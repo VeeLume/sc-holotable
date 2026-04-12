@@ -1,0 +1,31 @@
+[package]
+name = "sc-extract-generated"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+
+# Workspace-internal. Not intended to be consumed directly — `sc-extract`
+# re-exports everything that public consumers need. Keeping this crate
+# internal lets us rename, repackage, or restructure the generated layer
+# without breaking downstream callers.
+publish = false
+
+[package.metadata]
+# Why this is a separate crate: the generator produces ~270k lines of Rust
+# across ~170 bucket files. Splitting it out from `sc-extract` gives us:
+#
+# 1. A stable compilation unit — rustc caches the LLVM object for this
+#    crate separately from the hand-written sc-extract code, so edits to
+#    the latter don't trigger a full re-optimization of the generated code.
+# 2. A per-crate profile override (see the workspace Cargo.toml) — we
+#    build this crate at `opt-level = 1` to skip the expensive LLVM passes
+#    that otherwise dominate release build time on the giant match
+#    statements in `record_store.rs`.
+
+[dependencies]
+serde = { workspace = true }
+
+# svarog — Star Citizen data access. Direct workspace deps so the generated
+# code can `use svarog_common::CigGuid` etc. without going through sc-extract.
+svarog-common = { workspace = true }
+svarog-datacore = { workspace = true }

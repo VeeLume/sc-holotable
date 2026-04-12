@@ -1,0 +1,22 @@
+[package]
+name = "sc-generator"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+
+[[bin]]
+name = "sc-generator"
+path = "src/main.rs"
+
+[dependencies]
+sc-installs = { workspace = true }
+thiserror   = { workspace = true }
+tracing     = { workspace = true }
+
+# Svarog — Star Citizen data access. Pinned in workspace Cargo.toml.
+svarog-common   = { workspace = true }
+svarog-datacore = { workspace = true }
+svarog-p4k      = { workspace = true }
+
+# Simple structured CLI logging for a long-running extraction.
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }

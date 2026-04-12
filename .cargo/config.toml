@@ -1,0 +1,22 @@
+# Workspace-level Cargo configuration.
+#
+# The `sc-extract-generated` crate has ~6.5k structs, ~13k `impl Extract`
+# items, and serde derives across all of them. `rustc` itself can overflow
+# its default 8 MB thread stack while parsing / typechecking / running
+# proc-macro expansion on a fresh build. Bumping `RUST_MIN_STACK` lets the
+# compile succeed on Windows and Linux without any per-user configuration.
+#
+# 64 MB is well above any real need (we've seen it overflow at 8 MB, succeed
+# at 64 MB). Committed pages are lazy, so the cost is only what rustc
+# actually touches — typically a few MB.
+[env]
+RUST_MIN_STACK = "67108864"
+
+# Runtime stack size for compiled binaries on Windows.
+#
+# The RecordStore snapshot contains ~1,935 pool types serialized via msgpack.
+# Deserializing this payload with rmp_serde requires more stack depth than
+# the default 1 MB Windows thread stack provides. 8 MB is sufficient and
+# costs nothing in practice (virtual pages are committed lazily).
+[target.x86_64-pc-windows-msvc]
+rustflags = ["-C", "link-args=/STACK:8388608"]

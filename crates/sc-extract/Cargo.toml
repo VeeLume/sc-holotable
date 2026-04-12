@@ -1,0 +1,31 @@
+[package]
+name = "sc-extract"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+
+[dependencies]
+# Internal / workspace
+sc-extract-generated = { workspace = true }
+sc-installs = { workspace = true }
+thiserror = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+tracing = { workspace = true }
+
+# UTF-16 LE encoding / decoding for global.ini parsing.
+encoding_rs = "0.8"
+
+# Svarog — Star Citizen data access. Pinned in workspace Cargo.toml.
+svarog-common = { workspace = true }
+svarog-datacore = { workspace = true }
+svarog-p4k = { workspace = true }
+
+# Snapshot persistence: msgpack + zstd. msgpack matches `docs/sc-extract.md`;
+# zstd keeps the on-disk footprint in the 5–30 MB target range.
+rmp-serde = "1"
+zstd = "0.13"
+
+[dev-dependencies]
+tempfile = "3"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }

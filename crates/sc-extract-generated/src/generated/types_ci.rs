@@ -1,0 +1,185 @@
+// GENERATED FILE — DO NOT EDIT
+//
+// Produced by `tools/sc-generator`.
+// Regenerate with:
+//
+//     cargo run -p sc-generator -- --p4k <path-to-Data.p4k>
+//
+// Any hand edits will be lost on the next run.
+
+#![allow(non_snake_case)]
+#![allow(non_camel_case_types)]
+#![allow(dead_code)]
+#![allow(unused_imports)]
+#![allow(clippy::too_many_arguments)]
+
+use serde::{Deserialize, Serialize};
+
+use svarog_common::CigGuid;
+use svarog_datacore::{Instance, Value};
+use crate::{Builder, Extract, Handle, Pooled};
+
+use super::*;
+
+/// DCB type: `CinematicCameraControllerSetup`
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct CinematicCameraControllerSetup {
+    /// DCB field: `actionHoldTime` (Single)
+    #[serde(default)]
+    pub action_hold_time: f32,
+    /// DCB field: `expiryLingerTime` (Single)
+    #[serde(default)]
+    pub expiry_linger_time: f32,
+}
+
+impl Pooled for CinematicCameraControllerSetup {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.b_ci.cinematic_camera_controller_setup }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.b_ci.cinematic_camera_controller_setup }
+}
+
+impl<'a> Extract<'a> for CinematicCameraControllerSetup {
+    const TYPE_NAME: &'static str = "CinematicCameraControllerSetup";
+    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {
+            action_hold_time: inst.get_f32("actionHoldTime").unwrap_or_default(),
+            expiry_linger_time: inst.get_f32("expiryLingerTime").unwrap_or_default(),
+        }
+    }
+}
+
+/// DCB type: `CinematicConversationSettings`
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct CinematicConversationSettings {
+    /// DCB field: `widthAspectRatio` (Single)
+    #[serde(default)]
+    pub width_aspect_ratio: f32,
+    /// DCB field: `heightAspectRatio` (Single)
+    #[serde(default)]
+    pub height_aspect_ratio: f32,
+    /// DCB field: `lerpInTime` (Single)
+    #[serde(default)]
+    pub lerp_in_time: f32,
+    /// DCB field: `lerpOutTime` (Single)
+    #[serde(default)]
+    pub lerp_out_time: f32,
+}
+
+impl Pooled for CinematicConversationSettings {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.b_ci.cinematic_conversation_settings }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.b_ci.cinematic_conversation_settings }
+}
+
+impl<'a> Extract<'a> for CinematicConversationSettings {
+    const TYPE_NAME: &'static str = "CinematicConversationSettings";
+    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {
+            width_aspect_ratio: inst.get_f32("widthAspectRatio").unwrap_or_default(),
+            height_aspect_ratio: inst.get_f32("heightAspectRatio").unwrap_or_default(),
+            lerp_in_time: inst.get_f32("lerpInTime").unwrap_or_default(),
+            lerp_out_time: inst.get_f32("lerpOutTime").unwrap_or_default(),
+        }
+    }
+}
+
+/// DCB type: `CinematicConfig`
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct CinematicConfig {
+    /// DCB field: `globalState` (String)
+    #[serde(default)]
+    pub global_state: String,
+}
+
+impl Pooled for CinematicConfig {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.b_ci.cinematic_config }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.b_ci.cinematic_config }
+}
+
+impl<'a> Extract<'a> for CinematicConfig {
+    const TYPE_NAME: &'static str = "CinematicConfig";
+    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {
+            global_state: inst.get_str("globalState").map(String::from).unwrap_or_default(),
+        }
+    }
+}
+
+/// DCB type: `CinematicFlythroughPoint`
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct CinematicFlythroughPoint {
+    /// DCB field: `position` (Class)
+    #[serde(default)]
+    pub position: Option<Handle<Vec3>>,
+    /// DCB field: `rotation` (Class)
+    #[serde(default)]
+    pub rotation: Option<Handle<Quat>>,
+    /// DCB field: `duration` (Single)
+    #[serde(default)]
+    pub duration: f32,
+    /// DCB field: `relativeTo` (EnumChoice)
+    #[serde(default)]
+    pub relative_to: String,
+    /// DCB field: `interpolationToPoint` (Reference)
+    #[serde(default)]
+    pub interpolation_to_point: Option<CigGuid>,
+}
+
+impl Pooled for CinematicFlythroughPoint {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.b_ci.cinematic_flythrough_point }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.b_ci.cinematic_flythrough_point }
+}
+
+impl<'a> Extract<'a> for CinematicFlythroughPoint {
+    const TYPE_NAME: &'static str = "CinematicFlythroughPoint";
+    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
+        Self {
+            position: match inst.get("position") {
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::ClassRef(r))
+                | Some(Value::StrongPointer(Some(r)))
+                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<Vec3>(b.db.instance(r.struct_index, r.instance_index), true)),
+                _ => None,
+            },
+            rotation: match inst.get("rotation") {
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Quat>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::ClassRef(r))
+                | Some(Value::StrongPointer(Some(r)))
+                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<Quat>(b.db.instance(r.struct_index, r.instance_index), true)),
+                _ => None,
+            },
+            duration: inst.get_f32("duration").unwrap_or_default(),
+            relative_to: inst.get_str("relativeTo").map(String::from).unwrap_or_default(),
+            interpolation_to_point: inst.get("interpolationToPoint").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+        }
+    }
+}
+
+/// DCB type: `CinematicFlightPointsRecord`
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct CinematicFlightPointsRecord {
+    /// DCB field: `flightPoints` (Class (array))
+    #[serde(default)]
+    pub flight_points: Vec<Handle<CinematicFlythroughPoint>>,
+}
+
+impl Pooled for CinematicFlightPointsRecord {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.b_ci.cinematic_flight_points_record }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.b_ci.cinematic_flight_points_record }
+}
+
+impl<'a> Extract<'a> for CinematicFlightPointsRecord {
+    const TYPE_NAME: &'static str = "CinematicFlightPointsRecord";
+    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
+        Self {
+            flight_points: inst.get_array("flightPoints")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<CinematicFlythroughPoint>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r)
+                        | Value::StrongPointer(Some(r))
+                        | Value::WeakPointer(Some(r)) => Some(b.alloc_nested::<CinematicFlythroughPoint>(b.db.instance(r.struct_index, r.instance_index), true)),
+                        _ => None,
+                    }).collect())
+                .unwrap_or_default(),
+        }
+    }
+}
+

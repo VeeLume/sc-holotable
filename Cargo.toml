@@ -1,0 +1,122 @@
+[workspace]
+resolver = "3"
+members = [
+    "crates/sc-installs",
+    "crates/sc-extract",
+    "crates/sc-extract-generated",
+    "crates/sc-weapons",
+    "crates/sc-contracts",
+    "tools/sc-generator",
+    "tools/sc-snapshot",
+]
+
+[workspace.package]
+version = "0.0.0"
+edition = "2024"
+rust-version = "1.94.1"
+
+[workspace.dependencies]
+# Internal crates — referenced by path so one workspace member can depend on another.
+sc-installs = { path = "crates/sc-installs" }
+sc-extract = { path = "crates/sc-extract" }
+sc-extract-generated = { path = "crates/sc-extract-generated" }
+sc-weapons = { path = "crates/sc-weapons" }
+sc-contracts = { path = "crates/sc-contracts" }
+
+# Workspace-wide logging. Every crate that emits logs uses `tracing`.
+# See the "Conventions" section of the README for the rationale.
+tracing = "0.1"
+
+# Shared error handling and (de)serialization. Used by most crates.
+thiserror = "2"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+regex = "1"
+
+# svarog — Star Citizen data access. Pinned to a specific commit for
+# reproducible builds. Every workspace crate uses `{ workspace = true }`.
+svarog-common = { git = "https://github.com/19h/Svarog.git", rev = "ce06ec67", features = ["serde"] }
+svarog-datacore = { git = "https://github.com/19h/Svarog.git", rev = "ce06ec67" }
+svarog-p4k = { git = "https://github.com/19h/Svarog.git", rev = "ce06ec67" }
+
+# ── Profiles ────────────────────────────────────────────────────────────────
+#
+# Three release-tier profiles, trading compile time against runtime speed.
+# All three keep `sc-extract-generated` at `opt-level = 1 / codegen-units
+# = 256` — the hot path there is serde + hashmap, not the generated match
+# dispatch, so higher opt-levels just burn LLVM time for no gain.
+#
+#   Profile      Compile   Runtime   Use case
+#   ─────────    ───────   ───────   ──────────────────────────────────
+#   dev-opt      fast      decent    smoke tests, quick iteration
+#   release      moderate  good      CI, snapshot generation, consumers
+#   release-max  slow      maximum   shipped builds, benchmarks
+#
+# Invoke:
+#   cargo build --profile dev-opt
+#   cargo build --release              (= profile.release)
+#   cargo build --profile release-max
+
+# ── dev: development builds ────────────────────────────────────────────
+#
+# sc-extract-generated needs opt-level = 1 even in dev: at opt-level = 0
+# link.exe on Windows hits ~40k LNK2019 errors because rustc skips the
+# LLVM passes that materialise serde-derive's per-type __Visitor helpers
+# into exported symbols. codegen-units = 256 keeps LLVM parallelism high.
+[profile.dev.package.sc-extract-generated]
+opt-level = 1
+codegen-units = 256
+
+# ── dev-opt: fast compile, decent runtime ──────────────────────────────
+#
+# Everything at opt-level 1 + max codegen parallelism. Good enough for
+# functional testing of the full pipeline; compiles in minutes, not tens.
+[profile.dev-opt]
+inherits = "release"
+opt-level = 1
+lto = false
+debug = false
+incremental = true
+codegen-units = 256
+
+[profile.dev-opt.package.sc-extract-generated]
+opt-level = 1
+codegen-units = 256
+
+# ── release: middle ground (the default --release) ─────────────────────
+#
+# opt-level 2 for deps (svarog, serde, zstd) — the serde/hashmap-bound
+# hot path gains nothing from opt-level 3, which mostly just extends LLVM
+# passes. sc-extract and sc-extract-generated stay at opt-level 1:
+# sc-extract is thin orchestration, and sc-extract-generated's giant match
+# statements would balloon LLVM IR at higher opt-levels (the monomorphised
+# serde visit_map alone produced millions of IR instructions at opt-3).
+[profile.release]
+opt-level = 2
+
+[profile.release.package.sc-extract-generated]
+opt-level = 1
+codegen-units = 256
+
+[profile.release.package.sc-extract]
+opt-level = 1
+
+# ── release-max: runtime optimized, compile time is acceptable ─────────
+#
+# opt-level 3 + thin LTO + codegen-units 1 for maximum cross-crate
+# inlining on deps (svarog-datacore, rmp_serde, zstd). sc-extract bumped
+# to opt-level 2 (3 would re-trigger the visit_map IR explosion).
+# sc-extract-generated stays at opt-level 1 — same reasoning as above.
+[profile.release-max]
+inherits = "release"
+opt-level = 3
+lto = "thin"
+codegen-units = 1
+strip = true
+
+[profile.release-max.package.sc-extract-generated]
+opt-level = 1
+codegen-units = 256
+
+[profile.release-max.package.sc-extract]
+opt-level = 2

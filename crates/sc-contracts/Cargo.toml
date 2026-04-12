@@ -1,0 +1,8 @@
+[package]
+name = "sc-contracts"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+
+[dependencies]
+# sc-extract = { workspace = true }  # TODO: wire up once sc-extract has real helpers.

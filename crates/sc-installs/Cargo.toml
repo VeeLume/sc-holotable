@@ -1,0 +1,22 @@
+[package]
+name = "sc-installs"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+
+[features]
+default = []
+# Enables `specta::Type` derives on the public types so sc-langpatch (and
+# other Tauri consumers) can get typed Rust↔TS bindings without wrapping.
+specta = ["dep:specta"]
+
+[dependencies]
+thiserror  = { workspace = true }
+serde      = { workspace = true }
+serde_json = { workspace = true }
+tracing    = { workspace = true }
+regex      = { workspace = true }
+specta     = { version = "=2.0.0-rc.21", features = ["derive"], optional = true }
+
+[dev-dependencies]
+tempfile = "3"
