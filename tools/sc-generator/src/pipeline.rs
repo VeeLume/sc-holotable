@@ -8,6 +8,7 @@ use svarog_datacore::DataCoreDatabase;
 use svarog_p4k::P4kArchive;
 
 use crate::emit;
+use crate::features;
 
 /// Command-line options for a single generator run.
 #[derive(Debug, Clone)]
@@ -122,58 +123,125 @@ pub fn run(options: &RunOptions) -> Result<Summary> {
         source,
     })?;
 
-    // Remove stale files from previous runs so bucket renames don't leave
-    // orphan files hanging around (e.g. `types_a.rs` from an earlier
-    // first-letter bucketing when we've switched to two-letter bucketing).
-    //
-    // Scope is limited to generator-owned filenames: `types_*.rs`, the
-    // legacy single-file `types.rs`, `enums.rs`, `metadata.rs`, and `mod.rs`.
-    // We deliberately do NOT blow away the whole directory — if a user
-    // dropped a README or similar there, it stays.
-    clean_generated_dir(&options.out_dir)?;
+    // Clean the output directory completely — feature-scoped layout replaces
+    // the old alphabetical bucket layout.
+    if options.out_dir.exists() {
+        std::fs::remove_dir_all(&options.out_dir).map_err(|source| Error::CreateDir {
+            path: options.out_dir.clone(),
+            source,
+        })?;
+    }
+    std::fs::create_dir_all(&options.out_dir).map_err(|source| Error::CreateDir {
+        path: options.out_dir.clone(),
+        source,
+    })?;
 
-    // Compute the shared struct-name dedup table once; every emission
-    // stage consumes it so their views of "which types exist" stay
-    // consistent.
+    // Compute shared tables.
     let emitted_names = emit::compute_emitted_struct_names(&db);
     let pool_fields = emit::compute_pool_field_names(&emitted_names);
-    // Bucket assignments are the shared grouping used by the type bucket
-    // files AND by the `DataPools` / `RecordIndex` sub-struct splits, so
-    // every stage has the same idea of which bucket a type belongs to.
-    let bucket_assignments = emit::compute_bucket_assignments(&emitted_names);
 
-    // Emit files.
-    tracing::info!("emitting type buckets");
-    let buckets = emit::emit_types(&db, &emitted_names, &pool_fields, &bucket_assignments);
-    for (bucket, source) in &buckets {
-        let file_name = format!("types_{bucket}.rs");
-        write_file(&options.out_dir.join(&file_name), source)?;
+    // Classify types into features.
+    tracing::info!("classifying types into features");
+    let reachable: std::collections::HashSet<usize> = emitted_names
+        .keys()
+        .map(|&idx| idx as usize)
+        .collect();
+    let feature_rules = features::FeatureRules::default();
+    let feature_map = features::classify_features(&db, &reachable, &feature_rules);
+    let feature_assignments = emit::compute_feature_assignment_map(&emitted_names, &feature_map);
+
+    tracing::info!(
+        features = feature_map.feature_names.len(),
+        parent_features = feature_map.parent_features.len(),
+        "feature classification complete"
+    );
+
+    // Build the list of all feature module names (core + leaf features).
+    let mut all_features: Vec<String> = vec!["core".to_string()];
+    for f in &feature_map.feature_names {
+        if f != "core" && !all_features.contains(f) {
+            all_features.push(f.clone());
+        }
     }
 
+    // Group struct indices by feature.
+    let mut by_feature: std::collections::BTreeMap<String, Vec<u32>> = std::collections::BTreeMap::new();
+    for (&struct_idx, feature) in &feature_assignments {
+        by_feature.entry(feature.clone()).or_default().push(struct_idx);
+    }
+    // Sort indices within each feature for deterministic output.
+    for indices in by_feature.values_mut() {
+        indices.sort_unstable();
+    }
+
+    // Discover record types.
+    let mut record_struct_indices: std::collections::HashSet<u32> = std::collections::HashSet::new();
+    for record in db.records() {
+        if record.struct_index >= 0 && emitted_names.contains_key(&(record.struct_index as u32)) {
+            record_struct_indices.insert(record.struct_index as u32);
+        }
+    }
+
+    // Emit per-feature directories.
+    let mut features_with_index: Vec<String> = Vec::new();
+
+    for feature in &all_features {
+        let mod_name = feature.replace('-', "_");
+        let feature_dir = options.out_dir.join(&mod_name);
+        std::fs::create_dir_all(&feature_dir).map_err(|source| Error::CreateDir {
+            path: feature_dir.clone(),
+            source,
+        })?;
+
+        let indices = by_feature.get(feature).cloned().unwrap_or_default();
+
+        tracing::info!(feature = %feature, types = indices.len(), "emitting feature");
+
+        // types.rs
+        let types_src = emit::emit_feature_types(&db, feature, &indices, &emitted_names, &pool_fields);
+        write_file(&feature_dir.join("types.rs"), &types_src)?;
+
+        // pools.rs
+        let pools_src = emit::emit_feature_pools(feature, &indices, &emitted_names, &pool_fields);
+        write_file(&feature_dir.join("pools.rs"), &pools_src)?;
+
+        // index.rs (only if this feature has record types)
+        let feature_record_indices: Vec<u32> = indices
+            .iter()
+            .filter(|idx| record_struct_indices.contains(idx))
+            .copied()
+            .collect();
+        let has_index = !feature_record_indices.is_empty();
+        if has_index {
+            if let Some(index_src) = emit::emit_feature_index(&db, feature, &feature_record_indices, &emitted_names) {
+                write_file(&feature_dir.join("index.rs"), &index_src)?;
+            }
+            features_with_index.push(feature.clone());
+        }
+
+        // mod.rs
+        let mod_src = emit::emit_feature_mod(feature, has_index);
+        write_file(&feature_dir.join("mod.rs"), &mod_src)?;
+    }
+
+    // Top-level files.
     tracing::info!("emitting enums.rs");
-    let enums_src = emit::emit_enums(&db);
-    write_file(&options.out_dir.join("enums.rs"), &enums_src)?;
+    write_file(&options.out_dir.join("enums.rs"), &emit::emit_enums(&db))?;
 
     tracing::info!("emitting data_pools.rs");
-    let data_pools_src = emit::emit_data_pools(&emitted_names, &pool_fields, &bucket_assignments);
-    write_file(&options.out_dir.join("data_pools.rs"), &data_pools_src)?;
+    write_file(&options.out_dir.join("data_pools.rs"), &emit::emit_top_data_pools(&all_features))?;
 
     tracing::info!("emitting record_index.rs");
-    let record_index_src = emit::emit_record_index(&db, &emitted_names, &bucket_assignments);
-    write_file(&options.out_dir.join("record_index.rs"), &record_index_src)?;
+    write_file(&options.out_dir.join("record_index.rs"), &emit::emit_top_record_index(&features_with_index))?;
 
     tracing::info!("emitting record_store.rs");
-    let record_store_src = emit::emit_record_store(&db, &emitted_names, &bucket_assignments);
-    write_file(&options.out_dir.join("record_store.rs"), &record_store_src)?;
+    write_file(&options.out_dir.join("record_store.rs"), &emit::emit_record_store(&db, &emitted_names, &pool_fields, &feature_assignments))?;
 
     tracing::info!("emitting metadata.rs");
-    let metadata_src = emit::emit_metadata(&metadata);
-    write_file(&options.out_dir.join("metadata.rs"), &metadata_src)?;
+    write_file(&options.out_dir.join("metadata.rs"), &emit::emit_metadata(&metadata))?;
 
     tracing::info!("emitting mod.rs");
-    let bucket_names: Vec<String> = buckets.keys().cloned().collect();
-    let mod_src = emit::emit_mod_file(&bucket_names);
-    write_file(&options.out_dir.join("mod.rs"), &mod_src)?;
+    write_file(&options.out_dir.join("mod.rs"), &emit::emit_top_mod(&all_features, &feature_map))?;
 
     tracing::info!(elapsed_ms = start.elapsed().as_millis(), "write complete");
 

@@ -407,11 +407,17 @@ fn path_to_feature_name(prefix: &str) -> String {
     let stripped = prefix
         .strip_prefix("libs/foundry/records/")
         .unwrap_or(prefix);
-    stripped
+    let clean = stripped
         .replace(".xml", "")
         .replace('/', "-")
         .replace('.', "_")
-        .to_lowercase()
+        .replace(' ', "_")
+        .to_lowercase();
+    // Remove any character that's not alphanumeric, `-`, or `_`.
+    clean
+        .chars()
+        .filter(|c| c.is_ascii_alphanumeric() || *c == '-' || *c == '_')
+        .collect()
 }
 
 // ── BFS type closure ──────────────────────────────────────────────────────
