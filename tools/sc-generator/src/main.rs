@@ -23,6 +23,7 @@ use std::path::PathBuf;
 use std::process::ExitCode;
 
 mod emit;
+mod features;
 mod naming;
 mod pipeline;
 
@@ -69,6 +70,7 @@ fn parse_args() -> Result<RunOptions, String> {
     let mut out_dir: Option<PathBuf> = None;
     let mut check_only = false;
     let mut dump_paths = false;
+    let mut dump_features = false;
 
     while let Some(arg) = args.next() {
         match arg.as_str() {
@@ -82,6 +84,7 @@ fn parse_args() -> Result<RunOptions, String> {
             }
             "--check" => check_only = true,
             "--dump-paths" => dump_paths = true,
+            "--dump-features" => dump_features = true,
             "--help" | "-h" => {
                 print_usage();
                 std::process::exit(0);
@@ -98,6 +101,7 @@ fn parse_args() -> Result<RunOptions, String> {
         out_dir,
         check_only,
         dump_paths,
+        dump_features,
     })
 }
 

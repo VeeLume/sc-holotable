@@ -17,6 +17,8 @@ pub struct RunOptions {
     pub check_only: bool,
     /// Dump record path prefixes grouped by struct type, then exit.
     pub dump_paths: bool,
+    /// Dump computed feature assignments and exit.
+    pub dump_features: bool,
 }
 
 /// Summary of a completed generator run. Printed on success.
@@ -89,6 +91,15 @@ pub fn run(options: &RunOptions) -> Result<Summary> {
 
     if options.dump_paths {
         dump_record_paths(&db);
+        return Ok(Summary {
+            struct_count,
+            enum_count,
+            out_dir: options.out_dir.clone(),
+        });
+    }
+
+    if options.dump_features {
+        dump_feature_assignments(&db);
         return Ok(Summary {
             struct_count,
             enum_count,
@@ -281,6 +292,78 @@ fn clean_generated_dir(dir: &Path) -> Result<()> {
         }
     }
     Ok(())
+}
+
+/// Dump computed feature assignments — shows which types go into which feature.
+fn dump_feature_assignments(db: &DataCoreDatabase) {
+    use crate::emit;
+    use crate::features::{self, FeatureAssignment, FeatureRules};
+
+    let emitted_names = emit::compute_emitted_struct_names(db);
+    let reachable: std::collections::HashSet<usize> = emitted_names
+        .keys()
+        .map(|&idx| idx as usize)
+        .collect();
+
+    let rules = FeatureRules::default();
+    let feature_map = features::classify_features(db, &reachable, &rules);
+
+    // Count types per category.
+    let mut core_count = 0usize;
+    let mut multi_count = 0usize;
+    let mut single_count = 0usize;
+    for (&struct_idx, _) in &emitted_names {
+        match feature_map.struct_feature.get(struct_idx as usize).and_then(|a| a.as_ref()) {
+            Some(FeatureAssignment::Core) => core_count += 1,
+            Some(FeatureAssignment::Single(_)) => single_count += 1,
+            Some(FeatureAssignment::Multi(_)) => multi_count += 1,
+            None => {}
+        }
+    }
+
+    println!("Feature classification results");
+    println!("==============================");
+    println!();
+    println!("Rules: max_fields={}, min_fields={}, max_depth={}, core_threshold={}",
+        rules.max_fields_per_feature, rules.min_fields_per_feature,
+        rules.max_depth, rules.core_promotion_threshold);
+    println!();
+    println!("Total emitted types: {}", emitted_names.len());
+    println!("Total compile cost: {} fields", feature_map.total_cost);
+    println!();
+    println!("  Core (always compiled): {core_count} types, {} fields",
+        feature_map.feature_costs.get("core").copied().unwrap_or(0));
+    println!("  Multi-feature (cfg any): {multi_count} types");
+    println!("  Single-feature: {single_count} types");
+    println!();
+
+    // Leaf features sorted alphabetically.
+    println!("Leaf features ({} total):", feature_map.feature_names.len());
+    println!();
+    println!("{:<55} {:>6} {:>8}", "feature", "types", "cost");
+    println!("{:-<55} {:->6} {:->8}", "", "", "");
+
+    for feature_name in &feature_map.feature_names {
+        let cost = feature_map.feature_costs.get(feature_name).copied().unwrap_or(0);
+        // Count exclusive types for this feature.
+        let excl = feature_map.struct_feature.iter().flatten().filter(|a| {
+            matches!(a, FeatureAssignment::Single(f) if f == feature_name)
+        }).count();
+        println!("{feature_name:<55} {excl:>6} {cost:>8}");
+    }
+
+    // Parent features.
+    if !feature_map.parent_features.is_empty() {
+        println!();
+        println!("Parent features ({}):", feature_map.parent_features.len());
+        println!();
+        for (parent, children) in &feature_map.parent_features {
+            println!("  {parent}");
+            for child in children {
+                println!("    - {child}");
+            }
+        }
+    }
 }
 
 /// Dump record paths with adaptive depth analysis.
