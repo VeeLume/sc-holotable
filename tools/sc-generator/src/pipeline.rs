@@ -244,15 +244,26 @@ pub fn run(options: &RunOptions) -> Result<Summary> {
     tracing::info!("emitting mod.rs");
     write_file(&options.out_dir.join("mod.rs"), &emit::emit_top_mod(&all_features, &feature_map))?;
 
-    // Update Cargo.toml with the [features] section.
+    // Update Cargo.toml [features] sections.
+    // 1. sc-extract-generated/Cargo.toml — leaf features
+    // 2. sc-extract/Cargo.toml — forwarding features
     tracing::info!("updating Cargo.toml features");
-    let cargo_toml_path = options
+    let generated_crate_dir = options
         .out_dir
         .parent() // src/
-        .and_then(|p| p.parent()) // sc-extract-generated/
-        .map(|p| p.join("Cargo.toml"));
-    if let Some(cargo_path) = cargo_toml_path {
-        update_cargo_features(&cargo_path, &all_features, &feature_map)?;
+        .and_then(|p| p.parent()); // sc-extract-generated/
+
+    if let Some(gen_dir) = generated_crate_dir {
+        update_cargo_features(&gen_dir.join("Cargo.toml"), &all_features, &feature_map)?;
+
+        // sc-extract lives alongside sc-extract-generated under crates/.
+        let extract_cargo = gen_dir.parent() // crates/
+            .map(|p| p.join("sc-extract").join("Cargo.toml"));
+        if let Some(extract_path) = extract_cargo {
+            if extract_path.exists() {
+                update_sc_extract_features(&extract_path, &all_features, &feature_map)?;
+            }
+        }
     }
 
     tracing::info!(elapsed_ms = start.elapsed().as_millis(), "write complete");
@@ -654,6 +665,57 @@ fn update_cargo_features(
     out.push_str("# Auto-generated leaf features. Each gates a set of DCB types.\n");
     for f in &leaf_features {
         let _ = writeln!(out, "{f} = []");
+    }
+
+    write_file(cargo_path, &out)
+}
+
+/// Update sc-extract's Cargo.toml to forward features to sc-extract-generated.
+fn update_sc_extract_features(
+    cargo_path: &Path,
+    all_features: &[String],
+    feature_map: &crate::features::FeatureMap,
+) -> Result<()> {
+    let content = std::fs::read_to_string(cargo_path).map_err(|source| Error::WriteFile {
+        path: cargo_path.to_path_buf(),
+        source,
+    })?;
+
+    // Strip existing [features] section.
+    let base = if let Some(pos) = content.find("\n[features]") {
+        content[..pos + 1].to_string()
+    } else {
+        let mut s = content.clone();
+        if !s.ends_with('\n') {
+            s.push('\n');
+        }
+        s
+    };
+
+    let mut out = base;
+    out.push_str("[features]\n");
+    out.push_str("default = []\n");
+
+    // `full` forwards to sc-extract-generated/full
+    out.push_str("full = [\"sc-extract-generated/full\"]\n");
+
+    // Parent features forward to their children in sc-extract-generated.
+    for (parent, children) in &feature_map.parent_features {
+        let _ = write!(out, "{parent} = [");
+        let valid: Vec<&String> = children.iter().filter(|c| all_features.contains(c)).collect();
+        for (i, child) in valid.iter().enumerate() {
+            if i > 0 { out.push_str(", "); }
+            let _ = write!(out, "\"sc-extract-generated/{child}\"");
+        }
+        out.push_str("]\n");
+    }
+
+    // Leaf features forward 1:1.
+    out.push('\n');
+    out.push_str("# Auto-generated: each feature forwards to sc-extract-generated.\n");
+    for f in all_features {
+        if f == "core" { continue; }
+        let _ = writeln!(out, "{f} = [\"sc-extract-generated/{f}\"]");
     }
 
     write_file(cargo_path, &out)

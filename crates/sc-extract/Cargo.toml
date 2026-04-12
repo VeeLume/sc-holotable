@@ -29,3 +29,621 @@ zstd = "0.13"
 [dev-dependencies]
 tempfile = "3"
 tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+[features]
+default = []
+full = ["sc-extract-generated/full"]
+actor = [
+    "sc-extract-generated/actor-actorledgegrabbing",
+    "sc-extract-generated/actor-actortargetedparams",
+    "sc-extract-generated/actor-actorviewlimits",
+    "sc-extract-generated/actor-actorzerogtraversalparams",
+    "sc-extract-generated/actor-atls_geo_jumppackconfig",
+    "sc-extract-generated/actor-externalforceresponse",
+    "sc-extract-generated/actor-gforce",
+    "sc-extract-generated/actor-headtrackinglimits",
+    "sc-extract-generated/actor-inputdeflectiontime",
+    "sc-extract-generated/actor-locomotionpersonality",
+    "sc-extract-generated/actor-lookahead",
+    "sc-extract-generated/actor-playeranimatedinteractionconfig",
+    "sc-extract-generated/actor-playerdefaultactionsconfig",
+    "sc-extract-generated/actor-quantumtravelcameraeffects",
+    "sc-extract-generated/actor-skeletonconfigs",
+    "sc-extract-generated/actor-stanceinfo",
+    "sc-extract-generated/actor-targettrackingautozoom",
+]
+entities = [
+    "sc-extract-generated/entities-haulingentityclass",
+    "sc-extract-generated/entities-scitem-actormovables",
+    "sc-extract-generated/entities-scitem-mastermodeexclusionglobalparams",
+    "sc-extract-generated/entities-scitem-operatormoderecords",
+    "sc-extract-generated/entities-scitem-ships",
+    "sc-extract-generated/entities-scitem-usables",
+    "sc-extract-generated/entities-ui",
+    "sc-extract-generated/entities-vfx",
+]
+entities-scitem = [
+    "sc-extract-generated/entities-scitem-actormovables",
+    "sc-extract-generated/entities-scitem-mastermodeexclusionglobalparams",
+    "sc-extract-generated/entities-scitem-operatormoderecords",
+    "sc-extract-generated/entities-scitem-ships",
+    "sc-extract-generated/entities-scitem-usables",
+]
+libs-foundry-records = [
+    "sc-extract-generated/actor-actorledgegrabbing",
+    "sc-extract-generated/actor-actortargetedparams",
+    "sc-extract-generated/actor-actorviewlimits",
+    "sc-extract-generated/actor-actorzerogtraversalparams",
+    "sc-extract-generated/actor-atls_geo_jumppackconfig",
+    "sc-extract-generated/actor-externalforceresponse",
+    "sc-extract-generated/actor-gforce",
+    "sc-extract-generated/actor-headtrackinglimits",
+    "sc-extract-generated/actor-inputdeflectiontime",
+    "sc-extract-generated/actor-locomotionpersonality",
+    "sc-extract-generated/actor-lookahead",
+    "sc-extract-generated/actor-playeranimatedinteractionconfig",
+    "sc-extract-generated/actor-playerdefaultactionsconfig",
+    "sc-extract-generated/actor-quantumtravelcameraeffects",
+    "sc-extract-generated/actor-skeletonconfigs",
+    "sc-extract-generated/actor-stanceinfo",
+    "sc-extract-generated/actor-targettrackingautozoom",
+    "sc-extract-generated/ads",
+    "sc-extract-generated/aianimationdata",
+    "sc-extract-generated/aiglobalsettings",
+    "sc-extract-generated/aimotive",
+    "sc-extract-generated/aiprofile",
+    "sc-extract-generated/aiwavecollection",
+    "sc-extract-generated/ammoparams",
+    "sc-extract-generated/analytics",
+    "sc-extract-generated/announcer",
+    "sc-extract-generated/areaservices",
+    "sc-extract-generated/audio",
+    "sc-extract-generated/awardservice",
+    "sc-extract-generated/cameras",
+    "sc-extract-generated/capacitorassignment",
+    "sc-extract-generated/cargomanifest",
+    "sc-extract-generated/character",
+    "sc-extract-generated/chatchannelfilters",
+    "sc-extract-generated/chatcommandfastaccess",
+    "sc-extract-generated/chatemoterecord",
+    "sc-extract-generated/chatfilteroptions",
+    "sc-extract-generated/chatmanager",
+    "sc-extract-generated/closecombat",
+    "sc-extract-generated/commodityconfiguration",
+    "sc-extract-generated/commoditytypedatabase",
+    "sc-extract-generated/commsnotifications",
+    "sc-extract-generated/communicationatlconfig",
+    "sc-extract-generated/communicationconfig",
+    "sc-extract-generated/communicationname",
+    "sc-extract-generated/communicationsystem",
+    "sc-extract-generated/communicationvariableconfig",
+    "sc-extract-generated/consumabletypesdatabase",
+    "sc-extract-generated/contextualcommunicationconfig",
+    "sc-extract-generated/contracts",
+    "sc-extract-generated/conversation",
+    "sc-extract-generated/crafting",
+    "sc-extract-generated/crewmanifest",
+    "sc-extract-generated/damage",
+    "sc-extract-generated/densityclasses",
+    "sc-extract-generated/dialoguecontentbank",
+    "sc-extract-generated/dialoguerealm",
+    "sc-extract-generated/dynamiccameraeffects",
+    "sc-extract-generated/dynamiclightingrig",
+    "sc-extract-generated/emotions",
+    "sc-extract-generated/entities-haulingentityclass",
+    "sc-extract-generated/entities-scitem-actormovables",
+    "sc-extract-generated/entities-scitem-mastermodeexclusionglobalparams",
+    "sc-extract-generated/entities-scitem-operatormoderecords",
+    "sc-extract-generated/entities-scitem-ships",
+    "sc-extract-generated/entities-scitem-usables",
+    "sc-extract-generated/entities-ui",
+    "sc-extract-generated/entities-vfx",
+    "sc-extract-generated/entitlementpolicies",
+    "sc-extract-generated/environments",
+    "sc-extract-generated/evagraph",
+    "sc-extract-generated/explosiveordnance",
+    "sc-extract-generated/factions",
+    "sc-extract-generated/fidgetconfig",
+    "sc-extract-generated/foley",
+    "sc-extract-generated/forcefeedback_forcefeedbackeffects",
+    "sc-extract-generated/formation",
+    "sc-extract-generated/friendmanager",
+    "sc-extract-generated/fuelparams",
+    "sc-extract-generated/gamemode",
+    "sc-extract-generated/gamemodule",
+    "sc-extract-generated/globalarmarkerparams",
+    "sc-extract-generated/globalcargoloadingparams",
+    "sc-extract-generated/globalcommsnotificationparams",
+    "sc-extract-generated/globalcuttableshapeparams",
+    "sc-extract-generated/globalinteractionparams",
+    "sc-extract-generated/globalinventoryparams",
+    "sc-extract-generated/globalquantumdriveparams",
+    "sc-extract-generated/globalshopparams",
+    "sc-extract-generated/globaltutorialparams",
+    "sc-extract-generated/grips",
+    "sc-extract-generated/handholdgripdatabase",
+    "sc-extract-generated/hardwaremouse",
+    "sc-extract-generated/harvestable",
+    "sc-extract-generated/hazardawarenessparams",
+    "sc-extract-generated/hints",
+    "sc-extract-generated/hudparams",
+    "sc-extract-generated/ifcs",
+    "sc-extract-generated/initialdamageoverrides",
+    "sc-extract-generated/inputpromptconfig",
+    "sc-extract-generated/instancedinterior",
+    "sc-extract-generated/interactionconditions",
+    "sc-extract-generated/intoxication",
+    "sc-extract-generated/inventorycontainers",
+    "sc-extract-generated/item",
+    "sc-extract-generated/journalentry",
+    "sc-extract-generated/jumppoints",
+    "sc-extract-generated/landingpadsize",
+    "sc-extract-generated/lawsystem",
+    "sc-extract-generated/leangraph",
+    "sc-extract-generated/level",
+    "sc-extract-generated/loadoutkits",
+    "sc-extract-generated/longtermpersistence",
+    "sc-extract-generated/lootgeneration",
+    "sc-extract-generated/megamap",
+    "sc-extract-generated/mining",
+    "sc-extract-generated/missionbroker",
+    "sc-extract-generated/missiondata",
+    "sc-extract-generated/missionfailureconditions",
+    "sc-extract-generated/missiongiver",
+    "sc-extract-generated/missionscenarios",
+    "sc-extract-generated/missiontype",
+    "sc-extract-generated/motionstatemachine",
+    "sc-extract-generated/moveviewrestrictionpenalties",
+    "sc-extract-generated/musiclogic",
+    "sc-extract-generated/personalinnerthoughtrules",
+    "sc-extract-generated/planetdaynighttemperatureparams",
+    "sc-extract-generated/posturedatabase",
+    "sc-extract-generated/procbreathing",
+    "sc-extract-generated/proceduralaimrigrecord",
+    "sc-extract-generated/proceduralanimations",
+    "sc-extract-generated/procedurallandingsetup",
+    "sc-extract-generated/procedurallayout",
+    "sc-extract-generated/qteconfigs",
+    "sc-extract-generated/radarsystem",
+    "sc-extract-generated/rastar",
+    "sc-extract-generated/refinerynotificationconfiguration",
+    "sc-extract-generated/refiningprocess",
+    "sc-extract-generated/rendererpresets",
+    "sc-extract-generated/rentalnotificationparams",
+    "sc-extract-generated/reputation",
+    "sc-extract-generated/resourcetypedatabase",
+    "sc-extract-generated/roomsystem",
+    "sc-extract-generated/scarryableikinteractionlist",
+    "sc-extract-generated/scitemcommscomponentsetup",
+    "sc-extract-generated/scitemdisplayscreenpreset",
+    "sc-extract-generated/scitemmanufacturer",
+    "sc-extract-generated/scuttableshapedefinition",
+    "sc-extract-generated/seatcdikconfigs",
+    "sc-extract-generated/servicebeacon",
+    "sc-extract-generated/sgeometryviewdistanceratiocategories",
+    "sc-extract-generated/sglobalchargedrainbeamparams",
+    "sc-extract-generated/sglobalcrosshairparams",
+    "sc-extract-generated/sglobalelectronparams",
+    "sc-extract-generated/sglobalhealingbeamparams",
+    "sc-extract-generated/sglobalhitbehaviorparams",
+    "sc-extract-generated/sglobalsalvagerepairbeamparams",
+    "sc-extract-generated/sglobaltractorbeamparams",
+    "sc-extract-generated/shipinsurancerecord",
+    "sc-extract-generated/specialeventdatabase",
+    "sc-extract-generated/squantumdriveeffecttagstemplate",
+    "sc-extract-generated/sreputationglobalcontextbbparams",
+    "sc-extract-generated/ssolarsystem",
+    "sc-extract-generated/starmap",
+    "sc-extract-generated/tacticalquery",
+    "sc-extract-generated/tagdatabase",
+    "sc-extract-generated/targetselector",
+    "sc-extract-generated/tintpalettes",
+    "sc-extract-generated/trackview",
+    "sc-extract-generated/traversalcostconfig",
+    "sc-extract-generated/turret",
+    "sc-extract-generated/ui-animatedmarkers",
+    "sc-extract-generated/ui-armarkerconfiguration",
+    "sc-extract-generated/ui-buildingblocks",
+    "sc-extract-generated/ui-digitalsignage",
+    "sc-extract-generated/ui-directrtt",
+    "sc-extract-generated/ui-dockingslotvisibility",
+    "sc-extract-generated/ui-elementsounds_deprecated",
+    "sc-extract-generated/ui-flashobjectbindinggroups",
+    "sc-extract-generated/ui-flighthudmessages",
+    "sc-extract-generated/ui-frontend",
+    "sc-extract-generated/ui-graphs",
+    "sc-extract-generated/ui-holovehicleconfig",
+    "sc-extract-generated/ui-hudcolors_shipcolorpalettes",
+    "sc-extract-generated/ui-innerthought",
+    "sc-extract-generated/ui-itemkiosk",
+    "sc-extract-generated/ui-itempreview_config",
+    "sc-extract-generated/ui-itemtypedefinition",
+    "sc-extract-generated/ui-localplayershoppingdata",
+    "sc-extract-generated/ui-marker_config",
+    "sc-extract-generated/ui-markertrackingvolumeconfig",
+    "sc-extract-generated/ui-missilelockreticleconfig",
+    "sc-extract-generated/ui-mobiglas",
+    "sc-extract-generated/ui-objectdatabankentrymarkerconfig",
+    "sc-extract-generated/ui-playerchoice_imconfig_playerchoiceim",
+    "sc-extract-generated/ui-playerchoice_library_playerchoicelibrary",
+    "sc-extract-generated/ui-playerchoice_pitconfig_playerchoicepersonalthought",
+    "sc-extract-generated/ui-playerchoice_signalconfig_interactorsignalconfig",
+    "sc-extract-generated/ui-playerecggraph_config_playerecggraphconfig",
+    "sc-extract-generated/ui-pointofinterestdata",
+    "sc-extract-generated/ui-popups",
+    "sc-extract-generated/ui-radar3dpresets",
+    "sc-extract-generated/ui-radardisplay_config_radar",
+    "sc-extract-generated/ui-seatreticlearchetype",
+    "sc-extract-generated/ui-transformationinterpolatorrecords",
+    "sc-extract-generated/ui-uiconfig_starcitizen",
+    "sc-extract-generated/ui-uielements",
+    "sc-extract-generated/ui-uimodes",
+    "sc-extract-generated/ui-uistatedisplay",
+    "sc-extract-generated/ui-vehicleentrance",
+    "sc-extract-generated/ui-videocomms",
+    "sc-extract-generated/ui-visor",
+    "sc-extract-generated/ui-worlddisplay",
+    "sc-extract-generated/unittest_unittestb",
+    "sc-extract-generated/vehicle",
+    "sc-extract-generated/vfx",
+    "sc-extract-generated/vibrations",
+    "sc-extract-generated/videocommschannels",
+    "sc-extract-generated/voicebundle",
+    "sc-extract-generated/voicechannelsettingsrecord",
+    "sc-extract-generated/voicesingle",
+    "sc-extract-generated/weaponarmodifiers",
+    "sc-extract-generated/weaponmisfiredef",
+    "sc-extract-generated/weaponproceduralanimation",
+    "sc-extract-generated/weaponproceduralclip",
+    "sc-extract-generated/weaponproceduralrecoil",
+    "sc-extract-generated/zerogtraversalgraph",
+]
+ui = [
+    "sc-extract-generated/ui-animatedmarkers",
+    "sc-extract-generated/ui-armarkerconfiguration",
+    "sc-extract-generated/ui-buildingblocks",
+    "sc-extract-generated/ui-digitalsignage",
+    "sc-extract-generated/ui-directrtt",
+    "sc-extract-generated/ui-dockingslotvisibility",
+    "sc-extract-generated/ui-elementsounds_deprecated",
+    "sc-extract-generated/ui-flashobjectbindinggroups",
+    "sc-extract-generated/ui-flighthudmessages",
+    "sc-extract-generated/ui-frontend",
+    "sc-extract-generated/ui-graphs",
+    "sc-extract-generated/ui-holovehicleconfig",
+    "sc-extract-generated/ui-hudcolors_shipcolorpalettes",
+    "sc-extract-generated/ui-innerthought",
+    "sc-extract-generated/ui-itemkiosk",
+    "sc-extract-generated/ui-itempreview_config",
+    "sc-extract-generated/ui-itemtypedefinition",
+    "sc-extract-generated/ui-localplayershoppingdata",
+    "sc-extract-generated/ui-marker_config",
+    "sc-extract-generated/ui-markertrackingvolumeconfig",
+    "sc-extract-generated/ui-missilelockreticleconfig",
+    "sc-extract-generated/ui-mobiglas",
+    "sc-extract-generated/ui-objectdatabankentrymarkerconfig",
+    "sc-extract-generated/ui-playerchoice_imconfig_playerchoiceim",
+    "sc-extract-generated/ui-playerchoice_library_playerchoicelibrary",
+    "sc-extract-generated/ui-playerchoice_pitconfig_playerchoicepersonalthought",
+    "sc-extract-generated/ui-playerchoice_signalconfig_interactorsignalconfig",
+    "sc-extract-generated/ui-playerecggraph_config_playerecggraphconfig",
+    "sc-extract-generated/ui-pointofinterestdata",
+    "sc-extract-generated/ui-popups",
+    "sc-extract-generated/ui-radar3dpresets",
+    "sc-extract-generated/ui-radardisplay_config_radar",
+    "sc-extract-generated/ui-seatreticlearchetype",
+    "sc-extract-generated/ui-transformationinterpolatorrecords",
+    "sc-extract-generated/ui-uiconfig_starcitizen",
+    "sc-extract-generated/ui-uielements",
+    "sc-extract-generated/ui-uimodes",
+    "sc-extract-generated/ui-uistatedisplay",
+    "sc-extract-generated/ui-vehicleentrance",
+    "sc-extract-generated/ui-videocomms",
+    "sc-extract-generated/ui-visor",
+    "sc-extract-generated/ui-worlddisplay",
+]
+
+# Auto-generated: each feature forwards to sc-extract-generated.
+actor-actorledgegrabbing = ["sc-extract-generated/actor-actorledgegrabbing"]
+actor-actortargetedparams = ["sc-extract-generated/actor-actortargetedparams"]
+actor-actorviewlimits = ["sc-extract-generated/actor-actorviewlimits"]
+actor-actorzerogtraversalparams = [
+    "sc-extract-generated/actor-actorzerogtraversalparams",
+]
+actor-atls_geo_jumppackconfig = [
+    "sc-extract-generated/actor-atls_geo_jumppackconfig",
+]
+actor-externalforceresponse = [
+    "sc-extract-generated/actor-externalforceresponse",
+]
+actor-gforce = ["sc-extract-generated/actor-gforce"]
+actor-headtrackinglimits = ["sc-extract-generated/actor-headtrackinglimits"]
+actor-inputdeflectiontime = ["sc-extract-generated/actor-inputdeflectiontime"]
+actor-locomotionpersonality = [
+    "sc-extract-generated/actor-locomotionpersonality",
+]
+actor-lookahead = ["sc-extract-generated/actor-lookahead"]
+actor-playeranimatedinteractionconfig = [
+    "sc-extract-generated/actor-playeranimatedinteractionconfig",
+]
+actor-playerdefaultactionsconfig = [
+    "sc-extract-generated/actor-playerdefaultactionsconfig",
+]
+actor-quantumtravelcameraeffects = [
+    "sc-extract-generated/actor-quantumtravelcameraeffects",
+]
+actor-skeletonconfigs = ["sc-extract-generated/actor-skeletonconfigs"]
+actor-stanceinfo = ["sc-extract-generated/actor-stanceinfo"]
+actor-targettrackingautozoom = [
+    "sc-extract-generated/actor-targettrackingautozoom",
+]
+ads = ["sc-extract-generated/ads"]
+aianimationdata = ["sc-extract-generated/aianimationdata"]
+aiglobalsettings = ["sc-extract-generated/aiglobalsettings"]
+aimotive = ["sc-extract-generated/aimotive"]
+aiprofile = ["sc-extract-generated/aiprofile"]
+aiwavecollection = ["sc-extract-generated/aiwavecollection"]
+ammoparams = ["sc-extract-generated/ammoparams"]
+analytics = ["sc-extract-generated/analytics"]
+announcer = ["sc-extract-generated/announcer"]
+areaservices = ["sc-extract-generated/areaservices"]
+audio = ["sc-extract-generated/audio"]
+awardservice = ["sc-extract-generated/awardservice"]
+cameras = ["sc-extract-generated/cameras"]
+capacitorassignment = ["sc-extract-generated/capacitorassignment"]
+cargomanifest = ["sc-extract-generated/cargomanifest"]
+character = ["sc-extract-generated/character"]
+chatchannelfilters = ["sc-extract-generated/chatchannelfilters"]
+chatcommandfastaccess = ["sc-extract-generated/chatcommandfastaccess"]
+chatemoterecord = ["sc-extract-generated/chatemoterecord"]
+chatfilteroptions = ["sc-extract-generated/chatfilteroptions"]
+chatmanager = ["sc-extract-generated/chatmanager"]
+closecombat = ["sc-extract-generated/closecombat"]
+commodityconfiguration = ["sc-extract-generated/commodityconfiguration"]
+commoditytypedatabase = ["sc-extract-generated/commoditytypedatabase"]
+commsnotifications = ["sc-extract-generated/commsnotifications"]
+communicationatlconfig = ["sc-extract-generated/communicationatlconfig"]
+communicationconfig = ["sc-extract-generated/communicationconfig"]
+communicationname = ["sc-extract-generated/communicationname"]
+communicationsystem = ["sc-extract-generated/communicationsystem"]
+communicationvariableconfig = [
+    "sc-extract-generated/communicationvariableconfig",
+]
+consumabletypesdatabase = ["sc-extract-generated/consumabletypesdatabase"]
+contextualcommunicationconfig = [
+    "sc-extract-generated/contextualcommunicationconfig",
+]
+contracts = ["sc-extract-generated/contracts"]
+conversation = ["sc-extract-generated/conversation"]
+crafting = ["sc-extract-generated/crafting"]
+crewmanifest = ["sc-extract-generated/crewmanifest"]
+damage = ["sc-extract-generated/damage"]
+densityclasses = ["sc-extract-generated/densityclasses"]
+dialoguecontentbank = ["sc-extract-generated/dialoguecontentbank"]
+dialoguerealm = ["sc-extract-generated/dialoguerealm"]
+dynamiccameraeffects = ["sc-extract-generated/dynamiccameraeffects"]
+dynamiclightingrig = ["sc-extract-generated/dynamiclightingrig"]
+emotions = ["sc-extract-generated/emotions"]
+entities-haulingentityclass = [
+    "sc-extract-generated/entities-haulingentityclass",
+]
+entities-scitem-actormovables = [
+    "sc-extract-generated/entities-scitem-actormovables",
+]
+entities-scitem-mastermodeexclusionglobalparams = [
+    "sc-extract-generated/entities-scitem-mastermodeexclusionglobalparams",
+]
+entities-scitem-operatormoderecords = [
+    "sc-extract-generated/entities-scitem-operatormoderecords",
+]
+entities-scitem-ships = ["sc-extract-generated/entities-scitem-ships"]
+entities-scitem-usables = ["sc-extract-generated/entities-scitem-usables"]
+entities-ui = ["sc-extract-generated/entities-ui"]
+entities-vfx = ["sc-extract-generated/entities-vfx"]
+entitlementpolicies = ["sc-extract-generated/entitlementpolicies"]
+environments = ["sc-extract-generated/environments"]
+evagraph = ["sc-extract-generated/evagraph"]
+explosiveordnance = ["sc-extract-generated/explosiveordnance"]
+factions = ["sc-extract-generated/factions"]
+fidgetconfig = ["sc-extract-generated/fidgetconfig"]
+foley = ["sc-extract-generated/foley"]
+forcefeedback_forcefeedbackeffects = [
+    "sc-extract-generated/forcefeedback_forcefeedbackeffects",
+]
+formation = ["sc-extract-generated/formation"]
+friendmanager = ["sc-extract-generated/friendmanager"]
+fuelparams = ["sc-extract-generated/fuelparams"]
+gamemode = ["sc-extract-generated/gamemode"]
+gamemodule = ["sc-extract-generated/gamemodule"]
+globalarmarkerparams = ["sc-extract-generated/globalarmarkerparams"]
+globalcargoloadingparams = ["sc-extract-generated/globalcargoloadingparams"]
+globalcommsnotificationparams = [
+    "sc-extract-generated/globalcommsnotificationparams",
+]
+globalcuttableshapeparams = ["sc-extract-generated/globalcuttableshapeparams"]
+globalinteractionparams = ["sc-extract-generated/globalinteractionparams"]
+globalinventoryparams = ["sc-extract-generated/globalinventoryparams"]
+globalquantumdriveparams = ["sc-extract-generated/globalquantumdriveparams"]
+globalshopparams = ["sc-extract-generated/globalshopparams"]
+globaltutorialparams = ["sc-extract-generated/globaltutorialparams"]
+grips = ["sc-extract-generated/grips"]
+handholdgripdatabase = ["sc-extract-generated/handholdgripdatabase"]
+hardwaremouse = ["sc-extract-generated/hardwaremouse"]
+harvestable = ["sc-extract-generated/harvestable"]
+hazardawarenessparams = ["sc-extract-generated/hazardawarenessparams"]
+hints = ["sc-extract-generated/hints"]
+hudparams = ["sc-extract-generated/hudparams"]
+ifcs = ["sc-extract-generated/ifcs"]
+initialdamageoverrides = ["sc-extract-generated/initialdamageoverrides"]
+inputpromptconfig = ["sc-extract-generated/inputpromptconfig"]
+instancedinterior = ["sc-extract-generated/instancedinterior"]
+interactionconditions = ["sc-extract-generated/interactionconditions"]
+intoxication = ["sc-extract-generated/intoxication"]
+inventorycontainers = ["sc-extract-generated/inventorycontainers"]
+item = ["sc-extract-generated/item"]
+journalentry = ["sc-extract-generated/journalentry"]
+jumppoints = ["sc-extract-generated/jumppoints"]
+landingpadsize = ["sc-extract-generated/landingpadsize"]
+lawsystem = ["sc-extract-generated/lawsystem"]
+leangraph = ["sc-extract-generated/leangraph"]
+level = ["sc-extract-generated/level"]
+loadoutkits = ["sc-extract-generated/loadoutkits"]
+longtermpersistence = ["sc-extract-generated/longtermpersistence"]
+lootgeneration = ["sc-extract-generated/lootgeneration"]
+megamap = ["sc-extract-generated/megamap"]
+mining = ["sc-extract-generated/mining"]
+missionbroker = ["sc-extract-generated/missionbroker"]
+missiondata = ["sc-extract-generated/missiondata"]
+missionfailureconditions = ["sc-extract-generated/missionfailureconditions"]
+missiongiver = ["sc-extract-generated/missiongiver"]
+missionscenarios = ["sc-extract-generated/missionscenarios"]
+missiontype = ["sc-extract-generated/missiontype"]
+motionstatemachine = ["sc-extract-generated/motionstatemachine"]
+moveviewrestrictionpenalties = [
+    "sc-extract-generated/moveviewrestrictionpenalties",
+]
+musiclogic = ["sc-extract-generated/musiclogic"]
+personalinnerthoughtrules = ["sc-extract-generated/personalinnerthoughtrules"]
+planetdaynighttemperatureparams = [
+    "sc-extract-generated/planetdaynighttemperatureparams",
+]
+posturedatabase = ["sc-extract-generated/posturedatabase"]
+procbreathing = ["sc-extract-generated/procbreathing"]
+proceduralaimrigrecord = ["sc-extract-generated/proceduralaimrigrecord"]
+proceduralanimations = ["sc-extract-generated/proceduralanimations"]
+procedurallandingsetup = ["sc-extract-generated/procedurallandingsetup"]
+procedurallayout = ["sc-extract-generated/procedurallayout"]
+qteconfigs = ["sc-extract-generated/qteconfigs"]
+radarsystem = ["sc-extract-generated/radarsystem"]
+rastar = ["sc-extract-generated/rastar"]
+refinerynotificationconfiguration = [
+    "sc-extract-generated/refinerynotificationconfiguration",
+]
+refiningprocess = ["sc-extract-generated/refiningprocess"]
+rendererpresets = ["sc-extract-generated/rendererpresets"]
+rentalnotificationparams = ["sc-extract-generated/rentalnotificationparams"]
+reputation = ["sc-extract-generated/reputation"]
+resourcetypedatabase = ["sc-extract-generated/resourcetypedatabase"]
+roomsystem = ["sc-extract-generated/roomsystem"]
+scarryableikinteractionlist = [
+    "sc-extract-generated/scarryableikinteractionlist",
+]
+scitemcommscomponentsetup = ["sc-extract-generated/scitemcommscomponentsetup"]
+scitemdisplayscreenpreset = ["sc-extract-generated/scitemdisplayscreenpreset"]
+scitemmanufacturer = ["sc-extract-generated/scitemmanufacturer"]
+scuttableshapedefinition = ["sc-extract-generated/scuttableshapedefinition"]
+seatcdikconfigs = ["sc-extract-generated/seatcdikconfigs"]
+servicebeacon = ["sc-extract-generated/servicebeacon"]
+sgeometryviewdistanceratiocategories = [
+    "sc-extract-generated/sgeometryviewdistanceratiocategories",
+]
+sglobalchargedrainbeamparams = [
+    "sc-extract-generated/sglobalchargedrainbeamparams",
+]
+sglobalcrosshairparams = ["sc-extract-generated/sglobalcrosshairparams"]
+sglobalelectronparams = ["sc-extract-generated/sglobalelectronparams"]
+sglobalhealingbeamparams = ["sc-extract-generated/sglobalhealingbeamparams"]
+sglobalhitbehaviorparams = ["sc-extract-generated/sglobalhitbehaviorparams"]
+sglobalsalvagerepairbeamparams = [
+    "sc-extract-generated/sglobalsalvagerepairbeamparams",
+]
+sglobaltractorbeamparams = ["sc-extract-generated/sglobaltractorbeamparams"]
+shipinsurancerecord = ["sc-extract-generated/shipinsurancerecord"]
+specialeventdatabase = ["sc-extract-generated/specialeventdatabase"]
+squantumdriveeffecttagstemplate = [
+    "sc-extract-generated/squantumdriveeffecttagstemplate",
+]
+sreputationglobalcontextbbparams = [
+    "sc-extract-generated/sreputationglobalcontextbbparams",
+]
+ssolarsystem = ["sc-extract-generated/ssolarsystem"]
+starmap = ["sc-extract-generated/starmap"]
+tacticalquery = ["sc-extract-generated/tacticalquery"]
+tagdatabase = ["sc-extract-generated/tagdatabase"]
+targetselector = ["sc-extract-generated/targetselector"]
+tintpalettes = ["sc-extract-generated/tintpalettes"]
+trackview = ["sc-extract-generated/trackview"]
+traversalcostconfig = ["sc-extract-generated/traversalcostconfig"]
+turret = ["sc-extract-generated/turret"]
+ui-animatedmarkers = ["sc-extract-generated/ui-animatedmarkers"]
+ui-armarkerconfiguration = ["sc-extract-generated/ui-armarkerconfiguration"]
+ui-buildingblocks = ["sc-extract-generated/ui-buildingblocks"]
+ui-digitalsignage = ["sc-extract-generated/ui-digitalsignage"]
+ui-directrtt = ["sc-extract-generated/ui-directrtt"]
+ui-dockingslotvisibility = ["sc-extract-generated/ui-dockingslotvisibility"]
+ui-elementsounds_deprecated = [
+    "sc-extract-generated/ui-elementsounds_deprecated",
+]
+ui-flashobjectbindinggroups = [
+    "sc-extract-generated/ui-flashobjectbindinggroups",
+]
+ui-flighthudmessages = ["sc-extract-generated/ui-flighthudmessages"]
+ui-frontend = ["sc-extract-generated/ui-frontend"]
+ui-graphs = ["sc-extract-generated/ui-graphs"]
+ui-holovehicleconfig = ["sc-extract-generated/ui-holovehicleconfig"]
+ui-hudcolors_shipcolorpalettes = [
+    "sc-extract-generated/ui-hudcolors_shipcolorpalettes",
+]
+ui-innerthought = ["sc-extract-generated/ui-innerthought"]
+ui-itemkiosk = ["sc-extract-generated/ui-itemkiosk"]
+ui-itempreview_config = ["sc-extract-generated/ui-itempreview_config"]
+ui-itemtypedefinition = ["sc-extract-generated/ui-itemtypedefinition"]
+ui-localplayershoppingdata = ["sc-extract-generated/ui-localplayershoppingdata"]
+ui-marker_config = ["sc-extract-generated/ui-marker_config"]
+ui-markertrackingvolumeconfig = [
+    "sc-extract-generated/ui-markertrackingvolumeconfig",
+]
+ui-missilelockreticleconfig = [
+    "sc-extract-generated/ui-missilelockreticleconfig",
+]
+ui-mobiglas = ["sc-extract-generated/ui-mobiglas"]
+ui-objectdatabankentrymarkerconfig = [
+    "sc-extract-generated/ui-objectdatabankentrymarkerconfig",
+]
+ui-playerchoice_imconfig_playerchoiceim = [
+    "sc-extract-generated/ui-playerchoice_imconfig_playerchoiceim",
+]
+ui-playerchoice_library_playerchoicelibrary = [
+    "sc-extract-generated/ui-playerchoice_library_playerchoicelibrary",
+]
+ui-playerchoice_pitconfig_playerchoicepersonalthought = [
+    "sc-extract-generated/ui-playerchoice_pitconfig_playerchoicepersonalthought",
+]
+ui-playerchoice_signalconfig_interactorsignalconfig = [
+    "sc-extract-generated/ui-playerchoice_signalconfig_interactorsignalconfig",
+]
+ui-playerecggraph_config_playerecggraphconfig = [
+    "sc-extract-generated/ui-playerecggraph_config_playerecggraphconfig",
+]
+ui-pointofinterestdata = ["sc-extract-generated/ui-pointofinterestdata"]
+ui-popups = ["sc-extract-generated/ui-popups"]
+ui-radar3dpresets = ["sc-extract-generated/ui-radar3dpresets"]
+ui-radardisplay_config_radar = [
+    "sc-extract-generated/ui-radardisplay_config_radar",
+]
+ui-seatreticlearchetype = ["sc-extract-generated/ui-seatreticlearchetype"]
+ui-transformationinterpolatorrecords = [
+    "sc-extract-generated/ui-transformationinterpolatorrecords",
+]
+ui-uiconfig_starcitizen = ["sc-extract-generated/ui-uiconfig_starcitizen"]
+ui-uielements = ["sc-extract-generated/ui-uielements"]
+ui-uimodes = ["sc-extract-generated/ui-uimodes"]
+ui-uistatedisplay = ["sc-extract-generated/ui-uistatedisplay"]
+ui-vehicleentrance = ["sc-extract-generated/ui-vehicleentrance"]
+ui-videocomms = ["sc-extract-generated/ui-videocomms"]
+ui-visor = ["sc-extract-generated/ui-visor"]
+ui-worlddisplay = ["sc-extract-generated/ui-worlddisplay"]
+unittest_unittestb = ["sc-extract-generated/unittest_unittestb"]
+vehicle = ["sc-extract-generated/vehicle"]
+vfx = ["sc-extract-generated/vfx"]
+vibrations = ["sc-extract-generated/vibrations"]
+videocommschannels = ["sc-extract-generated/videocommschannels"]
+voicebundle = ["sc-extract-generated/voicebundle"]
+voicechannelsettingsrecord = ["sc-extract-generated/voicechannelsettingsrecord"]
+voicesingle = ["sc-extract-generated/voicesingle"]
+weaponarmodifiers = ["sc-extract-generated/weaponarmodifiers"]
+weaponmisfiredef = ["sc-extract-generated/weaponmisfiredef"]
+weaponproceduralanimation = ["sc-extract-generated/weaponproceduralanimation"]
+weaponproceduralclip = ["sc-extract-generated/weaponproceduralclip"]
+weaponproceduralrecoil = ["sc-extract-generated/weaponproceduralrecoil"]
+zerogtraversalgraph = ["sc-extract-generated/zerogtraversalgraph"]
