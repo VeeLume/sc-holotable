@@ -5,145 +5,161 @@
 
 ## Last worked on
 
-**Flat-pool refactor of `sc-extract-generated` — replaces the recursive `FromInstance` materialiser that required a 128 MB worker-thread stack, plus a set of compile-time optimisations to keep the generated crate tractable.**
+**Feature-gated generated code** — the generator now produces per-feature directories with `#[cfg(feature = "...")]` gates, reducing cold compile times by ~5x for consumers that only need a subset of DCB types.
 
-Why it was needed: the old generator emitted nested `Option<Box<T>>` fields populated by recursive `FromInstance::from_instance` calls. DCB composition nests 50+ levels deep, overflowing the Windows 1 MB main-thread stack; a 128 MB worker-thread stack was used as a workaround. A game patch reindexing struct types would also silently drop records because the dispatch match baked `struct_index` literals.
+### What shipped (2026-04-12)
 
-Shipped:
+1. **`ExtractConfig`** — configurable extraction pipeline. Consumers can skip expensive indices (reference graph, tag tree, manufacturers, etc.) via `ExtractConfig::standard()` / `ExtractConfig::minimal()` / `ExtractConfig::builder()`.
 
-1. **`Extract` trait + `Pooled` trait + `Builder`** (hand-written in `crates/sc-extract-generated/src/{extract,handle,builder}.rs`). Replaces `FromInstance`. Each generated struct implements both `Extract` (how to decode one from an `Instance`) and `Pooled` (where its `Vec<Option<T>>` pool lives in `DataPools`). `Builder<'a>` owns `DataPools`, `RecordIndex`, a `VecDeque<PendingSlot>` worklist, and a `(struct_idx, inst_idx) → u32` dedup map. `alloc_nested::<T>(inst, from_pool)` reserves a pool slot, enqueues the instance, and returns a typed `Handle<T>` immediately — no recursion through the call stack.
-2. **Generic `Handle<T>`**: one hand-written `Handle<T>(u32, PhantomData<fn() -> T>)` replaces the ~6,500 per-type `{Name}Id(u32)` newtypes an intermediate draft emitted. A single blanket `impl<T: Pooled> Index<Handle<T>> for DataPools` + `Handle<T>::get` covers every pool type. Dropped ~20,000 generated items (struct defs + Index impls + inherent gets) that were pure ergonomic decoration.
-3. **Reachability pruning in the generator.** `compute_reachable_struct_indices` does a transitive BFS from every record type through Class / StrongPointer / WeakPointer fields; struct definitions that no record transitively references are dropped at generation time. Drops emission from **6,545 → 1,935 types** (~70%). A generation-time self-check walks every emitted field and panics if any target is outside the reachable set — if it ever fires it means the BFS has a hole and the pruning would be unsafe.
-4. **Debug-build staleness panic.** `Builder::seed_database` tracks, in `cfg(debug_assertions)` only, every record struct_index whose type isn't in the generated dispatch table. At the end of seeding, if any were seen, it panics with the full list of unknown type names — direct signal that the generator is out of date relative to the runtime DCB. Release builds dead-code-eliminate the whole collection + check; unknown records are silently skipped and the app keeps working with whatever subset it understands.
-5. **Name-based `seed_database` dispatch.** The dispatch table is resolved per-run against the live DCB by `Extract::TYPE_NAME`, not by baked struct_index. A game patch that reorders struct types doesn't silently drop existing record types.
-6. **128 MB stack hack removed.** `parse_from_p4k` runs on the main thread, calls `Builder::new(&db).consume_database().finish()`. The iterative drain loop keeps stack depth O(1) regardless of DCB nesting depth.
-7. **`SCHEMA_VERSION` bumped 1 → 2.** Old snapshots fail `load_snapshot` cleanly.
-8. **Workspace profile fixes.** `.cargo/config.toml` sets `RUST_MIN_STACK = 67108864` (64 MB) so rustc itself doesn't stack-overflow on the giant generated crate. A `[profile.dev.package.sc-extract-generated]` override sets `opt-level = 1, codegen-units = 256` (matches the release override) — without it the dev profile's default `opt-level = 0` produces ~40k `link.exe` LNK2019 errors on serde-derive visitor helpers.
-9. **Dedup win.** Pool-backed instances referenced from multiple records (or multiple fields inside a record) share one slot; snapshots deduplicate transparently.
+2. **`parse_from_install`** — ergonomic entry point that auto-fills `game_version` / `build_id` from the `Installation`'s manifest. `parse_from_p4k` still works for raw paths.
 
-### Final numbers (real `Data.p4k`, 4.7 branch)
+3. **Iterative reference graph walker** — replaced recursive `collect_refs_from_instance` with an iterative worklist + per-record instance dedup. Simplified `ReferenceGraph` to `Guid → Vec<Guid>` (no field_path strings). SCHEMA_VERSION bumped to 3.
 
-| Metric | Before refactor | After refactor |
+4. **Feature-gated generated code** — the generator:
+   - Classifies types into features based on DCB record file paths
+   - Uses compile cost (total field count in BFS type closure) as the split metric
+   - Emits per-feature directories (`core/`, `audio/`, `entities-scitem-ships/`, etc.)
+   - Writes `[features]` sections to both `sc-extract-generated/Cargo.toml` and `sc-extract/Cargo.toml`
+   - Features mirror the path hierarchy; parent features enable all children
+
+5. **Svarog pinned** to `ce06ec67` as workspace dependencies.
+
+6. **8 MB Windows stack** for binaries (fixes snapshot deserialization stack overflow).
+
+7. **Three release profiles** — `dev-opt` (fast compile), `release` (balanced), `release-max` (max runtime).
+
+## Benchmarks (real Data.p4k, 4.7 branch, 2026-04-12)
+
+### Compile times (cold dev-opt build)
+
+| Features enabled | Compile time | vs Full |
 |---|---|---|
-| Raw DCB struct types | 6,545 | 6,545 (unchanged) |
-| Emitted struct types | ~6,500 | **1,935** (pruned) |
-| Generated directory size | ~23 MB | **5.4 MB** |
-| Generator run | ~1.6 s | ~1.8 s |
-| Cold `cargo check -p sc-extract-generated` | ~6 min | **~1m40s** |
-| Main-thread stack needed at runtime | 128 MB worker thread | default 1 MB, no worker thread |
-| Tests | 89 pass | 89 pass |
-| Clippy `-D warnings` | clean | clean |
+| Core only (default) | **4m 19s** | **4.8x faster** |
+| Core + ships | 4m 38s | 4.5x faster |
+| Full (all 1,935 types) | 20m 56s | baseline |
+| Old monolithic (before feature gating) | ~21 min | — |
 
-**Still pending**: end-to-end smoke test against real `Data.p4k` — run `parse_real_p4k` example to capture actual parse time, pool sizes, and snapshot size, and verify that the pruned set of emitted types covers everything real records touch at runtime (which the generator-time self-check already proves structurally).
+### Cold `cargo check` times (dev profile)
 
-### Post-refactor fix: iterative reference graph walker
+| Features | Check time |
+|---|---|
+| Core only | **26s** |
+| Core + ammoparams | 28s |
+| Full | 1m 41s |
+| Old monolithic | ~6 min |
 
-First real-data run (2026-04-11) confirmed record store builds successfully (111,928 records in ~12s) but **stack-overflowed** during `ReferenceGraph::from_database`. Root cause: the recursive `collect_refs_from_instance` / `collect_refs_from_value` functions walked DCB composition nesting (50+ levels) on the call stack — same class of bug the flat-pool refactor fixed in the Builder. Windows main-thread stack is 1 MB; the recursive frame accumulated path strings + Instance refs exceeded it.
+### Runtime (parse_real_p4k with ExtractConfig::standard(), graph off)
 
-Fix: replaced the two recursive functions with an iterative worklist inside `from_database`. Worklist items are `(Instance<'_>, Guid, String)` — `Instance` is `Copy` (two `u32`s + two refs), so storing it directly is cheap. Array elements that are classes/pointers are pushed onto the worklist rather than recursed into. Stack depth is now O(1) regardless of DCB nesting.
+| Features | Records | Parse time | Snapshot size | Load time |
+|---|---|---|---|---|
+| Core only | 60,669 | 17.0s | 12.35 MB | 1.35s |
+| Core + ships | 60,836 | 16.4s | 12.42 MB | 1.34s |
+| Full | 111,928 | 18.9s | 16.79 MB | 2.33s |
 
-The other `from_database` methods (`TagTree`, `ManufacturerRegistry`, `DisplayNameCache`) don't recurse deeply — they only read top-level record properties — so they're unaffected.
+### With reference graph (ExtractConfig::all(), full features)
+
+| Metric | Value |
+|---|---|
+| Total parse time | ~25s |
+| Graph build time | ~7.4s |
+| Graph edges | 1,427,349 |
+| Snapshot size (with graph) | 34.88 MB |
 
 ## Tasks
 
 | # | Task | Status |
 |---|---|---|
 | 1 | Implement sc-installs (port + tests) | ✅ completed |
-| 2 | Implement sc-extract hand-written foundation | ✅ completed (2a + 2c + 2d done; 2b skipped) |
+| 2 | Implement sc-extract hand-written foundation | ✅ completed (2a + 2c + 2d) |
 | 3 | Implement sc-generator (tools/sc-generator) | ✅ completed |
-| 4 | End-to-end wire-up and evaluation | 🔄 in_progress (implementation done, real-data smoke test pending) |
+| 4 | End-to-end smoke test | ✅ completed — pipeline runs to completion |
+| 5 | Feature-gated generated code | ✅ completed — 5x compile time reduction |
 
 ## Implementation status per crate
 
-| Crate / Tool | Spec | Implementing notes | Status |
-|---|---|---|---|
-| `sc-installs` | `docs/sc-installs.md` | `implementing/sc-installs.md` | ✅ **done** — 51 tests, 0 clippy warnings |
-| `sc-extract` phase 2a | `docs/sc-extract.md` | `implementing/sc-extract-2a.md` | ✅ error type, LocaleMap, svarog re-exports |
-| `sc-extract` phase 2b | — | — | ⏭️ **skipped** — superseded by the `AssetSource` layer; vehicle XML parsing deferred to a consumer-driven need |
-| `sc-extract` phase 2c | `docs/sc-extract.md` | `implementing/sc-extract-2c.md` | ✅ ReferenceGraph, TagTree, ManufacturerRegistry, DisplayNameCache, playable filters |
-| `sc-extract` phase 2d | `docs/sc-extract.md` | — | ✅ **implementation done** — ExtractedData, AssetSource, parse_from_p4k, save/load snapshot; smoke test pending |
-| `sc-extract-generated` | `docs/codegen.md` | `implementing/sc-generator.md` | ✅ flat-pool model; `DataPools` + `RecordIndex` + per-type `TId` handles; iterative `Builder::drain` replaces recursive `FromInstance` |
-| `sc-generator` | `docs/codegen.md` | `implementing/sc-generator.md` | ✅ **done** — ~1.6s on real Data.p4k, outputs to `sc-extract-generated/src/generated` |
-| `sc-ammo` | `docs/sc-ammo.md` | — | 📦 **not scaffolded** — spec only |
-| `sc-weapons` | `docs/sc-weapons.md` | — | 📦 **stub only** |
-| `sc-contracts` | — | — | 📦 **stub only** |
+| Crate / Tool | Status |
+|---|---|
+| `sc-installs` | ✅ 51 tests, full spec |
+| `sc-extract` phase 2a | ✅ error, LocaleMap, svarog re-exports |
+| `sc-extract` phase 2b | ⏭️ skipped (vehicle XML deferred) |
+| `sc-extract` phase 2c | ✅ ReferenceGraph, TagTree, ManufacturerRegistry, DisplayNameCache, filters |
+| `sc-extract` phase 2d | ✅ ExtractedData, AssetSource, parse_from_p4k/install, snapshot save/load |
+| `sc-extract` ExtractConfig | ✅ configurable pipeline (standard/all/minimal/builder) |
+| `sc-extract-generated` | ✅ flat-pool model, feature-gated per-feature directories |
+| `sc-generator` | ✅ codegen + feature classification + Cargo.toml generation |
+| `sc-ammo` | 📦 spec only |
+| `sc-weapons` | 📦 stub only |
+| `sc-contracts` | 📦 stub only |
 
 ### Test counts
 
-- `sc-installs`: 51 tests passing
-- `sc-extract`: 89 tests passing (85 from phase 2a+2c + 4 new in `extracted::tests` for snapshot round-trip, version mismatch, atomic write)
-- `sc-extract-generated`: 0 tests (pure generated code + trait def)
-- `sc-generator`: 3 naming tests passing
-- **Total: 143 tests**
+- `sc-installs`: 51 tests
+- `sc-extract`: 88 tests
+- `sc-generator`: 3 tests
+- **Total: 142 tests, all passing**
 
-## What's next
+## Feature classification details
 
-Once the dev-opt build finishes, run:
+The generator's feature classification algorithm:
+- Walks the DCB record path tree top-down from root
+- At each node, computes compile cost = Σ field_count(type) for all types in the BFS closure
+- Splits when cost > 500 fields, keeps leaf features when cost < 50 fields
+- Types shared by 5+ features are promoted to core (always compiled)
+- Feature names mirror the path: `entities-scitem-ships`, `audio`, `ammoparams`
+- Parent features automatically include all children
 
-```bash
-cargo run -p sc-extract --profile dev-opt --example parse_real_p4k -- "C:/Games/StarCitizen/LIVE/Data.p4k"
-```
-
-The example ([crates/sc-extract/examples/parse_real_p4k.rs](crates/sc-extract/examples/parse_real_p4k.rs)) exercises `parse_from_p4k` → snapshot save → snapshot load → asset-source fetch and prints real numbers.
-
-### Evaluation questions to answer
-
-- Does `parse_from_p4k` run to completion against real data? (First bare-metal attempt crashed with a stack overflow during `build_from_database`; fixed by running on a 32 MB-stack worker thread, needs re-verification.)
-- Do the speculative field names in `TagTree::from_database`, `ManufacturerRegistry::from_database`, and `DisplayNameCache::from_database` match reality? (`CLAUDE.md` flags these as guesses carried from earlier phases.)
-- Snapshot size — target 5–30 MB zstd-compressed. If it's wildly off, re-check msgpack encoding / whether generated HashMap keys double-encode.
-- Parse time — target tens of seconds. `RecordStore::build_from_database` dispatch on 597 match arms is the likely bottleneck; if it's >60s, revisit.
-- `load_snapshot` time — target sub-second. Mostly serde + zstd.
-- Snapshot round-trip byte-equivalence — not required but a good sanity check.
-
-After answers are in, decide whether:
-- The design in `docs/sc-extract.md` matches reality, or needs revision
-- The design in `docs/sc-weapons.md` / `docs/sc-ammo.md` is still the right approach
-- There are surprising gaps that should become follow-ups before the domain crates land
+Current classification (4.7 branch):
+- Core: 214 types, 967 fields (11% of total)
+- 227 leaf features, 5 parent features
+- Total: 1,935 types, 9,141 fields
 
 ## Open questions / unresolved decisions
 
-### Carried over from earlier phases
+### Answered
 
-- ~~**svarog commit pinning.**~~ **Done** — pinned to `ce06ec67` as workspace deps in root `Cargo.toml`.
-- **`TagTree::from_database` field names are speculative.** Assumes `tagName` / `parent` / `children` / `legacyGUID`. Phase 2d smoke test will reveal whether this is right.
-- **`ManufacturerRegistry::from_database` assumes a `Localization` nested instance** with `Name` / `Description` string fields. Unverified.
-- **`DisplayNameCache::from_database` assumes the Components chain** `Components → SAttachableComponentParams → AttachDef → Localization → Name`. Unverified.
-- **`Language` enum currently has only English.** Add others when a consumer actually needs them.
-- **Polymorphic enum generation for abstract base types.** The spec calls for tagged enums over concrete subclasses. Not implemented; probably needed for `sc-weapons` fire actions.
+- ~~**svarog commit pinning**~~ — Done: `ce06ec67` as workspace dep.
+- ~~**game_version / build_id hardcoded**~~ — Done: `parse_from_install` fills from manifest.
+- ~~**Reference graph stack overflow**~~ — Done: iterative walker + instance dedup.
+- ~~**Compile time**~~ — Done: feature-gated code, 5x improvement.
 
-### New / still open
+### Still open
 
-- **First dev-opt build timing unknown.** Measuring right now — the cold-build-after-split number is the headline number for deciding whether the profile split was worth the complexity.
-- **`game_version` / `build_id` are filled automatically by `parse_from_install`**, which reads the `BuildManifest` from the `Installation`. `parse_from_p4k` still sets them to `"unknown"` (raw path, no manifest context).
+- **`TagTree::from_database` field names are speculative.** Assumes `tagName` / `parent` / `children` / `legacyGUID`. Smoke test shows 18,313 tags — the fields are at least partially correct. Needs manual validation.
+- **`ManufacturerRegistry::from_database` assumptions.** Shows 1,084 manufacturers — working, but field names unverified.
+- **`DisplayNameCache::from_database`** — returns 0 entries because `global.ini` was not found in the archive. The path pattern `english/global.ini` may have changed in this build.
+- **`Language` enum** — only English. Add others when needed.
+- **Polymorphic enum generation** — not implemented. Needed for `sc-weapons` fire actions.
+- **Locale path** — `global.ini` not found in Data.p4k. Needs investigation (path may have changed).
 
-### Deferred design questions
+## What's next
 
-- Ship assembly layering when `sc-ships` eventually lands. Vehicle XML parsing is now covered generically by `AssetSource::vehicle_xml` — a hand-written CryXmlB parser will still be needed when a consumer demands it, but the access layer is in place.
-- Damage pipeline stays in bulkhead until `sc-ships` exists.
+1. **Start `sc-weapons`** — first real domain crate consuming `RecordStore`. Will validate the feature-gated type system works ergonomically for consumers.
+2. **Investigate locale path** — find where `global.ini` lives in the current Data.p4k build.
+3. **Add manual feature aliases** — e.g., `weapons = ["ammoparams", "entities-scitem-ships", "damage"]` for ergonomic consumer usage.
 
-## Numbers (as of last measurement)
+## Numbers
 
 | Metric | Value |
 |---|---|
 | DCB structs extracted | 6,545 |
 | DCB enums extracted | 760 |
-| Top-level record types (RecordStore fields) | 597 |
-| Generated files | 174 (types_* + enums + metadata + record_store + mod) |
-| Total generated lines | ~270,000 |
-| Generator run time | ~1.6 seconds |
-| sc-extract dev cold check | ~4 minutes |
-| sc-extract dev warm check | <1 second |
-| First release cold build (pre-split, opt-level 3) | **64 minutes** |
-| dev-opt cold build (post-split) | _measuring_ |
-| Total tests passing | 143 |
-| svarog commit in use | `ce06ec67` (pinned via workspace dep) |
+| Emitted struct types | 1,935 (pruned from 6,545) |
+| Core types (always compiled) | 214 |
+| Leaf features | 227 |
+| Parent features | 5 |
+| Total compile cost | 9,141 fields |
+| Generated feature directories | 227 |
+| Generator run time | ~3 seconds |
+| Cold dev-opt build (core only) | 4m 19s |
+| Cold dev-opt build (full) | 20m 56s |
+| Cold cargo check (core only) | 26s |
+| Total tests passing | 142 |
+| svarog commit | `ce06ec67` (pinned) |
 
 ## Fresh-session checklist
 
-If resuming work on this repo after a break:
-
-1. Read `CLAUDE.md` for orientation and gotchas (including the `sc-extract-generated` split rationale and the stack-overflow gotcha).
+1. Read `CLAUDE.md` for orientation and gotchas.
 2. Read this file (`status.md`) for current work state.
-3. `cargo check -p sc-extract` to verify the workspace still builds warm.
-4. If the smoke test hasn't been run yet, run `cargo run -p sc-extract --profile dev-opt --example parse_real_p4k` and update the numbers section with real data. Answer the evaluation questions above.
-5. If the smoke test passed, the next move is **either** start `sc-weapons` (domain crate, first real consumer of `RecordStore`) **or** pin svarog to a commit SHA and regenerate.
+3. `cargo check -p sc-extract` to verify warm build.
+4. Run smoke test: `cargo run -p sc-extract --profile dev-opt --example parse_real_p4k`
+5. For full extraction: `cargo run -p sc-extract --profile dev-opt --features full --example parse_real_p4k`

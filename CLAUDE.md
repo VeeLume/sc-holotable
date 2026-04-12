@@ -39,8 +39,8 @@ sc-holotable/
 ├── crates/
 │   ├── sc-installs/               ✅ implemented, 51 tests passing
 │   ├── sc-extract/                ✅ phase 2a + 2c + 2d done (hand-written half)
-│   ├── sc-extract-generated/      ✅ workspace-internal — generator output + FromInstance trait
-│   │   └── src/generated/         174 files (types_*, enums, record_store, metadata)
+│   ├── sc-extract-generated/      ✅ workspace-internal — feature-gated generated types
+│   │   └── src/generated/         227 feature directories + top-level composition files
 │   ├── sc-contracts/              📦 stub only (lib.rs docs, no code)
 │   └── sc-weapons/                📦 stub only (lib.rs docs, no code)
 └── tools/
@@ -51,12 +51,28 @@ Note: the spec proposed a `crates/components/` subdirectory for future `sc-ammo`
 
 ### The sc-extract / sc-extract-generated split
 
-`sc-extract-generated` is a **workspace-internal crate** that holds everything the generator emits plus the `FromInstance` trait. `sc-extract` depends on it and re-exports its public surface, so consumers still only see `sc_extract::RecordStore`, `sc_extract::FromInstance`, etc.
+`sc-extract-generated` is a **workspace-internal crate** that holds everything the generator emits plus the `Extract` / `Pooled` traits and the `Builder`. `sc-extract` depends on it and re-exports its public surface, so consumers see `sc_extract::RecordStore`, `sc_extract::Builder`, etc.
 
-Why split: the generated code is ~270k lines. At `opt-level = 3` the LLVM passes on the giant match statements in `record_store.rs` dominate release build time (first cold release build was 64 minutes). Splitting into its own crate gives us two wins:
+Why split: the generated code is ~1,935 struct types with serde derives. Splitting into its own crate gives build cache stability (edits to hand-written code don't invalidate generated code) and allows per-crate profile overrides.
 
-1. **Build cache stability** — edits to hand-written sc-extract modules no longer invalidate the LLVM object files for the generated code. Iteration on the hand-written half is fast even in release mode.
-2. **Per-crate profile override** — the workspace `Cargo.toml` sets `[profile.release.package.sc-extract-generated]` to `opt-level = 1` with `codegen-units = 256`, which skips the expensive inlining passes and parallelizes aggressively. Runtime cost is negligible (the hot path is load-once-walk-everything, serde and hashmap-bound, not the match dispatch).
+### Feature gating
+
+The generated types are organized into **feature-gated directories**. Each feature corresponds to a DCB record path prefix (e.g., `audio/`, `entities-scitem-ships/`, `ammoparams/`). Consumers enable only the features they need:
+
+```toml
+# Only ship weapons:
+sc-extract = { features = ["entities-scitem-ships"] }
+
+# Parent feature — enables all entity sub-features:
+sc-extract = { features = ["entities"] }
+
+# Everything:
+sc-extract = { features = ["full"] }
+```
+
+The `core` module (214 types, always compiled) contains types shared across many features. With just core, cold `cargo check` takes **26 seconds** instead of ~6 minutes for full.
+
+The generator auto-classifies types by walking the path tree and splitting on compile cost (total field count in BFS type closure). It writes the `[features]` section to both `sc-extract-generated/Cargo.toml` and `sc-extract/Cargo.toml`. See `docs/feature-gating.md` for the full design.
 
 Three release-tier profiles trade compile time against runtime speed. All three keep `sc-extract-generated` at `opt-level = 1 / codegen-units = 256` (serde/hashmap-bound, higher opt-levels just burn LLVM time):
 
@@ -114,15 +130,17 @@ When a new SC patch lands, regenerate the DataCore bindings:
 cargo run -p sc-generator --release -- --p4k "C:/Games/StarCitizen/LIVE/Data.p4k"
 ```
 
-This writes ~173 files into `crates/sc-extract/src/generated/`. Review the diff (`git diff crates/sc-extract/src/generated/`), fix any call sites that broke, commit the generated output alongside the hand-written fixes.
+This writes ~227 feature directories into `crates/sc-extract-generated/src/generated/` and updates both `sc-extract-generated/Cargo.toml` and `sc-extract/Cargo.toml` with the auto-detected `[features]` section. Review the diff, fix any call sites that broke, commit everything.
 
-Release mode is strongly preferred over debug — DCB parse is tens of times faster. The whole run takes ~1.6 seconds.
+Release mode is strongly preferred over debug — DCB parse is tens of times faster. The whole run takes ~3 seconds.
 
 Available flags:
 
 - `--p4k <path>` (required)
 - `--out-dir <path>` — defaults to `crates/sc-extract-generated/src/generated`
 - `--check` — parse everything but don't write files
+- `--dump-paths` — dump record path prefix distribution and exit
+- `--dump-features` — dump computed feature assignments and exit
 
 ## Build / test / lint
 
@@ -133,46 +151,45 @@ cargo check -p sc-installs
 
 # Tests for the libs
 cargo test -p sc-installs             # 51 tests
-cargo test -p sc-extract              # 89 tests (Phase 2d added 4)
+cargo test -p sc-extract              # 88 tests
 cargo test -p sc-generator            # 3 naming tests
 
 # Clippy (strict)
 cargo clippy -p sc-installs --all-targets -- -D warnings
 cargo clippy -p sc-extract --all-targets -- -D warnings
-cargo clippy -p sc-extract-generated --all-targets -- -D warnings
 cargo clippy -p sc-generator --all-targets -- -D warnings
 
-# Cold dev build of sc-extract with all generated code (~6 minutes)
-cargo build -p sc-extract
+# Smoke test — core only (fastest)
+cargo run -p sc-extract --profile dev-opt --example parse_real_p4k
 
-# Smoke tests — use dev-opt for fast compile + decent runtime
-cargo run -p sc-extract --profile dev-opt --example parse_real_p4k -- "C:/Games/StarCitizen/LIVE/Data.p4k"
+# Smoke test — with specific features
+cargo run -p sc-extract --profile dev-opt --features ammoparams --example parse_real_p4k
 
-# Full release (opt-level 2 for deps, 1 for generated code)
+# Smoke test — full (all types, slow compile)
+cargo run -p sc-extract --profile dev-opt --features full --example parse_real_p4k
+
+# Full release
 cargo build -p sc-extract --release
-
-# Maximum runtime perf (opt-level 3 + thin LTO — slow to compile)
-cargo build -p sc-extract --profile release-max
 ```
 
-**Warm incremental check is ~1 second.** Cold dev check is ~6 minutes because rustc has to type-check the 170+ generated modules. Use `--profile dev-opt` for quick smoke tests, `--release` as the normal release, and `--profile release-max` only when you need maximum runtime speed and can tolerate a long build. Avoid triggering cold rebuilds when iterating.
+**Warm incremental check is ~1 second.** Cold dev check (core only) is **26 seconds**; full is ~1m 41s. Cold dev-opt build (core only) is **4m 19s**; full is ~21 minutes. Use feature gating to keep iteration fast — only enable the features your consumer needs.
 
 ## Compile-time gotchas (this will bite you)
 
-The generated code is big — ~6,500 structs, ~760 enums, ~270,000 lines of Rust split across 173 bucket files. A few things keep the compile bearable:
+The generated code is 1,935 types across 227 feature directories. Feature gating keeps compile times manageable:
 
-1. **Two-letter bucketing with a 300-struct cap.** `SCItem*` types go to `types_sc.rs`, `Bu*` types to `types_bu1.rs`/`types_bu2.rs`, etc. Never put everything in one file — we measured >10 min compile times before the split.
+1. **Feature-gated directories.** Each feature module (e.g., `audio/`, `entities-scitem-ships/`) is behind `#[cfg(feature = "...")]`. Disabled features are never parsed by rustc. Core only (214 types) compiles in 26 seconds.
 2. **Generated structs derive only what's needed**: `Debug`, `Clone`, `Serialize`, `Deserialize`. No `Default`, no `PartialEq`/`Eq`/`Hash`. Fewer derives = fewer proc-macro invocations = faster compile.
-3. **`#![allow(unused_imports)]` on every bucket file.** Uniform imports keep the emitter simple; the allow silences the noise without per-bucket tracking.
-4. **Cold cargo check ≈ 6 minutes.** Warm incremental ≈ 1 second. The warm case is what matters for iteration.
+3. **`#![allow(unused_imports)]` on every feature type file.** Uniform imports keep the emitter simple.
+4. **Cold cargo check (core only) ≈ 26 seconds.** Full ≈ 1m 41s. Warm incremental ≈ 1 second.
 
-If compile time regresses substantially, the first thing to check is the bucket-size distribution:
+If compile time regresses, check the feature classification:
 
 ```bash
-for f in crates/sc-extract-generated/src/generated/types_*.rs; do wc -l "$f"; done | sort -rn | head -10
+cargo run -p sc-generator --release -- --p4k "C:/Games/StarCitizen/LIVE/Data.p4k" --dump-features
 ```
 
-No bucket file should be >30k lines. If one is, the `MAX_STRUCTS_PER_BUCKET` in `tools/sc-generator/src/emit.rs` needs tuning down.
+Core should have <300 types. If it's growing, the `core_promotion_threshold` or `max_fields_per_feature` in `tools/sc-generator/src/features.rs` needs tuning.
 
 ## Specific gotchas encountered during implementation
 
@@ -198,12 +215,11 @@ These are real bugs that were hit and fixed — future edits should not re-intro
 
 See `status.md` for the always-current version. Brief snapshot:
 
-- ✅ **`sc-installs`** — fully implemented, 52 tests passing, full spec + implementing doc
-- ✅ **`sc-extract` phase 2a** — foundations: error, FromInstance trait, svarog re-exports, LocaleMap (24 tests)
-- ⏭️ **`sc-extract` phase 2b** — vehicle XML — **deliberately skipped** (design not settled)
-- ✅ **`sc-extract` phase 2c** — ReferenceGraph, TagTree, ManufacturerRegistry, DisplayNameCache, playable filters (61 tests)
-- ✅ **`sc-generator`** — full DCB → Rust codegen, runs in ~1.6s, output compiles clean
-- ⏳ **`sc-extract` phase 2d** — `ExtractedData` envelope, `parse_from_p4k` orchestrator, snapshot save/load — **not started**
+- ✅ **`sc-installs`** — fully implemented, 51 tests
+- ✅ **`sc-extract`** — phases 2a + 2c + 2d done, ExtractConfig, parse_from_install, 88 tests
+- ⏭️ **`sc-extract` phase 2b** — vehicle XML — **deliberately skipped**
+- ✅ **`sc-extract-generated`** — feature-gated per-feature directories, 227 features, 214 core types
+- ✅ **`sc-generator`** — codegen + feature classification + Cargo.toml generation, ~3s run
 - 📦 **`sc-ammo`** — spec exists (`docs/sc-ammo.md`), crate not scaffolded
 - 📦 **`sc-weapons`** — spec exists (`docs/sc-weapons.md`), stub crate only
 - 📦 **`sc-contracts`** — stub crate only
