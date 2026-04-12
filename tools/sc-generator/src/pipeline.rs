@@ -1,6 +1,7 @@
 //! Orchestration — opens the P4K, extracts and parses the DCB, and drives
 //! the `emit` module to write generated Rust files.
 
+use std::fmt::Write as _;
 use std::path::{Path, PathBuf};
 use std::time::Instant;
 
@@ -242,6 +243,17 @@ pub fn run(options: &RunOptions) -> Result<Summary> {
 
     tracing::info!("emitting mod.rs");
     write_file(&options.out_dir.join("mod.rs"), &emit::emit_top_mod(&all_features, &feature_map))?;
+
+    // Update Cargo.toml with the [features] section.
+    tracing::info!("updating Cargo.toml features");
+    let cargo_toml_path = options
+        .out_dir
+        .parent() // src/
+        .and_then(|p| p.parent()) // sc-extract-generated/
+        .map(|p| p.join("Cargo.toml"));
+    if let Some(cargo_path) = cargo_toml_path {
+        update_cargo_features(&cargo_path, &all_features, &feature_map)?;
+    }
 
     tracing::info!(elapsed_ms = start.elapsed().as_millis(), "write complete");
 
@@ -582,6 +594,69 @@ fn dump_record_paths(db: &DataCoreDatabase) {
         needs_split.len(),
         tiny.len()
     );
+}
+
+/// Update the [features] section in Cargo.toml.
+///
+/// Reads the existing Cargo.toml, strips any existing [features] section
+/// (and everything after it), then appends the generated features.
+fn update_cargo_features(
+    cargo_path: &Path,
+    all_features: &[String],
+    feature_map: &crate::features::FeatureMap,
+) -> Result<()> {
+    let content = std::fs::read_to_string(cargo_path).map_err(|source| Error::WriteFile {
+        path: cargo_path.to_path_buf(),
+        source,
+    })?;
+
+    // Strip existing [features] section if present.
+    let base = if let Some(pos) = content.find("\n[features]") {
+        content[..pos + 1].to_string()
+    } else {
+        let mut s = content.clone();
+        if !s.ends_with('\n') {
+            s.push('\n');
+        }
+        s
+    };
+
+    let mut out = base;
+    out.push_str("[features]\n");
+    out.push_str("default = []\n");
+
+    // `full` enables all leaf features.
+    let leaf_features: Vec<&String> = all_features.iter().filter(|f| *f != "core").collect();
+    out.push_str("full = [\n");
+    for f in &leaf_features {
+        let _ = writeln!(out, "    \"{f}\",");
+    }
+    out.push_str("]\n");
+
+    // Parent features (aliases).
+    for (parent, children) in &feature_map.parent_features {
+        let _ = write!(out, "{parent} = [");
+        let valid_children: Vec<&String> = children
+            .iter()
+            .filter(|c| leaf_features.contains(c) || feature_map.parent_features.contains_key(*c))
+            .collect();
+        for (i, child) in valid_children.iter().enumerate() {
+            if i > 0 {
+                out.push_str(", ");
+            }
+            let _ = write!(out, "\"{child}\"");
+        }
+        out.push_str("]\n");
+    }
+
+    // Individual leaf features (empty deps — they just gate cfg).
+    out.push('\n');
+    out.push_str("# Auto-generated leaf features. Each gates a set of DCB types.\n");
+    for f in &leaf_features {
+        let _ = writeln!(out, "{f} = []");
+    }
+
+    write_file(cargo_path, &out)
 }
 
 fn current_timestamp() -> String {

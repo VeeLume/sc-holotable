@@ -29,3 +29,468 @@ serde = { workspace = true }
 # code can `use svarog_common::CigGuid` etc. without going through sc-extract.
 svarog-common = { workspace = true }
 svarog-datacore = { workspace = true }
+[features]
+default = []
+full = [
+    "actor-actorledgegrabbing",
+    "actor-actortargetedparams",
+    "actor-actorviewlimits",
+    "actor-actorzerogtraversalparams",
+    "actor-atls_geo_jumppackconfig",
+    "actor-externalforceresponse",
+    "actor-gforce",
+    "actor-headtrackinglimits",
+    "actor-inputdeflectiontime",
+    "actor-locomotionpersonality",
+    "actor-lookahead",
+    "actor-playeranimatedinteractionconfig",
+    "actor-playerdefaultactionsconfig",
+    "actor-quantumtravelcameraeffects",
+    "actor-skeletonconfigs",
+    "actor-stanceinfo",
+    "actor-targettrackingautozoom",
+    "ads",
+    "aianimationdata",
+    "aiglobalsettings",
+    "aimotive",
+    "aiprofile",
+    "aiwavecollection",
+    "ammoparams",
+    "analytics",
+    "announcer",
+    "areaservices",
+    "audio",
+    "awardservice",
+    "cameras",
+    "capacitorassignment",
+    "cargomanifest",
+    "character",
+    "chatchannelfilters",
+    "chatcommandfastaccess",
+    "chatemoterecord",
+    "chatfilteroptions",
+    "chatmanager",
+    "closecombat",
+    "commodityconfiguration",
+    "commoditytypedatabase",
+    "commsnotifications",
+    "communicationatlconfig",
+    "communicationconfig",
+    "communicationname",
+    "communicationsystem",
+    "communicationvariableconfig",
+    "consumabletypesdatabase",
+    "contextualcommunicationconfig",
+    "contracts",
+    "conversation",
+    "crafting",
+    "crewmanifest",
+    "damage",
+    "densityclasses",
+    "dialoguecontentbank",
+    "dialoguerealm",
+    "dynamiccameraeffects",
+    "dynamiclightingrig",
+    "emotions",
+    "entities-haulingentityclass",
+    "entities-scitem-actormovables",
+    "entities-scitem-mastermodeexclusionglobalparams",
+    "entities-scitem-operatormoderecords",
+    "entities-scitem-ships",
+    "entities-scitem-usables",
+    "entities-ui",
+    "entities-vfx",
+    "entitlementpolicies",
+    "environments",
+    "evagraph",
+    "explosiveordnance",
+    "factions",
+    "fidgetconfig",
+    "foley",
+    "forcefeedback_forcefeedbackeffects",
+    "formation",
+    "friendmanager",
+    "fuelparams",
+    "gamemode",
+    "gamemodule",
+    "globalarmarkerparams",
+    "globalcargoloadingparams",
+    "globalcommsnotificationparams",
+    "globalcuttableshapeparams",
+    "globalinteractionparams",
+    "globalinventoryparams",
+    "globalquantumdriveparams",
+    "globalshopparams",
+    "globaltutorialparams",
+    "grips",
+    "handholdgripdatabase",
+    "hardwaremouse",
+    "harvestable",
+    "hazardawarenessparams",
+    "hints",
+    "hudparams",
+    "ifcs",
+    "initialdamageoverrides",
+    "inputpromptconfig",
+    "instancedinterior",
+    "interactionconditions",
+    "intoxication",
+    "inventorycontainers",
+    "item",
+    "journalentry",
+    "jumppoints",
+    "landingpadsize",
+    "lawsystem",
+    "leangraph",
+    "level",
+    "loadoutkits",
+    "longtermpersistence",
+    "lootgeneration",
+    "megamap",
+    "mining",
+    "missionbroker",
+    "missiondata",
+    "missionfailureconditions",
+    "missiongiver",
+    "missionscenarios",
+    "missiontype",
+    "motionstatemachine",
+    "moveviewrestrictionpenalties",
+    "musiclogic",
+    "personalinnerthoughtrules",
+    "planetdaynighttemperatureparams",
+    "posturedatabase",
+    "procbreathing",
+    "proceduralaimrigrecord",
+    "proceduralanimations",
+    "procedurallandingsetup",
+    "procedurallayout",
+    "qteconfigs",
+    "radarsystem",
+    "rastar",
+    "refinerynotificationconfiguration",
+    "refiningprocess",
+    "rendererpresets",
+    "rentalnotificationparams",
+    "reputation",
+    "resourcetypedatabase",
+    "roomsystem",
+    "scarryableikinteractionlist",
+    "scitemcommscomponentsetup",
+    "scitemdisplayscreenpreset",
+    "scitemmanufacturer",
+    "scuttableshapedefinition",
+    "seatcdikconfigs",
+    "servicebeacon",
+    "sgeometryviewdistanceratiocategories",
+    "sglobalchargedrainbeamparams",
+    "sglobalcrosshairparams",
+    "sglobalelectronparams",
+    "sglobalhealingbeamparams",
+    "sglobalhitbehaviorparams",
+    "sglobalsalvagerepairbeamparams",
+    "sglobaltractorbeamparams",
+    "shipinsurancerecord",
+    "specialeventdatabase",
+    "squantumdriveeffecttagstemplate",
+    "sreputationglobalcontextbbparams",
+    "ssolarsystem",
+    "starmap",
+    "tacticalquery",
+    "tagdatabase",
+    "targetselector",
+    "tintpalettes",
+    "trackview",
+    "traversalcostconfig",
+    "turret",
+    "ui-animatedmarkers",
+    "ui-armarkerconfiguration",
+    "ui-buildingblocks",
+    "ui-digitalsignage",
+    "ui-directrtt",
+    "ui-dockingslotvisibility",
+    "ui-elementsounds_deprecated",
+    "ui-flashobjectbindinggroups",
+    "ui-flighthudmessages",
+    "ui-frontend",
+    "ui-graphs",
+    "ui-holovehicleconfig",
+    "ui-hudcolors_shipcolorpalettes",
+    "ui-innerthought",
+    "ui-itemkiosk",
+    "ui-itempreview_config",
+    "ui-itemtypedefinition",
+    "ui-localplayershoppingdata",
+    "ui-marker_config",
+    "ui-markertrackingvolumeconfig",
+    "ui-missilelockreticleconfig",
+    "ui-mobiglas",
+    "ui-objectdatabankentrymarkerconfig",
+    "ui-playerchoice_imconfig_playerchoiceim",
+    "ui-playerchoice_library_playerchoicelibrary",
+    "ui-playerchoice_pitconfig_playerchoicepersonalthought",
+    "ui-playerchoice_signalconfig_interactorsignalconfig",
+    "ui-playerecggraph_config_playerecggraphconfig",
+    "ui-pointofinterestdata",
+    "ui-popups",
+    "ui-radar3dpresets",
+    "ui-radardisplay_config_radar",
+    "ui-seatreticlearchetype",
+    "ui-transformationinterpolatorrecords",
+    "ui-uiconfig_starcitizen",
+    "ui-uielements",
+    "ui-uimodes",
+    "ui-uistatedisplay",
+    "ui-vehicleentrance",
+    "ui-videocomms",
+    "ui-visor",
+    "ui-worlddisplay",
+    "unittest_unittestb",
+    "vehicle",
+    "vfx",
+    "vibrations",
+    "videocommschannels",
+    "voicebundle",
+    "voicechannelsettingsrecord",
+    "voicesingle",
+    "weaponarmodifiers",
+    "weaponmisfiredef",
+    "weaponproceduralanimation",
+    "weaponproceduralclip",
+    "weaponproceduralrecoil",
+    "zerogtraversalgraph",
+]
+actor = ["actor-actorledgegrabbing", "actor-actortargetedparams", "actor-actorviewlimits", "actor-actorzerogtraversalparams", "actor-atls_geo_jumppackconfig", "actor-externalforceresponse", "actor-gforce", "actor-headtrackinglimits", "actor-inputdeflectiontime", "actor-locomotionpersonality", "actor-lookahead", "actor-playeranimatedinteractionconfig", "actor-playerdefaultactionsconfig", "actor-quantumtravelcameraeffects", "actor-skeletonconfigs", "actor-stanceinfo", "actor-targettrackingautozoom"]
+entities = ["entities-haulingentityclass", "entities-scitem-actormovables", "entities-scitem-mastermodeexclusionglobalparams", "entities-scitem-operatormoderecords", "entities-scitem-ships", "entities-scitem-usables", "entities-ui", "entities-vfx"]
+entities-scitem = ["entities-scitem-actormovables", "entities-scitem-mastermodeexclusionglobalparams", "entities-scitem-operatormoderecords", "entities-scitem-ships", "entities-scitem-usables"]
+libs-foundry-records = ["actor-actorledgegrabbing", "actor-actortargetedparams", "actor-actorviewlimits", "actor-actorzerogtraversalparams", "actor-atls_geo_jumppackconfig", "actor-externalforceresponse", "actor-gforce", "actor-headtrackinglimits", "actor-inputdeflectiontime", "actor-locomotionpersonality", "actor-lookahead", "actor-playeranimatedinteractionconfig", "actor-playerdefaultactionsconfig", "actor-quantumtravelcameraeffects", "actor-skeletonconfigs", "actor-stanceinfo", "actor-targettrackingautozoom", "ads", "aianimationdata", "aiglobalsettings", "aimotive", "aiprofile", "aiwavecollection", "ammoparams", "analytics", "announcer", "areaservices", "audio", "awardservice", "cameras", "capacitorassignment", "cargomanifest", "character", "chatchannelfilters", "chatcommandfastaccess", "chatemoterecord", "chatfilteroptions", "chatmanager", "closecombat", "commodityconfiguration", "commoditytypedatabase", "commsnotifications", "communicationatlconfig", "communicationconfig", "communicationname", "communicationsystem", "communicationvariableconfig", "consumabletypesdatabase", "contextualcommunicationconfig", "contracts", "conversation", "crafting", "crewmanifest", "damage", "densityclasses", "dialoguecontentbank", "dialoguerealm", "dynamiccameraeffects", "dynamiclightingrig", "emotions", "entities-haulingentityclass", "entities-scitem-actormovables", "entities-scitem-mastermodeexclusionglobalparams", "entities-scitem-operatormoderecords", "entities-scitem-ships", "entities-scitem-usables", "entities-ui", "entities-vfx", "entitlementpolicies", "environments", "evagraph", "explosiveordnance", "factions", "fidgetconfig", "foley", "forcefeedback_forcefeedbackeffects", "formation", "friendmanager", "fuelparams", "gamemode", "gamemodule", "globalarmarkerparams", "globalcargoloadingparams", "globalcommsnotificationparams", "globalcuttableshapeparams", "globalinteractionparams", "globalinventoryparams", "globalquantumdriveparams", "globalshopparams", "globaltutorialparams", "grips", "handholdgripdatabase", "hardwaremouse", "harvestable", "hazardawarenessparams", "hints", "hudparams", "ifcs", "initialdamageoverrides", "inputpromptconfig", "instancedinterior", "interactionconditions", "intoxication", "inventorycontainers", "item", "journalentry", "jumppoints", "landingpadsize", "lawsystem", "leangraph", "level", "loadoutkits", "longtermpersistence", "lootgeneration", "megamap", "mining", "missionbroker", "missiondata", "missionfailureconditions", "missiongiver", "missionscenarios", "missiontype", "motionstatemachine", "moveviewrestrictionpenalties", "musiclogic", "personalinnerthoughtrules", "planetdaynighttemperatureparams", "posturedatabase", "procbreathing", "proceduralaimrigrecord", "proceduralanimations", "procedurallandingsetup", "procedurallayout", "qteconfigs", "radarsystem", "rastar", "refinerynotificationconfiguration", "refiningprocess", "rendererpresets", "rentalnotificationparams", "reputation", "resourcetypedatabase", "roomsystem", "scarryableikinteractionlist", "scitemcommscomponentsetup", "scitemdisplayscreenpreset", "scitemmanufacturer", "scuttableshapedefinition", "seatcdikconfigs", "servicebeacon", "sgeometryviewdistanceratiocategories", "sglobalchargedrainbeamparams", "sglobalcrosshairparams", "sglobalelectronparams", "sglobalhealingbeamparams", "sglobalhitbehaviorparams", "sglobalsalvagerepairbeamparams", "sglobaltractorbeamparams", "shipinsurancerecord", "specialeventdatabase", "squantumdriveeffecttagstemplate", "sreputationglobalcontextbbparams", "ssolarsystem", "starmap", "tacticalquery", "tagdatabase", "targetselector", "tintpalettes", "trackview", "traversalcostconfig", "turret", "ui-animatedmarkers", "ui-armarkerconfiguration", "ui-buildingblocks", "ui-digitalsignage", "ui-directrtt", "ui-dockingslotvisibility", "ui-elementsounds_deprecated", "ui-flashobjectbindinggroups", "ui-flighthudmessages", "ui-frontend", "ui-graphs", "ui-holovehicleconfig", "ui-hudcolors_shipcolorpalettes", "ui-innerthought", "ui-itemkiosk", "ui-itempreview_config", "ui-itemtypedefinition", "ui-localplayershoppingdata", "ui-marker_config", "ui-markertrackingvolumeconfig", "ui-missilelockreticleconfig", "ui-mobiglas", "ui-objectdatabankentrymarkerconfig", "ui-playerchoice_imconfig_playerchoiceim", "ui-playerchoice_library_playerchoicelibrary", "ui-playerchoice_pitconfig_playerchoicepersonalthought", "ui-playerchoice_signalconfig_interactorsignalconfig", "ui-playerecggraph_config_playerecggraphconfig", "ui-pointofinterestdata", "ui-popups", "ui-radar3dpresets", "ui-radardisplay_config_radar", "ui-seatreticlearchetype", "ui-transformationinterpolatorrecords", "ui-uiconfig_starcitizen", "ui-uielements", "ui-uimodes", "ui-uistatedisplay", "ui-vehicleentrance", "ui-videocomms", "ui-visor", "ui-worlddisplay", "unittest_unittestb", "vehicle", "vfx", "vibrations", "videocommschannels", "voicebundle", "voicechannelsettingsrecord", "voicesingle", "weaponarmodifiers", "weaponmisfiredef", "weaponproceduralanimation", "weaponproceduralclip", "weaponproceduralrecoil", "zerogtraversalgraph"]
+ui = ["ui-animatedmarkers", "ui-armarkerconfiguration", "ui-buildingblocks", "ui-digitalsignage", "ui-directrtt", "ui-dockingslotvisibility", "ui-elementsounds_deprecated", "ui-flashobjectbindinggroups", "ui-flighthudmessages", "ui-frontend", "ui-graphs", "ui-holovehicleconfig", "ui-hudcolors_shipcolorpalettes", "ui-innerthought", "ui-itemkiosk", "ui-itempreview_config", "ui-itemtypedefinition", "ui-localplayershoppingdata", "ui-marker_config", "ui-markertrackingvolumeconfig", "ui-missilelockreticleconfig", "ui-mobiglas", "ui-objectdatabankentrymarkerconfig", "ui-playerchoice_imconfig_playerchoiceim", "ui-playerchoice_library_playerchoicelibrary", "ui-playerchoice_pitconfig_playerchoicepersonalthought", "ui-playerchoice_signalconfig_interactorsignalconfig", "ui-playerecggraph_config_playerecggraphconfig", "ui-pointofinterestdata", "ui-popups", "ui-radar3dpresets", "ui-radardisplay_config_radar", "ui-seatreticlearchetype", "ui-transformationinterpolatorrecords", "ui-uiconfig_starcitizen", "ui-uielements", "ui-uimodes", "ui-uistatedisplay", "ui-vehicleentrance", "ui-videocomms", "ui-visor", "ui-worlddisplay"]
+
+# Auto-generated leaf features. Each gates a set of DCB types.
+actor-actorledgegrabbing = []
+actor-actortargetedparams = []
+actor-actorviewlimits = []
+actor-actorzerogtraversalparams = []
+actor-atls_geo_jumppackconfig = []
+actor-externalforceresponse = []
+actor-gforce = []
+actor-headtrackinglimits = []
+actor-inputdeflectiontime = []
+actor-locomotionpersonality = []
+actor-lookahead = []
+actor-playeranimatedinteractionconfig = []
+actor-playerdefaultactionsconfig = []
+actor-quantumtravelcameraeffects = []
+actor-skeletonconfigs = []
+actor-stanceinfo = []
+actor-targettrackingautozoom = []
+ads = []
+aianimationdata = []
+aiglobalsettings = []
+aimotive = []
+aiprofile = []
+aiwavecollection = []
+ammoparams = []
+analytics = []
+announcer = []
+areaservices = []
+audio = []
+awardservice = []
+cameras = []
+capacitorassignment = []
+cargomanifest = []
+character = []
+chatchannelfilters = []
+chatcommandfastaccess = []
+chatemoterecord = []
+chatfilteroptions = []
+chatmanager = []
+closecombat = []
+commodityconfiguration = []
+commoditytypedatabase = []
+commsnotifications = []
+communicationatlconfig = []
+communicationconfig = []
+communicationname = []
+communicationsystem = []
+communicationvariableconfig = []
+consumabletypesdatabase = []
+contextualcommunicationconfig = []
+contracts = []
+conversation = []
+crafting = []
+crewmanifest = []
+damage = []
+densityclasses = []
+dialoguecontentbank = []
+dialoguerealm = []
+dynamiccameraeffects = []
+dynamiclightingrig = []
+emotions = []
+entities-haulingentityclass = []
+entities-scitem-actormovables = []
+entities-scitem-mastermodeexclusionglobalparams = []
+entities-scitem-operatormoderecords = []
+entities-scitem-ships = []
+entities-scitem-usables = []
+entities-ui = []
+entities-vfx = []
+entitlementpolicies = []
+environments = []
+evagraph = []
+explosiveordnance = []
+factions = []
+fidgetconfig = []
+foley = []
+forcefeedback_forcefeedbackeffects = []
+formation = []
+friendmanager = []
+fuelparams = []
+gamemode = []
+gamemodule = []
+globalarmarkerparams = []
+globalcargoloadingparams = []
+globalcommsnotificationparams = []
+globalcuttableshapeparams = []
+globalinteractionparams = []
+globalinventoryparams = []
+globalquantumdriveparams = []
+globalshopparams = []
+globaltutorialparams = []
+grips = []
+handholdgripdatabase = []
+hardwaremouse = []
+harvestable = []
+hazardawarenessparams = []
+hints = []
+hudparams = []
+ifcs = []
+initialdamageoverrides = []
+inputpromptconfig = []
+instancedinterior = []
+interactionconditions = []
+intoxication = []
+inventorycontainers = []
+item = []
+journalentry = []
+jumppoints = []
+landingpadsize = []
+lawsystem = []
+leangraph = []
+level = []
+loadoutkits = []
+longtermpersistence = []
+lootgeneration = []
+megamap = []
+mining = []
+missionbroker = []
+missiondata = []
+missionfailureconditions = []
+missiongiver = []
+missionscenarios = []
+missiontype = []
+motionstatemachine = []
+moveviewrestrictionpenalties = []
+musiclogic = []
+personalinnerthoughtrules = []
+planetdaynighttemperatureparams = []
+posturedatabase = []
+procbreathing = []
+proceduralaimrigrecord = []
+proceduralanimations = []
+procedurallandingsetup = []
+procedurallayout = []
+qteconfigs = []
+radarsystem = []
+rastar = []
+refinerynotificationconfiguration = []
+refiningprocess = []
+rendererpresets = []
+rentalnotificationparams = []
+reputation = []
+resourcetypedatabase = []
+roomsystem = []
+scarryableikinteractionlist = []
+scitemcommscomponentsetup = []
+scitemdisplayscreenpreset = []
+scitemmanufacturer = []
+scuttableshapedefinition = []
+seatcdikconfigs = []
+servicebeacon = []
+sgeometryviewdistanceratiocategories = []
+sglobalchargedrainbeamparams = []
+sglobalcrosshairparams = []
+sglobalelectronparams = []
+sglobalhealingbeamparams = []
+sglobalhitbehaviorparams = []
+sglobalsalvagerepairbeamparams = []
+sglobaltractorbeamparams = []
+shipinsurancerecord = []
+specialeventdatabase = []
+squantumdriveeffecttagstemplate = []
+sreputationglobalcontextbbparams = []
+ssolarsystem = []
+starmap = []
+tacticalquery = []
+tagdatabase = []
+targetselector = []
+tintpalettes = []
+trackview = []
+traversalcostconfig = []
+turret = []
+ui-animatedmarkers = []
+ui-armarkerconfiguration = []
+ui-buildingblocks = []
+ui-digitalsignage = []
+ui-directrtt = []
+ui-dockingslotvisibility = []
+ui-elementsounds_deprecated = []
+ui-flashobjectbindinggroups = []
+ui-flighthudmessages = []
+ui-frontend = []
+ui-graphs = []
+ui-holovehicleconfig = []
+ui-hudcolors_shipcolorpalettes = []
+ui-innerthought = []
+ui-itemkiosk = []
+ui-itempreview_config = []
+ui-itemtypedefinition = []
+ui-localplayershoppingdata = []
+ui-marker_config = []
+ui-markertrackingvolumeconfig = []
+ui-missilelockreticleconfig = []
+ui-mobiglas = []
+ui-objectdatabankentrymarkerconfig = []
+ui-playerchoice_imconfig_playerchoiceim = []
+ui-playerchoice_library_playerchoicelibrary = []
+ui-playerchoice_pitconfig_playerchoicepersonalthought = []
+ui-playerchoice_signalconfig_interactorsignalconfig = []
+ui-playerecggraph_config_playerecggraphconfig = []
+ui-pointofinterestdata = []
+ui-popups = []
+ui-radar3dpresets = []
+ui-radardisplay_config_radar = []
+ui-seatreticlearchetype = []
+ui-transformationinterpolatorrecords = []
+ui-uiconfig_starcitizen = []
+ui-uielements = []
+ui-uimodes = []
+ui-uistatedisplay = []
+ui-vehicleentrance = []
+ui-videocomms = []
+ui-visor = []
+ui-worlddisplay = []
+unittest_unittestb = []
+vehicle = []
+vfx = []
+vibrations = []
+videocommschannels = []
+voicebundle = []
+voicechannelsettingsrecord = []
+voicesingle = []
+weaponarmodifiers = []
+weaponmisfiredef = []
+weaponproceduralanimation = []
+weaponproceduralclip = []
+weaponproceduralrecoil = []
+zerogtraversalgraph = []
