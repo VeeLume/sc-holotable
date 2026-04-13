@@ -2,14 +2,15 @@
 //!
 //! [`AssetSource`] is a thin wrapper over [`svarog_p4k::P4kArchive`] that
 //! exposes read-only, on-demand access to arbitrary files in the archive.
-//! It is deliberately *orthogonal* to [`crate::ExtractedData`]: the envelope
-//! holds pure DCB-derived state and is serialisable, while an `AssetSource`
-//! holds a live mmap handle and is not.
+//! It is deliberately *orthogonal* to the serializable
+//! [`crate::DatacoreSnapshot`] / [`crate::AssetData`] types: those hold
+//! fully-owned, portable data, while an `AssetSource` holds a live mmap
+//! handle and is not serialisable.
 //!
-//! Consumers that only need files (e.g. `defaultBindings.xml`) can construct
-//! an `AssetSource` directly without ever parsing the DCB. Consumers that
-//! need both call [`crate::parse_from_p4k`] and receive an `ExtractedData`
-//! plus an `AssetSource` they can keep alongside it.
+//! Consumers that only need files (e.g. `defaultBindings.xml`) can
+//! construct an `AssetSource` directly without ever parsing the DCB.
+//! Consumers that need the datacore feed the same `AssetSource` into
+//! [`crate::Datacore::parse`].
 //!
 //! # Cost model
 //!
@@ -26,8 +27,8 @@ use crate::error::{Error, Result};
 
 /// Live handle to a `Data.p4k` archive for generic file access.
 ///
-/// Not serialisable — only `ExtractedData` is. Construct with
-/// [`AssetSource::open`] or receive one from [`crate::parse_from_p4k`].
+/// Not serialisable. Construct with [`AssetSource::open`] or
+/// [`AssetSource::from_install`].
 pub struct AssetSource {
     archive: P4kArchive,
     source_path: PathBuf,
@@ -47,6 +48,17 @@ impl AssetSource {
             archive,
             source_path: p4k_path.to_path_buf(),
         })
+    }
+
+    /// Convenience: open the `Data.p4k` from a discovered installation.
+    ///
+    /// ```no_run
+    /// let install = sc_installs::discover_primary()?;
+    /// let assets = sc_extract::AssetSource::from_install(&install)?;
+    /// # Ok::<(), Box<dyn std::error::Error>>(())
+    /// ```
+    pub fn from_install(install: &sc_installs::Installation) -> Result<Self> {
+        Self::open(&install.data_p4k())
     }
 
     /// Filesystem path of the underlying archive. Useful for error messages

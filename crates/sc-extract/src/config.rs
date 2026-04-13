@@ -1,58 +1,58 @@
 //! Extraction pipeline configuration.
 //!
-//! [`ExtractConfig`] controls which indices the extraction pipeline builds.
-//! The reference graph, tag tree, manufacturer registry, display name cache,
-//! and locale parsing are all independently toggleable.
+//! [`DatacoreConfig`] controls which DCB-derived indices the datacore
+//! pipeline builds. The reference graph, tag tree, manufacturer registry,
+//! and display name cache are all independently toggleable.
+//!
+//! Locale parsing lives on [`crate::AssetConfig`] — it's an asset-sourced
+//! value, not DCB-derived.
 //!
 //! # Default
 //!
-//! [`ExtractConfig::standard()`] is the recommended default — it builds
+//! [`DatacoreConfig::standard()`] is the recommended default — it builds
 //! everything except the reference graph (which is expensive and unused by
-//! most consumers). Use [`ExtractConfig::all()`] if you need the graph.
+//! most consumers). Use [`DatacoreConfig::all()`] if you need the graph.
 
-/// Controls which indices the extraction pipeline builds.
+/// Controls which DCB-derived indices [`crate::Datacore::parse`] builds.
 ///
-/// Use the builder pattern for custom configurations, or one of the
-/// predefined constructors for common setups.
+/// Use one of the predefined constructors or the builder pattern.
 ///
 /// ```
-/// use sc_extract::ExtractConfig;
+/// use sc_extract::DatacoreConfig;
 ///
 /// // Recommended default — everything except the expensive graph:
-/// let config = ExtractConfig::standard();
+/// let config = DatacoreConfig::standard();
 ///
-/// // Full extraction including graph:
-/// let config = ExtractConfig::all();
+/// // Full: includes the reference graph:
+/// let config = DatacoreConfig::all();
 ///
 /// // Custom:
-/// let config = ExtractConfig::builder()
+/// let config = DatacoreConfig::builder()
 ///     .graph(true)
-///     .locale(false)
+///     .manufacturers(false)
 ///     .build();
 /// ```
 #[derive(Debug, Clone)]
-pub struct ExtractConfig {
+pub struct DatacoreConfig {
     /// Build the ReferenceGraph? Walks all records iteratively — ~7s on
     /// real data, adds ~15 MB to snapshot size.
-    pub(crate) build_graph: bool,
+    pub build_graph: bool,
 
     /// Build the TagTree? Walks only "Tag" records — fast (~20ms).
-    pub(crate) build_tag_tree: bool,
+    pub build_tag_tree: bool,
 
     /// Build the ManufacturerRegistry? Walks only "SCItemManufacturer"
     /// records — fast (~5ms).
-    pub(crate) build_manufacturers: bool,
+    pub build_manufacturers: bool,
 
     /// Build the DisplayNameCache? Walks "EntityClassDefinition" records
-    /// and resolves names through the locale map — fast (~80ms), but
-    /// returns 0 results if locale is empty.
-    pub(crate) build_display_names: bool,
-
-    /// Parse global.ini from the archive into a LocaleMap?
-    pub(crate) build_locale: bool,
+    /// and resolves names against the [`crate::AssetData::locale`] passed
+    /// into [`crate::Datacore::parse`] — fast (~80ms), but returns 0
+    /// results if the locale is empty.
+    pub build_display_names: bool,
 }
 
-impl ExtractConfig {
+impl DatacoreConfig {
     /// Build everything — all indices including the reference graph.
     ///
     /// Use this when you need the full graph for dependency analysis.
@@ -63,65 +63,63 @@ impl ExtractConfig {
             build_tag_tree: true,
             build_manufacturers: true,
             build_display_names: true,
-            build_locale: true,
         }
     }
 
     /// Recommended default: everything except the reference graph.
     ///
     /// The graph is the most expensive index (~7s, ~15 MB) and most
-    /// consumers don't need it. Tags, manufacturers, display names, and
-    /// locale are cheap and broadly useful.
+    /// consumers don't need it. Tags, manufacturers, and display names
+    /// are cheap and broadly useful.
     pub fn standard() -> Self {
         Self {
             build_graph: false,
             build_tag_tree: true,
             build_manufacturers: true,
             build_display_names: true,
-            build_locale: true,
         }
     }
 
     /// Minimal: only the record store, no secondary indices.
-    ///
-    /// Fastest extraction — skips all index building. Useful when you
-    /// only need typed record access via the RecordStore.
     pub fn minimal() -> Self {
         Self {
             build_graph: false,
             build_tag_tree: false,
             build_manufacturers: false,
             build_display_names: false,
-            build_locale: false,
         }
     }
 
     /// Returns a builder for custom configurations.
-    pub fn builder() -> ExtractConfigBuilder {
-        ExtractConfigBuilder::new()
+    pub fn builder() -> DatacoreConfigBuilder {
+        DatacoreConfigBuilder::new()
     }
 }
 
-/// Builder for [`ExtractConfig`].
+impl Default for DatacoreConfig {
+    fn default() -> Self {
+        Self::standard()
+    }
+}
+
+/// Builder for [`DatacoreConfig`].
 ///
 /// Starts with everything disabled. Enable what you need.
 #[derive(Debug, Clone)]
-pub struct ExtractConfigBuilder {
+pub struct DatacoreConfigBuilder {
     build_graph: bool,
     build_tag_tree: bool,
     build_manufacturers: bool,
     build_display_names: bool,
-    build_locale: bool,
 }
 
-impl ExtractConfigBuilder {
+impl DatacoreConfigBuilder {
     fn new() -> Self {
         Self {
             build_graph: false,
             build_tag_tree: false,
             build_manufacturers: false,
             build_display_names: false,
-            build_locale: false,
         }
     }
 
@@ -149,20 +147,13 @@ impl ExtractConfigBuilder {
         self
     }
 
-    /// Enable or disable locale parsing (global.ini).
-    pub fn locale(mut self, yes: bool) -> Self {
-        self.build_locale = yes;
-        self
-    }
-
     /// Build the config.
-    pub fn build(self) -> ExtractConfig {
-        ExtractConfig {
+    pub fn build(self) -> DatacoreConfig {
+        DatacoreConfig {
             build_graph: self.build_graph,
             build_tag_tree: self.build_tag_tree,
             build_manufacturers: self.build_manufacturers,
             build_display_names: self.build_display_names,
-            build_locale: self.build_locale,
         }
     }
 }

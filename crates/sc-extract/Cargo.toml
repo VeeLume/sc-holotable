@@ -25,6 +25,7 @@ svarog-p4k = { workspace = true }
 # zstd keeps the on-disk footprint in the 5–30 MB target range.
 rmp-serde = "1"
 zstd = "0.13"
+chrono = "0.4.44"
 
 [dev-dependencies]
 tempfile = "3"
