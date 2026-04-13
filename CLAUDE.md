@@ -38,7 +38,7 @@ sc-holotable/
 │   └── sc-generator.md
 ├── crates/
 │   ├── sc-installs/               ✅ implemented, 51 tests passing
-│   ├── sc-extract/                ✅ phase 2a + 2c + 2d done (hand-written half)
+│   ├── sc-extract/                ✅ phase 2a + 2c + 2d done; API reworked 2026-04-13 (staged entry points)
 │   ├── sc-extract-generated/      ✅ workspace-internal — feature-gated generated types
 │   │   └── src/generated/         227 feature directories + top-level composition files
 │   ├── sc-contracts/              📦 stub only (lib.rs docs, no code)
@@ -216,7 +216,7 @@ These are real bugs that were hit and fixed — future edits should not re-intro
 See `status.md` for the always-current version. Brief snapshot:
 
 - ✅ **`sc-installs`** — fully implemented, 51 tests
-- ✅ **`sc-extract`** — phases 2a + 2c + 2d done, ExtractConfig, parse_from_install, 88 tests
+- ✅ **`sc-extract`** — phases 2a + 2c + 2d done. API reworked 2026-04-13 into three staged entry points (`AssetSource::from_install` → `AssetData::extract` → `Datacore::parse`) plus `ExtractSnapshot::save`/`load`. `Datacore` owns the live `DataCoreDatabase` so raw svarog queries stay available post-parse. 90 tests.
 - ⏭️ **`sc-extract` phase 2b** — vehicle XML — **deliberately skipped**
 - ✅ **`sc-extract-generated`** — feature-gated per-feature directories, 227 features, 214 core types
 - ✅ **`sc-generator`** — codegen + feature classification + Cargo.toml generation, ~3s run

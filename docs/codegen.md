@@ -1,6 +1,8 @@
 # Code generation — design specification
 
-> Status: **proposal, awaiting review.** Depends on `docs/sc-extract.md`.
+> Status: **implemented, with one significant divergence from this doc.** The `FromInstance` trait described throughout this spec was replaced by a flat-pool `Extract` + `Pooled` trait pair when the original recursive walker stack-overflowed on real data. See `implementing/sc-generator.md` for the full story of the refactor, and `docs/sc-extract.md` for the current trait signatures. The rest of this document — inheritance flattening, polymorphic enum emission, keyword escaping, feature classification — is still current.
+>
+> The generated output now lives in `crates/sc-extract-generated/src/generated/` (a workspace-internal crate), not `crates/sc-extract/src/generated/`. Consumers never depend on `sc-extract-generated` directly — they go through `sc-extract`, which re-exports the traits and the resulting `RecordStore` / `DataPools` / `Handle<T>`.
 
 ## Purpose
 
@@ -91,7 +93,7 @@ pub const STRUCT_COUNT: usize = 1847;
 pub const ENUM_COUNT: usize = 213;
 ```
 
-These constants are available to `sc-extract` at compile time. `parse_from_p4k` stamps the active constants into every `ExtractedData` it produces so snapshots carry their provenance.
+These constants are available to `sc-extract` at compile time. `Datacore::parse` / `snapshot_meta_from_install` stamp the active game version and build id into every `SnapshotMeta` so `ExtractSnapshot` files carry their provenance.
 
 ## Generation rules
 

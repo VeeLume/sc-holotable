@@ -5,28 +5,38 @@
 
 ## Last worked on
 
-**Feature-gated generated code** — the generator now produces per-feature directories with `#[cfg(feature = "...")]` gates, reducing cold compile times by ~5x for consumers that only need a subset of DCB types.
+**sc-extract API rework (2026-04-13)** — split the old `ExtractedData` god-struct into three orthogonal layers: live runtime handles, serializable asset data, and serializable datacore data. Removed the five overlapping `parse_*` entry points in favor of three staged building blocks. [`Datacore`] now owns the live `DataCoreDatabase` so raw svarog queries remain available after high-level parsing — a capability the old `parse_inner` flow dropped on the floor.
 
-### What shipped (2026-04-12)
+### What shipped (2026-04-13) — API rework
 
-1. **`ExtractConfig`** — configurable extraction pipeline. Consumers can skip expensive indices (reference graph, tag tree, manufacturers, etc.) via `ExtractConfig::standard()` / `ExtractConfig::minimal()` / `ExtractConfig::builder()`.
+1. **Staged entry points** replacing the old `parse_from_install{,_with}` / `parse_from_p4k` / `parse_with_config` / `parse_snapshot_only` family:
+   - [`AssetSource::from_install`] — open the P4K from a discovered install
+   - [`AssetData::extract`] — parse asset-sourced files (currently just `global.ini`)
+   - [`Datacore::parse`] — build the record store + indices; returns a live session that owns the `DataCoreDatabase`
 
-2. **`parse_from_install`** — ergonomic entry point that auto-fills `game_version` / `build_id` from the `Installation`'s manifest. `parse_from_p4k` still works for raw paths.
+2. **Runtime / data split.** [`Datacore`] (live) owns the db + a [`DatacoreSnapshot`] (serde). [`AssetData`] (serde) holds the locale. Consumers reach for the runtime type when they need raw svarog queries and the snapshot type when they're reading cooked data.
 
-3. **Iterative reference graph walker** — replaced recursive `collect_refs_from_instance` with an iterative worklist + per-record instance dedup. Simplified `ReferenceGraph` to `Guid → Vec<Guid>` (no field_path strings). SCHEMA_VERSION bumped to 3.
+3. **Single on-disk format.** [`ExtractSnapshot`] bundles `{ meta, asset_data: Option<…>, datacore: Option<…> }` into one msgpack+zstd file, covering all four consumer patterns (install-only / assets / datacore / both). `SCHEMA_VERSION` bumped to **4**.
 
-4. **Feature-gated generated code** — the generator:
-   - Classifies types into features based on DCB record file paths
-   - Uses compile cost (total field count in BFS type closure) as the split metric
-   - Emits per-feature directories (`core/`, `audio/`, `entities-scitem-ships/`, etc.)
-   - Writes `[features]` sections to both `sc-extract-generated/Cargo.toml` and `sc-extract/Cargo.toml`
-   - Features mirror the path hierarchy; parent features enable all children
+4. **`SnapshotMeta`** holds provenance (schema version, game version, build id, `extracted_at` as RFC 3339). The pre-rework `generator_version` / `p4k_sha256` / `game_branch` fields were never implemented and are not in the new shape.
 
-5. **Svarog pinned** to `ce06ec67` as workspace dependencies.
+5. **`DatacoreConfig` + `AssetConfig`** replace the old flat `ExtractConfig`. Locale moved to `AssetConfig::build_locale` because it's asset-sourced, not DCB-derived.
 
-6. **8 MB Windows stack** for binaries (fixes snapshot deserialization stack overflow).
+6. **`current_timestamp()` + `snapshot_meta_from_install()`** free helpers, using `chrono` for real RFC 3339.
 
-7. **Three release profiles** — `dev-opt` (fast compile), `release` (balanced), `release-max` (max runtime).
+7. **`filters.rs` unchanged** — `is_playable_ship` / `is_playable_weapon` are pure predicates and stay as free functions until a concrete consumer shape justifies folding them into iteration helpers.
+
+### What shipped previously (2026-04-12)
+
+1. **Feature-gated generated code** — the generator classifies types into features based on DCB record file paths, uses compile cost (total field count in BFS type closure) as the split metric, emits per-feature directories (`core/`, `audio/`, `entities-scitem-ships/`, etc.), and writes `[features]` sections to both `sc-extract-generated/Cargo.toml` and `sc-extract/Cargo.toml`. Parent features automatically include all children.
+
+2. **Iterative reference graph walker** — replaced recursive `collect_refs_from_instance` with an iterative worklist + per-record instance dedup. Simplified `ReferenceGraph` to `Guid → Vec<Guid>`. SCHEMA_VERSION was bumped to 3 (and now to 4 with the rework).
+
+3. **Svarog pinned** to `ce06ec67` as workspace dependencies.
+
+4. **8 MB Windows stack** for binaries (fixes snapshot deserialization stack overflow).
+
+5. **Three release profiles** — `dev-opt` (fast compile), `release` (balanced), `release-max` (max runtime).
 
 ## Benchmarks (real Data.p4k, 4.7 branch, 2026-04-12)
 
@@ -48,7 +58,9 @@
 | Full | 1m 41s |
 | Old monolithic | ~6 min |
 
-### Runtime (parse_real_p4k with ExtractConfig::standard(), graph off)
+### Runtime (parse_real_p4k with DatacoreConfig::standard(), graph off)
+
+> Numbers from 2026-04-12 (pre-rework). The rework doesn't meaningfully change parse cost — same underlying Builder + iterative walkers — but these should be re-measured after the next `cargo run --example parse_real_p4k` against the 4.7 P4K.
 
 | Features | Records | Parse time | Snapshot size | Load time |
 |---|---|---|---|---|
@@ -56,7 +68,7 @@
 | Core + ships | 60,836 | 16.4s | 12.42 MB | 1.34s |
 | Full | 111,928 | 18.9s | 16.79 MB | 2.33s |
 
-### With reference graph (ExtractConfig::all(), full features)
+### With reference graph (DatacoreConfig::all(), full features)
 
 | Metric | Value |
 |---|---|
@@ -83,8 +95,8 @@
 | `sc-extract` phase 2a | ✅ error, LocaleMap, svarog re-exports |
 | `sc-extract` phase 2b | ⏭️ skipped (vehicle XML deferred) |
 | `sc-extract` phase 2c | ✅ ReferenceGraph, TagTree, ManufacturerRegistry, DisplayNameCache, filters |
-| `sc-extract` phase 2d | ✅ ExtractedData, AssetSource, parse_from_p4k/install, snapshot save/load |
-| `sc-extract` ExtractConfig | ✅ configurable pipeline (standard/all/minimal/builder) |
+| `sc-extract` phase 2d | ✅ AssetSource, `Datacore`, `DatacoreSnapshot`, `AssetData`, `ExtractSnapshot` (rework 2026-04-13 replaced the old `ExtractedData` + `parse_*` family) |
+| `sc-extract` configs | ✅ `DatacoreConfig` + `AssetConfig` (replaced flat `ExtractConfig`); builders + presets (all/standard/minimal) |
 | `sc-extract-generated` | ✅ flat-pool model, feature-gated per-feature directories |
 | `sc-generator` | ✅ codegen + feature classification + Cargo.toml generation |
 | `sc-ammo` | 📦 spec only |
@@ -94,9 +106,9 @@
 ### Test counts
 
 - `sc-installs`: 51 tests
-- `sc-extract`: 88 tests
+- `sc-extract`: 90 tests (88 pre-rework + 6 new snapshot round-trip tests − 4 from the deleted `extracted.rs`)
 - `sc-generator`: 3 tests
-- **Total: 142 tests, all passing**
+- **Total: 144 tests, all passing**
 
 ## Feature classification details
 
@@ -118,9 +130,11 @@ Current classification (4.7 branch):
 ### Answered
 
 - ~~**svarog commit pinning**~~ — Done: `ce06ec67` as workspace dep.
-- ~~**game_version / build_id hardcoded**~~ — Done: `parse_from_install` fills from manifest.
+- ~~**game_version / build_id hardcoded**~~ — Done: `snapshot_meta_from_install` fills from manifest.
 - ~~**Reference graph stack overflow**~~ — Done: iterative walker + instance dedup.
 - ~~**Compile time**~~ — Done: feature-gated code, 5x improvement.
+- ~~**Runtime escape hatch for raw svarog queries after parse**~~ — Done: `Datacore` owns the live `DataCoreDatabase`.
+- ~~**`parse_from_*` sprawl and tuple return**~~ — Done: three staged entry points, one snapshot type.
 
 ### Still open
 
@@ -153,7 +167,7 @@ Current classification (4.7 branch):
 | Cold dev-opt build (core only) | 4m 19s |
 | Cold dev-opt build (full) | 20m 56s |
 | Cold cargo check (core only) | 26s |
-| Total tests passing | 142 |
+| Total tests passing | 144 |
 | svarog commit | `ce06ec67` (pinned) |
 
 ## Fresh-session checklist

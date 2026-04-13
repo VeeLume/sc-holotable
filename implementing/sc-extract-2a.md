@@ -1,5 +1,7 @@
 # `sc-extract` — Phase 2a implementation notes
 
+> **Historical record.** This document captures the initial Phase 2a implementation, back when the crate had a hand-written `FromInstance` trait and monolithic module structure. The `FromInstance` trait was superseded by the flat-pool `Extract` + `Pooled` pair (see `implementing/sc-generator.md`), and the whole entry-point surface was reworked on 2026-04-13 into staged `AssetSource::from_install` / `AssetData::extract` / `Datacore::parse` building blocks (see `docs/sc-extract.md`). The rationale for what was in Phase 2a remains useful context; the code shapes shown below no longer match the live crate.
+
 This document records Phase 2a of the `sc-extract` implementation: the foundational layer that unblocks every subsequent phase. It's deliberately scoped to the minimum viable surface — error type, svarog re-exports, the `FromInstance` trait, and `LocaleMap` — so subsequent phases can land incrementally without blocking on the full crate.
 
 ## Status

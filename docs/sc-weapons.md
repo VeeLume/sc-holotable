@@ -317,21 +317,23 @@ Walking `RecordStore` and wrapping each weapon is a common operation. `sc-weapon
 ```rust
 impl ShipWeapon {
     /// Iterator over all ship weapons in the snapshot.
-    pub fn all_in<'a>(data: &'a sc_extract::ExtractedData) -> impl Iterator<Item = Self> + 'a {
-        data.records
+    pub fn all_in<'a>(snap: &'a sc_extract::DatacoreSnapshot) -> impl Iterator<Item = Self> + 'a {
+        snap.records
             .all_entity_classes()
             .filter_map(|(_, ecd)| Self::try_from_raw(ecd.clone()))
     }
 }
 
 impl FpsWeapon {
-    pub fn all_in<'a>(data: &'a sc_extract::ExtractedData) -> impl Iterator<Item = Self> + 'a {
-        data.records
+    pub fn all_in<'a>(snap: &'a sc_extract::DatacoreSnapshot) -> impl Iterator<Item = Self> + 'a {
+        snap.records
             .all_entity_classes()
             .filter_map(|(_, ecd)| Self::try_from_raw(ecd.clone()))
     }
 }
 ```
+
+(`all_entity_classes` is spec shorthand for whichever typed-iteration helper the flat-pool `RecordStore` ends up exposing; the point is that the input is a `DatacoreSnapshot`, not the old `ExtractedData` god-struct.)
 
 A consumer that only wants ballistic ship weapons:
 

@@ -1,5 +1,7 @@
 # `sc-extract` — Phase 2c implementation notes
 
+> **Historical record.** Phase 2c shipped these modules inside the pre-rework `ExtractedData` god-struct with `from_database(&db, ...)` construction called from `parse_inner`. The 2026-04-13 rework moved the same `from_database` builders under `Datacore::parse` and split the results across `DatacoreSnapshot` (records, graph, tag_tree, manufacturers, display_names) and `AssetData` (locale). The individual module internals (`graph.rs`, `tags.rs`, `manufacturers.rs`, `display_names.rs`, `locale.rs`, `filters.rs`) were *not* changed by the rework and still match this doc. See `docs/sc-extract.md` for the current plumbing on top.
+
 This document records Phase 2c of the `sc-extract` implementation: the cross-cutting services (reference graph, tag tree, manufacturer registry, display-name cache, playable-content filters). Phase 2b (vehicle XML) was deliberately skipped per user decision — that part of the design is less settled and will be revisited when a consumer actually needs it.
 
 ## Status

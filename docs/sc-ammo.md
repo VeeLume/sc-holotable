@@ -33,7 +33,7 @@ It is a deliberately small crate: roughly one wrapper struct, a few traits, and 
 - `DamageInfo` (also lives in `sc_extract::generated`)
 - Weapon-level calculations like DPS or sustained DPS — those live in `sc-weapons`.
 - Damage-pipeline computations (shield/armor/hull) — those live in `bulkhead` or a future `sc-ships`.
-- Extraction or serialization — the raw type is already extracted by `sc-extract` and lives in `ExtractedData`.
+- Extraction or serialization — the raw type is already extracted by `sc-extract` and lives in `DatacoreSnapshot::records` (reachable either via a live `Datacore::snapshot()` or through `ExtractSnapshot::datacore`).
 
 ## The `Ammo` wrapper
 
@@ -262,18 +262,22 @@ pub enum AmmoKind {
 Typical consumer flow:
 
 ```rust
-use sc_extract::{ExtractedData, Guid};
+use sc_extract::{DatacoreSnapshot, Guid};
 use sc_ammo::Ammo;
 
-fn get_ammo_for_weapon(data: &ExtractedData, ammo_ref: Guid) -> Option<Ammo> {
+fn get_ammo_for_weapon(snap: &DatacoreSnapshot, ammo_ref: Guid) -> Option<Ammo> {
     // Ammo records in the DCB are keyed by GUID — the reference comes from
     // the weapon's `SAmmoContainerComponentParams.ammoParamsRecord` field.
-    let raw = data.records.get_ammo(&ammo_ref)?;
-    Some(Ammo::from_raw(raw.clone()))
+    // The exact accessor on `RecordStore` depends on the typed-lookup helpers
+    // that ship with the flat-pool model; consult the live crate for the
+    // current idiom.
+    let handle = snap.records.ammo_handle(&ammo_ref)?;
+    let raw = handle.get(&snap.records).cloned()?;
+    Some(Ammo::from_raw(raw))
 }
 ```
 
-The `records.get_ammo` accessor is generated on `RecordStore` because `AmmoParams` is a top-level record type in the DCB. See `docs/codegen.md`.
+`AmmoParams` is a top-level record type in the DCB and lives in the flat pools on `RecordStore`. See `docs/codegen.md` and `implementing/sc-generator.md` for how the generator exposes per-type handles.
 
 ## Design decisions
 
@@ -301,7 +305,7 @@ The DCB doesn't tag ammo as "ballistic" vs "energy" vs "distortion" — it just 
 - Weapon calculations — in `sc-weapons`.
 - Damage-pipeline calculations — in consumer apps.
 - Snapshot I/O — `sc-extract` owns parse/load.
-- Cross-record resolution — `ExtractedData::records.get_ammo` handles GUID → record lookup; `sc-ammo` takes already-resolved `AmmoParams` values.
+- Cross-record resolution — `DatacoreSnapshot::records` (reachable via `Datacore::snapshot()` or `ExtractSnapshot::datacore`) handles GUID → record lookup through its flat pools; `sc-ammo` takes already-resolved `AmmoParams` values.
 
 ## Open questions
 

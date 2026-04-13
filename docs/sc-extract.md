@@ -1,6 +1,8 @@
 # `sc-extract` — design specification
 
-> Status: **proposal, awaiting review.** Nothing in this document is implemented yet.
+> Status: **implemented and in use as of 2026-04-13.** Phases 2a + 2c + 2d are landed (hand-written half). Phase 2b (vehicle XML) is deliberately deferred — the design is still captured in the "Vehicle XML" section below as forward-looking spec.
+>
+> The API was reworked on 2026-04-13 to split runtime state from serializable data. See the "Entry points" and "Result types" sections for the current shape. Older implementation notes in `implementing/sc-extract-2a.md` and `implementing/sc-extract-2c.md` describe the pre-rework state and are kept for historical context.
 
 ## Purpose
 
@@ -14,10 +16,10 @@ It is the only non-`sc-installs` crate in the workspace that has svarog as a dep
 
 | App or crate | What it needs |
 |---|---|
-| `sc-ammo` | Generated `AmmoParams` + related types; `FromInstance` trait; svarog re-exports for custom extraction. |
-| `sc-weapons` | Generated `EntityClassDefinition`, `SCItemWeaponComponentParams`, fire-action enum; access to ammo records through the record store; `FromInstance`. |
+| `sc-ammo` | Generated `AmmoParams` + related types via `DatacoreSnapshot::records`; svarog re-exports for custom extraction. |
+| `sc-weapons` | Generated `EntityClassDefinition`, `SCItemWeaponComponentParams`, fire-action enum via `DatacoreSnapshot::records`; access to ammo records through the same store. |
 | `sc-contracts` | Generated contract generator types; **reference graph** (for reverse lookups from tags/blueprints back to contracts); tag tree; localization. |
-| `bulkhead` (future consumer) | Everything above plus playable-content filters, display-name cache, save/load snapshots. |
+| `bulkhead` (future consumer) | Everything above plus playable-content filters, display-name cache, snapshot round-trip. |
 | `sc-langpatch` (future consumer) | Everything above plus `LocaleMap` round-trip (parse + serialize patched `global.ini`) and `sc-installs` path helpers for the write target. |
 
 ## Scope
@@ -26,16 +28,16 @@ It is the only non-`sc-installs` crate in the workspace that has svarog as a dep
 
 - svarog re-exports and ergonomic aliases
 - Generated DataCore type catalog (produced by `tools/sc-generator`, see `docs/codegen.md`)
-- The `FromInstance` trait and its generated impls
+- The `Extract` + `Pooled` traits and the `Builder` (flat-pool materialiser) emitted by the generator
 - `ReferenceGraph` (built once during parse, serialized in snapshot)
 - Tag tree navigation (hand-written on top of generated `Tag` records)
 - Manufacturer registry (hand-written lookup on top of generated `SCItemManufacturer`)
 - `LocaleMap` — `global.ini` parse + serialize (UTF-16 LE with BOM)
-- **Vehicle XML** (CryXmlB) parsing — hull parts, item ports, damage multipliers, pipes, movement params. The non-DCB ship data source.
+- **Vehicle XML** (CryXmlB) parsing — *deferred; spec only.* The non-DCB ship data source; see the Vehicle XML section below.
 - Entity display-name resolver (pre-computed during parse, cached in snapshot)
-- Playable-content filters (`is_playable_weapon`, `is_playable_ship`, etc.)
-- `ExtractedData` envelope — the unified in-memory representation
-- Two public entry points: `parse_from_p4k` and `load_snapshot`, plus `save_snapshot`
+- Playable-content filters (`is_playable_weapon`, `is_playable_ship`)
+- Staged result types: [`AssetSource`] (live P4K handle), [`AssetData`] + [`Datacore`] (runtime session owning `DataCoreDatabase`), [`DatacoreSnapshot`] + [`ExtractSnapshot`] (serializable)
+- Three staged entry points: [`AssetSource::from_install`], [`AssetData::extract`], [`Datacore::parse`], plus [`ExtractSnapshot::save`] / [`ExtractSnapshot::load`]
 
 **What `sc-extract` does *not* own:**
 
@@ -51,17 +53,20 @@ It is the only non-`sc-installs` crate in the workspace that has svarog as a dep
 ```rust
 // sc-extract/src/lib.rs
 
-pub use svarog;   // escape hatch — full svarog namespace available as `sc_extract::svarog`
+// Full-namespace escape hatches for the three svarog crates.
+pub use svarog_common;
+pub use svarog_datacore;
+pub use svarog_p4k;
 
 // Ergonomic aliases at the crate root:
-pub use svarog::datacore::{
-    Value, InstanceRef, RecordRef, ArrayRef, ArrayElementType,
-    DataCoreDatabase, Record, Instance, Query, DataType,
+pub use svarog_datacore::{
+    ArrayElementType, ArrayRef, DataCoreDatabase, DataType, Instance, InstanceRef, Query, Record,
+    RecordRef, Value,
 };
 pub use svarog_common::CigGuid as Guid;
 ```
 
-Consumers write `use sc_extract::{Guid, Value, Instance};` for the 90% case and drop to `sc_extract::svarog::...` when they need something unusual. sc-extract does **not** redefine any of these types — they all come from svarog.
+Consumers write `use sc_extract::{Guid, Value, Instance};` for the 90% case and drop to `sc_extract::svarog_datacore::...` when they need something unusual. sc-extract does **not** redefine any of these types — they all come from svarog.
 
 Distinct reference semantics preserved from svarog:
 
@@ -81,44 +86,35 @@ The `sc_extract::generated::*` module contains every DataCore struct and enum as
 
 Key facts for consumers:
 
-- All types derive `Serialize`, `Deserialize`, `Debug`, `Clone`, and `Default` where possible.
+- All types derive `Serialize`, `Deserialize`, `Debug`, `Clone`. `Default` is *not* derived (reachability pruning + flat-pool handles don't need it, and skipping the derive cuts compile time).
 - Optional fields use `#[serde(default)]` so older snapshots still deserialize cleanly when new fields are added.
-- Abstract base types (types in the DCB with multiple concrete subclasses) become polymorphic enums: `SWeaponActionParamsVariant { SWeaponActionFireRapidParams(...), SWeaponActionFireSingleParams(...), SWeaponActionSequenceParams(...), Unknown }`.
+- Abstract base types (types in the DCB with multiple concrete subclasses) become polymorphic enums: `SWeaponActionParamsVariant { SWeaponActionFireRapidParams(...), SWeaponActionFireSingleParams(...), SWeaponActionSequenceParams(...), Unrecognized(String) }`.
 - Inheritance is **flattened** — parent-struct fields are inlined into the child struct rather than being kept as a `_parent: ParentType` field. See the rationale in `docs/codegen.md`.
-- Field names are `snake_case` versions of DataCore field names. Rust keyword collisions use raw identifiers (`r#type`, `r#ref`).
-- Every generated struct implements the `FromInstance` trait.
+- Field names are `snake_case` versions of DataCore field names. Rust keyword collisions use raw identifiers (`r#type`, `r#ref`) or trailing-underscore (`Self_`).
+- Every generated struct implements the `Extract` + `Pooled` traits.
 
-### The `FromInstance` trait
+### The `Extract` / `Pooled` traits and the `Builder`
+
+The earlier sketch of a single recursive `FromInstance::from_instance` was replaced by a **flat-pool** materialiser. The generator emits one `impl Extract<'a>` + one `impl Pooled` per reachable struct, and the hand-written [`Builder`] in `sc-extract-generated` walks every DCB record iteratively through a heap-allocated worklist, writing slot handles (`Handle<T>`) into a per-type `DataPools`.
 
 ```rust
-pub trait FromInstance: Sized {
-    /// Construct a typed value from a svarog `Instance`.
-    ///
-    /// Returns `None` if the instance is missing fields the type requires.
-    /// Missing optional fields produce their serde defaults.
-    fn from_instance(inst: &Instance<'_>) -> Option<Self>;
+pub trait Pooled: Sized {
+    /// Returns a mutable reference to this type's pool inside DataPools,
+    /// growing it if necessary.
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>>;
+    fn pool<'p>(pools: &'p DataPools) -> &'p Vec<Option<Self>>;
+}
+
+pub trait Extract<'a>: Sized + Pooled {
+    /// Materialize this type from a svarog `Instance`, allocating handles
+    /// into `builder.pools` for any nested class / pointer fields.
+    fn extract(inst: &Instance<'a>, builder: &mut Builder<'a>) -> Option<Self>;
 }
 ```
 
-Defined in `sc-extract`. Implemented by the generator for every generated struct and enum. This is the bridge between raw svarog access (zero-copy views into DCB bytes) and owned serializable values.
+The `Builder` owns a `&'a DataCoreDatabase`, a `DataPools`, a `RecordIndex`, and a worklist. Its `consume_database().finish()` pipeline seeds the worklist from `db.all_records()`, drains it iteratively, and returns a [`RecordStore`] ready for typed access. See `implementing/sc-generator.md` for the worklist details and why the old recursive `FromInstance` hit a stack overflow.
 
-```rust
-// Example of generated impl (not hand-written):
-impl FromInstance for SCItemWeaponComponentParams {
-    fn from_instance(inst: &Instance<'_>) -> Option<Self> {
-        Some(Self {
-            connection_params: inst.get_instance("connectionParams")
-                .and_then(|i| SWeaponConnectionParams::from_instance(&i))?,
-            fire_actions: inst.get_array("fireActions")
-                .map(|arr| arr.filter_map(|v| /* dispatch on polymorphic variant */).collect())
-                .unwrap_or_default(),
-            // ... one line per field, all generated
-        })
-    }
-}
-```
-
-Consumers rarely call `from_instance` directly — they get already-materialized values from the record store on `ExtractedData`. `FromInstance` is primarily an implementation detail of the parse path.
+Consumers almost never see `Extract` or `Builder` directly — they use the resulting [`RecordStore`] via [`Datacore`].
 
 ## The reference graph
 
@@ -175,11 +171,15 @@ impl ReferenceGraph {
 
 **Memory budget:** 200k records × ~5 outgoing edges each ≈ 1M edges. Each edge: `16B (from) + 16B (to) + 4B (field_path interned id) + 1B (kind) = ~40B`. Total ≈ 40MB in memory. Acceptable for a desktop app. The `field_path` strings are interned to avoid duplicating common paths like `"Components"` across thousands of edges.
 
-**The graph is built exactly once**, during `parse_from_p4k`. It is serialized as part of the snapshot. Apps that `load_snapshot` get the fully-built graph; they never rebuild it.
+**The graph is built exactly once**, during [`Datacore::parse`] when [`DatacoreConfig::build_graph`] is true. It is serialized as part of the [`DatacoreSnapshot`]. Apps that [`ExtractSnapshot::load`] get the fully-built graph; they never rebuild it.
+
+> Note: `ReferenceGraph` was simplified as part of the flat-pool refactor — edges are now `Guid → Vec<Guid>` instead of carrying a `field_path` or `kind`. The `Edge { from, to, field_path, kind }` shape shown in the next block is the earlier design, preserved here for historical context. The live code only exposes `outgoing(guid) -> &[Guid]` and `incoming(guid) -> &[Guid]`.
 
 ## Record store
 
-The snapshot holds every extracted record as a fully-materialized typed value, indexed for typed and untyped access. **All records are parsed eagerly during `parse_from_p4k`; the store never holds lazy views, raw bytes, or references back into the DCB.** See the "Parsing model" section below for the full rationale.
+The snapshot holds every extracted record as a fully-materialized typed value, indexed for typed and untyped access. **All records are parsed eagerly during [`Datacore::parse`]; the store never holds lazy views, raw bytes, or references back into the DCB.** See the "Parsing model" section below for the full rationale.
+
+> The shape below is the original per-type-HashMap sketch. The live implementation uses a **flat-pool** `RecordStore` built on top of the generic `Handle<T>(u32)` type — see `implementing/sc-generator.md` for the actual layout. The ergonomic accessor story (typed `entity_class()` / `manufacturer()` helpers) is not yet exposed; consumers walk the pools directly today.
 
 The exact internal shape is a generated detail (see `docs/codegen.md`) — consumers see the following API:
 
@@ -339,9 +339,11 @@ pub fn extract_locale(p4k_path: &Path, lang: Language) -> Result<LocaleMap>;
 
 ## Vehicle XML (CryXmlB files)
 
+> **Status: not implemented (phase 2b deliberately deferred).** This section is forward-looking spec. When vehicle XML parsing lands, it will plug in alongside the current asset/datacore split — likely as a third serializable bundle (e.g. `VehicleXmlStore`) that lives either inside [`AssetData`] or as its own field on [`ExtractSnapshot`]. A real working implementation exists in the sibling `sc-damage-calculator` crate at `src/extract/hull.rs` (~490 lines) and will be ported when the first consumer needs it.
+
 The DCB doesn't contain everything. Ships specifically have two fundamentally different data sources: the DCB holds the ship **entity** (`VehicleComponentParams`, default loadout references), while the **vehicle XML** holds the hull structure, hardpoint definitions with gimbal limits, pipe topology, and flight performance. A complete ship model requires merging both sources.
 
-Vehicle XMLs are **CryXmlB** (binary CryEngine XML) files stored in the P4K at paths like `data/scripts/entities/vehicles/implementations/xml/aegs_gladius.xml`. The DCB's `VehicleComponentParams.vehicleDefinition` field points at the XML path. sc-extract parses these during `parse_from_p4k`, stores the results in the snapshot, and exposes them alongside DCB records.
+Vehicle XMLs are **CryXmlB** (binary CryEngine XML) files stored in the P4K at paths like `data/scripts/entities/vehicles/implementations/xml/aegs_gladius.xml`. The DCB's `VehicleComponentParams.vehicleDefinition` field points at the XML path. When implemented, sc-extract will parse these during extraction and store the results alongside DCB records.
 
 **Parsing is hand-written, not generated.** The vehicle XML schema is ad-hoc, inconsistent, and accumulates historical oddities — codegen isn't a useful fit. The hand-written types live in `sc-extract/src/vehicle_xml/`, separate from `src/generated/`.
 
@@ -446,7 +448,7 @@ pub struct VehicleMovementParams {
 pub fn parse_vehicle_xml(bytes: &[u8]) -> Result<VehicleXml>;
 
 /// Extract every vehicle XML referenced by any ship ECD in the P4K.
-/// Called by `parse_from_p4k` during extraction.
+/// Will be called by `Datacore::parse` during extraction when implemented.
 ///
 /// Takes a map of ship record GUID → `vehicleDefinition` path string.
 /// Deduplicates by path (multiple ship variants often share a vehicle XML)
@@ -531,7 +533,9 @@ This is the single most common operation across consumers (bulkhead UI, sc-langp
 
 ```rust
 /// Pre-computed display names for every EntityClassDefinition that has one.
-/// Stored as part of `ExtractedData`, computed during `parse_from_p4k`.
+/// Stored as part of `DatacoreSnapshot`, computed during `Datacore::parse`
+/// when `DatacoreConfig::build_display_names` is true and the accompanying
+/// `AssetData` had a non-empty locale.
 pub struct DisplayNameCache {
     by_record: HashMap<Guid, String>,
 }
@@ -561,71 +565,84 @@ pub fn is_playable_shield(ecd: &EntityClassDefinition, display_name: Option<&str
 
 The exact rules live in bulkhead's `docs/damage-system.md` and migrate here as those crates are written. The rules live centrally in `sc-extract` rather than in each domain crate — centralizing avoids drift when multiple consumers disagree about what counts as "playable".
 
-## `ExtractedData` envelope
+## Result types
 
-The unified in-memory representation. Produced identically by both `parse_from_p4k` and `load_snapshot`, because the snapshot *is* a serialized `ExtractedData`.
+The crate splits data into three orthogonal layers along the **data-source** axis (assets vs. datacore) and the **lifetime** axis (live handles vs. owned serializable data):
+
+| Type | Layer | Kind | Source |
+|---|---|---|---|
+| [`AssetSource`] | runtime | live P4K handle | file |
+| [`AssetData`] | serializable | locale + future asset caches | asset files (e.g. `global.ini`) |
+| [`Datacore`] | runtime | owned `DataCoreDatabase` + inner [`DatacoreSnapshot`] | DCB |
+| [`DatacoreSnapshot`] | serializable | records, graph, tags, manufacturers, display names | DCB |
+| [`ExtractSnapshot`] | serializable (on-disk) | `{ meta, asset_data?, datacore? }` bundle | — |
+| [`SnapshotMeta`] | serializable | schema version + game version + build id + timestamp | install manifest |
 
 ```rust
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct ExtractedData {
-    // ── Metadata ─────────────────────────────────────────────────────────
-    /// Bumped on incompatible type or structure changes. Readers reject
-    /// snapshots with unknown schema versions.
-    pub schema_version: u32,
-    /// Bumped on codegen logic changes that produce different output
-    /// from the same DCB input.
-    pub generator_version: String,
-    /// Game build this snapshot was extracted from, e.g. "4.6.173.39432".
-    pub game_version: String,
-    /// Branch string from build_manifest.id, e.g. "sc-alpha-4.6.1".
-    pub game_branch: String,
-    /// Build id from build_manifest.id.
-    pub build_id: String,
-    /// SHA-256 of the Data.p4k file that was parsed. Used to detect
-    /// whether a cached snapshot is still fresh for the current install.
-    pub p4k_sha256: String,
-    /// UTC ISO-8601 timestamp.
-    pub extracted_at: String,
+/// Live handle to a `Data.p4k` archive. Not serializable.
+pub struct AssetSource { /* archive + source_path */ }
 
-    // ── Raw record store ───────────────────────────────────────────────
-    pub records: RecordStore,
-
-    // ── Indices and registries (all built during parse) ────────────────
-    pub graph: ReferenceGraph,
-    pub tags: TagTree,
-    pub manufacturers: ManufacturerRegistry,
-    pub display_names: DisplayNameCache,
-
-    // ── Localization ──────────────────────────────────────────────────
+/// Owned, serializable bundle of asset-sourced values. Currently just the
+/// locale; designed to grow.
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct AssetData {
     pub locale: LocaleMap,
-
-    // ── Vehicle XML data (ship structure) ─────────────────────────────
-    /// Parsed vehicle XMLs keyed by ship record GUID. Only ships that
-    /// have a resolvable `vehicleDefinition` path appear here.
-    pub vehicle_xmls: HashMap<Guid, VehicleXml>,
 }
 
-impl ExtractedData {
-    /// Total count across all record types.
-    pub fn record_count(&self) -> usize;
+/// Owned, serializable bundle of every DCB-derived value from one parse.
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct DatacoreSnapshot {
+    pub records: RecordStore,
+    pub graph: ReferenceGraph,
+    pub tag_tree: TagTree,
+    pub manufacturers: ManufacturerRegistry,
+    pub display_names: DisplayNameCache,
+}
 
-    /// True if this snapshot's `p4k_sha256` matches the given file.
-    /// Used by apps to check whether a cached snapshot is still valid.
-    pub fn matches_p4k(&self, p4k_path: &Path) -> Result<bool>;
+/// Live datacore session: owns the parsed `DataCoreDatabase` (so raw svarog
+/// queries stay available) plus the cooked `DatacoreSnapshot`. Not
+/// serializable — call `into_snapshot` to drop the db and get the serde half.
+pub struct Datacore { /* db + snapshot */ }
+
+impl Datacore {
+    pub fn db(&self) -> &DataCoreDatabase;          // raw escape hatch
+    pub fn snapshot(&self) -> &DatacoreSnapshot;
+    pub fn into_snapshot(self) -> DatacoreSnapshot;
+    pub fn records(&self) -> &RecordStore;
+}
+
+/// On-disk single-file snapshot format.
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct ExtractSnapshot {
+    pub meta: SnapshotMeta,
+    pub asset_data: Option<AssetData>,
+    pub datacore: Option<DatacoreSnapshot>,
+}
+
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct SnapshotMeta {
+    pub schema_version: u32,
+    pub game_version: String,
+    pub build_id: String,
+    pub extracted_at: String,     // RFC 3339 UTC
 }
 ```
 
+Each half of the pair (`AssetData` / `DatacoreSnapshot`) is `Option<_>` in `ExtractSnapshot` so the same file format covers all four consumer patterns: assets only, datacore only, both, or neither.
+
+Everything that was in the pre-rework `ExtractedData` god-struct is now reachable through these types. The `generator_version` / `p4k_sha256` / `game_branch` fields mentioned in an earlier draft were never implemented — provenance lives in `meta` only.
+
 ## Parsing model: eager by design
 
-`parse_from_p4k` performs a **single, complete, eager pass** over the DataCore. Every record is read, every `FromInstance::from_instance` is called, every field is materialized into an owned Rust value. By the time `parse_from_p4k` returns, the `DataCoreDatabase` is dropped and `ExtractedData` holds every record in memory as a fully-typed, owned value.
+[`Datacore::parse`] performs a **single, complete, eager pass** over the DataCore. Every record is seeded into the [`Builder`]'s worklist, every `Extract::extract` is called, every field is materialized into a slot handle inside `DataPools`. By the time `Datacore::parse` returns, the caller has a fully-typed [`DatacoreSnapshot`] — but [`Datacore`] *also keeps the `DataCoreDatabase` alive* so raw svarog queries remain available through [`Datacore::db`]. (Consumers who want to drop the db call [`Datacore::into_snapshot`] to get just the serde half.)
 
-There is no lazy loading. There are no deferred reads. No part of `ExtractedData` holds a reference to the original DCB bytes. This design choice is load-bearing and was deliberately chosen over a lazy alternative — see "Lazy was considered and rejected" below.
+The [`DatacoreSnapshot`] itself holds no references into the DCB bytes and survives the database being dropped. This is what lets snapshots round-trip through [`ExtractSnapshot::save`] / [`ExtractSnapshot::load`] with no P4K involvement at load time.
 
 ### Why eager
 
 Three reasons, in order of importance:
 
-1. **The snapshot model requires it.** `load_snapshot` reads a serialized `ExtractedData` from disk. If parsing were lazy, the deferred references would have nothing to defer *to* at load time — the DCB isn't around. Snapshots would have to embed the full DCB bytes to make lazy loading survive a reload, which defeats the entire point of having a compact cached snapshot.
+1. **The snapshot model requires it.** [`ExtractSnapshot::load`] reads a serialized `DatacoreSnapshot` from disk with no access to the original DCB. If parsing were lazy, the deferred references would have nothing to defer *to* at load time — the DCB isn't around. Snapshots would have to embed the full DCB bytes to make lazy loading survive a reload, which defeats the entire point of having a compact cached snapshot.
 
 2. **The cross-cutting services have to walk everything anyway.** `ReferenceGraph` needs a full pass to discover every edge. `TagTree` needs a full pass to find every tag. `DisplayNameCache` needs a full pass to resolve every entity's display name. `ManufacturerRegistry` needs a full pass. If you're walking the DCB to build these indices, you might as well materialize the records while you're there — the marginal cost per record is small.
 
@@ -650,80 +667,157 @@ For comparison: the raw DCB (`Game2.dcb`) inside `Data.p4k` is ~500 MB. Our extr
 
 ### Lazy was considered and rejected
 
-An earlier sketch considered keeping `DataCoreDatabase` alive inside `ExtractedData` and materializing records on demand via `FromInstance`. Four reasons it was rejected:
+An earlier sketch considered materializing records on demand via `FromInstance` against a borrowed `&'db DataCoreDatabase`. Four reasons it was rejected:
 
 - **Snapshots break.** There's no serializable form of "a lazy reference into a DCB that no longer exists". Snapshots would need to embed the full 500 MB DCB to survive a reload. The msgpack + zstd pipeline assumes self-contained data.
 - **Indices are eager anyway.** The graph, tag tree, display names, and manufacturers all need a full pass to build. Laziness only saves on the `RecordStore`, which is ~50% of total memory. Partial optimization for significant complexity.
-- **Lifetime complexity propagates.** `ExtractedData<'db>` would poison every consumer signature down the stack. Every function that takes `ExtractedData` would need a lifetime parameter. Unworkable at the scale of three consumer apps.
+- **Lifetime complexity propagates.** `Datacore<'db>` would poison every consumer signature down the stack. Every function that takes `Datacore` would need a lifetime parameter. Unworkable at the scale of three consumer apps.
 - **Query-time cost.** Lazy materialization reparses bytes on every access. Death by a thousand cuts for consumers that touch many records — which all of them do.
 
-The parse-time cost of eager loading (tens of seconds, once per game patch, paid by the `sc-generator` tool or by bulkhead's first-run flow) amortizes across every subsequent `load_snapshot` (sub-second). That's the right trade.
+The parse-time cost of eager loading (tens of seconds, once per game patch) amortizes across every subsequent [`ExtractSnapshot::load`] (sub-second). That's the right trade.
 
-### `load_snapshot` is strictly deserialization
+> **Note:** The *owned* `DataCoreDatabase` inside [`Datacore`] is a different beast from a *borrowed* `&'db DataCoreDatabase` lifetime parameter. The owned version keeps the db alive as an escape hatch for raw svarog queries without propagating lifetimes into every consumer signature. Calling [`Datacore::into_snapshot`] drops it cleanly.
 
-`load_snapshot` reads the file, zstd-decompresses it, and `rmp_deserialize`s the bytes into `ExtractedData`. It never touches a `Data.p4k`, never opens a DCB, never calls `FromInstance`. The path from snapshot bytes to a working `ExtractedData` has zero DCB involvement.
+### `ExtractSnapshot::load` is strictly deserialization
 
-This is why `parse_from_p4k` and `load_snapshot` can return the same type: `ExtractedData` is fully self-contained once populated, regardless of how it was populated.
+[`ExtractSnapshot::load`] reads the file, zstd-decompresses it, and `rmp_deserialize`s the bytes into an `ExtractSnapshot`. It never touches a `Data.p4k`, never opens a DCB, never calls `Extract`. The path from snapshot bytes to a working `DatacoreSnapshot` / `AssetData` has zero DCB involvement.
 
-### Partial or selective parsing — explicitly out of scope
+### Runtime filters via `DatacoreConfig`
 
-A possible future optimization is "profile-aware" parsing — e.g., bulkhead could tell the generator "I only need weapons, skip everything else" and get a smaller snapshot. This is **not** planned for the initial version and does not constrain the current design.
+Expensive indices can be disabled at parse time through [`DatacoreConfig`]:
 
-If it's added later, it takes the form of an optional filter applied during `parse_from_p4k` that drops records before materialization — not a lazy loading mechanism. The eager model stays.
+```rust
+pub struct DatacoreConfig {
+    pub build_graph: bool,          // ~7s, +15 MB
+    pub build_tag_tree: bool,
+    pub build_manufacturers: bool,
+    pub build_display_names: bool,  // needs a non-empty AssetData.locale
+}
+
+impl DatacoreConfig {
+    pub fn all() -> Self;           // everything including graph
+    pub fn standard() -> Self;      // everything except graph — recommended default
+    pub fn minimal() -> Self;       // just records
+    pub fn builder() -> DatacoreConfigBuilder;
+}
+```
+
+[`AssetConfig`] is the asset-side equivalent — currently just `build_locale: bool`, designed to grow. These runtime toggles are orthogonal to the compile-time **feature flags** that gate which generated struct types are even present in the build; see `docs/feature-gating.md` for the latter.
+
+A possible future optimization is "profile-aware" parsing — tighter filters that drop records before materialization, not just skipping index-building. Not planned; add when a consumer actually needs it.
 
 ## Entry points
 
-Two clearly-named public functions, plus a save helper:
+Three staged building blocks, plus the snapshot round-trip pair. Each step maps to one of the four consumer patterns.
 
 ```rust
-/// Parse Star Citizen game data directly from a `Data.p4k` archive.
-///
-/// This is the slow path — reads the full DCB, builds the reference graph,
-/// resolves cross-references, computes display names, runs `FromInstance`
-/// over every record. Typically takes tens of seconds and consumes
-/// significant memory during extraction.
-///
-/// Use this when:
-/// - No snapshot exists yet
-/// - The user's installed game version has changed
-/// - A one-off development / debugging tool doesn't want to manage snapshots
-pub fn parse_from_p4k(p4k_path: &Path) -> Result<ExtractedData>;
+impl AssetSource {
+    /// Open a `Data.p4k` by path. Parses the central directory; file
+    /// reads are on-demand.
+    pub fn open(p4k_path: &Path) -> Result<Self>;
 
-/// Load pre-parsed game data from a snapshot file.
-///
-/// This is the fast path — reads `<path>.msgpack.zst`, zstd-decodes,
-/// msgpack-deserializes. Typically takes under a second.
-///
-/// Returns `Err(Error::SchemaVersionMismatch)` if the snapshot's
-/// `schema_version` is unknown to this build.
-pub fn load_snapshot(snapshot_path: &Path) -> Result<ExtractedData>;
+    /// Convenience: open the `Data.p4k` from a discovered installation.
+    pub fn from_install(install: &sc_installs::Installation) -> Result<Self>;
+}
 
-/// Serialize an `ExtractedData` to disk as a zstd-compressed msgpack file.
-/// Writes atomically (via temp-file + rename).
-pub fn save_snapshot(data: &ExtractedData, path: &Path) -> Result<()>;
+impl AssetData {
+    /// Read every asset-sourced file enabled by `config` (currently just
+    /// `global.ini`). Returns an owned, serde-friendly bundle.
+    pub fn extract(assets: &AssetSource, config: &AssetConfig) -> Result<Self>;
+}
+
+impl Datacore {
+    /// Parse the DCB from an open AssetSource and build every index
+    /// enabled by `config`. `asset_data` provides the locale map used to
+    /// resolve display names — pass `AssetData::default()` if unneeded.
+    ///
+    /// Tens of seconds on a cold parse; the returned Datacore owns the
+    /// live DataCoreDatabase for raw queries via `db()`.
+    pub fn parse(
+        assets: &AssetSource,
+        asset_data: &AssetData,
+        config: &DatacoreConfig,
+    ) -> Result<Self>;
+}
+
+impl ExtractSnapshot {
+    /// Serialize to the on-disk format (msgpack + zstd). Atomic write.
+    pub fn save(&self, path: &Path) -> Result<()>;
+
+    /// Read from disk, zstd-decompress, msgpack-decode. No P4K needed.
+    /// Returns `Err(Error::SnapshotVersionMismatch)` if the schema_version
+    /// doesn't match this build.
+    pub fn load(path: &Path) -> Result<Self>;
+}
 ```
 
-**The snapshot IS a serialized `ExtractedData`.** There is no separate "snapshot type". `parse_from_p4k` and `load_snapshot` return the exact same shape.
+### The four consumer patterns
+
+```rust
+// 1. install only — use sc-installs, don't touch sc-extract
+let install = sc_installs::discover_primary()?;
+
+// 2. install + assets — streamdeck-starcitizen pattern
+let assets = AssetSource::from_install(&install)?;
+let bytes = assets.read("data/libs/foo.xml")?;
+
+// 3. install + assets + datacore — bulkhead / sc-langpatch pattern
+let assets = AssetSource::from_install(&install)?;
+let asset_data = AssetData::extract(&assets, &AssetConfig::standard())?;
+let datacore = Datacore::parse(&assets, &asset_data, &DatacoreConfig::standard())?;
+
+// High-level access via the snapshot:
+let snap = datacore.snapshot();
+for record in snap.records.iter() { /* ... */ }
+
+// Raw escape hatch while the session is alive:
+let db = datacore.db();
+let entities = db.records_by_type("EntityClassDefinition");
+
+// Persist for next cold-start:
+let on_disk = ExtractSnapshot {
+    meta: sc_extract::snapshot_meta_from_install(&install),
+    asset_data: Some(asset_data),
+    datacore: Some(datacore.into_snapshot()),
+};
+on_disk.save(path)?;
+
+// 4. install + datacore only (rare — locale lives in AssetData)
+let assets = AssetSource::from_install(&install)?;
+let datacore = Datacore::parse(&assets, &AssetData::default(), &DatacoreConfig::standard())?;
+// display_names is empty because no locale was built.
+
+// Load back from disk with no live P4K handle:
+let loaded = ExtractSnapshot::load(path)?;
+if let Some(dc) = &loaded.datacore { /* walk records */ }
+```
+
+**Snapshots are self-contained.** `ExtractSnapshot::load` produces fully-populated `AssetData` / `DatacoreSnapshot` without touching the original `Data.p4k`. The runtime [`Datacore`] session — which owns the live `DataCoreDatabase` — is the *only* thing that requires a P4K, and it can't be round-tripped through a file.
 
 ## Snapshot format
 
-On-disk: `<name>.msgpack.zst`
+On-disk: a single file — conventionally `<name>.snap` or `.msgpack.zst`, but sc-extract doesn't enforce a suffix.
 
-- **msgpack** (`rmp-serde`) for the data layer. Serde-native, compact, schema-evolvable via `#[serde(default)]`.
-- **zstd** for compression. Applied at the file boundary — read = `std::fs::read → zstd_decode → rmp_deserialize`; write = `rmp_serialize → zstd_encode → atomic write`.
+- **msgpack** (`rmp-serde`, `to_vec_named`) for the data layer. Serde-native, compact, schema-evolvable via `#[serde(default)]`. Named fields survive field-order reshuffles.
+- **zstd** (level 3) for compression. Applied at the file boundary: write = `rmp_serialize → zstd_encode → atomic write via .tmp`; read = `std::fs::read → zstd_decode → rmp_deserialize`.
 - Expected size: 5–30 MB depending on game patch. Fits comfortably in git if committed as a fixture for testing.
 
-Schema evolution:
+`ExtractSnapshot::SCHEMA_VERSION` is currently **4**. History:
 
-1. When types change in a compatible way (new optional field, new enum variant), `#[serde(default)]` handles it. No version bump.
-2. When types change incompatibly, bump `SCHEMA_VERSION` in `sc-extract`. Readers reject unknown versions.
-3. `generator_version` is bumped on codegen logic changes even when types haven't changed — for debugging, not for gating reads.
+- **v4** (2026-04-13) — rework: `ExtractSnapshot { meta, asset_data, datacore }` replaces the old `ExtractedData` god-struct. `SnapshotMeta` holds provenance. Not backward compatible with v3.
+- **v3** — `ReferenceGraph` simplified to `Guid → Vec<Guid>`; the `Edge { from, to, field_path, kind }` shape was dropped.
+- **v2** — flat-pool refactor: `RecordStore` holds `DataPools` + `RecordIndex` instead of nested `Option<Box<T>>` trees.
+
+Schema evolution rules:
+
+1. Compatible change (new optional field, new enum variant): `#[serde(default)]` + no version bump.
+2. Incompatible change: bump `SCHEMA_VERSION`. Old files fail fast with `Error::SnapshotVersionMismatch`.
 
 ## Logging
 
 Follows the workspace `tracing` convention. Usage:
 
-- `info!` — phase transitions in `parse_from_p4k` (opening p4k, parsing DCB, building graph, resolving display names, serializing).
+- `info!` — phase transitions in `Datacore::parse` / `AssetData::extract` (opening p4k, parsing DCB, building graph, resolving display names, serializing).
 - `debug!` — per-record details, skipped records, resolution failures that are expected.
 - `warn!` — recoverable issues (missing fields that should be present, unresolved references to non-existent GUIDs, etc.).
 - `error!` — only for failures that terminate the operation.
@@ -740,9 +834,9 @@ svarog already exposes concrete Rust types (`Value`, `InstanceRef`, `RecordRef`,
 
 Every DataCore struct and enum is generated into `sc-extract/src/generated/`, not split across domain crates. The alternative — hand-maintained target config telling the generator which types go where — is manual toil that breaks on every game patch. The correct factoring is "sc-extract owns the complete DCB schema; domain crates import what they need and build hand-written wrappers around them".
 
-### Single `FromInstance` trait, defined in `sc-extract`
+### `Extract` + `Pooled` traits in `sc-extract-generated`
 
-The generator produces `impl FromInstance for Foo` for every generated struct. The trait itself lives in `sc-extract` because it depends on `svarog::Instance`. Domain crates don't interact with `FromInstance` directly — they work with already-materialized values from `RecordStore`.
+The generator produces `impl Extract<'a>` + `impl Pooled` for every reachable struct. The traits live in `sc-extract-generated` (the workspace-internal crate) and are re-exported from `sc-extract` for consumers who need to implement them on hand-written types. Domain crates don't normally interact with these directly — they work with already-materialized values via the typed pools in `DatacoreSnapshot::records`.
 
 ### Graph built during parse, stored in snapshot
 
@@ -758,7 +852,7 @@ The DCB tag system is genuinely hierarchical (e.g. `Global.Manufacturer.Aegis`).
 
 ### Parse and load are first-class equal paths
 
-Both are public, both return `ExtractedData`, both are equally supported. The generator CLI (`tools/sc-generator`) is a thin wrapper over `parse_from_p4k + save_snapshot`. Apps choose based on their workflow — bulkhead caches snapshots by game version, a one-off CLI tool might skip snapshots entirely and parse fresh every run.
+Both are public and equally supported. Parsing produces a runtime [`Datacore`] (with live `DataCoreDatabase`); loading a snapshot produces a plain [`ExtractSnapshot`] with an `Option<DatacoreSnapshot>` inside. Consumers that only need the cooked data work against `DatacoreSnapshot` regardless of which side produced it — the shape is identical.
 
 ### Filter rules are predicates, not mandatory transformations
 
@@ -784,12 +878,12 @@ Explicit list, so the layering stays sharp:
 
 Captured here for audit trail; the rationale is baked into the relevant sections above.
 
-- **`RecordStore` is per-type HashMaps**, not a single type-erased map. Each top-level DataCore record type gets its own `HashMap<Guid, T>` field, emitted by the generator. Gives zero-cost typed access via generated accessors like `RecordStore::entity_class(&guid)` and `RecordStore::tag_record(&guid)`. The `RecordView` enum covers the untyped `get(&guid)` case by pattern-matching across every generated variant.
-- **Parsing is eager.** `parse_from_p4k` materializes every record in a single pass and drops the `DataCoreDatabase` before returning. Lazy loading was considered and rejected — see the "Parsing model" section.
+- **`RecordStore` uses flat pools with generic `Handle<T>`**, not per-type HashMaps. The earlier sketch (per-type `HashMap<Guid, T>` with generated `RecordStore::entity_class()` accessors) hit rustc / linker scaling problems at ~20k generated items; moving to a single generic `Handle<T>(u32)` + blanket `impl<T: Pooled> Index<Handle<T>> for DataPools` kept compile cost linear. See `implementing/sc-generator.md` for the full story.
+- **Parsing is eager.** [`Datacore::parse`] materializes every record in a single iterative pass. Lazy loading was considered and rejected — see the "Parsing model" section. The `DataCoreDatabase` is kept alive inside the returned `Datacore` (owned, not borrowed) as a raw-query escape hatch; call [`Datacore::into_snapshot`] to drop it.
 - **Playable-content filters are centralized** in `sc-extract`, not in each domain crate. Avoids drift between consumers that disagree about what counts as "playable".
 - **`ReferenceGraph::incoming_of_type` takes `&RecordStore` as a parameter** rather than denormalizing `type_name` into the graph. Keeps the graph compact at the cost of a per-query hashmap lookup.
 - **`Error` is a `thiserror` enum** with variants covering the parse / load / snapshot / IO failure modes. Detailed variant list will be finalized when the first real error-raising code lands.
-- **Vehicle XML / CryXmlB parsing lives in `sc-extract`.** Hand-written module at `sc-extract/src/vehicle_xml/`, not generated. Full section above.
+- **Vehicle XML / CryXmlB parsing lives in `sc-extract`** (when implemented). Hand-written, not generated. Currently deferred — see the Vehicle XML section.
 
 ## Out of scope for this document
 

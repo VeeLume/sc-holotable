@@ -1,7 +1,7 @@
 # Feature-gated generated code
 
 > Design document for compile-time reduction via feature-gated type generation.
-> Status: **proposed** — not yet implemented.
+> Status: **implemented (2026-04-12).** The generator produces per-feature directories and writes the `[features]` sections to both `sc-extract-generated/Cargo.toml` and `sc-extract/Cargo.toml` automatically. Current classification: 214 core types, 227 leaf features, 5 parent features, 1,935 total. Real benchmarks in `status.md` — cold `cargo check` drops from ~6 min (full) to 26 s (core only).
 
 ## Problem
 
@@ -170,11 +170,23 @@ if let Some(&i) = name_to_idx.get(AmmoParams::TYPE_NAME) {
 
 ## Expected impact
 
+Original projection:
+
 | Config | Types compiled | Est. cold check | Est. dev-opt build |
 |---|---|---|---|
 | `core` only | ~50-100 | <30s | ~3 min |
 | `core` + `weapons` | ~200-300 | ~1 min | ~5 min |
 | `full` | 1,935 | ~6 min | ~21 min |
+
+Measured after implementation (2026-04-12, real `Data.p4k`, 4.7 branch):
+
+| Config | Types compiled | Cold check | Cold dev-opt build |
+|---|---|---|---|
+| `core` only | 214 | **26s** | 4m 19s |
+| `core` + `ammoparams` | ~230 | 28s | — |
+| `full` | 1,935 | 1m 41s | 20m 56s |
+
+Close to projected on the low end; `full` is a bit faster than feared. See `status.md` for the full benchmark table.
 
 ## Complementary: runtime path filtering
 
