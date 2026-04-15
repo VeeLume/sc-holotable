@@ -143,55 +143,7 @@ at 11.7 GB is much more manageable and still useful for iteration.
 
 ## Latest results
 
-*Last run: 2026-04-15T22:26:21.6226467+02:00. Mode: `all`. rust-analyzer: not running.*
-
-Rows marked `(skipped)` or `(aborted)` were cut short by the operator. Re-run with `-Features <name> -Mode <mode>` to fill them in.
-
-### Environment
-
-| Field | Value |
-|---|---|
-| os | Microsoft Windows 11 Pro |
-| cpu | AMD Ryzen 7 5700X3D 8-Core Processor            |
-| ram | 32 GB |
-| rustc | rustc 1.94.1 (e408947bf 2026-03-25) |
-| cargo | cargo 1.94.1 (29ea6fb6a 2026-03-24) |
-
-### Cold `cargo check`
-
-| Features | Cold check | Peak RAM |
-|---|---:|---:|
-| `default` | 9.17s | 555 MB |
-| `ammoparams` | 9.62s | 600 MB |
-| `entities-scitem-ships` | 15.45s | 1,009 MB |
-| `full` | 37.66s | 2.54 GB |
-
-### Cold `cargo build --profile dev-opt`
-
-| Features | Cold build | Peak RAM |
-|---|---:|---:|
-| `default` | 29.29s | 1.46 GB |
-| `ammoparams` | 29.94s | 1.43 GB |
-| `entities-scitem-ships` | 1m 8.2s | 1.71 GB |
-| `full` | 2m 53.9s | 4.41 GB |
-
-### Runtime `parse_real_p4k` — `DatacoreConfig::standard()`
-
-| Features | Records | Locale | Display names | Parse | Snapshot | Save | Load | Peak RAM |
-|---|---:|---:|---:|---:|---:|---:|---:|---:|
-| `default` | 0 | 87,626 | 24,017 | 1.97s | 35.16 MB | 5.44s | 2.35s | 2.59 GB |
-| `ammoparams` | 46,255 | 87,626 | 24,017 | 7.44s | 35.16 MB | 5.45s | 2.35s | 3.17 GB |
-| `entities-scitem-ships` | 66,839 | 87,626 | 24,017 | 35.59s | 35.16 MB | 5.65s | 2.44s | 4.30 GB |
-| `full` | 111,928 | 87,626 | 24,017 | 36.74s | 35.16 MB | 6.04s | 2.58s | 4.58 GB |
-
-### Runtime `parse_real_p4k` — `DatacoreConfig::all()` (reference graph on)
-
-| Features | Records | Graph edges | Parse | Snapshot | Save | Load | Peak RAM |
-|---|---:|---:|---:|---:|---:|---:|---:|
-| `default` | 0 | 1,426,550 | 9.01s | 35.16 MB | 5.43s | 2.35s | 2.73 GB |
-| `ammoparams` | 46,255 | 1,426,550 | 14.28s | 35.16 MB | 5.46s | 2.46s | 3.27 GB |
-| `entities-scitem-ships` | 66,839 | 1,426,550 | 42.34s | 35.16 MB | 5.69s | 2.51s | 4.37 GB |
-| `full` | 111,928 | 1,426,550 | 45.37s | 35.16 MB | 5.91s | 2.55s | 4.65 GB |
+*No current run. Previous results are archived in the History section below. Run `.\tools\bench\bench.ps1 -Mode all -KillRa` to populate this section.*
 
 <!-- BENCH:RESULTS-END -->
 
@@ -242,6 +194,62 @@ With reference graph (`--all`, full features):
 | Graph build | ~7.4s |
 | Graph edges | 1,427,349 |
 | Snapshot with graph | 34.88 MB |
+
+### 2026-04-15 22:26 (clean, post-derive-drop)
+
+First clean run after dropping `Serialize`/`Deserialize`/`Debug`/`Clone`
+from generated structs, `Serialize`/`Deserialize` and the manual
+`Default` impl from generated enums, and `serde` entirely from
+`sc-extract-generated`'s dep graph. Runtime parse numbers are
+unchanged (as expected — derives are a compile-time concern). Compile
+times dropped ~60% for cold `dev-opt` builds and ~85% for cold
+`cargo check` on `full`, with peak RAM roughly halved.
+
+Environment:
+
+| Field | Value |
+|---|---|
+| os | Microsoft Windows 11 Pro |
+| cpu | AMD Ryzen 7 5700X3D 8-Core Processor |
+| ram | 32 GB |
+| rustc | rustc 1.94.1 (e408947bf 2026-03-25) |
+| cargo | cargo 1.94.1 (29ea6fb6a 2026-03-24) |
+
+Cold `cargo check`:
+
+| Features | Cold check | Peak RAM |
+|---|---:|---:|
+| `default` | 9.17s | 555 MB |
+| `ammoparams` | 9.62s | 600 MB |
+| `entities-scitem-ships` | 15.45s | 1,009 MB |
+| `full` | 37.66s | 2.54 GB |
+
+Cold `cargo build --profile dev-opt`:
+
+| Features | Cold build | Peak RAM |
+|---|---:|---:|
+| `default` | 29.29s | 1.46 GB |
+| `ammoparams` | 29.94s | 1.43 GB |
+| `entities-scitem-ships` | 1m 8.2s | 1.71 GB |
+| `full` | 2m 53.9s | 4.41 GB |
+
+Runtime `parse_real_p4k` — `DatacoreConfig::standard()`:
+
+| Features | Records | Locale | Display names | Parse | Snapshot | Save | Load | Peak RAM |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| `default` | 0 | 87,626 | 24,017 | 1.97s | 35.16 MB | 5.44s | 2.35s | 2.59 GB |
+| `ammoparams` | 46,255 | 87,626 | 24,017 | 7.44s | 35.16 MB | 5.45s | 2.35s | 3.17 GB |
+| `entities-scitem-ships` | 66,839 | 87,626 | 24,017 | 35.59s | 35.16 MB | 5.65s | 2.44s | 4.30 GB |
+| `full` | 111,928 | 87,626 | 24,017 | 36.74s | 35.16 MB | 6.04s | 2.58s | 4.58 GB |
+
+Runtime `parse_real_p4k` — `DatacoreConfig::all()` (reference graph on):
+
+| Features | Records | Graph edges | Parse | Snapshot | Save | Load | Peak RAM |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| `default` | 0 | 1,426,550 | 9.01s | 35.16 MB | 5.43s | 2.35s | 2.73 GB |
+| `ammoparams` | 46,255 | 1,426,550 | 14.28s | 35.16 MB | 5.46s | 2.46s | 3.27 GB |
+| `entities-scitem-ships` | 66,839 | 1,426,550 | 42.34s | 35.16 MB | 5.69s | 2.51s | 4.37 GB |
+| `full` | 111,928 | 1,426,550 | 45.37s | 35.16 MB | 5.91s | 2.55s | 4.65 GB |
 
 ### 2026-04-15 21:04 (clean, post-snapshot-v5, pre-derive-drop)
 
