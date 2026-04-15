@@ -52,7 +52,9 @@ svarog-p4k = { path = "E:/repros/Svarog/crates/svarog-p4k" }
 
 # ── Profiles ────────────────────────────────────────────────────────────────
 #
-# Clean slate: no customization. Both `dev` and `release` are on their
-# cargo defaults until measurement shows a specific knob is worth
-# overriding. Previous overrides were all driven by serde-derive
-# monomorphization and visit_map IR costs that no longer exist.
+# Iterating on the release profile to find a good compile/runtime
+# trade-off. Current experiment: thin LTO. See
+# docs/benchmarks.md §"iteration log" for results.
+
+[profile.release]
+lto = "fat"

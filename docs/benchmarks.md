@@ -143,7 +143,43 @@ at 11.7 GB is much more manageable and still useful for iteration.
 
 ## Latest results
 
-*No current run. Previous results are archived in the History section below. Run `.\tools\bench\bench.ps1 -Mode all -Features entities-scitem-ships -KillRa` to populate this section.*
+*Last run: 2026-04-15T23:58:02.4912109+02:00. Mode: `all`. rust-analyzer: not running.*
+
+Rows marked `(skipped)` or `(aborted)` were cut short by the operator. Re-run with `-Features <name> -Mode <mode>` to fill them in.
+
+### Environment
+
+| Field | Value |
+|---|---|
+| os | Microsoft Windows 11 Pro |
+| cpu | AMD Ryzen 7 5700X3D 8-Core Processor            |
+| ram | 32 GB |
+| rustc | rustc 1.94.1 (e408947bf 2026-03-25) |
+| cargo | cargo 1.94.1 (29ea6fb6a 2026-03-24) |
+
+### Cold `cargo check`
+
+| Features | Cold check | Peak RAM |
+|---|---:|---:|
+| `full` | 40.16s | 2.54 GB |
+
+### Cold `cargo build --release`
+
+| Features | Cold build | Peak RAM |
+|---|---:|---:|
+| `full` | 2m 8.3s | 5.05 GB |
+
+### Runtime `parse_real_p4k` — `DatacoreConfig::standard()`
+
+| Features | Records | Locale | Display names | Parse | Snapshot | Save | Load | Peak RAM |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| `full` | 111,928 | 87,626 | 24,017 | 30.97s | 35.16 MB | 2.90s | 1.65s | 4.57 GB |
+
+### Runtime `parse_real_p4k` — `DatacoreConfig::all()` (reference graph on)
+
+| Features | Records | Graph edges | Parse | Snapshot | Save | Load | Peak RAM |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| `full` | 111,928 | 1,426,550 | 36.81s | 35.16 MB | 2.95s | 1.67s | 4.65 GB |
 
 <!-- BENCH:RESULTS-END -->
 
@@ -163,7 +199,30 @@ config notes describe the delta vs. the previous row.
 
 | When | Build config | Check | Release build | Parse (std) | Parse (+graph) | Peak build RAM | Peak runtime RAM |
 |---|---|---:|---:|---:|---:|---:|---:|
-| 2026-04-15 23:03 | clean slate, cargo defaults (release: opt=3/cu=16/lto=off, no `.cargo/config.toml`) | 16.04s | 1m 44.5s | 29.30s | 35.15s | 1.88 GB | 4.37 GB |
+| 2026-04-15 23:03 | clean slate, cargo defaults (release: opt=3/cu=16/lto=false, no `.cargo/config.toml`) | 16.04s | 1m 44.5s | 29.30s | 35.15s | 1.88 GB | 4.37 GB |
+| 2026-04-15 23:13 | `release.lto = "thin"` | 15.55s | **49.60s** | 27.90s | 36.46s | 1.85 GB | 4.37 GB |
+| 2026-04-15 23:19 | `release.lto = "fat"` | 16.37s | 50.19s | 27.46s | 32.38s | 1.76 GB | 4.37 GB |
+| 2026-04-15 23:26 | `release.lto = "off"` (disables even local-thin) | 15.18s | 1m 8.9s | 34.24s | 41.70s | 1.92 GB | 4.37 GB |
+
+#### `full` feature set — thin vs fat spot check
+
+One-off comparison on `-Features full` to see whether fat LTO's cost
+scales with IR volume the way the textbook predicts. `.cargo/config.toml`
+carries `link-args=/STACK:8388608` for the Windows 8 MB runtime stack
+(the 1 MB default overflows during `full` DCB extract dispatch).
+
+| When | LTO | Check | Release build | Parse (std) | Parse (+graph) | Peak build RAM | Peak runtime RAM |
+|---|---|---:|---:|---:|---:|---:|---:|
+| 2026-04-15 23:42 | `thin` | 41.35s | 2m 5.5s | 32.84s | 38.10s | 5.03 GB | 4.64 GB |
+| 2026-04-15 23:58 | `fat` | 40.16s | 2m 8.3s | 30.97s | 36.81s | 5.05 GB | 4.65 GB |
+
+**Takeaway:** fat and thin are essentially tied on compile time even at
+`full` (+2.2% for fat). Prediction that fat would be 2–3× slower than
+thin on the larger workload was wrong — post-derive-drop IR volume is
+small enough per type that fat LTO's single-threaded link pass doesn't
+dominate. Fat is marginally faster at runtime (−6% parse std, −3%
+parse+graph) and RAM is identical. **Fat LTO is the winner** on both
+`entities-scitem-ships` and `full`; locking it in.
 
 
 ### Pre-2026-04-15 (stale, retained for context)

@@ -1,6 +1,19 @@
 # Workspace-level Cargo configuration.
 #
-# Clean slate: no overrides. Previous settings (RUST_MIN_STACK bump,
-# Windows linker stack bump) were workarounds for serde-derive
-# compilation costs and rmp_serde runtime stack costs on generated
-# types. With those derives gone, the defaults should suffice.
+# Runtime stack size for compiled binaries on Windows.
+#
+# Windows defaults main-thread stack to 1 MB; Linux and macOS default
+# to 8 MB. sc-extract's parse path under `--features full` overflows
+# the 1 MB default on Windows during DCB materialization. The deep
+# call graph comes from Rust-level monomorphization of the extract
+# dispatch — each DCB struct's extract fn calls through several
+# generic helpers, and a few types (esp. deeply-nested polymorphic
+# bases) exceed 1 MB on a cold stack. 8 MB matches the Linux default
+# and costs nothing in practice (virtual pages commit lazily).
+#
+# This is NOT a serde-derive problem (serde is no longer derived on
+# generated types). It's a "Windows main thread stack is smaller
+# than the rest of the world" problem. Needed on Windows, no-op
+# elsewhere.
+[target.x86_64-pc-windows-msvc]
+rustflags = ["-C", "link-args=/STACK:8388608"]
