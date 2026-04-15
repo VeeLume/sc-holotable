@@ -93,18 +93,10 @@ The generator auto-classifies by walking the actual DCB record instance graph (d
 Two recent refinements make the generated code more type-safe than a 1:1 schema reflection:
 
 - **`DataType::Locale` fields** emit as `LocaleKey` (a newtype over `String`). `LocaleMap::get` / `resolve` / `contains_key` accept any `AsRef<str>` so `&LocaleKey` passes natively. Consumers can't accidentally confuse a localization-reference string with a free-text string at compile time.
-- **`DataType::EnumChoice` fields** emit as the corresponding generated Rust enum (resolved through `prop.struct_index`, dual-used as the enum index for choice fields). Every enum gets a `from_dcb_str` associated function and a manual `Default` impl (required because every generated struct field carries `#[serde(default)]`). Unknown values (including variants added in a game patch the generator didn't see) fall through to `Unrecognized(String)` for forward compat.
+- **`DataType::EnumChoice` fields** emit as the corresponding generated Rust enum (resolved through `prop.struct_index`, dual-used as the enum index for choice fields). Every enum gets a `from_dcb_str` associated function. Unknown values (including variants added in a game patch the generator didn't see) fall through to `Unrecognized(String)` for forward compat.
 - **Polymorphic pointer fields** emit a poly enum (`generated/poly_enums.rs`) with a variant per observed subclass plus an `Unknown { struct_index: u32, instance_index: u32 }` fallback. The `Unknown` payload is the raw-layer escape hatch — a consumer can walk the instance directly via `datacore.db().instance(struct_index, instance_index)`.
 
-Three release-tier profiles trade compile time against runtime speed. All three keep `sc-extract-generated` at `opt-level = 1 / codegen-units = 256` (serde/hashmap-bound, higher opt-levels just burn LLVM time):
-
-| Profile | Compile | Runtime | Use case |
-|---|---|---|---|
-| `dev-opt` | fast | decent | `cargo build --profile dev-opt` — smoke tests, quick iteration |
-| `release` | moderate | good | `cargo build --release` — CI, snapshot generation, consumer builds |
-| `release-max` | slow | maximum | `cargo build --profile release-max` — shipped builds, benchmarks |
-
-`release` uses `opt-level = 2` globally (3 gains nothing on serde/hashmap workloads). `release-max` adds `opt-level = 3`, `lto = "thin"`, `codegen-units = 1` for maximum cross-crate inlining on deps.
+Profiles are currently **at cargo defaults** (no workspace customization). Previous workspace profile overrides were driven by serde-derive monomorphization costs that no longer exist after derive-drop (commit `06e0d2e`); the profile config + `.cargo/config.toml` were reset to a clean slate so any new overrides can be justified by fresh measurement. Use `cargo build`, `cargo build --release`, and `cargo check` with no special flags.
 
 **Rule of thumb**: never depend on `sc-extract-generated` directly from another workspace crate — go through `sc-extract`. That's the stable public boundary.
 
@@ -184,21 +176,19 @@ cargo clippy -p sc-extract --all-targets -- -D warnings
 cargo clippy -p sc-generator --all-targets -- -D warnings
 
 # Smoke test — core only (fastest)
-cargo run -p sc-extract --profile dev-opt --example parse_real_p4k
+cargo run -p sc-extract --release --example parse_real_p4k
 
 # Smoke test — with specific features
-cargo run -p sc-extract --profile dev-opt --features ammoparams --example parse_real_p4k
+cargo run -p sc-extract --release --features ammoparams --example parse_real_p4k
 
 # Smoke test — full (all types, slow compile)
-cargo run -p sc-extract --profile dev-opt --features full --example parse_real_p4k
+cargo run -p sc-extract --release --features full --example parse_real_p4k
 
 # Full release
 cargo build -p sc-extract --release
 ```
 
-**Warm incremental check is ~1 second.** Cold `cargo check -p sc-extract` ≈ 38s default, ≈ 4m 5s full. Cold `cargo build -p sc-extract --profile dev-opt` ≈ 2m 30s default; `--features full` was **≈ 3h 26m / 25.67 GB peak** pre-rework (2026-04-15 morning), projected **≈ 25–40m / ~6 GB peak** post-snapshot-rework (2026-04-15 later). See `docs/benchmarks.md` for the full table — awaiting post-rework confirmation run. Use feature gating to keep iteration fast — only enable the features your consumer needs.
-
-**Hardware requirement (pre-rework, being revised): at least 32 GB RAM** for `cargo build -p sc-extract --profile dev-opt --features full`. The v5 snapshot byte-bundle rework (2026-04-15) is expected to drop peak RAM to ~6 GB by eliminating the rmp_serde-over-generated-types monomorphization that drove the pre-rework 25.67 GB peak. Confirm with `bench.ps1 -Mode build -Features full -KillRa` before closing out the 32 GB requirement — 16 GB machines should be fine afterward.
+**Warm incremental check is ~1 second.** See `docs/benchmarks.md` for current cold compile numbers per feature set. Use feature gating to keep iteration fast — only enable the features your consumer needs.
 
 ## Compile-time gotchas (this will bite you)
 
@@ -208,8 +198,8 @@ The generated code is ~6,234 struct types + ~1,252 enum types across the `core/`
 2. **multi_feature is big (3,789 types) but cfg-gated per type.** Every struct carries a `#[cfg(any(feature = "A", feature = "B", …))]` listing every feature whose closure touches it. When you compile with only one leaf feature enabled, rustc strips most of `multi_feature/` during parsing. It's always "visible" in the source tree but only "real" to rustc when at least one member of its cfg union is active.
 3. **dormant (809 types) is whole-module gated.** Completely free unless `dormant` is explicitly enabled.
 4. **Feature-gated directories.** Each leaf feature dir (e.g., `audio/`, `entities-scitem-ships/`) is behind `#[cfg(feature = "...")]`. Disabled features are never parsed by rustc.
-5. **Generated structs derive only what's needed**: `Debug`, `Clone`, `Serialize`, `Deserialize`. No `Default`, no `PartialEq`/`Eq`/`Hash`. Fewer derives = fewer proc-macro invocations = faster compile.
-6. **Generated enums derive `Debug + Clone + PartialEq + Eq + Hash + Serialize + Deserialize`** and carry a manual `Default` impl (for `#[serde(default)]` on struct fields) and a `from_dcb_str` associated function.
+5. **Generated structs derive nothing.** No `Debug`, no `Clone`, no serde. Post-derive-drop (commit `06e0d2e`) the workspace does not serialize, clone, or debug-print generated records — consumers go through `handle.get(&pools)` for read access and the raw svarog layer (`Datacore::db()`) for escape-hatch inspection. Fewer derives = fewer proc-macro invocations = faster compile.
+6. **Generated enums derive `Debug + Clone + PartialEq + Eq + Hash`** and carry a `from_dcb_str` associated function. No serde, no manual `Default`.
 7. **`#![allow(non_camel_case_types, dead_code)]`** on enum files because DCB enum values use arbitrary casing.
 8. **`#![allow(unused_imports)]` on every feature type file.** Uniform imports keep the emitter simple.
 
@@ -231,7 +221,7 @@ These are real bugs that were hit and fixed — future edits should not re-intro
 - **Field-name collision fallback (fixed 2026-04-15).** On real DCB data, `TorusFieldGeom` has both `R` (major radius) and `r` (minor radius) — mathematically distinct but sanitize to the same snake_case identifier. `emit_struct`'s collision handler appends a numeric suffix (`r`, `r_2`, `r_3`, ...) rather than panicking. Don't revert to panic — this case is legitimate.
 - **`seed_database` dispatch is name-based, not index-based.** `Builder::seed_database` resolves every known record type's `struct_index` against the **live** DCB by name (`db.struct_name(i)`) and builds a per-run `Vec<Option<fn>>` dispatch table. This means a game patch that adds or reorders struct types does not silently drop records — only *newly added* record types are unknown, and existing ones keep being recognised even if their index shifted. The trade is a one-time O(n_structs) HashMap build at parse start.
 - **Debug builds panic on generator staleness.** In debug builds (`cfg(debug_assertions)`), `seed_database` tracks every record struct_index whose type isn't in the generated dispatch table, and panics at end-of-seed with the full list of unknown type names. Release builds dead-code-eliminate the check — unknown records are silently skipped and the app keeps working with whatever subset it understands. This means: run a debug build after a game patch and you'll immediately know if you need to regenerate; ship release builds and users get graceful degradation until you push an update.
-- **rustc needs a bigger stack for the generated crate.** With ~6.2k structs, ~1.2k enums, thousands of `impl Extract` / `impl Pooled` items, and serde derives across them all, `rustc` itself can overflow its default 8 MB thread stack while parsing/typechecking. `.cargo/config.toml` sets `RUST_MIN_STACK=67108864` (64 MB); no per-user configuration needed. If you run rustc directly from a different environment and hit `STATUS_STACK_OVERFLOW` inside the rustc process, that's the fix.
+- **rustc stack bump was a serde-derive workaround, now removed.** Pre-derive-drop, `rustc` could overflow its 8 MB thread stack while parsing/typechecking the generated crate due to serde-derive proc-macro expansion across ~6.5k types. `.cargo/config.toml` used to set `RUST_MIN_STACK=67108864`. With serde derives gone, the default stack is sufficient — no workaround in `.cargo/config.toml` anymore. If you hit `STATUS_STACK_OVERFLOW` inside rustc again, that's a regression: investigate what re-introduced the derive load rather than re-adding the env var.
 - **`Self`, `self`, `super`, `extern`, `crate` can't be raw identifiers in type position.** Generator escapes these with a trailing underscore (`Self_`). Most other keywords become `r#keyword`.
 - **DCB enums can have a value literally named `Unknown`.** The generator's catch-all fallback variant is named `Unrecognized(String)`, not `Unknown(String)`, to avoid collisions. Don't rename it back.
 - **Poly enums use a different `Unknown` shape.** For polymorphic pointer fields, the fallback variant is `Unknown { struct_index: u32, instance_index: u32 }` — a two-field struct variant carrying the raw-layer escape hatch. Consumers holding `Datacore` can resolve an `Unknown` through `datacore.db().instance(struct_index, instance_index)`. Don't collapse this back to a single-`u32` `Unknown(u32)` — you'd lose the instance handle and break the escape hatch.

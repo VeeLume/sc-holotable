@@ -34,7 +34,7 @@
     Which benchmark categories to run.
 
       check      Cold `cargo check` per feature set
-      build      Cold `cargo build --profile dev-opt` per feature set
+      build      Cold `cargo build --release` per feature set
       runtime    Runtime `parse_real_p4k` per feature set (default + full
                  unless -Features overrides)
       all        Everything (check + build + runtime)
@@ -215,7 +215,7 @@ if ($Features.Count -gt 0) {
     $FeatureSets = $AllFeatureSets
 }
 
-# Runtime benchmarks are expensive (require full dev-opt build); default
+# Runtime benchmarks are expensive (require full release build); default
 # to a narrower set unless -Features was passed.
 if ($Features.Count -gt 0) {
     $RuntimeFeatureSets = $FeatureSets
@@ -467,18 +467,18 @@ function Invoke-ColdBuild {
     param([PSCustomObject]$FeatureSet)
 
     Write-Host ""
-    Write-Host "── Cold dev-opt build: $($FeatureSet.Name) ──" -ForegroundColor Cyan
+    Write-Host "── Cold release build: $($FeatureSet.Name) ──" -ForegroundColor Cyan
 
     # Whole-profile clean so we get a true cold build, including the
-    # sc-extract-generated artifacts sitting in target/dev-opt/ from
+    # sc-extract-generated artifacts sitting in target/release/ from
     # earlier sessions. `cargo clean -p` alone is not enough — the
-    # dev-opt profile has its own subdirectory that persists across
+    # release profile has its own subdirectory that persists across
     # dev-profile cleans.
     #
     # Subshell so native-command stderr doesn't trip $ErrorActionPreference.
-    & { $ErrorActionPreference = 'Continue'; & cargo clean --profile dev-opt 2>&1 | Out-Null }
+    & { $ErrorActionPreference = 'Continue'; & cargo clean --release 2>&1 | Out-Null }
 
-    $result = Invoke-CargoTimedWithMemory -Arguments (@('build', '-p', 'sc-extract', '--profile', 'dev-opt') + $FeatureSet.Args)
+    $result = Invoke-CargoTimedWithMemory -Arguments (@('build', '-p', 'sc-extract', '--release') + $FeatureSet.Args)
 
     if ($result.ExitCode -ne 0) {
         throw "cargo build failed for $($FeatureSet.Name) (exit $($result.ExitCode))"
@@ -503,15 +503,15 @@ function Invoke-RuntimeBench {
     Write-Host ""
     Write-Host "── Runtime: $label ──" -ForegroundColor Cyan
 
-    # Ensure the example binary is built (dev-opt for fast iteration).
+    # Ensure the example binary is built (release — the only profile now).
     # Not cold-measured — this is runtime benchmarking, not compile.
-    $buildArgs = @('build', '-p', 'sc-extract', '--profile', 'dev-opt', '--example', 'parse_real_p4k') + $FeatureSet.Args
+    $buildArgs = @('build', '-p', 'sc-extract', '--release', '--example', 'parse_real_p4k') + $FeatureSet.Args
     $bresult = Invoke-Cargo -Arguments $buildArgs
     if ($bresult.ExitCode -ne 0) {
         throw "example build failed for $($FeatureSet.Name)"
     }
 
-    $runArgs = @('run', '-p', 'sc-extract', '--profile', 'dev-opt', '--example', 'parse_real_p4k') + $FeatureSet.Args
+    $runArgs = @('run', '-p', 'sc-extract', '--release', '--example', 'parse_real_p4k') + $FeatureSet.Args
     if ($WithGraph) {
         $runArgs += '--'
         $runArgs += '--all'
@@ -627,7 +627,7 @@ function Build-ResultsMarkdown {
     }
 
     if ($R.BuildTimes.Count -gt 0) {
-        [void]$sb.AppendLine('### Cold `cargo build --profile dev-opt`')
+        [void]$sb.AppendLine('### Cold `cargo build --release`')
         [void]$sb.AppendLine()
         [void]$sb.AppendLine('| Features | Cold build | Peak RAM |')
         [void]$sb.AppendLine('|---|---:|---:|')
@@ -765,7 +765,7 @@ if ($doCheck) {
 
 if ($doBuild) {
     Write-Host ""
-    Write-Host "══ Cold dev-opt build ═════════════════════════" -ForegroundColor Cyan
+    Write-Host "══ Cold release build ═════════════════════════" -ForegroundColor Cyan
     foreach ($fs in $FeatureSets) {
         $Results.BuildTimes += Invoke-ColdBuild -FeatureSet $fs
         Persist-Results -R $Results
@@ -807,7 +807,7 @@ if ($Results.CheckTimes.Count -gt 0) {
 
 if ($Results.BuildTimes.Count -gt 0) {
     Write-Host ""
-    Write-Host "Cold dev-opt build:" -ForegroundColor Yellow
+    Write-Host "Cold release build:" -ForegroundColor Yellow
     foreach ($r in $Results.BuildTimes) { Write-StepRow -R $r }
 }
 

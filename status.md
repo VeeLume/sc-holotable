@@ -90,9 +90,7 @@
 
 3. **Svarog pinned** to `ce06ec67` as workspace dependencies.
 
-4. **8 MB Windows stack** for binaries (fixes snapshot deserialization stack overflow).
-
-5. **Three release profiles** — `dev-opt` (fast compile), `release` (balanced), `release-max` (max runtime).
+4. **Profiles and `.cargo/config.toml` reset to cargo defaults** (2026-04-15, post-derive-drop). Previous workspace customization was all serde-derive workarounds; clean slate now. New overrides get re-introduced only when measurement justifies them.
 
 ## Benchmarks
 
@@ -258,5 +256,5 @@ Recommended order:
 1. Read `CLAUDE.md` for orientation and gotchas.
 2. Read this file (`status.md`) for current work state.
 3. `cargo check -p sc-extract` to verify warm build.
-4. Run smoke test: `cargo run -p sc-extract --profile dev-opt --example parse_real_p4k`
-5. For full extraction: `cargo run -p sc-extract --profile dev-opt --features full --example parse_real_p4k`
+4. Run smoke test: `cargo run -p sc-extract --release --example parse_real_p4k`
+5. For full extraction: `cargo run -p sc-extract --release --features full --example parse_real_p4k`

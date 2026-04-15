@@ -33,7 +33,7 @@ into history.
 | Mode | Measures | Cost |
 |---|---|---|
 | `check` | Cold `cargo check -p sc-extract` for each feature set | ~10 min |
-| `build` | Cold `cargo build -p sc-extract --profile dev-opt` for each feature set | ~30 min |
+| `build` | Cold `cargo build -p sc-extract --release` for each feature set | ~30 min |
 | `runtime` | `parse_real_p4k` against real `Data.p4k`, with + without reference graph | ~5 min |
 | `all` | Everything above | ~45 min |
 
@@ -133,7 +133,7 @@ at 11.7 GB is much more manageable and still useful for iteration.
 - **Snapshot size with graph ≫ without.** The reference graph
   (~1.4M edges) dominates the msgpack payload for the default config.
   With graph off, snapshots stay in the single-digit-MB range.
-- **Peak RAM during `dev-opt` build of `full` is the canonical
+- **Peak RAM during `release` build of `full` is the canonical
   "how much memory does rustc need here" number.** If this ever
   exceeds ~12 GB, domain-crate authors on 16 GB machines will start
   hitting paging. Current target: stay under 10 GB.

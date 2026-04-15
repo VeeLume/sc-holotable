@@ -23,7 +23,7 @@ The script has three independent modes — use `-Mode` to pick one.
 | Mode | Measures | Cost |
 |---|---|---|
 | `check` | Cold `cargo check -p sc-extract` for each feature set | ~10 min |
-| `build` | Cold `cargo build -p sc-extract --profile dev-opt` for each feature set | ~30 min |
+| `build` | Cold `cargo build -p sc-extract --release` for each feature set | ~30 min |
 | `runtime` | `parse_real_p4k` against real `C:\Games\StarCitizen\LIVE\Data.p4k`, with and without the reference graph | ~5 min |
 | `all` | Everything above | ~45 min |
 
@@ -52,7 +52,7 @@ invocation is running. You can press:
 
 | Key | Effect |
 |---|---|
-| `s` | **Skip the current step.** Kills cargo (and any spawned rustc/link processes), records the step as `Skipped` with the elapsed time so far, and moves on to the next one. Useful when a build like `entities-scitem-ships --profile dev-opt` is taking 30+ minutes and you want to keep the rest of the matrix moving. |
+| `s` | **Skip the current step.** Kills cargo (and any spawned rustc/link processes), records the step as `Skipped` with the elapsed time so far, and moves on to the next one. Useful when a build like `entities-scitem-ships --release` is taking 30+ minutes and you want to keep the rest of the matrix moving. |
 | `a` | **Abort the run.** Kills cargo like skip, but then breaks out of the remaining loops. Partial results are persisted, summary prints, script exits cleanly. |
 | `Ctrl+C` | **Nuclear.** Kills the PowerShell process. Whatever the last incremental save wrote is still on disk (see below), but no summary runs. |
 
@@ -88,7 +88,7 @@ layer, etc.) is stealing them. Fall back to `Ctrl+C` + manual
 **Results are written to disk after every completed step**, not just
 at the end. This means:
 
-- If your 3-hour `full` dev-opt build finishes successfully, the
+- If your `full` release build finishes successfully, the
   result is already in `target/bench-results.json` and
   `docs/benchmarks.md` *before* the next step starts.
 - If you `Ctrl+C` out of the script, everything that had completed
@@ -144,10 +144,10 @@ For each feature set:
 
 For each feature set:
 
-1. `cargo clean --profile dev-opt` — whole-profile clean so deps get
+1. `cargo clean --release` — whole-profile clean so deps get
    recompiled too. This is the slowest mode because it rebuilds svarog
    + serde + rmp-serde every time.
-2. `cargo build -p sc-extract --profile dev-opt [--features …]`
+2. `cargo build -p sc-extract --release [--features …]`
    wall-clock timed.
 
 ### `-Mode runtime`
@@ -218,8 +218,8 @@ The numbers you care about depend on who's complaining:
 - **"cold starts are too slow after `cargo clean`"** → `-Mode check`
   numbers. Default should be fastest, full should be slowest, dormant
   slightly above full.
-- **"CI is too slow"** → `-Mode build` numbers (dev-opt is close to what
-  CI does with `--release` minus LTO).
+- **"CI is too slow"** → `-Mode build` numbers. `release` profile
+  with no workspace customization is what CI does.
 - **"parsing the DCB takes too long"** → `-Mode runtime` numbers.
   Parse time + load time are the user-visible cost. Snapshot size
   matters if you distribute the snapshot over the wire.
