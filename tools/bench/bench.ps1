@@ -478,7 +478,14 @@ function Invoke-ColdBuild {
     # Subshell so native-command stderr doesn't trip $ErrorActionPreference.
     & { $ErrorActionPreference = 'Continue'; & cargo clean --release 2>&1 | Out-Null }
 
-    $result = Invoke-CargoTimedWithMemory -Arguments (@('build', '-p', 'sc-extract', '--release') + $FeatureSet.Args)
+    # Build the example binary, not just the lib. With `lto = "fat"` (or
+    # any cross-crate LTO), the final LTO pass only runs when linking a
+    # final binary — building an rlib at fat LTO produces bitcode-embedding
+    # rlibs but skips the LTO pass entirely. Measuring `cargo build -p
+    # sc-extract --release` would underreport build time by the entire LTO
+    # link cost (we observed lib=50s vs binary=2m 37s for ships under fat
+    # LTO + cu=256). The example target forces a real binary link.
+    $result = Invoke-CargoTimedWithMemory -Arguments (@('build', '-p', 'sc-extract', '--release', '--example', 'parse_real_p4k') + $FeatureSet.Args)
 
     if ($result.ExitCode -ne 0) {
         throw "cargo build failed for $($FeatureSet.Name) (exit $($result.ExitCode))"

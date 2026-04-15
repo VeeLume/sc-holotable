@@ -58,3 +58,7 @@ svarog-p4k = { path = "E:/repros/Svarog/crates/svarog-p4k" }
 
 [profile.release]
 lto = "fat"
+codegen-units = 256
+
+[profile.release.package.sc-extract-generated]
+opt-level = 1

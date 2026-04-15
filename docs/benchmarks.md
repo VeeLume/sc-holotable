@@ -143,7 +143,7 @@ at 11.7 GB is much more manageable and still useful for iteration.
 
 ## Latest results
 
-*Last run: 2026-04-15T23:58:02.4912109+02:00. Mode: `all`. rust-analyzer: not running.*
+*Last run: 2026-04-16T01:28:34.1099645+02:00. Mode: `all`. rust-analyzer: not running.*
 
 Rows marked `(skipped)` or `(aborted)` were cut short by the operator. Re-run with `-Features <name> -Mode <mode>` to fill them in.
 
@@ -161,25 +161,29 @@ Rows marked `(skipped)` or `(aborted)` were cut short by the operator. Re-run wi
 
 | Features | Cold check | Peak RAM |
 |---|---:|---:|
-| `full` | 40.16s | 2.54 GB |
+| `entities-scitem-ships` | 16.21s | 1,017 MB |
+| `full` | 40.18s | 2.54 GB |
 
 ### Cold `cargo build --release`
 
 | Features | Cold build | Peak RAM |
 |---|---:|---:|
-| `full` | 2m 8.3s | 5.05 GB |
+| `entities-scitem-ships` | 50.47s | 1.96 GB |
+| `full` | 2m 10.8s | 5.20 GB |
 
 ### Runtime `parse_real_p4k` — `DatacoreConfig::standard()`
 
 | Features | Records | Locale | Display names | Parse | Snapshot | Save | Load | Peak RAM |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|
-| `full` | 111,928 | 87,626 | 24,017 | 30.97s | 35.16 MB | 2.90s | 1.65s | 4.57 GB |
+| `entities-scitem-ships` | 66,839 | 87,626 | 24,017 | 26.94s | 35.16 MB | 2.94s | 1.81s | 4.29 GB |
+| `full` | 111,928 | 87,626 | 24,017 | 28.51s | 35.16 MB | 2.80s | 1.56s | 4.57 GB |
 
 ### Runtime `parse_real_p4k` — `DatacoreConfig::all()` (reference graph on)
 
 | Features | Records | Graph edges | Parse | Snapshot | Save | Load | Peak RAM |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| `full` | 111,928 | 1,426,550 | 36.81s | 35.16 MB | 2.95s | 1.67s | 4.65 GB |
+| `entities-scitem-ships` | 66,839 | 1,426,550 | 31.68s | 35.16 MB | 2.80s | 1.61s | 4.37 GB |
+| `full` | 111,928 | 1,426,550 | 33.77s | 35.16 MB | 2.70s | 1.52s | 4.64 GB |
 
 <!-- BENCH:RESULTS-END -->
 
@@ -197,12 +201,34 @@ cycle. Feature set is `entities-scitem-ships` on every row; runtime
 numbers are with reference graph (`DatacoreConfig::all()`). Build
 config notes describe the delta vs. the previous row.
 
+> **⚠ Methodology change at 2026-04-16 ~01:30**: rows above this point
+> were measured with `cargo build -p sc-extract --release` (lib only),
+> which **does not run the fat LTO pass** — fat LTO only fires when
+> linking a final binary. Lib-only build times underreported the true
+> binary build cost by 2-3× (observed: ships lib=50s vs binary=2m 37s
+> at fat LTO + cu=256). Runtime numbers are unaffected (they came from
+> a binary that did get LTO). Bench script was patched to build
+> `--example parse_real_p4k` so subsequent rows include the LTO link
+> cost. Compile-time deltas across LTO/opt/cgu rows above this line
+> should be re-measured before drawing conclusions; runtime deltas
+> remain valid.
+
 | When | Build config | Check | Release build | Parse (std) | Parse (+graph) | Peak build RAM | Peak runtime RAM |
 |---|---|---:|---:|---:|---:|---:|---:|
 | 2026-04-15 23:03 | clean slate, cargo defaults (release: opt=3/cu=16/lto=false, no `.cargo/config.toml`) | 16.04s | 1m 44.5s | 29.30s | 35.15s | 1.88 GB | 4.37 GB |
 | 2026-04-15 23:13 | `release.lto = "thin"` | 15.55s | **49.60s** | 27.90s | 36.46s | 1.85 GB | 4.37 GB |
 | 2026-04-15 23:19 | `release.lto = "fat"` | 16.37s | 50.19s | 27.46s | 32.38s | 1.76 GB | 4.37 GB |
 | 2026-04-15 23:26 | `release.lto = "off"` (disables even local-thin) | 15.18s | 1m 8.9s | 34.24s | 41.70s | 1.92 GB | 4.37 GB |
+| 2026-04-16 00:14 | fat LTO + `sc-extract-generated.opt-level = 0` | 15.12s | **33.05s** | 28.65s | 35.65s | 1.60 GB | 4.37 GB |
+| 2026-04-16 00:21 | fat LTO + `sc-extract-generated.opt-level = 1` | 15.23s | 49.97s | 28.19s | 34.06s | 1.75 GB | 4.37 GB |
+| 2026-04-16 00:46 | + `sc-extract.opt-level = 1` too — **bad: runtime +50%** | 15.19s | 47.84s | 45.49s | 48.43s | 1.71 GB | 4.37 GB |
+| 2026-04-16 01:06 | reverted to gen-only opt=1, + `release.codegen-units = 1` — **slow compile, no runtime win** | 15.82s | 1m 27.3s | 29.18s | 33.00s | 1.62 GB | 4.37 GB |
+| 2026-04-16 01:28 | + `release.codegen-units = 256` (binary build, post-fix) | 16.21s | **2m 37s** ¹ | 26.94s | 31.68s | 1.96 GB | 4.37 GB |
+
+¹ First row using the corrected end-to-end binary build measurement
+(includes the fat LTO link pass). Lib-only `cargo build -p sc-extract`
+for the same config measured 50.47s — the 2m+ delta is the LTO link
+the previous methodology was hiding.
 
 #### `full` feature set — thin vs fat spot check
 
@@ -223,6 +249,47 @@ small enough per type that fat LTO's single-threaded link pass doesn't
 dominate. Fat is marginally faster at runtime (−6% parse std, −3%
 parse+graph) and RAM is identical. **Fat LTO is the winner** on both
 `entities-scitem-ships` and `full`; locking it in.
+
+#### `full` feature set — opt-level 1 vs 3 spot check
+
+Follow-up: on `entities-scitem-ships`, opt=1 and opt=3 were
+indistinguishable under fat LTO. Re-running on `full` to see if that
+holds when IR volume is ~4× larger. The fat+opt=3 baseline is the
+`fat` row from the block above.
+
+| When | `sc-extract-generated.opt-level` | Check | Release build | Parse (std) | Parse (+graph) | Peak build RAM | Peak runtime RAM |
+|---|---|---:|---:|---:|---:|---:|---:|
+| 2026-04-15 23:58 | `3` (release default, no override) | 40.16s | 2m 8.3s | 30.97s | 36.81s | 5.05 GB | 4.65 GB |
+| 2026-04-16 00:30 | `1` | 38.03s | 2m 8.2s | 30.53s | 35.68s | 4.92 GB | 4.64 GB |
+
+**Takeaway:** opt=1 and opt=3 are indistinguishable on `full` too —
+build time is literally tied (0.1s), runtime is within 3% (noise),
+and RAM is within 3% (opt=1 slightly lower). Fat LTO is doing all
+the real optimization work at link time, so the per-crate opt-level
+on a crate that feeds into the LTO pass doesn't materially affect
+the output. Only opt=0 is a useful lever (it skips rustc passes
+entirely and relies on fat LTO for everything, trading ~10% runtime
+for ~34% compile time).
+
+#### `codegen-units` sweep
+
+Both `entities-scitem-ships` and `full` under the current baseline
+(fat LTO + `sc-extract-generated.opt-level = 1`). Varying only
+`release.codegen-units`. Default for release is 16.
+
+| When | cgu | Features | Check | Build | Parse+graph | Peak build RAM |
+|---|---:|---|---:|---:|---:|---:|
+| 2026-04-16 00:21 | 16 (default) | ships | 15.23s | 49.97s ⚠ | 34.06s | 1.75 GB |
+| 2026-04-16 00:30 | 16 (default) | full  | 38.03s | 2m 8.2s ⚠ | 35.68s | 4.92 GB |
+| 2026-04-16 01:06 | 1 | ships | 15.82s | 1m 27.3s ⚠ | 33.00s | 1.62 GB |
+| 2026-04-16 01:06 | 1 | full  | 37.42s | 4m 14.8s ⚠ | 35.89s | 3.98 GB |
+| 2026-04-16 01:28 | 256 | ships | 16.21s | **2m 37s** | 31.68s | 1.96 GB |
+| 2026-04-16 01:28 | 256 | full  | 40.18s | **5m 25s** | 33.77s | 5.20 GB |
+
+⚠ Lib-only build time (pre-methodology-fix). Underreports the LTO
+link cost. The cu=256 row is the first one measuring an actual binary
+build — direct comparison of the old cu=1/16 rows against cu=256 is
+not valid until they're re-measured under the binary-build script.
 
 
 ### Pre-2026-04-15 (stale, retained for context)

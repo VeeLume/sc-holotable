@@ -3,7 +3,35 @@
 > Current work state. Read `CLAUDE.md` first for the workspace orientation;
 > this file is the always-current "where we left off" snapshot.
 
+## ⚠ Next session — start here
+
+**Test harness has a methodology bug that was patched but not yet verified end-to-end.** Before resuming the compile-time iteration cycle, the [`tools/bench/bench.ps1`](tools/bench/bench.ps1) `Invoke-ColdBuild` change needs validation. The script now runs `cargo build -p sc-extract --release --example parse_real_p4k` instead of the old lib-only command, so the cold-build measurement actually includes the fat LTO link pass (which only fires when linking a final binary, not when producing an rlib). Until this is verified working and a fresh baseline is captured, **do not draw conclusions from any compile-time numbers in [`docs/benchmarks.md`](docs/benchmarks.md) before 2026-04-16 01:28** — they were measured against the lib-only build and underreport real binary build cost by 2-3× (observed: ships lib=50s vs binary=2m 37s under fat LTO + cu=256). Runtime numbers are unaffected throughout.
+
+**To resume:**
+
+1. Run `.\tools\bench\bench.ps1 -Mode all -Features entities-scitem-ships,full -KillRa` against the current `Cargo.toml` (fat LTO + `sc-extract-generated.opt-level = 1` + `release.codegen-units = 256`). Confirm that the build numbers reported by the script now match the binary builds reported by the cargo trace inside the runtime step (i.e. the gap is gone).
+2. Establish a clean post-fix baseline by reverting per-package overrides one at a time and re-running, so the LTO + opt-level + cgu sweeps have a comparable starting point under the corrected methodology.
+3. Re-run the load-bearing decisions with valid numbers: thin vs fat LTO at the binary link is the most likely conclusion to flip, since fat's LTO link is exactly the thing the old measurement was hiding.
+4. Continue the iteration log in [`docs/benchmarks.md`](docs/benchmarks.md) §iteration-log from the marked methodology-change line.
+
+The state in `Cargo.toml` and `.cargo/config.toml` at session end is the partial iteration result, **not a validated answer**. It's a defensible starting point but should be rebaselined under the new harness before any further commits change the profile.
+
 ## Last worked on
+
+**Compile-time iteration cycle (2026-04-15 evening → 2026-04-16 early morning)** — multi-step exploration to bring sc-extract cold compile times down. Three coupled phases:
+
+1. **Generator derive-drop (commit `06e0d2e`).** Stripped `Serialize`/`Deserialize`/`Debug`/`Clone` from generated structs, `Serialize`/`Deserialize` and the manual `Default` impl from generated enums, and `serde` entirely from `sc-extract-generated`'s dep graph. ~12,500 proc-macro expansions eliminated. Cold full check 4m 19s → 37.66s (-85%); cold full dev-opt build 7m 10s → 2m 53s (-60%); peak full RAM 13.63 GB → 4.41 GB. Runtime parse times unchanged, as expected.
+
+2. **Profile + `.cargo/config.toml` reset (commit `e538c27`).** Deleted `dev-opt` and `release-max` custom profiles, dropped every per-package and per-profile override in `Cargo.toml`, removed the `RUST_MIN_STACK` env var and Windows linker `/STACK` override from `.cargo/config.toml`. All of this customization was serde-derive workaround that no longer applied. Default `cargo check` works at opt-level 0 with no stack bump, test suite still 94/94. Updated `bench.ps1` + `tools/bench/README.md` to use `--release` instead of the now-deleted `dev-opt` profile.
+
+3. **Iteration log on `entities-scitem-ships` + occasional `full` spot checks** in [`docs/benchmarks.md`](docs/benchmarks.md) §iteration-log:
+
+   - **LTO sweep**: `lto = false` (default, the worst spot — runs local-thin per CGU at opt=3, duplicating full optimization 16x); `lto = "off"` (worst runtime, +20% parse); `lto = "thin"` (best of both); `lto = "fat"` (tied with thin on compile, marginally better runtime). Picked `fat`. Restored `link-args=/STACK:8388608` for Windows runtime stack — the 1 MB default overflows during full DCB extract dispatch, despite being a serde-unrelated cause (commit `fcf979d`).
+   - **Opt-level on `sc-extract-generated`**: `opt=0` (-34% compile, +10% runtime); `opt=1` and `opt=3` essentially tied on both ships and full (fat LTO does the real optimization at link time). Picked `opt=1` over `opt=0` for release semantics — a compile-optimized profile can come later if needed.
+   - **Opt-level on `sc-extract`**: `opt=1` here is a clear runtime regression (+50% parse) because the hand-written algorithms (graph BFS, tag tree, locale parse) need full LLVM optimization that LTO can't retroactively apply. Reverted.
+   - **Codegen-units**: `cu=1` doubles compile time, `cu=256` (in progress) is the first config measured under the fixed harness.
+
+4. **Methodology bug discovered (end of session).** All cold-build numbers prior to 2026-04-16 01:28 were lib-only (`cargo build -p sc-extract --release`), which doesn't run the fat LTO link pass — fat LTO only fires when linking an actual binary. The bench script's `Invoke-ColdBuild` was patched to use `--example parse_real_p4k` to force a real binary link, but the patched script needs validation and the prior comparisons need re-measurement before the LTO / opt-level / cgu conclusions are trustworthy. Runtime parse numbers throughout the session are valid because they came from binaries that did get LTO.
 
 **Snapshot byte-bundle rework v4 → v5 (2026-04-15, later)** — fixed the compile-time regression surfaced by the benchmarking run: sc-extract was spending ~90 % of its LLVM IR on `rmp_serde` monomorphizations of the cooked `DatacoreSnapshot`. Switched `ExtractSnapshot` to archive the raw `game2.dcb` + `english/global.ini` bytes instead of cooked typed pools, and added a `hydrate` step that re-parses at load time. Historical-snapshot comparison (bulkhead's weapon-diff feature) now works automatically because the DCB format is game-stable and field resolution happens at parse time. Plan file: [generic-marinating-plum.md](D:\Users\Valerie\.claude\plans\generic-marinating-plum.md).
 
