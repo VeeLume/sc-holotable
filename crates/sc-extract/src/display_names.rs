@@ -121,9 +121,9 @@ pub fn resolve_entity_display_name(
         }
 
         // Walk component → AttachDef → Localization → Name. The Name
-        // field is a DCB `Locale` — wrap it in a typed [`LocKey`] so the
-        // rest of this function treats it as a localization reference,
-        // not an arbitrary string.
+        // field is a DCB `Locale` — wrap it in a typed [`LocaleKey`] so
+        // the rest of this function treats it as a localization
+        // reference, not an arbitrary string.
         let attach_def = component.get_instance("AttachDef")?;
         let localization: Instance<'_> = attach_def.get_instance("Localization")?;
         let name_key = LocaleKey::new(localization.get_str("Name").unwrap_or(""));
@@ -131,7 +131,7 @@ pub fn resolve_entity_display_name(
             continue;
         }
 
-        // `LocaleMap::resolve` accepts `&LocKey` via `AsRef<str>` and
+        // `LocaleMap::resolve` accepts `&LocaleKey` via `AsRef<str>` and
         // handles the leading `@` prefix internally.
         if let Some(resolved) = locale.resolve(&name_key) {
             return Some(resolved.to_string());
