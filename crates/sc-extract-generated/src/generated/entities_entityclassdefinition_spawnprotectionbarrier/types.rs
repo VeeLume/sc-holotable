@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -21,16 +20,12 @@ use super::super::*;
 
 /// DCB type: `SSpawnProtectionBarrierParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SSpawnProtectionBarrierParams {
     /// `team` (Reference)
-    #[serde(default)]
     pub team: Option<CigGuid>,
     /// `phase` (Int32)
-    #[serde(default)]
     pub phase: i32,
     /// `deadZoneInactiveTime` (Int32)
-    #[serde(default)]
     pub dead_zone_inactive_time: i32,
 }
 

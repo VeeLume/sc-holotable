@@ -9,10 +9,8 @@
 
 #![allow(non_camel_case_types, dead_code)]
 
-use serde::{Deserialize, Serialize};
-
 /// DCB enum: `ARDataType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ARDataType {
     /// DCB value: `Player`
     Player,
@@ -40,14 +38,8 @@ impl ARDataType {
     }
 }
 
-impl Default for ARDataType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ARLabelMovementType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ARLabelMovementType {
     /// DCB value: `Fixed`
     Fixed,
@@ -75,14 +67,8 @@ impl ARLabelMovementType {
     }
 }
 
-impl Default for ARLabelMovementType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `AbilityAttemptResult`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum AbilityAttemptResult {
     /// DCB value: `Activated`
     Activated,
@@ -113,14 +99,8 @@ impl AbilityAttemptResult {
     }
 }
 
-impl Default for AbilityAttemptResult {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `AbilityType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum AbilityType {
     /// DCB value: `BeingRestrained`
     BeingRestrained,
@@ -523,14 +503,8 @@ impl AbilityType {
     }
 }
 
-impl Default for AbilityType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `AccountBadge`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum AccountBadge {
     /// DCB value: `RSI_BADGE_QA`
     RSI_BADGE_QA,
@@ -567,14 +541,8 @@ impl AccountBadge {
     }
 }
 
-impl Default for AccountBadge {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ActivationMethod`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ActivationMethod {
     /// DCB value: `ActivateOnAttach`
     ActivateOnAttach,
@@ -599,14 +567,8 @@ impl ActivationMethod {
     }
 }
 
-impl Default for ActivationMethod {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ActivationMode`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ActivationMode {
     /// DCB value: `Default`
     Default,
@@ -646,14 +608,8 @@ impl ActivationMode {
     }
 }
 
-impl Default for ActivationMode {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ActiveRange`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ActiveRange {
     /// DCB value: `InteriorRange`
     InteriorRange,
@@ -678,14 +634,8 @@ impl ActiveRange {
     }
 }
 
-impl Default for ActiveRange {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ActorBodyDirection`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ActorBodyDirection {
     /// DCB value: `None`
     None,
@@ -719,14 +669,8 @@ impl ActorBodyDirection {
     }
 }
 
-impl Default for ActorBodyDirection {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ActorBone`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ActorBone {
     /// DCB value: `Hips`
     Hips,
@@ -802,14 +746,8 @@ impl ActorBone {
     }
 }
 
-impl Default for ActorBone {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ActorFilter`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ActorFilter {
     /// DCB value: `OnlyPlayer`
     OnlyPlayer,
@@ -837,14 +775,8 @@ impl ActorFilter {
     }
 }
 
-impl Default for ActorFilter {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ActorStatCooldownType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ActorStatCooldownType {
     /// DCB value: `Time`
     Time,
@@ -869,14 +801,8 @@ impl ActorStatCooldownType {
     }
 }
 
-impl Default for ActorStatCooldownType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ActorStatType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ActorStatType {
     /// DCB value: `Hunger`
     Hunger,
@@ -982,14 +908,8 @@ impl ActorStatType {
     }
 }
 
-impl Default for ActorStatType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ActorStateFilterByAimStanceState`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ActorStateFilterByAimStanceState {
     /// DCB value: `Any`
     Any,
@@ -1038,14 +958,8 @@ impl ActorStateFilterByAimStanceState {
     }
 }
 
-impl Default for ActorStateFilterByAimStanceState {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ActorStateFilterByCharacterType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ActorStateFilterByCharacterType {
     /// DCB value: `Any`
     Any,
@@ -1073,14 +987,8 @@ impl ActorStateFilterByCharacterType {
     }
 }
 
-impl Default for ActorStateFilterByCharacterType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ActorStateFilterByHeldItemType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ActorStateFilterByHeldItemType {
     /// DCB value: `Any`
     Any,
@@ -1144,14 +1052,8 @@ impl ActorStateFilterByHeldItemType {
     }
 }
 
-impl Default for ActorStateFilterByHeldItemType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ActorStateFilterByLeanState`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ActorStateFilterByLeanState {
     /// DCB value: `Any`
     Any,
@@ -1182,14 +1084,8 @@ impl ActorStateFilterByLeanState {
     }
 }
 
-impl Default for ActorStateFilterByLeanState {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ActorStateFilterByLocomotionSet`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ActorStateFilterByLocomotionSet {
     /// DCB value: `Any`
     Any,
@@ -1235,14 +1131,8 @@ impl ActorStateFilterByLocomotionSet {
     }
 }
 
-impl Default for ActorStateFilterByLocomotionSet {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ActorStateFilterByMotionSpeed`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ActorStateFilterByMotionSpeed {
     /// DCB value: `Any`
     Any,
@@ -1282,14 +1172,8 @@ impl ActorStateFilterByMotionSpeed {
     }
 }
 
-impl Default for ActorStateFilterByMotionSpeed {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ActorStateFilterByPoseState`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ActorStateFilterByPoseState {
     /// DCB value: `Any`
     Any,
@@ -1332,14 +1216,8 @@ impl ActorStateFilterByPoseState {
     }
 }
 
-impl Default for ActorStateFilterByPoseState {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ActorStateFilterBySkeleton`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ActorStateFilterBySkeleton {
     /// DCB value: `Any`
     Any,
@@ -1370,14 +1248,8 @@ impl ActorStateFilterBySkeleton {
     }
 }
 
-impl Default for ActorStateFilterBySkeleton {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ActorStateFilterByStanceState`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ActorStateFilterByStanceState {
     /// DCB value: `Any`
     Any,
@@ -1441,14 +1313,8 @@ impl ActorStateFilterByStanceState {
     }
 }
 
-impl Default for ActorStateFilterByStanceState {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ActorStateFilterByState`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ActorStateFilterByState {
     /// DCB value: `Any`
     Any,
@@ -1551,14 +1417,8 @@ impl ActorStateFilterByState {
     }
 }
 
-impl Default for ActorStateFilterByState {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ActorStateSelection_Stance`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ActorStateSelection_Stance {
     /// DCB value: `Any`
     Any,
@@ -1610,14 +1470,8 @@ impl ActorStateSelection_Stance {
     }
 }
 
-impl Default for ActorStateSelection_Stance {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ActorStatusType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ActorStatusType {
     /// DCB value: `Concussion`
     Concussion,
@@ -1705,14 +1559,8 @@ impl ActorStatusType {
     }
 }
 
-impl Default for ActorStatusType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ActorStatusWidget`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ActorStatusWidget {
     /// DCB value: `HealthPool`
     HealthPool,
@@ -1758,14 +1606,8 @@ impl ActorStatusWidget {
     }
 }
 
-impl Default for ActorStatusWidget {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `AgentStance`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum AgentStance {
     /// DCB value: `Stand`
     Stand,
@@ -1799,14 +1641,8 @@ impl AgentStance {
     }
 }
 
-impl Default for AgentStance {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `AmmoCategory`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum AmmoCategory {
     /// DCB value: `None`
     None,
@@ -1858,14 +1694,8 @@ impl AmmoCategory {
     }
 }
 
-impl Default for AmmoCategory {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `AmmoSpawnType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum AmmoSpawnType {
     /// DCB value: `AllClients`
     AllClients,
@@ -1890,14 +1720,8 @@ impl AmmoSpawnType {
     }
 }
 
-impl Default for AmmoSpawnType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `AnimFootSyncMethod`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum AnimFootSyncMethod {
     /// DCB value: `Pairs`
     Pairs,
@@ -1922,14 +1746,8 @@ impl AnimFootSyncMethod {
     }
 }
 
-impl Default for AnimFootSyncMethod {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `AnimatedMarker_State`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum AnimatedMarker_State {
     /// DCB value: `Locking`
     Locking,
@@ -1957,14 +1775,8 @@ impl AnimatedMarker_State {
     }
 }
 
-impl Default for AnimatedMarker_State {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `AnimationGraph_TimeModifier`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum AnimationGraph_TimeModifier {
     /// DCB value: `None`
     None,
@@ -1992,14 +1804,8 @@ impl AnimationGraph_TimeModifier {
     }
 }
 
-impl Default for AnimationGraph_TimeModifier {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `AnimationGraph_TrackType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum AnimationGraph_TrackType {
     /// DCB value: `RotateX`
     RotateX,
@@ -2033,14 +1839,8 @@ impl AnimationGraph_TrackType {
     }
 }
 
-impl Default for AnimationGraph_TrackType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `AnimationScopeContextTypes`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum AnimationScopeContextTypes {
     /// DCB value: `Self`
     Self_,
@@ -2068,14 +1868,8 @@ impl AnimationScopeContextTypes {
     }
 }
 
-impl Default for AnimationScopeContextTypes {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `AnimationVariableInterpolationType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum AnimationVariableInterpolationType {
     /// DCB value: `Linear`
     Linear,
@@ -2106,14 +1900,8 @@ impl AnimationVariableInterpolationType {
     }
 }
 
-impl Default for AnimationVariableInterpolationType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `AsteroidStatePropertyType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum AsteroidStatePropertyType {
     /// DCB value: `DebrisDensity`
     DebrisDensity,
@@ -2135,14 +1923,8 @@ impl AsteroidStatePropertyType {
     }
 }
 
-impl Default for AsteroidStatePropertyType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `AtmosphereStatePropertyType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum AtmosphereStatePropertyType {
     /// DCB value: `Pressure`
     Pressure,
@@ -2170,14 +1952,8 @@ impl AtmosphereStatePropertyType {
     }
 }
 
-impl Default for AtmosphereStatePropertyType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `AtmosphereType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum AtmosphereType {
     /// DCB value: `Static`
     Static,
@@ -2202,14 +1978,8 @@ impl AtmosphereType {
     }
 }
 
-impl Default for AtmosphereType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `AttachmentZoneType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum AttachmentZoneType {
     /// DCB value: `Hosted`
     Hosted,
@@ -2237,14 +2007,8 @@ impl AttachmentZoneType {
     }
 }
 
-impl Default for AttachmentZoneType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `AttackType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum AttackType {
     /// DCB value: `LightRight`
     LightRight,
@@ -2308,14 +2072,8 @@ impl AttackType {
     }
 }
 
-impl Default for AttackType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `BB_ActivationButtonAction`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum BB_ActivationButtonAction {
     /// DCB value: `Up`
     Up,
@@ -2343,14 +2101,8 @@ impl BB_ActivationButtonAction {
     }
 }
 
-impl Default for BB_ActivationButtonAction {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `BB_AnimationDirection`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum BB_AnimationDirection {
     /// DCB value: `Forward`
     Forward,
@@ -2381,14 +2133,8 @@ impl BB_AnimationDirection {
     }
 }
 
-impl Default for BB_AnimationDirection {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `BB_AnimationFillMode`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum BB_AnimationFillMode {
     /// DCB value: `None`
     None,
@@ -2419,14 +2165,8 @@ impl BB_AnimationFillMode {
     }
 }
 
-impl Default for BB_AnimationFillMode {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `BB_AudioEvent`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum BB_AudioEvent {
     /// DCB value: `Change`
     Change,
@@ -2454,14 +2194,8 @@ impl BB_AudioEvent {
     }
 }
 
-impl Default for BB_AudioEvent {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `BB_AutoScalingMethod`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum BB_AutoScalingMethod {
     /// DCB value: `None`
     None,
@@ -2489,14 +2223,8 @@ impl BB_AutoScalingMethod {
     }
 }
 
-impl Default for BB_AutoScalingMethod {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `BB_Axis`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum BB_Axis {
     /// DCB value: `None`
     None,
@@ -2527,14 +2255,8 @@ impl BB_Axis {
     }
 }
 
-impl Default for BB_Axis {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `BB_AxisDirection`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum BB_AxisDirection {
     /// DCB value: `Horizontal`
     Horizontal,
@@ -2559,14 +2281,8 @@ impl BB_AxisDirection {
     }
 }
 
-impl Default for BB_AxisDirection {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `BB_BackgroundType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum BB_BackgroundType {
     /// DCB value: `None`
     None,
@@ -2591,14 +2307,8 @@ impl BB_BackgroundType {
     }
 }
 
-impl Default for BB_BackgroundType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `BB_BindingsArithmeticType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum BB_BindingsArithmeticType {
     /// DCB value: `Add`
     Add,
@@ -2641,14 +2351,8 @@ impl BB_BindingsArithmeticType {
     }
 }
 
-impl Default for BB_BindingsArithmeticType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `BB_BindingsBuiltInVariableTypeInteger`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum BB_BindingsBuiltInVariableTypeInteger {
     /// DCB value: `ServerTime`
     ServerTime,
@@ -2673,14 +2377,8 @@ impl BB_BindingsBuiltInVariableTypeInteger {
     }
 }
 
-impl Default for BB_BindingsBuiltInVariableTypeInteger {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `BB_BindingsBuiltInVariableTypeNumber`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum BB_BindingsBuiltInVariableTypeNumber {
     /// DCB value: `TimerSeconds`
     TimerSeconds,
@@ -2708,14 +2406,8 @@ impl BB_BindingsBuiltInVariableTypeNumber {
     }
 }
 
-impl Default for BB_BindingsBuiltInVariableTypeNumber {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `BB_BindingsCaseModifierType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum BB_BindingsCaseModifierType {
     /// DCB value: `None`
     None,
@@ -2749,14 +2441,8 @@ impl BB_BindingsCaseModifierType {
     }
 }
 
-impl Default for BB_BindingsCaseModifierType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `BB_BindingsCurrencyType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum BB_BindingsCurrencyType {
     /// DCB value: `CURRENCY_UEC`
     CURRENCY_UEC,
@@ -2787,14 +2473,8 @@ impl BB_BindingsCurrencyType {
     }
 }
 
-impl Default for BB_BindingsCurrencyType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `BB_BindingsFunctionType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum BB_BindingsFunctionType {
     /// DCB value: `Abs`
     Abs,
@@ -2864,14 +2544,8 @@ impl BB_BindingsFunctionType {
     }
 }
 
-impl Default for BB_BindingsFunctionType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `BB_BindingsIntegerConstants`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum BB_BindingsIntegerConstants {
     /// DCB value: `InvalidIndex`
     InvalidIndex,
@@ -2893,14 +2567,8 @@ impl BB_BindingsIntegerConstants {
     }
 }
 
-impl Default for BB_BindingsIntegerConstants {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `BB_BindingsIntegerFunctionType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum BB_BindingsIntegerFunctionType {
     /// DCB value: `Abs`
     Abs,
@@ -2928,14 +2596,8 @@ impl BB_BindingsIntegerFunctionType {
     }
 }
 
-impl Default for BB_BindingsIntegerFunctionType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `BB_BooleanField`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum BB_BooleanField {
     /// DCB value: `AffectsAutosize`
     AffectsAutosize,
@@ -3209,14 +2871,8 @@ impl BB_BooleanField {
     }
 }
 
-impl Default for BB_BooleanField {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `BB_BooleanWriteMode`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum BB_BooleanWriteMode {
     /// DCB value: `Invert`
     Invert,
@@ -3244,14 +2900,8 @@ impl BB_BooleanWriteMode {
     }
 }
 
-impl Default for BB_BooleanWriteMode {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `BB_CanvasCoordinateMethod`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum BB_CanvasCoordinateMethod {
     /// DCB value: `useRaw`
     useRaw,
@@ -3285,14 +2935,8 @@ impl BB_CanvasCoordinateMethod {
     }
 }
 
-impl Default for BB_CanvasCoordinateMethod {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `BB_CanvasWidgetSizingMethod`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum BB_CanvasWidgetSizingMethod {
     /// DCB value: `Size`
     Size,
@@ -3317,14 +2961,8 @@ impl BB_CanvasWidgetSizingMethod {
     }
 }
 
-impl Default for BB_CanvasWidgetSizingMethod {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `BB_ColorField`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum BB_ColorField {
     /// DCB value: `BackgroundColor`
     BackgroundColor,
@@ -3424,14 +3062,8 @@ impl BB_ColorField {
     }
 }
 
-impl Default for BB_ColorField {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `BB_ColorStyle`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum BB_ColorStyle {
     /// DCB value: `Base`
     Base,
@@ -3501,14 +3133,8 @@ impl BB_ColorStyle {
     }
 }
 
-impl Default for BB_ColorStyle {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `BB_ComparisonOperatorType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum BB_ComparisonOperatorType {
     /// DCB value: `Equal`
     Equal,
@@ -3545,14 +3171,8 @@ impl BB_ComparisonOperatorType {
     }
 }
 
-impl Default for BB_ComparisonOperatorType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `BB_ComponentParameter`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum BB_ComponentParameter {
     /// DCB value: `ParamInput0`
     ParamInput0,
@@ -3598,14 +3218,8 @@ impl BB_ComponentParameter {
     }
 }
 
-impl Default for BB_ComponentParameter {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `BB_ContentBoxPosition`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum BB_ContentBoxPosition {
     /// DCB value: `Top`
     Top,
@@ -3636,14 +3250,8 @@ impl BB_ContentBoxPosition {
     }
 }
 
-impl Default for BB_ContentBoxPosition {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `BB_CullingLevel`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum BB_CullingLevel {
     /// DCB value: `None`
     None,
@@ -3671,14 +3279,8 @@ impl BB_CullingLevel {
     }
 }
 
-impl Default for BB_CullingLevel {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `BB_CurvatureAxis`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum BB_CurvatureAxis {
     /// DCB value: `X`
     X,
@@ -3706,14 +3308,8 @@ impl BB_CurvatureAxis {
     }
 }
 
-impl Default for BB_CurvatureAxis {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `BB_DraggablePolicyType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum BB_DraggablePolicyType {
     /// DCB value: `None`
     None,
@@ -3738,14 +3334,8 @@ impl BB_DraggablePolicyType {
     }
 }
 
-impl Default for BB_DraggablePolicyType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `BB_DropTargetPolicyType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum BB_DropTargetPolicyType {
     /// DCB value: `None`
     None,
@@ -3770,14 +3360,8 @@ impl BB_DropTargetPolicyType {
     }
 }
 
-impl Default for BB_DropTargetPolicyType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `BB_DropdownAlignment`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum BB_DropdownAlignment {
     /// DCB value: `Up`
     Up,
@@ -3802,14 +3386,8 @@ impl BB_DropdownAlignment {
     }
 }
 
-impl Default for BB_DropdownAlignment {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `BB_DustParticleMovementRestriction`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum BB_DustParticleMovementRestriction {
     /// DCB value: `None`
     None,
@@ -3837,14 +3415,8 @@ impl BB_DustParticleMovementRestriction {
     }
 }
 
-impl Default for BB_DustParticleMovementRestriction {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `BB_FillStyle`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum BB_FillStyle {
     /// DCB value: `Filled`
     Filled,
@@ -3869,14 +3441,8 @@ impl BB_FillStyle {
     }
 }
 
-impl Default for BB_FillStyle {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `BB_FlexAxisJustification`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum BB_FlexAxisJustification {
     /// DCB value: `Start`
     Start,
@@ -3916,14 +3482,8 @@ impl BB_FlexAxisJustification {
     }
 }
 
-impl Default for BB_FlexAxisJustification {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `BB_FlexDirection`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum BB_FlexDirection {
     /// DCB value: `Row`
     Row,
@@ -3954,14 +3514,8 @@ impl BB_FlexDirection {
     }
 }
 
-impl Default for BB_FlexDirection {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `BB_FlexItemAlignment`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum BB_FlexItemAlignment {
     /// DCB value: `Start`
     Start,
@@ -3992,14 +3546,8 @@ impl BB_FlexItemAlignment {
     }
 }
 
-impl Default for BB_FlexItemAlignment {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `BB_FlexWrap`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum BB_FlexWrap {
     /// DCB value: `Wrap`
     Wrap,
@@ -4030,14 +3578,8 @@ impl BB_FlexWrap {
     }
 }
 
-impl Default for BB_FlexWrap {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `BB_FlipDirection`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum BB_FlipDirection {
     /// DCB value: `None`
     None,
@@ -4068,14 +3610,8 @@ impl BB_FlipDirection {
     }
 }
 
-impl Default for BB_FlipDirection {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `BB_GrabBounds`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum BB_GrabBounds {
     /// DCB value: `Sphere`
     Sphere,
@@ -4103,14 +3639,8 @@ impl BB_GrabBounds {
     }
 }
 
-impl Default for BB_GrabBounds {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `BB_GrabRotationMode`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum BB_GrabRotationMode {
     /// DCB value: `Orbital`
     Orbital,
@@ -4135,14 +3665,8 @@ impl BB_GrabRotationMode {
     }
 }
 
-impl Default for BB_GrabRotationMode {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `BB_GridPackDirection`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum BB_GridPackDirection {
     /// DCB value: `Horizontal`
     Horizontal,
@@ -4167,14 +3691,8 @@ impl BB_GridPackDirection {
     }
 }
 
-impl Default for BB_GridPackDirection {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `BB_IconWidgetPreset`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum BB_IconWidgetPreset {
     /// DCB value: `_None`
     _None,
@@ -4394,14 +3912,8 @@ impl BB_IconWidgetPreset {
     }
 }
 
-impl Default for BB_IconWidgetPreset {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `BB_ImageScalingMethod`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum BB_ImageScalingMethod {
     /// DCB value: `Fill`
     Fill,
@@ -4429,14 +3941,8 @@ impl BB_ImageScalingMethod {
     }
 }
 
-impl Default for BB_ImageScalingMethod {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `BB_IntegerField`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum BB_IntegerField {
     /// DCB value: `AutoScrollBehavior`
     AutoScrollBehavior,
@@ -4653,14 +4159,8 @@ impl BB_IntegerField {
     }
 }
 
-impl Default for BB_IntegerField {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `BB_JumpTerm`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum BB_JumpTerm {
     /// DCB value: `Start`
     Start,
@@ -4685,14 +4185,8 @@ impl BB_JumpTerm {
     }
 }
 
-impl Default for BB_JumpTerm {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `BB_LayoutPolicyType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum BB_LayoutPolicyType {
     /// DCB value: `None`
     None,
@@ -4720,14 +4214,8 @@ impl BB_LayoutPolicyType {
     }
 }
 
-impl Default for BB_LayoutPolicyType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `BB_ListNavigationType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum BB_ListNavigationType {
     /// DCB value: `None`
     None,
@@ -4755,14 +4243,8 @@ impl BB_ListNavigationType {
     }
 }
 
-impl Default for BB_ListNavigationType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `BB_LocalizedField`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum BB_LocalizedField {
     /// DCB value: `ParamInput0`
     ParamInput0,
@@ -4817,14 +4299,8 @@ impl BB_LocalizedField {
     }
 }
 
-impl Default for BB_LocalizedField {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `BB_NavigationType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum BB_NavigationType {
     /// DCB value: `Back`
     Back,
@@ -4849,14 +4325,8 @@ impl BB_NavigationType {
     }
 }
 
-impl Default for BB_NavigationType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `BB_NumberField`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum BB_NumberField {
     /// DCB value: `Alpha`
     Alpha,
@@ -5316,14 +4786,8 @@ impl BB_NumberField {
     }
 }
 
-impl Default for BB_NumberField {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `BB_OverflowBehavior`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum BB_OverflowBehavior {
     /// DCB value: `Visible`
     Visible,
@@ -5354,14 +4818,8 @@ impl BB_OverflowBehavior {
     }
 }
 
-impl Default for BB_OverflowBehavior {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `BB_ProgressMeterState`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum BB_ProgressMeterState {
     /// DCB value: `Static`
     Static,
@@ -5386,14 +4844,8 @@ impl BB_ProgressMeterState {
     }
 }
 
-impl Default for BB_ProgressMeterState {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `BB_RendererType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum BB_RendererType {
     /// DCB value: `None`
     None,
@@ -5430,14 +4882,8 @@ impl BB_RendererType {
     }
 }
 
-impl Default for BB_RendererType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `BB_RotationField`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum BB_RotationField {
     /// DCB value: `Orientation`
     Orientation,
@@ -5462,14 +4908,8 @@ impl BB_RotationField {
     }
 }
 
-impl Default for BB_RotationField {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `BB_SIPrefix`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum BB_SIPrefix {
     /// DCB value: `INVALID`
     INVALID,
@@ -5533,14 +4973,8 @@ impl BB_SIPrefix {
     }
 }
 
-impl Default for BB_SIPrefix {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `BB_SIUnit`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum BB_SIUnit {
     /// DCB value: `None`
     None,
@@ -5592,14 +5026,8 @@ impl BB_SIUnit {
     }
 }
 
-impl Default for BB_SIUnit {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `BB_SVGScalingBehavior`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum BB_SVGScalingBehavior {
     /// DCB value: `Contain`
     Contain,
@@ -5633,14 +5061,8 @@ impl BB_SVGScalingBehavior {
     }
 }
 
-impl Default for BB_SVGScalingBehavior {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `BB_ScrollBehavior`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum BB_ScrollBehavior {
     /// DCB value: `Pixel`
     Pixel,
@@ -5665,14 +5087,8 @@ impl BB_ScrollBehavior {
     }
 }
 
-impl Default for BB_ScrollBehavior {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `BB_ScrollPolicyType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum BB_ScrollPolicyType {
     /// DCB value: `None`
     None,
@@ -5697,14 +5113,8 @@ impl BB_ScrollPolicyType {
     }
 }
 
-impl Default for BB_ScrollPolicyType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `BB_SegmentProgressBehavior`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum BB_SegmentProgressBehavior {
     /// DCB value: `Clip`
     Clip,
@@ -5744,14 +5154,8 @@ impl BB_SegmentProgressBehavior {
     }
 }
 
-impl Default for BB_SegmentProgressBehavior {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `BB_SeparatorStyle`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum BB_SeparatorStyle {
     /// DCB value: `Primary`
     Primary,
@@ -5779,14 +5183,8 @@ impl BB_SeparatorStyle {
     }
 }
 
-impl Default for BB_SeparatorStyle {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `BB_SizeBehavior`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum BB_SizeBehavior {
     /// DCB value: `Fixed`
     Fixed,
@@ -5823,14 +5221,8 @@ impl BB_SizeBehavior {
     }
 }
 
-impl Default for BB_SizeBehavior {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `BB_SliderMode`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum BB_SliderMode {
     /// DCB value: `HorizontalBar`
     HorizontalBar,
@@ -5861,14 +5253,8 @@ impl BB_SliderMode {
     }
 }
 
-impl Default for BB_SliderMode {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `BB_StackDirection`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum BB_StackDirection {
     /// DCB value: `Horizontal`
     Horizontal,
@@ -5896,14 +5282,8 @@ impl BB_StackDirection {
     }
 }
 
-impl Default for BB_StackDirection {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `BB_StringField`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum BB_StringField {
     /// DCB value: `ActorEntityDNAString`
     ActorEntityDNAString,
@@ -6093,14 +5473,8 @@ impl BB_StringField {
     }
 }
 
-impl Default for BB_StringField {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `BB_StrokeAlignment`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum BB_StrokeAlignment {
     /// DCB value: `Center`
     Center,
@@ -6128,14 +5502,8 @@ impl BB_StrokeAlignment {
     }
 }
 
-impl Default for BB_StrokeAlignment {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `BB_StrokeCapStyle`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum BB_StrokeCapStyle {
     /// DCB value: `Round`
     Round,
@@ -6163,14 +5531,8 @@ impl BB_StrokeCapStyle {
     }
 }
 
-impl Default for BB_StrokeCapStyle {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `BB_StrokeJointStyle`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum BB_StrokeJointStyle {
     /// DCB value: `Round`
     Round,
@@ -6198,14 +5560,8 @@ impl BB_StrokeJointStyle {
     }
 }
 
-impl Default for BB_StrokeJointStyle {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `BB_StyleCountType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum BB_StyleCountType {
     /// DCB value: `Every`
     Every,
@@ -6233,14 +5589,8 @@ impl BB_StyleCountType {
     }
 }
 
-impl Default for BB_StyleCountType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `BB_TextAlignment`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum BB_TextAlignment {
     /// DCB value: `Left`
     Left,
@@ -6271,14 +5621,8 @@ impl BB_TextAlignment {
     }
 }
 
-impl Default for BB_TextAlignment {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `BB_TextFieldWidgetStylePreset`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum BB_TextFieldWidgetStylePreset {
     /// DCB value: `Title1`
     Title1,
@@ -6333,14 +5677,8 @@ impl BB_TextFieldWidgetStylePreset {
     }
 }
 
-impl Default for BB_TextFieldWidgetStylePreset {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `BB_TextureOrientation`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum BB_TextureOrientation {
     /// DCB value: `Landscape`
     Landscape,
@@ -6365,14 +5703,8 @@ impl BB_TextureOrientation {
     }
 }
 
-impl Default for BB_TextureOrientation {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `BB_TransformField`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum BB_TransformField {
     /// DCB value: `PositionOrientation`
     PositionOrientation,
@@ -6397,14 +5729,8 @@ impl BB_TransformField {
     }
 }
 
-impl Default for BB_TransformField {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `BB_UnidirectionalAutoScrollBehavior`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum BB_UnidirectionalAutoScrollBehavior {
     /// DCB value: `LeftToRight_Always`
     LeftToRight_Always,
@@ -6438,14 +5764,8 @@ impl BB_UnidirectionalAutoScrollBehavior {
     }
 }
 
-impl Default for BB_UnidirectionalAutoScrollBehavior {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `BB_UnidirectionalScrollDirection`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum BB_UnidirectionalScrollDirection {
     /// DCB value: `DeriveFromLayout`
     DeriveFromLayout,
@@ -6476,14 +5796,8 @@ impl BB_UnidirectionalScrollDirection {
     }
 }
 
-impl Default for BB_UnidirectionalScrollDirection {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `BB_VectorField`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum BB_VectorField {
     /// DCB value: `Position`
     Position,
@@ -6526,14 +5840,8 @@ impl BB_VectorField {
     }
 }
 
-impl Default for BB_VectorField {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `BB_VerticalTextAlignment`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum BB_VerticalTextAlignment {
     /// DCB value: `Top`
     Top,
@@ -6561,14 +5869,8 @@ impl BB_VerticalTextAlignment {
     }
 }
 
-impl Default for BB_VerticalTextAlignment {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `BB_WidgetType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum BB_WidgetType {
     /// DCB value: `ActorEntity`
     ActorEntity,
@@ -6680,14 +5982,8 @@ impl BB_WidgetType {
     }
 }
 
-impl Default for BB_WidgetType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `BettingFormat`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum BettingFormat {
     /// DCB value: `TopPlayer`
     TopPlayer,
@@ -6712,14 +6008,8 @@ impl BettingFormat {
     }
 }
 
-impl Default for BettingFormat {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `CIGAudioContextNamingStrategy`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum CIGAudioContextNamingStrategy {
     /// DCB value: `DataCoreFilePathAndEntityClassName`
     DataCoreFilePathAndEntityClassName,
@@ -6744,14 +6034,8 @@ impl CIGAudioContextNamingStrategy {
     }
 }
 
-impl Default for CIGAudioContextNamingStrategy {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `CameraViewTransitionMode`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum CameraViewTransitionMode {
     /// DCB value: `ExpSlerp`
     ExpSlerp,
@@ -6782,14 +6066,8 @@ impl CameraViewTransitionMode {
     }
 }
 
-impl Default for CameraViewTransitionMode {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `CanvasInstantiationMode`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum CanvasInstantiationMode {
     /// DCB value: `RootDeferred`
     RootDeferred,
@@ -6817,14 +6095,8 @@ impl CanvasInstantiationMode {
     }
 }
 
-impl Default for CanvasInstantiationMode {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `CargoFaceStackingSupport`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum CargoFaceStackingSupport {
     /// DCB value: `StackAll`
     StackAll,
@@ -6852,14 +6124,8 @@ impl CargoFaceStackingSupport {
     }
 }
 
-impl Default for CargoFaceStackingSupport {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ChannelColor`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ChannelColor {
     /// DCB value: `Blue`
     Blue,
@@ -6929,14 +6195,8 @@ impl ChannelColor {
     }
 }
 
-impl Default for ChannelColor {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ClassMigrationValidationType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ClassMigrationValidationType {
     /// DCB value: `None`
     None,
@@ -6964,14 +6224,8 @@ impl ClassMigrationValidationType {
     }
 }
 
-impl Default for ClassMigrationValidationType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `CombatStyle`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum CombatStyle {
     /// DCB value: `NotSet`
     NotSet,
@@ -7011,14 +6265,8 @@ impl CombatStyle {
     }
 }
 
-impl Default for CombatStyle {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ComparisonType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ComparisonType {
     /// DCB value: `HigherOrEqualTo`
     HigherOrEqualTo,
@@ -7046,14 +6294,8 @@ impl ComparisonType {
     }
 }
 
-impl Default for ComparisonType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ConditionResult`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ConditionResult {
     /// DCB value: `Pass`
     Pass,
@@ -7078,14 +6320,8 @@ impl ConditionResult {
     }
 }
 
-impl Default for ConditionResult {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ContractBoolParamType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ContractBoolParamType {
     /// DCB value: `Illegal`
     Illegal,
@@ -7146,14 +6382,8 @@ impl ContractBoolParamType {
     }
 }
 
-impl Default for ContractBoolParamType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ContractEndCommsReason`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ContractEndCommsReason {
     /// DCB value: `Complete`
     Complete,
@@ -7181,14 +6411,8 @@ impl ContractEndCommsReason {
     }
 }
 
-impl Default for ContractEndCommsReason {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ContractIntParamType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ContractIntParamType {
     /// DCB value: `MaxPlayersPerInstance`
     MaxPlayersPerInstance,
@@ -7225,14 +6449,8 @@ impl ContractIntParamType {
     }
 }
 
-impl Default for ContractIntParamType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ContractStringParamType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ContractStringParamType {
     /// DCB value: `Title`
     Title,
@@ -7266,14 +6484,8 @@ impl ContractStringParamType {
     }
 }
 
-impl Default for ContractStringParamType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ControlHintConditionActorAttachmentType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ControlHintConditionActorAttachmentType {
     /// DCB value: `Held`
     Held,
@@ -7304,14 +6516,8 @@ impl ControlHintConditionActorAttachmentType {
     }
 }
 
-impl Default for ControlHintConditionActorAttachmentType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ControlHintConditionActorCommsState`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ControlHintConditionActorCommsState {
     /// DCB value: `BeingCalled`
     BeingCalled,
@@ -7333,14 +6539,8 @@ impl ControlHintConditionActorCommsState {
     }
 }
 
-impl Default for ControlHintConditionActorCommsState {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ControlHintConditionActorEnvironment`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ControlHintConditionActorEnvironment {
     /// DCB value: `Greenzone`
     Greenzone,
@@ -7386,14 +6586,8 @@ impl ControlHintConditionActorEnvironment {
     }
 }
 
-impl Default for ControlHintConditionActorEnvironment {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ControlHintConditionActorInteractionState`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ControlHintConditionActorInteractionState {
     /// DCB value: `InInteractModeNothingUnderCursor`
     InInteractModeNothingUnderCursor,
@@ -7499,14 +6693,8 @@ impl ControlHintConditionActorInteractionState {
     }
 }
 
-impl Default for ControlHintConditionActorInteractionState {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ControlHintConditionActorLadderState`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ControlHintConditionActorLadderState {
     /// DCB value: `WithinMidPointRange`
     WithinMidPointRange,
@@ -7540,14 +6728,8 @@ impl ControlHintConditionActorLadderState {
     }
 }
 
-impl Default for ControlHintConditionActorLadderState {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ControlHintConditionActorMissionOfferReceived`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ControlHintConditionActorMissionOfferReceived {
     /// DCB value: `OfferReceived`
     OfferReceived,
@@ -7569,14 +6751,8 @@ impl ControlHintConditionActorMissionOfferReceived {
     }
 }
 
-impl Default for ControlHintConditionActorMissionOfferReceived {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ControlHintConditionActorSightZeroMode`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ControlHintConditionActorSightZeroMode {
     /// DCB value: `Manual`
     Manual,
@@ -7607,14 +6783,8 @@ impl ControlHintConditionActorSightZeroMode {
     }
 }
 
-impl Default for ControlHintConditionActorSightZeroMode {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ControlHintConditionActorSuitState`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ControlHintConditionActorSuitState {
     /// DCB value: `VisorDirty`
     VisorDirty,
@@ -7636,14 +6806,8 @@ impl ControlHintConditionActorSuitState {
     }
 }
 
-impl Default for ControlHintConditionActorSuitState {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ControlHintConditionActorToolState`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ControlHintConditionActorToolState {
     /// DCB value: `TractorBeamInUseOnObject`
     TractorBeamInUseOnObject,
@@ -7683,14 +6847,8 @@ impl ControlHintConditionActorToolState {
     }
 }
 
-impl Default for ControlHintConditionActorToolState {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ControlHintConditionActorWeaponState`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ControlHintConditionActorWeaponState {
     /// DCB value: `Reloadable`
     Reloadable,
@@ -7736,14 +6894,8 @@ impl ControlHintConditionActorWeaponState {
     }
 }
 
-impl Default for ControlHintConditionActorWeaponState {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ControlHintConditionActorZeroGEVAState`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ControlHintConditionActorZeroGEVAState {
     /// DCB value: `CanAttachToSurface`
     CanAttachToSurface,
@@ -7771,14 +6923,8 @@ impl ControlHintConditionActorZeroGEVAState {
     }
 }
 
-impl Default for ControlHintConditionActorZeroGEVAState {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ControlHintConditionMobiglasMapState`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ControlHintConditionMobiglasMapState {
     /// DCB value: `InteriorMapActive`
     InteriorMapActive,
@@ -7836,14 +6982,8 @@ impl ControlHintConditionMobiglasMapState {
     }
 }
 
-impl Default for ControlHintConditionMobiglasMapState {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ControlHintConditionOptInEventState`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ControlHintConditionOptInEventState {
     /// DCB value: `OptInEventAvailable`
     OptInEventAvailable,
@@ -7868,14 +7008,8 @@ impl ControlHintConditionOptInEventState {
     }
 }
 
-impl Default for ControlHintConditionOptInEventState {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ControlHintConditionRemoteTurret`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ControlHintConditionRemoteTurret {
     /// DCB value: `HasRemoteTurretAccess`
     HasRemoteTurretAccess,
@@ -7912,14 +7046,8 @@ impl ControlHintConditionRemoteTurret {
     }
 }
 
-impl Default for ControlHintConditionRemoteTurret {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ControlHintConditionTransporterMotionSpeed`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ControlHintConditionTransporterMotionSpeed {
     /// DCB value: `Idle`
     Idle,
@@ -7947,14 +7075,8 @@ impl ControlHintConditionTransporterMotionSpeed {
     }
 }
 
-impl Default for ControlHintConditionTransporterMotionSpeed {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ControlHintConditionTryOnState`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ControlHintConditionTryOnState {
     /// DCB value: `Active`
     Active,
@@ -7976,14 +7098,8 @@ impl ControlHintConditionTryOnState {
     }
 }
 
-impl Default for ControlHintConditionTryOnState {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ControlHintConditionVehicleAutoLandState`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ControlHintConditionVehicleAutoLandState {
     /// DCB value: `Ready`
     Ready,
@@ -8005,14 +7121,8 @@ impl ControlHintConditionVehicleAutoLandState {
     }
 }
 
-impl Default for ControlHintConditionVehicleAutoLandState {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ControlHintConditionVehicleAutoSelectedContact`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ControlHintConditionVehicleAutoSelectedContact {
     /// DCB value: `None`
     None,
@@ -8046,14 +7156,8 @@ impl ControlHintConditionVehicleAutoSelectedContact {
     }
 }
 
-impl Default for ControlHintConditionVehicleAutoSelectedContact {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ControlHintConditionVehicleComponents`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ControlHintConditionVehicleComponents {
     /// DCB value: `Missiles`
     Missiles,
@@ -8102,14 +7206,8 @@ impl ControlHintConditionVehicleComponents {
     }
 }
 
-impl Default for ControlHintConditionVehicleComponents {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ControlHintConditionVehicleCounterMeasureState`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ControlHintConditionVehicleCounterMeasureState {
     /// DCB value: `HasChaff`
     HasChaff,
@@ -8140,14 +7238,8 @@ impl ControlHintConditionVehicleCounterMeasureState {
     }
 }
 
-impl Default for ControlHintConditionVehicleCounterMeasureState {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ControlHintConditionVehicleDestroyedState`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ControlHintConditionVehicleDestroyedState {
     /// DCB value: `Alive`
     Alive,
@@ -8172,14 +7264,8 @@ impl ControlHintConditionVehicleDestroyedState {
     }
 }
 
-impl Default for ControlHintConditionVehicleDestroyedState {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ControlHintConditionVehicleDocking`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ControlHintConditionVehicleDocking {
     /// DCB value: `NoDockingTube`
     NoDockingTube,
@@ -8222,14 +7308,8 @@ impl ControlHintConditionVehicleDocking {
     }
 }
 
-impl Default for ControlHintConditionVehicleDocking {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ControlHintConditionVehicleEjectorSeat`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ControlHintConditionVehicleEjectorSeat {
     /// DCB value: `EjectorSeat`
     EjectorSeat,
@@ -8251,14 +7331,8 @@ impl ControlHintConditionVehicleEjectorSeat {
     }
 }
 
-impl Default for ControlHintConditionVehicleEjectorSeat {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ControlHintConditionVehicleEnvironment`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ControlHintConditionVehicleEnvironment {
     /// DCB value: `IncomingMissiles`
     IncomingMissiles,
@@ -8298,14 +7372,8 @@ impl ControlHintConditionVehicleEnvironment {
     }
 }
 
-impl Default for ControlHintConditionVehicleEnvironment {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ControlHintConditionVehicleHealthState`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ControlHintConditionVehicleHealthState {
     /// DCB value: `Below10Percent`
     Below10Percent,
@@ -8339,14 +7407,8 @@ impl ControlHintConditionVehicleHealthState {
     }
 }
 
-impl Default for ControlHintConditionVehicleHealthState {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ControlHintConditionVehicleJumpDriveState`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ControlHintConditionVehicleJumpDriveState {
     /// DCB value: `HasJumpDrive`
     HasJumpDrive,
@@ -8386,14 +7448,8 @@ impl ControlHintConditionVehicleJumpDriveState {
     }
 }
 
-impl Default for ControlHintConditionVehicleJumpDriveState {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ControlHintConditionVehicleLandingArea`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ControlHintConditionVehicleLandingArea {
     /// DCB value: `NoLandingArea`
     NoLandingArea,
@@ -8430,14 +7486,8 @@ impl ControlHintConditionVehicleLandingArea {
     }
 }
 
-impl Default for ControlHintConditionVehicleLandingArea {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ControlHintConditionVehicleLandingGearState`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ControlHintConditionVehicleLandingGearState {
     /// DCB value: `Down`
     Down,
@@ -8462,14 +7512,8 @@ impl ControlHintConditionVehicleLandingGearState {
     }
 }
 
-impl Default for ControlHintConditionVehicleLandingGearState {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ControlHintConditionVehicleLockedTarget`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ControlHintConditionVehicleLockedTarget {
     /// DCB value: `None`
     None,
@@ -8503,14 +7547,8 @@ impl ControlHintConditionVehicleLockedTarget {
     }
 }
 
-impl Default for ControlHintConditionVehicleLockedTarget {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ControlHintConditionVehicleMainThrustersState`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ControlHintConditionVehicleMainThrustersState {
     /// DCB value: `Off`
     Off,
@@ -8538,14 +7576,8 @@ impl ControlHintConditionVehicleMainThrustersState {
     }
 }
 
-impl Default for ControlHintConditionVehicleMainThrustersState {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ControlHintConditionVehicleMasterMode`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ControlHintConditionVehicleMasterMode {
     /// DCB value: `SCM`
     SCM,
@@ -8570,14 +7602,8 @@ impl ControlHintConditionVehicleMasterMode {
     }
 }
 
-impl Default for ControlHintConditionVehicleMasterMode {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ControlHintConditionVehicleMiningLaserMode`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ControlHintConditionVehicleMiningLaserMode {
     /// DCB value: `Fracture`
     Fracture,
@@ -8602,14 +7628,8 @@ impl ControlHintConditionVehicleMiningLaserMode {
     }
 }
 
-impl Default for ControlHintConditionVehicleMiningLaserMode {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ControlHintConditionVehiclePinnedTarget`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ControlHintConditionVehiclePinnedTarget {
     /// DCB value: `None`
     None,
@@ -8643,14 +7663,8 @@ impl ControlHintConditionVehiclePinnedTarget {
     }
 }
 
-impl Default for ControlHintConditionVehiclePinnedTarget {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ControlHintConditionVehicleQuantumTravelState`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ControlHintConditionVehicleQuantumTravelState {
     /// DCB value: `QT_RouteSet`
     QT_RouteSet,
@@ -8681,14 +7695,8 @@ impl ControlHintConditionVehicleQuantumTravelState {
     }
 }
 
-impl Default for ControlHintConditionVehicleQuantumTravelState {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ControlHintConditionVehicleSalvage`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ControlHintConditionVehicleSalvage {
     /// DCB value: `SupportsScraping`
     SupportsScraping,
@@ -8725,14 +7733,8 @@ impl ControlHintConditionVehicleSalvage {
     }
 }
 
-impl Default for ControlHintConditionVehicleSalvage {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ControlHintConditionVehicleScanWaveAvailability`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ControlHintConditionVehicleScanWaveAvailability {
     /// DCB value: `Available`
     Available,
@@ -8754,14 +7756,8 @@ impl ControlHintConditionVehicleScanWaveAvailability {
     }
 }
 
-impl Default for ControlHintConditionVehicleScanWaveAvailability {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ControlHintConditionVehicleSeatTypeState`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ControlHintConditionVehicleSeatTypeState {
     /// DCB value: `SeatToExterior`
     SeatToExterior,
@@ -8786,14 +7782,8 @@ impl ControlHintConditionVehicleSeatTypeState {
     }
 }
 
-impl Default for ControlHintConditionVehicleSeatTypeState {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ControlHintConditionVehicleState`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ControlHintConditionVehicleState {
     /// DCB value: `Docked`
     Docked,
@@ -8833,14 +7823,8 @@ impl ControlHintConditionVehicleState {
     }
 }
 
-impl Default for ControlHintConditionVehicleState {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ControlHintConditionVehicleSystems`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ControlHintConditionVehicleSystems {
     /// DCB value: `Power_On`
     Power_On,
@@ -8895,14 +7879,8 @@ impl ControlHintConditionVehicleSystems {
     }
 }
 
-impl Default for ControlHintConditionVehicleSystems {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ControlHintConditionVehicleWeaponState`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ControlHintConditionVehicleWeaponState {
     /// DCB value: `WeaponGroup1Set`
     WeaponGroup1Set,
@@ -8927,14 +7905,8 @@ impl ControlHintConditionVehicleWeaponState {
     }
 }
 
-impl Default for ControlHintConditionVehicleWeaponState {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ControlHintConditionVehicleWeaponSystems`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ControlHintConditionVehicleWeaponSystems {
     /// DCB value: `PrecisionTargetingEnabled`
     PrecisionTargetingEnabled,
@@ -8962,14 +7934,8 @@ impl ControlHintConditionVehicleWeaponSystems {
     }
 }
 
-impl Default for ControlHintConditionVehicleWeaponSystems {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `CounterMeasureType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum CounterMeasureType {
     /// DCB value: `Flare`
     Flare,
@@ -8994,14 +7960,8 @@ impl CounterMeasureType {
     }
 }
 
-impl Default for CounterMeasureType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `CoverBodyDirection`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum CoverBodyDirection {
     /// DCB value: `None`
     None,
@@ -9029,14 +7989,8 @@ impl CoverBodyDirection {
     }
 }
 
-impl Default for CoverBodyDirection {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `CtxGraph_ContextActionType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum CtxGraph_ContextActionType {
     /// DCB value: `Load`
     Load,
@@ -9073,14 +8027,8 @@ impl CtxGraph_ContextActionType {
     }
 }
 
-impl Default for CtxGraph_ContextActionType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `CurrencyType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum CurrencyType {
     /// DCB value: `INVALID`
     INVALID,
@@ -9114,14 +8062,8 @@ impl CurrencyType {
     }
 }
 
-impl Default for CurrencyType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `Cursor`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum Cursor {
     /// DCB value: `Auto`
     Auto,
@@ -9185,14 +8127,8 @@ impl Cursor {
     }
 }
 
-impl Default for Cursor {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `CurveEndPoint`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum CurveEndPoint {
     /// DCB value: `MinOptimal`
     MinOptimal,
@@ -9220,14 +8156,8 @@ impl CurveEndPoint {
     }
 }
 
-impl Default for CurveEndPoint {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `CurveStartPoint`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum CurveStartPoint {
     /// DCB value: `MinPower`
     MinPower,
@@ -9255,14 +8185,8 @@ impl CurveStartPoint {
     }
 }
 
-impl Default for CurveStartPoint {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `DamageToKillType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum DamageToKillType {
     /// DCB value: `none`
     none,
@@ -9317,14 +8241,8 @@ impl DamageToKillType {
     }
 }
 
-impl Default for DamageToKillType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `DamageTypes`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum DamageTypes {
     /// DCB value: `Physical`
     Physical,
@@ -9361,14 +8279,8 @@ impl DamageTypes {
     }
 }
 
-impl Default for DamageTypes {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `DateScheduleRepeat`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum DateScheduleRepeat {
     /// DCB value: `OneOff`
     OneOff,
@@ -9399,14 +8311,8 @@ impl DateScheduleRepeat {
     }
 }
 
-impl Default for DateScheduleRepeat {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `DaylightParticleGroupActivation`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum DaylightParticleGroupActivation {
     /// DCB value: `AlwaysActive`
     AlwaysActive,
@@ -9434,14 +8340,8 @@ impl DaylightParticleGroupActivation {
     }
 }
 
-impl Default for DaylightParticleGroupActivation {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `DeathReason`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum DeathReason {
     /// DCB value: `none`
     none,
@@ -9478,14 +8378,8 @@ impl DeathReason {
     }
 }
 
-impl Default for DeathReason {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `DeliveryObjectiveType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum DeliveryObjectiveType {
     /// DCB value: `None`
     None,
@@ -9519,14 +8413,8 @@ impl DeliveryObjectiveType {
     }
 }
 
-impl Default for DeliveryObjectiveType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `DeviceType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum DeviceType {
     /// DCB value: `Keyboard`
     Keyboard,
@@ -9557,14 +8445,8 @@ impl DeviceType {
     }
 }
 
-impl Default for DeviceType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `DirectForceTypeFilter`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum DirectForceTypeFilter {
     /// DCB value: `Any`
     Any,
@@ -9598,14 +8480,8 @@ impl DirectForceTypeFilter {
     }
 }
 
-impl Default for DirectForceTypeFilter {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `DirectRenderStage`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum DirectRenderStage {
     /// DCB value: `None`
     None,
@@ -9636,14 +8512,8 @@ impl DirectRenderStage {
     }
 }
 
-impl Default for DirectRenderStage {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `DisplayCategory`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum DisplayCategory {
     /// DCB value: `Critical`
     Critical,
@@ -9674,14 +8544,8 @@ impl DisplayCategory {
     }
 }
 
-impl Default for DisplayCategory {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `DisturbanceStyle`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum DisturbanceStyle {
     /// DCB value: `CenteredNoise`
     CenteredNoise,
@@ -9712,14 +8576,8 @@ impl DisturbanceStyle {
     }
 }
 
-impl Default for DisturbanceStyle {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EAEntityInclusionMode`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EAEntityInclusionMode {
     /// DCB value: `DoNotInclude`
     DoNotInclude,
@@ -9744,14 +8602,8 @@ impl EAEntityInclusionMode {
     }
 }
 
-impl Default for EAEntityInclusionMode {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EAGameCompletionAwardType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EAGameCompletionAwardType {
     /// DCB value: `WinOrLoss`
     WinOrLoss,
@@ -9776,14 +8628,8 @@ impl EAGameCompletionAwardType {
     }
 }
 
-impl Default for EAGameCompletionAwardType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EAGunGameArmorLevels`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EAGunGameArmorLevels {
     /// DCB value: `Light`
     Light,
@@ -9811,14 +8657,8 @@ impl EAGunGameArmorLevels {
     }
 }
 
-impl Default for EAGunGameArmorLevels {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EAIAwarenessLevel`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EAIAwarenessLevel {
     /// DCB value: `None`
     None,
@@ -9849,14 +8689,8 @@ impl EAIAwarenessLevel {
     }
 }
 
-impl Default for EAIAwarenessLevel {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EAIDisturbanceType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EAIDisturbanceType {
     /// DCB value: `VisualHostile`
     VisualHostile,
@@ -9911,14 +8745,8 @@ impl EAIDisturbanceType {
     }
 }
 
-impl Default for EAIDisturbanceType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EAIMagazineRules`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EAIMagazineRules {
     /// DCB value: `FollowGamerules`
     FollowGamerules,
@@ -9946,14 +8774,8 @@ impl EAIMagazineRules {
     }
 }
 
-impl Default for EAIMagazineRules {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EAINavigationGeneration`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EAINavigationGeneration {
     /// DCB value: `Included`
     Included,
@@ -9981,14 +8803,8 @@ impl EAINavigationGeneration {
     }
 }
 
-impl Default for EAINavigationGeneration {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EAIPerceptionAudioType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EAIPerceptionAudioType {
     /// DCB value: `BulletHit`
     BulletHit,
@@ -10043,14 +8859,8 @@ impl EAIPerceptionAudioType {
     }
 }
 
-impl Default for EAIPerceptionAudioType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EAIPerceptionBehaviour`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EAIPerceptionBehaviour {
     /// DCB value: `None`
     None,
@@ -10084,14 +8894,8 @@ impl EAIPerceptionBehaviour {
     }
 }
 
-impl Default for EAIPerceptionBehaviour {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EAIPerceptionContext`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EAIPerceptionContext {
     /// DCB value: `Default`
     Default,
@@ -10116,14 +8920,8 @@ impl EAIPerceptionContext {
     }
 }
 
-impl Default for EAIPerceptionContext {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EAIWeaponShootingMode`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EAIWeaponShootingMode {
     /// DCB value: `Single`
     Single,
@@ -10166,14 +8964,8 @@ impl EAIWeaponShootingMode {
     }
 }
 
-impl Default for EAIWeaponShootingMode {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EALoadoutSnapshotType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EALoadoutSnapshotType {
     /// DCB value: `EA_ELIMINATION`
     EA_ELIMINATION,
@@ -10201,14 +8993,8 @@ impl EALoadoutSnapshotType {
     }
 }
 
-impl Default for EALoadoutSnapshotType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EAMvpType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EAMvpType {
     /// DCB value: `None`
     None,
@@ -10245,14 +9031,8 @@ impl EAMvpType {
     }
 }
 
-impl Default for EAMvpType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EAOptionType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EAOptionType {
     /// DCB value: `GameMode`
     GameMode,
@@ -10277,14 +9057,8 @@ impl EAOptionType {
     }
 }
 
-impl Default for EAOptionType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EAPickupAudioTrigger`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EAPickupAudioTrigger {
     /// DCB value: `PickupAquiredByPlayer`
     PickupAquiredByPlayer,
@@ -10321,14 +9095,8 @@ impl EAPickupAudioTrigger {
     }
 }
 
-impl Default for EAPickupAudioTrigger {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EAPickupType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EAPickupType {
     /// DCB value: `Ballistics`
     Ballistics,
@@ -10365,14 +9133,8 @@ impl EAPickupType {
     }
 }
 
-impl Default for EAPickupType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EASOPSpawnState`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EASOPSpawnState {
     /// DCB value: `None`
     None,
@@ -10400,14 +9162,8 @@ impl EASOPSpawnState {
     }
 }
 
-impl Default for EASOPSpawnState {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EASpawnScreenMode`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EASpawnScreenMode {
     /// DCB value: `Disabled`
     Disabled,
@@ -10435,14 +9191,8 @@ impl EASpawnScreenMode {
     }
 }
 
-impl Default for EASpawnScreenMode {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EATransportOnTransitionFinished`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EATransportOnTransitionFinished {
     /// DCB value: `DoNothing`
     DoNothing,
@@ -10479,14 +9229,8 @@ impl EATransportOnTransitionFinished {
     }
 }
 
-impl Default for EATransportOnTransitionFinished {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EATransportTransitionType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EATransportTransitionType {
     /// DCB value: `Unknown`
     Unknown,
@@ -10514,14 +9258,8 @@ impl EATransportTransitionType {
     }
 }
 
-impl Default for EATransportTransitionType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EAccumulatorType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EAccumulatorType {
     /// DCB value: `Wear`
     Wear,
@@ -10549,14 +9287,8 @@ impl EAccumulatorType {
     }
 }
 
-impl Default for EAccumulatorType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EActorActionEntityCarryableState`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EActorActionEntityCarryableState {
     /// DCB value: `Undefined`
     Undefined,
@@ -10614,14 +9346,8 @@ impl EActorActionEntityCarryableState {
     }
 }
 
-impl Default for EActorActionEntityCarryableState {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EActorActionHandlerEventType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EActorActionHandlerEventType {
     /// DCB value: `Sleep`
     Sleep,
@@ -10643,14 +9369,8 @@ impl EActorActionHandlerEventType {
     }
 }
 
-impl Default for EActorActionHandlerEventType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EActorGForceCameraEffectCategory`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EActorGForceCameraEffectCategory {
     /// DCB value: `IfcsDefault`
     IfcsDefault,
@@ -10681,14 +9401,8 @@ impl EActorGForceCameraEffectCategory {
     }
 }
 
-impl Default for EActorGForceCameraEffectCategory {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EActorHostedArticulatedEntityProfile`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EActorHostedArticulatedEntityProfile {
     /// DCB value: `None`
     None,
@@ -10722,14 +9436,8 @@ impl EActorHostedArticulatedEntityProfile {
     }
 }
 
-impl Default for EActorHostedArticulatedEntityProfile {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EActorLookAheadHeadRollType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EActorLookAheadHeadRollType {
     /// DCB value: `VehicleHorizonAlignment`
     VehicleHorizonAlignment,
@@ -10757,14 +9465,8 @@ impl EActorLookAheadHeadRollType {
     }
 }
 
-impl Default for EActorLookAheadHeadRollType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EActorLookAheadTargetPointType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EActorLookAheadTargetPointType {
     /// DCB value: `VehicleForward`
     VehicleForward,
@@ -10852,14 +9554,8 @@ impl EActorLookAheadTargetPointType {
     }
 }
 
-impl Default for EActorLookAheadTargetPointType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EActorPhysicalizationProfile`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EActorPhysicalizationProfile {
     /// DCB value: `None`
     None,
@@ -10905,14 +9601,8 @@ impl EActorPhysicalizationProfile {
     }
 }
 
-impl Default for EActorPhysicalizationProfile {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EActorStanceUpAlignMode`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EActorStanceUpAlignMode {
     /// DCB value: `Auto`
     Auto,
@@ -10940,14 +9630,8 @@ impl EActorStanceUpAlignMode {
     }
 }
 
-impl Default for EActorStanceUpAlignMode {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EActorStateFilterByAimingRestriction`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EActorStateFilterByAimingRestriction {
     /// DCB value: `Any`
     Any,
@@ -10975,14 +9659,8 @@ impl EActorStateFilterByAimingRestriction {
     }
 }
 
-impl Default for EActorStateFilterByAimingRestriction {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EActorStateFilterByBoolState`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EActorStateFilterByBoolState {
     /// DCB value: `Any`
     Any,
@@ -11010,14 +9688,8 @@ impl EActorStateFilterByBoolState {
     }
 }
 
-impl Default for EActorStateFilterByBoolState {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EActorStateFilterByPlayerCamera`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EActorStateFilterByPlayerCamera {
     /// DCB value: `Any`
     Any,
@@ -11045,14 +9717,8 @@ impl EActorStateFilterByPlayerCamera {
     }
 }
 
-impl Default for EActorStateFilterByPlayerCamera {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EActorType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EActorType {
     /// DCB value: `Regular`
     Regular,
@@ -11092,14 +9758,8 @@ impl EActorType {
     }
 }
 
-impl Default for EActorType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EAimFireDetectionMode`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EAimFireDetectionMode {
     /// DCB value: `Temperature`
     Temperature,
@@ -11127,14 +9787,8 @@ impl EAimFireDetectionMode {
     }
 }
 
-impl Default for EAimFireDetectionMode {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EAimableAimType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EAimableAimType {
     /// DCB value: `PipAiming`
     PipAiming,
@@ -11162,14 +9816,8 @@ impl EAimableAimType {
     }
 }
 
-impl Default for EAimableAimType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EAimableGimbalState`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EAimableGimbalState {
     /// DCB value: `Fixed`
     Fixed,
@@ -11194,14 +9842,8 @@ impl EAimableGimbalState {
     }
 }
 
-impl Default for EAimableGimbalState {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EAimableUser`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EAimableUser {
     /// DCB value: `Pilot`
     Pilot,
@@ -11238,14 +9880,8 @@ impl EAimableUser {
     }
 }
 
-impl Default for EAimableUser {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EAmmoContainerType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EAmmoContainerType {
     /// DCB value: `Primary`
     Primary,
@@ -11273,14 +9909,8 @@ impl EAmmoContainerType {
     }
 }
 
-impl Default for EAmmoContainerType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EAnnouncementPriority`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EAnnouncementPriority {
     /// DCB value: `None`
     None,
@@ -11308,14 +9938,8 @@ impl EAnnouncementPriority {
     }
 }
 
-impl Default for EAnnouncementPriority {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EAnnouncerGameTokenType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EAnnouncerGameTokenType {
     /// DCB value: `None`
     None,
@@ -11349,14 +9973,8 @@ impl EAnnouncerGameTokenType {
     }
 }
 
-impl Default for EAnnouncerGameTokenType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EApplicationFormBodyTypes`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EApplicationFormBodyTypes {
     /// DCB value: `Male`
     Male,
@@ -11387,14 +10005,8 @@ impl EApplicationFormBodyTypes {
     }
 }
 
-impl Default for EApplicationFormBodyTypes {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EAudioBreathEvents`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EAudioBreathEvents {
     /// DCB value: `BreathIn`
     BreathIn,
@@ -11434,14 +10046,8 @@ impl EAudioBreathEvents {
     }
 }
 
-impl Default for EAudioBreathEvents {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EAudioBreathParams`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EAudioBreathParams {
     /// DCB value: `BreathDuration`
     BreathDuration,
@@ -11532,14 +10138,8 @@ impl EAudioBreathParams {
     }
 }
 
-impl Default for EAudioBreathParams {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EAudioControllerEntityType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EAudioControllerEntityType {
     /// DCB value: `None`
     None,
@@ -11573,14 +10173,8 @@ impl EAudioControllerEntityType {
     }
 }
 
-impl Default for EAudioControllerEntityType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EAudioEnvironmentFeedbackMovementType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EAudioEnvironmentFeedbackMovementType {
     /// DCB value: `EnvironmentMovement_X`
     EnvironmentMovement_X,
@@ -11611,14 +10205,8 @@ impl EAudioEnvironmentFeedbackMovementType {
     }
 }
 
-impl Default for EAudioEnvironmentFeedbackMovementType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EAudioGameContextType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EAudioGameContextType {
     /// DCB value: `Default`
     Default,
@@ -11661,14 +10249,8 @@ impl EAudioGameContextType {
     }
 }
 
-impl Default for EAudioGameContextType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EAudioIFCSOutputData`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EAudioIFCSOutputData {
     /// DCB value: `IFCS_Update_Mode`
     IFCS_Update_Mode,
@@ -11945,14 +10527,8 @@ impl EAudioIFCSOutputData {
     }
 }
 
-impl Default for EAudioIFCSOutputData {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EAudioTriggerType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EAudioTriggerType {
     /// DCB value: `None`
     None,
@@ -11995,14 +10571,8 @@ impl EAudioTriggerType {
     }
 }
 
-impl Default for EAudioTriggerType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EAudioValueOutputCameraInputs`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EAudioValueOutputCameraInputs {
     /// DCB value: `EAVOCI_None`
     EAVOCI_None,
@@ -12036,14 +10606,8 @@ impl EAudioValueOutputCameraInputs {
     }
 }
 
-impl Default for EAudioValueOutputCameraInputs {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EAutoFillType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EAutoFillType {
     /// DCB value: `None`
     None,
@@ -12077,14 +10641,8 @@ impl EAutoFillType {
     }
 }
 
-impl Default for EAutoFillType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EAuxiliaryProxy`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EAuxiliaryProxy {
     /// DCB value: `Head_Proxies`
     Head_Proxies,
@@ -12199,14 +10757,8 @@ impl EAuxiliaryProxy {
     }
 }
 
-impl Default for EAuxiliaryProxy {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EAwardId`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EAwardId {
     /// DCB value: `None`
     None,
@@ -12468,14 +11020,8 @@ impl EAwardId {
     }
 }
 
-impl Default for EAwardId {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EBuildModeSubMenu`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EBuildModeSubMenu {
     /// DCB value: `LandClaim`
     LandClaim,
@@ -12506,14 +11052,8 @@ impl EBuildModeSubMenu {
     }
 }
 
-impl Default for EBuildModeSubMenu {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EBuildingBlocksFlattenBehavior`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EBuildingBlocksFlattenBehavior {
     /// DCB value: `None`
     None,
@@ -12541,14 +11081,8 @@ impl EBuildingBlocksFlattenBehavior {
     }
 }
 
-impl Default for EBuildingBlocksFlattenBehavior {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ECIGTestA`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ECIGTestA {
     /// DCB value: `Item_A`
     Item_A,
@@ -12591,14 +11125,8 @@ impl ECIGTestA {
     }
 }
 
-impl Default for ECIGTestA {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ECameraTransitionRelativeTo`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ECameraTransitionRelativeTo {
     /// DCB value: `Start`
     Start,
@@ -12623,14 +11151,8 @@ impl ECameraTransitionRelativeTo {
     }
 }
 
-impl Default for ECameraTransitionRelativeTo {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ECameraViewTypes`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ECameraViewTypes {
     /// DCB value: `Simple3P`
     Simple3P,
@@ -12736,14 +11258,8 @@ impl ECameraViewTypes {
     }
 }
 
-impl Default for ECameraViewTypes {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ECarryableDefaultInteractions`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ECarryableDefaultInteractions {
     /// DCB value: `Carry`
     Carry,
@@ -12795,14 +11311,8 @@ impl ECarryableDefaultInteractions {
     }
 }
 
-impl Default for ECarryableDefaultInteractions {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ECarryableSequenceActions`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ECarryableSequenceActions {
     /// DCB value: `Undefined`
     Undefined,
@@ -12830,14 +11340,8 @@ impl ECarryableSequenceActions {
     }
 }
 
-impl Default for ECarryableSequenceActions {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ECarryableState`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ECarryableState {
     /// DCB value: `eCS_Dropped`
     eCS_Dropped,
@@ -12886,14 +11390,8 @@ impl ECarryableState {
     }
 }
 
-impl Default for ECarryableState {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ECharacterCustomizerDNARegion`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ECharacterCustomizerDNARegion {
     /// DCB value: `LeftBrow`
     LeftBrow,
@@ -12954,14 +11452,8 @@ impl ECharacterCustomizerDNARegion {
     }
 }
 
-impl Default for ECharacterCustomizerDNARegion {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ECharacterCustomizerFeature`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ECharacterCustomizerFeature {
     /// DCB value: `Skin`
     Skin,
@@ -13013,14 +11505,8 @@ impl ECharacterCustomizerFeature {
     }
 }
 
-impl Default for ECharacterCustomizerFeature {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ECharacterCustomizerItemSelectMode`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ECharacterCustomizerItemSelectMode {
     /// DCB value: `HeadSelection`
     HeadSelection,
@@ -13048,14 +11534,8 @@ impl ECharacterCustomizerItemSelectMode {
     }
 }
 
-impl Default for ECharacterCustomizerItemSelectMode {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ECharacterCustomizerTextureSelectSlot`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ECharacterCustomizerTextureSelectSlot {
     /// DCB value: `MakeupSlot1`
     MakeupSlot1,
@@ -13086,14 +11566,8 @@ impl ECharacterCustomizerTextureSelectSlot {
     }
 }
 
-impl Default for ECharacterCustomizerTextureSelectSlot {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ECharacterCustomizerTextureSlot`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ECharacterCustomizerTextureSlot {
     /// DCB value: `SLOT1`
     SLOT1,
@@ -13172,14 +11646,8 @@ impl ECharacterCustomizerTextureSlot {
     }
 }
 
-impl Default for ECharacterCustomizerTextureSlot {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ECharacterGenerationArchetypeBuild`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ECharacterGenerationArchetypeBuild {
     /// DCB value: `Skinny`
     Skinny,
@@ -13210,14 +11678,8 @@ impl ECharacterGenerationArchetypeBuild {
     }
 }
 
-impl Default for ECharacterGenerationArchetypeBuild {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ECharacterGenerationArchetypeEthnicity`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ECharacterGenerationArchetypeEthnicity {
     /// DCB value: `African`
     African,
@@ -13251,14 +11713,8 @@ impl ECharacterGenerationArchetypeEthnicity {
     }
 }
 
-impl Default for ECharacterGenerationArchetypeEthnicity {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EChargeDrainMode`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EChargeDrainMode {
     /// DCB value: `Charge`
     Charge,
@@ -13283,14 +11739,8 @@ impl EChargeDrainMode {
     }
 }
 
-impl Default for EChargeDrainMode {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EChatEmoteType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EChatEmoteType {
     /// DCB value: `Social`
     Social,
@@ -13315,14 +11765,8 @@ impl EChatEmoteType {
     }
 }
 
-impl Default for EChatEmoteType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ECommsNotificationTiming`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ECommsNotificationTiming {
     /// DCB value: `Simultaneous`
     Simultaneous,
@@ -13350,14 +11794,8 @@ impl ECommsNotificationTiming {
     }
 }
 
-impl Default for ECommsNotificationTiming {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ECommsRTTLocation`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ECommsRTTLocation {
     /// DCB value: `None`
     None,
@@ -13394,14 +11832,8 @@ impl ECommsRTTLocation {
     }
 }
 
-impl Default for ECommsRTTLocation {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EComparisonMode`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EComparisonMode {
     /// DCB value: `Equal`
     Equal,
@@ -13435,14 +11867,8 @@ impl EComparisonMode {
     }
 }
 
-impl Default for EComparisonMode {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EConsumableResourceType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EConsumableResourceType {
     /// DCB value: `None`
     None,
@@ -13467,14 +11893,8 @@ impl EConsumableResourceType {
     }
 }
 
-impl Default for EConsumableResourceType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EContextMenuOptionType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EContextMenuOptionType {
     /// DCB value: `AddFriend`
     AddFriend,
@@ -13520,14 +11940,8 @@ impl EContextMenuOptionType {
     }
 }
 
-impl Default for EContextMenuOptionType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EControlledSubstanceClass`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EControlledSubstanceClass {
     /// DCB value: `ClassA`
     ClassA,
@@ -13555,14 +11969,8 @@ impl EControlledSubstanceClass {
     }
 }
 
-impl Default for EControlledSubstanceClass {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EConversationHubLinkType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EConversationHubLinkType {
     /// DCB value: `First`
     First,
@@ -13590,14 +11998,8 @@ impl EConversationHubLinkType {
     }
 }
 
-impl Default for EConversationHubLinkType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ECraftingCostResultCompositionOption`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ECraftingCostResultCompositionOption {
     /// DCB value: `Include`
     Include,
@@ -13622,14 +12024,8 @@ impl ECraftingCostResultCompositionOption {
     }
 }
 
-impl Default for ECraftingCostResultCompositionOption {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ECraftingMachineDoorState`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ECraftingMachineDoorState {
     /// DCB value: `Opened`
     Opened,
@@ -13660,14 +12056,8 @@ impl ECraftingMachineDoorState {
     }
 }
 
-impl Default for ECraftingMachineDoorState {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ECraftingProcessType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ECraftingProcessType {
     /// DCB value: `Create`
     Create,
@@ -13704,14 +12094,8 @@ impl ECraftingProcessType {
     }
 }
 
-impl Default for ECraftingProcessType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ECustomSettingType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ECustomSettingType {
     /// DCB value: `TimeLimit`
     TimeLimit,
@@ -13751,14 +12135,8 @@ impl ECustomSettingType {
     }
 }
 
-impl Default for ECustomSettingType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EDFMVictoryScoringType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EDFMVictoryScoringType {
     /// DCB value: `Kills`
     Kills,
@@ -13789,14 +12167,8 @@ impl EDFMVictoryScoringType {
     }
 }
 
-impl Default for EDFMVictoryScoringType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EDNAEditType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EDNAEditType {
     /// DCB value: `None`
     None,
@@ -13827,14 +12199,8 @@ impl EDNAEditType {
     }
 }
 
-impl Default for EDNAEditType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EDecayType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EDecayType {
     /// DCB value: `Sink`
     Sink,
@@ -13856,14 +12222,8 @@ impl EDecayType {
     }
 }
 
-impl Default for EDecayType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EDefaultActionsEntityType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EDefaultActionsEntityType {
     /// DCB value: `MountedGun`
     MountedGun,
@@ -13891,14 +12251,8 @@ impl EDefaultActionsEntityType {
     }
 }
 
-impl Default for EDefaultActionsEntityType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EDefaultColliderBehaviour`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EDefaultColliderBehaviour {
     /// DCB value: `Pushable`
     Pushable,
@@ -13926,14 +12280,8 @@ impl EDefaultColliderBehaviour {
     }
 }
 
-impl Default for EDefaultColliderBehaviour {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EDefaultEntitlement`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EDefaultEntitlement {
     /// DCB value: `Offline`
     Offline,
@@ -13964,14 +12312,8 @@ impl EDefaultEntitlement {
     }
 }
 
-impl Default for EDefaultEntitlement {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EDeformerType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EDeformerType {
     /// DCB value: `Standard`
     Standard,
@@ -14026,14 +12368,8 @@ impl EDeformerType {
     }
 }
 
-impl Default for EDeformerType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EDelayUnit`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EDelayUnit {
     /// DCB value: `Seconds`
     Seconds,
@@ -14058,14 +12394,8 @@ impl EDelayUnit {
     }
 }
 
-impl Default for EDelayUnit {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EDelinkMode`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EDelinkMode {
     /// DCB value: `NoDelink`
     NoDelink,
@@ -14096,14 +12426,8 @@ impl EDelinkMode {
     }
 }
 
-impl Default for EDelinkMode {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EDeltaSignaturePriority`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EDeltaSignaturePriority {
     /// DCB value: `None`
     None,
@@ -14131,14 +12455,8 @@ impl EDeltaSignaturePriority {
     }
 }
 
-impl Default for EDeltaSignaturePriority {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EDifficultyModifierType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EDifficultyModifierType {
     /// DCB value: `PlayerIncomingDamage`
     PlayerIncomingDamage,
@@ -14265,14 +12583,8 @@ impl EDifficultyModifierType {
     }
 }
 
-impl Default for EDifficultyModifierType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EDifficultyRange_GameKnowledge`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EDifficultyRange_GameKnowledge {
     /// DCB value: `Noob_gaming_or_tutorial_1`
     Noob_gaming_or_tutorial_1,
@@ -14315,14 +12627,8 @@ impl EDifficultyRange_GameKnowledge {
     }
 }
 
-impl Default for EDifficultyRange_GameKnowledge {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EDifficultyRange_MechanicalSkill`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EDifficultyRange_MechanicalSkill {
     /// DCB value: `Hands_free_gaming_1`
     Hands_free_gaming_1,
@@ -14365,14 +12671,8 @@ impl EDifficultyRange_MechanicalSkill {
     }
 }
 
-impl Default for EDifficultyRange_MechanicalSkill {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EDifficultyRange_MentalLoad`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EDifficultyRange_MentalLoad {
     /// DCB value: `AFK_gaming_1`
     AFK_gaming_1,
@@ -14415,14 +12715,8 @@ impl EDifficultyRange_MentalLoad {
     }
 }
 
-impl Default for EDifficultyRange_MentalLoad {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EDifficultyRange_RiskOfLoss`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EDifficultyRange_RiskOfLoss {
     /// DCB value: `Safe_and_sound_zzzz_1`
     Safe_and_sound_zzzz_1,
@@ -14465,14 +12759,8 @@ impl EDifficultyRange_RiskOfLoss {
     }
 }
 
-impl Default for EDifficultyRange_RiskOfLoss {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EDockingTubeAnimationStage`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EDockingTubeAnimationStage {
     /// DCB value: `Inactive`
     Inactive,
@@ -14500,14 +12788,8 @@ impl EDockingTubeAnimationStage {
     }
 }
 
-impl Default for EDockingTubeAnimationStage {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EDoorCollisionReactionDirection`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EDoorCollisionReactionDirection {
     /// DCB value: `All`
     All,
@@ -14547,14 +12829,8 @@ impl EDoorCollisionReactionDirection {
     }
 }
 
-impl Default for EDoorCollisionReactionDirection {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EDoorDestructionBehavior`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EDoorDestructionBehavior {
     /// DCB value: `UnlockDoor`
     UnlockDoor,
@@ -14579,14 +12855,8 @@ impl EDoorDestructionBehavior {
     }
 }
 
-impl Default for EDoorDestructionBehavior {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EDoorPortalLookupMode`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EDoorPortalLookupMode {
     /// DCB value: `Automatic`
     Automatic,
@@ -14614,14 +12884,8 @@ impl EDoorPortalLookupMode {
     }
 }
 
-impl Default for EDoorPortalLookupMode {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EDoorPoweredState`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EDoorPoweredState {
     /// DCB value: `Powered`
     Powered,
@@ -14646,14 +12910,8 @@ impl EDoorPoweredState {
     }
 }
 
-impl Default for EDoorPoweredState {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EDynamicRigLightType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EDynamicRigLightType {
     /// DCB value: `Key`
     Key,
@@ -14681,14 +12939,8 @@ impl EDynamicRigLightType {
     }
 }
 
-impl Default for EDynamicRigLightType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EEAActionItemMessageType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EEAActionItemMessageType {
     /// DCB value: `Default`
     Default,
@@ -14758,14 +13010,8 @@ impl EEAActionItemMessageType {
     }
 }
 
-impl Default for EEAActionItemMessageType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EEACapturableEntityType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EEACapturableEntityType {
     /// DCB value: `Terminal`
     Terminal,
@@ -14793,14 +13039,8 @@ impl EEACapturableEntityType {
     }
 }
 
-impl Default for EEACapturableEntityType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EEACriticalMessageType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EEACriticalMessageType {
     /// DCB value: `Local_FirstBlood`
     Local_FirstBlood,
@@ -14891,14 +13131,8 @@ impl EEACriticalMessageType {
     }
 }
 
-impl Default for EEACriticalMessageType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EEAMessageTriggerFrequency`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EEAMessageTriggerFrequency {
     /// DCB value: `Always`
     Always,
@@ -14929,14 +13163,8 @@ impl EEAMessageTriggerFrequency {
     }
 }
 
-impl Default for EEAMessageTriggerFrequency {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EEAObjectiveState`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EEAObjectiveState {
     /// DCB value: `Default`
     Default,
@@ -14973,14 +13201,8 @@ impl EEAObjectiveState {
     }
 }
 
-impl Default for EEAObjectiveState {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EEAPlayableAreaOnExit`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EEAPlayableAreaOnExit {
     /// DCB value: `None`
     None,
@@ -15020,14 +13242,8 @@ impl EEAPlayableAreaOnExit {
     }
 }
 
-impl Default for EEAPlayableAreaOnExit {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EEASpawnMulticrewType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EEASpawnMulticrewType {
     /// DCB value: `Public`
     Public,
@@ -15052,14 +13268,8 @@ impl EEASpawnMulticrewType {
     }
 }
 
-impl Default for EEASpawnMulticrewType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EEASpecialEventPass`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EEASpecialEventPass {
     /// DCB value: `EA_SpecialEvent_LunarNewYear`
     EA_SpecialEvent_LunarNewYear,
@@ -15123,14 +13333,8 @@ impl EEASpecialEventPass {
     }
 }
 
-impl Default for EEASpecialEventPass {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EEndCondition`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EEndCondition {
     /// DCB value: `None`
     None,
@@ -15161,14 +13365,8 @@ impl EEndCondition {
     }
 }
 
-impl Default for EEndCondition {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EEnemyType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EEnemyType {
     /// DCB value: `ET_Invalid`
     ET_Invalid,
@@ -15214,14 +13412,8 @@ impl EEnemyType {
     }
 }
 
-impl Default for EEnemyType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EEntityComponentCommsChannelJoinType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EEntityComponentCommsChannelJoinType {
     /// DCB value: `AutoJoin`
     AutoJoin,
@@ -15246,14 +13438,8 @@ impl EEntityComponentCommsChannelJoinType {
     }
 }
 
-impl Default for EEntityComponentCommsChannelJoinType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EEntityMarkerType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EEntityMarkerType {
     /// DCB value: `None`
     None,
@@ -15287,14 +13473,8 @@ impl EEntityMarkerType {
     }
 }
 
-impl Default for EEntityMarkerType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EEntryFlagCondition`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EEntryFlagCondition {
     /// DCB value: `Tracked`
     Tracked,
@@ -15346,14 +13526,8 @@ impl EEntryFlagCondition {
     }
 }
 
-impl Default for EEntryFlagCondition {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EEventTriggerMask`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EEventTriggerMask {
     /// DCB value: `AIAndPlayer`
     AIAndPlayer,
@@ -15381,14 +13555,8 @@ impl EEventTriggerMask {
     }
 }
 
-impl Default for EEventTriggerMask {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EExcludeSpawnGender`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EExcludeSpawnGender {
     /// DCB value: `Male`
     Male,
@@ -15416,14 +13584,8 @@ impl EExcludeSpawnGender {
     }
 }
 
-impl Default for EExcludeSpawnGender {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EFaceType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EFaceType {
     /// DCB value: `Bubble`
     Bubble,
@@ -15454,14 +13616,8 @@ impl EFaceType {
     }
 }
 
-impl Default for EFaceType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EFiringRangePenaltyType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EFiringRangePenaltyType {
     /// DCB value: `EnemyReachedPlayer`
     EnemyReachedPlayer,
@@ -15489,14 +13645,8 @@ impl EFiringRangePenaltyType {
     }
 }
 
-impl Default for EFiringRangePenaltyType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EFirstSelectMode`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EFirstSelectMode {
     /// DCB value: `None`
     None,
@@ -15524,14 +13674,8 @@ impl EFirstSelectMode {
     }
 }
 
-impl Default for EFirstSelectMode {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EFitnessImprovementType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EFitnessImprovementType {
     /// DCB value: `Stamina`
     Stamina,
@@ -15556,14 +13700,8 @@ impl EFitnessImprovementType {
     }
 }
 
-impl Default for EFitnessImprovementType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EForceReactionLeanHumanSpineBoneName`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EForceReactionLeanHumanSpineBoneName {
     /// DCB value: `Hips`
     Hips,
@@ -15606,14 +13744,8 @@ impl EForceReactionLeanHumanSpineBoneName {
     }
 }
 
-impl Default for EForceReactionLeanHumanSpineBoneName {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EForceReactionLeanVanduulSpineBoneName`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EForceReactionLeanVanduulSpineBoneName {
     /// DCB value: `Hips`
     Hips,
@@ -15656,14 +13788,8 @@ impl EForceReactionLeanVanduulSpineBoneName {
     }
 }
 
-impl Default for EForceReactionLeanVanduulSpineBoneName {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EForceReactionLeanXianSpineBoneName`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EForceReactionLeanXianSpineBoneName {
     /// DCB value: `Hips`
     Hips,
@@ -15712,14 +13838,8 @@ impl EForceReactionLeanXianSpineBoneName {
     }
 }
 
-impl Default for EForceReactionLeanXianSpineBoneName {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EFortitudeImprovementType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EFortitudeImprovementType {
     /// DCB value: `HungerDecay`
     HungerDecay,
@@ -15756,14 +13876,8 @@ impl EFortitudeImprovementType {
     }
 }
 
-impl Default for EFortitudeImprovementType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EFrontendGameModeButton`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EFrontendGameModeButton {
     /// DCB value: `PU`
     PU,
@@ -15788,14 +13902,8 @@ impl EFrontendGameModeButton {
     }
 }
 
-impl Default for EFrontendGameModeButton {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EGameCollisionClass`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EGameCollisionClass {
     /// DCB value: `Actor_Capsule`
     Actor_Capsule,
@@ -15847,14 +13955,8 @@ impl EGameCollisionClass {
     }
 }
 
-impl Default for EGameCollisionClass {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EGameDifficulty`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EGameDifficulty {
     /// DCB value: `None`
     None,
@@ -15891,14 +13993,8 @@ impl EGameDifficulty {
     }
 }
 
-impl Default for EGameDifficulty {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EGameModeFilters`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EGameModeFilters {
     /// DCB value: `Released`
     Released,
@@ -15956,14 +14052,8 @@ impl EGameModeFilters {
     }
 }
 
-impl Default for EGameModeFilters {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EGameModeId`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EGameModeId {
     /// DCB value: `S42_Default`
     S42_Default,
@@ -16078,14 +14168,8 @@ impl EGameModeId {
     }
 }
 
-impl Default for EGameModeId {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EGameModePlayedId`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EGameModePlayedId {
     /// DCB value: `None`
     None,
@@ -16155,14 +14239,8 @@ impl EGameModePlayedId {
     }
 }
 
-impl Default for EGameModePlayedId {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EGameRulesEventType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EGameRulesEventType {
     /// DCB value: `PlayerKill`
     PlayerKill,
@@ -16412,14 +14490,8 @@ impl EGameRulesEventType {
     }
 }
 
-impl Default for EGameRulesEventType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EGasCloudFadeVolumeType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EGasCloudFadeVolumeType {
     /// DCB value: `Sphere`
     Sphere,
@@ -16444,14 +14516,8 @@ impl EGasCloudFadeVolumeType {
     }
 }
 
-impl Default for EGasCloudFadeVolumeType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EGasCloudLightType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EGasCloudLightType {
     /// DCB value: `Omni`
     Omni,
@@ -16476,14 +14542,8 @@ impl EGasCloudLightType {
     }
 }
 
-impl Default for EGasCloudLightType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EGasCloudOverrideVolumeType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EGasCloudOverrideVolumeType {
     /// DCB value: `Sphere`
     Sphere,
@@ -16508,14 +14568,8 @@ impl EGasCloudOverrideVolumeType {
     }
 }
 
-impl Default for EGasCloudOverrideVolumeType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EGeometrySlots`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EGeometrySlots {
     /// DCB value: `Main`
     Main,
@@ -16546,14 +14600,8 @@ impl EGeometrySlots {
     }
 }
 
-impl Default for EGeometrySlots {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EGeometryVisAreaMode`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EGeometryVisAreaMode {
     /// DCB value: `AABB_Center`
     AABB_Center,
@@ -16584,14 +14632,8 @@ impl EGeometryVisAreaMode {
     }
 }
 
-impl Default for EGeometryVisAreaMode {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EGimbalMode`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EGimbalMode {
     /// DCB value: `SeatFixed`
     SeatFixed,
@@ -16673,14 +14715,8 @@ impl EGimbalMode {
     }
 }
 
-impl Default for EGimbalMode {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EGimbalOrder`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EGimbalOrder {
     /// DCB value: `YawPitch`
     YawPitch,
@@ -16705,14 +14741,8 @@ impl EGimbalOrder {
     }
 }
 
-impl Default for EGimbalOrder {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EGravlevDataOutput`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EGravlevDataOutput {
     /// DCB value: `SpringCompressionOne`
     SpringCompressionOne,
@@ -16755,14 +14785,8 @@ impl EGravlevDataOutput {
     }
 }
 
-impl Default for EGravlevDataOutput {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EGripUser`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EGripUser {
     /// DCB value: `AI`
     AI,
@@ -16790,14 +14814,8 @@ impl EGripUser {
     }
 }
 
-impl Default for EGripUser {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EHUDNotificationType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EHUDNotificationType {
     /// DCB value: `Default`
     Default,
@@ -16834,14 +14852,8 @@ impl EHUDNotificationType {
     }
 }
 
-impl Default for EHUDNotificationType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EHackingCodeCommandParamType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EHackingCodeCommandParamType {
     /// DCB value: `Int`
     Int,
@@ -16872,14 +14884,8 @@ impl EHackingCodeCommandParamType {
     }
 }
 
-impl Default for EHackingCodeCommandParamType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EHackingCodeCommandType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EHackingCodeCommandType {
     /// DCB value: `None`
     None,
@@ -16943,14 +14949,8 @@ impl EHackingCodeCommandType {
     }
 }
 
-impl Default for EHackingCodeCommandType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EHackingCodeEventType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EHackingCodeEventType {
     /// DCB value: `None`
     None,
@@ -17026,14 +15026,8 @@ impl EHackingCodeEventType {
     }
 }
 
-impl Default for EHackingCodeEventType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EHackingErrorType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EHackingErrorType {
     /// DCB value: `Ok`
     Ok,
@@ -17127,14 +15121,8 @@ impl EHackingErrorType {
     }
 }
 
-impl Default for EHackingErrorType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EHackingFlagOverrideType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EHackingFlagOverrideType {
     /// DCB value: `UsePreset`
     UsePreset,
@@ -17162,14 +15150,8 @@ impl EHackingFlagOverrideType {
     }
 }
 
-impl Default for EHackingFlagOverrideType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EHackingParamsAbilityType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EHackingParamsAbilityType {
     /// DCB value: `Invalid`
     Invalid,
@@ -17209,14 +15191,8 @@ impl EHackingParamsAbilityType {
     }
 }
 
-impl Default for EHackingParamsAbilityType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EHandMode`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EHandMode {
     /// DCB value: `LeftHand`
     LeftHand,
@@ -17241,14 +15217,8 @@ impl EHandMode {
     }
 }
 
-impl Default for EHandMode {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EHandholdAttachOrientationSpace`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EHandholdAttachOrientationSpace {
     /// DCB value: `ActorSpace`
     ActorSpace,
@@ -17279,14 +15249,8 @@ impl EHandholdAttachOrientationSpace {
     }
 }
 
-impl Default for EHandholdAttachOrientationSpace {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EHazardTagListBehavior`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EHazardTagListBehavior {
     /// DCB value: `OneTagIsRequired`
     OneTagIsRequired,
@@ -17311,14 +15275,8 @@ impl EHazardTagListBehavior {
     }
 }
 
-impl Default for EHazardTagListBehavior {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EHeadWearHair`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EHeadWearHair {
     /// DCB value: `any`
     any,
@@ -17346,14 +15304,8 @@ impl EHeadWearHair {
     }
 }
 
-impl Default for EHeadWearHair {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EHealingMode`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EHealingMode {
     /// DCB value: `Target`
     Target,
@@ -17378,14 +15330,8 @@ impl EHealingMode {
     }
 }
 
-impl Default for EHealingMode {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EHealingValueType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EHealingValueType {
     /// DCB value: `Health`
     Health,
@@ -17410,14 +15356,8 @@ impl EHealingValueType {
     }
 }
 
-impl Default for EHealingValueType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EHelmetState`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EHelmetState {
     /// DCB value: `NONE`
     NONE,
@@ -17451,14 +15391,8 @@ impl EHelmetState {
     }
 }
 
-impl Default for EHelmetState {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EHelmetStateMachine`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EHelmetStateMachine {
     /// DCB value: `Default`
     Default,
@@ -17501,14 +15435,8 @@ impl EHelmetStateMachine {
     }
 }
 
-impl Default for EHelmetStateMachine {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EHitType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EHitType {
     /// DCB value: `Invalid`
     Invalid,
@@ -17599,14 +15527,8 @@ impl EHitType {
     }
 }
 
-impl Default for EHitType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EHitmarkerPositionMethod`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EHitmarkerPositionMethod {
     /// DCB value: `ScreenCenter`
     ScreenCenter,
@@ -17640,14 +15562,8 @@ impl EHitmarkerPositionMethod {
     }
 }
 
-impl Default for EHitmarkerPositionMethod {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EHoloFieldShape`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EHoloFieldShape {
     /// DCB value: `HoloField_Mesh`
     HoloField_Mesh,
@@ -17675,14 +15591,8 @@ impl EHoloFieldShape {
     }
 }
 
-impl Default for EHoloFieldShape {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EHolographicVolumeType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EHolographicVolumeType {
     /// DCB value: `Sphere`
     Sphere,
@@ -17707,14 +15617,8 @@ impl EHolographicVolumeType {
     }
 }
 
-impl Default for EHolographicVolumeType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EHoverPowerStage`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EHoverPowerStage {
     /// DCB value: `PoweredOff`
     PoweredOff,
@@ -17745,14 +15649,8 @@ impl EHoverPowerStage {
     }
 }
 
-impl Default for EHoverPowerStage {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EIFCSFormationModeMessage`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EIFCSFormationModeMessage {
     /// DCB value: `LinkAvailable`
     LinkAvailable,
@@ -17789,14 +15687,8 @@ impl EIFCSFormationModeMessage {
     }
 }
 
-impl Default for EIFCSFormationModeMessage {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EIFCSFormationState`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EIFCSFormationState {
     /// DCB value: `Inactive`
     Inactive,
@@ -17836,14 +15728,8 @@ impl EIFCSFormationState {
     }
 }
 
-impl Default for EIFCSFormationState {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EIFCSModifiableNumbers`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EIFCSModifiableNumbers {
     /// DCB value: `TestNumber`
     TestNumber,
@@ -17865,14 +15751,8 @@ impl EIFCSModifiableNumbers {
     }
 }
 
-impl Default for EIFCSModifiableNumbers {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EIFCSModifiableNumbersLegacy`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EIFCSModifiableNumbersLegacy {
     /// DCB value: `SCMSpeed`
     SCMSpeed,
@@ -17903,14 +15783,8 @@ impl EIFCSModifiableNumbersLegacy {
     }
 }
 
-impl Default for EIFCSModifiableNumbersLegacy {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EIFCSModifiableVectors`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EIFCSModifiableVectors {
     /// DCB value: `TestVector`
     TestVector,
@@ -17932,14 +15806,8 @@ impl EIFCSModifiableVectors {
     }
 }
 
-impl Default for EIFCSModifiableVectors {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EIFCSModifiableVectorsLegacy`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EIFCSModifiableVectorsLegacy {
     /// DCB value: `MaxAngularVelocity`
     MaxAngularVelocity,
@@ -17973,14 +15841,8 @@ impl EIFCSModifiableVectorsLegacy {
     }
 }
 
-impl Default for EIFCSModifiableVectorsLegacy {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EIFCSModifierType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EIFCSModifierType {
     /// DCB value: `Additive`
     Additive,
@@ -18008,14 +15870,8 @@ impl EIFCSModifierType {
     }
 }
 
-impl Default for EIFCSModifierType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EIfcsEspType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EIfcsEspType {
     /// DCB value: `Default`
     Default,
@@ -18049,14 +15905,8 @@ impl EIfcsEspType {
     }
 }
 
-impl Default for EIfcsEspType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EIfcsPhysicsDampingType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EIfcsPhysicsDampingType {
     /// DCB value: `Destroyed`
     Destroyed,
@@ -18087,14 +15937,8 @@ impl EIfcsPhysicsDampingType {
     }
 }
 
-impl Default for EIfcsPhysicsDampingType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EImpoundingTrigger`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EImpoundingTrigger {
     /// DCB value: `IllegalParking`
     IllegalParking,
@@ -18122,14 +15966,8 @@ impl EImpoundingTrigger {
     }
 }
 
-impl Default for EImpoundingTrigger {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EInfractionTrigger`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EInfractionTrigger {
     /// DCB value: `KillActor`
     KillActor,
@@ -18247,14 +16085,8 @@ impl EInfractionTrigger {
     }
 }
 
-impl Default for EInfractionTrigger {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EInputPromptBoundTo`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EInputPromptBoundTo {
     /// DCB value: `ActorEyes`
     ActorEyes,
@@ -18294,14 +16126,8 @@ impl EInputPromptBoundTo {
     }
 }
 
-impl Default for EInputPromptBoundTo {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EInputPromptMode`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EInputPromptMode {
     /// DCB value: `SingleClick`
     SingleClick,
@@ -18329,14 +16155,8 @@ impl EInputPromptMode {
     }
 }
 
-impl Default for EInputPromptMode {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EInputPromptPriority`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EInputPromptPriority {
     /// DCB value: `LowPriority`
     LowPriority,
@@ -18367,14 +16187,8 @@ impl EInputPromptPriority {
     }
 }
 
-impl Default for EInputPromptPriority {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EInstanceType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EInstanceType {
     /// DCB value: `Entrance`
     Entrance,
@@ -18396,14 +16210,8 @@ impl EInstanceType {
     }
 }
 
-impl Default for EInstanceType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EInteractionConditionTargetEntity`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EInteractionConditionTargetEntity {
     /// DCB value: `Interactor`
     Interactor,
@@ -18431,14 +16239,8 @@ impl EInteractionConditionTargetEntity {
     }
 }
 
-impl Default for EInteractionConditionTargetEntity {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EInteractionTriggerType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EInteractionTriggerType {
     /// DCB value: `Self`
     Self_,
@@ -18472,14 +16274,8 @@ impl EInteractionTriggerType {
     }
 }
 
-impl Default for EInteractionTriggerType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EItemActionEventType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EItemActionEventType {
     /// DCB value: `PowerOn`
     PowerOn,
@@ -18504,14 +16300,8 @@ impl EItemActionEventType {
     }
 }
 
-impl Default for EItemActionEventType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EItemClass`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EItemClass {
     /// DCB value: `Civilian`
     Civilian,
@@ -18548,14 +16338,8 @@ impl EItemClass {
     }
 }
 
-impl Default for EItemClass {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EItemFunctionalityCondition`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EItemFunctionalityCondition {
     /// DCB value: `Damage`
     Damage,
@@ -18577,14 +16361,8 @@ impl EItemFunctionalityCondition {
     }
 }
 
-impl Default for EItemFunctionalityCondition {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EItemPortAttachImplType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EItemPortAttachImplType {
     /// DCB value: `Bone`
     Bone,
@@ -18624,14 +16402,8 @@ impl EItemPortAttachImplType {
     }
 }
 
-impl Default for EItemPortAttachImplType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EItemPortAttachRotationLimitAxis`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EItemPortAttachRotationLimitAxis {
     /// DCB value: `None`
     None,
@@ -18665,14 +16437,8 @@ impl EItemPortAttachRotationLimitAxis {
     }
 }
 
-impl Default for EItemPortAttachRotationLimitAxis {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EItemPortConnectionType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EItemPortConnectionType {
     /// DCB value: `NoConnection`
     NoConnection,
@@ -18700,14 +16466,8 @@ impl EItemPortConnectionType {
     }
 }
 
-impl Default for EItemPortConnectionType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EItemPortPhysicsGridBehavior`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EItemPortPhysicsGridBehavior {
     /// DCB value: `Interior`
     Interior,
@@ -18735,14 +16495,8 @@ impl EItemPortPhysicsGridBehavior {
     }
 }
 
-impl Default for EItemPortPhysicsGridBehavior {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EItemResourceNegativeStates`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EItemResourceNegativeStates {
     /// DCB value: `eNone`
     eNone,
@@ -18785,14 +16539,8 @@ impl EItemResourceNegativeStates {
     }
 }
 
-impl Default for EItemResourceNegativeStates {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EItemShopAdjustmentMode`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EItemShopAdjustmentMode {
     /// DCB value: `NoAdjustment`
     NoAdjustment,
@@ -18823,14 +16571,8 @@ impl EItemShopAdjustmentMode {
     }
 }
 
-impl Default for EItemShopAdjustmentMode {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EItemShopReference`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EItemShopReference {
     /// DCB value: `Item`
     Item,
@@ -18867,14 +16609,8 @@ impl EItemShopReference {
     }
 }
 
-impl Default for EItemShopReference {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EItemStatType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EItemStatType {
     /// DCB value: `Flight_IFCS_BoostSpeedBackward`
     Flight_IFCS_BoostSpeedBackward,
@@ -18980,14 +16716,8 @@ impl EItemStatType {
     }
 }
 
-impl Default for EItemStatType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EItemSubType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EItemSubType {
     /// DCB value: `ADSComputer`
     ADSComputer,
@@ -19471,14 +17201,8 @@ impl EItemSubType {
     }
 }
 
-impl Default for EItemSubType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EItemType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EItemType {
     /// DCB value: `AIModule`
     AIModule,
@@ -20076,14 +17800,8 @@ impl EItemType {
     }
 }
 
-impl Default for EItemType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EKnockbackBodyPart`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EKnockbackBodyPart {
     /// DCB value: `Indirect`
     Indirect,
@@ -20123,14 +17841,8 @@ impl EKnockbackBodyPart {
     }
 }
 
-impl Default for EKnockbackBodyPart {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EKnockbackHitType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EKnockbackHitType {
     /// DCB value: `Physics`
     Physics,
@@ -20161,14 +17873,8 @@ impl EKnockbackHitType {
     }
 }
 
-impl Default for EKnockbackHitType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ELandClaimType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ELandClaimType {
     /// DCB value: `Default`
     Default,
@@ -20196,14 +17902,8 @@ impl ELandClaimType {
     }
 }
 
-impl Default for ELandClaimType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ELandingAreaCanBeUsedBy`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ELandingAreaCanBeUsedBy {
     /// DCB value: `None`
     None,
@@ -20234,14 +17934,8 @@ impl ELandingAreaCanBeUsedBy {
     }
 }
 
-impl Default for ELandingAreaCanBeUsedBy {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ELawLicenseType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ELawLicenseType {
     /// DCB value: `IllegalGoodsLicense_ClassA`
     IllegalGoodsLicense_ClassA,
@@ -20275,14 +17969,8 @@ impl ELawLicenseType {
     }
 }
 
-impl Default for ELawLicenseType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ELensDisplayMode`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ELensDisplayMode {
     /// DCB value: `FPS`
     FPS,
@@ -20337,14 +18025,8 @@ impl ELensDisplayMode {
     }
 }
 
-impl Default for ELensDisplayMode {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ELicenseType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ELicenseType {
     /// DCB value: `Gold`
     Gold,
@@ -20378,14 +18060,8 @@ impl ELicenseType {
     }
 }
 
-impl Default for ELicenseType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ELightAffectsGI`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ELightAffectsGI {
     /// DCB value: `On`
     On,
@@ -20413,14 +18089,8 @@ impl ELightAffectsGI {
     }
 }
 
-impl Default for ELightAffectsGI {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ELightEnabledWithGI`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ELightEnabledWithGI {
     /// DCB value: `Always`
     Always,
@@ -20448,14 +18118,8 @@ impl ELightEnabledWithGI {
     }
 }
 
-impl Default for ELightEnabledWithGI {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ELightImportance`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ELightImportance {
     /// DCB value: `Decorative`
     Decorative,
@@ -20489,14 +18153,8 @@ impl ELightImportance {
     }
 }
 
-impl Default for ELightImportance {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ELightState`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ELightState {
     /// DCB value: `Off`
     Off,
@@ -20530,14 +18188,8 @@ impl ELightState {
     }
 }
 
-impl Default for ELightState {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ELightStateOverride`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ELightStateOverride {
     /// DCB value: `Off`
     Off,
@@ -20574,14 +18226,8 @@ impl ELightStateOverride {
     }
 }
 
-impl Default for ELightStateOverride {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ELightType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ELightType {
     /// DCB value: `Omni`
     Omni,
@@ -20615,14 +18261,8 @@ impl ELightType {
     }
 }
 
-impl Default for ELightType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ELinkMode`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ELinkMode {
     /// DCB value: `NoLink`
     NoLink,
@@ -20647,14 +18287,8 @@ impl ELinkMode {
     }
 }
 
-impl Default for ELinkMode {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ELoadingScreenType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ELoadingScreenType {
     /// DCB value: `StarCitizen`
     StarCitizen,
@@ -20685,14 +18319,8 @@ impl ELoadingScreenType {
     }
 }
 
-impl Default for ELoadingScreenType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ELoadoutGroup`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ELoadoutGroup {
     /// DCB value: `Body`
     Body,
@@ -20843,14 +18471,8 @@ impl ELoadoutGroup {
     }
 }
 
-impl Default for ELoadoutGroup {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ELocationTypeLevel`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ELocationTypeLevel {
     /// DCB value: `SolarSystem`
     SolarSystem,
@@ -20884,14 +18506,8 @@ impl ELocationTypeLevel {
     }
 }
 
-impl Default for ELocationTypeLevel {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ELootFullnessMode`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ELootFullnessMode {
     /// DCB value: `stopAfterExceed`
     stopAfterExceed,
@@ -20916,14 +18532,8 @@ impl ELootFullnessMode {
     }
 }
 
-impl Default for ELootFullnessMode {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ELootPruningLevel`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ELootPruningLevel {
     /// DCB value: `none`
     none,
@@ -20954,14 +18564,8 @@ impl ELootPruningLevel {
     }
 }
 
-impl Default for ELootPruningLevel {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ELootingDefaultInteractions`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ELootingDefaultInteractions {
     /// DCB value: `OpenInventoryUI`
     OpenInventoryUI,
@@ -20986,14 +18590,8 @@ impl ELootingDefaultInteractions {
     }
 }
 
-impl Default for ELootingDefaultInteractions {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EMagLaunchState`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EMagLaunchState {
     /// DCB value: `Off`
     Off,
@@ -21024,14 +18622,8 @@ impl EMagLaunchState {
     }
 }
 
-impl Default for EMagLaunchState {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EMagRecoveryState`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EMagRecoveryState {
     /// DCB value: `Idle`
     Idle,
@@ -21077,14 +18669,8 @@ impl EMagRecoveryState {
     }
 }
 
-impl Default for EMagRecoveryState {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EMapId`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EMapId {
     /// DCB value: `INVALID`
     INVALID,
@@ -21235,14 +18821,8 @@ impl EMapId {
     }
 }
 
-impl Default for EMapId {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EMarkerProviders`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EMarkerProviders {
     /// DCB value: `Grenades`
     Grenades,
@@ -21282,14 +18862,8 @@ impl EMarkerProviders {
     }
 }
 
-impl Default for EMarkerProviders {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EMasterMode`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EMasterMode {
     /// DCB value: `Invalid`
     Invalid,
@@ -21320,14 +18894,8 @@ impl EMasterMode {
     }
 }
 
-impl Default for EMasterMode {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EMatchCycleType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EMatchCycleType {
     /// DCB value: `None`
     None,
@@ -21355,14 +18923,8 @@ impl EMatchCycleType {
     }
 }
 
-impl Default for EMatchCycleType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EMatchNetworkType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EMatchNetworkType {
     /// DCB value: `Offline`
     Offline,
@@ -21390,14 +18952,8 @@ impl EMatchNetworkType {
     }
 }
 
-impl Default for EMatchNetworkType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EMeshChunks`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EMeshChunks {
     /// DCB value: `vneck_zone`
     vneck_zone,
@@ -21593,14 +19149,8 @@ impl EMeshChunks {
     }
 }
 
-impl Default for EMeshChunks {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EMisfireType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EMisfireType {
     /// DCB value: `None`
     None,
@@ -21631,14 +19181,8 @@ impl EMisfireType {
     }
 }
 
-impl Default for EMisfireType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EMissionObjectiveCategory`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EMissionObjectiveCategory {
     /// DCB value: `Primary`
     Primary,
@@ -21663,14 +19207,8 @@ impl EMissionObjectiveCategory {
     }
 }
 
-impl Default for EMissionObjectiveCategory {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EMissionPhaseStates`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EMissionPhaseStates {
     /// DCB value: `NotStarted`
     NotStarted,
@@ -21704,14 +19242,8 @@ impl EMissionPhaseStates {
     }
 }
 
-impl Default for EMissionPhaseStates {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EMissionResult`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EMissionResult {
     /// DCB value: `Completed`
     Completed,
@@ -21745,14 +19277,8 @@ impl EMissionResult {
     }
 }
 
-impl Default for EMissionResult {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EMobiGlasAfterActionReportRank`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EMobiGlasAfterActionReportRank {
     /// DCB value: `Acceptable`
     Acceptable,
@@ -21783,14 +19309,8 @@ impl EMobiGlasAfterActionReportRank {
     }
 }
 
-impl Default for EMobiGlasAfterActionReportRank {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EMobiGlasPersonalStatusSkillsDisplayType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EMobiGlasPersonalStatusSkillsDisplayType {
     /// DCB value: `None`
     None,
@@ -21818,14 +19338,8 @@ impl EMobiGlasPersonalStatusSkillsDisplayType {
     }
 }
 
-impl Default for EMobiGlasPersonalStatusSkillsDisplayType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EModifierSignatureType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EModifierSignatureType {
     /// DCB value: `GainPercentage`
     GainPercentage,
@@ -21850,14 +19364,8 @@ impl EModifierSignatureType {
     }
 }
 
-impl Default for EModifierSignatureType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EModuleType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EModuleType {
     /// DCB value: `PersistentUniverse`
     PersistentUniverse,
@@ -21891,14 +19399,8 @@ impl EModuleType {
     }
 }
 
-impl Default for EModuleType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EMolehillDecayType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EMolehillDecayType {
     /// DCB value: `ShrinkOrInflate`
     ShrinkOrInflate,
@@ -21929,14 +19431,8 @@ impl EMolehillDecayType {
     }
 }
 
-impl Default for EMolehillDecayType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EMotionProcessorLimiterType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EMotionProcessorLimiterType {
     /// DCB value: `NormalizedUniform`
     NormalizedUniform,
@@ -21976,14 +19472,8 @@ impl EMotionProcessorLimiterType {
     }
 }
 
-impl Default for EMotionProcessorLimiterType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EMovementProcessor`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EMovementProcessor {
     /// DCB value: `None`
     None,
@@ -22014,14 +19504,8 @@ impl EMovementProcessor {
     }
 }
 
-impl Default for EMovementProcessor {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EMyEnum`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EMyEnum {
     /// DCB value: `First`
     First,
@@ -22049,14 +19533,8 @@ impl EMyEnum {
     }
 }
 
-impl Default for EMyEnum {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ENavPointType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ENavPointType {
     /// DCB value: `General`
     General,
@@ -22081,14 +19559,8 @@ impl ENavPointType {
     }
 }
 
-impl Default for ENavPointType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ENavigationAgentType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ENavigationAgentType {
     /// DCB value: `MediumSizedCharacters`
     MediumSizedCharacters,
@@ -22119,14 +19591,8 @@ impl ENavigationAgentType {
     }
 }
 
-impl Default for ENavigationAgentType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ENavigationLinkLinkingType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ENavigationLinkLinkingType {
     /// DCB value: `LinksInsideSameZone`
     LinksInsideSameZone,
@@ -22157,14 +19623,8 @@ impl ENavigationLinkLinkingType {
     }
 }
 
-impl Default for ENavigationLinkLinkingType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EObjectDataBankEntryTrackerType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EObjectDataBankEntryTrackerType {
     /// DCB value: `None`
     None,
@@ -22246,14 +19706,8 @@ impl EObjectDataBankEntryTrackerType {
     }
 }
 
-impl Default for EObjectDataBankEntryTrackerType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EObjectiveInteractionType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EObjectiveInteractionType {
     /// DCB value: `Defend`
     Defend,
@@ -22284,14 +19738,8 @@ impl EObjectiveInteractionType {
     }
 }
 
-impl Default for EObjectiveInteractionType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EOperationsType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EOperationsType {
     /// DCB value: `Add`
     Add,
@@ -22319,14 +19767,8 @@ impl EOperationsType {
     }
 }
 
-impl Default for EOperationsType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EOperatorMode`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EOperatorMode {
     /// DCB value: `None`
     None,
@@ -22381,14 +19823,8 @@ impl EOperatorMode {
     }
 }
 
-impl Default for EOperatorMode {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EOrdnanceRelativeDetachType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EOrdnanceRelativeDetachType {
     /// DCB value: `Ordnance`
     Ordnance,
@@ -22416,14 +19852,8 @@ impl EOrdnanceRelativeDetachType {
     }
 }
 
-impl Default for EOrdnanceRelativeDetachType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EOutfitPieceType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EOutfitPieceType {
     /// DCB value: `Head`
     Head,
@@ -22457,14 +19887,8 @@ impl EOutfitPieceType {
     }
 }
 
-impl Default for EOutfitPieceType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EParticleInputs`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EParticleInputs {
     /// DCB value: `Count`
     Count,
@@ -22513,14 +19937,8 @@ impl EParticleInputs {
     }
 }
 
-impl Default for EParticleInputs {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EParticleModifierSource`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EParticleModifierSource {
     /// DCB value: `None`
     None,
@@ -22563,14 +19981,8 @@ impl EParticleModifierSource {
     }
 }
 
-impl Default for EParticleModifierSource {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EParticleProperties`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EParticleProperties {
     /// DCB value: `strength`
     strength,
@@ -22628,14 +20040,8 @@ impl EParticleProperties {
     }
 }
 
-impl Default for EParticleProperties {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EPerceptionSenses`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EPerceptionSenses {
     /// DCB value: `Vision`
     Vision,
@@ -22663,14 +20069,8 @@ impl EPerceptionSenses {
     }
 }
 
-impl Default for EPerceptionSenses {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EPerceptionStatus`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EPerceptionStatus {
     /// DCB value: `Dead`
     Dead,
@@ -22704,14 +20104,8 @@ impl EPerceptionStatus {
     }
 }
 
-impl Default for EPerceptionStatus {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EPerceptionTypes`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EPerceptionTypes {
     /// DCB value: `Explosive`
     Explosive,
@@ -22775,14 +20169,8 @@ impl EPerceptionTypes {
     }
 }
 
-impl Default for EPerceptionTypes {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EPersistentDataPolicy`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EPersistentDataPolicy {
     /// DCB value: `Disabled`
     Disabled,
@@ -22810,14 +20198,8 @@ impl EPersistentDataPolicy {
     }
 }
 
-impl Default for EPersistentDataPolicy {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EPhysFlag`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EPhysFlag {
     /// DCB value: `none`
     none,
@@ -22956,14 +20338,8 @@ impl EPhysFlag {
     }
 }
 
-impl Default for EPhysFlag {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EPipeClass`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EPipeClass {
     /// DCB value: `Power`
     Power,
@@ -23027,14 +20403,8 @@ impl EPipeClass {
     }
 }
 
-impl Default for EPipeClass {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EPipePriorityGroup`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EPipePriorityGroup {
     /// DCB value: `Weapon`
     Weapon,
@@ -23065,14 +20435,8 @@ impl EPipePriorityGroup {
     }
 }
 
-impl Default for EPipePriorityGroup {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EPlayerActionAnimType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EPlayerActionAnimType {
     /// DCB value: `NoAnim`
     NoAnim,
@@ -23100,14 +20464,8 @@ impl EPlayerActionAnimType {
     }
 }
 
-impl Default for EPlayerActionAnimType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EPlayerAnimatedInteractionType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EPlayerAnimatedInteractionType {
     /// DCB value: `Instantaneous`
     Instantaneous,
@@ -23135,14 +20493,8 @@ impl EPlayerAnimatedInteractionType {
     }
 }
 
-impl Default for EPlayerAnimatedInteractionType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EPlayerAttachmentSlots`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EPlayerAttachmentSlots {
     /// DCB value: `Barrel`
     Barrel,
@@ -23170,14 +20522,8 @@ impl EPlayerAttachmentSlots {
     }
 }
 
-impl Default for EPlayerAttachmentSlots {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EPlayerGroupType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EPlayerGroupType {
     /// DCB value: `System`
     System,
@@ -23214,14 +20560,8 @@ impl EPlayerGroupType {
     }
 }
 
-impl Default for EPlayerGroupType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EPlayerItemSlots`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EPlayerItemSlots {
     /// DCB value: `ArmorArms`
     ArmorArms,
@@ -23312,14 +20652,8 @@ impl EPlayerItemSlots {
     }
 }
 
-impl Default for EPlayerItemSlots {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EPlayerStateActions`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EPlayerStateActions {
     /// DCB value: `None`
     None,
@@ -23410,14 +20744,8 @@ impl EPlayerStateActions {
     }
 }
 
-impl Default for EPlayerStateActions {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EPoolFilterCombineMode`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EPoolFilterCombineMode {
     /// DCB value: `Cumulative`
     Cumulative,
@@ -23442,14 +20770,8 @@ impl EPoolFilterCombineMode {
     }
 }
 
-impl Default for EPoolFilterCombineMode {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EPopupType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EPopupType {
     /// DCB value: `GameModeDisclaimer`
     GameModeDisclaimer,
@@ -23477,14 +20799,8 @@ impl EPopupType {
     }
 }
 
-impl Default for EPopupType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EPowerSourceState`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EPowerSourceState {
     /// DCB value: `None`
     None,
@@ -23515,14 +20831,8 @@ impl EPowerSourceState {
     }
 }
 
-impl Default for EPowerSourceState {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EPreferredSpawnLocationType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EPreferredSpawnLocationType {
     /// DCB value: `CriminalRespawnWithoutArrest`
     CriminalRespawnWithoutArrest,
@@ -23547,14 +20857,8 @@ impl EPreferredSpawnLocationType {
     }
 }
 
-impl Default for EPreferredSpawnLocationType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EPresetFStopValues`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EPresetFStopValues {
     /// DCB value: `FStop_0_1`
     FStop_0_1,
@@ -23609,14 +20913,8 @@ impl EPresetFStopValues {
     }
 }
 
-impl Default for EPresetFStopValues {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EPresetLensSizes`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EPresetLensSizes {
     /// DCB value: `LensSize_8mm`
     LensSize_8mm,
@@ -23680,14 +20978,8 @@ impl EPresetLensSizes {
     }
 }
 
-impl Default for EPresetLensSizes {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EProcLeanPoseType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EProcLeanPoseType {
     /// DCB value: `Standing`
     Standing,
@@ -23715,14 +21007,8 @@ impl EProcLeanPoseType {
     }
 }
 
-impl Default for EProcLeanPoseType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EProjectedHudAlignmentType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EProjectedHudAlignmentType {
     /// DCB value: `NoRotation`
     NoRotation,
@@ -23753,14 +21039,8 @@ impl EProjectedHudAlignmentType {
     }
 }
 
-impl Default for EProjectedHudAlignmentType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EProjectedHudPositionType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EProjectedHudPositionType {
     /// DCB value: `OnAngle`
     OnAngle,
@@ -23785,14 +21065,8 @@ impl EProjectedHudPositionType {
     }
 }
 
-impl Default for EProjectedHudPositionType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EProjectedHudYawLineAnchorType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EProjectedHudYawLineAnchorType {
     /// DCB value: `InForward`
     InForward,
@@ -23817,14 +21091,8 @@ impl EProjectedHudYawLineAnchorType {
     }
 }
 
-impl Default for EProjectedHudYawLineAnchorType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EProjectileType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EProjectileType {
     /// DCB value: `Primary`
     Primary,
@@ -23849,14 +21117,8 @@ impl EProjectileType {
     }
 }
 
-impl Default for EProjectileType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EProjectionSelection1`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EProjectionSelection1 {
     /// DCB value: `PS1_NoProjection`
     PS1_NoProjection,
@@ -23881,14 +21143,8 @@ impl EProjectionSelection1 {
     }
 }
 
-impl Default for EProjectionSelection1 {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EProjectionSelection2`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EProjectionSelection2 {
     /// DCB value: `PS2_NoProjection`
     PS2_NoProjection,
@@ -23916,14 +21172,8 @@ impl EProjectionSelection2 {
     }
 }
 
-impl Default for EProjectionSelection2 {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EProjectionSelection3`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EProjectionSelection3 {
     /// DCB value: `PS3_NoProjection`
     PS3_NoProjection,
@@ -23948,14 +21198,8 @@ impl EProjectionSelection3 {
     }
 }
 
-impl Default for EProjectionSelection3 {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EProjectionSelection4`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EProjectionSelection4 {
     /// DCB value: `PS4_NoProjection`
     PS4_NoProjection,
@@ -23983,14 +21227,8 @@ impl EProjectionSelection4 {
     }
 }
 
-impl Default for EProjectionSelection4 {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EQTEPriority`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EQTEPriority {
     /// DCB value: `QTELowPriority`
     QTELowPriority,
@@ -24021,14 +21259,8 @@ impl EQTEPriority {
     }
 }
 
-impl Default for EQTEPriority {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EQTEPriorityGivewayBehaviour`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EQTEPriorityGivewayBehaviour {
     /// DCB value: `Cancel`
     Cancel,
@@ -24053,14 +21285,8 @@ impl EQTEPriorityGivewayBehaviour {
     }
 }
 
-impl Default for EQTEPriorityGivewayBehaviour {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EQedVisualGraphState`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EQedVisualGraphState {
     /// DCB value: `Idle`
     Idle,
@@ -24106,14 +21332,8 @@ impl EQedVisualGraphState {
     }
 }
 
-impl Default for EQedVisualGraphState {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EQedVisualGraphTrackedVariable`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EQedVisualGraphTrackedVariable {
     /// DCB value: `ChargePercentage`
     ChargePercentage,
@@ -24138,14 +21358,8 @@ impl EQedVisualGraphTrackedVariable {
     }
 }
 
-impl Default for EQedVisualGraphTrackedVariable {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EQedVisualGraphTrackedVariableContext`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EQedVisualGraphTrackedVariableContext {
     /// DCB value: `TrackAscending`
     TrackAscending,
@@ -24170,14 +21384,8 @@ impl EQedVisualGraphTrackedVariableContext {
     }
 }
 
-impl Default for EQedVisualGraphTrackedVariableContext {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EQuantumProcessFailure`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EQuantumProcessFailure {
     /// DCB value: `None`
     None,
@@ -24241,14 +21449,8 @@ impl EQuantumProcessFailure {
     }
 }
 
-impl Default for EQuantumProcessFailure {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ERadarChargeLevels`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ERadarChargeLevels {
     /// DCB value: `LowCharge`
     LowCharge,
@@ -24273,14 +21475,8 @@ impl ERadarChargeLevels {
     }
 }
 
-impl Default for ERadarChargeLevels {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ERadarContactBehaviourCategory`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ERadarContactBehaviourCategory {
     /// DCB value: `Vehicle`
     Vehicle,
@@ -24311,14 +21507,8 @@ impl ERadarContactBehaviourCategory {
     }
 }
 
-impl Default for ERadarContactBehaviourCategory {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ERadarContactHighlightLayer`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ERadarContactHighlightLayer {
     /// DCB value: `Default`
     Default,
@@ -24343,14 +21533,8 @@ impl ERadarContactHighlightLayer {
     }
 }
 
-impl Default for ERadarContactHighlightLayer {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ERadarContactHighlightState`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ERadarContactHighlightState {
     /// DCB value: `TargetScanBlocked`
     TargetScanBlocked,
@@ -24396,14 +21580,8 @@ impl ERadarContactHighlightState {
     }
 }
 
-impl Default for ERadarContactHighlightState {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ERadarContactState`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ERadarContactState {
     /// DCB value: `Alive`
     Alive,
@@ -24431,14 +21609,8 @@ impl ERadarContactState {
     }
 }
 
-impl Default for ERadarContactState {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ERadarFocusLevels`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ERadarFocusLevels {
     /// DCB value: `Level1`
     Level1,
@@ -24481,14 +21653,8 @@ impl ERadarFocusLevels {
     }
 }
 
-impl Default for ERadarFocusLevels {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ERatingScoreCurveType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ERatingScoreCurveType {
     /// DCB value: `TwoThousandFiveHundred`
     TwoThousandFiveHundred,
@@ -24519,14 +21685,8 @@ impl ERatingScoreCurveType {
     }
 }
 
-impl Default for ERatingScoreCurveType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EReflexImprovementType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EReflexImprovementType {
     /// DCB value: `ADSSpeed`
     ADSSpeed,
@@ -24563,14 +21723,8 @@ impl EReflexImprovementType {
     }
 }
 
-impl Default for EReflexImprovementType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ERenderLayer`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ERenderLayer {
     /// DCB value: `Default`
     Default,
@@ -24646,14 +21800,8 @@ impl ERenderLayer {
     }
 }
 
-impl Default for ERenderLayer {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ERenderType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ERenderType {
     /// DCB value: `FORWARD`
     FORWARD,
@@ -24681,14 +21829,8 @@ impl ERenderType {
     }
 }
 
-impl Default for ERenderType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EReputationChangeReason`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EReputationChangeReason {
     /// DCB value: `UNSPECIFIED`
     UNSPECIFIED,
@@ -24731,14 +21873,8 @@ impl EReputationChangeReason {
     }
 }
 
-impl Default for EReputationChangeReason {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EReputationComparisonOperator`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EReputationComparisonOperator {
     /// DCB value: `GreaterThan`
     GreaterThan,
@@ -24772,14 +21908,8 @@ impl EReputationComparisonOperator {
     }
 }
 
-impl Default for EReputationComparisonOperator {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EReputationEntityType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EReputationEntityType {
     /// DCB value: `Organization`
     Organization,
@@ -24804,14 +21934,8 @@ impl EReputationEntityType {
     }
 }
 
-impl Default for EReputationEntityType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EReputationSortOrderEntity`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EReputationSortOrderEntity {
     /// DCB value: `Alphabetical`
     Alphabetical,
@@ -24839,14 +21963,8 @@ impl EReputationSortOrderEntity {
     }
 }
 
-impl Default for EReputationSortOrderEntity {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EReputationSortOrderScope`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EReputationSortOrderScope {
     /// DCB value: `Alphabetical`
     Alphabetical,
@@ -24871,14 +21989,8 @@ impl EReputationSortOrderScope {
     }
 }
 
-impl Default for EReputationSortOrderScope {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EReputationStateValueModifier`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EReputationStateValueModifier {
     /// DCB value: `Increment`
     Increment,
@@ -24909,14 +22021,8 @@ impl EReputationStateValueModifier {
     }
 }
 
-impl Default for EReputationStateValueModifier {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EResourceContainerMutabilityLevel`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EResourceContainerMutabilityLevel {
     /// DCB value: `Static`
     Static,
@@ -24944,14 +22050,8 @@ impl EResourceContainerMutabilityLevel {
     }
 }
 
-impl Default for EResourceContainerMutabilityLevel {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ERespawnLocationType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ERespawnLocationType {
     /// DCB value: `None`
     None,
@@ -24991,14 +22091,8 @@ impl ERespawnLocationType {
     }
 }
 
-impl Default for ERespawnLocationType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ERuntimeImageSourceType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ERuntimeImageSourceType {
     /// DCB value: `None`
     None,
@@ -25062,14 +22156,8 @@ impl ERuntimeImageSourceType {
     }
 }
 
-impl Default for ERuntimeImageSourceType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ES42StatsComparisonType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ES42StatsComparisonType {
     /// DCB value: `Equal`
     Equal,
@@ -25106,14 +22194,8 @@ impl ES42StatsComparisonType {
     }
 }
 
-impl Default for ES42StatsComparisonType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ES42StatsOperationType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ES42StatsOperationType {
     /// DCB value: `Add`
     Add,
@@ -25144,14 +22226,8 @@ impl ES42StatsOperationType {
     }
 }
 
-impl Default for ES42StatsOperationType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ES42StatsPlayerState`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ES42StatsPlayerState {
     /// DCB value: `Any`
     Any,
@@ -25179,14 +22255,8 @@ impl ES42StatsPlayerState {
     }
 }
 
-impl Default for ES42StatsPlayerState {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ES42StatsType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ES42StatsType {
     /// DCB value: `EnemyKills`
     EnemyKills,
@@ -25238,14 +22308,8 @@ impl ES42StatsType {
     }
 }
 
-impl Default for ES42StatsType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ESCItemDisplayScreenLightType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ESCItemDisplayScreenLightType {
     /// DCB value: `None`
     None,
@@ -25279,14 +22343,8 @@ impl ESCItemDisplayScreenLightType {
     }
 }
 
-impl Default for ESCItemDisplayScreenLightType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ESCItemDisplayScreenState`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ESCItemDisplayScreenState {
     /// DCB value: `None`
     None,
@@ -25326,14 +22384,8 @@ impl ESCItemDisplayScreenState {
     }
 }
 
-impl Default for ESCItemDisplayScreenState {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ESCItemDisplayScreenUIModel`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ESCItemDisplayScreenUIModel {
     /// DCB value: `Provider`
     Provider,
@@ -25358,14 +22410,8 @@ impl ESCItemDisplayScreenUIModel {
     }
 }
 
-impl Default for ESCItemDisplayScreenUIModel {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ESCItemElevatorPathNodeType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ESCItemElevatorPathNodeType {
     /// DCB value: `Stop`
     Stop,
@@ -25393,14 +22439,8 @@ impl ESCItemElevatorPathNodeType {
     }
 }
 
-impl Default for ESCItemElevatorPathNodeType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ESCScreenType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ESCScreenType {
     /// DCB value: `MFD_16_9`
     MFD_16_9,
@@ -25449,14 +22489,8 @@ impl ESCScreenType {
     }
 }
 
-impl Default for ESCScreenType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ESDFSetTypes`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ESDFSetTypes {
     /// DCB value: `Shield`
     Shield,
@@ -25478,14 +22512,8 @@ impl ESDFSetTypes {
     }
 }
 
-impl Default for ESDFSetTypes {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ESalvageRepairMode`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ESalvageRepairMode {
     /// DCB value: `Salvage`
     Salvage,
@@ -25510,14 +22538,8 @@ impl ESalvageRepairMode {
     }
 }
 
-impl Default for ESalvageRepairMode {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EScanCategory`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EScanCategory {
     /// DCB value: `Affiliation`
     Affiliation,
@@ -25551,14 +22573,8 @@ impl EScanCategory {
     }
 }
 
-impl Default for EScanCategory {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EScanDisplaySection`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EScanDisplaySection {
     /// DCB value: `Boxout`
     Boxout,
@@ -25589,14 +22605,8 @@ impl EScanDisplaySection {
     }
 }
 
-impl Default for EScanDisplaySection {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EScanDisplayVariable`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EScanDisplayVariable {
     /// DCB value: `Header`
     Header,
@@ -25627,14 +22637,8 @@ impl EScanDisplayVariable {
     }
 }
 
-impl Default for EScanDisplayVariable {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EScanDisplayVariableAuxiliaryType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EScanDisplayVariableAuxiliaryType {
     /// DCB value: `None`
     None,
@@ -25659,14 +22663,8 @@ impl EScanDisplayVariableAuxiliaryType {
     }
 }
 
-impl Default for EScanDisplayVariableAuxiliaryType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EScanInformation`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EScanInformation {
     /// DCB value: `ActorStatus`
     ActorStatus,
@@ -25901,14 +22899,8 @@ impl EScanInformation {
     }
 }
 
-impl Default for EScanInformation {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EScanProcedure`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EScanProcedure {
     /// DCB value: `Armor`
     Armor,
@@ -26029,14 +23021,8 @@ impl EScanProcedure {
     }
 }
 
-impl Default for EScanProcedure {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EScanSortType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EScanSortType {
     /// DCB value: `Less`
     Less,
@@ -26061,14 +23047,8 @@ impl EScanSortType {
     }
 }
 
-impl Default for EScanSortType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EScanTable`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EScanTable {
     /// DCB value: `Self`
     Self_,
@@ -26114,14 +23094,8 @@ impl EScanTable {
     }
 }
 
-impl Default for EScanTable {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EScanType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EScanType {
     /// DCB value: `AIAutoScan`
     AIAutoScan,
@@ -26155,14 +23129,8 @@ impl EScanType {
     }
 }
 
-impl Default for EScanType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EScopeType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EScopeType {
     /// DCB value: `None`
     None,
@@ -26190,14 +23158,8 @@ impl EScopeType {
     }
 }
 
-impl Default for EScopeType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EScoreDisplayType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EScoreDisplayType {
     /// DCB value: `Score`
     Score,
@@ -26222,14 +23184,8 @@ impl EScoreDisplayType {
     }
 }
 
-impl Default for EScoreDisplayType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EScoreType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EScoreType {
     /// DCB value: `Kill`
     Kill,
@@ -26449,14 +23405,8 @@ impl EScoreType {
     }
 }
 
-impl Default for EScoreType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EScoreUIType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EScoreUIType {
     /// DCB value: `NONE`
     NONE,
@@ -26484,14 +23434,8 @@ impl EScoreUIType {
     }
 }
 
-impl Default for EScoreUIType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EScoreboardType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EScoreboardType {
     /// DCB value: `TotalScore`
     TotalScore,
@@ -26537,14 +23481,8 @@ impl EScoreboardType {
     }
 }
 
-impl Default for EScoreboardType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ESeatAccessConditionType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ESeatAccessConditionType {
     /// DCB value: `True`
     True,
@@ -26572,14 +23510,8 @@ impl ESeatAccessConditionType {
     }
 }
 
-impl Default for ESeatAccessConditionType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ESeatAccessEntranceDependencyType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ESeatAccessEntranceDependencyType {
     /// DCB value: `Never`
     Never,
@@ -26610,14 +23542,8 @@ impl ESeatAccessEntranceDependencyType {
     }
 }
 
-impl Default for ESeatAccessEntranceDependencyType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ESeatAccessPassageCondition`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ESeatAccessPassageCondition {
     /// DCB value: `InteriorOnly`
     InteriorOnly,
@@ -26645,14 +23571,8 @@ impl ESeatAccessPassageCondition {
     }
 }
 
-impl Default for ESeatAccessPassageCondition {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ESeatViewType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ESeatViewType {
     /// DCB value: `Background`
     Background,
@@ -26707,14 +23627,8 @@ impl ESeatViewType {
     }
 }
 
-impl Default for ESeatViewType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ESecurityNetworkPermissionValue`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ESecurityNetworkPermissionValue {
     /// DCB value: `Inherit`
     Inherit,
@@ -26742,14 +23656,8 @@ impl ESecurityNetworkPermissionValue {
     }
 }
 
-impl Default for ESecurityNetworkPermissionValue {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ESelectionBehaviour`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ESelectionBehaviour {
     /// DCB value: `KeepAllSelected`
     KeepAllSelected,
@@ -26786,14 +23694,8 @@ impl ESelectionBehaviour {
     }
 }
 
-impl Default for ESelectionBehaviour {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ESequenceMode`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ESequenceMode {
     /// DCB value: `Individually`
     Individually,
@@ -26821,14 +23723,8 @@ impl ESequenceMode {
     }
 }
 
-impl Default for ESequenceMode {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EServiceBeaconType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EServiceBeaconType {
     /// DCB value: `None`
     None,
@@ -26868,14 +23764,8 @@ impl EServiceBeaconType {
     }
 }
 
-impl Default for EServiceBeaconType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EShipComputerMode`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EShipComputerMode {
     /// DCB value: `Default`
     Default,
@@ -26900,14 +23790,8 @@ impl EShipComputerMode {
     }
 }
 
-impl Default for EShipComputerMode {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EShipState`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EShipState {
     /// DCB value: `Grounded`
     Grounded,
@@ -26935,14 +23819,8 @@ impl EShipState {
     }
 }
 
-impl Default for EShipState {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ESignatureType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ESignatureType {
     /// DCB value: `Infrared`
     Infrared,
@@ -26985,14 +23863,8 @@ impl ESignatureType {
     }
 }
 
-impl Default for ESignatureType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ESilhouetteColourSource`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ESilhouetteColourSource {
     /// DCB value: `HDRTarget`
     HDRTarget,
@@ -27017,14 +23889,8 @@ impl ESilhouetteColourSource {
     }
 }
 
-impl Default for ESilhouetteColourSource {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ESkillType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ESkillType {
     /// DCB value: `Fitness`
     Fitness,
@@ -27061,14 +23927,8 @@ impl ESkillType {
     }
 }
 
-impl Default for ESkillType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ESlottingMode`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ESlottingMode {
     /// DCB value: `EnabledOnAndOffSlotting`
     EnabledOnAndOffSlotting,
@@ -27096,14 +23956,8 @@ impl ESlottingMode {
     }
 }
 
-impl Default for ESlottingMode {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ESoftbodySubstepMode`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ESoftbodySubstepMode {
     /// DCB value: `FullSubstep`
     FullSubstep,
@@ -27131,14 +23985,8 @@ impl ESoftbodySubstepMode {
     }
 }
 
-impl Default for ESoftbodySubstepMode {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ESoftbodyVisualBindingMode`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ESoftbodyVisualBindingMode {
     /// DCB value: `Planar`
     Planar,
@@ -27166,14 +24014,8 @@ impl ESoftbodyVisualBindingMode {
     }
 }
 
-impl Default for ESoftbodyVisualBindingMode {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ESoundInputs`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ESoundInputs {
     /// DCB value: `FloatParam`
     FloatParam,
@@ -27204,14 +24046,8 @@ impl ESoundInputs {
     }
 }
 
-impl Default for ESoundInputs {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ESpecialEffectsType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ESpecialEffectsType {
     /// DCB value: `ReloadFull`
     ReloadFull,
@@ -27239,14 +24075,8 @@ impl ESpecialEffectsType {
     }
 }
 
-impl Default for ESpecialEffectsType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ESpectatorMode`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ESpectatorMode {
     /// DCB value: `SM_Fixed`
     SM_Fixed,
@@ -27280,14 +24110,8 @@ impl ESpectatorMode {
     }
 }
 
-impl Default for ESpectatorMode {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ESpinActivationMode`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ESpinActivationMode {
     /// DCB value: `Fire`
     Fire,
@@ -27312,14 +24136,8 @@ impl ESpinActivationMode {
     }
 }
 
-impl Default for ESpinActivationMode {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EStarGalaPaths`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EStarGalaPaths {
     /// DCB value: `formationPath1`
     formationPath1,
@@ -27413,14 +24231,8 @@ impl EStarGalaPaths {
     }
 }
 
-impl Default for EStarGalaPaths {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EStatCompareMode`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EStatCompareMode {
     /// DCB value: `MoreIsBetter`
     MoreIsBetter,
@@ -27448,14 +24260,8 @@ impl EStatCompareMode {
     }
 }
 
-impl Default for EStatCompareMode {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EStatType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EStatType {
     /// DCB value: `OnFoot`
     OnFoot,
@@ -27483,14 +24289,8 @@ impl EStatType {
     }
 }
 
-impl Default for EStatType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EStrengthImprovementType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EStrengthImprovementType {
     /// DCB value: `CarryWheight`
     CarryWheight,
@@ -27536,14 +24336,8 @@ impl EStrengthImprovementType {
     }
 }
 
-impl Default for EStrengthImprovementType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ESuggestedFOVMode`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ESuggestedFOVMode {
     /// DCB value: `SuggestedFOVMode_None`
     SuggestedFOVMode_None,
@@ -27574,14 +24368,8 @@ impl ESuggestedFOVMode {
     }
 }
 
-impl Default for ESuggestedFOVMode {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ESunShadowMode`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ESunShadowMode {
     /// DCB value: `Upto_20m`
     Upto_20m,
@@ -27621,14 +24409,8 @@ impl ESunShadowMode {
     }
 }
 
-impl Default for ESunShadowMode {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ETakedownTechniqueImprovementType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ETakedownTechniqueImprovementType {
     /// DCB value: `Speed`
     Speed,
@@ -27653,14 +24435,8 @@ impl ETakedownTechniqueImprovementType {
     }
 }
 
-impl Default for ETakedownTechniqueImprovementType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ETattooMirrorMode`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ETattooMirrorMode {
     /// DCB value: `None`
     None,
@@ -27691,14 +24467,8 @@ impl ETattooMirrorMode {
     }
 }
 
-impl Default for ETattooMirrorMode {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EThrowMode`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EThrowMode {
     /// DCB value: `Undefined`
     Undefined,
@@ -27738,14 +24508,8 @@ impl EThrowMode {
     }
 }
 
-impl Default for EThrowMode {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EThrowPerceptionSound`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EThrowPerceptionSound {
     /// DCB value: `SmallSound`
     SmallSound,
@@ -27770,14 +24534,8 @@ impl EThrowPerceptionSound {
     }
 }
 
-impl Default for EThrowPerceptionSound {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EThrusterAnimDriver`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EThrusterAnimDriver {
     /// DCB value: `ThrustWithAfterburner`
     ThrustWithAfterburner,
@@ -27811,14 +24569,8 @@ impl EThrusterAnimDriver {
     }
 }
 
-impl Default for EThrusterAnimDriver {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EThrusterFlag`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EThrusterFlag {
     /// DCB value: `StrafeForward`
     StrafeForward,
@@ -27873,14 +24625,8 @@ impl EThrusterFlag {
     }
 }
 
-impl Default for EThrusterFlag {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EThrusterOutputData`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EThrusterOutputData {
     /// DCB value: `FireStrength`
     FireStrength,
@@ -27935,14 +24681,8 @@ impl EThrusterOutputData {
     }
 }
 
-impl Default for EThrusterOutputData {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EThrusterType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EThrusterType {
     /// DCB value: `Maneuver`
     Maneuver,
@@ -27970,14 +24710,8 @@ impl EThrusterType {
     }
 }
 
-impl Default for EThrusterType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ETriggerDefaultActions`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ETriggerDefaultActions {
     /// DCB value: `pc_item_primary`
     pc_item_primary,
@@ -28002,14 +24736,8 @@ impl ETriggerDefaultActions {
     }
 }
 
-impl Default for ETriggerDefaultActions {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ETurbulentPassEA`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ETurbulentPassEA {
     /// DCB value: `EA_BattleRoyale`
     EA_BattleRoyale,
@@ -28118,14 +24846,8 @@ impl ETurbulentPassEA {
     }
 }
 
-impl Default for ETurbulentPassEA {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ETurretGunSafetyType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ETurretGunSafetyType {
     /// DCB value: `Off`
     Off,
@@ -28153,14 +24875,8 @@ impl ETurretGunSafetyType {
     }
 }
 
-impl Default for ETurretGunSafetyType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ETurretRotationStyle`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ETurretRotationStyle {
     /// DCB value: `SingleAxis`
     SingleAxis,
@@ -28185,14 +24901,8 @@ impl ETurretRotationStyle {
     }
 }
 
-impl Default for ETurretRotationStyle {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EUsableEntrySelectionType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EUsableEntrySelectionType {
     /// DCB value: `FirstFound`
     FirstFound,
@@ -28223,14 +24933,8 @@ impl EUsableEntrySelectionType {
     }
 }
 
-impl Default for EUsableEntrySelectionType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EUsableSelectionMethod`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EUsableSelectionMethod {
     /// DCB value: `Priority`
     Priority,
@@ -28258,14 +24962,8 @@ impl EUsableSelectionMethod {
     }
 }
 
-impl Default for EUsableSelectionMethod {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EUsableStance`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EUsableStance {
     /// DCB value: `Stand`
     Stand,
@@ -28302,14 +25000,8 @@ impl EUsableStance {
     }
 }
 
-impl Default for EUsableStance {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EUseSlotReenablePoint`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EUseSlotReenablePoint {
     /// DCB value: `UseChannelCompletion`
     UseChannelCompletion,
@@ -28337,14 +25029,8 @@ impl EUseSlotReenablePoint {
     }
 }
 
-impl Default for EUseSlotReenablePoint {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EVAStateType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EVAStateType {
     /// DCB value: `StandIdle`
     StandIdle,
@@ -28378,14 +25064,8 @@ impl EVAStateType {
     }
 }
 
-impl Default for EVAStateType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EVaultingTechniqueImprovementType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EVaultingTechniqueImprovementType {
     /// DCB value: `Speed`
     Speed,
@@ -28407,14 +25087,8 @@ impl EVaultingTechniqueImprovementType {
     }
 }
 
-impl Default for EVaultingTechniqueImprovementType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EVehicleDamageModifier`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EVehicleDamageModifier {
     /// DCB value: `AI_HitBy_AI`
     AI_HitBy_AI,
@@ -28451,14 +25125,8 @@ impl EVehicleDamageModifier {
     }
 }
 
-impl Default for EVehicleDamageModifier {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EVehicleElevatorBehavior`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EVehicleElevatorBehavior {
     /// DCB value: `None`
     None,
@@ -28486,14 +25154,8 @@ impl EVehicleElevatorBehavior {
     }
 }
 
-impl Default for EVehicleElevatorBehavior {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EVehicleMovementClass`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EVehicleMovementClass {
     /// DCB value: `ArcadeWheeled`
     ArcadeWheeled,
@@ -28530,14 +25192,8 @@ impl EVehicleMovementClass {
     }
 }
 
-impl Default for EVehicleMovementClass {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EVibrationAudioCalculationType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EVibrationAudioCalculationType {
     /// DCB value: `Additive`
     Additive,
@@ -28562,14 +25218,8 @@ impl EVibrationAudioCalculationType {
     }
 }
 
-impl Default for EVibrationAudioCalculationType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EVibrationSource`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EVibrationSource {
     /// DCB value: `Collision`
     Collision,
@@ -28651,14 +25301,8 @@ impl EVibrationSource {
     }
 }
 
-impl Default for EVibrationSource {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EVibrationVehiclePlayerRole`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EVibrationVehiclePlayerRole {
     /// DCB value: `None`
     None,
@@ -28689,14 +25333,8 @@ impl EVibrationVehiclePlayerRole {
     }
 }
 
-impl Default for EVibrationVehiclePlayerRole {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EViewType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EViewType {
     /// DCB value: `eView_Off`
     eView_Off,
@@ -28748,14 +25386,8 @@ impl EViewType {
     }
 }
 
-impl Default for EViewType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EVoteLocType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EVoteLocType {
     /// DCB value: `Passed`
     Passed,
@@ -28792,14 +25424,8 @@ impl EVoteLocType {
     }
 }
 
-impl Default for EVoteLocType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EWantedLevelComparison`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EWantedLevelComparison {
     /// DCB value: `Ignore`
     Ignore,
@@ -28830,14 +25456,8 @@ impl EWantedLevelComparison {
     }
 }
 
-impl Default for EWantedLevelComparison {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EWave`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EWave {
     /// DCB value: `EWave_1`
     EWave_1,
@@ -28871,14 +25491,8 @@ impl EWave {
     }
 }
 
-impl Default for EWave {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EWeaponDisplayStat`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EWeaponDisplayStat {
     /// DCB value: `Damage`
     Damage,
@@ -28921,14 +25535,8 @@ impl EWeaponDisplayStat {
     }
 }
 
-impl Default for EWeaponDisplayStat {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EWeaponGroup`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EWeaponGroup {
     /// DCB value: `Gun1`
     Gun1,
@@ -28959,14 +25567,8 @@ impl EWeaponGroup {
     }
 }
 
-impl Default for EWeaponGroup {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EWeaponProjectileType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EWeaponProjectileType {
     /// DCB value: `Ballistic`
     Ballistic,
@@ -29036,14 +25638,8 @@ impl EWeaponProjectileType {
     }
 }
 
-impl Default for EWeaponProjectileType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EWeaponRangeCategory`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EWeaponRangeCategory {
     /// DCB value: `Short`
     Short,
@@ -29071,14 +25667,8 @@ impl EWeaponRangeCategory {
     }
 }
 
-impl Default for EWeaponRangeCategory {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EWeaponRole`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EWeaponRole {
     /// DCB value: `Sniper`
     Sniper,
@@ -29115,14 +25705,8 @@ impl EWeaponRole {
     }
 }
 
-impl Default for EWeaponRole {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EWeaponToggleMode`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EWeaponToggleMode {
     /// DCB value: `IsNotToggle`
     IsNotToggle,
@@ -29150,14 +25734,8 @@ impl EWeaponToggleMode {
     }
 }
 
-impl Default for EWeaponToggleMode {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EWeaponType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EWeaponType {
     /// DCB value: `Gatling`
     Gatling,
@@ -29194,14 +25772,8 @@ impl EWeaponType {
     }
 }
 
-impl Default for EWeaponType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EWeekday`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EWeekday {
     /// DCB value: `Sunday`
     Sunday,
@@ -29241,14 +25813,8 @@ impl EWeekday {
     }
 }
 
-impl Default for EWeekday {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ElectricalCalculationPropertyType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ElectricalCalculationPropertyType {
     /// DCB value: `Distance`
     Distance,
@@ -29273,14 +25839,8 @@ impl ElectricalCalculationPropertyType {
     }
 }
 
-impl Default for ElectricalCalculationPropertyType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ElectricalStatePropertyType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ElectricalStatePropertyType {
     /// DCB value: `Charge`
     Charge,
@@ -29302,14 +25862,8 @@ impl ElectricalStatePropertyType {
     }
 }
 
-impl Default for ElectricalStatePropertyType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EngineeringState`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EngineeringState {
     /// DCB value: `Baseline`
     Baseline,
@@ -29340,14 +25894,8 @@ impl EngineeringState {
     }
 }
 
-impl Default for EngineeringState {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `EulerAngles`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EulerAngles {
     /// DCB value: `Pitch`
     Pitch,
@@ -29375,14 +25923,8 @@ impl EulerAngles {
     }
 }
 
-impl Default for EulerAngles {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ExpirationActivationType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ExpirationActivationType {
     /// DCB value: `AtCreation`
     AtCreation,
@@ -29407,14 +25949,8 @@ impl ExpirationActivationType {
     }
 }
 
-impl Default for ExpirationActivationType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ExplosionZone`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ExplosionZone {
     /// DCB value: `AdamHosted`
     AdamHosted,
@@ -29439,14 +25975,8 @@ impl ExplosionZone {
     }
 }
 
-impl Default for ExplosionZone {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `FactionType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum FactionType {
     /// DCB value: `LawEnforcement`
     LawEnforcement,
@@ -29477,14 +26007,8 @@ impl FactionType {
     }
 }
 
-impl Default for FactionType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `FireBehavior`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum FireBehavior {
     /// DCB value: `VoxelDamage`
     VoxelDamage,
@@ -29560,14 +26084,8 @@ impl FireBehavior {
     }
 }
 
-impl Default for FireBehavior {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `FireEnabledMode`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum FireEnabledMode {
     /// DCB value: `Enabled`
     Enabled,
@@ -29601,14 +26119,8 @@ impl FireEnabledMode {
     }
 }
 
-impl Default for FireEnabledMode {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `FireFilterMode`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum FireFilterMode {
     /// DCB value: `Include`
     Include,
@@ -29633,14 +26145,8 @@ impl FireFilterMode {
     }
 }
 
-impl Default for FireFilterMode {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `FireHazardFogNoiseTextures`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum FireHazardFogNoiseTextures {
     /// DCB value: `Noise0`
     Noise0,
@@ -29665,14 +26171,8 @@ impl FireHazardFogNoiseTextures {
     }
 }
 
-impl Default for FireHazardFogNoiseTextures {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `FireHazardMaterials`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum FireHazardMaterials {
     /// DCB value: `Baseline`
     Baseline,
@@ -29703,14 +26203,8 @@ impl FireHazardMaterials {
     }
 }
 
-impl Default for FireHazardMaterials {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `FireHazardSurfaceDirections`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum FireHazardSurfaceDirections {
     /// DCB value: `Floors`
     Floors,
@@ -29738,14 +26232,8 @@ impl FireHazardSurfaceDirections {
     }
 }
 
-impl Default for FireHazardSurfaceDirections {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `FlashValueUpdateMode`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum FlashValueUpdateMode {
     /// DCB value: `None`
     None,
@@ -29779,14 +26267,8 @@ impl FlashValueUpdateMode {
     }
 }
 
-impl Default for FlashValueUpdateMode {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `FlightHUDMessageType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum FlightHUDMessageType {
     /// DCB value: `DefaultEmptyMessageDoesNotDisplay`
     DefaultEmptyMessageDoesNotDisplay,
@@ -29913,14 +26395,8 @@ impl FlightHUDMessageType {
     }
 }
 
-impl Default for FlightHUDMessageType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ForceKnockdownDirection`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ForceKnockdownDirection {
     /// DCB value: `None`
     None,
@@ -29954,14 +26430,8 @@ impl ForceKnockdownDirection {
     }
 }
 
-impl Default for ForceKnockdownDirection {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ForceReactionFilterType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ForceReactionFilterType {
     /// DCB value: `Standing`
     Standing,
@@ -30001,14 +26471,8 @@ impl ForceReactionFilterType {
     }
 }
 
-impl Default for ForceReactionFilterType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `FriendlyFireType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum FriendlyFireType {
     /// DCB value: `None`
     None,
@@ -30036,14 +26500,8 @@ impl FriendlyFireType {
     }
 }
 
-impl Default for FriendlyFireType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `FuelTypes`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum FuelTypes {
     /// DCB value: `INVALID`
     INVALID,
@@ -30071,14 +26529,8 @@ impl FuelTypes {
     }
 }
 
-impl Default for FuelTypes {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `GRID_TYPE`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum GRID_TYPE {
     /// DCB value: `Global`
     Global,
@@ -30115,14 +26567,8 @@ impl GRID_TYPE {
     }
 }
 
-impl Default for GRID_TYPE {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `GameplayTrigger_SelectionMode`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum GameplayTrigger_SelectionMode {
     /// DCB value: `All`
     All,
@@ -30150,14 +26596,8 @@ impl GameplayTrigger_SelectionMode {
     }
 }
 
-impl Default for GameplayTrigger_SelectionMode {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `GameplayTrigger_Toggle`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum GameplayTrigger_Toggle {
     /// DCB value: `Enable`
     Enable,
@@ -30182,14 +26622,8 @@ impl GameplayTrigger_Toggle {
     }
 }
 
-impl Default for GameplayTrigger_Toggle {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `GenderType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum GenderType {
     /// DCB value: `NotSet`
     NotSet,
@@ -30217,14 +26651,8 @@ impl GenderType {
     }
 }
 
-impl Default for GenderType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `GeomForm`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum GeomForm {
     /// DCB value: `Vertices`
     Vertices,
@@ -30255,14 +26683,8 @@ impl GeomForm {
     }
 }
 
-impl Default for GeomForm {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `GeomType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum GeomType {
     /// DCB value: `None`
     None,
@@ -30293,14 +26715,8 @@ impl GeomType {
     }
 }
 
-impl Default for GeomType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `HUDPalleteEntry`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum HUDPalleteEntry {
     /// DCB value: `Moderate`
     Moderate,
@@ -30346,14 +26762,8 @@ impl HUDPalleteEntry {
     }
 }
 
-impl Default for HUDPalleteEntry {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `HandholdType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum HandholdType {
     /// DCB value: `Fixed`
     Fixed,
@@ -30381,14 +26791,8 @@ impl HandholdType {
     }
 }
 
-impl Default for HandholdType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `HarvestableOverrideAreaType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum HarvestableOverrideAreaType {
     /// DCB value: `AutoRegisterWithZoneHost`
     AutoRegisterWithZoneHost,
@@ -30413,14 +26817,8 @@ impl HarvestableOverrideAreaType {
     }
 }
 
-impl Default for HarvestableOverrideAreaType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `HintEventType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum HintEventType {
     /// DCB value: `None`
     None,
@@ -31372,14 +27770,8 @@ impl HintEventType {
     }
 }
 
-impl Default for HintEventType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `HitReactionPart`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum HitReactionPart {
     /// DCB value: `Head`
     Head,
@@ -31413,14 +27805,8 @@ impl HitReactionPart {
     }
 }
 
-impl Default for HitReactionPart {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `HitReactionRegion`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum HitReactionRegion {
     /// DCB value: `Head`
     Head,
@@ -31448,14 +27834,8 @@ impl HitReactionRegion {
     }
 }
 
-impl Default for HitReactionRegion {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `HospitalizationReason`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum HospitalizationReason {
     /// DCB value: `none`
     none,
@@ -31495,14 +27875,8 @@ impl HospitalizationReason {
     }
 }
 
-impl Default for HospitalizationReason {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `Hostility`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum Hostility {
     /// DCB value: `Hostile`
     Hostile,
@@ -31530,14 +27904,8 @@ impl Hostility {
     }
 }
 
-impl Default for Hostility {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `IconShowCondition`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum IconShowCondition {
     /// DCB value: `DefaultShowNever`
     DefaultShowNever,
@@ -31577,14 +27945,8 @@ impl IconShowCondition {
     }
 }
 
-impl Default for IconShowCondition {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `InnerThoughtDisplayType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum InnerThoughtDisplayType {
     /// DCB value: `Show`
     Show,
@@ -31612,14 +27974,8 @@ impl InnerThoughtDisplayType {
     }
 }
 
-impl Default for InnerThoughtDisplayType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `InnerThoughtJustification`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum InnerThoughtJustification {
     /// DCB value: `Left`
     Left,
@@ -31647,14 +28003,8 @@ impl InnerThoughtJustification {
     }
 }
 
-impl Default for InnerThoughtJustification {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `InnerThoughtOrientation`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum InnerThoughtOrientation {
     /// DCB value: `RotateToPlayer`
     RotateToPlayer,
@@ -31679,14 +28029,8 @@ impl InnerThoughtOrientation {
     }
 }
 
-impl Default for InnerThoughtOrientation {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `InnerThought_ForceCase`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum InnerThought_ForceCase {
     /// DCB value: `None`
     None,
@@ -31714,14 +28058,8 @@ impl InnerThought_ForceCase {
     }
 }
 
-impl Default for InnerThought_ForceCase {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `InputDeviceType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum InputDeviceType {
     /// DCB value: `Keyboard`
     Keyboard,
@@ -31764,14 +28102,8 @@ impl InputDeviceType {
     }
 }
 
-impl Default for InputDeviceType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `InstancedInteriorSizeEnum`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum InstancedInteriorSizeEnum {
     /// DCB value: `Small`
     Small,
@@ -31802,14 +28134,8 @@ impl InstancedInteriorSizeEnum {
     }
 }
 
-impl Default for InstancedInteriorSizeEnum {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `InteractionBindingsMethod`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum InteractionBindingsMethod {
     /// DCB value: `None`
     None,
@@ -31837,14 +28163,8 @@ impl InteractionBindingsMethod {
     }
 }
 
-impl Default for InteractionBindingsMethod {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `InteractionGenericCursor`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum InteractionGenericCursor {
     /// DCB value: `SingleAction`
     SingleAction,
@@ -31881,14 +28201,8 @@ impl InteractionGenericCursor {
     }
 }
 
-impl Default for InteractionGenericCursor {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `InteractionModifier`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum InteractionModifier {
     /// DCB value: `DefaultStanding`
     DefaultStanding,
@@ -31922,14 +28236,8 @@ impl InteractionModifier {
     }
 }
 
-impl Default for InteractionModifier {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `InteractionPromptBoundTo`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum InteractionPromptBoundTo {
     /// DCB value: `ActorEyes`
     ActorEyes,
@@ -31969,14 +28277,8 @@ impl InteractionPromptBoundTo {
     }
 }
 
-impl Default for InteractionPromptBoundTo {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `InteractionPromptStyle`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum InteractionPromptStyle {
     /// DCB value: `Prompt`
     Prompt,
@@ -32016,14 +28318,8 @@ impl InteractionPromptStyle {
     }
 }
 
-impl Default for InteractionPromptStyle {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `InteractiveVariableLoopType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum InteractiveVariableLoopType {
     /// DCB value: `NoLoop`
     NoLoop,
@@ -32048,14 +28344,8 @@ impl InteractiveVariableLoopType {
     }
 }
 
-impl Default for InteractiveVariableLoopType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `InterpolationMode`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum InterpolationMode {
     /// DCB value: `Linear`
     Linear,
@@ -32104,14 +28394,8 @@ impl InterpolationMode {
     }
 }
 
-impl Default for InterpolationMode {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ItemExpiryState`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ItemExpiryState {
     /// DCB value: `Idle`
     Idle,
@@ -32139,14 +28423,8 @@ impl ItemExpiryState {
     }
 }
 
-impl Default for ItemExpiryState {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ItemJumpDriveState`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ItemJumpDriveState {
     /// DCB value: `Idle`
     Idle,
@@ -32192,14 +28470,8 @@ impl ItemJumpDriveState {
     }
 }
 
-impl Default for ItemJumpDriveState {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ItemKioskMode`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ItemKioskMode {
     /// DCB value: `Commodity`
     Commodity,
@@ -32233,14 +28505,8 @@ impl ItemKioskMode {
     }
 }
 
-impl Default for ItemKioskMode {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ItemResourceDeltaType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ItemResourceDeltaType {
     /// DCB value: `Consumption`
     Consumption,
@@ -32274,14 +28540,8 @@ impl ItemResourceDeltaType {
     }
 }
 
-impl Default for ItemResourceDeltaType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ItemResourceTypes`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ItemResourceTypes {
     /// DCB value: `Vent`
     Vent,
@@ -32324,14 +28584,8 @@ impl ItemResourceTypes {
     }
 }
 
-impl Default for ItemResourceTypes {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `JumpVariant`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum JumpVariant {
     /// DCB value: `Default`
     Default,
@@ -32368,14 +28622,8 @@ impl JumpVariant {
     }
 }
 
-impl Default for JumpVariant {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `KeypadKeys`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum KeypadKeys {
     /// DCB value: `Key0`
     Key0,
@@ -32424,14 +28672,8 @@ impl KeypadKeys {
     }
 }
 
-impl Default for KeypadKeys {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `KioskShopType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum KioskShopType {
     /// DCB value: `Commodity`
     Commodity,
@@ -32459,14 +28701,8 @@ impl KioskShopType {
     }
 }
 
-impl Default for KioskShopType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `LadderAnimationClimbSpeed`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum LadderAnimationClimbSpeed {
     /// DCB value: `Walk`
     Walk,
@@ -32494,14 +28730,8 @@ impl LadderAnimationClimbSpeed {
     }
 }
 
-impl Default for LadderAnimationClimbSpeed {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `LandingCondition`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum LandingCondition {
     /// DCB value: `None`
     None,
@@ -32526,14 +28756,8 @@ impl LandingCondition {
     }
 }
 
-impl Default for LandingCondition {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `LandingExitStance`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum LandingExitStance {
     /// DCB value: `Stand`
     Stand,
@@ -32564,14 +28788,8 @@ impl LandingExitStance {
     }
 }
 
-impl Default for LandingExitStance {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `LandingStrength`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum LandingStrength {
     /// DCB value: `Light`
     Light,
@@ -32602,14 +28820,8 @@ impl LandingStrength {
     }
 }
 
-impl Default for LandingStrength {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `LeanStateType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum LeanStateType {
     /// DCB value: `Idle`
     Idle,
@@ -32655,14 +28867,8 @@ impl LeanStateType {
     }
 }
 
-impl Default for LeanStateType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `LedgeType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum LedgeType {
     /// DCB value: `Any`
     Any,
@@ -32690,14 +28896,8 @@ impl LedgeType {
     }
 }
 
-impl Default for LedgeType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `LegacyCraftingPortMode`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum LegacyCraftingPortMode {
     /// DCB value: `Both`
     Both,
@@ -32725,14 +28925,8 @@ impl LegacyCraftingPortMode {
     }
 }
 
-impl Default for LegacyCraftingPortMode {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `LevelStreamingMode`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum LevelStreamingMode {
     /// DCB value: `Never`
     Never,
@@ -32760,14 +28954,8 @@ impl LevelStreamingMode {
     }
 }
 
-impl Default for LevelStreamingMode {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `LightProperties`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum LightProperties {
     /// DCB value: `Radius`
     Radius,
@@ -32798,14 +28986,8 @@ impl LightProperties {
     }
 }
 
-impl Default for LightProperties {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `LightningStrengthPropertyType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum LightningStrengthPropertyType {
     /// DCB value: `Distance`
     Distance,
@@ -32830,14 +29012,8 @@ impl LightningStrengthPropertyType {
     }
 }
 
-impl Default for LightningStrengthPropertyType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `LinkedStatReverseSignFlag`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum LinkedStatReverseSignFlag {
     /// DCB value: `None`
     None,
@@ -32868,14 +29044,8 @@ impl LinkedStatReverseSignFlag {
     }
 }
 
-impl Default for LinkedStatReverseSignFlag {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `LocalizationAvailability`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum LocalizationAvailability {
     /// DCB value: `Available`
     Available,
@@ -32903,14 +29073,8 @@ impl LocalizationAvailability {
     }
 }
 
-impl Default for LocalizationAvailability {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `LocalizationLabel`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum LocalizationLabel {
     /// DCB value: `None`
     None,
@@ -32944,14 +29108,8 @@ impl LocalizationLabel {
     }
 }
 
-impl Default for LocalizationLabel {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `LocalizationLanguage`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum LocalizationLanguage {
     /// DCB value: `None`
     None,
@@ -33009,14 +29167,8 @@ impl LocalizationLanguage {
     }
 }
 
-impl Default for LocalizationLanguage {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `LocalizationStatus`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum LocalizationStatus {
     /// DCB value: `WorkInProgress`
     WorkInProgress,
@@ -33080,14 +29232,8 @@ impl LocalizationStatus {
     }
 }
 
-impl Default for LocalizationStatus {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `LocalizationUse`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum LocalizationUse {
     /// DCB value: `General`
     General,
@@ -33115,14 +29261,8 @@ impl LocalizationUse {
     }
 }
 
-impl Default for LocalizationUse {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `MapDisplayFrameType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum MapDisplayFrameType {
     /// DCB value: `Rectangle2D`
     Rectangle2D,
@@ -33159,14 +29299,8 @@ impl MapDisplayFrameType {
     }
 }
 
-impl Default for MapDisplayFrameType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `MapMarkerTrackingPlaneAlignmentMode`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum MapMarkerTrackingPlaneAlignmentMode {
     /// DCB value: `GalacticPlane`
     GalacticPlane,
@@ -33191,14 +29325,8 @@ impl MapMarkerTrackingPlaneAlignmentMode {
     }
 }
 
-impl Default for MapMarkerTrackingPlaneAlignmentMode {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `MapRadarMode`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum MapRadarMode {
     /// DCB value: `FullScreen`
     FullScreen,
@@ -33226,14 +29354,8 @@ impl MapRadarMode {
     }
 }
 
-impl Default for MapRadarMode {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `MarkerClippingVolumeType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum MarkerClippingVolumeType {
     /// DCB value: `Sphere`
     Sphere,
@@ -33264,14 +29386,8 @@ impl MarkerClippingVolumeType {
     }
 }
 
-impl Default for MarkerClippingVolumeType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `MarkerTrackingActions`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum MarkerTrackingActions {
     /// DCB value: `None`
     None,
@@ -33311,14 +29427,8 @@ impl MarkerTrackingActions {
     }
 }
 
-impl Default for MarkerTrackingActions {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `Marker_ARCullingCategory`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum Marker_ARCullingCategory {
     /// DCB value: `Unassigned`
     Unassigned,
@@ -33376,14 +29486,8 @@ impl Marker_ARCullingCategory {
     }
 }
 
-impl Default for Marker_ARCullingCategory {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `Marker_DisplayMode`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum Marker_DisplayMode {
     /// DCB value: `FPS`
     FPS,
@@ -33408,14 +29512,8 @@ impl Marker_DisplayMode {
     }
 }
 
-impl Default for Marker_DisplayMode {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `Marker_MapBoxoutSectionType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum Marker_MapBoxoutSectionType {
     /// DCB value: `Amenities`
     Amenities,
@@ -33443,14 +29541,8 @@ impl Marker_MapBoxoutSectionType {
     }
 }
 
-impl Default for Marker_MapBoxoutSectionType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `Marker_MapDisplayMode`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum Marker_MapDisplayMode {
     /// DCB value: `DefaultRadar`
     DefaultRadar,
@@ -33484,14 +29576,8 @@ impl Marker_MapDisplayMode {
     }
 }
 
-impl Default for Marker_MapDisplayMode {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `Marker_MapLabelDisplayType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum Marker_MapLabelDisplayType {
     /// DCB value: `Always`
     Always,
@@ -33522,14 +29608,8 @@ impl Marker_MapLabelDisplayType {
     }
 }
 
-impl Default for Marker_MapLabelDisplayType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `Marker_StackPositionAlignment`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum Marker_StackPositionAlignment {
     /// DCB value: `Origin`
     Origin,
@@ -33563,14 +29643,8 @@ impl Marker_StackPositionAlignment {
     }
 }
 
-impl Default for Marker_StackPositionAlignment {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `MaterialProperties`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum MaterialProperties {
     /// DCB value: `Glow`
     Glow,
@@ -33613,14 +29687,8 @@ impl MaterialProperties {
     }
 }
 
-impl Default for MaterialProperties {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `MedBedTier`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum MedBedTier {
     /// DCB value: `Hospital`
     Hospital,
@@ -33648,14 +29716,8 @@ impl MedBedTier {
     }
 }
 
-impl Default for MedBedTier {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `MeleeAttackClass`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum MeleeAttackClass {
     /// DCB value: `Basic`
     Basic,
@@ -33683,14 +29745,8 @@ impl MeleeAttackClass {
     }
 }
 
-impl Default for MeleeAttackClass {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `MeleeTargetType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum MeleeTargetType {
     /// DCB value: `Any`
     Any,
@@ -33718,14 +29774,8 @@ impl MeleeTargetType {
     }
 }
 
-impl Default for MeleeTargetType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `MessageState`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum MessageState {
     /// DCB value: `Normal`
     Normal,
@@ -33753,14 +29803,8 @@ impl MessageState {
     }
 }
 
-impl Default for MessageState {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `MinimumInfluenceFactorOperation`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum MinimumInfluenceFactorOperation {
     /// DCB value: `GreaterThan`
     GreaterThan,
@@ -33785,14 +29829,8 @@ impl MinimumInfluenceFactorOperation {
     }
 }
 
-impl Default for MinimumInfluenceFactorOperation {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `MissionLocationTagType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum MissionLocationTagType {
     /// DCB value: `General`
     General,
@@ -33820,14 +29858,8 @@ impl MissionLocationTagType {
     }
 }
 
-impl Default for MissionLocationTagType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `Month`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum Month {
     /// DCB value: `January`
     January,
@@ -33882,14 +29914,8 @@ impl Month {
     }
 }
 
-impl Default for Month {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `MotionControlType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum MotionControlType {
     /// DCB value: `Animation`
     Animation,
@@ -33914,14 +29940,8 @@ impl MotionControlType {
     }
 }
 
-impl Default for MotionControlType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `MotionStateType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum MotionStateType {
     /// DCB value: `Idle`
     Idle,
@@ -33967,14 +29987,8 @@ impl MotionStateType {
     }
 }
 
-impl Default for MotionStateType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `MovementSet`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum MovementSet {
     /// DCB value: `Inactive`
     Inactive,
@@ -34017,14 +30031,8 @@ impl MovementSet {
     }
 }
 
-impl Default for MovementSet {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `MovementSetCondition`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum MovementSetCondition {
     /// DCB value: `StateMovable`
     StateMovable,
@@ -34070,14 +30078,8 @@ impl MovementSetCondition {
     }
 }
 
-impl Default for MovementSetCondition {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `MovementSpeed`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum MovementSpeed {
     /// DCB value: `WalkSlow`
     WalkSlow,
@@ -34114,14 +30116,8 @@ impl MovementSpeed {
     }
 }
 
-impl Default for MovementSpeed {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `NaturalMotionSpeed`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum NaturalMotionSpeed {
     /// DCB value: `WalkSlow`
     WalkSlow,
@@ -34170,14 +30166,8 @@ impl NaturalMotionSpeed {
     }
 }
 
-impl Default for NaturalMotionSpeed {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `NavPointIconEnum`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum NavPointIconEnum {
     /// DCB value: `Default`
     Default,
@@ -34217,14 +30207,8 @@ impl NavPointIconEnum {
     }
 }
 
-impl Default for NavPointIconEnum {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ParticleAttachToZone`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ParticleAttachToZone {
     /// DCB value: `Parent`
     Parent,
@@ -34249,14 +30233,8 @@ impl ParticleAttachToZone {
     }
 }
 
-impl Default for ParticleAttachToZone {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ParticleCPUVisAreaCullingMode`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ParticleCPUVisAreaCullingMode {
     /// DCB value: `None`
     None,
@@ -34284,14 +30262,8 @@ impl ParticleCPUVisAreaCullingMode {
     }
 }
 
-impl Default for ParticleCPUVisAreaCullingMode {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ParticleGPUVisAreaCullingMode`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ParticleGPUVisAreaCullingMode {
     /// DCB value: `Default`
     Default,
@@ -34322,14 +30294,8 @@ impl ParticleGPUVisAreaCullingMode {
     }
 }
 
-impl Default for ParticleGPUVisAreaCullingMode {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ParticleTesselationOverride`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ParticleTesselationOverride {
     /// DCB value: `Default`
     Default,
@@ -34366,14 +30332,8 @@ impl ParticleTesselationOverride {
     }
 }
 
-impl Default for ParticleTesselationOverride {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `PersistentItemGameModeFlag`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum PersistentItemGameModeFlag {
     /// DCB value: `Any`
     Any,
@@ -34410,14 +30370,8 @@ impl PersistentItemGameModeFlag {
     }
 }
 
-impl Default for PersistentItemGameModeFlag {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `PersonalThoughtCameraEffets`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum PersonalThoughtCameraEffets {
     /// DCB value: `None`
     None,
@@ -34454,14 +30408,8 @@ impl PersonalThoughtCameraEffets {
     }
 }
 
-impl Default for PersonalThoughtCameraEffets {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `PersonalThoughtContext`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum PersonalThoughtContext {
     /// DCB value: `EVA`
     EVA,
@@ -34501,14 +30449,8 @@ impl PersonalThoughtContext {
     }
 }
 
-impl Default for PersonalThoughtContext {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `PickableCollision`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum PickableCollision {
     /// DCB value: `None`
     None,
@@ -34539,14 +30481,8 @@ impl PickableCollision {
     }
 }
 
-impl Default for PickableCollision {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `PlanetAreaFitting`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum PlanetAreaFitting {
     /// DCB value: `Loose`
     Loose,
@@ -34571,14 +30507,8 @@ impl PlanetAreaFitting {
     }
 }
 
-impl Default for PlanetAreaFitting {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `PlanetAreaType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum PlanetAreaType {
     /// DCB value: `Hole`
     Hole,
@@ -34609,14 +30539,8 @@ impl PlanetAreaType {
     }
 }
 
-impl Default for PlanetAreaType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `PostEffectParams`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum PostEffectParams {
     /// DCB value: `Global_DirectionalBlur_Vec`
     Global_DirectionalBlur_Vec,
@@ -34878,14 +30802,8 @@ impl PostEffectParams {
     }
 }
 
-impl Default for PostEffectParams {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `PostureType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum PostureType {
     /// DCB value: `Invalid`
     Invalid,
@@ -34919,14 +30837,8 @@ impl PostureType {
     }
 }
 
-impl Default for PostureType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ProceduralAnimationBoneName`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ProceduralAnimationBoneName {
     /// DCB value: `Hips`
     Hips,
@@ -35017,14 +30929,8 @@ impl ProceduralAnimationBoneName {
     }
 }
 
-impl Default for ProceduralAnimationBoneName {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ProceduralAnimationBoneOperation`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ProceduralAnimationBoneOperation {
     /// DCB value: `Offset`
     Offset,
@@ -35049,14 +30955,8 @@ impl ProceduralAnimationBoneOperation {
     }
 }
 
-impl Default for ProceduralAnimationBoneOperation {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ProceduralAnimationBoneSpace`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ProceduralAnimationBoneSpace {
     /// DCB value: `ParentBone`
     ParentBone,
@@ -35084,14 +30984,8 @@ impl ProceduralAnimationBoneSpace {
     }
 }
 
-impl Default for ProceduralAnimationBoneSpace {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ProceduralLandingStrengthFilter`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ProceduralLandingStrengthFilter {
     /// DCB value: `Light`
     Light,
@@ -35125,14 +31019,8 @@ impl ProceduralLandingStrengthFilter {
     }
 }
 
-impl Default for ProceduralLandingStrengthFilter {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ProceduralLayout_TagFilteringMode`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ProceduralLayout_TagFilteringMode {
     /// DCB value: `Inclusion`
     Inclusion,
@@ -35157,14 +31045,8 @@ impl ProceduralLayout_TagFilteringMode {
     }
 }
 
-impl Default for ProceduralLayout_TagFilteringMode {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ProceduralLayout_VerticalDirection`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ProceduralLayout_VerticalDirection {
     /// DCB value: `Downwards`
     Downwards,
@@ -35189,14 +31071,8 @@ impl ProceduralLayout_VerticalDirection {
     }
 }
 
-impl Default for ProceduralLayout_VerticalDirection {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ProceduralPOILookAtType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ProceduralPOILookAtType {
     /// DCB value: `Origin`
     Origin,
@@ -35224,14 +31100,8 @@ impl ProceduralPOILookAtType {
     }
 }
 
-impl Default for ProceduralPOILookAtType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `PurchasableVehicleUsageType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum PurchasableVehicleUsageType {
     /// DCB value: `Purchase`
     Purchase,
@@ -35256,14 +31126,8 @@ impl PurchasableVehicleUsageType {
     }
 }
 
-impl Default for PurchasableVehicleUsageType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `QDriveSplineRotationBehavior`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum QDriveSplineRotationBehavior {
     /// DCB value: `NoRollback`
     NoRollback,
@@ -35288,14 +31152,8 @@ impl QDriveSplineRotationBehavior {
     }
 }
 
-impl Default for QDriveSplineRotationBehavior {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `QuantumDriveState`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum QuantumDriveState {
     /// DCB value: `Off`
     Off,
@@ -35347,14 +31205,8 @@ impl QuantumDriveState {
     }
 }
 
-impl Default for QuantumDriveState {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `QuantumState`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum QuantumState {
     /// DCB value: `Off`
     Off,
@@ -35403,14 +31255,8 @@ impl QuantumState {
     }
 }
 
-impl Default for QuantumState {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `RadarPriorityComparison`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum RadarPriorityComparison {
     /// DCB value: `LessThan`
     LessThan,
@@ -35444,14 +31290,8 @@ impl RadarPriorityComparison {
     }
 }
 
-impl Default for RadarPriorityComparison {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `RadiationStatePropertyType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum RadiationStatePropertyType {
     /// DCB value: `Distortion`
     Distortion,
@@ -35485,14 +31325,8 @@ impl RadiationStatePropertyType {
     }
 }
 
-impl Default for RadiationStatePropertyType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ReactionType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ReactionType {
     /// DCB value: `Hostile`
     Hostile,
@@ -35523,14 +31357,8 @@ impl ReactionType {
     }
 }
 
-impl Default for ReactionType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `RefiningQuality`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum RefiningQuality {
     /// DCB value: `Normal`
     Normal,
@@ -35558,14 +31386,8 @@ impl RefiningQuality {
     }
 }
 
-impl Default for RefiningQuality {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `RefiningSpeed`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum RefiningSpeed {
     /// DCB value: `Normal`
     Normal,
@@ -35593,14 +31415,8 @@ impl RefiningSpeed {
     }
 }
 
-impl Default for RefiningSpeed {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `RelativeDirection`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum RelativeDirection {
     /// DCB value: `Up`
     Up,
@@ -35637,14 +31453,8 @@ impl RelativeDirection {
     }
 }
 
-impl Default for RelativeDirection {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `RenderToTextureTarget`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum RenderToTextureTarget {
     /// DCB value: `All`
     All,
@@ -35672,14 +31482,8 @@ impl RenderToTextureTarget {
     }
 }
 
-impl Default for RenderToTextureTarget {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ResourceNetworkAcessParameter`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ResourceNetworkAcessParameter {
     /// DCB value: `Pressure`
     Pressure,
@@ -35722,14 +31526,8 @@ impl ResourceNetworkAcessParameter {
     }
 }
 
-impl Default for ResourceNetworkAcessParameter {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ResourceNetworkResource`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ResourceNetworkResource {
     /// DCB value: `Power`
     Power,
@@ -35778,14 +31576,8 @@ impl ResourceNetworkResource {
     }
 }
 
-impl Default for ResourceNetworkResource {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `RestraintStyle`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum RestraintStyle {
     /// DCB value: `CuffArmLeg`
     CuffArmLeg,
@@ -35810,14 +31602,8 @@ impl RestraintStyle {
     }
 }
 
-impl Default for RestraintStyle {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `RestrictedAreaDirectionalMessage`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum RestrictedAreaDirectionalMessage {
     /// DCB value: `Left`
     Left,
@@ -35854,14 +31640,8 @@ impl RestrictedAreaDirectionalMessage {
     }
 }
 
-impl Default for RestrictedAreaDirectionalMessage {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `RestrictedAreaState`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum RestrictedAreaState {
     /// DCB value: `Allow`
     Allow,
@@ -35889,14 +31669,8 @@ impl RestrictedAreaState {
     }
 }
 
-impl Default for RestrictedAreaState {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `RoomConnectorOrientationMode`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum RoomConnectorOrientationMode {
     /// DCB value: `AutoDetectWidest`
     AutoDetectWidest,
@@ -35927,14 +31701,8 @@ impl RoomConnectorOrientationMode {
     }
 }
 
-impl Default for RoomConnectorOrientationMode {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `RoomStateModifyType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum RoomStateModifyType {
     /// DCB value: `Inherit`
     Inherit,
@@ -35962,14 +31730,8 @@ impl RoomStateModifyType {
     }
 }
 
-impl Default for RoomStateModifyType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `RoomStatePropertyType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum RoomStatePropertyType {
     /// DCB value: `DebrisDensity`
     DebrisDensity,
@@ -36018,14 +31780,8 @@ impl RoomStatePropertyType {
     }
 }
 
-impl Default for RoomStatePropertyType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `RoomType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum RoomType {
     /// DCB value: `Area`
     Area,
@@ -36062,14 +31818,8 @@ impl RoomType {
     }
 }
 
-impl Default for RoomType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `RttOutputType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum RttOutputType {
     /// DCB value: `Default`
     Default,
@@ -36094,14 +31844,8 @@ impl RttOutputType {
     }
 }
 
-impl Default for RttOutputType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `SCSeatActorAttachmentType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum SCSeatActorAttachmentType {
     /// DCB value: `Host`
     Host,
@@ -36126,14 +31870,8 @@ impl SCSeatActorAttachmentType {
     }
 }
 
-impl Default for SCSeatActorAttachmentType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `SeatSkipStates`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum SeatSkipStates {
     /// DCB value: `None`
     None,
@@ -36164,14 +31902,8 @@ impl SeatSkipStates {
     }
 }
 
-impl Default for SeatSkipStates {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `SeatTypes`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum SeatTypes {
     /// DCB value: `HOTAS_R_L`
     HOTAS_R_L,
@@ -36199,14 +31931,8 @@ impl SeatTypes {
     }
 }
 
-impl Default for SeatTypes {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ShadowQuality`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ShadowQuality {
     /// DCB value: `Full`
     Full,
@@ -36237,14 +31963,8 @@ impl ShadowQuality {
     }
 }
 
-impl Default for ShadowQuality {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ShockwaveType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ShockwaveType {
     /// DCB value: `Cylinder`
     Cylinder,
@@ -36269,14 +31989,8 @@ impl ShockwaveType {
     }
 }
 
-impl Default for ShockwaveType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ShopInventoryType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ShopInventoryType {
     /// DCB value: `INVALID`
     INVALID,
@@ -36304,14 +32018,8 @@ impl ShopInventoryType {
     }
 }
 
-impl Default for ShopInventoryType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ShoppingKioskVariant`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ShoppingKioskVariant {
     /// DCB value: `LOW`
     LOW,
@@ -36336,14 +32044,8 @@ impl ShoppingKioskVariant {
     }
 }
 
-impl Default for ShoppingKioskVariant {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `SinglePlayerOrMultiplayer`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum SinglePlayerOrMultiplayer {
     /// DCB value: `Both`
     Both,
@@ -36371,14 +32073,8 @@ impl SinglePlayerOrMultiplayer {
     }
 }
 
-impl Default for SinglePlayerOrMultiplayer {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `SkeletonAnimationTaskTransitionType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum SkeletonAnimationTaskTransitionType {
     /// DCB value: `Linear`
     Linear,
@@ -36403,14 +32099,8 @@ impl SkeletonAnimationTaskTransitionType {
     }
 }
 
-impl Default for SkeletonAnimationTaskTransitionType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `SpawnWithMode`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum SpawnWithMode {
     /// DCB value: `MostSimilar`
     MostSimilar,
@@ -36435,14 +32125,8 @@ impl SpawnWithMode {
     }
 }
 
-impl Default for SpawnWithMode {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `SpeedThrottleActiveMode`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum SpeedThrottleActiveMode {
     /// DCB value: `Always`
     Always,
@@ -36467,14 +32151,8 @@ impl SpeedThrottleActiveMode {
     }
 }
 
-impl Default for SpeedThrottleActiveMode {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `SpeedThrottleNoWeaponSpeedCategory`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum SpeedThrottleNoWeaponSpeedCategory {
     /// DCB value: `SlowWalk`
     SlowWalk,
@@ -36508,14 +32186,8 @@ impl SpeedThrottleNoWeaponSpeedCategory {
     }
 }
 
-impl Default for SpeedThrottleNoWeaponSpeedCategory {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `SpeedThrottleWithWeaponSpeedCategory`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum SpeedThrottleWithWeaponSpeedCategory {
     /// DCB value: `SameAsNoWeapon`
     SameAsNoWeapon,
@@ -36555,14 +32227,8 @@ impl SpeedThrottleWithWeaponSpeedCategory {
     }
 }
 
-impl Default for SpeedThrottleWithWeaponSpeedCategory {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `StaminaActionCategory`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum StaminaActionCategory {
     /// DCB value: `MeleeJab`
     MeleeJab,
@@ -36650,14 +32316,8 @@ impl StaminaActionCategory {
     }
 }
 
-impl Default for StaminaActionCategory {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `StarmapBoolOverride`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum StarmapBoolOverride {
     /// DCB value: `False`
     False,
@@ -36685,14 +32345,8 @@ impl StarmapBoolOverride {
     }
 }
 
-impl Default for StarmapBoolOverride {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `StatBuffType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum StatBuffType {
     /// DCB value: `Hypertrophic`
     Hypertrophic,
@@ -36864,14 +32518,8 @@ impl StatBuffType {
     }
 }
 
-impl Default for StatBuffType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `StateTypeNetworkAuthority`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum StateTypeNetworkAuthority {
     /// DCB value: `Server`
     Server,
@@ -36896,14 +32544,8 @@ impl StateTypeNetworkAuthority {
     }
 }
 
-impl Default for StateTypeNetworkAuthority {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `StatusEffectType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum StatusEffectType {
     /// DCB value: `ADSEnter`
     ADSEnter,
@@ -37126,14 +32768,8 @@ impl StatusEffectType {
     }
 }
 
-impl Default for StatusEffectType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `StatusEffectValueType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum StatusEffectValueType {
     /// DCB value: `Additive`
     Additive,
@@ -37167,14 +32803,8 @@ impl StatusEffectValueType {
     }
 }
 
-impl Default for StatusEffectValueType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `StatusHeadBleedingLocation`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum StatusHeadBleedingLocation {
     /// DCB value: `LeftEye`
     LeftEye,
@@ -37217,14 +32847,8 @@ impl StatusHeadBleedingLocation {
     }
 }
 
-impl Default for StatusHeadBleedingLocation {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `StatusProbabilityCheckType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum StatusProbabilityCheckType {
     /// DCB value: `Always`
     Always,
@@ -37252,14 +32876,8 @@ impl StatusProbabilityCheckType {
     }
 }
 
-impl Default for StatusProbabilityCheckType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `SubItemScanItemStatus`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum SubItemScanItemStatus {
     /// DCB value: `Default`
     Default,
@@ -37290,14 +32908,8 @@ impl SubItemScanItemStatus {
     }
 }
 
-impl Default for SubItemScanItemStatus {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `SurfaceRaindropEmitterType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum SurfaceRaindropEmitterType {
     /// DCB value: `Rain`
     Rain,
@@ -37322,14 +32934,8 @@ impl SurfaceRaindropEmitterType {
     }
 }
 
-impl Default for SurfaceRaindropEmitterType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `SyncedMeleeAttackResult`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum SyncedMeleeAttackResult {
     /// DCB value: `Hit`
     Hit,
@@ -37357,14 +32963,8 @@ impl SyncedMeleeAttackResult {
     }
 }
 
-impl Default for SyncedMeleeAttackResult {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `TacticalQuerySystemType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum TacticalQuerySystemType {
     /// DCB value: `TacticalPointQuery`
     TacticalPointQuery,
@@ -37389,14 +32989,8 @@ impl TacticalQuerySystemType {
     }
 }
 
-impl Default for TacticalQuerySystemType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `TakeDownQuadrant`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum TakeDownQuadrant {
     /// DCB value: `AllQuadrants`
     AllQuadrants,
@@ -37427,14 +33021,8 @@ impl TakeDownQuadrant {
     }
 }
 
-impl Default for TakeDownQuadrant {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `TakeDownStance`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum TakeDownStance {
     /// DCB value: `AnyStance`
     AnyStance,
@@ -37465,14 +33053,8 @@ impl TakeDownStance {
     }
 }
 
-impl Default for TakeDownStance {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `TestType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum TestType {
     /// DCB value: `PhysicsImpact_Ocean`
     PhysicsImpact_Ocean,
@@ -37500,14 +33082,8 @@ impl TestType {
     }
 }
 
-impl Default for TestType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `TransportDestinationOrderingMethod`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum TransportDestinationOrderingMethod {
     /// DCB value: `Height`
     Height,
@@ -37532,14 +33108,8 @@ impl TransportDestinationOrderingMethod {
     }
 }
 
-impl Default for TransportDestinationOrderingMethod {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `UI3DDisplayInputType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum UI3DDisplayInputType {
     /// DCB value: `Pan`
     Pan,
@@ -37567,14 +33137,8 @@ impl UI3DDisplayInputType {
     }
 }
 
-impl Default for UI3DDisplayInputType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `UIBlockingMode`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum UIBlockingMode {
     /// DCB value: `ScanMode`
     ScanMode,
@@ -37596,14 +33160,8 @@ impl UIBlockingMode {
     }
 }
 
-impl Default for UIBlockingMode {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `UIDisplayActivationTypes`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum UIDisplayActivationTypes {
     /// DCB value: `Manual`
     Manual,
@@ -37631,14 +33189,8 @@ impl UIDisplayActivationTypes {
     }
 }
 
-impl Default for UIDisplayActivationTypes {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `UIDisplayEnvironmentAlignment`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum UIDisplayEnvironmentAlignment {
     /// DCB value: `GalacticPlane`
     GalacticPlane,
@@ -37666,14 +33218,8 @@ impl UIDisplayEnvironmentAlignment {
     }
 }
 
-impl Default for UIDisplayEnvironmentAlignment {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `UIElementAlignMode`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum UIElementAlignMode {
     /// DCB value: `dynamic`
     dynamic,
@@ -37698,14 +33244,8 @@ impl UIElementAlignMode {
     }
 }
 
-impl Default for UIElementAlignMode {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `UIGraph_BackBehavior`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum UIGraph_BackBehavior {
     /// DCB value: `Unsuported`
     Unsuported,
@@ -37742,14 +33282,8 @@ impl UIGraph_BackBehavior {
     }
 }
 
-impl Default for UIGraph_BackBehavior {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `UIGraph_BlockingMessagePopUpProvider`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum UIGraph_BlockingMessagePopUpProvider {
     /// DCB value: `GlobalGame`
     GlobalGame,
@@ -37774,14 +33308,8 @@ impl UIGraph_BlockingMessagePopUpProvider {
     }
 }
 
-impl Default for UIGraph_BlockingMessagePopUpProvider {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `UIGraph_SimpleComponentType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum UIGraph_SimpleComponentType {
     /// DCB value: `ElectronicAccessFullscreen`
     ElectronicAccessFullscreen,
@@ -37890,14 +33418,8 @@ impl UIGraph_SimpleComponentType {
     }
 }
 
-impl Default for UIGraph_SimpleComponentType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `UIWorldDisplayFollowRotationMode`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum UIWorldDisplayFollowRotationMode {
     /// DCB value: `Default`
     Default,
@@ -37928,14 +33450,8 @@ impl UIWorldDisplayFollowRotationMode {
     }
 }
 
-impl Default for UIWorldDisplayFollowRotationMode {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `UIWorldDisplayPathTypes`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum UIWorldDisplayPathTypes {
     /// DCB value: `Highlighted`
     Highlighted,
@@ -37963,14 +33479,8 @@ impl UIWorldDisplayPathTypes {
     }
 }
 
-impl Default for UIWorldDisplayPathTypes {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `UIWorldDisplayPlaneAlignment`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum UIWorldDisplayPlaneAlignment {
     /// DCB value: `Default`
     Default,
@@ -37998,14 +33508,8 @@ impl UIWorldDisplayPlaneAlignment {
     }
 }
 
-impl Default for UIWorldDisplayPlaneAlignment {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `UIWorldDisplayUseInputMode`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum UIWorldDisplayUseInputMode {
     /// DCB value: `Default`
     Default,
@@ -38033,14 +33537,8 @@ impl UIWorldDisplayUseInputMode {
     }
 }
 
-impl Default for UIWorldDisplayUseInputMode {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `VectorBases`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum VectorBases {
     /// DCB value: `Right`
     Right,
@@ -38068,14 +33566,8 @@ impl VectorBases {
     }
 }
 
-impl Default for VectorBases {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `WeaponPoseType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum WeaponPoseType {
     /// DCB value: `RightHand`
     RightHand,
@@ -38103,14 +33595,8 @@ impl WeaponPoseType {
     }
 }
 
-impl Default for WeaponPoseType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `WingmanTargetTypes`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum WingmanTargetTypes {
     /// DCB value: `None`
     None,
@@ -38138,14 +33624,8 @@ impl WingmanTargetTypes {
     }
 }
 
-impl Default for WingmanTargetTypes {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `WorldDisplayObjectFacingMode`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum WorldDisplayObjectFacingMode {
     /// DCB value: `Default`
     Default,
@@ -38176,14 +33656,8 @@ impl WorldDisplayObjectFacingMode {
     }
 }
 
-impl Default for WorldDisplayObjectFacingMode {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `ZeroGTraversalAction`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ZeroGTraversalAction {
     /// DCB value: `None`
     None,
@@ -38235,14 +33709,8 @@ impl ZeroGTraversalAction {
     }
 }
 
-impl Default for ZeroGTraversalAction {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `eCommunicationChannelType`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum eCommunicationChannelType {
     /// DCB value: `Global`
     Global,
@@ -38270,14 +33738,8 @@ impl eCommunicationChannelType {
     }
 }
 
-impl Default for eCommunicationChannelType {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `eCommunicationChoiceMethod`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum eCommunicationChoiceMethod {
     /// DCB value: `Random`
     Random,
@@ -38305,14 +33767,8 @@ impl eCommunicationChoiceMethod {
     }
 }
 
-impl Default for eCommunicationChoiceMethod {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `eCommunicationCriteriaOperant`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum eCommunicationCriteriaOperant {
     /// DCB value: `None`
     None,
@@ -38349,14 +33805,8 @@ impl eCommunicationCriteriaOperant {
     }
 }
 
-impl Default for eCommunicationCriteriaOperant {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `eContextualCommunicationConcept`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum eContextualCommunicationConcept {
     /// DCB value: `Custom`
     Custom,
@@ -38429,14 +33879,8 @@ impl eContextualCommunicationConcept {
     }
 }
 
-impl Default for eContextualCommunicationConcept {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
-    }
-}
-
 /// DCB enum: `eContextualCommunicationCriteria`
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum eContextualCommunicationCriteria {
     /// DCB value: `Custom`
     Custom,
@@ -38593,12 +34037,6 @@ impl eContextualCommunicationCriteria {
             "Target_IsFriendly" => Self::Target_IsFriendly,
             _ => Self::Unrecognized(s.to_string()),
         }
-    }
-}
-
-impl Default for eContextualCommunicationCriteria {
-    fn default() -> Self {
-        Self::Unrecognized(String::new())
     }
 }
 

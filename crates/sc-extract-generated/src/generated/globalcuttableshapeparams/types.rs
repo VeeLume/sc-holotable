@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,43 +19,30 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `SGlobalCuttableShapeParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SGlobalCuttableShapeParams {
     /// `heatRequiredPerSegment` (Single)
-    #[serde(default)]
     pub heat_required_per_segment: f32,
     /// `heatDissipationPerSecond` (Single)
-    #[serde(default)]
     pub heat_dissipation_per_second: f32,
     /// `particleEffect` (Class)
-    #[serde(default)]
     pub particle_effect: Option<Handle<GlobalResourceParticle>>,
     /// `finishedEffect` (Class)
-    #[serde(default)]
     pub finished_effect: Option<Handle<GlobalResourceParticle>>,
     /// `hitRadiusMin` (Single)
-    #[serde(default)]
     pub hit_radius_min: f32,
     /// `hitRadiusMax` (Single)
-    #[serde(default)]
     pub hit_radius_max: f32,
     /// `damageMultiplier` (Single)
-    #[serde(default)]
     pub damage_multiplier: f32,
     /// `impactParticleLifeTime` (Single)
-    #[serde(default)]
     pub impact_particle_life_time: f32,
     /// `highlightColor` (Class)
-    #[serde(default)]
     pub highlight_color: Option<Handle<RGB>>,
     /// `highlightOccludedAlpha` (Single)
-    #[serde(default)]
     pub highlight_occluded_alpha: f32,
     /// `highlightOutlineWidth` (Single)
-    #[serde(default)]
     pub highlight_outline_width: f32,
     /// `highlightOutlineOnly` (Boolean)
-    #[serde(default)]
     pub highlight_outline_only: bool,
 }
 

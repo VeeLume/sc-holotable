@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -21,16 +20,12 @@ use super::super::*;
 
 /// DCB type: `CargoFillCapacityValue_Random`
 /// Inherits from: `BaseCargoFillCapacityValue`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CargoFillCapacityValue_Random {
     /// `resources` (Class (array))
-    #[serde(default)]
     pub resources: Vec<Handle<CargoResource>>,
     /// `minCapacityRange` (Single)
-    #[serde(default)]
     pub min_capacity_range: f32,
     /// `maxCapacityRange` (Single)
-    #[serde(default)]
     pub max_capacity_range: f32,
 }
 
@@ -58,10 +53,8 @@ impl<'a> Extract<'a> for CargoFillCapacityValue_Random {
 
 /// DCB type: `CargoFillCapacityValue_Custom`
 /// Inherits from: `BaseCargoFillCapacityValue`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CargoFillCapacityValue_Custom {
     /// `resources` (Class (array))
-    #[serde(default)]
     pub resources: Vec<Handle<CargoResourceAllocation>>,
 }
 
@@ -86,16 +79,12 @@ impl<'a> Extract<'a> for CargoFillCapacityValue_Custom {
 }
 
 /// DCB type: `CargoResourceAllocation`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CargoResourceAllocation {
     /// `resources` (Class)
-    #[serde(default)]
     pub resources: Option<Handle<CargoResource>>,
     /// `minResourceAllocationPercentage` (Single)
-    #[serde(default)]
     pub min_resource_allocation_percentage: f32,
     /// `maxResourceAllocationPercentage` (Single)
-    #[serde(default)]
     pub max_resource_allocation_percentage: f32,
 }
 

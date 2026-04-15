@@ -9,16 +9,12 @@
 
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
-use serde::{Deserialize, Serialize};
 use super::super::*;
 
 /// Pool storage for the `leangraph` feature.
-#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+#[derive(Default)]
 pub struct LeangraphPools {
-    #[serde(default)]
     pub lean_connection: Vec<Option<LeanConnection>>,
-    #[serde(default)]
     pub lean_state: Vec<Option<LeanState>>,
-    #[serde(default)]
     pub lean_graph: Vec<Option<LeanGraph>>,
 }

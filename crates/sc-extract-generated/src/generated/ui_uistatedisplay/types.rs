@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,19 +19,14 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `UIStateDisplay_Threshold`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct UIStateDisplay_Threshold {
     /// `displayName` (Locale)
-    #[serde(default)]
     pub display_name: LocaleKey,
     /// `timelineLabel` (String)
-    #[serde(default)]
     pub timeline_label: String,
     /// `minThresholdValue` (Single)
-    #[serde(default)]
     pub min_threshold_value: f32,
     /// `stateColor` (EnumChoice)
-    #[serde(default)]
     pub state_color: HUDPalleteEntry,
 }
 
@@ -54,10 +48,8 @@ impl<'a> Extract<'a> for UIStateDisplay_Threshold {
 }
 
 /// DCB type: `UIStateDisplay`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct UIStateDisplay {
     /// `thresholds` (Class (array))
-    #[serde(default)]
     pub thresholds: Vec<Handle<UIStateDisplay_Threshold>>,
 }
 

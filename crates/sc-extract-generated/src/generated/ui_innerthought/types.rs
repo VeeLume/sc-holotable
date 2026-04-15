@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,16 +19,12 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `InnerThought_CycleAnimBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InnerThought_CycleAnimBase {
     /// `length` (Single)
-    #[serde(default)]
     pub length: f32,
     /// `amount` (Single)
-    #[serde(default)]
     pub amount: f32,
     /// `stagger` (Single)
-    #[serde(default)]
     pub stagger: f32,
 }
 
@@ -51,16 +46,12 @@ impl<'a> Extract<'a> for InnerThought_CycleAnimBase {
 
 /// DCB type: `InnerThought_CycleAnimRotateX`
 /// Inherits from: `InnerThought_CycleAnimBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InnerThought_CycleAnimRotateX {
     /// `length` (Single)
-    #[serde(default)]
     pub length: f32,
     /// `amount` (Single)
-    #[serde(default)]
     pub amount: f32,
     /// `stagger` (Single)
-    #[serde(default)]
     pub stagger: f32,
 }
 
@@ -82,16 +73,12 @@ impl<'a> Extract<'a> for InnerThought_CycleAnimRotateX {
 
 /// DCB type: `InnerThought_CycleAnimRotateY`
 /// Inherits from: `InnerThought_CycleAnimBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InnerThought_CycleAnimRotateY {
     /// `length` (Single)
-    #[serde(default)]
     pub length: f32,
     /// `amount` (Single)
-    #[serde(default)]
     pub amount: f32,
     /// `stagger` (Single)
-    #[serde(default)]
     pub stagger: f32,
 }
 
@@ -113,16 +100,12 @@ impl<'a> Extract<'a> for InnerThought_CycleAnimRotateY {
 
 /// DCB type: `InnerThought_CycleAnimRotateZ`
 /// Inherits from: `InnerThought_CycleAnimBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InnerThought_CycleAnimRotateZ {
     /// `length` (Single)
-    #[serde(default)]
     pub length: f32,
     /// `amount` (Single)
-    #[serde(default)]
     pub amount: f32,
     /// `stagger` (Single)
-    #[serde(default)]
     pub stagger: f32,
 }
 
@@ -143,16 +126,12 @@ impl<'a> Extract<'a> for InnerThought_CycleAnimRotateZ {
 }
 
 /// DCB type: `InnerThought_LayoutGridSetThought`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InnerThought_LayoutGridSetThought {
     /// `justification` (EnumChoice)
-    #[serde(default)]
     pub justification: InnerThoughtJustification,
     /// `offset` (Class)
-    #[serde(default)]
     pub offset: Option<Handle<Vec3>>,
     /// `angle` (Class)
-    #[serde(default)]
     pub angle: Option<Handle<Quat>>,
 }
 
@@ -179,10 +158,8 @@ impl<'a> Extract<'a> for InnerThought_LayoutGridSetThought {
 }
 
 /// DCB type: `InnerThought_LayoutGridSet`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InnerThought_LayoutGridSet {
     /// `thoughts` (Class (array))
-    #[serde(default)]
     pub thoughts: Vec<Handle<InnerThought_LayoutGridSetThought>>,
 }
 
@@ -208,31 +185,22 @@ impl<'a> Extract<'a> for InnerThought_LayoutGridSet {
 
 /// DCB type: `InnerThought_LayoutGrid`
 /// Inherits from: `InnerThought_LayoutChoiceBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InnerThought_LayoutGrid {
     /// `selectedColor` (Reference)
-    #[serde(default)]
     pub selected_color: Option<CigGuid>,
     /// `unselectedColor` (Reference)
-    #[serde(default)]
     pub unselected_color: Option<CigGuid>,
     /// `secondaryColor` (Reference)
-    #[serde(default)]
     pub secondary_color: Option<CigGuid>,
     /// `selectedOffset` (Class)
-    #[serde(default)]
     pub selected_offset: Option<Handle<Vec3>>,
     /// `unselectedOffset` (Class)
-    #[serde(default)]
     pub unselected_offset: Option<Handle<Vec3>>,
     /// `secondaryOffset` (Class)
-    #[serde(default)]
     pub secondary_offset: Option<Handle<Vec3>>,
     /// `primarySets` (Class (array))
-    #[serde(default)]
     pub primary_sets: Vec<Handle<InnerThought_LayoutGridSet>>,
     /// `secondarySets` (Class (array))
-    #[serde(default)]
     pub secondary_sets: Vec<Handle<InnerThought_LayoutGridSet>>,
 }
 
@@ -280,43 +248,30 @@ impl<'a> Extract<'a> for InnerThought_LayoutGrid {
 
 /// DCB type: `InnerThought_LayoutCurve`
 /// Inherits from: `InnerThought_LayoutBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InnerThought_LayoutCurve {
     /// `shuffleSelectedToBottom` (Boolean)
-    #[serde(default)]
     pub shuffle_selected_to_bottom: bool,
     /// `radius` (Single)
-    #[serde(default)]
     pub radius: f32,
     /// `angle` (Single)
-    #[serde(default)]
     pub angle: f32,
     /// `radiusOrientation` (Class)
-    #[serde(default)]
     pub radius_orientation: Option<Handle<Quat>>,
     /// `cycles` (StrongPointer (array))
-    #[serde(default)]
     pub cycles: Vec<InnerThought_CycleAnimBasePtr>,
     /// `selectedColor` (Reference)
-    #[serde(default)]
     pub selected_color: Option<CigGuid>,
     /// `unselectedColorStart` (Reference)
-    #[serde(default)]
     pub unselected_color_start: Option<CigGuid>,
     /// `unselectedColorEnd` (Reference)
-    #[serde(default)]
     pub unselected_color_end: Option<CigGuid>,
     /// `selectedOffset` (Class)
-    #[serde(default)]
     pub selected_offset: Option<Handle<Vec3>>,
     /// `unselectedOffset` (Class)
-    #[serde(default)]
     pub unselected_offset: Option<Handle<Vec3>>,
     /// `selectedRotation` (Class)
-    #[serde(default)]
     pub selected_rotation: Option<Handle<Deg3>>,
     /// `unselectedRotation` (Class)
-    #[serde(default)]
     pub unselected_rotation: Option<Handle<Deg3>>,
 }
 
@@ -367,16 +322,12 @@ impl<'a> Extract<'a> for InnerThought_LayoutCurve {
 
 /// DCB type: `InnerThought_LayoutPIT`
 /// Inherits from: `InnerThought_LayoutBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InnerThought_LayoutPIT {
     /// `selectedColor` (Reference)
-    #[serde(default)]
     pub selected_color: Option<CigGuid>,
     /// `unselectedColor` (Reference)
-    #[serde(default)]
     pub unselected_color: Option<CigGuid>,
     /// `inactiveColor` (Reference)
-    #[serde(default)]
     pub inactive_color: Option<CigGuid>,
 }
 
@@ -397,25 +348,18 @@ impl<'a> Extract<'a> for InnerThought_LayoutPIT {
 }
 
 /// DCB type: `InnerThought_LegacyUseSystemConfig`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InnerThought_LegacyUseSystemConfig {
     /// `targetDistance` (Single)
-    #[serde(default)]
     pub target_distance: f32,
     /// `minDistance` (Single)
-    #[serde(default)]
     pub min_distance: f32,
     /// `maxDistance` (Single)
-    #[serde(default)]
     pub max_distance: f32,
     /// `rotationRate` (Single)
-    #[serde(default)]
     pub rotation_rate: f32,
     /// `translationRate` (Single)
-    #[serde(default)]
     pub translation_rate: f32,
     /// `innerThought` (Reference)
-    #[serde(default)]
     pub inner_thought: Option<CigGuid>,
 }
 

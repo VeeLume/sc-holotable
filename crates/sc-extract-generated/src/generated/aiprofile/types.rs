@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,16 +19,12 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `AIMercyTimerSettings`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AIMercyTimerSettings {
     /// `activationThreshold` (Single)
-    #[serde(default)]
     pub activation_threshold: f32,
     /// `coolDownTimeSeconds` (Single)
-    #[serde(default)]
     pub cool_down_time_seconds: f32,
     /// `durationSeconds` (Single)
-    #[serde(default)]
     pub duration_seconds: f32,
 }
 
@@ -50,10 +45,8 @@ impl<'a> Extract<'a> for AIMercyTimerSettings {
 }
 
 /// DCB type: `StatDefinitions`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct StatDefinitions {
     /// `stats` (Class (array))
-    #[serde(default)]
     pub stats: Vec<Handle<Stat>>,
 }
 
@@ -78,16 +71,12 @@ impl<'a> Extract<'a> for StatDefinitions {
 }
 
 /// DCB type: `Stat`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Stat {
     /// `statTag` (Reference)
-    #[serde(default)]
     pub stat_tag: Option<CigGuid>,
     /// `minimumValue` (Single)
-    #[serde(default)]
     pub minimum_value: f32,
     /// `influences` (Class (array))
-    #[serde(default)]
     pub influences: Vec<Handle<StatInfluence>>,
 }
 
@@ -114,13 +103,10 @@ impl<'a> Extract<'a> for Stat {
 }
 
 /// DCB type: `StatInfluence`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct StatInfluence {
     /// `skillTag` (Reference)
-    #[serde(default)]
     pub skill_tag: Option<CigGuid>,
     /// `percentage` (Int32)
-    #[serde(default)]
     pub percentage: i32,
 }
 

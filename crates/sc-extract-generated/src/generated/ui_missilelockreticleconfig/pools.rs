@@ -9,14 +9,11 @@
 
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
-use serde::{Deserialize, Serialize};
 use super::super::*;
 
 /// Pool storage for the `ui-missilelockreticleconfig` feature.
-#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+#[derive(Default)]
 pub struct UiMissilelockreticleconfigPools {
-    #[serde(default)]
     pub missile_lock_reticle_segment_def: Vec<Option<MissileLockReticleSegmentDef>>,
-    #[serde(default)]
     pub missile_lock_reticle_config: Vec<Option<MissileLockReticle_Config>>,
 }

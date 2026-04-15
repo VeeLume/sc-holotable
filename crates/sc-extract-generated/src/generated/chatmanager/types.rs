@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,25 +19,18 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `ChatManagerDefaultChannelColor`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ChatManagerDefaultChannelColor {
     /// `global` (EnumChoice)
-    #[serde(default)]
     pub global: ChannelColor,
     /// `party` (EnumChoice)
-    #[serde(default)]
     pub party: ChannelColor,
     /// `gameEntity` (EnumChoice)
-    #[serde(default)]
     pub game_entity: ChannelColor,
     /// `whisper` (EnumChoice)
-    #[serde(default)]
     pub whisper: ChannelColor,
     /// `team` (EnumChoice)
-    #[serde(default)]
     pub team: ChannelColor,
     /// `squad` (EnumChoice)
-    #[serde(default)]
     pub squad: ChannelColor,
 }
 
@@ -62,13 +54,10 @@ impl<'a> Extract<'a> for ChatManagerDefaultChannelColor {
 }
 
 /// DCB type: `ChatManagerColor`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ChatManagerColor {
     /// `colorType` (EnumChoice)
-    #[serde(default)]
     pub color_type: ChannelColor,
     /// `color` (Class)
-    #[serde(default)]
     pub color: Option<Handle<SRGB8>>,
 }
 
@@ -91,13 +80,10 @@ impl<'a> Extract<'a> for ChatManagerColor {
 }
 
 /// DCB type: `ChatManagerGlobalParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ChatManagerGlobalParams {
     /// `defaultChannelColor` (Class)
-    #[serde(default)]
     pub default_channel_color: Option<Handle<ChatManagerDefaultChannelColor>>,
     /// `colorOptions` (Class (array))
-    #[serde(default)]
     pub color_options: Vec<Handle<ChatManagerColor>>,
 }
 

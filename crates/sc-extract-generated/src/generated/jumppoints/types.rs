@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,37 +19,26 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `SJumpTunnelVisualParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SJumpTunnelVisualParams {
     /// `quantumEffect` (Boolean)
-    #[serde(default)]
     pub quantum_effect: bool,
     /// `portalExternalViewDistRatio` (Single)
-    #[serde(default)]
     pub portal_external_view_dist_ratio: f32,
     /// `portalInternalViewDistRatio` (Single)
-    #[serde(default)]
     pub portal_internal_view_dist_ratio: f32,
     /// `visAreaViewDistRatio` (Single)
-    #[serde(default)]
     pub vis_area_view_dist_ratio: f32,
     /// `probeIntensity` (Single)
-    #[serde(default)]
     pub probe_intensity: f32,
     /// `internalDrawDistance` (Single)
-    #[serde(default)]
     pub internal_draw_distance: f32,
     /// `externalDrawDistance` (Single)
-    #[serde(default)]
     pub external_draw_distance: f32,
     /// `openingHiddenTime` (Single)
-    #[serde(default)]
     pub opening_hidden_time: f32,
     /// `closingHiddenTime` (Single)
-    #[serde(default)]
     pub closing_hidden_time: f32,
     /// `exitPortalCullingDistance` (Single)
-    #[serde(default)]
     pub exit_portal_culling_distance: f32,
 }
 
@@ -79,13 +67,10 @@ impl<'a> Extract<'a> for SJumpTunnelVisualParams {
 
 /// DCB type: `SSpreadMisfireEffect`
 /// Inherits from: `SMisfireEffect`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SSpreadMisfireEffect {
     /// `effectTrigger` (Reference)
-    #[serde(default)]
     pub effect_trigger: Option<CigGuid>,
     /// `effectTag` (Reference)
-    #[serde(default)]
     pub effect_tag: Option<CigGuid>,
 }
 
@@ -105,10 +90,8 @@ impl<'a> Extract<'a> for SSpreadMisfireEffect {
 }
 
 /// DCB type: `GlobalJumpPointTuningParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GlobalJumpPointTuningParams {
     /// `requiredTuningAmount` (Single)
-    #[serde(default)]
     pub required_tuning_amount: f32,
 }
 
@@ -127,34 +110,24 @@ impl<'a> Extract<'a> for GlobalJumpPointTuningParams {
 }
 
 /// DCB type: `GlobalJumpPointOpeningParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GlobalJumpPointOpeningParams {
     /// `projectileTime` (Single)
-    #[serde(default)]
     pub projectile_time: f32,
     /// `tuningCollapseTime` (Single)
-    #[serde(default)]
     pub tuning_collapse_time: f32,
     /// `openEffectStartDelay` (Single)
-    #[serde(default)]
     pub open_effect_start_delay: f32,
     /// `revealTime` (Single)
-    #[serde(default)]
     pub reveal_time: f32,
     /// `revealAnimCurve` (Class)
-    #[serde(default)]
     pub reveal_anim_curve: Option<Handle<BezierCurve>>,
     /// `revealFadeDelay` (Single)
-    #[serde(default)]
     pub reveal_fade_delay: f32,
     /// `openingTime` (Single)
-    #[serde(default)]
     pub opening_time: f32,
     /// `openingEndDelay` (Single)
-    #[serde(default)]
     pub opening_end_delay: f32,
     /// `apertureTimeScaleRange` (Class)
-    #[serde(default)]
     pub aperture_time_scale_range: Option<Handle<Range>>,
 }
 
@@ -187,16 +160,12 @@ impl<'a> Extract<'a> for GlobalJumpPointOpeningParams {
 }
 
 /// DCB type: `GlobalJumpPointClosingParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GlobalJumpPointClosingParams {
     /// `closingTime` (Single)
-    #[serde(default)]
     pub closing_time: f32,
     /// `shrinkTime` (Single)
-    #[serde(default)]
     pub shrink_time: f32,
     /// `closingTriggerDelay` (Single)
-    #[serde(default)]
     pub closing_trigger_delay: f32,
 }
 
@@ -217,16 +186,12 @@ impl<'a> Extract<'a> for GlobalJumpPointClosingParams {
 }
 
 /// DCB type: `GlobalJumpPointEffectParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GlobalJumpPointEffectParams {
     /// `tuningParams` (Class)
-    #[serde(default)]
     pub tuning_params: Option<Handle<GlobalJumpPointTuningParams>>,
     /// `openingParams` (Class)
-    #[serde(default)]
     pub opening_params: Option<Handle<GlobalJumpPointOpeningParams>>,
     /// `closingParams` (Class)
-    #[serde(default)]
     pub closing_params: Option<Handle<GlobalJumpPointClosingParams>>,
 }
 
@@ -256,16 +221,12 @@ impl<'a> Extract<'a> for GlobalJumpPointEffectParams {
 }
 
 /// DCB type: `JumpDriveUIConeParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct JumpDriveUIConeParams {
     /// `range` (Single)
-    #[serde(default)]
     pub range: f32,
     /// `angle` (Single)
-    #[serde(default)]
     pub angle: f32,
     /// `lookAtAngle` (Single)
-    #[serde(default)]
     pub look_at_angle: f32,
 }
 
@@ -286,37 +247,26 @@ impl<'a> Extract<'a> for JumpDriveUIConeParams {
 }
 
 /// DCB type: `GlobalJumpPointParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GlobalJumpPointParams {
     /// `alignmentAngle` (Single)
-    #[serde(default)]
     pub alignment_angle: f32,
     /// `alignmentTolerance` (Single)
-    #[serde(default)]
     pub alignment_tolerance: f32,
     /// `alignmentRange` (Single)
-    #[serde(default)]
     pub alignment_range: f32,
     /// `startClosingTime` (Single)
-    #[serde(default)]
     pub start_closing_time: f32,
     /// `shipPullInDelayTime` (Single)
-    #[serde(default)]
     pub ship_pull_in_delay_time: f32,
     /// `shipPullInBufferTime` (Single)
-    #[serde(default)]
     pub ship_pull_in_buffer_time: f32,
     /// `debrisPushOutAcceleration` (Single)
-    #[serde(default)]
     pub debris_push_out_acceleration: f32,
     /// `debrisPushOutMaximumSpeed` (Single)
-    #[serde(default)]
     pub debris_push_out_maximum_speed: f32,
     /// `effectParams` (Class)
-    #[serde(default)]
     pub effect_params: Option<Handle<GlobalJumpPointEffectParams>>,
     /// `uiConeParams` (Class)
-    #[serde(default)]
     pub ui_cone_params: Option<Handle<JumpDriveUIConeParams>>,
 }
 
@@ -350,13 +300,10 @@ impl<'a> Extract<'a> for GlobalJumpPointParams {
 }
 
 /// DCB type: `SJumpTunnelSectionProbabilityParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SJumpTunnelSectionProbabilityParams {
     /// `section` (WeakPointer)
-    #[serde(default)]
     pub section: Option<Handle<SJumpTunnelSectionGenerationParams>>,
     /// `probability` (Single)
-    #[serde(default)]
     pub probability: f32,
 }
 
@@ -379,16 +326,12 @@ impl<'a> Extract<'a> for SJumpTunnelSectionProbabilityParams {
 }
 
 /// DCB type: `SJumpTunnelSectionControlPointGenerationParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SJumpTunnelSectionControlPointGenerationParams {
     /// `sectionOffset` (Class)
-    #[serde(default)]
     pub section_offset: Option<Handle<Range>>,
     /// `sectionLength` (Class)
-    #[serde(default)]
     pub section_length: Option<Handle<Range>>,
     /// `angleOffset` (Class)
-    #[serde(default)]
     pub angle_offset: Option<Handle<Range>>,
 }
 
@@ -418,16 +361,12 @@ impl<'a> Extract<'a> for SJumpTunnelSectionControlPointGenerationParams {
 }
 
 /// DCB type: `SJumpTunnelObstacleGenerationParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SJumpTunnelObstacleGenerationParams {
     /// `size` (Class)
-    #[serde(default)]
     pub size: Option<Handle<Range>>,
     /// `offset` (Class)
-    #[serde(default)]
     pub offset: Option<Handle<Range>>,
     /// `angle` (Class)
-    #[serde(default)]
     pub angle: Option<Handle<Range>>,
 }
 
@@ -457,28 +396,20 @@ impl<'a> Extract<'a> for SJumpTunnelObstacleGenerationParams {
 }
 
 /// DCB type: `SJumpTunnelEllipticalParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SJumpTunnelEllipticalParams {
     /// `minRadius` (Single)
-    #[serde(default)]
     pub min_radius: f32,
     /// `maxRadius` (Single)
-    #[serde(default)]
     pub max_radius: f32,
     /// `radiusMultiplier` (Class)
-    #[serde(default)]
     pub radius_multiplier: Option<Handle<BezierCurve>>,
     /// `minAspectRatio` (Single)
-    #[serde(default)]
     pub min_aspect_ratio: f32,
     /// `maxAspectRatio` (Single)
-    #[serde(default)]
     pub max_aspect_ratio: f32,
     /// `aspectRatioMultiplier` (Class)
-    #[serde(default)]
     pub aspect_ratio_multiplier: Option<Handle<BezierCurve>>,
     /// `chanceToFollowCurvature` (Single)
-    #[serde(default)]
     pub chance_to_follow_curvature: f32,
 }
 
@@ -509,31 +440,22 @@ impl<'a> Extract<'a> for SJumpTunnelEllipticalParams {
 }
 
 /// DCB type: `SJumpTunnelSectionGenerationParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SJumpTunnelSectionGenerationParams {
     /// `debugName` (String)
-    #[serde(default)]
     pub debug_name: String,
     /// `defaultSectionLength` (Single)
-    #[serde(default)]
     pub default_section_length: f32,
     /// `nextSectionProbabilities` (Class (array))
-    #[serde(default)]
     pub next_section_probabilities: Vec<Handle<SJumpTunnelSectionProbabilityParams>>,
     /// `controlPoints` (Class (array))
-    #[serde(default)]
     pub control_points: Vec<Handle<SJumpTunnelSectionControlPointGenerationParams>>,
     /// `chanceOfObstacles` (Single)
-    #[serde(default)]
     pub chance_of_obstacles: f32,
     /// `numberOfObstacles` (Class)
-    #[serde(default)]
     pub number_of_obstacles: Option<Handle<Range>>,
     /// `obstacleGeneration` (Class)
-    #[serde(default)]
     pub obstacle_generation: Option<Handle<SJumpTunnelObstacleGenerationParams>>,
     /// `ellipticalParams` (Class)
-    #[serde(default)]
     pub elliptical_params: Option<Handle<SJumpTunnelEllipticalParams>>,
 }
 
@@ -580,34 +502,24 @@ impl<'a> Extract<'a> for SJumpTunnelSectionGenerationParams {
 }
 
 /// DCB type: `SJumpTunnelGenerationParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SJumpTunnelGenerationParams {
     /// `tunnelRadius` (Single)
-    #[serde(default)]
     pub tunnel_radius: f32,
     /// `tunnelRadiusGameplayBuffer` (Single)
-    #[serde(default)]
     pub tunnel_radius_gameplay_buffer: f32,
     /// `tunnelLength` (Single)
-    #[serde(default)]
     pub tunnel_length: f32,
     /// `entranceLength` (Single)
-    #[serde(default)]
     pub entrance_length: f32,
     /// `exitLength` (Single)
-    #[serde(default)]
     pub exit_length: f32,
     /// `entranceEllipticalParams` (Class)
-    #[serde(default)]
     pub entrance_elliptical_params: Option<Handle<SJumpTunnelEllipticalParams>>,
     /// `exitEllipticalParams` (Class)
-    #[serde(default)]
     pub exit_elliptical_params: Option<Handle<SJumpTunnelEllipticalParams>>,
     /// `firstSectionProbabilities` (Class (array))
-    #[serde(default)]
     pub first_section_probabilities: Vec<Handle<SJumpTunnelSectionProbabilityParams>>,
     /// `genParams` (Class (array))
-    #[serde(default)]
     pub gen_params: Vec<Handle<SJumpTunnelSectionGenerationParams>>,
 }
 
@@ -652,25 +564,18 @@ impl<'a> Extract<'a> for SJumpTunnelGenerationParams {
 }
 
 /// DCB type: `GlobalJumpTunnelLightParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GlobalJumpTunnelLightParams {
     /// `distanceAhead` (Single)
-    #[serde(default)]
     pub distance_ahead: f32,
     /// `intensity` (Single)
-    #[serde(default)]
     pub intensity: f32,
     /// `radius` (Single)
-    #[serde(default)]
     pub radius: f32,
     /// `bulbRadius` (Single)
-    #[serde(default)]
     pub bulb_radius: f32,
     /// `animSpeed` (Single)
-    #[serde(default)]
     pub anim_speed: f32,
     /// `lightStyle` (Byte)
-    #[serde(default)]
     pub light_style: u32,
 }
 
@@ -694,19 +599,14 @@ impl<'a> Extract<'a> for GlobalJumpTunnelLightParams {
 }
 
 /// DCB type: `GlobalJumpTunnelFogParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GlobalJumpTunnelFogParams {
     /// `fogStartOffset` (Single)
-    #[serde(default)]
     pub fog_start_offset: f32,
     /// `fogEndOffset` (Single)
-    #[serde(default)]
     pub fog_end_offset: f32,
     /// `fogEndIntensityDistanceRange` (Class)
-    #[serde(default)]
     pub fog_end_intensity_distance_range: Option<Handle<Range>>,
     /// `fogAnimatedIntensityScaleRange` (Class)
-    #[serde(default)]
     pub fog_animated_intensity_scale_range: Option<Handle<Range>>,
 }
 
@@ -734,40 +634,28 @@ impl<'a> Extract<'a> for GlobalJumpTunnelFogParams {
 }
 
 /// DCB type: `GlobalJumpTunnelPassByLightParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GlobalJumpTunnelPassByLightParams {
     /// `intensityRange` (Class)
-    #[serde(default)]
     pub intensity_range: Option<Handle<Range>>,
     /// `radiusRange` (Class)
-    #[serde(default)]
     pub radius_range: Option<Handle<Range>>,
     /// `bulbRange` (Class)
-    #[serde(default)]
     pub bulb_range: Option<Handle<Range>>,
     /// `spacingRange` (Class)
-    #[serde(default)]
     pub spacing_range: Option<Handle<Range>>,
     /// `distanceFromSpline` (Class)
-    #[serde(default)]
     pub distance_from_spline: Option<Handle<Range>>,
     /// `speedRange` (Class)
-    #[serde(default)]
     pub speed_range: Option<Handle<Range>>,
     /// `colorRandomOffsetRange` (Class)
-    #[serde(default)]
     pub color_random_offset_range: Option<Handle<Range>>,
     /// `entranceOffset` (Single)
-    #[serde(default)]
     pub entrance_offset: f32,
     /// `spawnChance` (Single)
-    #[serde(default)]
     pub spawn_chance: f32,
     /// `maxRange` (Single)
-    #[serde(default)]
     pub max_range: f32,
     /// `fadeOutDistStart` (Single)
-    #[serde(default)]
     pub fade_out_dist_start: f32,
 }
 
@@ -817,10 +705,8 @@ impl<'a> Extract<'a> for GlobalJumpTunnelPassByLightParams {
 }
 
 /// DCB type: `GlobalJumpTunnelProbeParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GlobalJumpTunnelProbeParams {
     /// `probeRadius` (Single)
-    #[serde(default)]
     pub probe_radius: f32,
 }
 
@@ -839,40 +725,28 @@ impl<'a> Extract<'a> for GlobalJumpTunnelProbeParams {
 }
 
 /// DCB type: `GlobalJumpTunnelEffectParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GlobalJumpTunnelEffectParams {
     /// `failEffect` (Class)
-    #[serde(default)]
     pub fail_effect: Option<Handle<GlobalResourceParticle>>,
     /// `interiorExitEffect` (Class)
-    #[serde(default)]
     pub interior_exit_effect: Option<Handle<GlobalResourceParticle>>,
     /// `spaceloopEffect` (Class)
-    #[serde(default)]
     pub spaceloop_effect: Option<Handle<GlobalResourceParticle>>,
     /// `centralSplineEffect` (Class)
-    #[serde(default)]
     pub central_spline_effect: Option<Handle<GlobalResourceParticle>>,
     /// `spaceFillingSplineEffect` (Class)
-    #[serde(default)]
     pub space_filling_spline_effect: Option<Handle<GlobalResourceParticle>>,
     /// `sunFlareEffect` (Class)
-    #[serde(default)]
     pub sun_flare_effect: Option<Handle<GlobalResourceParticle>>,
     /// `sunLightParams` (Class)
-    #[serde(default)]
     pub sun_light_params: Option<Handle<GlobalJumpTunnelLightParams>>,
     /// `probeParams` (Class)
-    #[serde(default)]
     pub probe_params: Option<Handle<GlobalJumpTunnelProbeParams>>,
     /// `fogParams` (Class)
-    #[serde(default)]
     pub fog_params: Option<Handle<GlobalJumpTunnelFogParams>>,
     /// `passByLightParams` (Class)
-    #[serde(default)]
     pub pass_by_light_params: Option<Handle<GlobalJumpTunnelPassByLightParams>>,
     /// `splineLength` (Single)
-    #[serde(default)]
     pub spline_length: f32,
 }
 
@@ -931,10 +805,8 @@ impl<'a> Extract<'a> for GlobalJumpTunnelEffectParams {
 }
 
 /// DCB type: `JumpTunnelCameraEffectParam`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct JumpTunnelCameraEffectParam {
     /// `referenceValue` (Single)
-    #[serde(default)]
     pub reference_value: f32,
 }
 
@@ -953,25 +825,18 @@ impl<'a> Extract<'a> for JumpTunnelCameraEffectParam {
 }
 
 /// DCB type: `JumpTunnelCameraEffects`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct JumpTunnelCameraEffects {
     /// `blur` (Class)
-    #[serde(default)]
     pub blur: Option<Handle<JumpTunnelCameraEffectParam>>,
     /// `bloom` (Class)
-    #[serde(default)]
     pub bloom: Option<Handle<JumpTunnelCameraEffectParam>>,
     /// `chromaticAberation` (Class)
-    #[serde(default)]
     pub chromatic_aberation: Option<Handle<JumpTunnelCameraEffectParam>>,
     /// `shutterSpeed` (Class)
-    #[serde(default)]
     pub shutter_speed: Option<Handle<JumpTunnelCameraEffectParam>>,
     /// `fov` (Class)
-    #[serde(default)]
     pub fov: Option<Handle<JumpTunnelCameraEffectParam>>,
     /// `fovScale` (Class)
-    #[serde(default)]
     pub fov_scale: Option<Handle<JumpTunnelCameraEffectParam>>,
 }
 
@@ -1013,13 +878,10 @@ impl<'a> Extract<'a> for JumpTunnelCameraEffects {
 }
 
 /// DCB type: `JumpDriveVelocityStrengthParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct JumpDriveVelocityStrengthParams {
     /// `maxStrengthAngle` (Single)
-    #[serde(default)]
     pub max_strength_angle: f32,
     /// `minStrengthAngle` (Single)
-    #[serde(default)]
     pub min_strength_angle: f32,
 }
 
@@ -1039,28 +901,20 @@ impl<'a> Extract<'a> for JumpDriveVelocityStrengthParams {
 }
 
 /// DCB type: `GlobalJumpTunnelCameraEffectParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GlobalJumpTunnelCameraEffectParams {
     /// `alignmentToSpline` (Class)
-    #[serde(default)]
     pub alignment_to_spline: Option<Handle<JumpTunnelCameraEffects>>,
     /// `distortionRatio` (Class)
-    #[serde(default)]
     pub distortion_ratio: Option<Handle<JumpTunnelCameraEffects>>,
     /// `openingProximity` (Class)
-    #[serde(default)]
     pub opening_proximity: Option<Handle<JumpTunnelCameraEffects>>,
     /// `wallProximity` (Class)
-    #[serde(default)]
     pub wall_proximity: Option<Handle<JumpTunnelCameraEffects>>,
     /// `failureState` (Class)
-    #[serde(default)]
     pub failure_state: Option<Handle<JumpTunnelCameraEffects>>,
     /// `velocityStrength` (Class)
-    #[serde(default)]
     pub velocity_strength: Option<Handle<JumpTunnelCameraEffects>>,
     /// `velocityStrengthParams` (Class)
-    #[serde(default)]
     pub velocity_strength_params: Option<Handle<JumpDriveVelocityStrengthParams>>,
 }
 
@@ -1106,13 +960,10 @@ impl<'a> Extract<'a> for GlobalJumpTunnelCameraEffectParams {
 }
 
 /// DCB type: `SJumpTunnelDistortionParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SJumpTunnelDistortionParams {
     /// `safeAreaRatio` (Single)
-    #[serde(default)]
     pub safe_area_ratio: f32,
     /// `distortionDamageRate` (Single)
-    #[serde(default)]
     pub distortion_damage_rate: f32,
 }
 
@@ -1132,43 +983,30 @@ impl<'a> Extract<'a> for SJumpTunnelDistortionParams {
 }
 
 /// DCB type: `SJumpTunnelFailureParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SJumpTunnelFailureParams {
     /// `exitAcceleration` (Single)
-    #[serde(default)]
     pub exit_acceleration: f32,
     /// `exitMaximumSpeed` (Single)
-    #[serde(default)]
     pub exit_maximum_speed: f32,
     /// `exitRollAcceleration` (Single)
-    #[serde(default)]
     pub exit_roll_acceleration: f32,
     /// `exitPitchAcceleration` (Single)
-    #[serde(default)]
     pub exit_pitch_acceleration: f32,
     /// `exitYawAcceleration` (Single)
-    #[serde(default)]
     pub exit_yaw_acceleration: f32,
     /// `exitAngularVelocityMaximum` (Single)
-    #[serde(default)]
     pub exit_angular_velocity_maximum: f32,
     /// `ratioOfMaxDistortionDamage` (Single)
-    #[serde(default)]
     pub ratio_of_max_distortion_damage: f32,
     /// `ratioOfMaxJDRVWearDamage` (Single)
-    #[serde(default)]
     pub ratio_of_max_jdrvwear_damage: f32,
     /// `ratioOfMaxQDRVWearDamage` (Single)
-    #[serde(default)]
     pub ratio_of_max_qdrvwear_damage: f32,
     /// `ratioOfMaxHullWearDamage` (Single)
-    #[serde(default)]
     pub ratio_of_max_hull_wear_damage: f32,
     /// `teleportRangeOffset` (Class)
-    #[serde(default)]
     pub teleport_range_offset: Option<Handle<Range>>,
     /// `teleportMaxHeight` (Single)
-    #[serde(default)]
     pub teleport_max_height: f32,
 }
 
@@ -1201,16 +1039,12 @@ impl<'a> Extract<'a> for SJumpTunnelFailureParams {
 }
 
 /// DCB type: `SJumpTunnelExitParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SJumpTunnelExitParams {
     /// `defaultDistanceRange` (Class)
-    #[serde(default)]
     pub default_distance_range: Option<Handle<Range>>,
     /// `defaultMaxHeight` (Single)
-    #[serde(default)]
     pub default_max_height: f32,
     /// `exitPushArea` (Class)
-    #[serde(default)]
     pub exit_push_area: Option<Handle<SJumpPointPushAreaParams>>,
 }
 
@@ -1237,31 +1071,22 @@ impl<'a> Extract<'a> for SJumpTunnelExitParams {
 }
 
 /// DCB type: `GlobalJumpTunnelHostParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GlobalJumpTunnelHostParams {
     /// `material` (Class)
-    #[serde(default)]
     pub material: Option<Handle<GlobalResourceMaterial>>,
     /// `tunnelGenerationParams` (Class)
-    #[serde(default)]
     pub tunnel_generation_params: Option<Handle<SJumpTunnelGenerationParams>>,
     /// `tunnelDistortionParams` (Class)
-    #[serde(default)]
     pub tunnel_distortion_params: Option<Handle<SJumpTunnelDistortionParams>>,
     /// `tunnelFailureParams` (Class)
-    #[serde(default)]
     pub tunnel_failure_params: Option<Handle<SJumpTunnelFailureParams>>,
     /// `tunnelExitParams` (Class)
-    #[serde(default)]
     pub tunnel_exit_params: Option<Handle<SJumpTunnelExitParams>>,
     /// `visualParams` (Class)
-    #[serde(default)]
     pub visual_params: Option<Handle<SJumpTunnelVisualParams>>,
     /// `effectParams` (Class)
-    #[serde(default)]
     pub effect_params: Option<Handle<GlobalJumpTunnelEffectParams>>,
     /// `entityPullInAcceleration` (Single)
-    #[serde(default)]
     pub entity_pull_in_acceleration: f32,
 }
 
@@ -1308,19 +1133,14 @@ impl<'a> Extract<'a> for GlobalJumpTunnelHostParams {
 }
 
 /// DCB type: `JumpDriveStateAudioMap`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct JumpDriveStateAudioMap {
     /// `enterStateLoop` (Class)
-    #[serde(default)]
     pub enter_state_loop: Option<Handle<GlobalResourceAudio>>,
     /// `enterStateOneShot` (Class)
-    #[serde(default)]
     pub enter_state_one_shot: Option<Handle<GlobalResourceAudio>>,
     /// `exitStateLoop` (Class)
-    #[serde(default)]
     pub exit_state_loop: Option<Handle<GlobalResourceAudio>>,
     /// `jumpDriveState` (EnumChoice)
-    #[serde(default)]
     pub jump_drive_state: ItemJumpDriveState,
 }
 
@@ -1351,82 +1171,56 @@ impl<'a> Extract<'a> for JumpDriveStateAudioMap {
 }
 
 /// DCB type: `JumpDriveAudioMovementParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct JumpDriveAudioMovementParams {
     /// `shipLinearAccelerationRL` (Class)
-    #[serde(default)]
     pub ship_linear_acceleration_rl: Option<Handle<AudioRtpc>>,
     /// `shipLinearAccelerationFB` (Class)
-    #[serde(default)]
     pub ship_linear_acceleration_fb: Option<Handle<AudioRtpc>>,
     /// `shipLinearAccelerationUD` (Class)
-    #[serde(default)]
     pub ship_linear_acceleration_ud: Option<Handle<AudioRtpc>>,
     /// `shipAngularAccelerationPitch` (Class)
-    #[serde(default)]
     pub ship_angular_acceleration_pitch: Option<Handle<AudioRtpc>>,
     /// `shipAngularAccelerationRoll` (Class)
-    #[serde(default)]
     pub ship_angular_acceleration_roll: Option<Handle<AudioRtpc>>,
     /// `shipAngularAccelerationYaw` (Class)
-    #[serde(default)]
     pub ship_angular_acceleration_yaw: Option<Handle<AudioRtpc>>,
     /// `shipAngularTurbulencePitch` (Class)
-    #[serde(default)]
     pub ship_angular_turbulence_pitch: Option<Handle<AudioRtpc>>,
     /// `shipAngularTurbulenceRoll` (Class)
-    #[serde(default)]
     pub ship_angular_turbulence_roll: Option<Handle<AudioRtpc>>,
     /// `shipAngularTurbulenceYaw` (Class)
-    #[serde(default)]
     pub ship_angular_turbulence_yaw: Option<Handle<AudioRtpc>>,
     /// `shipLinearVelocityRL` (Class)
-    #[serde(default)]
     pub ship_linear_velocity_rl: Option<Handle<AudioRtpc>>,
     /// `shipLinearVelocityFB` (Class)
-    #[serde(default)]
     pub ship_linear_velocity_fb: Option<Handle<AudioRtpc>>,
     /// `shipLinearVelocityUD` (Class)
-    #[serde(default)]
     pub ship_linear_velocity_ud: Option<Handle<AudioRtpc>>,
     /// `tunnelLinearAccelerationRL` (Class)
-    #[serde(default)]
     pub tunnel_linear_acceleration_rl: Option<Handle<AudioRtpc>>,
     /// `tunnelLinearAccelerationFB` (Class)
-    #[serde(default)]
     pub tunnel_linear_acceleration_fb: Option<Handle<AudioRtpc>>,
     /// `tunnelLinearAccelerationUD` (Class)
-    #[serde(default)]
     pub tunnel_linear_acceleration_ud: Option<Handle<AudioRtpc>>,
     /// `tunnelAngularAccelerationPitch` (Class)
-    #[serde(default)]
     pub tunnel_angular_acceleration_pitch: Option<Handle<AudioRtpc>>,
     /// `tunnelAngularAccelerationRoll` (Class)
-    #[serde(default)]
     pub tunnel_angular_acceleration_roll: Option<Handle<AudioRtpc>>,
     /// `tunnelAngularAccelerationYaw` (Class)
-    #[serde(default)]
     pub tunnel_angular_acceleration_yaw: Option<Handle<AudioRtpc>>,
     /// `playerInputPitch` (Class)
-    #[serde(default)]
     pub player_input_pitch: Option<Handle<AudioRtpc>>,
     /// `playerInputRoll` (Class)
-    #[serde(default)]
     pub player_input_roll: Option<Handle<AudioRtpc>>,
     /// `playerInputYaw` (Class)
-    #[serde(default)]
     pub player_input_yaw: Option<Handle<AudioRtpc>>,
     /// `playerInputStrafeRL` (Class)
-    #[serde(default)]
     pub player_input_strafe_rl: Option<Handle<AudioRtpc>>,
     /// `playerInputStrafeFB` (Class)
-    #[serde(default)]
     pub player_input_strafe_fb: Option<Handle<AudioRtpc>>,
     /// `playerInputStrafeUD` (Class)
-    #[serde(default)]
     pub player_input_strafe_ud: Option<Handle<AudioRtpc>>,
     /// `afterburnerRequestedRtpc` (Class)
-    #[serde(default)]
     pub afterburner_requested_rtpc: Option<Handle<AudioRtpc>>,
 }
 
@@ -1544,67 +1338,46 @@ impl<'a> Extract<'a> for JumpDriveAudioMovementParams {
 }
 
 /// DCB type: `JumpDriveAudioParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct JumpDriveAudioParams {
     /// `stateMap` (Class)
-    #[serde(default)]
     pub state_map: Option<Handle<JumpDriveStateAudioMap>>,
     /// `tunnelProgressRtpc` (Class)
-    #[serde(default)]
     pub tunnel_progress_rtpc: Option<Handle<AudioRtpc>>,
     /// `inJumpTunnelRtpc` (Class)
-    #[serde(default)]
     pub in_jump_tunnel_rtpc: Option<Handle<AudioRtpc>>,
     /// `distanceFromSplineRtpc` (Class)
-    #[serde(default)]
     pub distance_from_spline_rtpc: Option<Handle<AudioRtpc>>,
     /// `wallImpactSpeedThreshold` (Single)
-    #[serde(default)]
     pub wall_impact_speed_threshold: f32,
     /// `wallImpactDistanceThreshold` (Single)
-    #[serde(default)]
     pub wall_impact_distance_threshold: f32,
     /// `passByLightDistanceThreshold` (Single)
-    #[serde(default)]
     pub pass_by_light_distance_threshold: f32,
     /// `passByLightDistanceNormRtpc` (Class)
-    #[serde(default)]
     pub pass_by_light_distance_norm_rtpc: Option<Handle<AudioRtpc>>,
     /// `passByLightDotRtpc` (Class)
-    #[serde(default)]
     pub pass_by_light_dot_rtpc: Option<Handle<AudioRtpc>>,
     /// `tunnelWallImpactSpeedRtpc` (Class)
-    #[serde(default)]
     pub tunnel_wall_impact_speed_rtpc: Option<Handle<AudioRtpc>>,
     /// `tunnelWallImpactOneShot` (Class)
-    #[serde(default)]
     pub tunnel_wall_impact_one_shot: Option<Handle<GlobalResourceAudio>>,
     /// `startTunnelWallContactLoop` (Class)
-    #[serde(default)]
     pub start_tunnel_wall_contact_loop: Option<Handle<GlobalResourceAudio>>,
     /// `stopTunnelWallContactLoop` (Class)
-    #[serde(default)]
     pub stop_tunnel_wall_contact_loop: Option<Handle<GlobalResourceAudio>>,
     /// `splineVelRtpc` (Class)
-    #[serde(default)]
     pub spline_vel_rtpc: Option<Handle<AudioRtpc>>,
     /// `distortionRtpc` (Class)
-    #[serde(default)]
     pub distortion_rtpc: Option<Handle<AudioRtpc>>,
     /// `startSplineCenterLoop` (Class)
-    #[serde(default)]
     pub start_spline_center_loop: Option<Handle<GlobalResourceAudio>>,
     /// `stopSplineCenterLoop` (Class)
-    #[serde(default)]
     pub stop_spline_center_loop: Option<Handle<GlobalResourceAudio>>,
     /// `startShipTunnelMidpointLoop` (Class)
-    #[serde(default)]
     pub start_ship_tunnel_midpoint_loop: Option<Handle<GlobalResourceAudio>>,
     /// `stopShipTunnelMidpointLoop` (Class)
-    #[serde(default)]
     pub stop_ship_tunnel_midpoint_loop: Option<Handle<GlobalResourceAudio>>,
     /// `movementParams` (Class)
-    #[serde(default)]
     pub movement_params: Option<Handle<JumpDriveAudioMovementParams>>,
 }
 
@@ -1693,13 +1466,10 @@ impl<'a> Extract<'a> for JumpDriveAudioParams {
 }
 
 /// DCB type: `JumpDriveMusicEvent`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct JumpDriveMusicEvent {
     /// `musicLogicEvent` (Reference)
-    #[serde(default)]
     pub music_logic_event: Option<CigGuid>,
     /// `musicWwiseEvent` (Class)
-    #[serde(default)]
     pub music_wwise_event: Option<Handle<GlobalResourceAudio>>,
 }
 
@@ -1722,13 +1492,10 @@ impl<'a> Extract<'a> for JumpDriveMusicEvent {
 }
 
 /// DCB type: `JumpDriveStateMusicMap`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct JumpDriveStateMusicMap {
     /// `musicEvent` (Class)
-    #[serde(default)]
     pub music_event: Option<Handle<JumpDriveMusicEvent>>,
     /// `jumpDriveState` (EnumChoice)
-    #[serde(default)]
     pub jump_drive_state: ItemJumpDriveState,
 }
 
@@ -1751,19 +1518,14 @@ impl<'a> Extract<'a> for JumpDriveStateMusicMap {
 }
 
 /// DCB type: `JumpDriveMusicParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct JumpDriveMusicParams {
     /// `tunnelProgressRtpc` (Class)
-    #[serde(default)]
     pub tunnel_progress_rtpc: Option<Handle<AudioRtpc>>,
     /// `stateMap` (Class (array))
-    #[serde(default)]
     pub state_map: Vec<Handle<JumpDriveStateMusicMap>>,
     /// `preArrivalDurationSecs` (Single)
-    #[serde(default)]
     pub pre_arrival_duration_secs: f32,
     /// `preArrivalMusicEvent` (Class)
-    #[serde(default)]
     pub pre_arrival_music_event: Option<Handle<JumpDriveMusicEvent>>,
 }
 
@@ -1797,13 +1559,10 @@ impl<'a> Extract<'a> for JumpDriveMusicParams {
 }
 
 /// DCB type: `GlobalJumpDriveTuningEffectParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GlobalJumpDriveTuningEffectParams {
     /// `interferenceStrength` (Single)
-    #[serde(default)]
     pub interference_strength: f32,
     /// `midPointForInterferencePercentage` (Single)
-    #[serde(default)]
     pub mid_point_for_interference_percentage: f32,
 }
 
@@ -1823,10 +1582,8 @@ impl<'a> Extract<'a> for GlobalJumpDriveTuningEffectParams {
 }
 
 /// DCB type: `GlobalJumpDriveEntryEffectParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GlobalJumpDriveEntryEffectParams {
     /// `trailStrengthMaxDistance` (Single)
-    #[serde(default)]
     pub trail_strength_max_distance: f32,
 }
 
@@ -1845,10 +1602,8 @@ impl<'a> Extract<'a> for GlobalJumpDriveEntryEffectParams {
 }
 
 /// DCB type: `GlobalJumpDriveExitEffectParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GlobalJumpDriveExitEffectParams {
     /// `trailStrengthDelay` (Single)
-    #[serde(default)]
     pub trail_strength_delay: f32,
 }
 
@@ -1867,22 +1622,16 @@ impl<'a> Extract<'a> for GlobalJumpDriveExitEffectParams {
 }
 
 /// DCB type: `GlobalJumpDriveEffectParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GlobalJumpDriveEffectParams {
     /// `tuningParams` (Class)
-    #[serde(default)]
     pub tuning_params: Option<Handle<GlobalJumpDriveTuningEffectParams>>,
     /// `entryParams` (Class)
-    #[serde(default)]
     pub entry_params: Option<Handle<GlobalJumpDriveEntryEffectParams>>,
     /// `exitParams` (Class)
-    #[serde(default)]
     pub exit_params: Option<Handle<GlobalJumpDriveExitEffectParams>>,
     /// `failureBuildUpTime` (Single)
-    #[serde(default)]
     pub failure_build_up_time: f32,
     /// `failureDissipationTime` (Single)
-    #[serde(default)]
     pub failure_dissipation_time: f32,
 }
 
@@ -1914,16 +1663,12 @@ impl<'a> Extract<'a> for GlobalJumpDriveEffectParams {
 }
 
 /// DCB type: `JumpDriveApproachRingsParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct JumpDriveApproachRingsParams {
     /// `firstRingDistance` (Single)
-    #[serde(default)]
     pub first_ring_distance: f32,
     /// `lastRingDistance` (Single)
-    #[serde(default)]
     pub last_ring_distance: f32,
     /// `largestRingDiameter` (Single)
-    #[serde(default)]
     pub largest_ring_diameter: f32,
 }
 
@@ -1944,31 +1689,22 @@ impl<'a> Extract<'a> for JumpDriveApproachRingsParams {
 }
 
 /// DCB type: `GlobalJumpDriveParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GlobalJumpDriveParams {
     /// `audioParams` (Class)
-    #[serde(default)]
     pub audio_params: Option<Handle<JumpDriveAudioParams>>,
     /// `musicParams` (Class)
-    #[serde(default)]
     pub music_params: Option<Handle<JumpDriveMusicParams>>,
     /// `effectParams` (Class)
-    #[serde(default)]
     pub effect_params: Option<Handle<GlobalJumpDriveEffectParams>>,
     /// `approachRingParams` (Class)
-    #[serde(default)]
     pub approach_ring_params: Option<Handle<JumpDriveApproachRingsParams>>,
     /// `malfunction` (StrongPointer)
-    #[serde(default)]
     pub malfunction: Option<SMisfireEffectPtr>,
     /// `checksPassedDelay` (Single)
-    #[serde(default)]
     pub checks_passed_delay: f32,
     /// `obstructionPaddingSize` (Single)
-    #[serde(default)]
     pub obstruction_padding_size: f32,
     /// `wallRepelBounceVelocity` (Single)
-    #[serde(default)]
     pub wall_repel_bounce_velocity: f32,
 }
 
@@ -2009,13 +1745,10 @@ impl<'a> Extract<'a> for GlobalJumpDriveParams {
 }
 
 /// DCB type: `JumpTravelCameraParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct JumpTravelCameraParams {
     /// `genericModifiers` (Class)
-    #[serde(default)]
     pub generic_modifiers: Option<Handle<CameraEffectsModifiers>>,
     /// `cameraEffectParams` (Class)
-    #[serde(default)]
     pub camera_effect_params: Option<Handle<GlobalJumpTunnelCameraEffectParams>>,
 }
 

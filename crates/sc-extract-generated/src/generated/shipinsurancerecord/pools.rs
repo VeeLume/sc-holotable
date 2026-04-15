@@ -9,14 +9,11 @@
 
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
-use serde::{Deserialize, Serialize};
 use super::super::*;
 
 /// Pool storage for the `shipinsurancerecord` feature.
-#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+#[derive(Default)]
 pub struct ShipinsurancerecordPools {
-    #[serde(default)]
     pub suninsured_item: Vec<Option<SUninsuredItem>>,
-    #[serde(default)]
     pub ship_insurance_policy_record: Vec<Option<ShipInsurancePolicyRecord>>,
 }

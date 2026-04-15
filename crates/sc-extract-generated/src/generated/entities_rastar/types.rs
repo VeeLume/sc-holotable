@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -21,7 +20,6 @@ use super::super::*;
 
 /// DCB type: `BaseBuildingParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BaseBuildingParams {
 }
 
@@ -40,22 +38,16 @@ impl<'a> Extract<'a> for BaseBuildingParams {
 
 /// DCB type: `ObjectContainerModifierParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ObjectContainerModifierParams {
     /// `ExternalWear` (Single)
-    #[serde(default)]
     pub external_wear: f32,
     /// `ExternalDirt` (Single)
-    #[serde(default)]
     pub external_dirt: f32,
     /// `InternalWear` (Single)
-    #[serde(default)]
     pub internal_wear: f32,
     /// `InternalDirt` (Single)
-    #[serde(default)]
     pub internal_dirt: f32,
     /// `TintPaletteOverride` (Reference)
-    #[serde(default)]
     pub tint_palette_override: Option<CigGuid>,
 }
 
@@ -79,28 +71,20 @@ impl<'a> Extract<'a> for ObjectContainerModifierParams {
 
 /// DCB type: `RastarLocationParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct RastarLocationParams {
     /// `actionAreaRadius` (Single)
-    #[serde(default)]
     pub action_area_radius: f32,
     /// `locationSize` (Single)
-    #[serde(default)]
     pub location_size: f32,
     /// `externalWear` (Single)
-    #[serde(default)]
     pub external_wear: f32,
     /// `externalDirt` (Single)
-    #[serde(default)]
     pub external_dirt: f32,
     /// `internalWear` (Single)
-    #[serde(default)]
     pub internal_wear: f32,
     /// `internalDirt` (Single)
-    #[serde(default)]
     pub internal_dirt: f32,
     /// `tintPalette` (Reference)
-    #[serde(default)]
     pub tint_palette: Option<CigGuid>,
 }
 
@@ -126,7 +110,6 @@ impl<'a> Extract<'a> for RastarLocationParams {
 
 /// DCB type: `RastarUIParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct RastarUIParams {
 }
 

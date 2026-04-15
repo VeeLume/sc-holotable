@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,34 +19,24 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `STargetSelectorColorHighlighting`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct STargetSelectorColorHighlighting {
     /// `highlightColor` (Class)
-    #[serde(default)]
     pub highlight_color: Option<Handle<RGB>>,
     /// `occludedAlpha` (Single)
-    #[serde(default)]
     pub occluded_alpha: f32,
     /// `outlineOnly` (Boolean)
-    #[serde(default)]
     pub outline_only: bool,
     /// `outlineWidth` (Single)
-    #[serde(default)]
     pub outline_width: f32,
     /// `interferenceAmount` (Single)
-    #[serde(default)]
     pub interference_amount: f32,
     /// `interferenceSpeed` (Single)
-    #[serde(default)]
     pub interference_speed: f32,
     /// `interferenceTiling` (Single)
-    #[serde(default)]
     pub interference_tiling: f32,
     /// `interferenceBrightness` (Single)
-    #[serde(default)]
     pub interference_brightness: f32,
     /// `useHostilityColor` (Boolean)
-    #[serde(default)]
     pub use_hostility_color: bool,
 }
 
@@ -77,46 +66,32 @@ impl<'a> Extract<'a> for STargetSelectorColorHighlighting {
 }
 
 /// DCB type: `STargetSelectorHudParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct STargetSelectorHudParams {
     /// `calculateLockedTargetBracket` (Boolean)
-    #[serde(default)]
     pub calculate_locked_target_bracket: bool,
     /// `calculateSelectedTargetBracket` (Boolean)
-    #[serde(default)]
     pub calculate_selected_target_bracket: bool,
     /// `hudTargetPointerAngleOffset` (Single)
-    #[serde(default)]
     pub hud_target_pointer_angle_offset: f32,
     /// `hudTargetPointerHeadFollowAngleInner` (Single)
-    #[serde(default)]
     pub hud_target_pointer_head_follow_angle_inner: f32,
     /// `hudTargetPointerHeadFollowAngleOuter` (Single)
-    #[serde(default)]
     pub hud_target_pointer_head_follow_angle_outer: f32,
     /// `hudTargetPointerHeadFollowSwapTime` (Single)
-    #[serde(default)]
     pub hud_target_pointer_head_follow_swap_time: f32,
     /// `relativeAttitudePointerPosition` (Single)
-    #[serde(default)]
     pub relative_attitude_pointer_position: f32,
     /// `showAllSubtargets` (Boolean)
-    #[serde(default)]
     pub show_all_subtargets: bool,
     /// `targetPointerAlpha` (Class)
-    #[serde(default)]
     pub target_pointer_alpha: Option<Handle<BezierCurve>>,
     /// `outlineSubtargetsLocked` (Class)
-    #[serde(default)]
     pub outline_subtargets_locked: Option<Handle<STargetSelectorColorHighlighting>>,
     /// `outlineSubtargetsAvailable` (Class)
-    #[serde(default)]
     pub outline_subtargets_available: Option<Handle<STargetSelectorColorHighlighting>>,
     /// `outlineSubtargetsObjective` (Class)
-    #[serde(default)]
     pub outline_subtargets_objective: Option<Handle<STargetSelectorColorHighlighting>>,
     /// `outlineSubtargetsObjectiveLocked` (Class)
-    #[serde(default)]
     pub outline_subtargets_objective_locked: Option<Handle<STargetSelectorColorHighlighting>>,
 }
 
@@ -162,49 +137,34 @@ impl<'a> Extract<'a> for STargetSelectorHudParams {
 }
 
 /// DCB type: `SProjectedPitchLadderParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SProjectedPitchLadderParams {
     /// `visibleSizeAngle` (Single)
-    #[serde(default)]
     pub visible_size_angle: f32,
     /// `visibleFadeRatio` (Single)
-    #[serde(default)]
     pub visible_fade_ratio: f32,
     /// `incrementAngle` (Single)
-    #[serde(default)]
     pub increment_angle: f32,
     /// `centersEnabled` (Boolean)
-    #[serde(default)]
     pub centers_enabled: bool,
     /// `centersAlignmentType` (EnumChoice)
-    #[serde(default)]
     pub centers_alignment_type: EProjectedHudAlignmentType,
     /// `sidesEnabled` (Boolean)
-    #[serde(default)]
     pub sides_enabled: bool,
     /// `sidesHorizontalOffsetAngle` (Single)
-    #[serde(default)]
     pub sides_horizontal_offset_angle: f32,
     /// `sidesPositionType` (EnumChoice)
-    #[serde(default)]
     pub sides_position_type: EProjectedHudPositionType,
     /// `sidesAlignmentType` (EnumChoice)
-    #[serde(default)]
     pub sides_alignment_type: EProjectedHudAlignmentType,
     /// `labelsEnabled` (Boolean)
-    #[serde(default)]
     pub labels_enabled: bool,
     /// `labelsHorizontalOffsetAngle` (Single)
-    #[serde(default)]
     pub labels_horizontal_offset_angle: f32,
     /// `labelsPositionType` (EnumChoice)
-    #[serde(default)]
     pub labels_position_type: EProjectedHudPositionType,
     /// `labelsAlignmentType` (EnumChoice)
-    #[serde(default)]
     pub labels_alignment_type: EProjectedHudAlignmentType,
     /// `enableZeroPitchElements` (Boolean)
-    #[serde(default)]
     pub enable_zero_pitch_elements: bool,
 }
 
@@ -236,52 +196,36 @@ impl<'a> Extract<'a> for SProjectedPitchLadderParams {
 }
 
 /// DCB type: `SProjectedYawLineParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SProjectedYawLineParams {
     /// `enabled` (Boolean)
-    #[serde(default)]
     pub enabled: bool,
     /// `startAngle` (Single)
-    #[serde(default)]
     pub start_angle: f32,
     /// `endAngle` (Single)
-    #[serde(default)]
     pub end_angle: f32,
     /// `ticksEnabled` (Boolean)
-    #[serde(default)]
     pub ticks_enabled: bool,
     /// `tickForwardFadeStartAngle` (Single)
-    #[serde(default)]
     pub tick_forward_fade_start_angle: f32,
     /// `tickForwardFadeEndAngle` (Single)
-    #[serde(default)]
     pub tick_forward_fade_end_angle: f32,
     /// `tickBorderFadeAngle` (Single)
-    #[serde(default)]
     pub tick_border_fade_angle: f32,
     /// `tickIncrementAngle` (Single)
-    #[serde(default)]
     pub tick_increment_angle: f32,
     /// `tickIncrementVisualAngleRatio` (Single)
-    #[serde(default)]
     pub tick_increment_visual_angle_ratio: f32,
     /// `tickAlignmentType` (EnumChoice)
-    #[serde(default)]
     pub tick_alignment_type: EProjectedHudAlignmentType,
     /// `ticksAddCorners` (Boolean)
-    #[serde(default)]
     pub ticks_add_corners: bool,
     /// `ticksAsFullCircle` (Boolean)
-    #[serde(default)]
     pub ticks_as_full_circle: bool,
     /// `fixYawLineToAngle` (Boolean)
-    #[serde(default)]
     pub fix_yaw_line_to_angle: bool,
     /// `fixedAngle` (Single)
-    #[serde(default)]
     pub fixed_angle: f32,
     /// `anchorType` (EnumChoice)
-    #[serde(default)]
     pub anchor_type: EProjectedHudYawLineAnchorType,
 }
 
@@ -314,19 +258,14 @@ impl<'a> Extract<'a> for SProjectedYawLineParams {
 }
 
 /// DCB type: `SProjectedDisplayParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SProjectedDisplayParams {
     /// `enabled` (Boolean)
-    #[serde(default)]
     pub enabled: bool,
     /// `pitchOffset` (Single)
-    #[serde(default)]
     pub pitch_offset: f32,
     /// `yawOffset` (Single)
-    #[serde(default)]
     pub yaw_offset: f32,
     /// `alignmentType` (EnumChoice)
-    #[serde(default)]
     pub alignment_type: EProjectedHudAlignmentType,
 }
 
@@ -348,16 +287,12 @@ impl<'a> Extract<'a> for SProjectedDisplayParams {
 }
 
 /// DCB type: `SHudTapeParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SHudTapeParams {
     /// `range` (Single)
-    #[serde(default)]
     pub range: f32,
     /// `mainTickIncrement` (Single)
-    #[serde(default)]
     pub main_tick_increment: f32,
     /// `subTicks` (Int32)
-    #[serde(default)]
     pub sub_ticks: i32,
 }
 
@@ -378,25 +313,18 @@ impl<'a> Extract<'a> for SHudTapeParams {
 }
 
 /// DCB type: `SProjectedHudParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SProjectedHudParams {
     /// `pitchLadder` (Class)
-    #[serde(default)]
     pub pitch_ladder: Option<Handle<SProjectedPitchLadderParams>>,
     /// `yawLine` (Class)
-    #[serde(default)]
     pub yaw_line: Option<Handle<SProjectedYawLineParams>>,
     /// `display` (Class)
-    #[serde(default)]
     pub display: Option<Handle<SProjectedDisplayParams>>,
     /// `coilArrowShow` (Boolean)
-    #[serde(default)]
     pub coil_arrow_show: bool,
     /// `coilArrowOffsetAngle` (Single)
-    #[serde(default)]
     pub coil_arrow_offset_angle: f32,
     /// `coilArrowRotatesToTarget` (Boolean)
-    #[serde(default)]
     pub coil_arrow_rotates_to_target: bool,
 }
 
@@ -429,16 +357,12 @@ impl<'a> Extract<'a> for SProjectedHudParams {
 }
 
 /// DCB type: `SVehicleHudParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SVehicleHudParams {
     /// `altitudeTape` (Class)
-    #[serde(default)]
     pub altitude_tape: Option<Handle<SHudTapeParams>>,
     /// `radarAltimeterWidgetThreshold` (Single)
-    #[serde(default)]
     pub radar_altimeter_widget_threshold: f32,
     /// `compassTape` (Class)
-    #[serde(default)]
     pub compass_tape: Option<Handle<SHudTapeParams>>,
 }
 
@@ -465,19 +389,14 @@ impl<'a> Extract<'a> for SVehicleHudParams {
 }
 
 /// DCB type: `SAimableGimbalModeLabels`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SAimableGimbalModeLabels {
     /// `aimTypeNamesFull` (Locale)
-    #[serde(default)]
     pub aim_type_names_full: LocaleKey,
     /// `aimTypeNamesShort` (Locale)
-    #[serde(default)]
     pub aim_type_names_short: LocaleKey,
     /// `gimbalStateNamesFull` (Locale)
-    #[serde(default)]
     pub gimbal_state_names_full: LocaleKey,
     /// `gimbalStateNamesShort` (Locale)
-    #[serde(default)]
     pub gimbal_state_names_short: LocaleKey,
 }
 
@@ -499,40 +418,28 @@ impl<'a> Extract<'a> for SAimableGimbalModeLabels {
 }
 
 /// DCB type: `SAimableControllerHudParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SAimableControllerHudParams {
     /// `hudAutoGimbalTrackingMarkerAnimationTime` (Single)
-    #[serde(default)]
     pub hud_auto_gimbal_tracking_marker_animation_time: f32,
     /// `showAutoGimbalCombinedAllPIP` (Boolean)
-    #[serde(default)]
     pub show_auto_gimbal_combined_all_pip: bool,
     /// `leadPipFadingAngle` (Single)
-    #[serde(default)]
     pub lead_pip_fading_angle: f32,
     /// `leadPipFadingCurve` (Class)
-    #[serde(default)]
     pub lead_pip_fading_curve: Option<Handle<BezierCurve>>,
     /// `lagPipFadingAngle` (Single)
-    #[serde(default)]
     pub lag_pip_fading_angle: f32,
     /// `lagPipFadingCurve` (Class)
-    #[serde(default)]
     pub lag_pip_fading_curve: Option<Handle<BezierCurve>>,
     /// `borderOffsetAngleMin` (Single)
-    #[serde(default)]
     pub border_offset_angle_min: f32,
     /// `borderOffsetAngleMax` (Single)
-    #[serde(default)]
     pub border_offset_angle_max: f32,
     /// `crosshairShapes` (Int32)
-    #[serde(default)]
     pub crosshair_shapes: i32,
     /// `gimbalAlignmentAngle` (Single)
-    #[serde(default)]
     pub gimbal_alignment_angle: f32,
     /// `gimbalAlignmentExcludeOutOfAngle` (Boolean)
-    #[serde(default)]
     pub gimbal_alignment_exclude_out_of_angle: bool,
 }
 

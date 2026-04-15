@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -21,10 +20,8 @@ use super::super::*;
 
 /// DCB type: `HarvestableTagListTagEditor`
 /// Inherits from: `HarvestableTagListBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct HarvestableTagListTagEditor {
     /// `tags` (Reference (array))
-    #[serde(default)]
     pub tags: Vec<CigGuid>,
 }
 
@@ -45,10 +42,8 @@ impl<'a> Extract<'a> for HarvestableTagListTagEditor {
 }
 
 /// DCB type: `SubHarvestableMultiConfigRecord`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SubHarvestableMultiConfigRecord {
     /// `multiConfig` (Class)
-    #[serde(default)]
     pub multi_config: Option<Handle<SubHarvestableMultiConfig>>,
 }
 
@@ -71,10 +66,8 @@ impl<'a> Extract<'a> for SubHarvestableMultiConfigRecord {
 
 /// DCB type: `SubHarvestableConfigSingleRef`
 /// Inherits from: `SubHarvestableConfigSingleBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SubHarvestableConfigSingleRef {
     /// `subConfigRef` (Reference)
-    #[serde(default)]
     pub sub_config_ref: Option<CigGuid>,
 }
 
@@ -94,10 +87,8 @@ impl<'a> Extract<'a> for SubHarvestableConfigSingleRef {
 
 /// DCB type: `HarvestConditionDamageMap`
 /// Inherits from: `HarvestConditionBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct HarvestConditionDamageMap {
     /// `damageRatio` (Single)
-    #[serde(default)]
     pub damage_ratio: f32,
 }
 
@@ -116,22 +107,16 @@ impl<'a> Extract<'a> for HarvestConditionDamageMap {
 }
 
 /// DCB type: `HarvestableSetup`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct HarvestableSetup {
     /// `harvestBehaviour` (Class)
-    #[serde(default)]
     pub harvest_behaviour: Option<Handle<HarvestBehaviourParams>>,
     /// `transformParams` (Class)
-    #[serde(default)]
     pub transform_params: Option<Handle<HarvestableTransformParams>>,
     /// `subConfigBase` (StrongPointer)
-    #[serde(default)]
     pub sub_config_base: Option<SubHarvestableConfigBasePtr>,
     /// `respawnInSlotTime` (Single)
-    #[serde(default)]
     pub respawn_in_slot_time: f32,
     /// `specialHarvestableString` (String)
-    #[serde(default)]
     pub special_harvestable_string: String,
 }
 
@@ -163,22 +148,16 @@ impl<'a> Extract<'a> for HarvestableSetup {
 }
 
 /// DCB type: `HarvestableClusterParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct HarvestableClusterParams {
     /// `relativeProbability` (Single)
-    #[serde(default)]
     pub relative_probability: f32,
     /// `minSize` (Int32)
-    #[serde(default)]
     pub min_size: i32,
     /// `maxSize` (Int32)
-    #[serde(default)]
     pub max_size: i32,
     /// `minProximity` (Single)
-    #[serde(default)]
     pub min_proximity: f32,
     /// `maxProximity` (Single)
-    #[serde(default)]
     pub max_proximity: f32,
 }
 
@@ -201,13 +180,10 @@ impl<'a> Extract<'a> for HarvestableClusterParams {
 }
 
 /// DCB type: `HarvestableClusterPreset`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct HarvestableClusterPreset {
     /// `probabilityOfClustering` (Single)
-    #[serde(default)]
     pub probability_of_clustering: f32,
     /// `clusterParamsArray` (Class (array))
-    #[serde(default)]
     pub cluster_params_array: Vec<Handle<HarvestableClusterParams>>,
 }
 
@@ -233,25 +209,18 @@ impl<'a> Extract<'a> for HarvestableClusterPreset {
 }
 
 /// DCB type: `HarvestableElement`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct HarvestableElement {
     /// `harvestable` (Reference)
-    #[serde(default)]
     pub harvestable: Option<CigGuid>,
     /// `harvestableEntityClass` (Reference)
-    #[serde(default)]
     pub harvestable_entity_class: Option<CigGuid>,
     /// `harvestableSetup` (Reference)
-    #[serde(default)]
     pub harvestable_setup: Option<CigGuid>,
     /// `relativeProbability` (Single)
-    #[serde(default)]
     pub relative_probability: f32,
     /// `clustering` (Reference)
-    #[serde(default)]
     pub clustering: Option<CigGuid>,
     /// `geometries` (Class (array))
-    #[serde(default)]
     pub geometries: Vec<Handle<HarvestableGeometry>>,
 }
 
@@ -281,16 +250,12 @@ impl<'a> Extract<'a> for HarvestableElement {
 }
 
 /// DCB type: `HarvestableElementGroup`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct HarvestableElementGroup {
     /// `groupName` (String)
-    #[serde(default)]
     pub group_name: String,
     /// `groupProbability` (Single)
-    #[serde(default)]
     pub group_probability: f32,
     /// `harvestables` (Class (array))
-    #[serde(default)]
     pub harvestables: Vec<Handle<HarvestableElement>>,
 }
 
@@ -317,16 +282,12 @@ impl<'a> Extract<'a> for HarvestableElementGroup {
 }
 
 /// DCB type: `HarvestableElementModifier`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct HarvestableElementModifier {
     /// `harvestableElement` (WeakPointer)
-    #[serde(default)]
     pub harvestable_element: Option<Handle<HarvestableElement>>,
     /// `harvestableModifier` (Single)
-    #[serde(default)]
     pub harvestable_modifier: f32,
     /// `geometries` (Class (array))
-    #[serde(default)]
     pub geometries: Vec<Handle<HarvestableGeometry>>,
 }
 
@@ -357,10 +318,8 @@ impl<'a> Extract<'a> for HarvestableElementModifier {
 
 /// DCB type: `HarvestableAreaTypeObjectPreset`
 /// Inherits from: `HarvestableAreaTypeBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct HarvestableAreaTypeObjectPreset {
     /// `objectPresetPaths` (String (array))
-    #[serde(default)]
     pub object_preset_paths: Vec<String>,
 }
 
@@ -381,19 +340,14 @@ impl<'a> Extract<'a> for HarvestableAreaTypeObjectPreset {
 }
 
 /// DCB type: `HarvestableAreaPreset`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct HarvestableAreaPreset {
     /// `debugGroupName` (String)
-    #[serde(default)]
     pub debug_group_name: String,
     /// `areaType` (StrongPointer)
-    #[serde(default)]
     pub area_type: Option<HarvestableAreaTypeBasePtr>,
     /// `globalModifier` (Single)
-    #[serde(default)]
     pub global_modifier: f32,
     /// `modifiers` (Class (array))
-    #[serde(default)]
     pub modifiers: Vec<Handle<HarvestableElementModifier>>,
 }
 
@@ -424,13 +378,10 @@ impl<'a> Extract<'a> for HarvestableAreaPreset {
 }
 
 /// DCB type: `HarvestableProviderPreset`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct HarvestableProviderPreset {
     /// `harvestableGroups` (Class (array))
-    #[serde(default)]
     pub harvestable_groups: Vec<Handle<HarvestableElementGroup>>,
     /// `areas` (Class (array))
-    #[serde(default)]
     pub areas: Vec<Handle<HarvestableAreaPreset>>,
 }
 

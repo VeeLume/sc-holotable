@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,28 +19,20 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `PlayerECGGraph_Config`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PlayerECGGraph_Config {
     /// `idleAmpRangeMax` (Single)
-    #[serde(default)]
     pub idle_amp_range_max: f32,
     /// `spikeFrameDuration` (Byte)
-    #[serde(default)]
     pub spike_frame_duration: u32,
     /// `spikeFrameDurationRandFactor` (Single)
-    #[serde(default)]
     pub spike_frame_duration_rand_factor: f32,
     /// `waveFreq` (Byte)
-    #[serde(default)]
     pub wave_freq: u32,
     /// `pulseAmpMin` (Single)
-    #[serde(default)]
     pub pulse_amp_min: f32,
     /// `pulseAmpMax` (Single)
-    #[serde(default)]
     pub pulse_amp_max: f32,
     /// `updateRate` (Byte)
-    #[serde(default)]
     pub update_rate: u32,
 }
 

@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,37 +19,26 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `ActorGForceCameraEffectsData`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ActorGForceCameraEffectsData {
     /// `enabled` (Boolean)
-    #[serde(default)]
     pub enabled: bool,
     /// `effectsOnlyAppliedForward` (Boolean)
-    #[serde(default)]
     pub effects_only_applied_forward: bool,
     /// `gForceAngleOuter` (Single)
-    #[serde(default)]
     pub g_force_angle_outer: f32,
     /// `gForceAngleInner` (Single)
-    #[serde(default)]
     pub g_force_angle_inner: f32,
     /// `gForceMin` (Single)
-    #[serde(default)]
     pub g_force_min: f32,
     /// `gForceMax` (Single)
-    #[serde(default)]
     pub g_force_max: f32,
     /// `gForceFOV` (Single)
-    #[serde(default)]
     pub g_force_fov: f32,
     /// `focusDistance` (Single)
-    #[serde(default)]
     pub focus_distance: f32,
     /// `afterburnerEffectMinRatio` (Single)
-    #[serde(default)]
     pub afterburner_effect_min_ratio: f32,
     /// `genericModifiers` (Class)
-    #[serde(default)]
     pub generic_modifiers: Option<Handle<CameraEffectsModifiers>>,
 }
 
@@ -81,10 +69,8 @@ impl<'a> Extract<'a> for ActorGForceCameraEffectsData {
 }
 
 /// DCB type: `ActorGForceCameraEffects`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ActorGForceCameraEffects {
     /// `cameraEffects` (Class)
-    #[serde(default)]
     pub camera_effects: Option<Handle<ActorGForceCameraEffectsData>>,
 }
 

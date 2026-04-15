@@ -452,7 +452,6 @@ pub fn emit_poly_enums_file(
     out.push_str("//! dispatches on the instance's type name to select the correct\n");
     out.push_str("//! concrete variant.\n\n");
     out.push_str("#![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]\n\n");
-    out.push_str("use serde::{Deserialize, Serialize};\n");
     out.push_str("use crate::{Builder, Handle};\n");
     out.push_str("use super::*;\n\n");
 
@@ -537,7 +536,7 @@ fn emit_poly_enum(
     out.push_str("/// optional features are `#[cfg]`-gated; when their feature is\n");
     out.push_str("/// disabled at compile time, runtime dispatch falls through to\n");
     out.push_str("/// `Unknown { struct_index, instance_index }`.\n");
-    out.push_str("#[derive(Debug, Clone, Serialize, Deserialize)]\n");
+    out.push_str("#[derive(Debug, Clone)]\n");
     let _ = writeln!(out, "pub enum {enum_name} {{");
     for (type_name, cfg, _) in &variants {
         if !cfg.is_empty() {
@@ -581,8 +580,7 @@ fn emit_poly_enum(
 /// attributes from `feature_cfgs` so the pool struct compiles when only
 /// some of the type's features are enabled. The pool struct itself stays
 /// unconditional (it always exists, just with fewer fields when features
-/// are disabled); `serde(default)` on each field means deserialization
-/// continues to work when the field was absent at compile time.
+/// are disabled).
 pub fn emit_feature_pools(
     feature_name: &str,
     struct_indices: &[u32],
@@ -594,11 +592,10 @@ pub fn emit_feature_pools(
     let mut out = String::new();
     out.push_str(FILE_HEADER);
     out.push_str("#![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]\n\n");
-    out.push_str("use serde::{Deserialize, Serialize};\n");
     out.push_str("use super::super::*;\n\n");
 
     let _ = writeln!(out, "/// Pool storage for the `{feature_name}` feature.");
-    out.push_str("#[derive(Debug, Clone, Default, Serialize, Deserialize)]\n");
+    out.push_str("#[derive(Default)]\n");
     let _ = writeln!(out, "pub struct {suffix}Pools {{");
     for &struct_idx in struct_indices {
         if let (Some(type_name), Some(field)) =
@@ -607,7 +604,6 @@ pub fn emit_feature_pools(
             if let Some(Some(cfg)) = feature_cfgs.get(&struct_idx) {
                 let _ = writeln!(out, "    {cfg}");
             }
-            out.push_str("    #[serde(default)]\n");
             let _ = writeln!(out, "    pub {field}: Vec<Option<{type_name}>>,");
         }
     }
@@ -639,13 +635,12 @@ pub fn emit_feature_index(
     out.push_str(FILE_HEADER);
     out.push_str("#![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]\n\n");
     out.push_str("use std::collections::HashMap;\n");
-    out.push_str("use serde::{Deserialize, Serialize};\n");
     out.push_str("use svarog_common::CigGuid;\n");
     out.push_str("use crate::Handle;\n");
     out.push_str("use super::super::*;\n\n");
 
     let _ = writeln!(out, "/// Record index for the `{feature_name}` feature.");
-    out.push_str("#[derive(Debug, Clone, Default, Serialize, Deserialize)]\n");
+    out.push_str("#[derive(Default)]\n");
     let _ = writeln!(out, "pub struct {suffix}Index {{");
 
     let mut used: HashSet<String> = HashSet::new();
@@ -670,7 +665,6 @@ pub fn emit_feature_index(
         if !cfg_attr.is_empty() {
             let _ = writeln!(out, "    {cfg_attr}");
         }
-        out.push_str("    #[serde(default)]\n");
         let _ = writeln!(
             out,
             "    pub {field}: HashMap<CigGuid, Handle<{type_name}>>,"
@@ -739,9 +733,8 @@ pub fn emit_top_data_pools(feature_names: &[String]) -> String {
     out.push_str(FILE_HEADER);
     out.push_str("//! Top-level `DataPools` composing per-feature pool sub-structs.\n\n");
     out.push_str("#![allow(unused_imports)]\n\n");
-    out.push_str("use serde::{Deserialize, Serialize};\n\n");
 
-    out.push_str("#[derive(Debug, Clone, Default, Serialize, Deserialize)]\n");
+    out.push_str("#[derive(Default)]\n");
     out.push_str("pub struct DataPools {\n");
     for feature in feature_names {
         let suffix = feature_to_type_suffix(feature);
@@ -750,7 +743,6 @@ pub fn emit_top_data_pools(feature_names: &[String]) -> String {
         if let Some(cfg) = feature_module_cfg(feature) {
             let _ = writeln!(out, "    {cfg}");
         }
-        out.push_str("    #[serde(default)]\n");
         let _ = writeln!(out, "    pub {field}: super::{mod_name}::{suffix}Pools,");
     }
     out.push_str("}\n");
@@ -763,9 +755,8 @@ pub fn emit_top_record_index(features_with_index: &[String]) -> String {
     out.push_str(FILE_HEADER);
     out.push_str("//! Top-level `RecordIndex` composing per-feature index sub-structs.\n\n");
     out.push_str("#![allow(unused_imports)]\n\n");
-    out.push_str("use serde::{Deserialize, Serialize};\n\n");
 
-    out.push_str("#[derive(Debug, Clone, Default, Serialize, Deserialize)]\n");
+    out.push_str("#[derive(Default)]\n");
     out.push_str("pub struct RecordIndex {\n");
     for feature in features_with_index {
         let suffix = feature_to_type_suffix(feature);
@@ -774,7 +765,6 @@ pub fn emit_top_record_index(features_with_index: &[String]) -> String {
         if let Some(cfg) = feature_module_cfg(feature) {
             let _ = writeln!(out, "    {cfg}");
         }
-        out.push_str("    #[serde(default)]\n");
         let _ = writeln!(out, "    pub {field}: super::{mod_name}::{suffix}Index,");
     }
     out.push_str("}\n\n");
@@ -871,18 +861,15 @@ pub fn emit_record_store(
     out.push_str(FILE_HEADER);
     out.push_str("#![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]\n\n");
     out.push_str("use std::collections::HashMap;\n");
-    out.push_str("use serde::{Deserialize, Serialize};\n");
     out.push_str("use svarog_common::CigGuid;\n");
     out.push_str("use svarog_datacore::Instance;\n");
     out.push_str("use crate::{Builder, Extract, Handle};\n");
     out.push_str("use super::*;\n\n");
 
     // RecordStore struct
-    out.push_str("#[derive(Debug, Clone, Default, Serialize, Deserialize)]\n");
+    out.push_str("#[derive(Default)]\n");
     out.push_str("pub struct RecordStore {\n");
-    out.push_str("    #[serde(default)]\n");
     out.push_str("    pub pools: DataPools,\n");
-    out.push_str("    #[serde(default)]\n");
     out.push_str("    pub records: RecordIndex,\n");
     out.push_str("}\n\n");
 
@@ -1061,7 +1048,6 @@ pub fn emit_enums(db: &DataCoreDatabase) -> String {
     let mut out = String::new();
     out.push_str(FILE_HEADER);
     out.push_str("#![allow(non_camel_case_types, dead_code)]\n\n");
-    out.push_str("use serde::{Deserialize, Serialize};\n\n");
 
     let mut emitted: HashSet<String> = HashSet::new();
     for enum_idx in 0..db.enum_definitions().len() {
@@ -1092,7 +1078,7 @@ pub fn emit_enums(db: &DataCoreDatabase) -> String {
         }
 
         let _ = writeln!(out, "/// DCB enum: `{name}`");
-        out.push_str("#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]\n");
+        out.push_str("#[derive(Debug, Clone, PartialEq, Eq, Hash)]\n");
         let _ = writeln!(out, "pub enum {sanitized} {{");
         if kept_variants.is_empty() {
             out.push_str("    Empty,\n");
@@ -1135,18 +1121,6 @@ pub fn emit_enums(db: &DataCoreDatabase) -> String {
             );
             out.push_str("        }\n");
         }
-        out.push_str("    }\n");
-        out.push_str("}\n\n");
-
-        // Manual `Default` impl — every generated struct field is
-        // annotated with `#[serde(default)]` to tolerate missing values
-        // on deserialize, and that attribute requires the field type to
-        // implement `Default`. We map the default to `Unrecognized("")`
-        // which is the same semantic `from_dcb_str` uses for unknown
-        // input: "the source didn't tell us anything meaningful."
-        let _ = writeln!(out, "impl Default for {sanitized} {{");
-        out.push_str("    fn default() -> Self {\n");
-        let _ = writeln!(out, "        Self::{FALLBACK_VARIANT}(String::new())");
         out.push_str("    }\n");
         out.push_str("}\n\n");
     }
@@ -1209,7 +1183,6 @@ fn types_file_header(feature_name: &str) -> String {
     let _ = writeln!(out, "//! Types for feature `{feature_name}`.\n");
     out.push_str("#![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]\n");
     out.push_str("#![allow(clippy::too_many_arguments)]\n\n");
-    out.push_str("use serde::{Deserialize, Serialize};\n");
     out.push_str("use svarog_common::CigGuid;\n");
     out.push_str("use svarog_datacore::{Instance, Value};\n");
     // `LocaleKey` lives at the crate root (not inside `generated`), so pull
@@ -1299,13 +1272,11 @@ fn emit_struct(
     if !cfg_attr.is_empty() {
         let _ = writeln!(out, "{cfg_attr}");
     }
-    out.push_str("#[derive(Debug, Clone, Serialize, Deserialize)]\n");
     let _ = writeln!(out, "pub struct {name} {{");
     for f in &fields {
         let dt = f.data_type.map(|d| d.as_str()).unwrap_or("unknown");
         let array_tag = if f.is_array { " (array)" } else { "" };
         let _ = writeln!(out, "    /// `{}` ({dt}{array_tag})", f.orig_name);
-        out.push_str("    #[serde(default)]\n");
         let _ = writeln!(out, "    pub {}: {},", f.field_name, f.rust_type);
     }
     let _ = writeln!(out, "}}\n");

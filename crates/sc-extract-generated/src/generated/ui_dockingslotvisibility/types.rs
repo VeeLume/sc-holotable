@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,10 +19,8 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `DockingSlotVisibilityTagSet`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DockingSlotVisibilityTagSet {
     /// `tags` (String (array))
-    #[serde(default)]
     pub tags: Vec<String>,
 }
 
@@ -44,13 +41,10 @@ impl<'a> Extract<'a> for DockingSlotVisibilityTagSet {
 }
 
 /// DCB type: `DockingSlotVisibilityRule`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DockingSlotVisibilityRule {
     /// `modes` (EnumChoice (array))
-    #[serde(default)]
     pub modes: Vec<UIBlockingMode>,
     /// `tagSets` (Class (array))
-    #[serde(default)]
     pub tag_sets: Vec<Handle<DockingSlotVisibilityTagSet>>,
 }
 
@@ -78,10 +72,8 @@ impl<'a> Extract<'a> for DockingSlotVisibilityRule {
 }
 
 /// DCB type: `DockingSlotVisibility`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DockingSlotVisibility {
     /// `rules` (Class (array))
-    #[serde(default)]
     pub rules: Vec<Handle<DockingSlotVisibilityRule>>,
 }
 

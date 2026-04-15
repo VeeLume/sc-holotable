@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,16 +19,12 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `RefiningProcess`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct RefiningProcess {
     /// `refiningSpeed` (EnumChoice)
-    #[serde(default)]
     pub refining_speed: RefiningSpeed,
     /// `refiningQuality` (EnumChoice)
-    #[serde(default)]
     pub refining_quality: RefiningQuality,
     /// `processName` (Locale)
-    #[serde(default)]
     pub process_name: LocaleKey,
 }
 

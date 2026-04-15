@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -21,25 +20,18 @@ use super::super::*;
 
 /// DCB type: `TransportNavSplineParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct TransportNavSplineParams {
     /// `startTags` (Class)
-    #[serde(default)]
     pub start_tags: Option<Handle<TagList>>,
     /// `startTagFilter` (Class)
-    #[serde(default)]
     pub start_tag_filter: Option<Handle<TagsDNFTerm>>,
     /// `endTags` (Class)
-    #[serde(default)]
     pub end_tags: Option<Handle<TagList>>,
     /// `endTagFilter` (Class)
-    #[serde(default)]
     pub end_tag_filter: Option<Handle<TagsDNFTerm>>,
     /// `reversible` (Boolean)
-    #[serde(default)]
     pub reversible: bool,
     /// `invertForward` (Boolean)
-    #[serde(default)]
     pub invert_forward: bool,
 }
 

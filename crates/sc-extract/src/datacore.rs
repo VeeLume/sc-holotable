@@ -34,7 +34,12 @@ use crate::tags::TagTree;
 /// Not serialized. Snapshot persistence happens at the
 /// [`crate::ExtractSnapshot`] layer, which archives the raw DCB bytes and
 /// re-parses on load — see `docs/sc-extract.md` for why.
-#[derive(Debug, Clone, Default)]
+///
+/// Not `Debug` or `Clone`: the embedded [`RecordStore`] deliberately
+/// doesn't derive either, because doing so across ~6.2k generated types
+/// explodes compile time and buys nothing real — nobody clones a full
+/// parse result and [`Datacore`] supplies its own summary `Debug` impl.
+#[derive(Default)]
 #[non_exhaustive]
 pub struct DatacoreSnapshot {
     /// Every top-level DCB record, split by concrete Rust type.

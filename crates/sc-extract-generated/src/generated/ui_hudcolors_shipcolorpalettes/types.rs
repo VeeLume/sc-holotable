@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,13 +19,10 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `HudColors`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct HudColors {
     /// `HoloMatParams` (Class)
-    #[serde(default)]
     pub holo_mat_params: Option<Handle<HudColor_HoloParam>>,
     /// `Palettes` (Class (array))
-    #[serde(default)]
     pub palettes: Vec<Handle<HudColor_Palette>>,
 }
 
@@ -55,16 +51,12 @@ impl<'a> Extract<'a> for HudColors {
 }
 
 /// DCB type: `HudColor_Palette`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct HudColor_Palette {
     /// `Name` (String)
-    #[serde(default)]
     pub name: String,
     /// `StandardEntries` (Class)
-    #[serde(default)]
     pub standard_entries: Option<Handle<HudColor_Entry>>,
     /// `CustomEntries` (Class (array))
-    #[serde(default)]
     pub custom_entries: Vec<Handle<HudColor_CustomEntry>>,
 }
 
@@ -94,13 +86,10 @@ impl<'a> Extract<'a> for HudColor_Palette {
 }
 
 /// DCB type: `HudColor_Entry`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct HudColor_Entry {
     /// `FlashColor` (StrongPointer)
-    #[serde(default)]
     pub flash_color: Option<Handle<SRGBA8>>,
     /// `HoloMatColors` (Class)
-    #[serde(default)]
     pub holo_mat_colors: Option<Handle<HudColor_HoloMatColors>>,
 }
 
@@ -127,16 +116,12 @@ impl<'a> Extract<'a> for HudColor_Entry {
 
 /// DCB type: `HudColor_CustomEntry`
 /// Inherits from: `HudColor_Entry`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct HudColor_CustomEntry {
     /// `FlashColor` (StrongPointer)
-    #[serde(default)]
     pub flash_color: Option<Handle<SRGBA8>>,
     /// `HoloMatColors` (Class)
-    #[serde(default)]
     pub holo_mat_colors: Option<Handle<HudColor_HoloMatColors>>,
     /// `Name` (String)
-    #[serde(default)]
     pub name: String,
 }
 
@@ -163,25 +148,18 @@ impl<'a> Extract<'a> for HudColor_CustomEntry {
 }
 
 /// DCB type: `HudColor_HoloParam`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct HudColor_HoloParam {
     /// `Name` (String)
-    #[serde(default)]
     pub name: String,
     /// `Opacity` (Single)
-    #[serde(default)]
     pub opacity: f32,
     /// `Glow` (Single)
-    #[serde(default)]
     pub glow: f32,
     /// `DiffuseOpacity` (Single)
-    #[serde(default)]
     pub diffuse_opacity: f32,
     /// `RimOpacity` (Single)
-    #[serde(default)]
     pub rim_opacity: f32,
     /// `SilhouetteOpacity` (Single)
-    #[serde(default)]
     pub silhouette_opacity: f32,
 }
 
@@ -205,22 +183,16 @@ impl<'a> Extract<'a> for HudColor_HoloParam {
 }
 
 /// DCB type: `HudColor_HoloMatColors`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct HudColor_HoloMatColors {
     /// `Diffuse` (Class)
-    #[serde(default)]
     pub diffuse: Option<Handle<SRGB8>>,
     /// `Emissive` (Class)
-    #[serde(default)]
     pub emissive: Option<Handle<SRGB8>>,
     /// `RimColor` (Class)
-    #[serde(default)]
     pub rim_color: Option<Handle<SRGB8>>,
     /// `SilhouetteColor` (Class)
-    #[serde(default)]
     pub silhouette_color: Option<Handle<SRGB8>>,
     /// `Textures` (StrongPointer)
-    #[serde(default)]
     pub textures: Option<Handle<HudColor_HoloMatTextures>>,
 }
 
@@ -258,10 +230,8 @@ impl<'a> Extract<'a> for HudColor_HoloMatColors {
 }
 
 /// DCB type: `HudColor_HoloMatTextures`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct HudColor_HoloMatTextures {
     /// `DiffuseName` (String)
-    #[serde(default)]
     pub diffuse_name: String,
 }
 

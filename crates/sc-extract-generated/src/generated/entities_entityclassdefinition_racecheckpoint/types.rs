@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -21,16 +20,12 @@ use super::super::*;
 
 /// DCB type: `RaceCheckpointComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct RaceCheckpointComponentParams {
     /// `checkpointNumber` (Int32)
-    #[serde(default)]
     pub checkpoint_number: i32,
     /// `radius` (Single)
-    #[serde(default)]
     pub radius: f32,
     /// `bounds` (Class)
-    #[serde(default)]
     pub bounds: Option<Handle<Vec3>>,
 }
 
@@ -55,7 +50,6 @@ impl<'a> Extract<'a> for RaceCheckpointComponentParams {
 
 /// DCB type: `SRaceCheckpointObjectMetadataParams`
 /// Inherits from: `SObjectMetadataParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SRaceCheckpointObjectMetadataParams {
 }
 
@@ -74,7 +68,6 @@ impl<'a> Extract<'a> for SRaceCheckpointObjectMetadataParams {
 
 /// DCB type: `SRaceCheckpointEntryTrackerParams`
 /// Inherits from: `SObjectDataBankEntryTrackerParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SRaceCheckpointEntryTrackerParams {
 }
 

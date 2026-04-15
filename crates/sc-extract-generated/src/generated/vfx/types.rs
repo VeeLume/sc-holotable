@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,28 +19,20 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `AtmosphericFlightEffects`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AtmosphericFlightEffects {
     /// `maxAtmosphericPressure` (Single)
-    #[serde(default)]
     pub max_atmospheric_pressure: f32,
     /// `trailFading` (Class)
-    #[serde(default)]
     pub trail_fading: Option<Handle<TrailFadingSettings>>,
     /// `reverseTrailDisabling` (StrongPointer)
-    #[serde(default)]
     pub reverse_trail_disabling: Option<Handle<ReverseTrailsSetting>>,
     /// `engineTrails` (Class)
-    #[serde(default)]
     pub engine_trails: Option<Handle<GlobalEngineTrailsSetting>>,
     /// `aerodynamicTrails` (Class)
-    #[serde(default)]
     pub aerodynamic_trails: Option<Handle<GlobalAerodynamicTrailSettings>>,
     /// `atmosphericHeating` (Class)
-    #[serde(default)]
     pub atmospheric_heating: Option<Handle<GlobalAtmosphericHeatingSettings>>,
     /// `customEnvironmentEffects` (Class)
-    #[serde(default)]
     pub custom_environment_effects: Option<Handle<GlobalEnvironmentEffectSettings>>,
 }
 
@@ -84,22 +75,16 @@ impl<'a> Extract<'a> for AtmosphericFlightEffects {
 }
 
 /// DCB type: `TrailFadingSettings`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct TrailFadingSettings {
     /// `minimumVisibleSpeed` (Single)
-    #[serde(default)]
     pub minimum_visible_speed: f32,
     /// `speedFadeRatio` (Single)
-    #[serde(default)]
     pub speed_fade_ratio: f32,
     /// `lowIdleBound` (Single)
-    #[serde(default)]
     pub low_idle_bound: f32,
     /// `idleThrustBound` (Single)
-    #[serde(default)]
     pub idle_thrust_bound: f32,
     /// `thrustAfterburnBound` (Single)
-    #[serde(default)]
     pub thrust_afterburn_bound: f32,
 }
 
@@ -122,13 +107,10 @@ impl<'a> Extract<'a> for TrailFadingSettings {
 }
 
 /// DCB type: `ReverseTrailsSetting`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ReverseTrailsSetting {
     /// `disabledAngle` (Single)
-    #[serde(default)]
     pub disabled_angle: f32,
     /// `disabledFadeAngle` (Single)
-    #[serde(default)]
     pub disabled_fade_angle: f32,
 }
 
@@ -148,16 +130,12 @@ impl<'a> Extract<'a> for ReverseTrailsSetting {
 }
 
 /// DCB type: `GlobalEngineTrailsSetting`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GlobalEngineTrailsSetting {
     /// `pressureThreshold` (Single)
-    #[serde(default)]
     pub pressure_threshold: f32,
     /// `contrailPressureFadeRange` (Single)
-    #[serde(default)]
     pub contrail_pressure_fade_range: f32,
     /// `contrailCloudDensityRange` (Class)
-    #[serde(default)]
     pub contrail_cloud_density_range: Option<Handle<Range>>,
 }
 
@@ -181,31 +159,22 @@ impl<'a> Extract<'a> for GlobalEngineTrailsSetting {
 }
 
 /// DCB type: `GlobalAtmosphericHeatingSettings`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GlobalAtmosphericHeatingSettings {
     /// `flareStartTemperature` (Single)
-    #[serde(default)]
     pub flare_start_temperature: f32,
     /// `gravityDirectionBias` (Single)
-    #[serde(default)]
     pub gravity_direction_bias: f32,
     /// `relativeAltitudeRange` (Class)
-    #[serde(default)]
     pub relative_altitude_range: Option<Handle<Range>>,
     /// `relativeAltitudePeakStrength` (Single)
-    #[serde(default)]
     pub relative_altitude_peak_strength: f32,
     /// `minimumSpeed` (Single)
-    #[serde(default)]
     pub minimum_speed: f32,
     /// `maximumNonVehicleSpeed` (Single)
-    #[serde(default)]
     pub maximum_non_vehicle_speed: f32,
     /// `maximumNonVehicleAngularVelocity` (Class)
-    #[serde(default)]
     pub maximum_non_vehicle_angular_velocity: Option<Handle<Vec3>>,
     /// `fadeAngleRange` (Class)
-    #[serde(default)]
     pub fade_angle_range: Option<Handle<Range>>,
 }
 
@@ -240,28 +209,20 @@ impl<'a> Extract<'a> for GlobalAtmosphericHeatingSettings {
 }
 
 /// DCB type: `GlobalAerodynamicTrailSettings`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GlobalAerodynamicTrailSettings {
     /// `maximumAngleOfAttack` (Single)
-    #[serde(default)]
     pub maximum_angle_of_attack: f32,
     /// `maximumRollVelocity` (Single)
-    #[serde(default)]
     pub maximum_roll_velocity: f32,
     /// `maximumDewPointDeviation` (Single)
-    #[serde(default)]
     pub maximum_dew_point_deviation: f32,
     /// `speedInfluence` (Single)
-    #[serde(default)]
     pub speed_influence: f32,
     /// `engineTrailReduction` (Single)
-    #[serde(default)]
     pub engine_trail_reduction: f32,
     /// `heatingReduction` (Single)
-    #[serde(default)]
     pub heating_reduction: f32,
     /// `cloudDensityRange` (Class)
-    #[serde(default)]
     pub cloud_density_range: Option<Handle<Range>>,
 }
 
@@ -289,13 +250,10 @@ impl<'a> Extract<'a> for GlobalAerodynamicTrailSettings {
 }
 
 /// DCB type: `GlobalEnvironmentEffectSettings`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GlobalEnvironmentEffectSettings {
     /// `cullDistance` (Single)
-    #[serde(default)]
     pub cull_distance: f32,
     /// `cullDistanceRange` (Single)
-    #[serde(default)]
     pub cull_distance_range: f32,
 }
 
@@ -315,13 +273,10 @@ impl<'a> Extract<'a> for GlobalEnvironmentEffectSettings {
 }
 
 /// DCB type: `DamageMapDamageTypes`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DamageMapDamageTypes {
     /// `physical` (Class)
-    #[serde(default)]
     pub physical: Option<Handle<DamageMapChannels>>,
     /// `energy` (Class)
-    #[serde(default)]
     pub energy: Option<Handle<DamageMapChannels>>,
 }
 
@@ -347,19 +302,14 @@ impl<'a> Extract<'a> for DamageMapDamageTypes {
 }
 
 /// DCB type: `DamageMapDamageForm`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DamageMapDamageForm {
     /// `damageStrengthMultipliers` (Class)
-    #[serde(default)]
     pub damage_strength_multipliers: Option<Handle<DamageMapDamageTypes>>,
     /// `innerRadiusMultipliers` (Class)
-    #[serde(default)]
     pub inner_radius_multipliers: Option<Handle<DamageMapChannels>>,
     /// `outerRadiusMultipliers` (Class)
-    #[serde(default)]
     pub outer_radius_multipliers: Option<Handle<DamageMapChannels>>,
     /// `noiseStrength` (Class)
-    #[serde(default)]
     pub noise_strength: Option<Handle<DamageMapChannels>>,
 }
 
@@ -393,16 +343,12 @@ impl<'a> Extract<'a> for DamageMapDamageForm {
 }
 
 /// DCB type: `DamageMapGlobalParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DamageMapGlobalParams {
     /// `impact` (Class)
-    #[serde(default)]
     pub impact: Option<Handle<DamageMapDamageForm>>,
     /// `squib` (Class)
-    #[serde(default)]
     pub squib: Option<Handle<DamageMapDamageForm>>,
     /// `explosions` (Class)
-    #[serde(default)]
     pub explosions: Option<Handle<DamageMapDamageForm>>,
 }
 
@@ -432,28 +378,20 @@ impl<'a> Extract<'a> for DamageMapGlobalParams {
 }
 
 /// DCB type: `DematerializeAnimation`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DematerializeAnimation {
     /// `dissolveStartTime` (Single)
-    #[serde(default)]
     pub dissolve_start_time: f32,
     /// `dissolveDuration` (Single)
-    #[serde(default)]
     pub dissolve_duration: f32,
     /// `headEffect` (Class)
-    #[serde(default)]
     pub head_effect: Option<Handle<GlobalResourceParticle>>,
     /// `armEffect` (Class)
-    #[serde(default)]
     pub arm_effect: Option<Handle<GlobalResourceParticle>>,
     /// `legEffect` (Class)
-    #[serde(default)]
     pub leg_effect: Option<Handle<GlobalResourceParticle>>,
     /// `torsoEffect` (Class)
-    #[serde(default)]
     pub torso_effect: Option<Handle<GlobalResourceParticle>>,
     /// `debugEffect` (Class)
-    #[serde(default)]
     pub debug_effect: Option<Handle<GlobalResourceParticle>>,
 }
 
@@ -493,13 +431,10 @@ impl<'a> Extract<'a> for DematerializeAnimation {
 }
 
 /// DCB type: `GlobalGasCloudVDB_GameplayParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GlobalGasCloudVDB_GameplayParams {
     /// `opticalDensityRange` (Class)
-    #[serde(default)]
     pub optical_density_range: Option<Handle<Range>>,
     /// `gameplayDensityCurve` (Class)
-    #[serde(default)]
     pub gameplay_density_curve: Option<Handle<BezierCurve>>,
 }
 
@@ -525,10 +460,8 @@ impl<'a> Extract<'a> for GlobalGasCloudVDB_GameplayParams {
 }
 
 /// DCB type: `GlobalGasCloudVDBParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GlobalGasCloudVDBParams {
     /// `gameplay` (Class)
-    #[serde(default)]
     pub gameplay: Option<Handle<GlobalGasCloudVDB_GameplayParams>>,
 }
 
@@ -550,16 +483,12 @@ impl<'a> Extract<'a> for GlobalGasCloudVDBParams {
 }
 
 /// DCB type: `PlanetEffectLODDistance`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PlanetEffectLODDistance {
     /// `minCameraDistance` (Single)
-    #[serde(default)]
     pub min_camera_distance: f32,
     /// `maxCameraDistance` (Single)
-    #[serde(default)]
     pub max_camera_distance: f32,
     /// `subPatchLength` (Single)
-    #[serde(default)]
     pub sub_patch_length: f32,
 }
 
@@ -580,25 +509,18 @@ impl<'a> Extract<'a> for PlanetEffectLODDistance {
 }
 
 /// DCB type: `GlobalFogVolume`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GlobalFogVolume {
     /// `fogSize` (Class)
-    #[serde(default)]
     pub fog_size: Option<Handle<Vec3>>,
     /// `noiseLifeTime` (Single)
-    #[serde(default)]
     pub noise_life_time: f32,
     /// `softEdge` (Single)
-    #[serde(default)]
     pub soft_edge: f32,
     /// `hideFarLodThreshold` (Single)
-    #[serde(default)]
     pub hide_far_lod_threshold: f32,
     /// `fadeFarLodThreshold` (Single)
-    #[serde(default)]
     pub fade_far_lod_threshold: f32,
     /// `maxDistance` (Single)
-    #[serde(default)]
     pub max_distance: f32,
 }
 
@@ -625,22 +547,16 @@ impl<'a> Extract<'a> for GlobalFogVolume {
 }
 
 /// DCB type: `PlanetEffectLOD`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PlanetEffectLOD {
     /// `LODList` (Class (array))
-    #[serde(default)]
     pub lodlist: Vec<Handle<PlanetEffectLODDistance>>,
     /// `globalFogVolume` (Class)
-    #[serde(default)]
     pub global_fog_volume: Option<Handle<GlobalFogVolume>>,
     /// `tintColorSampleCells` (UInt32)
-    #[serde(default)]
     pub tint_color_sample_cells: u32,
     /// `sortByViewDistance` (Boolean)
-    #[serde(default)]
     pub sort_by_view_distance: bool,
     /// `overrideHalfResInsertDepth` (Single)
-    #[serde(default)]
     pub override_half_res_insert_depth: f32,
 }
 
@@ -672,19 +588,14 @@ impl<'a> Extract<'a> for PlanetEffectLOD {
 }
 
 /// DCB type: `QuantumDriveEffectSettings`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct QuantumDriveEffectSettings {
     /// `spoolingEffectFadeInDuration` (Single)
-    #[serde(default)]
     pub spooling_effect_fade_in_duration: f32,
     /// `spoolingEffectFadeOutDuration` (Single)
-    #[serde(default)]
     pub spooling_effect_fade_out_duration: f32,
     /// `spoolingEffectMultiplier` (Single)
-    #[serde(default)]
     pub spooling_effect_multiplier: f32,
     /// `spoolingEffectSpeedInput` (Single)
-    #[serde(default)]
     pub spooling_effect_speed_input: f32,
 }
 
@@ -706,10 +617,8 @@ impl<'a> Extract<'a> for QuantumDriveEffectSettings {
 }
 
 /// DCB type: `ScreenEffects_Library`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ScreenEffects_Library {
     /// `effectList` (Reference (array))
-    #[serde(default)]
     pub effect_list: Vec<CigGuid>,
 }
 
@@ -730,19 +639,14 @@ impl<'a> Extract<'a> for ScreenEffects_Library {
 }
 
 /// DCB type: `ScreenEffects_Effect`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ScreenEffects_Effect {
     /// `name` (Reference)
-    #[serde(default)]
     pub name: Option<CigGuid>,
     /// `disableInThirdPerson` (Boolean)
-    #[serde(default)]
     pub disable_in_third_person: bool,
     /// `sharedPattern` (StrongPointer)
-    #[serde(default)]
     pub shared_pattern: Option<ScreenEffects_PatternPtr>,
     /// `parameters` (Class (array))
-    #[serde(default)]
     pub parameters: Vec<Handle<ScreenEffects_Param>>,
 }
 
@@ -773,10 +677,8 @@ impl<'a> Extract<'a> for ScreenEffects_Effect {
 }
 
 /// DCB type: `ScreenEffects_Pattern`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ScreenEffects_Pattern {
     /// `duration` (Single)
-    #[serde(default)]
     pub duration: f32,
 }
 
@@ -795,16 +697,12 @@ impl<'a> Extract<'a> for ScreenEffects_Pattern {
 }
 
 /// DCB type: `ScreenEffects_Param`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ScreenEffects_Param {
     /// `parameter` (EnumChoice)
-    #[serde(default)]
     pub parameter: PostEffectParams,
     /// `value` (StrongPointer)
-    #[serde(default)]
     pub value: Option<ScreenEffects_ParamValuePtr>,
     /// `strengthBehavior` (StrongPointer)
-    #[serde(default)]
     pub strength_behavior: Option<ScreenEffects_ParamStrengthBehaviorPtr>,
 }
 
@@ -831,10 +729,8 @@ impl<'a> Extract<'a> for ScreenEffects_Param {
 }
 
 /// DCB type: `ScreenEffects_ParamStrengthBehavior`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ScreenEffects_ParamStrengthBehavior {
     /// `strengthTag` (Reference)
-    #[serde(default)]
     pub strength_tag: Option<CigGuid>,
 }
 
@@ -854,13 +750,10 @@ impl<'a> Extract<'a> for ScreenEffects_ParamStrengthBehavior {
 
 /// DCB type: `ScreenEffects_Pattern_Linear`
 /// Inherits from: `ScreenEffects_Pattern`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ScreenEffects_Pattern_Linear {
     /// `duration` (Single)
-    #[serde(default)]
     pub duration: f32,
     /// `mirrored` (Boolean)
-    #[serde(default)]
     pub mirrored: bool,
 }
 
@@ -881,13 +774,10 @@ impl<'a> Extract<'a> for ScreenEffects_Pattern_Linear {
 
 /// DCB type: `ScreenEffects_ParamValue_Float`
 /// Inherits from: `ScreenEffects_ParamValue`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ScreenEffects_ParamValue_Float {
     /// `value` (Single)
-    #[serde(default)]
     pub value: f32,
     /// `limitStacking` (Boolean)
-    #[serde(default)]
     pub limit_stacking: bool,
 }
 
@@ -908,16 +798,12 @@ impl<'a> Extract<'a> for ScreenEffects_ParamValue_Float {
 
 /// DCB type: `ScreenEffects_ParamStrengthBehavior_RangeEnable`
 /// Inherits from: `ScreenEffects_ParamStrengthBehavior`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ScreenEffects_ParamStrengthBehavior_RangeEnable {
     /// `strengthTag` (Reference)
-    #[serde(default)]
     pub strength_tag: Option<CigGuid>,
     /// `rangeStart` (Single)
-    #[serde(default)]
     pub range_start: f32,
     /// `rangeEnd` (Single)
-    #[serde(default)]
     pub range_end: f32,
 }
 
@@ -939,19 +825,14 @@ impl<'a> Extract<'a> for ScreenEffects_ParamStrengthBehavior_RangeEnable {
 
 /// DCB type: `ScreenEffects_ParamStrengthBehavior_RangeFade`
 /// Inherits from: `ScreenEffects_ParamStrengthBehavior`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ScreenEffects_ParamStrengthBehavior_RangeFade {
     /// `strengthTag` (Reference)
-    #[serde(default)]
     pub strength_tag: Option<CigGuid>,
     /// `rangeStart` (Single)
-    #[serde(default)]
     pub range_start: f32,
     /// `rangeEnd` (Single)
-    #[serde(default)]
     pub range_end: f32,
     /// `useSharedPattern` (Boolean)
-    #[serde(default)]
     pub use_shared_pattern: bool,
 }
 
@@ -973,10 +854,8 @@ impl<'a> Extract<'a> for ScreenEffects_ParamStrengthBehavior_RangeFade {
 }
 
 /// DCB type: `ScreenEffects_Debug`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ScreenEffects_Debug {
     /// `effectList` (Class (array))
-    #[serde(default)]
     pub effect_list: Vec<Handle<ScreenEffects_DebugEffect>>,
 }
 
@@ -1001,16 +880,12 @@ impl<'a> Extract<'a> for ScreenEffects_Debug {
 }
 
 /// DCB type: `ScreenEffects_DebugEffect`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ScreenEffects_DebugEffect {
     /// `name` (Reference)
-    #[serde(default)]
     pub name: Option<CigGuid>,
     /// `enable` (Boolean)
-    #[serde(default)]
     pub enable: bool,
     /// `parameters` (Class (array))
-    #[serde(default)]
     pub parameters: Vec<Handle<ScreenEffects_DebugParam>>,
 }
 
@@ -1037,13 +912,10 @@ impl<'a> Extract<'a> for ScreenEffects_DebugEffect {
 }
 
 /// DCB type: `ScreenEffects_DebugParam`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ScreenEffects_DebugParam {
     /// `strengthTag` (Reference)
-    #[serde(default)]
     pub strength_tag: Option<CigGuid>,
     /// `strength` (Single)
-    #[serde(default)]
     pub strength: f32,
 }
 
@@ -1063,31 +935,22 @@ impl<'a> Extract<'a> for ScreenEffects_DebugParam {
 }
 
 /// DCB type: `VideoCommsShaderParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct VideoCommsShaderParams {
     /// `fadeInSplineHighTech` (Class)
-    #[serde(default)]
     pub fade_in_spline_high_tech: Option<Handle<BezierCurve>>,
     /// `fadeOutSplineHighTech` (Class)
-    #[serde(default)]
     pub fade_out_spline_high_tech: Option<Handle<BezierCurve>>,
     /// `switchCommsSplineHighTech` (Class)
-    #[serde(default)]
     pub switch_comms_spline_high_tech: Option<Handle<BezierCurve>>,
     /// `fadeInSplineLowTech` (Class)
-    #[serde(default)]
     pub fade_in_spline_low_tech: Option<Handle<BezierCurve>>,
     /// `fadeOutSplineLowTech` (Class)
-    #[serde(default)]
     pub fade_out_spline_low_tech: Option<Handle<BezierCurve>>,
     /// `switchCommsSplineLowTech` (Class)
-    #[serde(default)]
     pub switch_comms_spline_low_tech: Option<Handle<BezierCurve>>,
     /// `lowTechMaterial` (String)
-    #[serde(default)]
     pub low_tech_material: String,
     /// `highTechMaterial` (String)
-    #[serde(default)]
     pub high_tech_material: String,
 }
 
@@ -1131,16 +994,12 @@ impl<'a> Extract<'a> for VideoCommsShaderParams {
 }
 
 /// DCB type: `WaterInteractionEffectParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct WaterInteractionEffectParams {
     /// `effect` (Class)
-    #[serde(default)]
     pub effect: Option<Handle<GlobalResourceParticle>>,
     /// `maxDuration` (Single)
-    #[serde(default)]
     pub max_duration: f32,
     /// `velocityRange` (Class)
-    #[serde(default)]
     pub velocity_range: Option<Handle<Range>>,
 }
 
@@ -1167,13 +1026,10 @@ impl<'a> Extract<'a> for WaterInteractionEffectParams {
 }
 
 /// DCB type: `WaterEffectsGlobalParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct WaterEffectsGlobalParams {
     /// `exitWaterEffect` (Class)
-    #[serde(default)]
     pub exit_water_effect: Option<Handle<WaterInteractionEffectParams>>,
     /// `enterWaterEffect` (Class)
-    #[serde(default)]
     pub enter_water_effect: Option<Handle<WaterInteractionEffectParams>>,
 }
 

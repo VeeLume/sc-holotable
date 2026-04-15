@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,37 +19,26 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `SAutoLoadingBoxSizeLoadingTime`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SAutoLoadingBoxSizeLoadingTime {
     /// `one_eighthSCU` (Single)
-    #[serde(default)]
     pub one_eighth_scu: f32,
     /// `one_quarterSCU` (Single)
-    #[serde(default)]
     pub one_quarter_scu: f32,
     /// `one_halfSCU` (Single)
-    #[serde(default)]
     pub one_half_scu: f32,
     /// `oneSCU` (Single)
-    #[serde(default)]
     pub one_scu: f32,
     /// `twoSCU` (Single)
-    #[serde(default)]
     pub two_scu: f32,
     /// `fourSCU` (Single)
-    #[serde(default)]
     pub four_scu: f32,
     /// `eightSCU` (Single)
-    #[serde(default)]
     pub eight_scu: f32,
     /// `sixteenSCU` (Single)
-    #[serde(default)]
     pub sixteen_scu: f32,
     /// `twentyFourSCU` (Single)
-    #[serde(default)]
     pub twenty_four_scu: f32,
     /// `thirtyTwoSCU` (Single)
-    #[serde(default)]
     pub thirty_two_scu: f32,
 }
 
@@ -78,73 +66,50 @@ impl<'a> Extract<'a> for SAutoLoadingBoxSizeLoadingTime {
 }
 
 /// DCB type: `GlobalCargoLoadingParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GlobalCargoLoadingParams {
     /// `vehicleVelocityEpsilon` (Single)
-    #[serde(default)]
     pub vehicle_velocity_epsilon: f32,
     /// `vehicleMovementTimeLimit` (Single)
-    #[serde(default)]
     pub vehicle_movement_time_limit: f32,
     /// `uiDisplayTimeLimit` (Single)
-    #[serde(default)]
     pub ui_display_time_limit: f32,
     /// `revokeTimeDelay` (Single)
-    #[serde(default)]
     pub revoke_time_delay: f32,
     /// `uiTimeRemainingForTimeOutWarning` (Single)
-    #[serde(default)]
     pub ui_time_remaining_for_time_out_warning: f32,
     /// `forfeitTimeBuffer` (Single)
-    #[serde(default)]
     pub forfeit_time_buffer: f32,
     /// `initialMovementHintTimeBuffer` (Single)
-    #[serde(default)]
     pub initial_movement_hint_time_buffer: f32,
     /// `cargoDeckLoadingTimePerSCU` (Single)
-    #[serde(default)]
     pub cargo_deck_loading_time_per_scu: f32,
     /// `autoLoadingBaseLoadingTime` (Single)
-    #[serde(default)]
     pub auto_loading_base_loading_time: f32,
     /// `autoLoadingBaseUnloadingTime` (Single)
-    #[serde(default)]
     pub auto_loading_base_unloading_time: f32,
     /// `autoLoadingBoxSizeLoadingTime` (Class)
-    #[serde(default)]
     pub auto_loading_box_size_loading_time: Option<Handle<SAutoLoadingBoxSizeLoadingTime>>,
     /// `autoLoadingBoxSizeUnloadingTime` (Class)
-    #[serde(default)]
     pub auto_loading_box_size_unloading_time: Option<Handle<SAutoLoadingBoxSizeLoadingTime>>,
     /// `warningCargoRemovalNotification` (Class)
-    #[serde(default)]
     pub warning_cargo_removal_notification: Option<Handle<CargoLoadingNotificationParams>>,
     /// `notifyCargoRemovalNotification` (Class)
-    #[serde(default)]
     pub notify_cargo_removal_notification: Option<Handle<CargoLoadingNotificationParams>>,
     /// `reminderRetrieveCargoFromLoadingAreaNotification` (Class)
-    #[serde(default)]
     pub reminder_retrieve_cargo_from_loading_area_notification: Option<Handle<CargoLoadingNotificationParams>>,
     /// `notifyCargoTransferredNotification` (Class)
-    #[serde(default)]
     pub notify_cargo_transferred_notification: Option<Handle<CargoLoadingNotificationParams>>,
     /// `notifyCargoTransferInterruptedObstructionNotification` (Class)
-    #[serde(default)]
     pub notify_cargo_transfer_interrupted_obstruction_notification: Option<Handle<CargoLoadingNotificationParams>>,
     /// `notifyCargoTransferInterruptedShipMovingNotification` (Class)
-    #[serde(default)]
     pub notify_cargo_transfer_interrupted_ship_moving_notification: Option<Handle<CargoLoadingNotificationParams>>,
     /// `notifyCargoTransferInterruptedGenericNotification` (Class)
-    #[serde(default)]
     pub notify_cargo_transfer_interrupted_generic_notification: Option<Handle<CargoLoadingNotificationParams>>,
     /// `initialMovementHintTimeBufferNotification` (Class)
-    #[serde(default)]
     pub initial_movement_hint_time_buffer_notification: Option<Handle<CargoLoadingNotificationParams>>,
     /// `notifyLoadingAreaRevokedTimeoutNotification` (Class)
-    #[serde(default)]
     pub notify_loading_area_revoked_timeout_notification: Option<Handle<CargoLoadingNotificationParams>>,
     /// `notifyLoadingAreaRevokedGenericNotification` (Class)
-    #[serde(default)]
     pub notify_loading_area_revoked_generic_notification: Option<Handle<CargoLoadingNotificationParams>>,
 }
 
@@ -220,22 +185,16 @@ impl<'a> Extract<'a> for GlobalCargoLoadingParams {
 }
 
 /// DCB type: `CargoLoadingNotificationParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CargoLoadingNotificationParams {
     /// `message` (Locale)
-    #[serde(default)]
     pub message: LocaleKey,
     /// `screenTimer` (Single)
-    #[serde(default)]
     pub screen_timer: f32,
     /// `hurryScreenTimer` (Single)
-    #[serde(default)]
     pub hurry_screen_timer: f32,
     /// `disabled` (Boolean)
-    #[serde(default)]
     pub disabled: bool,
     /// `dockNotificationParamsOverride` (Reference)
-    #[serde(default)]
     pub dock_notification_params_override: Option<CigGuid>,
 }
 

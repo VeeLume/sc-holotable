@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,13 +19,10 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `SGlobalHitBehaviorParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SGlobalHitBehaviorParams {
     /// `damagePerTickUpperLimit` (Single)
-    #[serde(default)]
     pub damage_per_tick_upper_limit: f32,
     /// `timeUpperLimit` (Single)
-    #[serde(default)]
     pub time_upper_limit: f32,
 }
 

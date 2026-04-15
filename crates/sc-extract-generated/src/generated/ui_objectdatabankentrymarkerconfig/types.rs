@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,19 +19,14 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `SCObjectDataBankEntryMarkerConfig`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCObjectDataBankEntryMarkerConfig {
     /// `managedLandingZoneMinimumDist` (Single)
-    #[serde(default)]
     pub managed_landing_zone_minimum_dist: f32,
     /// `managedLandingZoneMaximumDist` (Single)
-    #[serde(default)]
     pub managed_landing_zone_maximum_dist: f32,
     /// `unmanagedLandingZoneMinimumDist` (Single)
-    #[serde(default)]
     pub unmanaged_landing_zone_minimum_dist: f32,
     /// `unmanagedLandingZoneMaximumDist` (Single)
-    #[serde(default)]
     pub unmanaged_landing_zone_maximum_dist: f32,
 }
 

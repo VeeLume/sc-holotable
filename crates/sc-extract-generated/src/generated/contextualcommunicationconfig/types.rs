@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,13 +19,10 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `CommunicationVariableBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CommunicationVariableBase {
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
     /// `global` (Boolean)
-    #[serde(default)]
     pub global: bool,
 }
 
@@ -46,10 +42,8 @@ impl<'a> Extract<'a> for CommunicationVariableBase {
 }
 
 /// DCB type: `ContextualCommunicationConfig`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ContextualCommunicationConfig {
     /// `responseEntries` (Class (array))
-    #[serde(default)]
     pub response_entries: Vec<Handle<ContextualCommunicationResponse>>,
 }
 
@@ -74,28 +68,20 @@ impl<'a> Extract<'a> for ContextualCommunicationConfig {
 }
 
 /// DCB type: `ContextualCommunicationResponse`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ContextualCommunicationResponse {
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
     /// `concept` (EnumChoice)
-    #[serde(default)]
     pub concept: eContextualCommunicationConcept,
     /// `customConcept` (String)
-    #[serde(default)]
     pub custom_concept: String,
     /// `refireDelay` (Single)
-    #[serde(default)]
     pub refire_delay: f32,
     /// `rules` (Class (array))
-    #[serde(default)]
     pub rules: Vec<Handle<ContextualCommunicationCondition>>,
     /// `response` (Class)
-    #[serde(default)]
     pub response: Option<Handle<CommunicationRequest>>,
     /// `memoryVariables` (StrongPointer (array))
-    #[serde(default)]
     pub memory_variables: Vec<CommunicationVariableBasePtr>,
 }
 
@@ -134,13 +120,10 @@ impl<'a> Extract<'a> for ContextualCommunicationResponse {
 }
 
 /// DCB type: `CommunicationRequest`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CommunicationRequest {
     /// `communication` (Reference)
-    #[serde(default)]
     pub communication: Option<CigGuid>,
     /// `channelName` (Reference)
-    #[serde(default)]
     pub channel_name: Option<CigGuid>,
 }
 
@@ -160,22 +143,16 @@ impl<'a> Extract<'a> for CommunicationRequest {
 }
 
 /// DCB type: `ContextualCommunicationCondition`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ContextualCommunicationCondition {
     /// `criteriaType` (EnumChoice)
-    #[serde(default)]
     pub criteria_type: eContextualCommunicationCriteria,
     /// `customCriteria` (String)
-    #[serde(default)]
     pub custom_criteria: String,
     /// `numberValue` (Single)
-    #[serde(default)]
     pub number_value: f32,
     /// `stringValue` (String)
-    #[serde(default)]
     pub string_value: String,
     /// `operation` (EnumChoice)
-    #[serde(default)]
     pub operation: eCommunicationCriteriaOperant,
 }
 

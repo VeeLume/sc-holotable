@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -21,34 +20,24 @@ use super::super::*;
 
 /// DCB type: `SSensorMineProximityTrigger`
 /// Inherits from: `SSensorMineTriggerType`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SSensorMineProximityTrigger {
     /// `MaxRaysPerMine` (Int32)
-    #[serde(default)]
     pub max_rays_per_mine: i32,
     /// `Radius` (Single)
-    #[serde(default)]
     pub radius: f32,
     /// `WarningRadius` (Single)
-    #[serde(default)]
     pub warning_radius: f32,
     /// `AngleVertical` (Single)
-    #[serde(default)]
     pub angle_vertical: f32,
     /// `AngleHorizontal` (Single)
-    #[serde(default)]
     pub angle_horizontal: f32,
     /// `GuideLaserLength` (Single)
-    #[serde(default)]
     pub guide_laser_length: f32,
     /// `Front` (Class)
-    #[serde(default)]
     pub front: Option<Handle<Vec3>>,
     /// `Up` (Class)
-    #[serde(default)]
     pub up: Option<Handle<Vec3>>,
     /// `Center` (Class)
-    #[serde(default)]
     pub center: Option<Handle<Vec3>>,
 }
 
@@ -85,19 +74,14 @@ impl<'a> Extract<'a> for SSensorMineProximityTrigger {
 
 /// DCB type: `SGalactapediaUnlockableComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SGalactapediaUnlockableComponentParams {
     /// `unlockedByScan` (Boolean)
-    #[serde(default)]
     pub unlocked_by_scan: bool,
     /// `unlockedByInteraction` (Boolean)
-    #[serde(default)]
     pub unlocked_by_interaction: bool,
     /// `unlockedByPickingUp` (Boolean)
-    #[serde(default)]
     pub unlocked_by_picking_up: bool,
     /// `entriesToUnlock` (Reference (array))
-    #[serde(default)]
     pub entries_to_unlock: Vec<CigGuid>,
 }
 
@@ -122,10 +106,8 @@ impl<'a> Extract<'a> for SGalactapediaUnlockableComponentParams {
 
 /// DCB type: `SChangeHoloEntityStateModifier`
 /// Inherits from: `SStateModifier`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SChangeHoloEntityStateModifier {
     /// `holoEntityState` (WeakPointer)
-    #[serde(default)]
     pub holo_entity_state: Option<Handle<SInteractionState>>,
 }
 
@@ -148,22 +130,16 @@ impl<'a> Extract<'a> for SChangeHoloEntityStateModifier {
 
 /// DCB type: `SWeaponAIBeamParams`
 /// Inherits from: `SWeaponActionAIParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SWeaponAIBeamParams {
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
     /// `aiShootingMode` (EnumChoice)
-    #[serde(default)]
     pub ai_shooting_mode: EAIWeaponShootingMode,
     /// `duration` (Class)
-    #[serde(default)]
     pub duration: Option<Handle<Range>>,
     /// `cooldown` (Class)
-    #[serde(default)]
     pub cooldown: Option<Handle<Range>>,
     /// `minBullets` (Int32)
-    #[serde(default)]
     pub min_bullets: i32,
 }
 
@@ -193,10 +169,8 @@ impl<'a> Extract<'a> for SWeaponAIBeamParams {
 
 /// DCB type: `SWeaponConditionTargetingFire`
 /// Inherits from: `SWeaponConditionBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SWeaponConditionTargetingFire {
     /// `comparer` (Boolean)
-    #[serde(default)]
     pub comparer: bool,
 }
 
@@ -215,16 +189,12 @@ impl<'a> Extract<'a> for SWeaponConditionTargetingFire {
 }
 
 /// DCB type: `SWeaponActionFireThrustParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SWeaponActionFireThrustParams {
     /// `positiveAccelerationLimit` (Single)
-    #[serde(default)]
     pub positive_acceleration_limit: f32,
     /// `negativeAccelerationLimit` (Single)
-    #[serde(default)]
     pub negative_acceleration_limit: f32,
     /// `maxSpeed` (Single)
-    #[serde(default)]
     pub max_speed: f32,
 }
 
@@ -245,76 +215,52 @@ impl<'a> Extract<'a> for SWeaponActionFireThrustParams {
 }
 
 /// DCB type: `SChargeDrainPrimeParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SChargeDrainPrimeParams {
     /// `allowPriming` (Boolean)
-    #[serde(default)]
     pub allow_priming: bool,
     /// `minPrimeAmount` (Int32)
-    #[serde(default)]
     pub min_prime_amount: i32,
     /// `maxPrimeAmount` (Int32)
-    #[serde(default)]
     pub max_prime_amount: i32,
     /// `minToMaxChargeTime` (Single)
-    #[serde(default)]
     pub min_to_max_charge_time: f32,
     /// `resourceRatePrimeScalar` (Single)
-    #[serde(default)]
     pub resource_rate_prime_scalar: f32,
     /// `unstablePrimingModifier` (Single)
-    #[serde(default)]
     pub unstable_priming_modifier: f32,
     /// `baseStorageTime` (Single)
-    #[serde(default)]
     pub base_storage_time: f32,
     /// `additionalStorageTimePerVolt` (Single)
-    #[serde(default)]
     pub additional_storage_time_per_volt: f32,
     /// `minigameRadius` (Single)
-    #[serde(default)]
     pub minigame_radius: f32,
     /// `secondsToFail` (Single)
-    #[serde(default)]
     pub seconds_to_fail: f32,
     /// `recoilInterval` (Single)
-    #[serde(default)]
     pub recoil_interval: f32,
     /// `boostingRecoil` (Reference)
-    #[serde(default)]
     pub boosting_recoil: Option<CigGuid>,
     /// `voltBoostStateRecoil` (Reference)
-    #[serde(default)]
     pub volt_boost_state_recoil: Option<CigGuid>,
     /// `voltBoostUnleashRecoil` (Reference)
-    #[serde(default)]
     pub volt_boost_unleash_recoil: Option<CigGuid>,
     /// `voltBoostDumpRecoil` (Reference)
-    #[serde(default)]
     pub volt_boost_dump_recoil: Option<CigGuid>,
     /// `damage` (StrongPointer)
-    #[serde(default)]
     pub damage: Option<DamageBasePtr>,
     /// `hitRadius` (Single)
-    #[serde(default)]
     pub hit_radius: f32,
     /// `hitType` (String)
-    #[serde(default)]
     pub hit_type: String,
     /// `minChargeLossPercentage` (Single)
-    #[serde(default)]
     pub min_charge_loss_percentage: f32,
     /// `maxChargeLossPercentage` (Single)
-    #[serde(default)]
     pub max_charge_loss_percentage: f32,
     /// `lowerRandomLossLimitPercentage` (Single)
-    #[serde(default)]
     pub lower_random_loss_limit_percentage: f32,
     /// `upperRandomLossLimitPercentage` (Single)
-    #[serde(default)]
     pub upper_random_loss_limit_percentage: f32,
     /// `chargeFireActionTag` (Reference)
-    #[serde(default)]
     pub charge_fire_action_tag: Option<CigGuid>,
 }
 
@@ -358,16 +304,12 @@ impl<'a> Extract<'a> for SChargeDrainPrimeParams {
 }
 
 /// DCB type: `SChargeDrainRangeParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SChargeDrainRangeParams {
     /// `maxBeamDistance` (Single)
-    #[serde(default)]
     pub max_beam_distance: f32,
     /// `maxSensorDistance` (Single)
-    #[serde(default)]
     pub max_sensor_distance: f32,
     /// `maxVoltBoostDistance` (Single)
-    #[serde(default)]
     pub max_volt_boost_distance: f32,
 }
 
@@ -389,190 +331,128 @@ impl<'a> Extract<'a> for SChargeDrainRangeParams {
 
 /// DCB type: `SWeaponActionFireChargeDrainParams`
 /// Inherits from: `SWeaponActionParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SWeaponActionFireChargeDrainParams {
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
     /// `localisedName` (Locale)
-    #[serde(default)]
     pub localised_name: LocaleKey,
     /// `mannequinTag` (Class)
-    #[serde(default)]
     pub mannequin_tag: Option<Handle<SMannequinTagParams>>,
     /// `entityTag` (Reference)
-    #[serde(default)]
     pub entity_tag: Option<CigGuid>,
     /// `entityTags` (Class)
-    #[serde(default)]
     pub entity_tags: Option<Handle<TagList>>,
     /// `uiBindingsTag` (Reference)
-    #[serde(default)]
     pub ui_bindings_tag: Option<CigGuid>,
     /// `aiShootingMode` (EnumChoice)
-    #[serde(default)]
     pub ai_shooting_mode: EAIWeaponShootingMode,
     /// `switchFireModeAudioTrigger` (Class)
-    #[serde(default)]
     pub switch_fire_mode_audio_trigger: Option<Handle<GlobalResourceAudio>>,
     /// `selectableCondition` (StrongPointer)
-    #[serde(default)]
     pub selectable_condition: Option<SWeaponConditionBasePtr>,
     /// `hasReloadModesOnUI` (Boolean)
-    #[serde(default)]
     pub has_reload_modes_on_ui: bool,
     /// `localisedFunctionalityName` (Locale)
-    #[serde(default)]
     pub localised_functionality_name: LocaleKey,
     /// `functionalityTag` (Reference)
-    #[serde(default)]
     pub functionality_tag: Option<CigGuid>,
     /// `fireHelper` (String)
-    #[serde(default)]
     pub fire_helper: String,
     /// `toggle` (Boolean)
-    #[serde(default)]
     pub toggle: bool,
     /// `rangeParams` (Class)
-    #[serde(default)]
     pub range_params: Option<Handle<SChargeDrainRangeParams>>,
     /// `maxAimRadius` (Single)
-    #[serde(default)]
     pub max_aim_radius: f32,
     /// `resourceRate` (Single)
-    #[serde(default)]
     pub resource_rate: f32,
     /// `chargeDrainMode` (EnumChoice)
-    #[serde(default)]
     pub charge_drain_mode: EChargeDrainMode,
     /// `ammoType` (EnumChoice)
-    #[serde(default)]
     pub ammo_type: EAmmoContainerType,
     /// `wearPerSecond` (Single)
-    #[serde(default)]
     pub wear_per_second: f32,
     /// `recoilInterval` (Single)
-    #[serde(default)]
     pub recoil_interval: f32,
     /// `recoil` (Reference)
-    #[serde(default)]
     pub recoil: Option<CigGuid>,
     /// `primeParams` (Class)
-    #[serde(default)]
     pub prime_params: Option<Handle<SChargeDrainPrimeParams>>,
     /// `overloadDuration` (Single)
-    #[serde(default)]
     pub overload_duration: f32,
     /// `targetResource` (Reference)
-    #[serde(default)]
     pub target_resource: Option<CigGuid>,
     /// `shouldDryFireInGreenZones` (Boolean)
-    #[serde(default)]
     pub should_dry_fire_in_green_zones: bool,
     /// `fireFragment` (Class)
-    #[serde(default)]
     pub fire_fragment: Option<Handle<SFragmentParams>>,
     /// `stopFireFragment` (Class)
-    #[serde(default)]
     pub stop_fire_fragment: Option<Handle<SFragmentParams>>,
     /// `primingFragment` (Class)
-    #[serde(default)]
     pub priming_fragment: Option<Handle<SFragmentParams>>,
     /// `primedFragment` (Class)
-    #[serde(default)]
     pub primed_fragment: Option<Handle<SFragmentParams>>,
     /// `overloadFragment` (Class)
-    #[serde(default)]
     pub overload_fragment: Option<Handle<SFragmentParams>>,
     /// `startFireOneShotAudioTrigger` (Class)
-    #[serde(default)]
     pub start_fire_one_shot_audio_trigger: Option<Handle<GlobalResourceAudio>>,
     /// `startFireLoopAudioTrigger` (Class)
-    #[serde(default)]
     pub start_fire_loop_audio_trigger: Option<Handle<GlobalResourceAudio>>,
     /// `stopFireAudioTrigger` (Class)
-    #[serde(default)]
     pub stop_fire_audio_trigger: Option<Handle<GlobalResourceAudio>>,
     /// `dryFireAudioTrigger` (Class)
-    #[serde(default)]
     pub dry_fire_audio_trigger: Option<Handle<GlobalResourceAudio>>,
     /// `startOverloadAudioTrigger` (Class)
-    #[serde(default)]
     pub start_overload_audio_trigger: Option<Handle<GlobalResourceAudio>>,
     /// `stopOverloadAudioTrigger` (Class)
-    #[serde(default)]
     pub stop_overload_audio_trigger: Option<Handle<GlobalResourceAudio>>,
     /// `overloadFireAttemptAudioTrigger` (Class)
-    #[serde(default)]
     pub overload_fire_attempt_audio_trigger: Option<Handle<GlobalResourceAudio>>,
     /// `startPrimingLoopAudioTrigger` (Class)
-    #[serde(default)]
     pub start_priming_loop_audio_trigger: Option<Handle<GlobalResourceAudio>>,
     /// `stopPrimingLoopAudioTrigger` (Class)
-    #[serde(default)]
     pub stop_priming_loop_audio_trigger: Option<Handle<GlobalResourceAudio>>,
     /// `startPrimingUnstableLoopAudioTrigger` (Class)
-    #[serde(default)]
     pub start_priming_unstable_loop_audio_trigger: Option<Handle<GlobalResourceAudio>>,
     /// `stopPrimingUnstableLoopAudioTrigger` (Class)
-    #[serde(default)]
     pub stop_priming_unstable_loop_audio_trigger: Option<Handle<GlobalResourceAudio>>,
     /// `primingUnstableAudioTrigger` (Class)
-    #[serde(default)]
     pub priming_unstable_audio_trigger: Option<Handle<GlobalResourceAudio>>,
     /// `primeUnstableAudioRetriggerTime` (Single)
-    #[serde(default)]
     pub prime_unstable_audio_retrigger_time: f32,
     /// `startPrimedLoopAudioTrigger` (Class)
-    #[serde(default)]
     pub start_primed_loop_audio_trigger: Option<Handle<GlobalResourceAudio>>,
     /// `stopPrimedLoopAudioTrigger` (Class)
-    #[serde(default)]
     pub stop_primed_loop_audio_trigger: Option<Handle<GlobalResourceAudio>>,
     /// `onJumpstartAudioTrigger` (Class)
-    #[serde(default)]
     pub on_jumpstart_audio_trigger: Option<Handle<GlobalResourceAudio>>,
     /// `postJumpstartAudioTrigger` (Class)
-    #[serde(default)]
     pub post_jumpstart_audio_trigger: Option<Handle<GlobalResourceAudio>>,
     /// `dumpPrimedChargeAudioTrigger` (Class)
-    #[serde(default)]
     pub dump_primed_charge_audio_trigger: Option<Handle<GlobalResourceAudio>>,
     /// `weaponBatteryLevelRTPC` (Class)
-    #[serde(default)]
     pub weapon_battery_level_rtpc: Option<Handle<AudioRtpc>>,
     /// `weaponPrimedPercentageRTPC` (Class)
-    #[serde(default)]
     pub weapon_primed_percentage_rtpc: Option<Handle<AudioRtpc>>,
     /// `fireEffects` (Class (array))
-    #[serde(default)]
     pub fire_effects: Vec<Handle<SWeaponParticleEffectParams>>,
     /// `overloadEffects` (Class (array))
-    #[serde(default)]
     pub overload_effects: Vec<Handle<SWeaponParticleEffectParams>>,
     /// `overloadFireAttemptEffects` (Class (array))
-    #[serde(default)]
     pub overload_fire_attempt_effects: Vec<Handle<SWeaponParticleEffectParams>>,
     /// `primedEffects` (Class (array))
-    #[serde(default)]
     pub primed_effects: Vec<Handle<SWeaponParticleEffectParams>>,
     /// `postJumpstartEffects` (Class (array))
-    #[serde(default)]
     pub post_jumpstart_effects: Vec<Handle<SWeaponParticleEffectParams>>,
     /// `dumpPrimedChargeEffects` (Class (array))
-    #[serde(default)]
     pub dump_primed_charge_effects: Vec<Handle<SWeaponParticleEffectParams>>,
     /// `beamGroup` (StrongPointer)
-    #[serde(default)]
     pub beam_group: Option<Handle<SBeamGroupParams>>,
     /// `jumpstartBeamGroup` (StrongPointer)
-    #[serde(default)]
     pub jumpstart_beam_group: Option<Handle<SBeamGroupParams>>,
     /// `updateCondition` (StrongPointer)
-    #[serde(default)]
     pub update_condition: Option<SWeaponConditionBasePtr>,
     /// `signatureEmitterParams` (StrongPointer)
-    #[serde(default)]
     pub signature_emitter_params: Option<Handle<SSCSignatureEmitterParams>>,
 }
 
@@ -789,13 +669,10 @@ impl<'a> Extract<'a> for SWeaponActionFireChargeDrainParams {
 }
 
 /// DCB type: `SExtinguisherImpactParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SExtinguisherImpactParams {
     /// `particleEffect` (Class)
-    #[serde(default)]
     pub particle_effect: Option<Handle<GlobalResourceParticle>>,
     /// `distanceFromImpactPoint` (Single)
-    #[serde(default)]
     pub distance_from_impact_point: f32,
 }
 
@@ -818,16 +695,12 @@ impl<'a> Extract<'a> for SExtinguisherImpactParams {
 }
 
 /// DCB type: `STemperatureReadOutParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct STemperatureReadOutParams {
     /// `updateIntervalTime` (Single)
-    #[serde(default)]
     pub update_interval_time: f32,
     /// `smoothingFactor` (Single)
-    #[serde(default)]
     pub smoothing_factor: f32,
     /// `smoothingSamples` (Int32)
-    #[serde(default)]
     pub smoothing_samples: i32,
 }
 
@@ -848,22 +721,16 @@ impl<'a> Extract<'a> for STemperatureReadOutParams {
 }
 
 /// DCB type: `SVectorFieldParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SVectorFieldParams {
     /// `path` (String)
-    #[serde(default)]
     pub path: String,
     /// `radius` (Single)
-    #[serde(default)]
     pub radius: f32,
     /// `width` (Single)
-    #[serde(default)]
     pub width: f32,
     /// `falloff` (Single)
-    #[serde(default)]
     pub falloff: f32,
     /// `maxStrength` (Single)
-    #[serde(default)]
     pub max_strength: f32,
 }
 
@@ -886,13 +753,10 @@ impl<'a> Extract<'a> for SVectorFieldParams {
 }
 
 /// DCB type: `SExtinguisherVectorFieldParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SExtinguisherVectorFieldParams {
     /// `main` (Class)
-    #[serde(default)]
     pub main: Option<Handle<SVectorFieldParams>>,
     /// `spray` (Class)
-    #[serde(default)]
     pub spray: Option<Handle<SVectorFieldParams>>,
 }
 
@@ -919,127 +783,86 @@ impl<'a> Extract<'a> for SExtinguisherVectorFieldParams {
 
 /// DCB type: `SWeaponActionFireExtinguisherParams`
 /// Inherits from: `SWeaponActionParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SWeaponActionFireExtinguisherParams {
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
     /// `localisedName` (Locale)
-    #[serde(default)]
     pub localised_name: LocaleKey,
     /// `mannequinTag` (Class)
-    #[serde(default)]
     pub mannequin_tag: Option<Handle<SMannequinTagParams>>,
     /// `entityTag` (Reference)
-    #[serde(default)]
     pub entity_tag: Option<CigGuid>,
     /// `entityTags` (Class)
-    #[serde(default)]
     pub entity_tags: Option<Handle<TagList>>,
     /// `uiBindingsTag` (Reference)
-    #[serde(default)]
     pub ui_bindings_tag: Option<CigGuid>,
     /// `aiShootingMode` (EnumChoice)
-    #[serde(default)]
     pub ai_shooting_mode: EAIWeaponShootingMode,
     /// `switchFireModeAudioTrigger` (Class)
-    #[serde(default)]
     pub switch_fire_mode_audio_trigger: Option<Handle<GlobalResourceAudio>>,
     /// `selectableCondition` (StrongPointer)
-    #[serde(default)]
     pub selectable_condition: Option<SWeaponConditionBasePtr>,
     /// `hasReloadModesOnUI` (Boolean)
-    #[serde(default)]
     pub has_reload_modes_on_ui: bool,
     /// `toggle` (Boolean)
-    #[serde(default)]
     pub toggle: bool,
     /// `fireHelper` (String)
-    #[serde(default)]
     pub fire_helper: String,
     /// `extinguishingRange` (Single)
-    #[serde(default)]
     pub extinguishing_range: f32,
     /// `sensorRange` (Single)
-    #[serde(default)]
     pub sensor_range: f32,
     /// `fireDetectionRange` (Single)
-    #[serde(default)]
     pub fire_detection_range: f32,
     /// `fireDetectionIntervalTime` (Single)
-    #[serde(default)]
     pub fire_detection_interval_time: f32,
     /// `temperatureReadOutParams` (Class)
-    #[serde(default)]
     pub temperature_read_out_params: Option<Handle<STemperatureReadOutParams>>,
     /// `extinguishStrengthFalloffDistance` (Single)
-    #[serde(default)]
     pub extinguish_strength_falloff_distance: f32,
     /// `coneAngle` (Single)
-    #[serde(default)]
     pub cone_angle: f32,
     /// `maxRadius` (Single)
-    #[serde(default)]
     pub max_radius: f32,
     /// `minRadius` (Single)
-    #[serde(default)]
     pub min_radius: f32,
     /// `extinguishStrength` (Single)
-    #[serde(default)]
     pub extinguish_strength: f32,
     /// `maxRangeExtinguishStrength` (Single)
-    #[serde(default)]
     pub max_range_extinguish_strength: f32,
     /// `ammoPerSecond` (Single)
-    #[serde(default)]
     pub ammo_per_second: f32,
     /// `wearPerSecond` (Single)
-    #[serde(default)]
     pub wear_per_second: f32,
     /// `roomHelperClass` (Reference)
-    #[serde(default)]
     pub room_helper_class: Option<CigGuid>,
     /// `vectorFieldParams` (Class)
-    #[serde(default)]
     pub vector_field_params: Option<Handle<SExtinguisherVectorFieldParams>>,
     /// `fireEffects` (Class (array))
-    #[serde(default)]
     pub fire_effects: Vec<Handle<SWeaponParticleEffectParams>>,
     /// `impactEffect` (Class)
-    #[serde(default)]
     pub impact_effect: Option<Handle<SExtinguisherImpactParams>>,
     /// `fireFragment` (Class)
-    #[serde(default)]
     pub fire_fragment: Option<Handle<SFragmentParams>>,
     /// `stopFireFragment` (Class)
-    #[serde(default)]
     pub stop_fire_fragment: Option<Handle<SFragmentParams>>,
     /// `startFireOneShotAudioTrigger` (Class)
-    #[serde(default)]
     pub start_fire_one_shot_audio_trigger: Option<Handle<GlobalResourceAudio>>,
     /// `startFireLoopAudioTrigger` (Class)
-    #[serde(default)]
     pub start_fire_loop_audio_trigger: Option<Handle<GlobalResourceAudio>>,
     /// `stopFireAudioTrigger` (Class)
-    #[serde(default)]
     pub stop_fire_audio_trigger: Option<Handle<GlobalResourceAudio>>,
     /// `dryFireAudioTrigger` (Class)
-    #[serde(default)]
     pub dry_fire_audio_trigger: Option<Handle<GlobalResourceAudio>>,
     /// `updateCondition` (StrongPointer)
-    #[serde(default)]
     pub update_condition: Option<SWeaponConditionBasePtr>,
     /// `aimFireDetectionMode` (EnumChoice)
-    #[serde(default)]
     pub aim_fire_detection_mode: EAimFireDetectionMode,
     /// `aimFireDetectionTemperature` (Single)
-    #[serde(default)]
     pub aim_fire_detection_temperature: f32,
     /// `aimFireDetectionRadius` (Single)
-    #[serde(default)]
     pub aim_fire_detection_radius: f32,
     /// `thrustParams` (Class)
-    #[serde(default)]
     pub thrust_params: Option<Handle<SWeaponActionFireThrustParams>>,
 }
 

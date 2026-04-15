@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -21,10 +20,8 @@ use super::super::*;
 
 /// DCB type: `EAScenarioComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EAScenarioComponentParams {
     /// `precachingRadius` (Single)
-    #[serde(default)]
     pub precaching_radius: f32,
 }
 
@@ -43,25 +40,18 @@ impl<'a> Extract<'a> for EAScenarioComponentParams {
 }
 
 /// DCB type: `EATransportTransitionGroupParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EATransportTransitionGroupParams {
     /// `transitionTypeParams` (StrongPointer)
-    #[serde(default)]
     pub transition_type_params: Option<EATransportBaseTransitionParamsPtr>,
     /// `onFinished` (EnumChoice)
-    #[serde(default)]
     pub on_finished: EATransportOnTransitionFinished,
     /// `nextTransitionOverride` (Int32)
-    #[serde(default)]
     pub next_transition_override: i32,
     /// `landingWaitTime` (Single)
-    #[serde(default)]
     pub landing_wait_time: f32,
     /// `landingWaitTimeForTransfer` (Single)
-    #[serde(default)]
     pub landing_wait_time_for_transfer: f32,
     /// `timeToDisableSpawnSelection` (Single)
-    #[serde(default)]
     pub time_to_disable_spawn_selection: f32,
 }
 
@@ -89,22 +79,16 @@ impl<'a> Extract<'a> for EATransportTransitionGroupParams {
 
 /// DCB type: `EATransportControllerComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EATransportControllerComponentParams {
     /// `activePhase` (Int32)
-    #[serde(default)]
     pub active_phase: i32,
     /// `spawnDelay` (Single)
-    #[serde(default)]
     pub spawn_delay: f32,
     /// `onlyTransferActiveSpawns` (Boolean)
-    #[serde(default)]
     pub only_transfer_active_spawns: bool,
     /// `replaceSpawningTransport` (Boolean)
-    #[serde(default)]
     pub replace_spawning_transport: bool,
     /// `transitionGroups` (Class (array))
-    #[serde(default)]
     pub transition_groups: Vec<Handle<EATransportTransitionGroupParams>>,
 }
 

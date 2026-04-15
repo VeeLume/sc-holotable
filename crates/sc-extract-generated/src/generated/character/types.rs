@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,19 +19,14 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `DefaultPlayerLoadoutEntitlementParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DefaultPlayerLoadoutEntitlementParams {
     /// `Name` (String)
-    #[serde(default)]
     pub name: String,
     /// `LoadoutId` (UInt32)
-    #[serde(default)]
     pub loadout_id: u32,
     /// `Entitlement` (EnumChoice)
-    #[serde(default)]
     pub entitlement: EDefaultEntitlement,
     /// `Loadout` (StrongPointer)
-    #[serde(default)]
     pub loadout: Option<SItemPortLoadoutBaseParamsPtr>,
 }
 
@@ -57,10 +51,8 @@ impl<'a> Extract<'a> for DefaultPlayerLoadoutEntitlementParams {
 }
 
 /// DCB type: `DefaultPlayerLoadoutEntitlementRecord`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DefaultPlayerLoadoutEntitlementRecord {
     /// `Loadouts` (Class (array))
-    #[serde(default)]
     pub loadouts: Vec<Handle<DefaultPlayerLoadoutEntitlementParams>>,
 }
 

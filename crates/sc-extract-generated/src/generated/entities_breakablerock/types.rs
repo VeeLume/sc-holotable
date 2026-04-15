@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -21,10 +20,8 @@ use super::super::*;
 
 /// DCB type: `GeometryAsteroidModelTag`
 /// Inherits from: `SGeometryModelTagBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GeometryAsteroidModelTag {
     /// `tag` (Reference)
-    #[serde(default)]
     pub tag: Option<CigGuid>,
 }
 
@@ -44,22 +41,16 @@ impl<'a> Extract<'a> for GeometryAsteroidModelTag {
 
 /// DCB type: `LightningTargetParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LightningTargetParams {
     /// `overrideSurfaceTypeConductivity` (Boolean)
-    #[serde(default)]
     pub override_surface_type_conductivity: bool,
     /// `conductivityOverride` (Single)
-    #[serde(default)]
     pub conductivity_override: f32,
     /// `conductivityMultiplier` (Single)
-    #[serde(default)]
     pub conductivity_multiplier: f32,
     /// `resistance` (Single)
-    #[serde(default)]
     pub resistance: f32,
     /// `targetRadiusOverride` (Single)
-    #[serde(default)]
     pub target_radius_override: f32,
 }
 

@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,28 +19,20 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `LoadoutDummyComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LoadoutDummyComponentParams {
     /// `playerTagPoint` (String)
-    #[serde(default)]
     pub player_tag_point: String,
     /// `playerIdleAnim` (String)
-    #[serde(default)]
     pub player_idle_anim: String,
     /// `playerDisplayParams` (Class)
-    #[serde(default)]
     pub player_display_params: Option<Handle<UIWorldDisplay3DParams>>,
     /// `vehicleTagPoint` (String)
-    #[serde(default)]
     pub vehicle_tag_point: String,
     /// `vehicleBoundingBox` (Class)
-    #[serde(default)]
     pub vehicle_bounding_box: Option<Handle<Vec3>>,
     /// `vehicleAngle` (Class)
-    #[serde(default)]
     pub vehicle_angle: Option<Handle<Ang3>>,
     /// `vehicleDisplayParams` (Class)
-    #[serde(default)]
     pub vehicle_display_params: Option<Handle<UIWorldDisplay3DParams>>,
 }
 

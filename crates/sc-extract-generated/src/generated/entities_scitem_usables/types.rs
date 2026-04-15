@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -21,10 +20,8 @@ use super::super::*;
 
 /// DCB type: `ProceduralConnectionLinkController`
 /// Inherits from: `NavigationLinkController`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ProceduralConnectionLinkController {
     /// `zOffsetForRaycastCheck` (Single)
-    #[serde(default)]
     pub z_offset_for_raycast_check: f32,
 }
 
@@ -44,13 +41,10 @@ impl<'a> Extract<'a> for ProceduralConnectionLinkController {
 
 /// DCB type: `ClosestOrientationHandholdAttachSpotChoiceParams`
 /// Inherits from: `HandholdAttachPointChoiceParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ClosestOrientationHandholdAttachSpotChoiceParams {
     /// `desiredUpDirection` (Class)
-    #[serde(default)]
     pub desired_up_direction: Option<Handle<Vec3>>,
     /// `space` (EnumChoice)
-    #[serde(default)]
     pub space: EHandholdAttachOrientationSpace,
 }
 
@@ -74,13 +68,10 @@ impl<'a> Extract<'a> for ClosestOrientationHandholdAttachSpotChoiceParams {
 
 /// DCB type: `SpecificHandholdAttachSpotChoiceParams`
 /// Inherits from: `HandholdAttachPointChoiceParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SpecificHandholdAttachSpotChoiceParams {
     /// `attachSpotName` (String)
-    #[serde(default)]
     pub attach_spot_name: String,
     /// `fallbackParams` (StrongPointer)
-    #[serde(default)]
     pub fallback_params: Option<Handle<ClosestOrientationHandholdAttachSpotChoiceParams>>,
 }
 
@@ -103,19 +94,14 @@ impl<'a> Extract<'a> for SpecificHandholdAttachSpotChoiceParams {
 }
 
 /// DCB type: `HandholdAttachmentTriggerParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct HandholdAttachmentTriggerParams {
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
     /// `entityLinkName` (String)
-    #[serde(default)]
     pub entity_link_name: String,
     /// `handholdName` (String)
-    #[serde(default)]
     pub handhold_name: String,
     /// `attachPointChoiceParams` (StrongPointer)
-    #[serde(default)]
     pub attach_point_choice_params: Option<HandholdAttachPointChoiceParamsPtr>,
 }
 
@@ -141,16 +127,12 @@ impl<'a> Extract<'a> for HandholdAttachmentTriggerParams {
 
 /// DCB type: `HandholdSharedInteractionLink`
 /// Inherits from: `HandholdInteractionLink`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct HandholdSharedInteractionLink {
     /// `ignoreInteractionOnFail` (Boolean)
-    #[serde(default)]
     pub ignore_interaction_on_fail: bool,
     /// `attachmentTrigger` (WeakPointer)
-    #[serde(default)]
     pub attachment_trigger: Option<Handle<HandholdAttachmentTriggerParams>>,
     /// `sourceSharedInteraction` (WeakPointer)
-    #[serde(default)]
     pub source_shared_interaction: Option<Handle<SSharedInteractionParams>>,
 }
 
@@ -178,16 +160,12 @@ impl<'a> Extract<'a> for HandholdSharedInteractionLink {
 
 /// DCB type: `HandholdInteractionPointLink`
 /// Inherits from: `HandholdInteractionLink`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct HandholdInteractionPointLink {
     /// `ignoreInteractionOnFail` (Boolean)
-    #[serde(default)]
     pub ignore_interaction_on_fail: bool,
     /// `attachmentTrigger` (WeakPointer)
-    #[serde(default)]
     pub attachment_trigger: Option<Handle<HandholdAttachmentTriggerParams>>,
     /// `sourceInteractionPoint` (WeakPointer)
-    #[serde(default)]
     pub source_interaction_point: Option<Handle<SInteractionPointParams>>,
 }
 
@@ -215,16 +193,12 @@ impl<'a> Extract<'a> for HandholdInteractionPointLink {
 
 /// DCB type: `HandholdLinkComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct HandholdLinkComponentParams {
     /// `attachmentTriggers` (Class (array))
-    #[serde(default)]
     pub attachment_triggers: Vec<Handle<HandholdAttachmentTriggerParams>>,
     /// `sharedInteractionLinks` (Class (array))
-    #[serde(default)]
     pub shared_interaction_links: Vec<Handle<HandholdSharedInteractionLink>>,
     /// `interactionPointLinks` (Class (array))
-    #[serde(default)]
     pub interaction_point_links: Vec<Handle<HandholdInteractionPointLink>>,
 }
 
@@ -263,16 +237,12 @@ impl<'a> Extract<'a> for HandholdLinkComponentParams {
 }
 
 /// DCB type: `SPlayerUsableSearchRouteUsable`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SPlayerUsableSearchRouteUsable {
     /// `searchUsableTags` (Class)
-    #[serde(default)]
     pub search_usable_tags: Option<Handle<TagList>>,
     /// `searchUsableItemProviderTags` (Class)
-    #[serde(default)]
     pub search_usable_item_provider_tags: Option<Handle<TagList>>,
     /// `routingSettings` (Class)
-    #[serde(default)]
     pub routing_settings: Option<Handle<SUsableRoutingSettings>>,
 }
 
@@ -303,10 +273,8 @@ impl<'a> Extract<'a> for SPlayerUsableSearchRouteUsable {
 
 /// DCB type: `SSequencerPlayerUsableTaskParams`
 /// Inherits from: `SSequencerDefTaskParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SSequencerPlayerUsableTaskParams {
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
 }
 
@@ -326,16 +294,12 @@ impl<'a> Extract<'a> for SSequencerPlayerUsableTaskParams {
 
 /// DCB type: `SSequencerPlayerUsableSwitchChannelTaskParams`
 /// Inherits from: `SSequencerPlayerUsableTaskParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SSequencerPlayerUsableSwitchChannelTaskParams {
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
     /// `useChannelName` (String)
-    #[serde(default)]
     pub use_channel_name: String,
     /// `userOnChannel` (Reference)
-    #[serde(default)]
     pub user_on_channel: Option<CigGuid>,
 }
 
@@ -357,13 +321,10 @@ impl<'a> Extract<'a> for SSequencerPlayerUsableSwitchChannelTaskParams {
 
 /// DCB type: `SSequencerPlayerUsableScoochTaskParams`
 /// Inherits from: `SSequencerPlayerUsableTaskParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SSequencerPlayerUsableScoochTaskParams {
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
     /// `searchUsableRoute` (Class)
-    #[serde(default)]
     pub search_usable_route: Option<Handle<SPlayerUsableSearchRouteUsable>>,
 }
 
@@ -387,13 +348,10 @@ impl<'a> Extract<'a> for SSequencerPlayerUsableScoochTaskParams {
 
 /// DCB type: `SSequencerPlayerUsableUseChannelTaskParams`
 /// Inherits from: `SSequencerPlayerUsableTaskParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SSequencerPlayerUsableUseChannelTaskParams {
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
     /// `playerUsablePort` (WeakPointer)
-    #[serde(default)]
     pub player_usable_port: Option<Handle<PlayerUsableItemPort>>,
 }
 
@@ -417,16 +375,12 @@ impl<'a> Extract<'a> for SSequencerPlayerUsableUseChannelTaskParams {
 
 /// DCB type: `SSequencerPlayerUsableReserveSlotTaskParams`
 /// Inherits from: `SSequencerPlayerUsableTaskParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SSequencerPlayerUsableReserveSlotTaskParams {
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
     /// `searchUsableRoute` (Class)
-    #[serde(default)]
     pub search_usable_route: Option<Handle<SPlayerUsableSearchRouteUsable>>,
     /// `reserveSlot` (Boolean)
-    #[serde(default)]
     pub reserve_slot: bool,
 }
 
@@ -450,16 +404,12 @@ impl<'a> Extract<'a> for SSequencerPlayerUsableReserveSlotTaskParams {
 }
 
 /// DCB type: `PlayerUsableInteractionPoint`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PlayerUsableInteractionPoint {
     /// `interactionPoint` (WeakPointer)
-    #[serde(default)]
     pub interaction_point: Option<Handle<SInteractionPointParams>>,
     /// `useInteraction` (WeakPointer)
-    #[serde(default)]
     pub use_interaction: Option<Handle<SSharedInteractionParams>>,
     /// `fragmentTag` (String)
-    #[serde(default)]
     pub fragment_tag: String,
 }
 
@@ -486,13 +436,10 @@ impl<'a> Extract<'a> for PlayerUsableInteractionPoint {
 }
 
 /// DCB type: `PlayerUsableItemPort`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PlayerUsableItemPort {
     /// `itemPort` (WeakPointer)
-    #[serde(default)]
     pub item_port: Option<Handle<SItemPortDef>>,
     /// `useInteraction` (WeakPointer)
-    #[serde(default)]
     pub use_interaction: Option<Handle<SSharedInteractionParams>>,
 }
 
@@ -518,16 +465,12 @@ impl<'a> Extract<'a> for PlayerUsableItemPort {
 }
 
 /// DCB type: `PlayerUsableSlot`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PlayerUsableSlot {
     /// `useSlot` (WeakPointer)
-    #[serde(default)]
     pub use_slot: Option<Handle<UsableUseSlot>>,
     /// `playerUsableInteractionPoints` (Class (array))
-    #[serde(default)]
     pub player_usable_interaction_points: Vec<Handle<PlayerUsableInteractionPoint>>,
     /// `playerUsableItemPorts` (Class (array))
-    #[serde(default)]
     pub player_usable_item_ports: Vec<Handle<PlayerUsableItemPort>>,
 }
 
@@ -563,16 +506,12 @@ impl<'a> Extract<'a> for PlayerUsableSlot {
 }
 
 /// DCB type: `PlayerUsableUseChannelInstance`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PlayerUsableUseChannelInstance {
     /// `useChannelInstance` (WeakPointer)
-    #[serde(default)]
     pub use_channel_instance: Option<Handle<UsableUseChannelInstance>>,
     /// `delinkOnEnterComplete` (EnumChoice)
-    #[serde(default)]
     pub delink_on_enter_complete: EDelinkMode,
     /// `availableActionGroups` (Class (array))
-    #[serde(default)]
     pub available_action_groups: Vec<Handle<UsableChannelInputActionGroup>>,
 }
 
@@ -602,16 +541,12 @@ impl<'a> Extract<'a> for PlayerUsableUseChannelInstance {
 }
 
 /// DCB type: `PlayerUsableView`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PlayerUsableView {
     /// `focusOnUser` (Boolean)
-    #[serde(default)]
     pub focus_on_user: bool,
     /// `cameraView` (Reference)
-    #[serde(default)]
     pub camera_view: Option<CigGuid>,
     /// `transitionParams` (StrongPointer)
-    #[serde(default)]
     pub transition_params: Option<Handle<CameraTransitionParams>>,
 }
 
@@ -636,22 +571,16 @@ impl<'a> Extract<'a> for PlayerUsableView {
 
 /// DCB type: `SPlayerUsableParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SPlayerUsableParams {
     /// `playerUsableSlots` (Class (array))
-    #[serde(default)]
     pub player_usable_slots: Vec<Handle<PlayerUsableSlot>>,
     /// `playerUseChannels` (Class (array))
-    #[serde(default)]
     pub player_use_channels: Vec<Handle<PlayerUsableUseChannelInstance>>,
     /// `sequencerTasks` (StrongPointer (array))
-    #[serde(default)]
     pub sequencer_tasks: Vec<SSequencerPlayerUsableTaskParamsPtr>,
     /// `specializedData` (Class)
-    #[serde(default)]
     pub specialized_data: Option<Handle<SSpecializedData>>,
     /// `views` (Class (array))
-    #[serde(default)]
     pub views: Vec<Handle<PlayerUsableView>>,
 }
 
@@ -701,7 +630,6 @@ impl<'a> Extract<'a> for SPlayerUsableParams {
 
 /// DCB type: `MedBedProviderParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MedBedProviderParams {
 }
 
@@ -719,16 +647,12 @@ impl<'a> Extract<'a> for MedBedProviderParams {
 }
 
 /// DCB type: `MedBedSurgeryNamesInjurySeverity`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MedBedSurgeryNamesInjurySeverity {
     /// `injuryName` (Locale)
-    #[serde(default)]
     pub injury_name: LocaleKey,
     /// `majorInjuryName` (Locale)
-    #[serde(default)]
     pub major_injury_name: LocaleKey,
     /// `deadlyInjuryName` (Locale)
-    #[serde(default)]
     pub deadly_injury_name: LocaleKey,
 }
 
@@ -749,25 +673,18 @@ impl<'a> Extract<'a> for MedBedSurgeryNamesInjurySeverity {
 }
 
 /// DCB type: `MedBedSurgeryNames`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MedBedSurgeryNames {
     /// `headInjuries` (Class)
-    #[serde(default)]
     pub head_injuries: Option<Handle<MedBedSurgeryNamesInjurySeverity>>,
     /// `torsoInjuries` (Class)
-    #[serde(default)]
     pub torso_injuries: Option<Handle<MedBedSurgeryNamesInjurySeverity>>,
     /// `leftArmInjuries` (Class)
-    #[serde(default)]
     pub left_arm_injuries: Option<Handle<MedBedSurgeryNamesInjurySeverity>>,
     /// `rightArmInjuries` (Class)
-    #[serde(default)]
     pub right_arm_injuries: Option<Handle<MedBedSurgeryNamesInjurySeverity>>,
     /// `leftLegInjuries` (Class)
-    #[serde(default)]
     pub left_leg_injuries: Option<Handle<MedBedSurgeryNamesInjurySeverity>>,
     /// `rightLegInjuries` (Class)
-    #[serde(default)]
     pub right_leg_injuries: Option<Handle<MedBedSurgeryNamesInjurySeverity>>,
 }
 
@@ -809,10 +726,8 @@ impl<'a> Extract<'a> for MedBedSurgeryNames {
 }
 
 /// DCB type: `MedBedRespawnRangeOverride`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MedBedRespawnRangeOverride {
     /// `respawnRange` (Int64)
-    #[serde(default)]
     pub respawn_range: i64,
 }
 
@@ -832,61 +747,42 @@ impl<'a> Extract<'a> for MedBedRespawnRangeOverride {
 
 /// DCB type: `MedBedComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MedBedComponentParams {
     /// `healInteraction` (WeakPointer)
-    #[serde(default)]
     pub heal_interaction: Option<Handle<SSharedInteractionParams>>,
     /// `setRespawnInteraction` (WeakPointer)
-    #[serde(default)]
     pub set_respawn_interaction: Option<Handle<SSharedInteractionParams>>,
     /// `cancelRespawnInteraction` (WeakPointer)
-    #[serde(default)]
     pub cancel_respawn_interaction: Option<Handle<SSharedInteractionParams>>,
     /// `cancelAllRespawnsInteraction` (WeakPointer)
-    #[serde(default)]
     pub cancel_all_respawns_interaction: Option<Handle<SSharedInteractionParams>>,
     /// `respawnInteraction` (WeakPointer)
-    #[serde(default)]
     pub respawn_interaction: Option<Handle<SSharedInteractionParams>>,
     /// `respawnInteractionPoint` (WeakPointer)
-    #[serde(default)]
     pub respawn_interaction_point: Option<Handle<SInteractionPointParams>>,
     /// `useChannelToHealActor` (WeakPointer)
-    #[serde(default)]
     pub use_channel_to_heal_actor: Option<Handle<UsableUseChannelInstance>>,
     /// `surgerySequenceState` (WeakPointer)
-    #[serde(default)]
     pub surgery_sequence_state: Option<Handle<SInteractionState>>,
     /// `respawnRangeOverride` (StrongPointer)
-    #[serde(default)]
     pub respawn_range_override: Option<Handle<MedBedRespawnRangeOverride>>,
     /// `timeToHeal` (Single)
-    #[serde(default)]
     pub time_to_heal: f32,
     /// `delayBeforeHeal` (Single)
-    #[serde(default)]
     pub delay_before_heal: f32,
     /// `medBedTier` (EnumChoice)
-    #[serde(default)]
     pub med_bed_tier: MedBedTier,
     /// `medicalItemTierConfig` (Reference)
-    #[serde(default)]
     pub medical_item_tier_config: Option<CigGuid>,
     /// `canRespawnHere` (Boolean)
-    #[serde(default)]
     pub can_respawn_here: bool,
     /// `invulnerableUser` (Boolean)
-    #[serde(default)]
     pub invulnerable_user: bool,
     /// `invulnerableDuration` (Single)
-    #[serde(default)]
     pub invulnerable_duration: f32,
     /// `surgeryNames` (Class)
-    #[serde(default)]
     pub surgery_names: Option<Handle<MedBedSurgeryNames>>,
     /// `resourceRegenerationPerMinute` (StrongPointer)
-    #[serde(default)]
     pub resource_regeneration_per_minute: Option<SBaseCargoUnitPtr>,
 }
 
@@ -956,7 +852,6 @@ impl<'a> Extract<'a> for MedBedComponentParams {
 
 /// DCB type: `MedicalSkeletonUIProviderParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MedicalSkeletonUIProviderParams {
 }
 
@@ -975,7 +870,6 @@ impl<'a> Extract<'a> for MedicalSkeletonUIProviderParams {
 
 /// DCB type: `LinkedCloneLocationMedicalTier`
 /// Inherits from: `CloneLocationMedicalTier`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LinkedCloneLocationMedicalTier {
 }
 
@@ -994,10 +888,8 @@ impl<'a> Extract<'a> for LinkedCloneLocationMedicalTier {
 
 /// DCB type: `SetCloneLocationMedicalTier`
 /// Inherits from: `CloneLocationMedicalTier`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SetCloneLocationMedicalTier {
     /// `locationMedicalTier` (EnumChoice)
-    #[serde(default)]
     pub location_medical_tier: MedBedTier,
 }
 
@@ -1017,10 +909,8 @@ impl<'a> Extract<'a> for SetCloneLocationMedicalTier {
 
 /// DCB type: `CloneLocationUIProviderParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CloneLocationUIProviderParams {
     /// `medicalTier` (StrongPointer)
-    #[serde(default)]
     pub medical_tier: Option<CloneLocationMedicalTierPtr>,
 }
 
@@ -1043,7 +933,6 @@ impl<'a> Extract<'a> for CloneLocationUIProviderParams {
 
 /// DCB type: `SEntityComponentPersistentEntityEntitlementSpawnerParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SEntityComponentPersistentEntityEntitlementSpawnerParams {
 }
 
@@ -1062,13 +951,10 @@ impl<'a> Extract<'a> for SEntityComponentPersistentEntityEntitlementSpawnerParam
 
 /// DCB type: `SSequencerImmediateDespawnDespawnerTaskParams`
 /// Inherits from: `SSequencerDespawnerTaskParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SSequencerImmediateDespawnDespawnerTaskParams {
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
     /// `immediateDespawnPorts` (WeakPointer (array))
-    #[serde(default)]
     pub immediate_despawn_ports: Vec<Handle<SItemPortDef>>,
 }
 
@@ -1094,10 +980,8 @@ impl<'a> Extract<'a> for SSequencerImmediateDespawnDespawnerTaskParams {
 
 /// DCB type: `EntityEffectSystem_EnableSequencerTask`
 /// Inherits from: `EntityEffectSystem_BaseSequencerTask`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EntityEffectSystem_EnableSequencerTask {
     /// `tag` (Reference)
-    #[serde(default)]
     pub tag: Option<CigGuid>,
 }
 
@@ -1117,10 +1001,8 @@ impl<'a> Extract<'a> for EntityEffectSystem_EnableSequencerTask {
 
 /// DCB type: `EntityEffectSystem_DisableSequencerTask`
 /// Inherits from: `EntityEffectSystem_BaseSequencerTask`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EntityEffectSystem_DisableSequencerTask {
     /// `tag` (Reference)
-    #[serde(default)]
     pub tag: Option<CigGuid>,
 }
 
@@ -1140,7 +1022,6 @@ impl<'a> Extract<'a> for EntityEffectSystem_DisableSequencerTask {
 
 /// DCB type: `HospitalCheckinScreenComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct HospitalCheckinScreenComponentParams {
 }
 
@@ -1159,13 +1040,10 @@ impl<'a> Extract<'a> for HospitalCheckinScreenComponentParams {
 
 /// DCB type: `InteractionConditionEmptyUsableItemPort`
 /// Inherits from: `InteractionConditionParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InteractionConditionEmptyUsableItemPort {
     /// `conditionDisplay` (StrongPointer)
-    #[serde(default)]
     pub condition_display: Option<Handle<ConditionDisplayParams>>,
     /// `itemPortTag` (String)
-    #[serde(default)]
     pub item_port_tag: String,
 }
 
@@ -1189,13 +1067,10 @@ impl<'a> Extract<'a> for InteractionConditionEmptyUsableItemPort {
 
 /// DCB type: `InteractionConditionUsableAlignmentSlotEmpty`
 /// Inherits from: `InteractionConditionParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InteractionConditionUsableAlignmentSlotEmpty {
     /// `conditionDisplay` (StrongPointer)
-    #[serde(default)]
     pub condition_display: Option<Handle<ConditionDisplayParams>>,
     /// `alignmentSlot` (WeakPointer)
-    #[serde(default)]
     pub alignment_slot: Option<AlignmentSlotBasePtr>,
 }
 
@@ -1222,22 +1097,16 @@ impl<'a> Extract<'a> for InteractionConditionUsableAlignmentSlotEmpty {
 
 /// DCB type: `InteractionConditionAvailableSpaceInLinkedUsableItem`
 /// Inherits from: `InteractionConditionParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InteractionConditionAvailableSpaceInLinkedUsableItem {
     /// `conditionDisplay` (StrongPointer)
-    #[serde(default)]
     pub condition_display: Option<Handle<ConditionDisplayParams>>,
     /// `usablePortTag` (String)
-    #[serde(default)]
     pub usable_port_tag: String,
     /// `itemPortTag` (String)
-    #[serde(default)]
     pub item_port_tag: String,
     /// `itemType` (EnumChoice)
-    #[serde(default)]
     pub item_type: EItemType,
     /// `itemSubType` (EnumChoice)
-    #[serde(default)]
     pub item_sub_type: EItemSubType,
 }
 
@@ -1264,13 +1133,10 @@ impl<'a> Extract<'a> for InteractionConditionAvailableSpaceInLinkedUsableItem {
 
 /// DCB type: `InteractionConditionLinkedUsableHasTag`
 /// Inherits from: `InteractionConditionParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InteractionConditionLinkedUsableHasTag {
     /// `conditionDisplay` (StrongPointer)
-    #[serde(default)]
     pub condition_display: Option<Handle<ConditionDisplayParams>>,
     /// `usableTags` (Class)
-    #[serde(default)]
     pub usable_tags: Option<Handle<TagsDNFTerm>>,
 }
 
@@ -1297,16 +1163,12 @@ impl<'a> Extract<'a> for InteractionConditionLinkedUsableHasTag {
 
 /// DCB type: `SResourceContainerStateModifier`
 /// Inherits from: `SRangeStateModifier`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SResourceContainerStateModifier {
     /// `stateRanges` (Class (array))
-    #[serde(default)]
     pub state_ranges: Vec<Handle<SRangeStateLevel>>,
     /// `containerResource` (Reference)
-    #[serde(default)]
     pub container_resource: Option<CigGuid>,
     /// `useActualOccupancyValue` (Boolean)
-    #[serde(default)]
     pub use_actual_occupancy_value: bool,
 }
 
@@ -1334,10 +1196,8 @@ impl<'a> Extract<'a> for SResourceContainerStateModifier {
 
 /// DCB type: `SItemPortRule_TriggerSequenceDef`
 /// Inherits from: `SItemPortRuleDef`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SItemPortRule_TriggerSequenceDef {
     /// `triggerSequence` (WeakPointer)
-    #[serde(default)]
     pub trigger_sequence: Option<SSequencerDefSequenceParamsPtr>,
 }
 
@@ -1359,19 +1219,14 @@ impl<'a> Extract<'a> for SItemPortRule_TriggerSequenceDef {
 }
 
 /// DCB type: `UsableChannelInputActionGroup`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct UsableChannelInputActionGroup {
     /// `tag` (Reference)
-    #[serde(default)]
     pub tag: Option<CigGuid>,
     /// `hintDescription` (Locale)
-    #[serde(default)]
     pub hint_description: LocaleKey,
     /// `activationMode` (EnumChoice)
-    #[serde(default)]
     pub activation_mode: ActivationMode,
     /// `actions` (StrongPointer (array))
-    #[serde(default)]
     pub actions: Vec<UsableChannelInputActionPtr>,
 }
 
@@ -1398,13 +1253,10 @@ impl<'a> Extract<'a> for UsableChannelInputActionGroup {
 }
 
 /// DCB type: `UsableChannelInputAction`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct UsableChannelInputAction {
     /// `inputAction` (Class)
-    #[serde(default)]
     pub input_action: Option<Handle<InputAction>>,
     /// `interactionOnAction` (WeakPointer)
-    #[serde(default)]
     pub interaction_on_action: Option<Handle<SSharedInteractionParams>>,
 }
 
@@ -1431,16 +1283,12 @@ impl<'a> Extract<'a> for UsableChannelInputAction {
 
 /// DCB type: `UsableChannelInputAction_ControlInteractive`
 /// Inherits from: `UsableChannelInputAction`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct UsableChannelInputAction_ControlInteractive {
     /// `inputAction` (Class)
-    #[serde(default)]
     pub input_action: Option<Handle<InputAction>>,
     /// `interactionOnAction` (WeakPointer)
-    #[serde(default)]
     pub interaction_on_action: Option<Handle<SSharedInteractionParams>>,
     /// `controlVariable` (WeakPointer)
-    #[serde(default)]
     pub control_variable: Option<ControlInteractiveVariablePtr>,
 }
 
@@ -1471,10 +1319,8 @@ impl<'a> Extract<'a> for UsableChannelInputAction_ControlInteractive {
 
 /// DCB type: `InteractiveVariable_BackToDefaultIntParams`
 /// Inherits from: `InteractiveVariable_BackToDefaultParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InteractiveVariable_BackToDefaultIntParams {
     /// `waitTime` (Single)
-    #[serde(default)]
     pub wait_time: f32,
 }
 
@@ -1494,10 +1340,8 @@ impl<'a> Extract<'a> for InteractiveVariable_BackToDefaultIntParams {
 
 /// DCB type: `InteractiveVariable_BackToDefaultFloatParams`
 /// Inherits from: `InteractiveVariable_BackToDefaultParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InteractiveVariable_BackToDefaultFloatParams {
     /// `waitTime` (Single)
-    #[serde(default)]
     pub wait_time: f32,
 }
 
@@ -1517,25 +1361,18 @@ impl<'a> Extract<'a> for InteractiveVariable_BackToDefaultFloatParams {
 
 /// DCB type: `IntInteractiveVariable`
 /// Inherits from: `InteractiveVariable`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct IntInteractiveVariable {
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
     /// `defaultValue` (Int32)
-    #[serde(default)]
     pub default_value: i32,
     /// `minValue` (Int32)
-    #[serde(default)]
     pub min_value: i32,
     /// `maxValue` (Int32)
-    #[serde(default)]
     pub max_value: i32,
     /// `loopType` (EnumChoice)
-    #[serde(default)]
     pub loop_type: InteractiveVariableLoopType,
     /// `backToDefaultParams` (StrongPointer)
-    #[serde(default)]
     pub back_to_default_params: Option<Handle<InteractiveVariable_BackToDefaultIntParams>>,
 }
 
@@ -1563,25 +1400,18 @@ impl<'a> Extract<'a> for IntInteractiveVariable {
 
 /// DCB type: `FloatInteractiveVariable`
 /// Inherits from: `InteractiveVariable`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct FloatInteractiveVariable {
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
     /// `defaultValue` (Single)
-    #[serde(default)]
     pub default_value: f32,
     /// `minValue` (Single)
-    #[serde(default)]
     pub min_value: f32,
     /// `maxValue` (Single)
-    #[serde(default)]
     pub max_value: f32,
     /// `loopType` (EnumChoice)
-    #[serde(default)]
     pub loop_type: InteractiveVariableLoopType,
     /// `backToDefaultParams` (StrongPointer)
-    #[serde(default)]
     pub back_to_default_params: Option<InteractiveVariable_BackToDefaultFloatParamsPtr>,
 }
 
@@ -1608,13 +1438,10 @@ impl<'a> Extract<'a> for FloatInteractiveVariable {
 }
 
 /// DCB type: `ControlInteractiveVariable`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ControlInteractiveVariable {
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
     /// `fragmentTag` (String)
-    #[serde(default)]
     pub fragment_tag: String,
 }
 
@@ -1635,19 +1462,14 @@ impl<'a> Extract<'a> for ControlInteractiveVariable {
 
 /// DCB type: `ControlIntInteractiveVariable`
 /// Inherits from: `ControlInteractiveVariable`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ControlIntInteractiveVariable {
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
     /// `fragmentTag` (String)
-    #[serde(default)]
     pub fragment_tag: String,
     /// `variable` (WeakPointer)
-    #[serde(default)]
     pub variable: Option<Handle<IntInteractiveVariable>>,
     /// `amountToChange` (Int32)
-    #[serde(default)]
     pub amount_to_change: i32,
 }
 
@@ -1673,25 +1495,18 @@ impl<'a> Extract<'a> for ControlIntInteractiveVariable {
 
 /// DCB type: `ControlFloatInteractiveVariable`
 /// Inherits from: `ControlInteractiveVariable`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ControlFloatInteractiveVariable {
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
     /// `fragmentTag` (String)
-    #[serde(default)]
     pub fragment_tag: String,
     /// `variable` (WeakPointer)
-    #[serde(default)]
     pub variable: Option<Handle<FloatInteractiveVariable>>,
     /// `useAnimationEffectiveSection` (Boolean)
-    #[serde(default)]
     pub use_animation_effective_section: bool,
     /// `amountToChange` (Single)
-    #[serde(default)]
     pub amount_to_change: f32,
     /// `animationCycle` (Single)
-    #[serde(default)]
     pub animation_cycle: f32,
 }
 
@@ -1719,19 +1534,14 @@ impl<'a> Extract<'a> for ControlFloatInteractiveVariable {
 
 /// DCB type: `SCLinkedInteractiveControllerParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCLinkedInteractiveControllerParams {
     /// `ints` (Class (array))
-    #[serde(default)]
     pub ints: Vec<Handle<IntInteractiveVariable>>,
     /// `controlIntVariables` (Class (array))
-    #[serde(default)]
     pub control_int_variables: Vec<Handle<ControlIntInteractiveVariable>>,
     /// `floats` (Class (array))
-    #[serde(default)]
     pub floats: Vec<Handle<FloatInteractiveVariable>>,
     /// `controlFloatVariables` (Class (array))
-    #[serde(default)]
     pub control_float_variables: Vec<Handle<ControlFloatInteractiveVariable>>,
 }
 
@@ -1777,10 +1587,8 @@ impl<'a> Extract<'a> for SCLinkedInteractiveControllerParams {
 }
 
 /// DCB type: `UsableArchetypes`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct UsableArchetypes {
     /// `archetypes` (Reference (array))
-    #[serde(default)]
     pub archetypes: Vec<CigGuid>,
 }
 
@@ -1802,10 +1610,8 @@ impl<'a> Extract<'a> for UsableArchetypes {
 
 /// DCB type: `SphereAreaAlignmentSlotTypeParams`
 /// Inherits from: `AreaAlignmentSlotTypeParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SphereAreaAlignmentSlotTypeParams {
     /// `radius` (Single)
-    #[serde(default)]
     pub radius: f32,
 }
 
@@ -1824,25 +1630,18 @@ impl<'a> Extract<'a> for SphereAreaAlignmentSlotTypeParams {
 }
 
 /// DCB type: `SUsableRoutingSettings`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SUsableRoutingSettings {
     /// `useChannelName` (String)
-    #[serde(default)]
     pub use_channel_name: String,
     /// `slotGameTags` (Class)
-    #[serde(default)]
     pub slot_game_tags: Option<Handle<TagList>>,
     /// `selectionType` (EnumChoice)
-    #[serde(default)]
     pub selection_type: EUsableEntrySelectionType,
     /// `skipEntry` (Boolean)
-    #[serde(default)]
     pub skip_entry: bool,
     /// `verifyNavMesh` (Boolean)
-    #[serde(default)]
     pub verify_nav_mesh: bool,
     /// `interactionTag` (Reference)
-    #[serde(default)]
     pub interaction_tag: Option<CigGuid>,
 }
 
@@ -1870,7 +1669,6 @@ impl<'a> Extract<'a> for SUsableRoutingSettings {
 
 /// DCB type: `SSequencerUsableDelinkTask`
 /// Inherits from: `SSequencerUsableTask`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SSequencerUsableDelinkTask {
 }
 
@@ -1889,22 +1687,16 @@ impl<'a> Extract<'a> for SSequencerUsableDelinkTask {
 
 /// DCB type: `SSequencerUsableFillConsumableTaskParams`
 /// Inherits from: `SSequencerUsableTask`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SSequencerUsableFillConsumableTaskParams {
     /// `itemPortTag` (String)
-    #[serde(default)]
     pub item_port_tag: String,
     /// `useReservedContents` (Boolean)
-    #[serde(default)]
     pub use_reserved_contents: bool,
     /// `contentType` (String)
-    #[serde(default)]
     pub content_type: String,
     /// `duration` (Single)
-    #[serde(default)]
     pub duration: f32,
     /// `amountToAdd` (Single)
-    #[serde(default)]
     pub amount_to_add: f32,
 }
 
@@ -1927,19 +1719,14 @@ impl<'a> Extract<'a> for SSequencerUsableFillConsumableTaskParams {
 }
 
 /// DCB type: `CameraTransitionParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CameraTransitionParams {
     /// `transitionTime` (Single)
-    #[serde(default)]
     pub transition_time: f32,
     /// `isCinematic` (Boolean)
-    #[serde(default)]
     pub is_cinematic: bool,
     /// `nearFaceDistanceSq` (Single)
-    #[serde(default)]
     pub near_face_distance_sq: f32,
     /// `interpolationToPoint` (Reference)
-    #[serde(default)]
     pub interpolation_to_point: Option<CigGuid>,
 }
 

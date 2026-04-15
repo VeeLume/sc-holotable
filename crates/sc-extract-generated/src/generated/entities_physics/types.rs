@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -21,94 +20,64 @@ use super::super::*;
 
 /// DCB type: `ConstraintParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ConstraintParams {
     /// `broken` (Boolean)
-    #[serde(default)]
     pub broken: bool,
     /// `damping` (Single)
-    #[serde(default)]
     pub damping: f32,
     /// `noSelfCollisions` (Boolean)
-    #[serde(default)]
     pub no_self_collisions: bool,
     /// `useEntityFrame` (Boolean)
-    #[serde(default)]
     pub use_entity_frame: bool,
     /// `maxPullForce` (Single)
-    #[serde(default)]
     pub max_pull_force: f32,
     /// `maxBendTorque` (Single)
-    #[serde(default)]
     pub max_bend_torque: f32,
     /// `constrainToLine` (Boolean)
-    #[serde(default)]
     pub constrain_to_line: bool,
     /// `constrainToPlane` (Boolean)
-    #[serde(default)]
     pub constrain_to_plane: bool,
     /// `constrainFully` (Boolean)
-    #[serde(default)]
     pub constrain_fully: bool,
     /// `noRotation` (Boolean)
-    #[serde(default)]
     pub no_rotation: bool,
     /// `xMin` (Single)
-    #[serde(default)]
     pub x_min: f32,
     /// `xMax` (Single)
-    #[serde(default)]
     pub x_max: f32,
     /// `yzMax` (Single)
-    #[serde(default)]
     pub yz_max: f32,
     /// `xTranslationalCompliance` (Single)
-    #[serde(default)]
     pub x_translational_compliance: f32,
     /// `yzTranslationalCompliance` (Single)
-    #[serde(default)]
     pub yz_translational_compliance: f32,
     /// `xTranslationalDampingRate` (Single)
-    #[serde(default)]
     pub x_translational_damping_rate: f32,
     /// `yzTranslationalDampingRate` (Single)
-    #[serde(default)]
     pub yz_translational_damping_rate: f32,
     /// `xRotationalCompliance` (Single)
-    #[serde(default)]
     pub x_rotational_compliance: f32,
     /// `yzRotationalCompliance` (Single)
-    #[serde(default)]
     pub yz_rotational_compliance: f32,
     /// `xRotationalDampingRate` (Single)
-    #[serde(default)]
     pub x_rotational_damping_rate: f32,
     /// `yzRotationalDampingRate` (Single)
-    #[serde(default)]
     pub yz_rotational_damping_rate: f32,
     /// `targetRelativePosition` (Class)
-    #[serde(default)]
     pub target_relative_position: Option<Handle<Vec3>>,
     /// `targetRelativeRotation` (Class)
-    #[serde(default)]
     pub target_relative_rotation: Option<Handle<Ang3>>,
     /// `targetRelativeLinearVelocity` (Class)
-    #[serde(default)]
     pub target_relative_linear_velocity: Option<Handle<Vec3>>,
     /// `maxMotorForceLin` (Single)
-    #[serde(default)]
     pub max_motor_force_lin: f32,
     /// `linearMotorInviscosityCoefficient` (Class)
-    #[serde(default)]
     pub linear_motor_inviscosity_coefficient: Option<Handle<Vec3>>,
     /// `targetRelativeAngularVelocity` (Class)
-    #[serde(default)]
     pub target_relative_angular_velocity: Option<Handle<Vec3>>,
     /// `maxMotorForceAng` (Single)
-    #[serde(default)]
     pub max_motor_force_ang: f32,
     /// `angularMotorInviscosityCoefficient` (Class)
-    #[serde(default)]
     pub angular_motor_inviscosity_coefficient: Option<Handle<Vec3>>,
 }
 
@@ -174,10 +143,8 @@ impl<'a> Extract<'a> for ConstraintParams {
 
 /// DCB type: `DeadBodyParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DeadBodyParams {
     /// `kinematic` (Boolean)
-    #[serde(default)]
     pub kinematic: bool,
 }
 
@@ -197,7 +164,6 @@ impl<'a> Extract<'a> for DeadBodyParams {
 
 /// DCB type: `SRopeProxyParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SRopeProxyParams {
 }
 
@@ -216,31 +182,22 @@ impl<'a> Extract<'a> for SRopeProxyParams {
 
 /// DCB type: `WindAreaParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct WindAreaParams {
     /// `defaultActive` (Boolean)
-    #[serde(default)]
     pub default_active: bool,
     /// `size` (Class)
-    #[serde(default)]
     pub size: Option<Handle<Vec3>>,
     /// `ellipsoidal` (Boolean)
-    #[serde(default)]
     pub ellipsoidal: bool,
     /// `falloffInner` (Single)
-    #[serde(default)]
     pub falloff_inner: f32,
     /// `direction` (Class)
-    #[serde(default)]
     pub direction: Option<Handle<Vec3>>,
     /// `speed` (Single)
-    #[serde(default)]
     pub speed: f32,
     /// `airResistance` (Single)
-    #[serde(default)]
     pub air_resistance: f32,
     /// `airDensity` (Single)
-    #[serde(default)]
     pub air_density: f32,
 }
 
@@ -273,7 +230,6 @@ impl<'a> Extract<'a> for WindAreaParams {
 
 /// DCB type: `SEntityComponentConstraintPartnerComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SEntityComponentConstraintPartnerComponentParams {
 }
 
@@ -292,31 +248,22 @@ impl<'a> Extract<'a> for SEntityComponentConstraintPartnerComponentParams {
 
 /// DCB type: `SLayerEntitiesGroupComponentParams`
 /// Inherits from: `SEntitiesGroupComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SLayerEntitiesGroupComponentParams {
     /// `allowPhysicsChange` (Boolean)
-    #[serde(default)]
     pub allow_physics_change: bool,
     /// `allowStreaming` (Boolean)
-    #[serde(default)]
     pub allow_streaming: bool,
     /// `useLayerData` (Boolean)
-    #[serde(default)]
     pub use_layer_data: bool,
     /// `useMovablesInOCData` (Boolean)
-    #[serde(default)]
     pub use_movables_in_ocdata: bool,
     /// `useUnreferencedEntities` (Boolean)
-    #[serde(default)]
     pub use_unreferenced_entities: bool,
     /// `startStreamedOut` (Boolean)
-    #[serde(default)]
     pub start_streamed_out: bool,
     /// `startHidden` (Boolean)
-    #[serde(default)]
     pub start_hidden: bool,
     /// `isMaster` (Boolean)
-    #[serde(default)]
     pub is_master: bool,
 }
 
@@ -343,58 +290,40 @@ impl<'a> Extract<'a> for SLayerEntitiesGroupComponentParams {
 
 /// DCB type: `SEntityArticulatedPhysicsControllerParams`
 /// Inherits from: `SEntityBasePhysicsControllerParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SEntityArticulatedPhysicsControllerParams {
     /// `Mass` (Single)
-    #[serde(default)]
     pub mass: f32,
     /// `compoundingAllowed` (Boolean)
-    #[serde(default)]
     pub compounding_allowed: bool,
     /// `breakableParams` (StrongPointer)
-    #[serde(default)]
     pub breakable_params: Option<Handle<SBreakablePhysicsParams>>,
     /// `gameCollisionClass` (StrongPointer)
-    #[serde(default)]
     pub game_collision_class: Option<Handle<SGameCollisionClass>>,
     /// `spawnBoxScale` (Single)
-    #[serde(default)]
     pub spawn_box_scale: f32,
     /// `IsRagdoll` (Boolean)
-    #[serde(default)]
     pub is_ragdoll: bool,
     /// `Stiffness` (Single)
-    #[serde(default)]
     pub stiffness: f32,
     /// `MaxTimeStep` (Single)
-    #[serde(default)]
     pub max_time_step: f32,
     /// `MaxLoggedCollisions` (Int32)
-    #[serde(default)]
     pub max_logged_collisions: i32,
     /// `SleepSpeed` (Single)
-    #[serde(default)]
     pub sleep_speed: f32,
     /// `Damping` (Single)
-    #[serde(default)]
     pub damping: f32,
     /// `DampingFreefall` (Single)
-    #[serde(default)]
     pub damping_freefall: f32,
     /// `LyingModeNColls` (Int32)
-    #[serde(default)]
     pub lying_mode_ncolls: i32,
     /// `LyingDamping` (Single)
-    #[serde(default)]
     pub lying_damping: f32,
     /// `LyingSleepSpeed` (Single)
-    #[serde(default)]
     pub lying_sleep_speed: f32,
     /// `Resting` (Boolean)
-    #[serde(default)]
     pub resting: bool,
     /// `aiNavigationType` (EnumChoice)
-    #[serde(default)]
     pub ai_navigation_type: EAINavigationGeneration,
 }
 

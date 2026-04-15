@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -21,19 +20,14 @@ use super::super::*;
 
 /// DCB type: `TransitNavigationLink`
 /// Inherits from: `NavigationLinkType`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct TransitNavigationLink {
     /// `linkValidForAgentType` (String)
-    #[serde(default)]
     pub link_valid_for_agent_type: String,
     /// `costMultiplierSetup` (Class)
-    #[serde(default)]
     pub cost_multiplier_setup: Option<Handle<NavigationLinkCostCustomization>>,
     /// `linkingType` (EnumChoice)
-    #[serde(default)]
     pub linking_type: ENavigationLinkLinkingType,
     /// `useChannel` (WeakPointer)
-    #[serde(default)]
     pub use_channel: Option<Handle<UsableUseChannelInstance>>,
 }
 
@@ -62,13 +56,10 @@ impl<'a> Extract<'a> for TransitNavigationLink {
 
 /// DCB type: `HospitalEmergencyScreenComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct HospitalEmergencyScreenComponentParams {
     /// `openDoorsInteraction` (String)
-    #[serde(default)]
     pub open_doors_interaction: String,
     /// `closeDoorsInteraction` (String)
-    #[serde(default)]
     pub close_doors_interaction: String,
 }
 
@@ -89,16 +80,12 @@ impl<'a> Extract<'a> for HospitalEmergencyScreenComponentParams {
 
 /// DCB type: `SecurityClearanceGiverComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SecurityClearanceGiverComponentParams {
     /// `securityTokens` (Reference (array))
-    #[serde(default)]
     pub security_tokens: Vec<CigGuid>,
     /// `grantWhenInsideHostedZone` (Boolean)
-    #[serde(default)]
     pub grant_when_inside_hosted_zone: bool,
     /// `grantWhenInsideLinkedArea` (Boolean)
-    #[serde(default)]
     pub grant_when_inside_linked_area: bool,
 }
 
@@ -122,10 +109,8 @@ impl<'a> Extract<'a> for SecurityClearanceGiverComponentParams {
 
 /// DCB type: `SBindingTriggerGameplayTrigger`
 /// Inherits from: `SBaseInteractionGameplayTrigger`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SBindingTriggerGameplayTrigger {
     /// `triggerName` (String)
-    #[serde(default)]
     pub trigger_name: String,
 }
 
@@ -144,13 +129,10 @@ impl<'a> Extract<'a> for SBindingTriggerGameplayTrigger {
 }
 
 /// DCB type: `TransitNodeDialogueContext`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct TransitNodeDialogueContext {
     /// `triggerName` (String)
-    #[serde(default)]
     pub trigger_name: String,
     /// `dialogueContext` (Reference)
-    #[serde(default)]
     pub dialogue_context: Option<CigGuid>,
 }
 
@@ -170,37 +152,26 @@ impl<'a> Extract<'a> for TransitNodeDialogueContext {
 }
 
 /// DCB type: `TransitCarriageAudio`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct TransitCarriageAudio {
     /// `startTriggerID` (Class)
-    #[serde(default)]
     pub start_trigger_id: Option<Handle<GlobalResourceAudio>>,
     /// `startTriggerIDOneShot` (Class)
-    #[serde(default)]
     pub start_trigger_idone_shot: Option<Handle<GlobalResourceAudio>>,
     /// `stoppingTriggerID` (Class)
-    #[serde(default)]
     pub stopping_trigger_id: Option<Handle<GlobalResourceAudio>>,
     /// `maxStoppingTime` (Single)
-    #[serde(default)]
     pub max_stopping_time: f32,
     /// `stopTriggerID` (Class)
-    #[serde(default)]
     pub stop_trigger_id: Option<Handle<GlobalResourceAudio>>,
     /// `stopTriggerIDOneShot` (Class)
-    #[serde(default)]
     pub stop_trigger_idone_shot: Option<Handle<GlobalResourceAudio>>,
     /// `speedRTPC` (Class)
-    #[serde(default)]
     pub speed_rtpc: Option<Handle<AudioRtpc>>,
     /// `turnRTPC` (Class)
-    #[serde(default)]
     pub turn_rtpc: Option<Handle<AudioRtpc>>,
     /// `turnRTPCScaler` (Single)
-    #[serde(default)]
     pub turn_rtpcscaler: f32,
     /// `dialogueContexts` (Class (array))
-    #[serde(default)]
     pub dialogue_contexts: Vec<Handle<TransitNodeDialogueContext>>,
 }
 
@@ -255,10 +226,8 @@ impl<'a> Extract<'a> for TransitCarriageAudio {
 }
 
 /// DCB type: `TransitCarriageEffects`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct TransitCarriageEffects {
     /// `inTransitTag` (Reference)
-    #[serde(default)]
     pub in_transit_tag: Option<CigGuid>,
 }
 
@@ -278,46 +247,32 @@ impl<'a> Extract<'a> for TransitCarriageEffects {
 
 /// DCB type: `TransitCarriageParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct TransitCarriageParams {
     /// `defaultInteriorOC` (Class)
-    #[serde(default)]
     pub default_interior_oc: Option<Handle<GlobalResourceObjectContainer>>,
     /// `audio` (Class)
-    #[serde(default)]
     pub audio: Option<Handle<TransitCarriageAudio>>,
     /// `effects` (Class)
-    #[serde(default)]
     pub effects: Option<Handle<TransitCarriageEffects>>,
     /// `hasExternalAnimations` (Boolean)
-    #[serde(default)]
     pub has_external_animations: bool,
     /// `animationLength` (Single)
-    #[serde(default)]
     pub animation_length: f32,
     /// `fragment` (String)
-    #[serde(default)]
     pub fragment: String,
     /// `fragmentArrived` (String)
-    #[serde(default)]
     pub fragment_arrived: String,
     /// `fragmentArriving` (String)
-    #[serde(default)]
     pub fragment_arriving: String,
     /// `fragmentDeparting` (String)
-    #[serde(default)]
     pub fragment_departing: String,
     /// `fragmentDeparted` (String)
-    #[serde(default)]
     pub fragment_departed: String,
     /// `causesCertainDeath` (Boolean)
-    #[serde(default)]
     pub causes_certain_death: bool,
     /// `collisionDamage` (Single)
-    #[serde(default)]
     pub collision_damage: f32,
     /// `matchSplineOrientation` (Boolean)
-    #[serde(default)]
     pub match_spline_orientation: bool,
 }
 
@@ -358,7 +313,6 @@ impl<'a> Extract<'a> for TransitCarriageParams {
 
 /// DCB type: `TransitLimboNodeParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct TransitLimboNodeParams {
 }
 
@@ -377,13 +331,10 @@ impl<'a> Extract<'a> for TransitLimboNodeParams {
 
 /// DCB type: `TransitGatewayParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct TransitGatewayParams {
     /// `radius` (Single)
-    #[serde(default)]
     pub radius: f32,
     /// `safeTeleportOffset` (Class)
-    #[serde(default)]
     pub safe_teleport_offset: Option<Handle<Vec3>>,
 }
 
@@ -407,7 +358,6 @@ impl<'a> Extract<'a> for TransitGatewayParams {
 
 /// DCB type: `TransitInteractionPanelParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct TransitInteractionPanelParams {
 }
 
@@ -426,25 +376,18 @@ impl<'a> Extract<'a> for TransitInteractionPanelParams {
 
 /// DCB type: `TransitDestinationParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct TransitDestinationParams {
     /// `Name` (Locale)
-    #[serde(default)]
     pub name: LocaleKey,
     /// `importantLocation` (Boolean)
-    #[serde(default)]
     pub important_location: bool,
     /// `enabledByDefault` (Boolean)
-    #[serde(default)]
     pub enabled_by_default: bool,
     /// `priority` (Int32)
-    #[serde(default)]
     pub priority: i32,
     /// `radius` (Single)
-    #[serde(default)]
     pub radius: f32,
     /// `unlockedManufacturers` (Reference (array))
-    #[serde(default)]
     pub unlocked_manufacturers: Vec<CigGuid>,
 }
 
@@ -471,13 +414,10 @@ impl<'a> Extract<'a> for TransitDestinationParams {
 
 /// DCB type: `TransitDynamicDestinationParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct TransitDynamicDestinationParams {
     /// `Name` (Locale)
-    #[serde(default)]
     pub name: LocaleKey,
     /// `radius` (Single)
-    #[serde(default)]
     pub radius: f32,
 }
 
@@ -498,88 +438,60 @@ impl<'a> Extract<'a> for TransitDynamicDestinationParams {
 
 /// DCB type: `TransitManagerParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct TransitManagerParams {
     /// `carriageType` (Reference)
-    #[serde(default)]
     pub carriage_type: Option<CigGuid>,
     /// `carriageDisplayTypeId` (Locale)
-    #[serde(default)]
     pub carriage_display_type_id: LocaleKey,
     /// `carriageInterior` (Class)
-    #[serde(default)]
     pub carriage_interior: Option<Handle<GlobalResourceObjectContainer>>,
     /// `tagFilter` (Class)
-    #[serde(default)]
     pub tag_filter: Option<Handle<TagsDNFTerm>>,
     /// `carriageWaitTime` (Single)
-    #[serde(default)]
     pub carriage_wait_time: f32,
     /// `carriageDoorTimeout` (Single)
-    #[serde(default)]
     pub carriage_door_timeout: f32,
     /// `carriageAcceleration` (Single)
-    #[serde(default)]
     pub carriage_acceleration: f32,
     /// `idealTimeBetweenArrivals` (Single)
-    #[serde(default)]
     pub ideal_time_between_arrivals: f32,
     /// `pauseDistance` (Single)
-    #[serde(default)]
     pub pause_distance: f32,
     /// `forceStreamableTransit` (Boolean)
-    #[serde(default)]
     pub force_streamable_transit: bool,
     /// `forceCarriageAttachToParent` (Boolean)
-    #[serde(default)]
     pub force_carriage_attach_to_parent: bool,
     /// `onByDefault` (Boolean)
-    #[serde(default)]
     pub on_by_default: bool,
     /// `enabledForAI` (Boolean)
-    #[serde(default)]
     pub enabled_for_ai: bool,
     /// `sortDestinationsByName` (Boolean)
-    #[serde(default)]
     pub sort_destinations_by_name: bool,
     /// `sortDestinationsByPriority` (Boolean)
-    #[serde(default)]
     pub sort_destinations_by_priority: bool,
     /// `ignoreDoorProximity` (Boolean)
-    #[serde(default)]
     pub ignore_door_proximity: bool,
     /// `carriageDoorOpenByDefault` (Boolean)
-    #[serde(default)]
     pub carriage_door_open_by_default: bool,
     /// `doorFindDistance` (Single)
-    #[serde(default)]
     pub door_find_distance: f32,
     /// `automateTransit` (Boolean)
-    #[serde(default)]
     pub automate_transit: bool,
     /// `reverseDisplayIndexOrder` (Boolean)
-    #[serde(default)]
     pub reverse_display_index_order: bool,
     /// `turnOnInteractionName` (String)
-    #[serde(default)]
     pub turn_on_interaction_name: String,
     /// `turnOffInteractionName` (String)
-    #[serde(default)]
     pub turn_off_interaction_name: String,
     /// `displayIndexOffset` (SByte)
-    #[serde(default)]
     pub display_index_offset: i32,
     /// `updateDestinationsForDistantTrains` (Boolean)
-    #[serde(default)]
     pub update_destinations_for_distant_trains: bool,
     /// `persistDestinationEnabledState` (Boolean)
-    #[serde(default)]
     pub persist_destination_enabled_state: bool,
     /// `allowOneDestination` (Boolean)
-    #[serde(default)]
     pub allow_one_destination: bool,
     /// `manufacturer` (Reference)
-    #[serde(default)]
     pub manufacturer: Option<CigGuid>,
 }
 

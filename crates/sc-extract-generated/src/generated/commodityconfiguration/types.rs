@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,37 +19,26 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `CommodityDamageConfiguration`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CommodityDamageConfiguration {
     /// `minimumSpeed` (Single)
-    #[serde(default)]
     pub minimum_speed: f32,
     /// `speedSquaredToDamage` (Single)
-    #[serde(default)]
     pub speed_squared_to_damage: f32,
     /// `defaultExplosionParams` (Class)
-    #[serde(default)]
     pub default_explosion_params: Option<Handle<ExplosionParams>>,
     /// `volatilePowerRtpc` (Class)
-    #[serde(default)]
     pub volatile_power_rtpc: Option<Handle<AudioRtpc>>,
     /// `volatilityRadiusFactor` (Single)
-    #[serde(default)]
     pub volatility_radius_factor: f32,
     /// `volatilityDamageFactor` (Single)
-    #[serde(default)]
     pub volatility_damage_factor: f32,
     /// `volatilityForceFactor` (Single)
-    #[serde(default)]
     pub volatility_force_factor: f32,
     /// `volatilityCommodityDamageFactor` (Single)
-    #[serde(default)]
     pub volatility_commodity_damage_factor: f32,
     /// `volatilityParticleStrengthFactor` (Single)
-    #[serde(default)]
     pub volatility_particle_strength_factor: f32,
     /// `gracePeriod` (Single)
-    #[serde(default)]
     pub grace_period: f32,
 }
 

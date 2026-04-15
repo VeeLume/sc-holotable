@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -21,13 +20,10 @@ use super::super::*;
 
 /// DCB type: `STrackViewOutfitInteractionSwapData`
 /// Inherits from: `SAnimatedOutfitSwapData`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct STrackViewOutfitInteractionSwapData {
     /// `interaction` (WeakPointer)
-    #[serde(default)]
     pub interaction: Option<Handle<SSharedInteractionParams>>,
     /// `selectionTags` (Class)
-    #[serde(default)]
     pub selection_tags: Option<Handle<TagList>>,
 }
 
@@ -54,40 +50,28 @@ impl<'a> Extract<'a> for STrackViewOutfitInteractionSwapData {
 
 /// DCB type: `SEntityComponentOutfitHangerParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SEntityComponentOutfitHangerParams {
     /// `equipInteraction` (WeakPointer)
-    #[serde(default)]
     pub equip_interaction: Option<Handle<SSharedInteractionParams>>,
     /// `hangInteraction` (WeakPointer)
-    #[serde(default)]
     pub hang_interaction: Option<Handle<SSharedInteractionParams>>,
     /// `swapInteraction` (WeakPointer)
-    #[serde(default)]
     pub swap_interaction: Option<Handle<SSharedInteractionParams>>,
     /// `swapAllInteraction` (WeakPointer)
-    #[serde(default)]
     pub swap_all_interaction: Option<Handle<SSharedInteractionParams>>,
     /// `equipAllInteraction` (WeakPointer)
-    #[serde(default)]
     pub equip_all_interaction: Option<Handle<SSharedInteractionParams>>,
     /// `hangAllInteraction` (WeakPointer)
-    #[serde(default)]
     pub hang_all_interaction: Option<Handle<SSharedInteractionParams>>,
     /// `disguiseSwapAllInteraction` (WeakPointer)
-    #[serde(default)]
     pub disguise_swap_all_interaction: Option<Handle<SSharedInteractionParams>>,
     /// `itemPortTypeSubtypes` (Class (array))
-    #[serde(default)]
     pub item_port_type_subtypes: Vec<Handle<TypeSubtypeParams>>,
     /// `animatedOutfitSwap` (StrongPointer)
-    #[serde(default)]
     pub animated_outfit_swap: Option<SAnimatedOutfitSwapDataPtr>,
     /// `animatedOutfitHang` (StrongPointer)
-    #[serde(default)]
     pub animated_outfit_hang: Option<SAnimatedOutfitSwapDataPtr>,
     /// `destroyPlayerItems` (Boolean)
-    #[serde(default)]
     pub destroy_player_items: bool,
 }
 
@@ -150,34 +134,24 @@ impl<'a> Extract<'a> for SEntityComponentOutfitHangerParams {
 
 /// DCB type: `SFlightsuitHangerGroup`
 /// Inherits from: `SOutfitHangerGroup`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SFlightsuitHangerGroup {
     /// `groupPorts` (WeakPointer (array))
-    #[serde(default)]
     pub group_ports: Vec<Handle<SItemPortDef>>,
     /// `equipAllInteraction` (WeakPointer)
-    #[serde(default)]
     pub equip_all_interaction: Option<Handle<SSharedInteractionParams>>,
     /// `swapAllInteraction` (WeakPointer)
-    #[serde(default)]
     pub swap_all_interaction: Option<Handle<SSharedInteractionParams>>,
     /// `armorPorts` (WeakPointer (array))
-    #[serde(default)]
     pub armor_ports: Vec<Handle<SItemPortDef>>,
     /// `swapAllClothesInteraction` (WeakPointer)
-    #[serde(default)]
     pub swap_all_clothes_interaction: Option<Handle<SSharedInteractionParams>>,
     /// `swapAllUndersuitInteraction` (WeakPointer)
-    #[serde(default)]
     pub swap_all_undersuit_interaction: Option<Handle<SSharedInteractionParams>>,
     /// `swapAllHelmetInteraction` (WeakPointer)
-    #[serde(default)]
     pub swap_all_helmet_interaction: Option<Handle<SSharedInteractionParams>>,
     /// `swapAllCoreInteraction` (WeakPointer)
-    #[serde(default)]
     pub swap_all_core_interaction: Option<Handle<SSharedInteractionParams>>,
     /// `swapUndersuitClothesInteraction` (WeakPointer)
-    #[serde(default)]
     pub swap_undersuit_clothes_interaction: Option<Handle<SSharedInteractionParams>>,
 }
 
@@ -236,16 +210,12 @@ impl<'a> Extract<'a> for SFlightsuitHangerGroup {
 
 /// DCB type: `SMannequinHangerGroup`
 /// Inherits from: `SOutfitHangerGroup`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SMannequinHangerGroup {
     /// `groupPorts` (WeakPointer (array))
-    #[serde(default)]
     pub group_ports: Vec<Handle<SItemPortDef>>,
     /// `equipAllInteraction` (WeakPointer)
-    #[serde(default)]
     pub equip_all_interaction: Option<Handle<SSharedInteractionParams>>,
     /// `swapAllInteraction` (WeakPointer)
-    #[serde(default)]
     pub swap_all_interaction: Option<Handle<SSharedInteractionParams>>,
 }
 

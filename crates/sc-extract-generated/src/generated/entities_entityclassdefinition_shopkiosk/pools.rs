@@ -9,12 +9,10 @@
 
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
-use serde::{Deserialize, Serialize};
 use super::super::*;
 
 /// Pool storage for the `entities-entityclassdefinition_shopkiosk` feature.
-#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+#[derive(Default)]
 pub struct EntitiesEntityclassdefinition_shopkioskPools {
-    #[serde(default)]
     pub purchasable_vehicle_provider_params: Vec<Option<PurchasableVehicleProviderParams>>,
 }

@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,16 +19,12 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `SInputDeflectionTimeParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SInputDeflectionTimeParams {
     /// `minDeflectionTime` (Single)
-    #[serde(default)]
     pub min_deflection_time: f32,
     /// `maxDeflectionTime` (Single)
-    #[serde(default)]
     pub max_deflection_time: f32,
     /// `penaltyMapping` (Class)
-    #[serde(default)]
     pub penalty_mapping: Option<Handle<BezierCurve>>,
 }
 
@@ -53,13 +48,10 @@ impl<'a> Extract<'a> for SInputDeflectionTimeParams {
 }
 
 /// DCB type: `IfcsInputDeflectionTimeParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct IfcsInputDeflectionTimeParams {
     /// `linearMovement` (Class)
-    #[serde(default)]
     pub linear_movement: Option<Handle<SInputDeflectionTimeParams>>,
     /// `angularMovement` (Class)
-    #[serde(default)]
     pub angular_movement: Option<Handle<SInputDeflectionTimeParams>>,
 }
 
@@ -85,10 +77,8 @@ impl<'a> Extract<'a> for IfcsInputDeflectionTimeParams {
 }
 
 /// DCB type: `TurretInputDeflectionTimeParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct TurretInputDeflectionTimeParams {
     /// `angularMovement` (Class)
-    #[serde(default)]
     pub angular_movement: Option<Handle<SInputDeflectionTimeParams>>,
 }
 

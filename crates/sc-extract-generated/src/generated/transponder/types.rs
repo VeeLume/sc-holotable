@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -21,7 +20,6 @@ use super::super::*;
 
 /// DCB type: `STransponderObjectMetadataParams`
 /// Inherits from: `SObjectMetadataParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct STransponderObjectMetadataParams {
 }
 
@@ -40,7 +38,6 @@ impl<'a> Extract<'a> for STransponderObjectMetadataParams {
 
 /// DCB type: `STransponderEntryTrackerParams`
 /// Inherits from: `SObjectDataBankEntryTrackerParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct STransponderEntryTrackerParams {
 }
 

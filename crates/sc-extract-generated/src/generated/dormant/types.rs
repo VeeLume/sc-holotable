@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -21,16 +20,12 @@ use super::super::*;
 
 /// DCB type: `ActivityBehaviorRequestCondition_Timed`
 /// Inherits from: `ActivityBehaviorRequestCondition`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ActivityBehaviorRequestCondition_Timed {
     /// `timerDuration` (Single)
-    #[serde(default)]
     pub timer_duration: f32,
     /// `resetAfterTrigger` (Boolean)
-    #[serde(default)]
     pub reset_after_trigger: bool,
     /// `resetWaitsForBehaviorCompletion` (Boolean)
-    #[serde(default)]
     pub reset_waits_for_behavior_completion: bool,
 }
 
@@ -52,19 +47,14 @@ impl<'a> Extract<'a> for ActivityBehaviorRequestCondition_Timed {
 
 /// DCB type: `ActivityBehaviorRequest_Animate`
 /// Inherits from: `ActivityBehaviorRequest`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ActivityBehaviorRequest_Animate {
     /// `requestName` (String)
-    #[serde(default)]
     pub request_name: String,
     /// `condition` (StrongPointer)
-    #[serde(default)]
     pub condition: Option<ActivityBehaviorRequestConditionPtr>,
     /// `animFragmentId` (String)
-    #[serde(default)]
     pub anim_fragment_id: String,
     /// `animFragmentTags` (String)
-    #[serde(default)]
     pub anim_fragment_tags: String,
 }
 
@@ -90,16 +80,12 @@ impl<'a> Extract<'a> for ActivityBehaviorRequest_Animate {
 
 /// DCB type: `Condition_Boss`
 /// Inherits from: `AIMotiveCondition`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Condition_Boss {
     /// `id` (Guid)
-    #[serde(default)]
     pub id: CigGuid,
     /// `interrupt` (Boolean)
-    #[serde(default)]
     pub interrupt: bool,
     /// `minSatisfactionDuration` (Single)
-    #[serde(default)]
     pub min_satisfaction_duration: f32,
 }
 
@@ -121,19 +107,14 @@ impl<'a> Extract<'a> for Condition_Boss {
 
 /// DCB type: `Condition_Boss_HPAmountLostThisBossPhase`
 /// Inherits from: `Condition_Boss`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Condition_Boss_HPAmountLostThisBossPhase {
     /// `id` (Guid)
-    #[serde(default)]
     pub id: CigGuid,
     /// `interrupt` (Boolean)
-    #[serde(default)]
     pub interrupt: bool,
     /// `minSatisfactionDuration` (Single)
-    #[serde(default)]
     pub min_satisfaction_duration: f32,
     /// `hpAmount` (Single)
-    #[serde(default)]
     pub hp_amount: f32,
 }
 
@@ -156,19 +137,14 @@ impl<'a> Extract<'a> for Condition_Boss_HPAmountLostThisBossPhase {
 
 /// DCB type: `Condition_Boss_HPProportionLostThisBossPhase`
 /// Inherits from: `Condition_Boss`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Condition_Boss_HPProportionLostThisBossPhase {
     /// `id` (Guid)
-    #[serde(default)]
     pub id: CigGuid,
     /// `interrupt` (Boolean)
-    #[serde(default)]
     pub interrupt: bool,
     /// `minSatisfactionDuration` (Single)
-    #[serde(default)]
     pub min_satisfaction_duration: f32,
     /// `proportionOfMaxHealth` (Single)
-    #[serde(default)]
     pub proportion_of_max_health: f32,
 }
 
@@ -191,10 +167,8 @@ impl<'a> Extract<'a> for Condition_Boss_HPProportionLostThisBossPhase {
 
 /// DCB type: `LargeObservableExtender`
 /// Inherits from: `IObservableExtender`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LargeObservableExtender {
     /// `degreesOfVisualAngleToBeVisible` (Single)
-    #[serde(default)]
     pub degrees_of_visual_angle_to_be_visible: f32,
 }
 
@@ -214,10 +188,8 @@ impl<'a> Extract<'a> for LargeObservableExtender {
 
 /// DCB type: `FixedSizedCircleTraversalCostShapeConfig`
 /// Inherits from: `TraversalCostShapeConfig`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct FixedSizedCircleTraversalCostShapeConfig {
     /// `radius` (Single)
-    #[serde(default)]
     pub radius: f32,
 }
 
@@ -237,7 +209,6 @@ impl<'a> Extract<'a> for FixedSizedCircleTraversalCostShapeConfig {
 
 /// DCB type: `AIDirectControlComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AIDirectControlComponentParams {
 }
 
@@ -256,7 +227,6 @@ impl<'a> Extract<'a> for AIDirectControlComponentParams {
 
 /// DCB type: `SubsumptionConversationComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SubsumptionConversationComponentParams {
 }
 
@@ -275,7 +245,6 @@ impl<'a> Extract<'a> for SubsumptionConversationComponentParams {
 
 /// DCB type: `SubsumptionConversationLinkComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SubsumptionConversationLinkComponentParams {
 }
 
@@ -294,22 +263,16 @@ impl<'a> Extract<'a> for SubsumptionConversationLinkComponentParams {
 
 /// DCB type: `Condition_DistanceToTarget`
 /// Inherits from: `AIMotiveCondition`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Condition_DistanceToTarget {
     /// `id` (Guid)
-    #[serde(default)]
     pub id: CigGuid,
     /// `interrupt` (Boolean)
-    #[serde(default)]
     pub interrupt: bool,
     /// `minSatisfactionDuration` (Single)
-    #[serde(default)]
     pub min_satisfaction_duration: f32,
     /// `minRange` (Single)
-    #[serde(default)]
     pub min_range: f32,
     /// `maxRange` (Single)
-    #[serde(default)]
     pub max_range: f32,
 }
 
@@ -333,19 +296,14 @@ impl<'a> Extract<'a> for Condition_DistanceToTarget {
 
 /// DCB type: `Condition_Or`
 /// Inherits from: `AIMotiveCondition`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Condition_Or {
     /// `id` (Guid)
-    #[serde(default)]
     pub id: CigGuid,
     /// `interrupt` (Boolean)
-    #[serde(default)]
     pub interrupt: bool,
     /// `minSatisfactionDuration` (Single)
-    #[serde(default)]
     pub min_satisfaction_duration: f32,
     /// `conditions` (StrongPointer (array))
-    #[serde(default)]
     pub conditions: Vec<AIMotiveConditionPtr>,
 }
 
@@ -373,19 +331,14 @@ impl<'a> Extract<'a> for Condition_Or {
 
 /// DCB type: `Condition_TargetIsShip`
 /// Inherits from: `AIMotiveCondition`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Condition_TargetIsShip {
     /// `id` (Guid)
-    #[serde(default)]
     pub id: CigGuid,
     /// `interrupt` (Boolean)
-    #[serde(default)]
     pub interrupt: bool,
     /// `minSatisfactionDuration` (Single)
-    #[serde(default)]
     pub min_satisfaction_duration: f32,
     /// `isShip` (Boolean)
-    #[serde(default)]
     pub is_ship: bool,
 }
 
@@ -408,19 +361,14 @@ impl<'a> Extract<'a> for Condition_TargetIsShip {
 
 /// DCB type: `Condition_TargetReachable`
 /// Inherits from: `AIMotiveCondition`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Condition_TargetReachable {
     /// `id` (Guid)
-    #[serde(default)]
     pub id: CigGuid,
     /// `interrupt` (Boolean)
-    #[serde(default)]
     pub interrupt: bool,
     /// `minSatisfactionDuration` (Single)
-    #[serde(default)]
     pub min_satisfaction_duration: f32,
     /// `reachable` (Boolean)
-    #[serde(default)]
     pub reachable: bool,
 }
 
@@ -443,22 +391,16 @@ impl<'a> Extract<'a> for Condition_TargetReachable {
 
 /// DCB type: `Condition_TargetShipSizeCategory`
 /// Inherits from: `AIMotiveCondition`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Condition_TargetShipSizeCategory {
     /// `id` (Guid)
-    #[serde(default)]
     pub id: CigGuid,
     /// `interrupt` (Boolean)
-    #[serde(default)]
     pub interrupt: bool,
     /// `minSatisfactionDuration` (Single)
-    #[serde(default)]
     pub min_satisfaction_duration: f32,
     /// `minSize` (Int32)
-    #[serde(default)]
     pub min_size: i32,
     /// `maxSize` (Int32)
-    #[serde(default)]
     pub max_size: i32,
 }
 
@@ -482,22 +424,16 @@ impl<'a> Extract<'a> for Condition_TargetShipSizeCategory {
 
 /// DCB type: `Condition_YawToTarget`
 /// Inherits from: `AIMotiveCondition`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Condition_YawToTarget {
     /// `id` (Guid)
-    #[serde(default)]
     pub id: CigGuid,
     /// `interrupt` (Boolean)
-    #[serde(default)]
     pub interrupt: bool,
     /// `minSatisfactionDuration` (Single)
-    #[serde(default)]
     pub min_satisfaction_duration: f32,
     /// `minYawDegrees` (Single)
-    #[serde(default)]
     pub min_yaw_degrees: f32,
     /// `maxYawDegrees` (Single)
-    #[serde(default)]
     pub max_yaw_degrees: f32,
 }
 
@@ -521,22 +457,16 @@ impl<'a> Extract<'a> for Condition_YawToTarget {
 
 /// DCB type: `SeatedTacticScores`
 /// Inherits from: `CommonTacticScores`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SeatedTacticScores {
     /// `tacticName` (String)
-    #[serde(default)]
     pub tactic_name: String,
     /// `amountOfEntitiesTargetingSameTargetScore` (Class)
-    #[serde(default)]
     pub amount_of_entities_targeting_same_target_score: Option<Handle<CommonTargetingSameTargetScore>>,
     /// `isCurrentTargetVisibleScore` (Class)
-    #[serde(default)]
     pub is_current_target_visible_score: Option<Handle<CommonTargetVisibilityScore>>,
     /// `currentDistanceToTargetScore` (Class)
-    #[serde(default)]
     pub current_distance_to_target_score: Option<Handle<CommonCurrentTargetDistanceScore>>,
     /// `emptyTest` (Single)
-    #[serde(default)]
     pub empty_test: f32,
 }
 
@@ -569,10 +499,8 @@ impl<'a> Extract<'a> for SeatedTacticScores {
 
 /// DCB type: `ActionAreaDynamicCostExtension`
 /// Inherits from: `ActionAreaExtensionType`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ActionAreaDynamicCostExtension {
     /// `configGUID` (Reference)
-    #[serde(default)]
     pub config_guid: Option<CigGuid>,
 }
 
@@ -592,19 +520,14 @@ impl<'a> Extract<'a> for ActionAreaDynamicCostExtension {
 
 /// DCB type: `ActionAreaCirclingFormationExtension`
 /// Inherits from: `ActionAreaExtensionType`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ActionAreaCirclingFormationExtension {
     /// `ringWidth` (Single)
-    #[serde(default)]
     pub ring_width: f32,
     /// `numSlotsPerRing` (Int32)
-    #[serde(default)]
     pub num_slots_per_ring: i32,
     /// `numRings` (Int32)
-    #[serde(default)]
     pub num_rings: i32,
     /// `radialFormationValidationNavigationType` (String)
-    #[serde(default)]
     pub radial_formation_validation_navigation_type: String,
 }
 
@@ -627,7 +550,6 @@ impl<'a> Extract<'a> for ActionAreaCirclingFormationExtension {
 
 /// DCB type: `SCActorShoppingAssistance`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCActorShoppingAssistance {
 }
 
@@ -646,19 +568,14 @@ impl<'a> Extract<'a> for SCActorShoppingAssistance {
 
 /// DCB type: `StatusEffectDamage`
 /// Inherits from: `StatusEffectValue`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct StatusEffectDamage {
     /// `effectMin` (Single)
-    #[serde(default)]
     pub effect_min: f32,
     /// `effectMax` (Single)
-    #[serde(default)]
     pub effect_max: f32,
     /// `ignoresMultiplier` (Boolean)
-    #[serde(default)]
     pub ignores_multiplier: bool,
     /// `damagedParts` (Reference (array))
-    #[serde(default)]
     pub damaged_parts: Vec<CigGuid>,
 }
 
@@ -682,16 +599,12 @@ impl<'a> Extract<'a> for StatusEffectDamage {
 }
 
 /// DCB type: `LinkedStatusEffectTrigger`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LinkedStatusEffectTrigger {
     /// `statType` (EnumChoice)
-    #[serde(default)]
     pub stat_type: ActorStatType,
     /// `triggerMinThreshold` (Single)
-    #[serde(default)]
     pub trigger_min_threshold: f32,
     /// `triggerMaxThreshold` (Single)
-    #[serde(default)]
     pub trigger_max_threshold: f32,
 }
 
@@ -713,22 +626,16 @@ impl<'a> Extract<'a> for LinkedStatusEffectTrigger {
 
 /// DCB type: `StatusEffectMultipleTrigger`
 /// Inherits from: `StatusEffectTrigger`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct StatusEffectMultipleTrigger {
     /// `statusEffectType` (EnumChoice)
-    #[serde(default)]
     pub status_effect_type: StatusEffectType,
     /// `triggerMinThreshold` (Single)
-    #[serde(default)]
     pub trigger_min_threshold: f32,
     /// `triggerMaxThreshold` (Single)
-    #[serde(default)]
     pub trigger_max_threshold: f32,
     /// `value` (StrongPointer)
-    #[serde(default)]
     pub value: Option<StatusEffectValuePtr>,
     /// `linkedStatTrigger` (Class)
-    #[serde(default)]
     pub linked_stat_trigger: Option<Handle<LinkedStatusEffectTrigger>>,
 }
 
@@ -758,37 +665,26 @@ impl<'a> Extract<'a> for StatusEffectMultipleTrigger {
 
 /// DCB type: `ProbabilisticStatusTrigger`
 /// Inherits from: `StatusTriggerBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ProbabilisticStatusTrigger {
     /// `fortitudeLevelModifier` (StrongPointer)
-    #[serde(default)]
     pub fortitude_level_modifier: Option<Handle<SStatusFortitudeLevelModifier>>,
     /// `statusTriggerMinThreshold` (Single)
-    #[serde(default)]
     pub status_trigger_min_threshold: f32,
     /// `probabilityInterpMinThreshold` (Single)
-    #[serde(default)]
     pub probability_interp_min_threshold: f32,
     /// `probabilityInterpMaxThreshold` (Single)
-    #[serde(default)]
     pub probability_interp_max_threshold: f32,
     /// `statusTriggerGuaranteedThreshold` (Single)
-    #[serde(default)]
     pub status_trigger_guaranteed_threshold: f32,
     /// `maxStatusRangeThreshold` (Single)
-    #[serde(default)]
     pub max_status_range_threshold: f32,
     /// `probabilityMin` (Single)
-    #[serde(default)]
     pub probability_min: f32,
     /// `probabilityMax` (Single)
-    #[serde(default)]
     pub probability_max: f32,
     /// `probabilityCooldown` (Single)
-    #[serde(default)]
     pub probability_cooldown: f32,
     /// `probabilityCheckType` (EnumChoice)
-    #[serde(default)]
     pub probability_check_type: StatusProbabilityCheckType,
 }
 
@@ -820,10 +716,8 @@ impl<'a> Extract<'a> for ProbabilisticStatusTrigger {
 
 /// DCB type: `StatusMaskedRetriggerSetupPreset`
 /// Inherits from: `StatusMaskedRetriggerSetupBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct StatusMaskedRetriggerSetupPreset {
     /// `preset` (WeakPointer)
-    #[serde(default)]
     pub preset: Option<Handle<StatusMaskedRetriggerPreset>>,
 }
 
@@ -846,16 +740,12 @@ impl<'a> Extract<'a> for StatusMaskedRetriggerSetupPreset {
 
 /// DCB type: `LinkedStatPassExcessAboveThreshold`
 /// Inherits from: `LinkedStatPassValueBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LinkedStatPassExcessAboveThreshold {
     /// `threshold` (Single)
-    #[serde(default)]
     pub threshold: f32,
     /// `multiplier` (Single)
-    #[serde(default)]
     pub multiplier: f32,
     /// `reverseSignFlag` (EnumChoice)
-    #[serde(default)]
     pub reverse_sign_flag: LinkedStatReverseSignFlag,
 }
 
@@ -877,7 +767,6 @@ impl<'a> Extract<'a> for LinkedStatPassExcessAboveThreshold {
 
 /// DCB type: `LinkedStatRulePassAlwaysPositive`
 /// Inherits from: `LinkedStatRuleBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LinkedStatRulePassAlwaysPositive {
 }
 
@@ -896,10 +785,8 @@ impl<'a> Extract<'a> for LinkedStatRulePassAlwaysPositive {
 
 /// DCB type: `LinkedStatRulePassAboveThreshold`
 /// Inherits from: `LinkedStatRuleBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LinkedStatRulePassAboveThreshold {
     /// `threshold` (Single)
-    #[serde(default)]
     pub threshold: f32,
 }
 
@@ -919,10 +806,8 @@ impl<'a> Extract<'a> for LinkedStatRulePassAboveThreshold {
 
 /// DCB type: `LinkedStatRuleHasCrossedAboveThreshold`
 /// Inherits from: `LinkedStatRuleBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LinkedStatRuleHasCrossedAboveThreshold {
     /// `threshold` (Single)
-    #[serde(default)]
     pub threshold: f32,
 }
 
@@ -942,10 +827,8 @@ impl<'a> Extract<'a> for LinkedStatRuleHasCrossedAboveThreshold {
 
 /// DCB type: `LinkedStatRulePassBelowThreshold`
 /// Inherits from: `LinkedStatRuleBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LinkedStatRulePassBelowThreshold {
     /// `threshold` (Single)
-    #[serde(default)]
     pub threshold: f32,
 }
 
@@ -965,10 +848,8 @@ impl<'a> Extract<'a> for LinkedStatRulePassBelowThreshold {
 
 /// DCB type: `LinkedStatRulePassCrossingBelowThreshold`
 /// Inherits from: `LinkedStatRuleBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LinkedStatRulePassCrossingBelowThreshold {
     /// `threshold` (Single)
-    #[serde(default)]
     pub threshold: f32,
 }
 
@@ -988,19 +869,14 @@ impl<'a> Extract<'a> for LinkedStatRulePassCrossingBelowThreshold {
 
 /// DCB type: `AnimationScalarVariable`
 /// Inherits from: `AnimationVariable`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AnimationScalarVariable {
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
     /// `range` (Class)
-    #[serde(default)]
     pub range: Option<Handle<Range>>,
     /// `defaultValue` (Single)
-    #[serde(default)]
     pub default_value: f32,
     /// `defaultInterpolation` (Class)
-    #[serde(default)]
     pub default_interpolation: Option<Handle<AnimationVariableInterpolation>>,
 }
 
@@ -1028,13 +904,10 @@ impl<'a> Extract<'a> for AnimationScalarVariable {
 }
 
 /// DCB type: `AnimationVariableLink`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AnimationVariableLink {
     /// `variable` (WeakPointer)
-    #[serde(default)]
     pub variable: Option<AnimationScalarVariablePtr>,
     /// `invertValue` (Boolean)
-    #[serde(default)]
     pub invert_value: bool,
 }
 
@@ -1058,22 +931,16 @@ impl<'a> Extract<'a> for AnimationVariableLink {
 
 /// DCB type: `AnimationCombineVariable`
 /// Inherits from: `AnimationVariable`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AnimationCombineVariable {
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
     /// `range` (Class)
-    #[serde(default)]
     pub range: Option<Handle<Range>>,
     /// `defaultValue` (Single)
-    #[serde(default)]
     pub default_value: f32,
     /// `defaultInterpolation` (Class)
-    #[serde(default)]
     pub default_interpolation: Option<Handle<AnimationVariableInterpolation>>,
     /// `links` (Class (array))
-    #[serde(default)]
     pub links: Vec<Handle<AnimationVariableLink>>,
 }
 
@@ -1109,28 +976,20 @@ impl<'a> Extract<'a> for AnimationCombineVariable {
 
 /// DCB type: `SAsteroidFieldComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SAsteroidFieldComponentParams {
     /// `rngSeed` (Int32)
-    #[serde(default)]
     pub rng_seed: i32,
     /// `viewDistRatio` (Byte)
-    #[serde(default)]
     pub view_dist_ratio: u32,
     /// `lodRatio` (Byte)
-    #[serde(default)]
     pub lod_ratio: u32,
     /// `composition` (String)
-    #[serde(default)]
     pub composition: String,
     /// `noiseAmplitude` (Single)
-    #[serde(default)]
     pub noise_amplitude: f32,
     /// `noiseRoughness` (Single)
-    #[serde(default)]
     pub noise_roughness: f32,
     /// `noiseGranularity` (Single)
-    #[serde(default)]
     pub noise_granularity: f32,
 }
 
@@ -1156,10 +1015,8 @@ impl<'a> Extract<'a> for SAsteroidFieldComponentParams {
 
 /// DCB type: `BaseBuildingValidationPointComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BaseBuildingValidationPointComponentParams {
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
 }
 
@@ -1179,7 +1036,6 @@ impl<'a> Extract<'a> for BaseBuildingValidationPointComponentParams {
 
 /// DCB type: `PlayerBaseParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PlayerBaseParams {
 }
 
@@ -1198,7 +1054,6 @@ impl<'a> Extract<'a> for PlayerBaseParams {
 
 /// DCB type: `BaseBuildingStructureParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BaseBuildingStructureParams {
 }
 
@@ -1216,13 +1071,10 @@ impl<'a> Extract<'a> for BaseBuildingStructureParams {
 }
 
 /// DCB type: `BindingsOperations_IntegerStringFontStylePair`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BindingsOperations_IntegerStringFontStylePair {
     /// `first` (Int64)
-    #[serde(default)]
     pub first: i64,
     /// `second` (Reference)
-    #[serde(default)]
     pub second: Option<CigGuid>,
 }
 
@@ -1242,16 +1094,12 @@ impl<'a> Extract<'a> for BindingsOperations_IntegerStringFontStylePair {
 }
 
 /// DCB type: `BuildingBlocks_StringLocalizedPair`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildingBlocks_StringLocalizedPair {
     /// `first` (String)
-    #[serde(default)]
     pub first: String,
     /// `second` (Locale)
-    #[serde(default)]
     pub second: LocaleKey,
     /// `secondOverride` (WeakPointer)
-    #[serde(default)]
     pub second_override: Option<BuildingBlocks_BindingsLocalizedBasePtr>,
 }
 
@@ -1276,10 +1124,8 @@ impl<'a> Extract<'a> for BuildingBlocks_StringLocalizedPair {
 
 /// DCB type: `BuildingBlocks_BindingsFieldBase`
 /// Inherits from: `BuildingBlocks_Node`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildingBlocks_BindingsFieldBase {
     /// `widget` (WeakPointer)
-    #[serde(default)]
     pub widget: Option<BuildingBlocks_WidgetBasePtr>,
 }
 
@@ -1302,7 +1148,6 @@ impl<'a> Extract<'a> for BuildingBlocks_BindingsFieldBase {
 
 /// DCB type: `BuildingBlocks_BindingsOperationBase`
 /// Inherits from: `BuildingBlocks_Node`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildingBlocks_BindingsOperationBase {
 }
 
@@ -1321,16 +1166,12 @@ impl<'a> Extract<'a> for BuildingBlocks_BindingsOperationBase {
 
 /// DCB type: `BuildingBlocks_BindingsBooleanFromStringSwitch`
 /// Inherits from: `BuildingBlocks_BindingsBooleanBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildingBlocks_BindingsBooleanFromStringSwitch {
     /// `defaultValue` (Boolean)
-    #[serde(default)]
     pub default_value: bool,
     /// `exceptions` (String (array))
-    #[serde(default)]
     pub exceptions: Vec<String>,
     /// `input` (WeakPointer)
-    #[serde(default)]
     pub input: Option<BuildingBlocks_BindingsStringBasePtr>,
 }
 
@@ -1357,22 +1198,16 @@ impl<'a> Extract<'a> for BuildingBlocks_BindingsBooleanFromStringSwitch {
 
 /// DCB type: `BindingsOperations_DialogueEvent`
 /// Inherits from: `BuildingBlocks_BindingsFieldBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BindingsOperations_DialogueEvent {
     /// `widget` (WeakPointer)
-    #[serde(default)]
     pub widget: Option<BuildingBlocks_WidgetBasePtr>,
     /// `triggerEvent` (EnumChoice)
-    #[serde(default)]
     pub trigger_event: BB_AudioEvent,
     /// `input` (WeakPointer)
-    #[serde(default)]
     pub input: Option<BuildingBlocks_BindingsBooleanBasePtr>,
     /// `dialogueTag` (Reference)
-    #[serde(default)]
     pub dialogue_tag: Option<CigGuid>,
     /// `triggerOnInitialValue` (Boolean)
-    #[serde(default)]
     pub trigger_on_initial_value: bool,
 }
 
@@ -1401,16 +1236,12 @@ impl<'a> Extract<'a> for BindingsOperations_DialogueEvent {
 }
 
 /// DCB type: `BuildingBlocks_BooleanIntegerPair`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildingBlocks_BooleanIntegerPair {
     /// `first` (Boolean)
-    #[serde(default)]
     pub first: bool,
     /// `firstOverride` (WeakPointer)
-    #[serde(default)]
     pub first_override: Option<BuildingBlocks_BindingsBooleanBasePtr>,
     /// `second` (Int64)
-    #[serde(default)]
     pub second: i64,
 }
 
@@ -1435,16 +1266,12 @@ impl<'a> Extract<'a> for BuildingBlocks_BooleanIntegerPair {
 
 /// DCB type: `BuildingBlocks_IntegerFromBooleanConditionDef`
 /// Inherits from: `BuildingBlocks_BindingsIntegerBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildingBlocks_IntegerFromBooleanConditionDef {
     /// `inputPairs` (Class (array))
-    #[serde(default)]
     pub input_pairs: Vec<Handle<BuildingBlocks_BooleanIntegerPair>>,
     /// `defaultValue` (Int64)
-    #[serde(default)]
     pub default_value: i64,
     /// `defaultOverride` (WeakPointer)
-    #[serde(default)]
     pub default_override: Option<BuildingBlocks_BindingsIntegerBasePtr>,
 }
 
@@ -1475,16 +1302,12 @@ impl<'a> Extract<'a> for BuildingBlocks_IntegerFromBooleanConditionDef {
 
 /// DCB type: `BuildingBlocks_IntegerFromBooleanConditionSumDef`
 /// Inherits from: `BuildingBlocks_BindingsIntegerBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildingBlocks_IntegerFromBooleanConditionSumDef {
     /// `inputPairs` (Class (array))
-    #[serde(default)]
     pub input_pairs: Vec<Handle<BuildingBlocks_BooleanIntegerPair>>,
     /// `defaultValue` (Int64)
-    #[serde(default)]
     pub default_value: i64,
     /// `defaultOverride` (WeakPointer)
-    #[serde(default)]
     pub default_override: Option<BuildingBlocks_BindingsIntegerBasePtr>,
 }
 
@@ -1515,13 +1338,10 @@ impl<'a> Extract<'a> for BuildingBlocks_IntegerFromBooleanConditionSumDef {
 
 /// DCB type: `BindingsOperations_StringFromStringCanvas`
 /// Inherits from: `BuildingBlocks_BindingsStringBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BindingsOperations_StringFromStringCanvas {
     /// `input` (WeakPointer)
-    #[serde(default)]
     pub input: Option<BuildingBlocks_BindingsStringBasePtr>,
     /// `defaultValue` (Reference)
-    #[serde(default)]
     pub default_value: Option<CigGuid>,
 }
 
@@ -1545,16 +1365,12 @@ impl<'a> Extract<'a> for BindingsOperations_StringFromStringCanvas {
 
 /// DCB type: `BindingsOperations_StringFromIntegerSwitchFontStyle`
 /// Inherits from: `BuildingBlocks_BindingsStringBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BindingsOperations_StringFromIntegerSwitchFontStyle {
     /// `values` (Class (array))
-    #[serde(default)]
     pub values: Vec<Handle<BindingsOperations_IntegerStringFontStylePair>>,
     /// `defaultValue` (Reference)
-    #[serde(default)]
     pub default_value: Option<CigGuid>,
     /// `input` (WeakPointer)
-    #[serde(default)]
     pub input: Option<BuildingBlocks_BindingsIntegerBasePtr>,
 }
 
@@ -1585,19 +1401,14 @@ impl<'a> Extract<'a> for BindingsOperations_StringFromIntegerSwitchFontStyle {
 
 /// DCB type: `BuildingBlocks_BindingsLocalizationFromStringSwitch`
 /// Inherits from: `BuildingBlocks_BindingsLocalizedBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildingBlocks_BindingsLocalizationFromStringSwitch {
     /// `defaultValue` (Locale)
-    #[serde(default)]
     pub default_value: LocaleKey,
     /// `defaultOverride` (WeakPointer)
-    #[serde(default)]
     pub default_override: Option<BuildingBlocks_BindingsLocalizedBasePtr>,
     /// `values` (Class (array))
-    #[serde(default)]
     pub values: Vec<Handle<BuildingBlocks_StringLocalizedPair>>,
     /// `input` (WeakPointer)
-    #[serde(default)]
     pub input: Option<BuildingBlocks_BindingsStringBasePtr>,
 }
 
@@ -1632,43 +1443,30 @@ impl<'a> Extract<'a> for BuildingBlocks_BindingsLocalizationFromStringSwitch {
 
 /// DCB type: `BuildingBlocks_BindingsLocalizedRandomFromInteger`
 /// Inherits from: `BuildingBlocks_BindingsLocalizedBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildingBlocks_BindingsLocalizedRandomFromInteger {
     /// `length` (Int32)
-    #[serde(default)]
     pub length: i32,
     /// `withConsonants` (Boolean)
-    #[serde(default)]
     pub with_consonants: bool,
     /// `withConsonantsUppercase` (Boolean)
-    #[serde(default)]
     pub with_consonants_uppercase: bool,
     /// `withVowels` (Boolean)
-    #[serde(default)]
     pub with_vowels: bool,
     /// `withVowelsUppercase` (Boolean)
-    #[serde(default)]
     pub with_vowels_uppercase: bool,
     /// `withSymbols` (Boolean)
-    #[serde(default)]
     pub with_symbols: bool,
     /// `withNumbers` (Boolean)
-    #[serde(default)]
     pub with_numbers: bool,
     /// `numberBase` (Byte)
-    #[serde(default)]
     pub number_base: u32,
     /// `seedOffset` (Int32)
-    #[serde(default)]
     pub seed_offset: i32,
     /// `prefix` (Locale)
-    #[serde(default)]
     pub prefix: LocaleKey,
     /// `suffix` (Locale)
-    #[serde(default)]
     pub suffix: LocaleKey,
     /// `input` (WeakPointer)
-    #[serde(default)]
     pub input: Option<BuildingBlocks_BindingsIntegerBasePtr>,
 }
 
@@ -1702,10 +1500,8 @@ impl<'a> Extract<'a> for BuildingBlocks_BindingsLocalizedRandomFromInteger {
 
 /// DCB type: `BuildingBlocks_BindingsTransformInvert`
 /// Inherits from: `BuildingBlocks_BindingsTransformBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildingBlocks_BindingsTransformInvert {
     /// `input` (WeakPointer)
-    #[serde(default)]
     pub input: Option<BuildingBlocks_BindingsTransformBasePtr>,
 }
 
@@ -1728,22 +1524,16 @@ impl<'a> Extract<'a> for BuildingBlocks_BindingsTransformInvert {
 
 /// DCB type: `BoidsCylindricalLimiterRule`
 /// Inherits from: `BoidsBehaviorRule`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BoidsCylindricalLimiterRule {
     /// `velocityScale` (Single)
-    #[serde(default)]
     pub velocity_scale: f32,
     /// `minRadius` (Single)
-    #[serde(default)]
     pub min_radius: f32,
     /// `maxRadius` (Single)
-    #[serde(default)]
     pub max_radius: f32,
     /// `height` (Single)
-    #[serde(default)]
     pub height: f32,
     /// `effectDistance` (Single)
-    #[serde(default)]
     pub effect_distance: f32,
 }
 
@@ -1767,13 +1557,10 @@ impl<'a> Extract<'a> for BoidsCylindricalLimiterRule {
 
 /// DCB type: `BoidsAreaLimiterRule`
 /// Inherits from: `BoidsBehaviorRule`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BoidsAreaLimiterRule {
     /// `velocityScale` (Single)
-    #[serde(default)]
     pub velocity_scale: f32,
     /// `effectDistance` (Single)
-    #[serde(default)]
     pub effect_distance: f32,
 }
 
@@ -1794,10 +1581,8 @@ impl<'a> Extract<'a> for BoidsAreaLimiterRule {
 
 /// DCB type: `BuildingBlocks_PreviewScreenWorldOrigin`
 /// Inherits from: `BuildingBlocks_PreviewScreenBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildingBlocks_PreviewScreenWorldOrigin {
     /// `renderLayer` (EnumChoice)
-    #[serde(default)]
     pub render_layer: ERenderLayer,
 }
 
@@ -1817,13 +1602,10 @@ impl<'a> Extract<'a> for BuildingBlocks_PreviewScreenWorldOrigin {
 
 /// DCB type: `BuildingBlocks_PreviewSceneCard`
 /// Inherits from: `BuildingBlocks_PreviewScreenBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildingBlocks_PreviewSceneCard {
     /// `renderLayer` (EnumChoice)
-    #[serde(default)]
     pub render_layer: ERenderLayer,
     /// `paintScale` (Single)
-    #[serde(default)]
     pub paint_scale: f32,
 }
 
@@ -1844,10 +1626,8 @@ impl<'a> Extract<'a> for BuildingBlocks_PreviewSceneCard {
 
 /// DCB type: `BuildingBlocks_FieldModifierEnumeratedTypeMinHeightBehavior`
 /// Inherits from: `BuildingBlocks_FieldModifierEnumeratedTypeBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildingBlocks_FieldModifierEnumeratedTypeMinHeightBehavior {
     /// `value` (EnumChoice)
-    #[serde(default)]
     pub value: BB_SizeBehavior,
 }
 
@@ -1867,10 +1647,8 @@ impl<'a> Extract<'a> for BuildingBlocks_FieldModifierEnumeratedTypeMinHeightBeha
 
 /// DCB type: `BuildingBlocks_FieldModifierEnumeratedTypeDropTargetPolicy`
 /// Inherits from: `BuildingBlocks_FieldModifierEnumeratedTypeBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildingBlocks_FieldModifierEnumeratedTypeDropTargetPolicy {
     /// `value` (EnumChoice)
-    #[serde(default)]
     pub value: BB_DropTargetPolicyType,
 }
 
@@ -1890,10 +1668,8 @@ impl<'a> Extract<'a> for BuildingBlocks_FieldModifierEnumeratedTypeDropTargetPol
 
 /// DCB type: `BuildingBlocks_FieldModifierEnumeratedTypeDraggablePolicy`
 /// Inherits from: `BuildingBlocks_FieldModifierEnumeratedTypeBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildingBlocks_FieldModifierEnumeratedTypeDraggablePolicy {
     /// `value` (EnumChoice)
-    #[serde(default)]
     pub value: BB_DraggablePolicyType,
 }
 
@@ -1913,10 +1689,8 @@ impl<'a> Extract<'a> for BuildingBlocks_FieldModifierEnumeratedTypeDraggablePoli
 
 /// DCB type: `BuildingBlocks_FieldModifierEnumeratedTypeGridPackDirection`
 /// Inherits from: `BuildingBlocks_FieldModifierEnumeratedTypeBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildingBlocks_FieldModifierEnumeratedTypeGridPackDirection {
     /// `value` (EnumChoice)
-    #[serde(default)]
     pub value: BB_GridPackDirection,
 }
 
@@ -1936,10 +1710,8 @@ impl<'a> Extract<'a> for BuildingBlocks_FieldModifierEnumeratedTypeGridPackDirec
 
 /// DCB type: `BuildingBlocks_FieldModifierEnumeratedTypeUnidirectionalScrollDirection`
 /// Inherits from: `BuildingBlocks_FieldModifierEnumeratedTypeBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildingBlocks_FieldModifierEnumeratedTypeUnidirectionalScrollDirection {
     /// `value` (EnumChoice)
-    #[serde(default)]
     pub value: BB_UnidirectionalScrollDirection,
 }
 
@@ -1959,10 +1731,8 @@ impl<'a> Extract<'a> for BuildingBlocks_FieldModifierEnumeratedTypeUnidirectiona
 
 /// DCB type: `BuildingBlocks_FieldModifierEnumeratedTypeUnidirectionalAutoScrollBehavior`
 /// Inherits from: `BuildingBlocks_FieldModifierEnumeratedTypeBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildingBlocks_FieldModifierEnumeratedTypeUnidirectionalAutoScrollBehavior {
     /// `value` (EnumChoice)
-    #[serde(default)]
     pub value: BB_UnidirectionalAutoScrollBehavior,
 }
 
@@ -1982,10 +1752,8 @@ impl<'a> Extract<'a> for BuildingBlocks_FieldModifierEnumeratedTypeUnidirectiona
 
 /// DCB type: `BuildingBlocks_FieldModifierEnumeratedTypeScrollEasingType`
 /// Inherits from: `BuildingBlocks_FieldModifierEnumeratedTypeBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildingBlocks_FieldModifierEnumeratedTypeScrollEasingType {
     /// `value` (EnumChoice)
-    #[serde(default)]
     pub value: InterpolationMode,
 }
 
@@ -2005,10 +1773,8 @@ impl<'a> Extract<'a> for BuildingBlocks_FieldModifierEnumeratedTypeScrollEasingT
 
 /// DCB type: `BuildingBlocks_FieldModifierEnumeratedTypeStrokeJointStyle`
 /// Inherits from: `BuildingBlocks_FieldModifierEnumeratedTypeBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildingBlocks_FieldModifierEnumeratedTypeStrokeJointStyle {
     /// `value` (EnumChoice)
-    #[serde(default)]
     pub value: BB_StrokeJointStyle,
 }
 
@@ -2028,10 +1794,8 @@ impl<'a> Extract<'a> for BuildingBlocks_FieldModifierEnumeratedTypeStrokeJointSt
 
 /// DCB type: `BuildingBlocks_FieldModifierEnumeratedTypeSegmentEasing`
 /// Inherits from: `BuildingBlocks_FieldModifierEnumeratedTypeBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildingBlocks_FieldModifierEnumeratedTypeSegmentEasing {
     /// `value` (EnumChoice)
-    #[serde(default)]
     pub value: InterpolationMode,
 }
 
@@ -2051,10 +1815,8 @@ impl<'a> Extract<'a> for BuildingBlocks_FieldModifierEnumeratedTypeSegmentEasing
 
 /// DCB type: `BuildingBlocks_FieldModifierEnumeratedTypeSliderMode`
 /// Inherits from: `BuildingBlocks_FieldModifierEnumeratedTypeBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildingBlocks_FieldModifierEnumeratedTypeSliderMode {
     /// `value` (EnumChoice)
-    #[serde(default)]
     pub value: BB_SliderMode,
 }
 
@@ -2074,10 +1836,8 @@ impl<'a> Extract<'a> for BuildingBlocks_FieldModifierEnumeratedTypeSliderMode {
 
 /// DCB type: `BuildingBlocks_FieldModifierEnumeratedTypeTickBoxMode`
 /// Inherits from: `BuildingBlocks_FieldModifierEnumeratedTypeBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildingBlocks_FieldModifierEnumeratedTypeTickBoxMode {
     /// `value` (EnumChoice)
-    #[serde(default)]
     pub value: BB_BooleanWriteMode,
 }
 
@@ -2097,10 +1857,8 @@ impl<'a> Extract<'a> for BuildingBlocks_FieldModifierEnumeratedTypeTickBoxMode {
 
 /// DCB type: `BuildingBlocks_FieldModifierEnumeratedTypeCanvasWidgetSizingMethod`
 /// Inherits from: `BuildingBlocks_FieldModifierEnumeratedTypeBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildingBlocks_FieldModifierEnumeratedTypeCanvasWidgetSizingMethod {
     /// `value` (EnumChoice)
-    #[serde(default)]
     pub value: BB_CanvasWidgetSizingMethod,
 }
 
@@ -2120,10 +1878,8 @@ impl<'a> Extract<'a> for BuildingBlocks_FieldModifierEnumeratedTypeCanvasWidgetS
 
 /// DCB type: `BuildingBlocks_FieldModifierEnumeratedTypeDustParticleMovementRestriction`
 /// Inherits from: `BuildingBlocks_FieldModifierEnumeratedTypeBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildingBlocks_FieldModifierEnumeratedTypeDustParticleMovementRestriction {
     /// `value` (EnumChoice)
-    #[serde(default)]
     pub value: BB_DustParticleMovementRestriction,
 }
 
@@ -2143,13 +1899,10 @@ impl<'a> Extract<'a> for BuildingBlocks_FieldModifierEnumeratedTypeDustParticleM
 
 /// DCB type: `BuildingBlocks_FieldModifierEnumeratedTypeProgressMeterState`
 /// Inherits from: `BuildingBlocks_FieldModifierEnumeratedTypeBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildingBlocks_FieldModifierEnumeratedTypeProgressMeterState {
     /// `value` (EnumChoice)
-    #[serde(default)]
     pub value: BB_ProgressMeterState,
     /// `paramField` (EnumChoice)
-    #[serde(default)]
     pub param_field: BB_IntegerField,
 }
 
@@ -2170,199 +1923,134 @@ impl<'a> Extract<'a> for BuildingBlocks_FieldModifierEnumeratedTypeProgressMeter
 
 /// DCB type: `BuildingBlocks_WidgetLineList`
 /// Inherits from: `BuildingBlocks_DisplayWidget`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildingBlocks_WidgetLineList {
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
     /// `styleTags` (Reference (array))
-    #[serde(default)]
     pub style_tags: Vec<CigGuid>,
     /// `rendererType` (EnumChoice)
-    #[serde(default)]
     pub renderer_type: BB_RendererType,
     /// `rendererPolicy` (StrongPointer)
-    #[serde(default)]
     pub renderer_policy: Option<BuildingBlocks_RendererPolicyBasePtr>,
     /// `primitiveSettings` (Class)
-    #[serde(default)]
     pub primitive_settings: Option<Handle<BuildingBlocks_PrimitiveSettings>>,
     /// `parent` (WeakPointer)
-    #[serde(default)]
     pub parent: Option<BuildingBlocks_WidgetBasePtr>,
     /// `previewScene` (WeakPointer)
-    #[serde(default)]
     pub preview_scene: Option<BuildingBlocks_PreviewScreenBasePtr>,
     /// `previewSceneFlattened` (WeakPointer)
-    #[serde(default)]
     pub preview_scene_flattened: Option<BuildingBlocks_PreviewScreenBasePtr>,
     /// `cullingLevel` (EnumChoice)
-    #[serde(default)]
     pub culling_level: BB_CullingLevel,
     /// `isActive` (Boolean)
-    #[serde(default)]
     pub is_active: bool,
     /// `affectsLayout` (Boolean)
-    #[serde(default)]
     pub affects_layout: bool,
     /// `affectsAutosize` (Boolean)
-    #[serde(default)]
     pub affects_autosize: bool,
     /// `exportNode` (Boolean)
-    #[serde(default)]
     pub export_node: bool,
     /// `position` (Class)
-    #[serde(default)]
     pub position: Option<Handle<Vec3>>,
     /// `positionOffset` (Class)
-    #[serde(default)]
     pub position_offset: Option<Handle<Vec3>>,
     /// `orientation` (Class)
-    #[serde(default)]
     pub orientation: Option<Handle<Deg3>>,
     /// `orientationOffset` (Class)
-    #[serde(default)]
     pub orientation_offset: Option<Handle<Deg3>>,
     /// `scale` (Class)
-    #[serde(default)]
     pub scale: Option<Handle<Vec3>>,
     /// `sizing` (Class)
-    #[serde(default)]
     pub sizing: Option<Handle<BuildingBlocks_Size>>,
     /// `autoScalingMethod` (EnumChoice)
-    #[serde(default)]
     pub auto_scaling_method: BB_AutoScalingMethod,
     /// `padding` (Class)
-    #[serde(default)]
     pub padding: Option<Handle<BuildingBlocks_TRBL>>,
     /// `margin` (Class)
-    #[serde(default)]
     pub margin: Option<Handle<BuildingBlocks_TRBL>>,
     /// `pivot` (Class)
-    #[serde(default)]
     pub pivot: Option<Handle<Vec3>>,
     /// `anchor` (Class)
-    #[serde(default)]
     pub anchor: Option<Handle<Vec3>>,
     /// `background` (Class)
-    #[serde(default)]
     pub background: Option<Handle<BuildingBlocks_Background>>,
     /// `segmentedFill` (Class)
-    #[serde(default)]
     pub segmented_fill: Option<Handle<BuildingBlocks_SegmentedFill>>,
     /// `svgFill` (Class)
-    #[serde(default)]
     pub svg_fill: Option<Handle<BuildingBlocks_SvgFill>>,
     /// `border` (Class)
-    #[serde(default)]
     pub border: Option<Handle<BuildingBlocks_Border>>,
     /// `layoutPolicy` (StrongPointer)
-    #[serde(default)]
     pub layout_policy: Option<BuildingBlocks_LayoutPolicyBasePtr>,
     /// `layoutPolicyItem` (StrongPointer)
-    #[serde(default)]
     pub layout_policy_item: Option<BuildingBlocks_LayoutPolicyItemBasePtr>,
     /// `layoutItemCommon` (StrongPointer)
-    #[serde(default)]
     pub layout_item_common: Option<Handle<BuildingBlocks_LayoutItemCommon>>,
     /// `dropTargetPolicy` (StrongPointer)
-    #[serde(default)]
     pub drop_target_policy: Option<BuildingBlocks_DropTargetPolicyBasePtr>,
     /// `draggablePolicy` (StrongPointer)
-    #[serde(default)]
     pub draggable_policy: Option<BuildingBlocks_DraggablePolicyBasePtr>,
     /// `tooltipPolicy` (StrongPointer)
-    #[serde(default)]
     pub tooltip_policy: Option<Handle<BuildingBlocks_TooltipPolicy>>,
     /// `contextMenuPolicy` (StrongPointer)
-    #[serde(default)]
     pub context_menu_policy: Option<Handle<BuildingBlocks_ContextMenuPolicy>>,
     /// `grabControlsPolicy` (StrongPointer)
-    #[serde(default)]
     pub grab_controls_policy: Option<Handle<BuildingBlocks_GrabControlsPolicy>>,
     /// `calloutSettings` (StrongPointer)
-    #[serde(default)]
     pub callout_settings: Option<Handle<BuildingBlocks_CalloutSettings>>,
     /// `virtualCursorPolicy` (StrongPointer)
-    #[serde(default)]
     pub virtual_cursor_policy: Option<Handle<BuildingBlocks_VirtualCursorPolicy>>,
     /// `overflow` (Class)
-    #[serde(default)]
     pub overflow: Option<Handle<BuildingBlocks_Overflow>>,
     /// `scrollPolicy` (StrongPointer)
-    #[serde(default)]
     pub scroll_policy: Option<BuildingBlocks_ScrollPolicyBasePtr>,
     /// `radialTransform` (Class)
-    #[serde(default)]
     pub radial_transform: Option<Handle<BuildingBlocks_RadialTransform>>,
     /// `radialTransformChild` (Class)
-    #[serde(default)]
     pub radial_transform_child: Option<Handle<BuildingBlocks_RadialTransformChild>>,
     /// `animation` (Class)
-    #[serde(default)]
     pub animation: Option<Handle<BuildingBlocks_Animation>>,
     /// `interactions` (Class)
-    #[serde(default)]
     pub interactions: Option<Handle<BuildingBlocks_Interactions>>,
     /// `inheritsScale` (Boolean)
-    #[serde(default)]
     pub inherits_scale: bool,
     /// `inheritsRotation` (Boolean)
-    #[serde(default)]
     pub inherits_rotation: bool,
     /// `inheritsTranslation` (Boolean)
-    #[serde(default)]
     pub inherits_translation: bool,
     /// `inheritsAlpha` (Boolean)
-    #[serde(default)]
     pub inherits_alpha: bool,
     /// `inheritsOverflow` (Boolean)
-    #[serde(default)]
     pub inherits_overflow: bool,
     /// `alpha` (Single)
-    #[serde(default)]
     pub alpha: f32,
     /// `layer` (Byte)
-    #[serde(default)]
     pub layer: u32,
     /// `aspectRatioLibrary` (Reference)
-    #[serde(default)]
     pub aspect_ratio_library: Option<CigGuid>,
     /// `focusIndex` (Int16)
-    #[serde(default)]
     pub focus_index: i32,
     /// `inlineStyles` (Class (array))
-    #[serde(default)]
     pub inline_styles: Vec<Handle<BuildingBlocks_StyleEntry>>,
     /// `hoverCursor` (EnumChoice)
-    #[serde(default)]
     pub hover_cursor: Cursor,
     /// `enableHeldCursor` (Boolean)
-    #[serde(default)]
     pub enable_held_cursor: bool,
     /// `heldCursor` (EnumChoice)
-    #[serde(default)]
     pub held_cursor: Cursor,
     /// `urlContainer` (String)
-    #[serde(default)]
     pub url_container: String,
     /// `urlPosX` (String)
-    #[serde(default)]
     pub url_pos_x: String,
     /// `urlPosY` (String)
-    #[serde(default)]
     pub url_pos_y: String,
     /// `urlCurveX` (String)
-    #[serde(default)]
     pub url_curve_x: String,
     /// `urlCurveY` (String)
-    #[serde(default)]
     pub url_curve_y: String,
     /// `strokeWidth` (Single)
-    #[serde(default)]
     pub stroke_width: f32,
     /// `strokeColor` (StrongPointer)
-    #[serde(default)]
     pub stroke_color: Option<BuildingBlocks_ColorBasePtr>,
 }
 
@@ -2561,202 +2249,136 @@ impl<'a> Extract<'a> for BuildingBlocks_WidgetLineList {
 
 /// DCB type: `BuildingBlocks_ShapeWidget`
 /// Inherits from: `BuildingBlocks_DisplayWidget`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildingBlocks_ShapeWidget {
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
     /// `styleTags` (Reference (array))
-    #[serde(default)]
     pub style_tags: Vec<CigGuid>,
     /// `rendererType` (EnumChoice)
-    #[serde(default)]
     pub renderer_type: BB_RendererType,
     /// `rendererPolicy` (StrongPointer)
-    #[serde(default)]
     pub renderer_policy: Option<BuildingBlocks_RendererPolicyBasePtr>,
     /// `primitiveSettings` (Class)
-    #[serde(default)]
     pub primitive_settings: Option<Handle<BuildingBlocks_PrimitiveSettings>>,
     /// `parent` (WeakPointer)
-    #[serde(default)]
     pub parent: Option<BuildingBlocks_WidgetBasePtr>,
     /// `previewScene` (WeakPointer)
-    #[serde(default)]
     pub preview_scene: Option<BuildingBlocks_PreviewScreenBasePtr>,
     /// `previewSceneFlattened` (WeakPointer)
-    #[serde(default)]
     pub preview_scene_flattened: Option<BuildingBlocks_PreviewScreenBasePtr>,
     /// `cullingLevel` (EnumChoice)
-    #[serde(default)]
     pub culling_level: BB_CullingLevel,
     /// `isActive` (Boolean)
-    #[serde(default)]
     pub is_active: bool,
     /// `affectsLayout` (Boolean)
-    #[serde(default)]
     pub affects_layout: bool,
     /// `affectsAutosize` (Boolean)
-    #[serde(default)]
     pub affects_autosize: bool,
     /// `exportNode` (Boolean)
-    #[serde(default)]
     pub export_node: bool,
     /// `position` (Class)
-    #[serde(default)]
     pub position: Option<Handle<Vec3>>,
     /// `positionOffset` (Class)
-    #[serde(default)]
     pub position_offset: Option<Handle<Vec3>>,
     /// `orientation` (Class)
-    #[serde(default)]
     pub orientation: Option<Handle<Deg3>>,
     /// `orientationOffset` (Class)
-    #[serde(default)]
     pub orientation_offset: Option<Handle<Deg3>>,
     /// `scale` (Class)
-    #[serde(default)]
     pub scale: Option<Handle<Vec3>>,
     /// `sizing` (Class)
-    #[serde(default)]
     pub sizing: Option<Handle<BuildingBlocks_Size>>,
     /// `autoScalingMethod` (EnumChoice)
-    #[serde(default)]
     pub auto_scaling_method: BB_AutoScalingMethod,
     /// `padding` (Class)
-    #[serde(default)]
     pub padding: Option<Handle<BuildingBlocks_TRBL>>,
     /// `margin` (Class)
-    #[serde(default)]
     pub margin: Option<Handle<BuildingBlocks_TRBL>>,
     /// `pivot` (Class)
-    #[serde(default)]
     pub pivot: Option<Handle<Vec3>>,
     /// `anchor` (Class)
-    #[serde(default)]
     pub anchor: Option<Handle<Vec3>>,
     /// `background` (Class)
-    #[serde(default)]
     pub background: Option<Handle<BuildingBlocks_Background>>,
     /// `segmentedFill` (Class)
-    #[serde(default)]
     pub segmented_fill: Option<Handle<BuildingBlocks_SegmentedFill>>,
     /// `svgFill` (Class)
-    #[serde(default)]
     pub svg_fill: Option<Handle<BuildingBlocks_SvgFill>>,
     /// `border` (Class)
-    #[serde(default)]
     pub border: Option<Handle<BuildingBlocks_Border>>,
     /// `layoutPolicy` (StrongPointer)
-    #[serde(default)]
     pub layout_policy: Option<BuildingBlocks_LayoutPolicyBasePtr>,
     /// `layoutPolicyItem` (StrongPointer)
-    #[serde(default)]
     pub layout_policy_item: Option<BuildingBlocks_LayoutPolicyItemBasePtr>,
     /// `layoutItemCommon` (StrongPointer)
-    #[serde(default)]
     pub layout_item_common: Option<Handle<BuildingBlocks_LayoutItemCommon>>,
     /// `dropTargetPolicy` (StrongPointer)
-    #[serde(default)]
     pub drop_target_policy: Option<BuildingBlocks_DropTargetPolicyBasePtr>,
     /// `draggablePolicy` (StrongPointer)
-    #[serde(default)]
     pub draggable_policy: Option<BuildingBlocks_DraggablePolicyBasePtr>,
     /// `tooltipPolicy` (StrongPointer)
-    #[serde(default)]
     pub tooltip_policy: Option<Handle<BuildingBlocks_TooltipPolicy>>,
     /// `contextMenuPolicy` (StrongPointer)
-    #[serde(default)]
     pub context_menu_policy: Option<Handle<BuildingBlocks_ContextMenuPolicy>>,
     /// `grabControlsPolicy` (StrongPointer)
-    #[serde(default)]
     pub grab_controls_policy: Option<Handle<BuildingBlocks_GrabControlsPolicy>>,
     /// `calloutSettings` (StrongPointer)
-    #[serde(default)]
     pub callout_settings: Option<Handle<BuildingBlocks_CalloutSettings>>,
     /// `virtualCursorPolicy` (StrongPointer)
-    #[serde(default)]
     pub virtual_cursor_policy: Option<Handle<BuildingBlocks_VirtualCursorPolicy>>,
     /// `overflow` (Class)
-    #[serde(default)]
     pub overflow: Option<Handle<BuildingBlocks_Overflow>>,
     /// `scrollPolicy` (StrongPointer)
-    #[serde(default)]
     pub scroll_policy: Option<BuildingBlocks_ScrollPolicyBasePtr>,
     /// `radialTransform` (Class)
-    #[serde(default)]
     pub radial_transform: Option<Handle<BuildingBlocks_RadialTransform>>,
     /// `radialTransformChild` (Class)
-    #[serde(default)]
     pub radial_transform_child: Option<Handle<BuildingBlocks_RadialTransformChild>>,
     /// `animation` (Class)
-    #[serde(default)]
     pub animation: Option<Handle<BuildingBlocks_Animation>>,
     /// `interactions` (Class)
-    #[serde(default)]
     pub interactions: Option<Handle<BuildingBlocks_Interactions>>,
     /// `inheritsScale` (Boolean)
-    #[serde(default)]
     pub inherits_scale: bool,
     /// `inheritsRotation` (Boolean)
-    #[serde(default)]
     pub inherits_rotation: bool,
     /// `inheritsTranslation` (Boolean)
-    #[serde(default)]
     pub inherits_translation: bool,
     /// `inheritsAlpha` (Boolean)
-    #[serde(default)]
     pub inherits_alpha: bool,
     /// `inheritsOverflow` (Boolean)
-    #[serde(default)]
     pub inherits_overflow: bool,
     /// `alpha` (Single)
-    #[serde(default)]
     pub alpha: f32,
     /// `layer` (Byte)
-    #[serde(default)]
     pub layer: u32,
     /// `aspectRatioLibrary` (Reference)
-    #[serde(default)]
     pub aspect_ratio_library: Option<CigGuid>,
     /// `focusIndex` (Int16)
-    #[serde(default)]
     pub focus_index: i32,
     /// `inlineStyles` (Class (array))
-    #[serde(default)]
     pub inline_styles: Vec<Handle<BuildingBlocks_StyleEntry>>,
     /// `hoverCursor` (EnumChoice)
-    #[serde(default)]
     pub hover_cursor: Cursor,
     /// `enableHeldCursor` (Boolean)
-    #[serde(default)]
     pub enable_held_cursor: bool,
     /// `heldCursor` (EnumChoice)
-    #[serde(default)]
     pub held_cursor: Cursor,
     /// `doFill` (Boolean)
-    #[serde(default)]
     pub do_fill: bool,
     /// `fillColor` (StrongPointer)
-    #[serde(default)]
     pub fill_color: Option<BuildingBlocks_ColorBasePtr>,
     /// `doStroke` (Boolean)
-    #[serde(default)]
     pub do_stroke: bool,
     /// `strokeColor` (StrongPointer)
-    #[serde(default)]
     pub stroke_color: Option<BuildingBlocks_ColorBasePtr>,
     /// `strokeWidth` (Single)
-    #[serde(default)]
     pub stroke_width: f32,
     /// `strokeCapStyle` (EnumChoice)
-    #[serde(default)]
     pub stroke_cap_style: BB_StrokeCapStyle,
     /// `strokeJointStyle` (EnumChoice)
-    #[serde(default)]
     pub stroke_joint_style: BB_StrokeJointStyle,
     /// `strokeAlignment` (EnumChoice)
-    #[serde(default)]
     pub stroke_alignment: BB_StrokeAlignment,
 }
 
@@ -2959,217 +2581,146 @@ impl<'a> Extract<'a> for BuildingBlocks_ShapeWidget {
 
 /// DCB type: `BuildingBlocks_EntityWidgetBase`
 /// Inherits from: `BuildingBlocks_WidgetBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildingBlocks_EntityWidgetBase {
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
     /// `styleTags` (Reference (array))
-    #[serde(default)]
     pub style_tags: Vec<CigGuid>,
     /// `rendererType` (EnumChoice)
-    #[serde(default)]
     pub renderer_type: BB_RendererType,
     /// `rendererPolicy` (StrongPointer)
-    #[serde(default)]
     pub renderer_policy: Option<BuildingBlocks_RendererPolicyBasePtr>,
     /// `primitiveSettings` (Class)
-    #[serde(default)]
     pub primitive_settings: Option<Handle<BuildingBlocks_PrimitiveSettings>>,
     /// `parent` (WeakPointer)
-    #[serde(default)]
     pub parent: Option<BuildingBlocks_WidgetBasePtr>,
     /// `previewScene` (WeakPointer)
-    #[serde(default)]
     pub preview_scene: Option<BuildingBlocks_PreviewScreenBasePtr>,
     /// `previewSceneFlattened` (WeakPointer)
-    #[serde(default)]
     pub preview_scene_flattened: Option<BuildingBlocks_PreviewScreenBasePtr>,
     /// `cullingLevel` (EnumChoice)
-    #[serde(default)]
     pub culling_level: BB_CullingLevel,
     /// `isActive` (Boolean)
-    #[serde(default)]
     pub is_active: bool,
     /// `affectsLayout` (Boolean)
-    #[serde(default)]
     pub affects_layout: bool,
     /// `affectsAutosize` (Boolean)
-    #[serde(default)]
     pub affects_autosize: bool,
     /// `exportNode` (Boolean)
-    #[serde(default)]
     pub export_node: bool,
     /// `position` (Class)
-    #[serde(default)]
     pub position: Option<Handle<Vec3>>,
     /// `positionOffset` (Class)
-    #[serde(default)]
     pub position_offset: Option<Handle<Vec3>>,
     /// `orientation` (Class)
-    #[serde(default)]
     pub orientation: Option<Handle<Deg3>>,
     /// `orientationOffset` (Class)
-    #[serde(default)]
     pub orientation_offset: Option<Handle<Deg3>>,
     /// `scale` (Class)
-    #[serde(default)]
     pub scale: Option<Handle<Vec3>>,
     /// `sizing` (Class)
-    #[serde(default)]
     pub sizing: Option<Handle<BuildingBlocks_Size>>,
     /// `autoScalingMethod` (EnumChoice)
-    #[serde(default)]
     pub auto_scaling_method: BB_AutoScalingMethod,
     /// `padding` (Class)
-    #[serde(default)]
     pub padding: Option<Handle<BuildingBlocks_TRBL>>,
     /// `margin` (Class)
-    #[serde(default)]
     pub margin: Option<Handle<BuildingBlocks_TRBL>>,
     /// `pivot` (Class)
-    #[serde(default)]
     pub pivot: Option<Handle<Vec3>>,
     /// `anchor` (Class)
-    #[serde(default)]
     pub anchor: Option<Handle<Vec3>>,
     /// `background` (Class)
-    #[serde(default)]
     pub background: Option<Handle<BuildingBlocks_Background>>,
     /// `segmentedFill` (Class)
-    #[serde(default)]
     pub segmented_fill: Option<Handle<BuildingBlocks_SegmentedFill>>,
     /// `svgFill` (Class)
-    #[serde(default)]
     pub svg_fill: Option<Handle<BuildingBlocks_SvgFill>>,
     /// `border` (Class)
-    #[serde(default)]
     pub border: Option<Handle<BuildingBlocks_Border>>,
     /// `layoutPolicy` (StrongPointer)
-    #[serde(default)]
     pub layout_policy: Option<BuildingBlocks_LayoutPolicyBasePtr>,
     /// `layoutPolicyItem` (StrongPointer)
-    #[serde(default)]
     pub layout_policy_item: Option<BuildingBlocks_LayoutPolicyItemBasePtr>,
     /// `layoutItemCommon` (StrongPointer)
-    #[serde(default)]
     pub layout_item_common: Option<Handle<BuildingBlocks_LayoutItemCommon>>,
     /// `dropTargetPolicy` (StrongPointer)
-    #[serde(default)]
     pub drop_target_policy: Option<BuildingBlocks_DropTargetPolicyBasePtr>,
     /// `draggablePolicy` (StrongPointer)
-    #[serde(default)]
     pub draggable_policy: Option<BuildingBlocks_DraggablePolicyBasePtr>,
     /// `tooltipPolicy` (StrongPointer)
-    #[serde(default)]
     pub tooltip_policy: Option<Handle<BuildingBlocks_TooltipPolicy>>,
     /// `contextMenuPolicy` (StrongPointer)
-    #[serde(default)]
     pub context_menu_policy: Option<Handle<BuildingBlocks_ContextMenuPolicy>>,
     /// `grabControlsPolicy` (StrongPointer)
-    #[serde(default)]
     pub grab_controls_policy: Option<Handle<BuildingBlocks_GrabControlsPolicy>>,
     /// `calloutSettings` (StrongPointer)
-    #[serde(default)]
     pub callout_settings: Option<Handle<BuildingBlocks_CalloutSettings>>,
     /// `virtualCursorPolicy` (StrongPointer)
-    #[serde(default)]
     pub virtual_cursor_policy: Option<Handle<BuildingBlocks_VirtualCursorPolicy>>,
     /// `overflow` (Class)
-    #[serde(default)]
     pub overflow: Option<Handle<BuildingBlocks_Overflow>>,
     /// `scrollPolicy` (StrongPointer)
-    #[serde(default)]
     pub scroll_policy: Option<BuildingBlocks_ScrollPolicyBasePtr>,
     /// `radialTransform` (Class)
-    #[serde(default)]
     pub radial_transform: Option<Handle<BuildingBlocks_RadialTransform>>,
     /// `radialTransformChild` (Class)
-    #[serde(default)]
     pub radial_transform_child: Option<Handle<BuildingBlocks_RadialTransformChild>>,
     /// `animation` (Class)
-    #[serde(default)]
     pub animation: Option<Handle<BuildingBlocks_Animation>>,
     /// `interactions` (Class)
-    #[serde(default)]
     pub interactions: Option<Handle<BuildingBlocks_Interactions>>,
     /// `inheritsScale` (Boolean)
-    #[serde(default)]
     pub inherits_scale: bool,
     /// `inheritsRotation` (Boolean)
-    #[serde(default)]
     pub inherits_rotation: bool,
     /// `inheritsTranslation` (Boolean)
-    #[serde(default)]
     pub inherits_translation: bool,
     /// `inheritsAlpha` (Boolean)
-    #[serde(default)]
     pub inherits_alpha: bool,
     /// `inheritsOverflow` (Boolean)
-    #[serde(default)]
     pub inherits_overflow: bool,
     /// `alpha` (Single)
-    #[serde(default)]
     pub alpha: f32,
     /// `layer` (Byte)
-    #[serde(default)]
     pub layer: u32,
     /// `aspectRatioLibrary` (Reference)
-    #[serde(default)]
     pub aspect_ratio_library: Option<CigGuid>,
     /// `focusIndex` (Int16)
-    #[serde(default)]
     pub focus_index: i32,
     /// `inlineStyles` (Class (array))
-    #[serde(default)]
     pub inline_styles: Vec<Handle<BuildingBlocks_StyleEntry>>,
     /// `hoverCursor` (EnumChoice)
-    #[serde(default)]
     pub hover_cursor: Cursor,
     /// `enableHeldCursor` (Boolean)
-    #[serde(default)]
     pub enable_held_cursor: bool,
     /// `heldCursor` (EnumChoice)
-    #[serde(default)]
     pub held_cursor: Cursor,
     /// `contentOrientation` (Class)
-    #[serde(default)]
     pub content_orientation: Option<Handle<Deg3>>,
     /// `geometryTag` (Reference)
-    #[serde(default)]
     pub geometry_tag: Option<CigGuid>,
     /// `materialPath` (String)
-    #[serde(default)]
     pub material_path: String,
     /// `useCustomPivot` (Boolean)
-    #[serde(default)]
     pub use_custom_pivot: bool,
     /// `contentScaleLimitMax` (Single)
-    #[serde(default)]
     pub content_scale_limit_max: f32,
     /// `contentScaleLimitMin` (Single)
-    #[serde(default)]
     pub content_scale_limit_min: f32,
     /// `effects` (Class)
-    #[serde(default)]
     pub effects: Option<Handle<SBuildingBlocks_EntityEffects>>,
     /// `loadoutNames` (String (array))
-    #[serde(default)]
     pub loadout_names: Vec<String>,
     /// `dirt` (Single)
-    #[serde(default)]
     pub dirt: f32,
     /// `wear` (Single)
-    #[serde(default)]
     pub wear: f32,
     /// `tintPalette` (Class)
-    #[serde(default)]
     pub tint_palette: Option<Handle<TintPaletteRef>>,
     /// `imageSource` (EnumChoice)
-    #[serde(default)]
     pub image_source: ERuntimeImageSourceType,
     /// `spawnerType` (String)
-    #[serde(default)]
     pub spawner_type: String,
 }
 
@@ -3382,190 +2933,128 @@ impl<'a> Extract<'a> for BuildingBlocks_EntityWidgetBase {
 
 /// DCB type: `BuildingBlocks_WidgetRuntimeVolume`
 /// Inherits from: `BuildingBlocks_DisplayWidget`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildingBlocks_WidgetRuntimeVolume {
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
     /// `styleTags` (Reference (array))
-    #[serde(default)]
     pub style_tags: Vec<CigGuid>,
     /// `rendererType` (EnumChoice)
-    #[serde(default)]
     pub renderer_type: BB_RendererType,
     /// `rendererPolicy` (StrongPointer)
-    #[serde(default)]
     pub renderer_policy: Option<BuildingBlocks_RendererPolicyBasePtr>,
     /// `primitiveSettings` (Class)
-    #[serde(default)]
     pub primitive_settings: Option<Handle<BuildingBlocks_PrimitiveSettings>>,
     /// `parent` (WeakPointer)
-    #[serde(default)]
     pub parent: Option<BuildingBlocks_WidgetBasePtr>,
     /// `previewScene` (WeakPointer)
-    #[serde(default)]
     pub preview_scene: Option<BuildingBlocks_PreviewScreenBasePtr>,
     /// `previewSceneFlattened` (WeakPointer)
-    #[serde(default)]
     pub preview_scene_flattened: Option<BuildingBlocks_PreviewScreenBasePtr>,
     /// `cullingLevel` (EnumChoice)
-    #[serde(default)]
     pub culling_level: BB_CullingLevel,
     /// `isActive` (Boolean)
-    #[serde(default)]
     pub is_active: bool,
     /// `affectsLayout` (Boolean)
-    #[serde(default)]
     pub affects_layout: bool,
     /// `affectsAutosize` (Boolean)
-    #[serde(default)]
     pub affects_autosize: bool,
     /// `exportNode` (Boolean)
-    #[serde(default)]
     pub export_node: bool,
     /// `position` (Class)
-    #[serde(default)]
     pub position: Option<Handle<Vec3>>,
     /// `positionOffset` (Class)
-    #[serde(default)]
     pub position_offset: Option<Handle<Vec3>>,
     /// `orientation` (Class)
-    #[serde(default)]
     pub orientation: Option<Handle<Deg3>>,
     /// `orientationOffset` (Class)
-    #[serde(default)]
     pub orientation_offset: Option<Handle<Deg3>>,
     /// `scale` (Class)
-    #[serde(default)]
     pub scale: Option<Handle<Vec3>>,
     /// `sizing` (Class)
-    #[serde(default)]
     pub sizing: Option<Handle<BuildingBlocks_Size>>,
     /// `autoScalingMethod` (EnumChoice)
-    #[serde(default)]
     pub auto_scaling_method: BB_AutoScalingMethod,
     /// `padding` (Class)
-    #[serde(default)]
     pub padding: Option<Handle<BuildingBlocks_TRBL>>,
     /// `margin` (Class)
-    #[serde(default)]
     pub margin: Option<Handle<BuildingBlocks_TRBL>>,
     /// `pivot` (Class)
-    #[serde(default)]
     pub pivot: Option<Handle<Vec3>>,
     /// `anchor` (Class)
-    #[serde(default)]
     pub anchor: Option<Handle<Vec3>>,
     /// `background` (Class)
-    #[serde(default)]
     pub background: Option<Handle<BuildingBlocks_Background>>,
     /// `segmentedFill` (Class)
-    #[serde(default)]
     pub segmented_fill: Option<Handle<BuildingBlocks_SegmentedFill>>,
     /// `svgFill` (Class)
-    #[serde(default)]
     pub svg_fill: Option<Handle<BuildingBlocks_SvgFill>>,
     /// `border` (Class)
-    #[serde(default)]
     pub border: Option<Handle<BuildingBlocks_Border>>,
     /// `layoutPolicy` (StrongPointer)
-    #[serde(default)]
     pub layout_policy: Option<BuildingBlocks_LayoutPolicyBasePtr>,
     /// `layoutPolicyItem` (StrongPointer)
-    #[serde(default)]
     pub layout_policy_item: Option<BuildingBlocks_LayoutPolicyItemBasePtr>,
     /// `layoutItemCommon` (StrongPointer)
-    #[serde(default)]
     pub layout_item_common: Option<Handle<BuildingBlocks_LayoutItemCommon>>,
     /// `dropTargetPolicy` (StrongPointer)
-    #[serde(default)]
     pub drop_target_policy: Option<BuildingBlocks_DropTargetPolicyBasePtr>,
     /// `draggablePolicy` (StrongPointer)
-    #[serde(default)]
     pub draggable_policy: Option<BuildingBlocks_DraggablePolicyBasePtr>,
     /// `tooltipPolicy` (StrongPointer)
-    #[serde(default)]
     pub tooltip_policy: Option<Handle<BuildingBlocks_TooltipPolicy>>,
     /// `contextMenuPolicy` (StrongPointer)
-    #[serde(default)]
     pub context_menu_policy: Option<Handle<BuildingBlocks_ContextMenuPolicy>>,
     /// `grabControlsPolicy` (StrongPointer)
-    #[serde(default)]
     pub grab_controls_policy: Option<Handle<BuildingBlocks_GrabControlsPolicy>>,
     /// `calloutSettings` (StrongPointer)
-    #[serde(default)]
     pub callout_settings: Option<Handle<BuildingBlocks_CalloutSettings>>,
     /// `virtualCursorPolicy` (StrongPointer)
-    #[serde(default)]
     pub virtual_cursor_policy: Option<Handle<BuildingBlocks_VirtualCursorPolicy>>,
     /// `overflow` (Class)
-    #[serde(default)]
     pub overflow: Option<Handle<BuildingBlocks_Overflow>>,
     /// `scrollPolicy` (StrongPointer)
-    #[serde(default)]
     pub scroll_policy: Option<BuildingBlocks_ScrollPolicyBasePtr>,
     /// `radialTransform` (Class)
-    #[serde(default)]
     pub radial_transform: Option<Handle<BuildingBlocks_RadialTransform>>,
     /// `radialTransformChild` (Class)
-    #[serde(default)]
     pub radial_transform_child: Option<Handle<BuildingBlocks_RadialTransformChild>>,
     /// `animation` (Class)
-    #[serde(default)]
     pub animation: Option<Handle<BuildingBlocks_Animation>>,
     /// `interactions` (Class)
-    #[serde(default)]
     pub interactions: Option<Handle<BuildingBlocks_Interactions>>,
     /// `inheritsScale` (Boolean)
-    #[serde(default)]
     pub inherits_scale: bool,
     /// `inheritsRotation` (Boolean)
-    #[serde(default)]
     pub inherits_rotation: bool,
     /// `inheritsTranslation` (Boolean)
-    #[serde(default)]
     pub inherits_translation: bool,
     /// `inheritsAlpha` (Boolean)
-    #[serde(default)]
     pub inherits_alpha: bool,
     /// `inheritsOverflow` (Boolean)
-    #[serde(default)]
     pub inherits_overflow: bool,
     /// `alpha` (Single)
-    #[serde(default)]
     pub alpha: f32,
     /// `layer` (Byte)
-    #[serde(default)]
     pub layer: u32,
     /// `aspectRatioLibrary` (Reference)
-    #[serde(default)]
     pub aspect_ratio_library: Option<CigGuid>,
     /// `focusIndex` (Int16)
-    #[serde(default)]
     pub focus_index: i32,
     /// `inlineStyles` (Class (array))
-    #[serde(default)]
     pub inline_styles: Vec<Handle<BuildingBlocks_StyleEntry>>,
     /// `hoverCursor` (EnumChoice)
-    #[serde(default)]
     pub hover_cursor: Cursor,
     /// `enableHeldCursor` (Boolean)
-    #[serde(default)]
     pub enable_held_cursor: bool,
     /// `heldCursor` (EnumChoice)
-    #[serde(default)]
     pub held_cursor: Cursor,
     /// `imageSource` (EnumChoice)
-    #[serde(default)]
     pub image_source: ERuntimeImageSourceType,
     /// `volumeType` (EnumChoice)
-    #[serde(default)]
     pub volume_type: EHolographicVolumeType,
     /// `pickableTag` (Reference)
-    #[serde(default)]
     pub pickable_tag: Option<CigGuid>,
     /// `objectFadeDist` (Single)
-    #[serde(default)]
     pub object_fade_dist: f32,
 }
 
@@ -3758,178 +3247,120 @@ impl<'a> Extract<'a> for BuildingBlocks_WidgetRuntimeVolume {
 
 /// DCB type: `BuildingBlocks_WidgetCardTexture`
 /// Inherits from: `BuildingBlocks_WidgetBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildingBlocks_WidgetCardTexture {
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
     /// `styleTags` (Reference (array))
-    #[serde(default)]
     pub style_tags: Vec<CigGuid>,
     /// `rendererType` (EnumChoice)
-    #[serde(default)]
     pub renderer_type: BB_RendererType,
     /// `rendererPolicy` (StrongPointer)
-    #[serde(default)]
     pub renderer_policy: Option<BuildingBlocks_RendererPolicyBasePtr>,
     /// `primitiveSettings` (Class)
-    #[serde(default)]
     pub primitive_settings: Option<Handle<BuildingBlocks_PrimitiveSettings>>,
     /// `parent` (WeakPointer)
-    #[serde(default)]
     pub parent: Option<BuildingBlocks_WidgetBasePtr>,
     /// `previewScene` (WeakPointer)
-    #[serde(default)]
     pub preview_scene: Option<BuildingBlocks_PreviewScreenBasePtr>,
     /// `previewSceneFlattened` (WeakPointer)
-    #[serde(default)]
     pub preview_scene_flattened: Option<BuildingBlocks_PreviewScreenBasePtr>,
     /// `cullingLevel` (EnumChoice)
-    #[serde(default)]
     pub culling_level: BB_CullingLevel,
     /// `isActive` (Boolean)
-    #[serde(default)]
     pub is_active: bool,
     /// `affectsLayout` (Boolean)
-    #[serde(default)]
     pub affects_layout: bool,
     /// `affectsAutosize` (Boolean)
-    #[serde(default)]
     pub affects_autosize: bool,
     /// `exportNode` (Boolean)
-    #[serde(default)]
     pub export_node: bool,
     /// `position` (Class)
-    #[serde(default)]
     pub position: Option<Handle<Vec3>>,
     /// `positionOffset` (Class)
-    #[serde(default)]
     pub position_offset: Option<Handle<Vec3>>,
     /// `orientation` (Class)
-    #[serde(default)]
     pub orientation: Option<Handle<Deg3>>,
     /// `orientationOffset` (Class)
-    #[serde(default)]
     pub orientation_offset: Option<Handle<Deg3>>,
     /// `scale` (Class)
-    #[serde(default)]
     pub scale: Option<Handle<Vec3>>,
     /// `sizing` (Class)
-    #[serde(default)]
     pub sizing: Option<Handle<BuildingBlocks_Size>>,
     /// `autoScalingMethod` (EnumChoice)
-    #[serde(default)]
     pub auto_scaling_method: BB_AutoScalingMethod,
     /// `padding` (Class)
-    #[serde(default)]
     pub padding: Option<Handle<BuildingBlocks_TRBL>>,
     /// `margin` (Class)
-    #[serde(default)]
     pub margin: Option<Handle<BuildingBlocks_TRBL>>,
     /// `pivot` (Class)
-    #[serde(default)]
     pub pivot: Option<Handle<Vec3>>,
     /// `anchor` (Class)
-    #[serde(default)]
     pub anchor: Option<Handle<Vec3>>,
     /// `background` (Class)
-    #[serde(default)]
     pub background: Option<Handle<BuildingBlocks_Background>>,
     /// `segmentedFill` (Class)
-    #[serde(default)]
     pub segmented_fill: Option<Handle<BuildingBlocks_SegmentedFill>>,
     /// `svgFill` (Class)
-    #[serde(default)]
     pub svg_fill: Option<Handle<BuildingBlocks_SvgFill>>,
     /// `border` (Class)
-    #[serde(default)]
     pub border: Option<Handle<BuildingBlocks_Border>>,
     /// `layoutPolicy` (StrongPointer)
-    #[serde(default)]
     pub layout_policy: Option<BuildingBlocks_LayoutPolicyBasePtr>,
     /// `layoutPolicyItem` (StrongPointer)
-    #[serde(default)]
     pub layout_policy_item: Option<BuildingBlocks_LayoutPolicyItemBasePtr>,
     /// `layoutItemCommon` (StrongPointer)
-    #[serde(default)]
     pub layout_item_common: Option<Handle<BuildingBlocks_LayoutItemCommon>>,
     /// `dropTargetPolicy` (StrongPointer)
-    #[serde(default)]
     pub drop_target_policy: Option<BuildingBlocks_DropTargetPolicyBasePtr>,
     /// `draggablePolicy` (StrongPointer)
-    #[serde(default)]
     pub draggable_policy: Option<BuildingBlocks_DraggablePolicyBasePtr>,
     /// `tooltipPolicy` (StrongPointer)
-    #[serde(default)]
     pub tooltip_policy: Option<Handle<BuildingBlocks_TooltipPolicy>>,
     /// `contextMenuPolicy` (StrongPointer)
-    #[serde(default)]
     pub context_menu_policy: Option<Handle<BuildingBlocks_ContextMenuPolicy>>,
     /// `grabControlsPolicy` (StrongPointer)
-    #[serde(default)]
     pub grab_controls_policy: Option<Handle<BuildingBlocks_GrabControlsPolicy>>,
     /// `calloutSettings` (StrongPointer)
-    #[serde(default)]
     pub callout_settings: Option<Handle<BuildingBlocks_CalloutSettings>>,
     /// `virtualCursorPolicy` (StrongPointer)
-    #[serde(default)]
     pub virtual_cursor_policy: Option<Handle<BuildingBlocks_VirtualCursorPolicy>>,
     /// `overflow` (Class)
-    #[serde(default)]
     pub overflow: Option<Handle<BuildingBlocks_Overflow>>,
     /// `scrollPolicy` (StrongPointer)
-    #[serde(default)]
     pub scroll_policy: Option<BuildingBlocks_ScrollPolicyBasePtr>,
     /// `radialTransform` (Class)
-    #[serde(default)]
     pub radial_transform: Option<Handle<BuildingBlocks_RadialTransform>>,
     /// `radialTransformChild` (Class)
-    #[serde(default)]
     pub radial_transform_child: Option<Handle<BuildingBlocks_RadialTransformChild>>,
     /// `animation` (Class)
-    #[serde(default)]
     pub animation: Option<Handle<BuildingBlocks_Animation>>,
     /// `interactions` (Class)
-    #[serde(default)]
     pub interactions: Option<Handle<BuildingBlocks_Interactions>>,
     /// `inheritsScale` (Boolean)
-    #[serde(default)]
     pub inherits_scale: bool,
     /// `inheritsRotation` (Boolean)
-    #[serde(default)]
     pub inherits_rotation: bool,
     /// `inheritsTranslation` (Boolean)
-    #[serde(default)]
     pub inherits_translation: bool,
     /// `inheritsAlpha` (Boolean)
-    #[serde(default)]
     pub inherits_alpha: bool,
     /// `inheritsOverflow` (Boolean)
-    #[serde(default)]
     pub inherits_overflow: bool,
     /// `alpha` (Single)
-    #[serde(default)]
     pub alpha: f32,
     /// `layer` (Byte)
-    #[serde(default)]
     pub layer: u32,
     /// `aspectRatioLibrary` (Reference)
-    #[serde(default)]
     pub aspect_ratio_library: Option<CigGuid>,
     /// `focusIndex` (Int16)
-    #[serde(default)]
     pub focus_index: i32,
     /// `inlineStyles` (Class (array))
-    #[serde(default)]
     pub inline_styles: Vec<Handle<BuildingBlocks_StyleEntry>>,
     /// `hoverCursor` (EnumChoice)
-    #[serde(default)]
     pub hover_cursor: Cursor,
     /// `enableHeldCursor` (Boolean)
-    #[serde(default)]
     pub enable_held_cursor: bool,
     /// `heldCursor` (EnumChoice)
-    #[serde(default)]
     pub held_cursor: Cursor,
 }
 
@@ -4118,205 +3549,138 @@ impl<'a> Extract<'a> for BuildingBlocks_WidgetCardTexture {
 
 /// DCB type: `BuildingBlocks_TogglerBase`
 /// Inherits from: `BuildingBlocks_WidgetCanvas`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildingBlocks_TogglerBase {
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
     /// `styleTags` (Reference (array))
-    #[serde(default)]
     pub style_tags: Vec<CigGuid>,
     /// `rendererType` (EnumChoice)
-    #[serde(default)]
     pub renderer_type: BB_RendererType,
     /// `rendererPolicy` (StrongPointer)
-    #[serde(default)]
     pub renderer_policy: Option<BuildingBlocks_RendererPolicyBasePtr>,
     /// `primitiveSettings` (Class)
-    #[serde(default)]
     pub primitive_settings: Option<Handle<BuildingBlocks_PrimitiveSettings>>,
     /// `parent` (WeakPointer)
-    #[serde(default)]
     pub parent: Option<BuildingBlocks_WidgetBasePtr>,
     /// `previewScene` (WeakPointer)
-    #[serde(default)]
     pub preview_scene: Option<BuildingBlocks_PreviewScreenBasePtr>,
     /// `previewSceneFlattened` (WeakPointer)
-    #[serde(default)]
     pub preview_scene_flattened: Option<BuildingBlocks_PreviewScreenBasePtr>,
     /// `cullingLevel` (EnumChoice)
-    #[serde(default)]
     pub culling_level: BB_CullingLevel,
     /// `isActive` (Boolean)
-    #[serde(default)]
     pub is_active: bool,
     /// `affectsLayout` (Boolean)
-    #[serde(default)]
     pub affects_layout: bool,
     /// `affectsAutosize` (Boolean)
-    #[serde(default)]
     pub affects_autosize: bool,
     /// `exportNode` (Boolean)
-    #[serde(default)]
     pub export_node: bool,
     /// `position` (Class)
-    #[serde(default)]
     pub position: Option<Handle<Vec3>>,
     /// `positionOffset` (Class)
-    #[serde(default)]
     pub position_offset: Option<Handle<Vec3>>,
     /// `orientation` (Class)
-    #[serde(default)]
     pub orientation: Option<Handle<Deg3>>,
     /// `orientationOffset` (Class)
-    #[serde(default)]
     pub orientation_offset: Option<Handle<Deg3>>,
     /// `scale` (Class)
-    #[serde(default)]
     pub scale: Option<Handle<Vec3>>,
     /// `sizing` (Class)
-    #[serde(default)]
     pub sizing: Option<Handle<BuildingBlocks_Size>>,
     /// `autoScalingMethod` (EnumChoice)
-    #[serde(default)]
     pub auto_scaling_method: BB_AutoScalingMethod,
     /// `padding` (Class)
-    #[serde(default)]
     pub padding: Option<Handle<BuildingBlocks_TRBL>>,
     /// `margin` (Class)
-    #[serde(default)]
     pub margin: Option<Handle<BuildingBlocks_TRBL>>,
     /// `pivot` (Class)
-    #[serde(default)]
     pub pivot: Option<Handle<Vec3>>,
     /// `anchor` (Class)
-    #[serde(default)]
     pub anchor: Option<Handle<Vec3>>,
     /// `background` (Class)
-    #[serde(default)]
     pub background: Option<Handle<BuildingBlocks_Background>>,
     /// `segmentedFill` (Class)
-    #[serde(default)]
     pub segmented_fill: Option<Handle<BuildingBlocks_SegmentedFill>>,
     /// `svgFill` (Class)
-    #[serde(default)]
     pub svg_fill: Option<Handle<BuildingBlocks_SvgFill>>,
     /// `border` (Class)
-    #[serde(default)]
     pub border: Option<Handle<BuildingBlocks_Border>>,
     /// `layoutPolicy` (StrongPointer)
-    #[serde(default)]
     pub layout_policy: Option<BuildingBlocks_LayoutPolicyBasePtr>,
     /// `layoutPolicyItem` (StrongPointer)
-    #[serde(default)]
     pub layout_policy_item: Option<BuildingBlocks_LayoutPolicyItemBasePtr>,
     /// `layoutItemCommon` (StrongPointer)
-    #[serde(default)]
     pub layout_item_common: Option<Handle<BuildingBlocks_LayoutItemCommon>>,
     /// `dropTargetPolicy` (StrongPointer)
-    #[serde(default)]
     pub drop_target_policy: Option<BuildingBlocks_DropTargetPolicyBasePtr>,
     /// `draggablePolicy` (StrongPointer)
-    #[serde(default)]
     pub draggable_policy: Option<BuildingBlocks_DraggablePolicyBasePtr>,
     /// `tooltipPolicy` (StrongPointer)
-    #[serde(default)]
     pub tooltip_policy: Option<Handle<BuildingBlocks_TooltipPolicy>>,
     /// `contextMenuPolicy` (StrongPointer)
-    #[serde(default)]
     pub context_menu_policy: Option<Handle<BuildingBlocks_ContextMenuPolicy>>,
     /// `grabControlsPolicy` (StrongPointer)
-    #[serde(default)]
     pub grab_controls_policy: Option<Handle<BuildingBlocks_GrabControlsPolicy>>,
     /// `calloutSettings` (StrongPointer)
-    #[serde(default)]
     pub callout_settings: Option<Handle<BuildingBlocks_CalloutSettings>>,
     /// `virtualCursorPolicy` (StrongPointer)
-    #[serde(default)]
     pub virtual_cursor_policy: Option<Handle<BuildingBlocks_VirtualCursorPolicy>>,
     /// `overflow` (Class)
-    #[serde(default)]
     pub overflow: Option<Handle<BuildingBlocks_Overflow>>,
     /// `scrollPolicy` (StrongPointer)
-    #[serde(default)]
     pub scroll_policy: Option<BuildingBlocks_ScrollPolicyBasePtr>,
     /// `radialTransform` (Class)
-    #[serde(default)]
     pub radial_transform: Option<Handle<BuildingBlocks_RadialTransform>>,
     /// `radialTransformChild` (Class)
-    #[serde(default)]
     pub radial_transform_child: Option<Handle<BuildingBlocks_RadialTransformChild>>,
     /// `animation` (Class)
-    #[serde(default)]
     pub animation: Option<Handle<BuildingBlocks_Animation>>,
     /// `interactions` (Class)
-    #[serde(default)]
     pub interactions: Option<Handle<BuildingBlocks_Interactions>>,
     /// `inheritsScale` (Boolean)
-    #[serde(default)]
     pub inherits_scale: bool,
     /// `inheritsRotation` (Boolean)
-    #[serde(default)]
     pub inherits_rotation: bool,
     /// `inheritsTranslation` (Boolean)
-    #[serde(default)]
     pub inherits_translation: bool,
     /// `inheritsAlpha` (Boolean)
-    #[serde(default)]
     pub inherits_alpha: bool,
     /// `inheritsOverflow` (Boolean)
-    #[serde(default)]
     pub inherits_overflow: bool,
     /// `alpha` (Single)
-    #[serde(default)]
     pub alpha: f32,
     /// `layer` (Byte)
-    #[serde(default)]
     pub layer: u32,
     /// `aspectRatioLibrary` (Reference)
-    #[serde(default)]
     pub aspect_ratio_library: Option<CigGuid>,
     /// `focusIndex` (Int16)
-    #[serde(default)]
     pub focus_index: i32,
     /// `inlineStyles` (Class (array))
-    #[serde(default)]
     pub inline_styles: Vec<Handle<BuildingBlocks_StyleEntry>>,
     /// `hoverCursor` (EnumChoice)
-    #[serde(default)]
     pub hover_cursor: Cursor,
     /// `enableHeldCursor` (Boolean)
-    #[serde(default)]
     pub enable_held_cursor: bool,
     /// `heldCursor` (EnumChoice)
-    #[serde(default)]
     pub held_cursor: Cursor,
     /// `instantiated` (Boolean)
-    #[serde(default)]
     pub instantiated: bool,
     /// `urlOptional` (String)
-    #[serde(default)]
     pub url_optional: String,
     /// `urlPostfix` (String)
-    #[serde(default)]
     pub url_postfix: String,
     /// `stylesheetOverride` (Reference)
-    #[serde(default)]
     pub stylesheet_override: Option<CigGuid>,
     /// `canvas` (Reference)
-    #[serde(default)]
     pub canvas: Option<CigGuid>,
     /// `sizingMethod` (EnumChoice)
-    #[serde(default)]
     pub sizing_method: BB_CanvasWidgetSizingMethod,
     /// `paramInputValues` (StrongPointer (array))
-    #[serde(default)]
     pub param_input_values: Vec<BuildingBlocks_ComponentParameterInputBasePtr>,
     /// `variableName` (String)
-    #[serde(default)]
     pub variable_name: String,
     /// `toggleActivationEvent` (EnumChoice)
-    #[serde(default)]
     pub toggle_activation_event: BB_ActivationButtonAction,
 }
 
@@ -4519,202 +3883,136 @@ impl<'a> Extract<'a> for BuildingBlocks_TogglerBase {
 
 /// DCB type: `BuildingBlocks_TextureBase`
 /// Inherits from: `BuildingBlocks_WidgetCanvas`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildingBlocks_TextureBase {
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
     /// `styleTags` (Reference (array))
-    #[serde(default)]
     pub style_tags: Vec<CigGuid>,
     /// `rendererType` (EnumChoice)
-    #[serde(default)]
     pub renderer_type: BB_RendererType,
     /// `rendererPolicy` (StrongPointer)
-    #[serde(default)]
     pub renderer_policy: Option<BuildingBlocks_RendererPolicyBasePtr>,
     /// `primitiveSettings` (Class)
-    #[serde(default)]
     pub primitive_settings: Option<Handle<BuildingBlocks_PrimitiveSettings>>,
     /// `parent` (WeakPointer)
-    #[serde(default)]
     pub parent: Option<BuildingBlocks_WidgetBasePtr>,
     /// `previewScene` (WeakPointer)
-    #[serde(default)]
     pub preview_scene: Option<BuildingBlocks_PreviewScreenBasePtr>,
     /// `previewSceneFlattened` (WeakPointer)
-    #[serde(default)]
     pub preview_scene_flattened: Option<BuildingBlocks_PreviewScreenBasePtr>,
     /// `cullingLevel` (EnumChoice)
-    #[serde(default)]
     pub culling_level: BB_CullingLevel,
     /// `isActive` (Boolean)
-    #[serde(default)]
     pub is_active: bool,
     /// `affectsLayout` (Boolean)
-    #[serde(default)]
     pub affects_layout: bool,
     /// `affectsAutosize` (Boolean)
-    #[serde(default)]
     pub affects_autosize: bool,
     /// `exportNode` (Boolean)
-    #[serde(default)]
     pub export_node: bool,
     /// `position` (Class)
-    #[serde(default)]
     pub position: Option<Handle<Vec3>>,
     /// `positionOffset` (Class)
-    #[serde(default)]
     pub position_offset: Option<Handle<Vec3>>,
     /// `orientation` (Class)
-    #[serde(default)]
     pub orientation: Option<Handle<Deg3>>,
     /// `orientationOffset` (Class)
-    #[serde(default)]
     pub orientation_offset: Option<Handle<Deg3>>,
     /// `scale` (Class)
-    #[serde(default)]
     pub scale: Option<Handle<Vec3>>,
     /// `sizing` (Class)
-    #[serde(default)]
     pub sizing: Option<Handle<BuildingBlocks_Size>>,
     /// `autoScalingMethod` (EnumChoice)
-    #[serde(default)]
     pub auto_scaling_method: BB_AutoScalingMethod,
     /// `padding` (Class)
-    #[serde(default)]
     pub padding: Option<Handle<BuildingBlocks_TRBL>>,
     /// `margin` (Class)
-    #[serde(default)]
     pub margin: Option<Handle<BuildingBlocks_TRBL>>,
     /// `pivot` (Class)
-    #[serde(default)]
     pub pivot: Option<Handle<Vec3>>,
     /// `anchor` (Class)
-    #[serde(default)]
     pub anchor: Option<Handle<Vec3>>,
     /// `background` (Class)
-    #[serde(default)]
     pub background: Option<Handle<BuildingBlocks_Background>>,
     /// `segmentedFill` (Class)
-    #[serde(default)]
     pub segmented_fill: Option<Handle<BuildingBlocks_SegmentedFill>>,
     /// `svgFill` (Class)
-    #[serde(default)]
     pub svg_fill: Option<Handle<BuildingBlocks_SvgFill>>,
     /// `border` (Class)
-    #[serde(default)]
     pub border: Option<Handle<BuildingBlocks_Border>>,
     /// `layoutPolicy` (StrongPointer)
-    #[serde(default)]
     pub layout_policy: Option<BuildingBlocks_LayoutPolicyBasePtr>,
     /// `layoutPolicyItem` (StrongPointer)
-    #[serde(default)]
     pub layout_policy_item: Option<BuildingBlocks_LayoutPolicyItemBasePtr>,
     /// `layoutItemCommon` (StrongPointer)
-    #[serde(default)]
     pub layout_item_common: Option<Handle<BuildingBlocks_LayoutItemCommon>>,
     /// `dropTargetPolicy` (StrongPointer)
-    #[serde(default)]
     pub drop_target_policy: Option<BuildingBlocks_DropTargetPolicyBasePtr>,
     /// `draggablePolicy` (StrongPointer)
-    #[serde(default)]
     pub draggable_policy: Option<BuildingBlocks_DraggablePolicyBasePtr>,
     /// `tooltipPolicy` (StrongPointer)
-    #[serde(default)]
     pub tooltip_policy: Option<Handle<BuildingBlocks_TooltipPolicy>>,
     /// `contextMenuPolicy` (StrongPointer)
-    #[serde(default)]
     pub context_menu_policy: Option<Handle<BuildingBlocks_ContextMenuPolicy>>,
     /// `grabControlsPolicy` (StrongPointer)
-    #[serde(default)]
     pub grab_controls_policy: Option<Handle<BuildingBlocks_GrabControlsPolicy>>,
     /// `calloutSettings` (StrongPointer)
-    #[serde(default)]
     pub callout_settings: Option<Handle<BuildingBlocks_CalloutSettings>>,
     /// `virtualCursorPolicy` (StrongPointer)
-    #[serde(default)]
     pub virtual_cursor_policy: Option<Handle<BuildingBlocks_VirtualCursorPolicy>>,
     /// `overflow` (Class)
-    #[serde(default)]
     pub overflow: Option<Handle<BuildingBlocks_Overflow>>,
     /// `scrollPolicy` (StrongPointer)
-    #[serde(default)]
     pub scroll_policy: Option<BuildingBlocks_ScrollPolicyBasePtr>,
     /// `radialTransform` (Class)
-    #[serde(default)]
     pub radial_transform: Option<Handle<BuildingBlocks_RadialTransform>>,
     /// `radialTransformChild` (Class)
-    #[serde(default)]
     pub radial_transform_child: Option<Handle<BuildingBlocks_RadialTransformChild>>,
     /// `animation` (Class)
-    #[serde(default)]
     pub animation: Option<Handle<BuildingBlocks_Animation>>,
     /// `interactions` (Class)
-    #[serde(default)]
     pub interactions: Option<Handle<BuildingBlocks_Interactions>>,
     /// `inheritsScale` (Boolean)
-    #[serde(default)]
     pub inherits_scale: bool,
     /// `inheritsRotation` (Boolean)
-    #[serde(default)]
     pub inherits_rotation: bool,
     /// `inheritsTranslation` (Boolean)
-    #[serde(default)]
     pub inherits_translation: bool,
     /// `inheritsAlpha` (Boolean)
-    #[serde(default)]
     pub inherits_alpha: bool,
     /// `inheritsOverflow` (Boolean)
-    #[serde(default)]
     pub inherits_overflow: bool,
     /// `alpha` (Single)
-    #[serde(default)]
     pub alpha: f32,
     /// `layer` (Byte)
-    #[serde(default)]
     pub layer: u32,
     /// `aspectRatioLibrary` (Reference)
-    #[serde(default)]
     pub aspect_ratio_library: Option<CigGuid>,
     /// `focusIndex` (Int16)
-    #[serde(default)]
     pub focus_index: i32,
     /// `inlineStyles` (Class (array))
-    #[serde(default)]
     pub inline_styles: Vec<Handle<BuildingBlocks_StyleEntry>>,
     /// `hoverCursor` (EnumChoice)
-    #[serde(default)]
     pub hover_cursor: Cursor,
     /// `enableHeldCursor` (Boolean)
-    #[serde(default)]
     pub enable_held_cursor: bool,
     /// `heldCursor` (EnumChoice)
-    #[serde(default)]
     pub held_cursor: Cursor,
     /// `instantiated` (Boolean)
-    #[serde(default)]
     pub instantiated: bool,
     /// `urlOptional` (String)
-    #[serde(default)]
     pub url_optional: String,
     /// `urlPostfix` (String)
-    #[serde(default)]
     pub url_postfix: String,
     /// `stylesheetOverride` (Reference)
-    #[serde(default)]
     pub stylesheet_override: Option<CigGuid>,
     /// `canvas` (Reference)
-    #[serde(default)]
     pub canvas: Option<CigGuid>,
     /// `sizingMethod` (EnumChoice)
-    #[serde(default)]
     pub sizing_method: BB_CanvasWidgetSizingMethod,
     /// `paramInputValues` (StrongPointer (array))
-    #[serde(default)]
     pub param_input_values: Vec<BuildingBlocks_ComponentParameterInputBasePtr>,
     /// `textureProperties` (Class)
-    #[serde(default)]
     pub texture_properties: Option<Handle<BuildingBlocks_ComponentTextureProperties>>,
 }
 
@@ -4919,13 +4217,10 @@ impl<'a> Extract<'a> for BuildingBlocks_TextureBase {
 
 /// DCB type: `BuildingBlocks_TriggerModifyNumber`
 /// Inherits from: `BuildingBlocks_TriggerBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildingBlocks_TriggerModifyNumber {
     /// `variableName` (String)
-    #[serde(default)]
     pub variable_name: String,
     /// `value` (Single)
-    #[serde(default)]
     pub value: f32,
 }
 
@@ -4946,7 +4241,6 @@ impl<'a> Extract<'a> for BuildingBlocks_TriggerModifyNumber {
 
 /// DCB type: `BuildingBlocks_TriggerHyperLink`
 /// Inherits from: `BuildingBlocks_TriggerBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildingBlocks_TriggerHyperLink {
 }
 
@@ -4965,13 +4259,10 @@ impl<'a> Extract<'a> for BuildingBlocks_TriggerHyperLink {
 
 /// DCB type: `BuildingBlocks_NumberTextFormatModifier`
 /// Inherits from: `BuildingBlocks_TextFormatModifierBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildingBlocks_NumberTextFormatModifier {
     /// `field` (EnumChoice)
-    #[serde(default)]
     pub field: BB_NumberField,
     /// `value` (Single)
-    #[serde(default)]
     pub value: f32,
 }
 
@@ -4992,13 +4283,10 @@ impl<'a> Extract<'a> for BuildingBlocks_NumberTextFormatModifier {
 
 /// DCB type: `BuildingBlocks_StaticVariableIntegerConstant`
 /// Inherits from: `BuildingBlocks_StaticVariableBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildingBlocks_StaticVariableIntegerConstant {
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
     /// `value` (EnumChoice)
-    #[serde(default)]
     pub value: BB_BindingsIntegerConstants,
 }
 
@@ -5019,16 +4307,12 @@ impl<'a> Extract<'a> for BuildingBlocks_StaticVariableIntegerConstant {
 
 /// DCB type: `CameraSimple3PConfig`
 /// Inherits from: `CameraBaseConfig`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CameraSimple3PConfig {
     /// `baseSettings` (Class)
-    #[serde(default)]
     pub base_settings: Option<Handle<CameraBaseSettingsConfig>>,
     /// `blendConfig` (Class)
-    #[serde(default)]
     pub blend_config: Option<Handle<CameraBlendConfig>>,
     /// `FOVConfig` (Class)
-    #[serde(default)]
     pub fovconfig: Option<Handle<CameraFOVConfig>>,
 }
 
@@ -5059,28 +4343,20 @@ impl<'a> Extract<'a> for CameraSimple3PConfig {
 
 /// DCB type: `CameraThirdPersonBaseConfig`
 /// Inherits from: `CameraBaseConfig`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CameraThirdPersonBaseConfig {
     /// `baseSettings` (Class)
-    #[serde(default)]
     pub base_settings: Option<Handle<CameraBaseSettingsConfig>>,
     /// `blendConfig` (Class)
-    #[serde(default)]
     pub blend_config: Option<Handle<CameraBlendConfig>>,
     /// `FOVConfig` (Class)
-    #[serde(default)]
     pub fovconfig: Option<Handle<CameraFOVConfig>>,
     /// `operatorShake` (Class)
-    #[serde(default)]
     pub operator_shake: Option<Handle<CameraShakeConfig>>,
     /// `speedShake` (Class)
-    #[serde(default)]
     pub speed_shake: Option<Handle<CameraSpeedShakeConfig>>,
     /// `gforceShake` (Class)
-    #[serde(default)]
     pub gforce_shake: Option<Handle<CameraGForceShakeConfig>>,
     /// `raindropsEnabled` (Boolean)
-    #[serde(default)]
     pub raindrops_enabled: bool,
 }
 
@@ -5124,49 +4400,34 @@ impl<'a> Extract<'a> for CameraThirdPersonBaseConfig {
 
 /// DCB type: `CameraOrbitConfig`
 /// Inherits from: `CameraThirdPersonBaseConfig`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CameraOrbitConfig {
     /// `baseSettings` (Class)
-    #[serde(default)]
     pub base_settings: Option<Handle<CameraBaseSettingsConfig>>,
     /// `blendConfig` (Class)
-    #[serde(default)]
     pub blend_config: Option<Handle<CameraBlendConfig>>,
     /// `FOVConfig` (Class)
-    #[serde(default)]
     pub fovconfig: Option<Handle<CameraFOVConfig>>,
     /// `operatorShake` (Class)
-    #[serde(default)]
     pub operator_shake: Option<Handle<CameraShakeConfig>>,
     /// `speedShake` (Class)
-    #[serde(default)]
     pub speed_shake: Option<Handle<CameraSpeedShakeConfig>>,
     /// `gforceShake` (Class)
-    #[serde(default)]
     pub gforce_shake: Option<Handle<CameraGForceShakeConfig>>,
     /// `raindropsEnabled` (Boolean)
-    #[serde(default)]
     pub raindrops_enabled: bool,
     /// `rotationConfig` (Class)
-    #[serde(default)]
     pub rotation_config: Option<Handle<CameraRotationConfig>>,
     /// `distanceConfig` (Class)
-    #[serde(default)]
     pub distance_config: Option<Handle<CameraDistanceConfig>>,
     /// `targetOffsetConfig` (Class)
-    #[serde(default)]
     pub target_offset_config: Option<Handle<CameraTargetOffsetConfig>>,
     /// `springConfig` (Class)
-    #[serde(default)]
     pub spring_config: Option<Handle<CameraSpringConfig>>,
     /// `collisionConfig` (Class)
-    #[serde(default)]
     pub collision_config: Option<Handle<CameraCollisionConfig>>,
     /// `defaultViews` (Class (array))
-    #[serde(default)]
     pub default_views: Vec<Handle<SCameraViewStateOrbit>>,
     /// `alternativeViewsConfig` (Class)
-    #[serde(default)]
     pub alternative_views_config: Option<Handle<CameraAlternativeViewsConfig>>,
 }
 
@@ -5240,52 +4501,36 @@ impl<'a> Extract<'a> for CameraOrbitConfig {
 }
 
 /// DCB type: `BuildModeConfig`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildModeConfig {
     /// `panSpeed` (Single)
-    #[serde(default)]
     pub pan_speed: f32,
     /// `zoomSpeed` (Single)
-    #[serde(default)]
     pub zoom_speed: f32,
     /// `initialDistance` (Single)
-    #[serde(default)]
     pub initial_distance: f32,
     /// `minDistance` (Single)
-    #[serde(default)]
     pub min_distance: f32,
     /// `maxDistance` (Single)
-    #[serde(default)]
     pub max_distance: f32,
     /// `yawInputDeadzone` (Single)
-    #[serde(default)]
     pub yaw_input_deadzone: f32,
     /// `yawInputSpeedModifier` (Single)
-    #[serde(default)]
     pub yaw_input_speed_modifier: f32,
     /// `initialYaw` (Single)
-    #[serde(default)]
     pub initial_yaw: f32,
     /// `pitchInputDeadzone` (Single)
-    #[serde(default)]
     pub pitch_input_deadzone: f32,
     /// `pitchInputSpeedModifier` (Single)
-    #[serde(default)]
     pub pitch_input_speed_modifier: f32,
     /// `initialPitch` (Single)
-    #[serde(default)]
     pub initial_pitch: f32,
     /// `minPitch` (Single)
-    #[serde(default)]
     pub min_pitch: f32,
     /// `maxPitch` (Single)
-    #[serde(default)]
     pub max_pitch: f32,
     /// `maxRange` (Single)
-    #[serde(default)]
     pub max_range: f32,
     /// `autoPilotFlyToTime` (Single)
-    #[serde(default)]
     pub auto_pilot_fly_to_time: f32,
 }
 
@@ -5319,19 +4564,14 @@ impl<'a> Extract<'a> for BuildModeConfig {
 
 /// DCB type: `CameraBuildModeConfig`
 /// Inherits from: `CameraBaseConfig`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CameraBuildModeConfig {
     /// `baseSettings` (Class)
-    #[serde(default)]
     pub base_settings: Option<Handle<CameraBaseSettingsConfig>>,
     /// `blendConfig` (Class)
-    #[serde(default)]
     pub blend_config: Option<Handle<CameraBlendConfig>>,
     /// `FOVConfig` (Class)
-    #[serde(default)]
     pub fovconfig: Option<Handle<CameraFOVConfig>>,
     /// `buildModeConfig` (Class)
-    #[serde(default)]
     pub build_mode_config: Option<Handle<BuildModeConfig>>,
 }
 
@@ -5366,16 +4606,12 @@ impl<'a> Extract<'a> for CameraBuildModeConfig {
 
 /// DCB type: `CargoFillCapacityValue_RandomBeta`
 /// Inherits from: `BaseCargoFillCapacityValue`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CargoFillCapacityValue_RandomBeta {
     /// `resources` (Class (array))
-    #[serde(default)]
     pub resources: Vec<Handle<CargoResourceDistribution>>,
     /// `minCapacityRange` (Single)
-    #[serde(default)]
     pub min_capacity_range: f32,
     /// `maxCapacityRange` (Single)
-    #[serde(default)]
     pub max_capacity_range: f32,
 }
 
@@ -5402,13 +4638,10 @@ impl<'a> Extract<'a> for CargoFillCapacityValue_RandomBeta {
 }
 
 /// DCB type: `CargoResourceDistribution`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CargoResourceDistribution {
     /// `resource` (Reference)
-    #[serde(default)]
     pub resource: Option<CigGuid>,
     /// `meanAverage` (Single)
-    #[serde(default)]
     pub mean_average: f32,
 }
 
@@ -5429,10 +4662,8 @@ impl<'a> Extract<'a> for CargoResourceDistribution {
 
 /// DCB type: `SCustomzierColorRGBA8`
 /// Inherits from: `SCustomzierColorDefBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCustomzierColorRGBA8 {
     /// `color` (Class)
-    #[serde(default)]
     pub color: Option<Handle<RGBA8>>,
 }
 
@@ -5455,25 +4686,18 @@ impl<'a> Extract<'a> for SCustomzierColorRGBA8 {
 
 /// DCB type: `SCharacterEyeValidationParams`
 /// Inherits from: `SCharacterValidationParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCharacterEyeValidationParams {
     /// `minHue` (Single)
-    #[serde(default)]
     pub min_hue: f32,
     /// `maxHue` (Single)
-    #[serde(default)]
     pub max_hue: f32,
     /// `sMaxCurve` (Class)
-    #[serde(default)]
     pub s_max_curve: Option<Handle<BezierCurve>>,
     /// `sMinCurve` (Class)
-    #[serde(default)]
     pub s_min_curve: Option<Handle<BezierCurve>>,
     /// `vMaxCurve` (Class)
-    #[serde(default)]
     pub v_max_curve: Option<Handle<BezierCurve>>,
     /// `vMinCurve` (Class)
-    #[serde(default)]
     pub v_min_curve: Option<Handle<BezierCurve>>,
 }
 
@@ -5510,73 +4734,50 @@ impl<'a> Extract<'a> for SCharacterEyeValidationParams {
 
 /// DCB type: `SCharacterCustomizerItemSelect`
 /// Inherits from: `SCharacterCustomizerFeatureBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCharacterCustomizerItemSelect {
     /// `debugName` (String)
-    #[serde(default)]
     pub debug_name: String,
     /// `displayNameLocId` (Locale)
-    #[serde(default)]
     pub display_name_loc_id: LocaleKey,
     /// `idString` (String)
-    #[serde(default)]
     pub id_string: String,
     /// `subFeatures` (StrongPointer (array))
-    #[serde(default)]
     pub sub_features: Vec<SCharacterCustomizerFeatureBasePtr>,
     /// `iconPath` (String)
-    #[serde(default)]
     pub icon_path: String,
     /// `randomizationParams` (StrongPointer)
-    #[serde(default)]
     pub randomization_params: Option<SCharacterCustomizerRandomizationParamsPtr>,
     /// `validationParams` (StrongPointer)
-    #[serde(default)]
     pub validation_params: Option<SCharacterValidationParamsPtr>,
     /// `featureType` (EnumChoice)
-    #[serde(default)]
     pub feature_type: ECharacterCustomizerFeature,
     /// `materialParams` (WeakPointer)
-    #[serde(default)]
     pub material_params: Option<Handle<SCustomizableMaterialParams>>,
     /// `precacheSkinMaterials` (Boolean)
-    #[serde(default)]
     pub precache_skin_materials: bool,
     /// `supportsSubFeatureSelection` (Boolean)
-    #[serde(default)]
     pub supports_sub_feature_selection: bool,
     /// `devModeOnly` (Boolean)
-    #[serde(default)]
     pub dev_mode_only: bool,
     /// `itemportsToHide` (String (array))
-    #[serde(default)]
     pub itemports_to_hide: Vec<String>,
     /// `libraryItemportsToHide` (String (array))
-    #[serde(default)]
     pub library_itemports_to_hide: Vec<String>,
     /// `clippingVolumeParams` (Class)
-    #[serde(default)]
     pub clipping_volume_params: Option<Handle<SCharacterCustomizerClippingVolumeParams>>,
     /// `advancedModeClippingVolumeParams` (Class)
-    #[serde(default)]
     pub advanced_mode_clipping_volume_params: Option<Handle<SCharacterCustomizerClippingVolumeParams>>,
     /// `addEmptyEntry` (Boolean)
-    #[serde(default)]
     pub add_empty_entry: bool,
     /// `featureLibOffset` (Class)
-    #[serde(default)]
     pub feature_lib_offset: Option<Handle<Vec3>>,
     /// `advancedModeLibOffset` (Class)
-    #[serde(default)]
     pub advanced_mode_lib_offset: Option<Handle<Vec3>>,
     /// `featureLibRowsOnScreen` (Int32)
-    #[serde(default)]
     pub feature_lib_rows_on_screen: i32,
     /// `advancedModeRowsOnScreen` (Int32)
-    #[serde(default)]
     pub advanced_mode_rows_on_screen: i32,
     /// `itemSelectMode` (EnumChoice)
-    #[serde(default)]
     pub item_select_mode: ECharacterCustomizerItemSelectMode,
 }
 
@@ -5646,10 +4847,8 @@ impl<'a> Extract<'a> for SCharacterCustomizerItemSelect {
 }
 
 /// DCB type: `SCharacterCustomizerPresetItemBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCharacterCustomizerPresetItemBase {
     /// `debugName` (String)
-    #[serde(default)]
     pub debug_name: String,
 }
 
@@ -5669,13 +4868,10 @@ impl<'a> Extract<'a> for SCharacterCustomizerPresetItemBase {
 
 /// DCB type: `SCharacterCustomizerPresetItemCHF`
 /// Inherits from: `SCharacterCustomizerPresetItemBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCharacterCustomizerPresetItemCHF {
     /// `debugName` (String)
-    #[serde(default)]
     pub debug_name: String,
     /// `customizationFile` (String)
-    #[serde(default)]
     pub customization_file: String,
 }
 
@@ -5696,28 +4892,20 @@ impl<'a> Extract<'a> for SCharacterCustomizerPresetItemCHF {
 
 /// DCB type: `SCharacterCustomizerPresetItemDecal`
 /// Inherits from: `SCharacterCustomizerPresetItemBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCharacterCustomizerPresetItemDecal {
     /// `debugName` (String)
-    #[serde(default)]
     pub debug_name: String,
     /// `materialPath` (String)
-    #[serde(default)]
     pub material_path: String,
     /// `projectionCenter` (Class)
-    #[serde(default)]
     pub projection_center: Option<Handle<Vec3>>,
     /// `projectionDirection` (Class)
-    #[serde(default)]
     pub projection_direction: Option<Handle<Vec3>>,
     /// `angle` (Single)
-    #[serde(default)]
     pub angle: f32,
     /// `diameter` (Single)
-    #[serde(default)]
     pub diameter: f32,
     /// `decalAlpha` (Single)
-    #[serde(default)]
     pub decal_alpha: f32,
 }
 
@@ -5748,13 +4936,10 @@ impl<'a> Extract<'a> for SCharacterCustomizerPresetItemDecal {
 }
 
 /// DCB type: `SCharacterCustomizerPreset`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCharacterCustomizerPreset {
     /// `debugName` (String)
-    #[serde(default)]
     pub debug_name: String,
     /// `presetItems` (StrongPointer (array))
-    #[serde(default)]
     pub preset_items: Vec<SCharacterCustomizerPresetItemBasePtr>,
 }
 
@@ -5780,76 +4965,52 @@ impl<'a> Extract<'a> for SCharacterCustomizerPreset {
 
 /// DCB type: `SCharacterCustomizerFeaturePreset`
 /// Inherits from: `SCharacterCustomizerItemSelect`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCharacterCustomizerFeaturePreset {
     /// `debugName` (String)
-    #[serde(default)]
     pub debug_name: String,
     /// `displayNameLocId` (Locale)
-    #[serde(default)]
     pub display_name_loc_id: LocaleKey,
     /// `idString` (String)
-    #[serde(default)]
     pub id_string: String,
     /// `subFeatures` (StrongPointer (array))
-    #[serde(default)]
     pub sub_features: Vec<SCharacterCustomizerFeatureBasePtr>,
     /// `iconPath` (String)
-    #[serde(default)]
     pub icon_path: String,
     /// `randomizationParams` (StrongPointer)
-    #[serde(default)]
     pub randomization_params: Option<SCharacterCustomizerRandomizationParamsPtr>,
     /// `validationParams` (StrongPointer)
-    #[serde(default)]
     pub validation_params: Option<SCharacterValidationParamsPtr>,
     /// `featureType` (EnumChoice)
-    #[serde(default)]
     pub feature_type: ECharacterCustomizerFeature,
     /// `materialParams` (WeakPointer)
-    #[serde(default)]
     pub material_params: Option<Handle<SCustomizableMaterialParams>>,
     /// `precacheSkinMaterials` (Boolean)
-    #[serde(default)]
     pub precache_skin_materials: bool,
     /// `supportsSubFeatureSelection` (Boolean)
-    #[serde(default)]
     pub supports_sub_feature_selection: bool,
     /// `devModeOnly` (Boolean)
-    #[serde(default)]
     pub dev_mode_only: bool,
     /// `itemportsToHide` (String (array))
-    #[serde(default)]
     pub itemports_to_hide: Vec<String>,
     /// `libraryItemportsToHide` (String (array))
-    #[serde(default)]
     pub library_itemports_to_hide: Vec<String>,
     /// `clippingVolumeParams` (Class)
-    #[serde(default)]
     pub clipping_volume_params: Option<Handle<SCharacterCustomizerClippingVolumeParams>>,
     /// `advancedModeClippingVolumeParams` (Class)
-    #[serde(default)]
     pub advanced_mode_clipping_volume_params: Option<Handle<SCharacterCustomizerClippingVolumeParams>>,
     /// `addEmptyEntry` (Boolean)
-    #[serde(default)]
     pub add_empty_entry: bool,
     /// `featureLibOffset` (Class)
-    #[serde(default)]
     pub feature_lib_offset: Option<Handle<Vec3>>,
     /// `advancedModeLibOffset` (Class)
-    #[serde(default)]
     pub advanced_mode_lib_offset: Option<Handle<Vec3>>,
     /// `featureLibRowsOnScreen` (Int32)
-    #[serde(default)]
     pub feature_lib_rows_on_screen: i32,
     /// `advancedModeRowsOnScreen` (Int32)
-    #[serde(default)]
     pub advanced_mode_rows_on_screen: i32,
     /// `itemSelectMode` (EnumChoice)
-    #[serde(default)]
     pub item_select_mode: ECharacterCustomizerItemSelectMode,
     /// `presets` (Class (array))
-    #[serde(default)]
     pub presets: Vec<Handle<SCharacterCustomizerPreset>>,
 }
 
@@ -5927,16 +5088,12 @@ impl<'a> Extract<'a> for SCharacterCustomizerFeaturePreset {
 
 /// DCB type: `SArchetypeEntityAssetDefBase`
 /// Inherits from: `SArchetypeAssetDefBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SArchetypeEntityAssetDefBase {
     /// `debugName` (String)
-    #[serde(default)]
     pub debug_name: String,
     /// `itemportName` (String)
-    #[serde(default)]
     pub itemport_name: String,
     /// `parentItemportName` (String)
-    #[serde(default)]
     pub parent_itemport_name: String,
 }
 
@@ -5958,19 +5115,14 @@ impl<'a> Extract<'a> for SArchetypeEntityAssetDefBase {
 
 /// DCB type: `SArchetypeAssetEntityDef`
 /// Inherits from: `SArchetypeEntityAssetDefBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SArchetypeAssetEntityDef {
     /// `debugName` (String)
-    #[serde(default)]
     pub debug_name: String,
     /// `itemportName` (String)
-    #[serde(default)]
     pub itemport_name: String,
     /// `parentItemportName` (String)
-    #[serde(default)]
     pub parent_itemport_name: String,
     /// `entityClass` (Reference)
-    #[serde(default)]
     pub entity_class: Option<CigGuid>,
 }
 
@@ -5993,13 +5145,10 @@ impl<'a> Extract<'a> for SArchetypeAssetEntityDef {
 
 /// DCB type: `SArchetypeAssetCHFDef`
 /// Inherits from: `SArchetypeAssetDefBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SArchetypeAssetCHFDef {
     /// `debugName` (String)
-    #[serde(default)]
     pub debug_name: String,
     /// `customizationFile` (String)
-    #[serde(default)]
     pub customization_file: String,
 }
 
@@ -6020,13 +5169,10 @@ impl<'a> Extract<'a> for SArchetypeAssetCHFDef {
 
 /// DCB type: `SArchetypeAssetLoadoutDef`
 /// Inherits from: `SArchetypeAssetDefBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SArchetypeAssetLoadoutDef {
     /// `debugName` (String)
-    #[serde(default)]
     pub debug_name: String,
     /// `loadout` (StrongPointer)
-    #[serde(default)]
     pub loadout: Option<SItemPortLoadoutBaseParamsPtr>,
 }
 
@@ -6050,22 +5196,16 @@ impl<'a> Extract<'a> for SArchetypeAssetLoadoutDef {
 
 /// DCB type: `SArchetypeAssetTagDef`
 /// Inherits from: `SArchetypeEntityAssetDefBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SArchetypeAssetTagDef {
     /// `debugName` (String)
-    #[serde(default)]
     pub debug_name: String,
     /// `itemportName` (String)
-    #[serde(default)]
     pub itemport_name: String,
     /// `parentItemportName` (String)
-    #[serde(default)]
     pub parent_itemport_name: String,
     /// `requiredTags` (Class)
-    #[serde(default)]
     pub required_tags: Option<Handle<TagList>>,
     /// `forbiddenTags` (Class)
-    #[serde(default)]
     pub forbidden_tags: Option<Handle<TagList>>,
 }
 
@@ -6095,16 +5235,12 @@ impl<'a> Extract<'a> for SArchetypeAssetTagDef {
 
 /// DCB type: `CockpitRuleInt`
 /// Inherits from: `CockpitRuleBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CockpitRuleInt {
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
     /// `priority` (Single)
-    #[serde(default)]
     pub priority: f32,
     /// `value` (Int32)
-    #[serde(default)]
     pub value: i32,
 }
 
@@ -6126,13 +5262,10 @@ impl<'a> Extract<'a> for CockpitRuleInt {
 
 /// DCB type: `SCollectibleComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCollectibleComponentParams {
     /// `associatedCollectibleRecord` (Reference)
-    #[serde(default)]
     pub associated_collectible_record: Option<CigGuid>,
     /// `hideWhenCollected` (Boolean)
-    #[serde(default)]
     pub hide_when_collected: bool,
 }
 
@@ -6153,10 +5286,8 @@ impl<'a> Extract<'a> for SCollectibleComponentParams {
 
 /// DCB type: `BezierDamage`
 /// Inherits from: `TemperatureDamageControl`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BezierDamage {
     /// `curve` (Class)
-    #[serde(default)]
     pub curve: Option<Handle<BezierCurve>>,
 }
 
@@ -6179,10 +5310,8 @@ impl<'a> Extract<'a> for BezierDamage {
 
 /// DCB type: `ExponentialDamage`
 /// Inherits from: `TemperatureDamageControl`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ExponentialDamage {
     /// `exponent` (Single)
-    #[serde(default)]
     pub exponent: f32,
 }
 
@@ -6202,16 +5331,12 @@ impl<'a> Extract<'a> for ExponentialDamage {
 
 /// DCB type: `CommunicationVariableFloat`
 /// Inherits from: `CommunicationVariableBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CommunicationVariableFloat {
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
     /// `global` (Boolean)
-    #[serde(default)]
     pub global: bool,
     /// `value` (Single)
-    #[serde(default)]
     pub value: f32,
 }
 
@@ -6233,16 +5358,12 @@ impl<'a> Extract<'a> for CommunicationVariableFloat {
 
 /// DCB type: `CommunicationVariableString`
 /// Inherits from: `CommunicationVariableBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CommunicationVariableString {
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
     /// `global` (Boolean)
-    #[serde(default)]
     pub global: bool,
     /// `value` (String)
-    #[serde(default)]
     pub value: String,
 }
 
@@ -6264,31 +5385,22 @@ impl<'a> Extract<'a> for CommunicationVariableString {
 
 /// DCB type: `ArmouryTerminalParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ArmouryTerminalParams {
     /// `armouryManager` (Class)
-    #[serde(default)]
     pub armoury_manager: Option<Handle<EntityReferenceDef>>,
     /// `registrationCompleteToken` (Reference)
-    #[serde(default)]
     pub registration_complete_token: Option<CigGuid>,
     /// `registerState` (WeakPointer)
-    #[serde(default)]
     pub register_state: Option<Handle<SInteractionState>>,
     /// `registrationCompleteState` (WeakPointer)
-    #[serde(default)]
     pub registration_complete_state: Option<Handle<SInteractionState>>,
     /// `useState` (WeakPointer)
-    #[serde(default)]
     pub use_state: Option<Handle<SInteractionState>>,
     /// `processingState` (WeakPointer)
-    #[serde(default)]
     pub processing_state: Option<Handle<SInteractionState>>,
     /// `checkoutItemsState` (WeakPointer)
-    #[serde(default)]
     pub checkout_items_state: Option<Handle<SInteractionState>>,
     /// `armourerRequestTimeout` (Single)
-    #[serde(default)]
     pub armourer_request_timeout: f32,
 }
 
@@ -6333,10 +5445,8 @@ impl<'a> Extract<'a> for ArmouryTerminalParams {
 
 /// DCB type: `LegacyCraftingRecipeList_Direct`
 /// Inherits from: `LegacyCraftingRecipeList_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LegacyCraftingRecipeList_Direct {
     /// `recipes` (StrongPointer (array))
-    #[serde(default)]
     pub recipes: Vec<LegacyCraftingRecipeDef_BasePtr>,
 }
 
@@ -6361,151 +5471,102 @@ impl<'a> Extract<'a> for LegacyCraftingRecipeList_Direct {
 
 /// DCB type: `GroundVehicleAudioComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GroundVehicleAudioComponentParams {
     /// `engineSoundPosition` (String)
-    #[serde(default)]
     pub engine_sound_position: String,
     /// `engineStartupOneShot` (Class)
-    #[serde(default)]
     pub engine_startup_one_shot: Option<Handle<GlobalResourceAudio>>,
     /// `engineRunLoopStart` (Class)
-    #[serde(default)]
     pub engine_run_loop_start: Option<Handle<GlobalResourceAudio>>,
     /// `engineRunLoopStop` (Class)
-    #[serde(default)]
     pub engine_run_loop_stop: Option<Handle<GlobalResourceAudio>>,
     /// `hornSoundPosition` (String)
-    #[serde(default)]
     pub horn_sound_position: String,
     /// `hornLoopStart` (Class)
-    #[serde(default)]
     pub horn_loop_start: Option<Handle<GlobalResourceAudio>>,
     /// `hornLoopStop` (Class)
-    #[serde(default)]
     pub horn_loop_stop: Option<Handle<GlobalResourceAudio>>,
     /// `suspensionBumpSound` (Class)
-    #[serde(default)]
     pub suspension_bump_sound: Option<Handle<GlobalResourceAudio>>,
     /// `gearChangeSound` (Class)
-    #[serde(default)]
     pub gear_change_sound: Option<Handle<GlobalResourceAudio>>,
     /// `throttleOnSound` (Class)
-    #[serde(default)]
     pub throttle_on_sound: Option<Handle<GlobalResourceAudio>>,
     /// `throttleOffSound` (Class)
-    #[serde(default)]
     pub throttle_off_sound: Option<Handle<GlobalResourceAudio>>,
     /// `damagedSound` (Class)
-    #[serde(default)]
     pub damaged_sound: Option<Handle<GlobalResourceAudio>>,
     /// `destroyedSound` (Class)
-    #[serde(default)]
     pub destroyed_sound: Option<Handle<GlobalResourceAudio>>,
     /// `boostStartTrigger` (Class)
-    #[serde(default)]
     pub boost_start_trigger: Option<Handle<GlobalResourceAudio>>,
     /// `boostStopTrigger` (Class)
-    #[serde(default)]
     pub boost_stop_trigger: Option<Handle<GlobalResourceAudio>>,
     /// `speedRtpc` (Class)
-    #[serde(default)]
     pub speed_rtpc: Option<Handle<AudioRtpc>>,
     /// `throttleRtpc` (Class)
-    #[serde(default)]
     pub throttle_rtpc: Option<Handle<AudioRtpc>>,
     /// `throttleLoadRtpc` (Class)
-    #[serde(default)]
     pub throttle_load_rtpc: Option<Handle<AudioRtpc>>,
     /// `throttleOnAtLoadRtpc` (Class)
-    #[serde(default)]
     pub throttle_on_at_load_rtpc: Option<Handle<AudioRtpc>>,
     /// `throttleOffAtLoadRtpc` (Class)
-    #[serde(default)]
     pub throttle_off_at_load_rtpc: Option<Handle<AudioRtpc>>,
     /// `rpmRtpc` (Class)
-    #[serde(default)]
     pub rpm_rtpc: Option<Handle<AudioRtpc>>,
     /// `rpmLoadRtpc` (Class)
-    #[serde(default)]
     pub rpm_load_rtpc: Option<Handle<AudioRtpc>>,
     /// `rpmAccelerationRtpc` (Class)
-    #[serde(default)]
     pub rpm_acceleration_rtpc: Option<Handle<AudioRtpc>>,
     /// `slipRtpc` (Class)
-    #[serde(default)]
     pub slip_rtpc: Option<Handle<AudioRtpc>>,
     /// `slipForwardsRtpc` (Class)
-    #[serde(default)]
     pub slip_forwards_rtpc: Option<Handle<AudioRtpc>>,
     /// `slipLateralRtpc` (Class)
-    #[serde(default)]
     pub slip_lateral_rtpc: Option<Handle<AudioRtpc>>,
     /// `steerRtpc` (Class)
-    #[serde(default)]
     pub steer_rtpc: Option<Handle<AudioRtpc>>,
     /// `steerStrainRtpc` (Class)
-    #[serde(default)]
     pub steer_strain_rtpc: Option<Handle<AudioRtpc>>,
     /// `groundContactsRtpc` (Class)
-    #[serde(default)]
     pub ground_contacts_rtpc: Option<Handle<AudioRtpc>>,
     /// `airTimeRtpc` (Class)
-    #[serde(default)]
     pub air_time_rtpc: Option<Handle<AudioRtpc>>,
     /// `suspensionCompressionRtpc` (Class)
-    #[serde(default)]
     pub suspension_compression_rtpc: Option<Handle<AudioRtpc>>,
     /// `suspensionStrokeRtpc` (Class)
-    #[serde(default)]
     pub suspension_stroke_rtpc: Option<Handle<AudioRtpc>>,
     /// `bumpCompressionRtpc` (Class)
-    #[serde(default)]
     pub bump_compression_rtpc: Option<Handle<AudioRtpc>>,
     /// `surfaceRoughnessRtpc` (Class)
-    #[serde(default)]
     pub surface_roughness_rtpc: Option<Handle<AudioRtpc>>,
     /// `boostDurationRtpc` (Class)
-    #[serde(default)]
     pub boost_duration_rtpc: Option<Handle<AudioRtpc>>,
     /// `remainingBoostRtpc` (Class)
-    #[serde(default)]
     pub remaining_boost_rtpc: Option<Handle<AudioRtpc>>,
     /// `bumpMinSusp` (Single)
-    #[serde(default)]
     pub bump_min_susp: f32,
     /// `bumpMinSpeed` (Single)
-    #[serde(default)]
     pub bump_min_speed: f32,
     /// `bumpIntensityMult` (Single)
-    #[serde(default)]
     pub bump_intensity_mult: f32,
     /// `bumpMinTime` (Single)
-    #[serde(default)]
     pub bump_min_time: f32,
     /// `throttleLoadLerpUpTime` (Single)
-    #[serde(default)]
     pub throttle_load_lerp_up_time: f32,
     /// `throttleLoadLerpDownTime` (Single)
-    #[serde(default)]
     pub throttle_load_lerp_down_time: f32,
     /// `skidLerpSpeed` (Single)
-    #[serde(default)]
     pub skid_lerp_speed: f32,
     /// `skidCentrifugalFactor` (Single)
-    #[serde(default)]
     pub skid_centrifugal_factor: f32,
     /// `skidBrakeFactor` (Single)
-    #[serde(default)]
     pub skid_brake_factor: f32,
     /// `skidPowerLockFactor` (Single)
-    #[serde(default)]
     pub skid_power_lock_factor: f32,
     /// `skidLateralFactor` (Single)
-    #[serde(default)]
     pub skid_lateral_factor: f32,
     /// `skidForwardFactor` (Single)
-    #[serde(default)]
     pub skid_forward_factor: f32,
 }
 
@@ -6674,7 +5735,6 @@ impl<'a> Extract<'a> for GroundVehicleAudioComponentParams {
 
 /// DCB type: `SEntityObjectCharacterComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SEntityObjectCharacterComponentParams {
 }
 
@@ -6693,7 +5753,6 @@ impl<'a> Extract<'a> for SEntityObjectCharacterComponentParams {
 
 /// DCB type: `SSubstitutionProxyParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SSubstitutionProxyParams {
 }
 
@@ -6712,7 +5771,6 @@ impl<'a> Extract<'a> for SSubstitutionProxyParams {
 
 /// DCB type: `SEntityNodeProxyParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SEntityNodeProxyParams {
 }
 
@@ -6731,7 +5789,6 @@ impl<'a> Extract<'a> for SEntityNodeProxyParams {
 
 /// DCB type: `SClipVolumeProxyParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SClipVolumeProxyParams {
 }
 
@@ -6750,7 +5807,6 @@ impl<'a> Extract<'a> for SClipVolumeProxyParams {
 
 /// DCB type: `SScriptProxyParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SScriptProxyParams {
 }
 
@@ -6769,7 +5825,6 @@ impl<'a> Extract<'a> for SScriptProxyParams {
 
 /// DCB type: `DynamicInstancePropertiesParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DynamicInstancePropertiesParams {
 }
 
@@ -6788,7 +5843,6 @@ impl<'a> Extract<'a> for DynamicInstancePropertiesParams {
 
 /// DCB type: `LifetimeDebugParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LifetimeDebugParams {
 }
 
@@ -6807,46 +5861,32 @@ impl<'a> Extract<'a> for LifetimeDebugParams {
 
 /// DCB type: `FiringRangeParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct FiringRangeParams {
     /// `authorizationCondition` (Class)
-    #[serde(default)]
     pub authorization_condition: Option<Handle<SecurityClearanceConditions>>,
     /// `authorizedState` (WeakPointer)
-    #[serde(default)]
     pub authorized_state: Option<Handle<SInteractionState>>,
     /// `nonAuthorizedState` (WeakPointer)
-    #[serde(default)]
     pub non_authorized_state: Option<Handle<SInteractionState>>,
     /// `offState` (WeakPointer)
-    #[serde(default)]
     pub off_state: Option<Handle<SInteractionState>>,
     /// `allowedWeapons` (Class (array))
-    #[serde(default)]
     pub allowed_weapons: Vec<Handle<FiringRangeWeaponItem>>,
     /// `weaponTagBlackList` (Reference (array))
-    #[serde(default)]
     pub weapon_tag_black_list: Vec<CigGuid>,
     /// `actionAreaEntity` (Class)
-    #[serde(default)]
     pub action_area_entity: Option<Handle<EntityReferenceDef>>,
     /// `targetPracticeScenario` (Reference)
-    #[serde(default)]
     pub target_practice_scenario: Option<CigGuid>,
     /// `targetPracticeFinishedTime` (Single)
-    #[serde(default)]
     pub target_practice_finished_time: f32,
     /// `completedAllAchievement` (Reference)
-    #[serde(default)]
     pub completed_all_achievement: Option<CigGuid>,
     /// `topPlaceInAllScenariosAchievement` (Reference)
-    #[serde(default)]
     pub top_place_in_all_scenarios_achievement: Option<CigGuid>,
     /// `weaponEquipDelay` (Single)
-    #[serde(default)]
     pub weapon_equip_delay: f32,
     /// `leftAreaTimeout` (Single)
-    #[serde(default)]
     pub left_area_timeout: f32,
 }
 
@@ -6900,31 +5940,22 @@ impl<'a> Extract<'a> for FiringRangeParams {
 }
 
 /// DCB type: `FiringRangeWeaponItem`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct FiringRangeWeaponItem {
     /// `weaponName` (Locale)
-    #[serde(default)]
     pub weapon_name: LocaleKey,
     /// `tag` (Reference)
-    #[serde(default)]
     pub tag: Option<CigGuid>,
     /// `basicScenario` (Reference)
-    #[serde(default)]
     pub basic_scenario: Option<CigGuid>,
     /// `advancedScenario` (Reference)
-    #[serde(default)]
     pub advanced_scenario: Option<CigGuid>,
     /// `tokensToBecomeVisible` (Reference (array))
-    #[serde(default)]
     pub tokens_to_become_visible: Vec<CigGuid>,
     /// `tokensToBecomeUnlocked` (Reference (array))
-    #[serde(default)]
     pub tokens_to_become_unlocked: Vec<CigGuid>,
     /// `defaultDisplayEntity` (Reference)
-    #[serde(default)]
     pub default_display_entity: Option<CigGuid>,
     /// `equipText` (Locale)
-    #[serde(default)]
     pub equip_text: LocaleKey,
 }
 
@@ -6955,22 +5986,16 @@ impl<'a> Extract<'a> for FiringRangeWeaponItem {
 
 /// DCB type: `GravityBaseParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GravityBaseParams {
     /// `active` (Boolean)
-    #[serde(default)]
     pub active: bool,
     /// `uniform` (Boolean)
-    #[serde(default)]
     pub uniform: bool,
     /// `fallOffInner` (Single)
-    #[serde(default)]
     pub fall_off_inner: f32,
     /// `gravityMagnitude` (Single)
-    #[serde(default)]
     pub gravity_magnitude: f32,
     /// `gravityDirection` (Class)
-    #[serde(default)]
     pub gravity_direction: Option<Handle<Vec3>>,
 }
 
@@ -6997,10 +6022,8 @@ impl<'a> Extract<'a> for GravityBaseParams {
 
 /// DCB type: `HarvestableTagListString`
 /// Inherits from: `HarvestableTagListBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct HarvestableTagListString {
     /// `tags` (String)
-    #[serde(default)]
     pub tags: String,
 }
 
@@ -7020,10 +6043,8 @@ impl<'a> Extract<'a> for HarvestableTagListString {
 
 /// DCB type: `SubHarvestableMultiConfigRef`
 /// Inherits from: `SubHarvestableConfigBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SubHarvestableMultiConfigRef {
     /// `multiConfigRef` (Reference)
-    #[serde(default)]
     pub multi_config_ref: Option<CigGuid>,
 }
 
@@ -7043,10 +6064,8 @@ impl<'a> Extract<'a> for SubHarvestableMultiConfigRef {
 
 /// DCB type: `HarvestableAreaTypeManualOverride`
 /// Inherits from: `HarvestableAreaTypeBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct HarvestableAreaTypeManualOverride {
     /// `tag` (Reference)
-    #[serde(default)]
     pub tag: Option<CigGuid>,
 }
 
@@ -7066,13 +6085,10 @@ impl<'a> Extract<'a> for HarvestableAreaTypeManualOverride {
 
 /// DCB type: `LinearModifierInterpolator`
 /// Inherits from: `ModifierInterpolator`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LinearModifierInterpolator {
     /// `startTime` (Single)
-    #[serde(default)]
     pub start_time: f32,
     /// `duration` (Single)
-    #[serde(default)]
     pub duration: f32,
 }
 
@@ -7093,16 +6109,12 @@ impl<'a> Extract<'a> for LinearModifierInterpolator {
 
 /// DCB type: `BezierModifierInterpolator`
 /// Inherits from: `ModifierInterpolator`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BezierModifierInterpolator {
     /// `startTime` (Single)
-    #[serde(default)]
     pub start_time: f32,
     /// `duration` (Single)
-    #[serde(default)]
     pub duration: f32,
     /// `curve` (Class)
-    #[serde(default)]
     pub curve: Option<Handle<BezierCurve>>,
 }
 
@@ -7127,10 +6139,8 @@ impl<'a> Extract<'a> for BezierModifierInterpolator {
 
 /// DCB type: `LifetimeControlledItemModifierParams`
 /// Inherits from: `BaseItemModifierParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LifetimeControlledItemModifierParams {
     /// `modifierLifetime` (StrongPointer)
-    #[serde(default)]
     pub modifier_lifetime: Option<ItemModifierLifetimePtr>,
 }
 
@@ -7153,13 +6163,10 @@ impl<'a> Extract<'a> for LifetimeControlledItemModifierParams {
 
 /// DCB type: `DelayedModifierTriggerParams`
 /// Inherits from: `BaseItemModifierParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DelayedModifierTriggerParams {
     /// `delay` (Single)
-    #[serde(default)]
     pub delay: f32,
     /// `modifier` (StrongPointer)
-    #[serde(default)]
     pub modifier: Option<BaseItemModifierParamsPtr>,
 }
 
@@ -7183,13 +6190,10 @@ impl<'a> Extract<'a> for DelayedModifierTriggerParams {
 
 /// DCB type: `ItemResourceRoomModifierParams`
 /// Inherits from: `LifetimeControlledItemModifierParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ItemResourceRoomModifierParams {
     /// `modifierLifetime` (StrongPointer)
-    #[serde(default)]
     pub modifier_lifetime: Option<ItemModifierLifetimePtr>,
     /// `resourceModifiers` (Class)
-    #[serde(default)]
     pub resource_modifiers: Option<Handle<ItemResourceModifier>>,
 }
 
@@ -7216,13 +6220,10 @@ impl<'a> Extract<'a> for ItemResourceRoomModifierParams {
 
 /// DCB type: `ItemSignatureModifierParams`
 /// Inherits from: `LifetimeControlledItemModifierParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ItemSignatureModifierParams {
     /// `modifierLifetime` (StrongPointer)
-    #[serde(default)]
     pub modifier_lifetime: Option<ItemModifierLifetimePtr>,
     /// `signatureSizeMultiplier` (Single)
-    #[serde(default)]
     pub signature_size_multiplier: f32,
 }
 
@@ -7246,13 +6247,10 @@ impl<'a> Extract<'a> for ItemSignatureModifierParams {
 
 /// DCB type: `ItemHeatModifierParams`
 /// Inherits from: `LifetimeControlledItemModifierParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ItemHeatModifierParams {
     /// `modifierLifetime` (StrongPointer)
-    #[serde(default)]
     pub modifier_lifetime: Option<ItemModifierLifetimePtr>,
     /// `heatGenerationMultiplier` (Single)
-    #[serde(default)]
     pub heat_generation_multiplier: f32,
 }
 
@@ -7276,31 +6274,22 @@ impl<'a> Extract<'a> for ItemHeatModifierParams {
 
 /// DCB type: `SJumpTunnelMeshParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SJumpTunnelMeshParams {
     /// `widthRange` (Class)
-    #[serde(default)]
     pub width_range: Option<Handle<Range>>,
     /// `heightRange` (Class)
-    #[serde(default)]
     pub height_range: Option<Handle<Range>>,
     /// `entryExitRadius` (Single)
-    #[serde(default)]
     pub entry_exit_radius: f32,
     /// `obstacleScale` (Single)
-    #[serde(default)]
     pub obstacle_scale: f32,
     /// `numObstacles` (Int32)
-    #[serde(default)]
     pub num_obstacles: i32,
     /// `matchFirstSpline` (Boolean)
-    #[serde(default)]
     pub match_first_spline: bool,
     /// `visualParams` (Class)
-    #[serde(default)]
     pub visual_params: Option<Handle<SJumpTunnelVisualParams>>,
     /// `cubeMapParams` (Class)
-    #[serde(default)]
     pub cube_map_params: Option<Handle<JumpTunnelCubeMapParams>>,
 }
 
@@ -7339,16 +6328,12 @@ impl<'a> Extract<'a> for SJumpTunnelMeshParams {
 
 /// DCB type: `LightFlickerWaveSphereParams`
 /// Inherits from: `LightFlickerWaveParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LightFlickerWaveSphereParams {
     /// `expanding` (Boolean)
-    #[serde(default)]
     pub expanding: bool,
     /// `maxRadius` (Single)
-    #[serde(default)]
     pub max_radius: f32,
     /// `radiusPerSecond` (Single)
-    #[serde(default)]
     pub radius_per_second: f32,
 }
 
@@ -7370,16 +6355,12 @@ impl<'a> Extract<'a> for LightFlickerWaveSphereParams {
 
 /// DCB type: `LightFlickerWaveLinearParams`
 /// Inherits from: `LightFlickerWaveParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LightFlickerWaveLinearParams {
     /// `maxDistance` (Single)
-    #[serde(default)]
     pub max_distance: f32,
     /// `speed` (Single)
-    #[serde(default)]
     pub speed: f32,
     /// `startFromEntity` (Boolean)
-    #[serde(default)]
     pub start_from_entity: bool,
 }
 
@@ -7401,22 +6382,16 @@ impl<'a> Extract<'a> for LightFlickerWaveLinearParams {
 
 /// DCB type: `LightFlickerWaveRandomParams`
 /// Inherits from: `LightFlickerWaveParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LightFlickerWaveRandomParams {
     /// `minDelay` (Single)
-    #[serde(default)]
     pub min_delay: f32,
     /// `maxDelay` (Single)
-    #[serde(default)]
     pub max_delay: f32,
     /// `minLightsPerActivation` (Int32)
-    #[serde(default)]
     pub min_lights_per_activation: i32,
     /// `maxLightsPerActivation` (Int32)
-    #[serde(default)]
     pub max_lights_per_activation: i32,
     /// `maxDuration` (Single)
-    #[serde(default)]
     pub max_duration: f32,
 }
 
@@ -7440,7 +6415,6 @@ impl<'a> Extract<'a> for LightFlickerWaveRandomParams {
 
 /// DCB type: `SLocalPlayerHapticParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SLocalPlayerHapticParams {
 }
 
@@ -7459,16 +6433,12 @@ impl<'a> Extract<'a> for SLocalPlayerHapticParams {
 
 /// DCB type: `SMisfireMeanTimeCondition`
 /// Inherits from: `SMisfireCondition`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SMisfireMeanTimeCondition {
     /// `minDegradation` (Single)
-    #[serde(default)]
     pub min_degradation: f32,
     /// `meanTimeBetweenMisfire` (Single)
-    #[serde(default)]
     pub mean_time_between_misfire: f32,
     /// `misfireArray` (WeakPointer (array))
-    #[serde(default)]
     pub misfire_array: Vec<SMisfireEffectPtr>,
 }
 
@@ -7495,10 +6465,8 @@ impl<'a> Extract<'a> for SMisfireMeanTimeCondition {
 
 /// DCB type: `SMisfireDamageValue`
 /// Inherits from: `SMisfireDamage`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SMisfireDamageValue {
     /// `health` (Single)
-    #[serde(default)]
     pub health: f32,
 }
 
@@ -7518,10 +6486,8 @@ impl<'a> Extract<'a> for SMisfireDamageValue {
 
 /// DCB type: `SMisfireDamageRatio`
 /// Inherits from: `SMisfireDamage`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SMisfireDamageRatio {
     /// `health` (Single)
-    #[serde(default)]
     pub health: f32,
 }
 
@@ -7541,10 +6507,8 @@ impl<'a> Extract<'a> for SMisfireDamageRatio {
 
 /// DCB type: `SMisfireSpecificDamage`
 /// Inherits from: `SMisfireDamage`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SMisfireSpecificDamage {
     /// `damage` (StrongPointer)
-    #[serde(default)]
     pub damage: Option<DamageBasePtr>,
 }
 
@@ -7567,16 +6531,12 @@ impl<'a> Extract<'a> for SMisfireSpecificDamage {
 
 /// DCB type: `SDamageMisfireEffect`
 /// Inherits from: `SMisfireEffect`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SDamageMisfireEffect {
     /// `effectTrigger` (Reference)
-    #[serde(default)]
     pub effect_trigger: Option<CigGuid>,
     /// `effectTag` (Reference)
-    #[serde(default)]
     pub effect_tag: Option<CigGuid>,
     /// `damageValue` (StrongPointer)
-    #[serde(default)]
     pub damage_value: Option<SMisfireDamagePtr>,
 }
 
@@ -7601,22 +6561,16 @@ impl<'a> Extract<'a> for SDamageMisfireEffect {
 
 /// DCB type: `SBurstMisfireEffect`
 /// Inherits from: `SMisfireEffect`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SBurstMisfireEffect {
     /// `effectTrigger` (Reference)
-    #[serde(default)]
     pub effect_trigger: Option<CigGuid>,
     /// `effectTag` (Reference)
-    #[serde(default)]
     pub effect_tag: Option<CigGuid>,
     /// `forcedThrottle` (Single)
-    #[serde(default)]
     pub forced_throttle: f32,
     /// `signatureModifier` (Single)
-    #[serde(default)]
     pub signature_modifier: f32,
     /// `offlineTimeToFix` (Single)
-    #[serde(default)]
     pub offline_time_to_fix: f32,
 }
 
@@ -7640,19 +6594,14 @@ impl<'a> Extract<'a> for SBurstMisfireEffect {
 
 /// DCB type: `SEntityFireMisfireEffect`
 /// Inherits from: `SMisfireEffect`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SEntityFireMisfireEffect {
     /// `effectTrigger` (Reference)
-    #[serde(default)]
     pub effect_trigger: Option<CigGuid>,
     /// `effectTag` (Reference)
-    #[serde(default)]
     pub effect_tag: Option<CigGuid>,
     /// `strength` (Single)
-    #[serde(default)]
     pub strength: f32,
     /// `flashStrength` (Single)
-    #[serde(default)]
     pub flash_strength: f32,
 }
 
@@ -7675,16 +6624,12 @@ impl<'a> Extract<'a> for SEntityFireMisfireEffect {
 
 /// DCB type: `SLegacyThrusterMisfireParams`
 /// Inherits from: `SLegacyItemMisfireParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SLegacyThrusterMisfireParams {
     /// `maxThrustRatio` (Single)
-    #[serde(default)]
     pub max_thrust_ratio: f32,
     /// `minThrustRatio` (Single)
-    #[serde(default)]
     pub min_thrust_ratio: f32,
     /// `misfireThrustToOffTimeRatio` (Single)
-    #[serde(default)]
     pub misfire_thrust_to_off_time_ratio: f32,
 }
 
@@ -7706,10 +6651,8 @@ impl<'a> Extract<'a> for SLegacyThrusterMisfireParams {
 
 /// DCB type: `ParticleEffectFixedTintingParams`
 /// Inherits from: `ParticleEffectNoneTintingParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ParticleEffectFixedTintingParams {
     /// `color` (Class)
-    #[serde(default)]
     pub color: Option<Handle<RGB>>,
 }
 
@@ -7732,16 +6675,12 @@ impl<'a> Extract<'a> for ParticleEffectFixedTintingParams {
 
 /// DCB type: `ParticleEffectRandomTintingParams`
 /// Inherits from: `ParticleEffectNoneTintingParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ParticleEffectRandomTintingParams {
     /// `color` (Class)
-    #[serde(default)]
     pub color: Option<Handle<RGB>>,
     /// `random` (Single)
-    #[serde(default)]
     pub random: f32,
     /// `randomHue` (Boolean)
-    #[serde(default)]
     pub random_hue: bool,
 }
 
@@ -7766,25 +6705,18 @@ impl<'a> Extract<'a> for ParticleEffectRandomTintingParams {
 
 /// DCB type: `PlacedSurfaceEffectsComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PlacedSurfaceEffectsComponentParams {
     /// `enable` (Boolean)
-    #[serde(default)]
     pub enable: bool,
     /// `surfaceParticleRtt` (Class)
-    #[serde(default)]
     pub surface_particle_rtt: Option<Handle<SurfaceParticleRTTParams>>,
     /// `lodDistanceScale` (Single)
-    #[serde(default)]
     pub lod_distance_scale: f32,
     /// `inactiveDuration` (Single)
-    #[serde(default)]
     pub inactive_duration: f32,
     /// `staticWetnessAmount` (Single)
-    #[serde(default)]
     pub static_wetness_amount: f32,
     /// `placedEmitters` (Class (array))
-    #[serde(default)]
     pub placed_emitters: Vec<Handle<PlacedSurfaceEffects_EmitterEntry>>,
 }
 
@@ -7817,13 +6749,10 @@ impl<'a> Extract<'a> for PlacedSurfaceEffectsComponentParams {
 }
 
 /// DCB type: `PlacedSurfaceEffects_EmitterEntry`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PlacedSurfaceEffects_EmitterEntry {
     /// `emitterStrength` (Single)
-    #[serde(default)]
     pub emitter_strength: f32,
     /// `emitterReference` (Reference)
-    #[serde(default)]
     pub emitter_reference: Option<CigGuid>,
 }
 
@@ -7844,19 +6773,14 @@ impl<'a> Extract<'a> for PlacedSurfaceEffects_EmitterEntry {
 
 /// DCB type: `ProceduralPlanetAudioAlgorithmAveragePosition`
 /// Inherits from: `ProceduralPlanetAudioAlgorithm`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ProceduralPlanetAudioAlgorithmAveragePosition {
     /// `countRtpcs` (Class (array))
-    #[serde(default)]
     pub count_rtpcs: Vec<Handle<AudioRtpc>>,
     /// `countRtpc` (Class)
-    #[serde(default)]
     pub count_rtpc: Option<Handle<AudioRtpc>>,
     /// `avgScaleRtpc` (Class)
-    #[serde(default)]
     pub avg_scale_rtpc: Option<Handle<AudioRtpc>>,
     /// `definition` (Reference)
-    #[serde(default)]
     pub definition: Option<CigGuid>,
 }
 
@@ -7891,10 +6815,8 @@ impl<'a> Extract<'a> for ProceduralPlanetAudioAlgorithmAveragePosition {
 
 /// DCB type: `ProceduralPlanetAudioAlgorithmCount`
 /// Inherits from: `ProceduralPlanetAudioAlgorithm`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ProceduralPlanetAudioAlgorithmCount {
     /// `countRtpcs` (Class (array))
-    #[serde(default)]
     pub count_rtpcs: Vec<Handle<AudioRtpc>>,
 }
 
@@ -7920,16 +6842,12 @@ impl<'a> Extract<'a> for ProceduralPlanetAudioAlgorithmCount {
 
 /// DCB type: `ProjectileTestParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ProjectileTestParams {
     /// `enabled` (Boolean)
-    #[serde(default)]
     pub enabled: bool,
     /// `showBB` (Boolean)
-    #[serde(default)]
     pub show_bb: bool,
     /// `ammoType` (Reference)
-    #[serde(default)]
     pub ammo_type: Option<CigGuid>,
 }
 
@@ -7951,7 +6869,6 @@ impl<'a> Extract<'a> for ProjectileTestParams {
 
 /// DCB type: `MovementRecordingParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MovementRecordingParams {
 }
 
@@ -7969,10 +6886,8 @@ impl<'a> Extract<'a> for MovementRecordingParams {
 }
 
 /// DCB type: `SControlledEntityGroupCondition`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SControlledEntityGroupCondition {
     /// `condition` (Reference)
-    #[serde(default)]
     pub condition: Option<CigGuid>,
 }
 
@@ -7991,13 +6906,10 @@ impl<'a> Extract<'a> for SControlledEntityGroupCondition {
 }
 
 /// DCB type: `SControlledEntityRopeAttachmentPair`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SControlledEntityRopeAttachmentPair {
     /// `ropeEntity` (Class)
-    #[serde(default)]
     pub rope_entity: Option<Handle<EntityReferenceDef>>,
     /// `attachedEntity` (Class)
-    #[serde(default)]
     pub attached_entity: Option<Handle<EntityReferenceDef>>,
 }
 
@@ -8023,10 +6935,8 @@ impl<'a> Extract<'a> for SControlledEntityRopeAttachmentPair {
 }
 
 /// DCB type: `SControlledEntityRopeAttachmentPairs`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SControlledEntityRopeAttachmentPairs {
     /// `attachmentPairs` (Class (array))
-    #[serde(default)]
     pub attachment_pairs: Vec<Handle<SControlledEntityRopeAttachmentPair>>,
 }
 
@@ -8051,34 +6961,24 @@ impl<'a> Extract<'a> for SControlledEntityRopeAttachmentPairs {
 }
 
 /// DCB type: `SControlledEntityStaticTransformParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SControlledEntityStaticTransformParams {
     /// `targetTransform` (Class)
-    #[serde(default)]
     pub target_transform: Option<Handle<EntityReferenceDef>>,
     /// `canLockPosition` (Boolean)
-    #[serde(default)]
     pub can_lock_position: bool,
     /// `canLockRotation` (Boolean)
-    #[serde(default)]
     pub can_lock_rotation: bool,
     /// `canLockScale` (Boolean)
-    #[serde(default)]
     pub can_lock_scale: bool,
     /// `movementSnapThreshold` (Single)
-    #[serde(default)]
     pub movement_snap_threshold: f32,
     /// `rotationSnapThreshold` (Single)
-    #[serde(default)]
     pub rotation_snap_threshold: f32,
     /// `scaleSnapThreshold` (Single)
-    #[serde(default)]
     pub scale_snap_threshold: f32,
     /// `uiMaxDistance` (Single)
-    #[serde(default)]
     pub ui_max_distance: f32,
     /// `uiIcon` (String)
-    #[serde(default)]
     pub ui_icon: String,
 }
 
@@ -8108,19 +7008,14 @@ impl<'a> Extract<'a> for SControlledEntityStaticTransformParams {
 }
 
 /// DCB type: `SControlledEntityAutoCraneCurve`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SControlledEntityAutoCraneCurve {
     /// `autoStartupCurve` (Reference)
-    #[serde(default)]
     pub auto_startup_curve: Option<CigGuid>,
     /// `fullStartupDistance` (Single)
-    #[serde(default)]
     pub full_startup_distance: f32,
     /// `autoSlowdownCurve` (Reference)
-    #[serde(default)]
     pub auto_slowdown_curve: Option<CigGuid>,
     /// `fullSlowdownDistance` (Single)
-    #[serde(default)]
     pub full_slowdown_distance: f32,
 }
 
@@ -8142,31 +7037,22 @@ impl<'a> Extract<'a> for SControlledEntityAutoCraneCurve {
 }
 
 /// DCB type: `SControlledEntityAutoCraneData`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SControlledEntityAutoCraneData {
     /// `autoCraneDirectionPerUnitToGround` (Class)
-    #[serde(default)]
     pub auto_crane_direction_per_unit_to_ground: Option<Handle<Vec3>>,
     /// `autoCraneDropOffset` (Class)
-    #[serde(default)]
     pub auto_crane_drop_offset: Option<Handle<Vec3>>,
     /// `autoCraneGrabOffset` (Class)
-    #[serde(default)]
     pub auto_crane_grab_offset: Option<Handle<Vec3>>,
     /// `autoCraneSpeed` (Single)
-    #[serde(default)]
     pub auto_crane_speed: f32,
     /// `autoCranePullLockTolerance` (Single)
-    #[serde(default)]
     pub auto_crane_pull_lock_tolerance: f32,
     /// `loweringCurves` (Class)
-    #[serde(default)]
     pub lowering_curves: Option<Handle<SControlledEntityAutoCraneCurve>>,
     /// `raisingCurves` (Class)
-    #[serde(default)]
     pub raising_curves: Option<Handle<SControlledEntityAutoCraneCurve>>,
     /// `secondsDelayBeforeRaise` (Single)
-    #[serde(default)]
     pub seconds_delay_before_raise: f32,
 }
 
@@ -8207,43 +7093,30 @@ impl<'a> Extract<'a> for SControlledEntityAutoCraneData {
 }
 
 /// DCB type: `SControlledEntityDynamicTransformParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SControlledEntityDynamicTransformParams {
     /// `dynamicTargets` (Class (array))
-    #[serde(default)]
     pub dynamic_targets: Vec<Handle<EntityReferenceDef>>,
     /// `classTargets` (Reference (array))
-    #[serde(default)]
     pub class_targets: Vec<CigGuid>,
     /// `dynamicNoGrabTargets` (Class (array))
-    #[serde(default)]
     pub dynamic_no_grab_targets: Vec<Handle<EntityReferenceDef>>,
     /// `classNoGrabTargets` (Reference (array))
-    #[serde(default)]
     pub class_no_grab_targets: Vec<CigGuid>,
     /// `projectionDirection` (Class)
-    #[serde(default)]
     pub projection_direction: Option<Handle<Vec3>>,
     /// `attachmentOffset` (Class)
-    #[serde(default)]
     pub attachment_offset: Option<Handle<Vec3>>,
     /// `pullRange` (Class)
-    #[serde(default)]
     pub pull_range: Option<Handle<Vec3>>,
     /// `pullStrength` (Single)
-    #[serde(default)]
     pub pull_strength: f32,
     /// `pullReferenceEntity` (Class)
-    #[serde(default)]
     pub pull_reference_entity: Option<Handle<EntityReferenceDef>>,
     /// `grabRange` (Single)
-    #[serde(default)]
     pub grab_range: f32,
     /// `canGrab` (Boolean)
-    #[serde(default)]
     pub can_grab: bool,
     /// `autoCraneData` (Class)
-    #[serde(default)]
     pub auto_crane_data: Option<Handle<SControlledEntityAutoCraneData>>,
 }
 
@@ -8304,28 +7177,20 @@ impl<'a> Extract<'a> for SControlledEntityDynamicTransformParams {
 }
 
 /// DCB type: `SControlledEntityTransformParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SControlledEntityTransformParams {
     /// `axisMovementSpeed` (Class)
-    #[serde(default)]
     pub axis_movement_speed: Option<Handle<Vec3>>,
     /// `axisRotationSpeed` (Single)
-    #[serde(default)]
     pub axis_rotation_speed: f32,
     /// `scaleSpeed` (Single)
-    #[serde(default)]
     pub scale_speed: f32,
     /// `minScale` (Single)
-    #[serde(default)]
     pub min_scale: f32,
     /// `maxScale` (Single)
-    #[serde(default)]
     pub max_scale: f32,
     /// `staticTargets` (Class (array))
-    #[serde(default)]
     pub static_targets: Vec<Handle<SControlledEntityStaticTransformParams>>,
     /// `dynamicTargetParams` (Class)
-    #[serde(default)]
     pub dynamic_target_params: Option<Handle<SControlledEntityDynamicTransformParams>>,
 }
 
@@ -8362,19 +7227,14 @@ impl<'a> Extract<'a> for SControlledEntityTransformParams {
 }
 
 /// DCB type: `SControlledEntityIFCSParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SControlledEntityIFCSParams {
     /// `enableIFCSControl` (Boolean)
-    #[serde(default)]
     pub enable_ifcscontrol: bool,
     /// `boundContainmentForce` (Single)
-    #[serde(default)]
     pub bound_containment_force: f32,
     /// `alignmentSpeed` (Single)
-    #[serde(default)]
     pub alignment_speed: f32,
     /// `alignmentRange` (Single)
-    #[serde(default)]
     pub alignment_range: f32,
 }
 
@@ -8396,25 +7256,18 @@ impl<'a> Extract<'a> for SControlledEntityIFCSParams {
 }
 
 /// DCB type: `SControlledEntityParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SControlledEntityParams {
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
     /// `entity` (Class)
-    #[serde(default)]
     pub entity: Option<Handle<EntityReferenceDef>>,
     /// `transformParams` (Class)
-    #[serde(default)]
     pub transform_params: Option<Handle<SControlledEntityTransformParams>>,
     /// `toggleKinematicPhysics` (Boolean)
-    #[serde(default)]
     pub toggle_kinematic_physics: bool,
     /// `forceAwake` (Boolean)
-    #[serde(default)]
     pub force_awake: bool,
     /// `ifcsParams` (Class)
-    #[serde(default)]
     pub ifcs_params: Option<Handle<SControlledEntityIFCSParams>>,
 }
 
@@ -8447,19 +7300,14 @@ impl<'a> Extract<'a> for SControlledEntityParams {
 }
 
 /// DCB type: `SAutoCraneParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SAutoCraneParams {
     /// `autoCrane` (Boolean)
-    #[serde(default)]
     pub auto_crane: bool,
     /// `positionReference` (Class)
-    #[serde(default)]
     pub position_reference: Option<Handle<EntityReferenceDef>>,
     /// `aiCheckDirection` (Class)
-    #[serde(default)]
     pub ai_check_direction: Option<Handle<Vec3>>,
     /// `checkRadius` (Single)
-    #[serde(default)]
     pub check_radius: f32,
 }
 
@@ -8487,19 +7335,14 @@ impl<'a> Extract<'a> for SAutoCraneParams {
 }
 
 /// DCB type: `SControlledEntityCameraParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SControlledEntityCameraParams {
     /// `cameraRecord` (Reference)
-    #[serde(default)]
     pub camera_record: Option<CigGuid>,
     /// `groupCameraEntity` (Class)
-    #[serde(default)]
     pub group_camera_entity: Option<Handle<EntityReferenceDef>>,
     /// `uiLayerIndex` (Int32)
-    #[serde(default)]
     pub ui_layer_index: i32,
     /// `uiLayerViewName` (String)
-    #[serde(default)]
     pub ui_layer_view_name: String,
 }
 
@@ -8524,13 +7367,10 @@ impl<'a> Extract<'a> for SControlledEntityCameraParams {
 }
 
 /// DCB type: `SOverrideControlledEntityCameraParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SOverrideControlledEntityCameraParams {
     /// `shouldOverride` (Boolean)
-    #[serde(default)]
     pub should_override: bool,
     /// `cameraData` (Class)
-    #[serde(default)]
     pub camera_data: Option<Handle<SControlledEntityCameraParams>>,
 }
 
@@ -8553,19 +7393,14 @@ impl<'a> Extract<'a> for SOverrideControlledEntityCameraParams {
 }
 
 /// DCB type: `SRemoteRigidEntityControlledEntitiesParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SRemoteRigidEntityControlledEntitiesParams {
     /// `entities` (Class (array))
-    #[serde(default)]
     pub entities: Vec<Handle<SControlledEntityParams>>,
     /// `autoCraneData` (Class)
-    #[serde(default)]
     pub auto_crane_data: Option<Handle<SAutoCraneParams>>,
     /// `cameraOverrideData` (Class)
-    #[serde(default)]
     pub camera_override_data: Option<Handle<SOverrideControlledEntityCameraParams>>,
     /// `accessCondition` (Class)
-    #[serde(default)]
     pub access_condition: Option<Handle<SControlledEntityGroupCondition>>,
 }
 
@@ -8602,10 +7437,8 @@ impl<'a> Extract<'a> for SRemoteRigidEntityControlledEntitiesParams {
 }
 
 /// DCB type: `SRemoteRigidEntityControllerControlledGroupParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SRemoteRigidEntityControllerControlledGroupParams {
     /// `entityGroups` (Class (array))
-    #[serde(default)]
     pub entity_groups: Vec<Handle<SRemoteRigidEntityControlledEntitiesParams>>,
 }
 
@@ -8630,13 +7463,10 @@ impl<'a> Extract<'a> for SRemoteRigidEntityControllerControlledGroupParams {
 }
 
 /// DCB type: `SRemoteRigidEntityControllerOneHandedParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SRemoteRigidEntityControllerOneHandedParams {
     /// `boneToIgnore` (String)
-    #[serde(default)]
     pub bone_to_ignore: String,
     /// `animationVariableToBlock` (String)
-    #[serde(default)]
     pub animation_variable_to_block: String,
 }
 
@@ -8657,91 +7487,62 @@ impl<'a> Extract<'a> for SRemoteRigidEntityControllerOneHandedParams {
 
 /// DCB type: `SRemoteRigidEntityControllerParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SRemoteRigidEntityControllerParams {
     /// `animStartInteraction` (WeakPointer)
-    #[serde(default)]
     pub anim_start_interaction: Option<Handle<SSharedInteractionParams>>,
     /// `oneHandedAnimStartInteraction` (WeakPointer)
-    #[serde(default)]
     pub one_handed_anim_start_interaction: Option<Handle<SSharedInteractionParams>>,
     /// `animStopInteraction` (WeakPointer)
-    #[serde(default)]
     pub anim_stop_interaction: Option<Handle<SSharedInteractionParams>>,
     /// `startUsingInteraction` (WeakPointer)
-    #[serde(default)]
     pub start_using_interaction: Option<Handle<SSharedInteractionParams>>,
     /// `action1Interaction` (WeakPointer)
-    #[serde(default)]
     pub action1_interaction: Option<Handle<SSharedInteractionParams>>,
     /// `action2Interaction` (WeakPointer)
-    #[serde(default)]
     pub action2_interaction: Option<Handle<SSharedInteractionParams>>,
     /// `grabInteraction` (WeakPointer)
-    #[serde(default)]
     pub grab_interaction: Option<Handle<SSharedInteractionParams>>,
     /// `releaseInteraction` (WeakPointer)
-    #[serde(default)]
     pub release_interaction: Option<Handle<SSharedInteractionParams>>,
     /// `exitInteraction` (WeakPointer)
-    #[serde(default)]
     pub exit_interaction: Option<Handle<SSharedInteractionParams>>,
     /// `functionalState` (WeakPointer)
-    #[serde(default)]
     pub functional_state: Option<Handle<SInteractionState>>,
     /// `brokenState` (WeakPointer)
-    #[serde(default)]
     pub broken_state: Option<Handle<SInteractionState>>,
     /// `preventGrabbingState` (WeakPointer)
-    #[serde(default)]
     pub prevent_grabbing_state: Option<Handle<SInteractionState>>,
     /// `preventDroppingState` (WeakPointer)
-    #[serde(default)]
     pub prevent_dropping_state: Option<Handle<SInteractionState>>,
     /// `controlledGroups` (Class)
-    #[serde(default)]
     pub controlled_groups: Option<Handle<SRemoteRigidEntityControllerControlledGroupParams>>,
     /// `cameraData` (Class)
-    #[serde(default)]
     pub camera_data: Option<Handle<SControlledEntityCameraParams>>,
     /// `movementLerpSpeed` (Single)
-    #[serde(default)]
     pub movement_lerp_speed: f32,
     /// `rotationLerpSpeed` (Single)
-    #[serde(default)]
     pub rotation_lerp_speed: f32,
     /// `scaleLerpSpeed` (Single)
-    #[serde(default)]
     pub scale_lerp_speed: f32,
     /// `oneHandedParams` (Class)
-    #[serde(default)]
     pub one_handed_params: Option<Handle<SRemoteRigidEntityControllerOneHandedParams>>,
     /// `forwardBackwardMovement` (Class)
-    #[serde(default)]
     pub forward_backward_movement: Option<Handle<Vec3>>,
     /// `sideToSideMovement` (Class)
-    #[serde(default)]
     pub side_to_side_movement: Option<Handle<Vec3>>,
     /// `upDownMovement` (Class)
-    #[serde(default)]
     pub up_down_movement: Option<Handle<Vec3>>,
     /// `keyboardRotation` (Class)
-    #[serde(default)]
     pub keyboard_rotation: Option<Handle<Vec3>>,
     /// `mouseLeftRightRotation` (Class)
-    #[serde(default)]
     pub mouse_left_right_rotation: Option<Handle<Vec3>>,
     /// `mouseUpDownRotation` (Class)
-    #[serde(default)]
     pub mouse_up_down_rotation: Option<Handle<Vec3>>,
     /// `rotationDeadzone` (Single)
-    #[serde(default)]
     pub rotation_deadzone: f32,
     /// `relevantRopeAttachments` (Class)
-    #[serde(default)]
     pub relevant_rope_attachments: Option<Handle<SControlledEntityRopeAttachmentPairs>>,
     /// `objectSearchRange` (Single)
-    #[serde(default)]
     pub object_search_range: f32,
 }
 
@@ -8857,25 +7658,18 @@ impl<'a> Extract<'a> for SRemoteRigidEntityControllerParams {
 
 /// DCB type: `SSimpodComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SSimpodComponentParams {
     /// `startUsingInteraction` (WeakPointer)
-    #[serde(default)]
     pub start_using_interaction: Option<Handle<SSharedInteractionParams>>,
     /// `screenLayerIndex` (Int32)
-    #[serde(default)]
     pub screen_layer_index: i32,
     /// `screenViewName` (String)
-    #[serde(default)]
     pub screen_view_name: String,
     /// `availableSimulations` (Reference (array))
-    #[serde(default)]
     pub available_simulations: Vec<CigGuid>,
     /// `exitInteraction` (WeakPointer)
-    #[serde(default)]
     pub exit_interaction: Option<Handle<SSharedInteractionParams>>,
     /// `cameraExposure` (Single)
-    #[serde(default)]
     pub camera_exposure: f32,
 }
 
@@ -8908,19 +7702,14 @@ impl<'a> Extract<'a> for SSimpodComponentParams {
 
 /// DCB type: `EntityComponentSpawnClosetParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EntityComponentSpawnClosetParams {
     /// `supportedTags` (Class)
-    #[serde(default)]
     pub supported_tags: Option<Handle<TagList>>,
     /// `maxSpawnsPerMinute` (Single)
-    #[serde(default)]
     pub max_spawns_per_minute: f32,
     /// `requestHoldSeconds` (Single)
-    #[serde(default)]
     pub request_hold_seconds: f32,
     /// `defaultDoorsOpen` (Boolean)
-    #[serde(default)]
     pub default_doors_open: bool,
 }
 
@@ -8946,7 +7735,6 @@ impl<'a> Extract<'a> for EntityComponentSpawnClosetParams {
 
 /// DCB type: `EntityComponentSpawnClosetNPCParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EntityComponentSpawnClosetNPCParams {
 }
 
@@ -8965,19 +7753,14 @@ impl<'a> Extract<'a> for EntityComponentSpawnClosetNPCParams {
 
 /// DCB type: `EntityComponentSpawnClosetTransitManagerParams`
 /// Inherits from: `EntityComponentSpawnClosetParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EntityComponentSpawnClosetTransitManagerParams {
     /// `supportedTags` (Class)
-    #[serde(default)]
     pub supported_tags: Option<Handle<TagList>>,
     /// `maxSpawnsPerMinute` (Single)
-    #[serde(default)]
     pub max_spawns_per_minute: f32,
     /// `requestHoldSeconds` (Single)
-    #[serde(default)]
     pub request_hold_seconds: f32,
     /// `defaultDoorsOpen` (Boolean)
-    #[serde(default)]
     pub default_doors_open: bool,
 }
 
@@ -9003,7 +7786,6 @@ impl<'a> Extract<'a> for EntityComponentSpawnClosetTransitManagerParams {
 
 /// DCB type: `TileManagerParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct TileManagerParams {
 }
 
@@ -9022,7 +7804,6 @@ impl<'a> Extract<'a> for TileManagerParams {
 
 /// DCB type: `VendingMachineItemParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct VendingMachineItemParams {
 }
 
@@ -9041,10 +7822,8 @@ impl<'a> Extract<'a> for VendingMachineItemParams {
 
 /// DCB type: `SCItemControlCondition_Tag`
 /// Inherits from: `SCItemControlCondition_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCItemControlCondition_Tag {
     /// `tag` (String)
-    #[serde(default)]
     pub tag: String,
 }
 
@@ -9064,10 +7843,8 @@ impl<'a> Extract<'a> for SCItemControlCondition_Tag {
 
 /// DCB type: `SCItemControlCondition_AllowedByRemoteTurretView`
 /// Inherits from: `SCItemControlCondition_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCItemControlCondition_AllowedByRemoteTurretView {
     /// `turretTags` (String (array))
-    #[serde(default)]
     pub turret_tags: Vec<String>,
 }
 
@@ -9089,10 +7866,8 @@ impl<'a> Extract<'a> for SCItemControlCondition_AllowedByRemoteTurretView {
 
 /// DCB type: `SCItemControlCondition_And`
 /// Inherits from: `SCItemControlCondition_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCItemControlCondition_And {
     /// `subConditions` (StrongPointer (array))
-    #[serde(default)]
     pub sub_conditions: Vec<SCItemControlCondition_BasePtr>,
 }
 
@@ -9116,19 +7891,14 @@ impl<'a> Extract<'a> for SCItemControlCondition_And {
 }
 
 /// DCB type: `SCItemConditionalPriority`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCItemConditionalPriority {
     /// `itemType` (EnumChoice)
-    #[serde(default)]
     pub item_type: EItemType,
     /// `defaultPriority` (Byte)
-    #[serde(default)]
     pub default_priority: u32,
     /// `priorityWhenConditionMet` (Byte)
-    #[serde(default)]
     pub priority_when_condition_met: u32,
     /// `condition` (StrongPointer)
-    #[serde(default)]
     pub condition: Option<SCItemControlCondition_BasePtr>,
 }
 
@@ -9154,10 +7924,8 @@ impl<'a> Extract<'a> for SCItemConditionalPriority {
 
 /// DCB type: `SCItemConditionalControllableGroupParams`
 /// Inherits from: `SCItemControlBaseParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCItemConditionalControllableGroupParams {
     /// `conditionalPriorities` (Class (array))
-    #[serde(default)]
     pub conditional_priorities: Vec<Handle<SCItemConditionalPriority>>,
 }
 
@@ -9183,52 +7951,36 @@ impl<'a> Extract<'a> for SCItemConditionalControllableGroupParams {
 
 /// DCB type: `SCStickyFilterComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCStickyFilterComponentParams {
     /// `movementParams` (Class)
-    #[serde(default)]
     pub movement_params: Option<Handle<StickyFilterMovementParams>>,
     /// `rotationParams` (Class)
-    #[serde(default)]
     pub rotation_params: Option<Handle<StickyFilterRotationParams>>,
     /// `autoCenterParams` (Class)
-    #[serde(default)]
     pub auto_center_params: Option<Handle<StickyFilterAutocenterParams>>,
     /// `applyLetterboxing` (Boolean)
-    #[serde(default)]
     pub apply_letterboxing: bool,
     /// `initialAngleOfApproach` (Single)
-    #[serde(default)]
     pub initial_angle_of_approach: f32,
     /// `angleOfApproachAmplitude` (Single)
-    #[serde(default)]
     pub angle_of_approach_amplitude: f32,
     /// `iconRadius` (Single)
-    #[serde(default)]
     pub icon_radius: f32,
     /// `triggerRadius` (Single)
-    #[serde(default)]
     pub trigger_radius: f32,
     /// `iconOffset` (Class)
-    #[serde(default)]
     pub icon_offset: Option<Handle<Vec3>>,
     /// `previewMovementRadius` (Boolean)
-    #[serde(default)]
     pub preview_movement_radius: bool,
     /// `previewMovementSpeed` (Boolean)
-    #[serde(default)]
     pub preview_movement_speed: bool,
     /// `previewRotationRadius` (Boolean)
-    #[serde(default)]
     pub preview_rotation_radius: bool,
     /// `previewAngleOfApproach` (Boolean)
-    #[serde(default)]
     pub preview_angle_of_approach: bool,
     /// `testFilterInEditor` (Boolean)
-    #[serde(default)]
     pub test_filter_in_editor: bool,
     /// `testAngleInEditor` (Boolean)
-    #[serde(default)]
     pub test_angle_in_editor: bool,
 }
 
@@ -9274,10 +8026,8 @@ impl<'a> Extract<'a> for SCStickyFilterComponentParams {
 
 /// DCB type: `ConversationNode_BaseNext`
 /// Inherits from: `ConversationNode_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ConversationNode_BaseNext {
     /// `next` (WeakPointer)
-    #[serde(default)]
     pub next: Option<ConversationNode_BasePtr>,
 }
 
@@ -9300,13 +8050,10 @@ impl<'a> Extract<'a> for ConversationNode_BaseNext {
 
 /// DCB type: `ConversationNode_VariableGameToken`
 /// Inherits from: `ConversationNode_BaseNext`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ConversationNode_VariableGameToken {
     /// `next` (WeakPointer)
-    #[serde(default)]
     pub next: Option<ConversationNode_BasePtr>,
     /// `setVariable` (String)
-    #[serde(default)]
     pub set_variable: String,
 }
 
@@ -9330,19 +8077,14 @@ impl<'a> Extract<'a> for ConversationNode_VariableGameToken {
 
 /// DCB type: `ConversationNode_FlowGraphEvent`
 /// Inherits from: `ConversationNode_BaseNext`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ConversationNode_FlowGraphEvent {
     /// `next` (WeakPointer)
-    #[serde(default)]
     pub next: Option<ConversationNode_BasePtr>,
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
     /// `value` (String)
-    #[serde(default)]
     pub value: String,
     /// `waitForDone` (Boolean)
-    #[serde(default)]
     pub wait_for_done: bool,
 }
 
@@ -9367,19 +8109,14 @@ impl<'a> Extract<'a> for ConversationNode_FlowGraphEvent {
 }
 
 /// DCB type: `RGBA8`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct RGBA8 {
     /// `r` (Byte)
-    #[serde(default)]
     pub r: u32,
     /// `g` (Byte)
-    #[serde(default)]
     pub g: u32,
     /// `b` (Byte)
-    #[serde(default)]
     pub b: u32,
     /// `a` (Byte)
-    #[serde(default)]
     pub a: u32,
 }
 
@@ -9402,7 +8139,6 @@ impl<'a> Extract<'a> for RGBA8 {
 
 /// DCB type: `CraftingCostContext_Base_NonRef`
 /// Inherits from: `CraftingCostContext_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CraftingCostContext_Base_NonRef {
 }
 
@@ -9421,10 +8157,8 @@ impl<'a> Extract<'a> for CraftingCostContext_Base_NonRef {
 
 /// DCB type: `CraftingCost_Base_NonRef`
 /// Inherits from: `CraftingCost_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CraftingCost_Base_NonRef {
     /// `context` (StrongPointer (array))
-    #[serde(default)]
     pub context: Vec<CraftingCostContext_BasePtr>,
 }
 
@@ -9449,10 +8183,8 @@ impl<'a> Extract<'a> for CraftingCost_Base_NonRef {
 
 /// DCB type: `CraftingCost_Base_Material`
 /// Inherits from: `CraftingCost_Base_NonRef`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CraftingCost_Base_Material {
     /// `context` (StrongPointer (array))
-    #[serde(default)]
     pub context: Vec<CraftingCostContext_BasePtr>,
 }
 
@@ -9477,13 +8209,10 @@ impl<'a> Extract<'a> for CraftingCost_Base_Material {
 
 /// DCB type: `CraftingCost_RecordRef`
 /// Inherits from: `CraftingCost_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CraftingCost_RecordRef {
     /// `context` (StrongPointer (array))
-    #[serde(default)]
     pub context: Vec<CraftingCostContext_BasePtr>,
     /// `costRecord` (Reference)
-    #[serde(default)]
     pub cost_record: Option<CigGuid>,
 }
 
@@ -9509,13 +8238,10 @@ impl<'a> Extract<'a> for CraftingCost_RecordRef {
 
 /// DCB type: `CraftingCost_Ref`
 /// Inherits from: `CraftingCost_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CraftingCost_Ref {
     /// `context` (StrongPointer (array))
-    #[serde(default)]
     pub context: Vec<CraftingCostContext_BasePtr>,
     /// `costReference` (WeakPointer)
-    #[serde(default)]
     pub cost_reference: Option<CraftingCost_Base_NonRefPtr>,
 }
 
@@ -9544,10 +8270,8 @@ impl<'a> Extract<'a> for CraftingCost_Ref {
 
 /// DCB type: `CraftingOptionEffect_Time`
 /// Inherits from: `CraftingOptionalEffect_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CraftingOptionEffect_Time {
     /// `timeMultiplier` (Single)
-    #[serde(default)]
     pub time_multiplier: f32,
 }
 
@@ -9567,7 +8291,6 @@ impl<'a> Extract<'a> for CraftingOptionEffect_Time {
 
 /// DCB type: `CraftingGameplayPropertyModifierValueRange_Base_NonRef`
 /// Inherits from: `CraftingGameplayPropertyModifierValueRange_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CraftingGameplayPropertyModifierValueRange_Base_NonRef {
 }
 
@@ -9586,7 +8309,6 @@ impl<'a> Extract<'a> for CraftingGameplayPropertyModifierValueRange_Base_NonRef 
 
 /// DCB type: `CraftingGameplayPropertyModifier_Base_NonRef`
 /// Inherits from: `CraftingGameplayPropertyModifier_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CraftingGameplayPropertyModifier_Base_NonRef {
 }
 
@@ -9605,10 +8327,8 @@ impl<'a> Extract<'a> for CraftingGameplayPropertyModifier_Base_NonRef {
 
 /// DCB type: `CraftingGameplayPropertyModifier_RecordRef`
 /// Inherits from: `CraftingGameplayPropertyModifier_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CraftingGameplayPropertyModifier_RecordRef {
     /// `gameplayPropertyModifierRecord` (Reference)
-    #[serde(default)]
     pub gameplay_property_modifier_record: Option<CigGuid>,
 }
 
@@ -9628,7 +8348,6 @@ impl<'a> Extract<'a> for CraftingGameplayPropertyModifier_RecordRef {
 
 /// DCB type: `CraftingGameplayPropertyModifiers_Base_NonRef`
 /// Inherits from: `CraftingGameplayPropertyModifiers_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CraftingGameplayPropertyModifiers_Base_NonRef {
 }
 
@@ -9647,10 +8366,8 @@ impl<'a> Extract<'a> for CraftingGameplayPropertyModifiers_Base_NonRef {
 
 /// DCB type: `CraftingGameplayPropertyModifiers_RecordRef`
 /// Inherits from: `CraftingGameplayPropertyModifiers_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CraftingGameplayPropertyModifiers_RecordRef {
     /// `gameplayPropertyModifiersRecord` (Reference)
-    #[serde(default)]
     pub gameplay_property_modifiers_record: Option<CigGuid>,
 }
 
@@ -9670,16 +8387,12 @@ impl<'a> Extract<'a> for CraftingGameplayPropertyModifiers_RecordRef {
 
 /// DCB type: `CraftingResult_Item`
 /// Inherits from: `CraftingResult_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CraftingResult_Item {
     /// `entityClass` (Reference)
-    #[serde(default)]
     pub entity_class: Option<CigGuid>,
     /// `quantity` (Int32)
-    #[serde(default)]
     pub quantity: i32,
     /// `tier` (Int32)
-    #[serde(default)]
     pub tier: i32,
 }
 
@@ -9701,13 +8414,10 @@ impl<'a> Extract<'a> for CraftingResult_Item {
 
 /// DCB type: `CraftingResult_Resource`
 /// Inherits from: `CraftingResult_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CraftingResult_Resource {
     /// `resource` (Reference)
-    #[serde(default)]
     pub resource: Option<CigGuid>,
     /// `quantity` (StrongPointer)
-    #[serde(default)]
     pub quantity: Option<SBaseCargoUnitPtr>,
 }
 
@@ -9731,10 +8441,8 @@ impl<'a> Extract<'a> for CraftingResult_Resource {
 
 /// DCB type: `CraftingRecipeCosts_RecordRef`
 /// Inherits from: `CraftingRecipeCosts_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CraftingRecipeCosts_RecordRef {
     /// `costsRecord` (Reference)
-    #[serde(default)]
     pub costs_record: Option<CigGuid>,
 }
 
@@ -9754,10 +8462,8 @@ impl<'a> Extract<'a> for CraftingRecipeCosts_RecordRef {
 
 /// DCB type: `CraftingRecipeCosts_Ref`
 /// Inherits from: `CraftingRecipeCosts_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CraftingRecipeCosts_Ref {
     /// `costsReference` (WeakPointer)
-    #[serde(default)]
     pub costs_reference: Option<CraftingRecipeCosts_Base_NonRefPtr>,
 }
 
@@ -9780,7 +8486,6 @@ impl<'a> Extract<'a> for CraftingRecipeCosts_Ref {
 
 /// DCB type: `CraftingRecipeResults_Base_NonRef`
 /// Inherits from: `CraftingRecipeResults_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CraftingRecipeResults_Base_NonRef {
 }
 
@@ -9799,10 +8504,8 @@ impl<'a> Extract<'a> for CraftingRecipeResults_Base_NonRef {
 
 /// DCB type: `CraftingRecipeResults_RecordRef`
 /// Inherits from: `CraftingRecipeResults_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CraftingRecipeResults_RecordRef {
     /// `resultsRecord` (Reference)
-    #[serde(default)]
     pub results_record: Option<CigGuid>,
 }
 
@@ -9822,10 +8525,8 @@ impl<'a> Extract<'a> for CraftingRecipeResults_RecordRef {
 
 /// DCB type: `CraftingRecipeResults_Ref`
 /// Inherits from: `CraftingRecipeResults_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CraftingRecipeResults_Ref {
     /// `resultsReference` (WeakPointer)
-    #[serde(default)]
     pub results_reference: Option<CraftingRecipeCosts_Base_NonRefPtr>,
 }
 
@@ -9848,7 +8549,6 @@ impl<'a> Extract<'a> for CraftingRecipeResults_Ref {
 
 /// DCB type: `CraftingProcessSpecificRecipeData_Base_NonRef`
 /// Inherits from: `CraftingProcessSpecificRecipeData_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CraftingProcessSpecificRecipeData_Base_NonRef {
 }
 
@@ -9867,13 +8567,10 @@ impl<'a> Extract<'a> for CraftingProcessSpecificRecipeData_Base_NonRef {
 
 /// DCB type: `CraftingProcessSpecificRecipeData_Refining`
 /// Inherits from: `CraftingProcessSpecificRecipeData_Base_NonRef`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CraftingProcessSpecificRecipeData_Refining {
     /// `rawInputQuantity` (StrongPointer)
-    #[serde(default)]
     pub raw_input_quantity: Option<SBaseCargoUnitPtr>,
     /// `refinedOutputQuantity` (StrongPointer)
-    #[serde(default)]
     pub refined_output_quantity: Option<SBaseCargoUnitPtr>,
 }
 
@@ -9900,10 +8597,8 @@ impl<'a> Extract<'a> for CraftingProcessSpecificRecipeData_Refining {
 
 /// DCB type: `CraftingRecipe_RecordRef`
 /// Inherits from: `CraftingRecipe_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CraftingRecipe_RecordRef {
     /// `recipeRecord` (Reference)
-    #[serde(default)]
     pub recipe_record: Option<CigGuid>,
 }
 
@@ -9923,10 +8618,8 @@ impl<'a> Extract<'a> for CraftingRecipe_RecordRef {
 
 /// DCB type: `CraftingRecipe_Ref`
 /// Inherits from: `CraftingRecipe_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CraftingRecipe_Ref {
     /// `recipeReference` (WeakPointer)
-    #[serde(default)]
     pub recipe_reference: Option<CraftingRecipe_Base_NonRefPtr>,
 }
 
@@ -9949,7 +8642,6 @@ impl<'a> Extract<'a> for CraftingRecipe_Ref {
 
 /// DCB type: `CraftingResearchUnlock_Base_NonRef`
 /// Inherits from: `CraftingResearchUnlock_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CraftingResearchUnlock_Base_NonRef {
 }
 
@@ -9968,7 +8660,6 @@ impl<'a> Extract<'a> for CraftingResearchUnlock_Base_NonRef {
 
 /// DCB type: `CraftingResearchUnlock`
 /// Inherits from: `CraftingResearchUnlock_Base_NonRef`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CraftingResearchUnlock {
 }
 
@@ -9987,7 +8678,6 @@ impl<'a> Extract<'a> for CraftingResearchUnlock {
 
 /// DCB type: `CraftingResearch_Base_NonRef`
 /// Inherits from: `CraftingResearch_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CraftingResearch_Base_NonRef {
 }
 
@@ -10006,7 +8696,6 @@ impl<'a> Extract<'a> for CraftingResearch_Base_NonRef {
 
 /// DCB type: `CraftingBlueprintTier_Base_NonRef`
 /// Inherits from: `CraftingBlueprintTier_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CraftingBlueprintTier_Base_NonRef {
 }
 
@@ -10025,7 +8714,6 @@ impl<'a> Extract<'a> for CraftingBlueprintTier_Base_NonRef {
 
 /// DCB type: `BlueprintCategoryAvailability_Base_NonRef`
 /// Inherits from: `BlueprintCategoryAvailability_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BlueprintCategoryAvailability_Base_NonRef {
 }
 
@@ -10044,10 +8732,8 @@ impl<'a> Extract<'a> for BlueprintCategoryAvailability_Base_NonRef {
 
 /// DCB type: `BlueprintCategoryAvailability_Ref`
 /// Inherits from: `BlueprintCategoryAvailability_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BlueprintCategoryAvailability_Ref {
     /// `availabilityRecord` (Reference)
-    #[serde(default)]
     pub availability_record: Option<CigGuid>,
 }
 
@@ -10067,7 +8753,6 @@ impl<'a> Extract<'a> for BlueprintCategoryAvailability_Ref {
 
 /// DCB type: `CraftingProcess_Base_NonRef`
 /// Inherits from: `CraftingProcess_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CraftingProcess_Base_NonRef {
 }
 
@@ -10086,16 +8771,12 @@ impl<'a> Extract<'a> for CraftingProcess_Base_NonRef {
 
 /// DCB type: `CraftingProcess_Refining`
 /// Inherits from: `CraftingProcess_Base_NonRef`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CraftingProcess_Refining {
     /// `rawInput` (Reference)
-    #[serde(default)]
     pub raw_input: Option<CigGuid>,
     /// `refinedOutput` (Reference)
-    #[serde(default)]
     pub refined_output: Option<CigGuid>,
     /// `primaryInputName` (Locale)
-    #[serde(default)]
     pub primary_input_name: LocaleKey,
 }
 
@@ -10117,10 +8798,8 @@ impl<'a> Extract<'a> for CraftingProcess_Refining {
 
 /// DCB type: `CraftingProcess_Repair`
 /// Inherits from: `CraftingProcess_Base_NonRef`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CraftingProcess_Repair {
     /// `entityClass` (Reference)
-    #[serde(default)]
     pub entity_class: Option<CigGuid>,
 }
 
@@ -10140,10 +8819,8 @@ impl<'a> Extract<'a> for CraftingProcess_Repair {
 
 /// DCB type: `CraftingProcess_Upgrade`
 /// Inherits from: `CraftingProcess_Base_NonRef`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CraftingProcess_Upgrade {
     /// `entityClass` (Reference)
-    #[serde(default)]
     pub entity_class: Option<CigGuid>,
 }
 
@@ -10163,13 +8840,10 @@ impl<'a> Extract<'a> for CraftingProcess_Upgrade {
 
 /// DCB type: `CraftingProcess_Dismantle`
 /// Inherits from: `CraftingProcess_Base_NonRef`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CraftingProcess_Dismantle {
     /// `entityClass` (Reference)
-    #[serde(default)]
     pub entity_class: Option<CigGuid>,
     /// `efficiency` (Single)
-    #[serde(default)]
     pub efficiency: f32,
 }
 
@@ -10190,7 +8864,6 @@ impl<'a> Extract<'a> for CraftingProcess_Dismantle {
 
 /// DCB type: `GenericCraftingProcess_Base_NonRef`
 /// Inherits from: `GenericCraftingProcess_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GenericCraftingProcess_Base_NonRef {
 }
 
@@ -10209,7 +8882,6 @@ impl<'a> Extract<'a> for GenericCraftingProcess_Base_NonRef {
 
 /// DCB type: `DefaultBlueprintSelection_Base_NonRef`
 /// Inherits from: `DefaultBlueprintSelection_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DefaultBlueprintSelection_Base_NonRef {
 }
 
@@ -10228,7 +8900,6 @@ impl<'a> Extract<'a> for DefaultBlueprintSelection_Base_NonRef {
 
 /// DCB type: `CraftedItemComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CraftedItemComponentParams {
 }
 
@@ -10247,13 +8918,10 @@ impl<'a> Extract<'a> for CraftedItemComponentParams {
 
 /// DCB type: `CraftingQualityDistributionUniform`
 /// Inherits from: `CraftingQualityDistribution_Base_NonRef`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CraftingQualityDistributionUniform {
     /// `min` (Int32)
-    #[serde(default)]
     pub min: i32,
     /// `max` (Int32)
-    #[serde(default)]
     pub max: i32,
 }
 
@@ -10274,7 +8942,6 @@ impl<'a> Extract<'a> for CraftingQualityDistributionUniform {
 
 /// DCB type: `CameraComponentOverrideControllerSpawnNotifierComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CameraComponentOverrideControllerSpawnNotifierComponentParams {
 }
 
@@ -10293,7 +8960,6 @@ impl<'a> Extract<'a> for CameraComponentOverrideControllerSpawnNotifierComponent
 
 /// DCB type: `GameTokenContainerParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GameTokenContainerParams {
 }
 
@@ -10312,7 +8978,6 @@ impl<'a> Extract<'a> for GameTokenContainerParams {
 
 /// DCB type: `AudioGroupComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AudioGroupComponentParams {
 }
 
@@ -10331,7 +8996,6 @@ impl<'a> Extract<'a> for AudioGroupComponentParams {
 
 /// DCB type: `EntityComponentNetworkParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EntityComponentNetworkParams {
 }
 
@@ -10350,13 +9014,10 @@ impl<'a> Extract<'a> for EntityComponentNetworkParams {
 
 /// DCB type: `RandomFloat`
 /// Inherits from: `CustomFloat`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct RandomFloat {
     /// `minimum` (Single)
-    #[serde(default)]
     pub minimum: f32,
     /// `maximum` (Single)
-    #[serde(default)]
     pub maximum: f32,
 }
 
@@ -10377,10 +9038,8 @@ impl<'a> Extract<'a> for RandomFloat {
 
 /// DCB type: `ExplosionByRecordParams`
 /// Inherits from: `ExplosionBaseParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ExplosionByRecordParams {
     /// `record` (Reference)
-    #[serde(default)]
     pub record: Option<CigGuid>,
 }
 
@@ -10400,10 +9059,8 @@ impl<'a> Extract<'a> for ExplosionByRecordParams {
 
 /// DCB type: `DefaultActionsEntityEntryCondition_NOT`
 /// Inherits from: `DefaultActionsEntityEntryCondition`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DefaultActionsEntityEntryCondition_NOT {
     /// `condition` (StrongPointer)
-    #[serde(default)]
     pub condition: Option<DefaultActionsEntityEntryConditionPtr>,
 }
 
@@ -10426,7 +9083,6 @@ impl<'a> Extract<'a> for DefaultActionsEntityEntryCondition_NOT {
 
 /// DCB type: `DefaultActionsEntityEntryCondition_CanActorBeLooted`
 /// Inherits from: `DefaultActionsEntityEntryCondition`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DefaultActionsEntityEntryCondition_CanActorBeLooted {
 }
 
@@ -10445,7 +9101,6 @@ impl<'a> Extract<'a> for DefaultActionsEntityEntryCondition_CanActorBeLooted {
 
 /// DCB type: `DefaultActionsEntityState_CanActorBeLooted`
 /// Inherits from: `DefaultActionsEntityState`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DefaultActionsEntityState_CanActorBeLooted {
 }
 
@@ -10464,7 +9119,6 @@ impl<'a> Extract<'a> for DefaultActionsEntityState_CanActorBeLooted {
 
 /// DCB type: `DefaultActionsEntityState_EntityIsAttachedToOtherActor`
 /// Inherits from: `DefaultActionsEntityState`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DefaultActionsEntityState_EntityIsAttachedToOtherActor {
 }
 
@@ -10483,7 +9137,6 @@ impl<'a> Extract<'a> for DefaultActionsEntityState_EntityIsAttachedToOtherActor 
 
 /// DCB type: `DefaultActionsEntityState_EntityIsAttachedToLootableActor`
 /// Inherits from: `DefaultActionsEntityState`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DefaultActionsEntityState_EntityIsAttachedToLootableActor {
 }
 
@@ -10502,7 +9155,6 @@ impl<'a> Extract<'a> for DefaultActionsEntityState_EntityIsAttachedToLootableAct
 
 /// DCB type: `DefaultActionsEntityState_EntityIsAttachedToDraggableBody`
 /// Inherits from: `DefaultActionsEntityState`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DefaultActionsEntityState_EntityIsAttachedToDraggableBody {
 }
 
@@ -10521,7 +9173,6 @@ impl<'a> Extract<'a> for DefaultActionsEntityState_EntityIsAttachedToDraggableBo
 
 /// DCB type: `DefaultActionsEntityState_InRestrainRange`
 /// Inherits from: `DefaultActionsEntityState`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DefaultActionsEntityState_InRestrainRange {
 }
 
@@ -10540,10 +9191,8 @@ impl<'a> Extract<'a> for DefaultActionsEntityState_InRestrainRange {
 
 /// DCB type: `DialogueContextEmbeddedEntry`
 /// Inherits from: `DialogueContextEntry`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DialogueContextEmbeddedEntry {
     /// `dialogueContext` (Reference)
-    #[serde(default)]
     pub dialogue_context: Option<CigGuid>,
 }
 
@@ -10563,10 +9212,8 @@ impl<'a> Extract<'a> for DialogueContextEmbeddedEntry {
 
 /// DCB type: `DialogueContextReferenceEntry`
 /// Inherits from: `DialogueContextEntry`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DialogueContextReferenceEntry {
     /// `dialogueContext` (Reference)
-    #[serde(default)]
     pub dialogue_context: Option<CigGuid>,
 }
 
@@ -10585,10 +9232,8 @@ impl<'a> Extract<'a> for DialogueContextReferenceEntry {
 }
 
 /// DCB type: `DialogueBundleEntry`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DialogueBundleEntry {
     /// `dialogue` (StrongPointer)
-    #[serde(default)]
     pub dialogue: Option<DialogueContextEntryPtr>,
 }
 
@@ -10610,13 +9255,10 @@ impl<'a> Extract<'a> for DialogueBundleEntry {
 }
 
 /// DCB type: `WeightedDialogueBundleEntry`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct WeightedDialogueBundleEntry {
     /// `dialogue` (StrongPointer)
-    #[serde(default)]
     pub dialogue: Option<DialogueContextEntryPtr>,
     /// `weight` (Single)
-    #[serde(default)]
     pub weight: f32,
 }
 
@@ -10640,13 +9282,10 @@ impl<'a> Extract<'a> for WeightedDialogueBundleEntry {
 
 /// DCB type: `DialogueBundleReference`
 /// Inherits from: `DialogueBundle`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DialogueBundleReference {
     /// `usePooling` (Boolean)
-    #[serde(default)]
     pub use_pooling: bool,
     /// `dialoguePreset` (Reference)
-    #[serde(default)]
     pub dialogue_preset: Option<CigGuid>,
 }
 
@@ -10667,13 +9306,10 @@ impl<'a> Extract<'a> for DialogueBundleReference {
 
 /// DCB type: `DialogueBundleEmbedded`
 /// Inherits from: `DialogueBundle`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DialogueBundleEmbedded {
     /// `usePooling` (Boolean)
-    #[serde(default)]
     pub use_pooling: bool,
     /// `dialogueEntries` (Class (array))
-    #[serde(default)]
     pub dialogue_entries: Vec<Handle<DialogueBundleEntry>>,
 }
 
@@ -10700,10 +9336,8 @@ impl<'a> Extract<'a> for DialogueBundleEmbedded {
 
 /// DCB type: `DialogueBundleWeighted`
 /// Inherits from: `DialogueBundle`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DialogueBundleWeighted {
     /// `usePooling` (Boolean)
-    #[serde(default)]
     pub use_pooling: bool,
 }
 
@@ -10723,13 +9357,10 @@ impl<'a> Extract<'a> for DialogueBundleWeighted {
 
 /// DCB type: `DialogueBundleWeightedReference`
 /// Inherits from: `DialogueBundleWeighted`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DialogueBundleWeightedReference {
     /// `usePooling` (Boolean)
-    #[serde(default)]
     pub use_pooling: bool,
     /// `dialoguePreset` (Reference)
-    #[serde(default)]
     pub dialogue_preset: Option<CigGuid>,
 }
 
@@ -10750,13 +9381,10 @@ impl<'a> Extract<'a> for DialogueBundleWeightedReference {
 
 /// DCB type: `DialogueBundleWeightedEmbedded`
 /// Inherits from: `DialogueBundleWeighted`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DialogueBundleWeightedEmbedded {
     /// `usePooling` (Boolean)
-    #[serde(default)]
     pub use_pooling: bool,
     /// `dialogueEntries` (Class (array))
-    #[serde(default)]
     pub dialogue_entries: Vec<Handle<WeightedDialogueBundleEntry>>,
 }
 
@@ -10783,19 +9411,14 @@ impl<'a> Extract<'a> for DialogueBundleWeightedEmbedded {
 
 /// DCB type: `SEAUIMessageComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SEAUIMessageComponentParams {
     /// `lifetime` (Single)
-    #[serde(default)]
     pub lifetime: f32,
     /// `maxAmountOfMessages` (Int32)
-    #[serde(default)]
     pub max_amount_of_messages: i32,
     /// `messageQueueIdentifier` (String)
-    #[serde(default)]
     pub message_queue_identifier: String,
     /// `fadeoutTime` (Single)
-    #[serde(default)]
     pub fadeout_time: f32,
 }
 
@@ -10818,7 +9441,6 @@ impl<'a> Extract<'a> for SEAUIMessageComponentParams {
 
 /// DCB type: `EASerializedCarrier`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EASerializedCarrier {
 }
 
@@ -10837,10 +9459,8 @@ impl<'a> Extract<'a> for EASerializedCarrier {
 
 /// DCB type: `SEntityTargetingProperties`
 /// Inherits from: `EntityClassStaticDataParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SEntityTargetingProperties {
     /// `positionOffset` (Class)
-    #[serde(default)]
     pub position_offset: Option<Handle<Vec3>>,
 }
 
@@ -10863,10 +9483,8 @@ impl<'a> Extract<'a> for SEntityTargetingProperties {
 
 /// DCB type: `RadarQuantumOverrideParams`
 /// Inherits from: `EntityClassStaticDataParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct RadarQuantumOverrideParams {
     /// `arrivalRadius` (Single)
-    #[serde(default)]
     pub arrival_radius: f32,
 }
 
@@ -10886,16 +9504,12 @@ impl<'a> Extract<'a> for RadarQuantumOverrideParams {
 
 /// DCB type: `SAttachmentImplementationBone`
 /// Inherits from: `SAttachmentImplementationBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SAttachmentImplementationBone {
     /// `offset` (Class)
-    #[serde(default)]
     pub offset: Option<Handle<QuatT>>,
     /// `scale` (Single)
-    #[serde(default)]
     pub scale: f32,
     /// `jointName` (String)
-    #[serde(default)]
     pub joint_name: String,
 }
 
@@ -10920,7 +9534,6 @@ impl<'a> Extract<'a> for SAttachmentImplementationBone {
 
 /// DCB type: `QuantumGridComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct QuantumGridComponentParams {
 }
 
@@ -10939,10 +9552,8 @@ impl<'a> Extract<'a> for QuantumGridComponentParams {
 
 /// DCB type: `SBaseObjectContainerComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SBaseObjectContainerComponentParams {
     /// `objectContainer` (String)
-    #[serde(default)]
     pub object_container: String,
 }
 
@@ -10962,10 +9573,8 @@ impl<'a> Extract<'a> for SBaseObjectContainerComponentParams {
 
 /// DCB type: `SStreamingObjectContainerComponentParams`
 /// Inherits from: `SObjectContainerComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SStreamingObjectContainerComponentParams {
     /// `objectContainer` (String)
-    #[serde(default)]
     pub object_container: String,
 }
 
@@ -10985,16 +9594,12 @@ impl<'a> Extract<'a> for SStreamingObjectContainerComponentParams {
 
 /// DCB type: `ShakeComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ShakeComponentParams {
     /// `enabled` (Boolean)
-    #[serde(default)]
     pub enabled: bool,
     /// `unifiedShakeParams` (Reference)
-    #[serde(default)]
     pub unified_shake_params: Option<CigGuid>,
     /// `distanceIntensityCurve` (Reference)
-    #[serde(default)]
     pub distance_intensity_curve: Option<CigGuid>,
 }
 
@@ -11016,7 +9621,6 @@ impl<'a> Extract<'a> for ShakeComponentParams {
 
 /// DCB type: `SkylineComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SkylineComponentParams {
 }
 
@@ -11035,7 +9639,6 @@ impl<'a> Extract<'a> for SkylineComponentParams {
 
 /// DCB type: `AreaBaseComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AreaBaseComponentParams {
 }
 
@@ -11054,7 +9657,6 @@ impl<'a> Extract<'a> for AreaBaseComponentParams {
 
 /// DCB type: `MissionBeaconProviderEntityComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MissionBeaconProviderEntityComponentParams {
 }
 
@@ -11073,7 +9675,6 @@ impl<'a> Extract<'a> for MissionBeaconProviderEntityComponentParams {
 
 /// DCB type: `InventoryProviderEntityComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InventoryProviderEntityComponentParams {
 }
 
@@ -11091,13 +9692,10 @@ impl<'a> Extract<'a> for InventoryProviderEntityComponentParams {
 }
 
 /// DCB type: `Bindings_SubsumptionBroadcastEvent`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Bindings_SubsumptionBroadcastEvent {
     /// `eventName` (String)
-    #[serde(default)]
     pub event_name: String,
     /// `eventRange` (Single)
-    #[serde(default)]
     pub event_range: f32,
 }
 
@@ -11118,13 +9716,10 @@ impl<'a> Extract<'a> for Bindings_SubsumptionBroadcastEvent {
 
 /// DCB type: `UIBindingsSubsumptionComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct UIBindingsSubsumptionComponentParams {
     /// `broadcastEvents` (Class (array))
-    #[serde(default)]
     pub broadcast_events: Vec<Handle<Bindings_SubsumptionBroadcastEvent>>,
     /// `subsumptionCallbackTrigger` (Boolean)
-    #[serde(default)]
     pub subsumption_callback_trigger: bool,
 }
 
@@ -11151,13 +9746,10 @@ impl<'a> Extract<'a> for UIBindingsSubsumptionComponentParams {
 
 /// DCB type: `StringUserVariableSetValueTask`
 /// Inherits from: `StringUserVariableTask`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct StringUserVariableSetValueTask {
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
     /// `value` (String)
-    #[serde(default)]
     pub value: String,
 }
 
@@ -11178,10 +9770,8 @@ impl<'a> Extract<'a> for StringUserVariableSetValueTask {
 
 /// DCB type: `RecordRefUserVariableTypeCanvasRecord`
 /// Inherits from: `RecordRefUserVariableTypeBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct RecordRefUserVariableTypeCanvasRecord {
     /// `value` (Reference)
-    #[serde(default)]
     pub value: Option<CigGuid>,
 }
 
@@ -11201,7 +9791,6 @@ impl<'a> Extract<'a> for RecordRefUserVariableTypeCanvasRecord {
 
 /// DCB type: `DummyTestArraysComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DummyTestArraysComponentParams {
 }
 
@@ -11220,7 +9809,6 @@ impl<'a> Extract<'a> for DummyTestArraysComponentParams {
 
 /// DCB type: `FoIPConfigurationProviderParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct FoIPConfigurationProviderParams {
 }
 
@@ -11239,7 +9827,6 @@ impl<'a> Extract<'a> for FoIPConfigurationProviderParams {
 
 /// DCB type: `SS42SubsumptionMissionComponentParams`
 /// Inherits from: `SSubsumptionMissionComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SS42SubsumptionMissionComponentParams {
 }
 
@@ -11258,7 +9845,6 @@ impl<'a> Extract<'a> for SS42SubsumptionMissionComponentParams {
 
 /// DCB type: `SRenderToTextureViewBaseParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SRenderToTextureViewBaseParams {
 }
 
@@ -11277,7 +9863,6 @@ impl<'a> Extract<'a> for SRenderToTextureViewBaseParams {
 
 /// DCB type: `CharacterCustomizerControllerParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CharacterCustomizerControllerParams {
 }
 
@@ -11296,7 +9881,6 @@ impl<'a> Extract<'a> for CharacterCustomizerControllerParams {
 
 /// DCB type: `SEntityComponentVehicleSeaterParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SEntityComponentVehicleSeaterParams {
 }
 
@@ -11315,31 +9899,22 @@ impl<'a> Extract<'a> for SEntityComponentVehicleSeaterParams {
 
 /// DCB type: `LandingSplineVisualARParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LandingSplineVisualARParams {
     /// `hasAirshield` (Boolean)
-    #[serde(default)]
     pub has_airshield: bool,
     /// `distanceBetweenStripSegments` (Single)
-    #[serde(default)]
     pub distance_between_strip_segments: f32,
     /// `gateDimensions` (Class)
-    #[serde(default)]
     pub gate_dimensions: Option<Handle<Vec2>>,
     /// `landingStripFadeOffDistance` (Class)
-    #[serde(default)]
     pub landing_strip_fade_off_distance: Option<Handle<Vec3>>,
     /// `landingStripVisibleDistance` (Class)
-    #[serde(default)]
     pub landing_strip_visible_distance: Option<Handle<Vec3>>,
     /// `stripBlinkWidthSegments` (Single)
-    #[serde(default)]
     pub strip_blink_width_segments: f32,
     /// `stripBlinkMovePerSecond` (Single)
-    #[serde(default)]
     pub strip_blink_move_per_second: f32,
     /// `distanceBetweenBlinks` (Single)
-    #[serde(default)]
     pub distance_between_blinks: f32,
 }
 
@@ -11375,7 +9950,6 @@ impl<'a> Extract<'a> for LandingSplineVisualARParams {
 
 /// DCB type: `QuadGeometryEntityComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct QuadGeometryEntityComponentParams {
 }
 
@@ -11394,7 +9968,6 @@ impl<'a> Extract<'a> for QuadGeometryEntityComponentParams {
 
 /// DCB type: `RearmRefuelTerminalParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct RearmRefuelTerminalParams {
 }
 
@@ -11412,10 +9985,8 @@ impl<'a> Extract<'a> for RearmRefuelTerminalParams {
 }
 
 /// DCB type: `SCIGTestBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCIGTestBase {
     /// `bBase` (Boolean)
-    #[serde(default)]
     pub b_base: bool,
 }
 
@@ -11435,13 +10006,10 @@ impl<'a> Extract<'a> for SCIGTestBase {
 
 /// DCB type: `SCIGTestA`
 /// Inherits from: `SCIGTestBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCIGTestA {
     /// `bBase` (Boolean)
-    #[serde(default)]
     pub b_base: bool,
     /// `bA` (Boolean)
-    #[serde(default)]
     pub b_a: bool,
 }
 
@@ -11462,16 +10030,12 @@ impl<'a> Extract<'a> for SCIGTestA {
 
 /// DCB type: `SCIGTestAA`
 /// Inherits from: `SCIGTestA`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCIGTestAA {
     /// `bBase` (Boolean)
-    #[serde(default)]
     pub b_base: bool,
     /// `bA` (Boolean)
-    #[serde(default)]
     pub b_a: bool,
     /// `bAA` (Boolean)
-    #[serde(default)]
     pub b_aa: bool,
 }
 
@@ -11493,25 +10057,18 @@ impl<'a> Extract<'a> for SCIGTestAA {
 
 /// DCB type: `SCIGTestAAA`
 /// Inherits from: `SCIGTestAA`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCIGTestAAA {
     /// `bBase` (Boolean)
-    #[serde(default)]
     pub b_base: bool,
     /// `bA` (Boolean)
-    #[serde(default)]
     pub b_a: bool,
     /// `bAA` (Boolean)
-    #[serde(default)]
     pub b_aa: bool,
     /// `bAAA` (Boolean)
-    #[serde(default)]
     pub b_aaa: bool,
     /// `nAAA` (Int32)
-    #[serde(default)]
     pub n_aaa: i32,
     /// `osAAATestBase` (StrongPointer)
-    #[serde(default)]
     pub os_aaatest_base: Option<SCIGTestBasePtr>,
 }
 
@@ -11539,13 +10096,10 @@ impl<'a> Extract<'a> for SCIGTestAAA {
 
 /// DCB type: `SCIGTestB`
 /// Inherits from: `SCIGTestBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCIGTestB {
     /// `bBase` (Boolean)
-    #[serde(default)]
     pub b_base: bool,
     /// `bB` (Boolean)
-    #[serde(default)]
     pub b_b: bool,
 }
 
@@ -11566,22 +10120,16 @@ impl<'a> Extract<'a> for SCIGTestB {
 
 /// DCB type: `SCIGTestBB`
 /// Inherits from: `SCIGTestB`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCIGTestBB {
     /// `bBase` (Boolean)
-    #[serde(default)]
     pub b_base: bool,
     /// `bB` (Boolean)
-    #[serde(default)]
     pub b_b: bool,
     /// `bBBs` (Boolean (array))
-    #[serde(default)]
     pub b_bbs: Vec<bool>,
     /// `nBBs` (Single (array))
-    #[serde(default)]
     pub n_bbs: Vec<f32>,
     /// `osBBTestBases` (StrongPointer (array))
-    #[serde(default)]
     pub os_bbtest_bases: Vec<SCIGTestBasePtr>,
 }
 
@@ -11614,13 +10162,10 @@ impl<'a> Extract<'a> for SCIGTestBB {
 
 /// DCB type: `SCIGTestC`
 /// Inherits from: `SCIGTestBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCIGTestC {
     /// `bBase` (Boolean)
-    #[serde(default)]
     pub b_base: bool,
     /// `bC` (Boolean)
-    #[serde(default)]
     pub b_c: bool,
 }
 
@@ -11641,262 +10186,176 @@ impl<'a> Extract<'a> for SCIGTestC {
 
 /// DCB type: `SEntityComponentCIGTestAParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SEntityComponentCIGTestAParams {
     /// `Bool_0` (Boolean)
-    #[serde(default)]
     pub bool_0: bool,
     /// `Bool_1` (Boolean)
-    #[serde(default)]
     pub bool_1: bool,
     /// `Bool_2` (Boolean (array))
-    #[serde(default)]
     pub bool_2: Vec<bool>,
     /// `Bool_3` (Boolean (array))
-    #[serde(default)]
     pub bool_3: Vec<bool>,
     /// `SInt8_0` (SByte)
-    #[serde(default)]
     pub sint8_0: i32,
     /// `SInt8_1` (SByte)
-    #[serde(default)]
     pub sint8_1: i32,
     /// `SInt8_2` (SByte (array))
-    #[serde(default)]
     pub sint8_2: Vec<i32>,
     /// `SInt8_3` (SByte (array))
-    #[serde(default)]
     pub sint8_3: Vec<i32>,
     /// `SInt16_0` (Int16)
-    #[serde(default)]
     pub sint16_0: i32,
     /// `SInt16_1` (Int16)
-    #[serde(default)]
     pub sint16_1: i32,
     /// `SInt16_2` (Int16 (array))
-    #[serde(default)]
     pub sint16_2: Vec<i32>,
     /// `SInt16_3` (Int16 (array))
-    #[serde(default)]
     pub sint16_3: Vec<i32>,
     /// `SInt32_0` (Int32)
-    #[serde(default)]
     pub sint32_0: i32,
     /// `SInt32_1` (Int32)
-    #[serde(default)]
     pub sint32_1: i32,
     /// `SInt32_2` (Int32 (array))
-    #[serde(default)]
     pub sint32_2: Vec<i32>,
     /// `SInt32_3` (Int32 (array))
-    #[serde(default)]
     pub sint32_3: Vec<i32>,
     /// `SInt64_0` (Int64)
-    #[serde(default)]
     pub sint64_0: i64,
     /// `SInt64_1` (Int64)
-    #[serde(default)]
     pub sint64_1: i64,
     /// `SInt64_2` (Int64 (array))
-    #[serde(default)]
     pub sint64_2: Vec<i64>,
     /// `SInt64_3` (Int64 (array))
-    #[serde(default)]
     pub sint64_3: Vec<i64>,
     /// `UInt8_0` (Byte)
-    #[serde(default)]
     pub uint8_0: u32,
     /// `UInt8_1` (Byte)
-    #[serde(default)]
     pub uint8_1: u32,
     /// `UInt8_2` (Byte (array))
-    #[serde(default)]
     pub uint8_2: Vec<u32>,
     /// `UInt8_3` (Byte (array))
-    #[serde(default)]
     pub uint8_3: Vec<u32>,
     /// `UInt16_0` (UInt16)
-    #[serde(default)]
     pub uint16_0: u32,
     /// `UInt16_1` (UInt16)
-    #[serde(default)]
     pub uint16_1: u32,
     /// `UInt16_2` (UInt16 (array))
-    #[serde(default)]
     pub uint16_2: Vec<u32>,
     /// `UInt16_3` (UInt16 (array))
-    #[serde(default)]
     pub uint16_3: Vec<u32>,
     /// `UInt32_0` (UInt32)
-    #[serde(default)]
     pub uint32_0: u32,
     /// `UInt32_1` (UInt32)
-    #[serde(default)]
     pub uint32_1: u32,
     /// `UInt32_2` (UInt32 (array))
-    #[serde(default)]
     pub uint32_2: Vec<u32>,
     /// `UInt32_3` (UInt32 (array))
-    #[serde(default)]
     pub uint32_3: Vec<u32>,
     /// `UInt64_0` (UInt64)
-    #[serde(default)]
     pub uint64_0: u64,
     /// `UInt64_1` (UInt64)
-    #[serde(default)]
     pub uint64_1: u64,
     /// `UInt64_2` (UInt64 (array))
-    #[serde(default)]
     pub uint64_2: Vec<u64>,
     /// `UInt64_3` (UInt64 (array))
-    #[serde(default)]
     pub uint64_3: Vec<u64>,
     /// `Float_0` (Single)
-    #[serde(default)]
     pub float_0: f32,
     /// `Float_1` (Single)
-    #[serde(default)]
     pub float_1: f32,
     /// `Float_2` (Single (array))
-    #[serde(default)]
     pub float_2: Vec<f32>,
     /// `Float_3` (Single (array))
-    #[serde(default)]
     pub float_3: Vec<f32>,
     /// `Double_0` (Double)
-    #[serde(default)]
     pub double_0: f64,
     /// `Double_1` (Double)
-    #[serde(default)]
     pub double_1: f64,
     /// `Double_2` (Double (array))
-    #[serde(default)]
     pub double_2: Vec<f64>,
     /// `Double_3` (Double (array))
-    #[serde(default)]
     pub double_3: Vec<f64>,
     /// `Enum_0` (EnumChoice)
-    #[serde(default)]
     pub enum_0: ECIGTestA,
     /// `Enum_1` (EnumChoice)
-    #[serde(default)]
     pub enum_1: ECIGTestA,
     /// `Enum_2` (EnumChoice (array))
-    #[serde(default)]
     pub enum_2: Vec<ECIGTestA>,
     /// `Enum_3` (EnumChoice (array))
-    #[serde(default)]
     pub enum_3: Vec<ECIGTestA>,
     /// `String_0` (String)
-    #[serde(default)]
     pub string_0: String,
     /// `String_1` (String)
-    #[serde(default)]
     pub string_1: String,
     /// `String_2` (String (array))
-    #[serde(default)]
     pub string_2: Vec<String>,
     /// `String_3` (String (array))
-    #[serde(default)]
     pub string_3: Vec<String>,
     /// `FilePath_0` (String)
-    #[serde(default)]
     pub file_path_0: String,
     /// `FilePath_1` (String)
-    #[serde(default)]
     pub file_path_1: String,
     /// `FilePath_2` (String (array))
-    #[serde(default)]
     pub file_path_2: Vec<String>,
     /// `FilePath_3` (String (array))
-    #[serde(default)]
     pub file_path_3: Vec<String>,
     /// `VFX_0` (String)
-    #[serde(default)]
     pub vfx_0: String,
     /// `VFX_1` (String)
-    #[serde(default)]
     pub vfx_1: String,
     /// `VFX_2` (String (array))
-    #[serde(default)]
     pub vfx_2: Vec<String>,
     /// `VFX_3` (String (array))
-    #[serde(default)]
     pub vfx_3: Vec<String>,
     /// `LocId_0` (Locale)
-    #[serde(default)]
     pub loc_id_0: LocaleKey,
     /// `LocId_1` (Locale)
-    #[serde(default)]
     pub loc_id_1: LocaleKey,
     /// `LocId_2` (Locale (array))
-    #[serde(default)]
     pub loc_id_2: Vec<LocaleKey>,
     /// `LocId_3` (Locale (array))
-    #[serde(default)]
     pub loc_id_3: Vec<LocaleKey>,
     /// `wpTestBase_0` (WeakPointer)
-    #[serde(default)]
     pub wp_test_base_0: Option<SCIGTestBasePtr>,
     /// `wpTestBase_1` (WeakPointer)
-    #[serde(default)]
     pub wp_test_base_1: Option<SCIGTestBasePtr>,
     /// `wpTestBase_2` (WeakPointer (array))
-    #[serde(default)]
     pub wp_test_base_2: Vec<SCIGTestBasePtr>,
     /// `wpTestBase_3` (WeakPointer (array))
-    #[serde(default)]
     pub wp_test_base_3: Vec<SCIGTestBasePtr>,
     /// `wpTestA_0` (WeakPointer)
-    #[serde(default)]
     pub wp_test_a_0: Option<SCIGTestAPtr>,
     /// `wpTestA_1` (WeakPointer)
-    #[serde(default)]
     pub wp_test_a_1: Option<SCIGTestAPtr>,
     /// `wpTestA_2` (WeakPointer (array))
-    #[serde(default)]
     pub wp_test_a_2: Vec<SCIGTestAPtr>,
     /// `wpTestA_3` (WeakPointer (array))
-    #[serde(default)]
     pub wp_test_a_3: Vec<SCIGTestAPtr>,
     /// `osTestBase_0` (StrongPointer)
-    #[serde(default)]
     pub os_test_base_0: Option<SCIGTestBasePtr>,
     /// `osTestBase_1` (StrongPointer)
-    #[serde(default)]
     pub os_test_base_1: Option<SCIGTestBasePtr>,
     /// `osTestBase_2` (StrongPointer (array))
-    #[serde(default)]
     pub os_test_base_2: Vec<SCIGTestBasePtr>,
     /// `osTestBase_3` (StrongPointer (array))
-    #[serde(default)]
     pub os_test_base_3: Vec<SCIGTestBasePtr>,
     /// `osTestBB_0` (StrongPointer)
-    #[serde(default)]
     pub os_test_bb_0: Option<Handle<SCIGTestBB>>,
     /// `osTestBB_1` (StrongPointer)
-    #[serde(default)]
     pub os_test_bb_1: Option<Handle<SCIGTestBB>>,
     /// `osTestBB_2` (StrongPointer (array))
-    #[serde(default)]
     pub os_test_bb_2: Vec<Handle<SCIGTestBB>>,
     /// `osTestBB_3` (StrongPointer (array))
-    #[serde(default)]
     pub os_test_bb_3: Vec<Handle<SCIGTestBB>>,
     /// `osTestA` (StrongPointer)
-    #[serde(default)]
     pub os_test_a: Option<SCIGTestAPtr>,
     /// `osTestAA` (StrongPointer)
-    #[serde(default)]
     pub os_test_aa: Option<SCIGTestAAPtr>,
     /// `osTestAAA` (StrongPointer)
-    #[serde(default)]
     pub os_test_aaa: Option<Handle<SCIGTestAAA>>,
     /// `osTestB` (StrongPointer)
-    #[serde(default)]
     pub os_test_b: Option<SCIGTestBPtr>,
     /// `osTestC` (StrongPointer)
-    #[serde(default)]
     pub os_test_c: Option<Handle<SCIGTestC>>,
 }
 
@@ -12143,175 +10602,118 @@ impl<'a> Extract<'a> for SEntityComponentCIGTestAParams {
 
 /// DCB type: `SEntityComponentCIGTestBParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SEntityComponentCIGTestBParams {
     /// `wpTestBase_0` (WeakPointer)
-    #[serde(default)]
     pub wp_test_base_0: Option<SCIGTestBasePtr>,
     /// `wpTestBase_1` (WeakPointer)
-    #[serde(default)]
     pub wp_test_base_1: Option<SCIGTestBasePtr>,
     /// `wpTestBase_2` (WeakPointer (array))
-    #[serde(default)]
     pub wp_test_base_2: Vec<SCIGTestBasePtr>,
     /// `wpTestBase_3` (WeakPointer (array))
-    #[serde(default)]
     pub wp_test_base_3: Vec<SCIGTestBasePtr>,
     /// `wpTestB_0` (WeakPointer)
-    #[serde(default)]
     pub wp_test_b_0: Option<SCIGTestBPtr>,
     /// `wpTestB_1` (WeakPointer)
-    #[serde(default)]
     pub wp_test_b_1: Option<SCIGTestBPtr>,
     /// `wpTestB_2` (WeakPointer (array))
-    #[serde(default)]
     pub wp_test_b_2: Vec<SCIGTestBPtr>,
     /// `wpTestB_3` (WeakPointer (array))
-    #[serde(default)]
     pub wp_test_b_3: Vec<SCIGTestBPtr>,
     /// `refUnitTest_0` (Reference)
-    #[serde(default)]
     pub ref_unit_test_0: Option<CigGuid>,
     /// `refUnitTest_1` (Reference)
-    #[serde(default)]
     pub ref_unit_test_1: Option<CigGuid>,
     /// `refUnitTest_2` (Reference (array))
-    #[serde(default)]
     pub ref_unit_test_2: Vec<CigGuid>,
     /// `refUnitTest_3` (Reference (array))
-    #[serde(default)]
     pub ref_unit_test_3: Vec<CigGuid>,
     /// `refPalette_0` (Reference)
-    #[serde(default)]
     pub ref_palette_0: Option<CigGuid>,
     /// `refPalette_1` (Reference)
-    #[serde(default)]
     pub ref_palette_1: Option<CigGuid>,
     /// `refPalette_2` (Reference (array))
-    #[serde(default)]
     pub ref_palette_2: Vec<CigGuid>,
     /// `refPalette_3` (Reference (array))
-    #[serde(default)]
     pub ref_palette_3: Vec<CigGuid>,
     /// `refEntity_0` (Reference)
-    #[serde(default)]
     pub ref_entity_0: Option<CigGuid>,
     /// `refEntity_1` (Reference)
-    #[serde(default)]
     pub ref_entity_1: Option<CigGuid>,
     /// `refEntity_2` (Reference (array))
-    #[serde(default)]
     pub ref_entity_2: Vec<CigGuid>,
     /// `refEntity_3` (Reference (array))
-    #[serde(default)]
     pub ref_entity_3: Vec<CigGuid>,
     /// `refTag_0` (Reference)
-    #[serde(default)]
     pub ref_tag_0: Option<CigGuid>,
     /// `refTag_1` (Reference)
-    #[serde(default)]
     pub ref_tag_1: Option<CigGuid>,
     /// `refTag_2` (Reference (array))
-    #[serde(default)]
     pub ref_tag_2: Vec<CigGuid>,
     /// `refTag_3` (Reference (array))
-    #[serde(default)]
     pub ref_tag_3: Vec<CigGuid>,
     /// `Vec3_0` (Class)
-    #[serde(default)]
     pub vec3_0: Option<Handle<Vec3>>,
     /// `Vec3_1` (Class)
-    #[serde(default)]
     pub vec3_1: Option<Handle<Vec3>>,
     /// `Vec3_2` (Class (array))
-    #[serde(default)]
     pub vec3_2: Vec<Handle<Vec3>>,
     /// `Vec3_3` (Class (array))
-    #[serde(default)]
     pub vec3_3: Vec<Handle<Vec3>>,
     /// `QuatT_0` (Class)
-    #[serde(default)]
     pub quat_t_0: Option<Handle<QuatT>>,
     /// `QuatT_1` (Class)
-    #[serde(default)]
     pub quat_t_1: Option<Handle<QuatT>>,
     /// `QuatT_2` (Class (array))
-    #[serde(default)]
     pub quat_t_2: Vec<Handle<QuatT>>,
     /// `QuatT_3` (Class (array))
-    #[serde(default)]
     pub quat_t_3: Vec<Handle<QuatT>>,
     /// `LRGB__8_0` (Class)
-    #[serde(default)]
     pub lrgb_8_0: Option<Handle<RGB8>>,
     /// `LRGB__8_1` (Class)
-    #[serde(default)]
     pub lrgb_8_1: Option<Handle<RGB8>>,
     /// `LRGB__8_2` (Class (array))
-    #[serde(default)]
     pub lrgb_8_2: Vec<Handle<RGB8>>,
     /// `LRGB__8_3` (Class (array))
-    #[serde(default)]
     pub lrgb_8_3: Vec<Handle<RGB8>>,
     /// `LRGBA_8_0` (Class)
-    #[serde(default)]
     pub lrgba_8_0: Option<Handle<RGBA8>>,
     /// `LRGBA_8_1` (Class)
-    #[serde(default)]
     pub lrgba_8_1: Option<Handle<RGBA8>>,
     /// `LRGBA_8_2` (Class (array))
-    #[serde(default)]
     pub lrgba_8_2: Vec<Handle<RGBA8>>,
     /// `LRGBA_8_3` (Class (array))
-    #[serde(default)]
     pub lrgba_8_3: Vec<Handle<RGBA8>>,
     /// `LRGB__F_0` (Class)
-    #[serde(default)]
     pub lrgb_f_0: Option<Handle<RGB>>,
     /// `LRGB__F_1` (Class)
-    #[serde(default)]
     pub lrgb_f_1: Option<Handle<RGB>>,
     /// `LRGB__F_2` (Class (array))
-    #[serde(default)]
     pub lrgb_f_2: Vec<Handle<RGB>>,
     /// `LRGB__F_3` (Class (array))
-    #[serde(default)]
     pub lrgb_f_3: Vec<Handle<RGB>>,
     /// `LRGBA_F_0` (Class)
-    #[serde(default)]
     pub lrgba_f_0: Option<Handle<RGBA>>,
     /// `LRGBA_F_1` (Class)
-    #[serde(default)]
     pub lrgba_f_1: Option<Handle<RGBA>>,
     /// `LRGBA_F_2` (Class (array))
-    #[serde(default)]
     pub lrgba_f_2: Vec<Handle<RGBA>>,
     /// `LRGBA_F_3` (Class (array))
-    #[serde(default)]
     pub lrgba_f_3: Vec<Handle<RGBA>>,
     /// `SRGB__8_0` (Class)
-    #[serde(default)]
     pub srgb_8_0: Option<Handle<SRGB8>>,
     /// `SRGB__8_1` (Class)
-    #[serde(default)]
     pub srgb_8_1: Option<Handle<SRGB8>>,
     /// `SRGB__8_2` (Class (array))
-    #[serde(default)]
     pub srgb_8_2: Vec<Handle<SRGB8>>,
     /// `SRGB__8_3` (Class (array))
-    #[serde(default)]
     pub srgb_8_3: Vec<Handle<SRGB8>>,
     /// `SRGBA_8_0` (Class)
-    #[serde(default)]
     pub srgba_8_0: Option<Handle<SRGBA8>>,
     /// `SRGBA_8_1` (Class)
-    #[serde(default)]
     pub srgba_8_1: Option<Handle<SRGBA8>>,
     /// `SRGBA_8_2` (Class (array))
-    #[serde(default)]
     pub srgba_8_2: Vec<Handle<SRGBA8>>,
     /// `SRGBA_8_3` (Class (array))
-    #[serde(default)]
     pub srgba_8_3: Vec<Handle<SRGBA8>>,
 }
 
@@ -12578,7 +10980,6 @@ impl<'a> Extract<'a> for SEntityComponentCIGTestBParams {
 
 /// DCB type: `CodeDrivenChatProviderSettings`
 /// Inherits from: `ChatProviderSettingsBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CodeDrivenChatProviderSettings {
 }
 
@@ -12597,10 +10998,8 @@ impl<'a> Extract<'a> for CodeDrivenChatProviderSettings {
 
 /// DCB type: `SLoadoutRequirementAND`
 /// Inherits from: `SLoadoutRequirementBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SLoadoutRequirementAND {
     /// `Requirements` (StrongPointer (array))
-    #[serde(default)]
     pub requirements: Vec<SLoadoutRequirementBasePtr>,
 }
 
@@ -12625,10 +11024,8 @@ impl<'a> Extract<'a> for SLoadoutRequirementAND {
 
 /// DCB type: `SLoadoutRequirementNOT`
 /// Inherits from: `SLoadoutRequirementBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SLoadoutRequirementNOT {
     /// `RequirementToInvert` (StrongPointer)
-    #[serde(default)]
     pub requirement_to_invert: Option<SLoadoutRequirementBasePtr>,
 }
 
@@ -12651,34 +11048,24 @@ impl<'a> Extract<'a> for SLoadoutRequirementNOT {
 
 /// DCB type: `SDirtAccumulatorParams`
 /// Inherits from: `SAccumulatorParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SDirtAccumulatorParams {
     /// `InitialAccumulationRatio` (Single)
-    #[serde(default)]
     pub initial_accumulation_ratio: f32,
     /// `AccumulateWhenUnstreamed` (Boolean)
-    #[serde(default)]
     pub accumulate_when_unstreamed: bool,
     /// `AccumulateOnlyAfterTractorBeam` (Boolean)
-    #[serde(default)]
     pub accumulate_only_after_tractor_beam: bool,
     /// `AccumulateOnlyWhenAttached` (Boolean)
-    #[serde(default)]
     pub accumulate_only_when_attached: bool,
     /// `StopAccumulationWhenAttached` (Boolean)
-    #[serde(default)]
     pub stop_accumulation_when_attached: bool,
     /// `AccumulationEventThreshold` (Single)
-    #[serde(default)]
     pub accumulation_event_threshold: f32,
     /// `PortTags` (String)
-    #[serde(default)]
     pub port_tags: String,
     /// `RequiredPortTags` (String)
-    #[serde(default)]
     pub required_port_tags: String,
     /// `InitialDirtRatio` (Single)
-    #[serde(default)]
     pub initial_dirt_ratio: f32,
 }
 
@@ -12706,31 +11093,22 @@ impl<'a> Extract<'a> for SDirtAccumulatorParams {
 
 /// DCB type: `SWetnessAccumulatorParams`
 /// Inherits from: `SAccumulatorParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SWetnessAccumulatorParams {
     /// `InitialAccumulationRatio` (Single)
-    #[serde(default)]
     pub initial_accumulation_ratio: f32,
     /// `AccumulateWhenUnstreamed` (Boolean)
-    #[serde(default)]
     pub accumulate_when_unstreamed: bool,
     /// `AccumulateOnlyAfterTractorBeam` (Boolean)
-    #[serde(default)]
     pub accumulate_only_after_tractor_beam: bool,
     /// `AccumulateOnlyWhenAttached` (Boolean)
-    #[serde(default)]
     pub accumulate_only_when_attached: bool,
     /// `StopAccumulationWhenAttached` (Boolean)
-    #[serde(default)]
     pub stop_accumulation_when_attached: bool,
     /// `AccumulationEventThreshold` (Single)
-    #[serde(default)]
     pub accumulation_event_threshold: f32,
     /// `PortTags` (String)
-    #[serde(default)]
     pub port_tags: String,
     /// `RequiredPortTags` (String)
-    #[serde(default)]
     pub required_port_tags: String,
 }
 
@@ -12757,13 +11135,10 @@ impl<'a> Extract<'a> for SWetnessAccumulatorParams {
 
 /// DCB type: `SSequencerMoveToAnimateEntityDragTaskParams`
 /// Inherits from: `SSequencerEntityDragTaskParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SSequencerMoveToAnimateEntityDragTaskParams {
     /// `fragmentId` (String)
-    #[serde(default)]
     pub fragment_id: String,
     /// `fragTag` (String)
-    #[serde(default)]
     pub frag_tag: String,
 }
 
@@ -12784,13 +11159,10 @@ impl<'a> Extract<'a> for SSequencerMoveToAnimateEntityDragTaskParams {
 
 /// DCB type: `SSequencerBespokeEntityDragTaskParams`
 /// Inherits from: `SSequencerEntityDragTaskParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SSequencerBespokeEntityDragTaskParams {
     /// `fragmentId` (String)
-    #[serde(default)]
     pub fragment_id: String,
     /// `fragTag` (String)
-    #[serde(default)]
     pub frag_tag: String,
 }
 
@@ -12811,13 +11183,10 @@ impl<'a> Extract<'a> for SSequencerBespokeEntityDragTaskParams {
 
 /// DCB type: `EATransportQTravelTransitionParams`
 /// Inherits from: `EATransportBaseTransitionParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EATransportQTravelTransitionParams {
     /// `type` (EnumChoice)
-    #[serde(default)]
     pub r#type: EATransportTransitionType,
     /// `spoolUpTime` (Single)
-    #[serde(default)]
     pub spool_up_time: f32,
 }
 
@@ -12838,16 +11207,12 @@ impl<'a> Extract<'a> for EATransportQTravelTransitionParams {
 
 /// DCB type: `EATransportSplineTransitionParams`
 /// Inherits from: `EATransportBaseTransitionParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EATransportSplineTransitionParams {
     /// `type` (EnumChoice)
-    #[serde(default)]
     pub r#type: EATransportTransitionType,
     /// `flyToStart` (Boolean)
-    #[serde(default)]
     pub fly_to_start: bool,
     /// `useAfterburner` (Boolean)
-    #[serde(default)]
     pub use_afterburner: bool,
 }
 
@@ -12869,16 +11234,12 @@ impl<'a> Extract<'a> for EATransportSplineTransitionParams {
 
 /// DCB type: `SThrusterMisfireParams`
 /// Inherits from: `SItemMisfireParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SThrusterMisfireParams {
     /// `maxThrustRatio` (Single)
-    #[serde(default)]
     pub max_thrust_ratio: f32,
     /// `minThrustRatio` (Single)
-    #[serde(default)]
     pub min_thrust_ratio: f32,
     /// `misfireThrustToOffTimeRatio` (Single)
-    #[serde(default)]
     pub misfire_thrust_to_off_time_ratio: f32,
 }
 
@@ -12900,13 +11261,10 @@ impl<'a> Extract<'a> for SThrusterMisfireParams {
 
 /// DCB type: `SPowerPlantMisfireParams`
 /// Inherits from: `SItemMisfireParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SPowerPlantMisfireParams {
     /// `reducesPower` (Boolean)
-    #[serde(default)]
     pub reduces_power: bool,
     /// `powerReductionRatio` (Single)
-    #[serde(default)]
     pub power_reduction_ratio: f32,
 }
 
@@ -12927,16 +11285,12 @@ impl<'a> Extract<'a> for SPowerPlantMisfireParams {
 
 /// DCB type: `SCoolerMisfireParams`
 /// Inherits from: `SItemMisfireParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCoolerMisfireParams {
     /// `coolingRateReduction` (Single)
-    #[serde(default)]
     pub cooling_rate_reduction: f32,
     /// `minCoolingRateReduction` (Single)
-    #[serde(default)]
     pub min_cooling_rate_reduction: f32,
     /// `hasVariableCoolingRateReduction` (Boolean)
-    #[serde(default)]
     pub has_variable_cooling_rate_reduction: bool,
 }
 
@@ -12958,13 +11312,10 @@ impl<'a> Extract<'a> for SCoolerMisfireParams {
 
 /// DCB type: `SShieldGeneratorMisfireParams`
 /// Inherits from: `SItemMisfireParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SShieldGeneratorMisfireParams {
     /// `regenReductionRatio` (Single)
-    #[serde(default)]
     pub regen_reduction_ratio: f32,
     /// `healthReductionRatio` (Single)
-    #[serde(default)]
     pub health_reduction_ratio: f32,
 }
 
@@ -12985,16 +11336,12 @@ impl<'a> Extract<'a> for SShieldGeneratorMisfireParams {
 
 /// DCB type: `SHackingThreatLevelConditionAbilityStarted`
 /// Inherits from: `SHackingThreatLevelConditionParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SHackingThreatLevelConditionAbilityStarted {
     /// `isIntruder` (Boolean)
-    #[serde(default)]
     pub is_intruder: bool,
     /// `pointsAdded` (Int32)
-    #[serde(default)]
     pub points_added: i32,
     /// `abilityType` (EnumChoice)
-    #[serde(default)]
     pub ability_type: EHackingParamsAbilityType,
 }
 
@@ -13016,13 +11363,10 @@ impl<'a> Extract<'a> for SHackingThreatLevelConditionAbilityStarted {
 
 /// DCB type: `SHackingThreatLevelConditionLinkPointActivated`
 /// Inherits from: `SHackingThreatLevelConditionParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SHackingThreatLevelConditionLinkPointActivated {
     /// `isIntruder` (Boolean)
-    #[serde(default)]
     pub is_intruder: bool,
     /// `pointsAdded` (Int32)
-    #[serde(default)]
     pub points_added: i32,
 }
 
@@ -13043,13 +11387,10 @@ impl<'a> Extract<'a> for SHackingThreatLevelConditionLinkPointActivated {
 
 /// DCB type: `SHackingThreatLevelConditionNodeSwapped`
 /// Inherits from: `SHackingThreatLevelConditionParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SHackingThreatLevelConditionNodeSwapped {
     /// `isIntruder` (Boolean)
-    #[serde(default)]
     pub is_intruder: bool,
     /// `pointsAdded` (Int32)
-    #[serde(default)]
     pub points_added: i32,
 }
 
@@ -13070,16 +11411,12 @@ impl<'a> Extract<'a> for SHackingThreatLevelConditionNodeSwapped {
 
 /// DCB type: `SHackingThreatLevelConditionTime`
 /// Inherits from: `SHackingThreatLevelConditionParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SHackingThreatLevelConditionTime {
     /// `isIntruder` (Boolean)
-    #[serde(default)]
     pub is_intruder: bool,
     /// `pointsAdded` (Int32)
-    #[serde(default)]
     pub points_added: i32,
     /// `timePeriod` (Single)
-    #[serde(default)]
     pub time_period: f32,
 }
 
@@ -13101,7 +11438,6 @@ impl<'a> Extract<'a> for SHackingThreatLevelConditionTime {
 
 /// DCB type: `SEntitiesGroupComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SEntitiesGroupComponentParams {
 }
 
@@ -13120,7 +11456,6 @@ impl<'a> Extract<'a> for SEntitiesGroupComponentParams {
 
 /// DCB type: `SEntityComponentNavPointParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SEntityComponentNavPointParams {
 }
 
@@ -13139,19 +11474,14 @@ impl<'a> Extract<'a> for SEntityComponentNavPointParams {
 
 /// DCB type: `SMissionLocationObjectMetadataParams`
 /// Inherits from: `SObjectMetadataParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SMissionLocationObjectMetadataParams {
     /// `template` (Reference)
-    #[serde(default)]
     pub template: Option<CigGuid>,
     /// `additionalStringVariants` (Class)
-    #[serde(default)]
     pub additional_string_variants: Option<Handle<MissionStringVariants>>,
     /// `actionArea` (String)
-    #[serde(default)]
     pub action_area: String,
     /// `entityClusterId` (Reference)
-    #[serde(default)]
     pub entity_cluster_id: Option<CigGuid>,
 }
 
@@ -13177,10 +11507,8 @@ impl<'a> Extract<'a> for SMissionLocationObjectMetadataParams {
 
 /// DCB type: `STrackViewOutfitExternalSwapData`
 /// Inherits from: `SAnimatedOutfitSwapData`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct STrackViewOutfitExternalSwapData {
     /// `selectionTags` (Class)
-    #[serde(default)]
     pub selection_tags: Option<Handle<TagList>>,
 }
 
@@ -13203,52 +11531,36 @@ impl<'a> Extract<'a> for STrackViewOutfitExternalSwapData {
 
 /// DCB type: `SEntityComponentProximityMirrorParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SEntityComponentProximityMirrorParams {
     /// `maxLod` (Byte)
-    #[serde(default)]
     pub max_lod: u32,
     /// `localActivationAreaMin` (Class)
-    #[serde(default)]
     pub local_activation_area_min: Option<Handle<Vec3>>,
     /// `localActivationAreaMax` (Class)
-    #[serde(default)]
     pub local_activation_area_max: Option<Handle<Vec3>>,
     /// `localLookAreaMin` (Class)
-    #[serde(default)]
     pub local_look_area_min: Option<Handle<Vec3>>,
     /// `localLookAreaMax` (Class)
-    #[serde(default)]
     pub local_look_area_max: Option<Handle<Vec3>>,
     /// `screenAnimBindingsVariable` (String)
-    #[serde(default)]
     pub screen_anim_bindings_variable: String,
     /// `screenAnimInactive` (Int32)
-    #[serde(default)]
     pub screen_anim_inactive: i32,
     /// `screenAnimActive` (Int32)
-    #[serde(default)]
     pub screen_anim_active: i32,
     /// `screenSubMaterialId` (Int32)
-    #[serde(default)]
     pub screen_sub_material_id: i32,
     /// `typicalActorDistance` (Single)
-    #[serde(default)]
     pub typical_actor_distance: f32,
     /// `cameraFarPlane` (Single)
-    #[serde(default)]
     pub camera_far_plane: f32,
     /// `mirrorGeometry` (Class)
-    #[serde(default)]
     pub mirror_geometry: Option<Handle<GlobalResourceGeometry>>,
     /// `mirrorMaterial` (Class)
-    #[serde(default)]
     pub mirror_material: Option<Handle<GlobalResourceMaterial>>,
     /// `screenGeometry` (Class)
-    #[serde(default)]
     pub screen_geometry: Option<Handle<GlobalResourceGeometry>>,
     /// `screenMaterial` (Class)
-    #[serde(default)]
     pub screen_material: Option<Handle<GlobalResourceMaterial>>,
 }
 
@@ -13306,10 +11618,8 @@ impl<'a> Extract<'a> for SEntityComponentProximityMirrorParams {
 
 /// DCB type: `SSequencerDefInteractionTaskParams`
 /// Inherits from: `SSequencerDefTaskParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SSequencerDefInteractionTaskParams {
     /// `interaction` (WeakPointer)
-    #[serde(default)]
     pub interaction: Option<Handle<SSharedInteractionParams>>,
 }
 
@@ -13332,10 +11642,8 @@ impl<'a> Extract<'a> for SSequencerDefInteractionTaskParams {
 
 /// DCB type: `SpawnerPrerequisite_AND`
 /// Inherits from: `BaseSpawnerPrerequisite`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SpawnerPrerequisite_AND {
     /// `prerequisites` (StrongPointer (array))
-    #[serde(default)]
     pub prerequisites: Vec<BaseSpawnerPrerequisitePtr>,
 }
 
@@ -13360,10 +11668,8 @@ impl<'a> Extract<'a> for SpawnerPrerequisite_AND {
 
 /// DCB type: `SpawnerPrerequisite_NOT`
 /// Inherits from: `BaseSpawnerPrerequisite`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SpawnerPrerequisite_NOT {
     /// `prerequisite` (StrongPointer)
-    #[serde(default)]
     pub prerequisite: Option<BaseSpawnerPrerequisitePtr>,
 }
 
@@ -13386,7 +11692,6 @@ impl<'a> Extract<'a> for SpawnerPrerequisite_NOT {
 
 /// DCB type: `SSpawner_SpawnedEntityParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SSpawner_SpawnedEntityParams {
 }
 
@@ -13405,7 +11710,6 @@ impl<'a> Extract<'a> for SSpawner_SpawnedEntityParams {
 
 /// DCB type: `SStreamingDependencyComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SStreamingDependencyComponentParams {
 }
 
@@ -13424,34 +11728,24 @@ impl<'a> Extract<'a> for SStreamingDependencyComponentParams {
 
 /// DCB type: `STriggerableDevicesBehaviorActorStatusParams`
 /// Inherits from: `STriggerableDevicesBehaviorParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct STriggerableDevicesBehaviorActorStatusParams {
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
     /// `shouldBeDestroyed` (Boolean)
-    #[serde(default)]
     pub should_be_destroyed: bool,
     /// `effectTags` (Reference (array))
-    #[serde(default)]
     pub effect_tags: Vec<CigGuid>,
     /// `startSequence` (WeakPointer)
-    #[serde(default)]
     pub start_sequence: Option<SSequencerDefSequenceParamsPtr>,
     /// `endSequence` (WeakPointer)
-    #[serde(default)]
     pub end_sequence: Option<SSequencerDefSequenceParamsPtr>,
     /// `radius` (Single)
-    #[serde(default)]
     pub radius: f32,
     /// `angleCurve` (EnumChoice)
-    #[serde(default)]
     pub angle_curve: InterpolationMode,
     /// `rangeCurve` (EnumChoice)
-    #[serde(default)]
     pub range_curve: InterpolationMode,
     /// `actorStatusBuffs` (Class (array))
-    #[serde(default)]
     pub actor_status_buffs: Vec<Handle<ActorStatusAddBuff>>,
 }
 
@@ -13493,22 +11787,16 @@ impl<'a> Extract<'a> for STriggerableDevicesBehaviorActorStatusParams {
 
 /// DCB type: `STriggerableDevicesBehaviorDetachParams`
 /// Inherits from: `STriggerableDevicesBehaviorParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct STriggerableDevicesBehaviorDetachParams {
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
     /// `shouldBeDestroyed` (Boolean)
-    #[serde(default)]
     pub should_be_destroyed: bool,
     /// `effectTags` (Reference (array))
-    #[serde(default)]
     pub effect_tags: Vec<CigGuid>,
     /// `startSequence` (WeakPointer)
-    #[serde(default)]
     pub start_sequence: Option<SSequencerDefSequenceParamsPtr>,
     /// `endSequence` (WeakPointer)
-    #[serde(default)]
     pub end_sequence: Option<SSequencerDefSequenceParamsPtr>,
 }
 
@@ -13540,22 +11828,16 @@ impl<'a> Extract<'a> for STriggerableDevicesBehaviorDetachParams {
 
 /// DCB type: `STriggerableDevicesBehaviorUnprimeParams`
 /// Inherits from: `STriggerableDevicesBehaviorParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct STriggerableDevicesBehaviorUnprimeParams {
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
     /// `shouldBeDestroyed` (Boolean)
-    #[serde(default)]
     pub should_be_destroyed: bool,
     /// `effectTags` (Reference (array))
-    #[serde(default)]
     pub effect_tags: Vec<CigGuid>,
     /// `startSequence` (WeakPointer)
-    #[serde(default)]
     pub start_sequence: Option<SSequencerDefSequenceParamsPtr>,
     /// `endSequence` (WeakPointer)
-    #[serde(default)]
     pub end_sequence: Option<SSequencerDefSequenceParamsPtr>,
 }
 
@@ -13587,22 +11869,16 @@ impl<'a> Extract<'a> for STriggerableDevicesBehaviorUnprimeParams {
 
 /// DCB type: `STriggerableDevicesBehaviorRadarJammerParams`
 /// Inherits from: `STriggerableDevicesBehaviorParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct STriggerableDevicesBehaviorRadarJammerParams {
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
     /// `shouldBeDestroyed` (Boolean)
-    #[serde(default)]
     pub should_be_destroyed: bool,
     /// `effectTags` (Reference (array))
-    #[serde(default)]
     pub effect_tags: Vec<CigGuid>,
     /// `startSequence` (WeakPointer)
-    #[serde(default)]
     pub start_sequence: Option<SSequencerDefSequenceParamsPtr>,
     /// `endSequence` (WeakPointer)
-    #[serde(default)]
     pub end_sequence: Option<SSequencerDefSequenceParamsPtr>,
 }
 
@@ -13634,34 +11910,24 @@ impl<'a> Extract<'a> for STriggerableDevicesBehaviorRadarJammerParams {
 
 /// DCB type: `STriggerableDevicesTriggerAllAnyParams`
 /// Inherits from: `STriggerableDevicesTriggerParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct STriggerableDevicesTriggerAllAnyParams {
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
     /// `isAuthoritative` (Boolean)
-    #[serde(default)]
     pub is_authoritative: bool,
     /// `effectTags` (Reference (array))
-    #[serde(default)]
     pub effect_tags: Vec<CigGuid>,
     /// `blinkingParams` (Class)
-    #[serde(default)]
     pub blinking_params: Option<Handle<STriggerableDevicesBlinking>>,
     /// `markerShapePath` (String)
-    #[serde(default)]
     pub marker_shape_path: String,
     /// `markerModelPath` (String)
-    #[serde(default)]
     pub marker_model_path: String,
     /// `behavior` (StrongPointer)
-    #[serde(default)]
     pub behavior: Option<STriggerableDevicesBehaviorParamsPtr>,
     /// `subTriggers` (StrongPointer (array))
-    #[serde(default)]
     pub sub_triggers: Vec<STriggerableDevicesTriggerParamsPtr>,
     /// `finishAll` (Boolean)
-    #[serde(default)]
     pub finish_all: bool,
 }
 
@@ -13702,31 +11968,22 @@ impl<'a> Extract<'a> for STriggerableDevicesTriggerAllAnyParams {
 
 /// DCB type: `STriggerableDevicesTriggerGravityParams`
 /// Inherits from: `STriggerableDevicesTriggerParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct STriggerableDevicesTriggerGravityParams {
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
     /// `isAuthoritative` (Boolean)
-    #[serde(default)]
     pub is_authoritative: bool,
     /// `effectTags` (Reference (array))
-    #[serde(default)]
     pub effect_tags: Vec<CigGuid>,
     /// `blinkingParams` (Class)
-    #[serde(default)]
     pub blinking_params: Option<Handle<STriggerableDevicesBlinking>>,
     /// `markerShapePath` (String)
-    #[serde(default)]
     pub marker_shape_path: String,
     /// `markerModelPath` (String)
-    #[serde(default)]
     pub marker_model_path: String,
     /// `behavior` (StrongPointer)
-    #[serde(default)]
     pub behavior: Option<STriggerableDevicesBehaviorParamsPtr>,
     /// `angle` (Single)
-    #[serde(default)]
     pub angle: f32,
 }
 
@@ -13761,19 +12018,14 @@ impl<'a> Extract<'a> for STriggerableDevicesTriggerGravityParams {
 
 /// DCB type: `SEntityComponentEffects_Test`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SEntityComponentEffects_Test {
     /// `tags` (Class (array))
-    #[serde(default)]
     pub tags: Vec<Handle<EntityComponentEffects_Test_Tag>>,
     /// `triggers` (Class (array))
-    #[serde(default)]
     pub triggers: Vec<Handle<EntityComponentEffects_Test_Trigger>>,
     /// `parameters` (Class (array))
-    #[serde(default)]
     pub parameters: Vec<Handle<EntityComponentEffects_Test_Link>>,
     /// `colorParameters` (Class (array))
-    #[serde(default)]
     pub color_parameters: Vec<Handle<EntityComponentEffects_Test_ColorLink>>,
 }
 
@@ -13819,16 +12071,12 @@ impl<'a> Extract<'a> for SEntityComponentEffects_Test {
 }
 
 /// DCB type: `EntityComponentEffects_Test_Tag`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EntityComponentEffects_Test_Tag {
     /// `enable` (Boolean)
-    #[serde(default)]
     pub enable: bool,
     /// `tag` (Reference)
-    #[serde(default)]
     pub tag: Option<CigGuid>,
     /// `forceStop` (Boolean)
-    #[serde(default)]
     pub force_stop: bool,
 }
 
@@ -13849,16 +12097,12 @@ impl<'a> Extract<'a> for EntityComponentEffects_Test_Tag {
 }
 
 /// DCB type: `EntityComponentEffects_Test_Trigger`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EntityComponentEffects_Test_Trigger {
     /// `enable` (Boolean)
-    #[serde(default)]
     pub enable: bool,
     /// `trigger` (Reference)
-    #[serde(default)]
     pub trigger: Option<CigGuid>,
     /// `forceStop` (Boolean)
-    #[serde(default)]
     pub force_stop: bool,
 }
 
@@ -13879,13 +12123,10 @@ impl<'a> Extract<'a> for EntityComponentEffects_Test_Trigger {
 }
 
 /// DCB type: `EntityComponentEffects_Test_Link`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EntityComponentEffects_Test_Link {
     /// `value` (Single)
-    #[serde(default)]
     pub value: f32,
     /// `parameter` (Reference)
-    #[serde(default)]
     pub parameter: Option<CigGuid>,
 }
 
@@ -13905,13 +12146,10 @@ impl<'a> Extract<'a> for EntityComponentEffects_Test_Link {
 }
 
 /// DCB type: `EntityComponentEffects_Test_ColorLink`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EntityComponentEffects_Test_ColorLink {
     /// `color` (Class)
-    #[serde(default)]
     pub color: Option<Handle<RGB>>,
     /// `parameter` (Reference)
-    #[serde(default)]
     pub parameter: Option<CigGuid>,
 }
 
@@ -13935,10 +12173,8 @@ impl<'a> Extract<'a> for EntityComponentEffects_Test_ColorLink {
 
 /// DCB type: `SendLandingGearObstructedEvent`
 /// Inherits from: `EventDispatcher`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SendLandingGearObstructedEvent {
     /// `obstructed` (Boolean)
-    #[serde(default)]
     pub obstructed: bool,
 }
 
@@ -13958,7 +12194,6 @@ impl<'a> Extract<'a> for SendLandingGearObstructedEvent {
 
 /// DCB type: `SendAttemptWirelessLinkEvent`
 /// Inherits from: `EventDispatcher`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SendAttemptWirelessLinkEvent {
 }
 
@@ -13977,10 +12212,8 @@ impl<'a> Extract<'a> for SendAttemptWirelessLinkEvent {
 
 /// DCB type: `SetPowerSourceStateEvent`
 /// Inherits from: `EventDispatcher`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SetPowerSourceStateEvent {
     /// `newPowerSourceState` (EnumChoice)
-    #[serde(default)]
     pub new_power_source_state: EPowerSourceState,
 }
 
@@ -14000,10 +12233,8 @@ impl<'a> Extract<'a> for SetPowerSourceStateEvent {
 
 /// DCB type: `SetRadarJammerEnabledEvent`
 /// Inherits from: `EventDispatcher`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SetRadarJammerEnabledEvent {
     /// `enable` (Boolean)
-    #[serde(default)]
     pub enable: bool,
 }
 
@@ -14023,10 +12254,8 @@ impl<'a> Extract<'a> for SetRadarJammerEnabledEvent {
 
 /// DCB type: `SEntityDensityClassOverridesRef`
 /// Inherits from: `SEntityDensityClassOverridesBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SEntityDensityClassOverridesRef {
     /// `densityLifetimeOverrideRef` (Reference)
-    #[serde(default)]
     pub density_lifetime_override_ref: Option<CigGuid>,
 }
 
@@ -14046,10 +12275,8 @@ impl<'a> Extract<'a> for SEntityDensityClassOverridesRef {
 
 /// DCB type: `RTTNameTagParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct RTTNameTagParams {
     /// `bindingName` (String)
-    #[serde(default)]
     pub binding_name: String,
 }
 
@@ -14069,10 +12296,8 @@ impl<'a> Extract<'a> for RTTNameTagParams {
 
 /// DCB type: `ExtinguishType_Sphere`
 /// Inherits from: `ExtinguishType_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ExtinguishType_Sphere {
     /// `radius` (Single)
-    #[serde(default)]
     pub radius: f32,
 }
 
@@ -14092,10 +12317,8 @@ impl<'a> Extract<'a> for ExtinguishType_Sphere {
 
 /// DCB type: `FireRepairerType_Raycast`
 /// Inherits from: `FireRepairerType_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct FireRepairerType_Raycast {
     /// `maximumDistance` (Single)
-    #[serde(default)]
     pub maximum_distance: f32,
 }
 
@@ -14114,28 +12337,20 @@ impl<'a> Extract<'a> for FireRepairerType_Raycast {
 }
 
 /// DCB type: `SApplicationFormMusicParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SApplicationFormMusicParams {
     /// `muteMusicWwiseEvent` (Class)
-    #[serde(default)]
     pub mute_music_wwise_event: Option<Handle<GlobalResourceAudio>>,
     /// `unmuteMusicWwiseEvent` (Class)
-    #[serde(default)]
     pub unmute_music_wwise_event: Option<Handle<GlobalResourceAudio>>,
     /// `slideToMuteMusic` (Int32)
-    #[serde(default)]
     pub slide_to_mute_music: i32,
     /// `applicationStartedWwiseEvent` (Class)
-    #[serde(default)]
     pub application_started_wwise_event: Option<Handle<GlobalResourceAudio>>,
     /// `backToMainMenuWwiseEvent` (Class)
-    #[serde(default)]
     pub back_to_main_menu_wwise_event: Option<Handle<GlobalResourceAudio>>,
     /// `expandVideoWwiseEvent` (Class)
-    #[serde(default)]
     pub expand_video_wwise_event: Option<Handle<GlobalResourceAudio>>,
     /// `restoreVideoWwiseEvent` (Class)
-    #[serde(default)]
     pub restore_video_wwise_event: Option<Handle<GlobalResourceAudio>>,
 }
 
@@ -14179,37 +12394,26 @@ impl<'a> Extract<'a> for SApplicationFormMusicParams {
 
 /// DCB type: `FlightAcademyApplicationFormComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct FlightAcademyApplicationFormComponentParams {
     /// `homeworlds` (Class (array))
-    #[serde(default)]
     pub homeworlds: Vec<Handle<SApplicationFormHeadHomeworld>>,
     /// `emergencyContactLocations` (Locale (array))
-    #[serde(default)]
     pub emergency_contact_locations: Vec<LocaleKey>,
     /// `emergencyContactRelations` (Class (array))
-    #[serde(default)]
     pub emergency_contact_relations: Vec<Handle<SApplicationFormRelationParams>>,
     /// `voiceParams` (Class (array))
-    #[serde(default)]
     pub voice_params: Vec<Handle<SApplicationFormVoiceParams>>,
     /// `bodyTypeMannequinTags` (String)
-    #[serde(default)]
     pub body_type_mannequin_tags: String,
     /// `musicParams` (Class)
-    #[serde(default)]
     pub music_params: Option<Handle<SApplicationFormMusicParams>>,
     /// `slidesCount` (Int32)
-    #[serde(default)]
     pub slides_count: i32,
     /// `stepsCount` (Int32)
-    #[serde(default)]
     pub steps_count: i32,
     /// `confirmationScreenDelay` (Single)
-    #[serde(default)]
     pub confirmation_screen_delay: f32,
     /// `fadeScreenDelay` (Single)
-    #[serde(default)]
     pub fade_screen_delay: f32,
 }
 
@@ -14260,19 +12464,14 @@ impl<'a> Extract<'a> for FlightAcademyApplicationFormComponentParams {
 }
 
 /// DCB type: `SApplicationFormHeadHomeworld`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SApplicationFormHeadHomeworld {
     /// `displayName` (Locale)
-    #[serde(default)]
     pub display_name: LocaleKey,
     /// `displayDescription` (Locale)
-    #[serde(default)]
     pub display_description: LocaleKey,
     /// `imagePath` (String)
-    #[serde(default)]
     pub image_path: String,
     /// `bodyTypes` (Class)
-    #[serde(default)]
     pub body_types: Option<Handle<SApplicationFormBodyTypeOption>>,
 }
 
@@ -14297,13 +12496,10 @@ impl<'a> Extract<'a> for SApplicationFormHeadHomeworld {
 }
 
 /// DCB type: `SApplicationFormRelationParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SApplicationFormRelationParams {
     /// `displayName` (Locale)
-    #[serde(default)]
     pub display_name: LocaleKey,
     /// `mannequinTag` (String)
-    #[serde(default)]
     pub mannequin_tag: String,
 }
 
@@ -14323,10 +12519,8 @@ impl<'a> Extract<'a> for SApplicationFormRelationParams {
 }
 
 /// DCB type: `SApplicationFormBodyTypeOption`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SApplicationFormBodyTypeOption {
     /// `availableHeads` (Class (array))
-    #[serde(default)]
     pub available_heads: Vec<Handle<SApplicationFormHead>>,
 }
 
@@ -14351,16 +12545,12 @@ impl<'a> Extract<'a> for SApplicationFormBodyTypeOption {
 }
 
 /// DCB type: `SApplicationFormHead`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SApplicationFormHead {
     /// `displayImage` (String)
-    #[serde(default)]
     pub display_image: String,
     /// `selectedDisplayImage` (String)
-    #[serde(default)]
     pub selected_display_image: String,
     /// `customHeadFile` (String)
-    #[serde(default)]
     pub custom_head_file: String,
 }
 
@@ -14381,16 +12571,12 @@ impl<'a> Extract<'a> for SApplicationFormHead {
 }
 
 /// DCB type: `SApplicationFormVoiceParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SApplicationFormVoiceParams {
     /// `debugName` (String)
-    #[serde(default)]
     pub debug_name: String,
     /// `voiceSampleAudioTriggers` (Class (array))
-    #[serde(default)]
     pub voice_sample_audio_triggers: Vec<Handle<GlobalResourceAudio>>,
     /// `modelVoiceTagPairs` (Class (array))
-    #[serde(default)]
     pub model_voice_tag_pairs: Vec<Handle<SModelVoiceTagPair>>,
 }
 
@@ -14423,31 +12609,22 @@ impl<'a> Extract<'a> for SApplicationFormVoiceParams {
 }
 
 /// DCB type: `FrontendS42ActionData`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct FrontendS42ActionData {
     /// `positionEntity` (Class)
-    #[serde(default)]
     pub position_entity: Option<Handle<EntityReferenceDef>>,
     /// `modelPositionEntity` (Class)
-    #[serde(default)]
     pub model_position_entity: Option<Handle<EntityReferenceDef>>,
     /// `model` (String)
-    #[serde(default)]
     pub model: String,
     /// `optionSelectedTrackview` (Class)
-    #[serde(default)]
     pub option_selected_trackview: Option<Handle<EntityReferenceDef>>,
     /// `idleTrackview` (Class)
-    #[serde(default)]
     pub idle_trackview: Option<Handle<EntityReferenceDef>>,
     /// `backToRoomTrackview` (Class)
-    #[serde(default)]
     pub back_to_room_trackview: Option<Handle<EntityReferenceDef>>,
     /// `externalBindingsConsumerEntities` (Class (array))
-    #[serde(default)]
     pub external_bindings_consumer_entities: Vec<Handle<EntityReferenceDef>>,
     /// `externalAudioController` (Class)
-    #[serde(default)]
     pub external_audio_controller: Option<Handle<EntityReferenceDef>>,
 }
 
@@ -14497,40 +12674,28 @@ impl<'a> Extract<'a> for FrontendS42ActionData {
 }
 
 /// DCB type: `FrontendS42Actions`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct FrontendS42Actions {
     /// `newGame` (Class)
-    #[serde(default)]
     pub new_game: Option<Handle<FrontendS42ActionData>>,
     /// `continue` (Class)
-    #[serde(default)]
     pub r#continue: Option<Handle<FrontendS42ActionData>>,
     /// `loadGame` (Class)
-    #[serde(default)]
     pub load_game: Option<Handle<FrontendS42ActionData>>,
     /// `quit` (Class)
-    #[serde(default)]
     pub quit: Option<Handle<FrontendS42ActionData>>,
     /// `options` (Class)
-    #[serde(default)]
     pub options: Option<Handle<FrontendS42ActionData>>,
     /// `hallway` (Class)
-    #[serde(default)]
     pub hallway: Option<Handle<FrontendS42ActionData>>,
     /// `room` (Class)
-    #[serde(default)]
     pub room: Option<Handle<FrontendS42ActionData>>,
     /// `galactapedia` (Class)
-    #[serde(default)]
     pub galactapedia: Option<Handle<FrontendS42ActionData>>,
     /// `changeCharacter` (Class)
-    #[serde(default)]
     pub change_character: Option<Handle<FrontendS42ActionData>>,
     /// `debugLevelSelect` (Class)
-    #[serde(default)]
     pub debug_level_select: Option<Handle<FrontendS42ActionData>>,
     /// `missionSelect` (Class)
-    #[serde(default)]
     pub mission_select: Option<Handle<FrontendS42ActionData>>,
 }
 
@@ -14592,37 +12757,26 @@ impl<'a> Extract<'a> for FrontendS42Actions {
 }
 
 /// DCB type: `FrontendS42Scenario`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct FrontendS42Scenario {
     /// `scenarioTag` (Reference)
-    #[serde(default)]
     pub scenario_tag: Option<CigGuid>,
     /// `actionsData` (Class)
-    #[serde(default)]
     pub actions_data: Option<Handle<FrontendS42Actions>>,
     /// `introToEngageTrackview` (Class)
-    #[serde(default)]
     pub intro_to_engage_trackview: Option<Handle<EntityReferenceDef>>,
     /// `engageScreenTrackview` (Class)
-    #[serde(default)]
     pub engage_screen_trackview: Option<Handle<EntityReferenceDef>>,
     /// `engageScreenToRoomTrackview` (Class)
-    #[serde(default)]
     pub engage_screen_to_room_trackview: Option<Handle<EntityReferenceDef>>,
     /// `roomTrackview` (Class)
-    #[serde(default)]
     pub room_trackview: Option<Handle<EntityReferenceDef>>,
     /// `hallwayTrackview` (Class)
-    #[serde(default)]
     pub hallway_trackview: Option<Handle<EntityReferenceDef>>,
     /// `roomToHallwayTrackview` (Class)
-    #[serde(default)]
     pub room_to_hallway_trackview: Option<Handle<EntityReferenceDef>>,
     /// `hallwayToRoomTrackview` (Class)
-    #[serde(default)]
     pub hallway_to_room_trackview: Option<Handle<EntityReferenceDef>>,
     /// `backgroundLoopingTrackviews` (Class (array))
-    #[serde(default)]
     pub background_looping_trackviews: Vec<Handle<EntityReferenceDef>>,
 }
 
@@ -14681,16 +12835,12 @@ impl<'a> Extract<'a> for FrontendS42Scenario {
 
 /// DCB type: `FrontendControllerProviderSQ42Params`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct FrontendControllerProviderSQ42Params {
     /// `scenarios` (Class (array))
-    #[serde(default)]
     pub scenarios: Vec<Handle<FrontendS42Scenario>>,
     /// `deleteGameTimer` (Single)
-    #[serde(default)]
     pub delete_game_timer: f32,
     /// `newGameMegamapRecord` (Reference)
-    #[serde(default)]
     pub new_game_megamap_record: Option<CigGuid>,
 }
 
@@ -14718,10 +12868,8 @@ impl<'a> Extract<'a> for FrontendControllerProviderSQ42Params {
 
 /// DCB type: `SCommonDamageHandling`
 /// Inherits from: `SIDamageHandlingModule`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCommonDamageHandling {
     /// `damageDisabled` (Boolean)
-    #[serde(default)]
     pub damage_disabled: bool,
 }
 
@@ -14741,13 +12889,10 @@ impl<'a> Extract<'a> for SCommonDamageHandling {
 
 /// DCB type: `SISpectatorBase`
 /// Inherits from: `SISpectatorModule`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SISpectatorBase {
     /// `modes` (Class (array))
-    #[serde(default)]
     pub modes: Vec<Handle<SpectatorModeParams>>,
     /// `defaultSpectatorCamera` (EnumChoice)
-    #[serde(default)]
     pub default_spectator_camera: ESpectatorMode,
 }
 
@@ -14774,7 +12919,6 @@ impl<'a> Extract<'a> for SISpectatorBase {
 
 /// DCB type: `SNonAuthoritativeClientStatsRecording`
 /// Inherits from: `SIStatsRecordingModule`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SNonAuthoritativeClientStatsRecording {
 }
 
@@ -14793,58 +12937,40 @@ impl<'a> Extract<'a> for SNonAuthoritativeClientStatsRecording {
 
 /// DCB type: `EAPhaseBaseComponentDef`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EAPhaseBaseComponentDef {
     /// `sortingPosition` (Int32)
-    #[serde(default)]
     pub sorting_position: i32,
     /// `name` (Locale)
-    #[serde(default)]
     pub name: LocaleKey,
     /// `phase` (Int32)
-    #[serde(default)]
     pub phase: i32,
     /// `defaultTeam` (Reference)
-    #[serde(default)]
     pub default_team: Option<CigGuid>,
     /// `scaleMarkerByDistance` (Boolean)
-    #[serde(default)]
     pub scale_marker_by_distance: bool,
     /// `availableToDefaultTeam` (Boolean)
-    #[serde(default)]
     pub available_to_default_team: bool,
     /// `percentageString` (Locale)
-    #[serde(default)]
     pub percentage_string: LocaleKey,
     /// `removeMarkerOnCapture` (Boolean)
-    #[serde(default)]
     pub remove_marker_on_capture: bool,
     /// `showMarker` (Boolean)
-    #[serde(default)]
     pub show_marker: bool,
     /// `canTriggerOvertime` (Boolean)
-    #[serde(default)]
     pub can_trigger_overtime: bool,
     /// `capturedNotification` (Class)
-    #[serde(default)]
     pub captured_notification: Option<Handle<SEACriticalMessageDef>>,
     /// `lostNotification` (Class)
-    #[serde(default)]
     pub lost_notification: Option<Handle<SEACriticalMessageDef>>,
     /// `neutralizedNotification` (Class)
-    #[serde(default)]
     pub neutralized_notification: Option<Handle<SEACriticalMessageDef>>,
     /// `objectiveMarkerMessages` (Class)
-    #[serde(default)]
     pub objective_marker_messages: Option<Handle<SEAObjectiveMarkerStatusMessages>>,
     /// `objectiveMarkerSettings` (Class (array))
-    #[serde(default)]
     pub objective_marker_settings: Vec<Handle<SEAObjectiveMarkerStateSettings>>,
     /// `onInteractDamageToObjective` (Int32)
-    #[serde(default)]
     pub on_interact_damage_to_objective: i32,
     /// `onInteractDamageRadius` (Single)
-    #[serde(default)]
     pub on_interact_damage_radius: f32,
 }
 
@@ -14898,19 +13024,14 @@ impl<'a> Extract<'a> for EAPhaseBaseComponentDef {
 
 /// DCB type: `SS42PlayerStats`
 /// Inherits from: `SStandardPlayerStats`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SS42PlayerStats {
     /// `secondsToMergeHits` (Single)
-    #[serde(default)]
     pub seconds_to_merge_hits: f32,
     /// `deathScreenMaxItemsPerColumn` (Int32)
-    #[serde(default)]
     pub death_screen_max_items_per_column: i32,
     /// `deathScreenMaxSecondsStatValid` (Int32)
-    #[serde(default)]
     pub death_screen_max_seconds_stat_valid: i32,
     /// `friendlyFireKickParams` (Class)
-    #[serde(default)]
     pub friendly_fire_kick_params: Option<Handle<SEAFriendlyFireKickParams>>,
 }
 
@@ -14936,19 +13057,14 @@ impl<'a> Extract<'a> for SS42PlayerStats {
 
 /// DCB type: `SSimpodStats`
 /// Inherits from: `SStandardPlayerStats`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SSimpodStats {
     /// `secondsToMergeHits` (Single)
-    #[serde(default)]
     pub seconds_to_merge_hits: f32,
     /// `deathScreenMaxItemsPerColumn` (Int32)
-    #[serde(default)]
     pub death_screen_max_items_per_column: i32,
     /// `deathScreenMaxSecondsStatValid` (Int32)
-    #[serde(default)]
     pub death_screen_max_seconds_stat_valid: i32,
     /// `friendlyFireKickParams` (Class)
-    #[serde(default)]
     pub friendly_fire_kick_params: Option<Handle<SEAFriendlyFireKickParams>>,
 }
 
@@ -14974,19 +13090,14 @@ impl<'a> Extract<'a> for SSimpodStats {
 
 /// DCB type: `SSCSpawningBase`
 /// Inherits from: `SISpawning`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SSCSpawningBase {
     /// `respawnTimeKilled` (Single)
-    #[serde(default)]
     pub respawn_time_killed: f32,
     /// `pressXToRespawn` (Boolean)
-    #[serde(default)]
     pub press_xto_respawn: bool,
     /// `allowForceRespawnSuicide` (Boolean)
-    #[serde(default)]
     pub allow_force_respawn_suicide: bool,
     /// `characterGenerationParams` (Reference)
-    #[serde(default)]
     pub character_generation_params: Option<CigGuid>,
 }
 
@@ -15008,13 +13119,10 @@ impl<'a> Extract<'a> for SSCSpawningBase {
 }
 
 /// DCB type: `SPlayerLoadoutOverride`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SPlayerLoadoutOverride {
     /// `tag` (Reference)
-    #[serde(default)]
     pub tag: Option<CigGuid>,
     /// `standinRecord` (Reference)
-    #[serde(default)]
     pub standin_record: Option<CigGuid>,
 }
 
@@ -15035,43 +13143,30 @@ impl<'a> Extract<'a> for SPlayerLoadoutOverride {
 
 /// DCB type: `SS42Spawning`
 /// Inherits from: `SSCSpawningBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SS42Spawning {
     /// `respawnTimeKilled` (Single)
-    #[serde(default)]
     pub respawn_time_killed: f32,
     /// `pressXToRespawn` (Boolean)
-    #[serde(default)]
     pub press_xto_respawn: bool,
     /// `allowForceRespawnSuicide` (Boolean)
-    #[serde(default)]
     pub allow_force_respawn_suicide: bool,
     /// `characterGenerationParams` (Reference)
-    #[serde(default)]
     pub character_generation_params: Option<CigGuid>,
     /// `loadoutOverrides` (Class (array))
-    #[serde(default)]
     pub loadout_overrides: Vec<Handle<SPlayerLoadoutOverride>>,
     /// `defaultPlayerCharacterMale` (String)
-    #[serde(default)]
     pub default_player_character_male: String,
     /// `defaultPlayerCharacterFemale` (String)
-    #[serde(default)]
     pub default_player_character_female: String,
     /// `newGamePrecacheTag` (Reference)
-    #[serde(default)]
     pub new_game_precache_tag: Option<CigGuid>,
     /// `newGameSpawnPlayerTag` (Reference)
-    #[serde(default)]
     pub new_game_spawn_player_tag: Option<CigGuid>,
     /// `newGameChapterTag` (Reference)
-    #[serde(default)]
     pub new_game_chapter_tag: Option<CigGuid>,
     /// `loadGameMinHealthThreshold` (Single)
-    #[serde(default)]
     pub load_game_min_health_threshold: f32,
     /// `loadGameMinOxygenThreshold` (Single)
-    #[serde(default)]
     pub load_game_min_oxygen_threshold: f32,
 }
 
@@ -15108,16 +13203,12 @@ impl<'a> Extract<'a> for SS42Spawning {
 
 /// DCB type: `SSpawningBase`
 /// Inherits from: `SISpawning`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SSpawningBase {
     /// `team1AlwaysUsesInitialSpawns` (Boolean)
-    #[serde(default)]
     pub team1_always_uses_initial_spawns: bool,
     /// `team2AlwaysUsesInitialSpawns` (Boolean)
-    #[serde(default)]
     pub team2_always_uses_initial_spawns: bool,
     /// `groupSpawners` (Boolean)
-    #[serde(default)]
     pub group_spawners: bool,
 }
 
@@ -15139,52 +13230,36 @@ impl<'a> Extract<'a> for SSpawningBase {
 
 /// DCB type: `SEASimpodSpawning`
 /// Inherits from: `SEASpawning`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SEASimpodSpawning {
     /// `respawnInvulnerableTime` (Single)
-    #[serde(default)]
     pub respawn_invulnerable_time: f32,
     /// `swapSpawnsOnNewRound` (Boolean)
-    #[serde(default)]
     pub swap_spawns_on_new_round: bool,
     /// `hideRespawnPrompt` (Boolean)
-    #[serde(default)]
     pub hide_respawn_prompt: bool,
     /// `playerCanSuicide` (Boolean)
-    #[serde(default)]
     pub player_can_suicide: bool,
     /// `ejectingIsDeath` (Boolean)
-    #[serde(default)]
     pub ejecting_is_death: bool,
     /// `autoEnterRemoteTurret` (Boolean)
-    #[serde(default)]
     pub auto_enter_remote_turret: bool,
     /// `spawnScreenMode` (EnumChoice)
-    #[serde(default)]
     pub spawn_screen_mode: EASpawnScreenMode,
     /// `forceSpawnOnGameStart` (Boolean)
-    #[serde(default)]
     pub force_spawn_on_game_start: bool,
     /// `forceRespawnOnGameStart` (Boolean)
-    #[serde(default)]
     pub force_respawn_on_game_start: bool,
     /// `spawnScreenForceSpawnTime` (Single)
-    #[serde(default)]
     pub spawn_screen_force_spawn_time: f32,
     /// `localization` (Class)
-    #[serde(default)]
     pub localization: Option<Handle<SEASpawningLocalization>>,
     /// `respawnScheduler` (StrongPointer)
-    #[serde(default)]
     pub respawn_scheduler: Option<SEASpawnRespawnSchedulerParamsPtr>,
     /// `livesGovernor` (StrongPointer)
-    #[serde(default)]
     pub lives_governor: Option<Handle<SEASpawnLivesGovernor>>,
     /// `playerSpawnProperties` (Class)
-    #[serde(default)]
     pub player_spawn_properties: Option<Handle<SEAPlayerSpawnProperties>>,
     /// `vehicleSpawnProperties` (Class)
-    #[serde(default)]
     pub vehicle_spawn_properties: Option<Handle<SEAVehicleSpawnProperties>>,
 }
 
@@ -15233,7 +13308,6 @@ impl<'a> Extract<'a> for SEASimpodSpawning {
 
 /// DCB type: `EASpawnNotifierParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EASpawnNotifierParams {
 }
 
@@ -15252,7 +13326,6 @@ impl<'a> Extract<'a> for EASpawnNotifierParams {
 
 /// DCB type: `EASpawnModifierParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EASpawnModifierParams {
 }
 
@@ -15271,7 +13344,6 @@ impl<'a> Extract<'a> for EASpawnModifierParams {
 
 /// DCB type: `EASpawnRezParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EASpawnRezParams {
 }
 
@@ -15290,76 +13362,52 @@ impl<'a> Extract<'a> for EASpawnRezParams {
 
 /// DCB type: `SFPSVictoryConditionsTeamLives`
 /// Inherits from: `SFPSVictoryConditionsTeam`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SFPSVictoryConditionsTeamLives {
     /// `timeLimit` (Single)
-    #[serde(default)]
     pub time_limit: f32,
     /// `timeRemainingNoNewPlayers` (Single)
-    #[serde(default)]
     pub time_remaining_no_new_players: f32,
     /// `scoreLimit` (Int32)
-    #[serde(default)]
     pub score_limit: i32,
     /// `checkScore` (Boolean)
-    #[serde(default)]
     pub check_score: bool,
     /// `checkTime` (Boolean)
-    #[serde(default)]
     pub check_time: bool,
     /// `checkScoreAsTime` (Boolean)
-    #[serde(default)]
     pub check_score_as_time: bool,
     /// `decideRoundWinnerUsingRoundPoints` (Boolean)
-    #[serde(default)]
     pub decide_round_winner_using_round_points: bool,
     /// `decideGameWinnerWithTeamScore` (Boolean)
-    #[serde(default)]
     pub decide_game_winner_with_team_score: bool,
     /// `playHalfwaySound` (Boolean)
-    #[serde(default)]
     pub play_halfway_sound: bool,
     /// `playHalfwaySoundAfterUpdatingTimeLimit` (Boolean)
-    #[serde(default)]
     pub play_halfway_sound_after_updating_time_limit: bool,
     /// `playTimeAnnouncements` (Boolean)
-    #[serde(default)]
     pub play_time_announcements: bool,
     /// `canPlayMusicMoods` (Boolean)
-    #[serde(default)]
     pub can_play_music_moods: bool,
     /// `doOpponentDisconnectedCheck` (Boolean)
-    #[serde(default)]
     pub do_opponent_disconnected_check: bool,
     /// `narrowMatchWinRatio` (Single)
-    #[serde(default)]
     pub narrow_match_win_ratio: f32,
     /// `bigRoundWinRatio` (Single)
-    #[serde(default)]
     pub big_round_win_ratio: f32,
     /// `narrowMatchDefeatRatio` (Single)
-    #[serde(default)]
     pub narrow_match_defeat_ratio: f32,
     /// `bigRoundDefeatRatio` (Single)
-    #[serde(default)]
     pub big_round_defeat_ratio: f32,
     /// `endOnKill` (Boolean)
-    #[serde(default)]
     pub end_on_kill: bool,
     /// `endOnAllOthersRanOutOfLives` (Boolean)
-    #[serde(default)]
     pub end_on_all_others_ran_out_of_lives: bool,
     /// `winAwardToTeamTopScorersOnly` (Boolean)
-    #[serde(default)]
     pub win_award_to_team_top_scorers_only: bool,
     /// `winAwardPlayerCount` (Int32)
-    #[serde(default)]
     pub win_award_player_count: i32,
     /// `winAwardIds` (EnumChoice (array))
-    #[serde(default)]
     pub win_award_ids: Vec<EAwardId>,
     /// `playerHUDParams` (Class)
-    #[serde(default)]
     pub player_hudparams: Option<Handle<EAPlayerHUDParams>>,
 }
 
@@ -15406,25 +13454,18 @@ impl<'a> Extract<'a> for SFPSVictoryConditionsTeamLives {
 
 /// DCB type: `SSimpodSubsumptionMission`
 /// Inherits from: `SSubsumptionMission`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SSimpodSubsumptionMission {
     /// `useNewMissionSystem` (Boolean)
-    #[serde(default)]
     pub use_new_mission_system: bool,
     /// `startOnIntialCountdown` (Boolean)
-    #[serde(default)]
     pub start_on_intial_countdown: bool,
     /// `spawningTagFilter` (Class)
-    #[serde(default)]
     pub spawning_tag_filter: Option<Handle<TagList>>,
     /// `defaultNPCSkillDefinition` (Reference)
-    #[serde(default)]
     pub default_npcskill_definition: Option<CigGuid>,
     /// `uecCurve` (Class)
-    #[serde(default)]
     pub uec_curve: Option<Handle<RewardScale>>,
     /// `repCurve` (Class)
-    #[serde(default)]
     pub rep_curve: Option<Handle<RewardScale>>,
 }
 
@@ -15458,7 +13499,6 @@ impl<'a> Extract<'a> for SSimpodSubsumptionMission {
 
 /// DCB type: `GameModeParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GameModeParams {
 }
 
@@ -15477,19 +13517,14 @@ impl<'a> Extract<'a> for GameModeParams {
 
 /// DCB type: `EABettingModuleParams`
 /// Inherits from: `SIBettingModule`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EABettingModuleParams {
     /// `bettingFormat` (EnumChoice)
-    #[serde(default)]
     pub betting_format: BettingFormat,
     /// `bettingCurrency` (EnumChoice)
-    #[serde(default)]
     pub betting_currency: CurrencyType,
     /// `disconnectionProtection` (Boolean)
-    #[serde(default)]
     pub disconnection_protection: bool,
     /// `alsoProtectDisconnecter` (Boolean)
-    #[serde(default)]
     pub also_protect_disconnecter: bool,
 }
 
@@ -15512,25 +13547,18 @@ impl<'a> Extract<'a> for EABettingModuleParams {
 
 /// DCB type: `S42DifficultyParams`
 /// Inherits from: `BaseDifficultyParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct S42DifficultyParams {
     /// `defaultDifficulty` (EnumChoice)
-    #[serde(default)]
     pub default_difficulty: EGameDifficulty,
     /// `enableDynamicScaling` (Boolean)
-    #[serde(default)]
     pub enable_dynamic_scaling: bool,
     /// `fpsDynamicScaling` (Class)
-    #[serde(default)]
     pub fps_dynamic_scaling: Option<Handle<SDynamicDifficultyParams>>,
     /// `shipDynamicScaling` (Class)
-    #[serde(default)]
     pub ship_dynamic_scaling: Option<Handle<SDynamicDifficultyParams>>,
     /// `difficultyModifiers` (Reference)
-    #[serde(default)]
     pub difficulty_modifiers: Option<CigGuid>,
     /// `playerInnerHintsTag` (Reference)
-    #[serde(default)]
     pub player_inner_hints_tag: Option<CigGuid>,
 }
 
@@ -15561,7 +13589,6 @@ impl<'a> Extract<'a> for S42DifficultyParams {
 
 /// DCB type: `SGameRulesS42ReputationParamsDef`
 /// Inherits from: `SGameRulesReputationBaseParamsDef`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SGameRulesS42ReputationParamsDef {
 }
 
@@ -15580,7 +13607,6 @@ impl<'a> Extract<'a> for SGameRulesS42ReputationParamsDef {
 
 /// DCB type: `GameRulesStateBaseParams`
 /// Inherits from: `SIStateModule`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GameRulesStateBaseParams {
 }
 
@@ -15599,7 +13625,6 @@ impl<'a> Extract<'a> for GameRulesStateBaseParams {
 
 /// DCB type: `S42StateParams`
 /// Inherits from: `GameRulesStateBaseParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct S42StateParams {
 }
 
@@ -15618,13 +13643,10 @@ impl<'a> Extract<'a> for S42StateParams {
 
 /// DCB type: `EASimpodStateParams`
 /// Inherits from: `EAStateParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EASimpodStateParams {
     /// `pregame` (Class)
-    #[serde(default)]
     pub pregame: Option<Handle<GameRulesEAStatePreGameParams>>,
     /// `postgame` (Class)
-    #[serde(default)]
     pub postgame: Option<Handle<GameRulesEAStatePostGameParams>>,
 }
 
@@ -15651,10 +13673,8 @@ impl<'a> Extract<'a> for EASimpodStateParams {
 
 /// DCB type: `GeometryPropModelTag`
 /// Inherits from: `SGeometryModelTagBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GeometryPropModelTag {
     /// `tag` (Reference)
-    #[serde(default)]
     pub tag: Option<CigGuid>,
 }
 
@@ -15674,7 +13694,6 @@ impl<'a> Extract<'a> for GeometryPropModelTag {
 
 /// DCB type: `SUIGeometryResourceComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SUIGeometryResourceComponentParams {
 }
 
@@ -15693,7 +13712,6 @@ impl<'a> Extract<'a> for SUIGeometryResourceComponentParams {
 
 /// DCB type: `SBaseHealthComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SBaseHealthComponentParams {
 }
 
@@ -15712,10 +13730,8 @@ impl<'a> Extract<'a> for SBaseHealthComponentParams {
 
 /// DCB type: `SInitialDamageSpecifierFixed`
 /// Inherits from: `SInitialDamageSpecifierBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SInitialDamageSpecifierFixed {
     /// `Damage` (StrongPointer)
-    #[serde(default)]
     pub damage: Option<DamageBasePtr>,
 }
 
@@ -15738,7 +13754,6 @@ impl<'a> Extract<'a> for SInitialDamageSpecifierFixed {
 
 /// DCB type: `HintMarkerParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct HintMarkerParams {
 }
 
@@ -15757,22 +13772,16 @@ impl<'a> Extract<'a> for HintMarkerParams {
 
 /// DCB type: `HitBehaviorDamageOverTime`
 /// Inherits from: `HitBehaviorBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct HitBehaviorDamageOverTime {
     /// `damagePerSecond` (StrongPointer)
-    #[serde(default)]
     pub damage_per_second: Option<DamageBasePtr>,
     /// `duration` (Single)
-    #[serde(default)]
     pub duration: f32,
     /// `damagePeriod` (Single)
-    #[serde(default)]
     pub damage_period: f32,
     /// `ignoreShields` (Boolean)
-    #[serde(default)]
     pub ignore_shields: bool,
     /// `applyToHealthPool` (Boolean)
-    #[serde(default)]
     pub apply_to_health_pool: bool,
 }
 
@@ -15799,19 +13808,14 @@ impl<'a> Extract<'a> for HitBehaviorDamageOverTime {
 
 /// DCB type: `SHospitalEmergencyScreenStateModifier`
 /// Inherits from: `SStateModifier`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SHospitalEmergencyScreenStateModifier {
     /// `OnClosing` (WeakPointer)
-    #[serde(default)]
     pub on_closing: Option<Handle<SInteractionState>>,
     /// `OnSuccess` (WeakPointer)
-    #[serde(default)]
     pub on_success: Option<Handle<SInteractionState>>,
     /// `OnErrorUninjured` (WeakPointer)
-    #[serde(default)]
     pub on_error_uninjured: Option<Handle<SInteractionState>>,
     /// `OnErrorEmpty` (WeakPointer)
-    #[serde(default)]
     pub on_error_empty: Option<Handle<SInteractionState>>,
 }
 
@@ -15846,25 +13850,18 @@ impl<'a> Extract<'a> for SHospitalEmergencyScreenStateModifier {
 
 /// DCB type: `InnerThought_LayoutChoiceBase`
 /// Inherits from: `InnerThought_LayoutBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InnerThought_LayoutChoiceBase {
     /// `selectedColor` (Reference)
-    #[serde(default)]
     pub selected_color: Option<CigGuid>,
     /// `unselectedColor` (Reference)
-    #[serde(default)]
     pub unselected_color: Option<CigGuid>,
     /// `secondaryColor` (Reference)
-    #[serde(default)]
     pub secondary_color: Option<CigGuid>,
     /// `selectedOffset` (Class)
-    #[serde(default)]
     pub selected_offset: Option<Handle<Vec3>>,
     /// `unselectedOffset` (Class)
-    #[serde(default)]
     pub unselected_offset: Option<Handle<Vec3>>,
     /// `secondaryOffset` (Class)
-    #[serde(default)]
     pub secondary_offset: Option<Handle<Vec3>>,
 }
 
@@ -15898,7 +13895,6 @@ impl<'a> Extract<'a> for InnerThought_LayoutChoiceBase {
 
 /// DCB type: `SEntityLinkHighlightNode`
 /// Inherits from: `SHighlightBehaviorNodeParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SEntityLinkHighlightNode {
 }
 
@@ -15917,7 +13913,6 @@ impl<'a> Extract<'a> for SEntityLinkHighlightNode {
 
 /// DCB type: `SInteractionLinkHighlightNode`
 /// Inherits from: `SHighlightBehaviorNodeParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SInteractionLinkHighlightNode {
 }
 
@@ -15936,13 +13931,10 @@ impl<'a> Extract<'a> for SInteractionLinkHighlightNode {
 
 /// DCB type: `SInteractableMenuSetTitle`
 /// Inherits from: `SInteractableMenuTitleParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SInteractableMenuSetTitle {
     /// `titleColor` (Reference)
-    #[serde(default)]
     pub title_color: Option<CigGuid>,
     /// `title` (Locale)
-    #[serde(default)]
     pub title: LocaleKey,
 }
 
@@ -15963,13 +13955,10 @@ impl<'a> Extract<'a> for SInteractableMenuSetTitle {
 
 /// DCB type: `SInteractionPointModifierApplyActorOffsetByGravity`
 /// Inherits from: `SInteractionPointModifier`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SInteractionPointModifierApplyActorOffsetByGravity {
     /// `conditionParams` (StrongPointer (array))
-    #[serde(default)]
     pub condition_params: Vec<InteractionConditionParamsPtr>,
     /// `directionalOffsets` (Single)
-    #[serde(default)]
     pub directional_offsets: f32,
 }
 
@@ -15995,13 +13984,10 @@ impl<'a> Extract<'a> for SInteractionPointModifierApplyActorOffsetByGravity {
 
 /// DCB type: `SInteractionPointModifierReplaceByBoneTransform`
 /// Inherits from: `SInteractionPointModifier`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SInteractionPointModifierReplaceByBoneTransform {
     /// `conditionParams` (StrongPointer (array))
-    #[serde(default)]
     pub condition_params: Vec<InteractionConditionParamsPtr>,
     /// `boneName` (String)
-    #[serde(default)]
     pub bone_name: String,
 }
 
@@ -16027,13 +14013,10 @@ impl<'a> Extract<'a> for SInteractionPointModifierReplaceByBoneTransform {
 
 /// DCB type: `InteractionConditionItemPower`
 /// Inherits from: `InteractionConditionParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InteractionConditionItemPower {
     /// `conditionDisplay` (StrongPointer)
-    #[serde(default)]
     pub condition_display: Option<Handle<ConditionDisplayParams>>,
     /// `powerState` (EnumChoice)
-    #[serde(default)]
     pub power_state: EItemActionEventType,
 }
 
@@ -16057,16 +14040,12 @@ impl<'a> Extract<'a> for InteractionConditionItemPower {
 
 /// DCB type: `InteractionConditionActorInventoryContainerEntityHasTag`
 /// Inherits from: `InteractionConditionParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InteractionConditionActorInventoryContainerEntityHasTag {
     /// `conditionDisplay` (StrongPointer)
-    #[serde(default)]
     pub condition_display: Option<Handle<ConditionDisplayParams>>,
     /// `conditionResult` (EnumChoice)
-    #[serde(default)]
     pub condition_result: ConditionResult,
     /// `attachableTag` (String (array))
-    #[serde(default)]
     pub attachable_tag: Vec<String>,
 }
 
@@ -16093,16 +14072,12 @@ impl<'a> Extract<'a> for InteractionConditionActorInventoryContainerEntityHasTag
 
 /// DCB type: `InteractionConditionSecurityClearanceToken`
 /// Inherits from: `InteractionConditionParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InteractionConditionSecurityClearanceToken {
     /// `conditionDisplay` (StrongPointer)
-    #[serde(default)]
     pub condition_display: Option<Handle<ConditionDisplayParams>>,
     /// `requiredConditions` (Class)
-    #[serde(default)]
     pub required_conditions: Option<Handle<SecurityClearanceConditions>>,
     /// `checkEntityTokens` (Boolean)
-    #[serde(default)]
     pub check_entity_tokens: bool,
 }
 
@@ -16130,10 +14105,8 @@ impl<'a> Extract<'a> for InteractionConditionSecurityClearanceToken {
 
 /// DCB type: `InteractionConditionActorSealedHelmet`
 /// Inherits from: `InteractionConditionParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InteractionConditionActorSealedHelmet {
     /// `conditionDisplay` (StrongPointer)
-    #[serde(default)]
     pub condition_display: Option<Handle<ConditionDisplayParams>>,
 }
 
@@ -16156,10 +14129,8 @@ impl<'a> Extract<'a> for InteractionConditionActorSealedHelmet {
 
 /// DCB type: `InteractionConditionCanAttachItemOnHanger`
 /// Inherits from: `InteractionConditionParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InteractionConditionCanAttachItemOnHanger {
     /// `conditionDisplay` (StrongPointer)
-    #[serde(default)]
     pub condition_display: Option<Handle<ConditionDisplayParams>>,
 }
 
@@ -16182,16 +14153,12 @@ impl<'a> Extract<'a> for InteractionConditionCanAttachItemOnHanger {
 
 /// DCB type: `InteractionConditionHasItemTypeAttached`
 /// Inherits from: `InteractionConditionParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InteractionConditionHasItemTypeAttached {
     /// `conditionDisplay` (StrongPointer)
-    #[serde(default)]
     pub condition_display: Option<Handle<ConditionDisplayParams>>,
     /// `itemType` (EnumChoice)
-    #[serde(default)]
     pub item_type: EItemType,
     /// `itemSubType` (EnumChoice)
-    #[serde(default)]
     pub item_sub_type: EItemSubType,
 }
 
@@ -16216,16 +14183,12 @@ impl<'a> Extract<'a> for InteractionConditionHasItemTypeAttached {
 
 /// DCB type: `InteractionConditionLimitNearbyCarryables`
 /// Inherits from: `InteractionConditionParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InteractionConditionLimitNearbyCarryables {
     /// `conditionDisplay` (StrongPointer)
-    #[serde(default)]
     pub condition_display: Option<Handle<ConditionDisplayParams>>,
     /// `searchRadius` (Int32)
-    #[serde(default)]
     pub search_radius: i32,
     /// `maxLimit` (Int32)
-    #[serde(default)]
     pub max_limit: i32,
 }
 
@@ -16250,13 +14213,10 @@ impl<'a> Extract<'a> for InteractionConditionLimitNearbyCarryables {
 
 /// DCB type: `InteractionConditionDraggedActorHasProhibitedItems`
 /// Inherits from: `InteractionConditionParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InteractionConditionDraggedActorHasProhibitedItems {
     /// `conditionDisplay` (StrongPointer)
-    #[serde(default)]
     pub condition_display: Option<Handle<ConditionDisplayParams>>,
     /// `prohibitedList` (StrongPointer (array))
-    #[serde(default)]
     pub prohibited_list: Vec<Handle<InteractionProhibitedItemParams>>,
 }
 
@@ -16285,16 +14245,12 @@ impl<'a> Extract<'a> for InteractionConditionDraggedActorHasProhibitedItems {
 
 /// DCB type: `InteractionConditionHasSupportingItemport`
 /// Inherits from: `InteractionConditionParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InteractionConditionHasSupportingItemport {
     /// `conditionDisplay` (StrongPointer)
-    #[serde(default)]
     pub condition_display: Option<Handle<ConditionDisplayParams>>,
     /// `itemPortTags` (String (array))
-    #[serde(default)]
     pub item_port_tags: Vec<String>,
     /// `itemPortNames` (String (array))
-    #[serde(default)]
     pub item_port_names: Vec<String>,
 }
 
@@ -16323,10 +14279,8 @@ impl<'a> Extract<'a> for InteractionConditionHasSupportingItemport {
 
 /// DCB type: `InteractionConditionSwapOnly`
 /// Inherits from: `InteractionConditionParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InteractionConditionSwapOnly {
     /// `conditionDisplay` (StrongPointer)
-    #[serde(default)]
     pub condition_display: Option<Handle<ConditionDisplayParams>>,
 }
 
@@ -16349,10 +14303,8 @@ impl<'a> Extract<'a> for InteractionConditionSwapOnly {
 
 /// DCB type: `SInteractionConditionPlayerVehicleNotInArmisticeZone`
 /// Inherits from: `InteractionConditionParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SInteractionConditionPlayerVehicleNotInArmisticeZone {
     /// `conditionDisplay` (StrongPointer)
-    #[serde(default)]
     pub condition_display: Option<Handle<ConditionDisplayParams>>,
 }
 
@@ -16375,13 +14327,10 @@ impl<'a> Extract<'a> for SInteractionConditionPlayerVehicleNotInArmisticeZone {
 
 /// DCB type: `SInteractionConditionMovableMover`
 /// Inherits from: `InteractionConditionParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SInteractionConditionMovableMover {
     /// `conditionDisplay` (StrongPointer)
-    #[serde(default)]
     pub condition_display: Option<Handle<ConditionDisplayParams>>,
     /// `requireMover` (Boolean)
-    #[serde(default)]
     pub require_mover: bool,
 }
 
@@ -16405,10 +14354,8 @@ impl<'a> Extract<'a> for SInteractionConditionMovableMover {
 
 /// DCB type: `InteractionConditionHackingControllerEnabled`
 /// Inherits from: `InteractionConditionParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InteractionConditionHackingControllerEnabled {
     /// `conditionDisplay` (StrongPointer)
-    #[serde(default)]
     pub condition_display: Option<Handle<ConditionDisplayParams>>,
 }
 
@@ -16431,13 +14378,10 @@ impl<'a> Extract<'a> for InteractionConditionHackingControllerEnabled {
 
 /// DCB type: `InteractionConditionIsInteractionShownAsPrompt`
 /// Inherits from: `InteractionConditionParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InteractionConditionIsInteractionShownAsPrompt {
     /// `conditionDisplay` (StrongPointer)
-    #[serde(default)]
     pub condition_display: Option<Handle<ConditionDisplayParams>>,
     /// `Interaction` (WeakPointer)
-    #[serde(default)]
     pub interaction: Option<Handle<SSharedInteractionParams>>,
 }
 
@@ -16464,13 +14408,10 @@ impl<'a> Extract<'a> for InteractionConditionIsInteractionShownAsPrompt {
 
 /// DCB type: `InteractionConditionHeldItemHasTag`
 /// Inherits from: `InteractionConditionParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InteractionConditionHeldItemHasTag {
     /// `conditionDisplay` (StrongPointer)
-    #[serde(default)]
     pub condition_display: Option<Handle<ConditionDisplayParams>>,
     /// `heldItemTags` (Class)
-    #[serde(default)]
     pub held_item_tags: Option<Handle<TagsDNFTerm>>,
 }
 
@@ -16497,16 +14438,12 @@ impl<'a> Extract<'a> for InteractionConditionHeldItemHasTag {
 
 /// DCB type: `InteractionConditionSkillLevel`
 /// Inherits from: `InteractionConditionParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InteractionConditionSkillLevel {
     /// `conditionDisplay` (StrongPointer)
-    #[serde(default)]
     pub condition_display: Option<Handle<ConditionDisplayParams>>,
     /// `skillType` (EnumChoice)
-    #[serde(default)]
     pub skill_type: ESkillType,
     /// `skillLevelLimit` (Int32)
-    #[serde(default)]
     pub skill_level_limit: i32,
 }
 
@@ -16531,13 +14468,10 @@ impl<'a> Extract<'a> for InteractionConditionSkillLevel {
 
 /// DCB type: `InteractionConditionStaminaRequirement`
 /// Inherits from: `InteractionConditionParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InteractionConditionStaminaRequirement {
     /// `conditionDisplay` (StrongPointer)
-    #[serde(default)]
     pub condition_display: Option<Handle<ConditionDisplayParams>>,
     /// `staminaRequirement` (Single)
-    #[serde(default)]
     pub stamina_requirement: f32,
 }
 
@@ -16561,10 +14495,8 @@ impl<'a> Extract<'a> for InteractionConditionStaminaRequirement {
 
 /// DCB type: `SRangeStateModifier`
 /// Inherits from: `SStateModifier`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SRangeStateModifier {
     /// `stateRanges` (Class (array))
-    #[serde(default)]
     pub state_ranges: Vec<Handle<SRangeStateLevel>>,
 }
 
@@ -16590,16 +14522,12 @@ impl<'a> Extract<'a> for SRangeStateModifier {
 
 /// DCB type: `SPowerSourceStateModifier`
 /// Inherits from: `SStateModifier`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SPowerSourceStateModifier {
     /// `onOnlineState` (WeakPointer)
-    #[serde(default)]
     pub on_online_state: Option<Handle<SInteractionState>>,
     /// `onOfflineState` (WeakPointer)
-    #[serde(default)]
     pub on_offline_state: Option<Handle<SInteractionState>>,
     /// `onInoperableState` (WeakPointer)
-    #[serde(default)]
     pub on_inoperable_state: Option<Handle<SInteractionState>>,
 }
 
@@ -16630,13 +14558,10 @@ impl<'a> Extract<'a> for SPowerSourceStateModifier {
 
 /// DCB type: `SPrisonSentenceStateModifier`
 /// Inherits from: `SStateModifier`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SPrisonSentenceStateModifier {
     /// `onFinishSentenceSuccess` (WeakPointer)
-    #[serde(default)]
     pub on_finish_sentence_success: Option<Handle<SInteractionState>>,
     /// `onFinishSentenceFail` (WeakPointer)
-    #[serde(default)]
     pub on_finish_sentence_fail: Option<Handle<SInteractionState>>,
 }
 
@@ -16663,10 +14588,8 @@ impl<'a> Extract<'a> for SPrisonSentenceStateModifier {
 
 /// DCB type: `SItemExpiryStateModifier`
 /// Inherits from: `SStateModifier`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SItemExpiryStateModifier {
     /// `interactionStates` (WeakPointer)
-    #[serde(default)]
     pub interaction_states: Option<Handle<SInteractionState>>,
 }
 
@@ -16689,10 +14612,8 @@ impl<'a> Extract<'a> for SItemExpiryStateModifier {
 
 /// DCB type: `AttachableStateModifierBase`
 /// Inherits from: `SStateModifier`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AttachableStateModifierBase {
     /// `context` (StrongPointer)
-    #[serde(default)]
     pub context: Option<AttachableStateModifierContextBasePtr>,
 }
 
@@ -16715,10 +14636,8 @@ impl<'a> Extract<'a> for AttachableStateModifierBase {
 
 /// DCB type: `LandingSystemStateModifierBase`
 /// Inherits from: `AttachableStateModifierBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LandingSystemStateModifierBase {
     /// `context` (StrongPointer)
-    #[serde(default)]
     pub context: Option<AttachableStateModifierContextBasePtr>,
 }
 
@@ -16740,13 +14659,10 @@ impl<'a> Extract<'a> for LandingSystemStateModifierBase {
 }
 
 /// DCB type: `StateTokenRequirements`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct StateTokenRequirements {
     /// `state` (WeakPointer)
-    #[serde(default)]
     pub state: Option<Handle<SInteractionState>>,
     /// `requiredTokens` (Reference (array))
-    #[serde(default)]
     pub required_tokens: Vec<CigGuid>,
 }
 
@@ -16771,13 +14687,10 @@ impl<'a> Extract<'a> for StateTokenRequirements {
 }
 
 /// DCB type: `StateTypeStateTokenRequirements`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct StateTypeStateTokenRequirements {
     /// `stateType` (WeakPointer)
-    #[serde(default)]
     pub state_type: Option<Handle<SInteractionStateType>>,
     /// `stateTokenRequirements` (Class (array))
-    #[serde(default)]
     pub state_token_requirements: Vec<Handle<StateTokenRequirements>>,
 }
 
@@ -16807,10 +14720,8 @@ impl<'a> Extract<'a> for StateTypeStateTokenRequirements {
 
 /// DCB type: `SecurityAccessTokenStateModifier`
 /// Inherits from: `SStateModifier`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SecurityAccessTokenStateModifier {
     /// `stateTypeStateTokenRequirements` (Class (array))
-    #[serde(default)]
     pub state_type_state_token_requirements: Vec<Handle<StateTypeStateTokenRequirements>>,
 }
 
@@ -16836,16 +14747,12 @@ impl<'a> Extract<'a> for SecurityAccessTokenStateModifier {
 
 /// DCB type: `CollectibleStateModifier`
 /// Inherits from: `SStateModifier`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CollectibleStateModifier {
     /// `originState` (WeakPointer)
-    #[serde(default)]
     pub origin_state: Option<Handle<SInteractionState>>,
     /// `stateIfCollected` (WeakPointer)
-    #[serde(default)]
     pub state_if_collected: Option<Handle<SInteractionState>>,
     /// `stateIfUncollected` (WeakPointer)
-    #[serde(default)]
     pub state_if_uncollected: Option<Handle<SInteractionState>>,
 }
 
@@ -16876,10 +14783,8 @@ impl<'a> Extract<'a> for CollectibleStateModifier {
 
 /// DCB type: `InventoryContainerGridCellSizeMeters`
 /// Inherits from: `InventoryContainerGridCellSizeBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InventoryContainerGridCellSizeMeters {
     /// `meters` (Int32)
-    #[serde(default)]
     pub meters: i32,
 }
 
@@ -16899,7 +14804,6 @@ impl<'a> Extract<'a> for InventoryContainerGridCellSizeMeters {
 
 /// DCB type: `VehicleItem`
 /// Inherits from: `BaseItem`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct VehicleItem {
 }
 
@@ -16918,10 +14822,8 @@ impl<'a> Extract<'a> for VehicleItem {
 
 /// DCB type: `TimerExpirationParams`
 /// Inherits from: `BaseExpirationTypeParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct TimerExpirationParams {
     /// `expirationDuration` (Class)
-    #[serde(default)]
     pub expiration_duration: Option<Handle<Time>>,
 }
 
@@ -16944,10 +14846,8 @@ impl<'a> Extract<'a> for TimerExpirationParams {
 
 /// DCB type: `DateExpirationParams`
 /// Inherits from: `BaseExpirationTypeParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DateExpirationParams {
     /// `expirationDateTime` (Class)
-    #[serde(default)]
     pub expiration_date_time: Option<Handle<DateTime>>,
 }
 
@@ -16970,19 +14870,14 @@ impl<'a> Extract<'a> for DateExpirationParams {
 
 /// DCB type: `SCItemExpiryComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCItemExpiryComponentParams {
     /// `expirationType` (StrongPointer)
-    #[serde(default)]
     pub expiration_type: Option<BaseExpirationTypeParamsPtr>,
     /// `expirationActivationType` (EnumChoice)
-    #[serde(default)]
     pub expiration_activation_type: ExpirationActivationType,
     /// `creationLimitPerCycle` (Int32)
-    #[serde(default)]
     pub creation_limit_per_cycle: i32,
     /// `expiredDensityClass` (Reference)
-    #[serde(default)]
     pub expired_density_class: Option<CigGuid>,
 }
 
@@ -17008,10 +14903,8 @@ impl<'a> Extract<'a> for SCItemExpiryComponentParams {
 
 /// DCB type: `SItemPortRule_HideInteractionsDef`
 /// Inherits from: `SItemPortRuleDef`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SItemPortRule_HideInteractionsDef {
     /// `interactionNames` (String (array))
-    #[serde(default)]
     pub interaction_names: Vec<String>,
 }
 
@@ -17033,52 +14926,36 @@ impl<'a> Extract<'a> for SItemPortRule_HideInteractionsDef {
 
 /// DCB type: `SSimulationParamsPendulum`
 /// Inherits from: `SSimulationParamsBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SSimulationParamsPendulum {
     /// `UseSimulation` (Boolean)
-    #[serde(default)]
     pub use_simulation: bool,
     /// `UseDebugSetup` (Boolean)
-    #[serde(default)]
     pub use_debug_setup: bool,
     /// `UseDebugText` (Boolean)
-    #[serde(default)]
     pub use_debug_text: bool,
     /// `UseRedirect` (Boolean)
-    #[serde(default)]
     pub use_redirect: bool,
     /// `SimFPS` (Byte)
-    #[serde(default)]
     pub sim_fps: u32,
     /// `PivotOffset` (Class)
-    #[serde(default)]
     pub pivot_offset: Option<Handle<Vec3>>,
     /// `SimulationAxis` (Class)
-    #[serde(default)]
     pub simulation_axis: Option<Handle<Vec3>>,
     /// `Mass` (Single)
-    #[serde(default)]
     pub mass: f32,
     /// `Gravity` (Single)
-    #[serde(default)]
     pub gravity: f32,
     /// `Damping` (Single)
-    #[serde(default)]
     pub damping: f32,
     /// `JointSpring` (Single)
-    #[serde(default)]
     pub joint_spring: f32,
     /// `SpringTarget` (Class)
-    #[serde(default)]
     pub spring_target: Option<Handle<Vec2>>,
     /// `ConeAngle` (Single)
-    #[serde(default)]
     pub cone_angle: f32,
     /// `HingeRotation` (Single)
-    #[serde(default)]
     pub hinge_rotation: f32,
     /// `Capsule` (Class)
-    #[serde(default)]
     pub capsule: Option<Handle<Vec2>>,
 }
 
@@ -17124,40 +15001,28 @@ impl<'a> Extract<'a> for SSimulationParamsPendulum {
 
 /// DCB type: `SSimulationParamsTranslationalProjection`
 /// Inherits from: `SSimulationParamsBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SSimulationParamsTranslationalProjection {
     /// `UseSimulation` (Boolean)
-    #[serde(default)]
     pub use_simulation: bool,
     /// `UseDebugSetup` (Boolean)
-    #[serde(default)]
     pub use_debug_setup: bool,
     /// `UseDebugText` (Boolean)
-    #[serde(default)]
     pub use_debug_text: bool,
     /// `UseRedirect` (Boolean)
-    #[serde(default)]
     pub use_redirect: bool,
     /// `SimFPS` (Byte)
-    #[serde(default)]
     pub sim_fps: u32,
     /// `PivotOffset` (Class)
-    #[serde(default)]
     pub pivot_offset: Option<Handle<Vec3>>,
     /// `ProjectionType` (EnumChoice)
-    #[serde(default)]
     pub projection_type: EProjectionSelection4,
     /// `Radius` (Single)
-    #[serde(default)]
     pub radius: f32,
     /// `TranslationAxis` (Class)
-    #[serde(default)]
     pub translation_axis: Option<Handle<Vec3>>,
     /// `Capsule` (Class)
-    #[serde(default)]
     pub capsule: Option<Handle<Vec2>>,
     /// `AvailableCollisionProxies` (EnumChoice (array))
-    #[serde(default)]
     pub available_collision_proxies: Vec<EAuxiliaryProxy>,
 }
 
@@ -17198,10 +15063,8 @@ impl<'a> Extract<'a> for SSimulationParamsTranslationalProjection {
 
 /// DCB type: `SItemPortDefAttachmentImplementationFace`
 /// Inherits from: `SItemPortDefAttachmentImplementationBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SItemPortDefAttachmentImplementationFace {
     /// `Helper` (Class)
-    #[serde(default)]
     pub helper: Option<Handle<SItemPortDefHelperNode>>,
 }
 
@@ -17224,7 +15087,6 @@ impl<'a> Extract<'a> for SItemPortDefAttachmentImplementationFace {
 
 /// DCB type: `SItemPortDefAttachmentImplementationLogical`
 /// Inherits from: `SItemPortDefAttachmentImplementationBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SItemPortDefAttachmentImplementationLogical {
 }
 
@@ -17243,7 +15105,6 @@ impl<'a> Extract<'a> for SItemPortDefAttachmentImplementationLogical {
 
 /// DCB type: `ItemPortHostComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ItemPortHostComponentParams {
 }
 
@@ -17261,13 +15122,10 @@ impl<'a> Extract<'a> for ItemPortHostComponentParams {
 }
 
 /// DCB type: `ItemResourceConversionPair`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ItemResourceConversionPair {
     /// `toScrub` (Reference)
-    #[serde(default)]
     pub to_scrub: Option<CigGuid>,
     /// `toAdd` (Reference)
-    #[serde(default)]
     pub to_add: Option<CigGuid>,
 }
 
@@ -17287,13 +15145,10 @@ impl<'a> Extract<'a> for ItemResourceConversionPair {
 }
 
 /// DCB type: `ItemResourceDeltaInject`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ItemResourceDeltaInject {
     /// `injectedDelta` (Class)
-    #[serde(default)]
     pub injected_delta: Option<Handle<ItemResourceDeltaAmount>>,
     /// `injectedComposition` (Class)
-    #[serde(default)]
     pub injected_composition: Option<Handle<ItemResourceComposition>>,
 }
 
@@ -17319,10 +15174,8 @@ impl<'a> Extract<'a> for ItemResourceDeltaInject {
 }
 
 /// DCB type: `ItemResourceModifier`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ItemResourceModifier {
     /// `delta` (StrongPointer)
-    #[serde(default)]
     pub delta: Option<Handle<ItemResourceDeltaInject>>,
 }
 
@@ -17345,13 +15198,10 @@ impl<'a> Extract<'a> for ItemResourceModifier {
 
 /// DCB type: `FunctionalityModifierLinear`
 /// Inherits from: `FunctionalityModifierBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct FunctionalityModifierLinear {
     /// `minFunctionalityMultiplier` (Single)
-    #[serde(default)]
     pub min_functionality_multiplier: f32,
     /// `maxFunctionalityMultiplier` (Single)
-    #[serde(default)]
     pub max_functionality_multiplier: f32,
 }
 
@@ -17372,10 +15222,8 @@ impl<'a> Extract<'a> for FunctionalityModifierLinear {
 
 /// DCB type: `FunctionalityModifierCurve`
 /// Inherits from: `FunctionalityModifierBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct FunctionalityModifierCurve {
     /// `functionalityModifierCurve` (Class)
-    #[serde(default)]
     pub functionality_modifier_curve: Option<Handle<BezierCurve>>,
 }
 
@@ -17398,10 +15246,8 @@ impl<'a> Extract<'a> for FunctionalityModifierCurve {
 
 /// DCB type: `ItemResourceDynamicAmountExample`
 /// Inherits from: `ItemResourceDynamicAmountBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ItemResourceDynamicAmountExample {
     /// `frequency` (Single)
-    #[serde(default)]
     pub frequency: f32,
 }
 
@@ -17421,13 +15267,10 @@ impl<'a> Extract<'a> for ItemResourceDynamicAmountExample {
 
 /// DCB type: `ItemResourceDynamicAmountFunctionalityRatio`
 /// Inherits from: `ItemResourceDynamicAmountBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ItemResourceDynamicAmountFunctionalityRatio {
     /// `threshold` (Single)
-    #[serde(default)]
     pub threshold: f32,
     /// `resource` (EnumChoice)
-    #[serde(default)]
     pub resource: ResourceNetworkResource,
 }
 
@@ -17448,7 +15291,6 @@ impl<'a> Extract<'a> for ItemResourceDynamicAmountFunctionalityRatio {
 
 /// DCB type: `ItemResourceDynamicAmountWeaponAmmo`
 /// Inherits from: `ItemResourceDynamicAmountBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ItemResourceDynamicAmountWeaponAmmo {
 }
 
@@ -17467,7 +15309,6 @@ impl<'a> Extract<'a> for ItemResourceDynamicAmountWeaponAmmo {
 
 /// DCB type: `ItemResourceDynamicAmountWeaponRegen`
 /// Inherits from: `ItemResourceDynamicAmountBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ItemResourceDynamicAmountWeaponRegen {
 }
 
@@ -17486,10 +15327,8 @@ impl<'a> Extract<'a> for ItemResourceDynamicAmountWeaponRegen {
 
 /// DCB type: `ItemResourceConversionModifierScrub`
 /// Inherits from: `ItemResourceConversionModifierBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ItemResourceConversionModifierScrub {
     /// `conversionPair` (Class (array))
-    #[serde(default)]
     pub conversion_pair: Vec<Handle<ItemResourceConversionPair>>,
 }
 
@@ -17515,13 +15354,10 @@ impl<'a> Extract<'a> for ItemResourceConversionModifierScrub {
 
 /// DCB type: `ItemResourceDynamicCompositionExample`
 /// Inherits from: `ItemResourceDynamicCompositionBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ItemResourceDynamicCompositionExample {
     /// `resource1` (Reference)
-    #[serde(default)]
     pub resource1: Option<CigGuid>,
     /// `resource2` (Reference)
-    #[serde(default)]
     pub resource2: Option<CigGuid>,
 }
 
@@ -17542,10 +15378,8 @@ impl<'a> Extract<'a> for ItemResourceDynamicCompositionExample {
 
 /// DCB type: `ItemResourceControlParameterRNParameter`
 /// Inherits from: `ItemResourceControlParameterBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ItemResourceControlParameterRNParameter {
     /// `parameter` (EnumChoice)
-    #[serde(default)]
     pub parameter: ResourceNetworkAcessParameter,
 }
 
@@ -17565,16 +15399,12 @@ impl<'a> Extract<'a> for ItemResourceControlParameterRNParameter {
 
 /// DCB type: `ItemResourceControlRNParameterExternalPort`
 /// Inherits from: `ItemResourceControlParameterBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ItemResourceControlRNParameterExternalPort {
     /// `parameter` (EnumChoice)
-    #[serde(default)]
     pub parameter: ResourceNetworkAcessParameter,
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
     /// `portName` (String)
-    #[serde(default)]
     pub port_name: String,
 }
 
@@ -17596,10 +15426,8 @@ impl<'a> Extract<'a> for ItemResourceControlRNParameterExternalPort {
 
 /// DCB type: `ItemResourceControlOutputState`
 /// Inherits from: `ItemResourceControlOutputBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ItemResourceControlOutputState {
     /// `outputState` (WeakPointer)
-    #[serde(default)]
     pub output_state: Option<Handle<ItemResourceState>>,
 }
 
@@ -17622,10 +15450,8 @@ impl<'a> Extract<'a> for ItemResourceControlOutputState {
 
 /// DCB type: `ItemResourceControlOutputControlBlock`
 /// Inherits from: `ItemResourceControlOutputBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ItemResourceControlOutputControlBlock {
     /// `outputControlBlock` (WeakPointer)
-    #[serde(default)]
     pub output_control_block: Option<Handle<ItemResourceControlBlock>>,
 }
 
@@ -17648,10 +15474,8 @@ impl<'a> Extract<'a> for ItemResourceControlOutputControlBlock {
 
 /// DCB type: `ItemResourceControlOutputChangeInteractionState`
 /// Inherits from: `ItemResourceControlOutputBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ItemResourceControlOutputChangeInteractionState {
     /// `outputInteractionState` (WeakPointer)
-    #[serde(default)]
     pub output_interaction_state: Option<Handle<SInteractionState>>,
 }
 
@@ -17674,19 +15498,14 @@ impl<'a> Extract<'a> for ItemResourceControlOutputChangeInteractionState {
 
 /// DCB type: `ItemResourceControlConditionLimit`
 /// Inherits from: `ItemResourceControlConditionBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ItemResourceControlConditionLimit {
     /// `controlOutput` (WeakPointer)
-    #[serde(default)]
     pub control_output: Option<ItemResourceControlOutputBasePtr>,
     /// `controlParameter` (WeakPointer)
-    #[serde(default)]
     pub control_parameter: Option<ItemResourceControlParameterBasePtr>,
     /// `limitMax` (Single)
-    #[serde(default)]
     pub limit_max: f32,
     /// `limitMin` (Single)
-    #[serde(default)]
     pub limit_min: f32,
 }
 
@@ -17715,19 +15534,14 @@ impl<'a> Extract<'a> for ItemResourceControlConditionLimit {
 
 /// DCB type: `ItemResourceControlConditionLimitParameter`
 /// Inherits from: `ItemResourceControlConditionBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ItemResourceControlConditionLimitParameter {
     /// `controlOutput` (WeakPointer)
-    #[serde(default)]
     pub control_output: Option<ItemResourceControlOutputBasePtr>,
     /// `controlParameter` (WeakPointer)
-    #[serde(default)]
     pub control_parameter: Option<ItemResourceControlParameterBasePtr>,
     /// `limitParameter` (WeakPointer)
-    #[serde(default)]
     pub limit_parameter: Option<ItemResourceControlParameterBasePtr>,
     /// `min` (Boolean)
-    #[serde(default)]
     pub min: bool,
 }
 
@@ -17759,13 +15573,10 @@ impl<'a> Extract<'a> for ItemResourceControlConditionLimitParameter {
 
 /// DCB type: `ItemResourceControlConditionGravity`
 /// Inherits from: `ItemResourceControlConditionBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ItemResourceControlConditionGravity {
     /// `gravModifier` (Single)
-    #[serde(default)]
     pub grav_modifier: f32,
     /// `funcionality` (WeakPointer)
-    #[serde(default)]
     pub funcionality: Option<ItemResourceControlParameterBasePtr>,
 }
 
@@ -17789,13 +15600,10 @@ impl<'a> Extract<'a> for ItemResourceControlConditionGravity {
 
 /// DCB type: `ItemResourceControlConditionThrottle`
 /// Inherits from: `ItemResourceControlConditionBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ItemResourceControlConditionThrottle {
     /// `controlOutput` (WeakPointer)
-    #[serde(default)]
     pub control_output: Option<ItemResourceControlOutputBasePtr>,
     /// `controlParameter` (WeakPointer)
-    #[serde(default)]
     pub control_parameter: Option<ItemResourceControlParameterBasePtr>,
 }
 
@@ -17822,19 +15630,14 @@ impl<'a> Extract<'a> for ItemResourceControlConditionThrottle {
 
 /// DCB type: `JournalEntryMissionProgressText`
 /// Inherits from: `BaseJournalEntry`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct JournalEntryMissionProgressText {
     /// `BodyText` (Locale)
-    #[serde(default)]
     pub body_text: LocaleKey,
     /// `associatedMissions` (Reference (array))
-    #[serde(default)]
     pub associated_missions: Vec<CigGuid>,
     /// `completedText` (Locale)
-    #[serde(default)]
     pub completed_text: LocaleKey,
     /// `allCompletedText` (Locale)
-    #[serde(default)]
     pub all_completed_text: LocaleKey,
 }
 
@@ -17859,61 +15662,42 @@ impl<'a> Extract<'a> for JournalEntryMissionProgressText {
 
 /// DCB type: `SJumpPointAccessParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SJumpPointAccessParams {
     /// `distanceForManualComms` (Single)
-    #[serde(default)]
     pub distance_for_manual_comms: f32,
     /// `distanceAllowedToJumpPoint` (Single)
-    #[serde(default)]
     pub distance_allowed_to_jump_point: f32,
     /// `timeGivenForInitiatingJump` (Single)
-    #[serde(default)]
     pub time_given_for_initiating_jump: f32,
     /// `timeBetweenJumps` (Single)
-    #[serde(default)]
     pub time_between_jumps: f32,
     /// `timeForCompletePartyJump` (Single)
-    #[serde(default)]
     pub time_for_complete_party_jump: f32,
     /// `timeGivenForCancellingJump` (Single)
-    #[serde(default)]
     pub time_given_for_cancelling_jump: f32,
     /// `timeShowingHUDMessages` (Single)
-    #[serde(default)]
     pub time_showing_hudmessages: f32,
     /// `greetingMessage` (Locale)
-    #[serde(default)]
     pub greeting_message: LocaleKey,
     /// `approachingJumpZoneMessage` (Locale)
-    #[serde(default)]
     pub approaching_jump_zone_message: LocaleKey,
     /// `inQueueMessage` (Locale)
-    #[serde(default)]
     pub in_queue_message: LocaleKey,
     /// `partyLeaderEnteredQueueMessage` (Locale)
-    #[serde(default)]
     pub party_leader_entered_queue_message: LocaleKey,
     /// `queuingOnlyForLeaderMessage` (Locale)
-    #[serde(default)]
     pub queuing_only_for_leader_message: LocaleKey,
     /// `partyAlreadyInQueueMessage` (Locale)
-    #[serde(default)]
     pub party_already_in_queue_message: LocaleKey,
     /// `startJumpMessage` (Locale)
-    #[serde(default)]
     pub start_jump_message: LocaleKey,
     /// `lingeringMessage` (Locale)
-    #[serde(default)]
     pub lingering_message: LocaleKey,
     /// `removedPermissionMessage` (Locale)
-    #[serde(default)]
     pub removed_permission_message: LocaleKey,
     /// `illegalJumpMessage` (Locale)
-    #[serde(default)]
     pub illegal_jump_message: LocaleKey,
     /// `partyInitiateJumpingMessage` (Locale)
-    #[serde(default)]
     pub party_initiate_jumping_message: LocaleKey,
 }
 
@@ -17950,34 +15734,24 @@ impl<'a> Extract<'a> for SJumpPointAccessParams {
 
 /// DCB type: `RefuelBaseService`
 /// Inherits from: `BaseService`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct RefuelBaseService {
     /// `text` (Locale)
-    #[serde(default)]
     pub text: LocaleKey,
     /// `description` (Locale)
-    #[serde(default)]
     pub description: LocaleKey,
     /// `productName` (Locale)
-    #[serde(default)]
     pub product_name: LocaleKey,
     /// `icon` (String)
-    #[serde(default)]
     pub icon: String,
     /// `serviceDelayTime` (Single)
-    #[serde(default)]
     pub service_delay_time: f32,
     /// `hudMessage` (Locale)
-    #[serde(default)]
     pub hud_message: LocaleKey,
     /// `instantRefuel` (Boolean)
-    #[serde(default)]
     pub instant_refuel: bool,
     /// `refuelUnitPerSecond` (Int32)
-    #[serde(default)]
     pub refuel_unit_per_second: i32,
     /// `fuelCommodity` (Reference)
-    #[serde(default)]
     pub fuel_commodity: Option<CigGuid>,
 }
 
@@ -18005,7 +15779,6 @@ impl<'a> Extract<'a> for RefuelBaseService {
 
 /// DCB type: `LightAIVisionHelperExtender`
 /// Inherits from: `ILightAIExtender`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LightAIVisionHelperExtender {
 }
 
@@ -18024,13 +15797,10 @@ impl<'a> Extract<'a> for LightAIVisionHelperExtender {
 
 /// DCB type: `InterferenceParams_OneShot`
 /// Inherits from: `InterferenceParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InterferenceParams_OneShot {
     /// `fallOffDistance` (Single)
-    #[serde(default)]
     pub fall_off_distance: f32,
     /// `energy` (Single)
-    #[serde(default)]
     pub energy: f32,
 }
 
@@ -18051,16 +15821,12 @@ impl<'a> Extract<'a> for InterferenceParams_OneShot {
 
 /// DCB type: `InterferenceParams_Continuous`
 /// Inherits from: `InterferenceParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InterferenceParams_Continuous {
     /// `fallOffDistance` (Single)
-    #[serde(default)]
     pub fall_off_distance: f32,
     /// `energyPerSecond` (Single)
-    #[serde(default)]
     pub energy_per_second: f32,
     /// `increaseDuration` (Single)
-    #[serde(default)]
     pub increase_duration: f32,
 }
 
@@ -18082,16 +15848,12 @@ impl<'a> Extract<'a> for InterferenceParams_Continuous {
 
 /// DCB type: `LightningTargetMode_Entity`
 /// Inherits from: `LightningTargetMode`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LightningTargetMode_Entity {
     /// `enable` (Boolean)
-    #[serde(default)]
     pub enable: bool,
     /// `length` (Class)
-    #[serde(default)]
     pub length: Option<Handle<Range>>,
     /// `strength` (Class)
-    #[serde(default)]
     pub strength: Option<Handle<LightningStrengthDriver>>,
 }
 
@@ -18119,19 +15881,14 @@ impl<'a> Extract<'a> for LightningTargetMode_Entity {
 
 /// DCB type: `LightningShape_Ellipsoid`
 /// Inherits from: `LightningShape_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LightningShape_Ellipsoid {
     /// `offsetToPlanetClouds` (Boolean)
-    #[serde(default)]
     pub offset_to_planet_clouds: bool,
     /// `applyScaleMultiplier` (Boolean)
-    #[serde(default)]
     pub apply_scale_multiplier: bool,
     /// `offset` (Class)
-    #[serde(default)]
     pub offset: Option<Handle<Vec3>>,
     /// `radii` (Class)
-    #[serde(default)]
     pub radii: Option<Handle<Vec3>>,
 }
 
@@ -18160,16 +15917,12 @@ impl<'a> Extract<'a> for LightningShape_Ellipsoid {
 
 /// DCB type: `UsableChannelInputAction_TriggerSequence`
 /// Inherits from: `UsableChannelInputAction`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct UsableChannelInputAction_TriggerSequence {
     /// `inputAction` (Class)
-    #[serde(default)]
     pub input_action: Option<Handle<InputAction>>,
     /// `interactionOnAction` (WeakPointer)
-    #[serde(default)]
     pub interaction_on_action: Option<Handle<SSharedInteractionParams>>,
     /// `playSequence` (WeakPointer)
-    #[serde(default)]
     pub play_sequence: Option<SSequencerDefSequenceParamsPtr>,
 }
 
@@ -18200,34 +15953,24 @@ impl<'a> Extract<'a> for UsableChannelInputAction_TriggerSequence {
 
 /// DCB type: `UsableChannelInputAction_ConsumeWithUsable`
 /// Inherits from: `UsableChannelInputAction`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct UsableChannelInputAction_ConsumeWithUsable {
     /// `inputAction` (Class)
-    #[serde(default)]
     pub input_action: Option<Handle<InputAction>>,
     /// `interactionOnAction` (WeakPointer)
-    #[serde(default)]
     pub interaction_on_action: Option<Handle<SSharedInteractionParams>>,
     /// `consumableItemPortTag` (String)
-    #[serde(default)]
     pub consumable_item_port_tag: String,
     /// `cutleryItemPortTag` (String)
-    #[serde(default)]
     pub cutlery_item_port_tag: String,
     /// `searchOnSocketUsable` (Boolean)
-    #[serde(default)]
     pub search_on_socket_usable: bool,
     /// `usableItemPortTag` (String)
-    #[serde(default)]
     pub usable_item_port_tag: String,
     /// `usableItemType` (EnumChoice)
-    #[serde(default)]
     pub usable_item_type: EItemType,
     /// `usableItemSubType` (EnumChoice)
-    #[serde(default)]
     pub usable_item_sub_type: EItemSubType,
     /// `usableItemTags` (Class)
-    #[serde(default)]
     pub usable_item_tags: Option<Handle<TagsDNFTerm>>,
 }
 
@@ -18264,46 +16007,32 @@ impl<'a> Extract<'a> for UsableChannelInputAction_ConsumeWithUsable {
 
 /// DCB type: `UsableChannelInputAction_Exercise`
 /// Inherits from: `UsableChannelInputAction_ControlInteractive`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct UsableChannelInputAction_Exercise {
     /// `inputAction` (Class)
-    #[serde(default)]
     pub input_action: Option<Handle<InputAction>>,
     /// `interactionOnAction` (WeakPointer)
-    #[serde(default)]
     pub interaction_on_action: Option<Handle<SSharedInteractionParams>>,
     /// `controlVariable` (WeakPointer)
-    #[serde(default)]
     pub control_variable: Option<ControlInteractiveVariablePtr>,
     /// `isInterruptable` (Boolean)
-    #[serde(default)]
     pub is_interruptable: bool,
     /// `staminaComparison` (EnumChoice)
-    #[serde(default)]
     pub stamina_comparison: ComparisonType,
     /// `staminaRequirement` (Single)
-    #[serde(default)]
     pub stamina_requirement: f32,
     /// `skillRequirements` (Class (array))
-    #[serde(default)]
     pub skill_requirements: Vec<Handle<SkillRequirement>>,
     /// `drainStaminaOverTime` (Boolean)
-    #[serde(default)]
     pub drain_stamina_over_time: bool,
     /// `staminaCost` (Single)
-    #[serde(default)]
     pub stamina_cost: f32,
     /// `applyExperienceOverTime` (Boolean)
-    #[serde(default)]
     pub apply_experience_over_time: bool,
     /// `skillGains` (Class (array))
-    #[serde(default)]
     pub skill_gains: Vec<Handle<SkillGain>>,
     /// `requiredAction` (WeakPointer)
-    #[serde(default)]
     pub required_action: Option<UsableChannelInputActionPtr>,
     /// `QTEConfig` (Reference)
-    #[serde(default)]
     pub qteconfig: Option<CigGuid>,
 }
 
@@ -18358,16 +16087,12 @@ impl<'a> Extract<'a> for UsableChannelInputAction_Exercise {
 }
 
 /// DCB type: `SkillRequirement`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SkillRequirement {
     /// `playerSkill` (EnumChoice)
-    #[serde(default)]
     pub player_skill: ESkillType,
     /// `comparison` (EnumChoice)
-    #[serde(default)]
     pub comparison: ComparisonType,
     /// `skillLevel` (Int32)
-    #[serde(default)]
     pub skill_level: i32,
 }
 
@@ -18388,13 +16113,10 @@ impl<'a> Extract<'a> for SkillRequirement {
 }
 
 /// DCB type: `SkillGain`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SkillGain {
     /// `playerSkill` (EnumChoice)
-    #[serde(default)]
     pub player_skill: ESkillType,
     /// `xpAmount` (Int32)
-    #[serde(default)]
     pub xp_amount: i32,
 }
 
@@ -18415,13 +16137,10 @@ impl<'a> Extract<'a> for SkillGain {
 
 /// DCB type: `InteractiveVariable_AnimateToDefaultFloatParams`
 /// Inherits from: `InteractiveVariable_BackToDefaultFloatParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InteractiveVariable_AnimateToDefaultFloatParams {
     /// `waitTime` (Single)
-    #[serde(default)]
     pub wait_time: f32,
     /// `controlVariables` (WeakPointer (array))
-    #[serde(default)]
     pub control_variables: Vec<Handle<ControlFloatInteractiveVariable>>,
 }
 
@@ -18447,10 +16166,8 @@ impl<'a> Extract<'a> for InteractiveVariable_AnimateToDefaultFloatParams {
 
 /// DCB type: `InteractiveVariable_SnapToDefaultFloatParams`
 /// Inherits from: `InteractiveVariable_BackToDefaultFloatParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InteractiveVariable_SnapToDefaultFloatParams {
     /// `waitTime` (Single)
-    #[serde(default)]
     pub wait_time: f32,
 }
 
@@ -18470,7 +16187,6 @@ impl<'a> Extract<'a> for InteractiveVariable_SnapToDefaultFloatParams {
 
 /// DCB type: `LoadoutResponseParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LoadoutResponseParams {
 }
 
@@ -18489,7 +16205,6 @@ impl<'a> Extract<'a> for LoadoutResponseParams {
 
 /// DCB type: `EntityComponentControlHintsParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EntityComponentControlHintsParams {
 }
 
@@ -18508,13 +16223,10 @@ impl<'a> Extract<'a> for EntityComponentControlHintsParams {
 
 /// DCB type: `ControlHints_UsableLinkedInteractiveAction`
 /// Inherits from: `ControlHints_Input`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ControlHints_UsableLinkedInteractiveAction {
     /// `activationMode` (EnumChoice)
-    #[serde(default)]
     pub activation_mode: ActivationMode,
     /// `tag` (Reference)
-    #[serde(default)]
     pub tag: Option<CigGuid>,
 }
 
@@ -18535,10 +16247,8 @@ impl<'a> Extract<'a> for ControlHints_UsableLinkedInteractiveAction {
 
 /// DCB type: `ControlHintCondition_ActorAbilityAvailable`
 /// Inherits from: `ControlHintCondition`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ControlHintCondition_ActorAbilityAvailable {
     /// `ability` (EnumChoice)
-    #[serde(default)]
     pub ability: AbilityType,
 }
 
@@ -18558,10 +16268,8 @@ impl<'a> Extract<'a> for ControlHintCondition_ActorAbilityAvailable {
 
 /// DCB type: `ControlHintCondition_ActorLadderState`
 /// Inherits from: `ControlHintCondition`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ControlHintCondition_ActorLadderState {
     /// `ladderState` (EnumChoice)
-    #[serde(default)]
     pub ladder_state: ControlHintConditionActorLadderState,
 }
 
@@ -18581,10 +16289,8 @@ impl<'a> Extract<'a> for ControlHintCondition_ActorLadderState {
 
 /// DCB type: `ControlHintCondition_ActorZeroGEVAState`
 /// Inherits from: `ControlHintCondition`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ControlHintCondition_ActorZeroGEVAState {
     /// `zeroGEVAState` (EnumChoice)
-    #[serde(default)]
     pub zero_gevastate: ControlHintConditionActorZeroGEVAState,
 }
 
@@ -18604,13 +16310,10 @@ impl<'a> Extract<'a> for ControlHintCondition_ActorZeroGEVAState {
 
 /// DCB type: `ControlHintCondition_ActorTags`
 /// Inherits from: `ControlHintCondition`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ControlHintCondition_ActorTags {
     /// `positiveTags` (Class)
-    #[serde(default)]
     pub positive_tags: Option<Handle<TagList>>,
     /// `negativeTags` (Class)
-    #[serde(default)]
     pub negative_tags: Option<Handle<TagList>>,
 }
 
@@ -18637,10 +16340,8 @@ impl<'a> Extract<'a> for ControlHintCondition_ActorTags {
 
 /// DCB type: `ControlHintCondition_VehicleScanWaveAvailability`
 /// Inherits from: `ControlHintCondition`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ControlHintCondition_VehicleScanWaveAvailability {
     /// `scanWaveAvailable` (EnumChoice)
-    #[serde(default)]
     pub scan_wave_available: ControlHintConditionVehicleScanWaveAvailability,
 }
 
@@ -18660,10 +16361,8 @@ impl<'a> Extract<'a> for ControlHintCondition_VehicleScanWaveAvailability {
 
 /// DCB type: `ControlHintCondition_VehicleFormationMode`
 /// Inherits from: `ControlHintCondition`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ControlHintCondition_VehicleFormationMode {
     /// `formationState` (EnumChoice)
-    #[serde(default)]
     pub formation_state: EIFCSFormationState,
 }
 
@@ -18683,10 +16382,8 @@ impl<'a> Extract<'a> for ControlHintCondition_VehicleFormationMode {
 
 /// DCB type: `ControlHintCondition_OptInEventState`
 /// Inherits from: `ControlHintCondition`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ControlHintCondition_OptInEventState {
     /// `optInEventState` (EnumChoice)
-    #[serde(default)]
     pub opt_in_event_state: ControlHintConditionOptInEventState,
 }
 
@@ -18706,10 +16403,8 @@ impl<'a> Extract<'a> for ControlHintCondition_OptInEventState {
 
 /// DCB type: `ControlHintCondition_HintTrigger`
 /// Inherits from: `ControlHintCondition`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ControlHintCondition_HintTrigger {
     /// `hintTrigger` (Reference)
-    #[serde(default)]
     pub hint_trigger: Option<CigGuid>,
 }
 
@@ -18729,7 +16424,6 @@ impl<'a> Extract<'a> for ControlHintCondition_HintTrigger {
 
 /// DCB type: `ControlHintCondition_AnyHintTrigger`
 /// Inherits from: `ControlHintCondition`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ControlHintCondition_AnyHintTrigger {
 }
 
@@ -18748,7 +16442,6 @@ impl<'a> Extract<'a> for ControlHintCondition_AnyHintTrigger {
 
 /// DCB type: `EntityClassList_NoRef`
 /// Inherits from: `EntityClassList_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EntityClassList_NoRef {
 }
 
@@ -18767,10 +16460,8 @@ impl<'a> Extract<'a> for EntityClassList_NoRef {
 
 /// DCB type: `EntityClassList_RecordRef`
 /// Inherits from: `EntityClassList_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EntityClassList_RecordRef {
     /// `entityClassListRecord` (Reference)
-    #[serde(default)]
     pub entity_class_list_record: Option<CigGuid>,
 }
 
@@ -18790,13 +16481,10 @@ impl<'a> Extract<'a> for EntityClassList_RecordRef {
 
 /// DCB type: `PoolFilter_EntityClasses`
 /// Inherits from: `PoolFilter_NoRef`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PoolFilter_EntityClasses {
     /// `whitelist` (StrongPointer)
-    #[serde(default)]
     pub whitelist: Option<EntityClassList_BasePtr>,
     /// `blacklist` (StrongPointer)
-    #[serde(default)]
     pub blacklist: Option<EntityClassList_BasePtr>,
 }
 
@@ -18823,7 +16511,6 @@ impl<'a> Extract<'a> for PoolFilter_EntityClasses {
 
 /// DCB type: `LootArchetypeV3Selector_NoRef`
 /// Inherits from: `LootArchetypeV3Selector_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LootArchetypeV3Selector_NoRef {
 }
 
@@ -18842,7 +16529,6 @@ impl<'a> Extract<'a> for LootArchetypeV3Selector_NoRef {
 
 /// DCB type: `ArchetypeOptionalDataV3_NoRef`
 /// Inherits from: `ArchetypeOptionalDataV3_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ArchetypeOptionalDataV3_NoRef {
 }
 
@@ -18861,7 +16547,6 @@ impl<'a> Extract<'a> for ArchetypeOptionalDataV3_NoRef {
 
 /// DCB type: `SpawnWithV3Selector_NoRef`
 /// Inherits from: `SpawnWithV3Selector_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SpawnWithV3Selector_NoRef {
 }
 
@@ -18880,10 +16565,8 @@ impl<'a> Extract<'a> for SpawnWithV3Selector_NoRef {
 
 /// DCB type: `SpawnWithV3Selector_EntityClasses`
 /// Inherits from: `SpawnWithV3Selector_NoRef`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SpawnWithV3Selector_EntityClasses {
     /// `entityClasses` (StrongPointer)
-    #[serde(default)]
     pub entity_classes: Option<EntityClassList_BasePtr>,
 }
 
@@ -18906,7 +16589,6 @@ impl<'a> Extract<'a> for SpawnWithV3Selector_EntityClasses {
 
 /// DCB type: `LootTableOptionalDataV3_NoRef`
 /// Inherits from: `LootTableOptionalDataV3_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LootTableOptionalDataV3_NoRef {
 }
 
@@ -18925,7 +16607,6 @@ impl<'a> Extract<'a> for LootTableOptionalDataV3_NoRef {
 
 /// DCB type: `LootV3SecondaryChoiceEntrySelector_NoRef`
 /// Inherits from: `LootV3SecondaryChoiceEntrySelector_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LootV3SecondaryChoiceEntrySelector_NoRef {
 }
 
@@ -18944,7 +16625,6 @@ impl<'a> Extract<'a> for LootV3SecondaryChoiceEntrySelector_NoRef {
 
 /// DCB type: `QuantityRange_NoRef`
 /// Inherits from: `QuantityRange_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct QuantityRange_NoRef {
 }
 
@@ -18963,13 +16643,10 @@ impl<'a> Extract<'a> for QuantityRange_NoRef {
 
 /// DCB type: `MaelstromDestroyEvent`
 /// Inherits from: `MaelstromBaseEvent`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MaelstromDestroyEvent {
     /// `eventTag` (Reference)
-    #[serde(default)]
     pub event_tag: Option<CigGuid>,
     /// `groupTag` (Reference)
-    #[serde(default)]
     pub group_tag: Option<CigGuid>,
 }
 
@@ -18990,16 +16667,12 @@ impl<'a> Extract<'a> for MaelstromDestroyEvent {
 
 /// DCB type: `MaelstromInteractionStateMachineEvent`
 /// Inherits from: `MaelstromBaseEvent`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MaelstromInteractionStateMachineEvent {
     /// `eventTag` (Reference)
-    #[serde(default)]
     pub event_tag: Option<CigGuid>,
     /// `groupTag` (Reference)
-    #[serde(default)]
     pub group_tag: Option<CigGuid>,
     /// `state` (WeakPointer)
-    #[serde(default)]
     pub state: Option<Handle<SInteractionState>>,
 }
 
@@ -19023,37 +16696,26 @@ impl<'a> Extract<'a> for MaelstromInteractionStateMachineEvent {
 }
 
 /// DCB type: `SMagRecoveryMotionParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SMagRecoveryMotionParams {
     /// `linAccelerationMax` (Single)
-    #[serde(default)]
     pub lin_acceleration_max: f32,
     /// `linAccelerationJerkTime` (Single)
-    #[serde(default)]
     pub lin_acceleration_jerk_time: f32,
     /// `linMaxSpeed` (Single)
-    #[serde(default)]
     pub lin_max_speed: f32,
     /// `linAccelerationDecayDefault` (Single)
-    #[serde(default)]
     pub lin_acceleration_decay_default: f32,
     /// `linAccelerationDecayBeyondTrapThreshold` (Single)
-    #[serde(default)]
     pub lin_acceleration_decay_beyond_trap_threshold: f32,
     /// `angAccelerationMax` (Single)
-    #[serde(default)]
     pub ang_acceleration_max: f32,
     /// `angAccelerationJerkTime` (Single)
-    #[serde(default)]
     pub ang_acceleration_jerk_time: f32,
     /// `angMaxSpeed` (Single)
-    #[serde(default)]
     pub ang_max_speed: f32,
     /// `angAccelerationDecay` (Single)
-    #[serde(default)]
     pub ang_acceleration_decay: f32,
     /// `brakeDistanceWhenBeyondTrapThreshold` (Single)
-    #[serde(default)]
     pub brake_distance_when_beyond_trap_threshold: f32,
 }
 
@@ -19082,52 +16744,36 @@ impl<'a> Extract<'a> for SMagRecoveryMotionParams {
 
 /// DCB type: `SMagRecoveryParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SMagRecoveryParams {
     /// `deploymentTime` (Single)
-    #[serde(default)]
     pub deployment_time: f32,
     /// `automateLandingGear` (Boolean)
-    #[serde(default)]
     pub automate_landing_gear: bool,
     /// `trapDistance` (Single)
-    #[serde(default)]
     pub trap_distance: f32,
     /// `trapFullStrengthTime` (Single)
-    #[serde(default)]
     pub trap_full_strength_time: f32,
     /// `thresholdAngleForward` (Single)
-    #[serde(default)]
     pub threshold_angle_forward: f32,
     /// `thresholdAngleUp` (Single)
-    #[serde(default)]
     pub threshold_angle_up: f32,
     /// `hoverStabilizationTime` (Single)
-    #[serde(default)]
     pub hover_stabilization_time: f32,
     /// `linHoverSpeed` (Single)
-    #[serde(default)]
     pub lin_hover_speed: f32,
     /// `linHoverToTouchdownSpeed` (Single)
-    #[serde(default)]
     pub lin_hover_to_touchdown_speed: f32,
     /// `hoverNoiseAng` (Class)
-    #[serde(default)]
     pub hover_noise_ang: Option<Handle<SMagLaunchRecoveryNoiseParams>>,
     /// `hoverNoiseLin` (Class)
-    #[serde(default)]
     pub hover_noise_lin: Option<Handle<SMagLaunchRecoveryNoiseParams>>,
     /// `angSpeed` (Single)
-    #[serde(default)]
     pub ang_speed: f32,
     /// `touchdownTime` (Single)
-    #[serde(default)]
     pub touchdown_time: f32,
     /// `motion` (Class)
-    #[serde(default)]
     pub motion: Option<Handle<SMagRecoveryMotionParams>>,
     /// `states` (WeakPointer)
-    #[serde(default)]
     pub states: Option<Handle<SInteractionState>>,
 }
 
@@ -19173,22 +16819,16 @@ impl<'a> Extract<'a> for SMagRecoveryParams {
 
 /// DCB type: `MapDisplayParamsRadarMapSingleMode`
 /// Inherits from: `MapDisplayParamsRadarMapBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MapDisplayParamsRadarMapSingleMode {
     /// `maximumRadarRange` (Single)
-    #[serde(default)]
     pub maximum_radar_range: f32,
     /// `showLinkedVehicleGeometry` (Boolean)
-    #[serde(default)]
     pub show_linked_vehicle_geometry: bool,
     /// `showRadarPlane` (Boolean)
-    #[serde(default)]
     pub show_radar_plane: bool,
     /// `scaleRangeToView` (Boolean)
-    #[serde(default)]
     pub scale_range_to_view: bool,
     /// `interiorMapOverrideParams` (Class)
-    #[serde(default)]
     pub interior_map_override_params: Option<Handle<MapDisplayParamsInteriorMap>>,
 }
 
@@ -19215,13 +16855,10 @@ impl<'a> Extract<'a> for MapDisplayParamsRadarMapSingleMode {
 
 /// DCB type: `MapDisplayParamsRadarMapMultiMode`
 /// Inherits from: `MapDisplayParamsRadarMapBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MapDisplayParamsRadarMapMultiMode {
     /// `maximumRadarRange` (Single)
-    #[serde(default)]
     pub maximum_radar_range: f32,
     /// `modes` (Class (array))
-    #[serde(default)]
     pub modes: Vec<Handle<MapDisplayRadarMode>>,
 }
 
@@ -19247,25 +16884,18 @@ impl<'a> Extract<'a> for MapDisplayParamsRadarMapMultiMode {
 }
 
 /// DCB type: `MapDisplayRadarMode`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MapDisplayRadarMode {
     /// `radarMode` (EnumChoice)
-    #[serde(default)]
     pub radar_mode: MapRadarMode,
     /// `showLinkedVehicleGeometry` (Boolean)
-    #[serde(default)]
     pub show_linked_vehicle_geometry: bool,
     /// `showRadarPlane` (Boolean)
-    #[serde(default)]
     pub show_radar_plane: bool,
     /// `scaleRangeToView` (Boolean)
-    #[serde(default)]
     pub scale_range_to_view: bool,
     /// `startModeOverrideParams` (StrongPointer)
-    #[serde(default)]
     pub start_mode_override_params: Option<MapDisplayStartModeBaseParamsPtr>,
     /// `interiorMapOverrideParams` (Class)
-    #[serde(default)]
     pub interior_map_override_params: Option<Handle<MapDisplayParamsInteriorMap>>,
 }
 
@@ -19296,19 +16926,14 @@ impl<'a> Extract<'a> for MapDisplayRadarMode {
 
 /// DCB type: `MapDisplayStartModeFixedOverrideParams`
 /// Inherits from: `MapDisplayStartModeBaseParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MapDisplayStartModeFixedOverrideParams {
     /// `minimumViewDistance` (Single)
-    #[serde(default)]
     pub minimum_view_distance: f32,
     /// `maximumViewDistance` (Single)
-    #[serde(default)]
     pub maximum_view_distance: f32,
     /// `initialViewDistance` (Single)
-    #[serde(default)]
     pub initial_view_distance: f32,
     /// `initialViewAngle` (Single)
-    #[serde(default)]
     pub initial_view_angle: f32,
 }
 
@@ -19331,28 +16956,20 @@ impl<'a> Extract<'a> for MapDisplayStartModeFixedOverrideParams {
 
 /// DCB type: `MapDisplayStartModeLandingOverrideParams`
 /// Inherits from: `MapDisplayStartModeBaseParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MapDisplayStartModeLandingOverrideParams {
     /// `radiusMinimumMultiplier` (Single)
-    #[serde(default)]
     pub radius_minimum_multiplier: f32,
     /// `radiusMaximumMultiplier` (Single)
-    #[serde(default)]
     pub radius_maximum_multiplier: f32,
     /// `radiusInitialMultiplier` (Single)
-    #[serde(default)]
     pub radius_initial_multiplier: f32,
     /// `radiusTrackPadThresholdMultiplier` (Single)
-    #[serde(default)]
     pub radius_track_pad_threshold_multiplier: f32,
     /// `radiusFocusPadThresholdMultiplier` (Single)
-    #[serde(default)]
     pub radius_focus_pad_threshold_multiplier: f32,
     /// `initialViewAngleFocusVehicle` (Single)
-    #[serde(default)]
     pub initial_view_angle_focus_vehicle: f32,
     /// `initialViewAngleFocusPad` (Single)
-    #[serde(default)]
     pub initial_view_angle_focus_pad: f32,
 }
 
@@ -19378,7 +16995,6 @@ impl<'a> Extract<'a> for MapDisplayStartModeLandingOverrideParams {
 
 /// DCB type: `Marker_AbilityScan`
 /// Inherits from: `Marker_AbilityBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Marker_AbilityScan {
 }
 
@@ -19397,10 +17013,8 @@ impl<'a> Extract<'a> for Marker_AbilityScan {
 
 /// DCB type: `VisibilityConditionDef_AND`
 /// Inherits from: `VisibilityConditionDef`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct VisibilityConditionDef_AND {
     /// `conditions` (StrongPointer (array))
-    #[serde(default)]
     pub conditions: Vec<VisibilityConditionDefPtr>,
 }
 
@@ -19425,16 +17039,12 @@ impl<'a> Extract<'a> for VisibilityConditionDef_AND {
 
 /// DCB type: `SyncedAttackCategoryParams`
 /// Inherits from: `AttackCategoryParamsBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SyncedAttackCategoryParams {
     /// `damageInfo` (Class)
-    #[serde(default)]
     pub damage_info: Option<Handle<DamageInfo>>,
     /// `comboBrokenSuccess` (EnumChoice (array))
-    #[serde(default)]
     pub combo_broken_success: Vec<SyncedMeleeAttackResult>,
     /// `comboBrokenFailure` (EnumChoice (array))
-    #[serde(default)]
     pub combo_broken_failure: Vec<SyncedMeleeAttackResult>,
 }
 
@@ -19463,37 +17073,26 @@ impl<'a> Extract<'a> for SyncedAttackCategoryParams {
 
 /// DCB type: `AISyncedMeleeAttack`
 /// Inherits from: `AIMeleeAttack`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AISyncedMeleeAttack {
     /// `attackType` (EnumChoice)
-    #[serde(default)]
     pub attack_type: AttackType,
     /// `globalFragmentTags` (String)
-    #[serde(default)]
     pub global_fragment_tags: String,
     /// `minDistanceToTarget2d` (Single)
-    #[serde(default)]
     pub min_distance_to_target2d: f32,
     /// `maxDistanceToTarget2d` (Single)
-    #[serde(default)]
     pub max_distance_to_target2d: f32,
     /// `minRelativeTargetHeight` (Single)
-    #[serde(default)]
     pub min_relative_target_height: f32,
     /// `maxRelativeTargetHeight` (Single)
-    #[serde(default)]
     pub max_relative_target_height: f32,
     /// `maxAngleToTarget` (Single)
-    #[serde(default)]
     pub max_angle_to_target: f32,
     /// `ignoreAttackObstructionClearance` (Boolean)
-    #[serde(default)]
     pub ignore_attack_obstruction_clearance: bool,
     /// `maxAngleTargetToAttacker` (Single)
-    #[serde(default)]
     pub max_angle_target_to_attacker: f32,
     /// `meleeAttackParams` (WeakPointer)
-    #[serde(default)]
     pub melee_attack_params: Option<Handle<SyncedAttackCategoryParams>>,
 }
 
@@ -19525,7 +17124,6 @@ impl<'a> Extract<'a> for AISyncedMeleeAttack {
 
 /// DCB type: `ContractGenerationParams_RequestOnly`
 /// Inherits from: `ContractGenerationParamsBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ContractGenerationParams_RequestOnly {
 }
 
@@ -19544,10 +17142,8 @@ impl<'a> Extract<'a> for ContractGenerationParams_RequestOnly {
 
 /// DCB type: `ContractPrerequisite_JournalEntries`
 /// Inherits from: `ContractPrerequisiteBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ContractPrerequisite_JournalEntries {
     /// `requiredJournalEntries` (Reference (array))
-    #[serde(default)]
     pub required_journal_entries: Vec<CigGuid>,
 }
 
@@ -19569,13 +17165,10 @@ impl<'a> Extract<'a> for ContractPrerequisite_JournalEntries {
 
 /// DCB type: `ContractPrerequisite_AreaTags`
 /// Inherits from: `ContractPrerequisiteBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ContractPrerequisite_AreaTags {
     /// `requiredAreaTags` (Class)
-    #[serde(default)]
     pub required_area_tags: Option<Handle<TagList>>,
     /// `excludedAreaTags` (Class)
-    #[serde(default)]
     pub excluded_area_tags: Option<Handle<TagList>>,
 }
 
@@ -19602,13 +17195,10 @@ impl<'a> Extract<'a> for ContractPrerequisite_AreaTags {
 
 /// DCB type: `ItemAwardTag`
 /// Inherits from: `ItemAwardBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ItemAwardTag {
     /// `amountToAward` (Int32)
-    #[serde(default)]
     pub amount_to_award: i32,
     /// `rewardSearchTags` (Class)
-    #[serde(default)]
     pub reward_search_tags: Option<Handle<TagsDNFTerm>>,
 }
 
@@ -19632,7 +17222,6 @@ impl<'a> Extract<'a> for ItemAwardTag {
 
 /// DCB type: `ContractClass_GlobalEvent`
 /// Inherits from: `ContractClassBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ContractClass_GlobalEvent {
 }
 
@@ -19651,13 +17240,10 @@ impl<'a> Extract<'a> for ContractClass_GlobalEvent {
 
 /// DCB type: `HaulingOrderContent_ResourceBase`
 /// Inherits from: `HaulingOrderContentBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct HaulingOrderContent_ResourceBase {
     /// `resource` (Reference)
-    #[serde(default)]
     pub resource: Option<CigGuid>,
     /// `maxContainerSize` (Single)
-    #[serde(default)]
     pub max_container_size: f32,
 }
 
@@ -19678,13 +17264,10 @@ impl<'a> Extract<'a> for HaulingOrderContent_ResourceBase {
 
 /// DCB type: `HaulingOrderContent_ResourceUnlimitedDropOff`
 /// Inherits from: `HaulingOrderContent_ResourceBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct HaulingOrderContent_ResourceUnlimitedDropOff {
     /// `resource` (Reference)
-    #[serde(default)]
     pub resource: Option<CigGuid>,
     /// `maxContainerSize` (Single)
-    #[serde(default)]
     pub max_container_size: f32,
 }
 
@@ -19705,22 +17288,16 @@ impl<'a> Extract<'a> for HaulingOrderContent_ResourceUnlimitedDropOff {
 
 /// DCB type: `HaulingOrder_PropertyBase`
 /// Inherits from: `HaulingOrderBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct HaulingOrder_PropertyBase {
     /// `pickUpLocation` (WeakPointer)
-    #[serde(default)]
     pub pick_up_location: Option<ObjectivePropertyBasePtr>,
     /// `dropOffLocation` (WeakPointer)
-    #[serde(default)]
     pub drop_off_location: Option<ObjectivePropertyBasePtr>,
     /// `pickUpTargetTypes` (Reference (array))
-    #[serde(default)]
     pub pick_up_target_types: Vec<CigGuid>,
     /// `dropOffTargetTypes` (Reference (array))
-    #[serde(default)]
     pub drop_off_target_types: Vec<CigGuid>,
     /// `haulingOrdersProperty` (WeakPointer)
-    #[serde(default)]
     pub hauling_orders_property: Option<ObjectivePropertyBasePtr>,
 }
 
@@ -19757,22 +17334,16 @@ impl<'a> Extract<'a> for HaulingOrder_PropertyBase {
 
 /// DCB type: `HaulingOrder_PropertyDropOff`
 /// Inherits from: `HaulingOrder_PropertyBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct HaulingOrder_PropertyDropOff {
     /// `pickUpLocation` (WeakPointer)
-    #[serde(default)]
     pub pick_up_location: Option<ObjectivePropertyBasePtr>,
     /// `dropOffLocation` (WeakPointer)
-    #[serde(default)]
     pub drop_off_location: Option<ObjectivePropertyBasePtr>,
     /// `pickUpTargetTypes` (Reference (array))
-    #[serde(default)]
     pub pick_up_target_types: Vec<CigGuid>,
     /// `dropOffTargetTypes` (Reference (array))
-    #[serde(default)]
     pub drop_off_target_types: Vec<CigGuid>,
     /// `haulingOrdersProperty` (WeakPointer)
-    #[serde(default)]
     pub hauling_orders_property: Option<ObjectivePropertyBasePtr>,
 }
 
@@ -19809,25 +17380,18 @@ impl<'a> Extract<'a> for HaulingOrder_PropertyDropOff {
 
 /// DCB type: `HaulingOrder_ResourceBase`
 /// Inherits from: `HaulingOrderBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct HaulingOrder_ResourceBase {
     /// `pickUpLocation` (WeakPointer)
-    #[serde(default)]
     pub pick_up_location: Option<ObjectivePropertyBasePtr>,
     /// `dropOffLocation` (WeakPointer)
-    #[serde(default)]
     pub drop_off_location: Option<ObjectivePropertyBasePtr>,
     /// `pickUpTargetTypes` (Reference (array))
-    #[serde(default)]
     pub pick_up_target_types: Vec<CigGuid>,
     /// `dropOffTargetTypes` (Reference (array))
-    #[serde(default)]
     pub drop_off_target_types: Vec<CigGuid>,
     /// `resource` (Reference)
-    #[serde(default)]
     pub resource: Option<CigGuid>,
     /// `maxContainerSize` (Single)
-    #[serde(default)]
     pub max_container_size: f32,
 }
 
@@ -19862,22 +17426,16 @@ impl<'a> Extract<'a> for HaulingOrder_ResourceBase {
 
 /// DCB type: `HaulingOrder_MissionItemDropOff`
 /// Inherits from: `HaulingOrderBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct HaulingOrder_MissionItemDropOff {
     /// `pickUpLocation` (WeakPointer)
-    #[serde(default)]
     pub pick_up_location: Option<ObjectivePropertyBasePtr>,
     /// `dropOffLocation` (WeakPointer)
-    #[serde(default)]
     pub drop_off_location: Option<ObjectivePropertyBasePtr>,
     /// `pickUpTargetTypes` (Reference (array))
-    #[serde(default)]
     pub pick_up_target_types: Vec<CigGuid>,
     /// `dropOffTargetTypes` (Reference (array))
-    #[serde(default)]
     pub drop_off_target_types: Vec<CigGuid>,
     /// `deliveryOrderInput` (WeakPointer)
-    #[serde(default)]
     pub delivery_order_input: Option<Handle<ObjectiveProperty_Input>>,
 }
 
@@ -19914,22 +17472,16 @@ impl<'a> Extract<'a> for HaulingOrder_MissionItemDropOff {
 
 /// DCB type: `HaulingOrder_Or`
 /// Inherits from: `HaulingOrderBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct HaulingOrder_Or {
     /// `pickUpLocation` (WeakPointer)
-    #[serde(default)]
     pub pick_up_location: Option<ObjectivePropertyBasePtr>,
     /// `dropOffLocation` (WeakPointer)
-    #[serde(default)]
     pub drop_off_location: Option<ObjectivePropertyBasePtr>,
     /// `pickUpTargetTypes` (Reference (array))
-    #[serde(default)]
     pub pick_up_target_types: Vec<CigGuid>,
     /// `dropOffTargetTypes` (Reference (array))
-    #[serde(default)]
     pub drop_off_target_types: Vec<CigGuid>,
     /// `options` (StrongPointer (array))
-    #[serde(default)]
     pub options: Vec<HaulingOrder_OrOption_BasePtr>,
 }
 
@@ -19967,16 +17519,12 @@ impl<'a> Extract<'a> for HaulingOrder_Or {
 }
 
 /// DCB type: `Investigation_Suspect`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Investigation_Suspect {
     /// `name` (Class)
-    #[serde(default)]
     pub name: Option<Handle<MissionPropertyValue_AIName>>,
     /// `initialSuspect` (Boolean)
-    #[serde(default)]
     pub initial_suspect: bool,
     /// `isGuilty` (Boolean)
-    #[serde(default)]
     pub is_guilty: bool,
 }
 
@@ -20000,13 +17548,10 @@ impl<'a> Extract<'a> for Investigation_Suspect {
 }
 
 /// DCB type: `Investigation_Clue`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Investigation_Clue {
     /// `objectiveLongDescription` (Locale)
-    #[serde(default)]
     pub objective_long_description: LocaleKey,
     /// `objectiveShortDescription` (Locale)
-    #[serde(default)]
     pub objective_short_description: LocaleKey,
 }
 
@@ -20027,16 +17572,12 @@ impl<'a> Extract<'a> for Investigation_Clue {
 
 /// DCB type: `Investigation_Clue_JournalEntry`
 /// Inherits from: `Investigation_Clue`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Investigation_Clue_JournalEntry {
     /// `objectiveLongDescription` (Locale)
-    #[serde(default)]
     pub objective_long_description: LocaleKey,
     /// `objectiveShortDescription` (Locale)
-    #[serde(default)]
     pub objective_short_description: LocaleKey,
     /// `journalEntry` (Reference)
-    #[serde(default)]
     pub journal_entry: Option<CigGuid>,
 }
 
@@ -20058,19 +17599,14 @@ impl<'a> Extract<'a> for Investigation_Clue_JournalEntry {
 
 /// DCB type: `Investigation_Clue_CorpseScanInfo`
 /// Inherits from: `Investigation_Clue`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Investigation_Clue_CorpseScanInfo {
     /// `objectiveLongDescription` (Locale)
-    #[serde(default)]
     pub objective_long_description: LocaleKey,
     /// `objectiveShortDescription` (Locale)
-    #[serde(default)]
     pub objective_short_description: LocaleKey,
     /// `name` (Class)
-    #[serde(default)]
     pub name: Option<Handle<MissionPropertyValue_AIName>>,
     /// `causeOfDeath` (Locale)
-    #[serde(default)]
     pub cause_of_death: LocaleKey,
 }
 
@@ -20095,16 +17631,12 @@ impl<'a> Extract<'a> for Investigation_Clue_CorpseScanInfo {
 }
 
 /// DCB type: `Investigation_ClueItem`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Investigation_ClueItem {
     /// `entityClass` (Reference)
-    #[serde(default)]
     pub entity_class: Option<CigGuid>,
     /// `spawnTags` (Class)
-    #[serde(default)]
     pub spawn_tags: Option<Handle<TagList>>,
     /// `clues` (StrongPointer (array))
-    #[serde(default)]
     pub clues: Vec<Investigation_CluePtr>,
 }
 
@@ -20134,19 +17666,14 @@ impl<'a> Extract<'a> for Investigation_ClueItem {
 
 /// DCB type: `Investigation_ClueItem_Datapad`
 /// Inherits from: `Investigation_ClueItem`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Investigation_ClueItem_Datapad {
     /// `entityClass` (Reference)
-    #[serde(default)]
     pub entity_class: Option<CigGuid>,
     /// `spawnTags` (Class)
-    #[serde(default)]
     pub spawn_tags: Option<Handle<TagList>>,
     /// `clues` (StrongPointer (array))
-    #[serde(default)]
     pub clues: Vec<Investigation_CluePtr>,
     /// `canvas` (Reference)
-    #[serde(default)]
     pub canvas: Option<CigGuid>,
 }
 
@@ -20177,19 +17704,14 @@ impl<'a> Extract<'a> for Investigation_ClueItem_Datapad {
 
 /// DCB type: `Investigation_ClueItem_Corpse`
 /// Inherits from: `Investigation_ClueItem`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Investigation_ClueItem_Corpse {
     /// `entityClass` (Reference)
-    #[serde(default)]
     pub entity_class: Option<CigGuid>,
     /// `spawnTags` (Class)
-    #[serde(default)]
     pub spawn_tags: Option<Handle<TagList>>,
     /// `clues` (StrongPointer (array))
-    #[serde(default)]
     pub clues: Vec<Investigation_CluePtr>,
     /// `suspectRepresented` (WeakPointer)
-    #[serde(default)]
     pub suspect_represented: Option<Handle<Investigation_Suspect>>,
 }
 
@@ -20222,10 +17744,8 @@ impl<'a> Extract<'a> for Investigation_ClueItem_Corpse {
 }
 
 /// DCB type: `Investigation_Location`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Investigation_Location {
     /// `clueItems` (StrongPointer (array))
-    #[serde(default)]
     pub clue_items: Vec<Investigation_ClueItemPtr>,
 }
 
@@ -20250,16 +17770,12 @@ impl<'a> Extract<'a> for Investigation_Location {
 
 /// DCB type: `MissionPropertyValue_Investigation`
 /// Inherits from: `BaseMissionPropertyValue`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MissionPropertyValue_Investigation {
     /// `startingJournalEntries` (Reference (array))
-    #[serde(default)]
     pub starting_journal_entries: Vec<CigGuid>,
     /// `suspects` (Class (array))
-    #[serde(default)]
     pub suspects: Vec<Handle<Investigation_Suspect>>,
     /// `locations` (Class (array))
-    #[serde(default)]
     pub locations: Vec<Handle<Investigation_Location>>,
 }
 
@@ -20295,16 +17811,12 @@ impl<'a> Extract<'a> for MissionPropertyValue_Investigation {
 
 /// DCB type: `MissionVariableFloat`
 /// Inherits from: `MissionVariableBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MissionVariableFloat {
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
     /// `description` (String)
-    #[serde(default)]
     pub description: String,
     /// `value` (Single)
-    #[serde(default)]
     pub value: f32,
 }
 
@@ -20326,16 +17838,12 @@ impl<'a> Extract<'a> for MissionVariableFloat {
 
 /// DCB type: `MissionVariableString`
 /// Inherits from: `MissionVariableBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MissionVariableString {
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
     /// `description` (String)
-    #[serde(default)]
     pub description: String,
     /// `value` (String)
-    #[serde(default)]
     pub value: String,
 }
 
@@ -20357,7 +17865,6 @@ impl<'a> Extract<'a> for MissionVariableString {
 
 /// DCB type: `ModuleDeclarationType_Beacon`
 /// Inherits from: `ModuleDeclarationType_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ModuleDeclarationType_Beacon {
 }
 
@@ -20376,37 +17883,26 @@ impl<'a> Extract<'a> for ModuleDeclarationType_Beacon {
 
 /// DCB type: `ObjectiveHandler_WithModule`
 /// Inherits from: `ObjectiveHandlerBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ObjectiveHandler_WithModule {
     /// `moduleDeclaration` (Reference)
-    #[serde(default)]
     pub module_declaration: Option<CigGuid>,
     /// `module` (String)
-    #[serde(default)]
     pub module: String,
     /// `moduleHierarchy` (Reference)
-    #[serde(default)]
     pub module_hierarchy: Option<CigGuid>,
     /// `disableTravelObjectives` (Boolean)
-    #[serde(default)]
     pub disable_travel_objectives: bool,
     /// `disableReturnObjectives` (Boolean)
-    #[serde(default)]
     pub disable_return_objectives: bool,
     /// `travelRadiusKM` (Single)
-    #[serde(default)]
     pub travel_radius_km: f32,
     /// `allPlayersLeftGracePeriod` (Single)
-    #[serde(default)]
     pub all_players_left_grace_period: f32,
     /// `travelObjectiveInfo` (Class)
-    #[serde(default)]
     pub travel_objective_info: Option<Handle<ObjectiveDisplayInfo>>,
     /// `returnObjectiveInfo` (Class)
-    #[serde(default)]
     pub return_objective_info: Option<Handle<ObjectiveDisplayInfo>>,
     /// `navPointSpawnInfo` (StrongPointer)
-    #[serde(default)]
     pub nav_point_spawn_info: Option<Handle<NavPointSpawnInformation>>,
 }
 
@@ -20444,40 +17940,28 @@ impl<'a> Extract<'a> for ObjectiveHandler_WithModule {
 
 /// DCB type: `ObjectiveHandler_EventModule`
 /// Inherits from: `ObjectiveHandler_WithModule`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ObjectiveHandler_EventModule {
     /// `moduleDeclaration` (Reference)
-    #[serde(default)]
     pub module_declaration: Option<CigGuid>,
     /// `module` (String)
-    #[serde(default)]
     pub module: String,
     /// `moduleHierarchy` (Reference)
-    #[serde(default)]
     pub module_hierarchy: Option<CigGuid>,
     /// `disableTravelObjectives` (Boolean)
-    #[serde(default)]
     pub disable_travel_objectives: bool,
     /// `disableReturnObjectives` (Boolean)
-    #[serde(default)]
     pub disable_return_objectives: bool,
     /// `travelRadiusKM` (Single)
-    #[serde(default)]
     pub travel_radius_km: f32,
     /// `allPlayersLeftGracePeriod` (Single)
-    #[serde(default)]
     pub all_players_left_grace_period: f32,
     /// `travelObjectiveInfo` (Class)
-    #[serde(default)]
     pub travel_objective_info: Option<Handle<ObjectiveDisplayInfo>>,
     /// `returnObjectiveInfo` (Class)
-    #[serde(default)]
     pub return_objective_info: Option<Handle<ObjectiveDisplayInfo>>,
     /// `navPointSpawnInfo` (StrongPointer)
-    #[serde(default)]
     pub nav_point_spawn_info: Option<Handle<NavPointSpawnInformation>>,
     /// `locations` (WeakPointer (array))
-    #[serde(default)]
     pub locations: Vec<ObjectivePropertyBasePtr>,
 }
 
@@ -20521,16 +18005,12 @@ impl<'a> Extract<'a> for ObjectiveHandler_EventModule {
 
 /// DCB type: `MobiglasDisplayLocation`
 /// Inherits from: `MobiglasDisplayLayoutBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MobiglasDisplayLocation {
     /// `objectiveTitle` (Class)
-    #[serde(default)]
     pub objective_title: Option<Handle<ObjectiveDisplayInfo>>,
     /// `collectObjective` (Class)
-    #[serde(default)]
     pub collect_objective: Option<Handle<ObjectiveDisplayInfo>>,
     /// `deliveryObjective` (Class)
-    #[serde(default)]
     pub delivery_objective: Option<Handle<ObjectiveDisplayInfo>>,
 }
 
@@ -20561,13 +18041,10 @@ impl<'a> Extract<'a> for MobiglasDisplayLocation {
 
 /// DCB type: `MobiglasDisplayCounter`
 /// Inherits from: `MobiglasDisplayLayoutBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MobiglasDisplayCounter {
     /// `objectiveTitle` (Class)
-    #[serde(default)]
     pub objective_title: Option<Handle<ObjectiveDisplayInfo>>,
     /// `collectAndDeliverObjective` (Class)
-    #[serde(default)]
     pub collect_and_deliver_objective: Option<Handle<ObjectiveDisplayInfo>>,
 }
 
@@ -20594,16 +18071,12 @@ impl<'a> Extract<'a> for MobiglasDisplayCounter {
 
 /// DCB type: `MissionModifier_ShopItemPerksDef`
 /// Inherits from: `BaseMissionModifier`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MissionModifier_ShopItemPerksDef {
     /// `modifierName` (String)
-    #[serde(default)]
     pub modifier_name: String,
     /// `enabled` (Boolean)
-    #[serde(default)]
     pub enabled: bool,
     /// `itemCategory` (StrongPointer (array))
-    #[serde(default)]
     pub item_category: Vec<SPerkShopItemCategoryBasePtr>,
 }
 
@@ -20630,7 +18103,6 @@ impl<'a> Extract<'a> for MissionModifier_ShopItemPerksDef {
 
 /// DCB type: `SMissionStagingAreaComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SMissionStagingAreaComponentParams {
 }
 
@@ -20649,7 +18121,6 @@ impl<'a> Extract<'a> for SMissionStagingAreaComponentParams {
 
 /// DCB type: `SpawningManagerNotifierComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SpawningManagerNotifierComponentParams {
 }
 
@@ -20668,7 +18139,6 @@ impl<'a> Extract<'a> for SpawningManagerNotifierComponentParams {
 
 /// DCB type: `EnvironmentalMissionComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EnvironmentalMissionComponentParams {
 }
 
@@ -20687,7 +18157,6 @@ impl<'a> Extract<'a> for EnvironmentalMissionComponentParams {
 
 /// DCB type: `MissionDataComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MissionDataComponentParams {
 }
 
@@ -20706,7 +18175,6 @@ impl<'a> Extract<'a> for MissionDataComponentParams {
 
 /// DCB type: `DeliveryLockerItemComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DeliveryLockerItemComponentParams {
 }
 
@@ -20725,7 +18193,6 @@ impl<'a> Extract<'a> for DeliveryLockerItemComponentParams {
 
 /// DCB type: `DeliveryItemPortPickupComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DeliveryItemPortPickupComponentParams {
 }
 
@@ -20744,7 +18211,6 @@ impl<'a> Extract<'a> for DeliveryItemPortPickupComponentParams {
 
 /// DCB type: `HaulingMissionHelperComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct HaulingMissionHelperComponentParams {
 }
 
@@ -20763,13 +18229,10 @@ impl<'a> Extract<'a> for HaulingMissionHelperComponentParams {
 
 /// DCB type: `MissionInitParamActivity`
 /// Inherits from: `AbstractMissionInitParam`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MissionInitParamActivity {
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
     /// `value` (String)
-    #[serde(default)]
     pub value: String,
 }
 
@@ -20790,7 +18253,6 @@ impl<'a> Extract<'a> for MissionInitParamActivity {
 
 /// DCB type: `SARDataGenericComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SARDataGenericComponentParams {
 }
 
@@ -20809,10 +18271,8 @@ impl<'a> Extract<'a> for SARDataGenericComponentParams {
 
 /// DCB type: `SS42GalactapediaSourceDataParams`
 /// Inherits from: `SMobiGlasAppParamsBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SS42GalactapediaSourceDataParams {
     /// `sourceList` (Reference)
-    #[serde(default)]
     pub source_list: Option<CigGuid>,
 }
 
@@ -20831,19 +18291,14 @@ impl<'a> Extract<'a> for SS42GalactapediaSourceDataParams {
 }
 
 /// DCB type: `SMobiGlasLauncherApp`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SMobiGlasLauncherApp {
     /// `appName` (Locale)
-    #[serde(default)]
     pub app_name: LocaleKey,
     /// `iconPath` (String)
-    #[serde(default)]
     pub icon_path: String,
     /// `appTriggerName` (String)
-    #[serde(default)]
     pub app_trigger_name: String,
     /// `notificationURLPath` (String)
-    #[serde(default)]
     pub notification_urlpath: String,
 }
 
@@ -20866,10 +18321,8 @@ impl<'a> Extract<'a> for SMobiGlasLauncherApp {
 
 /// DCB type: `EntityComponentMobiglasLauncherProviderParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EntityComponentMobiglasLauncherProviderParams {
     /// `launcherApps` (Class (array))
-    #[serde(default)]
     pub launcher_apps: Vec<Handle<SMobiGlasLauncherApp>>,
 }
 
@@ -20895,10 +18348,8 @@ impl<'a> Extract<'a> for EntityComponentMobiglasLauncherProviderParams {
 
 /// DCB type: `ParentMusicLogicNode`
 /// Inherits from: `MusicLogicNode`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ParentMusicLogicNode {
     /// `children` (WeakPointer (array))
-    #[serde(default)]
     pub children: Vec<MusicLogicNodePtr>,
 }
 
@@ -20923,10 +18374,8 @@ impl<'a> Extract<'a> for ParentMusicLogicNode {
 
 /// DCB type: `MusicLogicCondition`
 /// Inherits from: `ParentMusicLogicNode`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MusicLogicCondition {
     /// `children` (WeakPointer (array))
-    #[serde(default)]
     pub children: Vec<MusicLogicNodePtr>,
 }
 
@@ -20951,34 +18400,24 @@ impl<'a> Extract<'a> for MusicLogicCondition {
 
 /// DCB type: `CommsNotificationStageLight`
 /// Inherits from: `CommsNotificationStageListItem`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CommsNotificationStageLight {
     /// `position` (Class)
-    #[serde(default)]
     pub position: Option<Handle<Vec3>>,
     /// `rotation` (Class)
-    #[serde(default)]
     pub rotation: Option<Handle<Vec3>>,
     /// `lightRadius` (Single)
-    #[serde(default)]
     pub light_radius: f32,
     /// `bulbRadius` (Single)
-    #[serde(default)]
     pub bulb_radius: f32,
     /// `FOV` (Single)
-    #[serde(default)]
     pub fov: f32,
     /// `visibleShadows` (Boolean)
-    #[serde(default)]
     pub visible_shadows: bool,
     /// `intensity` (Single)
-    #[serde(default)]
     pub intensity: f32,
     /// `color` (Class)
-    #[serde(default)]
     pub color: Option<Handle<SRGBA8>>,
     /// `image` (String)
-    #[serde(default)]
     pub image: String,
 }
 
@@ -21015,7 +18454,6 @@ impl<'a> Extract<'a> for CommsNotificationStageLight {
 
 /// DCB type: `CommsStageUIProviderParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CommsStageUIProviderParams {
 }
 
@@ -21034,7 +18472,6 @@ impl<'a> Extract<'a> for CommsStageUIProviderParams {
 
 /// DCB type: `CommsNotificationUserParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CommsNotificationUserParams {
 }
 
@@ -21053,7 +18490,6 @@ impl<'a> Extract<'a> for CommsNotificationUserParams {
 
 /// DCB type: `SQuantumTravelEntryTrackerParams`
 /// Inherits from: `SObjectDataBankEntryTrackerParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SQuantumTravelEntryTrackerParams {
 }
 
@@ -21072,7 +18508,6 @@ impl<'a> Extract<'a> for SQuantumTravelEntryTrackerParams {
 
 /// DCB type: `STurretEntryTrackerParams`
 /// Inherits from: `SObjectDataBankEntryTrackerParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct STurretEntryTrackerParams {
 }
 
@@ -21091,7 +18526,6 @@ impl<'a> Extract<'a> for STurretEntryTrackerParams {
 
 /// DCB type: `SDebrisEntryTrackerParams`
 /// Inherits from: `SObjectDataBankEntryTrackerParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SDebrisEntryTrackerParams {
 }
 
@@ -21110,7 +18544,6 @@ impl<'a> Extract<'a> for SDebrisEntryTrackerParams {
 
 /// DCB type: `SUnknownEntryTrackerParams`
 /// Inherits from: `SObjectDataBankEntryTrackerParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SUnknownEntryTrackerParams {
 }
 
@@ -21129,7 +18562,6 @@ impl<'a> Extract<'a> for SUnknownEntryTrackerParams {
 
 /// DCB type: `SBlobContactEntryTrackerParams`
 /// Inherits from: `SObjectDataBankEntryTrackerParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SBlobContactEntryTrackerParams {
 }
 
@@ -21148,7 +18580,6 @@ impl<'a> Extract<'a> for SBlobContactEntryTrackerParams {
 
 /// DCB type: `SInteractableEntryTrackerParams`
 /// Inherits from: `SObjectDataBankEntryTrackerParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SInteractableEntryTrackerParams {
 }
 
@@ -21167,7 +18598,6 @@ impl<'a> Extract<'a> for SInteractableEntryTrackerParams {
 
 /// DCB type: `SInteractionPointEntryTrackerParams`
 /// Inherits from: `SObjectDataBankEntryTrackerParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SInteractionPointEntryTrackerParams {
 }
 
@@ -21186,7 +18616,6 @@ impl<'a> Extract<'a> for SInteractionPointEntryTrackerParams {
 
 /// DCB type: `SHintEntryTrackerParams`
 /// Inherits from: `SObjectDataBankEntryTrackerParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SHintEntryTrackerParams {
 }
 
@@ -21205,7 +18634,6 @@ impl<'a> Extract<'a> for SHintEntryTrackerParams {
 
 /// DCB type: `SExplosiveEntryTrackerParams`
 /// Inherits from: `SObjectDataBankEntryTrackerParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SExplosiveEntryTrackerParams {
 }
 
@@ -21224,16 +18652,12 @@ impl<'a> Extract<'a> for SExplosiveEntryTrackerParams {
 
 /// DCB type: `ReputationRewardFaction`
 /// Inherits from: `ReputationRewardBaseDef`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ReputationRewardFaction {
     /// `scope` (Reference)
-    #[serde(default)]
     pub scope: Option<CigGuid>,
     /// `reward` (Reference)
-    #[serde(default)]
     pub reward: Option<CigGuid>,
     /// `factionReputation` (Reference)
-    #[serde(default)]
     pub faction_reputation: Option<CigGuid>,
 }
 
@@ -21255,16 +18679,12 @@ impl<'a> Extract<'a> for ReputationRewardFaction {
 
 /// DCB type: `SEntityOverclockComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SEntityOverclockComponentParams {
     /// `MinOverclockPotential` (Single)
-    #[serde(default)]
     pub min_overclock_potential: f32,
     /// `MaxOverclockPotential` (Single)
-    #[serde(default)]
     pub max_overclock_potential: f32,
     /// `PerformanceIncrease` (Single)
-    #[serde(default)]
     pub performance_increase: f32,
 }
 
@@ -21285,22 +18705,16 @@ impl<'a> Extract<'a> for SEntityOverclockComponentParams {
 }
 
 /// DCB type: `SPerkShopItemCategoryBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SPerkShopItemCategoryBase {
     /// `id` (Guid)
-    #[serde(default)]
     pub id: CigGuid,
     /// `franchise` (Reference)
-    #[serde(default)]
     pub franchise: Option<CigGuid>,
     /// `type` (EnumChoice)
-    #[serde(default)]
     pub r#type: EItemType,
     /// `subType` (EnumChoice)
-    #[serde(default)]
     pub sub_type: EItemSubType,
     /// `requiredTag` (Reference)
-    #[serde(default)]
     pub required_tag: Option<CigGuid>,
 }
 
@@ -21324,25 +18738,18 @@ impl<'a> Extract<'a> for SPerkShopItemCategoryBase {
 
 /// DCB type: `SPerkDiscountItemCategory`
 /// Inherits from: `SPerkShopItemCategoryBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SPerkDiscountItemCategory {
     /// `id` (Guid)
-    #[serde(default)]
     pub id: CigGuid,
     /// `franchise` (Reference)
-    #[serde(default)]
     pub franchise: Option<CigGuid>,
     /// `type` (EnumChoice)
-    #[serde(default)]
     pub r#type: EItemType,
     /// `subType` (EnumChoice)
-    #[serde(default)]
     pub sub_type: EItemSubType,
     /// `requiredTag` (Reference)
-    #[serde(default)]
     pub required_tag: Option<CigGuid>,
     /// `discountPercentage` (Single)
-    #[serde(default)]
     pub discount_percentage: f32,
 }
 
@@ -21367,22 +18774,16 @@ impl<'a> Extract<'a> for SPerkDiscountItemCategory {
 
 /// DCB type: `SPerkEnabledItemCategory`
 /// Inherits from: `SPerkShopItemCategoryBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SPerkEnabledItemCategory {
     /// `id` (Guid)
-    #[serde(default)]
     pub id: CigGuid,
     /// `franchise` (Reference)
-    #[serde(default)]
     pub franchise: Option<CigGuid>,
     /// `type` (EnumChoice)
-    #[serde(default)]
     pub r#type: EItemType,
     /// `subType` (EnumChoice)
-    #[serde(default)]
     pub sub_type: EItemSubType,
     /// `requiredTag` (Reference)
-    #[serde(default)]
     pub required_tag: Option<CigGuid>,
 }
 
@@ -21406,25 +18807,18 @@ impl<'a> Extract<'a> for SPerkEnabledItemCategory {
 
 /// DCB type: `SItemPerkListParams`
 /// Inherits from: `SPerkParamsBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SItemPerkListParams {
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
     /// `description` (String)
-    #[serde(default)]
     pub description: String,
     /// `displayName` (Locale)
-    #[serde(default)]
     pub display_name: LocaleKey,
     /// `displayDescription` (Locale)
-    #[serde(default)]
     pub display_description: LocaleKey,
     /// `icon` (String)
-    #[serde(default)]
     pub icon: String,
     /// `discountedItems` (Class (array))
-    #[serde(default)]
     pub discounted_items: Vec<Handle<SPerkShopItemCategoryBase>>,
 }
 
@@ -21455,19 +18849,14 @@ impl<'a> Extract<'a> for SItemPerkListParams {
 
 /// DCB type: `SMultiMissionCompleteReward`
 /// Inherits from: `MissionCompletePerkBaseDef`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SMultiMissionCompleteReward {
     /// `minRequiredMissions` (Class (array))
-    #[serde(default)]
     pub min_required_missions: Vec<Handle<MinRequiredMissions>>,
     /// `rentalEntityClass` (Reference)
-    #[serde(default)]
     pub rental_entity_class: Option<CigGuid>,
     /// `durationSeconds` (Int32)
-    #[serde(default)]
     pub duration_seconds: i32,
     /// `badgeToAward` (EnumChoice)
-    #[serde(default)]
     pub badge_to_award: EAwardId,
 }
 
@@ -21496,10 +18885,8 @@ impl<'a> Extract<'a> for SMultiMissionCompleteReward {
 
 /// DCB type: `SMultiMissionCompleteRewardParams`
 /// Inherits from: `MissionCompletePerkBaseDef`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SMultiMissionCompleteRewardParams {
     /// `multiMissionCompleteRewardRecord` (Reference)
-    #[serde(default)]
     pub multi_mission_complete_reward_record: Option<CigGuid>,
 }
 
@@ -21519,10 +18906,8 @@ impl<'a> Extract<'a> for SMultiMissionCompleteRewardParams {
 
 /// DCB type: `SBadgeCompleteReward`
 /// Inherits from: `MissionCompletePerkBaseDef`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SBadgeCompleteReward {
     /// `badgesToAward` (EnumChoice (array))
-    #[serde(default)]
     pub badges_to_award: Vec<EAwardId>,
 }
 
@@ -21544,28 +18929,20 @@ impl<'a> Extract<'a> for SBadgeCompleteReward {
 
 /// DCB type: `SEntityCgfGridProperty`
 /// Inherits from: `SEntityGridProperty`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SEntityCgfGridProperty {
     /// `inheritGravity` (Boolean)
-    #[serde(default)]
     pub inherit_gravity: bool,
     /// `gravity` (Class)
-    #[serde(default)]
     pub gravity: Option<Handle<Vec3>>,
     /// `gridType` (EnumChoice)
-    #[serde(default)]
     pub grid_type: GRID_TYPE,
     /// `cellSize` (Single)
-    #[serde(default)]
     pub cell_size: f32,
     /// `gridPartsOnly` (Boolean)
-    #[serde(default)]
     pub grid_parts_only: bool,
     /// `portalExclusiveMode` (Boolean)
-    #[serde(default)]
     pub portal_exclusive_mode: bool,
     /// `gridGeometry` (Class)
-    #[serde(default)]
     pub grid_geometry: Option<Handle<GlobalResourceGeometry>>,
 }
 
@@ -21597,31 +18974,22 @@ impl<'a> Extract<'a> for SEntityCgfGridProperty {
 
 /// DCB type: `SEntitySphereGridProperty`
 /// Inherits from: `SEntityGridProperty`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SEntitySphereGridProperty {
     /// `inheritGravity` (Boolean)
-    #[serde(default)]
     pub inherit_gravity: bool,
     /// `gravity` (Class)
-    #[serde(default)]
     pub gravity: Option<Handle<Vec3>>,
     /// `gridType` (EnumChoice)
-    #[serde(default)]
     pub grid_type: GRID_TYPE,
     /// `cellSize` (Single)
-    #[serde(default)]
     pub cell_size: f32,
     /// `gridPartsOnly` (Boolean)
-    #[serde(default)]
     pub grid_parts_only: bool,
     /// `portalExclusiveMode` (Boolean)
-    #[serde(default)]
     pub portal_exclusive_mode: bool,
     /// `gridGeometry` (Class)
-    #[serde(default)]
     pub grid_geometry: Option<Handle<GlobalResourceGeometry>>,
     /// `radius` (Single)
-    #[serde(default)]
     pub radius: f32,
 }
 
@@ -21654,34 +19022,24 @@ impl<'a> Extract<'a> for SEntitySphereGridProperty {
 
 /// DCB type: `SEntityBoxGridProperty`
 /// Inherits from: `SEntityGridProperty`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SEntityBoxGridProperty {
     /// `inheritGravity` (Boolean)
-    #[serde(default)]
     pub inherit_gravity: bool,
     /// `gravity` (Class)
-    #[serde(default)]
     pub gravity: Option<Handle<Vec3>>,
     /// `gridType` (EnumChoice)
-    #[serde(default)]
     pub grid_type: GRID_TYPE,
     /// `cellSize` (Single)
-    #[serde(default)]
     pub cell_size: f32,
     /// `gridPartsOnly` (Boolean)
-    #[serde(default)]
     pub grid_parts_only: bool,
     /// `portalExclusiveMode` (Boolean)
-    #[serde(default)]
     pub portal_exclusive_mode: bool,
     /// `gridGeometry` (Class)
-    #[serde(default)]
     pub grid_geometry: Option<Handle<GlobalResourceGeometry>>,
     /// `center` (Class)
-    #[serde(default)]
     pub center: Option<Handle<Vec3>>,
     /// `size` (Class)
-    #[serde(default)]
     pub size: Option<Handle<Vec3>>,
 }
 
@@ -21721,28 +19079,20 @@ impl<'a> Extract<'a> for SEntityBoxGridProperty {
 
 /// DCB type: `SEntityObjectContainerGridProperty`
 /// Inherits from: `SEntityGridProperty`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SEntityObjectContainerGridProperty {
     /// `inheritGravity` (Boolean)
-    #[serde(default)]
     pub inherit_gravity: bool,
     /// `gravity` (Class)
-    #[serde(default)]
     pub gravity: Option<Handle<Vec3>>,
     /// `gridType` (EnumChoice)
-    #[serde(default)]
     pub grid_type: GRID_TYPE,
     /// `cellSize` (Single)
-    #[serde(default)]
     pub cell_size: f32,
     /// `gridPartsOnly` (Boolean)
-    #[serde(default)]
     pub grid_parts_only: bool,
     /// `portalExclusiveMode` (Boolean)
-    #[serde(default)]
     pub portal_exclusive_mode: bool,
     /// `gridGeometry` (Class)
-    #[serde(default)]
     pub grid_geometry: Option<Handle<GlobalResourceGeometry>>,
 }
 
@@ -21774,79 +19124,54 @@ impl<'a> Extract<'a> for SEntityObjectContainerGridProperty {
 
 /// DCB type: `SEntitySpaceShipPhysicsControllerParams`
 /// Inherits from: `SEntityRigidPhysicsControllerParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SEntitySpaceShipPhysicsControllerParams {
     /// `Mass` (Single)
-    #[serde(default)]
     pub mass: f32,
     /// `compoundingAllowed` (Boolean)
-    #[serde(default)]
     pub compounding_allowed: bool,
     /// `breakableParams` (StrongPointer)
-    #[serde(default)]
     pub breakable_params: Option<Handle<SBreakablePhysicsParams>>,
     /// `gameCollisionClass` (StrongPointer)
-    #[serde(default)]
     pub game_collision_class: Option<Handle<SGameCollisionClass>>,
     /// `spawnBoxScale` (Single)
-    #[serde(default)]
     pub spawn_box_scale: f32,
     /// `PhysFlagsOverride` (EnumChoice (array))
-    #[serde(default)]
     pub phys_flags_override: Vec<EPhysFlag>,
     /// `PhysFlagsColliderOverride` (EnumChoice (array))
-    #[serde(default)]
     pub phys_flags_collider_override: Vec<EPhysFlag>,
     /// `maxLoggedCollisions` (Int32)
-    #[serde(default)]
     pub max_logged_collisions: i32,
     /// `Damping` (Single)
-    #[serde(default)]
     pub damping: f32,
     /// `DampingZeroG` (Single)
-    #[serde(default)]
     pub damping_zero_g: f32,
     /// `DampingFreefall` (Single)
-    #[serde(default)]
     pub damping_freefall: f32,
     /// `PushableByPlayers` (Boolean)
-    #[serde(default)]
     pub pushable_by_players: bool,
     /// `NeverAffectTriggers` (Boolean)
-    #[serde(default)]
     pub never_affect_triggers: bool,
     /// `UseManualGridTransition` (Boolean)
-    #[serde(default)]
     pub use_manual_grid_transition: bool,
     /// `grid` (StrongPointer)
-    #[serde(default)]
     pub grid: Option<SEntityGridPropertyPtr>,
     /// `shieldSDFParams` (StrongPointer)
-    #[serde(default)]
     pub shield_sdfparams: Option<Handle<SDFSetParams>>,
     /// `aiNavigationType` (EnumChoice)
-    #[serde(default)]
     pub ai_navigation_type: EAINavigationGeneration,
     /// `Kinematic` (Boolean)
-    #[serde(default)]
     pub kinematic: bool,
     /// `EnableCrossGridChecks` (Boolean)
-    #[serde(default)]
     pub enable_cross_grid_checks: bool,
     /// `Resting` (Boolean)
-    #[serde(default)]
     pub resting: bool,
     /// `physicalizeAllSlots` (Boolean)
-    #[serde(default)]
     pub physicalize_all_slots: bool,
     /// `enableExteriorShadow` (Boolean)
-    #[serde(default)]
     pub enable_exterior_shadow: bool,
     /// `buoyancyParams` (StrongPointer)
-    #[serde(default)]
     pub buoyancy_params: Option<Handle<SEntityBuoyancyParams>>,
     /// `temperature` (Class)
-    #[serde(default)]
     pub temperature: Option<Handle<EntityTemperature>>,
 }
 
@@ -21911,76 +19236,52 @@ impl<'a> Extract<'a> for SEntitySpaceShipPhysicsControllerParams {
 
 /// DCB type: `SEntitySoftDeprecatedPhysicsControllerParams`
 /// Inherits from: `SEntityBasePhysicsControllerParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SEntitySoftDeprecatedPhysicsControllerParams {
     /// `Mass` (Single)
-    #[serde(default)]
     pub mass: f32,
     /// `compoundingAllowed` (Boolean)
-    #[serde(default)]
     pub compounding_allowed: bool,
     /// `breakableParams` (StrongPointer)
-    #[serde(default)]
     pub breakable_params: Option<Handle<SBreakablePhysicsParams>>,
     /// `gameCollisionClass` (StrongPointer)
-    #[serde(default)]
     pub game_collision_class: Option<Handle<SGameCollisionClass>>,
     /// `spawnBoxScale` (Single)
-    #[serde(default)]
     pub spawn_box_scale: f32,
     /// `damping` (Single)
-    #[serde(default)]
     pub damping: f32,
     /// `maxTimeStep` (Single)
-    #[serde(default)]
     pub max_time_step: f32,
     /// `maxIters` (Int32)
-    #[serde(default)]
     pub max_iters: i32,
     /// `windVariance` (Single)
-    #[serde(default)]
     pub wind_variance: f32,
     /// `accuracy` (Single)
-    #[serde(default)]
     pub accuracy: f32,
     /// `impulseScale` (Single)
-    #[serde(default)]
     pub impulse_scale: f32,
     /// `explosionScale` (Single)
-    #[serde(default)]
     pub explosion_scale: f32,
     /// `sleepSpeed` (Single)
-    #[serde(default)]
     pub sleep_speed: f32,
     /// `thickness` (Single)
-    #[serde(default)]
     pub thickness: f32,
     /// `friction` (Single)
-    #[serde(default)]
     pub friction: f32,
     /// `hardness` (Single)
-    #[serde(default)]
     pub hardness: f32,
     /// `airResistance` (Single)
-    #[serde(default)]
     pub air_resistance: f32,
     /// `waterResistance` (Single)
-    #[serde(default)]
     pub water_resistance: f32,
     /// `massDecay` (Single)
-    #[serde(default)]
     pub mass_decay: f32,
     /// `collideWithTerrain` (Boolean)
-    #[serde(default)]
     pub collide_with_terrain: bool,
     /// `collideWithStatics` (Boolean)
-    #[serde(default)]
     pub collide_with_statics: bool,
     /// `collideWithRigid` (Boolean)
-    #[serde(default)]
     pub collide_with_rigid: bool,
     /// `collideWithActors` (Boolean)
-    #[serde(default)]
     pub collide_with_actors: bool,
 }
 
@@ -22028,28 +19329,20 @@ impl<'a> Extract<'a> for SEntitySoftDeprecatedPhysicsControllerParams {
 
 /// DCB type: `SEntitySpherePhysicsGridParams`
 /// Inherits from: `SEntityBasePhysicsGridParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SEntitySpherePhysicsGridParams {
     /// `inheritGravity` (Boolean)
-    #[serde(default)]
     pub inherit_gravity: bool,
     /// `gravity` (Class)
-    #[serde(default)]
     pub gravity: Option<Handle<Vec3>>,
     /// `gridType` (EnumChoice)
-    #[serde(default)]
     pub grid_type: GRID_TYPE,
     /// `cellSize` (Single)
-    #[serde(default)]
     pub cell_size: f32,
     /// `gridPartsOnly` (Boolean)
-    #[serde(default)]
     pub grid_parts_only: bool,
     /// `portalExclusiveMode` (Boolean)
-    #[serde(default)]
     pub portal_exclusive_mode: bool,
     /// `radius` (Single)
-    #[serde(default)]
     pub radius: f32,
 }
 
@@ -22078,31 +19371,22 @@ impl<'a> Extract<'a> for SEntitySpherePhysicsGridParams {
 
 /// DCB type: `SEntityBoxPhysicsGridParams`
 /// Inherits from: `SEntityBasePhysicsGridParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SEntityBoxPhysicsGridParams {
     /// `inheritGravity` (Boolean)
-    #[serde(default)]
     pub inherit_gravity: bool,
     /// `gravity` (Class)
-    #[serde(default)]
     pub gravity: Option<Handle<Vec3>>,
     /// `gridType` (EnumChoice)
-    #[serde(default)]
     pub grid_type: GRID_TYPE,
     /// `cellSize` (Single)
-    #[serde(default)]
     pub cell_size: f32,
     /// `gridPartsOnly` (Boolean)
-    #[serde(default)]
     pub grid_parts_only: bool,
     /// `portalExclusiveMode` (Boolean)
-    #[serde(default)]
     pub portal_exclusive_mode: bool,
     /// `center` (Class)
-    #[serde(default)]
     pub center: Option<Handle<Vec3>>,
     /// `size` (Class)
-    #[serde(default)]
     pub size: Option<Handle<Vec3>>,
 }
 
@@ -22138,28 +19422,20 @@ impl<'a> Extract<'a> for SEntityBoxPhysicsGridParams {
 
 /// DCB type: `SEntityVoxelPhysicsGridParams`
 /// Inherits from: `SEntityBasePhysicsGridParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SEntityVoxelPhysicsGridParams {
     /// `inheritGravity` (Boolean)
-    #[serde(default)]
     pub inherit_gravity: bool,
     /// `gravity` (Class)
-    #[serde(default)]
     pub gravity: Option<Handle<Vec3>>,
     /// `gridType` (EnumChoice)
-    #[serde(default)]
     pub grid_type: GRID_TYPE,
     /// `cellSize` (Single)
-    #[serde(default)]
     pub cell_size: f32,
     /// `gridPartsOnly` (Boolean)
-    #[serde(default)]
     pub grid_parts_only: bool,
     /// `portalExclusiveMode` (Boolean)
-    #[serde(default)]
     pub portal_exclusive_mode: bool,
     /// `voxelDataFile` (String)
-    #[serde(default)]
     pub voxel_data_file: String,
 }
 
@@ -22188,31 +19464,22 @@ impl<'a> Extract<'a> for SEntityVoxelPhysicsGridParams {
 
 /// DCB type: `SEntityCGFPhysicsGridParams`
 /// Inherits from: `SEntityBasePhysicsGridParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SEntityCGFPhysicsGridParams {
     /// `inheritGravity` (Boolean)
-    #[serde(default)]
     pub inherit_gravity: bool,
     /// `gravity` (Class)
-    #[serde(default)]
     pub gravity: Option<Handle<Vec3>>,
     /// `gridType` (EnumChoice)
-    #[serde(default)]
     pub grid_type: GRID_TYPE,
     /// `cellSize` (Single)
-    #[serde(default)]
     pub cell_size: f32,
     /// `gridPartsOnly` (Boolean)
-    #[serde(default)]
     pub grid_parts_only: bool,
     /// `portalExclusiveMode` (Boolean)
-    #[serde(default)]
     pub portal_exclusive_mode: bool,
     /// `cgfDataFile` (String)
-    #[serde(default)]
     pub cgf_data_file: String,
     /// `includeVisareas` (Boolean)
-    #[serde(default)]
     pub include_visareas: bool,
 }
 
@@ -22242,28 +19509,20 @@ impl<'a> Extract<'a> for SEntityCGFPhysicsGridParams {
 
 /// DCB type: `SEntityVisAreaPhysicsGridParams`
 /// Inherits from: `SEntityBasePhysicsGridParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SEntityVisAreaPhysicsGridParams {
     /// `inheritGravity` (Boolean)
-    #[serde(default)]
     pub inherit_gravity: bool,
     /// `gravity` (Class)
-    #[serde(default)]
     pub gravity: Option<Handle<Vec3>>,
     /// `gridType` (EnumChoice)
-    #[serde(default)]
     pub grid_type: GRID_TYPE,
     /// `cellSize` (Single)
-    #[serde(default)]
     pub cell_size: f32,
     /// `gridPartsOnly` (Boolean)
-    #[serde(default)]
     pub grid_parts_only: bool,
     /// `portalExclusiveMode` (Boolean)
-    #[serde(default)]
     pub portal_exclusive_mode: bool,
     /// `mergeMeshes` (Boolean)
-    #[serde(default)]
     pub merge_meshes: bool,
 }
 
@@ -22292,10 +19551,8 @@ impl<'a> Extract<'a> for SEntityVisAreaPhysicsGridParams {
 
 /// DCB type: `SActorDefaultDeathBehaviour`
 /// Inherits from: `SActorDeathBehaviour`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SActorDefaultDeathBehaviour {
     /// `densityClassOverride` (Reference)
-    #[serde(default)]
     pub density_class_override: Option<CigGuid>,
 }
 
@@ -22315,10 +19572,8 @@ impl<'a> Extract<'a> for SActorDefaultDeathBehaviour {
 
 /// DCB type: `PlanetDayNightTemperatureTemplateRef`
 /// Inherits from: `PlanetDayNightTemperatureBaseParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PlanetDayNightTemperatureTemplateRef {
     /// `dayNightTemperatureParamsRecord` (Reference)
-    #[serde(default)]
     pub day_night_temperature_params_record: Option<CigGuid>,
 }
 
@@ -22338,34 +19593,24 @@ impl<'a> Extract<'a> for PlanetDayNightTemperatureTemplateRef {
 
 /// DCB type: `ProceduralLayoutGraphNode_Base`
 /// Inherits from: `ProceduralLayoutNode_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ProceduralLayoutGraphNode_Base {
     /// `MinDistance` (Int32)
-    #[serde(default)]
     pub min_distance: i32,
     /// `MaxDistance` (Int32)
-    #[serde(default)]
     pub max_distance: i32,
     /// `SpecificRoutingElementsTags` (Class (array))
-    #[serde(default)]
     pub specific_routing_elements_tags: Vec<Handle<TagList>>,
     /// `ChanceOfDoor` (Single)
-    #[serde(default)]
     pub chance_of_door: f32,
     /// `ChanceOfGeneration` (Single)
-    #[serde(default)]
     pub chance_of_generation: f32,
     /// `Mandatory` (Boolean)
-    #[serde(default)]
     pub mandatory: bool,
     /// `LayerSuffix` (String)
-    #[serde(default)]
     pub layer_suffix: String,
     /// `TintPalettePath` (String)
-    #[serde(default)]
     pub tint_palette_path: String,
     /// `outputLinks` (WeakPointer (array))
-    #[serde(default)]
     pub output_links: Vec<ProceduralLayoutNode_BasePtr>,
 }
 
@@ -22404,16 +19649,12 @@ impl<'a> Extract<'a> for ProceduralLayoutGraphNode_Base {
 
 /// DCB type: `ProceduralLayoutNode_AlternateElementProperties`
 /// Inherits from: `ProceduralLayoutNode_ElementProperties`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ProceduralLayoutNode_AlternateElementProperties {
     /// `ElementTags` (Reference (array))
-    #[serde(default)]
     pub element_tags: Vec<CigGuid>,
     /// `ElementThemes` (Reference (array))
-    #[serde(default)]
     pub element_themes: Vec<CigGuid>,
     /// `Weight` (Single)
-    #[serde(default)]
     pub weight: f32,
 }
 
@@ -22439,37 +19680,26 @@ impl<'a> Extract<'a> for ProceduralLayoutNode_AlternateElementProperties {
 
 /// DCB type: `ProceduralLayoutGraphNode_AlternateElement`
 /// Inherits from: `ProceduralLayoutGraphNode_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ProceduralLayoutGraphNode_AlternateElement {
     /// `MinDistance` (Int32)
-    #[serde(default)]
     pub min_distance: i32,
     /// `MaxDistance` (Int32)
-    #[serde(default)]
     pub max_distance: i32,
     /// `SpecificRoutingElementsTags` (Class (array))
-    #[serde(default)]
     pub specific_routing_elements_tags: Vec<Handle<TagList>>,
     /// `ChanceOfDoor` (Single)
-    #[serde(default)]
     pub chance_of_door: f32,
     /// `ChanceOfGeneration` (Single)
-    #[serde(default)]
     pub chance_of_generation: f32,
     /// `Mandatory` (Boolean)
-    #[serde(default)]
     pub mandatory: bool,
     /// `LayerSuffix` (String)
-    #[serde(default)]
     pub layer_suffix: String,
     /// `TintPalettePath` (String)
-    #[serde(default)]
     pub tint_palette_path: String,
     /// `outputLinks` (WeakPointer (array))
-    #[serde(default)]
     pub output_links: Vec<ProceduralLayoutNode_BasePtr>,
     /// `AlternateElements` (Class (array))
-    #[serde(default)]
     pub alternate_elements: Vec<Handle<ProceduralLayoutNode_AlternateElementProperties>>,
 }
 
@@ -22515,37 +19745,26 @@ impl<'a> Extract<'a> for ProceduralLayoutGraphNode_AlternateElement {
 
 /// DCB type: `ProceduralLayoutGraphNode_CorridorElement`
 /// Inherits from: `ProceduralLayoutGraphNode_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ProceduralLayoutGraphNode_CorridorElement {
     /// `MinDistance` (Int32)
-    #[serde(default)]
     pub min_distance: i32,
     /// `MaxDistance` (Int32)
-    #[serde(default)]
     pub max_distance: i32,
     /// `SpecificRoutingElementsTags` (Class (array))
-    #[serde(default)]
     pub specific_routing_elements_tags: Vec<Handle<TagList>>,
     /// `ChanceOfDoor` (Single)
-    #[serde(default)]
     pub chance_of_door: f32,
     /// `ChanceOfGeneration` (Single)
-    #[serde(default)]
     pub chance_of_generation: f32,
     /// `Mandatory` (Boolean)
-    #[serde(default)]
     pub mandatory: bool,
     /// `LayerSuffix` (String)
-    #[serde(default)]
     pub layer_suffix: String,
     /// `TintPalettePath` (String)
-    #[serde(default)]
     pub tint_palette_path: String,
     /// `outputLinks` (WeakPointer (array))
-    #[serde(default)]
     pub output_links: Vec<ProceduralLayoutNode_BasePtr>,
     /// `ElementProperties` (Class)
-    #[serde(default)]
     pub element_properties: Option<Handle<ProceduralLayoutNode_ElementProperties>>,
 }
 
@@ -22587,13 +19806,10 @@ impl<'a> Extract<'a> for ProceduralLayoutGraphNode_CorridorElement {
 }
 
 /// DCB type: `ProceduralLayoutNode_AlternateSubGraphProperties`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ProceduralLayoutNode_AlternateSubGraphProperties {
     /// `SubGraphReference` (Reference)
-    #[serde(default)]
     pub sub_graph_reference: Option<CigGuid>,
     /// `Seed` (Int32)
-    #[serde(default)]
     pub seed: i32,
 }
 
@@ -22614,37 +19830,26 @@ impl<'a> Extract<'a> for ProceduralLayoutNode_AlternateSubGraphProperties {
 
 /// DCB type: `ProceduralLayoutGraphNode_AlternateSubGraph`
 /// Inherits from: `ProceduralLayoutGraphNode_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ProceduralLayoutGraphNode_AlternateSubGraph {
     /// `MinDistance` (Int32)
-    #[serde(default)]
     pub min_distance: i32,
     /// `MaxDistance` (Int32)
-    #[serde(default)]
     pub max_distance: i32,
     /// `SpecificRoutingElementsTags` (Class (array))
-    #[serde(default)]
     pub specific_routing_elements_tags: Vec<Handle<TagList>>,
     /// `ChanceOfDoor` (Single)
-    #[serde(default)]
     pub chance_of_door: f32,
     /// `ChanceOfGeneration` (Single)
-    #[serde(default)]
     pub chance_of_generation: f32,
     /// `Mandatory` (Boolean)
-    #[serde(default)]
     pub mandatory: bool,
     /// `LayerSuffix` (String)
-    #[serde(default)]
     pub layer_suffix: String,
     /// `TintPalettePath` (String)
-    #[serde(default)]
     pub tint_palette_path: String,
     /// `outputLinks` (WeakPointer (array))
-    #[serde(default)]
     pub output_links: Vec<ProceduralLayoutNode_BasePtr>,
     /// `AlternateSubGraphs` (Class (array))
-    #[serde(default)]
     pub alternate_sub_graphs: Vec<Handle<ProceduralLayoutNode_AlternateSubGraphProperties>>,
 }
 
@@ -22690,67 +19895,46 @@ impl<'a> Extract<'a> for ProceduralLayoutGraphNode_AlternateSubGraph {
 
 /// DCB type: `ProceduralLayoutGraphNode_VerticalElement`
 /// Inherits from: `ProceduralLayoutGraphNode_Element`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ProceduralLayoutGraphNode_VerticalElement {
     /// `MinDistance` (Int32)
-    #[serde(default)]
     pub min_distance: i32,
     /// `MaxDistance` (Int32)
-    #[serde(default)]
     pub max_distance: i32,
     /// `SpecificRoutingElementsTags` (Class (array))
-    #[serde(default)]
     pub specific_routing_elements_tags: Vec<Handle<TagList>>,
     /// `ChanceOfDoor` (Single)
-    #[serde(default)]
     pub chance_of_door: f32,
     /// `ChanceOfGeneration` (Single)
-    #[serde(default)]
     pub chance_of_generation: f32,
     /// `Mandatory` (Boolean)
-    #[serde(default)]
     pub mandatory: bool,
     /// `LayerSuffix` (String)
-    #[serde(default)]
     pub layer_suffix: String,
     /// `TintPalettePath` (String)
-    #[serde(default)]
     pub tint_palette_path: String,
     /// `outputLinks` (WeakPointer (array))
-    #[serde(default)]
     pub output_links: Vec<ProceduralLayoutNode_BasePtr>,
     /// `ElementProperties` (Class)
-    #[serde(default)]
     pub element_properties: Option<Handle<ProceduralLayoutNode_ElementProperties>>,
     /// `Direction` (EnumChoice)
-    #[serde(default)]
     pub direction: ProceduralLayout_VerticalDirection,
     /// `outputLinks_Floor1` (WeakPointer (array))
-    #[serde(default)]
     pub output_links_floor1: Vec<ProceduralLayoutNode_BasePtr>,
     /// `outputLinks_Floor2` (WeakPointer (array))
-    #[serde(default)]
     pub output_links_floor2: Vec<ProceduralLayoutNode_BasePtr>,
     /// `outputLinks_Floor3` (WeakPointer (array))
-    #[serde(default)]
     pub output_links_floor3: Vec<ProceduralLayoutNode_BasePtr>,
     /// `outputLinks_Floor4` (WeakPointer (array))
-    #[serde(default)]
     pub output_links_floor4: Vec<ProceduralLayoutNode_BasePtr>,
     /// `outputLinks_Floor5` (WeakPointer (array))
-    #[serde(default)]
     pub output_links_floor5: Vec<ProceduralLayoutNode_BasePtr>,
     /// `outputLinks_Floor6` (WeakPointer (array))
-    #[serde(default)]
     pub output_links_floor6: Vec<ProceduralLayoutNode_BasePtr>,
     /// `outputLinks_Floor7` (WeakPointer (array))
-    #[serde(default)]
     pub output_links_floor7: Vec<ProceduralLayoutNode_BasePtr>,
     /// `outputLinks_Floor8` (WeakPointer (array))
-    #[serde(default)]
     pub output_links_floor8: Vec<ProceduralLayoutNode_BasePtr>,
     /// `outputLinks_Floor9` (WeakPointer (array))
-    #[serde(default)]
     pub output_links_floor9: Vec<ProceduralLayoutNode_BasePtr>,
 }
 
@@ -22847,43 +20031,30 @@ impl<'a> Extract<'a> for ProceduralLayoutGraphNode_VerticalElement {
 }
 
 /// DCB type: `QuantumDriveEffectParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct QuantumDriveEffectParams {
     /// `quantumParticleEffects` (StrongPointer)
-    #[serde(default)]
     pub quantum_particle_effects: Option<Handle<Behavior_CustomQuantumDriveEffectsPreset>>,
     /// `quantumTrailEffect` (StrongPointer)
-    #[serde(default)]
     pub quantum_trail_effect: Option<Handle<Behavior_CustomQuantumDriveEffectsPreset>>,
     /// `shieldProjectileRelativeTime` (Single)
-    #[serde(default)]
     pub shield_projectile_relative_time: f32,
     /// `boostChargeShieldPulseRelativeTime` (Single)
-    #[serde(default)]
     pub boost_charge_shield_pulse_relative_time: f32,
     /// `shipBoundsScale` (Single)
-    #[serde(default)]
     pub ship_bounds_scale: f32,
     /// `originOffsetDistance` (Single)
-    #[serde(default)]
     pub origin_offset_distance: f32,
     /// `castingOffsetDistance` (Single)
-    #[serde(default)]
     pub casting_offset_distance: f32,
     /// `interiorTransitExitOffsetDistance` (Single)
-    #[serde(default)]
     pub interior_transit_exit_offset_distance: f32,
     /// `effectScaling` (Single)
-    #[serde(default)]
     pub effect_scaling: f32,
     /// `shieldPulseEffectScale` (Single)
-    #[serde(default)]
     pub shield_pulse_effect_scale: f32,
     /// `shieldPulseEmissionScale` (Single)
-    #[serde(default)]
     pub shield_pulse_emission_scale: f32,
     /// `chromaticShiftVelocityRange` (Class)
-    #[serde(default)]
     pub chromatic_shift_velocity_range: Option<Handle<Range>>,
 }
 
@@ -22923,10 +20094,8 @@ impl<'a> Extract<'a> for QuantumDriveEffectParams {
 
 /// DCB type: `Behavior_CustomQuantumDriveEffectsPreset`
 /// Inherits from: `SEntitityEffectSystem_SystemBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Behavior_CustomQuantumDriveEffectsPreset {
     /// `particleEffects` (Class)
-    #[serde(default)]
     pub particle_effects: Option<Handle<SEntityEffectSystem_ParticleCategory>>,
 }
 
@@ -22948,34 +20117,24 @@ impl<'a> Extract<'a> for Behavior_CustomQuantumDriveEffectsPreset {
 }
 
 /// DCB type: `SQuantumBoostAudioParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SQuantumBoostAudioParams {
     /// `bubbleStart` (Class)
-    #[serde(default)]
     pub bubble_start: Option<Handle<GlobalResourceAudio>>,
     /// `bubbleStop` (Class)
-    #[serde(default)]
     pub bubble_stop: Option<Handle<GlobalResourceAudio>>,
     /// `bubbleRtpc` (Class)
-    #[serde(default)]
     pub bubble_rtpc: Option<Handle<AudioRtpc>>,
     /// `boostStart` (Class)
-    #[serde(default)]
     pub boost_start: Option<Handle<GlobalResourceAudio>>,
     /// `boostStop` (Class)
-    #[serde(default)]
     pub boost_stop: Option<Handle<GlobalResourceAudio>>,
     /// `boostRtpc` (Class)
-    #[serde(default)]
     pub boost_rtpc: Option<Handle<AudioRtpc>>,
     /// `enterBoost` (Class)
-    #[serde(default)]
     pub enter_boost: Option<Handle<GlobalResourceAudio>>,
     /// `exitBoost` (Class)
-    #[serde(default)]
     pub exit_boost: Option<Handle<GlobalResourceAudio>>,
     /// `angleOffsetRtpc` (Class)
-    #[serde(default)]
     pub angle_offset_rtpc: Option<Handle<AudioRtpc>>,
 }
 
@@ -23029,40 +20188,28 @@ impl<'a> Extract<'a> for SQuantumBoostAudioParams {
 }
 
 /// DCB type: `SQuantumRotationParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SQuantumRotationParams {
     /// `maxAngVelocity` (Class)
-    #[serde(default)]
     pub max_ang_velocity: Option<Handle<Vec3>>,
     /// `timeToFullAngVelocity` (Class)
-    #[serde(default)]
     pub time_to_full_ang_velocity: Option<Handle<Vec3>>,
     /// `vibrationBoostAngleOffset` (Class)
-    #[serde(default)]
     pub vibration_boost_angle_offset: Option<Handle<BezierCurve>>,
     /// `turbulenceSpeeds` (Class)
-    #[serde(default)]
     pub turbulence_speeds: Option<Handle<Vec3>>,
     /// `turbulenceSourceMaxAngle` (Single)
-    #[serde(default)]
     pub turbulence_source_max_angle: f32,
     /// `turbulenceMaxPitchYawSpeed` (Single)
-    #[serde(default)]
     pub turbulence_max_pitch_yaw_speed: f32,
     /// `turbulenceTimeToFullPitchYawSpeed` (Single)
-    #[serde(default)]
     pub turbulence_time_to_full_pitch_yaw_speed: f32,
     /// `turbulenceEffectiveYawPitchRange` (Single)
-    #[serde(default)]
     pub turbulence_effective_yaw_pitch_range: f32,
     /// `turbulenceMaxRollSpeed` (Single)
-    #[serde(default)]
     pub turbulence_max_roll_speed: f32,
     /// `turbulenceTimeToFullRollSpeed` (Single)
-    #[serde(default)]
     pub turbulence_time_to_full_roll_speed: f32,
     /// `turbulenceEffectiveRollRange` (Single)
-    #[serde(default)]
     pub turbulence_effective_roll_range: f32,
 }
 
@@ -23103,16 +20250,12 @@ impl<'a> Extract<'a> for SQuantumRotationParams {
 }
 
 /// DCB type: `SQuantumRotationKickParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SQuantumRotationKickParams {
     /// `enabled` (Boolean)
-    #[serde(default)]
     pub enabled: bool,
     /// `kickMin` (Class)
-    #[serde(default)]
     pub kick_min: Option<Handle<Vec3>>,
     /// `kickMax` (Class)
-    #[serde(default)]
     pub kick_max: Option<Handle<Vec3>>,
 }
 
@@ -23139,37 +20282,26 @@ impl<'a> Extract<'a> for SQuantumRotationKickParams {
 }
 
 /// DCB type: `SQuantumBubbleIntegrityParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SQuantumBubbleIntegrityParams {
     /// `referenceAngle` (Single)
-    #[serde(default)]
     pub reference_angle: f32,
     /// `alignmentCrossoverPointRatio` (Single)
-    #[serde(default)]
     pub alignment_crossover_point_ratio: f32,
     /// `increaseValueMapping` (Class)
-    #[serde(default)]
     pub increase_value_mapping: Option<Handle<BezierCurve>>,
     /// `decreaseValueMapping` (Class)
-    #[serde(default)]
     pub decrease_value_mapping: Option<Handle<BezierCurve>>,
     /// `bestIntegrityIncreaseTime` (Single)
-    #[serde(default)]
     pub best_integrity_increase_time: f32,
     /// `worstIntegrityDecreaseTime` (Single)
-    #[serde(default)]
     pub worst_integrity_decrease_time: f32,
     /// `collapseTime` (Single)
-    #[serde(default)]
     pub collapse_time: f32,
     /// `relativeCoastSpeedFactor` (Class)
-    #[serde(default)]
     pub relative_coast_speed_factor: Option<Handle<BezierCurve>>,
     /// `relativeCapacityCostFactor` (Class)
-    #[serde(default)]
     pub relative_capacity_cost_factor: Option<Handle<BezierCurve>>,
     /// `vibrationBubbleIntegrity` (Class)
-    #[serde(default)]
     pub vibration_bubble_integrity: Option<Handle<BezierCurve>>,
 }
 
@@ -23212,19 +20344,14 @@ impl<'a> Extract<'a> for SQuantumBubbleIntegrityParams {
 }
 
 /// DCB type: `SQuantumTimerData`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SQuantumTimerData {
     /// `ifcsHandoverTimeSuccess` (Single)
-    #[serde(default)]
     pub ifcs_handover_time_success: f32,
     /// `ifcsHandoverTimeFailed` (Single)
-    #[serde(default)]
     pub ifcs_handover_time_failed: f32,
     /// `ifcsRespoolTimeSuccess` (Single)
-    #[serde(default)]
     pub ifcs_respool_time_success: f32,
     /// `ifcsRespoolTimeFailed` (Single)
-    #[serde(default)]
     pub ifcs_respool_time_failed: f32,
 }
 
@@ -23246,16 +20373,12 @@ impl<'a> Extract<'a> for SQuantumTimerData {
 }
 
 /// DCB type: `SQuantumTimers`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SQuantumTimers {
     /// `travelTimers` (Class)
-    #[serde(default)]
     pub travel_timers: Option<Handle<SQuantumTimerData>>,
     /// `boostTimers` (Class)
-    #[serde(default)]
     pub boost_timers: Option<Handle<SQuantumTimerData>>,
     /// `failedCooldownVibrationTime` (Single)
-    #[serde(default)]
     pub failed_cooldown_vibration_time: f32,
 }
 
@@ -23282,28 +20405,20 @@ impl<'a> Extract<'a> for SQuantumTimers {
 }
 
 /// DCB type: `SQuantumDriveBoostParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SQuantumDriveBoostParams {
     /// `minSpeed` (Single)
-    #[serde(default)]
     pub min_speed: f32,
     /// `maxSpeed` (Single)
-    #[serde(default)]
     pub max_speed: f32,
     /// `timeToFullSpeed` (Single)
-    #[serde(default)]
     pub time_to_full_speed: f32,
     /// `timeToStopMultiplier` (Single)
-    #[serde(default)]
     pub time_to_stop_multiplier: f32,
     /// `minStopDistance` (Single)
-    #[serde(default)]
     pub min_stop_distance: f32,
     /// `maxUseTime` (Single)
-    #[serde(default)]
     pub max_use_time: f32,
     /// `kickStart` (Class)
-    #[serde(default)]
     pub kick_start: Option<Handle<SQuantumRotationKickParams>>,
 }
 
@@ -23331,40 +20446,28 @@ impl<'a> Extract<'a> for SQuantumDriveBoostParams {
 }
 
 /// DCB type: `SQuantumDriveTravelParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SQuantumDriveTravelParams {
     /// `maxCoastSpeed` (Single)
-    #[serde(default)]
     pub max_coast_speed: f32,
     /// `timeToMaxCoastSpeed` (Single)
-    #[serde(default)]
     pub time_to_max_coast_speed: f32,
     /// `stabilizationTime` (Single)
-    #[serde(default)]
     pub stabilization_time: f32,
     /// `minTravelTime` (Single)
-    #[serde(default)]
     pub min_travel_time: f32,
     /// `targetMinRange` (Single)
-    #[serde(default)]
     pub target_min_range: f32,
     /// `maxUseTime` (Single)
-    #[serde(default)]
     pub max_use_time: f32,
     /// `stopTime` (Single)
-    #[serde(default)]
     pub stop_time: f32,
     /// `rotation` (Class)
-    #[serde(default)]
     pub rotation: Option<Handle<SQuantumRotationParams>>,
     /// `kickStart` (Class)
-    #[serde(default)]
     pub kick_start: Option<Handle<SQuantumRotationKickParams>>,
     /// `kickExit` (Class)
-    #[serde(default)]
     pub kick_exit: Option<Handle<SQuantumRotationKickParams>>,
     /// `kickExitFail` (Class)
-    #[serde(default)]
     pub kick_exit_fail: Option<Handle<SQuantumRotationKickParams>>,
 }
 
@@ -23405,19 +20508,14 @@ impl<'a> Extract<'a> for SQuantumDriveTravelParams {
 }
 
 /// DCB type: `SQuantumDriveVibrationNoiseParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SQuantumDriveVibrationNoiseParams {
     /// `frequency` (Single)
-    #[serde(default)]
     pub frequency: f32,
     /// `multiplier` (Single)
-    #[serde(default)]
     pub multiplier: f32,
     /// `hurstIndex` (Single)
-    #[serde(default)]
     pub hurst_index: f32,
     /// `threshold` (Single)
-    #[serde(default)]
     pub threshold: f32,
 }
 
@@ -23439,37 +20537,26 @@ impl<'a> Extract<'a> for SQuantumDriveVibrationNoiseParams {
 }
 
 /// DCB type: `SQuantumDriveVibrationParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SQuantumDriveVibrationParams {
     /// `vibrationPreparing` (Class)
-    #[serde(default)]
     pub vibration_preparing: Option<Handle<BezierCurve>>,
     /// `vibrationSpeed` (Class)
-    #[serde(default)]
     pub vibration_speed: Option<Handle<BezierCurve>>,
     /// `vibrationCancel` (Class)
-    #[serde(default)]
     pub vibration_cancel: Option<Handle<BezierCurve>>,
     /// `vibrationCancelTime` (Class)
-    #[serde(default)]
     pub vibration_cancel_time: Option<Handle<BezierCurve>>,
     /// `vibrationCooldown` (Class)
-    #[serde(default)]
     pub vibration_cooldown: Option<Handle<BezierCurve>>,
     /// `processInitialVibrationTime` (Single)
-    #[serde(default)]
     pub process_initial_vibration_time: f32,
     /// `processInitialVibrationCurve` (Class)
-    #[serde(default)]
     pub process_initial_vibration_curve: Option<Handle<BezierCurve>>,
     /// `baseVibrationTravel` (Single)
-    #[serde(default)]
     pub base_vibration_travel: f32,
     /// `baseVibrationBoost` (Single)
-    #[serde(default)]
     pub base_vibration_boost: f32,
     /// `travelNoise` (Class)
-    #[serde(default)]
     pub travel_noise: Option<Handle<SQuantumDriveVibrationNoiseParams>>,
 }
 
@@ -23518,46 +20605,32 @@ impl<'a> Extract<'a> for SQuantumDriveVibrationParams {
 }
 
 /// DCB type: `SQuantumHudMessages`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SQuantumHudMessages {
     /// `boostingInitiated` (Locale)
-    #[serde(default)]
     pub boosting_initiated: LocaleKey,
     /// `boostingStarted` (Locale)
-    #[serde(default)]
     pub boosting_started: LocaleKey,
     /// `boostingCancelInitiated` (Locale)
-    #[serde(default)]
     pub boosting_cancel_initiated: LocaleKey,
     /// `travelInitiated` (Locale)
-    #[serde(default)]
     pub travel_initiated: LocaleKey,
     /// `travelStarted` (Locale)
-    #[serde(default)]
     pub travel_started: LocaleKey,
     /// `travelCancelInitiated` (Locale)
-    #[serde(default)]
     pub travel_cancel_initiated: LocaleKey,
     /// `blindBoostDisabledMessage` (Locale)
-    #[serde(default)]
     pub blind_boost_disabled_message: LocaleKey,
     /// `waitingForGroupMember` (Locale)
-    #[serde(default)]
     pub waiting_for_group_member: LocaleKey,
     /// `travelBlocked` (Locale)
-    #[serde(default)]
     pub travel_blocked: LocaleKey,
     /// `travelUnblocked` (Locale)
-    #[serde(default)]
     pub travel_unblocked: LocaleKey,
     /// `boostBlocked` (Locale)
-    #[serde(default)]
     pub boost_blocked: LocaleKey,
     /// `boostUnblocked` (Locale)
-    #[serde(default)]
     pub boost_unblocked: LocaleKey,
     /// `failureMessages` (Locale)
-    #[serde(default)]
     pub failure_messages: LocaleKey,
 }
 
@@ -23589,61 +20662,42 @@ impl<'a> Extract<'a> for SQuantumHudMessages {
 
 /// DCB type: `SCItemQuantumDriveParams_NEW`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCItemQuantumDriveParams_NEW {
     /// `heatParams` (Class)
-    #[serde(default)]
     pub heat_params: Option<Handle<QuantumDriveHeatParams>>,
     /// `effectParams` (Class)
-    #[serde(default)]
     pub effect_params: Option<Handle<QuantumDriveEffectParams>>,
     /// `effectTags` (StrongPointer)
-    #[serde(default)]
     pub effect_tags: Option<SQuantumDriveEffectBaseParamsPtr>,
     /// `resourceNetworkParams` (Class)
-    #[serde(default)]
     pub resource_network_params: Option<Handle<SQuantumResourceNetworkParams>>,
     /// `tracePoint` (String)
-    #[serde(default)]
     pub trace_point: String,
     /// `spoolUpTime` (Single)
-    #[serde(default)]
     pub spool_up_time: f32,
     /// `quantumFuelRequirement` (Single)
-    #[serde(default)]
     pub quantum_fuel_requirement: f32,
     /// `disableCharge` (Single)
-    #[serde(default)]
     pub disable_charge: f32,
     /// `jumpRange` (Single)
-    #[serde(default)]
     pub jump_range: f32,
     /// `disconnectRange` (Single)
-    #[serde(default)]
     pub disconnect_range: f32,
     /// `trailEntityClass` (Reference)
-    #[serde(default)]
     pub trail_entity_class: Option<CigGuid>,
     /// `boosting` (Class)
-    #[serde(default)]
     pub boosting: Option<Handle<SQuantumDriveBoostParams>>,
     /// `travelling` (Class)
-    #[serde(default)]
     pub travelling: Option<Handle<SQuantumDriveTravelParams>>,
     /// `bubbleIntegrity` (Class)
-    #[serde(default)]
     pub bubble_integrity: Option<Handle<SQuantumBubbleIntegrityParams>>,
     /// `vibration` (Class)
-    #[serde(default)]
     pub vibration: Option<Handle<SQuantumDriveVibrationParams>>,
     /// `timers` (Class)
-    #[serde(default)]
     pub timers: Option<Handle<SQuantumTimers>>,
     /// `hudMessages` (Class)
-    #[serde(default)]
     pub hud_messages: Option<Handle<SQuantumHudMessages>>,
     /// `audio` (Class)
-    #[serde(default)]
     pub audio: Option<Handle<SQuantumBoostAudioParams>>,
 }
 
@@ -23712,16 +20766,12 @@ impl<'a> Extract<'a> for SCItemQuantumDriveParams_NEW {
 }
 
 /// DCB type: `SQuantumResourceNetworkParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SQuantumResourceNetworkParams {
     /// `idleState` (WeakPointer)
-    #[serde(default)]
     pub idle_state: Option<Handle<ItemResourceState>>,
     /// `spoolingState` (WeakPointer)
-    #[serde(default)]
     pub spooling_state: Option<Handle<ItemResourceState>>,
     /// `travellingState` (WeakPointer)
-    #[serde(default)]
     pub travelling_state: Option<Handle<ItemResourceState>>,
 }
 
@@ -23752,7 +20802,6 @@ impl<'a> Extract<'a> for SQuantumResourceNetworkParams {
 
 /// DCB type: `SEntityComponentOrbitalNavPointParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SEntityComponentOrbitalNavPointParams {
 }
 
@@ -23771,13 +20820,10 @@ impl<'a> Extract<'a> for SEntityComponentOrbitalNavPointParams {
 
 /// DCB type: `SQuantumCameraStateEffectsTimeDef`
 /// Inherits from: `SQuantumCameraStateMappingDef`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SQuantumCameraStateEffectsTimeDef {
     /// `strengthMapping` (Class)
-    #[serde(default)]
     pub strength_mapping: Option<Handle<BezierCurve>>,
     /// `time` (Single)
-    #[serde(default)]
     pub time: f32,
 }
 
@@ -23801,13 +20847,10 @@ impl<'a> Extract<'a> for SQuantumCameraStateEffectsTimeDef {
 
 /// DCB type: `ContactHighlightMaterialParams`
 /// Inherits from: `ContactHighlightVisualBaseParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ContactHighlightMaterialParams {
     /// `color` (Class)
-    #[serde(default)]
     pub color: Option<Handle<RGBA>>,
     /// `material` (Class)
-    #[serde(default)]
     pub material: Option<Handle<GlobalResourceMaterial>>,
 }
 
@@ -23834,10 +20877,8 @@ impl<'a> Extract<'a> for ContactHighlightMaterialParams {
 
 /// DCB type: `SCItemRadarSensitivityModifierTypeContacts`
 /// Inherits from: `SCItemRadarSensitivityModifierType`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCItemRadarSensitivityModifierTypeContacts {
     /// `contactTypes` (Reference (array))
-    #[serde(default)]
     pub contact_types: Vec<CigGuid>,
 }
 
@@ -23859,10 +20900,8 @@ impl<'a> Extract<'a> for SCItemRadarSensitivityModifierTypeContacts {
 
 /// DCB type: `SCItemRadarSensitivityModifierTypeSignatureCategory`
 /// Inherits from: `SCItemRadarSensitivityModifierType`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCItemRadarSensitivityModifierTypeSignatureCategory {
     /// `signatureCategories` (Reference (array))
-    #[serde(default)]
     pub signature_categories: Vec<CigGuid>,
 }
 
@@ -23884,10 +20923,8 @@ impl<'a> Extract<'a> for SCItemRadarSensitivityModifierTypeSignatureCategory {
 
 /// DCB type: `ScanCustomValueArray`
 /// Inherits from: `ScanCustomValue`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ScanCustomValueArray {
     /// `value` (StrongPointer (array))
-    #[serde(default)]
     pub value: Vec<ScanCustomValuePtr>,
 }
 
@@ -23911,13 +20948,10 @@ impl<'a> Extract<'a> for ScanCustomValueArray {
 }
 
 /// DCB type: `ScanDataEntryParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ScanDataEntryParams {
     /// `scanCategory` (EnumChoice)
-    #[serde(default)]
     pub scan_category: EScanCategory,
     /// `scanInformation` (EnumChoice)
-    #[serde(default)]
     pub scan_information: EScanInformation,
 }
 
@@ -23938,31 +20972,22 @@ impl<'a> Extract<'a> for ScanDataEntryParams {
 
 /// DCB type: `ScanDisplayArmorVariableParams`
 /// Inherits from: `ScanDisplayVariableParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ScanDisplayArmorVariableParams {
     /// `truncateSize` (Byte)
-    #[serde(default)]
     pub truncate_size: u32,
     /// `displayIsHidden` (Boolean)
-    #[serde(default)]
     pub display_is_hidden: bool,
     /// `displayInBrackets` (Boolean)
-    #[serde(default)]
     pub display_in_brackets: bool,
     /// `suffixArrayIndex` (Boolean)
-    #[serde(default)]
     pub suffix_array_index: bool,
     /// `suffixSemiColon` (Boolean)
-    #[serde(default)]
     pub suffix_semi_colon: bool,
     /// `auxiliaryFlag` (EnumChoice)
-    #[serde(default)]
     pub auxiliary_flag: EScanDisplayVariableAuxiliaryType,
     /// `fallback` (StrongPointer)
-    #[serde(default)]
     pub fallback: Option<ScanDisplayVariableParamsPtr>,
     /// `scanDataEntries` (Class (array))
-    #[serde(default)]
     pub scan_data_entries: Vec<Handle<ScanDataEntryParams>>,
 }
 
@@ -23998,16 +21023,12 @@ impl<'a> Extract<'a> for ScanDisplayArmorVariableParams {
 
 /// DCB type: `StatusPriorityFloat`
 /// Inherits from: `StatusPriorityBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct StatusPriorityFloat {
     /// `associatedWidget` (EnumChoice)
-    #[serde(default)]
     pub associated_widget: ActorStatusWidget,
     /// `thresholdValue` (Single)
-    #[serde(default)]
     pub threshold_value: f32,
     /// `comparison` (EnumChoice)
-    #[serde(default)]
     pub comparison: RadarPriorityComparison,
 }
 
@@ -24029,16 +21050,12 @@ impl<'a> Extract<'a> for StatusPriorityFloat {
 
 /// DCB type: `StatusPriorityStamina`
 /// Inherits from: `StatusPriorityFloat`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct StatusPriorityStamina {
     /// `associatedWidget` (EnumChoice)
-    #[serde(default)]
     pub associated_widget: ActorStatusWidget,
     /// `thresholdValue` (Single)
-    #[serde(default)]
     pub threshold_value: f32,
     /// `comparison` (EnumChoice)
-    #[serde(default)]
     pub comparison: RadarPriorityComparison,
 }
 
@@ -24060,31 +21077,22 @@ impl<'a> Extract<'a> for StatusPriorityStamina {
 
 /// DCB type: `ClassificationScanProcedureParams`
 /// Inherits from: `ScanProcedureParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ClassificationScanProcedureParams {
     /// `requiredScanTag` (Reference)
-    #[serde(default)]
     pub required_scan_tag: Option<CigGuid>,
     /// `emissionBaseline` (Single)
-    #[serde(default)]
     pub emission_baseline: f32,
     /// `runtimeDuration` (Single)
-    #[serde(default)]
     pub runtime_duration: f32,
     /// `allowedInAIAutoScan` (Boolean)
-    #[serde(default)]
     pub allowed_in_aiauto_scan: bool,
     /// `allowedInFocalPointScan` (Boolean)
-    #[serde(default)]
     pub allowed_in_focal_point_scan: bool,
     /// `allowedInPingBroadScan` (Boolean)
-    #[serde(default)]
     pub allowed_in_ping_broad_scan: bool,
     /// `allowedInPingFocusScan` (Boolean)
-    #[serde(default)]
     pub allowed_in_ping_focus_scan: bool,
     /// `allowedInPassiveScan` (Boolean)
-    #[serde(default)]
     pub allowed_in_passive_scan: bool,
 }
 
@@ -24111,34 +21119,24 @@ impl<'a> Extract<'a> for ClassificationScanProcedureParams {
 
 /// DCB type: `CryopodScanProcedureParams`
 /// Inherits from: `ScanProcedureParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CryopodScanProcedureParams {
     /// `requiredScanTag` (Reference)
-    #[serde(default)]
     pub required_scan_tag: Option<CigGuid>,
     /// `emissionBaseline` (Single)
-    #[serde(default)]
     pub emission_baseline: f32,
     /// `runtimeDuration` (Single)
-    #[serde(default)]
     pub runtime_duration: f32,
     /// `allowedInAIAutoScan` (Boolean)
-    #[serde(default)]
     pub allowed_in_aiauto_scan: bool,
     /// `allowedInFocalPointScan` (Boolean)
-    #[serde(default)]
     pub allowed_in_focal_point_scan: bool,
     /// `allowedInPingBroadScan` (Boolean)
-    #[serde(default)]
     pub allowed_in_ping_broad_scan: bool,
     /// `allowedInPingFocusScan` (Boolean)
-    #[serde(default)]
     pub allowed_in_ping_focus_scan: bool,
     /// `allowedInPassiveScan` (Boolean)
-    #[serde(default)]
     pub allowed_in_passive_scan: bool,
     /// `emptyPodLocId` (Locale)
-    #[serde(default)]
     pub empty_pod_loc_id: LocaleKey,
 }
 
@@ -24166,31 +21164,22 @@ impl<'a> Extract<'a> for CryopodScanProcedureParams {
 
 /// DCB type: `JurisdictionScanProcedureParams`
 /// Inherits from: `ScanProcedureParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct JurisdictionScanProcedureParams {
     /// `requiredScanTag` (Reference)
-    #[serde(default)]
     pub required_scan_tag: Option<CigGuid>,
     /// `emissionBaseline` (Single)
-    #[serde(default)]
     pub emission_baseline: f32,
     /// `runtimeDuration` (Single)
-    #[serde(default)]
     pub runtime_duration: f32,
     /// `allowedInAIAutoScan` (Boolean)
-    #[serde(default)]
     pub allowed_in_aiauto_scan: bool,
     /// `allowedInFocalPointScan` (Boolean)
-    #[serde(default)]
     pub allowed_in_focal_point_scan: bool,
     /// `allowedInPingBroadScan` (Boolean)
-    #[serde(default)]
     pub allowed_in_ping_broad_scan: bool,
     /// `allowedInPingFocusScan` (Boolean)
-    #[serde(default)]
     pub allowed_in_ping_focus_scan: bool,
     /// `allowedInPassiveScan` (Boolean)
-    #[serde(default)]
     pub allowed_in_passive_scan: bool,
 }
 
@@ -24217,31 +21206,22 @@ impl<'a> Extract<'a> for JurisdictionScanProcedureParams {
 
 /// DCB type: `VehicleSelfDestructScanProcedureParams`
 /// Inherits from: `ScanProcedureParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct VehicleSelfDestructScanProcedureParams {
     /// `requiredScanTag` (Reference)
-    #[serde(default)]
     pub required_scan_tag: Option<CigGuid>,
     /// `emissionBaseline` (Single)
-    #[serde(default)]
     pub emission_baseline: f32,
     /// `runtimeDuration` (Single)
-    #[serde(default)]
     pub runtime_duration: f32,
     /// `allowedInAIAutoScan` (Boolean)
-    #[serde(default)]
     pub allowed_in_aiauto_scan: bool,
     /// `allowedInFocalPointScan` (Boolean)
-    #[serde(default)]
     pub allowed_in_focal_point_scan: bool,
     /// `allowedInPingBroadScan` (Boolean)
-    #[serde(default)]
     pub allowed_in_ping_broad_scan: bool,
     /// `allowedInPingFocusScan` (Boolean)
-    #[serde(default)]
     pub allowed_in_ping_focus_scan: bool,
     /// `allowedInPassiveScan` (Boolean)
-    #[serde(default)]
     pub allowed_in_passive_scan: bool,
 }
 
@@ -24268,10 +21248,8 @@ impl<'a> Extract<'a> for VehicleSelfDestructScanProcedureParams {
 
 /// DCB type: `SBBDynamicPropertyInt`
 /// Inherits from: `SBBDynamicPropertyBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SBBDynamicPropertyInt {
     /// `value` (Int32)
-    #[serde(default)]
     pub value: i32,
 }
 
@@ -24291,10 +21269,8 @@ impl<'a> Extract<'a> for SBBDynamicPropertyInt {
 
 /// DCB type: `SBBDynamicPropertyFloat`
 /// Inherits from: `SBBDynamicPropertyBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SBBDynamicPropertyFloat {
     /// `value` (Single)
-    #[serde(default)]
     pub value: f32,
 }
 
@@ -24314,10 +21290,8 @@ impl<'a> Extract<'a> for SBBDynamicPropertyFloat {
 
 /// DCB type: `SReputationStateModifierDecrement`
 /// Inherits from: `SReputationStateModifierBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SReputationStateModifierDecrement {
     /// `value` (Int32)
-    #[serde(default)]
     pub value: i32,
 }
 
@@ -24337,7 +21311,6 @@ impl<'a> Extract<'a> for SReputationStateModifierDecrement {
 
 /// DCB type: `SReputationMissionRequirementExpression_Or`
 /// Inherits from: `SReputationMissionRequirementExpressionElement`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SReputationMissionRequirementExpression_Or {
 }
 
@@ -24356,7 +21329,6 @@ impl<'a> Extract<'a> for SReputationMissionRequirementExpression_Or {
 
 /// DCB type: `SReputationMissionRequirementExpression_Not`
 /// Inherits from: `SReputationMissionRequirementExpressionElement`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SReputationMissionRequirementExpression_Not {
 }
 
@@ -24375,10 +21347,8 @@ impl<'a> Extract<'a> for SReputationMissionRequirementExpression_Not {
 
 /// DCB type: `KilogramsPerCubicMeter`
 /// Inherits from: `BaseDensityUnit`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct KilogramsPerCubicMeter {
     /// `kilogramsPerCubicMeter` (Single)
-    #[serde(default)]
     pub kilograms_per_cubic_meter: f32,
 }
 
@@ -24398,10 +21368,8 @@ impl<'a> Extract<'a> for KilogramsPerCubicMeter {
 
 /// DCB type: `ResourceTypeMolarMass`
 /// Inherits from: `ResourceTypeDensityType`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ResourceTypeMolarMass {
     /// `molarMass` (Single)
-    #[serde(default)]
     pub molar_mass: f32,
 }
 
@@ -24421,13 +21389,10 @@ impl<'a> Extract<'a> for ResourceTypeMolarMass {
 
 /// DCB type: `SCItemRestraintParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCItemRestraintParams {
     /// `restraintStyle` (EnumChoice)
-    #[serde(default)]
     pub restraint_style: RestraintStyle,
     /// `cosmeticEntityClass` (Reference)
-    #[serde(default)]
     pub cosmetic_entity_class: Option<CigGuid>,
 }
 
@@ -24448,10 +21413,8 @@ impl<'a> Extract<'a> for SCItemRestraintParams {
 
 /// DCB type: `VolumeShape_Box`
 /// Inherits from: `VolumeShape`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct VolumeShape_Box {
     /// `size` (Class)
-    #[serde(default)]
     pub size: Option<Handle<Vec3>>,
 }
 
@@ -24474,10 +21437,8 @@ impl<'a> Extract<'a> for VolumeShape_Box {
 
 /// DCB type: `VolumeShape_Ellipsoid`
 /// Inherits from: `VolumeShape`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct VolumeShape_Ellipsoid {
     /// `radii` (Class)
-    #[serde(default)]
     pub radii: Option<Handle<Vec3>>,
 }
 
@@ -24500,7 +21461,6 @@ impl<'a> Extract<'a> for VolumeShape_Ellipsoid {
 
 /// DCB type: `SAtmosphericCompositionInheritPlanet`
 /// Inherits from: `SAtmosphericCompositionBaseParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SAtmosphericCompositionInheritPlanet {
 }
 
@@ -24519,10 +21479,8 @@ impl<'a> Extract<'a> for SAtmosphericCompositionInheritPlanet {
 
 /// DCB type: `AerodynamicTrailCalculationGasCloudOpticalDensityRange`
 /// Inherits from: `AerodynamicTrailCalculation`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AerodynamicTrailCalculationGasCloudOpticalDensityRange {
     /// `range` (Class)
-    #[serde(default)]
     pub range: Option<Handle<Range>>,
 }
 
@@ -24545,13 +21503,10 @@ impl<'a> Extract<'a> for AerodynamicTrailCalculationGasCloudOpticalDensityRange 
 
 /// DCB type: `ElectricalRoomExtension`
 /// Inherits from: `RoomExtension`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ElectricalRoomExtension {
     /// `state` (StrongPointer)
-    #[serde(default)]
     pub state: Option<ElectricalStateBasePtr>,
     /// `behavior` (Reference)
-    #[serde(default)]
     pub behavior: Option<CigGuid>,
 }
 
@@ -24575,13 +21530,10 @@ impl<'a> Extract<'a> for ElectricalRoomExtension {
 
 /// DCB type: `ElectricalState`
 /// Inherits from: `ElectricalStateBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ElectricalState {
     /// `chargeMod` (EnumChoice)
-    #[serde(default)]
     pub charge_mod: RoomStateModifyType,
     /// `charge` (Single)
-    #[serde(default)]
     pub charge: f32,
 }
 
@@ -24602,10 +21554,8 @@ impl<'a> Extract<'a> for ElectricalState {
 
 /// DCB type: `ElectricalStateRef`
 /// Inherits from: `ElectricalStateBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ElectricalStateRef {
     /// `stateTemplate` (Reference)
-    #[serde(default)]
     pub state_template: Option<CigGuid>,
 }
 
@@ -24625,13 +21575,10 @@ impl<'a> Extract<'a> for ElectricalStateRef {
 
 /// DCB type: `AreaDisruptionGameplayTrigger`
 /// Inherits from: `SDisruptionGameplayTriggerType`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AreaDisruptionGameplayTrigger {
     /// `disturbanceScore` (UInt32)
-    #[serde(default)]
     pub disturbance_score: u32,
     /// `areaTagsToAdd` (Reference (array))
-    #[serde(default)]
     pub area_tags_to_add: Vec<CigGuid>,
 }
 
@@ -24654,10 +21601,8 @@ impl<'a> Extract<'a> for AreaDisruptionGameplayTrigger {
 
 /// DCB type: `ResetAreaDisruptionGameplayTrigger`
 /// Inherits from: `SDisruptionGameplayTriggerType`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ResetAreaDisruptionGameplayTrigger {
     /// `areaTagsToRemove` (Reference (array))
-    #[serde(default)]
     pub area_tags_to_remove: Vec<CigGuid>,
 }
 
@@ -24679,10 +21624,8 @@ impl<'a> Extract<'a> for ResetAreaDisruptionGameplayTrigger {
 
 /// DCB type: `HearingDisruptionGameplayTrigger`
 /// Inherits from: `SDisruptionGameplayTriggerType`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct HearingDisruptionGameplayTrigger {
     /// `range` (Single)
-    #[serde(default)]
     pub range: f32,
 }
 
@@ -24702,10 +21645,8 @@ impl<'a> Extract<'a> for HearingDisruptionGameplayTrigger {
 
 /// DCB type: `SDisruptionGameplayTrigger`
 /// Inherits from: `SBaseInteractionGameplayTrigger`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SDisruptionGameplayTrigger {
     /// `disruptionTriggerType` (StrongPointer)
-    #[serde(default)]
     pub disruption_trigger_type: Option<SDisruptionGameplayTriggerTypePtr>,
 }
 
@@ -24728,7 +21669,6 @@ impl<'a> Extract<'a> for SDisruptionGameplayTrigger {
 
 /// DCB type: `SResetEntityLifetimeGameplayTrigger`
 /// Inherits from: `SBaseInteractionGameplayTrigger`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SResetEntityLifetimeGameplayTrigger {
 }
 
@@ -24747,10 +21687,8 @@ impl<'a> Extract<'a> for SResetEntityLifetimeGameplayTrigger {
 
 /// DCB type: `SAttachableTagCheck`
 /// Inherits from: `SCheckType`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SAttachableTagCheck {
     /// `stringTag` (String)
-    #[serde(default)]
     pub string_tag: String,
 }
 
@@ -24770,7 +21708,6 @@ impl<'a> Extract<'a> for SAttachableTagCheck {
 
 /// DCB type: `GameplayTrigger_TargetType_Self`
 /// Inherits from: `GameplayTrigger_TargetType_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GameplayTrigger_TargetType_Self {
 }
 
@@ -24789,10 +21726,8 @@ impl<'a> Extract<'a> for GameplayTrigger_TargetType_Self {
 
 /// DCB type: `GameplayTrigger_TargetType_Root`
 /// Inherits from: `GameplayTrigger_TargetType_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GameplayTrigger_TargetType_Root {
     /// `nextTarget` (StrongPointer)
-    #[serde(default)]
     pub next_target: Option<GameplayTrigger_TargetType_BasePtr>,
 }
 
@@ -24815,13 +21750,10 @@ impl<'a> Extract<'a> for GameplayTrigger_TargetType_Root {
 
 /// DCB type: `GameplayTrigger_TargetType_ItemPortName`
 /// Inherits from: `GameplayTrigger_TargetType_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GameplayTrigger_TargetType_ItemPortName {
     /// `itemPortName` (String)
-    #[serde(default)]
     pub item_port_name: String,
     /// `nextTarget` (StrongPointer)
-    #[serde(default)]
     pub next_target: Option<GameplayTrigger_TargetType_BasePtr>,
 }
 
@@ -24845,16 +21777,12 @@ impl<'a> Extract<'a> for GameplayTrigger_TargetType_ItemPortName {
 
 /// DCB type: `GameplayTrigger_TargetType_Filtered`
 /// Inherits from: `GameplayTrigger_TargetType_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GameplayTrigger_TargetType_Filtered {
     /// `targets` (StrongPointer (array))
-    #[serde(default)]
     pub targets: Vec<GameplayTrigger_TargetType_BasePtr>,
     /// `filter` (StrongPointer)
-    #[serde(default)]
     pub filter: Option<GameplayTrigger_FilterType_BasePtr>,
     /// `nextTarget` (StrongPointer)
-    #[serde(default)]
     pub next_target: Option<GameplayTrigger_TargetType_BasePtr>,
 }
 
@@ -24887,13 +21815,10 @@ impl<'a> Extract<'a> for GameplayTrigger_TargetType_Filtered {
 
 /// DCB type: `GameplayTrigger_FilterType_EntityClass`
 /// Inherits from: `GameplayTrigger_FilterType_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GameplayTrigger_FilterType_EntityClass {
     /// `filterInclusionMode` (EnumChoice)
-    #[serde(default)]
     pub filter_inclusion_mode: GameplayTrigger_SelectionMode,
     /// `entityClasses` (Reference (array))
-    #[serde(default)]
     pub entity_classes: Vec<CigGuid>,
 }
 
@@ -24916,13 +21841,10 @@ impl<'a> Extract<'a> for GameplayTrigger_FilterType_EntityClass {
 
 /// DCB type: `GameplayTrigger_FilterType_EntityTag`
 /// Inherits from: `GameplayTrigger_FilterType_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GameplayTrigger_FilterType_EntityTag {
     /// `filterInclusionMode` (EnumChoice)
-    #[serde(default)]
     pub filter_inclusion_mode: GameplayTrigger_SelectionMode,
     /// `entityTags` (Reference (array))
-    #[serde(default)]
     pub entity_tags: Vec<CigGuid>,
 }
 
@@ -24945,13 +21867,10 @@ impl<'a> Extract<'a> for GameplayTrigger_FilterType_EntityTag {
 
 /// DCB type: `GameplayTrigger_FilterType_ItemType`
 /// Inherits from: `GameplayTrigger_FilterType_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GameplayTrigger_FilterType_ItemType {
     /// `itemTypes` (EnumChoice (array))
-    #[serde(default)]
     pub item_types: Vec<EItemType>,
     /// `itemSubTypes` (EnumChoice (array))
-    #[serde(default)]
     pub item_sub_types: Vec<EItemSubType>,
 }
 
@@ -24976,13 +21895,10 @@ impl<'a> Extract<'a> for GameplayTrigger_FilterType_ItemType {
 
 /// DCB type: `GameplayTrigger_Executor_ActivateInteraction_ByTag`
 /// Inherits from: `GameplayTrigger_Executor_ActivateInteraction_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GameplayTrigger_Executor_ActivateInteraction_ByTag {
     /// `interactionLinkingTag` (Reference)
-    #[serde(default)]
     pub interaction_linking_tag: Option<CigGuid>,
     /// `ignoreLinkableFlag` (Boolean)
-    #[serde(default)]
     pub ignore_linkable_flag: bool,
 }
 
@@ -25003,10 +21919,8 @@ impl<'a> Extract<'a> for GameplayTrigger_Executor_ActivateInteraction_ByTag {
 
 /// DCB type: `GameplayTrigger_Executor_SetInteractionState_ByTag`
 /// Inherits from: `GameplayTrigger_Executor_SetInteractionState_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GameplayTrigger_Executor_SetInteractionState_ByTag {
     /// `stateTags` (Reference (array))
-    #[serde(default)]
     pub state_tags: Vec<CigGuid>,
 }
 
@@ -25028,13 +21942,10 @@ impl<'a> Extract<'a> for GameplayTrigger_Executor_SetInteractionState_ByTag {
 
 /// DCB type: `AreaTargetStateChange`
 /// Inherits from: `AreaCommunicationMessage`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AreaTargetStateChange {
     /// `stateTypeName` (String)
-    #[serde(default)]
     pub state_type_name: String,
     /// `stateName` (String)
-    #[serde(default)]
     pub state_name: String,
 }
 
@@ -25055,10 +21966,8 @@ impl<'a> Extract<'a> for AreaTargetStateChange {
 
 /// DCB type: `GameplayTriggerConditionNAND`
 /// Inherits from: `GameplayTriggerCondition`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GameplayTriggerConditionNAND {
     /// `inputs` (StrongPointer (array))
-    #[serde(default)]
     pub inputs: Vec<GameplayTriggerConditionPtr>,
 }
 
@@ -25083,10 +21992,8 @@ impl<'a> Extract<'a> for GameplayTriggerConditionNAND {
 
 /// DCB type: `GameplayTriggerConditionNOR`
 /// Inherits from: `GameplayTriggerCondition`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GameplayTriggerConditionNOR {
     /// `inputs` (StrongPointer (array))
-    #[serde(default)]
     pub inputs: Vec<GameplayTriggerConditionPtr>,
 }
 
@@ -25111,10 +22018,8 @@ impl<'a> Extract<'a> for GameplayTriggerConditionNOR {
 
 /// DCB type: `GameplayTriggerConditionXOR`
 /// Inherits from: `GameplayTriggerCondition`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GameplayTriggerConditionXOR {
     /// `inputs` (StrongPointer (array))
-    #[serde(default)]
     pub inputs: Vec<GameplayTriggerConditionPtr>,
 }
 
@@ -25139,10 +22044,8 @@ impl<'a> Extract<'a> for GameplayTriggerConditionXOR {
 
 /// DCB type: `GameplayTriggerConditionXNOR`
 /// Inherits from: `GameplayTriggerCondition`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GameplayTriggerConditionXNOR {
     /// `inputs` (StrongPointer (array))
-    #[serde(default)]
     pub inputs: Vec<GameplayTriggerConditionPtr>,
 }
 
@@ -25167,13 +22070,10 @@ impl<'a> Extract<'a> for GameplayTriggerConditionXNOR {
 
 /// DCB type: `GameplayTriggerConditionCheckStateOther`
 /// Inherits from: `GameplayTriggerCondition`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GameplayTriggerConditionCheckStateOther {
     /// `stateTypeName` (String)
-    #[serde(default)]
     pub state_type_name: String,
     /// `stateName` (String)
-    #[serde(default)]
     pub state_name: String,
 }
 
@@ -25194,16 +22094,12 @@ impl<'a> Extract<'a> for GameplayTriggerConditionCheckStateOther {
 
 /// DCB type: `GameplayTriggerConditionTargetEntity`
 /// Inherits from: `GameplayTriggerCondition`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GameplayTriggerConditionTargetEntity {
     /// `targetCheckMode` (EnumChoice)
-    #[serde(default)]
     pub target_check_mode: GameplayTrigger_SelectionMode,
     /// `conditionTargets` (StrongPointer (array))
-    #[serde(default)]
     pub condition_targets: Vec<GameplayTrigger_TargetType_BasePtr>,
     /// `input` (StrongPointer)
-    #[serde(default)]
     pub input: Option<GameplayTriggerConditionPtr>,
 }
 
@@ -25233,13 +22129,10 @@ impl<'a> Extract<'a> for GameplayTriggerConditionTargetEntity {
 
 /// DCB type: `UserVariableCheckBoolEqual`
 /// Inherits from: `UserVariableCheck`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct UserVariableCheckBoolEqual {
     /// `variableName` (String)
-    #[serde(default)]
     pub variable_name: String,
     /// `valueToCheck` (Boolean)
-    #[serde(default)]
     pub value_to_check: bool,
 }
 
@@ -25260,13 +22153,10 @@ impl<'a> Extract<'a> for UserVariableCheckBoolEqual {
 
 /// DCB type: `UserVariableCheckIntGreater`
 /// Inherits from: `UserVariableCheck`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct UserVariableCheckIntGreater {
     /// `variableName` (String)
-    #[serde(default)]
     pub variable_name: String,
     /// `valueToCheck` (Int32)
-    #[serde(default)]
     pub value_to_check: i32,
 }
 
@@ -25287,13 +22177,10 @@ impl<'a> Extract<'a> for UserVariableCheckIntGreater {
 
 /// DCB type: `UserVariableCheckFloatEqual`
 /// Inherits from: `UserVariableCheck`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct UserVariableCheckFloatEqual {
     /// `variableName` (String)
-    #[serde(default)]
     pub variable_name: String,
     /// `valueToCheck` (Single)
-    #[serde(default)]
     pub value_to_check: f32,
 }
 
@@ -25314,13 +22201,10 @@ impl<'a> Extract<'a> for UserVariableCheckFloatEqual {
 
 /// DCB type: `UserVariableCheckFloatGreater`
 /// Inherits from: `UserVariableCheck`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct UserVariableCheckFloatGreater {
     /// `variableName` (String)
-    #[serde(default)]
     pub variable_name: String,
     /// `valueToCheck` (Single)
-    #[serde(default)]
     pub value_to_check: f32,
 }
 
@@ -25341,13 +22225,10 @@ impl<'a> Extract<'a> for UserVariableCheckFloatGreater {
 
 /// DCB type: `UserVariableCheckFloatLess`
 /// Inherits from: `UserVariableCheck`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct UserVariableCheckFloatLess {
     /// `variableName` (String)
-    #[serde(default)]
     pub variable_name: String,
     /// `valueToCheck` (Single)
-    #[serde(default)]
     pub value_to_check: f32,
 }
 
@@ -25368,13 +22249,10 @@ impl<'a> Extract<'a> for UserVariableCheckFloatLess {
 
 /// DCB type: `UserVariableCheckStringEqual`
 /// Inherits from: `UserVariableCheck`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct UserVariableCheckStringEqual {
     /// `variableName` (String)
-    #[serde(default)]
     pub variable_name: String,
     /// `valueToCheck` (String)
-    #[serde(default)]
     pub value_to_check: String,
 }
 
@@ -25395,7 +22273,6 @@ impl<'a> Extract<'a> for UserVariableCheckStringEqual {
 
 /// DCB type: `FireHazardExtinguishGameplayTrigger`
 /// Inherits from: `SBaseInteractionGameplayTrigger`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct FireHazardExtinguishGameplayTrigger {
 }
 
@@ -25414,10 +22291,8 @@ impl<'a> Extract<'a> for FireHazardExtinguishGameplayTrigger {
 
 /// DCB type: `SetSubGeometryTagGameplayTrigger`
 /// Inherits from: `SBaseInteractionGameplayTrigger`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SetSubGeometryTagGameplayTrigger {
     /// `subGeometryTag` (String)
-    #[serde(default)]
     pub sub_geometry_tag: String,
 }
 
@@ -25437,10 +22312,8 @@ impl<'a> Extract<'a> for SetSubGeometryTagGameplayTrigger {
 
 /// DCB type: `SAddHealthValue`
 /// Inherits from: `SModHealth`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SAddHealthValue {
     /// `healthValue` (Single)
-    #[serde(default)]
     pub health_value: f32,
 }
 
@@ -25460,10 +22333,8 @@ impl<'a> Extract<'a> for SAddHealthValue {
 
 /// DCB type: `SSubstractHealthValue`
 /// Inherits from: `SModHealth`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SSubstractHealthValue {
     /// `healthValue` (Single)
-    #[serde(default)]
     pub health_value: f32,
 }
 
@@ -25483,10 +22354,8 @@ impl<'a> Extract<'a> for SSubstractHealthValue {
 
 /// DCB type: `SAddHealthRatio`
 /// Inherits from: `SModHealth`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SAddHealthRatio {
     /// `healthRatio` (Single)
-    #[serde(default)]
     pub health_ratio: f32,
 }
 
@@ -25506,19 +22375,14 @@ impl<'a> Extract<'a> for SAddHealthRatio {
 
 /// DCB type: `InvulnerabilityState`
 /// Inherits from: `VulnerabilityState`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InvulnerabilityState {
     /// `invulnerable` (Boolean)
-    #[serde(default)]
     pub invulnerable: bool,
     /// `propagateDamageToParent` (Boolean)
-    #[serde(default)]
     pub propagate_damage_to_parent: bool,
     /// `ignoreAllHits` (Boolean)
-    #[serde(default)]
     pub ignore_all_hits: bool,
     /// `undoTimerSeconds` (Single)
-    #[serde(default)]
     pub undo_timer_seconds: f32,
 }
 
@@ -25541,10 +22405,8 @@ impl<'a> Extract<'a> for InvulnerabilityState {
 
 /// DCB type: `SSelfHintActivator`
 /// Inherits from: `SHintActivator`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SSelfHintActivator {
     /// `hint` (EnumChoice)
-    #[serde(default)]
     pub hint: HintEventType,
 }
 
@@ -25564,10 +22426,8 @@ impl<'a> Extract<'a> for SSelfHintActivator {
 
 /// DCB type: `SInteractorHintActivator`
 /// Inherits from: `SHintActivator`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SInteractorHintActivator {
     /// `hint` (EnumChoice)
-    #[serde(default)]
     pub hint: HintEventType,
 }
 
@@ -25587,7 +22447,6 @@ impl<'a> Extract<'a> for SInteractorHintActivator {
 
 /// DCB type: `SActivateItemExpirationGameplayTrigger`
 /// Inherits from: `SBaseInteractionGameplayTrigger`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SActivateItemExpirationGameplayTrigger {
 }
 
@@ -25606,10 +22465,8 @@ impl<'a> Extract<'a> for SActivateItemExpirationGameplayTrigger {
 
 /// DCB type: `GameplayTrigger_Physics_SetParameter_KinematicState`
 /// Inherits from: `GameplayTrigger_Physics_SetParameter_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GameplayTrigger_Physics_SetParameter_KinematicState {
     /// `kinematicState` (EnumChoice)
-    #[serde(default)]
     pub kinematic_state: GameplayTrigger_Toggle,
 }
 
@@ -25629,10 +22486,8 @@ impl<'a> Extract<'a> for GameplayTrigger_Physics_SetParameter_KinematicState {
 
 /// DCB type: `SSetScreenShakeAreaEnabledStateGameplayTrigger`
 /// Inherits from: `SBaseInteractionGameplayTrigger`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SSetScreenShakeAreaEnabledStateGameplayTrigger {
     /// `Enable` (Boolean)
-    #[serde(default)]
     pub enable: bool,
 }
 
@@ -25652,13 +22507,10 @@ impl<'a> Extract<'a> for SSetScreenShakeAreaEnabledStateGameplayTrigger {
 
 /// DCB type: `TriggeredWarning`
 /// Inherits from: `TriggeredMessage`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct TriggeredWarning {
     /// `text` (Locale)
-    #[serde(default)]
     pub text: LocaleKey,
     /// `messageState` (EnumChoice)
-    #[serde(default)]
     pub message_state: MessageState,
 }
 
@@ -25679,13 +22531,10 @@ impl<'a> Extract<'a> for TriggeredWarning {
 
 /// DCB type: `TriggeredWarningClear`
 /// Inherits from: `TriggeredWarning`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct TriggeredWarningClear {
     /// `text` (Locale)
-    #[serde(default)]
     pub text: LocaleKey,
     /// `messageState` (EnumChoice)
-    #[serde(default)]
     pub message_state: MessageState,
 }
 
@@ -25706,13 +22555,10 @@ impl<'a> Extract<'a> for TriggeredWarningClear {
 
 /// DCB type: `SUserVariableSetStringValue`
 /// Inherits from: `SUserVariableSetValueBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SUserVariableSetStringValue {
     /// `variableName` (String)
-    #[serde(default)]
     pub variable_name: String,
     /// `valueToSet` (String)
-    #[serde(default)]
     pub value_to_set: String,
 }
 
@@ -25733,10 +22579,8 @@ impl<'a> Extract<'a> for SUserVariableSetStringValue {
 
 /// DCB type: `UserVariableInverseBoolValue`
 /// Inherits from: `UserVariableComputeValueBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct UserVariableInverseBoolValue {
     /// `variableName` (String)
-    #[serde(default)]
     pub variable_name: String,
 }
 
@@ -25756,13 +22600,10 @@ impl<'a> Extract<'a> for UserVariableInverseBoolValue {
 
 /// DCB type: `UserVariableMultiplyIntValue`
 /// Inherits from: `UserVariableComputeValueBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct UserVariableMultiplyIntValue {
     /// `variableName` (String)
-    #[serde(default)]
     pub variable_name: String,
     /// `multiplierValue` (Int32)
-    #[serde(default)]
     pub multiplier_value: i32,
 }
 
@@ -25783,13 +22624,10 @@ impl<'a> Extract<'a> for UserVariableMultiplyIntValue {
 
 /// DCB type: `UserVariableDivideIntValue`
 /// Inherits from: `UserVariableComputeValueBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct UserVariableDivideIntValue {
     /// `variableName` (String)
-    #[serde(default)]
     pub variable_name: String,
     /// `dividerValue` (Int32)
-    #[serde(default)]
     pub divider_value: i32,
 }
 
@@ -25810,13 +22648,10 @@ impl<'a> Extract<'a> for UserVariableDivideIntValue {
 
 /// DCB type: `UserVariableModulusIntValue`
 /// Inherits from: `UserVariableComputeValueBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct UserVariableModulusIntValue {
     /// `variableName` (String)
-    #[serde(default)]
     pub variable_name: String,
     /// `dividerValue` (Int32)
-    #[serde(default)]
     pub divider_value: i32,
 }
 
@@ -25837,13 +22672,10 @@ impl<'a> Extract<'a> for UserVariableModulusIntValue {
 
 /// DCB type: `UserVariableSubtractFloatValue`
 /// Inherits from: `UserVariableComputeValueBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct UserVariableSubtractFloatValue {
     /// `variableName` (String)
-    #[serde(default)]
     pub variable_name: String,
     /// `valueToSubtract` (Single)
-    #[serde(default)]
     pub value_to_subtract: f32,
 }
 
@@ -25864,13 +22696,10 @@ impl<'a> Extract<'a> for UserVariableSubtractFloatValue {
 
 /// DCB type: `UserVariableMultiplyFloatValue`
 /// Inherits from: `UserVariableComputeValueBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct UserVariableMultiplyFloatValue {
     /// `variableName` (String)
-    #[serde(default)]
     pub variable_name: String,
     /// `multiplierValue` (Single)
-    #[serde(default)]
     pub multiplier_value: f32,
 }
 
@@ -25891,13 +22720,10 @@ impl<'a> Extract<'a> for UserVariableMultiplyFloatValue {
 
 /// DCB type: `UserVariableDivideFloatValue`
 /// Inherits from: `UserVariableComputeValueBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct UserVariableDivideFloatValue {
     /// `variableName` (String)
-    #[serde(default)]
     pub variable_name: String,
     /// `dividerValue` (Single)
-    #[serde(default)]
     pub divider_value: f32,
 }
 
@@ -25918,7 +22744,6 @@ impl<'a> Extract<'a> for UserVariableDivideFloatValue {
 
 /// DCB type: `SVendingMachineSpawnGameplayTrigger`
 /// Inherits from: `SBaseInteractionGameplayTrigger`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SVendingMachineSpawnGameplayTrigger {
 }
 
@@ -25937,13 +22762,10 @@ impl<'a> Extract<'a> for SVendingMachineSpawnGameplayTrigger {
 
 /// DCB type: `STransferCreditGameplayTrigger`
 /// Inherits from: `SBaseInteractionGameplayTrigger`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct STransferCreditGameplayTrigger {
     /// `itemPort` (WeakPointer)
-    #[serde(default)]
     pub item_port: Option<Handle<SItemPortDef>>,
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
 }
 
@@ -25967,16 +22789,12 @@ impl<'a> Extract<'a> for STransferCreditGameplayTrigger {
 
 /// DCB type: `GameplayTrigger_InterpolationType_UserVariableFloat`
 /// Inherits from: `GameplayTrigger_InterpolationType`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GameplayTrigger_InterpolationType_UserVariableFloat {
     /// `variableName` (String)
-    #[serde(default)]
     pub variable_name: String,
     /// `startValue` (Single)
-    #[serde(default)]
     pub start_value: f32,
     /// `endValue` (Single)
-    #[serde(default)]
     pub end_value: f32,
 }
 
@@ -25998,16 +22816,12 @@ impl<'a> Extract<'a> for GameplayTrigger_InterpolationType_UserVariableFloat {
 
 /// DCB type: `SCLegacyWeaponComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCLegacyWeaponComponentParams {
     /// `PowerOnline` (Int32)
-    #[serde(default)]
     pub power_online: i32,
     /// `HeatRateOnline` (Single)
-    #[serde(default)]
     pub heat_rate_online: f32,
     /// `HeatPerShot` (Single)
-    #[serde(default)]
     pub heat_per_shot: f32,
 }
 
@@ -26029,22 +22843,16 @@ impl<'a> Extract<'a> for SCLegacyWeaponComponentParams {
 
 /// DCB type: `SCItemBoatControllerParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCItemBoatControllerParams {
     /// `disableEngineInteraction` (WeakPointer)
-    #[serde(default)]
     pub disable_engine_interaction: Option<Handle<SSharedInteractionParams>>,
     /// `enableEngineInteraction` (WeakPointer)
-    #[serde(default)]
     pub enable_engine_interaction: Option<Handle<SSharedInteractionParams>>,
     /// `boatMovementParams` (Reference)
-    #[serde(default)]
     pub boat_movement_params: Option<CigGuid>,
     /// `intoxicationModifierRef` (Reference)
-    #[serde(default)]
     pub intoxication_modifier_ref: Option<CigGuid>,
     /// `propellerHelper` (String)
-    #[serde(default)]
     pub propeller_helper: String,
 }
 
@@ -26074,10 +22882,8 @@ impl<'a> Extract<'a> for SCItemBoatControllerParams {
 
 /// DCB type: `SCItemFoleyParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCItemFoleyParams {
     /// `FoleyDef` (Reference)
-    #[serde(default)]
     pub foley_def: Option<CigGuid>,
 }
 
@@ -26097,31 +22903,22 @@ impl<'a> Extract<'a> for SCItemFoleyParams {
 
 /// DCB type: `SCItemCargoGridParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCItemCargoGridParams {
     /// `dimensions` (Class)
-    #[serde(default)]
     pub dimensions: Option<Handle<Vec3>>,
     /// `crateGenPercentageOnDestroy` (Single)
-    #[serde(default)]
     pub crate_gen_percentage_on_destroy: f32,
     /// `crateMaxOnDestroy` (Int32)
-    #[serde(default)]
     pub crate_max_on_destroy: i32,
     /// `invisible` (Boolean)
-    #[serde(default)]
     pub invisible: bool,
     /// `miningOnly` (Boolean)
-    #[serde(default)]
     pub mining_only: bool,
     /// `transformDependant` (Boolean)
-    #[serde(default)]
     pub transform_dependant: bool,
     /// `minVolatilePowerToExplode` (Single)
-    #[serde(default)]
     pub min_volatile_power_to_explode: f32,
     /// `damageConfiguration` (Reference)
-    #[serde(default)]
     pub damage_configuration: Option<CigGuid>,
 }
 
@@ -26151,7 +22948,6 @@ impl<'a> Extract<'a> for SCItemCargoGridParams {
 
 /// DCB type: `CargoGridSpawnedComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CargoGridSpawnedComponentParams {
 }
 
@@ -26170,16 +22966,12 @@ impl<'a> Extract<'a> for CargoGridSpawnedComponentParams {
 
 /// DCB type: `SCItemCoolerParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCItemCoolerParams {
     /// `CoolingRate` (Single)
-    #[serde(default)]
     pub cooling_rate: f32,
     /// `SuppressionIRFactor` (Single)
-    #[serde(default)]
     pub suppression_irfactor: f32,
     /// `SuppressionHeatFactor` (Single)
-    #[serde(default)]
     pub suppression_heat_factor: f32,
 }
 
@@ -26201,22 +22993,16 @@ impl<'a> Extract<'a> for SCItemCoolerParams {
 
 /// DCB type: `PurchasableDisplayClothing`
 /// Inherits from: `PurchasableDisplayBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PurchasableDisplayClothing {
     /// `FashionType` (Locale)
-    #[serde(default)]
     pub fashion_type: LocaleKey,
     /// `FabricMaterial` (Locale)
-    #[serde(default)]
     pub fabric_material: LocaleKey,
     /// `Style` (Locale)
-    #[serde(default)]
     pub style: LocaleKey,
     /// `Gender` (String)
-    #[serde(default)]
     pub gender: String,
     /// `Color` (Locale)
-    #[serde(default)]
     pub color: LocaleKey,
 }
 
@@ -26240,13 +23026,10 @@ impl<'a> Extract<'a> for PurchasableDisplayClothing {
 
 /// DCB type: `SCItemPowerPlantParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCItemPowerPlantParams {
     /// `turnOnInteraction` (WeakPointer)
-    #[serde(default)]
     pub turn_on_interaction: Option<Handle<SSharedInteractionParams>>,
     /// `turnOffInteraction` (WeakPointer)
-    #[serde(default)]
     pub turn_off_interaction: Option<Handle<SSharedInteractionParams>>,
 }
 
@@ -26273,13 +23056,10 @@ impl<'a> Extract<'a> for SCItemPowerPlantParams {
 
 /// DCB type: `SCItemProximitySensorSphereParams`
 /// Inherits from: `SCItemProximitySensorShapeParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCItemProximitySensorSphereParams {
     /// `Radius` (Single)
-    #[serde(default)]
     pub radius: f32,
     /// `Center` (Class)
-    #[serde(default)]
     pub center: Option<Handle<Vec3>>,
 }
 
@@ -26303,19 +23083,14 @@ impl<'a> Extract<'a> for SCItemProximitySensorSphereParams {
 
 /// DCB type: `SPowerSourceComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SPowerSourceComponentParams {
     /// `initialState` (EnumChoice)
-    #[serde(default)]
     pub initial_state: EPowerSourceState,
     /// `requiredJumpstartVoltage` (Int32)
-    #[serde(default)]
     pub required_jumpstart_voltage: i32,
     /// `isInfinitePowerSource` (Boolean)
-    #[serde(default)]
     pub is_infinite_power_source: bool,
     /// `objectJumpstartAudioOneShot` (Class)
-    #[serde(default)]
     pub object_jumpstart_audio_one_shot: Option<Handle<GlobalResourceAudio>>,
 }
 
@@ -26341,37 +23116,26 @@ impl<'a> Extract<'a> for SPowerSourceComponentParams {
 
 /// DCB type: `SCItemExplosiveParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCItemExplosiveParams {
     /// `maxLifeTime` (Single)
-    #[serde(default)]
     pub max_life_time: f32,
     /// `detonateOnImpact` (Boolean)
-    #[serde(default)]
     pub detonate_on_impact: bool,
     /// `startCookAudioTrigger` (Class)
-    #[serde(default)]
     pub start_cook_audio_trigger: Option<Handle<GlobalResourceAudio>>,
     /// `stopCookAudioTrigger` (Class)
-    #[serde(default)]
     pub stop_cook_audio_trigger: Option<Handle<GlobalResourceAudio>>,
     /// `cookingProgressRtpc` (Class)
-    #[serde(default)]
     pub cooking_progress_rtpc: Option<Handle<AudioRtpc>>,
     /// `grenadeLightIntensityRtpc` (Class)
-    #[serde(default)]
     pub grenade_light_intensity_rtpc: Option<Handle<AudioRtpc>>,
     /// `explosionParams` (Class)
-    #[serde(default)]
     pub explosion_params: Option<Handle<ExplosionParams>>,
     /// `blinkingLightParams` (Class)
-    #[serde(default)]
     pub blinking_light_params: Option<Handle<BlinkingLightParams>>,
     /// `markerShapePath` (String)
-    #[serde(default)]
     pub marker_shape_path: String,
     /// `markerModelPath` (String)
-    #[serde(default)]
     pub marker_model_path: String,
 }
 
@@ -26417,16 +23181,12 @@ impl<'a> Extract<'a> for SCItemExplosiveParams {
 }
 
 /// DCB type: `BlinkingLightParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BlinkingLightParams {
     /// `enabled` (Boolean)
-    #[serde(default)]
     pub enabled: bool,
     /// `minFrequency` (Single)
-    #[serde(default)]
     pub min_frequency: f32,
     /// `maxFrequency` (Single)
-    #[serde(default)]
     pub max_frequency: f32,
 }
 
@@ -26448,13 +23208,10 @@ impl<'a> Extract<'a> for BlinkingLightParams {
 
 /// DCB type: `ConsumableEffectClearBuffEffect`
 /// Inherits from: `ConsumableEffect`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ConsumableEffectClearBuffEffect {
     /// `effectDescription` (Locale)
-    #[serde(default)]
     pub effect_description: LocaleKey,
     /// `buffTypes` (EnumChoice (array))
-    #[serde(default)]
     pub buff_types: Vec<StatBuffType>,
 }
 
@@ -26477,10 +23234,8 @@ impl<'a> Extract<'a> for ConsumableEffectClearBuffEffect {
 
 /// DCB type: `SCItemDockingControllerParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCItemDockingControllerParams {
     /// `queryDistance` (Single)
-    #[serde(default)]
     pub query_distance: f32,
 }
 
@@ -26500,34 +23255,24 @@ impl<'a> Extract<'a> for SCItemDockingControllerParams {
 
 /// DCB type: `SCMeleeWeaponParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCMeleeWeaponParams {
     /// `helper` (String)
-    #[serde(default)]
     pub helper: String,
     /// `audioTriggerName` (String)
-    #[serde(default)]
     pub audio_trigger_name: String,
     /// `matFxTriggerName` (String)
-    #[serde(default)]
     pub mat_fx_trigger_name: String,
     /// `canBeUsedForTakeDown` (Boolean)
-    #[serde(default)]
     pub can_be_used_for_take_down: bool,
     /// `canBlock` (Boolean)
-    #[serde(default)]
     pub can_block: bool,
     /// `canBeUsedInProne` (Boolean)
-    #[serde(default)]
     pub can_be_used_in_prone: bool,
     /// `canDodge` (Boolean)
-    #[serde(default)]
     pub can_dodge: bool,
     /// `stanceTransitionMeleeDelay` (Single)
-    #[serde(default)]
     pub stance_transition_melee_delay: f32,
     /// `proceduralAnimationRecord` (Reference)
-    #[serde(default)]
     pub procedural_animation_record: Option<CigGuid>,
 }
 
@@ -26555,7 +23300,6 @@ impl<'a> Extract<'a> for SCMeleeWeaponParams {
 
 /// DCB type: `AnimationComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AnimationComponentParams {
 }
 
@@ -26574,19 +23318,14 @@ impl<'a> Extract<'a> for AnimationComponentParams {
 
 /// DCB type: `RadarJammerComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct RadarJammerComponentParams {
     /// `activateOnSpawn` (Boolean)
-    #[serde(default)]
     pub activate_on_spawn: bool,
     /// `jammingRadius` (Single)
-    #[serde(default)]
     pub jamming_radius: f32,
     /// `turnOnInteraction` (WeakPointer)
-    #[serde(default)]
     pub turn_on_interaction: Option<Handle<SSharedInteractionParams>>,
     /// `turnOffInteraction` (WeakPointer)
-    #[serde(default)]
     pub turn_off_interaction: Option<Handle<SSharedInteractionParams>>,
 }
 
@@ -26615,31 +23354,22 @@ impl<'a> Extract<'a> for RadarJammerComponentParams {
 
 /// DCB type: `SCItemDoorFiveWayProceduralParams`
 /// Inherits from: `SCItemDoorAnimationParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCItemDoorFiveWayProceduralParams {
     /// `DefaultAnimationDurationScale` (Single)
-    #[serde(default)]
     pub default_animation_duration_scale: f32,
     /// `SecondaryAnimationDurationScale` (Single)
-    #[serde(default)]
     pub secondary_animation_duration_scale: f32,
     /// `userAnimationParams` (StrongPointer)
-    #[serde(default)]
     pub user_animation_params: Option<Handle<SCItemDoorUserAnimationParams>>,
     /// `OpenIntroTag` (String)
-    #[serde(default)]
     pub open_intro_tag: String,
     /// `OpenOutroTag` (String)
-    #[serde(default)]
     pub open_outro_tag: String,
     /// `TransitionTag` (String)
-    #[serde(default)]
     pub transition_tag: String,
     /// `CloseIntroTag` (String)
-    #[serde(default)]
     pub close_intro_tag: String,
     /// `CloseOutroTag` (String)
-    #[serde(default)]
     pub close_outro_tag: String,
 }
 
@@ -26669,10 +23399,8 @@ impl<'a> Extract<'a> for SCItemDoorFiveWayProceduralParams {
 
 /// DCB type: `SDoorCollisionReactionParams`
 /// Inherits from: `SDoorCollisionReactionBaseParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SDoorCollisionReactionParams {
     /// `CollisionReactionDirection` (EnumChoice)
-    #[serde(default)]
     pub collision_reaction_direction: EDoorCollisionReactionDirection,
 }
 
@@ -26692,16 +23420,12 @@ impl<'a> Extract<'a> for SDoorCollisionReactionParams {
 
 /// DCB type: `SCItemDoorStatusLightsParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCItemDoorStatusLightsParams {
     /// `PoweredAndIntactEffectGroup` (String)
-    #[serde(default)]
     pub powered_and_intact_effect_group: String,
     /// `EmergencyPowerEffectGroup` (String)
-    #[serde(default)]
     pub emergency_power_effect_group: String,
     /// `OfflineEffectGroup` (String)
-    #[serde(default)]
     pub offline_effect_group: String,
 }
 
@@ -26723,10 +23447,8 @@ impl<'a> Extract<'a> for SCItemDoorStatusLightsParams {
 
 /// DCB type: `AccessibilityExteriorZoneParams`
 /// Inherits from: `AccessibilityBaseParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AccessibilityExteriorZoneParams {
     /// `accessibleTimingInTransit` (Single)
-    #[serde(default)]
     pub accessible_timing_in_transit: f32,
 }
 
@@ -26746,10 +23468,8 @@ impl<'a> Extract<'a> for AccessibilityExteriorZoneParams {
 
 /// DCB type: `SElevatorBBoxCollisionParams`
 /// Inherits from: `SElevatorBaseCollisionParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SElevatorBBoxCollisionParams {
     /// `Scale` (Single)
-    #[serde(default)]
     pub scale: f32,
 }
 
@@ -26769,13 +23489,10 @@ impl<'a> Extract<'a> for SElevatorBBoxCollisionParams {
 
 /// DCB type: `SElevatorCustomCollisionParams`
 /// Inherits from: `SElevatorBaseCollisionParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SElevatorCustomCollisionParams {
     /// `Extent` (Class)
-    #[serde(default)]
     pub extent: Option<Handle<Vec3>>,
     /// `Offset` (Class)
-    #[serde(default)]
     pub offset: Option<Handle<Vec3>>,
 }
 
@@ -26802,19 +23519,14 @@ impl<'a> Extract<'a> for SElevatorCustomCollisionParams {
 
 /// DCB type: `SCItemLandingGearParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCItemLandingGearParams {
     /// `scopeContext` (String)
-    #[serde(default)]
     pub scope_context: String,
     /// `vehicleScopeContext` (String)
-    #[serde(default)]
     pub vehicle_scope_context: String,
     /// `alwaysVisible` (Boolean)
-    #[serde(default)]
     pub always_visible: bool,
     /// `spring` (StrongPointer)
-    #[serde(default)]
     pub spring: Option<Handle<VehicleLandingGearSpring>>,
 }
 
@@ -26840,46 +23552,32 @@ impl<'a> Extract<'a> for SCItemLandingGearParams {
 
 /// DCB type: `SExplosiveOrdnanceParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SExplosiveOrdnanceParams {
     /// `audioParams` (Class)
-    #[serde(default)]
     pub audio_params: Option<Handle<SOrdnanceAudioParams>>,
     /// `requiresLauncher` (Boolean)
-    #[serde(default)]
     pub requires_launcher: bool,
     /// `enableLifetime` (Boolean)
-    #[serde(default)]
     pub enable_lifetime: bool,
     /// `maxLifetime` (Single)
-    #[serde(default)]
     pub max_lifetime: f32,
     /// `armTime` (Single)
-    #[serde(default)]
     pub arm_time: f32,
     /// `maxArmableOverride` (Int32)
-    #[serde(default)]
     pub max_armable_override: i32,
     /// `igniteTime` (Single)
-    #[serde(default)]
     pub ignite_time: f32,
     /// `collisionDelayTime` (Single)
-    #[serde(default)]
     pub collision_delay_time: f32,
     /// `explosionSafetyDistance` (Single)
-    #[serde(default)]
     pub explosion_safety_distance: f32,
     /// `projectileProximity` (Single)
-    #[serde(default)]
     pub projectile_proximity: f32,
     /// `explosionParams` (Class)
-    #[serde(default)]
     pub explosion_params: Option<Handle<ExplosionParams>>,
     /// `clusterParams` (StrongPointer)
-    #[serde(default)]
     pub cluster_params: Option<Handle<SOrdnanceClusterParams>>,
     /// `emissionsParams` (Class)
-    #[serde(default)]
     pub emissions_params: Option<Handle<SOrdnanceEmissionsParams>>,
 }
 
@@ -26923,10 +23621,8 @@ impl<'a> Extract<'a> for SExplosiveOrdnanceParams {
 
 /// DCB type: `SSendSeatReadyPoseLockedEvent`
 /// Inherits from: `EventDispatcher`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SSendSeatReadyPoseLockedEvent {
     /// `locked` (Boolean)
-    #[serde(default)]
     pub locked: bool,
 }
 
@@ -26946,28 +23642,20 @@ impl<'a> Extract<'a> for SSendSeatReadyPoseLockedEvent {
 
 /// DCB type: `SHelmetStateAnimationParams`
 /// Inherits from: `SHelmetStateBaseParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SHelmetStateAnimationParams {
     /// `state` (EnumChoice)
-    #[serde(default)]
     pub state: EHelmetState,
     /// `nextState` (EnumChoice)
-    #[serde(default)]
     pub next_state: EHelmetState,
     /// `linkedStates` (Class (array))
-    #[serde(default)]
     pub linked_states: Vec<Handle<SHelmetLinkedState>>,
     /// `animationName` (String)
-    #[serde(default)]
     pub animation_name: String,
     /// `playbackSpeed` (Single)
-    #[serde(default)]
     pub playback_speed: f32,
     /// `freezeAt` (Single)
-    #[serde(default)]
     pub freeze_at: f32,
     /// `modelTag` (String)
-    #[serde(default)]
     pub model_tag: String,
 }
 
@@ -26999,22 +23687,16 @@ impl<'a> Extract<'a> for SHelmetStateAnimationParams {
 
 /// DCB type: `SHelmetStateFadeParams`
 /// Inherits from: `SHelmetStateBaseParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SHelmetStateFadeParams {
     /// `state` (EnumChoice)
-    #[serde(default)]
     pub state: EHelmetState,
     /// `nextState` (EnumChoice)
-    #[serde(default)]
     pub next_state: EHelmetState,
     /// `linkedStates` (Class (array))
-    #[serde(default)]
     pub linked_states: Vec<Handle<SHelmetLinkedState>>,
     /// `duration` (Single)
-    #[serde(default)]
     pub duration: f32,
     /// `fadeCurve` (Reference)
-    #[serde(default)]
     pub fade_curve: Option<CigGuid>,
 }
 
@@ -27044,19 +23726,14 @@ impl<'a> Extract<'a> for SHelmetStateFadeParams {
 
 /// DCB type: `SHelmetStateLightsParams`
 /// Inherits from: `SHelmetStateBaseParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SHelmetStateLightsParams {
     /// `state` (EnumChoice)
-    #[serde(default)]
     pub state: EHelmetState,
     /// `nextState` (EnumChoice)
-    #[serde(default)]
     pub next_state: EHelmetState,
     /// `linkedStates` (Class (array))
-    #[serde(default)]
     pub linked_states: Vec<Handle<SHelmetLinkedState>>,
     /// `lightsOn` (Boolean)
-    #[serde(default)]
     pub lights_on: bool,
 }
 
@@ -27085,25 +23762,18 @@ impl<'a> Extract<'a> for SHelmetStateLightsParams {
 
 /// DCB type: `SCItemWeaponRegenPoolComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCItemWeaponRegenPoolComponentParams {
     /// `regenFillRate` (Single)
-    #[serde(default)]
     pub regen_fill_rate: f32,
     /// `ammoLoad` (Single)
-    #[serde(default)]
     pub ammo_load: f32,
     /// `respectsCapacitorAssignments` (Boolean)
-    #[serde(default)]
     pub respects_capacitor_assignments: bool,
     /// `capacitorAssignmentInputOutputRegen` (Reference)
-    #[serde(default)]
     pub capacitor_assignment_input_output_regen: Option<CigGuid>,
     /// `capacitorAssignmentInputOutputRegenNavMode` (Reference)
-    #[serde(default)]
     pub capacitor_assignment_input_output_regen_nav_mode: Option<CigGuid>,
     /// `capacitorAssignmentInputOutputAmmoLoad` (Reference)
-    #[serde(default)]
     pub capacitor_assignment_input_output_ammo_load: Option<CigGuid>,
 }
 
@@ -27128,10 +23798,8 @@ impl<'a> Extract<'a> for SCItemWeaponRegenPoolComponentParams {
 
 /// DCB type: `WeaponAIAimingMethodHighLowArc`
 /// Inherits from: `WeaponAIAimingMethod`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct WeaponAIAimingMethodHighLowArc {
     /// `useLowArc` (Boolean)
-    #[serde(default)]
     pub use_low_arc: bool,
 }
 
@@ -27151,34 +23819,24 @@ impl<'a> Extract<'a> for WeaponAIAimingMethodHighLowArc {
 
 /// DCB type: `WeaponAIAimingMethodPreferredHeightArc`
 /// Inherits from: `WeaponAIAimingMethod`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct WeaponAIAimingMethodPreferredHeightArc {
     /// `minProjectileSpeed` (Single)
-    #[serde(default)]
     pub min_projectile_speed: f32,
     /// `maxProjectileSpeed` (Single)
-    #[serde(default)]
     pub max_projectile_speed: f32,
     /// `preferredHeight` (Single)
-    #[serde(default)]
     pub preferred_height: f32,
     /// `minHeight` (Single)
-    #[serde(default)]
     pub min_height: f32,
     /// `maxHeight` (Single)
-    #[serde(default)]
     pub max_height: f32,
     /// `angleIncrement` (Single)
-    #[serde(default)]
     pub angle_increment: f32,
     /// `minAngleDegrees` (Single)
-    #[serde(default)]
     pub min_angle_degrees: f32,
     /// `maxAngleDegrees` (Single)
-    #[serde(default)]
     pub max_angle_degrees: f32,
     /// `searchDepth` (Int32)
-    #[serde(default)]
     pub search_depth: i32,
 }
 
@@ -27206,13 +23864,10 @@ impl<'a> Extract<'a> for WeaponAIAimingMethodPreferredHeightArc {
 
 /// DCB type: `SThrowableLauncher`
 /// Inherits from: `SLauncherBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SThrowableLauncher {
     /// `throwMode` (EnumChoice)
-    #[serde(default)]
     pub throw_mode: EThrowMode,
     /// `soundRadius` (Single)
-    #[serde(default)]
     pub sound_radius: f32,
 }
 
@@ -27233,10 +23888,8 @@ impl<'a> Extract<'a> for SThrowableLauncher {
 
 /// DCB type: `SWeaponConditionAny`
 /// Inherits from: `SWeaponConditionBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SWeaponConditionAny {
     /// `conditions` (StrongPointer (array))
-    #[serde(default)]
     pub conditions: Vec<SWeaponConditionBasePtr>,
 }
 
@@ -27261,10 +23914,8 @@ impl<'a> Extract<'a> for SWeaponConditionAny {
 
 /// DCB type: `SWeaponConditionNot`
 /// Inherits from: `SWeaponConditionBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SWeaponConditionNot {
     /// `condition` (StrongPointer)
-    #[serde(default)]
     pub condition: Option<SWeaponConditionBasePtr>,
 }
 
@@ -27287,10 +23938,8 @@ impl<'a> Extract<'a> for SWeaponConditionNot {
 
 /// DCB type: `SWeaponConditionHasAttachmentWithTags`
 /// Inherits from: `SWeaponConditionBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SWeaponConditionHasAttachmentWithTags {
     /// `tags` (Reference (array))
-    #[serde(default)]
     pub tags: Vec<CigGuid>,
 }
 
@@ -27312,40 +23961,28 @@ impl<'a> Extract<'a> for SWeaponConditionHasAttachmentWithTags {
 
 /// DCB type: `SWeaponActionMarkGrappleParams`
 /// Inherits from: `SWeaponActionParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SWeaponActionMarkGrappleParams {
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
     /// `localisedName` (Locale)
-    #[serde(default)]
     pub localised_name: LocaleKey,
     /// `mannequinTag` (Class)
-    #[serde(default)]
     pub mannequin_tag: Option<Handle<SMannequinTagParams>>,
     /// `entityTag` (Reference)
-    #[serde(default)]
     pub entity_tag: Option<CigGuid>,
     /// `entityTags` (Class)
-    #[serde(default)]
     pub entity_tags: Option<Handle<TagList>>,
     /// `uiBindingsTag` (Reference)
-    #[serde(default)]
     pub ui_bindings_tag: Option<CigGuid>,
     /// `aiShootingMode` (EnumChoice)
-    #[serde(default)]
     pub ai_shooting_mode: EAIWeaponShootingMode,
     /// `switchFireModeAudioTrigger` (Class)
-    #[serde(default)]
     pub switch_fire_mode_audio_trigger: Option<Handle<GlobalResourceAudio>>,
     /// `selectableCondition` (StrongPointer)
-    #[serde(default)]
     pub selectable_condition: Option<SWeaponConditionBasePtr>,
     /// `hasReloadModesOnUI` (Boolean)
-    #[serde(default)]
     pub has_reload_modes_on_ui: bool,
     /// `markRangeMax` (Single)
-    #[serde(default)]
     pub mark_range_max: f32,
 }
 
@@ -27387,40 +24024,28 @@ impl<'a> Extract<'a> for SWeaponActionMarkGrappleParams {
 
 /// DCB type: `SWeaponActionToggleParams`
 /// Inherits from: `SWeaponActionParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SWeaponActionToggleParams {
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
     /// `localisedName` (Locale)
-    #[serde(default)]
     pub localised_name: LocaleKey,
     /// `mannequinTag` (Class)
-    #[serde(default)]
     pub mannequin_tag: Option<Handle<SMannequinTagParams>>,
     /// `entityTag` (Reference)
-    #[serde(default)]
     pub entity_tag: Option<CigGuid>,
     /// `entityTags` (Class)
-    #[serde(default)]
     pub entity_tags: Option<Handle<TagList>>,
     /// `uiBindingsTag` (Reference)
-    #[serde(default)]
     pub ui_bindings_tag: Option<CigGuid>,
     /// `aiShootingMode` (EnumChoice)
-    #[serde(default)]
     pub ai_shooting_mode: EAIWeaponShootingMode,
     /// `switchFireModeAudioTrigger` (Class)
-    #[serde(default)]
     pub switch_fire_mode_audio_trigger: Option<Handle<GlobalResourceAudio>>,
     /// `selectableCondition` (StrongPointer)
-    #[serde(default)]
     pub selectable_condition: Option<SWeaponConditionBasePtr>,
     /// `hasReloadModesOnUI` (Boolean)
-    #[serde(default)]
     pub has_reload_modes_on_ui: bool,
     /// `weaponAction` (StrongPointer)
-    #[serde(default)]
     pub weapon_action: Option<SWeaponActionParamsPtr>,
 }
 
@@ -27465,37 +24090,26 @@ impl<'a> Extract<'a> for SWeaponActionToggleParams {
 
 /// DCB type: `SWeaponActionHighlightCuttablesParams`
 /// Inherits from: `SWeaponActionParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SWeaponActionHighlightCuttablesParams {
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
     /// `localisedName` (Locale)
-    #[serde(default)]
     pub localised_name: LocaleKey,
     /// `mannequinTag` (Class)
-    #[serde(default)]
     pub mannequin_tag: Option<Handle<SMannequinTagParams>>,
     /// `entityTag` (Reference)
-    #[serde(default)]
     pub entity_tag: Option<CigGuid>,
     /// `entityTags` (Class)
-    #[serde(default)]
     pub entity_tags: Option<Handle<TagList>>,
     /// `uiBindingsTag` (Reference)
-    #[serde(default)]
     pub ui_bindings_tag: Option<CigGuid>,
     /// `aiShootingMode` (EnumChoice)
-    #[serde(default)]
     pub ai_shooting_mode: EAIWeaponShootingMode,
     /// `switchFireModeAudioTrigger` (Class)
-    #[serde(default)]
     pub switch_fire_mode_audio_trigger: Option<Handle<GlobalResourceAudio>>,
     /// `selectableCondition` (StrongPointer)
-    #[serde(default)]
     pub selectable_condition: Option<SWeaponConditionBasePtr>,
     /// `hasReloadModesOnUI` (Boolean)
-    #[serde(default)]
     pub has_reload_modes_on_ui: bool,
 }
 
@@ -27536,37 +24150,26 @@ impl<'a> Extract<'a> for SWeaponActionHighlightCuttablesParams {
 
 /// DCB type: `SWeaponActionMeleeParams`
 /// Inherits from: `SWeaponActionParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SWeaponActionMeleeParams {
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
     /// `localisedName` (Locale)
-    #[serde(default)]
     pub localised_name: LocaleKey,
     /// `mannequinTag` (Class)
-    #[serde(default)]
     pub mannequin_tag: Option<Handle<SMannequinTagParams>>,
     /// `entityTag` (Reference)
-    #[serde(default)]
     pub entity_tag: Option<CigGuid>,
     /// `entityTags` (Class)
-    #[serde(default)]
     pub entity_tags: Option<Handle<TagList>>,
     /// `uiBindingsTag` (Reference)
-    #[serde(default)]
     pub ui_bindings_tag: Option<CigGuid>,
     /// `aiShootingMode` (EnumChoice)
-    #[serde(default)]
     pub ai_shooting_mode: EAIWeaponShootingMode,
     /// `switchFireModeAudioTrigger` (Class)
-    #[serde(default)]
     pub switch_fire_mode_audio_trigger: Option<Handle<GlobalResourceAudio>>,
     /// `selectableCondition` (StrongPointer)
-    #[serde(default)]
     pub selectable_condition: Option<SWeaponConditionBasePtr>,
     /// `hasReloadModesOnUI` (Boolean)
-    #[serde(default)]
     pub has_reload_modes_on_ui: bool,
 }
 
@@ -27607,76 +24210,52 @@ impl<'a> Extract<'a> for SWeaponActionMeleeParams {
 
 /// DCB type: `SWeaponActionGrappleParams`
 /// Inherits from: `SWeaponActionParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SWeaponActionGrappleParams {
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
     /// `localisedName` (Locale)
-    #[serde(default)]
     pub localised_name: LocaleKey,
     /// `mannequinTag` (Class)
-    #[serde(default)]
     pub mannequin_tag: Option<Handle<SMannequinTagParams>>,
     /// `entityTag` (Reference)
-    #[serde(default)]
     pub entity_tag: Option<CigGuid>,
     /// `entityTags` (Class)
-    #[serde(default)]
     pub entity_tags: Option<Handle<TagList>>,
     /// `uiBindingsTag` (Reference)
-    #[serde(default)]
     pub ui_bindings_tag: Option<CigGuid>,
     /// `aiShootingMode` (EnumChoice)
-    #[serde(default)]
     pub ai_shooting_mode: EAIWeaponShootingMode,
     /// `switchFireModeAudioTrigger` (Class)
-    #[serde(default)]
     pub switch_fire_mode_audio_trigger: Option<Handle<GlobalResourceAudio>>,
     /// `selectableCondition` (StrongPointer)
-    #[serde(default)]
     pub selectable_condition: Option<SWeaponConditionBasePtr>,
     /// `hasReloadModesOnUI` (Boolean)
-    #[serde(default)]
     pub has_reload_modes_on_ui: bool,
     /// `firePosHelper` (String)
-    #[serde(default)]
     pub fire_pos_helper: String,
     /// `maxGrappleRange` (Single)
-    #[serde(default)]
     pub max_grapple_range: f32,
     /// `minGrappleRange` (Single)
-    #[serde(default)]
     pub min_grapple_range: f32,
     /// `grappleStrength` (Single)
-    #[serde(default)]
     pub grapple_strength: f32,
     /// `maxGrappleStrength` (Single)
-    #[serde(default)]
     pub max_grapple_strength: f32,
     /// `energyRate` (Int32)
-    #[serde(default)]
     pub energy_rate: i32,
     /// `cooldownTime` (Single)
-    #[serde(default)]
     pub cooldown_time: f32,
     /// `maxGrappleTime` (Single)
-    #[serde(default)]
     pub max_grapple_time: f32,
     /// `recoil` (Reference)
-    #[serde(default)]
     pub recoil: Option<CigGuid>,
     /// `fireFragment` (Class)
-    #[serde(default)]
     pub fire_fragment: Option<Handle<SFragmentParams>>,
     /// `fireAudioTrigger` (Class)
-    #[serde(default)]
     pub fire_audio_trigger: Option<Handle<GlobalResourceAudio>>,
     /// `dryFireAudioTrigger` (Class)
-    #[serde(default)]
     pub dry_fire_audio_trigger: Option<Handle<GlobalResourceAudio>>,
     /// `fireEffects` (Class (array))
-    #[serde(default)]
     pub fire_effects: Vec<Handle<SWeaponParticleEffectParams>>,
 }
 
@@ -27745,7 +24324,6 @@ impl<'a> Extract<'a> for SWeaponActionGrappleParams {
 
 /// DCB type: `IWeaponComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct IWeaponComponentParams {
 }
 
@@ -27764,10 +24342,8 @@ impl<'a> Extract<'a> for IWeaponComponentParams {
 
 /// DCB type: `ItemRecoveryCondition_EntityTag`
 /// Inherits from: `ItemRecoverySetConditionDef`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ItemRecoveryCondition_EntityTag {
     /// `tags` (Class)
-    #[serde(default)]
     pub tags: Option<Handle<TagList>>,
 }
 
@@ -27790,16 +24366,12 @@ impl<'a> Extract<'a> for ItemRecoveryCondition_EntityTag {
 
 /// DCB type: `PersonalThoughtAction`
 /// Inherits from: `PersonalThoughtOption`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PersonalThoughtAction {
     /// `text` (Locale)
-    #[serde(default)]
     pub text: LocaleKey,
     /// `description` (Locale)
-    #[serde(default)]
     pub description: LocaleKey,
     /// `inputAction` (Class)
-    #[serde(default)]
     pub input_action: Option<Handle<InputAction>>,
 }
 
@@ -27824,16 +24396,12 @@ impl<'a> Extract<'a> for PersonalThoughtAction {
 
 /// DCB type: `PersonalThoughtCategory`
 /// Inherits from: `PersonalThoughtOption`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PersonalThoughtCategory {
     /// `text` (Locale)
-    #[serde(default)]
     pub text: LocaleKey,
     /// `description` (Locale)
-    #[serde(default)]
     pub description: LocaleKey,
     /// `optionArray` (StrongPointer (array))
-    #[serde(default)]
     pub option_array: Vec<PersonalThoughtOptionPtr>,
 }
 
@@ -27860,22 +24428,16 @@ impl<'a> Extract<'a> for PersonalThoughtCategory {
 
 /// DCB type: `PersonalThoughtPlayerItem`
 /// Inherits from: `PersonalThoughtAction`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PersonalThoughtPlayerItem {
     /// `text` (Locale)
-    #[serde(default)]
     pub text: LocaleKey,
     /// `description` (Locale)
-    #[serde(default)]
     pub description: LocaleKey,
     /// `inputAction` (Class)
-    #[serde(default)]
     pub input_action: Option<Handle<InputAction>>,
     /// `type` (EnumChoice)
-    #[serde(default)]
     pub r#type: EItemType,
     /// `subType` (EnumChoice)
-    #[serde(default)]
     pub sub_type: EItemSubType,
 }
 
@@ -27902,10 +24464,8 @@ impl<'a> Extract<'a> for PersonalThoughtPlayerItem {
 
 /// DCB type: `QuickAccessWheelAutoOperatorModeDef`
 /// Inherits from: `QuickAccessWheelElement`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct QuickAccessWheelAutoOperatorModeDef {
     /// `openContextMenuAsFolder` (Boolean)
-    #[serde(default)]
     pub open_context_menu_as_folder: bool,
 }
 
@@ -27925,10 +24485,8 @@ impl<'a> Extract<'a> for QuickAccessWheelAutoOperatorModeDef {
 
 /// DCB type: `QuickAccessWheelAutoWingmanCommandsDef`
 /// Inherits from: `QuickAccessWheelElement`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct QuickAccessWheelAutoWingmanCommandsDef {
     /// `openContextMenuAsFolder` (Boolean)
-    #[serde(default)]
     pub open_context_menu_as_folder: bool,
 }
 
@@ -27947,13 +24505,10 @@ impl<'a> Extract<'a> for QuickAccessWheelAutoWingmanCommandsDef {
 }
 
 /// DCB type: `SModifierSignaturesEntry`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SModifierSignaturesEntry {
     /// `modifierType` (EnumChoice)
-    #[serde(default)]
     pub modifier_type: EModifierSignatureType,
     /// `value` (Single)
-    #[serde(default)]
     pub value: f32,
 }
 
@@ -27974,10 +24529,8 @@ impl<'a> Extract<'a> for SModifierSignaturesEntry {
 
 /// DCB type: `SSCSignatureEmissionModifier`
 /// Inherits from: `SSCSignatureEmissionBaseModifier`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SSCSignatureEmissionModifier {
     /// `modifierEntries` (Class)
-    #[serde(default)]
     pub modifier_entries: Option<Handle<SModifierSignaturesEntry>>,
 }
 
@@ -28000,10 +24553,8 @@ impl<'a> Extract<'a> for SSCSignatureEmissionModifier {
 
 /// DCB type: `SSCSignatureSystemAudioMultiplier`
 /// Inherits from: `SSCSignatureSystemAudioModifier`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SSCSignatureSystemAudioMultiplier {
     /// `value` (Single)
-    #[serde(default)]
     pub value: f32,
 }
 
@@ -28023,10 +24574,8 @@ impl<'a> Extract<'a> for SSCSignatureSystemAudioMultiplier {
 
 /// DCB type: `SSCSignatureSystemAudioOffset`
 /// Inherits from: `SSCSignatureSystemAudioModifier`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SSCSignatureSystemAudioOffset {
     /// `value` (Single)
-    #[serde(default)]
     pub value: f32,
 }
 
@@ -28046,16 +24595,12 @@ impl<'a> Extract<'a> for SSCSignatureSystemAudioOffset {
 
 /// DCB type: `SSCSignatureSystemAudioTriggerTagRule`
 /// Inherits from: `SSCSignatureSystemAudioRule`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SSCSignatureSystemAudioTriggerTagRule {
     /// `subRules` (StrongPointer (array))
-    #[serde(default)]
     pub sub_rules: Vec<SSCSignatureSystemAudioSubRulePtr>,
     /// `modifier` (StrongPointer)
-    #[serde(default)]
     pub modifier: Option<SSCSignatureSystemAudioModifierPtr>,
     /// `triggerTag` (Reference)
-    #[serde(default)]
     pub trigger_tag: Option<CigGuid>,
 }
 
@@ -28085,16 +24630,12 @@ impl<'a> Extract<'a> for SSCSignatureSystemAudioTriggerTagRule {
 
 /// DCB type: `SSCSignatureSystemAudioTriggerRule`
 /// Inherits from: `SSCSignatureSystemAudioRule`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SSCSignatureSystemAudioTriggerRule {
     /// `subRules` (StrongPointer (array))
-    #[serde(default)]
     pub sub_rules: Vec<SSCSignatureSystemAudioSubRulePtr>,
     /// `modifier` (StrongPointer)
-    #[serde(default)]
     pub modifier: Option<SSCSignatureSystemAudioModifierPtr>,
     /// `trigger` (Class)
-    #[serde(default)]
     pub trigger: Option<Handle<GlobalResourceAudio>>,
 }
 
@@ -28127,7 +24668,6 @@ impl<'a> Extract<'a> for SSCSignatureSystemAudioTriggerRule {
 
 /// DCB type: `ScannableComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ScannableComponentParams {
 }
 
@@ -28146,7 +24686,6 @@ impl<'a> Extract<'a> for ScannableComponentParams {
 
 /// DCB type: `CompletionType_DeliveredSCU`
 /// Inherits from: `CompletionTypeBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CompletionType_DeliveredSCU {
 }
 
@@ -28165,10 +24704,8 @@ impl<'a> Extract<'a> for CompletionType_DeliveredSCU {
 
 /// DCB type: `ScreenEffects_ParamValue_Bool`
 /// Inherits from: `ScreenEffects_ParamValue`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ScreenEffects_ParamValue_Bool {
     /// `enabled` (Boolean)
-    #[serde(default)]
     pub enabled: bool,
 }
 
@@ -28188,13 +24725,10 @@ impl<'a> Extract<'a> for ScreenEffects_ParamValue_Bool {
 
 /// DCB type: `ScreenEffects_ParamValue_Int`
 /// Inherits from: `ScreenEffects_ParamValue`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ScreenEffects_ParamValue_Int {
     /// `value` (Int32)
-    #[serde(default)]
     pub value: i32,
     /// `limitStacking` (Boolean)
-    #[serde(default)]
     pub limit_stacking: bool,
 }
 
@@ -28215,7 +24749,6 @@ impl<'a> Extract<'a> for ScreenEffects_ParamValue_Int {
 
 /// DCB type: `ScreenEffects_ParamValue_Vec4Base`
 /// Inherits from: `ScreenEffects_ParamValue`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ScreenEffects_ParamValue_Vec4Base {
 }
 
@@ -28234,10 +24767,8 @@ impl<'a> Extract<'a> for ScreenEffects_ParamValue_Vec4Base {
 
 /// DCB type: `ScreenEffects_ParamValue_Vec4`
 /// Inherits from: `ScreenEffects_ParamValue_Vec4Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ScreenEffects_ParamValue_Vec4 {
     /// `value` (Class)
-    #[serde(default)]
     pub value: Option<Handle<Vec4>>,
 }
 
@@ -28260,10 +24791,8 @@ impl<'a> Extract<'a> for ScreenEffects_ParamValue_Vec4 {
 
 /// DCB type: `ScreenEffects_ParamValue_Color`
 /// Inherits from: `ScreenEffects_ParamValue_Vec4Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ScreenEffects_ParamValue_Color {
     /// `value` (Class)
-    #[serde(default)]
     pub value: Option<Handle<RGBA>>,
 }
 
@@ -28286,10 +24815,8 @@ impl<'a> Extract<'a> for ScreenEffects_ParamValue_Color {
 
 /// DCB type: `ScreenEffects_ParamValue_Texture`
 /// Inherits from: `ScreenEffects_ParamValue`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ScreenEffects_ParamValue_Texture {
     /// `value` (Class)
-    #[serde(default)]
     pub value: Option<Handle<GlobalResourceTexture>>,
 }
 
@@ -28312,13 +24839,10 @@ impl<'a> Extract<'a> for ScreenEffects_ParamValue_Texture {
 
 /// DCB type: `SecurityClearanceTokenData_AND`
 /// Inherits from: `SecurityClearanceTokenData`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SecurityClearanceTokenData_AND {
     /// `conditionFailedTag` (Reference)
-    #[serde(default)]
     pub condition_failed_tag: Option<CigGuid>,
     /// `conditions` (StrongPointer (array))
-    #[serde(default)]
     pub conditions: Vec<SecurityClearanceTokenDataPtr>,
 }
 
@@ -28344,13 +24868,10 @@ impl<'a> Extract<'a> for SecurityClearanceTokenData_AND {
 
 /// DCB type: `SecurityClearanceTokenData_OR`
 /// Inherits from: `SecurityClearanceTokenData`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SecurityClearanceTokenData_OR {
     /// `conditionFailedTag` (Reference)
-    #[serde(default)]
     pub condition_failed_tag: Option<CigGuid>,
     /// `conditions` (StrongPointer (array))
-    #[serde(default)]
     pub conditions: Vec<SecurityClearanceTokenDataPtr>,
 }
 
@@ -28376,13 +24897,10 @@ impl<'a> Extract<'a> for SecurityClearanceTokenData_OR {
 
 /// DCB type: `SecurityClearanceTokenData_NOT`
 /// Inherits from: `SecurityClearanceTokenData`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SecurityClearanceTokenData_NOT {
     /// `conditionFailedTag` (Reference)
-    #[serde(default)]
     pub condition_failed_tag: Option<CigGuid>,
     /// `condition` (StrongPointer)
-    #[serde(default)]
     pub condition: Option<SecurityClearanceTokenDataPtr>,
 }
 
@@ -28406,13 +24924,10 @@ impl<'a> Extract<'a> for SecurityClearanceTokenData_NOT {
 
 /// DCB type: `SecurityClearanceTokenData_OtherToken`
 /// Inherits from: `SecurityClearanceTokenData`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SecurityClearanceTokenData_OtherToken {
     /// `conditionFailedTag` (Reference)
-    #[serde(default)]
     pub condition_failed_tag: Option<CigGuid>,
     /// `token` (Reference)
-    #[serde(default)]
     pub token: Option<CigGuid>,
 }
 
@@ -28433,10 +24948,8 @@ impl<'a> Extract<'a> for SecurityClearanceTokenData_OtherToken {
 
 /// DCB type: `SecurityClearanceTokenData_UnarmedDef`
 /// Inherits from: `SecurityClearanceTokenData`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SecurityClearanceTokenData_UnarmedDef {
     /// `conditionFailedTag` (Reference)
-    #[serde(default)]
     pub condition_failed_tag: Option<CigGuid>,
 }
 
@@ -28456,16 +24969,12 @@ impl<'a> Extract<'a> for SecurityClearanceTokenData_UnarmedDef {
 
 /// DCB type: `SecurityClearance_OutfitRequirement_TagRequirementDef`
 /// Inherits from: `SecurityClearance_OutfitRequirementDef`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SecurityClearance_OutfitRequirement_TagRequirementDef {
     /// `outfitPiecesToCheck` (EnumChoice (array))
-    #[serde(default)]
     pub outfit_pieces_to_check: Vec<EOutfitPieceType>,
     /// `requiredTag` (Reference)
-    #[serde(default)]
     pub required_tag: Option<CigGuid>,
     /// `allowMissingOutfitPieces` (Boolean)
-    #[serde(default)]
     pub allow_missing_outfit_pieces: bool,
 }
 
@@ -28489,10 +24998,8 @@ impl<'a> Extract<'a> for SecurityClearance_OutfitRequirement_TagRequirementDef {
 
 /// DCB type: `SecurityClearance_OutfitRequirement_RequiredPieceDef`
 /// Inherits from: `SecurityClearance_OutfitRequirementDef`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SecurityClearance_OutfitRequirement_RequiredPieceDef {
     /// `requiredPiece` (EnumChoice)
-    #[serde(default)]
     pub required_piece: EOutfitPieceType,
 }
 
@@ -28512,10 +25019,8 @@ impl<'a> Extract<'a> for SecurityClearance_OutfitRequirement_RequiredPieceDef {
 
 /// DCB type: `SecurityClearance_OutfitRequirement_OrDef`
 /// Inherits from: `SecurityClearance_OutfitRequirementDef`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SecurityClearance_OutfitRequirement_OrDef {
     /// `requirementsToOr` (StrongPointer (array))
-    #[serde(default)]
     pub requirements_to_or: Vec<SecurityClearance_OutfitRequirementDefPtr>,
 }
 
@@ -28540,10 +25045,8 @@ impl<'a> Extract<'a> for SecurityClearance_OutfitRequirement_OrDef {
 
 /// DCB type: `SecurityClearance_OutfitRequirement_AndDef`
 /// Inherits from: `SecurityClearance_OutfitRequirementDef`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SecurityClearance_OutfitRequirement_AndDef {
     /// `requirementsToAnd` (StrongPointer (array))
-    #[serde(default)]
     pub requirements_to_and: Vec<SecurityClearance_OutfitRequirementDefPtr>,
 }
 
@@ -28568,10 +25071,8 @@ impl<'a> Extract<'a> for SecurityClearance_OutfitRequirement_AndDef {
 
 /// DCB type: `SecurityClearance_OutfitRequirement_NotDef`
 /// Inherits from: `SecurityClearance_OutfitRequirementDef`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SecurityClearance_OutfitRequirement_NotDef {
     /// `requirementToInvert` (StrongPointer)
-    #[serde(default)]
     pub requirement_to_invert: Option<SecurityClearance_OutfitRequirementDefPtr>,
 }
 
@@ -28594,13 +25095,10 @@ impl<'a> Extract<'a> for SecurityClearance_OutfitRequirement_NotDef {
 
 /// DCB type: `SecurityClearanceTokenData_OutfitRequirementDef`
 /// Inherits from: `SecurityClearanceTokenData`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SecurityClearanceTokenData_OutfitRequirementDef {
     /// `conditionFailedTag` (Reference)
-    #[serde(default)]
     pub condition_failed_tag: Option<CigGuid>,
     /// `outfitRequirement` (StrongPointer)
-    #[serde(default)]
     pub outfit_requirement: Option<SecurityClearance_OutfitRequirementDefPtr>,
 }
 
@@ -28624,10 +25122,8 @@ impl<'a> Extract<'a> for SecurityClearanceTokenData_OutfitRequirementDef {
 
 /// DCB type: `SecurityClearanceTokenData_WeaponDrawn`
 /// Inherits from: `SecurityClearanceTokenData`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SecurityClearanceTokenData_WeaponDrawn {
     /// `conditionFailedTag` (Reference)
-    #[serde(default)]
     pub condition_failed_tag: Option<CigGuid>,
 }
 
@@ -28647,13 +25143,10 @@ impl<'a> Extract<'a> for SecurityClearanceTokenData_WeaponDrawn {
 
 /// DCB type: `SecurityLoginInput`
 /// Inherits from: `SecurityManualInput`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SecurityLoginInput {
     /// `loginUsername` (String)
-    #[serde(default)]
     pub login_username: String,
     /// `loginPassword` (String)
-    #[serde(default)]
     pub login_password: String,
 }
 
@@ -28674,10 +25167,8 @@ impl<'a> Extract<'a> for SecurityLoginInput {
 
 /// DCB type: `SecurityTokenNotificationRecordReference`
 /// Inherits from: `SecurityNotifications`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SecurityTokenNotificationRecordReference {
     /// `notifications` (Reference (array))
-    #[serde(default)]
     pub notifications: Vec<CigGuid>,
 }
 
@@ -28699,10 +25190,8 @@ impl<'a> Extract<'a> for SecurityTokenNotificationRecordReference {
 
 /// DCB type: `SecurityNetworkVariableValue_Int`
 /// Inherits from: `SecurityNetworkVariableValue_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SecurityNetworkVariableValue_Int {
     /// `value` (Int32)
-    #[serde(default)]
     pub value: i32,
 }
 
@@ -28722,19 +25211,14 @@ impl<'a> Extract<'a> for SecurityNetworkVariableValue_Int {
 
 /// DCB type: `TQSInputStringValue`
 /// Inherits from: `TQSInput`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct TQSInputStringValue {
     /// `requirements` (Class)
-    #[serde(default)]
     pub requirements: Option<Handle<TagsDNF>>,
     /// `condition` (String)
-    #[serde(default)]
     pub condition: String,
     /// `value` (String)
-    #[serde(default)]
     pub value: String,
     /// `overrides` (Class (array))
-    #[serde(default)]
     pub overrides: Vec<Handle<TQSInputStringValue>>,
 }
 
@@ -28766,22 +25250,16 @@ impl<'a> Extract<'a> for TQSInputStringValue {
 
 /// DCB type: `TQSWeightInputIntValue`
 /// Inherits from: `TQSWeightInput`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct TQSWeightInputIntValue {
     /// `requirements` (Class)
-    #[serde(default)]
     pub requirements: Option<Handle<TagsDNF>>,
     /// `condition` (String)
-    #[serde(default)]
     pub condition: String,
     /// `weight` (Single)
-    #[serde(default)]
     pub weight: f32,
     /// `value` (Int32)
-    #[serde(default)]
     pub value: i32,
     /// `overrides` (Class (array))
-    #[serde(default)]
     pub overrides: Vec<Handle<TQSWeightInputIntValue>>,
 }
 
@@ -28814,22 +25292,16 @@ impl<'a> Extract<'a> for TQSWeightInputIntValue {
 
 /// DCB type: `TQSWeightDynamicVariableValue`
 /// Inherits from: `TQSWeightInput`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct TQSWeightDynamicVariableValue {
     /// `requirements` (Class)
-    #[serde(default)]
     pub requirements: Option<Handle<TagsDNF>>,
     /// `condition` (String)
-    #[serde(default)]
     pub condition: String,
     /// `weight` (Single)
-    #[serde(default)]
     pub weight: f32,
     /// `value` (Class)
-    #[serde(default)]
     pub value: Option<Handle<TagsDNF>>,
     /// `overrides` (Class (array))
-    #[serde(default)]
     pub overrides: Vec<Handle<TQSWeightDynamicVariableValue>>,
 }
 
@@ -28865,7 +25337,6 @@ impl<'a> Extract<'a> for TQSWeightDynamicVariableValue {
 
 /// DCB type: `TileParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct TileParams {
 }
 
@@ -28884,10 +25355,8 @@ impl<'a> Extract<'a> for TileParams {
 
 /// DCB type: `TimeValue_LongSeconds`
 /// Inherits from: `TimeValue_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct TimeValue_LongSeconds {
     /// `seconds` (Double)
-    #[serde(default)]
     pub seconds: f64,
 }
 
@@ -28907,13 +25376,10 @@ impl<'a> Extract<'a> for TimeValue_LongSeconds {
 
 /// DCB type: `TransportEventItemSpawnerParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct TransportEventItemSpawnerParams {
     /// `splineEvent` (String)
-    #[serde(default)]
     pub spline_event: String,
     /// `spawnEntityClass` (String)
-    #[serde(default)]
     pub spawn_entity_class: String,
 }
 
@@ -28934,7 +25400,6 @@ impl<'a> Extract<'a> for TransportEventItemSpawnerParams {
 
 /// DCB type: `TransportTestPermissionsInterface`
 /// Inherits from: `TransportPermissionsInterface`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct TransportTestPermissionsInterface {
 }
 
@@ -28953,10 +25418,8 @@ impl<'a> Extract<'a> for TransportTestPermissionsInterface {
 
 /// DCB type: `TransportIIMHangarInterface`
 /// Inherits from: `TransportPermissionsInterface`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct TransportIIMHangarInterface {
     /// `useReservationQueue` (Boolean)
-    #[serde(default)]
     pub use_reservation_queue: bool,
 }
 
@@ -28976,7 +25439,6 @@ impl<'a> Extract<'a> for TransportIIMHangarInterface {
 
 /// DCB type: `TransportBlacklistInterface`
 /// Inherits from: `TransportPermissionsInterface`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct TransportBlacklistInterface {
 }
 
@@ -28995,55 +25457,38 @@ impl<'a> Extract<'a> for TransportBlacklistInterface {
 
 /// DCB type: `TransportManagerParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct TransportManagerParams {
     /// `automated` (Boolean)
-    #[serde(default)]
     pub automated: bool,
     /// `carriageClass` (Reference)
-    #[serde(default)]
     pub carriage_class: Option<CigGuid>,
     /// `permissionsSource` (StrongPointer)
-    #[serde(default)]
     pub permissions_source: Option<TransportPermissionsInterfacePtr>,
     /// `carriageAnnouncements` (Reference)
-    #[serde(default)]
     pub carriage_announcements: Option<CigGuid>,
     /// `manufacturer` (Reference)
-    #[serde(default)]
     pub manufacturer: Option<CigGuid>,
     /// `ordering` (EnumChoice)
-    #[serde(default)]
     pub ordering: TransportDestinationOrderingMethod,
     /// `tagFilter` (Class)
-    #[serde(default)]
     pub tag_filter: Option<Handle<TagsDNFTerm>>,
     /// `maxSpeed` (Single)
-    #[serde(default)]
     pub max_speed: f32,
     /// `acceleration` (Single)
-    #[serde(default)]
     pub acceleration: f32,
     /// `maxTeleportDuration` (Single)
-    #[serde(default)]
     pub max_teleport_duration: f32,
     /// `invalidTeleportDuration` (Single)
-    #[serde(default)]
     pub invalid_teleport_duration: f32,
     /// `automatedCarriageInterval` (Single)
-    #[serde(default)]
     pub automated_carriage_interval: f32,
     /// `doorCloseDelay` (Single)
-    #[serde(default)]
     pub door_close_delay: f32,
     /// `departureDelay` (Single)
-    #[serde(default)]
     pub departure_delay: f32,
     /// `holdDoorsDelay` (Single)
-    #[serde(default)]
     pub hold_doors_delay: f32,
     /// `reservationTime` (Single)
-    #[serde(default)]
     pub reservation_time: f32,
 }
 
@@ -29084,31 +25529,22 @@ impl<'a> Extract<'a> for TransportManagerParams {
 
 /// DCB type: `TransportDestinationParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct TransportDestinationParams {
     /// `name` (Locale)
-    #[serde(default)]
     pub name: LocaleKey,
     /// `autoNumberedName` (Boolean)
-    #[serde(default)]
     pub auto_numbered_name: bool,
     /// `category` (Reference)
-    #[serde(default)]
     pub category: Option<CigGuid>,
     /// `priority` (Int32)
-    #[serde(default)]
     pub priority: i32,
     /// `useDoorTags` (Boolean)
-    #[serde(default)]
     pub use_door_tags: bool,
     /// `isDefaultDestination` (Boolean)
-    #[serde(default)]
     pub is_default_destination: bool,
     /// `identifierTag` (Reference)
-    #[serde(default)]
     pub identifier_tag: Option<CigGuid>,
     /// `tagFilter` (Class)
-    #[serde(default)]
     pub tag_filter: Option<Handle<TagsDNFTerm>>,
 }
 
@@ -29138,10 +25574,8 @@ impl<'a> Extract<'a> for TransportDestinationParams {
 
 /// DCB type: `TransportGatewayParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct TransportGatewayParams {
     /// `tagFilter` (Class)
-    #[serde(default)]
     pub tag_filter: Option<Handle<TagsDNFTerm>>,
 }
 
@@ -29164,28 +25598,20 @@ impl<'a> Extract<'a> for TransportGatewayParams {
 
 /// DCB type: `TransportPausePointParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct TransportPausePointParams {
     /// `startTags` (Class)
-    #[serde(default)]
     pub start_tags: Option<Handle<TagList>>,
     /// `startTagFilter` (Class)
-    #[serde(default)]
     pub start_tag_filter: Option<Handle<TagsDNFTerm>>,
     /// `endTags` (Class)
-    #[serde(default)]
     pub end_tags: Option<Handle<TagList>>,
     /// `endTagFilter` (Class)
-    #[serde(default)]
     pub end_tag_filter: Option<Handle<TagsDNFTerm>>,
     /// `invertForwardOnReverse` (Boolean)
-    #[serde(default)]
     pub invert_forward_on_reverse: bool,
     /// `pauseDuration` (Single)
-    #[serde(default)]
     pub pause_duration: f32,
     /// `trigger` (String)
-    #[serde(default)]
     pub trigger: String,
 }
 
@@ -29223,7 +25649,6 @@ impl<'a> Extract<'a> for TransportPausePointParams {
 
 /// DCB type: `TransportEventListenerParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct TransportEventListenerParams {
 }
 
@@ -29242,7 +25667,6 @@ impl<'a> Extract<'a> for TransportEventListenerParams {
 
 /// DCB type: `TransportGatewayDoorParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct TransportGatewayDoorParams {
 }
 
@@ -29261,7 +25685,6 @@ impl<'a> Extract<'a> for TransportGatewayDoorParams {
 
 /// DCB type: `TransportGatewayTimerPanelParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct TransportGatewayTimerPanelParams {
 }
 
@@ -29280,7 +25703,6 @@ impl<'a> Extract<'a> for TransportGatewayTimerPanelParams {
 
 /// DCB type: `TransportGatewayControlPanelParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct TransportGatewayControlPanelParams {
 }
 
@@ -29299,7 +25721,6 @@ impl<'a> Extract<'a> for TransportGatewayControlPanelParams {
 
 /// DCB type: `TransportCarriageDoorParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct TransportCarriageDoorParams {
 }
 
@@ -29318,7 +25739,6 @@ impl<'a> Extract<'a> for TransportCarriageDoorParams {
 
 /// DCB type: `TransportCarriageControlPanelParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct TransportCarriageControlPanelParams {
 }
 
@@ -29337,7 +25757,6 @@ impl<'a> Extract<'a> for TransportCarriageControlPanelParams {
 
 /// DCB type: `TransportCarriageTimerPanelParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct TransportCarriageTimerPanelParams {
 }
 
@@ -29355,31 +25774,22 @@ impl<'a> Extract<'a> for TransportCarriageTimerPanelParams {
 }
 
 /// DCB type: `TransportCarriageAudio`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct TransportCarriageAudio {
     /// `startTriggerID` (Class)
-    #[serde(default)]
     pub start_trigger_id: Option<Handle<GlobalResourceAudio>>,
     /// `startTriggerIDOneShot` (Class)
-    #[serde(default)]
     pub start_trigger_idone_shot: Option<Handle<GlobalResourceAudio>>,
     /// `stoppingTriggerID` (Class)
-    #[serde(default)]
     pub stopping_trigger_id: Option<Handle<GlobalResourceAudio>>,
     /// `stopTriggerID` (Class)
-    #[serde(default)]
     pub stop_trigger_id: Option<Handle<GlobalResourceAudio>>,
     /// `stopTriggerIDOneShot` (Class)
-    #[serde(default)]
     pub stop_trigger_idone_shot: Option<Handle<GlobalResourceAudio>>,
     /// `speedRTPC` (Class)
-    #[serde(default)]
     pub speed_rtpc: Option<Handle<AudioRtpc>>,
     /// `turnRTPC` (Class)
-    #[serde(default)]
     pub turn_rtpc: Option<Handle<AudioRtpc>>,
     /// `turnRTPCScaler` (Single)
-    #[serde(default)]
     pub turn_rtpcscaler: f32,
 }
 
@@ -29426,10 +25836,8 @@ impl<'a> Extract<'a> for TransportCarriageAudio {
 }
 
 /// DCB type: `TransportCarriageEffects`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct TransportCarriageEffects {
     /// `inTransitTag` (Reference)
-    #[serde(default)]
     pub in_transit_tag: Option<CigGuid>,
 }
 
@@ -29449,25 +25857,18 @@ impl<'a> Extract<'a> for TransportCarriageEffects {
 
 /// DCB type: `TransportCarriageParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct TransportCarriageParams {
     /// `responsive` (Boolean)
-    #[serde(default)]
     pub responsive: bool,
     /// `reverseDirectionWithSpline` (Boolean)
-    #[serde(default)]
     pub reverse_direction_with_spline: bool,
     /// `alignmentPositionalOffset` (Class)
-    #[serde(default)]
     pub alignment_positional_offset: Option<Handle<Vec3>>,
     /// `alignmentRotationalOffset` (Class)
-    #[serde(default)]
     pub alignment_rotational_offset: Option<Handle<Vec3>>,
     /// `audio` (Class)
-    #[serde(default)]
     pub audio: Option<Handle<TransportCarriageAudio>>,
     /// `effects` (Class)
-    #[serde(default)]
     pub effects: Option<Handle<TransportCarriageEffects>>,
 }
 
@@ -29504,7 +25905,6 @@ impl<'a> Extract<'a> for TransportCarriageParams {
 
 /// DCB type: `UIGraph_LoadoutSelectorComponent`
 /// Inherits from: `CtxGraph_Component`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct UIGraph_LoadoutSelectorComponent {
 }
 
@@ -29523,7 +25923,6 @@ impl<'a> Extract<'a> for UIGraph_LoadoutSelectorComponent {
 
 /// DCB type: `UIGraph_ContactWidgetComponent`
 /// Inherits from: `CtxGraph_Component`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct UIGraph_ContactWidgetComponent {
 }
 
@@ -29542,7 +25941,6 @@ impl<'a> Extract<'a> for UIGraph_ContactWidgetComponent {
 
 /// DCB type: `UIGraph_FastContactListComponent`
 /// Inherits from: `CtxGraph_Component`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct UIGraph_FastContactListComponent {
 }
 
@@ -29561,7 +25959,6 @@ impl<'a> Extract<'a> for UIGraph_FastContactListComponent {
 
 /// DCB type: `UIGraph_LauncherScreenComponent`
 /// Inherits from: `CtxGraph_Component`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct UIGraph_LauncherScreenComponent {
 }
 
@@ -29580,7 +25977,6 @@ impl<'a> Extract<'a> for UIGraph_LauncherScreenComponent {
 
 /// DCB type: `UIGraph_LandingAreaServicesComponent`
 /// Inherits from: `CtxGraph_Component`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct UIGraph_LandingAreaServicesComponent {
 }
 
@@ -29599,7 +25995,6 @@ impl<'a> Extract<'a> for UIGraph_LandingAreaServicesComponent {
 
 /// DCB type: `UIGraph_SkyLineNavContextComponent`
 /// Inherits from: `CtxGraph_Component`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct UIGraph_SkyLineNavContextComponent {
 }
 
@@ -29618,10 +26013,8 @@ impl<'a> Extract<'a> for UIGraph_SkyLineNavContextComponent {
 
 /// DCB type: `EAStaticLoadoutDummy`
 /// Inherits from: `CtxGraph_Component`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EAStaticLoadoutDummy {
     /// `params` (Reference)
-    #[serde(default)]
     pub params: Option<CigGuid>,
 }
 
@@ -29641,7 +26034,6 @@ impl<'a> Extract<'a> for EAStaticLoadoutDummy {
 
 /// DCB type: `UIGraph_InventoryComponent`
 /// Inherits from: `CtxGraph_Component`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct UIGraph_InventoryComponent {
 }
 
@@ -29660,19 +26052,14 @@ impl<'a> Extract<'a> for UIGraph_InventoryComponent {
 
 /// DCB type: `UnitTest_OverrideDefaultsClassA`
 /// Inherits from: `UnitTest_OverrideDefaultsTest`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct UnitTest_OverrideDefaultsClassA {
     /// `myIntTest` (Int32)
-    #[serde(default)]
     pub my_int_test: i32,
     /// `offsetAngle` (Class)
-    #[serde(default)]
     pub offset_angle: Option<Handle<Ang3>>,
     /// `anotherAngle` (Class)
-    #[serde(default)]
     pub another_angle: Option<Handle<Ang3>>,
     /// `myClassA` (String)
-    #[serde(default)]
     pub my_class_a: String,
 }
 
@@ -29701,22 +26088,16 @@ impl<'a> Extract<'a> for UnitTest_OverrideDefaultsClassA {
 
 /// DCB type: `UnitTest_OverrideDefaultsClassB`
 /// Inherits from: `UnitTest_OverrideDefaultsClassA`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct UnitTest_OverrideDefaultsClassB {
     /// `myIntTest` (Int32)
-    #[serde(default)]
     pub my_int_test: i32,
     /// `offsetAngle` (Class)
-    #[serde(default)]
     pub offset_angle: Option<Handle<Ang3>>,
     /// `anotherAngle` (Class)
-    #[serde(default)]
     pub another_angle: Option<Handle<Ang3>>,
     /// `myClassA` (String)
-    #[serde(default)]
     pub my_class_a: String,
     /// `myClassB` (String)
-    #[serde(default)]
     pub my_class_b: String,
 }
 
@@ -29746,7 +26127,6 @@ impl<'a> Extract<'a> for UnitTest_OverrideDefaultsClassB {
 
 /// DCB type: `AlignmentSlotAreaHelperComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AlignmentSlotAreaHelperComponentParams {
 }
 
@@ -29765,10 +26145,8 @@ impl<'a> Extract<'a> for AlignmentSlotAreaHelperComponentParams {
 
 /// DCB type: `SScoochOverrides`
 /// Inherits from: `SSpecializedDataEntry`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SScoochOverrides {
     /// `overrides` (Class (array))
-    #[serde(default)]
     pub overrides: Vec<Handle<SScoochOverride>>,
 }
 
@@ -29793,13 +26171,10 @@ impl<'a> Extract<'a> for SScoochOverrides {
 }
 
 /// DCB type: `SScoochOverride`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SScoochOverride {
     /// `keyTags` (Reference)
-    #[serde(default)]
     pub key_tags: Option<CigGuid>,
     /// `scoochOverrideMannequinTags` (String)
-    #[serde(default)]
     pub scooch_override_mannequin_tags: String,
 }
 
@@ -29820,10 +26195,8 @@ impl<'a> Extract<'a> for SScoochOverride {
 
 /// DCB type: `UsableSlottingReferenceLoadoutEntry`
 /// Inherits from: `UsableSlottingReferenceElementBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct UsableSlottingReferenceLoadoutEntry {
     /// `loadoutEntry` (WeakPointer)
-    #[serde(default)]
     pub loadout_entry: Option<Handle<SItemPortLoadoutEntryParams>>,
 }
 
@@ -29846,10 +26219,8 @@ impl<'a> Extract<'a> for UsableSlottingReferenceLoadoutEntry {
 
 /// DCB type: `SSequencerUsableEnableUseChannelTask`
 /// Inherits from: `SSequencerUsableTask`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SSequencerUsableEnableUseChannelTask {
     /// `useChannelInstancesToEnable` (WeakPointer (array))
-    #[serde(default)]
     pub use_channel_instances_to_enable: Vec<Handle<UsableUseChannelInstance>>,
 }
 
@@ -29874,10 +26245,8 @@ impl<'a> Extract<'a> for SSequencerUsableEnableUseChannelTask {
 
 /// DCB type: `SSequencerUsableDisableUseChannelTask`
 /// Inherits from: `SSequencerUsableTask`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SSequencerUsableDisableUseChannelTask {
     /// `useChannelInstancesToDisable` (WeakPointer (array))
-    #[serde(default)]
     pub use_channel_instances_to_disable: Vec<Handle<UsableUseChannelInstance>>,
 }
 
@@ -29902,13 +26271,10 @@ impl<'a> Extract<'a> for SSequencerUsableDisableUseChannelTask {
 
 /// DCB type: `SSequencerUsableSendEventToUserTask`
 /// Inherits from: `SSequencerUsableTask`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SSequencerUsableSendEventToUserTask {
     /// `eventName` (String)
-    #[serde(default)]
     pub event_name: String,
     /// `useChannelInstance` (WeakPointer)
-    #[serde(default)]
     pub use_channel_instance: Option<Handle<UsableUseChannelInstance>>,
 }
 
@@ -29932,7 +26298,6 @@ impl<'a> Extract<'a> for SSequencerUsableSendEventToUserTask {
 
 /// DCB type: `EntityComponentRttAspectFocusVehicleParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EntityComponentRttAspectFocusVehicleParams {
 }
 
@@ -29951,7 +26316,6 @@ impl<'a> Extract<'a> for EntityComponentRttAspectFocusVehicleParams {
 
 /// DCB type: `EntityComponentRttAspectOwnVehicleParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EntityComponentRttAspectOwnVehicleParams {
 }
 
@@ -29970,19 +26334,14 @@ impl<'a> Extract<'a> for EntityComponentRttAspectOwnVehicleParams {
 
 /// DCB type: `VehicleEditorTerminalParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct VehicleEditorTerminalParams {
     /// `uiData` (Reference)
-    #[serde(default)]
     pub ui_data: Option<CigGuid>,
     /// `autoSelectLonelyVehicle` (Boolean)
-    #[serde(default)]
     pub auto_select_lonely_vehicle: bool,
     /// `autoSelectFirstCategory` (Boolean)
-    #[serde(default)]
     pub auto_select_first_category: bool,
     /// `selectionBehaviour` (EnumChoice)
-    #[serde(default)]
     pub selection_behaviour: ESelectionBehaviour,
 }
 
@@ -30005,25 +26364,18 @@ impl<'a> Extract<'a> for VehicleEditorTerminalParams {
 
 /// DCB type: `VehicleEditorManagerParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct VehicleEditorManagerParams {
     /// `offlineVehicles` (Reference)
-    #[serde(default)]
     pub offline_vehicles: Option<CigGuid>,
     /// `editableCategories` (Reference)
-    #[serde(default)]
     pub editable_categories: Option<CigGuid>,
     /// `offlineItems` (Reference)
-    #[serde(default)]
     pub offline_items: Option<CigGuid>,
     /// `autoEquipData` (Reference (array))
-    #[serde(default)]
     pub auto_equip_data: Vec<CigGuid>,
     /// `groupEquipData` (Reference (array))
-    #[serde(default)]
     pub group_equip_data: Vec<CigGuid>,
     /// `recursiveItemPortIteration` (Boolean)
-    #[serde(default)]
     pub recursive_item_port_iteration: bool,
 }
 
@@ -30052,49 +26404,34 @@ impl<'a> Extract<'a> for VehicleEditorManagerParams {
 
 /// DCB type: `DistressCommsSignalComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DistressCommsSignalComponentParams {
     /// `signalRadius` (Single)
-    #[serde(default)]
     pub signal_radius: f32,
     /// `detectionRadius` (Single)
-    #[serde(default)]
     pub detection_radius: f32,
     /// `stopBroadcastRadius` (Single)
-    #[serde(default)]
     pub stop_broadcast_radius: f32,
     /// `detectionOffset` (Class)
-    #[serde(default)]
     pub detection_offset: Option<Handle<Vec3>>,
     /// `distanceStrengthCurve` (Class)
-    #[serde(default)]
     pub distance_strength_curve: Option<Handle<BezierCurve>>,
     /// `directionStrengthCurve` (Class)
-    #[serde(default)]
     pub direction_strength_curve: Option<Handle<BezierCurve>>,
     /// `maxDirectionScale` (Single)
-    #[serde(default)]
     pub max_direction_scale: f32,
     /// `commsCallPriority` (Int32)
-    #[serde(default)]
     pub comms_call_priority: i32,
     /// `startLoopingSound` (Class)
-    #[serde(default)]
     pub start_looping_sound: Option<Handle<GlobalResourceAudio>>,
     /// `stopLoopingSound` (Class)
-    #[serde(default)]
     pub stop_looping_sound: Option<Handle<GlobalResourceAudio>>,
     /// `loopingSoundSignalStrengthRTPC` (Class)
-    #[serde(default)]
     pub looping_sound_signal_strength_rtpc: Option<Handle<AudioRtpc>>,
     /// `useCommsSignatureStrength` (Boolean)
-    #[serde(default)]
     pub use_comms_signature_strength: bool,
     /// `applyDistanceScaleToStrength` (Boolean)
-    #[serde(default)]
     pub apply_distance_scale_to_strength: bool,
     /// `applyDirectionScaleToStrength` (Boolean)
-    #[serde(default)]
     pub apply_direction_scale_to_strength: bool,
 }
 
@@ -30145,7 +26482,6 @@ impl<'a> Extract<'a> for DistressCommsSignalComponentParams {
 
 /// DCB type: `VoiceChatRxParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct VoiceChatRxParams {
 }
 
@@ -30164,7 +26500,6 @@ impl<'a> Extract<'a> for VoiceChatRxParams {
 
 /// DCB type: `Weapon`
 /// Inherits from: `BaseItem`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Weapon {
 }
 
@@ -30183,79 +26518,54 @@ impl<'a> Extract<'a> for Weapon {
 
 /// DCB type: `WeaponProceduralClipRecoil`
 /// Inherits from: `WeaponProceduralClipBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct WeaponProceduralClipRecoil {
     /// `blendTime` (Single)
-    #[serde(default)]
     pub blend_time: f32,
     /// `dampStrength` (Single)
-    #[serde(default)]
     pub damp_strength: f32,
     /// `fireRecoilTime` (Single)
-    #[serde(default)]
     pub fire_recoil_time: f32,
     /// `fireRecoilStrengthFirst` (Single)
-    #[serde(default)]
     pub fire_recoil_strength_first: f32,
     /// `fireRecoilStrength` (Single)
-    #[serde(default)]
     pub fire_recoil_strength: f32,
     /// `angleRecoilStrength` (Single)
-    #[serde(default)]
     pub angle_recoil_strength: f32,
     /// `useRandomRotation` (Boolean)
-    #[serde(default)]
     pub use_random_rotation: bool,
     /// `rotation` (Class)
-    #[serde(default)]
     pub rotation: Option<Handle<Ang3>>,
     /// `randomness` (Single)
-    #[serde(default)]
     pub randomness: f32,
     /// `randomnessBackPush` (Single)
-    #[serde(default)]
     pub randomness_back_push: f32,
     /// `frontalOscillationRotation` (Single)
-    #[serde(default)]
     pub frontal_oscillation_rotation: f32,
     /// `frontalOscillationStrength` (Single)
-    #[serde(default)]
     pub frontal_oscillation_strength: f32,
     /// `frontalOscillationDampStrength` (Single)
-    #[serde(default)]
     pub frontal_oscillation_damp_strength: f32,
     /// `max` (Class)
-    #[serde(default)]
     pub max: Option<Handle<Vec2>>,
     /// `pull_left_percentage` (Single)
-    #[serde(default)]
     pub pull_left_percentage: f32,
     /// `shot_kick_first` (Single)
-    #[serde(default)]
     pub shot_kick_first: f32,
     /// `shot_kick` (Single)
-    #[serde(default)]
     pub shot_kick: f32,
     /// `random` (Single)
-    #[serde(default)]
     pub random: f32,
     /// `random_z` (Single)
-    #[serde(default)]
     pub random_z: f32,
     /// `decay` (Single)
-    #[serde(default)]
     pub decay: f32,
     /// `end_decay` (Single)
-    #[serde(default)]
     pub end_decay: f32,
     /// `recoil_time` (Single)
-    #[serde(default)]
     pub recoil_time: f32,
     /// `delay` (Single)
-    #[serde(default)]
     pub delay: f32,
     /// `hipsPushForce` (Single)
-    #[serde(default)]
     pub hips_push_force: f32,
 }
 
@@ -30304,13 +26614,10 @@ impl<'a> Extract<'a> for WeaponProceduralClipRecoil {
 
 /// DCB type: `WeatherEffects_Atmosphere_WaterDepth`
 /// Inherits from: `WeatherEffects_Atmosphere`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct WeatherEffects_Atmosphere_WaterDepth {
     /// `spaceLoopEffect` (Class)
-    #[serde(default)]
     pub space_loop_effect: Option<Handle<WeatherEffects_SpaceLoopEffect>>,
     /// `interpolationRange` (Class)
-    #[serde(default)]
     pub interpolation_range: Option<Handle<Range>>,
 }
 
@@ -30337,7 +26644,6 @@ impl<'a> Extract<'a> for WeatherEffects_Atmosphere_WaterDepth {
 
 /// DCB type: `PlanetSpawnedEntityParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PlanetSpawnedEntityParams {
 }
 
@@ -30356,7 +26662,6 @@ impl<'a> Extract<'a> for PlanetSpawnedEntityParams {
 
 /// DCB type: `CraterModifierComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CraterModifierComponentParams {
 }
 
@@ -30375,16 +26680,12 @@ impl<'a> Extract<'a> for CraterModifierComponentParams {
 
 /// DCB type: `MobiGlasPersonalMessage_ShipChat`
 /// Inherits from: `MobiGlasAppDataBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MobiGlasPersonalMessage_ShipChat {
     /// `dateTime` (Class)
-    #[serde(default)]
     pub date_time: Option<Handle<DateTime>>,
     /// `senderName` (Locale)
-    #[serde(default)]
     pub sender_name: LocaleKey,
     /// `content` (Locale)
-    #[serde(default)]
     pub content: LocaleKey,
 }
 
@@ -30408,13 +26709,10 @@ impl<'a> Extract<'a> for MobiGlasPersonalMessage_ShipChat {
 }
 
 /// DCB type: `MobiGlasPersonalMessage_ShipChatScheduleEntry`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MobiGlasPersonalMessage_ShipChatScheduleEntry {
     /// `delayTime` (Single)
-    #[serde(default)]
     pub delay_time: f32,
     /// `chatParams` (Class)
-    #[serde(default)]
     pub chat_params: Option<Handle<MobiGlasPersonalMessage_ShipChat>>,
 }
 
@@ -30438,19 +26736,14 @@ impl<'a> Extract<'a> for MobiGlasPersonalMessage_ShipChatScheduleEntry {
 
 /// DCB type: `MobiGlasPersonalMessage_ShipChatSchedule`
 /// Inherits from: `MobiGlasAppDataBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MobiGlasPersonalMessage_ShipChatSchedule {
     /// `startDateTime` (Class)
-    #[serde(default)]
     pub start_date_time: Option<Handle<DateTime>>,
     /// `chatEntries` (Class (array))
-    #[serde(default)]
     pub chat_entries: Vec<Handle<MobiGlasPersonalMessage_ShipChatScheduleEntry>>,
     /// `minDelayTime` (Single)
-    #[serde(default)]
     pub min_delay_time: f32,
     /// `maxDelayTime` (Single)
-    #[serde(default)]
     pub max_delay_time: f32,
 }
 
@@ -30482,22 +26775,16 @@ impl<'a> Extract<'a> for MobiGlasPersonalMessage_ShipChatSchedule {
 
 /// DCB type: `MobiGlasPersonalMessage_Message`
 /// Inherits from: `MobiGlasAppDataBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MobiGlasPersonalMessage_Message {
     /// `dateTime` (Class)
-    #[serde(default)]
     pub date_time: Option<Handle<DateTime>>,
     /// `senderName` (Locale)
-    #[serde(default)]
     pub sender_name: LocaleKey,
     /// `subject` (Locale)
-    #[serde(default)]
     pub subject: LocaleKey,
     /// `content` (Class (array))
-    #[serde(default)]
     pub content: Vec<Handle<MobiGlasAppContent>>,
     /// `displayIcon` (String)
-    #[serde(default)]
     pub display_icon: String,
 }
 
@@ -30530,61 +26817,42 @@ impl<'a> Extract<'a> for MobiGlasPersonalMessage_Message {
 
 /// DCB type: `MobiGlasMissionBriefing`
 /// Inherits from: `MobiGlasAppDataBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MobiGlasMissionBriefing {
     /// `briefingMissionLogEntry` (Reference)
-    #[serde(default)]
     pub briefing_mission_log_entry: Option<CigGuid>,
     /// `missionImage` (String)
-    #[serde(default)]
     pub mission_image: String,
     /// `friendImage` (String)
-    #[serde(default)]
     pub friend_image: String,
     /// `enemyImage` (String)
-    #[serde(default)]
     pub enemy_image: String,
     /// `missionSummary` (Locale)
-    #[serde(default)]
     pub mission_summary: LocaleKey,
     /// `authorization` (Reference)
-    #[serde(default)]
     pub authorization: Option<CigGuid>,
     /// `areaOfOperation` (Locale)
-    #[serde(default)]
     pub area_of_operation: LocaleKey,
     /// `targets` (Locale (array))
-    #[serde(default)]
     pub targets: Vec<LocaleKey>,
     /// `hazards` (Locale (array))
-    #[serde(default)]
     pub hazards: Vec<LocaleKey>,
     /// `pointsOfInterest` (Locale (array))
-    #[serde(default)]
     pub points_of_interest: Vec<LocaleKey>,
     /// `enemyForces` (Locale (array))
-    #[serde(default)]
     pub enemy_forces: Vec<LocaleKey>,
     /// `friendlyForces` (Locale (array))
-    #[serde(default)]
     pub friendly_forces: Vec<LocaleKey>,
     /// `civilianConsiderations` (Locale (array))
-    #[serde(default)]
     pub civilian_considerations: Vec<LocaleKey>,
     /// `rulesOfEngagement` (Locale (array))
-    #[serde(default)]
     pub rules_of_engagement: Vec<LocaleKey>,
     /// `tasks` (Locale (array))
-    #[serde(default)]
     pub tasks: Vec<LocaleKey>,
     /// `logistics` (Locale (array))
-    #[serde(default)]
     pub logistics: Vec<LocaleKey>,
     /// `commandAndSignal` (Locale)
-    #[serde(default)]
     pub command_and_signal: LocaleKey,
     /// `supplementaryIntel` (Locale)
-    #[serde(default)]
     pub supplementary_intel: LocaleKey,
 }
 
@@ -30639,34 +26907,24 @@ impl<'a> Extract<'a> for MobiGlasMissionBriefing {
 
 /// DCB type: `MobiGlasAfterActionReportGenerationRules`
 /// Inherits from: `MobiGlasAppDataBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MobiGlasAfterActionReportGenerationRules {
     /// `missionLogEntry` (Reference)
-    #[serde(default)]
     pub mission_log_entry: Option<CigGuid>,
     /// `ranks` (Class)
-    #[serde(default)]
     pub ranks: Option<Handle<MobiGlasAfterActionReportRankRules>>,
     /// `statsDisplay` (Reference (array))
-    #[serde(default)]
     pub stats_display: Vec<CigGuid>,
     /// `commendationRules` (Reference)
-    #[serde(default)]
     pub commendation_rules: Option<CigGuid>,
     /// `CORank` (Locale)
-    #[serde(default)]
     pub corank: LocaleKey,
     /// `COName` (Locale)
-    #[serde(default)]
     pub coname: LocaleKey,
     /// `COImage` (String)
-    #[serde(default)]
     pub coimage: String,
     /// `medPenTag` (Reference)
-    #[serde(default)]
     pub med_pen_tag: Option<CigGuid>,
     /// `optionalObjectives` (Reference (array))
-    #[serde(default)]
     pub optional_objectives: Vec<CigGuid>,
 }
 
@@ -30700,19 +26958,14 @@ impl<'a> Extract<'a> for MobiGlasAfterActionReportGenerationRules {
 }
 
 /// DCB type: `AfterActionReportReputationImpact`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AfterActionReportReputationImpact {
     /// `orgOrNPC` (Reference)
-    #[serde(default)]
     pub org_or_npc: Option<CigGuid>,
     /// `scope` (Reference)
-    #[serde(default)]
     pub scope: Option<CigGuid>,
     /// `impactValue` (Int32)
-    #[serde(default)]
     pub impact_value: i32,
     /// `replaceCurrentValue` (Boolean)
-    #[serde(default)]
     pub replace_current_value: bool,
 }
 
@@ -30734,28 +26987,20 @@ impl<'a> Extract<'a> for AfterActionReportReputationImpact {
 }
 
 /// DCB type: `MobiGlasAfterActionReportRankRules`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MobiGlasAfterActionReportRankRules {
     /// `maxTime` (Class)
-    #[serde(default)]
     pub max_time: Option<Handle<Time>>,
     /// `maxMedpens` (Int32)
-    #[serde(default)]
     pub max_medpens: i32,
     /// `maxShipDamage` (Single)
-    #[serde(default)]
     pub max_ship_damage: f32,
     /// `requiredObjectives` (Reference (array))
-    #[serde(default)]
     pub required_objectives: Vec<CigGuid>,
     /// `coDebrief` (Locale)
-    #[serde(default)]
     pub co_debrief: LocaleKey,
     /// `oldManDebrief` (Locale)
-    #[serde(default)]
     pub old_man_debrief: LocaleKey,
     /// `reputationImpacts` (Class (array))
-    #[serde(default)]
     pub reputation_impacts: Vec<Handle<AfterActionReportReputationImpact>>,
 }
 
@@ -30792,13 +27037,10 @@ impl<'a> Extract<'a> for MobiGlasAfterActionReportRankRules {
 
 /// DCB type: `MobiGlasMissionManagerSummaryUpdate`
 /// Inherits from: `MobiGlasAppDataBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MobiGlasMissionManagerSummaryUpdate {
     /// `missionLogEntry` (Reference)
-    #[serde(default)]
     pub mission_log_entry: Option<CigGuid>,
     /// `additionalText` (Locale)
-    #[serde(default)]
     pub additional_text: LocaleKey,
 }
 
@@ -30818,16 +27060,12 @@ impl<'a> Extract<'a> for MobiGlasMissionManagerSummaryUpdate {
 }
 
 /// DCB type: `S42FieldManualContentPiece`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct S42FieldManualContentPiece {
     /// `contentPieceHeading` (Locale)
-    #[serde(default)]
     pub content_piece_heading: LocaleKey,
     /// `contentPieceParagraph` (Locale)
-    #[serde(default)]
     pub content_piece_paragraph: LocaleKey,
     /// `contentPieceImagePath` (String)
-    #[serde(default)]
     pub content_piece_image_path: String,
 }
 
@@ -30849,16 +27087,12 @@ impl<'a> Extract<'a> for S42FieldManualContentPiece {
 
 /// DCB type: `S42FieldManual`
 /// Inherits from: `MobiGlasAppDataBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct S42FieldManual {
     /// `manualTitle` (Locale)
-    #[serde(default)]
     pub manual_title: LocaleKey,
     /// `contentPieces` (Class (array))
-    #[serde(default)]
     pub content_pieces: Vec<Handle<S42FieldManualContentPiece>>,
     /// `manualCategory` (Reference)
-    #[serde(default)]
     pub manual_category: Option<CigGuid>,
 }
 
@@ -30886,10 +27120,8 @@ impl<'a> Extract<'a> for S42FieldManual {
 
 /// DCB type: `SMobiGlasAppDataPacket`
 /// Inherits from: `MobiGlasAppDataBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SMobiGlasAppDataPacket {
     /// `dataPacket` (StrongPointer)
-    #[serde(default)]
     pub data_packet: Option<SMobiGlasAppDataPacketBasePtr>,
 }
 
@@ -30912,10 +27144,8 @@ impl<'a> Extract<'a> for SMobiGlasAppDataPacket {
 
 /// DCB type: `SMobiGlasAppDataPacketEmbedded`
 /// Inherits from: `SMobiGlasAppDataPacketBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SMobiGlasAppDataPacketEmbedded {
     /// `data` (StrongPointer (array))
-    #[serde(default)]
     pub data: Vec<MobiGlasAppDataBasePtr>,
 }
 
@@ -30940,10 +27170,8 @@ impl<'a> Extract<'a> for SMobiGlasAppDataPacketEmbedded {
 
 /// DCB type: `SMobiGlasAppDataPacketReferenced`
 /// Inherits from: `SMobiGlasAppDataPacketBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SMobiGlasAppDataPacketReferenced {
     /// `data` (Reference (array))
-    #[serde(default)]
     pub data: Vec<CigGuid>,
 }
 
@@ -30965,10 +27193,8 @@ impl<'a> Extract<'a> for SMobiGlasAppDataPacketReferenced {
 
 /// DCB type: `SMobiGlasSetShipRecallAllowed`
 /// Inherits from: `MobiGlasAppDataBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SMobiGlasSetShipRecallAllowed {
     /// `allowed` (Boolean)
-    #[serde(default)]
     pub allowed: bool,
 }
 
@@ -30988,10 +27214,8 @@ impl<'a> Extract<'a> for SMobiGlasSetShipRecallAllowed {
 
 /// DCB type: `SMobiGlasSetUniqueShip`
 /// Inherits from: `MobiGlasAppDataBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SMobiGlasSetUniqueShip {
     /// `shipClass` (Reference)
-    #[serde(default)]
     pub ship_class: Option<CigGuid>,
 }
 
@@ -31011,34 +27235,24 @@ impl<'a> Extract<'a> for SMobiGlasSetUniqueShip {
 
 /// DCB type: `SShipStatusAppParams`
 /// Inherits from: `SMobiGlasAppParamsBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SShipStatusAppParams {
     /// `linkedStarMap` (Reference)
-    #[serde(default)]
     pub linked_star_map: Option<CigGuid>,
     /// `shipHoloRotationSpeed` (Single)
-    #[serde(default)]
     pub ship_holo_rotation_speed: f32,
     /// `shipHoloRotationSmoothTime` (Single)
-    #[serde(default)]
     pub ship_holo_rotation_smooth_time: f32,
     /// `lowAmmoThreshold` (Single)
-    #[serde(default)]
     pub low_ammo_threshold: f32,
     /// `lowOrdnanceThreshold` (Single)
-    #[serde(default)]
     pub low_ordnance_threshold: f32,
     /// `lowHydrogenFuelThreshold` (Single)
-    #[serde(default)]
     pub low_hydrogen_fuel_threshold: f32,
     /// `lowQuantumFuelThreshold` (Single)
-    #[serde(default)]
     pub low_quantum_fuel_threshold: f32,
     /// `shipRecallRetryTime` (Single)
-    #[serde(default)]
     pub ship_recall_retry_time: f32,
     /// `requirePermissionForShipRecall` (Boolean)
-    #[serde(default)]
     pub require_permission_for_ship_recall: bool,
 }
 
@@ -31066,37 +27280,26 @@ impl<'a> Extract<'a> for SShipStatusAppParams {
 
 /// DCB type: `S42ShipStatusAppParams`
 /// Inherits from: `SShipStatusAppParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct S42ShipStatusAppParams {
     /// `linkedStarMap` (Reference)
-    #[serde(default)]
     pub linked_star_map: Option<CigGuid>,
     /// `shipHoloRotationSpeed` (Single)
-    #[serde(default)]
     pub ship_holo_rotation_speed: f32,
     /// `shipHoloRotationSmoothTime` (Single)
-    #[serde(default)]
     pub ship_holo_rotation_smooth_time: f32,
     /// `lowAmmoThreshold` (Single)
-    #[serde(default)]
     pub low_ammo_threshold: f32,
     /// `lowOrdnanceThreshold` (Single)
-    #[serde(default)]
     pub low_ordnance_threshold: f32,
     /// `lowHydrogenFuelThreshold` (Single)
-    #[serde(default)]
     pub low_hydrogen_fuel_threshold: f32,
     /// `lowQuantumFuelThreshold` (Single)
-    #[serde(default)]
     pub low_quantum_fuel_threshold: f32,
     /// `shipRecallRetryTime` (Single)
-    #[serde(default)]
     pub ship_recall_retry_time: f32,
     /// `requirePermissionForShipRecall` (Boolean)
-    #[serde(default)]
     pub require_permission_for_ship_recall: bool,
     /// `playerShips` (Class (array))
-    #[serde(default)]
     pub player_ships: Vec<Handle<S42ShipStatusAllowedShipParams>>,
 }
 
@@ -31130,22 +27333,16 @@ impl<'a> Extract<'a> for S42ShipStatusAppParams {
 }
 
 /// DCB type: `S42ShipStatusAllowedShipParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct S42ShipStatusAllowedShipParams {
     /// `shipClass` (Reference)
-    #[serde(default)]
     pub ship_class: Option<CigGuid>,
     /// `showShields` (Boolean)
-    #[serde(default)]
     pub show_shields: bool,
     /// `showFuel` (Boolean)
-    #[serde(default)]
     pub show_fuel: bool,
     /// `showOrdnance` (Boolean)
-    #[serde(default)]
     pub show_ordnance: bool,
     /// `showAmmo` (Boolean)
-    #[serde(default)]
     pub show_ammo: bool,
 }
 
@@ -31169,10 +27366,8 @@ impl<'a> Extract<'a> for S42ShipStatusAllowedShipParams {
 
 /// DCB type: `SMinigameAppParams`
 /// Inherits from: `SMobiGlasAppParamsBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SMinigameAppParams {
     /// `miniGameRecordDef` (Reference)
-    #[serde(default)]
     pub mini_game_record_def: Option<CigGuid>,
 }
 
@@ -31191,13 +27386,10 @@ impl<'a> Extract<'a> for SMinigameAppParams {
 }
 
 /// DCB type: `S42PlayerDataSkipPointRank`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct S42PlayerDataSkipPointRank {
     /// `tags` (Reference (array))
-    #[serde(default)]
     pub tags: Vec<CigGuid>,
     /// `rank` (Locale)
-    #[serde(default)]
     pub rank: LocaleKey,
 }
 
@@ -31220,16 +27412,12 @@ impl<'a> Extract<'a> for S42PlayerDataSkipPointRank {
 
 /// DCB type: `SS42PlayerDataAppParams`
 /// Inherits from: `SMobiGlasAppParamsBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SS42PlayerDataAppParams {
     /// `defaultRank` (Locale)
-    #[serde(default)]
     pub default_rank: LocaleKey,
     /// `skipPointRanks` (Class (array))
-    #[serde(default)]
     pub skip_point_ranks: Vec<Handle<S42PlayerDataSkipPointRank>>,
     /// `episodeTag` (Reference)
-    #[serde(default)]
     pub episode_tag: Option<CigGuid>,
 }
 

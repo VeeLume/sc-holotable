@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -21,25 +20,18 @@ use super::super::*;
 
 /// DCB type: `SLightFlickerVolumeComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SLightFlickerVolumeComponentParams {
     /// `waveControlParams` (StrongPointer)
-    #[serde(default)]
     pub wave_control_params: Option<LightFlickerWaveParamsPtr>,
     /// `animParams` (Class)
-    #[serde(default)]
     pub anim_params: Option<Handle<SLightFlickerAnimParams>>,
     /// `randomSeed` (UInt32)
-    #[serde(default)]
     pub random_seed: u32,
     /// `searchRadius` (Single)
-    #[serde(default)]
     pub search_radius: f32,
     /// `wavePasses` (Int32)
-    #[serde(default)]
     pub wave_passes: i32,
     /// `filteringParams` (Class)
-    #[serde(default)]
     pub filtering_params: Option<Handle<SLightFlickerFilteringParams>>,
 }
 
@@ -72,16 +64,12 @@ impl<'a> Extract<'a> for SLightFlickerVolumeComponentParams {
 }
 
 /// DCB type: `SLightFlickerFilteringParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SLightFlickerFilteringParams {
     /// `ignoreOnlyFogLights` (Boolean)
-    #[serde(default)]
     pub ignore_only_fog_lights: bool,
     /// `filterByVisArea` (Boolean)
-    #[serde(default)]
     pub filter_by_vis_area: bool,
     /// `ignoreEnvironmentProbes` (Boolean)
-    #[serde(default)]
     pub ignore_environment_probes: bool,
 }
 
@@ -102,34 +90,24 @@ impl<'a> Extract<'a> for SLightFlickerFilteringParams {
 }
 
 /// DCB type: `SLightFlickerAnimParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SLightFlickerAnimParams {
     /// `minAnimTime` (Single)
-    #[serde(default)]
     pub min_anim_time: f32,
     /// `maxAnimTime` (Single)
-    #[serde(default)]
     pub max_anim_time: f32,
     /// `minSpeedMultiplier` (Single)
-    #[serde(default)]
     pub min_speed_multiplier: f32,
     /// `maxSpeedMultiplier` (Single)
-    #[serde(default)]
     pub max_speed_multiplier: f32,
     /// `lightStyles` (Int32 (array))
-    #[serde(default)]
     pub light_styles: Vec<i32>,
     /// `endColor` (Class)
-    #[serde(default)]
     pub end_color: Option<Handle<SRGB8>>,
     /// `restoreOriginalAfterTime` (Single)
-    #[serde(default)]
     pub restore_original_after_time: f32,
     /// `keepActiveAfterWaveFinished` (Boolean)
-    #[serde(default)]
     pub keep_active_after_wave_finished: bool,
     /// `trackviewTime` (Single)
-    #[serde(default)]
     pub trackview_time: f32,
 }
 
@@ -162,49 +140,34 @@ impl<'a> Extract<'a> for SLightFlickerAnimParams {
 
 /// DCB type: `LightAudioComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LightAudioComponentParams {
     /// `enableAudio` (Boolean)
-    #[serde(default)]
     pub enable_audio: bool,
     /// `playTrigger` (Class)
-    #[serde(default)]
     pub play_trigger: Option<Handle<GlobalResourceAudio>>,
     /// `stopTrigger` (Class)
-    #[serde(default)]
     pub stop_trigger: Option<Handle<GlobalResourceAudio>>,
     /// `lightGroupStateDefaultPlayTrigger` (Class)
-    #[serde(default)]
     pub light_group_state_default_play_trigger: Option<Handle<GlobalResourceAudio>>,
     /// `lightGroupStateDefaultStopTrigger` (Class)
-    #[serde(default)]
     pub light_group_state_default_stop_trigger: Option<Handle<GlobalResourceAudio>>,
     /// `lightGroupStateAuxiliaryPlayTrigger` (Class)
-    #[serde(default)]
     pub light_group_state_auxiliary_play_trigger: Option<Handle<GlobalResourceAudio>>,
     /// `lightGroupStateAuxiliaryStopTrigger` (Class)
-    #[serde(default)]
     pub light_group_state_auxiliary_stop_trigger: Option<Handle<GlobalResourceAudio>>,
     /// `lightGroupStateEmergencyPlayTrigger` (Class)
-    #[serde(default)]
     pub light_group_state_emergency_play_trigger: Option<Handle<GlobalResourceAudio>>,
     /// `lightGroupStateEmergencyStopTrigger` (Class)
-    #[serde(default)]
     pub light_group_state_emergency_stop_trigger: Option<Handle<GlobalResourceAudio>>,
     /// `lightGroupStateCinematicPlayTrigger` (Class)
-    #[serde(default)]
     pub light_group_state_cinematic_play_trigger: Option<Handle<GlobalResourceAudio>>,
     /// `lightGroupStateCinematicStopTrigger` (Class)
-    #[serde(default)]
     pub light_group_state_cinematic_stop_trigger: Option<Handle<GlobalResourceAudio>>,
     /// `luminanceRtpc` (Class)
-    #[serde(default)]
     pub luminance_rtpc: Option<Handle<AudioRtpc>>,
     /// `attenuationScale` (Single)
-    #[serde(default)]
     pub attenuation_scale: f32,
     /// `volume_db` (Single)
-    #[serde(default)]
     pub volume_db: f32,
 }
 
@@ -270,7 +233,6 @@ impl<'a> Extract<'a> for LightAudioComponentParams {
 
 /// DCB type: `LightBoxComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LightBoxComponentParams {
 }
 

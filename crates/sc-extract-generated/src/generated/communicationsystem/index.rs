@@ -10,17 +10,14 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
 use std::collections::HashMap;
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use crate::Handle;
 use super::super::*;
 
 /// Record index for the `communicationsystem` feature.
-#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+#[derive(Default)]
 pub struct CommunicationsystemIndex {
-    #[serde(default)]
     pub communication_channel_config: HashMap<CigGuid, Handle<CommunicationChannelConfig>>,
-    #[serde(default)]
     pub communication_auto_mannequin_tags_config: HashMap<CigGuid, Handle<CommunicationAutoMannequinTagsConfig>>,
 }
 

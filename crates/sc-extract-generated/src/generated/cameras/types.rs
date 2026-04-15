@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -21,37 +20,26 @@ use super::super::*;
 
 /// DCB type: `CameraLookBehindConfig`
 /// Inherits from: `CameraBaseConfig`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CameraLookBehindConfig {
     /// `baseSettings` (Class)
-    #[serde(default)]
     pub base_settings: Option<Handle<CameraBaseSettingsConfig>>,
     /// `blendConfig` (Class)
-    #[serde(default)]
     pub blend_config: Option<Handle<CameraBlendConfig>>,
     /// `FOVConfig` (Class)
-    #[serde(default)]
     pub fovconfig: Option<Handle<CameraFOVConfig>>,
     /// `distanceConfig` (Class)
-    #[serde(default)]
     pub distance_config: Option<Handle<CameraDistanceConfig>>,
     /// `heightOverride` (Single)
-    #[serde(default)]
     pub height_override: f32,
     /// `screenOverlayTextureName` (String)
-    #[serde(default)]
     pub screen_overlay_texture_name: String,
     /// `introEffectLibrary` (String)
-    #[serde(default)]
     pub intro_effect_library: String,
     /// `introEffectName` (String)
-    #[serde(default)]
     pub intro_effect_name: String,
     /// `outroEffectLibrary` (String)
-    #[serde(default)]
     pub outro_effect_library: String,
     /// `outroEffectName` (String)
-    #[serde(default)]
     pub outro_effect_name: String,
 }
 
@@ -92,46 +80,32 @@ impl<'a> Extract<'a> for CameraLookBehindConfig {
 
 /// DCB type: `CameraTimeCamConfig`
 /// Inherits from: `CameraFreeCamConfig`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CameraTimeCamConfig {
     /// `baseSettings` (Class)
-    #[serde(default)]
     pub base_settings: Option<Handle<CameraBaseSettingsConfig>>,
     /// `blendConfig` (Class)
-    #[serde(default)]
     pub blend_config: Option<Handle<CameraBlendConfig>>,
     /// `FOVConfig` (Class)
-    #[serde(default)]
     pub fovconfig: Option<Handle<CameraFOVConfig>>,
     /// `operatorShake` (Class)
-    #[serde(default)]
     pub operator_shake: Option<Handle<CameraShakeConfig>>,
     /// `speedShake` (Class)
-    #[serde(default)]
     pub speed_shake: Option<Handle<CameraSpeedShakeConfig>>,
     /// `gforceShake` (Class)
-    #[serde(default)]
     pub gforce_shake: Option<Handle<CameraGForceShakeConfig>>,
     /// `raindropsEnabled` (Boolean)
-    #[serde(default)]
     pub raindrops_enabled: bool,
     /// `radius` (Single)
-    #[serde(default)]
     pub radius: f32,
     /// `movementSpeed` (Single)
-    #[serde(default)]
     pub movement_speed: f32,
     /// `sprintSpeed` (Single)
-    #[serde(default)]
     pub sprint_speed: f32,
     /// `freeCamRotationScale` (Single)
-    #[serde(default)]
     pub free_cam_rotation_scale: f32,
     /// `DOFFocusDistanceConfig` (Class)
-    #[serde(default)]
     pub doffocus_distance_config: Option<Handle<CameraDOFFocusDistanceConfig>>,
     /// `collisionConfig` (Class)
-    #[serde(default)]
     pub collision_config: Option<Handle<CameraCollisionConfig>>,
 }
 
@@ -186,13 +160,10 @@ impl<'a> Extract<'a> for CameraTimeCamConfig {
 }
 
 /// DCB type: `OrbitEntityCinematicEvent`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct OrbitEntityCinematicEvent {
     /// `triggerTime` (Single)
-    #[serde(default)]
     pub trigger_time: f32,
     /// `loadViewIndex` (Int32)
-    #[serde(default)]
     pub load_view_index: i32,
 }
 
@@ -213,61 +184,42 @@ impl<'a> Extract<'a> for OrbitEntityCinematicEvent {
 
 /// DCB type: `CameraOrbitEntityCinematicConfig`
 /// Inherits from: `CameraOrbitEntityConfig`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CameraOrbitEntityCinematicConfig {
     /// `baseSettings` (Class)
-    #[serde(default)]
     pub base_settings: Option<Handle<CameraBaseSettingsConfig>>,
     /// `blendConfig` (Class)
-    #[serde(default)]
     pub blend_config: Option<Handle<CameraBlendConfig>>,
     /// `FOVConfig` (Class)
-    #[serde(default)]
     pub fovconfig: Option<Handle<CameraFOVConfig>>,
     /// `operatorShake` (Class)
-    #[serde(default)]
     pub operator_shake: Option<Handle<CameraShakeConfig>>,
     /// `speedShake` (Class)
-    #[serde(default)]
     pub speed_shake: Option<Handle<CameraSpeedShakeConfig>>,
     /// `gforceShake` (Class)
-    #[serde(default)]
     pub gforce_shake: Option<Handle<CameraGForceShakeConfig>>,
     /// `raindropsEnabled` (Boolean)
-    #[serde(default)]
     pub raindrops_enabled: bool,
     /// `rotationConfig` (Class)
-    #[serde(default)]
     pub rotation_config: Option<Handle<CameraRotationConfig>>,
     /// `distanceConfig` (Class)
-    #[serde(default)]
     pub distance_config: Option<Handle<CameraDistanceConfig>>,
     /// `targetOffsetConfig` (Class)
-    #[serde(default)]
     pub target_offset_config: Option<Handle<CameraTargetOffsetConfig>>,
     /// `springConfig` (Class)
-    #[serde(default)]
     pub spring_config: Option<Handle<CameraSpringConfig>>,
     /// `collisionConfig` (Class)
-    #[serde(default)]
     pub collision_config: Option<Handle<CameraCollisionConfig>>,
     /// `defaultViews` (Class (array))
-    #[serde(default)]
     pub default_views: Vec<Handle<SCameraViewStateOrbit>>,
     /// `alternativeViewsConfig` (Class)
-    #[serde(default)]
     pub alternative_views_config: Option<Handle<CameraAlternativeViewsConfig>>,
     /// `actorOffsetConfig` (Class (array))
-    #[serde(default)]
     pub actor_offset_config: Vec<Handle<ActorCameraOffsetFiltered>>,
     /// `cinematicEvents` (Class (array))
-    #[serde(default)]
     pub cinematic_events: Vec<Handle<OrbitEntityCinematicEvent>>,
     /// `expiryViewIndex` (Int32)
-    #[serde(default)]
     pub expiry_view_index: i32,
     /// `expiryAutomaticDollySpeed` (Single)
-    #[serde(default)]
     pub expiry_automatic_dolly_speed: f32,
 }
 
@@ -358,52 +310,36 @@ impl<'a> Extract<'a> for CameraOrbitEntityCinematicConfig {
 
 /// DCB type: `CameraOrbitFPSDeathCamConfig`
 /// Inherits from: `CameraOrbitEntityConfig`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CameraOrbitFPSDeathCamConfig {
     /// `baseSettings` (Class)
-    #[serde(default)]
     pub base_settings: Option<Handle<CameraBaseSettingsConfig>>,
     /// `blendConfig` (Class)
-    #[serde(default)]
     pub blend_config: Option<Handle<CameraBlendConfig>>,
     /// `FOVConfig` (Class)
-    #[serde(default)]
     pub fovconfig: Option<Handle<CameraFOVConfig>>,
     /// `operatorShake` (Class)
-    #[serde(default)]
     pub operator_shake: Option<Handle<CameraShakeConfig>>,
     /// `speedShake` (Class)
-    #[serde(default)]
     pub speed_shake: Option<Handle<CameraSpeedShakeConfig>>,
     /// `gforceShake` (Class)
-    #[serde(default)]
     pub gforce_shake: Option<Handle<CameraGForceShakeConfig>>,
     /// `raindropsEnabled` (Boolean)
-    #[serde(default)]
     pub raindrops_enabled: bool,
     /// `rotationConfig` (Class)
-    #[serde(default)]
     pub rotation_config: Option<Handle<CameraRotationConfig>>,
     /// `distanceConfig` (Class)
-    #[serde(default)]
     pub distance_config: Option<Handle<CameraDistanceConfig>>,
     /// `targetOffsetConfig` (Class)
-    #[serde(default)]
     pub target_offset_config: Option<Handle<CameraTargetOffsetConfig>>,
     /// `springConfig` (Class)
-    #[serde(default)]
     pub spring_config: Option<Handle<CameraSpringConfig>>,
     /// `collisionConfig` (Class)
-    #[serde(default)]
     pub collision_config: Option<Handle<CameraCollisionConfig>>,
     /// `defaultViews` (Class (array))
-    #[serde(default)]
     pub default_views: Vec<Handle<SCameraViewStateOrbit>>,
     /// `alternativeViewsConfig` (Class)
-    #[serde(default)]
     pub alternative_views_config: Option<Handle<CameraAlternativeViewsConfig>>,
     /// `actorOffsetConfig` (Class (array))
-    #[serde(default)]
     pub actor_offset_config: Vec<Handle<ActorCameraOffsetFiltered>>,
 }
 
@@ -485,16 +421,12 @@ impl<'a> Extract<'a> for CameraOrbitFPSDeathCamConfig {
 
 /// DCB type: `CameraDockingConfig`
 /// Inherits from: `CameraBaseConfig`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CameraDockingConfig {
     /// `baseSettings` (Class)
-    #[serde(default)]
     pub base_settings: Option<Handle<CameraBaseSettingsConfig>>,
     /// `blendConfig` (Class)
-    #[serde(default)]
     pub blend_config: Option<Handle<CameraBlendConfig>>,
     /// `FOVConfig` (Class)
-    #[serde(default)]
     pub fovconfig: Option<Handle<CameraFOVConfig>>,
 }
 
@@ -524,13 +456,10 @@ impl<'a> Extract<'a> for CameraDockingConfig {
 }
 
 /// DCB type: `CameraShopItemOffset`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CameraShopItemOffset {
     /// `itemType` (EnumChoice)
-    #[serde(default)]
     pub item_type: EItemType,
     /// `positionOffset` (Class)
-    #[serde(default)]
     pub position_offset: Option<Handle<Vec3>>,
 }
 
@@ -553,55 +482,38 @@ impl<'a> Extract<'a> for CameraShopItemOffset {
 }
 
 /// DCB type: `CameraShopConfig`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CameraShopConfig {
     /// `initialPositionOffset` (Class)
-    #[serde(default)]
     pub initial_position_offset: Option<Handle<Vec3>>,
     /// `itemOffsets` (Class (array))
-    #[serde(default)]
     pub item_offsets: Vec<Handle<CameraShopItemOffset>>,
     /// `minVerticalRotationAngle` (Single)
-    #[serde(default)]
     pub min_vertical_rotation_angle: f32,
     /// `maxVerticalRotationAngle` (Single)
-    #[serde(default)]
     pub max_vertical_rotation_angle: f32,
     /// `minHorizontalRotationAngle` (Single)
-    #[serde(default)]
     pub min_horizontal_rotation_angle: f32,
     /// `maxHorizontalRotationAngle` (Single)
-    #[serde(default)]
     pub max_horizontal_rotation_angle: f32,
     /// `inTranslationSpeed` (Single)
-    #[serde(default)]
     pub in_translation_speed: f32,
     /// `outTranslationSpeed` (Single)
-    #[serde(default)]
     pub out_translation_speed: f32,
     /// `inRotationSpeed` (Single)
-    #[serde(default)]
     pub in_rotation_speed: f32,
     /// `outRotationSpeed` (Single)
-    #[serde(default)]
     pub out_rotation_speed: f32,
     /// `rotationSpeed` (Single)
-    #[serde(default)]
     pub rotation_speed: f32,
     /// `zoomMin` (Single)
-    #[serde(default)]
     pub zoom_min: f32,
     /// `zoomMax` (Single)
-    #[serde(default)]
     pub zoom_max: f32,
     /// `zoomSpeed` (Single)
-    #[serde(default)]
     pub zoom_speed: f32,
     /// `twirlSpeed` (Single)
-    #[serde(default)]
     pub twirl_speed: f32,
     /// `timeToActivateTwirl` (Single)
-    #[serde(default)]
     pub time_to_activate_twirl: f32,
 }
 
@@ -645,28 +557,20 @@ impl<'a> Extract<'a> for CameraShopConfig {
 
 /// DCB type: `CameraStaticConfig`
 /// Inherits from: `CameraBaseConfig`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CameraStaticConfig {
     /// `baseSettings` (Class)
-    #[serde(default)]
     pub base_settings: Option<Handle<CameraBaseSettingsConfig>>,
     /// `blendConfig` (Class)
-    #[serde(default)]
     pub blend_config: Option<Handle<CameraBlendConfig>>,
     /// `FOVConfig` (Class)
-    #[serde(default)]
     pub fovconfig: Option<Handle<CameraFOVConfig>>,
     /// `targetOffsetConfig` (Class)
-    #[serde(default)]
     pub target_offset_config: Option<Handle<CameraTargetOffsetConfig>>,
     /// `focusTargetAttachmentName` (String)
-    #[serde(default)]
     pub focus_target_attachment_name: String,
     /// `targetAttachmentPositionOffset` (Class)
-    #[serde(default)]
     pub target_attachment_position_offset: Option<Handle<Vec3>>,
     /// `targetAttachmentLerpFactor` (Single)
-    #[serde(default)]
     pub target_attachment_lerp_factor: f32,
 }
 
@@ -707,28 +611,20 @@ impl<'a> Extract<'a> for CameraStaticConfig {
 
 /// DCB type: `CameraView2ShipsFrameParams`
 /// Inherits from: `CameraThirdPersonBaseConfig`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CameraView2ShipsFrameParams {
     /// `baseSettings` (Class)
-    #[serde(default)]
     pub base_settings: Option<Handle<CameraBaseSettingsConfig>>,
     /// `blendConfig` (Class)
-    #[serde(default)]
     pub blend_config: Option<Handle<CameraBlendConfig>>,
     /// `FOVConfig` (Class)
-    #[serde(default)]
     pub fovconfig: Option<Handle<CameraFOVConfig>>,
     /// `operatorShake` (Class)
-    #[serde(default)]
     pub operator_shake: Option<Handle<CameraShakeConfig>>,
     /// `speedShake` (Class)
-    #[serde(default)]
     pub speed_shake: Option<Handle<CameraSpeedShakeConfig>>,
     /// `gforceShake` (Class)
-    #[serde(default)]
     pub gforce_shake: Option<Handle<CameraGForceShakeConfig>>,
     /// `raindropsEnabled` (Boolean)
-    #[serde(default)]
     pub raindrops_enabled: bool,
 }
 
@@ -772,16 +668,12 @@ impl<'a> Extract<'a> for CameraView2ShipsFrameParams {
 
 /// DCB type: `CameraTrackviewConfig`
 /// Inherits from: `CameraBaseConfig`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CameraTrackviewConfig {
     /// `baseSettings` (Class)
-    #[serde(default)]
     pub base_settings: Option<Handle<CameraBaseSettingsConfig>>,
     /// `blendConfig` (Class)
-    #[serde(default)]
     pub blend_config: Option<Handle<CameraBlendConfig>>,
     /// `FOVConfig` (Class)
-    #[serde(default)]
     pub fovconfig: Option<Handle<CameraFOVConfig>>,
 }
 
@@ -811,13 +703,10 @@ impl<'a> Extract<'a> for CameraTrackviewConfig {
 }
 
 /// DCB type: `CinematicCameraControllerSetup`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CinematicCameraControllerSetup {
     /// `actionHoldTime` (Single)
-    #[serde(default)]
     pub action_hold_time: f32,
     /// `expiryLingerTime` (Single)
-    #[serde(default)]
     pub expiry_linger_time: f32,
 }
 
@@ -837,13 +726,10 @@ impl<'a> Extract<'a> for CinematicCameraControllerSetup {
 }
 
 /// DCB type: `CameraFOVChangeData`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CameraFOVChangeData {
     /// `fovLerpSpeed` (Single)
-    #[serde(default)]
     pub fov_lerp_speed: f32,
     /// `resetFOVLerpSpeed` (Single)
-    #[serde(default)]
     pub reset_fovlerp_speed: f32,
 }
 

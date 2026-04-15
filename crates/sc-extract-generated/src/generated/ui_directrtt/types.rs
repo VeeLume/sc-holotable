@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,16 +19,12 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `DirectRTT_ChromaticAberrationParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DirectRTT_ChromaticAberrationParams {
     /// `RedChannelOffset` (Class)
-    #[serde(default)]
     pub red_channel_offset: Option<Handle<Vec2>>,
     /// `GreenChannelOffset` (Class)
-    #[serde(default)]
     pub green_channel_offset: Option<Handle<Vec2>>,
     /// `BlueChannelOffset` (Class)
-    #[serde(default)]
     pub blue_channel_offset: Option<Handle<Vec2>>,
 }
 
@@ -59,28 +54,20 @@ impl<'a> Extract<'a> for DirectRTT_ChromaticAberrationParams {
 }
 
 /// DCB type: `DirectRTT_DropShadowParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DirectRTT_DropShadowParams {
     /// `SharpShadowIntensity` (Single)
-    #[serde(default)]
     pub sharp_shadow_intensity: f32,
     /// `SoftShadowIntensity` (Single)
-    #[serde(default)]
     pub soft_shadow_intensity: f32,
     /// `Spread` (Single)
-    #[serde(default)]
     pub spread: f32,
     /// `Offset` (Class)
-    #[serde(default)]
     pub offset: Option<Handle<Vec2>>,
     /// `Color` (Class)
-    #[serde(default)]
     pub color: Option<Handle<SRGB8>>,
     /// `OpacityInBrightScenes` (Single)
-    #[serde(default)]
     pub opacity_in_bright_scenes: f32,
     /// `OpacityInDarkScenes` (Single)
-    #[serde(default)]
     pub opacity_in_dark_scenes: f32,
 }
 
@@ -111,22 +98,16 @@ impl<'a> Extract<'a> for DirectRTT_DropShadowParams {
 }
 
 /// DCB type: `DirectRTT_BloomParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DirectRTT_BloomParams {
     /// `Cutoff` (Single)
-    #[serde(default)]
     pub cutoff: f32,
     /// `BloomAdditiveBlendFactor` (Single)
-    #[serde(default)]
     pub bloom_additive_blend_factor: f32,
     /// `SaturationFactor` (Single)
-    #[serde(default)]
     pub saturation_factor: f32,
     /// `OpacityInBrightScenes` (Single)
-    #[serde(default)]
     pub opacity_in_bright_scenes: f32,
     /// `OpacityInDarkScenes` (Single)
-    #[serde(default)]
     pub opacity_in_dark_scenes: f32,
 }
 
@@ -149,19 +130,14 @@ impl<'a> Extract<'a> for DirectRTT_BloomParams {
 }
 
 /// DCB type: `DirectRTT_PixelGridParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DirectRTT_PixelGridParams {
     /// `TexturePath` (String)
-    #[serde(default)]
     pub texture_path: String,
     /// `Intensity` (Single)
-    #[serde(default)]
     pub intensity: f32,
     /// `Tiling` (Single)
-    #[serde(default)]
     pub tiling: f32,
     /// `ScrollSpeed` (Single)
-    #[serde(default)]
     pub scroll_speed: f32,
 }
 
@@ -183,19 +159,14 @@ impl<'a> Extract<'a> for DirectRTT_PixelGridParams {
 }
 
 /// DCB type: `DirectRTT_InterferenceParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DirectRTT_InterferenceParams {
     /// `Amount` (Single)
-    #[serde(default)]
     pub amount: f32,
     /// `Speed` (Single)
-    #[serde(default)]
     pub speed: f32,
     /// `Tiling` (Single)
-    #[serde(default)]
     pub tiling: f32,
     /// `Brightness` (Single)
-    #[serde(default)]
     pub brightness: f32,
 }
 
@@ -217,34 +188,24 @@ impl<'a> Extract<'a> for DirectRTT_InterferenceParams {
 }
 
 /// DCB type: `DirectRTT_AfterTonemappingParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DirectRTT_AfterTonemappingParams {
     /// `BlurRadius` (Single)
-    #[serde(default)]
     pub blur_radius: f32,
     /// `OpacityInBrightScenes` (Single)
-    #[serde(default)]
     pub opacity_in_bright_scenes: f32,
     /// `OpacityInDarkScenes` (Single)
-    #[serde(default)]
     pub opacity_in_dark_scenes: f32,
     /// `AdditiveBlendFactor` (Single)
-    #[serde(default)]
     pub additive_blend_factor: f32,
     /// `ChromaticAberrationParams` (Class)
-    #[serde(default)]
     pub chromatic_aberration_params: Option<Handle<DirectRTT_ChromaticAberrationParams>>,
     /// `DropShadowParams` (Class)
-    #[serde(default)]
     pub drop_shadow_params: Option<Handle<DirectRTT_DropShadowParams>>,
     /// `BloomParams` (Class)
-    #[serde(default)]
     pub bloom_params: Option<Handle<DirectRTT_BloomParams>>,
     /// `PixelGridParams` (Class)
-    #[serde(default)]
     pub pixel_grid_params: Option<Handle<DirectRTT_PixelGridParams>>,
     /// `ScreenInterferenceParams` (Class)
-    #[serde(default)]
     pub screen_interference_params: Option<Handle<DirectRTT_InterferenceParams>>,
 }
 

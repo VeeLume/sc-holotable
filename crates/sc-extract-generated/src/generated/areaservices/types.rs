@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,25 +19,18 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `BaseService`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BaseService {
     /// `text` (Locale)
-    #[serde(default)]
     pub text: LocaleKey,
     /// `description` (Locale)
-    #[serde(default)]
     pub description: LocaleKey,
     /// `productName` (Locale)
-    #[serde(default)]
     pub product_name: LocaleKey,
     /// `icon` (String)
-    #[serde(default)]
     pub icon: String,
     /// `serviceDelayTime` (Single)
-    #[serde(default)]
     pub service_delay_time: f32,
     /// `hudMessage` (Locale)
-    #[serde(default)]
     pub hud_message: LocaleKey,
 }
 
@@ -63,34 +55,24 @@ impl<'a> Extract<'a> for BaseService {
 
 /// DCB type: `RepairService`
 /// Inherits from: `BaseService`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct RepairService {
     /// `text` (Locale)
-    #[serde(default)]
     pub text: LocaleKey,
     /// `description` (Locale)
-    #[serde(default)]
     pub description: LocaleKey,
     /// `productName` (Locale)
-    #[serde(default)]
     pub product_name: LocaleKey,
     /// `icon` (String)
-    #[serde(default)]
     pub icon: String,
     /// `serviceDelayTime` (Single)
-    #[serde(default)]
     pub service_delay_time: f32,
     /// `hudMessage` (Locale)
-    #[serde(default)]
     pub hud_message: LocaleKey,
     /// `commodityToHitPoints` (Int32)
-    #[serde(default)]
     pub commodity_to_hit_points: i32,
     /// `commodityToDegradationLifetime` (Int32)
-    #[serde(default)]
     pub commodity_to_degradation_lifetime: i32,
     /// `repairCommodity` (Reference)
-    #[serde(default)]
     pub repair_commodity: Option<CigGuid>,
 }
 
@@ -118,34 +100,24 @@ impl<'a> Extract<'a> for RepairService {
 
 /// DCB type: `QuantumRefuelService`
 /// Inherits from: `RefuelBaseService`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct QuantumRefuelService {
     /// `text` (Locale)
-    #[serde(default)]
     pub text: LocaleKey,
     /// `description` (Locale)
-    #[serde(default)]
     pub description: LocaleKey,
     /// `productName` (Locale)
-    #[serde(default)]
     pub product_name: LocaleKey,
     /// `icon` (String)
-    #[serde(default)]
     pub icon: String,
     /// `serviceDelayTime` (Single)
-    #[serde(default)]
     pub service_delay_time: f32,
     /// `hudMessage` (Locale)
-    #[serde(default)]
     pub hud_message: LocaleKey,
     /// `instantRefuel` (Boolean)
-    #[serde(default)]
     pub instant_refuel: bool,
     /// `refuelUnitPerSecond` (Int32)
-    #[serde(default)]
     pub refuel_unit_per_second: i32,
     /// `fuelCommodity` (Reference)
-    #[serde(default)]
     pub fuel_commodity: Option<CigGuid>,
 }
 
@@ -173,34 +145,24 @@ impl<'a> Extract<'a> for QuantumRefuelService {
 
 /// DCB type: `HydrogenRefuelService`
 /// Inherits from: `RefuelBaseService`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct HydrogenRefuelService {
     /// `text` (Locale)
-    #[serde(default)]
     pub text: LocaleKey,
     /// `description` (Locale)
-    #[serde(default)]
     pub description: LocaleKey,
     /// `productName` (Locale)
-    #[serde(default)]
     pub product_name: LocaleKey,
     /// `icon` (String)
-    #[serde(default)]
     pub icon: String,
     /// `serviceDelayTime` (Single)
-    #[serde(default)]
     pub service_delay_time: f32,
     /// `hudMessage` (Locale)
-    #[serde(default)]
     pub hud_message: LocaleKey,
     /// `instantRefuel` (Boolean)
-    #[serde(default)]
     pub instant_refuel: bool,
     /// `refuelUnitPerSecond` (Int32)
-    #[serde(default)]
     pub refuel_unit_per_second: i32,
     /// `fuelCommodity` (Reference)
-    #[serde(default)]
     pub fuel_commodity: Option<CigGuid>,
 }
 
@@ -228,28 +190,20 @@ impl<'a> Extract<'a> for HydrogenRefuelService {
 
 /// DCB type: `RestockService`
 /// Inherits from: `BaseService`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct RestockService {
     /// `text` (Locale)
-    #[serde(default)]
     pub text: LocaleKey,
     /// `description` (Locale)
-    #[serde(default)]
     pub description: LocaleKey,
     /// `productName` (Locale)
-    #[serde(default)]
     pub product_name: LocaleKey,
     /// `icon` (String)
-    #[serde(default)]
     pub icon: String,
     /// `serviceDelayTime` (Single)
-    #[serde(default)]
     pub service_delay_time: f32,
     /// `hudMessage` (Locale)
-    #[serde(default)]
     pub hud_message: LocaleKey,
     /// `AmmoCommodity` (Reference)
-    #[serde(default)]
     pub ammo_commodity: Option<CigGuid>,
 }
 
@@ -274,16 +228,12 @@ impl<'a> Extract<'a> for RestockService {
 }
 
 /// DCB type: `AreaServices`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AreaServices {
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
     /// `lingeringTimeout` (Single)
-    #[serde(default)]
     pub lingering_timeout: f32,
     /// `service` (StrongPointer (array))
-    #[serde(default)]
     pub service: Vec<BaseServicePtr>,
 }
 

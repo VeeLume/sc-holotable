@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,16 +19,12 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `ForceFeedback`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ForceFeedback {
     /// `Patterns` (Class (array))
-    #[serde(default)]
     pub patterns: Vec<Handle<ForceFeedbackPattern>>,
     /// `Envelopes` (Class (array))
-    #[serde(default)]
     pub envelopes: Vec<Handle<ForceFeedbackEnvelope>>,
     /// `Effects` (Class (array))
-    #[serde(default)]
     pub effects: Vec<Handle<ForceFeedbackEffect>>,
 }
 
@@ -68,13 +63,10 @@ impl<'a> Extract<'a> for ForceFeedback {
 }
 
 /// DCB type: `ForceFeedbackPattern`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ForceFeedbackPattern {
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
     /// `samples` (String)
-    #[serde(default)]
     pub samples: String,
 }
 
@@ -94,13 +86,10 @@ impl<'a> Extract<'a> for ForceFeedbackPattern {
 }
 
 /// DCB type: `ForceFeedbackEnvelope`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ForceFeedbackEnvelope {
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
     /// `samples` (String)
-    #[serde(default)]
     pub samples: String,
 }
 
@@ -120,22 +109,16 @@ impl<'a> Extract<'a> for ForceFeedbackEnvelope {
 }
 
 /// DCB type: `ForceFeedbackEffect`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ForceFeedbackEffect {
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
     /// `time` (Single)
-    #[serde(default)]
     pub time: f32,
     /// `MotorAB` (StrongPointer)
-    #[serde(default)]
     pub motor_ab: Option<Handle<ForceFeedbackMotor>>,
     /// `MotorA` (StrongPointer)
-    #[serde(default)]
     pub motor_a: Option<Handle<ForceFeedbackMotor>>,
     /// `MotorB` (StrongPointer)
-    #[serde(default)]
     pub motor_b: Option<Handle<ForceFeedbackMotor>>,
 }
 
@@ -167,16 +150,12 @@ impl<'a> Extract<'a> for ForceFeedbackEffect {
 }
 
 /// DCB type: `ForceFeedbackMotor`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ForceFeedbackMotor {
     /// `frequency` (Single)
-    #[serde(default)]
     pub frequency: f32,
     /// `pattern` (String)
-    #[serde(default)]
     pub pattern: String,
     /// `envelope` (String)
-    #[serde(default)]
     pub envelope: String,
 }
 

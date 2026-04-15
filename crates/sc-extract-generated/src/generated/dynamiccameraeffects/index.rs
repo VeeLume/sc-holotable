@@ -10,17 +10,14 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
 use std::collections::HashMap;
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use crate::Handle;
 use super::super::*;
 
 /// Record index for the `dynamiccameraeffects` feature.
-#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+#[derive(Default)]
 pub struct DynamiccameraeffectsIndex {
-    #[serde(default)]
     pub dynamic_camera_effects_list: HashMap<CigGuid, Handle<DynamicCameraEffectsList>>,
-    #[serde(default)]
     pub constant_dofglobal_data: HashMap<CigGuid, Handle<ConstantDOFGlobalData>>,
 }
 

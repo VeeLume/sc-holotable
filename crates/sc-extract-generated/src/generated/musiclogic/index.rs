@@ -10,19 +10,15 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
 use std::collections::HashMap;
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use crate::Handle;
 use super::super::*;
 
 /// Record index for the `musiclogic` feature.
-#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+#[derive(Default)]
 pub struct MusiclogicIndex {
-    #[serde(default)]
     pub music_logic_config: HashMap<CigGuid, Handle<MusicLogicConfig>>,
-    #[serde(default)]
     pub music_logic_event_list: HashMap<CigGuid, Handle<MusicLogicEventList>>,
-    #[serde(default)]
     pub music_logic_switch_value: HashMap<CigGuid, Handle<MusicLogicSwitchValue>>,
 }
 

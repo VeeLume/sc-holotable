@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,10 +19,8 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `AirlockGreenzoneParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AirlockGreenzoneParams {
     /// `GreenZoneToggleDoorIndex` (Int32)
-    #[serde(default)]
     pub green_zone_toggle_door_index: i32,
 }
 
@@ -42,13 +39,10 @@ impl<'a> Extract<'a> for AirlockGreenzoneParams {
 }
 
 /// DCB type: `AirlockAreaParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AirlockAreaParams {
     /// `AreaOffset` (Class)
-    #[serde(default)]
     pub area_offset: Option<Handle<Vec3>>,
     /// `AreaSize` (Class)
-    #[serde(default)]
     pub area_size: Option<Handle<Vec3>>,
 }
 
@@ -75,22 +69,16 @@ impl<'a> Extract<'a> for AirlockAreaParams {
 
 /// DCB type: `SCItemAirlockParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCItemAirlockParams {
     /// `MaxTimeToWaitForDoors` (Single)
-    #[serde(default)]
     pub max_time_to_wait_for_doors: f32,
     /// `MinTimeToWaitAfterDoorsClosed` (Single)
-    #[serde(default)]
     pub min_time_to_wait_after_doors_closed: f32,
     /// `CycleTime` (Single)
-    #[serde(default)]
     pub cycle_time: f32,
     /// `GreenzoneParams` (StrongPointer)
-    #[serde(default)]
     pub greenzone_params: Option<Handle<AirlockGreenzoneParams>>,
     /// `AreaOverride` (StrongPointer)
-    #[serde(default)]
     pub area_override: Option<Handle<AirlockAreaParams>>,
 }
 

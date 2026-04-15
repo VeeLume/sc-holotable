@@ -9,18 +9,13 @@
 
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
-use serde::{Deserialize, Serialize};
 use super::super::*;
 
 /// Pool storage for the `hardwaremouse` feature.
-#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+#[derive(Default)]
 pub struct HardwaremousePools {
-    #[serde(default)]
     pub virtual_cursor_params: Vec<Option<VirtualCursorParams>>,
-    #[serde(default)]
     pub virtual_cursor_hover_friction_params: Vec<Option<VirtualCursorHoverFrictionParams>>,
-    #[serde(default)]
     pub virtual_cursor_wheel_params: Vec<Option<VirtualCursorWheelParams>>,
-    #[serde(default)]
     pub hardware_mouse_params: Vec<Option<HardwareMouseParams>>,
 }

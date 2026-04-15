@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -21,16 +20,12 @@ use super::super::*;
 
 /// DCB type: `SCItemCommsReceiverComponentParams`
 /// Inherits from: `SCItemCommsComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCItemCommsReceiverComponentParams {
     /// `setup` (Reference)
-    #[serde(default)]
     pub setup: Option<CigGuid>,
     /// `commsChannels` (Reference (array))
-    #[serde(default)]
     pub comms_channels: Vec<CigGuid>,
     /// `audioCommsEffectOverride` (String)
-    #[serde(default)]
     pub audio_comms_effect_override: String,
 }
 

@@ -9,14 +9,11 @@
 
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
-use serde::{Deserialize, Serialize};
 use super::super::*;
 
 /// Pool storage for the `entities-scitem-mastermodeexclusionglobalparams` feature.
-#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+#[derive(Default)]
 pub struct EntitiesScitemMastermodeexclusionglobalparamsPools {
-    #[serde(default)]
     pub master_mode_exclusion: Vec<Option<MasterModeExclusion>>,
-    #[serde(default)]
     pub master_mode_exclusion_global_params: Vec<Option<MasterModeExclusionGlobalParams>>,
 }

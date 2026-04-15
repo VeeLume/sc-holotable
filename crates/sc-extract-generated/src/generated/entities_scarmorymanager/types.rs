@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -21,34 +20,24 @@ use super::super::*;
 
 /// DCB type: `SArmouryManagerParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SArmouryManagerParams {
     /// `armouryData` (Reference)
-    #[serde(default)]
     pub armoury_data: Option<CigGuid>,
     /// `armourer` (Class)
-    #[serde(default)]
     pub armourer: Option<Handle<EntityReferenceDef>>,
     /// `weaponRacks` (Class (array))
-    #[serde(default)]
     pub weapon_racks: Vec<Handle<EntityReferenceDef>>,
     /// `inventories` (Class (array))
-    #[serde(default)]
     pub inventories: Vec<Handle<EntityReferenceDef>>,
     /// `locker` (Class)
-    #[serde(default)]
     pub locker: Option<Handle<EntityReferenceDef>>,
     /// `spawnerLocations` (Class (array))
-    #[serde(default)]
     pub spawner_locations: Vec<Handle<EntityReferenceDef>>,
     /// `requestInteractionRadius` (Single)
-    #[serde(default)]
     pub request_interaction_radius: f32,
     /// `firingRangeEntities` (Class (array))
-    #[serde(default)]
     pub firing_range_entities: Vec<Handle<EntityReferenceDef>>,
     /// `cleanupArea` (Class)
-    #[serde(default)]
     pub cleanup_area: Option<Handle<EntityReferenceDef>>,
 }
 

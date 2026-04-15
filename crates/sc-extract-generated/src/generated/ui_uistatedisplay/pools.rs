@@ -9,14 +9,11 @@
 
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
-use serde::{Deserialize, Serialize};
 use super::super::*;
 
 /// Pool storage for the `ui-uistatedisplay` feature.
-#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+#[derive(Default)]
 pub struct UiUistatedisplayPools {
-    #[serde(default)]
     pub uistate_display_threshold: Vec<Option<UIStateDisplay_Threshold>>,
-    #[serde(default)]
     pub uistate_display: Vec<Option<UIStateDisplay>>,
 }

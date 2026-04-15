@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -21,25 +20,18 @@ use super::super::*;
 
 /// DCB type: `SCItemDeployableShieldParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCItemDeployableShieldParams {
     /// `shield` (String)
-    #[serde(default)]
     pub shield: String,
     /// `startupVFX` (String)
-    #[serde(default)]
     pub startup_vfx: String,
     /// `destroyedVFX` (String)
-    #[serde(default)]
     pub destroyed_vfx: String,
     /// `openAnim` (String)
-    #[serde(default)]
     pub open_anim: String,
     /// `closedAnim` (String)
-    #[serde(default)]
     pub closed_anim: String,
     /// `size` (Class)
-    #[serde(default)]
     pub size: Option<Handle<Vec3>>,
 }
 

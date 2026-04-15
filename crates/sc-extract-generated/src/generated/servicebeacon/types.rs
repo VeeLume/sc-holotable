@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -21,28 +20,20 @@ use super::super::*;
 
 /// DCB type: `ContractGeneratorHandler_ServiceBeacon`
 /// Inherits from: `ContractGeneratorHandlerBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ContractGeneratorHandler_ServiceBeacon {
     /// `notForRelease` (Boolean)
-    #[serde(default)]
     pub not_for_release: bool,
     /// `workInProgress` (Boolean)
-    #[serde(default)]
     pub work_in_progress: bool,
     /// `debugName` (String)
-    #[serde(default)]
     pub debug_name: String,
     /// `required_active_scenarios` (Reference (array))
-    #[serde(default)]
     pub required_active_scenarios: Vec<CigGuid>,
     /// `defaultAvailability` (Class)
-    #[serde(default)]
     pub default_availability: Option<Handle<ContractAvailability>>,
     /// `contractParams` (Class)
-    #[serde(default)]
     pub contract_params: Option<Handle<ContractParamOverrides>>,
     /// `serviceBeaconContracts` (Class (array))
-    #[serde(default)]
     pub service_beacon_contracts: Vec<Handle<Contract>>,
 }
 
@@ -82,10 +73,8 @@ impl<'a> Extract<'a> for ContractGeneratorHandler_ServiceBeacon {
 
 /// DCB type: `ContractClass_ServiceBeacon`
 /// Inherits from: `ContractClassBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ContractClass_ServiceBeacon {
     /// `params` (StrongPointer)
-    #[serde(default)]
     pub params: Option<ServiceBeaconBaseTemplateParamsPtr>,
 }
 
@@ -108,7 +97,6 @@ impl<'a> Extract<'a> for ContractClass_ServiceBeacon {
 
 /// DCB type: `MissionPropertyValue_StarMapLocation`
 /// Inherits from: `BaseMissionPropertyValue`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MissionPropertyValue_StarMapLocation {
 }
 
@@ -126,13 +114,10 @@ impl<'a> Extract<'a> for MissionPropertyValue_StarMapLocation {
 }
 
 /// DCB type: `BeaconsContracts`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BeaconsContracts {
     /// `serviceBeacons` (Reference (array))
-    #[serde(default)]
     pub service_beacons: Vec<CigGuid>,
     /// `serviceBeaconContractGenerator` (Reference)
-    #[serde(default)]
     pub service_beacon_contract_generator: Option<CigGuid>,
 }
 
@@ -154,37 +139,26 @@ impl<'a> Extract<'a> for BeaconsContracts {
 }
 
 /// DCB type: `ServiceBeaconBaseTemplateParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ServiceBeaconBaseTemplateParams {
     /// `objectiveTitle` (Locale)
-    #[serde(default)]
     pub objective_title: LocaleKey,
     /// `objectiveDescription` (Locale)
-    #[serde(default)]
     pub objective_description: LocaleKey,
     /// `canBeCreatedInMobiglas` (Boolean)
-    #[serde(default)]
     pub can_be_created_in_mobiglas: bool,
     /// `serviceBeaconType` (EnumChoice)
-    #[serde(default)]
     pub service_beacon_type: EServiceBeaconType,
     /// `serviceBeaconName` (Locale)
-    #[serde(default)]
     pub service_beacon_name: LocaleKey,
     /// `beaconTaxPercentage` (Int32)
-    #[serde(default)]
     pub beacon_tax_percentage: i32,
     /// `beaconMaxPaymentAmount` (Int32)
-    #[serde(default)]
     pub beacon_max_payment_amount: i32,
     /// `npcRequesterNameDef` (Class)
-    #[serde(default)]
     pub npc_requester_name_def: Option<Handle<MissionPropertyValue_AIName>>,
     /// `npcCreatorParams` (StrongPointer)
-    #[serde(default)]
     pub npc_creator_params: Option<SServiceBeaconCreatorParamsBasePtr>,
     /// `beaconModuleDeclaration` (Reference)
-    #[serde(default)]
     pub beacon_module_declaration: Option<CigGuid>,
 }
 
@@ -219,49 +193,34 @@ impl<'a> Extract<'a> for ServiceBeaconBaseTemplateParams {
 
 /// DCB type: `PersonalTransportBeaconParams`
 /// Inherits from: `ServiceBeaconBaseTemplateParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PersonalTransportBeaconParams {
     /// `objectiveTitle` (Locale)
-    #[serde(default)]
     pub objective_title: LocaleKey,
     /// `objectiveDescription` (Locale)
-    #[serde(default)]
     pub objective_description: LocaleKey,
     /// `canBeCreatedInMobiglas` (Boolean)
-    #[serde(default)]
     pub can_be_created_in_mobiglas: bool,
     /// `serviceBeaconType` (EnumChoice)
-    #[serde(default)]
     pub service_beacon_type: EServiceBeaconType,
     /// `serviceBeaconName` (Locale)
-    #[serde(default)]
     pub service_beacon_name: LocaleKey,
     /// `beaconTaxPercentage` (Int32)
-    #[serde(default)]
     pub beacon_tax_percentage: i32,
     /// `beaconMaxPaymentAmount` (Int32)
-    #[serde(default)]
     pub beacon_max_payment_amount: i32,
     /// `npcRequesterNameDef` (Class)
-    #[serde(default)]
     pub npc_requester_name_def: Option<Handle<MissionPropertyValue_AIName>>,
     /// `npcCreatorParams` (StrongPointer)
-    #[serde(default)]
     pub npc_creator_params: Option<SServiceBeaconCreatorParamsBasePtr>,
     /// `beaconModuleDeclaration` (Reference)
-    #[serde(default)]
     pub beacon_module_declaration: Option<CigGuid>,
     /// `pickUpObjectiveTitle` (Locale)
-    #[serde(default)]
     pub pick_up_objective_title: LocaleKey,
     /// `pickUpObjectiveDescription` (Locale)
-    #[serde(default)]
     pub pick_up_objective_description: LocaleKey,
     /// `deliveryObjectiveTitle` (Locale)
-    #[serde(default)]
     pub delivery_objective_title: LocaleKey,
     /// `deliveryObjectiveDescription` (Locale)
-    #[serde(default)]
     pub delivery_objective_description: LocaleKey,
 }
 
@@ -299,10 +258,8 @@ impl<'a> Extract<'a> for PersonalTransportBeaconParams {
 }
 
 /// DCB type: `SServiceBeaconNotificationOverride`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SServiceBeaconNotificationOverride {
     /// `message` (Locale)
-    #[serde(default)]
     pub message: LocaleKey,
 }
 
@@ -322,10 +279,8 @@ impl<'a> Extract<'a> for SServiceBeaconNotificationOverride {
 
 /// DCB type: `SServiceBeaconCreatorParams`
 /// Inherits from: `SServiceBeaconCreatorParamsBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SServiceBeaconCreatorParams {
     /// `missionEntry` (Reference)
-    #[serde(default)]
     pub mission_entry: Option<CigGuid>,
 }
 
@@ -344,16 +299,12 @@ impl<'a> Extract<'a> for SServiceBeaconCreatorParams {
 }
 
 /// DCB type: `SServiceBeaconDifficultyEntry`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SServiceBeaconDifficultyEntry {
     /// `difficulty` (Int32)
-    #[serde(default)]
     pub difficulty: i32,
     /// `missionEntry` (Reference)
-    #[serde(default)]
     pub mission_entry: Option<CigGuid>,
     /// `beaconDetectedNotificationOverride` (StrongPointer)
-    #[serde(default)]
     pub beacon_detected_notification_override: Option<Handle<SServiceBeaconNotificationOverride>>,
 }
 
@@ -378,10 +329,8 @@ impl<'a> Extract<'a> for SServiceBeaconDifficultyEntry {
 
 /// DCB type: `SServiceBeaconCreatorParamsWithDifficulty`
 /// Inherits from: `SServiceBeaconCreatorParamsBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SServiceBeaconCreatorParamsWithDifficulty {
     /// `missionEntriesByDifficulty` (Class (array))
-    #[serde(default)]
     pub mission_entries_by_difficulty: Vec<Handle<SServiceBeaconDifficultyEntry>>,
 }
 
@@ -406,28 +355,20 @@ impl<'a> Extract<'a> for SServiceBeaconCreatorParamsWithDifficulty {
 }
 
 /// DCB type: `ServiceBeaconBaseParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ServiceBeaconBaseParams {
     /// `serviceBeaconType` (EnumChoice)
-    #[serde(default)]
     pub service_beacon_type: EServiceBeaconType,
     /// `serviceBeaconName` (Locale)
-    #[serde(default)]
     pub service_beacon_name: LocaleKey,
     /// `beaconTaxPercentage` (Int32)
-    #[serde(default)]
     pub beacon_tax_percentage: i32,
     /// `beaconMaxPaymentAmount` (Int32)
-    #[serde(default)]
     pub beacon_max_payment_amount: i32,
     /// `npcRequesterNameDef` (Class)
-    #[serde(default)]
     pub npc_requester_name_def: Option<Handle<MissionPropertyValue_AIName>>,
     /// `playerCreatorParams` (StrongPointer)
-    #[serde(default)]
     pub player_creator_params: Option<Handle<SServiceBeaconCreatorParams>>,
     /// `npcCreatorParams` (StrongPointer)
-    #[serde(default)]
     pub npc_creator_params: Option<SServiceBeaconCreatorParamsBasePtr>,
 }
 
@@ -462,40 +403,28 @@ impl<'a> Extract<'a> for ServiceBeaconBaseParams {
 
 /// DCB type: `PersonalTransportParams`
 /// Inherits from: `ServiceBeaconBaseParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PersonalTransportParams {
     /// `serviceBeaconType` (EnumChoice)
-    #[serde(default)]
     pub service_beacon_type: EServiceBeaconType,
     /// `serviceBeaconName` (Locale)
-    #[serde(default)]
     pub service_beacon_name: LocaleKey,
     /// `beaconTaxPercentage` (Int32)
-    #[serde(default)]
     pub beacon_tax_percentage: i32,
     /// `beaconMaxPaymentAmount` (Int32)
-    #[serde(default)]
     pub beacon_max_payment_amount: i32,
     /// `npcRequesterNameDef` (Class)
-    #[serde(default)]
     pub npc_requester_name_def: Option<Handle<MissionPropertyValue_AIName>>,
     /// `playerCreatorParams` (StrongPointer)
-    #[serde(default)]
     pub player_creator_params: Option<Handle<SServiceBeaconCreatorParams>>,
     /// `npcCreatorParams` (StrongPointer)
-    #[serde(default)]
     pub npc_creator_params: Option<SServiceBeaconCreatorParamsBasePtr>,
     /// `pickUpObjectiveTitle` (Locale)
-    #[serde(default)]
     pub pick_up_objective_title: LocaleKey,
     /// `pickUpObjectiveDescription` (Locale)
-    #[serde(default)]
     pub pick_up_objective_description: LocaleKey,
     /// `deliveryObjectiveTitle` (Locale)
-    #[serde(default)]
     pub delivery_objective_title: LocaleKey,
     /// `deliveryObjectiveDescription` (Locale)
-    #[serde(default)]
     pub delivery_objective_description: LocaleKey,
 }
 
@@ -534,34 +463,24 @@ impl<'a> Extract<'a> for PersonalTransportParams {
 
 /// DCB type: `EscortParams`
 /// Inherits from: `ServiceBeaconBaseParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EscortParams {
     /// `serviceBeaconType` (EnumChoice)
-    #[serde(default)]
     pub service_beacon_type: EServiceBeaconType,
     /// `serviceBeaconName` (Locale)
-    #[serde(default)]
     pub service_beacon_name: LocaleKey,
     /// `beaconTaxPercentage` (Int32)
-    #[serde(default)]
     pub beacon_tax_percentage: i32,
     /// `beaconMaxPaymentAmount` (Int32)
-    #[serde(default)]
     pub beacon_max_payment_amount: i32,
     /// `npcRequesterNameDef` (Class)
-    #[serde(default)]
     pub npc_requester_name_def: Option<Handle<MissionPropertyValue_AIName>>,
     /// `playerCreatorParams` (StrongPointer)
-    #[serde(default)]
     pub player_creator_params: Option<Handle<SServiceBeaconCreatorParams>>,
     /// `npcCreatorParams` (StrongPointer)
-    #[serde(default)]
     pub npc_creator_params: Option<SServiceBeaconCreatorParamsBasePtr>,
     /// `objectiveTitle` (Locale)
-    #[serde(default)]
     pub objective_title: LocaleKey,
     /// `objectiveDescription` (Locale)
-    #[serde(default)]
     pub objective_description: LocaleKey,
 }
 
@@ -598,34 +517,24 @@ impl<'a> Extract<'a> for EscortParams {
 
 /// DCB type: `RefuelParams`
 /// Inherits from: `ServiceBeaconBaseParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct RefuelParams {
     /// `serviceBeaconType` (EnumChoice)
-    #[serde(default)]
     pub service_beacon_type: EServiceBeaconType,
     /// `serviceBeaconName` (Locale)
-    #[serde(default)]
     pub service_beacon_name: LocaleKey,
     /// `beaconTaxPercentage` (Int32)
-    #[serde(default)]
     pub beacon_tax_percentage: i32,
     /// `beaconMaxPaymentAmount` (Int32)
-    #[serde(default)]
     pub beacon_max_payment_amount: i32,
     /// `npcRequesterNameDef` (Class)
-    #[serde(default)]
     pub npc_requester_name_def: Option<Handle<MissionPropertyValue_AIName>>,
     /// `playerCreatorParams` (StrongPointer)
-    #[serde(default)]
     pub player_creator_params: Option<Handle<SServiceBeaconCreatorParams>>,
     /// `npcCreatorParams` (StrongPointer)
-    #[serde(default)]
     pub npc_creator_params: Option<SServiceBeaconCreatorParamsBasePtr>,
     /// `objectiveTitle` (Locale)
-    #[serde(default)]
     pub objective_title: LocaleKey,
     /// `objectiveDescription` (Locale)
-    #[serde(default)]
     pub objective_description: LocaleKey,
 }
 
@@ -662,34 +571,24 @@ impl<'a> Extract<'a> for RefuelParams {
 
 /// DCB type: `CombatAssistanceParams`
 /// Inherits from: `ServiceBeaconBaseParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CombatAssistanceParams {
     /// `serviceBeaconType` (EnumChoice)
-    #[serde(default)]
     pub service_beacon_type: EServiceBeaconType,
     /// `serviceBeaconName` (Locale)
-    #[serde(default)]
     pub service_beacon_name: LocaleKey,
     /// `beaconTaxPercentage` (Int32)
-    #[serde(default)]
     pub beacon_tax_percentage: i32,
     /// `beaconMaxPaymentAmount` (Int32)
-    #[serde(default)]
     pub beacon_max_payment_amount: i32,
     /// `npcRequesterNameDef` (Class)
-    #[serde(default)]
     pub npc_requester_name_def: Option<Handle<MissionPropertyValue_AIName>>,
     /// `playerCreatorParams` (StrongPointer)
-    #[serde(default)]
     pub player_creator_params: Option<Handle<SServiceBeaconCreatorParams>>,
     /// `npcCreatorParams` (StrongPointer)
-    #[serde(default)]
     pub npc_creator_params: Option<SServiceBeaconCreatorParamsBasePtr>,
     /// `objectiveTitle` (Locale)
-    #[serde(default)]
     pub objective_title: LocaleKey,
     /// `objectiveDescription` (Locale)
-    #[serde(default)]
     pub objective_description: LocaleKey,
 }
 
@@ -726,34 +625,24 @@ impl<'a> Extract<'a> for CombatAssistanceParams {
 
 /// DCB type: `ReviveParams`
 /// Inherits from: `ServiceBeaconBaseParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ReviveParams {
     /// `serviceBeaconType` (EnumChoice)
-    #[serde(default)]
     pub service_beacon_type: EServiceBeaconType,
     /// `serviceBeaconName` (Locale)
-    #[serde(default)]
     pub service_beacon_name: LocaleKey,
     /// `beaconTaxPercentage` (Int32)
-    #[serde(default)]
     pub beacon_tax_percentage: i32,
     /// `beaconMaxPaymentAmount` (Int32)
-    #[serde(default)]
     pub beacon_max_payment_amount: i32,
     /// `npcRequesterNameDef` (Class)
-    #[serde(default)]
     pub npc_requester_name_def: Option<Handle<MissionPropertyValue_AIName>>,
     /// `playerCreatorParams` (StrongPointer)
-    #[serde(default)]
     pub player_creator_params: Option<Handle<SServiceBeaconCreatorParams>>,
     /// `npcCreatorParams` (StrongPointer)
-    #[serde(default)]
     pub npc_creator_params: Option<SServiceBeaconCreatorParamsBasePtr>,
     /// `objectiveTitle` (Locale)
-    #[serde(default)]
     pub objective_title: LocaleKey,
     /// `objectiveDescription` (Locale)
-    #[serde(default)]
     pub objective_description: LocaleKey,
 }
 
@@ -790,34 +679,24 @@ impl<'a> Extract<'a> for ReviveParams {
 
 /// DCB type: `HealParams`
 /// Inherits from: `ServiceBeaconBaseParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct HealParams {
     /// `serviceBeaconType` (EnumChoice)
-    #[serde(default)]
     pub service_beacon_type: EServiceBeaconType,
     /// `serviceBeaconName` (Locale)
-    #[serde(default)]
     pub service_beacon_name: LocaleKey,
     /// `beaconTaxPercentage` (Int32)
-    #[serde(default)]
     pub beacon_tax_percentage: i32,
     /// `beaconMaxPaymentAmount` (Int32)
-    #[serde(default)]
     pub beacon_max_payment_amount: i32,
     /// `npcRequesterNameDef` (Class)
-    #[serde(default)]
     pub npc_requester_name_def: Option<Handle<MissionPropertyValue_AIName>>,
     /// `playerCreatorParams` (StrongPointer)
-    #[serde(default)]
     pub player_creator_params: Option<Handle<SServiceBeaconCreatorParams>>,
     /// `npcCreatorParams` (StrongPointer)
-    #[serde(default)]
     pub npc_creator_params: Option<SServiceBeaconCreatorParamsBasePtr>,
     /// `objectiveTitle` (Locale)
-    #[serde(default)]
     pub objective_title: LocaleKey,
     /// `objectiveDescription` (Locale)
-    #[serde(default)]
     pub objective_description: LocaleKey,
 }
 
@@ -853,10 +732,8 @@ impl<'a> Extract<'a> for HealParams {
 }
 
 /// DCB type: `ServiceBeaconParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ServiceBeaconParams {
     /// `params` (StrongPointer)
-    #[serde(default)]
     pub params: Option<ServiceBeaconBaseParamsPtr>,
 }
 
@@ -878,22 +755,16 @@ impl<'a> Extract<'a> for ServiceBeaconParams {
 }
 
 /// DCB type: `ServiceBeaconNotificationParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ServiceBeaconNotificationParams {
     /// `message` (Locale)
-    #[serde(default)]
     pub message: LocaleKey,
     /// `screenTimer` (Single)
-    #[serde(default)]
     pub screen_timer: f32,
     /// `hurryScreenTimer` (Single)
-    #[serde(default)]
     pub hurry_screen_timer: f32,
     /// `blocking` (Boolean)
-    #[serde(default)]
     pub blocking: bool,
     /// `dockNotificationParamsOverride` (Reference)
-    #[serde(default)]
     pub dock_notification_params_override: Option<CigGuid>,
 }
 
@@ -916,115 +787,78 @@ impl<'a> Extract<'a> for ServiceBeaconNotificationParams {
 }
 
 /// DCB type: `ServiceBeaconGlobalParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ServiceBeaconGlobalParams {
     /// `quantumTravelPointClass` (Reference)
-    #[serde(default)]
     pub quantum_travel_point_class: Option<CigGuid>,
     /// `missionTypeRecord` (Reference)
-    #[serde(default)]
     pub mission_type_record: Option<CigGuid>,
     /// `personalTransportDetectedNotification` (Class)
-    #[serde(default)]
     pub personal_transport_detected_notification: Option<Handle<ServiceBeaconNotificationParams>>,
     /// `combatAssistanceDetectedNotification` (Class)
-    #[serde(default)]
     pub combat_assistance_detected_notification: Option<Handle<ServiceBeaconNotificationParams>>,
     /// `escortDetectedNotification` (Class)
-    #[serde(default)]
     pub escort_detected_notification: Option<Handle<ServiceBeaconNotificationParams>>,
     /// `refuelDetectedNotification` (Class)
-    #[serde(default)]
     pub refuel_detected_notification: Option<Handle<ServiceBeaconNotificationParams>>,
     /// `reviveDetectedNotification` (Class)
-    #[serde(default)]
     pub revive_detected_notification: Option<Handle<ServiceBeaconNotificationParams>>,
     /// `healDetectedNotification` (Class)
-    #[serde(default)]
     pub heal_detected_notification: Option<Handle<ServiceBeaconNotificationParams>>,
     /// `contractAcceptedNotification` (Class)
-    #[serde(default)]
     pub contract_accepted_notification: Option<Handle<ServiceBeaconNotificationParams>>,
     /// `contractCancelledNotification` (Class)
-    #[serde(default)]
     pub contract_cancelled_notification: Option<Handle<ServiceBeaconNotificationParams>>,
     /// `contractNoLongerAvailableNotification` (Class)
-    #[serde(default)]
     pub contract_no_longer_available_notification: Option<Handle<ServiceBeaconNotificationParams>>,
     /// `contractCompletedInitiatorNotification` (Class)
-    #[serde(default)]
     pub contract_completed_initiator_notification: Option<Handle<ServiceBeaconNotificationParams>>,
     /// `contractCompletedProviderNotification` (Class)
-    #[serde(default)]
     pub contract_completed_provider_notification: Option<Handle<ServiceBeaconNotificationParams>>,
     /// `providerWithinRangeNotification` (Class)
-    #[serde(default)]
     pub provider_within_range_notification: Option<Handle<ServiceBeaconNotificationParams>>,
     /// `spoofedContractOfferedNotification` (Class)
-    #[serde(default)]
     pub spoofed_contract_offered_notification: Option<Handle<ServiceBeaconNotificationParams>>,
     /// `contractProviderName` (Locale)
-    #[serde(default)]
     pub contract_provider_name: LocaleKey,
     /// `vehicleLocationChosenForPersonalTransport` (Locale)
-    #[serde(default)]
     pub vehicle_location_chosen_for_personal_transport: LocaleKey,
     /// `providerNameToken` (String)
-    #[serde(default)]
     pub provider_name_token: String,
     /// `initiatorNameToken` (String)
-    #[serde(default)]
     pub initiator_name_token: String,
     /// `selectedDestinationToken` (String)
-    #[serde(default)]
     pub selected_destination_token: String,
     /// `contractTypeToken` (String)
-    #[serde(default)]
     pub contract_type_token: String,
     /// `distanceToInitiatorToken` (String)
-    #[serde(default)]
     pub distance_to_initiator_token: String,
     /// `initiatorLocationToken` (String)
-    #[serde(default)]
     pub initiator_location_token: String,
     /// `paymentAmountToken` (String)
-    #[serde(default)]
     pub payment_amount_token: String,
     /// `openSpaceLocationName` (Locale)
-    #[serde(default)]
     pub open_space_location_name: LocaleKey,
     /// `allReputationsLabel` (Locale)
-    #[serde(default)]
     pub all_reputations_label: LocaleKey,
     /// `oneStarReputationLabel` (Locale)
-    #[serde(default)]
     pub one_star_reputation_label: LocaleKey,
     /// `twoStarReputationLabel` (Locale)
-    #[serde(default)]
     pub two_star_reputation_label: LocaleKey,
     /// `threeStarReputationLabel` (Locale)
-    #[serde(default)]
     pub three_star_reputation_label: LocaleKey,
     /// `fourStarReputationLabel` (Locale)
-    #[serde(default)]
     pub four_star_reputation_label: LocaleKey,
     /// `fiveStarReputationLabel` (Locale)
-    #[serde(default)]
     pub five_star_reputation_label: LocaleKey,
     /// `invalidTypeErrorMessage` (Locale)
-    #[serde(default)]
     pub invalid_type_error_message: LocaleKey,
     /// `invalidReputationErrorMessage` (Locale)
-    #[serde(default)]
     pub invalid_reputation_error_message: LocaleKey,
     /// `priceIsZeroErrorMessage` (Locale)
-    #[serde(default)]
     pub price_is_zero_error_message: LocaleKey,
     /// `insufficientFundsErrorMessage` (Locale)
-    #[serde(default)]
     pub insufficient_funds_error_message: LocaleKey,
     /// `invalidLocationSelectedErrorMessage` (Locale)
-    #[serde(default)]
     pub invalid_location_selected_error_message: LocaleKey,
 }
 

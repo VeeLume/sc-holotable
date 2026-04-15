@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,31 +19,22 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `GeometryInstancer_Serialized`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GeometryInstancer_Serialized {
     /// `Version` (Int32)
-    #[serde(default)]
     pub version: i32,
     /// `Flags` (Int32)
-    #[serde(default)]
     pub flags: i32,
     /// `Geometry` (Class)
-    #[serde(default)]
     pub geometry: Option<Handle<GlobalResourceCGF>>,
     /// `Material` (Class)
-    #[serde(default)]
     pub material: Option<Handle<GlobalResourceMaterial>>,
     /// `MinAABB` (Class)
-    #[serde(default)]
     pub min_aabb: Option<Handle<Vec3>>,
     /// `MaxAABB` (Class)
-    #[serde(default)]
     pub max_aabb: Option<Handle<Vec3>>,
     /// `EncodedSize` (Int32)
-    #[serde(default)]
     pub encoded_size: i32,
     /// `EncodedBase64` (String)
-    #[serde(default)]
     pub encoded_base64: String,
 }
 
@@ -83,10 +73,8 @@ impl<'a> Extract<'a> for GeometryInstancer_Serialized {
 
 /// DCB type: `GeometryInstancerComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GeometryInstancerComponentParams {
     /// `Serialized` (Class)
-    #[serde(default)]
     pub serialized: Option<Handle<GeometryInstancer_Serialized>>,
 }
 

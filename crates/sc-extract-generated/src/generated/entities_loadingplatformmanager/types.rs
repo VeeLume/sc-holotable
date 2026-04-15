@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,22 +19,16 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `SCLoadingPlatformEntityReferences`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCLoadingPlatformEntityReferences {
     /// `loadingGate` (String)
-    #[serde(default)]
     pub loading_gate: String,
     /// `loadingPlatform` (String)
-    #[serde(default)]
     pub loading_platform: String,
     /// `frontGate` (String)
-    #[serde(default)]
     pub front_gate: String,
     /// `kiosk` (String)
-    #[serde(default)]
     pub kiosk: String,
     /// `obstructionCheckBounds` (String)
-    #[serde(default)]
     pub obstruction_check_bounds: String,
 }
 
@@ -58,22 +51,16 @@ impl<'a> Extract<'a> for SCLoadingPlatformEntityReferences {
 }
 
 /// DCB type: `SCLoadingPlatformLightGroupParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCLoadingPlatformLightGroupParams {
     /// `lightGroupEntityReference` (String)
-    #[serde(default)]
     pub light_group_entity_reference: String,
     /// `platformIdleClosedLightState` (EnumChoice)
-    #[serde(default)]
     pub platform_idle_closed_light_state: ELightState,
     /// `platformInTransitLightState` (EnumChoice)
-    #[serde(default)]
     pub platform_in_transit_light_state: ELightState,
     /// `platformIdleOpenLightState` (EnumChoice)
-    #[serde(default)]
     pub platform_idle_open_light_state: ELightState,
     /// `platformObstructedLightState` (EnumChoice)
-    #[serde(default)]
     pub platform_obstructed_light_state: ELightState,
 }
 
@@ -96,25 +83,18 @@ impl<'a> Extract<'a> for SCLoadingPlatformLightGroupParams {
 }
 
 /// DCB type: `SCLoadingPlatformEffectParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCLoadingPlatformEffectParams {
     /// `raisingLoadingPlatformTrigger` (Reference (array))
-    #[serde(default)]
     pub raising_loading_platform_trigger: Vec<CigGuid>,
     /// `openingLoadingGateTrigger` (Reference (array))
-    #[serde(default)]
     pub opening_loading_gate_trigger: Vec<CigGuid>,
     /// `openingFrontGateTrigger` (Reference (array))
-    #[serde(default)]
     pub opening_front_gate_trigger: Vec<CigGuid>,
     /// `loweringLoadingPlatformTrigger` (Reference (array))
-    #[serde(default)]
     pub lowering_loading_platform_trigger: Vec<CigGuid>,
     /// `closingLoadingGateTrigger` (Reference (array))
-    #[serde(default)]
     pub closing_loading_gate_trigger: Vec<CigGuid>,
     /// `closingFrontGateTrigger` (Reference (array))
-    #[serde(default)]
     pub closing_front_gate_trigger: Vec<CigGuid>,
 }
 
@@ -150,13 +130,10 @@ impl<'a> Extract<'a> for SCLoadingPlatformEffectParams {
 }
 
 /// DCB type: `SCLoadingPlatformTrackviewParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCLoadingPlatformTrackviewParams {
     /// `openingLoadingPlatformTrack` (String)
-    #[serde(default)]
     pub opening_loading_platform_track: String,
     /// `closingLoadingPlatformTrack` (String)
-    #[serde(default)]
     pub closing_loading_platform_track: String,
 }
 
@@ -177,31 +154,22 @@ impl<'a> Extract<'a> for SCLoadingPlatformTrackviewParams {
 
 /// DCB type: `SCLoadingPlatformManagerParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCLoadingPlatformManagerParams {
     /// `loadingPlatformEntityReferences` (Class)
-    #[serde(default)]
     pub loading_platform_entity_references: Option<Handle<SCLoadingPlatformEntityReferences>>,
     /// `lightGroupParams` (Class)
-    #[serde(default)]
     pub light_group_params: Option<Handle<SCLoadingPlatformLightGroupParams>>,
     /// `effectParams` (Class)
-    #[serde(default)]
     pub effect_params: Option<Handle<SCLoadingPlatformEffectParams>>,
     /// `trackviewParams` (Class)
-    #[serde(default)]
     pub trackview_params: Option<Handle<SCLoadingPlatformTrackviewParams>>,
     /// `hasFrontGate` (Boolean)
-    #[serde(default)]
     pub has_front_gate: bool,
     /// `hasLoadingGate` (Boolean)
-    #[serde(default)]
     pub has_loading_gate: bool,
     /// `hasCargoGrid` (Boolean)
-    #[serde(default)]
     pub has_cargo_grid: bool,
     /// `hasLandingArea` (Boolean)
-    #[serde(default)]
     pub has_landing_area: bool,
 }
 

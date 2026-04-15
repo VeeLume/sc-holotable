@@ -10,17 +10,14 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
 use std::collections::HashMap;
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use crate::Handle;
 use super::super::*;
 
 /// Record index for the `trackview` feature.
-#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+#[derive(Default)]
 pub struct TrackviewIndex {
-    #[serde(default)]
     pub camera_transition_interpolation_curve_record: HashMap<CigGuid, Handle<CameraTransitionInterpolationCurveRecord>>,
-    #[serde(default)]
     pub cinematic_flight_points_record: HashMap<CigGuid, Handle<CinematicFlightPointsRecord>>,
 }
 

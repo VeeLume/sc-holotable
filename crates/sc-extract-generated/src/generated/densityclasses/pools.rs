@@ -9,18 +9,13 @@
 
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
-use serde::{Deserialize, Serialize};
 use super::super::*;
 
 /// Pool storage for the `densityclasses` feature.
-#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+#[derive(Default)]
 pub struct DensityclassesPools {
-    #[serde(default)]
     pub sdensity_class_lifetime_override_entry: Vec<Option<SDensityClassLifetimeOverrideEntry>>,
-    #[serde(default)]
     pub sdefault_density_class_lifetime_overrides: Vec<Option<SDefaultDensityClassLifetimeOverrides>>,
-    #[serde(default)]
     pub sentity_density_class_overrides_record: Vec<Option<SEntityDensityClassOverridesRecord>>,
-    #[serde(default)]
     pub sentity_density_class_overrides_manual: Vec<Option<SEntityDensityClassOverridesManual>>,
 }

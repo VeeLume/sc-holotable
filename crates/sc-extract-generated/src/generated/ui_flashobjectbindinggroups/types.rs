@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,10 +19,8 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `FlashObjectBindingGroup`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct FlashObjectBindingGroup {
     /// `variableObjects` (Class (array))
-    #[serde(default)]
     pub variable_objects: Vec<Handle<FlashVariableObject>>,
 }
 
@@ -48,97 +45,66 @@ impl<'a> Extract<'a> for FlashObjectBindingGroup {
 }
 
 /// DCB type: `FlashVariableObject`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct FlashVariableObject {
     /// `linkName` (String)
-    #[serde(default)]
     pub link_name: String,
     /// `setAlpha` (Boolean)
-    #[serde(default)]
     pub set_alpha: bool,
     /// `alpha` (Single)
-    #[serde(default)]
     pub alpha: f32,
     /// `setCurrentFrame` (Boolean)
-    #[serde(default)]
     pub set_current_frame: bool,
     /// `currentFrame` (UInt32)
-    #[serde(default)]
     pub current_frame: u32,
     /// `modeX` (EnumChoice)
-    #[serde(default)]
     pub mode_x: FlashValueUpdateMode,
     /// `modeY` (EnumChoice)
-    #[serde(default)]
     pub mode_y: FlashValueUpdateMode,
     /// `modeZ` (EnumChoice)
-    #[serde(default)]
     pub mode_z: FlashValueUpdateMode,
     /// `x` (Single)
-    #[serde(default)]
     pub x: f32,
     /// `y` (Single)
-    #[serde(default)]
     pub y: f32,
     /// `z` (Single)
-    #[serde(default)]
     pub z: f32,
     /// `attachX` (Single)
-    #[serde(default)]
     pub attach_x: f32,
     /// `attachY` (Single)
-    #[serde(default)]
     pub attach_y: f32,
     /// `modeRotationX` (EnumChoice)
-    #[serde(default)]
     pub mode_rotation_x: FlashValueUpdateMode,
     /// `modeRotationY` (EnumChoice)
-    #[serde(default)]
     pub mode_rotation_y: FlashValueUpdateMode,
     /// `modeRotationZ` (EnumChoice)
-    #[serde(default)]
     pub mode_rotation_z: FlashValueUpdateMode,
     /// `rotationX` (Single)
-    #[serde(default)]
     pub rotation_x: f32,
     /// `rotationY` (Single)
-    #[serde(default)]
     pub rotation_y: f32,
     /// `rotationZ` (Single)
-    #[serde(default)]
     pub rotation_z: f32,
     /// `setScaleX` (Boolean)
-    #[serde(default)]
     pub set_scale_x: bool,
     /// `setScaleY` (Boolean)
-    #[serde(default)]
     pub set_scale_y: bool,
     /// `setScaleZ` (Boolean)
-    #[serde(default)]
     pub set_scale_z: bool,
     /// `scaleX` (Single)
-    #[serde(default)]
     pub scale_x: f32,
     /// `scaleY` (Single)
-    #[serde(default)]
     pub scale_y: f32,
     /// `scaleZ` (Single)
-    #[serde(default)]
     pub scale_z: f32,
     /// `setVisible` (Boolean)
-    #[serde(default)]
     pub set_visible: bool,
     /// `visible` (Boolean)
-    #[serde(default)]
     pub visible: bool,
     /// `setPerspFOV` (Boolean)
-    #[serde(default)]
     pub set_persp_fov: bool,
     /// `perspFOV` (Single)
-    #[serde(default)]
     pub persp_fov: f32,
     /// `fix2dCoordinates` (Boolean)
-    #[serde(default)]
     pub fix2d_coordinates: bool,
 }
 

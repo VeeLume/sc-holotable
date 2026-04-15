@@ -9,14 +9,11 @@
 
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
-use serde::{Deserialize, Serialize};
 use super::super::*;
 
 /// Pool storage for the `entities-scitem-flair` feature.
-#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+#[derive(Default)]
 pub struct EntitiesScitemFlairPools {
-    #[serde(default)]
     pub scitem_fish_params: Vec<Option<SCItemFishParams>>,
-    #[serde(default)]
     pub scjukebox_params: Vec<Option<SCJukeboxParams>>,
 }

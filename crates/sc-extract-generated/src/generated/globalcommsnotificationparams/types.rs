@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,19 +19,14 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `CommsNotificationsGlobalParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CommsNotificationsGlobalParams {
     /// `channelName` (Reference)
-    #[serde(default)]
     pub channel_name: Option<CigGuid>,
     /// `expiry` (Single)
-    #[serde(default)]
     pub expiry: f32,
     /// `priority` (Int32)
-    #[serde(default)]
     pub priority: i32,
     /// `fakeCommsAudioEntityClass3D` (Reference)
-    #[serde(default)]
     pub fake_comms_audio_entity_class3_d: Option<CigGuid>,
 }
 

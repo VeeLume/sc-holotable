@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,13 +19,10 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `SkinInteractableTemplate`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SkinInteractableTemplate {
     /// `Type` (EnumChoice)
-    #[serde(default)]
     pub r#type: EItemType,
     /// `InteractionPoints` (Class (array))
-    #[serde(default)]
     pub interaction_points: Vec<Handle<SInteractionPointParams>>,
 }
 
@@ -52,10 +48,8 @@ impl<'a> Extract<'a> for SkinInteractableTemplate {
 }
 
 /// DCB type: `SkinInteractableTemplates`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SkinInteractableTemplates {
     /// `Templates` (Class (array))
-    #[serde(default)]
     pub templates: Vec<Handle<SkinInteractableTemplate>>,
 }
 

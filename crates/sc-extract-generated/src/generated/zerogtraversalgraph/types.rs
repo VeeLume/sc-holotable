@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,28 +19,20 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `ZeroGTraversalConnection`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ZeroGTraversalConnection {
     /// `waitUntillFinished` (Boolean)
-    #[serde(default)]
     pub wait_untill_finished: bool,
     /// `delaySeconds` (Single)
-    #[serde(default)]
     pub delay_seconds: f32,
     /// `waitForEvent` (String)
-    #[serde(default)]
     pub wait_for_event: String,
     /// `resetViewOnTransition` (Boolean)
-    #[serde(default)]
     pub reset_view_on_transition: bool,
     /// `playExitAnimation` (Boolean)
-    #[serde(default)]
     pub play_exit_animation: bool,
     /// `allowExitYield` (Boolean)
-    #[serde(default)]
     pub allow_exit_yield: bool,
     /// `nextState` (WeakPointer)
-    #[serde(default)]
     pub next_state: Option<Handle<ZeroGTraversalState>>,
 }
 
@@ -69,28 +60,20 @@ impl<'a> Extract<'a> for ZeroGTraversalConnection {
 }
 
 /// DCB type: `ZeroGTraversalState`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ZeroGTraversalState {
     /// `type` (EnumChoice)
-    #[serde(default)]
     pub r#type: ZeroGTraversalAction,
     /// `mannequinTags` (String)
-    #[serde(default)]
     pub mannequin_tags: String,
     /// `mannequinFragment` (String)
-    #[serde(default)]
     pub mannequin_fragment: String,
     /// `playEnterAnimation` (Boolean)
-    #[serde(default)]
     pub play_enter_animation: bool,
     /// `canTurnInState` (Boolean)
-    #[serde(default)]
     pub can_turn_in_state: bool,
     /// `useAnimMotionControl` (Boolean)
-    #[serde(default)]
     pub use_anim_motion_control: bool,
     /// `connections` (Class (array))
-    #[serde(default)]
     pub connections: Vec<Handle<ZeroGTraversalConnection>>,
 }
 
@@ -121,10 +104,8 @@ impl<'a> Extract<'a> for ZeroGTraversalState {
 }
 
 /// DCB type: `ZeroGTraversalGraph`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ZeroGTraversalGraph {
     /// `traversalStates` (Class (array))
-    #[serde(default)]
     pub traversal_states: Vec<Handle<ZeroGTraversalState>>,
 }
 

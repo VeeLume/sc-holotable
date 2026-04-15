@@ -10,15 +10,13 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
 use std::collections::HashMap;
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use crate::Handle;
 use super::super::*;
 
 /// Record index for the `actor-externalforceresponse` feature.
-#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+#[derive(Default)]
 pub struct ActorExternalforceresponseIndex {
-    #[serde(default)]
     pub sactor_force_reactions_preset_record: HashMap<CigGuid, Handle<SActorForceReactionsPresetRecord>>,
 }
 

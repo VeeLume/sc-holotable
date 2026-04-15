@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -21,16 +20,12 @@ use super::super::*;
 
 /// DCB type: `MissionModifier_LawLicense`
 /// Inherits from: `BaseMissionModifier`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MissionModifier_LawLicense {
     /// `modifierName` (String)
-    #[serde(default)]
     pub modifier_name: String,
     /// `enabled` (Boolean)
-    #[serde(default)]
     pub enabled: bool,
     /// `licenseType` (EnumChoice)
-    #[serde(default)]
     pub license_type: ELawLicenseType,
 }
 
@@ -52,25 +47,18 @@ impl<'a> Extract<'a> for MissionModifier_LawLicense {
 
 /// DCB type: `MissionModifier_FactionHostility`
 /// Inherits from: `BaseMissionModifier`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MissionModifier_FactionHostility {
     /// `modifierName` (String)
-    #[serde(default)]
     pub modifier_name: String,
     /// `enabled` (Boolean)
-    #[serde(default)]
     pub enabled: bool,
     /// `faction` (Reference)
-    #[serde(default)]
     pub faction: Option<CigGuid>,
     /// `myReaction` (EnumChoice)
-    #[serde(default)]
     pub my_reaction: ReactionType,
     /// `theirReaction` (EnumChoice)
-    #[serde(default)]
     pub their_reaction: ReactionType,
     /// `ignoreCriminalHostility` (Boolean)
-    #[serde(default)]
     pub ignore_criminal_hostility: bool,
 }
 
@@ -95,19 +83,14 @@ impl<'a> Extract<'a> for MissionModifier_FactionHostility {
 
 /// DCB type: `MissionModifier_HostileMission`
 /// Inherits from: `BaseMissionModifier`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MissionModifier_HostileMission {
     /// `modifierName` (String)
-    #[serde(default)]
     pub modifier_name: String,
     /// `enabled` (Boolean)
-    #[serde(default)]
     pub enabled: bool,
     /// `missionBrokerEntry` (Reference)
-    #[serde(default)]
     pub mission_broker_entry: Option<CigGuid>,
     /// `legalToAttack` (Boolean)
-    #[serde(default)]
     pub legal_to_attack: bool,
 }
 
@@ -130,16 +113,12 @@ impl<'a> Extract<'a> for MissionModifier_HostileMission {
 
 /// DCB type: `MissionModifier_IgnoreMissionPlayerCriminality`
 /// Inherits from: `BaseMissionModifier`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MissionModifier_IgnoreMissionPlayerCriminality {
     /// `modifierName` (String)
-    #[serde(default)]
     pub modifier_name: String,
     /// `enabled` (Boolean)
-    #[serde(default)]
     pub enabled: bool,
     /// `missionBrokerEntry` (Reference)
-    #[serde(default)]
     pub mission_broker_entry: Option<CigGuid>,
 }
 
@@ -161,7 +140,6 @@ impl<'a> Extract<'a> for MissionModifier_IgnoreMissionPlayerCriminality {
 
 /// DCB type: `SReputationMissionRequirementExpression_And`
 /// Inherits from: `SReputationMissionRequirementExpressionElement`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SReputationMissionRequirementExpression_And {
 }
 
@@ -180,7 +158,6 @@ impl<'a> Extract<'a> for SReputationMissionRequirementExpression_And {
 
 /// DCB type: `SReputationMissionRequirementExpression_LeftParenthesis`
 /// Inherits from: `SReputationMissionRequirementExpressionElement`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SReputationMissionRequirementExpression_LeftParenthesis {
 }
 
@@ -199,7 +176,6 @@ impl<'a> Extract<'a> for SReputationMissionRequirementExpression_LeftParenthesis
 
 /// DCB type: `SReputationMissionRequirementExpression_RightParenthesis`
 /// Inherits from: `SReputationMissionRequirementExpressionElement`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SReputationMissionRequirementExpression_RightParenthesis {
 }
 

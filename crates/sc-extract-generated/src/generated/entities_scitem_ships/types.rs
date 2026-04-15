@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -21,10 +20,8 @@ use super::super::*;
 
 /// DCB type: `ItemModifierTimedLife`
 /// Inherits from: `ItemModifierLifetime`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ItemModifierTimedLife {
     /// `lifetime` (Single)
-    #[serde(default)]
     pub lifetime: f32,
 }
 
@@ -44,19 +41,14 @@ impl<'a> Extract<'a> for ItemModifierTimedLife {
 
 /// DCB type: `ItemMiningBoosterParams`
 /// Inherits from: `LifetimeControlledItemModifierParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ItemMiningBoosterParams {
     /// `modifierLifetime` (StrongPointer)
-    #[serde(default)]
     pub modifier_lifetime: Option<ItemModifierLifetimePtr>,
     /// `powerLevelChange` (Single)
-    #[serde(default)]
     pub power_level_change: f32,
     /// `showInUI` (Boolean)
-    #[serde(default)]
     pub show_in_ui: bool,
     /// `isGood` (Boolean)
-    #[serde(default)]
     pub is_good: bool,
 }
 
@@ -82,19 +74,14 @@ impl<'a> Extract<'a> for ItemMiningBoosterParams {
 
 /// DCB type: `SMisfireFunctionalityCondition`
 /// Inherits from: `SMisfireCondition`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SMisfireFunctionalityCondition {
     /// `functionalityMin` (Single)
-    #[serde(default)]
     pub functionality_min: f32,
     /// `minTimeForTrigger` (Single)
-    #[serde(default)]
     pub min_time_for_trigger: f32,
     /// `meanTimeForCondition` (Single)
-    #[serde(default)]
     pub mean_time_for_condition: f32,
     /// `misfireArray` (WeakPointer (array))
-    #[serde(default)]
     pub misfire_array: Vec<SMisfireEffectPtr>,
 }
 
@@ -121,16 +108,12 @@ impl<'a> Extract<'a> for SMisfireFunctionalityCondition {
 }
 
 /// DCB type: `HoverPlane`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct HoverPlane {
     /// `width` (Single)
-    #[serde(default)]
     pub width: f32,
     /// `length` (Single)
-    #[serde(default)]
     pub length: f32,
     /// `offset` (Class)
-    #[serde(default)]
     pub offset: Option<Handle<Vec3>>,
 }
 
@@ -154,28 +137,20 @@ impl<'a> Extract<'a> for HoverPlane {
 }
 
 /// DCB type: `SuspensionSprings`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SuspensionSprings {
     /// `undampedFrequency` (Single)
-    #[serde(default)]
     pub undamped_frequency: f32,
     /// `dampingRatio` (Single)
-    #[serde(default)]
     pub damping_ratio: f32,
     /// `forceBlendOutDelay` (Single)
-    #[serde(default)]
     pub force_blend_out_delay: f32,
     /// `forceBlendInRate` (Single)
-    #[serde(default)]
     pub force_blend_in_rate: f32,
     /// `forceBlendOutRate` (Single)
-    #[serde(default)]
     pub force_blend_out_rate: f32,
     /// `bumpStop` (Single)
-    #[serde(default)]
     pub bump_stop: f32,
     /// `compressionForceCurve` (Class)
-    #[serde(default)]
     pub compression_force_curve: Option<Handle<BezierCurve>>,
 }
 
@@ -203,25 +178,18 @@ impl<'a> Extract<'a> for SuspensionSprings {
 }
 
 /// DCB type: `HoverHeight`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct HoverHeight {
     /// `desiredHoverHeight` (Single)
-    #[serde(default)]
     pub desired_hover_height: f32,
     /// `hoverHeightOffsetRange` (Class)
-    #[serde(default)]
     pub hover_height_offset_range: Option<Handle<Range>>,
     /// `hoverHeightOffsetAcceleration` (Single)
-    #[serde(default)]
     pub hover_height_offset_acceleration: f32,
     /// `hoverHeightOffsetMaxSpeed` (Single)
-    #[serde(default)]
     pub hover_height_offset_max_speed: f32,
     /// `speedRangeForExtraHeight` (Class)
-    #[serde(default)]
     pub speed_range_for_extra_height: Option<Handle<Range>>,
     /// `maxExtraHoverHeight` (Single)
-    #[serde(default)]
     pub max_extra_hover_height: f32,
 }
 
@@ -251,19 +219,14 @@ impl<'a> Extract<'a> for HoverHeight {
 }
 
 /// DCB type: `HoverTilting`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct HoverTilting {
     /// `strafeBankFactor` (Single)
-    #[serde(default)]
     pub strafe_bank_factor: f32,
     /// `forwardBackTiltFactor` (Single)
-    #[serde(default)]
     pub forward_back_tilt_factor: f32,
     /// `turnBankFactor` (Single)
-    #[serde(default)]
     pub turn_bank_factor: f32,
     /// `bankPerSpeedCurve` (Class)
-    #[serde(default)]
     pub bank_per_speed_curve: Option<Handle<BezierCurve>>,
 }
 
@@ -288,16 +251,12 @@ impl<'a> Extract<'a> for HoverTilting {
 }
 
 /// DCB type: `HoverCollisions`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct HoverCollisions {
     /// `antiSpinThreshold` (Single)
-    #[serde(default)]
     pub anti_spin_threshold: f32,
     /// `linearCollisionDamp` (Single)
-    #[serde(default)]
     pub linear_collision_damp: f32,
     /// `angularCollisionDamp` (Single)
-    #[serde(default)]
     pub angular_collision_damp: f32,
 }
 
@@ -318,31 +277,22 @@ impl<'a> Extract<'a> for HoverCollisions {
 }
 
 /// DCB type: `HoverHandling`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct HoverHandling {
     /// `turnFriction` (Single)
-    #[serde(default)]
     pub turn_friction: f32,
     /// `selfRightingAccelBoost` (Single)
-    #[serde(default)]
     pub self_righting_accel_boost: f32,
     /// `hoverMaxSpeed` (Single)
-    #[serde(default)]
     pub hover_max_speed: f32,
     /// `airControlMultiplier` (Single)
-    #[serde(default)]
     pub air_control_multiplier: f32,
     /// `antiFallMultiplier` (Single)
-    #[serde(default)]
     pub anti_fall_multiplier: f32,
     /// `lateralStrafeMultiplier` (Single)
-    #[serde(default)]
     pub lateral_strafe_multiplier: f32,
     /// `maxSpeedMultiplierByHeight` (Class)
-    #[serde(default)]
     pub max_speed_multiplier_by_height: Option<Handle<BezierCurve>>,
     /// `turnFrictionMultiplierByHeight` (Class)
-    #[serde(default)]
     pub turn_friction_multiplier_by_height: Option<Handle<BezierCurve>>,
 }
 
@@ -375,31 +325,22 @@ impl<'a> Extract<'a> for HoverHandling {
 
 /// DCB type: `GravlevParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GravlevParams {
     /// `hoverPlane` (Class)
-    #[serde(default)]
     pub hover_plane: Option<Handle<HoverPlane>>,
     /// `springs` (Class)
-    #[serde(default)]
     pub springs: Option<Handle<SuspensionSprings>>,
     /// `height` (Class)
-    #[serde(default)]
     pub height: Option<Handle<HoverHeight>>,
     /// `tilting` (Class)
-    #[serde(default)]
     pub tilting: Option<Handle<HoverTilting>>,
     /// `collisions` (Class)
-    #[serde(default)]
     pub collisions: Option<Handle<HoverCollisions>>,
     /// `handling` (Class)
-    #[serde(default)]
     pub handling: Option<Handle<HoverHandling>>,
     /// `hoverHeightRtpc` (Class)
-    #[serde(default)]
     pub hover_height_rtpc: Option<Handle<AudioRtpc>>,
     /// `hoverHeightDifferentialRtpc` (Class)
-    #[serde(default)]
     pub hover_height_differential_rtpc: Option<Handle<AudioRtpc>>,
 }
 
@@ -449,13 +390,10 @@ impl<'a> Extract<'a> for GravlevParams {
 }
 
 /// DCB type: `SIFCSModifierNumber`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SIFCSModifierNumber {
     /// `value` (Single)
-    #[serde(default)]
     pub value: f32,
     /// `type` (EnumChoice)
-    #[serde(default)]
     pub r#type: EIFCSModifierType,
 }
 
@@ -475,13 +413,10 @@ impl<'a> Extract<'a> for SIFCSModifierNumber {
 }
 
 /// DCB type: `SIFCSModifierVector`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SIFCSModifierVector {
     /// `value` (Class)
-    #[serde(default)]
     pub value: Option<Handle<Vec3>>,
     /// `type` (EnumChoice)
-    #[serde(default)]
     pub r#type: EIFCSModifierType,
 }
 
@@ -504,13 +439,10 @@ impl<'a> Extract<'a> for SIFCSModifierVector {
 }
 
 /// DCB type: `SIFCSModifiersLegacy`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SIFCSModifiersLegacy {
     /// `numbers` (Class)
-    #[serde(default)]
     pub numbers: Option<Handle<SIFCSModifierNumber>>,
     /// `vectors` (Class)
-    #[serde(default)]
     pub vectors: Option<Handle<SIFCSModifierVector>>,
 }
 
@@ -537,10 +469,8 @@ impl<'a> Extract<'a> for SIFCSModifiersLegacy {
 
 /// DCB type: `SendDockingEnableEvent`
 /// Inherits from: `EventDispatcher`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SendDockingEnableEvent {
     /// `enabled` (Boolean)
-    #[serde(default)]
     pub enabled: bool,
 }
 
@@ -560,22 +490,16 @@ impl<'a> Extract<'a> for SendDockingEnableEvent {
 
 /// DCB type: `SelfDestructStateModifier`
 /// Inherits from: `AttachableStateModifierBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SelfDestructStateModifier {
     /// `context` (StrongPointer)
-    #[serde(default)]
     pub context: Option<AttachableStateModifierContextBasePtr>,
     /// `offlineState` (WeakPointer)
-    #[serde(default)]
     pub offline_state: Option<Handle<SInteractionState>>,
     /// `primedState` (WeakPointer)
-    #[serde(default)]
     pub primed_state: Option<Handle<SInteractionState>>,
     /// `idleState` (WeakPointer)
-    #[serde(default)]
     pub idle_state: Option<Handle<SInteractionState>>,
     /// `detonatedState` (WeakPointer)
-    #[serde(default)]
     pub detonated_state: Option<Handle<SInteractionState>>,
 }
 
@@ -614,7 +538,6 @@ impl<'a> Extract<'a> for SelfDestructStateModifier {
 
 /// DCB type: `ItemResourceDynamicAmountFuelNozzleFuel`
 /// Inherits from: `ItemResourceDynamicAmountBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ItemResourceDynamicAmountFuelNozzleFuel {
 }
 
@@ -633,76 +556,52 @@ impl<'a> Extract<'a> for ItemResourceDynamicAmountFuelNozzleFuel {
 
 /// DCB type: `SCItemEMPParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCItemEMPParams {
     /// `chargeTime` (Single)
-    #[serde(default)]
     pub charge_time: f32,
     /// `distortionDamage` (Single)
-    #[serde(default)]
     pub distortion_damage: f32,
     /// `empRadius` (Single)
-    #[serde(default)]
     pub emp_radius: f32,
     /// `minEmpRadius` (Single)
-    #[serde(default)]
     pub min_emp_radius: f32,
     /// `physRadius` (Single)
-    #[serde(default)]
     pub phys_radius: f32,
     /// `minPhysRadius` (Single)
-    #[serde(default)]
     pub min_phys_radius: f32,
     /// `pressure` (Single)
-    #[serde(default)]
     pub pressure: f32,
     /// `unleashTime` (Single)
-    #[serde(default)]
     pub unleash_time: f32,
     /// `cooldownTime` (Single)
-    #[serde(default)]
     pub cooldown_time: f32,
     /// `ChargingParticle` (Class)
-    #[serde(default)]
     pub charging_particle: Option<Handle<GlobalResourceParticle>>,
     /// `ChargedParticle` (Class)
-    #[serde(default)]
     pub charged_particle: Option<Handle<GlobalResourceParticle>>,
     /// `ChargingTag` (Reference)
-    #[serde(default)]
     pub charging_tag: Option<CigGuid>,
     /// `ChargedTag` (Reference)
-    #[serde(default)]
     pub charged_tag: Option<CigGuid>,
     /// `StartChargingTrigger` (Reference)
-    #[serde(default)]
     pub start_charging_trigger: Option<CigGuid>,
     /// `StopChargingTrigger` (Reference)
-    #[serde(default)]
     pub stop_charging_trigger: Option<CigGuid>,
     /// `StartChargedTrigger` (Reference)
-    #[serde(default)]
     pub start_charged_trigger: Option<CigGuid>,
     /// `StopChargedTrigger` (Reference)
-    #[serde(default)]
     pub stop_charged_trigger: Option<CigGuid>,
     /// `StartUnleashTrigger` (Reference)
-    #[serde(default)]
     pub start_unleash_trigger: Option<CigGuid>,
     /// `StopUnleashTrigger` (Reference)
-    #[serde(default)]
     pub stop_unleash_trigger: Option<CigGuid>,
     /// `idleState` (WeakPointer)
-    #[serde(default)]
     pub idle_state: Option<Handle<ItemResourceState>>,
     /// `chargingState` (WeakPointer)
-    #[serde(default)]
     pub charging_state: Option<Handle<ItemResourceState>>,
     /// `chargedState` (WeakPointer)
-    #[serde(default)]
     pub charged_state: Option<Handle<ItemResourceState>>,
     /// `releasingState` (WeakPointer)
-    #[serde(default)]
     pub releasing_state: Option<Handle<ItemResourceState>>,
 }
 
@@ -762,52 +661,36 @@ impl<'a> Extract<'a> for SCItemEMPParams {
 
 /// DCB type: `SCItemFuelNozzleParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCItemFuelNozzleParams {
     /// `fuelMaxFlowMultiplier` (Single)
-    #[serde(default)]
     pub fuel_max_flow_multiplier: f32,
     /// `fuelTankCapacityMultiplier` (Single)
-    #[serde(default)]
     pub fuel_tank_capacity_multiplier: f32,
     /// `fuelSafeSpeed` (Single)
-    #[serde(default)]
     pub fuel_safe_speed: f32,
     /// `fuelSafeSpeedRN` (Single)
-    #[serde(default)]
     pub fuel_safe_speed_rn: f32,
     /// `fuelDamageMultiplier` (Single)
-    #[serde(default)]
     pub fuel_damage_multiplier: f32,
     /// `waveModifier` (Single)
-    #[serde(default)]
     pub wave_modifier: f32,
     /// `waveModifierRN` (Single)
-    #[serde(default)]
     pub wave_modifier_rn: f32,
     /// `frequency` (Single)
-    #[serde(default)]
     pub frequency: f32,
     /// `flowSpeedModifier` (Single)
-    #[serde(default)]
     pub flow_speed_modifier: f32,
     /// `fuelPodMultiplier` (Single)
-    #[serde(default)]
     pub fuel_pod_multiplier: f32,
     /// `fuelFlowLoopStartAudioTrigger` (Class)
-    #[serde(default)]
     pub fuel_flow_loop_start_audio_trigger: Option<Handle<GlobalResourceAudio>>,
     /// `fuelFlowLoopStopAudioTrigger` (Class)
-    #[serde(default)]
     pub fuel_flow_loop_stop_audio_trigger: Option<Handle<GlobalResourceAudio>>,
     /// `fuelFlowRateAudioRtpcs` (Class (array))
-    #[serde(default)]
     pub fuel_flow_rate_audio_rtpcs: Vec<Handle<AudioRtpc>>,
     /// `fuelSpillAudioRtpc` (Class)
-    #[serde(default)]
     pub fuel_spill_audio_rtpc: Option<Handle<AudioRtpc>>,
     /// `stateToPowerOff` (WeakPointer)
-    #[serde(default)]
     pub state_to_power_off: Option<Handle<SInteractionState>>,
 }
 
@@ -859,46 +742,32 @@ impl<'a> Extract<'a> for SCItemFuelNozzleParams {
 
 /// DCB type: `SCItemSpaceMineParams`
 /// Inherits from: `SExplosiveOrdnanceParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCItemSpaceMineParams {
     /// `audioParams` (Class)
-    #[serde(default)]
     pub audio_params: Option<Handle<SOrdnanceAudioParams>>,
     /// `requiresLauncher` (Boolean)
-    #[serde(default)]
     pub requires_launcher: bool,
     /// `enableLifetime` (Boolean)
-    #[serde(default)]
     pub enable_lifetime: bool,
     /// `maxLifetime` (Single)
-    #[serde(default)]
     pub max_lifetime: f32,
     /// `armTime` (Single)
-    #[serde(default)]
     pub arm_time: f32,
     /// `maxArmableOverride` (Int32)
-    #[serde(default)]
     pub max_armable_override: i32,
     /// `igniteTime` (Single)
-    #[serde(default)]
     pub ignite_time: f32,
     /// `collisionDelayTime` (Single)
-    #[serde(default)]
     pub collision_delay_time: f32,
     /// `explosionSafetyDistance` (Single)
-    #[serde(default)]
     pub explosion_safety_distance: f32,
     /// `projectileProximity` (Single)
-    #[serde(default)]
     pub projectile_proximity: f32,
     /// `explosionParams` (Class)
-    #[serde(default)]
     pub explosion_params: Option<Handle<ExplosionParams>>,
     /// `clusterParams` (StrongPointer)
-    #[serde(default)]
     pub cluster_params: Option<Handle<SOrdnanceClusterParams>>,
     /// `emissionsParams` (Class)
-    #[serde(default)]
     pub emissions_params: Option<Handle<SOrdnanceEmissionsParams>>,
 }
 
@@ -941,22 +810,16 @@ impl<'a> Extract<'a> for SCItemSpaceMineParams {
 }
 
 /// DCB type: `SMFDParamsDiagnostics`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SMFDParamsDiagnostics {
     /// `healthThresholdDamaged` (Single)
-    #[serde(default)]
     pub health_threshold_damaged: f32,
     /// `healthThresholdCritical` (Single)
-    #[serde(default)]
     pub health_threshold_critical: f32,
     /// `excludedItemTypes` (Class (array))
-    #[serde(default)]
     pub excluded_item_types: Vec<Handle<SItemPortDefTypes>>,
     /// `includedItemTypes` (Class (array))
-    #[serde(default)]
     pub included_item_types: Vec<Handle<SItemPortDefTypes>>,
     /// `typeIcons` (String)
-    #[serde(default)]
     pub type_icons: String,
 }
 
@@ -992,7 +855,6 @@ impl<'a> Extract<'a> for SMFDParamsDiagnostics {
 
 /// DCB type: `SDummyLauncher`
 /// Inherits from: `SLauncherBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SDummyLauncher {
 }
 

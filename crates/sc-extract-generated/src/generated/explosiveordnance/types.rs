@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,19 +19,14 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `ExplosiveOrdnancePingVFX`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ExplosiveOrdnancePingVFX {
     /// `pingSphereGeometry` (Class)
-    #[serde(default)]
     pub ping_sphere_geometry: Option<Handle<GlobalResourceGeometry>>,
     /// `pingMaterial` (Class)
-    #[serde(default)]
     pub ping_material: Option<Handle<GlobalResourceMaterial>>,
     /// `pingColor` (Class)
-    #[serde(default)]
     pub ping_color: Option<Handle<RGB>>,
     /// `pingBrightness` (Single)
-    #[serde(default)]
     pub ping_brightness: f32,
 }
 
@@ -63,16 +57,12 @@ impl<'a> Extract<'a> for ExplosiveOrdnancePingVFX {
 }
 
 /// DCB type: `ExplosiveOrdnancePingGlobalParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ExplosiveOrdnancePingGlobalParams {
     /// `vfxGhostPingParams` (Class)
-    #[serde(default)]
     pub vfx_ghost_ping_params: Option<Handle<ExplosiveOrdnancePingVFX>>,
     /// `vfxDesiredPingParams` (Class)
-    #[serde(default)]
     pub vfx_desired_ping_params: Option<Handle<ExplosiveOrdnancePingVFX>>,
     /// `vfxPredictedPingParams` (Class)
-    #[serde(default)]
     pub vfx_predicted_ping_params: Option<Handle<ExplosiveOrdnancePingVFX>>,
 }
 

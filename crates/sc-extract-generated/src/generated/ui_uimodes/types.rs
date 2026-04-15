@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,22 +19,16 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `UIModeVisibilitySettings`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct UIModeVisibilitySettings {
     /// `itemPortTrackers` (Boolean)
-    #[serde(default)]
     pub item_port_trackers: bool,
     /// `grenadeTrackers` (Boolean)
-    #[serde(default)]
     pub grenade_trackers: bool,
     /// `missionObjectiveTrackers` (Boolean)
-    #[serde(default)]
     pub mission_objective_trackers: bool,
     /// `unattendedVehicleTrackers` (Boolean)
-    #[serde(default)]
     pub unattended_vehicle_trackers: bool,
     /// `radarObjectTrackers` (Boolean)
-    #[serde(default)]
     pub radar_object_trackers: bool,
 }
 

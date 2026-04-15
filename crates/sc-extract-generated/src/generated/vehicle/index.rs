@@ -10,19 +10,15 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
 use std::collections::HashMap;
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use crate::Handle;
 use super::super::*;
 
 /// Record index for the `vehicle` feature.
-#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+#[derive(Default)]
 pub struct VehicleIndex {
-    #[serde(default)]
     pub soperator_mode_labels: HashMap<CigGuid, Handle<SOperatorModeLabels>>,
-    #[serde(default)]
     pub smaster_mode_labels: HashMap<CigGuid, Handle<SMasterModeLabels>>,
-    #[serde(default)]
     pub vehicle_career_list: HashMap<CigGuid, Handle<VehicleCareerList>>,
 }
 

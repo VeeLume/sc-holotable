@@ -683,7 +683,6 @@ dependencies = [
 name = "sc-extract-generated"
 version = "0.0.0"
 dependencies = [
- "serde",
  "svarog-common",
  "svarog-datacore",
 ]

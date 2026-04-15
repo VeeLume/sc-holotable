@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,10 +19,8 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `ChatEmoteRecord`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ChatEmoteRecord {
     /// `packs` (Class (array))
-    #[serde(default)]
     pub packs: Vec<Handle<ChatEmotePack>>,
 }
 
@@ -48,13 +45,10 @@ impl<'a> Extract<'a> for ChatEmoteRecord {
 }
 
 /// DCB type: `ChatEmotePack`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ChatEmotePack {
     /// `packType` (String)
-    #[serde(default)]
     pub pack_type: String,
     /// `emotes` (Class (array))
-    #[serde(default)]
     pub emotes: Vec<Handle<ChatEmoteData>>,
 }
 
@@ -80,22 +74,16 @@ impl<'a> Extract<'a> for ChatEmotePack {
 }
 
 /// DCB type: `ChatEmoteData`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ChatEmoteData {
     /// `emoteType` (Locale)
-    #[serde(default)]
     pub emote_type: LocaleKey,
     /// `alternateEmoteTypes` (Locale (array))
-    #[serde(default)]
     pub alternate_emote_types: Vec<LocaleKey>,
     /// `enabled` (Boolean)
-    #[serde(default)]
     pub enabled: bool,
     /// `isInterruptable` (Boolean)
-    #[serde(default)]
     pub is_interruptable: bool,
     /// `animData` (Class)
-    #[serde(default)]
     pub anim_data: Option<Handle<ChatEmoteAnimData>>,
 }
 
@@ -123,19 +111,14 @@ impl<'a> Extract<'a> for ChatEmoteData {
 }
 
 /// DCB type: `ChatEmoteAnimData`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ChatEmoteAnimData {
     /// `fragmentID` (String)
-    #[serde(default)]
     pub fragment_id: String,
     /// `tagID` (String)
-    #[serde(default)]
     pub tag_id: String,
     /// `textToDisplay` (Locale)
-    #[serde(default)]
     pub text_to_display: LocaleKey,
     /// `type` (EnumChoice)
-    #[serde(default)]
     pub r#type: EChatEmoteType,
 }
 

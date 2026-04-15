@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -21,34 +20,24 @@ use super::super::*;
 
 /// DCB type: `RaceRingComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct RaceRingComponentParams {
     /// `radius` (Single)
-    #[serde(default)]
     pub radius: f32,
     /// `openSpeed` (Single)
-    #[serde(default)]
     pub open_speed: f32,
     /// `closeSpeed` (Single)
-    #[serde(default)]
     pub close_speed: f32,
     /// `openAmount` (Single)
-    #[serde(default)]
     pub open_amount: f32,
     /// `closeAmount` (Single)
-    #[serde(default)]
     pub close_amount: f32,
     /// `innerRingModel` (String)
-    #[serde(default)]
     pub inner_ring_model: String,
     /// `outerRingModel` (String)
-    #[serde(default)]
     pub outer_ring_model: String,
     /// `irisModel` (String)
-    #[serde(default)]
     pub iris_model: String,
     /// `openAnimName` (String)
-    #[serde(default)]
     pub open_anim_name: String,
 }
 

@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -21,13 +20,10 @@ use super::super::*;
 
 /// DCB type: `MissionLocationValidation_EntityTags`
 /// Inherits from: `MissionLocationValidation`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MissionLocationValidation_EntityTags {
     /// `generalTag` (Reference)
-    #[serde(default)]
     pub general_tag: Option<CigGuid>,
     /// `requiredEntityTags` (Class)
-    #[serde(default)]
     pub required_entity_tags: Option<Handle<TagList>>,
 }
 
@@ -51,28 +47,20 @@ impl<'a> Extract<'a> for MissionLocationValidation_EntityTags {
 
 /// DCB type: `ContractGeneratorHandler_LinearSeries`
 /// Inherits from: `ContractGeneratorHandlerBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ContractGeneratorHandler_LinearSeries {
     /// `notForRelease` (Boolean)
-    #[serde(default)]
     pub not_for_release: bool,
     /// `workInProgress` (Boolean)
-    #[serde(default)]
     pub work_in_progress: bool,
     /// `debugName` (String)
-    #[serde(default)]
     pub debug_name: String,
     /// `required_active_scenarios` (Reference (array))
-    #[serde(default)]
     pub required_active_scenarios: Vec<CigGuid>,
     /// `defaultAvailability` (Class)
-    #[serde(default)]
     pub default_availability: Option<Handle<ContractAvailability>>,
     /// `contractParams` (Class)
-    #[serde(default)]
     pub contract_params: Option<Handle<ContractParamOverrides>>,
     /// `contracts` (Class (array))
-    #[serde(default)]
     pub contracts: Vec<Handle<Contract>>,
 }
 
@@ -112,28 +100,20 @@ impl<'a> Extract<'a> for ContractGeneratorHandler_LinearSeries {
 
 /// DCB type: `ContractGeneratorHandler_TutorialSeriesDef`
 /// Inherits from: `ContractGeneratorHandler_LinearSeries`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ContractGeneratorHandler_TutorialSeriesDef {
     /// `notForRelease` (Boolean)
-    #[serde(default)]
     pub not_for_release: bool,
     /// `workInProgress` (Boolean)
-    #[serde(default)]
     pub work_in_progress: bool,
     /// `debugName` (String)
-    #[serde(default)]
     pub debug_name: String,
     /// `required_active_scenarios` (Reference (array))
-    #[serde(default)]
     pub required_active_scenarios: Vec<CigGuid>,
     /// `defaultAvailability` (Class)
-    #[serde(default)]
     pub default_availability: Option<Handle<ContractAvailability>>,
     /// `contractParams` (Class)
-    #[serde(default)]
     pub contract_params: Option<Handle<ContractParamOverrides>>,
     /// `contracts` (Class (array))
-    #[serde(default)]
     pub contracts: Vec<Handle<Contract>>,
 }
 
@@ -173,28 +153,20 @@ impl<'a> Extract<'a> for ContractGeneratorHandler_TutorialSeriesDef {
 
 /// DCB type: `ContractGeneratorHandler_List`
 /// Inherits from: `ContractGeneratorHandlerBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ContractGeneratorHandler_List {
     /// `notForRelease` (Boolean)
-    #[serde(default)]
     pub not_for_release: bool,
     /// `workInProgress` (Boolean)
-    #[serde(default)]
     pub work_in_progress: bool,
     /// `debugName` (String)
-    #[serde(default)]
     pub debug_name: String,
     /// `required_active_scenarios` (Reference (array))
-    #[serde(default)]
     pub required_active_scenarios: Vec<CigGuid>,
     /// `defaultAvailability` (Class)
-    #[serde(default)]
     pub default_availability: Option<Handle<ContractAvailability>>,
     /// `contractParams` (Class)
-    #[serde(default)]
     pub contract_params: Option<Handle<ContractParamOverrides>>,
     /// `contracts` (Class (array))
-    #[serde(default)]
     pub contracts: Vec<Handle<Contract>>,
 }
 
@@ -234,28 +206,20 @@ impl<'a> Extract<'a> for ContractGeneratorHandler_List {
 
 /// DCB type: `ContractGeneratorHandler_Legacy`
 /// Inherits from: `ContractGeneratorHandlerBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ContractGeneratorHandler_Legacy {
     /// `notForRelease` (Boolean)
-    #[serde(default)]
     pub not_for_release: bool,
     /// `workInProgress` (Boolean)
-    #[serde(default)]
     pub work_in_progress: bool,
     /// `debugName` (String)
-    #[serde(default)]
     pub debug_name: String,
     /// `required_active_scenarios` (Reference (array))
-    #[serde(default)]
     pub required_active_scenarios: Vec<CigGuid>,
     /// `defaultAvailability` (Class)
-    #[serde(default)]
     pub default_availability: Option<Handle<ContractAvailability>>,
     /// `contractParams` (Class)
-    #[serde(default)]
     pub contract_params: Option<Handle<ContractParamOverrides>>,
     /// `legacyContracts` (Class (array))
-    #[serde(default)]
     pub legacy_contracts: Vec<Handle<ContractLegacy>>,
 }
 
@@ -295,49 +259,34 @@ impl<'a> Extract<'a> for ContractGeneratorHandler_Legacy {
 
 /// DCB type: `ContractLegacy`
 /// Inherits from: `ContractBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ContractLegacy {
     /// `id` (Guid)
-    #[serde(default)]
     pub id: CigGuid,
     /// `notForRelease` (Boolean)
-    #[serde(default)]
     pub not_for_release: bool,
     /// `workInProgress` (Boolean)
-    #[serde(default)]
     pub work_in_progress: bool,
     /// `debugName` (String)
-    #[serde(default)]
     pub debug_name: String,
     /// `template` (Reference)
-    #[serde(default)]
     pub template: Option<CigGuid>,
     /// `required_active_scenarios` (Reference (array))
-    #[serde(default)]
     pub required_active_scenarios: Vec<CigGuid>,
     /// `paramOverrides` (Class)
-    #[serde(default)]
     pub param_overrides: Option<Handle<ContractParamOverrides>>,
     /// `subContracts` (Class (array))
-    #[serde(default)]
     pub sub_contracts: Vec<Handle<SubContract>>,
     /// `additionalPrerequisites` (StrongPointer (array))
-    #[serde(default)]
     pub additional_prerequisites: Vec<ContractPrerequisiteBasePtr>,
     /// `generationParams` (StrongPointer)
-    #[serde(default)]
     pub generation_params: Option<ContractGenerationParamsBasePtr>,
     /// `contractLifeTime` (StrongPointer)
-    #[serde(default)]
     pub contract_life_time: Option<Handle<ContractLifeTime>>,
     /// `contractPlugins` (StrongPointer (array))
-    #[serde(default)]
     pub contract_plugins: Vec<SContractPlugin_BasePtr>,
     /// `contractResults` (Class)
-    #[serde(default)]
     pub contract_results: Option<Handle<ContractResults>>,
     /// `missionBrokerEntry` (Reference)
-    #[serde(default)]
     pub mission_broker_entry: Option<CigGuid>,
 }
 
@@ -400,52 +349,36 @@ impl<'a> Extract<'a> for ContractLegacy {
 
 /// DCB type: `CareerContract`
 /// Inherits from: `ContractBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CareerContract {
     /// `id` (Guid)
-    #[serde(default)]
     pub id: CigGuid,
     /// `notForRelease` (Boolean)
-    #[serde(default)]
     pub not_for_release: bool,
     /// `workInProgress` (Boolean)
-    #[serde(default)]
     pub work_in_progress: bool,
     /// `debugName` (String)
-    #[serde(default)]
     pub debug_name: String,
     /// `template` (Reference)
-    #[serde(default)]
     pub template: Option<CigGuid>,
     /// `required_active_scenarios` (Reference (array))
-    #[serde(default)]
     pub required_active_scenarios: Vec<CigGuid>,
     /// `paramOverrides` (Class)
-    #[serde(default)]
     pub param_overrides: Option<Handle<ContractParamOverrides>>,
     /// `subContracts` (Class (array))
-    #[serde(default)]
     pub sub_contracts: Vec<Handle<SubContract>>,
     /// `additionalPrerequisites` (StrongPointer (array))
-    #[serde(default)]
     pub additional_prerequisites: Vec<ContractPrerequisiteBasePtr>,
     /// `generationParams` (StrongPointer)
-    #[serde(default)]
     pub generation_params: Option<ContractGenerationParamsBasePtr>,
     /// `contractLifeTime` (StrongPointer)
-    #[serde(default)]
     pub contract_life_time: Option<Handle<ContractLifeTime>>,
     /// `contractPlugins` (StrongPointer (array))
-    #[serde(default)]
     pub contract_plugins: Vec<SContractPlugin_BasePtr>,
     /// `contractResults` (Class)
-    #[serde(default)]
     pub contract_results: Option<Handle<ContractResults>>,
     /// `minStanding` (Reference)
-    #[serde(default)]
     pub min_standing: Option<CigGuid>,
     /// `maxStanding` (Reference)
-    #[serde(default)]
     pub max_standing: Option<CigGuid>,
 }
 
@@ -509,37 +442,26 @@ impl<'a> Extract<'a> for CareerContract {
 
 /// DCB type: `ContractGeneratorHandler_Career`
 /// Inherits from: `ContractGeneratorHandlerBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ContractGeneratorHandler_Career {
     /// `notForRelease` (Boolean)
-    #[serde(default)]
     pub not_for_release: bool,
     /// `workInProgress` (Boolean)
-    #[serde(default)]
     pub work_in_progress: bool,
     /// `debugName` (String)
-    #[serde(default)]
     pub debug_name: String,
     /// `required_active_scenarios` (Reference (array))
-    #[serde(default)]
     pub required_active_scenarios: Vec<CigGuid>,
     /// `defaultAvailability` (Class)
-    #[serde(default)]
     pub default_availability: Option<Handle<ContractAvailability>>,
     /// `contractParams` (Class)
-    #[serde(default)]
     pub contract_params: Option<Handle<ContractParamOverrides>>,
     /// `introContracts` (Class (array))
-    #[serde(default)]
     pub intro_contracts: Vec<Handle<Contract>>,
     /// `factionReputation` (Reference)
-    #[serde(default)]
     pub faction_reputation: Option<CigGuid>,
     /// `reputationScope` (Reference)
-    #[serde(default)]
     pub reputation_scope: Option<CigGuid>,
     /// `contracts` (Class (array))
-    #[serde(default)]
     pub contracts: Vec<Handle<CareerContract>>,
 }
 
@@ -588,19 +510,14 @@ impl<'a> Extract<'a> for ContractGeneratorHandler_Career {
 
 /// DCB type: `SContractPlugin_SScenarioProgress`
 /// Inherits from: `SContractPlugin_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SContractPlugin_SScenarioProgress {
     /// `missionScenario` (Reference)
-    #[serde(default)]
     pub mission_scenario: Option<CigGuid>,
     /// `scenarioProgressRecord` (Reference)
-    #[serde(default)]
     pub scenario_progress_record: Option<CigGuid>,
     /// `faction` (Reference)
-    #[serde(default)]
     pub faction: Option<CigGuid>,
     /// `splitPointsForParty` (Boolean)
-    #[serde(default)]
     pub split_points_for_party: bool,
 }
 
@@ -623,10 +540,8 @@ impl<'a> Extract<'a> for SContractPlugin_SScenarioProgress {
 
 /// DCB type: `ContractPrerequisite_Locality`
 /// Inherits from: `ContractPrerequisiteBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ContractPrerequisite_Locality {
     /// `localityAvailable` (Reference)
-    #[serde(default)]
     pub locality_available: Option<CigGuid>,
 }
 
@@ -646,10 +561,8 @@ impl<'a> Extract<'a> for ContractPrerequisite_Locality {
 
 /// DCB type: `ContractPrerequisite_Location`
 /// Inherits from: `ContractPrerequisiteBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ContractPrerequisite_Location {
     /// `locationAvailable` (Reference)
-    #[serde(default)]
     pub location_available: Option<CigGuid>,
 }
 
@@ -669,16 +582,12 @@ impl<'a> Extract<'a> for ContractPrerequisite_Location {
 
 /// DCB type: `ContractPrerequisite_LocationProperty`
 /// Inherits from: `ContractPrerequisiteBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ContractPrerequisite_LocationProperty {
     /// `propertyVariableName` (String)
-    #[serde(default)]
     pub property_variable_name: String,
     /// `propertyExtendedTextToken` (String)
-    #[serde(default)]
     pub property_extended_text_token: String,
     /// `locationLevelType` (EnumChoice)
-    #[serde(default)]
     pub location_level_type: ELocationTypeLevel,
 }
 
@@ -700,19 +609,14 @@ impl<'a> Extract<'a> for ContractPrerequisite_LocationProperty {
 
 /// DCB type: `ContractPrerequisite_CrimeStat`
 /// Inherits from: `ContractPrerequisiteBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ContractPrerequisite_CrimeStat {
     /// `includePrerequisiteWhenSharing` (Boolean)
-    #[serde(default)]
     pub include_prerequisite_when_sharing: bool,
     /// `crimeStatJurisdictionOverride` (Reference)
-    #[serde(default)]
     pub crime_stat_jurisdiction_override: Option<CigGuid>,
     /// `minCrimeStat` (Single)
-    #[serde(default)]
     pub min_crime_stat: f32,
     /// `maxCrimeStat` (Single)
-    #[serde(default)]
     pub max_crime_stat: f32,
 }
 
@@ -735,25 +639,18 @@ impl<'a> Extract<'a> for ContractPrerequisite_CrimeStat {
 
 /// DCB type: `ContractPrerequisite_Reputation`
 /// Inherits from: `ContractPrerequisiteBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ContractPrerequisite_Reputation {
     /// `includePrerequisiteWhenSharing` (Boolean)
-    #[serde(default)]
     pub include_prerequisite_when_sharing: bool,
     /// `factionReputation` (Reference)
-    #[serde(default)]
     pub faction_reputation: Option<CigGuid>,
     /// `scope` (Reference)
-    #[serde(default)]
     pub scope: Option<CigGuid>,
     /// `exclude` (Boolean)
-    #[serde(default)]
     pub exclude: bool,
     /// `minStanding` (Reference)
-    #[serde(default)]
     pub min_standing: Option<CigGuid>,
     /// `maxStanding` (Reference)
-    #[serde(default)]
     pub max_standing: Option<CigGuid>,
 }
 
@@ -778,22 +675,16 @@ impl<'a> Extract<'a> for ContractPrerequisite_Reputation {
 
 /// DCB type: `ContractPrerequisite_CompletedContractTags`
 /// Inherits from: `ContractPrerequisiteBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ContractPrerequisite_CompletedContractTags {
     /// `includePrerequisiteWhenSharing` (Boolean)
-    #[serde(default)]
     pub include_prerequisite_when_sharing: bool,
     /// `requiredCompletedContractTags` (Class)
-    #[serde(default)]
     pub required_completed_contract_tags: Option<Handle<TagList>>,
     /// `requiredCountValue` (Int32)
-    #[serde(default)]
     pub required_count_value: i32,
     /// `excludedCompletedContractTags` (Class)
-    #[serde(default)]
     pub excluded_completed_contract_tags: Option<Handle<TagList>>,
     /// `excludedCountValue` (Int32)
-    #[serde(default)]
     pub excluded_count_value: i32,
 }
 
@@ -823,13 +714,10 @@ impl<'a> Extract<'a> for ContractPrerequisite_CompletedContractTags {
 
 /// DCB type: `ContractResult_Reward`
 /// Inherits from: `ContractResultBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ContractResult_Reward {
     /// `missionResults` (Boolean)
-    #[serde(default)]
     pub mission_results: bool,
     /// `contractReward` (Class)
-    #[serde(default)]
     pub contract_reward: Option<Handle<MissionReward>>,
 }
 
@@ -853,13 +741,10 @@ impl<'a> Extract<'a> for ContractResult_Reward {
 
 /// DCB type: `ContractResult_LegacyReputation`
 /// Inherits from: `ContractResultBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ContractResult_LegacyReputation {
     /// `missionResults` (Boolean)
-    #[serde(default)]
     pub mission_results: bool,
     /// `contractResultReputationAmounts` (Class)
-    #[serde(default)]
     pub contract_result_reputation_amounts: Option<Handle<SReputationAmountParams>>,
 }
 
@@ -883,16 +768,12 @@ impl<'a> Extract<'a> for ContractResult_LegacyReputation {
 
 /// DCB type: `ContractResult_CalculatedReputation`
 /// Inherits from: `ContractResultBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ContractResult_CalculatedReputation {
     /// `missionResults` (Boolean)
-    #[serde(default)]
     pub mission_results: bool,
     /// `factionReputation` (Reference)
-    #[serde(default)]
     pub faction_reputation: Option<CigGuid>,
     /// `reputationScope` (Reference)
-    #[serde(default)]
     pub reputation_scope: Option<CigGuid>,
 }
 
@@ -914,16 +795,12 @@ impl<'a> Extract<'a> for ContractResult_CalculatedReputation {
 
 /// DCB type: `ContractResult_JournalEntry`
 /// Inherits from: `ContractResultBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ContractResult_JournalEntry {
     /// `missionResults` (Boolean)
-    #[serde(default)]
     pub mission_results: bool,
     /// `journalEntriesToAdd` (Reference (array))
-    #[serde(default)]
     pub journal_entries_to_add: Vec<CigGuid>,
     /// `journalEntriesToRemove` (Reference (array))
-    #[serde(default)]
     pub journal_entries_to_remove: Vec<CigGuid>,
 }
 
@@ -949,13 +826,10 @@ impl<'a> Extract<'a> for ContractResult_JournalEntry {
 
 /// DCB type: `ContractResult_RefundBuyIn`
 /// Inherits from: `ContractResultBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ContractResult_RefundBuyIn {
     /// `missionResults` (Boolean)
-    #[serde(default)]
     pub mission_results: bool,
     /// `refundMultiplier` (Single)
-    #[serde(default)]
     pub refund_multiplier: f32,
 }
 
@@ -975,13 +849,10 @@ impl<'a> Extract<'a> for ContractResult_RefundBuyIn {
 }
 
 /// DCB type: `ContractResult_CompletionTag`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ContractResult_CompletionTag {
     /// `count` (Int32)
-    #[serde(default)]
     pub count: i32,
     /// `tag` (Reference)
-    #[serde(default)]
     pub tag: Option<CigGuid>,
 }
 
@@ -1002,13 +873,10 @@ impl<'a> Extract<'a> for ContractResult_CompletionTag {
 
 /// DCB type: `ContractResult_CompletionTags`
 /// Inherits from: `ContractResultBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ContractResult_CompletionTags {
     /// `missionResults` (Boolean)
-    #[serde(default)]
     pub mission_results: bool,
     /// `completionTags` (Class (array))
-    #[serde(default)]
     pub completion_tags: Vec<Handle<ContractResult_CompletionTag>>,
 }
 
@@ -1034,13 +902,10 @@ impl<'a> Extract<'a> for ContractResult_CompletionTags {
 }
 
 /// DCB type: `MinCompletionTags`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MinCompletionTags {
     /// `requiredTag` (Reference)
-    #[serde(default)]
     pub required_tag: Option<CigGuid>,
     /// `minRequired` (Int32)
-    #[serde(default)]
     pub min_required: i32,
 }
 
@@ -1061,19 +926,14 @@ impl<'a> Extract<'a> for MinCompletionTags {
 
 /// DCB type: `ContractResult_BadgeAward`
 /// Inherits from: `ContractResultBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ContractResult_BadgeAward {
     /// `missionResults` (Boolean)
-    #[serde(default)]
     pub mission_results: bool,
     /// `requiredCompletionTags` (Class (array))
-    #[serde(default)]
     pub required_completion_tags: Vec<Handle<MinCompletionTags>>,
     /// `badgeToAward` (EnumChoice)
-    #[serde(default)]
     pub badge_to_award: EAwardId,
     /// `commsNotification` (Reference)
-    #[serde(default)]
     pub comms_notification: Option<CigGuid>,
 }
 
@@ -1102,28 +962,20 @@ impl<'a> Extract<'a> for ContractResult_BadgeAward {
 
 /// DCB type: `ContractResult_Item`
 /// Inherits from: `ContractResultBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ContractResult_Item {
     /// `missionResults` (Boolean)
-    #[serde(default)]
     pub mission_results: bool,
     /// `entityClass` (Reference)
-    #[serde(default)]
     pub entity_class: Option<CigGuid>,
     /// `amount` (Int32)
-    #[serde(default)]
     pub amount: i32,
     /// `sendToPlayerHomeLocation` (Boolean)
-    #[serde(default)]
     pub send_to_player_home_location: bool,
     /// `awardOnlyToMissionOwner` (Boolean)
-    #[serde(default)]
     pub award_only_to_mission_owner: bool,
     /// `targetLocation` (WeakPointer)
-    #[serde(default)]
     pub target_location: Option<Handle<MissionProperty>>,
     /// `notification` (Class)
-    #[serde(default)]
     pub notification: Option<Handle<RewardNotification>>,
 }
 
@@ -1155,10 +1007,8 @@ impl<'a> Extract<'a> for ContractResult_Item {
 
 /// DCB type: `ContractResult_CompletionBounty`
 /// Inherits from: `ContractResult_CalculatedReward`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ContractResult_CompletionBounty {
     /// `missionResults` (Boolean)
-    #[serde(default)]
     pub mission_results: bool,
 }
 
@@ -1178,13 +1028,10 @@ impl<'a> Extract<'a> for ContractResult_CompletionBounty {
 
 /// DCB type: `ItemAwardEntityClass`
 /// Inherits from: `ItemAwardBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ItemAwardEntityClass {
     /// `amountToAward` (Int32)
-    #[serde(default)]
     pub amount_to_award: i32,
     /// `entityClass` (Reference)
-    #[serde(default)]
     pub entity_class: Option<CigGuid>,
 }
 
@@ -1205,10 +1052,8 @@ impl<'a> Extract<'a> for ItemAwardEntityClass {
 
 /// DCB type: `ItemAwardWeightingsParams`
 /// Inherits from: `ItemAwardWeightingsBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ItemAwardWeightingsParams {
     /// `awardsRecord` (Reference)
-    #[serde(default)]
     pub awards_record: Option<CigGuid>,
 }
 
@@ -1228,22 +1073,16 @@ impl<'a> Extract<'a> for ItemAwardWeightingsParams {
 
 /// DCB type: `ContractResult_ItemsWeighting`
 /// Inherits from: `ContractResultBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ContractResult_ItemsWeighting {
     /// `missionResults` (Boolean)
-    #[serde(default)]
     pub mission_results: bool,
     /// `targetLocation` (WeakPointer)
-    #[serde(default)]
     pub target_location: Option<Handle<MissionProperty>>,
     /// `awardOnlyToMissionOwner` (Boolean)
-    #[serde(default)]
     pub award_only_to_mission_owner: bool,
     /// `itemAwardStructure` (StrongPointer (array))
-    #[serde(default)]
     pub item_award_structure: Vec<ItemAwardWeightingsBasePtr>,
     /// `notification` (Class)
-    #[serde(default)]
     pub notification: Option<Handle<RewardNotification>>,
 }
 
@@ -1278,16 +1117,12 @@ impl<'a> Extract<'a> for ContractResult_ItemsWeighting {
 
 /// DCB type: `ContractResult_ScenarioProgress`
 /// Inherits from: `ContractResultBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ContractResult_ScenarioProgress {
     /// `missionResults` (Boolean)
-    #[serde(default)]
     pub mission_results: bool,
     /// `PointsToAward` (Int32)
-    #[serde(default)]
     pub points_to_award: i32,
     /// `scenarioProgressPlugin` (Class)
-    #[serde(default)]
     pub scenario_progress_plugin: Option<Handle<SContractPlugin_SScenarioProgress>>,
 }
 
@@ -1311,46 +1146,32 @@ impl<'a> Extract<'a> for ContractResult_ScenarioProgress {
 }
 
 /// DCB type: `RewardNotification`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct RewardNotification {
     /// `enabled` (Boolean)
-    #[serde(default)]
     pub enabled: bool,
     /// `enablePrompt` (Boolean)
-    #[serde(default)]
     pub enable_prompt: bool,
     /// `awardNotification` (Locale)
-    #[serde(default)]
     pub award_notification: LocaleKey,
     /// `multiAwardNotification` (Locale)
-    #[serde(default)]
     pub multi_award_notification: LocaleKey,
     /// `selectionPrompt` (Locale)
-    #[serde(default)]
     pub selection_prompt: LocaleKey,
     /// `shipKioskDestination` (Locale)
-    #[serde(default)]
     pub ship_kiosk_destination: LocaleKey,
     /// `freightElevatorDestination` (Locale)
-    #[serde(default)]
     pub freight_elevator_destination: LocaleKey,
     /// `freightElevatorCannotRetrieve` (Locale)
-    #[serde(default)]
     pub freight_elevator_cannot_retrieve: LocaleKey,
     /// `rewardExtendedTextToken` (String)
-    #[serde(default)]
     pub reward_extended_text_token: String,
     /// `destinationLocationExtendedTextToken` (String)
-    #[serde(default)]
     pub destination_location_extended_text_token: String,
     /// `kioskDestinationExtendedTextToken` (String)
-    #[serde(default)]
     pub kiosk_destination_extended_text_token: String,
     /// `rewardAmountExtendedTextToken` (String)
-    #[serde(default)]
     pub reward_amount_extended_text_token: String,
     /// `musicWwiseEvent` (Class)
-    #[serde(default)]
     pub music_wwise_event: Option<Handle<GlobalResourceAudio>>,
 }
 
@@ -1385,16 +1206,12 @@ impl<'a> Extract<'a> for RewardNotification {
 
 /// DCB type: `BlueprintRewards`
 /// Inherits from: `ContractResultBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BlueprintRewards {
     /// `missionResults` (Boolean)
-    #[serde(default)]
     pub mission_results: bool,
     /// `chance` (Single)
-    #[serde(default)]
     pub chance: f32,
     /// `blueprintPool` (Reference)
-    #[serde(default)]
     pub blueprint_pool: Option<CigGuid>,
 }
 
@@ -1415,19 +1232,14 @@ impl<'a> Extract<'a> for BlueprintRewards {
 }
 
 /// DCB type: `ContractAutoFinishSettings`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ContractAutoFinishSettings {
     /// `contractDeadline` (Class)
-    #[serde(default)]
     pub contract_deadline: Option<Handle<MissionDeadline>>,
     /// `failIfSentToPrison` (Boolean)
-    #[serde(default)]
     pub fail_if_sent_to_prison: bool,
     /// `failIfBecameCriminal` (Boolean)
-    #[serde(default)]
     pub fail_if_became_criminal: bool,
     /// `failIfLeavePrison` (Boolean)
-    #[serde(default)]
     pub fail_if_leave_prison: bool,
 }
 
@@ -1452,22 +1264,16 @@ impl<'a> Extract<'a> for ContractAutoFinishSettings {
 }
 
 /// DCB type: `ActiveContractSettings`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ActiveContractSettings {
     /// `hasCompleteButton` (Boolean)
-    #[serde(default)]
     pub has_complete_button: bool,
     /// `handlesAbandonRequest` (Boolean)
-    #[serde(default)]
     pub handles_abandon_request: bool,
     /// `canBeShared` (Boolean)
-    #[serde(default)]
     pub can_be_shared: bool,
     /// `displayAlliedMarkers` (Boolean)
-    #[serde(default)]
     pub display_allied_markers: bool,
     /// `onlyOwnerCanComplete` (Boolean)
-    #[serde(default)]
     pub only_owner_can_complete: bool,
 }
 
@@ -1491,13 +1297,10 @@ impl<'a> Extract<'a> for ActiveContractSettings {
 
 /// DCB type: `ContractClass_Contract`
 /// Inherits from: `ContractClassBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ContractClass_Contract {
     /// `additionalParams` (Class)
-    #[serde(default)]
     pub additional_params: Option<Handle<ActiveContractSettings>>,
     /// `autoFinishSettings` (Class)
-    #[serde(default)]
     pub auto_finish_settings: Option<Handle<ContractAutoFinishSettings>>,
 }
 
@@ -1524,7 +1327,6 @@ impl<'a> Extract<'a> for ContractClass_Contract {
 
 /// DCB type: `ContractClass_PVPBounty`
 /// Inherits from: `ContractClassBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ContractClass_PVPBounty {
 }
 
@@ -1543,19 +1345,14 @@ impl<'a> Extract<'a> for ContractClass_PVPBounty {
 
 /// DCB type: `HaulingOrderContent_Resource`
 /// Inherits from: `HaulingOrderContent_ResourceBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct HaulingOrderContent_Resource {
     /// `resource` (Reference)
-    #[serde(default)]
     pub resource: Option<CigGuid>,
     /// `maxContainerSize` (Single)
-    #[serde(default)]
     pub max_container_size: f32,
     /// `minSCU` (Single)
-    #[serde(default)]
     pub min_scu: f32,
     /// `maxSCU` (Single)
-    #[serde(default)]
     pub max_scu: f32,
 }
 
@@ -1578,16 +1375,12 @@ impl<'a> Extract<'a> for HaulingOrderContent_Resource {
 
 /// DCB type: `HaulingOrderContent_EntityClasses`
 /// Inherits from: `HaulingOrderContentBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct HaulingOrderContent_EntityClasses {
     /// `haulingEntityClasses` (Reference)
-    #[serde(default)]
     pub hauling_entity_classes: Option<CigGuid>,
     /// `minAmount` (Int32)
-    #[serde(default)]
     pub min_amount: i32,
     /// `maxAmount` (Int32)
-    #[serde(default)]
     pub max_amount: i32,
 }
 
@@ -1609,16 +1402,12 @@ impl<'a> Extract<'a> for HaulingOrderContent_EntityClasses {
 
 /// DCB type: `HaulingOrderContent_EntityClass`
 /// Inherits from: `HaulingOrderContentBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct HaulingOrderContent_EntityClass {
     /// `entityClass` (Reference)
-    #[serde(default)]
     pub entity_class: Option<CigGuid>,
     /// `minAmount` (Int32)
-    #[serde(default)]
     pub min_amount: i32,
     /// `maxAmount` (Int32)
-    #[serde(default)]
     pub max_amount: i32,
 }
 
@@ -1640,16 +1429,12 @@ impl<'a> Extract<'a> for HaulingOrderContent_EntityClass {
 
 /// DCB type: `HaulingOrderContent_MissionItem`
 /// Inherits from: `HaulingOrderContentBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct HaulingOrderContent_MissionItem {
     /// `item` (WeakPointer)
-    #[serde(default)]
     pub item: Option<Handle<MissionProperty>>,
     /// `minAmount` (Int32)
-    #[serde(default)]
     pub min_amount: i32,
     /// `maxAmount` (Int32)
-    #[serde(default)]
     pub max_amount: i32,
 }
 
@@ -1674,22 +1459,16 @@ impl<'a> Extract<'a> for HaulingOrderContent_MissionItem {
 
 /// DCB type: `HaulingOrder_Property`
 /// Inherits from: `HaulingOrder_PropertyBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct HaulingOrder_Property {
     /// `pickUpLocation` (WeakPointer)
-    #[serde(default)]
     pub pick_up_location: Option<ObjectivePropertyBasePtr>,
     /// `dropOffLocation` (WeakPointer)
-    #[serde(default)]
     pub drop_off_location: Option<ObjectivePropertyBasePtr>,
     /// `pickUpTargetTypes` (Reference (array))
-    #[serde(default)]
     pub pick_up_target_types: Vec<CigGuid>,
     /// `dropOffTargetTypes` (Reference (array))
-    #[serde(default)]
     pub drop_off_target_types: Vec<CigGuid>,
     /// `haulingOrdersProperty` (WeakPointer)
-    #[serde(default)]
     pub hauling_orders_property: Option<ObjectivePropertyBasePtr>,
 }
 
@@ -1726,25 +1505,18 @@ impl<'a> Extract<'a> for HaulingOrder_Property {
 
 /// DCB type: `HaulingOrder_ResourceUnlimitedDropOff`
 /// Inherits from: `HaulingOrder_ResourceBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct HaulingOrder_ResourceUnlimitedDropOff {
     /// `pickUpLocation` (WeakPointer)
-    #[serde(default)]
     pub pick_up_location: Option<ObjectivePropertyBasePtr>,
     /// `dropOffLocation` (WeakPointer)
-    #[serde(default)]
     pub drop_off_location: Option<ObjectivePropertyBasePtr>,
     /// `pickUpTargetTypes` (Reference (array))
-    #[serde(default)]
     pub pick_up_target_types: Vec<CigGuid>,
     /// `dropOffTargetTypes` (Reference (array))
-    #[serde(default)]
     pub drop_off_target_types: Vec<CigGuid>,
     /// `resource` (Reference)
-    #[serde(default)]
     pub resource: Option<CigGuid>,
     /// `maxContainerSize` (Single)
-    #[serde(default)]
     pub max_container_size: f32,
 }
 
@@ -1779,28 +1551,20 @@ impl<'a> Extract<'a> for HaulingOrder_ResourceUnlimitedDropOff {
 
 /// DCB type: `HaulingOrder_EntityClasses`
 /// Inherits from: `HaulingOrderBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct HaulingOrder_EntityClasses {
     /// `pickUpLocation` (WeakPointer)
-    #[serde(default)]
     pub pick_up_location: Option<ObjectivePropertyBasePtr>,
     /// `dropOffLocation` (WeakPointer)
-    #[serde(default)]
     pub drop_off_location: Option<ObjectivePropertyBasePtr>,
     /// `pickUpTargetTypes` (Reference (array))
-    #[serde(default)]
     pub pick_up_target_types: Vec<CigGuid>,
     /// `dropOffTargetTypes` (Reference (array))
-    #[serde(default)]
     pub drop_off_target_types: Vec<CigGuid>,
     /// `haulingEntityClasses` (Reference)
-    #[serde(default)]
     pub hauling_entity_classes: Option<CigGuid>,
     /// `minAmount` (Int32)
-    #[serde(default)]
     pub min_amount: i32,
     /// `maxAmount` (Int32)
-    #[serde(default)]
     pub max_amount: i32,
 }
 
@@ -1836,28 +1600,20 @@ impl<'a> Extract<'a> for HaulingOrder_EntityClasses {
 
 /// DCB type: `HaulingOrder_EntityClass`
 /// Inherits from: `HaulingOrderBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct HaulingOrder_EntityClass {
     /// `pickUpLocation` (WeakPointer)
-    #[serde(default)]
     pub pick_up_location: Option<ObjectivePropertyBasePtr>,
     /// `dropOffLocation` (WeakPointer)
-    #[serde(default)]
     pub drop_off_location: Option<ObjectivePropertyBasePtr>,
     /// `pickUpTargetTypes` (Reference (array))
-    #[serde(default)]
     pub pick_up_target_types: Vec<CigGuid>,
     /// `dropOffTargetTypes` (Reference (array))
-    #[serde(default)]
     pub drop_off_target_types: Vec<CigGuid>,
     /// `entityClass` (Reference)
-    #[serde(default)]
     pub entity_class: Option<CigGuid>,
     /// `minAmount` (Int32)
-    #[serde(default)]
     pub min_amount: i32,
     /// `maxAmount` (Int32)
-    #[serde(default)]
     pub max_amount: i32,
 }
 
@@ -1893,28 +1649,20 @@ impl<'a> Extract<'a> for HaulingOrder_EntityClass {
 
 /// DCB type: `HaulingOrder_MissionItem`
 /// Inherits from: `HaulingOrderBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct HaulingOrder_MissionItem {
     /// `pickUpLocation` (WeakPointer)
-    #[serde(default)]
     pub pick_up_location: Option<ObjectivePropertyBasePtr>,
     /// `dropOffLocation` (WeakPointer)
-    #[serde(default)]
     pub drop_off_location: Option<ObjectivePropertyBasePtr>,
     /// `pickUpTargetTypes` (Reference (array))
-    #[serde(default)]
     pub pick_up_target_types: Vec<CigGuid>,
     /// `dropOffTargetTypes` (Reference (array))
-    #[serde(default)]
     pub drop_off_target_types: Vec<CigGuid>,
     /// `item` (WeakPointer)
-    #[serde(default)]
     pub item: Option<ObjectivePropertyBasePtr>,
     /// `minAmount` (Int32)
-    #[serde(default)]
     pub min_amount: i32,
     /// `maxAmount` (Int32)
-    #[serde(default)]
     pub max_amount: i32,
 }
 
@@ -1953,10 +1701,8 @@ impl<'a> Extract<'a> for HaulingOrder_MissionItem {
 
 /// DCB type: `HaulingOrder_OrOption_And`
 /// Inherits from: `HaulingOrder_OrOption_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct HaulingOrder_OrOption_And {
     /// `orders` (StrongPointer (array))
-    #[serde(default)]
     pub orders: Vec<HaulingOrderContentBasePtr>,
 }
 
@@ -1981,10 +1727,8 @@ impl<'a> Extract<'a> for HaulingOrder_OrOption_And {
 
 /// DCB type: `HaulingOrderContent_Or`
 /// Inherits from: `HaulingOrderContentBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct HaulingOrderContent_Or {
     /// `options` (StrongPointer (array))
-    #[serde(default)]
     pub options: Vec<HaulingOrder_OrOption_BasePtr>,
 }
 
@@ -2009,10 +1753,8 @@ impl<'a> Extract<'a> for HaulingOrderContent_Or {
 
 /// DCB type: `MissionFlowCondition_AllTokensState`
 /// Inherits from: `MissionFlowConditionBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MissionFlowCondition_AllTokensState {
     /// `tokenState` (EnumChoice)
-    #[serde(default)]
     pub token_state: EMissionPhaseStates,
 }
 
@@ -2032,10 +1774,8 @@ impl<'a> Extract<'a> for MissionFlowCondition_AllTokensState {
 
 /// DCB type: `MissionFlowCondition_AnyTokensState`
 /// Inherits from: `MissionFlowConditionBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MissionFlowCondition_AnyTokensState {
     /// `tokenState` (EnumChoice)
-    #[serde(default)]
     pub token_state: EMissionPhaseStates,
 }
 
@@ -2055,7 +1795,6 @@ impl<'a> Extract<'a> for MissionFlowCondition_AnyTokensState {
 
 /// DCB type: `MissionFlowCondition_OnMissionStart`
 /// Inherits from: `MissionFlowConditionBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MissionFlowCondition_OnMissionStart {
 }
 
@@ -2074,10 +1813,8 @@ impl<'a> Extract<'a> for MissionFlowCondition_OnMissionStart {
 
 /// DCB type: `MissionFlowCondition_OR`
 /// Inherits from: `MissionFlowConditionBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MissionFlowCondition_OR {
     /// `conditions` (StrongPointer (array))
-    #[serde(default)]
     pub conditions: Vec<MissionFlowConditionBasePtr>,
 }
 
@@ -2101,13 +1838,10 @@ impl<'a> Extract<'a> for MissionFlowCondition_OR {
 }
 
 /// DCB type: `MissionRandomPhaseEntry`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MissionRandomPhaseEntry {
     /// `objective` (WeakPointer)
-    #[serde(default)]
     pub objective: Option<ObjectiveTokenPtr>,
     /// `probability` (Single)
-    #[serde(default)]
     pub probability: f32,
 }
 
@@ -2131,10 +1865,8 @@ impl<'a> Extract<'a> for MissionRandomPhaseEntry {
 
 /// DCB type: `MissionFlowAction_PickRandomMissionPhase`
 /// Inherits from: `MissionFlowActionBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MissionFlowAction_PickRandomMissionPhase {
     /// `missionPhases` (Class (array))
-    #[serde(default)]
     pub mission_phases: Vec<Handle<MissionRandomPhaseEntry>>,
 }
 
@@ -2160,25 +1892,18 @@ impl<'a> Extract<'a> for MissionFlowAction_PickRandomMissionPhase {
 
 /// DCB type: `MissionPropertyValue_Locations`
 /// Inherits from: `MissionPropertyValue_Location`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MissionPropertyValue_Locations {
     /// `matchConditions` (StrongPointer (array))
-    #[serde(default)]
     pub match_conditions: Vec<BaseDataSetMatchConditionPtr>,
     /// `resourceTags` (Reference (array))
-    #[serde(default)]
     pub resource_tags: Vec<CigGuid>,
     /// `logErrorOnSearchFail` (Boolean)
-    #[serde(default)]
     pub log_error_on_search_fail: bool,
     /// `minLocationsToFind` (Int32)
-    #[serde(default)]
     pub min_locations_to_find: i32,
     /// `maxLocationsToFind` (Int32)
-    #[serde(default)]
     pub max_locations_to_find: i32,
     /// `failIfMinAmountNotFound` (Boolean)
-    #[serde(default)]
     pub fail_if_min_amount_not_found: bool,
 }
 
@@ -2210,10 +1935,8 @@ impl<'a> Extract<'a> for MissionPropertyValue_Locations {
 
 /// DCB type: `MissionPropertyValue_HaulingOrders`
 /// Inherits from: `BaseMissionPropertyValue`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MissionPropertyValue_HaulingOrders {
     /// `haulingOrderContent` (StrongPointer (array))
-    #[serde(default)]
     pub hauling_order_content: Vec<HaulingOrderContentBasePtr>,
 }
 
@@ -2237,13 +1960,10 @@ impl<'a> Extract<'a> for MissionPropertyValue_HaulingOrders {
 }
 
 /// DCB type: `MissionModuleHierarchySubMission`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MissionModuleHierarchySubMission {
     /// `subMissionModule` (String)
-    #[serde(default)]
     pub sub_mission_module: String,
     /// `subModuleHierarchy` (Reference)
-    #[serde(default)]
     pub sub_module_hierarchy: Option<CigGuid>,
 }
 
@@ -2263,13 +1983,10 @@ impl<'a> Extract<'a> for MissionModuleHierarchySubMission {
 }
 
 /// DCB type: `MissionModuleHierarchy`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MissionModuleHierarchy {
     /// `missionModule` (String)
-    #[serde(default)]
     pub mission_module: String,
     /// `subMissionModules` (Class (array))
-    #[serde(default)]
     pub sub_mission_modules: Vec<Handle<MissionModuleHierarchySubMission>>,
 }
 
@@ -2296,43 +2013,30 @@ impl<'a> Extract<'a> for MissionModuleHierarchy {
 
 /// DCB type: `ObjectiveHandler_Local`
 /// Inherits from: `ObjectiveHandler_WithModule`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ObjectiveHandler_Local {
     /// `moduleDeclaration` (Reference)
-    #[serde(default)]
     pub module_declaration: Option<CigGuid>,
     /// `module` (String)
-    #[serde(default)]
     pub module: String,
     /// `moduleHierarchy` (Reference)
-    #[serde(default)]
     pub module_hierarchy: Option<CigGuid>,
     /// `disableTravelObjectives` (Boolean)
-    #[serde(default)]
     pub disable_travel_objectives: bool,
     /// `disableReturnObjectives` (Boolean)
-    #[serde(default)]
     pub disable_return_objectives: bool,
     /// `travelRadiusKM` (Single)
-    #[serde(default)]
     pub travel_radius_km: f32,
     /// `allPlayersLeftGracePeriod` (Single)
-    #[serde(default)]
     pub all_players_left_grace_period: f32,
     /// `travelObjectiveInfo` (Class)
-    #[serde(default)]
     pub travel_objective_info: Option<Handle<ObjectiveDisplayInfo>>,
     /// `returnObjectiveInfo` (Class)
-    #[serde(default)]
     pub return_objective_info: Option<Handle<ObjectiveDisplayInfo>>,
     /// `navPointSpawnInfo` (StrongPointer)
-    #[serde(default)]
     pub nav_point_spawn_info: Option<Handle<NavPointSpawnInformation>>,
     /// `location` (WeakPointer)
-    #[serde(default)]
     pub location: Option<ObjectivePropertyBasePtr>,
     /// `securityManifestToOverride` (Reference)
-    #[serde(default)]
     pub security_manifest_to_override: Option<CigGuid>,
 }
 
@@ -2375,46 +2079,32 @@ impl<'a> Extract<'a> for ObjectiveHandler_Local {
 
 /// DCB type: `ObjectiveHandler_NearLocation`
 /// Inherits from: `ObjectiveHandler_WithModule`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ObjectiveHandler_NearLocation {
     /// `moduleDeclaration` (Reference)
-    #[serde(default)]
     pub module_declaration: Option<CigGuid>,
     /// `module` (String)
-    #[serde(default)]
     pub module: String,
     /// `moduleHierarchy` (Reference)
-    #[serde(default)]
     pub module_hierarchy: Option<CigGuid>,
     /// `disableTravelObjectives` (Boolean)
-    #[serde(default)]
     pub disable_travel_objectives: bool,
     /// `disableReturnObjectives` (Boolean)
-    #[serde(default)]
     pub disable_return_objectives: bool,
     /// `travelRadiusKM` (Single)
-    #[serde(default)]
     pub travel_radius_km: f32,
     /// `allPlayersLeftGracePeriod` (Single)
-    #[serde(default)]
     pub all_players_left_grace_period: f32,
     /// `travelObjectiveInfo` (Class)
-    #[serde(default)]
     pub travel_objective_info: Option<Handle<ObjectiveDisplayInfo>>,
     /// `returnObjectiveInfo` (Class)
-    #[serde(default)]
     pub return_objective_info: Option<Handle<ObjectiveDisplayInfo>>,
     /// `navPointSpawnInfo` (StrongPointer)
-    #[serde(default)]
     pub nav_point_spawn_info: Option<Handle<NavPointSpawnInformation>>,
     /// `location` (WeakPointer)
-    #[serde(default)]
     pub location: Option<ObjectivePropertyBasePtr>,
     /// `maxDistance` (Single)
-    #[serde(default)]
     pub max_distance: f32,
     /// `minDistance` (Single)
-    #[serde(default)]
     pub min_distance: f32,
 }
 
@@ -2458,31 +2148,22 @@ impl<'a> Extract<'a> for ObjectiveHandler_NearLocation {
 
 /// DCB type: `ContractGeneratorHandler_PVPBountyDef`
 /// Inherits from: `ContractGeneratorHandlerBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ContractGeneratorHandler_PVPBountyDef {
     /// `notForRelease` (Boolean)
-    #[serde(default)]
     pub not_for_release: bool,
     /// `workInProgress` (Boolean)
-    #[serde(default)]
     pub work_in_progress: bool,
     /// `debugName` (String)
-    #[serde(default)]
     pub debug_name: String,
     /// `required_active_scenarios` (Reference (array))
-    #[serde(default)]
     pub required_active_scenarios: Vec<CigGuid>,
     /// `defaultAvailability` (Class)
-    #[serde(default)]
     pub default_availability: Option<Handle<ContractAvailability>>,
     /// `contractParams` (Class)
-    #[serde(default)]
     pub contract_params: Option<Handle<ContractParamOverrides>>,
     /// `PVPBountyContract` (Class (array))
-    #[serde(default)]
     pub pvpbounty_contract: Vec<Handle<Contract>>,
     /// `escapedConvicts` (Boolean)
-    #[serde(default)]
     pub escaped_convicts: bool,
 }
 
@@ -2522,13 +2203,10 @@ impl<'a> Extract<'a> for ContractGeneratorHandler_PVPBountyDef {
 }
 
 /// DCB type: `SPVPBountyContractGenerators`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SPVPBountyContractGenerators {
     /// `locationAvailable` (Reference)
-    #[serde(default)]
     pub location_available: Option<CigGuid>,
     /// `contractGenerator` (Reference)
-    #[serde(default)]
     pub contract_generator: Option<CigGuid>,
 }
 
@@ -2548,16 +2226,12 @@ impl<'a> Extract<'a> for SPVPBountyContractGenerators {
 }
 
 /// DCB type: `GlobalMissionSettings`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GlobalMissionSettings {
     /// `locationValidation` (StrongPointer (array))
-    #[serde(default)]
     pub location_validation: Vec<MissionLocationValidationPtr>,
     /// `defaultJurisdictionForPlayerCrimeStats` (Reference)
-    #[serde(default)]
     pub default_jurisdiction_for_player_crime_stats: Option<CigGuid>,
     /// `PVPBountyContractGenerators` (Class (array))
-    #[serde(default)]
     pub pvpbounty_contract_generators: Vec<Handle<SPVPBountyContractGenerators>>,
 }
 

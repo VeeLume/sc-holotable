@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,22 +19,16 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `SeatReticleArchetype`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SeatReticleArchetype {
     /// `fixed` (Boolean)
-    #[serde(default)]
     pub fixed: bool,
     /// `look` (Boolean)
-    #[serde(default)]
     pub look: bool,
     /// `velocity` (Boolean)
-    #[serde(default)]
     pub velocity: bool,
     /// `control` (Boolean)
-    #[serde(default)]
     pub control: bool,
     /// `atmospheric` (Boolean)
-    #[serde(default)]
     pub atmospheric: bool,
 }
 

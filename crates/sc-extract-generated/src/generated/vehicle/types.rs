@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,13 +19,10 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `SOperatorModeLabels`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SOperatorModeLabels {
     /// `fullNames` (Locale)
-    #[serde(default)]
     pub full_names: LocaleKey,
     /// `shortNames` (Locale)
-    #[serde(default)]
     pub short_names: LocaleKey,
 }
 
@@ -46,13 +42,10 @@ impl<'a> Extract<'a> for SOperatorModeLabels {
 }
 
 /// DCB type: `SMasterModeLabels`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SMasterModeLabels {
     /// `fullNames` (Locale)
-    #[serde(default)]
     pub full_names: LocaleKey,
     /// `shortNames` (Locale)
-    #[serde(default)]
     pub short_names: LocaleKey,
 }
 
@@ -72,10 +65,8 @@ impl<'a> Extract<'a> for SMasterModeLabels {
 }
 
 /// DCB type: `VehicleCareerList`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct VehicleCareerList {
     /// `careerList` (Reference (array))
-    #[serde(default)]
     pub career_list: Vec<CigGuid>,
 }
 

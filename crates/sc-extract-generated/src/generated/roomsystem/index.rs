@@ -10,23 +10,17 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
 use std::collections::HashMap;
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use crate::Handle;
 use super::super::*;
 
 /// Record index for the `roomsystem` feature.
-#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+#[derive(Default)]
 pub struct RoomsystemIndex {
-    #[serde(default)]
     pub fire_hazard_global_params: HashMap<CigGuid, Handle<FireHazardGlobalParams>>,
-    #[serde(default)]
     pub global_gas_params: HashMap<CigGuid, Handle<GlobalGasParams>>,
-    #[serde(default)]
     pub global_room_state_params: HashMap<CigGuid, Handle<GlobalRoomStateParams>>,
-    #[serde(default)]
     pub electrical_state_template: HashMap<CigGuid, Handle<ElectricalStateTemplate>>,
-    #[serde(default)]
     pub electrical_behavior: HashMap<CigGuid, Handle<ElectricalBehavior>>,
 }
 

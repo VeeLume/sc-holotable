@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -21,112 +20,76 @@ use super::super::*;
 
 /// DCB type: `EntityComponentCharacterCustomizerParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EntityComponentCharacterCustomizerParams {
     /// `cameraRigRoot` (Class)
-    #[serde(default)]
     pub camera_rig_root: Option<Handle<EntityReferenceDef>>,
     /// `playerHighlightingParams` (Class)
-    #[serde(default)]
     pub player_highlighting_params: Option<Handle<SFaceHighlightingParams>>,
     /// `currentEditFaceHighlightingParams` (Class)
-    #[serde(default)]
     pub current_edit_face_highlighting_params: Option<Handle<SFaceHighlightingParams>>,
     /// `headLibraryTagPoint` (Class)
-    #[serde(default)]
     pub head_library_tag_point: Option<Handle<EntityReferenceDef>>,
     /// `cameraParent` (Class)
-    #[serde(default)]
     pub camera_parent: Option<Handle<EntityReferenceDef>>,
     /// `zoomNavSpline` (Class)
-    #[serde(default)]
     pub zoom_nav_spline: Option<Handle<EntityReferenceDef>>,
     /// `libraryDeselectDelayTime` (Single)
-    #[serde(default)]
     pub library_deselect_delay_time: f32,
     /// `libraryHeadCount` (Int32)
-    #[serde(default)]
     pub library_head_count: i32,
     /// `customizerDNARegions` (Class)
-    #[serde(default)]
     pub customizer_dnaregions: Option<Handle<SCharacterCustomizerDNARegionParams>>,
     /// `bodyTypes` (Class (array))
-    #[serde(default)]
     pub body_types: Vec<Handle<SCharacterCustomizerBodyTypeParams>>,
     /// `blankSkinVariant` (Reference)
-    #[serde(default)]
     pub blank_skin_variant: Option<CigGuid>,
     /// `controlParams` (Class)
-    #[serde(default)]
     pub control_params: Option<Handle<SCharacterCustomizerControlParams>>,
     /// `materialEditingParams` (Class)
-    #[serde(default)]
     pub material_editing_params: Option<Handle<SCharacterCustomizerMaterialEditParams>>,
     /// `headLibraryRollOnTriggers` (Boolean)
-    #[serde(default)]
     pub head_library_roll_on_triggers: bool,
     /// `dnaBlendingPools` (Class (array))
-    #[serde(default)]
     pub dna_blending_pools: Vec<Handle<SCharacterCustomizerDNAHeadPool>>,
     /// `useBlendingPoolsForFaceSculpting` (Boolean)
-    #[serde(default)]
     pub use_blending_pools_for_face_sculpting: bool,
     /// `faceSculptingPools` (Class (array))
-    #[serde(default)]
     pub face_sculpting_pools: Vec<Handle<SCharacterCustomizerDNAHeadPool>>,
     /// `featureLibraryParams` (Class)
-    #[serde(default)]
     pub feature_library_params: Option<Handle<SCharacterCustomizerHeadLibraryParams>>,
     /// `dnaHeadLibraryParams` (Class)
-    #[serde(default)]
     pub dna_head_library_params: Option<Handle<SCharacterCustomizerHeadLibraryParams>>,
     /// `dnaClippingVolumeParams` (Class)
-    #[serde(default)]
     pub dna_clipping_volume_params: Option<Handle<SCharacterCustomizerClippingVolumeParams>>,
     /// `voiceOptions` (Class (array))
-    #[serde(default)]
     pub voice_options: Vec<Handle<SCharacterCustomizerVoiceParams>>,
     /// `allowedClasses` (Reference)
-    #[serde(default)]
     pub allowed_classes: Option<CigGuid>,
     /// `featureItemTags` (String (array))
-    #[serde(default)]
     pub feature_item_tags: Vec<String>,
     /// `serializeToNetwork` (Boolean)
-    #[serde(default)]
     pub serialize_to_network: bool,
     /// `serializationTimeout` (Single)
-    #[serde(default)]
     pub serialization_timeout: f32,
     /// `loadoutReplacements` (Class (array))
-    #[serde(default)]
     pub loadout_replacements: Vec<Handle<SCharacterCustomizerLoadoutItemReplacementMapping>>,
     /// `updatePlayerEntity` (Boolean)
-    #[serde(default)]
     pub update_player_entity: bool,
     /// `clearAllPlayerLoadout` (Boolean)
-    #[serde(default)]
     pub clear_all_player_loadout: bool,
     /// `cameraEntity` (Class)
-    #[serde(default)]
     pub camera_entity: Option<Handle<EntityReferenceDef>>,
     /// `dialogueData` (Reference)
-    #[serde(default)]
     pub dialogue_data: Option<CigGuid>,
     /// `flowSteps` (Class (array))
-    #[serde(default)]
     pub flow_steps: Vec<Handle<SCharacterCustomizerStep>>,
     /// `customizableMaterials` (StrongPointer (array))
-    #[serde(default)]
     pub customizable_materials: Vec<Handle<SCustomizableMaterialParams>>,
     /// `hidePlayer` (Boolean)
-    #[serde(default)]
     pub hide_player: bool,
     /// `shutdownTime` (Single)
-    #[serde(default)]
     pub shutdown_time: f32,
     /// `requireNameValues` (Boolean)
-    #[serde(default)]
     pub require_name_values: bool,
 }
 
@@ -261,16 +224,12 @@ impl<'a> Extract<'a> for EntityComponentCharacterCustomizerParams {
 }
 
 /// DCB type: `SCharacterCustomizerLoadoutItemReplacementMapping`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCharacterCustomizerLoadoutItemReplacementMapping {
     /// `networkOnly` (Boolean)
-    #[serde(default)]
     pub network_only: bool,
     /// `oldItemGUID` (String)
-    #[serde(default)]
     pub old_item_guid: String,
     /// `newItem` (Reference)
-    #[serde(default)]
     pub new_item: Option<CigGuid>,
 }
 
@@ -291,34 +250,24 @@ impl<'a> Extract<'a> for SCharacterCustomizerLoadoutItemReplacementMapping {
 }
 
 /// DCB type: `SCharacterCustomizerHeadLibraryParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCharacterCustomizerHeadLibraryParams {
     /// `libraryRoot` (Class)
-    #[serde(default)]
     pub library_root: Option<Handle<EntityReferenceDef>>,
     /// `columns` (Int32)
-    #[serde(default)]
     pub columns: i32,
     /// `columnSpacing` (Single)
-    #[serde(default)]
     pub column_spacing: f32,
     /// `rowSpacing` (Single)
-    #[serde(default)]
     pub row_spacing: f32,
     /// `libraryScrollingIncrement` (Single)
-    #[serde(default)]
     pub library_scrolling_increment: f32,
     /// `rowsOnScreen` (Int32)
-    #[serde(default)]
     pub rows_on_screen: i32,
     /// `sourceHeadClass` (Reference)
-    #[serde(default)]
     pub source_head_class: Option<CigGuid>,
     /// `additionalEntities` (Class (array))
-    #[serde(default)]
     pub additional_entities: Vec<Handle<EntityReferenceDef>>,
     /// `defaultProtosHeadClass` (Reference)
-    #[serde(default)]
     pub default_protos_head_class: Option<CigGuid>,
 }
 
@@ -354,13 +303,10 @@ impl<'a> Extract<'a> for SCharacterCustomizerHeadLibraryParams {
 }
 
 /// DCB type: `SCharacterCustomizerBlemishMapParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCharacterCustomizerBlemishMapParams {
     /// `blemishMask` (String)
-    #[serde(default)]
     pub blemish_mask: String,
     /// `blemishIdMask` (String)
-    #[serde(default)]
     pub blemish_id_mask: String,
 }
 
@@ -381,10 +327,8 @@ impl<'a> Extract<'a> for SCharacterCustomizerBlemishMapParams {
 
 /// DCB type: `SCustomzierColorSRGBA8`
 /// Inherits from: `SCustomzierColorDefBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCustomzierColorSRGBA8 {
     /// `color` (Class)
-    #[serde(default)]
     pub color: Option<Handle<SRGBA8>>,
 }
 
@@ -406,16 +350,12 @@ impl<'a> Extract<'a> for SCustomzierColorSRGBA8 {
 }
 
 /// DCB type: `SCharacterCustomizerDefaultShaderParam`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCharacterCustomizerDefaultShaderParam {
     /// `param` (WeakPointer)
-    #[serde(default)]
     pub param: Option<SCharacterCustomizerShaderParamBasePtr>,
     /// `colorValue` (StrongPointer)
-    #[serde(default)]
     pub color_value: Option<SCustomzierColorDefBasePtr>,
     /// `floatValue` (Single)
-    #[serde(default)]
     pub float_value: f32,
 }
 
@@ -442,16 +382,12 @@ impl<'a> Extract<'a> for SCharacterCustomizerDefaultShaderParam {
 }
 
 /// DCB type: `SCharacterCustomizerClampedValueParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCharacterCustomizerClampedValueParams {
     /// `clampValue` (Boolean)
-    #[serde(default)]
     pub clamp_value: bool,
     /// `minValue` (Single)
-    #[serde(default)]
     pub min_value: f32,
     /// `maxValue` (Single)
-    #[serde(default)]
     pub max_value: f32,
 }
 
@@ -472,28 +408,20 @@ impl<'a> Extract<'a> for SCharacterCustomizerClampedValueParams {
 }
 
 /// DCB type: `SCharacterCustomizerTextureParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCharacterCustomizerTextureParams {
     /// `texturePath` (String)
-    #[serde(default)]
     pub texture_path: String,
     /// `numTilesU` (Int32)
-    #[serde(default)]
     pub num_tiles_u: i32,
     /// `numTilesV` (Int32)
-    #[serde(default)]
     pub num_tiles_v: i32,
     /// `offsetU` (Int32)
-    #[serde(default)]
     pub offset_u: i32,
     /// `offsetV` (Int32)
-    #[serde(default)]
     pub offset_v: i32,
     /// `supportsHueRotation` (Boolean)
-    #[serde(default)]
     pub supports_hue_rotation: bool,
     /// `mirrorMode` (EnumChoice)
-    #[serde(default)]
     pub mirror_mode: ETattooMirrorMode,
 }
 
@@ -518,13 +446,10 @@ impl<'a> Extract<'a> for SCharacterCustomizerTextureParams {
 }
 
 /// DCB type: `SCharacterCustomizerTextureList`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCharacterCustomizerTextureList {
     /// `textures` (StrongPointer (array))
-    #[serde(default)]
     pub textures: Vec<SCharacterCustomizerTextureParamsPtr>,
     /// `devOnlyTextures` (StrongPointer (array))
-    #[serde(default)]
     pub dev_only_textures: Vec<SCharacterCustomizerTextureParamsPtr>,
 }
 
@@ -555,31 +480,22 @@ impl<'a> Extract<'a> for SCharacterCustomizerTextureList {
 
 /// DCB type: `SCharacterCustomizerMakeupParams`
 /// Inherits from: `SCharacterCustomizerTextureParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCharacterCustomizerMakeupParams {
     /// `texturePath` (String)
-    #[serde(default)]
     pub texture_path: String,
     /// `numTilesU` (Int32)
-    #[serde(default)]
     pub num_tiles_u: i32,
     /// `numTilesV` (Int32)
-    #[serde(default)]
     pub num_tiles_v: i32,
     /// `offsetU` (Int32)
-    #[serde(default)]
     pub offset_u: i32,
     /// `offsetV` (Int32)
-    #[serde(default)]
     pub offset_v: i32,
     /// `supportsHueRotation` (Boolean)
-    #[serde(default)]
     pub supports_hue_rotation: bool,
     /// `mirrorMode` (EnumChoice)
-    #[serde(default)]
     pub mirror_mode: ETattooMirrorMode,
     /// `defaultShaderParams` (Class (array))
-    #[serde(default)]
     pub default_shader_params: Vec<Handle<SCharacterCustomizerDefaultShaderParam>>,
 }
 
@@ -611,13 +527,10 @@ impl<'a> Extract<'a> for SCharacterCustomizerMakeupParams {
 }
 
 /// DCB type: `SCharacterCustomizerExtraTextureParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCharacterCustomizerExtraTextureParams {
     /// `texturePath` (String)
-    #[serde(default)]
     pub texture_path: String,
     /// `textureSlot` (EnumChoice)
-    #[serde(default)]
     pub texture_slot: ECharacterCustomizerTextureSlot,
 }
 
@@ -638,31 +551,22 @@ impl<'a> Extract<'a> for SCharacterCustomizerExtraTextureParams {
 
 /// DCB type: `SCharacterCustomizerMultiTextureParams`
 /// Inherits from: `SCharacterCustomizerTextureParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCharacterCustomizerMultiTextureParams {
     /// `texturePath` (String)
-    #[serde(default)]
     pub texture_path: String,
     /// `numTilesU` (Int32)
-    #[serde(default)]
     pub num_tiles_u: i32,
     /// `numTilesV` (Int32)
-    #[serde(default)]
     pub num_tiles_v: i32,
     /// `offsetU` (Int32)
-    #[serde(default)]
     pub offset_u: i32,
     /// `offsetV` (Int32)
-    #[serde(default)]
     pub offset_v: i32,
     /// `supportsHueRotation` (Boolean)
-    #[serde(default)]
     pub supports_hue_rotation: bool,
     /// `mirrorMode` (EnumChoice)
-    #[serde(default)]
     pub mirror_mode: ETattooMirrorMode,
     /// `additionalTextures` (Class (array))
-    #[serde(default)]
     pub additional_textures: Vec<Handle<SCharacterCustomizerExtraTextureParams>>,
 }
 
@@ -694,13 +598,10 @@ impl<'a> Extract<'a> for SCharacterCustomizerMultiTextureParams {
 }
 
 /// DCB type: `SCharacterCustomizerBaseMaterialSet`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCharacterCustomizerBaseMaterialSet {
     /// `headSkinBaseMaterial` (String)
-    #[serde(default)]
     pub head_skin_base_material: String,
     /// `bodySkinBaseMaterial` (String)
-    #[serde(default)]
     pub body_skin_base_material: String,
 }
 
@@ -720,19 +621,14 @@ impl<'a> Extract<'a> for SCharacterCustomizerBaseMaterialSet {
 }
 
 /// DCB type: `SCharacterCustomizerSkinBaseMaterialList`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCharacterCustomizerSkinBaseMaterialList {
     /// `debugName` (String)
-    #[serde(default)]
     pub debug_name: String,
     /// `modelTag` (StrongPointer)
-    #[serde(default)]
     pub model_tag: Option<SGeometryModelTagBasePtr>,
     /// `skinBaseMaterials` (Class (array))
-    #[serde(default)]
     pub skin_base_materials: Vec<Handle<SCharacterCustomizerBaseMaterialSet>>,
     /// `devOnly` (Boolean)
-    #[serde(default)]
     pub dev_only: bool,
 }
 
@@ -763,19 +659,14 @@ impl<'a> Extract<'a> for SCharacterCustomizerSkinBaseMaterialList {
 }
 
 /// DCB type: `SCharacterCustomizerMaterialEditParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCharacterCustomizerMaterialEditParams {
     /// `blemishMaps` (Class (array))
-    #[serde(default)]
     pub blemish_maps: Vec<Handle<SCharacterCustomizerBlemishMapParams>>,
     /// `baseSkinMaterials` (Class (array))
-    #[serde(default)]
     pub base_skin_materials: Vec<Handle<SCharacterCustomizerSkinBaseMaterialList>>,
     /// `hairDyeShiftMinFadeOut` (Single)
-    #[serde(default)]
     pub hair_dye_shift_min_fade_out: f32,
     /// `hairLengths` (Class (array))
-    #[serde(default)]
     pub hair_lengths: Vec<Handle<SCharacterCustomizerHairLengthEntry>>,
 }
 
@@ -815,19 +706,14 @@ impl<'a> Extract<'a> for SCharacterCustomizerMaterialEditParams {
 }
 
 /// DCB type: `SFaceHighlightingParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SFaceHighlightingParams {
     /// `wireFrameMaskPow` (Single)
-    #[serde(default)]
     pub wire_frame_mask_pow: f32,
     /// `pulseSpeed` (Single)
-    #[serde(default)]
     pub pulse_speed: f32,
     /// `highlightSymmetrical` (Boolean)
-    #[serde(default)]
     pub highlight_symmetrical: bool,
     /// `wireFrameColour` (Class)
-    #[serde(default)]
     pub wire_frame_colour: Option<Handle<SRGBA8>>,
 }
 
@@ -852,19 +738,14 @@ impl<'a> Extract<'a> for SFaceHighlightingParams {
 }
 
 /// DCB type: `SCharacterCustomizerVertexParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCharacterCustomizerVertexParams {
     /// `debugName` (String)
-    #[serde(default)]
     pub debug_name: String,
     /// `vertexId` (Int32)
-    #[serde(default)]
     pub vertex_id: i32,
     /// `ignoreList` (WeakPointer (array))
-    #[serde(default)]
     pub ignore_list: Vec<Handle<SCharacterCustomizerVertexParams>>,
     /// `shapingTolerance` (Single)
-    #[serde(default)]
     pub shaping_tolerance: f32,
 }
 
@@ -892,25 +773,18 @@ impl<'a> Extract<'a> for SCharacterCustomizerVertexParams {
 
 /// DCB type: `SCharacterCustomizerDNARegionParams`
 /// Inherits from: `SCharacterCustomizerRegionParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCharacterCustomizerDNARegionParams {
     /// `displayName` (String)
-    #[serde(default)]
     pub display_name: String,
     /// `displayNameLocId` (Locale)
-    #[serde(default)]
     pub display_name_loc_id: LocaleKey,
     /// `visible` (Boolean)
-    #[serde(default)]
     pub visible: bool,
     /// `symmetryRegion` (EnumChoice)
-    #[serde(default)]
     pub symmetry_region: ECharacterCustomizerDNARegion,
     /// `shapingVertices` (Class (array))
-    #[serde(default)]
     pub shaping_vertices: Vec<Handle<SCharacterCustomizerVertexParams>>,
     /// `shapingUIWeight` (Single)
-    #[serde(default)]
     pub shaping_uiweight: f32,
 }
 
@@ -940,31 +814,22 @@ impl<'a> Extract<'a> for SCharacterCustomizerDNARegionParams {
 }
 
 /// DCB type: `SCharacterCustomizerBodyTypeParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCharacterCustomizerBodyTypeParams {
     /// `displayName` (String)
-    #[serde(default)]
     pub display_name: String,
     /// `displayNameLocId` (Locale)
-    #[serde(default)]
     pub display_name_loc_id: LocaleKey,
     /// `bodyTypeDummyClass` (Reference)
-    #[serde(default)]
     pub body_type_dummy_class: Option<CigGuid>,
     /// `bodyTypeTagPoint` (Class)
-    #[serde(default)]
     pub body_type_tag_point: Option<Handle<EntityReferenceDef>>,
     /// `overrideModelTag` (StrongPointer)
-    #[serde(default)]
     pub override_model_tag: Option<SGeometryModelTagBasePtr>,
     /// `bodyTypeOffset` (Class)
-    #[serde(default)]
     pub body_type_offset: Option<Handle<Vec3>>,
     /// `randomizationOverrideParams` (Class (array))
-    #[serde(default)]
     pub randomization_override_params: Vec<Handle<SCharacterCustomizerRandomizationOverrideParams>>,
     /// `cameraRigOffset` (Class)
-    #[serde(default)]
     pub camera_rig_offset: Option<Handle<Vec3>>,
 }
 
@@ -1008,13 +873,10 @@ impl<'a> Extract<'a> for SCharacterCustomizerBodyTypeParams {
 }
 
 /// DCB type: `SCharacterCustomizerRandomizationOverrideParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCharacterCustomizerRandomizationOverrideParams {
     /// `feature` (WeakPointer)
-    #[serde(default)]
     pub feature: Option<SCharacterCustomizerFeatureBasePtr>,
     /// `randomizationParams` (StrongPointer)
-    #[serde(default)]
     pub randomization_params: Option<SCharacterCustomizerRandomizationParamsPtr>,
 }
 
@@ -1040,73 +902,50 @@ impl<'a> Extract<'a> for SCharacterCustomizerRandomizationOverrideParams {
 }
 
 /// DCB type: `SCharacterCustomizerControlParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCharacterCustomizerControlParams {
     /// `zoomSpeed` (Single)
-    #[serde(default)]
     pub zoom_speed: f32,
     /// `rotationRate` (Single)
-    #[serde(default)]
     pub rotation_rate: f32,
     /// `maxRotationSpeed` (Single)
-    #[serde(default)]
     pub max_rotation_speed: f32,
     /// `tiltClamp` (Class)
-    #[serde(default)]
     pub tilt_clamp: Option<Handle<Vec2>>,
     /// `enableTilt` (Boolean)
-    #[serde(default)]
     pub enable_tilt: bool,
     /// `dnaDragRate` (Single)
-    #[serde(default)]
     pub dna_drag_rate: f32,
     /// `dnaKeyboardEditRate` (Single)
-    #[serde(default)]
     pub dna_keyboard_edit_rate: f32,
     /// `rotationLerpTime` (Single)
-    #[serde(default)]
     pub rotation_lerp_time: f32,
     /// `libraryHeadBBoxScale` (Single)
-    #[serde(default)]
     pub library_head_bbox_scale: f32,
     /// `wholeHeadRegionBBoxScale` (Single)
-    #[serde(default)]
     pub whole_head_region_bbox_scale: f32,
     /// `libraryScrollSpeed` (Single)
-    #[serde(default)]
     pub library_scroll_speed: f32,
     /// `libraryScrollTimeout` (Single)
-    #[serde(default)]
     pub library_scroll_timeout: f32,
     /// `dnaKeyControlSpeed` (Single)
-    #[serde(default)]
     pub dna_key_control_speed: f32,
     /// `bodyTypeSelectionLerpTime` (Single)
-    #[serde(default)]
     pub body_type_selection_lerp_time: f32,
     /// `faceSculptingControlPointUIScaleFactor` (Single)
-    #[serde(default)]
     pub face_sculpting_control_point_uiscale_factor: f32,
     /// `enforceSymmetry` (Boolean)
-    #[serde(default)]
     pub enforce_symmetry: bool,
     /// `useAllDNAVertices` (Boolean)
-    #[serde(default)]
     pub use_all_dnavertices: bool,
     /// `facesculptingUIRadius` (Single)
-    #[serde(default)]
     pub facesculpting_uiradius: f32,
     /// `stepChangeDelayTime` (Single)
-    #[serde(default)]
     pub step_change_delay_time: f32,
     /// `faceSculptingOcclusionOffset` (Single)
-    #[serde(default)]
     pub face_sculpting_occlusion_offset: f32,
     /// `rotateCamera` (Boolean)
-    #[serde(default)]
     pub rotate_camera: bool,
     /// `stepTransitionTime` (Single)
-    #[serde(default)]
     pub step_transition_time: f32,
 }
 
@@ -1149,19 +988,14 @@ impl<'a> Extract<'a> for SCharacterCustomizerControlParams {
 }
 
 /// DCB type: `SCharacterCustomizerDNAHeadPool`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCharacterCustomizerDNAHeadPool {
     /// `tag` (StrongPointer)
-    #[serde(default)]
     pub tag: Option<SGeometryModelTagBasePtr>,
     /// `defaultMaterialPaths` (String (array))
-    #[serde(default)]
     pub default_material_paths: Vec<String>,
     /// `exclusionPool` (Boolean)
-    #[serde(default)]
     pub exclusion_pool: bool,
     /// `heads` (Class (array))
-    #[serde(default)]
     pub heads: Vec<Handle<SCharacterCustomizerDNAHeadParams>>,
 }
 
@@ -1194,16 +1028,12 @@ impl<'a> Extract<'a> for SCharacterCustomizerDNAHeadPool {
 }
 
 /// DCB type: `SCustomizerDefaultItem`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCustomizerDefaultItem {
     /// `itemportName` (String)
-    #[serde(default)]
     pub itemport_name: String,
     /// `class` (Reference)
-    #[serde(default)]
     pub class: Option<CigGuid>,
     /// `children` (Class (array))
-    #[serde(default)]
     pub children: Vec<Handle<SCustomizerDefaultItem>>,
 }
 
@@ -1230,19 +1060,14 @@ impl<'a> Extract<'a> for SCustomizerDefaultItem {
 }
 
 /// DCB type: `SCharacterCustomizerDNAHeadParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCharacterCustomizerDNAHeadParams {
     /// `headId` (Int32)
-    #[serde(default)]
     pub head_id: i32,
     /// `customMaterial` (String)
-    #[serde(default)]
     pub custom_material: String,
     /// `defaultLoadoutItems` (Class (array))
-    #[serde(default)]
     pub default_loadout_items: Vec<Handle<SCustomizerDefaultItem>>,
     /// `irisColor` (Class)
-    #[serde(default)]
     pub iris_color: Option<Handle<RGB>>,
 }
 
@@ -1273,16 +1098,12 @@ impl<'a> Extract<'a> for SCharacterCustomizerDNAHeadParams {
 }
 
 /// DCB type: `SCharacterCustomizerClippingVolumeParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCharacterCustomizerClippingVolumeParams {
     /// `area` (Class)
-    #[serde(default)]
     pub area: Option<Handle<EntityReferenceDef>>,
     /// `transitionTime` (Single)
-    #[serde(default)]
     pub transition_time: f32,
     /// `fadeDistance` (Single)
-    #[serde(default)]
     pub fade_distance: f32,
 }
 
@@ -1306,13 +1127,10 @@ impl<'a> Extract<'a> for SCharacterCustomizerClippingVolumeParams {
 }
 
 /// DCB type: `SCharacterCustomizerVoiceParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCharacterCustomizerVoiceParams {
     /// `debugName` (String)
-    #[serde(default)]
     pub debug_name: String,
     /// `modelVoiceTagPairs` (Class (array))
-    #[serde(default)]
     pub model_voice_tag_pairs: Vec<Handle<SModelVoiceTagPair>>,
 }
 
@@ -1339,19 +1157,14 @@ impl<'a> Extract<'a> for SCharacterCustomizerVoiceParams {
 
 /// DCB type: `SCharacterCustomizerComplexionRandomizationParams`
 /// Inherits from: `SCharacterCustomizerRandomizationParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCharacterCustomizerComplexionRandomizationParams {
     /// `frecklesOpacityLimits` (Class)
-    #[serde(default)]
     pub freckles_opacity_limits: Option<Handle<Vec2>>,
     /// `frecklesAmountLimits` (Class)
-    #[serde(default)]
     pub freckles_amount_limits: Option<Handle<Vec2>>,
     /// `sunspotsOpacityLimits` (Class)
-    #[serde(default)]
     pub sunspots_opacity_limits: Option<Handle<Vec2>>,
     /// `sunspotsAmountLimits` (Class)
-    #[serde(default)]
     pub sunspots_amount_limits: Option<Handle<Vec2>>,
 }
 
@@ -1386,10 +1199,8 @@ impl<'a> Extract<'a> for SCharacterCustomizerComplexionRandomizationParams {
 
 /// DCB type: `SCharacterCustomizerItemRandomizationParams`
 /// Inherits from: `SCharacterCustomizerRandomizationParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCharacterCustomizerItemRandomizationParams {
     /// `noItemProbability` (Single)
-    #[serde(default)]
     pub no_item_probability: f32,
 }
 
@@ -1409,16 +1220,12 @@ impl<'a> Extract<'a> for SCharacterCustomizerItemRandomizationParams {
 
 /// DCB type: `SCharacterCustomizerHairRandomizationParams`
 /// Inherits from: `SCharacterCustomizerItemRandomizationParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCharacterCustomizerHairRandomizationParams {
     /// `noItemProbability` (Single)
-    #[serde(default)]
     pub no_item_probability: f32,
     /// `melaninLimits` (Class)
-    #[serde(default)]
     pub melanin_limits: Option<Handle<Vec2>>,
     /// `rednessLimits` (Class)
-    #[serde(default)]
     pub redness_limits: Option<Handle<Vec2>>,
 }
 
@@ -1446,13 +1253,10 @@ impl<'a> Extract<'a> for SCharacterCustomizerHairRandomizationParams {
 
 /// DCB type: `SCharacterCustomizerMakeupSlotRandomizationParams`
 /// Inherits from: `SCharacterCustomizerRandomizationParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCharacterCustomizerMakeupSlotRandomizationParams {
     /// `noMakeupProbability` (Single)
-    #[serde(default)]
     pub no_makeup_probability: f32,
     /// `makeupSlot` (WeakPointer)
-    #[serde(default)]
     pub makeup_slot: Option<Handle<SCharacterCustomizerMakeupSlot>>,
 }
 
@@ -1476,16 +1280,12 @@ impl<'a> Extract<'a> for SCharacterCustomizerMakeupSlotRandomizationParams {
 
 /// DCB type: `SCharacterCustomizerTattooRandomizationParams`
 /// Inherits from: `SCharacterCustomizerRandomizationParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCharacterCustomizerTattooRandomizationParams {
     /// `noTattooProbability` (Single)
-    #[serde(default)]
     pub no_tattoo_probability: f32,
     /// `tattooAgeLimits` (Class)
-    #[serde(default)]
     pub tattoo_age_limits: Option<Handle<Vec2>>,
     /// `tattooFeatureParams` (WeakPointer)
-    #[serde(default)]
     pub tattoo_feature_params: Option<SCharacterCustomizerFeatureTextureSelectPtr>,
 }
 
@@ -1512,13 +1312,10 @@ impl<'a> Extract<'a> for SCharacterCustomizerTattooRandomizationParams {
 }
 
 /// DCB type: `SCharacterCustomizerRandomColorDef`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCharacterCustomizerRandomColorDef {
     /// `probability` (Single)
-    #[serde(default)]
     pub probability: f32,
     /// `color` (Class)
-    #[serde(default)]
     pub color: Option<Handle<RGB>>,
 }
 
@@ -1542,10 +1339,8 @@ impl<'a> Extract<'a> for SCharacterCustomizerRandomColorDef {
 
 /// DCB type: `SCharacterCustomizerEyeRandomizationParams`
 /// Inherits from: `SCharacterCustomizerRandomizationParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCharacterCustomizerEyeRandomizationParams {
     /// `irisColors` (Class (array))
-    #[serde(default)]
     pub iris_colors: Vec<Handle<SCharacterCustomizerRandomColorDef>>,
 }
 
@@ -1570,13 +1365,10 @@ impl<'a> Extract<'a> for SCharacterCustomizerEyeRandomizationParams {
 }
 
 /// DCB type: `SCharacterCustomizerHairLengthOverride`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCharacterCustomizerHairLengthOverride {
     /// `modelTag` (StrongPointer)
-    #[serde(default)]
     pub model_tag: Option<SGeometryModelTagBasePtr>,
     /// `hairLength` (Single)
-    #[serde(default)]
     pub hair_length: f32,
 }
 
@@ -1599,16 +1391,12 @@ impl<'a> Extract<'a> for SCharacterCustomizerHairLengthOverride {
 }
 
 /// DCB type: `SCharacterCustomizerHairLengthEntry`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCharacterCustomizerHairLengthEntry {
     /// `hairClass` (Reference)
-    #[serde(default)]
     pub hair_class: Option<CigGuid>,
     /// `hairLength` (Single)
-    #[serde(default)]
     pub hair_length: f32,
     /// `hairLengthOverrides` (Class (array))
-    #[serde(default)]
     pub hair_length_overrides: Vec<Handle<SCharacterCustomizerHairLengthOverride>>,
 }
 
@@ -1636,13 +1424,10 @@ impl<'a> Extract<'a> for SCharacterCustomizerHairLengthEntry {
 
 /// DCB type: `SCharacterSkinValidationParams`
 /// Inherits from: `SCharacterValidationParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCharacterSkinValidationParams {
     /// `minHue` (Single)
-    #[serde(default)]
     pub min_hue: f32,
     /// `maxHue` (Single)
-    #[serde(default)]
     pub max_hue: f32,
 }
 
@@ -1662,28 +1447,20 @@ impl<'a> Extract<'a> for SCharacterSkinValidationParams {
 }
 
 /// DCB type: `SCustomizableMaterialParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCustomizableMaterialParams {
     /// `debugName` (String)
-    #[serde(default)]
     pub debug_name: String,
     /// `attachmentName` (String)
-    #[serde(default)]
     pub attachment_name: String,
     /// `itemType` (EnumChoice)
-    #[serde(default)]
     pub item_type: EItemType,
     /// `submaterialsToEdit` (Int32 (array))
-    #[serde(default)]
     pub submaterials_to_edit: Vec<i32>,
     /// `linkedMaterials` (WeakPointer (array))
-    #[serde(default)]
     pub linked_materials: Vec<Handle<SCustomizableMaterialParams>>,
     /// `additionalFlags` (String)
-    #[serde(default)]
     pub additional_flags: String,
     /// `validationParams` (StrongPointer)
-    #[serde(default)]
     pub validation_params: Option<SCharacterValidationParamsPtr>,
 }
 
@@ -1718,31 +1495,22 @@ impl<'a> Extract<'a> for SCustomizableMaterialParams {
 }
 
 /// DCB type: `SCharacterCustomizerStep`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCharacterCustomizerStep {
     /// `debugName` (String)
-    #[serde(default)]
     pub debug_name: String,
     /// `displayNameLocId` (Locale)
-    #[serde(default)]
     pub display_name_loc_id: LocaleKey,
     /// `features` (StrongPointer (array))
-    #[serde(default)]
     pub features: Vec<SCharacterCustomizerFeatureBasePtr>,
     /// `isVisible` (Boolean)
-    #[serde(default)]
     pub is_visible: bool,
     /// `uiVisible` (Boolean)
-    #[serde(default)]
     pub ui_visible: bool,
     /// `iconPath` (String)
-    #[serde(default)]
     pub icon_path: String,
     /// `playerDummyVisible` (Boolean)
-    #[serde(default)]
     pub player_dummy_visible: bool,
     /// `allowFlowgraphTransition` (Boolean)
-    #[serde(default)]
     pub allow_flowgraph_transition: bool,
 }
 
@@ -1773,49 +1541,34 @@ impl<'a> Extract<'a> for SCharacterCustomizerStep {
 }
 
 /// DCB type: `SCharacterCustomizerFeatureBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCharacterCustomizerFeatureBase {
     /// `debugName` (String)
-    #[serde(default)]
     pub debug_name: String,
     /// `displayNameLocId` (Locale)
-    #[serde(default)]
     pub display_name_loc_id: LocaleKey,
     /// `idString` (String)
-    #[serde(default)]
     pub id_string: String,
     /// `subFeatures` (StrongPointer (array))
-    #[serde(default)]
     pub sub_features: Vec<SCharacterCustomizerFeatureBasePtr>,
     /// `iconPath` (String)
-    #[serde(default)]
     pub icon_path: String,
     /// `randomizationParams` (StrongPointer)
-    #[serde(default)]
     pub randomization_params: Option<SCharacterCustomizerRandomizationParamsPtr>,
     /// `validationParams` (StrongPointer)
-    #[serde(default)]
     pub validation_params: Option<SCharacterValidationParamsPtr>,
     /// `featureType` (EnumChoice)
-    #[serde(default)]
     pub feature_type: ECharacterCustomizerFeature,
     /// `materialParams` (WeakPointer)
-    #[serde(default)]
     pub material_params: Option<Handle<SCustomizableMaterialParams>>,
     /// `precacheSkinMaterials` (Boolean)
-    #[serde(default)]
     pub precache_skin_materials: bool,
     /// `supportsSubFeatureSelection` (Boolean)
-    #[serde(default)]
     pub supports_sub_feature_selection: bool,
     /// `devModeOnly` (Boolean)
-    #[serde(default)]
     pub dev_mode_only: bool,
     /// `itemportsToHide` (String (array))
-    #[serde(default)]
     pub itemports_to_hide: Vec<String>,
     /// `libraryItemportsToHide` (String (array))
-    #[serde(default)]
     pub library_itemports_to_hide: Vec<String>,
 }
 
@@ -1866,52 +1619,36 @@ impl<'a> Extract<'a> for SCharacterCustomizerFeatureBase {
 
 /// DCB type: `SCharacterCustomizerFeatureDNA`
 /// Inherits from: `SCharacterCustomizerFeatureBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCharacterCustomizerFeatureDNA {
     /// `debugName` (String)
-    #[serde(default)]
     pub debug_name: String,
     /// `displayNameLocId` (Locale)
-    #[serde(default)]
     pub display_name_loc_id: LocaleKey,
     /// `idString` (String)
-    #[serde(default)]
     pub id_string: String,
     /// `subFeatures` (StrongPointer (array))
-    #[serde(default)]
     pub sub_features: Vec<SCharacterCustomizerFeatureBasePtr>,
     /// `iconPath` (String)
-    #[serde(default)]
     pub icon_path: String,
     /// `randomizationParams` (StrongPointer)
-    #[serde(default)]
     pub randomization_params: Option<SCharacterCustomizerRandomizationParamsPtr>,
     /// `validationParams` (StrongPointer)
-    #[serde(default)]
     pub validation_params: Option<SCharacterValidationParamsPtr>,
     /// `featureType` (EnumChoice)
-    #[serde(default)]
     pub feature_type: ECharacterCustomizerFeature,
     /// `materialParams` (WeakPointer)
-    #[serde(default)]
     pub material_params: Option<Handle<SCustomizableMaterialParams>>,
     /// `precacheSkinMaterials` (Boolean)
-    #[serde(default)]
     pub precache_skin_materials: bool,
     /// `supportsSubFeatureSelection` (Boolean)
-    #[serde(default)]
     pub supports_sub_feature_selection: bool,
     /// `devModeOnly` (Boolean)
-    #[serde(default)]
     pub dev_mode_only: bool,
     /// `itemportsToHide` (String (array))
-    #[serde(default)]
     pub itemports_to_hide: Vec<String>,
     /// `libraryItemportsToHide` (String (array))
-    #[serde(default)]
     pub library_itemports_to_hide: Vec<String>,
     /// `editType` (EnumChoice)
-    #[serde(default)]
     pub edit_type: EDNAEditType,
 }
 
@@ -1963,88 +1700,60 @@ impl<'a> Extract<'a> for SCharacterCustomizerFeatureDNA {
 
 /// DCB type: `SCharacterCustomizerFeatureItemEquip`
 /// Inherits from: `SCharacterCustomizerItemSelect`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCharacterCustomizerFeatureItemEquip {
     /// `debugName` (String)
-    #[serde(default)]
     pub debug_name: String,
     /// `displayNameLocId` (Locale)
-    #[serde(default)]
     pub display_name_loc_id: LocaleKey,
     /// `idString` (String)
-    #[serde(default)]
     pub id_string: String,
     /// `subFeatures` (StrongPointer (array))
-    #[serde(default)]
     pub sub_features: Vec<SCharacterCustomizerFeatureBasePtr>,
     /// `iconPath` (String)
-    #[serde(default)]
     pub icon_path: String,
     /// `randomizationParams` (StrongPointer)
-    #[serde(default)]
     pub randomization_params: Option<SCharacterCustomizerRandomizationParamsPtr>,
     /// `validationParams` (StrongPointer)
-    #[serde(default)]
     pub validation_params: Option<SCharacterValidationParamsPtr>,
     /// `featureType` (EnumChoice)
-    #[serde(default)]
     pub feature_type: ECharacterCustomizerFeature,
     /// `materialParams` (WeakPointer)
-    #[serde(default)]
     pub material_params: Option<Handle<SCustomizableMaterialParams>>,
     /// `precacheSkinMaterials` (Boolean)
-    #[serde(default)]
     pub precache_skin_materials: bool,
     /// `supportsSubFeatureSelection` (Boolean)
-    #[serde(default)]
     pub supports_sub_feature_selection: bool,
     /// `devModeOnly` (Boolean)
-    #[serde(default)]
     pub dev_mode_only: bool,
     /// `itemportsToHide` (String (array))
-    #[serde(default)]
     pub itemports_to_hide: Vec<String>,
     /// `libraryItemportsToHide` (String (array))
-    #[serde(default)]
     pub library_itemports_to_hide: Vec<String>,
     /// `clippingVolumeParams` (Class)
-    #[serde(default)]
     pub clipping_volume_params: Option<Handle<SCharacterCustomizerClippingVolumeParams>>,
     /// `advancedModeClippingVolumeParams` (Class)
-    #[serde(default)]
     pub advanced_mode_clipping_volume_params: Option<Handle<SCharacterCustomizerClippingVolumeParams>>,
     /// `addEmptyEntry` (Boolean)
-    #[serde(default)]
     pub add_empty_entry: bool,
     /// `featureLibOffset` (Class)
-    #[serde(default)]
     pub feature_lib_offset: Option<Handle<Vec3>>,
     /// `advancedModeLibOffset` (Class)
-    #[serde(default)]
     pub advanced_mode_lib_offset: Option<Handle<Vec3>>,
     /// `featureLibRowsOnScreen` (Int32)
-    #[serde(default)]
     pub feature_lib_rows_on_screen: i32,
     /// `advancedModeRowsOnScreen` (Int32)
-    #[serde(default)]
     pub advanced_mode_rows_on_screen: i32,
     /// `itemSelectMode` (EnumChoice)
-    #[serde(default)]
     pub item_select_mode: ECharacterCustomizerItemSelectMode,
     /// `itemType` (EnumChoice)
-    #[serde(default)]
     pub item_type: EItemType,
     /// `requiredPortTag` (String)
-    #[serde(default)]
     pub required_port_tag: String,
     /// `requiredTags` (String)
-    #[serde(default)]
     pub required_tags: String,
     /// `showOnParentFeatureHeadLibrary` (Boolean)
-    #[serde(default)]
     pub show_on_parent_feature_head_library: bool,
     /// `linkedItemPortNames` (String (array))
-    #[serde(default)]
     pub linked_item_port_names: Vec<String>,
 }
 
@@ -2122,85 +1831,58 @@ impl<'a> Extract<'a> for SCharacterCustomizerFeatureItemEquip {
 
 /// DCB type: `SCharacterCustomizerFeatureTextureSelect`
 /// Inherits from: `SCharacterCustomizerItemSelect`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCharacterCustomizerFeatureTextureSelect {
     /// `debugName` (String)
-    #[serde(default)]
     pub debug_name: String,
     /// `displayNameLocId` (Locale)
-    #[serde(default)]
     pub display_name_loc_id: LocaleKey,
     /// `idString` (String)
-    #[serde(default)]
     pub id_string: String,
     /// `subFeatures` (StrongPointer (array))
-    #[serde(default)]
     pub sub_features: Vec<SCharacterCustomizerFeatureBasePtr>,
     /// `iconPath` (String)
-    #[serde(default)]
     pub icon_path: String,
     /// `randomizationParams` (StrongPointer)
-    #[serde(default)]
     pub randomization_params: Option<SCharacterCustomizerRandomizationParamsPtr>,
     /// `validationParams` (StrongPointer)
-    #[serde(default)]
     pub validation_params: Option<SCharacterValidationParamsPtr>,
     /// `featureType` (EnumChoice)
-    #[serde(default)]
     pub feature_type: ECharacterCustomizerFeature,
     /// `materialParams` (WeakPointer)
-    #[serde(default)]
     pub material_params: Option<Handle<SCustomizableMaterialParams>>,
     /// `precacheSkinMaterials` (Boolean)
-    #[serde(default)]
     pub precache_skin_materials: bool,
     /// `supportsSubFeatureSelection` (Boolean)
-    #[serde(default)]
     pub supports_sub_feature_selection: bool,
     /// `devModeOnly` (Boolean)
-    #[serde(default)]
     pub dev_mode_only: bool,
     /// `itemportsToHide` (String (array))
-    #[serde(default)]
     pub itemports_to_hide: Vec<String>,
     /// `libraryItemportsToHide` (String (array))
-    #[serde(default)]
     pub library_itemports_to_hide: Vec<String>,
     /// `clippingVolumeParams` (Class)
-    #[serde(default)]
     pub clipping_volume_params: Option<Handle<SCharacterCustomizerClippingVolumeParams>>,
     /// `advancedModeClippingVolumeParams` (Class)
-    #[serde(default)]
     pub advanced_mode_clipping_volume_params: Option<Handle<SCharacterCustomizerClippingVolumeParams>>,
     /// `addEmptyEntry` (Boolean)
-    #[serde(default)]
     pub add_empty_entry: bool,
     /// `featureLibOffset` (Class)
-    #[serde(default)]
     pub feature_lib_offset: Option<Handle<Vec3>>,
     /// `advancedModeLibOffset` (Class)
-    #[serde(default)]
     pub advanced_mode_lib_offset: Option<Handle<Vec3>>,
     /// `featureLibRowsOnScreen` (Int32)
-    #[serde(default)]
     pub feature_lib_rows_on_screen: i32,
     /// `advancedModeRowsOnScreen` (Int32)
-    #[serde(default)]
     pub advanced_mode_rows_on_screen: i32,
     /// `itemSelectMode` (EnumChoice)
-    #[serde(default)]
     pub item_select_mode: ECharacterCustomizerItemSelectMode,
     /// `slot` (EnumChoice)
-    #[serde(default)]
     pub slot: ECharacterCustomizerTextureSelectSlot,
     /// `textureSlot` (EnumChoice)
-    #[serde(default)]
     pub texture_slot: ECharacterCustomizerTextureSlot,
     /// `subMaterialsToEdit` (Int32 (array))
-    #[serde(default)]
     pub sub_materials_to_edit: Vec<i32>,
     /// `textures` (Class)
-    #[serde(default)]
     pub textures: Option<Handle<SCharacterCustomizerTextureList>>,
 }
 
@@ -2279,28 +1961,20 @@ impl<'a> Extract<'a> for SCharacterCustomizerFeatureTextureSelect {
 }
 
 /// DCB type: `SCharacterCustomizerShaderParamBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCharacterCustomizerShaderParamBase {
     /// `materialParams` (WeakPointer)
-    #[serde(default)]
     pub material_params: Option<Handle<SCustomizableMaterialParams>>,
     /// `applyToCurrentFeatureMaterial` (Boolean)
-    #[serde(default)]
     pub apply_to_current_feature_material: bool,
     /// `shaderParamName` (String)
-    #[serde(default)]
     pub shader_param_name: String,
     /// `bindingsURL` (String)
-    #[serde(default)]
     pub bindings_url: String,
     /// `setFromCurrentBindings` (Boolean)
-    #[serde(default)]
     pub set_from_current_bindings: bool,
     /// `requiresAdvancedMode` (Boolean)
-    #[serde(default)]
     pub requires_advanced_mode: bool,
     /// `canBeEdited` (Boolean)
-    #[serde(default)]
     pub can_be_edited: bool,
 }
 
@@ -2329,34 +2003,24 @@ impl<'a> Extract<'a> for SCharacterCustomizerShaderParamBase {
 
 /// DCB type: `SCharacterCustomizerShaderParamFloat`
 /// Inherits from: `SCharacterCustomizerShaderParamBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCharacterCustomizerShaderParamFloat {
     /// `materialParams` (WeakPointer)
-    #[serde(default)]
     pub material_params: Option<Handle<SCustomizableMaterialParams>>,
     /// `applyToCurrentFeatureMaterial` (Boolean)
-    #[serde(default)]
     pub apply_to_current_feature_material: bool,
     /// `shaderParamName` (String)
-    #[serde(default)]
     pub shader_param_name: String,
     /// `bindingsURL` (String)
-    #[serde(default)]
     pub bindings_url: String,
     /// `setFromCurrentBindings` (Boolean)
-    #[serde(default)]
     pub set_from_current_bindings: bool,
     /// `requiresAdvancedMode` (Boolean)
-    #[serde(default)]
     pub requires_advanced_mode: bool,
     /// `canBeEdited` (Boolean)
-    #[serde(default)]
     pub can_be_edited: bool,
     /// `min` (Single)
-    #[serde(default)]
     pub min: f32,
     /// `max` (Single)
-    #[serde(default)]
     pub max: f32,
 }
 
@@ -2387,34 +2051,24 @@ impl<'a> Extract<'a> for SCharacterCustomizerShaderParamFloat {
 
 /// DCB type: `SCharacterCustomizerShaderParamColor`
 /// Inherits from: `SCharacterCustomizerShaderParamBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCharacterCustomizerShaderParamColor {
     /// `materialParams` (WeakPointer)
-    #[serde(default)]
     pub material_params: Option<Handle<SCustomizableMaterialParams>>,
     /// `applyToCurrentFeatureMaterial` (Boolean)
-    #[serde(default)]
     pub apply_to_current_feature_material: bool,
     /// `shaderParamName` (String)
-    #[serde(default)]
     pub shader_param_name: String,
     /// `bindingsURL` (String)
-    #[serde(default)]
     pub bindings_url: String,
     /// `setFromCurrentBindings` (Boolean)
-    #[serde(default)]
     pub set_from_current_bindings: bool,
     /// `requiresAdvancedMode` (Boolean)
-    #[serde(default)]
     pub requires_advanced_mode: bool,
     /// `canBeEdited` (Boolean)
-    #[serde(default)]
     pub can_be_edited: bool,
     /// `useConstantSaturationColorPicker` (Boolean)
-    #[serde(default)]
     pub use_constant_saturation_color_picker: bool,
     /// `shaderToUImultiplier` (Single)
-    #[serde(default)]
     pub shader_to_uimultiplier: f32,
 }
 
@@ -2444,13 +2098,10 @@ impl<'a> Extract<'a> for SCharacterCustomizerShaderParamColor {
 }
 
 /// DCB type: `SCharacterCustomizerShaderParamCopy`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCharacterCustomizerShaderParamCopy {
     /// `sourceParam` (WeakPointer)
-    #[serde(default)]
     pub source_param: Option<SCharacterCustomizerShaderParamBasePtr>,
     /// `targetParams` (WeakPointer (array))
-    #[serde(default)]
     pub target_params: Vec<SCharacterCustomizerShaderParamBasePtr>,
 }
 
@@ -2479,58 +2130,40 @@ impl<'a> Extract<'a> for SCharacterCustomizerShaderParamCopy {
 
 /// DCB type: `SCharacterCustomizerFeatureShaderEdit`
 /// Inherits from: `SCharacterCustomizerFeatureBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCharacterCustomizerFeatureShaderEdit {
     /// `debugName` (String)
-    #[serde(default)]
     pub debug_name: String,
     /// `displayNameLocId` (Locale)
-    #[serde(default)]
     pub display_name_loc_id: LocaleKey,
     /// `idString` (String)
-    #[serde(default)]
     pub id_string: String,
     /// `subFeatures` (StrongPointer (array))
-    #[serde(default)]
     pub sub_features: Vec<SCharacterCustomizerFeatureBasePtr>,
     /// `iconPath` (String)
-    #[serde(default)]
     pub icon_path: String,
     /// `randomizationParams` (StrongPointer)
-    #[serde(default)]
     pub randomization_params: Option<SCharacterCustomizerRandomizationParamsPtr>,
     /// `validationParams` (StrongPointer)
-    #[serde(default)]
     pub validation_params: Option<SCharacterValidationParamsPtr>,
     /// `featureType` (EnumChoice)
-    #[serde(default)]
     pub feature_type: ECharacterCustomizerFeature,
     /// `materialParams` (WeakPointer)
-    #[serde(default)]
     pub material_params: Option<Handle<SCustomizableMaterialParams>>,
     /// `precacheSkinMaterials` (Boolean)
-    #[serde(default)]
     pub precache_skin_materials: bool,
     /// `supportsSubFeatureSelection` (Boolean)
-    #[serde(default)]
     pub supports_sub_feature_selection: bool,
     /// `devModeOnly` (Boolean)
-    #[serde(default)]
     pub dev_mode_only: bool,
     /// `itemportsToHide` (String (array))
-    #[serde(default)]
     pub itemports_to_hide: Vec<String>,
     /// `libraryItemportsToHide` (String (array))
-    #[serde(default)]
     pub library_itemports_to_hide: Vec<String>,
     /// `subMaterialsToEdit` (Int32 (array))
-    #[serde(default)]
     pub sub_materials_to_edit: Vec<i32>,
     /// `shaderParams` (StrongPointer (array))
-    #[serde(default)]
     pub shader_params: Vec<SCharacterCustomizerShaderParamBasePtr>,
     /// `shaderParamCopyBindings` (Class (array))
-    #[serde(default)]
     pub shader_param_copy_bindings: Vec<Handle<SCharacterCustomizerShaderParamCopy>>,
 }
 
@@ -2597,49 +2230,34 @@ impl<'a> Extract<'a> for SCharacterCustomizerFeatureShaderEdit {
 
 /// DCB type: `SCharacterCustomizerFeatureBodyTypeSelect`
 /// Inherits from: `SCharacterCustomizerFeatureBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCharacterCustomizerFeatureBodyTypeSelect {
     /// `debugName` (String)
-    #[serde(default)]
     pub debug_name: String,
     /// `displayNameLocId` (Locale)
-    #[serde(default)]
     pub display_name_loc_id: LocaleKey,
     /// `idString` (String)
-    #[serde(default)]
     pub id_string: String,
     /// `subFeatures` (StrongPointer (array))
-    #[serde(default)]
     pub sub_features: Vec<SCharacterCustomizerFeatureBasePtr>,
     /// `iconPath` (String)
-    #[serde(default)]
     pub icon_path: String,
     /// `randomizationParams` (StrongPointer)
-    #[serde(default)]
     pub randomization_params: Option<SCharacterCustomizerRandomizationParamsPtr>,
     /// `validationParams` (StrongPointer)
-    #[serde(default)]
     pub validation_params: Option<SCharacterValidationParamsPtr>,
     /// `featureType` (EnumChoice)
-    #[serde(default)]
     pub feature_type: ECharacterCustomizerFeature,
     /// `materialParams` (WeakPointer)
-    #[serde(default)]
     pub material_params: Option<Handle<SCustomizableMaterialParams>>,
     /// `precacheSkinMaterials` (Boolean)
-    #[serde(default)]
     pub precache_skin_materials: bool,
     /// `supportsSubFeatureSelection` (Boolean)
-    #[serde(default)]
     pub supports_sub_feature_selection: bool,
     /// `devModeOnly` (Boolean)
-    #[serde(default)]
     pub dev_mode_only: bool,
     /// `itemportsToHide` (String (array))
-    #[serde(default)]
     pub itemports_to_hide: Vec<String>,
     /// `libraryItemportsToHide` (String (array))
-    #[serde(default)]
     pub library_itemports_to_hide: Vec<String>,
 }
 
@@ -2690,97 +2308,66 @@ impl<'a> Extract<'a> for SCharacterCustomizerFeatureBodyTypeSelect {
 
 /// DCB type: `SCharacterCustomizerMakeupSlot`
 /// Inherits from: `SCharacterCustomizerFeatureTextureSelect`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCharacterCustomizerMakeupSlot {
     /// `debugName` (String)
-    #[serde(default)]
     pub debug_name: String,
     /// `displayNameLocId` (Locale)
-    #[serde(default)]
     pub display_name_loc_id: LocaleKey,
     /// `idString` (String)
-    #[serde(default)]
     pub id_string: String,
     /// `subFeatures` (StrongPointer (array))
-    #[serde(default)]
     pub sub_features: Vec<SCharacterCustomizerFeatureBasePtr>,
     /// `iconPath` (String)
-    #[serde(default)]
     pub icon_path: String,
     /// `randomizationParams` (StrongPointer)
-    #[serde(default)]
     pub randomization_params: Option<SCharacterCustomizerRandomizationParamsPtr>,
     /// `validationParams` (StrongPointer)
-    #[serde(default)]
     pub validation_params: Option<SCharacterValidationParamsPtr>,
     /// `featureType` (EnumChoice)
-    #[serde(default)]
     pub feature_type: ECharacterCustomizerFeature,
     /// `materialParams` (WeakPointer)
-    #[serde(default)]
     pub material_params: Option<Handle<SCustomizableMaterialParams>>,
     /// `precacheSkinMaterials` (Boolean)
-    #[serde(default)]
     pub precache_skin_materials: bool,
     /// `supportsSubFeatureSelection` (Boolean)
-    #[serde(default)]
     pub supports_sub_feature_selection: bool,
     /// `devModeOnly` (Boolean)
-    #[serde(default)]
     pub dev_mode_only: bool,
     /// `itemportsToHide` (String (array))
-    #[serde(default)]
     pub itemports_to_hide: Vec<String>,
     /// `libraryItemportsToHide` (String (array))
-    #[serde(default)]
     pub library_itemports_to_hide: Vec<String>,
     /// `clippingVolumeParams` (Class)
-    #[serde(default)]
     pub clipping_volume_params: Option<Handle<SCharacterCustomizerClippingVolumeParams>>,
     /// `advancedModeClippingVolumeParams` (Class)
-    #[serde(default)]
     pub advanced_mode_clipping_volume_params: Option<Handle<SCharacterCustomizerClippingVolumeParams>>,
     /// `addEmptyEntry` (Boolean)
-    #[serde(default)]
     pub add_empty_entry: bool,
     /// `featureLibOffset` (Class)
-    #[serde(default)]
     pub feature_lib_offset: Option<Handle<Vec3>>,
     /// `advancedModeLibOffset` (Class)
-    #[serde(default)]
     pub advanced_mode_lib_offset: Option<Handle<Vec3>>,
     /// `featureLibRowsOnScreen` (Int32)
-    #[serde(default)]
     pub feature_lib_rows_on_screen: i32,
     /// `advancedModeRowsOnScreen` (Int32)
-    #[serde(default)]
     pub advanced_mode_rows_on_screen: i32,
     /// `itemSelectMode` (EnumChoice)
-    #[serde(default)]
     pub item_select_mode: ECharacterCustomizerItemSelectMode,
     /// `slot` (EnumChoice)
-    #[serde(default)]
     pub slot: ECharacterCustomizerTextureSelectSlot,
     /// `textureSlot` (EnumChoice)
-    #[serde(default)]
     pub texture_slot: ECharacterCustomizerTextureSlot,
     /// `subMaterialsToEdit` (Int32 (array))
-    #[serde(default)]
     pub sub_materials_to_edit: Vec<i32>,
     /// `textures` (Class)
-    #[serde(default)]
     pub textures: Option<Handle<SCharacterCustomizerTextureList>>,
     /// `smoothLimits` (Class)
-    #[serde(default)]
     pub smooth_limits: Option<Handle<SCharacterCustomizerClampedValueParams>>,
     /// `metalLimits` (Class)
-    #[serde(default)]
     pub metal_limits: Option<Handle<SCharacterCustomizerClampedValueParams>>,
     /// `opacityLimits` (Class)
-    #[serde(default)]
     pub opacity_limits: Option<Handle<SCharacterCustomizerClampedValueParams>>,
     /// `basicModeChannel` (Int32)
-    #[serde(default)]
     pub basic_mode_channel: i32,
 }
 
@@ -2872,13 +2459,10 @@ impl<'a> Extract<'a> for SCharacterCustomizerMakeupSlot {
 }
 
 /// DCB type: `SModelVoiceTagPair`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SModelVoiceTagPair {
     /// `modelTag` (Reference)
-    #[serde(default)]
     pub model_tag: Option<CigGuid>,
     /// `voiceTag` (Reference)
-    #[serde(default)]
     pub voice_tag: Option<CigGuid>,
 }
 

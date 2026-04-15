@@ -10,23 +10,17 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
 use std::collections::HashMap;
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use crate::Handle;
 use super::super::*;
 
 /// Record index for the `hudparams` feature.
-#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+#[derive(Default)]
 pub struct HudparamsIndex {
-    #[serde(default)]
     pub starget_selector_hud_params: HashMap<CigGuid, Handle<STargetSelectorHudParams>>,
-    #[serde(default)]
     pub sprojected_hud_params: HashMap<CigGuid, Handle<SProjectedHudParams>>,
-    #[serde(default)]
     pub svehicle_hud_params: HashMap<CigGuid, Handle<SVehicleHudParams>>,
-    #[serde(default)]
     pub saimable_gimbal_mode_labels: HashMap<CigGuid, Handle<SAimableGimbalModeLabels>>,
-    #[serde(default)]
     pub saimable_controller_hud_params: HashMap<CigGuid, Handle<SAimableControllerHudParams>>,
 }
 

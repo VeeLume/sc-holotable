@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -21,10 +20,8 @@ use super::super::*;
 
 /// DCB type: `SDespawnRule_OnPartsDetached`
 /// Inherits from: `SDespawnRule`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SDespawnRule_OnPartsDetached {
     /// `ruleDelaySeconds` (Single)
-    #[serde(default)]
     pub rule_delay_seconds: f32,
 }
 
@@ -44,10 +41,8 @@ impl<'a> Extract<'a> for SDespawnRule_OnPartsDetached {
 
 /// DCB type: `InteractionConditionDeliveryMissionItem`
 /// Inherits from: `InteractionConditionParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InteractionConditionDeliveryMissionItem {
     /// `conditionDisplay` (StrongPointer)
-    #[serde(default)]
     pub condition_display: Option<Handle<ConditionDisplayParams>>,
 }
 
@@ -70,7 +65,6 @@ impl<'a> Extract<'a> for InteractionConditionDeliveryMissionItem {
 
 /// DCB type: `DeliveryItemPortComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DeliveryItemPortComponentParams {
 }
 

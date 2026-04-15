@@ -23,8 +23,6 @@ publish = false
 #    statements in `record_store.rs`.
 
 [dependencies]
-serde = { workspace = true }
-
 # svarog — Star Citizen data access. Direct workspace deps so the generated
 # code can `use svarog_common::CigGuid` etc. without going through sc-extract.
 svarog-common = { workspace = true }

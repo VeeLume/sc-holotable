@@ -9,14 +9,11 @@
 
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
-use serde::{Deserialize, Serialize};
 use super::super::*;
 
 /// Pool storage for the `environments` feature.
-#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+#[derive(Default)]
 pub struct EnvironmentsPools {
-    #[serde(default)]
     pub asteroid_procedural: Vec<Option<AsteroidProcedural>>,
-    #[serde(default)]
     pub asteroid_field_composition: Vec<Option<AsteroidFieldComposition>>,
 }

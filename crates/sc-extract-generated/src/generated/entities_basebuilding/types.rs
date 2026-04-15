@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -21,10 +20,8 @@ use super::super::*;
 
 /// DCB type: `BlueprintCategoryAvailability_Whitelist`
 /// Inherits from: `BlueprintCategoryAvailability_Base_NonRef`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BlueprintCategoryAvailability_Whitelist {
     /// `categories` (Reference (array))
-    #[serde(default)]
     pub categories: Vec<CigGuid>,
 }
 
@@ -46,10 +43,8 @@ impl<'a> Extract<'a> for BlueprintCategoryAvailability_Whitelist {
 
 /// DCB type: `CrafterDoorStateEvent`
 /// Inherits from: `EventDispatcher`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CrafterDoorStateEvent {
     /// `doorState` (EnumChoice)
-    #[serde(default)]
     pub door_state: ECraftingMachineDoorState,
 }
 
@@ -68,22 +63,16 @@ impl<'a> Extract<'a> for CrafterDoorStateEvent {
 }
 
 /// DCB type: `CraftingQueueCoreParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CraftingQueueCoreParams {
     /// `debugName` (String)
-    #[serde(default)]
     pub debug_name: String,
     /// `blueprintCategoryAvailability` (StrongPointer)
-    #[serde(default)]
     pub blueprint_category_availability: Option<BlueprintCategoryAvailability_BasePtr>,
     /// `processTypeAvailability` (Boolean)
-    #[serde(default)]
     pub process_type_availability: bool,
     /// `maxJobsInProgress` (Int32)
-    #[serde(default)]
     pub max_jobs_in_progress: i32,
     /// `maxJobsWaiting` (Int32)
-    #[serde(default)]
     pub max_jobs_waiting: i32,
 }
 
@@ -109,13 +98,10 @@ impl<'a> Extract<'a> for CraftingQueueCoreParams {
 }
 
 /// DCB type: `CrafterInteractionParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CrafterInteractionParams {
     /// `openDoorInteraction` (WeakPointer)
-    #[serde(default)]
     pub open_door_interaction: Option<Handle<SSharedInteractionParams>>,
     /// `closeDoorInteraction` (WeakPointer)
-    #[serde(default)]
     pub close_door_interaction: Option<Handle<SSharedInteractionParams>>,
 }
 
@@ -142,16 +128,12 @@ impl<'a> Extract<'a> for CrafterInteractionParams {
 
 /// DCB type: `CrafterComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CrafterComponentParams {
     /// `queues` (Class (array))
-    #[serde(default)]
     pub queues: Vec<Handle<CraftingQueueCoreParams>>,
     /// `maxJobsInHistory` (Int32)
-    #[serde(default)]
     pub max_jobs_in_history: i32,
     /// `interactionParams` (Class)
-    #[serde(default)]
     pub interaction_params: Option<Handle<CrafterInteractionParams>>,
 }
 
@@ -181,19 +163,14 @@ impl<'a> Extract<'a> for CrafterComponentParams {
 }
 
 /// DCB type: `CrafterPagedUIListParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CrafterPagedUIListParams {
     /// `numPagedElementsHorizontally` (Single)
-    #[serde(default)]
     pub num_paged_elements_horizontally: f32,
     /// `numPagedElementsVertically` (Single)
-    #[serde(default)]
     pub num_paged_elements_vertically: f32,
     /// `categoryHeaderVerticalSizeAsFractionOfElement` (Single)
-    #[serde(default)]
     pub category_header_vertical_size_as_fraction_of_element: f32,
     /// `subCategoryHeaderVerticalSizeAsFractionOfElement` (Single)
-    #[serde(default)]
     pub sub_category_header_vertical_size_as_fraction_of_element: f32,
 }
 
@@ -216,13 +193,10 @@ impl<'a> Extract<'a> for CrafterPagedUIListParams {
 
 /// DCB type: `CrafterUIProviderComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CrafterUIProviderComponentParams {
     /// `blueprintPagedListParams` (Class)
-    #[serde(default)]
     pub blueprint_paged_list_params: Option<Handle<CrafterPagedUIListParams>>,
     /// `materialsPagedListParams` (Class)
-    #[serde(default)]
     pub materials_paged_list_params: Option<Handle<CrafterPagedUIListParams>>,
 }
 
@@ -249,64 +223,44 @@ impl<'a> Extract<'a> for CrafterUIProviderComponentParams {
 
 /// DCB type: `EntityComponentHeatConnection`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EntityComponentHeatConnection {
     /// `TemperatureToIR` (Single)
-    #[serde(default)]
     pub temperature_to_ir: f32,
     /// `StartIRTemperature` (Single)
-    #[serde(default)]
     pub start_irtemperature: f32,
     /// `OverpowerHeat` (Single)
-    #[serde(default)]
     pub overpower_heat: f32,
     /// `OverclockThresholdMinHeat` (Single)
-    #[serde(default)]
     pub overclock_threshold_min_heat: f32,
     /// `OverclockThresholdMaxHeat` (Single)
-    #[serde(default)]
     pub overclock_threshold_max_heat: f32,
     /// `ThermalEnergyBase` (Single)
-    #[serde(default)]
     pub thermal_energy_base: f32,
     /// `ThermalEnergyDraw` (Single)
-    #[serde(default)]
     pub thermal_energy_draw: f32,
     /// `ThermalConductivity` (Single)
-    #[serde(default)]
     pub thermal_conductivity: f32,
     /// `SpecificHeatCapacity` (Single)
-    #[serde(default)]
     pub specific_heat_capacity: f32,
     /// `Mass` (Single)
-    #[serde(default)]
     pub mass: f32,
     /// `SurfaceArea` (Single)
-    #[serde(default)]
     pub surface_area: f32,
     /// `StartCoolingTemperature` (Single)
-    #[serde(default)]
     pub start_cooling_temperature: f32,
     /// `MaxCoolingRate` (Single)
-    #[serde(default)]
     pub max_cooling_rate: f32,
     /// `MaxTemperature` (Single)
-    #[serde(default)]
     pub max_temperature: f32,
     /// `OverheatTemperature` (Single)
-    #[serde(default)]
     pub overheat_temperature: f32,
     /// `RecoveryTemperature` (Single)
-    #[serde(default)]
     pub recovery_temperature: f32,
     /// `MinTemperature` (Single)
-    #[serde(default)]
     pub min_temperature: f32,
     /// `MisfireMinTemperature` (Single)
-    #[serde(default)]
     pub misfire_min_temperature: f32,
     /// `MisfireMaxTemperature` (Single)
-    #[serde(default)]
     pub misfire_max_temperature: f32,
 }
 
@@ -343,19 +297,14 @@ impl<'a> Extract<'a> for EntityComponentHeatConnection {
 }
 
 /// DCB type: `SMisfireBandParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SMisfireBandParams {
     /// `threshold` (Single)
-    #[serde(default)]
     pub threshold: f32,
     /// `minorProbability` (Single)
-    #[serde(default)]
     pub minor_probability: f32,
     /// `majorProbability` (Single)
-    #[serde(default)]
     pub major_probability: f32,
     /// `criticalProbability` (Single)
-    #[serde(default)]
     pub critical_probability: f32,
 }
 
@@ -377,19 +326,14 @@ impl<'a> Extract<'a> for SMisfireBandParams {
 }
 
 /// DCB type: `SMisfireSeverityFactors`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SMisfireSeverityFactors {
     /// `degradation` (Single)
-    #[serde(default)]
     pub degradation: f32,
     /// `damage` (Single)
-    #[serde(default)]
     pub damage: f32,
     /// `heat` (Single)
-    #[serde(default)]
     pub heat: f32,
     /// `distortion` (Single)
-    #[serde(default)]
     pub distortion: f32,
 }
 
@@ -411,25 +355,18 @@ impl<'a> Extract<'a> for SMisfireSeverityFactors {
 }
 
 /// DCB type: `SMisfireGenerationParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SMisfireGenerationParams {
     /// `maxWindowLength` (Single)
-    #[serde(default)]
     pub max_window_length: f32,
     /// `minWindowLength` (Single)
-    #[serde(default)]
     pub min_window_length: f32,
     /// `severityFactors` (Class)
-    #[serde(default)]
     pub severity_factors: Option<Handle<SMisfireSeverityFactors>>,
     /// `minorBand` (Class)
-    #[serde(default)]
     pub minor_band: Option<Handle<SMisfireBandParams>>,
     /// `majorBand` (Class)
-    #[serde(default)]
     pub major_band: Option<Handle<SMisfireBandParams>>,
     /// `criticalBand` (Class)
-    #[serde(default)]
     pub critical_band: Option<Handle<SMisfireBandParams>>,
 }
 
@@ -465,22 +402,16 @@ impl<'a> Extract<'a> for SMisfireGenerationParams {
 }
 
 /// DCB type: `SMisfireEventParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SMisfireEventParams {
     /// `warningLocId` (Locale)
-    #[serde(default)]
     pub warning_loc_id: LocaleKey,
     /// `duration` (Single)
-    #[serde(default)]
     pub duration: f32,
     /// `ageRatioInflicted` (Single)
-    #[serde(default)]
     pub age_ratio_inflicted: f32,
     /// `healthRatioInflicted` (Single)
-    #[serde(default)]
     pub health_ratio_inflicted: f32,
     /// `ItemParams` (StrongPointer)
-    #[serde(default)]
     pub item_params: Option<SItemMisfireParamsPtr>,
 }
 
@@ -506,16 +437,12 @@ impl<'a> Extract<'a> for SMisfireEventParams {
 }
 
 /// DCB type: `SMisfireEvents`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SMisfireEvents {
     /// `MinorMisfires` (Class (array))
-    #[serde(default)]
     pub minor_misfires: Vec<Handle<SMisfireEventParams>>,
     /// `MajorMisfires` (Class (array))
-    #[serde(default)]
     pub major_misfires: Vec<Handle<SMisfireEventParams>>,
     /// `CriticalMisfires` (Class (array))
-    #[serde(default)]
     pub critical_misfires: Vec<Handle<SMisfireEventParams>>,
 }
 
@@ -555,61 +482,42 @@ impl<'a> Extract<'a> for SMisfireEvents {
 
 /// DCB type: `EntityComponentPowerConnection`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EntityComponentPowerConnection {
     /// `PowerBase` (Single)
-    #[serde(default)]
     pub power_base: f32,
     /// `PowerDraw` (Single)
-    #[serde(default)]
     pub power_draw: f32,
     /// `TimeToReachDrawRequest` (Single)
-    #[serde(default)]
     pub time_to_reach_draw_request: f32,
     /// `SafeguardPriority` (Int32)
-    #[serde(default)]
     pub safeguard_priority: i32,
     /// `DisplayedInPoweredItemList` (Boolean)
-    #[serde(default)]
     pub displayed_in_powered_item_list: bool,
     /// `IsThrottleable` (Boolean)
-    #[serde(default)]
     pub is_throttleable: bool,
     /// `IsOverclockable` (Boolean)
-    #[serde(default)]
     pub is_overclockable: bool,
     /// `OverclockThresholdMin` (Single)
-    #[serde(default)]
     pub overclock_threshold_min: f32,
     /// `OverclockThresholdMax` (Single)
-    #[serde(default)]
     pub overclock_threshold_max: f32,
     /// `OverpowerPerformance` (Single)
-    #[serde(default)]
     pub overpower_performance: f32,
     /// `OverclockPerformance` (Single)
-    #[serde(default)]
     pub overclock_performance: f32,
     /// `PowerToEM` (Single)
-    #[serde(default)]
     pub power_to_em: f32,
     /// `DecayRateOfEM` (Single)
-    #[serde(default)]
     pub decay_rate_of_em: f32,
     /// `WarningDelayTime` (Single)
-    #[serde(default)]
     pub warning_delay_time: f32,
     /// `WarningDisplayTime` (Single)
-    #[serde(default)]
     pub warning_display_time: f32,
     /// `MisfireItemTypeLocID` (Locale)
-    #[serde(default)]
     pub misfire_item_type_loc_id: LocaleKey,
     /// `MisfireGenerationParams` (StrongPointer)
-    #[serde(default)]
     pub misfire_generation_params: Option<Handle<SMisfireGenerationParams>>,
     /// `MisfireEvents` (Class)
-    #[serde(default)]
     pub misfire_events: Option<Handle<SMisfireEvents>>,
 }
 
@@ -652,19 +560,14 @@ impl<'a> Extract<'a> for EntityComponentPowerConnection {
 
 /// DCB type: `CrafterStateModifier`
 /// Inherits from: `SStateModifier`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CrafterStateModifier {
     /// `lockedState` (WeakPointer)
-    #[serde(default)]
     pub locked_state: Option<Handle<SInteractionState>>,
     /// `unlockedState` (WeakPointer)
-    #[serde(default)]
     pub unlocked_state: Option<Handle<SInteractionState>>,
     /// `startProgressState` (WeakPointer)
-    #[serde(default)]
     pub start_progress_state: Option<Handle<SInteractionState>>,
     /// `finishProgressState` (WeakPointer)
-    #[serde(default)]
     pub finish_progress_state: Option<Handle<SInteractionState>>,
 }
 

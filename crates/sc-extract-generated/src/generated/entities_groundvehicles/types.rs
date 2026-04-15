@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -21,166 +20,112 @@ use super::super::*;
 
 /// DCB type: `TrackWheeledVehicleAudioComponentParams`
 /// Inherits from: `GroundVehicleAudioComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct TrackWheeledVehicleAudioComponentParams {
     /// `engineSoundPosition` (String)
-    #[serde(default)]
     pub engine_sound_position: String,
     /// `engineStartupOneShot` (Class)
-    #[serde(default)]
     pub engine_startup_one_shot: Option<Handle<GlobalResourceAudio>>,
     /// `engineRunLoopStart` (Class)
-    #[serde(default)]
     pub engine_run_loop_start: Option<Handle<GlobalResourceAudio>>,
     /// `engineRunLoopStop` (Class)
-    #[serde(default)]
     pub engine_run_loop_stop: Option<Handle<GlobalResourceAudio>>,
     /// `hornSoundPosition` (String)
-    #[serde(default)]
     pub horn_sound_position: String,
     /// `hornLoopStart` (Class)
-    #[serde(default)]
     pub horn_loop_start: Option<Handle<GlobalResourceAudio>>,
     /// `hornLoopStop` (Class)
-    #[serde(default)]
     pub horn_loop_stop: Option<Handle<GlobalResourceAudio>>,
     /// `suspensionBumpSound` (Class)
-    #[serde(default)]
     pub suspension_bump_sound: Option<Handle<GlobalResourceAudio>>,
     /// `gearChangeSound` (Class)
-    #[serde(default)]
     pub gear_change_sound: Option<Handle<GlobalResourceAudio>>,
     /// `throttleOnSound` (Class)
-    #[serde(default)]
     pub throttle_on_sound: Option<Handle<GlobalResourceAudio>>,
     /// `throttleOffSound` (Class)
-    #[serde(default)]
     pub throttle_off_sound: Option<Handle<GlobalResourceAudio>>,
     /// `damagedSound` (Class)
-    #[serde(default)]
     pub damaged_sound: Option<Handle<GlobalResourceAudio>>,
     /// `destroyedSound` (Class)
-    #[serde(default)]
     pub destroyed_sound: Option<Handle<GlobalResourceAudio>>,
     /// `boostStartTrigger` (Class)
-    #[serde(default)]
     pub boost_start_trigger: Option<Handle<GlobalResourceAudio>>,
     /// `boostStopTrigger` (Class)
-    #[serde(default)]
     pub boost_stop_trigger: Option<Handle<GlobalResourceAudio>>,
     /// `speedRtpc` (Class)
-    #[serde(default)]
     pub speed_rtpc: Option<Handle<AudioRtpc>>,
     /// `throttleRtpc` (Class)
-    #[serde(default)]
     pub throttle_rtpc: Option<Handle<AudioRtpc>>,
     /// `throttleLoadRtpc` (Class)
-    #[serde(default)]
     pub throttle_load_rtpc: Option<Handle<AudioRtpc>>,
     /// `throttleOnAtLoadRtpc` (Class)
-    #[serde(default)]
     pub throttle_on_at_load_rtpc: Option<Handle<AudioRtpc>>,
     /// `throttleOffAtLoadRtpc` (Class)
-    #[serde(default)]
     pub throttle_off_at_load_rtpc: Option<Handle<AudioRtpc>>,
     /// `rpmRtpc` (Class)
-    #[serde(default)]
     pub rpm_rtpc: Option<Handle<AudioRtpc>>,
     /// `rpmLoadRtpc` (Class)
-    #[serde(default)]
     pub rpm_load_rtpc: Option<Handle<AudioRtpc>>,
     /// `rpmAccelerationRtpc` (Class)
-    #[serde(default)]
     pub rpm_acceleration_rtpc: Option<Handle<AudioRtpc>>,
     /// `slipRtpc` (Class)
-    #[serde(default)]
     pub slip_rtpc: Option<Handle<AudioRtpc>>,
     /// `slipForwardsRtpc` (Class)
-    #[serde(default)]
     pub slip_forwards_rtpc: Option<Handle<AudioRtpc>>,
     /// `slipLateralRtpc` (Class)
-    #[serde(default)]
     pub slip_lateral_rtpc: Option<Handle<AudioRtpc>>,
     /// `steerRtpc` (Class)
-    #[serde(default)]
     pub steer_rtpc: Option<Handle<AudioRtpc>>,
     /// `steerStrainRtpc` (Class)
-    #[serde(default)]
     pub steer_strain_rtpc: Option<Handle<AudioRtpc>>,
     /// `groundContactsRtpc` (Class)
-    #[serde(default)]
     pub ground_contacts_rtpc: Option<Handle<AudioRtpc>>,
     /// `airTimeRtpc` (Class)
-    #[serde(default)]
     pub air_time_rtpc: Option<Handle<AudioRtpc>>,
     /// `suspensionCompressionRtpc` (Class)
-    #[serde(default)]
     pub suspension_compression_rtpc: Option<Handle<AudioRtpc>>,
     /// `suspensionStrokeRtpc` (Class)
-    #[serde(default)]
     pub suspension_stroke_rtpc: Option<Handle<AudioRtpc>>,
     /// `bumpCompressionRtpc` (Class)
-    #[serde(default)]
     pub bump_compression_rtpc: Option<Handle<AudioRtpc>>,
     /// `surfaceRoughnessRtpc` (Class)
-    #[serde(default)]
     pub surface_roughness_rtpc: Option<Handle<AudioRtpc>>,
     /// `boostDurationRtpc` (Class)
-    #[serde(default)]
     pub boost_duration_rtpc: Option<Handle<AudioRtpc>>,
     /// `remainingBoostRtpc` (Class)
-    #[serde(default)]
     pub remaining_boost_rtpc: Option<Handle<AudioRtpc>>,
     /// `bumpMinSusp` (Single)
-    #[serde(default)]
     pub bump_min_susp: f32,
     /// `bumpMinSpeed` (Single)
-    #[serde(default)]
     pub bump_min_speed: f32,
     /// `bumpIntensityMult` (Single)
-    #[serde(default)]
     pub bump_intensity_mult: f32,
     /// `bumpMinTime` (Single)
-    #[serde(default)]
     pub bump_min_time: f32,
     /// `throttleLoadLerpUpTime` (Single)
-    #[serde(default)]
     pub throttle_load_lerp_up_time: f32,
     /// `throttleLoadLerpDownTime` (Single)
-    #[serde(default)]
     pub throttle_load_lerp_down_time: f32,
     /// `skidLerpSpeed` (Single)
-    #[serde(default)]
     pub skid_lerp_speed: f32,
     /// `skidCentrifugalFactor` (Single)
-    #[serde(default)]
     pub skid_centrifugal_factor: f32,
     /// `skidBrakeFactor` (Single)
-    #[serde(default)]
     pub skid_brake_factor: f32,
     /// `skidPowerLockFactor` (Single)
-    #[serde(default)]
     pub skid_power_lock_factor: f32,
     /// `skidLateralFactor` (Single)
-    #[serde(default)]
     pub skid_lateral_factor: f32,
     /// `skidForwardFactor` (Single)
-    #[serde(default)]
     pub skid_forward_factor: f32,
     /// `treadRotationSpeedRtpc` (Class)
-    #[serde(default)]
     pub tread_rotation_speed_rtpc: Option<Handle<AudioRtpc>>,
     /// `treadGroundContactRtpc` (Class)
-    #[serde(default)]
     pub tread_ground_contact_rtpc: Option<Handle<AudioRtpc>>,
     /// `treadCountRtpc` (Class)
-    #[serde(default)]
     pub tread_count_rtpc: Option<Handle<AudioRtpc>>,
     /// `treadIndexRtpc` (Class)
-    #[serde(default)]
     pub tread_index_rtpc: Option<Handle<AudioRtpc>>,
     /// `treadAudioSurfaceMap` (Reference)
-    #[serde(default)]
     pub tread_audio_surface_map: Option<CigGuid>,
 }
 

@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -21,10 +20,8 @@ use super::super::*;
 
 /// DCB type: `RecordRefUserVariableTypeFontStyle`
 /// Inherits from: `RecordRefUserVariableTypeBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct RecordRefUserVariableTypeFontStyle {
     /// `value` (Reference)
-    #[serde(default)]
     pub value: Option<CigGuid>,
 }
 
@@ -44,7 +41,6 @@ impl<'a> Extract<'a> for RecordRefUserVariableTypeFontStyle {
 
 /// DCB type: `SpawnNotifierEntityComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SpawnNotifierEntityComponentParams {
 }
 
@@ -62,16 +58,12 @@ impl<'a> Extract<'a> for SpawnNotifierEntityComponentParams {
 }
 
 /// DCB type: `SMatchNetworkTypeParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SMatchNetworkTypeParams {
     /// `name` (Locale)
-    #[serde(default)]
     pub name: LocaleKey,
     /// `description` (Locale)
-    #[serde(default)]
     pub description: LocaleKey,
     /// `matchNetworkType` (EnumChoice)
-    #[serde(default)]
     pub match_network_type: EMatchNetworkType,
 }
 
@@ -92,19 +84,14 @@ impl<'a> Extract<'a> for SMatchNetworkTypeParams {
 }
 
 /// DCB type: `PopupParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PopupParams {
     /// `locTitle` (Locale)
-    #[serde(default)]
     pub loc_title: LocaleKey,
     /// `locBody` (Locale)
-    #[serde(default)]
     pub loc_body: LocaleKey,
     /// `locConfirm` (Locale)
-    #[serde(default)]
     pub loc_confirm: LocaleKey,
     /// `locDecline` (Locale)
-    #[serde(default)]
     pub loc_decline: LocaleKey,
 }
 
@@ -126,19 +113,14 @@ impl<'a> Extract<'a> for PopupParams {
 }
 
 /// DCB type: `EAPatchNoteParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EAPatchNoteParams {
     /// `note` (Locale)
-    #[serde(default)]
     pub note: LocaleKey,
     /// `bold` (Boolean)
-    #[serde(default)]
     pub bold: bool,
     /// `underlined` (Boolean)
-    #[serde(default)]
     pub underlined: bool,
     /// `italic` (Boolean)
-    #[serde(default)]
     pub italic: bool,
 }
 
@@ -160,13 +142,10 @@ impl<'a> Extract<'a> for EAPatchNoteParams {
 }
 
 /// DCB type: `EAPatchNoteCategoryParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EAPatchNoteCategoryParams {
     /// `name` (Locale)
-    #[serde(default)]
     pub name: LocaleKey,
     /// `notes` (Class (array))
-    #[serde(default)]
     pub notes: Vec<Handle<EAPatchNoteParams>>,
 }
 
@@ -192,13 +171,10 @@ impl<'a> Extract<'a> for EAPatchNoteCategoryParams {
 }
 
 /// DCB type: `SocialTab`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SocialTab {
     /// `name` (Locale)
-    #[serde(default)]
     pub name: LocaleKey,
     /// `activeNetworkTypes` (EnumChoice (array))
-    #[serde(default)]
     pub active_network_types: Vec<EMatchNetworkType>,
 }
 
@@ -220,22 +196,16 @@ impl<'a> Extract<'a> for SocialTab {
 }
 
 /// DCB type: `EAExperimentalModeResetTimeParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EAExperimentalModeResetTimeParams {
     /// `weekday` (EnumChoice)
-    #[serde(default)]
     pub weekday: EWeekday,
     /// `hour` (Int32)
-    #[serde(default)]
     pub hour: i32,
     /// `minute` (Int32)
-    #[serde(default)]
     pub minute: i32,
     /// `showSecondsInTimer` (Boolean)
-    #[serde(default)]
     pub show_seconds_in_timer: bool,
     /// `locRestartRequired` (Locale)
-    #[serde(default)]
     pub loc_restart_required: LocaleKey,
 }
 
@@ -258,31 +228,22 @@ impl<'a> Extract<'a> for EAExperimentalModeResetTimeParams {
 }
 
 /// DCB type: `EASpecialEventInformationParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EASpecialEventInformationParams {
     /// `badgeId` (UInt32)
-    #[serde(default)]
     pub badge_id: u32,
     /// `eventTitle` (Locale)
-    #[serde(default)]
     pub event_title: LocaleKey,
     /// `eventDescription` (Locale)
-    #[serde(default)]
     pub event_description: LocaleKey,
     /// `bannerImage` (String)
-    #[serde(default)]
     pub banner_image: String,
     /// `loadscreenOverride` (String)
-    #[serde(default)]
     pub loadscreen_override: String,
     /// `backgroundVideoOverride` (String)
-    #[serde(default)]
     pub background_video_override: String,
     /// `modesActiveWithEvent` (EnumChoice (array))
-    #[serde(default)]
     pub modes_active_with_event: Vec<EGameModeId>,
     /// `style` (Reference)
-    #[serde(default)]
     pub style: Option<CigGuid>,
 }
 
@@ -311,58 +272,40 @@ impl<'a> Extract<'a> for EASpecialEventInformationParams {
 
 /// DCB type: `SEntityComponentFrontendEAUIProviderParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SEntityComponentFrontendEAUIProviderParams {
     /// `matchNetworkTypeNames` (Class (array))
-    #[serde(default)]
     pub match_network_type_names: Vec<Handle<SMatchNetworkTypeParams>>,
     /// `anyMapOptionName` (Locale)
-    #[serde(default)]
     pub any_map_option_name: LocaleKey,
     /// `anyMapOptionDescription` (Locale)
-    #[serde(default)]
     pub any_map_option_description: LocaleKey,
     /// `anyMapOptionThumbnail` (String)
-    #[serde(default)]
     pub any_map_option_thumbnail: String,
     /// `anyTeamOptionName` (Locale)
-    #[serde(default)]
     pub any_team_option_name: LocaleKey,
     /// `anyTeamOptionDescription` (Locale)
-    #[serde(default)]
     pub any_team_option_description: LocaleKey,
     /// `locReadyCount` (Locale)
-    #[serde(default)]
     pub loc_ready_count: LocaleKey,
     /// `locErrorReadyCheck` (Locale)
-    #[serde(default)]
     pub loc_error_ready_check: LocaleKey,
     /// `locErrorPlayerLimit` (Locale)
-    #[serde(default)]
     pub loc_error_player_limit: LocaleKey,
     /// `locErrorMissingBadge` (Locale)
-    #[serde(default)]
     pub loc_error_missing_badge: LocaleKey,
     /// `locErrorMinPlayers` (Locale)
-    #[serde(default)]
     pub loc_error_min_players: LocaleKey,
     /// `featuredGameMode` (EnumChoice)
-    #[serde(default)]
     pub featured_game_mode: EGameModeId,
     /// `popupParams` (Class)
-    #[serde(default)]
     pub popup_params: Option<Handle<PopupParams>>,
     /// `patchNoteCategories` (Class (array))
-    #[serde(default)]
     pub patch_note_categories: Vec<Handle<EAPatchNoteCategoryParams>>,
     /// `socialTabs` (Class (array))
-    #[serde(default)]
     pub social_tabs: Vec<Handle<SocialTab>>,
     /// `experimentalModeResetTime` (Class)
-    #[serde(default)]
     pub experimental_mode_reset_time: Option<Handle<EAExperimentalModeResetTimeParams>>,
     /// `specialEventInformation` (Class)
-    #[serde(default)]
     pub special_event_information: Option<Handle<EASpecialEventInformationParams>>,
 }
 
@@ -425,43 +368,30 @@ impl<'a> Extract<'a> for SEntityComponentFrontendEAUIProviderParams {
 
 /// DCB type: `EntityComponentFrontendPUUIProviderParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EntityComponentFrontendPUUIProviderParams {
     /// `introTitleLocId` (Locale)
-    #[serde(default)]
     pub intro_title_loc_id: LocaleKey,
     /// `introDescriptionLocId` (Locale)
-    #[serde(default)]
     pub intro_description_loc_id: LocaleKey,
     /// `hangarLocId` (Locale)
-    #[serde(default)]
     pub hangar_loc_id: LocaleKey,
     /// `hangarDescriptionLocId` (Locale)
-    #[serde(default)]
     pub hangar_description_loc_id: LocaleKey,
     /// `hangarSystemImagePath` (String)
-    #[serde(default)]
     pub hangar_system_image_path: String,
     /// `regionLocalizationIdentifiers` (Locale (array))
-    #[serde(default)]
     pub region_localization_identifiers: Vec<LocaleKey>,
     /// `soloplayWarningLocId` (Locale)
-    #[serde(default)]
     pub soloplay_warning_loc_id: LocaleKey,
     /// `soloplayWarningConfirmLocId` (Locale)
-    #[serde(default)]
     pub soloplay_warning_confirm_loc_id: LocaleKey,
     /// `soloplayWarningCancelLocId` (Locale)
-    #[serde(default)]
     pub soloplay_warning_cancel_loc_id: LocaleKey,
     /// `firstSpawnWarningLocId` (Locale)
-    #[serde(default)]
     pub first_spawn_warning_loc_id: LocaleKey,
     /// `firstSpawnWarningConfirmLocId` (Locale)
-    #[serde(default)]
     pub first_spawn_warning_confirm_loc_id: LocaleKey,
     /// `firstSpawnWarningCancelLocId` (Locale)
-    #[serde(default)]
     pub first_spawn_warning_cancel_loc_id: LocaleKey,
 }
 
@@ -493,25 +423,18 @@ impl<'a> Extract<'a> for EntityComponentFrontendPUUIProviderParams {
 }
 
 /// DCB type: `SFrontendGameModeButton`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SFrontendGameModeButton {
     /// `buttonEnum` (EnumChoice)
-    #[serde(default)]
     pub button_enum: EFrontendGameModeButton,
     /// `buttonTitle` (Locale)
-    #[serde(default)]
     pub button_title: LocaleKey,
     /// `buttonDescription` (Locale)
-    #[serde(default)]
     pub button_description: LocaleKey,
     /// `imagePath` (String)
-    #[serde(default)]
     pub image_path: String,
     /// `moviePath` (String)
-    #[serde(default)]
     pub movie_path: String,
     /// `isActive` (Boolean)
-    #[serde(default)]
     pub is_active: bool,
 }
 
@@ -535,25 +458,18 @@ impl<'a> Extract<'a> for SFrontendGameModeButton {
 }
 
 /// DCB type: `FrontendOverrideParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct FrontendOverrideParams {
     /// `persistentUniverseActive` (Boolean)
-    #[serde(default)]
     pub persistent_universe_active: bool,
     /// `arenaCommanderActive` (Boolean)
-    #[serde(default)]
     pub arena_commander_active: bool,
     /// `tutorialDisabled` (Boolean)
-    #[serde(default)]
     pub tutorial_disabled: bool,
     /// `disableResidenceSelectionWarning` (Boolean)
-    #[serde(default)]
     pub disable_residence_selection_warning: bool,
     /// `backgroundVideoPath` (String)
-    #[serde(default)]
     pub background_video_path: String,
     /// `disabledSystems` (Reference (array))
-    #[serde(default)]
     pub disabled_systems: Vec<CigGuid>,
 }
 
@@ -580,13 +496,10 @@ impl<'a> Extract<'a> for FrontendOverrideParams {
 
 /// DCB type: `EntityComponentFrontendUIProviderParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EntityComponentFrontendUIProviderParams {
     /// `overrideFrontendParam` (Reference)
-    #[serde(default)]
     pub override_frontend_param: Option<CigGuid>,
     /// `frontendGameModeButtons` (Class (array))
-    #[serde(default)]
     pub frontend_game_mode_buttons: Vec<Handle<SFrontendGameModeButton>>,
 }
 
@@ -613,7 +526,6 @@ impl<'a> Extract<'a> for EntityComponentFrontendUIProviderParams {
 
 /// DCB type: `FrontendControllerProviderParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct FrontendControllerProviderParams {
 }
 
@@ -632,22 +544,16 @@ impl<'a> Extract<'a> for FrontendControllerProviderParams {
 
 /// DCB type: `SEntityComponentRttLiveCameraPreviewParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SEntityComponentRttLiveCameraPreviewParams {
     /// `width` (Int32)
-    #[serde(default)]
     pub width: i32,
     /// `height` (Int32)
-    #[serde(default)]
     pub height: i32,
     /// `fov` (Int32)
-    #[serde(default)]
     pub fov: i32,
     /// `near` (Single)
-    #[serde(default)]
     pub near: f32,
     /// `far` (Single)
-    #[serde(default)]
     pub far: f32,
 }
 
@@ -671,16 +577,12 @@ impl<'a> Extract<'a> for SEntityComponentRttLiveCameraPreviewParams {
 
 /// DCB type: `UIInteriorMapSectionParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct UIInteriorMapSectionParams {
     /// `name` (Locale)
-    #[serde(default)]
     pub name: LocaleKey,
     /// `size` (Class)
-    #[serde(default)]
     pub size: Option<Handle<Vec3>>,
     /// `restrictViewBounds` (Boolean)
-    #[serde(default)]
     pub restrict_view_bounds: bool,
 }
 
@@ -705,16 +607,12 @@ impl<'a> Extract<'a> for UIInteriorMapSectionParams {
 
 /// DCB type: `UIInteriorMapLabelParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct UIInteriorMapLabelParams {
     /// `name` (Locale)
-    #[serde(default)]
     pub name: LocaleKey,
     /// `textScale` (Single)
-    #[serde(default)]
     pub text_scale: f32,
     /// `maxWidth` (Single)
-    #[serde(default)]
     pub max_width: f32,
 }
 
@@ -736,16 +634,12 @@ impl<'a> Extract<'a> for UIInteriorMapLabelParams {
 
 /// DCB type: `TelevisionScreenParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct TelevisionScreenParams {
     /// `nextInteraction` (WeakPointer)
-    #[serde(default)]
     pub next_interaction: Option<Handle<SSharedInteractionParams>>,
     /// `previousInteraction` (WeakPointer)
-    #[serde(default)]
     pub previous_interaction: Option<Handle<SSharedInteractionParams>>,
     /// `movieList` (Reference)
-    #[serde(default)]
     pub movie_list: Option<CigGuid>,
 }
 

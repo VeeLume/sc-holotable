@@ -9,14 +9,11 @@
 
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
-use serde::{Deserialize, Serialize};
 use super::super::*;
 
 /// Pool storage for the `inventorycontainers` feature.
-#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+#[derive(Default)]
 pub struct InventorycontainersPools {
-    #[serde(default)]
     pub open_inventory_occupant_item_type_properties: Vec<Option<OpenInventoryOccupantItemTypeProperties>>,
-    #[serde(default)]
     pub inventory_container_manager: Vec<Option<InventoryContainerManager>>,
 }

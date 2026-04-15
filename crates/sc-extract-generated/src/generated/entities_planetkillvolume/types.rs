@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -21,25 +20,18 @@ use super::super::*;
 
 /// DCB type: `PlanetKillVolumeComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PlanetKillVolumeComponentParams {
     /// `planetRadius` (Single)
-    #[serde(default)]
     pub planet_radius: f32,
     /// `killRadius` (Single)
-    #[serde(default)]
     pub kill_radius: f32,
     /// `shakeRadius` (Single)
-    #[serde(default)]
     pub shake_radius: f32,
     /// `warningRadius` (Single)
-    #[serde(default)]
     pub warning_radius: f32,
     /// `shadowPenumbraWidth` (Single)
-    #[serde(default)]
     pub shadow_penumbra_width: f32,
     /// `shadowMaxRange` (Single)
-    #[serde(default)]
     pub shadow_max_range: f32,
 }
 

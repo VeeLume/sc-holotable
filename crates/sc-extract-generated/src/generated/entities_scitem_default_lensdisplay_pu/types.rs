@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -21,10 +20,8 @@ use super::super::*;
 
 /// DCB type: `SChatChannelBlackList`
 /// Inherits from: `SChatChannelFilterBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SChatChannelBlackList {
     /// `chatChannelType` (StrongPointer (array))
-    #[serde(default)]
     pub chat_channel_type: Vec<SChatChannelTypeBasePtr>,
 }
 
@@ -49,19 +46,14 @@ impl<'a> Extract<'a> for SChatChannelBlackList {
 
 /// DCB type: `EntityComponentRttAspectBoxoutParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EntityComponentRttAspectBoxoutParams {
     /// `targetRttSlot` (EnumChoice)
-    #[serde(default)]
     pub target_rtt_slot: ERuntimeImageSourceType,
     /// `aspectRatio` (Single)
-    #[serde(default)]
     pub aspect_ratio: f32,
     /// `maximumScreenSizeRatio` (Single)
-    #[serde(default)]
     pub maximum_screen_size_ratio: f32,
     /// `noShieldScaleAdjustment` (Single)
-    #[serde(default)]
     pub no_shield_scale_adjustment: f32,
 }
 

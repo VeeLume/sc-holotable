@@ -9,14 +9,11 @@
 
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
-use serde::{Deserialize, Serialize};
 use super::super::*;
 
 /// Pool storage for the `ui-armarkerconfiguration` feature.
-#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+#[derive(Default)]
 pub struct UiArmarkerconfigurationPools {
-    #[serde(default)]
     pub global_marker_configs: Vec<Option<GlobalMarkerConfigs>>,
-    #[serde(default)]
     pub marker_ability_nearest_face: Vec<Option<Marker_AbilityNearestFace>>,
 }

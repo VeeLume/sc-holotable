@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -21,10 +20,8 @@ use super::super::*;
 
 /// DCB type: `FireAreaHazards`
 /// Inherits from: `INavigationCostVolumeExtender`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct FireAreaHazards {
     /// `overrideConfig` (Reference)
-    #[serde(default)]
     pub override_config: Option<CigGuid>,
 }
 
@@ -44,16 +41,12 @@ impl<'a> Extract<'a> for FireAreaHazards {
 
 /// DCB type: `CIGAudioParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CIGAudioParams {
     /// `namingStrategy` (EnumChoice)
-    #[serde(default)]
     pub naming_strategy: CIGAudioContextNamingStrategy,
     /// `boneNames` (String (array))
-    #[serde(default)]
     pub bone_names: Vec<String>,
     /// `enableAnimStart` (Boolean)
-    #[serde(default)]
     pub enable_anim_start: bool,
 }
 
@@ -77,13 +70,10 @@ impl<'a> Extract<'a> for CIGAudioParams {
 
 /// DCB type: `EntityComponentFireArea`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EntityComponentFireArea {
     /// `repairRate` (Single)
-    #[serde(default)]
     pub repair_rate: f32,
     /// `combustibility` (Single)
-    #[serde(default)]
     pub combustibility: f32,
 }
 
@@ -104,10 +94,8 @@ impl<'a> Extract<'a> for EntityComponentFireArea {
 
 /// DCB type: `FireVoxelSelectionShape_Box`
 /// Inherits from: `FireVoxelSelectionShape`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct FireVoxelSelectionShape_Box {
     /// `size` (Class)
-    #[serde(default)]
     pub size: Option<Handle<Vec3>>,
 }
 
@@ -130,13 +118,10 @@ impl<'a> Extract<'a> for FireVoxelSelectionShape_Box {
 
 /// DCB type: `EntityComponentFireFilter`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EntityComponentFireFilter {
     /// `mode` (EnumChoice)
-    #[serde(default)]
     pub mode: FireFilterMode,
     /// `shape` (StrongPointer)
-    #[serde(default)]
     pub shape: Option<FireVoxelSelectionShapePtr>,
 }
 
@@ -160,31 +145,22 @@ impl<'a> Extract<'a> for EntityComponentFireFilter {
 
 /// DCB type: `EntityComponentExtinguisher`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EntityComponentExtinguisher {
     /// `enable` (Boolean)
-    #[serde(default)]
     pub enable: bool,
     /// `strength` (Single)
-    #[serde(default)]
     pub strength: f32,
     /// `type` (StrongPointer)
-    #[serde(default)]
     pub r#type: Option<ExtinguishType_BasePtr>,
     /// `extinguishingEffectOverride` (Class)
-    #[serde(default)]
     pub extinguishing_effect_override: Option<Handle<GlobalResourceParticle>>,
     /// `vectorFieldRadius` (Single)
-    #[serde(default)]
     pub vector_field_radius: f32,
     /// `vectorFieldWidth` (Single)
-    #[serde(default)]
     pub vector_field_width: f32,
     /// `vectorFieldFalloff` (Single)
-    #[serde(default)]
     pub vector_field_falloff: f32,
     /// `vectorFieldMaxStrength` (Single)
-    #[serde(default)]
     pub vector_field_max_strength: f32,
 }
 
@@ -217,13 +193,10 @@ impl<'a> Extract<'a> for EntityComponentExtinguisher {
 
 /// DCB type: `ExtinguishType_Spray`
 /// Inherits from: `ExtinguishType_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ExtinguishType_Spray {
     /// `maximumDistance` (Single)
-    #[serde(default)]
     pub maximum_distance: f32,
     /// `coneAngle` (Single)
-    #[serde(default)]
     pub cone_angle: f32,
 }
 
@@ -244,19 +217,14 @@ impl<'a> Extract<'a> for ExtinguishType_Spray {
 
 /// DCB type: `EntityComponentFireRepairer`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EntityComponentFireRepairer {
     /// `enable` (Boolean)
-    #[serde(default)]
     pub enable: bool,
     /// `repairRate` (Single)
-    #[serde(default)]
     pub repair_rate: f32,
     /// `radius` (Single)
-    #[serde(default)]
     pub radius: f32,
     /// `type` (StrongPointer)
-    #[serde(default)]
     pub r#type: Option<FireRepairerType_BasePtr>,
 }
 
@@ -282,7 +250,6 @@ impl<'a> Extract<'a> for EntityComponentFireRepairer {
 
 /// DCB type: `FireRepairerType_EntityPos`
 /// Inherits from: `FireRepairerType_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct FireRepairerType_EntityPos {
 }
 
@@ -301,10 +268,8 @@ impl<'a> Extract<'a> for FireRepairerType_EntityPos {
 
 /// DCB type: `EntityTemperatureStateModifier`
 /// Inherits from: `SRangeStateModifier`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EntityTemperatureStateModifier {
     /// `stateRanges` (Class (array))
-    #[serde(default)]
     pub state_ranges: Vec<Handle<SRangeStateLevel>>,
 }
 
@@ -330,7 +295,6 @@ impl<'a> Extract<'a> for EntityTemperatureStateModifier {
 
 /// DCB type: `ItemResourceDynamicAmountLifeSupport`
 /// Inherits from: `ItemResourceDynamicAmountBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ItemResourceDynamicAmountLifeSupport {
 }
 
@@ -349,7 +313,6 @@ impl<'a> Extract<'a> for ItemResourceDynamicAmountLifeSupport {
 
 /// DCB type: `SEntityComponentRoomGroupParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SEntityComponentRoomGroupParams {
 }
 
@@ -368,13 +331,10 @@ impl<'a> Extract<'a> for SEntityComponentRoomGroupParams {
 
 /// DCB type: `EntityComponentRoomFadeVolumeParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EntityComponentRoomFadeVolumeParams {
     /// `areaVolume` (StrongPointer)
-    #[serde(default)]
     pub area_volume: Option<VolumeShapePtr>,
     /// `fadeZone` (Single)
-    #[serde(default)]
     pub fade_zone: f32,
 }
 
@@ -398,10 +358,8 @@ impl<'a> Extract<'a> for EntityComponentRoomFadeVolumeParams {
 
 /// DCB type: `VolumeShape_Sphere`
 /// Inherits from: `VolumeShape`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct VolumeShape_Sphere {
     /// `radius` (Single)
-    #[serde(default)]
     pub radius: f32,
 }
 
@@ -421,7 +379,6 @@ impl<'a> Extract<'a> for VolumeShape_Sphere {
 
 /// DCB type: `SAtmosphericCompositionInherit`
 /// Inherits from: `SAtmosphericCompositionBaseParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SAtmosphericCompositionInherit {
 }
 
@@ -440,13 +397,10 @@ impl<'a> Extract<'a> for SAtmosphericCompositionInherit {
 
 /// DCB type: `AsteroidState`
 /// Inherits from: `AsteroidStateBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AsteroidState {
     /// `debrisDensityMod` (EnumChoice)
-    #[serde(default)]
     pub debris_density_mod: RoomStateModifyType,
     /// `debrisDensity` (Single)
-    #[serde(default)]
     pub debris_density: f32,
 }
 

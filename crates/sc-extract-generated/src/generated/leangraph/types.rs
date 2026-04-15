@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,19 +19,14 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `LeanConnection`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LeanConnection {
     /// `waitUntilFinished` (Boolean)
-    #[serde(default)]
     pub wait_until_finished: bool,
     /// `delaySeconds` (Single)
-    #[serde(default)]
     pub delay_seconds: f32,
     /// `waitForEvent` (String)
-    #[serde(default)]
     pub wait_for_event: String,
     /// `nextState` (WeakPointer)
-    #[serde(default)]
     pub next_state: Option<Handle<LeanState>>,
 }
 
@@ -57,19 +51,14 @@ impl<'a> Extract<'a> for LeanConnection {
 }
 
 /// DCB type: `LeanState`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LeanState {
     /// `type` (EnumChoice)
-    #[serde(default)]
     pub r#type: LeanStateType,
     /// `mannequinTags` (String)
-    #[serde(default)]
     pub mannequin_tags: String,
     /// `mannequinFragment` (String)
-    #[serde(default)]
     pub mannequin_fragment: String,
     /// `connections` (Class (array))
-    #[serde(default)]
     pub connections: Vec<Handle<LeanConnection>>,
 }
 
@@ -97,10 +86,8 @@ impl<'a> Extract<'a> for LeanState {
 }
 
 /// DCB type: `LeanGraph`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LeanGraph {
     /// `leanStates` (Class (array))
-    #[serde(default)]
     pub lean_states: Vec<Handle<LeanState>>,
 }
 

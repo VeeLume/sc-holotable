@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,13 +19,10 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `HologramParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct HologramParams {
     /// `ValidMaterial` (String)
-    #[serde(default)]
     pub valid_material: String,
     /// `InvalidMaterial` (String)
-    #[serde(default)]
     pub invalid_material: String,
 }
 
@@ -46,19 +42,14 @@ impl<'a> Extract<'a> for HologramParams {
 }
 
 /// DCB type: `RaSTaRLibraryElement`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct RaSTaRLibraryElement {
     /// `filePath` (String)
-    #[serde(default)]
     pub file_path: String,
     /// `displayName` (String)
-    #[serde(default)]
     pub display_name: String,
     /// `isMainModule` (Boolean)
-    #[serde(default)]
     pub is_main_module: bool,
     /// `isIndependantModule` (Boolean)
-    #[serde(default)]
     pub is_independant_module: bool,
 }
 
@@ -80,13 +71,10 @@ impl<'a> Extract<'a> for RaSTaRLibraryElement {
 }
 
 /// DCB type: `RaSTaRLibraryCategory`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct RaSTaRLibraryCategory {
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
     /// `elements` (Reference (array))
-    #[serde(default)]
     pub elements: Vec<CigGuid>,
 }
 
@@ -108,10 +96,8 @@ impl<'a> Extract<'a> for RaSTaRLibraryCategory {
 }
 
 /// DCB type: `RaSTaRLibrary`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct RaSTaRLibrary {
     /// `categories` (Class (array))
-    #[serde(default)]
     pub categories: Vec<Handle<RaSTaRLibraryCategory>>,
 }
 

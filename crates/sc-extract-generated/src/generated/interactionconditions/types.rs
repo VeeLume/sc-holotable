@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -21,10 +20,8 @@ use super::super::*;
 
 /// DCB type: `InteractionConditionCanAffordItem`
 /// Inherits from: `InteractionConditionParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InteractionConditionCanAffordItem {
     /// `conditionDisplay` (StrongPointer)
-    #[serde(default)]
     pub condition_display: Option<Handle<ConditionDisplayParams>>,
 }
 
@@ -47,10 +44,8 @@ impl<'a> Extract<'a> for InteractionConditionCanAffordItem {
 
 /// DCB type: `InteractionConditionCanBeBodyDragged`
 /// Inherits from: `InteractionConditionParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InteractionConditionCanBeBodyDragged {
     /// `conditionDisplay` (StrongPointer)
-    #[serde(default)]
     pub condition_display: Option<Handle<ConditionDisplayParams>>,
 }
 
@@ -72,19 +67,14 @@ impl<'a> Extract<'a> for InteractionConditionCanBeBodyDragged {
 }
 
 /// DCB type: `ShopInteractionData`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ShopInteractionData {
     /// `quickBuyConditionList` (Class)
-    #[serde(default)]
     pub quick_buy_condition_list: Option<Handle<InteractionConditionList>>,
     /// `quickBuyInteractionText` (Locale)
-    #[serde(default)]
     pub quick_buy_interaction_text: LocaleKey,
     /// `quickBuyPriceStringToken` (String)
-    #[serde(default)]
     pub quick_buy_price_string_token: String,
     /// `moreInfoInteractionText` (Locale)
-    #[serde(default)]
     pub more_info_interaction_text: LocaleKey,
 }
 

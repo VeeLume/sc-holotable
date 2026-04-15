@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,37 +19,26 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `PopupDef`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PopupDef {
     /// `title` (Locale)
-    #[serde(default)]
     pub title: LocaleKey,
     /// `message1` (Locale)
-    #[serde(default)]
     pub message1: LocaleKey,
     /// `message2` (Locale)
-    #[serde(default)]
     pub message2: LocaleKey,
     /// `message3` (Locale)
-    #[serde(default)]
     pub message3: LocaleKey,
     /// `hasCancelButton` (Boolean)
-    #[serde(default)]
     pub has_cancel_button: bool,
     /// `hasConfirmButton` (Boolean)
-    #[serde(default)]
     pub has_confirm_button: bool,
     /// `cancelOverrideString` (Locale)
-    #[serde(default)]
     pub cancel_override_string: LocaleKey,
     /// `confirmOverrideString` (Locale)
-    #[serde(default)]
     pub confirm_override_string: LocaleKey,
     /// `popupFrame` (String)
-    #[serde(default)]
     pub popup_frame: String,
     /// `popupHeaderFrame` (String)
-    #[serde(default)]
     pub popup_header_frame: String,
 }
 

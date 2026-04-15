@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,10 +19,8 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `EntitlementItemType`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EntitlementItemType {
     /// `Type` (EnumChoice)
-    #[serde(default)]
     pub r#type: EItemType,
 }
 
@@ -42,10 +39,8 @@ impl<'a> Extract<'a> for EntitlementItemType {
 }
 
 /// DCB type: `EntitlementAccountItemGlobalParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EntitlementAccountItemGlobalParams {
     /// `accountItemTypes` (Class (array))
-    #[serde(default)]
     pub account_item_types: Vec<Handle<EntitlementItemType>>,
 }
 
@@ -70,10 +65,8 @@ impl<'a> Extract<'a> for EntitlementAccountItemGlobalParams {
 }
 
 /// DCB type: `EntitlementNonInventoryStorableItemGlobalParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EntitlementNonInventoryStorableItemGlobalParams {
     /// `itemTypes` (Class (array))
-    #[serde(default)]
     pub item_types: Vec<Handle<EntitlementItemType>>,
 }
 
@@ -98,19 +91,14 @@ impl<'a> Extract<'a> for EntitlementNonInventoryStorableItemGlobalParams {
 }
 
 /// DCB type: `CorpseInteractionParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CorpseInteractionParams {
     /// `itemRecoveryBlacklist` (Reference (array))
-    #[serde(default)]
     pub item_recovery_blacklist: Vec<CigGuid>,
     /// `corpseClasses` (Reference (array))
-    #[serde(default)]
     pub corpse_classes: Vec<CigGuid>,
     /// `allowedTypes` (EnumChoice (array))
-    #[serde(default)]
     pub allowed_types: Vec<EItemType>,
     /// `allowedSubTypes` (EnumChoice (array))
-    #[serde(default)]
     pub allowed_sub_types: Vec<EItemSubType>,
 }
 
@@ -140,22 +128,16 @@ impl<'a> Extract<'a> for CorpseInteractionParams {
 }
 
 /// DCB type: `ItemRecoveryConfigurationParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ItemRecoveryConfigurationParams {
     /// `nonEligibleItems` (StrongPointer (array))
-    #[serde(default)]
     pub non_eligible_items: Vec<ItemRecoverySetConditionDefPtr>,
     /// `consumableItems` (StrongPointer (array))
-    #[serde(default)]
     pub consumable_items: Vec<ItemRecoverySetConditionDefPtr>,
     /// `dontEquipBrickedItems` (StrongPointer (array))
-    #[serde(default)]
     pub dont_equip_bricked_items: Vec<ItemRecoverySetConditionDefPtr>,
     /// `economyParams` (Class)
-    #[serde(default)]
     pub economy_params: Option<Handle<ItemRecoveryEconomyParams>>,
     /// `notificationParams` (Class)
-    #[serde(default)]
     pub notification_params: Option<Handle<ItemRecoveryNotificationParams>>,
 }
 
@@ -199,34 +181,24 @@ impl<'a> Extract<'a> for ItemRecoveryConfigurationParams {
 }
 
 /// DCB type: `ItemRecoveryNotificationParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ItemRecoveryNotificationParams {
     /// `itemBricked_Title` (Locale)
-    #[serde(default)]
     pub item_bricked_title: LocaleKey,
     /// `itemBricked_Body` (Locale)
-    #[serde(default)]
     pub item_bricked_body: LocaleKey,
     /// `itemBricking_Title` (Locale)
-    #[serde(default)]
     pub item_bricking_title: LocaleKey,
     /// `itemBricking_Body` (Locale)
-    #[serde(default)]
     pub item_bricking_body: LocaleKey,
     /// `onBrickedItemUseNotificationBuffer` (Single)
-    #[serde(default)]
     pub on_bricked_item_use_notification_buffer: f32,
     /// `onBrickedItemUsed_Title` (Locale)
-    #[serde(default)]
     pub on_bricked_item_used_title: LocaleKey,
     /// `onBrickedItemUsed_CannotEquip` (Locale)
-    #[serde(default)]
     pub on_bricked_item_used_cannot_equip: LocaleKey,
     /// `onBrickedItemUsed_CannotFire` (Locale)
-    #[serde(default)]
     pub on_bricked_item_used_cannot_fire: LocaleKey,
     /// `onBrickedItemUsed_CannotUse` (Locale)
-    #[serde(default)]
     pub on_bricked_item_used_cannot_use: LocaleKey,
 }
 
@@ -253,22 +225,16 @@ impl<'a> Extract<'a> for ItemRecoveryNotificationParams {
 }
 
 /// DCB type: `ItemRecoveryEconomyParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ItemRecoveryEconomyParams {
     /// `globalBrickTimer` (Single)
-    #[serde(default)]
     pub global_brick_timer: f32,
     /// `baseReclaimTime` (Single)
-    #[serde(default)]
     pub base_reclaim_time: f32,
     /// `scalingPriceFloor` (Single)
-    #[serde(default)]
     pub scaling_price_floor: f32,
     /// `aUECperSecond` (Single)
-    #[serde(default)]
     pub a_uecper_second: f32,
     /// `claimCostMultiplier` (Single)
-    #[serde(default)]
     pub claim_cost_multiplier: f32,
 }
 
@@ -292,13 +258,10 @@ impl<'a> Extract<'a> for ItemRecoveryEconomyParams {
 
 /// DCB type: `ItemRecoveryCondition_ItemType`
 /// Inherits from: `ItemRecoverySetConditionDef`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ItemRecoveryCondition_ItemType {
     /// `type` (EnumChoice)
-    #[serde(default)]
     pub r#type: EItemType,
     /// `subType` (EnumChoice)
-    #[serde(default)]
     pub sub_type: EItemSubType,
 }
 
@@ -319,10 +282,8 @@ impl<'a> Extract<'a> for ItemRecoveryCondition_ItemType {
 
 /// DCB type: `ItemRecoveryCondition_EntityClass`
 /// Inherits from: `ItemRecoverySetConditionDef`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ItemRecoveryCondition_EntityClass {
     /// `classDef` (Reference)
-    #[serde(default)]
     pub class_def: Option<CigGuid>,
 }
 
@@ -341,13 +302,10 @@ impl<'a> Extract<'a> for ItemRecoveryCondition_EntityClass {
 }
 
 /// DCB type: `DebugLoadoutKit`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DebugLoadoutKit {
     /// `entityClass` (Reference)
-    #[serde(default)]
     pub entity_class: Option<CigGuid>,
     /// `loadoutKit` (Reference)
-    #[serde(default)]
     pub loadout_kit: Option<CigGuid>,
 }
 
@@ -367,10 +325,8 @@ impl<'a> Extract<'a> for DebugLoadoutKit {
 }
 
 /// DCB type: `WebCustomizationDebug`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct WebCustomizationDebug {
     /// `debugLoadoutKits` (Class (array))
-    #[serde(default)]
     pub debug_loadout_kits: Vec<Handle<DebugLoadoutKit>>,
 }
 
@@ -395,13 +351,10 @@ impl<'a> Extract<'a> for WebCustomizationDebug {
 }
 
 /// DCB type: `WebCustomizationItemTypeName`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct WebCustomizationItemTypeName {
     /// `name` (Locale)
-    #[serde(default)]
     pub name: LocaleKey,
     /// `itemTypes` (EnumChoice (array))
-    #[serde(default)]
     pub item_types: Vec<EItemType>,
 }
 
@@ -423,13 +376,10 @@ impl<'a> Extract<'a> for WebCustomizationItemTypeName {
 }
 
 /// DCB type: `WebCustomizationGlobalParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct WebCustomizationGlobalParams {
     /// `defaultLoadoutKitName` (Locale)
-    #[serde(default)]
     pub default_loadout_kit_name: LocaleKey,
     /// `typeNames` (Class (array))
-    #[serde(default)]
     pub type_names: Vec<Handle<WebCustomizationItemTypeName>>,
 }
 

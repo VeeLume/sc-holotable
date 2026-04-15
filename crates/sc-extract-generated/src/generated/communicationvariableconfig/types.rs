@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,10 +19,8 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `CommunicationVariableConfig`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CommunicationVariableConfig {
     /// `variables` (Class (array))
-    #[serde(default)]
     pub variables: Vec<Handle<CommunicationVariableBool>>,
 }
 
@@ -49,16 +46,12 @@ impl<'a> Extract<'a> for CommunicationVariableConfig {
 
 /// DCB type: `CommunicationVariableBool`
 /// Inherits from: `CommunicationVariableBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CommunicationVariableBool {
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
     /// `global` (Boolean)
-    #[serde(default)]
     pub global: bool,
     /// `value` (Boolean)
-    #[serde(default)]
     pub value: bool,
 }
 

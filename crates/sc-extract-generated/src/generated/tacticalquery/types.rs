@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -21,19 +20,14 @@ use super::super::*;
 
 /// DCB type: `TQSInputIntValue`
 /// Inherits from: `TQSInput`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct TQSInputIntValue {
     /// `requirements` (Class)
-    #[serde(default)]
     pub requirements: Option<Handle<TagsDNF>>,
     /// `condition` (String)
-    #[serde(default)]
     pub condition: String,
     /// `value` (Int32)
-    #[serde(default)]
     pub value: i32,
     /// `overrides` (Class (array))
-    #[serde(default)]
     pub overrides: Vec<Handle<TQSInputIntValue>>,
 }
 
@@ -65,19 +59,14 @@ impl<'a> Extract<'a> for TQSInputIntValue {
 
 /// DCB type: `TQSInputDynamicVariableValue`
 /// Inherits from: `TQSInput`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct TQSInputDynamicVariableValue {
     /// `requirements` (Class)
-    #[serde(default)]
     pub requirements: Option<Handle<TagsDNF>>,
     /// `condition` (String)
-    #[serde(default)]
     pub condition: String,
     /// `value` (String)
-    #[serde(default)]
     pub value: String,
     /// `overrides` (Class (array))
-    #[serde(default)]
     pub overrides: Vec<Handle<TQSInputDynamicVariableValue>>,
 }
 
@@ -109,22 +98,16 @@ impl<'a> Extract<'a> for TQSInputDynamicVariableValue {
 
 /// DCB type: `TQSWeightInputFloatValue`
 /// Inherits from: `TQSWeightInput`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct TQSWeightInputFloatValue {
     /// `requirements` (Class)
-    #[serde(default)]
     pub requirements: Option<Handle<TagsDNF>>,
     /// `condition` (String)
-    #[serde(default)]
     pub condition: String,
     /// `weight` (Single)
-    #[serde(default)]
     pub weight: f32,
     /// `value` (Single)
-    #[serde(default)]
     pub value: f32,
     /// `overrides` (Class (array))
-    #[serde(default)]
     pub overrides: Vec<Handle<TQSWeightInputFloatValue>>,
 }
 
@@ -157,22 +140,16 @@ impl<'a> Extract<'a> for TQSWeightInputFloatValue {
 
 /// DCB type: `TQSWeightInputTagValue`
 /// Inherits from: `TQSWeightInput`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct TQSWeightInputTagValue {
     /// `requirements` (Class)
-    #[serde(default)]
     pub requirements: Option<Handle<TagsDNF>>,
     /// `condition` (String)
-    #[serde(default)]
     pub condition: String,
     /// `weight` (Single)
-    #[serde(default)]
     pub weight: f32,
     /// `value` (Class)
-    #[serde(default)]
     pub value: Option<Handle<TagsDNF>>,
     /// `overrides` (Class (array))
-    #[serde(default)]
     pub overrides: Vec<Handle<TQSWeightInputTagValue>>,
 }
 
@@ -207,10 +184,8 @@ impl<'a> Extract<'a> for TQSWeightInputTagValue {
 }
 
 /// DCB type: `TQSOptionContentRecord`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct TQSOptionContentRecord {
     /// `content` (Class)
-    #[serde(default)]
     pub content: Option<Handle<TQSOptionContent>>,
 }
 
@@ -233,16 +208,12 @@ impl<'a> Extract<'a> for TQSOptionContentRecord {
 
 /// DCB type: `TQSOptionReference`
 /// Inherits from: `TQSOption`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct TQSOptionReference {
     /// `requirements` (Class)
-    #[serde(default)]
     pub requirements: Option<Handle<TagsDNF>>,
     /// `content` (Reference)
-    #[serde(default)]
     pub content: Option<CigGuid>,
     /// `optionOverrides` (StrongPointer (array))
-    #[serde(default)]
     pub option_overrides: Vec<TQSOptionPtr>,
 }
 

@@ -9,14 +9,11 @@
 
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
-use serde::{Deserialize, Serialize};
 use super::super::*;
 
 /// Pool storage for the `awardservice` feature.
-#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+#[derive(Default)]
 pub struct AwardservicePools {
-    #[serde(default)]
     pub award_service_award: Vec<Option<AwardService_Award>>,
-    #[serde(default)]
     pub award_service_config: Vec<Option<AwardService_Config>>,
 }

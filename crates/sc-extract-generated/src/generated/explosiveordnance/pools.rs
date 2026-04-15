@@ -9,14 +9,11 @@
 
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
-use serde::{Deserialize, Serialize};
 use super::super::*;
 
 /// Pool storage for the `explosiveordnance` feature.
-#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+#[derive(Default)]
 pub struct ExplosiveordnancePools {
-    #[serde(default)]
     pub explosive_ordnance_ping_vfx: Vec<Option<ExplosiveOrdnancePingVFX>>,
-    #[serde(default)]
     pub explosive_ordnance_ping_global_params: Vec<Option<ExplosiveOrdnancePingGlobalParams>>,
 }

@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,10 +19,8 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `AudioBreathStyleConditionList`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AudioBreathStyleConditionList {
     /// `list` (Reference (array))
-    #[serde(default)]
     pub list: Vec<CigGuid>,
 }
 
@@ -44,10 +41,8 @@ impl<'a> Extract<'a> for AudioBreathStyleConditionList {
 }
 
 /// DCB type: `EntityAudioControllerTypeParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EntityAudioControllerTypeParams {
     /// `audioControllerParams` (StrongPointer)
-    #[serde(default)]
     pub audio_controller_params: Option<Handle<SEntityAudioControllerParams>>,
 }
 
@@ -69,16 +64,12 @@ impl<'a> Extract<'a> for EntityAudioControllerTypeParams {
 }
 
 /// DCB type: `EntityAudioControllerTypeManagementParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EntityAudioControllerTypeManagementParams {
     /// `audioControllerEntityType` (EnumChoice)
-    #[serde(default)]
     pub audio_controller_entity_type: EAudioControllerEntityType,
     /// `maxFullLODs` (Int32)
-    #[serde(default)]
     pub max_full_lods: i32,
     /// `maxLowLODs` (Int32)
-    #[serde(default)]
     pub max_low_lods: i32,
 }
 
@@ -99,10 +90,8 @@ impl<'a> Extract<'a> for EntityAudioControllerTypeManagementParams {
 }
 
 /// DCB type: `EntityAudioControllerManagerParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EntityAudioControllerManagerParams {
     /// `params` (Class (array))
-    #[serde(default)]
     pub params: Vec<Handle<EntityAudioControllerTypeManagementParams>>,
 }
 
@@ -127,10 +116,8 @@ impl<'a> Extract<'a> for EntityAudioControllerManagerParams {
 }
 
 /// DCB type: `AudioWhitelist`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AudioWhitelist {
     /// `triggerTypes` (EnumChoice (array))
-    #[serde(default)]
     pub trigger_types: Vec<EAudioTriggerType>,
 }
 
@@ -151,28 +138,20 @@ impl<'a> Extract<'a> for AudioWhitelist {
 }
 
 /// DCB type: `AudioEnvironment`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AudioEnvironment {
     /// `wwiseEnvironmentName` (String)
-    #[serde(default)]
     pub wwise_environment_name: String,
     /// `interiorityMinimum` (Single)
-    #[serde(default)]
     pub interiority_minimum: f32,
     /// `interiorityMaximum` (Single)
-    #[serde(default)]
     pub interiority_maximum: f32,
     /// `sizeMinimum` (Single)
-    #[serde(default)]
     pub size_minimum: f32,
     /// `sizeMaximum` (Single)
-    #[serde(default)]
     pub size_maximum: f32,
     /// `primarySurfaceType` (String)
-    #[serde(default)]
     pub primary_surface_type: String,
     /// `secondarySurfaceType` (String)
-    #[serde(default)]
     pub secondary_surface_type: String,
 }
 
@@ -197,16 +176,12 @@ impl<'a> Extract<'a> for AudioEnvironment {
 }
 
 /// DCB type: `AudioOneShotManagerBudgetEntry`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AudioOneShotManagerBudgetEntry {
     /// `tag` (Reference)
-    #[serde(default)]
     pub tag: Option<CigGuid>,
     /// `maxAudioObjects` (Int32)
-    #[serde(default)]
     pub max_audio_objects: i32,
     /// `priorityFalloffPerSecond` (Single)
-    #[serde(default)]
     pub priority_falloff_per_second: f32,
 }
 
@@ -227,19 +202,14 @@ impl<'a> Extract<'a> for AudioOneShotManagerBudgetEntry {
 }
 
 /// DCB type: `AudioBudgetDefinition`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AudioBudgetDefinition {
     /// `oneshotBudget` (Class (array))
-    #[serde(default)]
     pub oneshot_budget: Vec<Handle<AudioOneShotManagerBudgetEntry>>,
     /// `shipAudioLimit` (Int32)
-    #[serde(default)]
     pub ship_audio_limit: i32,
     /// `shipThrusterLimit` (Int32)
-    #[serde(default)]
     pub ship_thruster_limit: i32,
     /// `actorFoleyLimit` (Int32)
-    #[serde(default)]
     pub actor_foley_limit: i32,
 }
 
@@ -267,13 +237,10 @@ impl<'a> Extract<'a> for AudioBudgetDefinition {
 }
 
 /// DCB type: `AudioGameContextGlobals`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AudioGameContextGlobals {
     /// `globalStates` (Class (array))
-    #[serde(default)]
     pub global_states: Vec<Handle<AudioSwitch>>,
     /// `globalRTPCs` (Class (array))
-    #[serde(default)]
     pub global_rtpcs: Vec<Handle<AudioRtpcWithDefault>>,
 }
 
@@ -305,13 +272,10 @@ impl<'a> Extract<'a> for AudioGameContextGlobals {
 }
 
 /// DCB type: `AudioGameContext`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AudioGameContext {
     /// `budgetDefinition` (Reference)
-    #[serde(default)]
     pub budget_definition: Option<CigGuid>,
     /// `globalRtpcsAndStates` (Reference)
-    #[serde(default)]
     pub global_rtpcs_and_states: Option<CigGuid>,
 }
 
@@ -331,10 +295,8 @@ impl<'a> Extract<'a> for AudioGameContext {
 }
 
 /// DCB type: `AudioGameContextSetup`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AudioGameContextSetup {
     /// `gameContexts` (Class)
-    #[serde(default)]
     pub game_contexts: Option<Handle<AudioGameContext>>,
 }
 
@@ -356,10 +318,8 @@ impl<'a> Extract<'a> for AudioGameContextSetup {
 }
 
 /// DCB type: `SurfaceAudioPropertiesDefinition`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SurfaceAudioPropertiesDefinition {
     /// `surfaceAudioProps` (Class (array))
-    #[serde(default)]
     pub surface_audio_props: Vec<Handle<SurfaceAudioProperties>>,
 }
 
@@ -384,49 +344,34 @@ impl<'a> Extract<'a> for SurfaceAudioPropertiesDefinition {
 }
 
 /// DCB type: `SurfaceAudioProperties`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SurfaceAudioProperties {
     /// `surfaceType` (String)
-    #[serde(default)]
     pub surface_type: String,
     /// `damping` (Single)
-    #[serde(default)]
     pub damping: f32,
     /// `collisionTrigger` (Class)
-    #[serde(default)]
     pub collision_trigger: Option<Handle<GlobalResourceAudio>>,
     /// `collisionTriggerMinPlayTime` (Single)
-    #[serde(default)]
     pub collision_trigger_min_play_time: f32,
     /// `slideStartTrigger` (Class)
-    #[serde(default)]
     pub slide_start_trigger: Option<Handle<GlobalResourceAudio>>,
     /// `slideStopTrigger` (Class)
-    #[serde(default)]
     pub slide_stop_trigger: Option<Handle<GlobalResourceAudio>>,
     /// `rollStartTrigger` (Class)
-    #[serde(default)]
     pub roll_start_trigger: Option<Handle<GlobalResourceAudio>>,
     /// `rollStopTrigger` (Class)
-    #[serde(default)]
     pub roll_stop_trigger: Option<Handle<GlobalResourceAudio>>,
     /// `rtpcSlideVelocity` (Class)
-    #[serde(default)]
     pub rtpc_slide_velocity: Option<Handle<AudioRtpc>>,
     /// `rtpcRollVelocity` (Class)
-    #[serde(default)]
     pub rtpc_roll_velocity: Option<Handle<AudioRtpc>>,
     /// `rtpcMassOther` (Class)
-    #[serde(default)]
     pub rtpc_mass_other: Option<Handle<AudioRtpc>>,
     /// `rtpcTimeSinceLastOneshot` (Class)
-    #[serde(default)]
     pub rtpc_time_since_last_oneshot: Option<Handle<AudioRtpc>>,
     /// `rtpcMomentum` (Class)
-    #[serde(default)]
     pub rtpc_momentum: Option<Handle<AudioRtpc>>,
     /// `surfaceSwitchAndState` (Class)
-    #[serde(default)]
     pub surface_switch_and_state: Option<Handle<AudioSwitch>>,
 }
 
@@ -491,19 +436,14 @@ impl<'a> Extract<'a> for SurfaceAudioProperties {
 }
 
 /// DCB type: `GlobalAudioSettings`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GlobalAudioSettings {
     /// `enablePropagationPathing` (Boolean)
-    #[serde(default)]
     pub enable_propagation_pathing: bool,
     /// `enablePropagationPathingActorOnly` (Boolean)
-    #[serde(default)]
     pub enable_propagation_pathing_actor_only: bool,
     /// `gamePausedTrigger` (Class)
-    #[serde(default)]
     pub game_paused_trigger: Option<Handle<GlobalResourceAudio>>,
     /// `gameUnpausedTrigger` (Class)
-    #[serde(default)]
     pub game_unpaused_trigger: Option<Handle<GlobalResourceAudio>>,
 }
 
@@ -531,16 +471,12 @@ impl<'a> Extract<'a> for GlobalAudioSettings {
 }
 
 /// DCB type: `AudioTagAction`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AudioTagAction {
     /// `tag` (Reference)
-    #[serde(default)]
     pub tag: Option<CigGuid>,
     /// `audioTrigger` (Class)
-    #[serde(default)]
     pub audio_trigger: Option<Handle<GlobalResourceAudio>>,
     /// `switch` (Class)
-    #[serde(default)]
     pub switch: Option<Handle<AudioSwitch>>,
 }
 
@@ -567,10 +503,8 @@ impl<'a> Extract<'a> for AudioTagAction {
 }
 
 /// DCB type: `AudioTagActionList`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AudioTagActionList {
     /// `tagActionList` (Class (array))
-    #[serde(default)]
     pub tag_action_list: Vec<Handle<AudioTagAction>>,
 }
 
@@ -595,10 +529,8 @@ impl<'a> Extract<'a> for AudioTagActionList {
 }
 
 /// DCB type: `AudioValueOutputBehaviour`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AudioValueOutputBehaviour {
     /// `debugName` (String)
-    #[serde(default)]
     pub debug_name: String,
 }
 
@@ -618,52 +550,36 @@ impl<'a> Extract<'a> for AudioValueOutputBehaviour {
 
 /// DCB type: `AudioValueOutputBehaviourCamera`
 /// Inherits from: `AudioValueOutputBehaviour`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AudioValueOutputBehaviourCamera {
     /// `debugName` (String)
-    #[serde(default)]
     pub debug_name: String,
     /// `enableShake` (Boolean)
-    #[serde(default)]
     pub enable_shake: bool,
     /// `localModifier` (Single)
-    #[serde(default)]
     pub local_modifier: f32,
     /// `offsetAngle` (Class)
-    #[serde(default)]
     pub offset_angle: Option<Handle<Ang3>>,
     /// `offsetAngleInput` (EnumChoice)
-    #[serde(default)]
     pub offset_angle_input: EAudioValueOutputCameraInputs,
     /// `offsetAngleModifier` (Class)
-    #[serde(default)]
     pub offset_angle_modifier: Option<Handle<BezierCurve>>,
     /// `offsetAngleModifierUse` (Boolean)
-    #[serde(default)]
     pub offset_angle_modifier_use: bool,
     /// `offsetPosition` (Class)
-    #[serde(default)]
     pub offset_position: Option<Handle<Vec3>>,
     /// `offsetPositionInput` (EnumChoice)
-    #[serde(default)]
     pub offset_position_input: EAudioValueOutputCameraInputs,
     /// `offsetPositionModifier` (Class)
-    #[serde(default)]
     pub offset_position_modifier: Option<Handle<BezierCurve>>,
     /// `offsetPositionModifierUse` (Boolean)
-    #[serde(default)]
     pub offset_position_modifier_use: bool,
     /// `shakesPerSecond` (Single)
-    #[serde(default)]
     pub shakes_per_second: f32,
     /// `translationNoise` (Single)
-    #[serde(default)]
     pub translation_noise: f32,
     /// `rotationNoise` (Single)
-    #[serde(default)]
     pub rotation_noise: f32,
     /// `smoothFactor` (Single)
-    #[serde(default)]
     pub smooth_factor: f32,
 }
 
@@ -709,10 +625,8 @@ impl<'a> Extract<'a> for AudioValueOutputBehaviourCamera {
 
 /// DCB type: `AudioValueOutputBehaviourMicrophone`
 /// Inherits from: `AudioValueOutputBehaviour`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AudioValueOutputBehaviourMicrophone {
     /// `debugName` (String)
-    #[serde(default)]
     pub debug_name: String,
 }
 
@@ -731,16 +645,12 @@ impl<'a> Extract<'a> for AudioValueOutputBehaviourMicrophone {
 }
 
 /// DCB type: `AudioValueOutput`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AudioValueOutput {
     /// `debugName` (String)
-    #[serde(default)]
     pub debug_name: String,
     /// `pluginInstanceID` (Int32)
-    #[serde(default)]
     pub plugin_instance_id: i32,
     /// `behaviours` (StrongPointer (array))
-    #[serde(default)]
     pub behaviours: Vec<AudioValueOutputBehaviourPtr>,
 }
 
@@ -766,10 +676,8 @@ impl<'a> Extract<'a> for AudioValueOutput {
 }
 
 /// DCB type: `AudioValueOutputSetup`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AudioValueOutputSetup {
     /// `outputs` (Class (array))
-    #[serde(default)]
     pub outputs: Vec<Handle<AudioValueOutput>>,
 }
 
@@ -794,16 +702,12 @@ impl<'a> Extract<'a> for AudioValueOutputSetup {
 }
 
 /// DCB type: `QueueingBehaviour`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct QueueingBehaviour {
     /// `canInterrupt` (Boolean)
-    #[serde(default)]
     pub can_interrupt: bool,
     /// `canBeInterrupted` (Boolean)
-    #[serde(default)]
     pub can_be_interrupted: bool,
     /// `canBeQueued` (Boolean)
-    #[serde(default)]
     pub can_be_queued: bool,
 }
 
@@ -824,34 +728,24 @@ impl<'a> Extract<'a> for QueueingBehaviour {
 }
 
 /// DCB type: `CockpitResponseVariation`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CockpitResponseVariation {
     /// `communicationName` (Reference)
-    #[serde(default)]
     pub communication_name: Option<CigGuid>,
     /// `initialDelay` (Single)
-    #[serde(default)]
     pub initial_delay: f32,
     /// `hasSfx` (Boolean)
-    #[serde(default)]
     pub has_sfx: bool,
     /// `refireDelaySfx` (Single)
-    #[serde(default)]
     pub refire_delay_sfx: f32,
     /// `hasDialogue` (Boolean)
-    #[serde(default)]
     pub has_dialogue: bool,
     /// `refireDelayDialogue` (Single)
-    #[serde(default)]
     pub refire_delay_dialogue: f32,
     /// `timeout` (Single)
-    #[serde(default)]
     pub timeout: f32,
     /// `queuingBehaviour` (Class)
-    #[serde(default)]
     pub queuing_behaviour: Option<Handle<QueueingBehaviour>>,
     /// `rules` (StrongPointer (array))
-    #[serde(default)]
     pub rules: Vec<CockpitRuleBasePtr>,
 }
 
@@ -886,19 +780,14 @@ impl<'a> Extract<'a> for CockpitResponseVariation {
 }
 
 /// DCB type: `CockpitResponse`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CockpitResponse {
     /// `concept` (String)
-    #[serde(default)]
     pub concept: String,
     /// `canPlayWhenLanded` (Boolean)
-    #[serde(default)]
     pub can_play_when_landed: bool,
     /// `canPlayWhenRacing` (Boolean)
-    #[serde(default)]
     pub can_play_when_racing: bool,
     /// `variations` (Class (array))
-    #[serde(default)]
     pub variations: Vec<Handle<CockpitResponseVariation>>,
 }
 
@@ -926,10 +815,8 @@ impl<'a> Extract<'a> for CockpitResponse {
 }
 
 /// DCB type: `CockpitResponses`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CockpitResponses {
     /// `responses` (Reference (array))
-    #[serde(default)]
     pub responses: Vec<CigGuid>,
 }
 
@@ -950,13 +837,10 @@ impl<'a> Extract<'a> for CockpitResponses {
 }
 
 /// DCB type: `CockpitRuleBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CockpitRuleBase {
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
     /// `priority` (Single)
-    #[serde(default)]
     pub priority: f32,
 }
 
@@ -977,16 +861,12 @@ impl<'a> Extract<'a> for CockpitRuleBase {
 
 /// DCB type: `CockpitRuleFloat`
 /// Inherits from: `CockpitRuleBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CockpitRuleFloat {
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
     /// `priority` (Single)
-    #[serde(default)]
     pub priority: f32,
     /// `value` (Single)
-    #[serde(default)]
     pub value: f32,
 }
 
@@ -1008,16 +888,12 @@ impl<'a> Extract<'a> for CockpitRuleFloat {
 
 /// DCB type: `CockpitRuleString`
 /// Inherits from: `CockpitRuleBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CockpitRuleString {
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
     /// `priority` (Single)
-    #[serde(default)]
     pub priority: f32,
     /// `value` (String)
-    #[serde(default)]
     pub value: String,
 }
 
@@ -1038,19 +914,14 @@ impl<'a> Extract<'a> for CockpitRuleString {
 }
 
 /// DCB type: `AudioAllegianceSwitches`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AudioAllegianceSwitches {
     /// `allegianceRTPC` (Class)
-    #[serde(default)]
     pub allegiance_rtpc: Option<Handle<AudioRtpc>>,
     /// `neutralRtpcValue` (Single)
-    #[serde(default)]
     pub neutral_rtpc_value: f32,
     /// `friendlyRtpcValue` (Single)
-    #[serde(default)]
     pub friendly_rtpc_value: f32,
     /// `hostileRtpcValue` (Single)
-    #[serde(default)]
     pub hostile_rtpc_value: f32,
 }
 
@@ -1075,10 +946,8 @@ impl<'a> Extract<'a> for AudioAllegianceSwitches {
 }
 
 /// DCB type: `AudioSignalList`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AudioSignalList {
     /// `Signals` (Class (array))
-    #[serde(default)]
     pub signals: Vec<Handle<AudioSignal>>,
 }
 
@@ -1103,10 +972,8 @@ impl<'a> Extract<'a> for AudioSignalList {
 }
 
 /// DCB type: `TagToAudioRtpcList`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct TagToAudioRtpcList {
     /// `TagsToRtpcs` (Class (array))
-    #[serde(default)]
     pub tags_to_rtpcs: Vec<Handle<TagToAudioRtpc>>,
 }
 
@@ -1132,16 +999,12 @@ impl<'a> Extract<'a> for TagToAudioRtpcList {
 
 /// DCB type: `AudioSignalRtpc`
 /// Inherits from: `AudioRtpcWithDefault`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AudioSignalRtpc {
     /// `rtpc` (String)
-    #[serde(default)]
     pub rtpc: String,
     /// `defaultValue` (Single)
-    #[serde(default)]
     pub default_value: f32,
     /// `global` (Boolean)
-    #[serde(default)]
     pub global: bool,
 }
 
@@ -1162,19 +1025,14 @@ impl<'a> Extract<'a> for AudioSignalRtpc {
 }
 
 /// DCB type: `AudioSignal`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AudioSignal {
     /// `Name` (String)
-    #[serde(default)]
     pub name: String,
     /// `audioTriggers` (Class (array))
-    #[serde(default)]
     pub audio_triggers: Vec<Handle<GlobalResourceAudio>>,
     /// `switches` (Class (array))
-    #[serde(default)]
     pub switches: Vec<Handle<AudioSwitch>>,
     /// `rtpcs` (Class (array))
-    #[serde(default)]
     pub rtpcs: Vec<Handle<AudioSignalRtpc>>,
 }
 
@@ -1214,16 +1072,12 @@ impl<'a> Extract<'a> for AudioSignal {
 }
 
 /// DCB type: `TagToAudioRtpc`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct TagToAudioRtpc {
     /// `tag` (Reference)
-    #[serde(default)]
     pub tag: Option<CigGuid>,
     /// `rtpcName` (String)
-    #[serde(default)]
     pub rtpc_name: String,
     /// `rtpcValue` (Single)
-    #[serde(default)]
     pub rtpc_value: f32,
 }
 
@@ -1244,10 +1098,8 @@ impl<'a> Extract<'a> for TagToAudioRtpc {
 }
 
 /// DCB type: `GPUParticleAudioList`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GPUParticleAudioList {
     /// `particleAudioList` (Reference (array))
-    #[serde(default)]
     pub particle_audio_list: Vec<CigGuid>,
 }
 
@@ -1268,13 +1120,10 @@ impl<'a> Extract<'a> for GPUParticleAudioList {
 }
 
 /// DCB type: `CommsAudioEffect`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CommsAudioEffect {
     /// `busName` (String)
-    #[serde(default)]
     pub bus_name: String,
     /// `locationId` (EnumChoice)
-    #[serde(default)]
     pub location_id: ECommsRTTLocation,
 }
 
@@ -1294,10 +1143,8 @@ impl<'a> Extract<'a> for CommsAudioEffect {
 }
 
 /// DCB type: `ShipComputerPresetList`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ShipComputerPresetList {
     /// `presets` (Reference (array))
-    #[serde(default)]
     pub presets: Vec<CigGuid>,
 }
 
@@ -1318,19 +1165,14 @@ impl<'a> Extract<'a> for ShipComputerPresetList {
 }
 
 /// DCB type: `ShipComputerPreset`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ShipComputerPreset {
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
     /// `base` (Reference)
-    #[serde(default)]
     pub base: Option<CigGuid>,
     /// `displayText` (Locale)
-    #[serde(default)]
     pub display_text: LocaleKey,
     /// `responses` (Reference (array))
-    #[serde(default)]
     pub responses: Vec<CigGuid>,
 }
 
@@ -1354,13 +1196,10 @@ impl<'a> Extract<'a> for ShipComputerPreset {
 }
 
 /// DCB type: `VideoCommsAudioParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct VideoCommsAudioParams {
     /// `lowTechInterferenceAudioRTPC` (Class)
-    #[serde(default)]
     pub low_tech_interference_audio_rtpc: Option<Handle<AudioRtpc>>,
     /// `highTechInterferenceAudioRTPC` (Class)
-    #[serde(default)]
     pub high_tech_interference_audio_rtpc: Option<Handle<AudioRtpc>>,
 }
 

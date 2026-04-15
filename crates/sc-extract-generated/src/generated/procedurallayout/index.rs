@@ -10,19 +10,15 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
 use std::collections::HashMap;
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use crate::Handle;
 use super::super::*;
 
 /// Record index for the `procedurallayout` feature.
-#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+#[derive(Default)]
 pub struct ProcedurallayoutIndex {
-    #[serde(default)]
     pub faction_palettes: HashMap<CigGuid, Handle<FactionPalettes>>,
-    #[serde(default)]
     pub faction_palette: HashMap<CigGuid, Handle<FactionPalette>>,
-    #[serde(default)]
     pub procedural_layout_graph: HashMap<CigGuid, Handle<ProceduralLayoutGraph>>,
 }
 

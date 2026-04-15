@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,79 +19,54 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `SGlobalElectronParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SGlobalElectronParams {
     /// `time` (Single)
-    #[serde(default)]
     pub time: f32,
     /// `damagePerCharge` (Single)
-    #[serde(default)]
     pub damage_per_charge: f32,
     /// `metersPerCharge` (Single)
-    #[serde(default)]
     pub meters_per_charge: f32,
     /// `damageScalePerJump` (Single)
-    #[serde(default)]
     pub damage_scale_per_jump: f32,
     /// `cooldownBetweenJumps` (Single)
-    #[serde(default)]
     pub cooldown_between_jumps: f32,
     /// `residualChargeMultiplier` (Single)
-    #[serde(default)]
     pub residual_charge_multiplier: f32,
     /// `residualChargeInterference` (Single)
-    #[serde(default)]
     pub residual_charge_interference: f32,
     /// `explosionParams` (Class)
-    #[serde(default)]
     pub explosion_params: Option<Handle<ExplosionParams>>,
     /// `chargedTag` (Reference)
-    #[serde(default)]
     pub charged_tag: Option<CigGuid>,
     /// `chainLightningParticleEffect` (Class)
-    #[serde(default)]
     pub chain_lightning_particle_effect: Option<Handle<GlobalResourceParticle>>,
     /// `chainLightningEffectDuration` (Single)
-    #[serde(default)]
     pub chain_lightning_effect_duration: f32,
     /// `chainLightningJoint` (String)
-    #[serde(default)]
     pub chain_lightning_joint: String,
     /// `explosionJoint` (String)
-    #[serde(default)]
     pub explosion_joint: String,
     /// `residualChargeAudioStartTrigger` (Class)
-    #[serde(default)]
     pub residual_charge_audio_start_trigger: Option<Handle<GlobalResourceAudio>>,
     /// `residualChargeAudioStopTrigger` (Class)
-    #[serde(default)]
     pub residual_charge_audio_stop_trigger: Option<Handle<GlobalResourceAudio>>,
     /// `residualChargeTimeRemainingRtpc` (Class)
-    #[serde(default)]
     pub residual_charge_time_remaining_rtpc: Option<Handle<AudioRtpc>>,
     /// `residualChargeDamageRtpc` (Class)
-    #[serde(default)]
     pub residual_charge_damage_rtpc: Option<Handle<AudioRtpc>>,
     /// `chainLightningSourceAudioStartTrigger` (Class)
-    #[serde(default)]
     pub chain_lightning_source_audio_start_trigger: Option<Handle<GlobalResourceAudio>>,
     /// `chainLightningSourceAudioStopTrigger` (Class)
-    #[serde(default)]
     pub chain_lightning_source_audio_stop_trigger: Option<Handle<GlobalResourceAudio>>,
     /// `chainLightningTargetAudioStartTrigger` (Class)
-    #[serde(default)]
     pub chain_lightning_target_audio_start_trigger: Option<Handle<GlobalResourceAudio>>,
     /// `chainLightningTargetAudioStopTrigger` (Class)
-    #[serde(default)]
     pub chain_lightning_target_audio_stop_trigger: Option<Handle<GlobalResourceAudio>>,
     /// `chainLightningTimeRemainingRtpc` (Class)
-    #[serde(default)]
     pub chain_lightning_time_remaining_rtpc: Option<Handle<AudioRtpc>>,
     /// `chainLightningParticleStrengthRtpc` (Class)
-    #[serde(default)]
     pub chain_lightning_particle_strength_rtpc: Option<Handle<AudioRtpc>>,
     /// `audioBoneName` (String)
-    #[serde(default)]
     pub audio_bone_name: String,
 }
 

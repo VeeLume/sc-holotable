@@ -9,12 +9,10 @@
 
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
-use serde::{Deserialize, Serialize};
 use super::super::*;
 
 /// Pool storage for the `entities-planetkillvolume` feature.
-#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+#[derive(Default)]
 pub struct EntitiesPlanetkillvolumePools {
-    #[serde(default)]
     pub planet_kill_volume_component_params: Vec<Option<PlanetKillVolumeComponentParams>>,
 }

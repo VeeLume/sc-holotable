@@ -9,14 +9,11 @@
 
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
-use serde::{Deserialize, Serialize};
 use super::super::*;
 
 /// Pool storage for the `entities-aft` feature.
-#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+#[derive(Default)]
 pub struct EntitiesAftPools {
-    #[serde(default)]
     pub entity_event_callback_component_params: Vec<Option<EntityEventCallbackComponentParams>>,
-    #[serde(default)]
     pub area_event_callback_component_params: Vec<Option<AreaEventCallbackComponentParams>>,
 }

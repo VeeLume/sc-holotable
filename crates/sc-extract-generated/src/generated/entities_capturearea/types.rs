@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,19 +19,14 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `AreaOutdoorMaterialParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AreaOutdoorMaterialParams {
     /// `gridOpacity` (Single)
-    #[serde(default)]
     pub grid_opacity: f32,
     /// `gridOuterNoisePower` (Single)
-    #[serde(default)]
     pub grid_outer_noise_power: f32,
     /// `beamOuterAlpha` (Single)
-    #[serde(default)]
     pub beam_outer_alpha: f32,
     /// `beamGlowAmount` (Single)
-    #[serde(default)]
     pub beam_glow_amount: f32,
 }
 
@@ -55,70 +49,48 @@ impl<'a> Extract<'a> for AreaOutdoorMaterialParams {
 
 /// DCB type: `CaptureAreaUIParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CaptureAreaUIParams {
     /// `hidden` (Boolean)
-    #[serde(default)]
     pub hidden: bool,
     /// `outdoorAreaUI` (Boolean)
-    #[serde(default)]
     pub outdoor_area_ui: bool,
     /// `timeToLoop` (Single)
-    #[serde(default)]
     pub time_to_loop: f32,
     /// `gridLayerCount` (Int32)
-    #[serde(default)]
     pub grid_layer_count: i32,
     /// `dimensions` (Class)
-    #[serde(default)]
     pub dimensions: Option<Handle<Vec3>>,
     /// `drawFarDistance` (Single)
-    #[serde(default)]
     pub draw_far_distance: f32,
     /// `gridAreaHeightPerc` (Single)
-    #[serde(default)]
     pub grid_area_height_perc: f32,
     /// `baseLineWidthPerc` (Single)
-    #[serde(default)]
     pub base_line_width_perc: f32,
     /// `basePaddingInnerPerc` (Single)
-    #[serde(default)]
     pub base_padding_inner_perc: f32,
     /// `baseOffset` (Single)
-    #[serde(default)]
     pub base_offset: f32,
     /// `baseAlpha` (Single)
-    #[serde(default)]
     pub base_alpha: f32,
     /// `baseNoisePower` (Single)
-    #[serde(default)]
     pub base_noise_power: f32,
     /// `gridPaddingInnerPerc` (Single)
-    #[serde(default)]
     pub grid_padding_inner_perc: f32,
     /// `gridLineWidthPerc` (Single)
-    #[serde(default)]
     pub grid_line_width_perc: f32,
     /// `gridHighlightFeatherPerc` (Single)
-    #[serde(default)]
     pub grid_highlight_feather_perc: f32,
     /// `gridFalloffPerc` (Single)
-    #[serde(default)]
     pub grid_falloff_perc: f32,
     /// `indoorAreaParams` (Class)
-    #[serde(default)]
     pub indoor_area_params: Option<Handle<AreaOutdoorMaterialParams>>,
     /// `outdoorAreaParams` (Class)
-    #[serde(default)]
     pub outdoor_area_params: Option<Handle<AreaOutdoorMaterialParams>>,
     /// `baseLineMaterial` (String)
-    #[serde(default)]
     pub base_line_material: String,
     /// `beamMaterial` (String)
-    #[serde(default)]
     pub beam_material: String,
     /// `gridLineMaterial` (String)
-    #[serde(default)]
     pub grid_line_material: String,
 }
 

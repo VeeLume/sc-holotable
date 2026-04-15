@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -21,10 +20,8 @@ use super::super::*;
 
 /// DCB type: `DaylightParticleGroupComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DaylightParticleGroupComponentParams {
     /// `activationBehavior` (EnumChoice)
-    #[serde(default)]
     pub activation_behavior: DaylightParticleGroupActivation,
 }
 
@@ -43,25 +40,18 @@ impl<'a> Extract<'a> for DaylightParticleGroupComponentParams {
 }
 
 /// DCB type: `PlacedSurfaceEffects_Emitter`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PlacedSurfaceEffects_Emitter {
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
     /// `tag` (Reference)
-    #[serde(default)]
     pub tag: Option<CigGuid>,
     /// `particleEffect` (Class)
-    #[serde(default)]
     pub particle_effect: Option<Handle<GlobalResourceParticle>>,
     /// `emitterPosition` (Class)
-    #[serde(default)]
     pub emitter_position: Option<Handle<Vec3>>,
     /// `linkedToSdf` (Boolean)
-    #[serde(default)]
     pub linked_to_sdf: bool,
     /// `fadeOutDuration` (Single)
-    #[serde(default)]
     pub fade_out_duration: f32,
 }
 
@@ -92,7 +82,6 @@ impl<'a> Extract<'a> for PlacedSurfaceEffects_Emitter {
 
 /// DCB type: `SurfaceRaindropsTargetComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SurfaceRaindropsTargetComponentParams {
 }
 

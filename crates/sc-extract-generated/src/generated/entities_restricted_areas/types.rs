@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -21,25 +20,18 @@ use super::super::*;
 
 /// DCB type: `RestrictedAreaComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct RestrictedAreaComponentParams {
     /// `state` (EnumChoice)
-    #[serde(default)]
     pub state: RestrictedAreaState,
     /// `timeToDespawn` (Single)
-    #[serde(default)]
     pub time_to_despawn: f32,
     /// `affectShips` (Boolean)
-    #[serde(default)]
     pub affect_ships: bool,
     /// `affectActorsOnFoot` (Boolean)
-    #[serde(default)]
     pub affect_actors_on_foot: bool,
     /// `affectGroundVehicles` (Boolean)
-    #[serde(default)]
     pub affect_ground_vehicles: bool,
     /// `allowTagsOnLoad` (Reference (array))
-    #[serde(default)]
     pub allow_tags_on_load: Vec<CigGuid>,
 }
 

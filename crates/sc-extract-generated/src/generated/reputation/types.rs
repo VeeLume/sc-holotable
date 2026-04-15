@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -21,10 +20,8 @@ use super::super::*;
 
 /// DCB type: `SandboxInfractionDefinitionTrigger`
 /// Inherits from: `SandboxInfractionBaseDef`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SandboxInfractionDefinitionTrigger {
     /// `sandboxInfractionDefinitionTrigger` (Reference)
-    #[serde(default)]
     pub sandbox_infraction_definition_trigger: Option<CigGuid>,
 }
 
@@ -43,10 +40,8 @@ impl<'a> Extract<'a> for SandboxInfractionDefinitionTrigger {
 }
 
 /// DCB type: `SReputationStateParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SReputationStateParams {
     /// `Name` (String)
-    #[serde(default)]
     pub name: String,
 }
 
@@ -66,10 +61,8 @@ impl<'a> Extract<'a> for SReputationStateParams {
 
 /// DCB type: `SReputationStateModifierIncrement`
 /// Inherits from: `SReputationStateModifierBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SReputationStateModifierIncrement {
     /// `value` (Int32)
-    #[serde(default)]
     pub value: i32,
 }
 
@@ -89,10 +82,8 @@ impl<'a> Extract<'a> for SReputationStateModifierIncrement {
 
 /// DCB type: `SReputationStateModifierSet`
 /// Inherits from: `SReputationStateModifierBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SReputationStateModifierSet {
     /// `value` (Int32)
-    #[serde(default)]
     pub value: i32,
 }
 
@@ -112,10 +103,8 @@ impl<'a> Extract<'a> for SReputationStateModifierSet {
 
 /// DCB type: `SReputationStateModifierSetBool`
 /// Inherits from: `SReputationStateModifierBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SReputationStateModifierSetBool {
     /// `value` (Boolean)
-    #[serde(default)]
     pub value: bool,
 }
 
@@ -135,10 +124,8 @@ impl<'a> Extract<'a> for SReputationStateModifierSetBool {
 
 /// DCB type: `SReputationStateModifierSetToState`
 /// Inherits from: `SReputationStateModifierBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SReputationStateModifierSetToState {
     /// `modifierState` (Reference)
-    #[serde(default)]
     pub modifier_state: Option<CigGuid>,
 }
 
@@ -157,13 +144,10 @@ impl<'a> Extract<'a> for SReputationStateModifierSetToState {
 }
 
 /// DCB type: `SReputationStateModifierParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SReputationStateModifierParams {
     /// `state` (Reference)
-    #[serde(default)]
     pub state: Option<CigGuid>,
     /// `modifier` (StrongPointer)
-    #[serde(default)]
     pub modifier: Option<SReputationStateModifierBasePtr>,
 }
 
@@ -186,10 +170,8 @@ impl<'a> Extract<'a> for SReputationStateModifierParams {
 }
 
 /// DCB type: `SReputationStateMissionResultModifierListParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SReputationStateMissionResultModifierListParams {
     /// `stateModifiers` (Class (array))
-    #[serde(default)]
     pub state_modifiers: Vec<Handle<SReputationStateModifierParams>>,
 }
 
@@ -214,10 +196,8 @@ impl<'a> Extract<'a> for SReputationStateMissionResultModifierListParams {
 }
 
 /// DCB type: `SReputationStateMissionResultModifierParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SReputationStateMissionResultModifierParams {
     /// `missionResultStateModifiers` (Class)
-    #[serde(default)]
     pub mission_result_state_modifiers: Option<Handle<SReputationStateMissionResultModifierListParams>>,
 }
 

@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,28 +19,20 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `AwardService_Award`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AwardService_Award {
     /// `enabled` (Boolean)
-    #[serde(default)]
     pub enabled: bool,
     /// `triggerId` (String)
-    #[serde(default)]
     pub trigger_id: String,
     /// `displayTitle` (Locale)
-    #[serde(default)]
     pub display_title: LocaleKey,
     /// `displayMessage` (Locale)
-    #[serde(default)]
     pub display_message: LocaleKey,
     /// `badgeId` (UInt32)
-    #[serde(default)]
     pub badge_id: u32,
     /// `prerequisiteBadgeIds` (UInt32 (array))
-    #[serde(default)]
     pub prerequisite_badge_ids: Vec<u32>,
     /// `pushCommLinkNotification` (Boolean)
-    #[serde(default)]
     pub push_comm_link_notification: bool,
 }
 
@@ -68,13 +59,10 @@ impl<'a> Extract<'a> for AwardService_Award {
 }
 
 /// DCB type: `AwardService_Config`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AwardService_Config {
     /// `Awards` (Class)
-    #[serde(default)]
     pub awards: Option<Handle<AwardService_Award>>,
     /// `Played` (Class)
-    #[serde(default)]
     pub played: Option<Handle<AwardService_Award>>,
 }
 

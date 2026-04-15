@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,28 +19,20 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `RefineryNotificationConfiguration`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct RefineryNotificationConfiguration {
     /// `text` (Locale)
-    #[serde(default)]
     pub text: LocaleKey,
     /// `textMultiple` (Locale)
-    #[serde(default)]
     pub text_multiple: LocaleKey,
     /// `duration` (Single)
-    #[serde(default)]
     pub duration: f32,
     /// `refineryServiceError` (Locale)
-    #[serde(default)]
     pub refinery_service_error: LocaleKey,
     /// `refineryDeliveryFailed` (Locale)
-    #[serde(default)]
     pub refinery_delivery_failed: LocaleKey,
     /// `refineryJobCreationFailed` (Locale)
-    #[serde(default)]
     pub refinery_job_creation_failed: LocaleKey,
     /// `refinerySetupError` (Locale)
-    #[serde(default)]
     pub refinery_setup_error: LocaleKey,
 }
 

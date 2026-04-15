@@ -9,14 +9,11 @@
 
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
-use serde::{Deserialize, Serialize};
 use super::super::*;
 
 /// Pool storage for the `globalinteractionparams` feature.
-#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+#[derive(Default)]
 pub struct GlobalinteractionparamsPools {
-    #[serde(default)]
     pub skin_interactable_template: Vec<Option<SkinInteractableTemplate>>,
-    #[serde(default)]
     pub skin_interactable_templates: Vec<Option<SkinInteractableTemplates>>,
 }

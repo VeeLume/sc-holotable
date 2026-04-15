@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,22 +19,16 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `SMagLaunchRecoveryNoiseParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SMagLaunchRecoveryNoiseParams {
     /// `maxOffset` (Single)
-    #[serde(default)]
     pub max_offset: f32,
     /// `frequencies` (Class)
-    #[serde(default)]
     pub frequencies: Option<Handle<Vec3>>,
     /// `multiplier` (Single)
-    #[serde(default)]
     pub multiplier: f32,
     /// `hurstIndex` (Single)
-    #[serde(default)]
     pub hurst_index: f32,
     /// `threshold` (Single)
-    #[serde(default)]
     pub threshold: f32,
 }
 
@@ -61,31 +54,22 @@ impl<'a> Extract<'a> for SMagLaunchRecoveryNoiseParams {
 }
 
 /// DCB type: `SMagLaunchMotionParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SMagLaunchMotionParams {
     /// `linAccelerationMax` (Single)
-    #[serde(default)]
     pub lin_acceleration_max: f32,
     /// `linAccelerationJerkTime` (Single)
-    #[serde(default)]
     pub lin_acceleration_jerk_time: f32,
     /// `linAccelerationDecay` (Single)
-    #[serde(default)]
     pub lin_acceleration_decay: f32,
     /// `linSpeedMax` (Single)
-    #[serde(default)]
     pub lin_speed_max: f32,
     /// `angAccelerationMax` (Single)
-    #[serde(default)]
     pub ang_acceleration_max: f32,
     /// `angAccelerationJerkTime` (Single)
-    #[serde(default)]
     pub ang_acceleration_jerk_time: f32,
     /// `angAccelerationDecay` (Single)
-    #[serde(default)]
     pub ang_acceleration_decay: f32,
     /// `angSpeedMax` (Single)
-    #[serde(default)]
     pub ang_speed_max: f32,
 }
 
@@ -112,37 +96,26 @@ impl<'a> Extract<'a> for SMagLaunchMotionParams {
 
 /// DCB type: `MagLaunchParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MagLaunchParams {
     /// `liftMotion` (Class)
-    #[serde(default)]
     pub lift_motion: Option<Handle<SMagLaunchMotionParams>>,
     /// `launchMotion` (Class)
-    #[serde(default)]
     pub launch_motion: Option<Handle<SMagLaunchMotionParams>>,
     /// `magLiftSpoolUpTime` (Single)
-    #[serde(default)]
     pub mag_lift_spool_up_time: f32,
     /// `maxTimeWaitAfterLift` (Single)
-    #[serde(default)]
     pub max_time_wait_after_lift: f32,
     /// `launchLength` (Single)
-    #[serde(default)]
     pub launch_length: f32,
     /// `landingGearAutoRaise` (Boolean)
-    #[serde(default)]
     pub landing_gear_auto_raise: bool,
     /// `landingGearAutoRaiseHoverRatio` (Single)
-    #[serde(default)]
     pub landing_gear_auto_raise_hover_ratio: f32,
     /// `applyNoise` (Boolean)
-    #[serde(default)]
     pub apply_noise: bool,
     /// `hoverNoiseLin` (Class)
-    #[serde(default)]
     pub hover_noise_lin: Option<Handle<SMagLaunchRecoveryNoiseParams>>,
     /// `hoverNoiseAng` (Class)
-    #[serde(default)]
     pub hover_noise_ang: Option<Handle<SMagLaunchRecoveryNoiseParams>>,
 }
 

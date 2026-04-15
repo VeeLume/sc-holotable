@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -21,10 +20,8 @@ use super::super::*;
 
 /// DCB type: `SSequencerChangeStanceCarryableTaskParams`
 /// Inherits from: `SSequencerCarryableTaskParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SSequencerChangeStanceCarryableTaskParams {
     /// `stance` (EnumChoice)
-    #[serde(default)]
     pub stance: AgentStance,
 }
 
@@ -44,58 +41,40 @@ impl<'a> Extract<'a> for SSequencerChangeStanceCarryableTaskParams {
 
 /// DCB type: `SSimulationParamsSpringEllipsoid`
 /// Inherits from: `SSimulationParamsBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SSimulationParamsSpringEllipsoid {
     /// `UseSimulation` (Boolean)
-    #[serde(default)]
     pub use_simulation: bool,
     /// `UseDebugSetup` (Boolean)
-    #[serde(default)]
     pub use_debug_setup: bool,
     /// `UseDebugText` (Boolean)
-    #[serde(default)]
     pub use_debug_text: bool,
     /// `UseRedirect` (Boolean)
-    #[serde(default)]
     pub use_redirect: bool,
     /// `SimFPS` (Byte)
-    #[serde(default)]
     pub sim_fps: u32,
     /// `PivotOffset` (Class)
-    #[serde(default)]
     pub pivot_offset: Option<Handle<Vec3>>,
     /// `Mass` (Single)
-    #[serde(default)]
     pub mass: f32,
     /// `Gravity` (Single)
-    #[serde(default)]
     pub gravity: f32,
     /// `Damping` (Single)
-    #[serde(default)]
     pub damping: f32,
     /// `Stiffness` (Single)
-    #[serde(default)]
     pub stiffness: f32,
     /// `StiffnessTarget` (Class)
-    #[serde(default)]
     pub stiffness_target: Option<Handle<Vec3>>,
     /// `DiskRadius` (Single)
-    #[serde(default)]
     pub disk_radius: f32,
     /// `SphereScale` (Class)
-    #[serde(default)]
     pub sphere_scale: Option<Handle<Vec2>>,
     /// `DiskRotation` (Class)
-    #[serde(default)]
     pub disk_rotation: Option<Handle<Vec2>>,
     /// `ProjectionType` (EnumChoice)
-    #[serde(default)]
     pub projection_type: EProjectionSelection3,
     /// `Radius` (Single)
-    #[serde(default)]
     pub radius: f32,
     /// `AvailableCollisionProxies` (EnumChoice (array))
-    #[serde(default)]
     pub available_collision_proxies: Vec<EAuxiliaryProxy>,
 }
 

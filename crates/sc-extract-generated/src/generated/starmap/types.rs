@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,10 +19,8 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `StarMapObjectTypes`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct StarMapObjectTypes {
     /// `types` (Reference (array))
-    #[serde(default)]
     pub types: Vec<CigGuid>,
 }
 
@@ -44,22 +41,16 @@ impl<'a> Extract<'a> for StarMapObjectTypes {
 }
 
 /// DCB type: `StarMapMissionObject`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct StarMapMissionObject {
     /// `minimumDisplaySize` (Single)
-    #[serde(default)]
     pub minimum_display_size: f32,
     /// `rotationSpeed` (Single)
-    #[serde(default)]
     pub rotation_speed: f32,
     /// `facingMode` (EnumChoice)
-    #[serde(default)]
     pub facing_mode: WorldDisplayObjectFacingMode,
     /// `geometry` (Class)
-    #[serde(default)]
     pub geometry: Option<Handle<GlobalResourceGeometry>>,
     /// `material` (Class)
-    #[serde(default)]
     pub material: Option<Handle<GlobalResourceMaterial>>,
 }
 
@@ -88,22 +79,16 @@ impl<'a> Extract<'a> for StarMapMissionObject {
 }
 
 /// DCB type: `StarMapPartyMemberObject`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct StarMapPartyMemberObject {
     /// `minimumDisplaySize` (Single)
-    #[serde(default)]
     pub minimum_display_size: f32,
     /// `rotationSpeed` (Single)
-    #[serde(default)]
     pub rotation_speed: f32,
     /// `facingMode` (EnumChoice)
-    #[serde(default)]
     pub facing_mode: WorldDisplayObjectFacingMode,
     /// `geometry` (Class)
-    #[serde(default)]
     pub geometry: Option<Handle<GlobalResourceGeometry>>,
     /// `material` (Class)
-    #[serde(default)]
     pub material: Option<Handle<GlobalResourceMaterial>>,
 }
 

@@ -9,14 +9,11 @@
 
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
-use serde::{Deserialize, Serialize};
 use super::super::*;
 
 /// Pool storage for the `ui-markertrackingvolumeconfig` feature.
-#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+#[derive(Default)]
 pub struct UiMarkertrackingvolumeconfigPools {
-    #[serde(default)]
     pub marker_tracking_common_map_parameters: Vec<Option<MarkerTrackingCommonMapParameters>>,
-    #[serde(default)]
     pub marker_tracking_label_parameters: Vec<Option<MarkerTrackingLabelParameters>>,
 }

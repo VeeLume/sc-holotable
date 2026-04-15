@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,16 +19,12 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `AnimatedMarker_Marker`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AnimatedMarker_Marker {
     /// `matrixStackID` (String (array))
-    #[serde(default)]
     pub matrix_stack_id: Vec<String>,
     /// `timelines` (Class (array))
-    #[serde(default)]
     pub timelines: Vec<Handle<AnimationGraph_Timeline>>,
     /// `timers` (Class (array))
-    #[serde(default)]
     pub timers: Vec<Handle<AnimationGraph_Timer>>,
 }
 
@@ -64,34 +59,24 @@ impl<'a> Extract<'a> for AnimatedMarker_Marker {
 }
 
 /// DCB type: `AnimatedMarker`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AnimatedMarker {
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
     /// `objectName` (String)
-    #[serde(default)]
     pub object_name: String,
     /// `doOriginOffsetScale` (Boolean)
-    #[serde(default)]
     pub do_origin_offset_scale: bool,
     /// `originOffsetScaleMin` (Single)
-    #[serde(default)]
     pub origin_offset_scale_min: f32,
     /// `originOffsetTargetBoundInc` (Single)
-    #[serde(default)]
     pub origin_offset_target_bound_inc: f32,
     /// `matrixBlendRate` (Single)
-    #[serde(default)]
     pub matrix_blend_rate: f32,
     /// `lockLostLength` (Single)
-    #[serde(default)]
     pub lock_lost_length: f32,
     /// `additionAttachments` (UInt32)
-    #[serde(default)]
     pub addition_attachments: u32,
     /// `markers` (Class)
-    #[serde(default)]
     pub markers: Option<Handle<AnimatedMarker_Marker>>,
 }
 
@@ -121,97 +106,66 @@ impl<'a> Extract<'a> for AnimatedMarker {
 }
 
 /// DCB type: `CombatMarker`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CombatMarker {
     /// `objectName` (String)
-    #[serde(default)]
     pub object_name: String,
     /// `minimumScale` (Single)
-    #[serde(default)]
     pub minimum_scale: f32,
     /// `inverseScaleMultiplier` (Single)
-    #[serde(default)]
     pub inverse_scale_multiplier: f32,
     /// `hitAnimTotalTime` (Single)
-    #[serde(default)]
     pub hit_anim_total_time: f32,
     /// `hitAnimationOffsetSize` (Single)
-    #[serde(default)]
     pub hit_animation_offset_size: f32,
     /// `easeType` (EnumChoice)
-    #[serde(default)]
     pub ease_type: InterpolationMode,
     /// `textOffset` (Single)
-    #[serde(default)]
     pub text_offset: f32,
     /// `introAnimTime` (Single)
-    #[serde(default)]
     pub intro_anim_time: f32,
     /// `introAnimPitchRotationFrequency` (Single)
-    #[serde(default)]
     pub intro_anim_pitch_rotation_frequency: f32,
     /// `introAnimYawRotationFrequency` (Single)
-    #[serde(default)]
     pub intro_anim_yaw_rotation_frequency: f32,
     /// `introAnimRollRotationFrequency` (Single)
-    #[serde(default)]
     pub intro_anim_roll_rotation_frequency: f32,
     /// `introAnimEaseType` (EnumChoice)
-    #[serde(default)]
     pub intro_anim_ease_type: InterpolationMode,
     /// `introStartingScale` (Single)
-    #[serde(default)]
     pub intro_starting_scale: f32,
     /// `introStartingOffsetScale` (Single)
-    #[serde(default)]
     pub intro_starting_offset_scale: f32,
     /// `introAnimOffset` (Single)
-    #[serde(default)]
     pub intro_anim_offset: f32,
     /// `transitionAnimLength` (Single)
-    #[serde(default)]
     pub transition_anim_length: f32,
     /// `transitionAnimEaseType` (EnumChoice)
-    #[serde(default)]
     pub transition_anim_ease_type: InterpolationMode,
     /// `rotationalAnimationClamp` (Single)
-    #[serde(default)]
     pub rotational_animation_clamp: f32,
     /// `rotationalAnimationIntegrationTime` (Single)
-    #[serde(default)]
     pub rotational_animation_integration_time: f32,
     /// `signalLostAnimationTime` (Single)
-    #[serde(default)]
     pub signal_lost_animation_time: f32,
     /// `signalLostAnimationPulseFrequency` (Single)
-    #[serde(default)]
     pub signal_lost_animation_pulse_frequency: f32,
     /// `unfocusedObjectName` (String)
-    #[serde(default)]
     pub unfocused_object_name: String,
     /// `unfocusedMarkerScale` (Single)
-    #[serde(default)]
     pub unfocused_marker_scale: f32,
     /// `hitAnimationColor` (Class)
-    #[serde(default)]
     pub hit_animation_color: Option<Handle<RGB>>,
     /// `hitAnimationFlickerTime` (Single)
-    #[serde(default)]
     pub hit_animation_flicker_time: f32,
     /// `hitAnimOffsetFactor` (Single)
-    #[serde(default)]
     pub hit_anim_offset_factor: f32,
     /// `transitionScaleCurve` (Class)
-    #[serde(default)]
     pub transition_scale_curve: Option<Handle<BezierCurve>>,
     /// `gainedFocusAnimTotalTime` (Single)
-    #[serde(default)]
     pub gained_focus_anim_total_time: f32,
     /// `gainedFocusAnimFlickerTime` (Single)
-    #[serde(default)]
     pub gained_focus_anim_flicker_time: f32,
     /// `unFocusedRotationFactor` (Single)
-    #[serde(default)]
     pub un_focused_rotation_factor: f32,
 }
 
@@ -265,19 +219,14 @@ impl<'a> Extract<'a> for CombatMarker {
 }
 
 /// DCB type: `AnimationGraph_KeyFrame`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AnimationGraph_KeyFrame {
     /// `frame` (UInt32)
-    #[serde(default)]
     pub frame: u32,
     /// `value` (Single)
-    #[serde(default)]
     pub value: f32,
     /// `timeModifier` (EnumChoice)
-    #[serde(default)]
     pub time_modifier: AnimationGraph_TimeModifier,
     /// `easeType` (EnumChoice)
-    #[serde(default)]
     pub ease_type: InterpolationMode,
 }
 
@@ -299,16 +248,12 @@ impl<'a> Extract<'a> for AnimationGraph_KeyFrame {
 }
 
 /// DCB type: `AnimationGraph_Track`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AnimationGraph_Track {
     /// `trackName` (String)
-    #[serde(default)]
     pub track_name: String,
     /// `type` (EnumChoice)
-    #[serde(default)]
     pub r#type: AnimationGraph_TrackType,
     /// `keyFrames` (Class (array))
-    #[serde(default)]
     pub key_frames: Vec<Handle<AnimationGraph_KeyFrame>>,
 }
 
@@ -335,19 +280,14 @@ impl<'a> Extract<'a> for AnimationGraph_Track {
 }
 
 /// DCB type: `AnimationGraph_Timer`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AnimationGraph_Timer {
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
     /// `timeStart` (Single)
-    #[serde(default)]
     pub time_start: f32,
     /// `timeEnd` (Single)
-    #[serde(default)]
     pub time_end: f32,
     /// `count` (UInt32)
-    #[serde(default)]
     pub count: u32,
 }
 
@@ -369,16 +309,12 @@ impl<'a> Extract<'a> for AnimationGraph_Timer {
 }
 
 /// DCB type: `AnimationGraph_Timeline`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AnimationGraph_Timeline {
     /// `timerID` (String)
-    #[serde(default)]
     pub timer_id: String,
     /// `frameRate` (UInt32)
-    #[serde(default)]
     pub frame_rate: u32,
     /// `tracks` (Class (array))
-    #[serde(default)]
     pub tracks: Vec<Handle<AnimationGraph_Track>>,
 }
 

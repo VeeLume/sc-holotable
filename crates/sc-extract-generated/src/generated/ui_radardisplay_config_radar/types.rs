@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,85 +19,58 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `RadarPlate_Config`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct RadarPlate_Config {
     /// `Color` (EnumChoice)
-    #[serde(default)]
     pub color: HUDPalleteEntry,
     /// `Rotation` (Single)
-    #[serde(default)]
     pub rotation: f32,
     /// `Segments` (Int32)
-    #[serde(default)]
     pub segments: i32,
     /// `MainPlateSprite` (Class)
-    #[serde(default)]
     pub main_plate_sprite: Option<Handle<SimpleSpriteSlot>>,
     /// `MainPlateInnerRings` (Int32)
-    #[serde(default)]
     pub main_plate_inner_rings: i32,
     /// `InnerRingThickness` (Single)
-    #[serde(default)]
     pub inner_ring_thickness: f32,
     /// `InnerRingUV_Start` (Class)
-    #[serde(default)]
     pub inner_ring_uv_start: Option<Handle<Vec2>>,
     /// `InnerRingUV_Size` (Class)
-    #[serde(default)]
     pub inner_ring_uv_size: Option<Handle<Vec2>>,
     /// `CenterIconScale` (Single)
-    #[serde(default)]
     pub center_icon_scale: f32,
     /// `CenterIconSprite` (Class)
-    #[serde(default)]
     pub center_icon_sprite: Option<Handle<SimpleSpriteSlot>>,
     /// `TopRingElevation` (Single)
-    #[serde(default)]
     pub top_ring_elevation: f32,
     /// `TopRingThickness` (Single)
-    #[serde(default)]
     pub top_ring_thickness: f32,
     /// `TopRingUV_Start` (Class)
-    #[serde(default)]
     pub top_ring_uv_start: Option<Handle<Vec2>>,
     /// `TopRingUV_Size` (Class)
-    #[serde(default)]
     pub top_ring_uv_size: Option<Handle<Vec2>>,
     /// `BottomARingElevation` (Single)
-    #[serde(default)]
     pub bottom_aring_elevation: f32,
     /// `BottomARingSizeMultiplier` (Single)
-    #[serde(default)]
     pub bottom_aring_size_multiplier: f32,
     /// `BottomARingGapAngle` (Single)
-    #[serde(default)]
     pub bottom_aring_gap_angle: f32,
     /// `BottomARingThickness` (Single)
-    #[serde(default)]
     pub bottom_aring_thickness: f32,
     /// `BottomARingUV_Start` (Class)
-    #[serde(default)]
     pub bottom_aring_uv_start: Option<Handle<Vec2>>,
     /// `BottomARingUV_Size` (Class)
-    #[serde(default)]
     pub bottom_aring_uv_size: Option<Handle<Vec2>>,
     /// `BottomBRingElevation` (Single)
-    #[serde(default)]
     pub bottom_bring_elevation: f32,
     /// `BottomBRingSizeMultiplier` (Single)
-    #[serde(default)]
     pub bottom_bring_size_multiplier: f32,
     /// `BottomBRingGapAngle` (Single)
-    #[serde(default)]
     pub bottom_bring_gap_angle: f32,
     /// `BottomBRingThickness` (Single)
-    #[serde(default)]
     pub bottom_bring_thickness: f32,
     /// `BottomBRingUV_Start` (Class)
-    #[serde(default)]
     pub bottom_bring_uv_start: Option<Handle<Vec2>>,
     /// `BottomBRingUV_Size` (Class)
-    #[serde(default)]
     pub bottom_bring_uv_size: Option<Handle<Vec2>>,
 }
 
@@ -172,22 +144,16 @@ impl<'a> Extract<'a> for RadarPlate_Config {
 }
 
 /// DCB type: `RadarDisplayEntryEffects_Config`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct RadarDisplayEntryEffects_Config {
     /// `activatePingDuration` (Single)
-    #[serde(default)]
     pub activate_ping_duration: f32,
     /// `activatePingMaxSize` (Single)
-    #[serde(default)]
     pub activate_ping_max_size: f32,
     /// `activatePingRelativeColorChange` (Single)
-    #[serde(default)]
     pub activate_ping_relative_color_change: f32,
     /// `fadeOutDuration` (Single)
-    #[serde(default)]
     pub fade_out_duration: f32,
     /// `fadeOutLineOutStart` (Single)
-    #[serde(default)]
     pub fade_out_line_out_start: f32,
 }
 
@@ -210,61 +176,42 @@ impl<'a> Extract<'a> for RadarDisplayEntryEffects_Config {
 }
 
 /// DCB type: `RadarDisplay_Config`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct RadarDisplay_Config {
     /// `LineThickness` (Single)
-    #[serde(default)]
     pub line_thickness: f32,
     /// `QuadSize` (Single)
-    #[serde(default)]
     pub quad_size: f32,
     /// `LocalEntity` (Class)
-    #[serde(default)]
     pub local_entity: Option<Handle<SimpleSpriteSlot>>,
     /// `Line` (Class)
-    #[serde(default)]
     pub line: Option<Handle<SimpleSpriteSlot>>,
     /// `Number` (Class)
-    #[serde(default)]
     pub number: Option<Handle<SimpleSpriteSlot>>,
     /// `Missile` (Class)
-    #[serde(default)]
     pub missile: Option<Handle<SimpleSpriteSlot>>,
     /// `Core` (Class)
-    #[serde(default)]
     pub core: Option<Handle<SimpleSpriteSlot>>,
     /// `Beacon` (Class)
-    #[serde(default)]
     pub beacon: Option<Handle<SimpleSpriteSlot>>,
     /// `Blob` (Class)
-    #[serde(default)]
     pub blob: Option<Handle<SimpleSpriteSlot>>,
     /// `ArrowUp` (Class)
-    #[serde(default)]
     pub arrow_up: Option<Handle<SimpleSpriteSlot>>,
     /// `ArrowDown` (Class)
-    #[serde(default)]
     pub arrow_down: Option<Handle<SimpleSpriteSlot>>,
     /// `FocusedArrowUp` (Class)
-    #[serde(default)]
     pub focused_arrow_up: Option<Handle<SimpleSpriteSlot>>,
     /// `FocusedArrowDown` (Class)
-    #[serde(default)]
     pub focused_arrow_down: Option<Handle<SimpleSpriteSlot>>,
     /// `ActivePingUV_Start` (Class)
-    #[serde(default)]
     pub active_ping_uv_start: Option<Handle<Vec2>>,
     /// `ActivePingUV_Size` (Class)
-    #[serde(default)]
     pub active_ping_uv_size: Option<Handle<Vec2>>,
     /// `ActivePingColor` (EnumChoice)
-    #[serde(default)]
     pub active_ping_color: HUDPalleteEntry,
     /// `radarEntryEffects` (Class)
-    #[serde(default)]
     pub radar_entry_effects: Option<Handle<RadarDisplayEntryEffects_Config>>,
     /// `radarPlateSettings` (Class)
-    #[serde(default)]
     pub radar_plate_settings: Option<Handle<RadarPlate_Config>>,
 }
 

@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -21,7 +20,6 @@ use super::super::*;
 
 /// DCB type: `BuildModeKioskProviderComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildModeKioskProviderComponentParams {
 }
 
@@ -40,13 +38,10 @@ impl<'a> Extract<'a> for BuildModeKioskProviderComponentParams {
 
 /// DCB type: `InteractionConditionHoverPowerStageEqual`
 /// Inherits from: `InteractionConditionParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InteractionConditionHoverPowerStageEqual {
     /// `conditionDisplay` (StrongPointer)
-    #[serde(default)]
     pub condition_display: Option<Handle<ConditionDisplayParams>>,
     /// `powerStage` (EnumChoice)
-    #[serde(default)]
     pub power_stage: EHoverPowerStage,
 }
 
@@ -70,19 +65,14 @@ impl<'a> Extract<'a> for InteractionConditionHoverPowerStageEqual {
 
 /// DCB type: `StateModifierHoverPowerStage`
 /// Inherits from: `SStateModifier`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct StateModifierHoverPowerStage {
     /// `poweredOff` (WeakPointer)
-    #[serde(default)]
     pub powered_off: Option<Handle<SInteractionState>>,
     /// `poweringOff` (WeakPointer)
-    #[serde(default)]
     pub powering_off: Option<Handle<SInteractionState>>,
     /// `poweringOn` (WeakPointer)
-    #[serde(default)]
     pub powering_on: Option<Handle<SInteractionState>>,
     /// `poweredOn` (WeakPointer)
-    #[serde(default)]
     pub powered_on: Option<Handle<SInteractionState>>,
 }
 
@@ -117,13 +107,10 @@ impl<'a> Extract<'a> for StateModifierHoverPowerStage {
 
 /// DCB type: `SStateModifierMovableMover`
 /// Inherits from: `SStateModifier`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SStateModifierMovableMover {
     /// `hasMoverState` (WeakPointer)
-    #[serde(default)]
     pub has_mover_state: Option<Handle<SInteractionState>>,
     /// `noMoverState` (WeakPointer)
-    #[serde(default)]
     pub no_mover_state: Option<Handle<SInteractionState>>,
 }
 
@@ -149,64 +136,44 @@ impl<'a> Extract<'a> for SStateModifierMovableMover {
 }
 
 /// DCB type: `SEntityHoverPhysicsPartialParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SEntityHoverPhysicsPartialParams {
     /// `desiredHoverHeight` (Single)
-    #[serde(default)]
     pub desired_hover_height: f32,
     /// `desiredHoverMinHeight` (Single)
-    #[serde(default)]
     pub desired_hover_min_height: f32,
     /// `alignToSurface` (Single)
-    #[serde(default)]
     pub align_to_surface: f32,
     /// `alignToSurfaceMaxAngle` (Single)
-    #[serde(default)]
     pub align_to_surface_max_angle: f32,
     /// `alignToSurfaceEasingStartAngle` (Single)
-    #[serde(default)]
     pub align_to_surface_easing_start_angle: f32,
     /// `alignToSurfaceEasingEndAngle` (Single)
-    #[serde(default)]
     pub align_to_surface_easing_end_angle: f32,
     /// `maxGroundSearchDepth` (Single)
-    #[serde(default)]
     pub max_ground_search_depth: f32,
     /// `maxClimbHeight` (Single)
-    #[serde(default)]
     pub max_climb_height: f32,
     /// `desiredMaxFallSpeed` (Single)
-    #[serde(default)]
     pub desired_max_fall_speed: f32,
     /// `desiredFallSpeedEasingStartDepth` (Single)
-    #[serde(default)]
     pub desired_fall_speed_easing_start_depth: f32,
     /// `desiredFallSpeedEasingPower` (Single)
-    #[serde(default)]
     pub desired_fall_speed_easing_power: f32,
     /// `desiredMaxRaiseSpeed` (Single)
-    #[serde(default)]
     pub desired_max_raise_speed: f32,
     /// `desiredRaiseSpeedEasingStartHeight` (Single)
-    #[serde(default)]
     pub desired_raise_speed_easing_start_height: f32,
     /// `desiredRaiseSpeedEasingPower` (Single)
-    #[serde(default)]
     pub desired_raise_speed_easing_power: f32,
     /// `desiredMaxRotationalAdjustmentSpeed` (Single)
-    #[serde(default)]
     pub desired_max_rotational_adjustment_speed: f32,
     /// `desiredAngularSpeedEasingStartAngle` (Single)
-    #[serde(default)]
     pub desired_angular_speed_easing_start_angle: f32,
     /// `desiredAngularSpeedEasingPower` (Single)
-    #[serde(default)]
     pub desired_angular_speed_easing_power: f32,
     /// `lateralMoveStopMaxSpeed` (Single)
-    #[serde(default)]
     pub lateral_move_stop_max_speed: f32,
     /// `yawStopMaxSpeed` (Single)
-    #[serde(default)]
     pub yaw_stop_max_speed: f32,
 }
 
@@ -243,52 +210,36 @@ impl<'a> Extract<'a> for SEntityHoverPhysicsPartialParams {
 }
 
 /// DCB type: `SEntityHoverPhysicsControllerParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SEntityHoverPhysicsControllerParams {
     /// `interactionActivate` (WeakPointer)
-    #[serde(default)]
     pub interaction_activate: Option<Handle<SSharedInteractionParams>>,
     /// `interactionDeactivate` (WeakPointer)
-    #[serde(default)]
     pub interaction_deactivate: Option<Handle<SSharedInteractionParams>>,
     /// `activateHoverByDefault` (Boolean)
-    #[serde(default)]
     pub activate_hover_by_default: bool,
     /// `activateHoverOnGripAttached` (Boolean)
-    #[serde(default)]
     pub activate_hover_on_grip_attached: bool,
     /// `deactivateHoverOnGripDetached` (Boolean)
-    #[serde(default)]
     pub deactivate_hover_on_grip_detached: bool,
     /// `blendInDuration` (Single)
-    #[serde(default)]
     pub blend_in_duration: f32,
     /// `blendOutDuration` (Single)
-    #[serde(default)]
     pub blend_out_duration: f32,
     /// `powerOffDesiredHoverHeight` (Single)
-    #[serde(default)]
     pub power_off_desired_hover_height: f32,
     /// `maxHoverMass` (Single)
-    #[serde(default)]
     pub max_hover_mass: f32,
     /// `maxRotationalAdjustmentTorque` (Single)
-    #[serde(default)]
     pub max_rotational_adjustment_torque: f32,
     /// `basePlaneHalfWidth` (Single)
-    #[serde(default)]
     pub base_plane_half_width: f32,
     /// `basePlaneHalfLength` (Single)
-    #[serde(default)]
     pub base_plane_half_length: f32,
     /// `basePlaneOriginOffset` (Class)
-    #[serde(default)]
     pub base_plane_origin_offset: Option<Handle<Vec3>>,
     /// `hoverPhysicsIdle` (Class)
-    #[serde(default)]
     pub hover_physics_idle: Option<Handle<SEntityHoverPhysicsPartialParams>>,
     /// `hoverPhysicsGripAttached` (Class)
-    #[serde(default)]
     pub hover_physics_grip_attached: Option<Handle<SEntityHoverPhysicsPartialParams>>,
 }
 
@@ -337,13 +288,10 @@ impl<'a> Extract<'a> for SEntityHoverPhysicsControllerParams {
 
 /// DCB type: `SEntityHoverPhysicsControllerComponentParams`
 /// Inherits from: `SEntityPhysicsControllerParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SEntityHoverPhysicsControllerComponentParams {
     /// `PhysType` (StrongPointer)
-    #[serde(default)]
     pub phys_type: Option<SEntityBasePhysicsControllerParamsPtr>,
     /// `hover` (Class)
-    #[serde(default)]
     pub hover: Option<Handle<SEntityHoverPhysicsControllerParams>>,
 }
 

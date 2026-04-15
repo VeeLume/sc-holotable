@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,16 +19,12 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `Fidget`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Fidget {
     /// `FragmentTags` (String (array))
-    #[serde(default)]
     pub fragment_tags: Vec<String>,
     /// `IntervalMin` (Single)
-    #[serde(default)]
     pub interval_min: f32,
     /// `IntervalMax` (Single)
-    #[serde(default)]
     pub interval_max: f32,
 }
 
@@ -52,19 +47,14 @@ impl<'a> Extract<'a> for Fidget {
 }
 
 /// DCB type: `FidgetConfig`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct FidgetConfig {
     /// `FragmentId` (String)
-    #[serde(default)]
     pub fragment_id: String,
     /// `Fidgets` (Class (array))
-    #[serde(default)]
     pub fidgets: Vec<Handle<Fidget>>,
     /// `RepeatTime` (Single)
-    #[serde(default)]
     pub repeat_time: f32,
     /// `BreakTime` (Single)
-    #[serde(default)]
     pub break_time: f32,
 }
 

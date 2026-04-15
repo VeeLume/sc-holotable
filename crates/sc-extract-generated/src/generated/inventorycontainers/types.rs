@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,13 +19,10 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `OpenInventoryOccupantItemTypeProperties`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct OpenInventoryOccupantItemTypeProperties {
     /// `itemType` (EnumChoice)
-    #[serde(default)]
     pub item_type: EItemType,
     /// `defaultProperties` (Class)
-    #[serde(default)]
     pub default_properties: Option<Handle<CargoGridOccupantProperties>>,
 }
 
@@ -49,49 +45,34 @@ impl<'a> Extract<'a> for OpenInventoryOccupantItemTypeProperties {
 }
 
 /// DCB type: `InventoryContainerManager`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InventoryContainerManager {
     /// `lootBoxes` (Reference (array))
-    #[serde(default)]
     pub loot_boxes: Vec<CigGuid>,
     /// `spawnLootGrid` (Class)
-    #[serde(default)]
     pub spawn_loot_grid: Option<Handle<Vec3>>,
     /// `closedInventoryNonStorableItemTypes` (Class (array))
-    #[serde(default)]
     pub closed_inventory_non_storable_item_types: Vec<Handle<InventoryContainerItemTypeFilter>>,
     /// `closedInventoryNonStorableOutfitItemTypes` (EnumChoice (array))
-    #[serde(default)]
     pub closed_inventory_non_storable_outfit_item_types: Vec<EItemType>,
     /// `openInventoryNonStorableItemTypes` (Class (array))
-    #[serde(default)]
     pub open_inventory_non_storable_item_types: Vec<Handle<InventoryContainerItemTypeFilter>>,
     /// `itemTypeOpenInventoryOccupantProperties` (Class (array))
-    #[serde(default)]
     pub item_type_open_inventory_occupant_properties: Vec<Handle<OpenInventoryOccupantItemTypeProperties>>,
     /// `defaultOpenInventoryOccupantProperties` (Class)
-    #[serde(default)]
     pub default_open_inventory_occupant_properties: Option<Handle<CargoGridOccupantProperties>>,
     /// `smallItemDropDist` (Single)
-    #[serde(default)]
     pub small_item_drop_dist: f32,
     /// `BigItemDropDist` (Single)
-    #[serde(default)]
     pub big_item_drop_dist: f32,
     /// `bigItemVolumeThresholdSCU` (Single)
-    #[serde(default)]
     pub big_item_volume_threshold_scu: f32,
     /// `dropItemMaxHeight` (Single)
-    #[serde(default)]
     pub drop_item_max_height: f32,
     /// `dropItemSurfaceOffset` (Single)
-    #[serde(default)]
     pub drop_item_surface_offset: f32,
     /// `dropItemRetryOffset` (Single)
-    #[serde(default)]
     pub drop_item_retry_offset: f32,
     /// `numberOfRetries` (Int32)
-    #[serde(default)]
     pub number_of_retries: i32,
 }
 

@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,16 +19,12 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `SMissionAcceptGameplayTriggerNotifications`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SMissionAcceptGameplayTriggerNotifications {
     /// `unknownErrorNotification` (Reference)
-    #[serde(default)]
     pub unknown_error_notification: Option<CigGuid>,
     /// `noMatchingContractsFoundNotification` (Reference)
-    #[serde(default)]
     pub no_matching_contracts_found_notification: Option<CigGuid>,
     /// `missionAlreadyActiveNotification` (Reference)
-    #[serde(default)]
     pub mission_already_active_notification: Option<CigGuid>,
 }
 
@@ -51,16 +46,12 @@ impl<'a> Extract<'a> for SMissionAcceptGameplayTriggerNotifications {
 
 /// DCB type: `SMissionAcceptGameplayTrigger`
 /// Inherits from: `SBaseInteractionGameplayTrigger`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SMissionAcceptGameplayTrigger {
     /// `contractID` (Guid)
-    #[serde(default)]
     pub contract_id: CigGuid,
     /// `debugContractName` (String)
-    #[serde(default)]
     pub debug_contract_name: String,
     /// `notifications` (Class)
-    #[serde(default)]
     pub notifications: Option<Handle<SMissionAcceptGameplayTriggerNotifications>>,
 }
 

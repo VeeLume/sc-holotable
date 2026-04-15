@@ -10,25 +10,18 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
 use std::collections::HashMap;
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use crate::Handle;
 use super::super::*;
 
 /// Record index for the `entitlementpolicies` feature.
-#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+#[derive(Default)]
 pub struct EntitlementpoliciesIndex {
-    #[serde(default)]
     pub entitlement_account_item_global_params: HashMap<CigGuid, Handle<EntitlementAccountItemGlobalParams>>,
-    #[serde(default)]
     pub entitlement_non_inventory_storable_item_global_params: HashMap<CigGuid, Handle<EntitlementNonInventoryStorableItemGlobalParams>>,
-    #[serde(default)]
     pub corpse_interaction_params: HashMap<CigGuid, Handle<CorpseInteractionParams>>,
-    #[serde(default)]
     pub item_recovery_configuration_params: HashMap<CigGuid, Handle<ItemRecoveryConfigurationParams>>,
-    #[serde(default)]
     pub web_customization_debug: HashMap<CigGuid, Handle<WebCustomizationDebug>>,
-    #[serde(default)]
     pub web_customization_global_params: HashMap<CigGuid, Handle<WebCustomizationGlobalParams>>,
 }
 

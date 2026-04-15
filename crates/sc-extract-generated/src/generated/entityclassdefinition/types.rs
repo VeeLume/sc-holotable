@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -21,13 +20,10 @@ use super::super::*;
 
 /// DCB type: `PlanetEffectTestParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PlanetEffectTestParams {
     /// `planetEffect` (Class)
-    #[serde(default)]
     pub planet_effect: Option<Handle<GlobalResourceParticle>>,
     /// `surfaceType` (String)
-    #[serde(default)]
     pub surface_type: String,
 }
 
@@ -51,13 +47,10 @@ impl<'a> Extract<'a> for PlanetEffectTestParams {
 
 /// DCB type: `InstancedInteriorManagerComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InstancedInteriorManagerComponentParams {
     /// `doorTimeoutSeconds` (Single)
-    #[serde(default)]
     pub door_timeout_seconds: f32,
     /// `transportTagsFilter` (Class)
-    #[serde(default)]
     pub transport_tags_filter: Option<Handle<TagsDNFTerm>>,
 }
 

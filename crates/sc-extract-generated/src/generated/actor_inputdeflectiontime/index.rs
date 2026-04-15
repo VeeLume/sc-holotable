@@ -10,17 +10,14 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
 use std::collections::HashMap;
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use crate::Handle;
 use super::super::*;
 
 /// Record index for the `actor-inputdeflectiontime` feature.
-#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+#[derive(Default)]
 pub struct ActorInputdeflectiontimeIndex {
-    #[serde(default)]
     pub ifcs_input_deflection_time_params: HashMap<CigGuid, Handle<IfcsInputDeflectionTimeParams>>,
-    #[serde(default)]
     pub turret_input_deflection_time_params: HashMap<CigGuid, Handle<TurretInputDeflectionTimeParams>>,
 }
 

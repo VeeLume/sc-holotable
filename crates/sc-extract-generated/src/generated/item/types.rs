@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,13 +19,10 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `GameTokens`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GameTokens {
     /// `GameTokenLibraries` (String (array))
-    #[serde(default)]
     pub game_token_libraries: Vec<String>,
     /// `FlowGraphs` (String (array))
-    #[serde(default)]
     pub flow_graphs: Vec<String>,
 }
 
@@ -50,10 +46,8 @@ impl<'a> Extract<'a> for GameTokens {
 }
 
 /// DCB type: `Item`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Item {
     /// `type` (StrongPointer)
-    #[serde(default)]
     pub r#type: Option<BaseItemPtr>,
 }
 
@@ -76,10 +70,8 @@ impl<'a> Extract<'a> for Item {
 
 /// DCB type: `VehicleItemInteriorController`
 /// Inherits from: `VehicleItem`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct VehicleItemInteriorController {
     /// `GameTokenList` (Class)
-    #[serde(default)]
     pub game_token_list: Option<Handle<GameTokens>>,
 }
 
@@ -101,13 +93,10 @@ impl<'a> Extract<'a> for VehicleItemInteriorController {
 }
 
 /// DCB type: `SHelmetLinkedState`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SHelmetLinkedState {
     /// `stateMachine` (EnumChoice)
-    #[serde(default)]
     pub state_machine: EHelmetStateMachine,
     /// `stateToEnter` (EnumChoice)
-    #[serde(default)]
     pub state_to_enter: EHelmetState,
 }
 
@@ -127,16 +116,12 @@ impl<'a> Extract<'a> for SHelmetLinkedState {
 }
 
 /// DCB type: `SHelmetStateBaseParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SHelmetStateBaseParams {
     /// `state` (EnumChoice)
-    #[serde(default)]
     pub state: EHelmetState,
     /// `nextState` (EnumChoice)
-    #[serde(default)]
     pub next_state: EHelmetState,
     /// `linkedStates` (Class (array))
-    #[serde(default)]
     pub linked_states: Vec<Handle<SHelmetLinkedState>>,
 }
 
@@ -163,16 +148,12 @@ impl<'a> Extract<'a> for SHelmetStateBaseParams {
 }
 
 /// DCB type: `SHelmetStateMachineParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SHelmetStateMachineParams {
     /// `stateMachine` (EnumChoice)
-    #[serde(default)]
     pub state_machine: EHelmetStateMachine,
     /// `states` (StrongPointer (array))
-    #[serde(default)]
     pub states: Vec<SHelmetStateBaseParamsPtr>,
     /// `startState` (EnumChoice)
-    #[serde(default)]
     pub start_state: EHelmetState,
 }
 
@@ -198,10 +179,8 @@ impl<'a> Extract<'a> for SHelmetStateMachineParams {
 }
 
 /// DCB type: `AnimatedHelmetParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AnimatedHelmetParams {
     /// `stateMachines` (Class (array))
-    #[serde(default)]
     pub state_machines: Vec<Handle<SHelmetStateMachineParams>>,
 }
 

@@ -10,19 +10,15 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
 use std::collections::HashMap;
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use crate::Handle;
 use super::super::*;
 
 /// Record index for the `specialeventdatabase` feature.
-#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+#[derive(Default)]
 pub struct SpecialeventdatabaseIndex {
-    #[serde(default)]
     pub special_event_manufacturer: HashMap<CigGuid, Handle<SpecialEventManufacturer>>,
-    #[serde(default)]
     pub special_event_day: HashMap<CigGuid, Handle<SpecialEventDay>>,
-    #[serde(default)]
     pub special_event_database: HashMap<CigGuid, Handle<SpecialEventDatabase>>,
 }
 

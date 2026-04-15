@@ -10,17 +10,14 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
 use std::collections::HashMap;
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::Instance;
 use crate::{Builder, Extract, Handle};
 use super::*;
 
-#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+#[derive(Default)]
 pub struct RecordStore {
-    #[serde(default)]
     pub pools: DataPools,
-    #[serde(default)]
     pub records: RecordIndex,
 }
 

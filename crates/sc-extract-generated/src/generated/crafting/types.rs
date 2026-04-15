@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -21,13 +20,10 @@ use super::super::*;
 
 /// DCB type: `LegacyCraftingOutput_ResourceAmount`
 /// Inherits from: `LegacyCraftingOutput_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LegacyCraftingOutput_ResourceAmount {
     /// `resource` (Reference)
-    #[serde(default)]
     pub resource: Option<CigGuid>,
     /// `amount` (StrongPointer)
-    #[serde(default)]
     pub amount: Option<SBaseCargoUnitPtr>,
 }
 
@@ -51,10 +47,8 @@ impl<'a> Extract<'a> for LegacyCraftingOutput_ResourceAmount {
 
 /// DCB type: `LegacyCraftingRecipeDef_Direct`
 /// Inherits from: `LegacyCraftingRecipeDef_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LegacyCraftingRecipeDef_Direct {
     /// `recipe` (StrongPointer)
-    #[serde(default)]
     pub recipe: Option<LegacyCraftingRecipe_BasePtr>,
 }
 
@@ -76,10 +70,8 @@ impl<'a> Extract<'a> for LegacyCraftingRecipeDef_Direct {
 }
 
 /// DCB type: `BlueprintCategoryDatabaseRecord`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BlueprintCategoryDatabaseRecord {
     /// `categories` (Reference (array))
-    #[serde(default)]
     pub categories: Vec<CigGuid>,
 }
 
@@ -101,13 +93,10 @@ impl<'a> Extract<'a> for BlueprintCategoryDatabaseRecord {
 
 /// DCB type: `GenericCraftingProcess_Dismantle`
 /// Inherits from: `GenericCraftingProcess_Base_NonRef`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GenericCraftingProcess_Dismantle {
     /// `efficiency` (Single)
-    #[serde(default)]
     pub efficiency: f32,
     /// `dismantleTime` (StrongPointer)
-    #[serde(default)]
     pub dismantle_time: Option<TimeValue_BasePtr>,
 }
 
@@ -131,10 +120,8 @@ impl<'a> Extract<'a> for GenericCraftingProcess_Dismantle {
 
 /// DCB type: `GenericCraftingBlueprint`
 /// Inherits from: `CraftingBlueprint_Base_NonRef`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GenericCraftingBlueprint {
     /// `processSpecificData` (StrongPointer)
-    #[serde(default)]
     pub process_specific_data: Option<GenericCraftingProcess_BasePtr>,
 }
 
@@ -157,10 +144,8 @@ impl<'a> Extract<'a> for GenericCraftingBlueprint {
 
 /// DCB type: `DefaultBlueprintSelection_Whitelist`
 /// Inherits from: `DefaultBlueprintSelection_Base_NonRef`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DefaultBlueprintSelection_Whitelist {
     /// `blueprintRecords` (Reference (array))
-    #[serde(default)]
     pub blueprint_records: Vec<CigGuid>,
 }
 
@@ -181,22 +166,16 @@ impl<'a> Extract<'a> for DefaultBlueprintSelection_Whitelist {
 }
 
 /// DCB type: `CraftingGlobalParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CraftingGlobalParams {
     /// `refiningQualityUnitMultiplier` (Single)
-    #[serde(default)]
     pub refining_quality_unit_multiplier: f32,
     /// `defaultCompositionQuality` (Int32)
-    #[serde(default)]
     pub default_composition_quality: i32,
     /// `dismantleBlacklistResources` (Reference (array))
-    #[serde(default)]
     pub dismantle_blacklist_resources: Vec<CigGuid>,
     /// `dismantleBlacklistEntityClasses` (Reference (array))
-    #[serde(default)]
     pub dismantle_blacklist_entity_classes: Vec<CigGuid>,
     /// `defaultBlueprintSelection` (StrongPointer)
-    #[serde(default)]
     pub default_blueprint_selection: Option<DefaultBlueprintSelection_BasePtr>,
 }
 

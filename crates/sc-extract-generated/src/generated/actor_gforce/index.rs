@@ -10,15 +10,13 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
 use std::collections::HashMap;
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use crate::Handle;
 use super::super::*;
 
 /// Record index for the `actor-gforce` feature.
-#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+#[derive(Default)]
 pub struct ActorGforceIndex {
-    #[serde(default)]
     pub actor_gforce_camera_effects: HashMap<CigGuid, Handle<ActorGForceCameraEffects>>,
 }
 

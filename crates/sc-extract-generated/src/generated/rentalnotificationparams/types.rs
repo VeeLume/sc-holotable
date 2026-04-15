@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,16 +19,12 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `RentalNotificationParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct RentalNotificationParams {
     /// `timeToRentalExpireMessage` (Locale)
-    #[serde(default)]
     pub time_to_rental_expire_message: LocaleKey,
     /// `rentedItemNameToken` (String)
-    #[serde(default)]
     pub rented_item_name_token: String,
     /// `rentalDurationToken` (String)
-    #[serde(default)]
     pub rental_duration_token: String,
 }
 

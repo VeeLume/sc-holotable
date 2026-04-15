@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -21,7 +20,6 @@ use super::super::*;
 
 /// DCB type: `SDynamicGroupComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SDynamicGroupComponentParams {
 }
 
@@ -40,10 +38,8 @@ impl<'a> Extract<'a> for SDynamicGroupComponentParams {
 
 /// DCB type: `ActivityBehaviorComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ActivityBehaviorComponentParams {
     /// `activityData` (Reference)
-    #[serde(default)]
     pub activity_data: Option<CigGuid>,
 }
 
@@ -63,25 +59,18 @@ impl<'a> Extract<'a> for ActivityBehaviorComponentParams {
 
 /// DCB type: `TerrainTrashCleanupComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct TerrainTrashCleanupComponentParams {
     /// `lifetime` (Single)
-    #[serde(default)]
     pub lifetime: f32,
     /// `decayType` (EnumChoice)
-    #[serde(default)]
     pub decay_type: EDecayType,
     /// `decayDuration` (Single)
-    #[serde(default)]
     pub decay_duration: f32,
     /// `destroyAfterDecay` (Boolean)
-    #[serde(default)]
     pub destroy_after_decay: bool,
     /// `decayBoundingBoxMultiplier` (Single)
-    #[serde(default)]
     pub decay_bounding_box_multiplier: f32,
     /// `decayDistanceOverride` (Single)
-    #[serde(default)]
     pub decay_distance_override: f32,
 }
 
@@ -105,16 +94,12 @@ impl<'a> Extract<'a> for TerrainTrashCleanupComponentParams {
 }
 
 /// DCB type: `SActorDeathPoseVariant`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SActorDeathPoseVariant {
     /// `variantName` (String)
-    #[serde(default)]
     pub variant_name: String,
     /// `mannequinTag` (String)
-    #[serde(default)]
     pub mannequin_tag: String,
     /// `geometryTags` (String)
-    #[serde(default)]
     pub geometry_tags: String,
 }
 
@@ -136,22 +121,16 @@ impl<'a> Extract<'a> for SActorDeathPoseVariant {
 
 /// DCB type: `SActorStaticColliderDeathBehaviour`
 /// Inherits from: `SActorDeathBehaviour`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SActorStaticColliderDeathBehaviour {
     /// `densityClassOverride` (Reference)
-    #[serde(default)]
     pub density_class_override: Option<CigGuid>,
     /// `deadColliderClass` (Reference)
-    #[serde(default)]
     pub dead_collider_class: Option<CigGuid>,
     /// `deathPoseVariants` (Class (array))
-    #[serde(default)]
     pub death_pose_variants: Vec<Handle<SActorDeathPoseVariant>>,
     /// `deathOrientationEntityTag` (Reference)
-    #[serde(default)]
     pub death_orientation_entity_tag: Option<CigGuid>,
     /// `maxTagQueryDistance` (Single)
-    #[serde(default)]
     pub max_tag_query_distance: f32,
 }
 
@@ -181,184 +160,124 @@ impl<'a> Extract<'a> for SActorStaticColliderDeathBehaviour {
 
 /// DCB type: `SDummyPlayerComponentParams`
 /// Inherits from: `SActorComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SDummyPlayerComponentParams {
     /// `character` (Reference)
-    #[serde(default)]
     pub character: Option<CigGuid>,
     /// `isAIControlled` (Boolean)
-    #[serde(default)]
     pub is_aicontrolled: bool,
     /// `flyInGroundState` (Boolean)
-    #[serde(default)]
     pub fly_in_ground_state: bool,
     /// `aimFOV` (Single)
-    #[serde(default)]
     pub aim_fov: f32,
     /// `maxLookAimAngle` (Single)
-    #[serde(default)]
     pub max_look_aim_angle: f32,
     /// `maxDeltaAngleRateNormal` (Single)
-    #[serde(default)]
     pub max_delta_angle_rate_normal: f32,
     /// `jumpFallLandParams` (Reference)
-    #[serde(default)]
     pub jump_fall_land_params: Option<CigGuid>,
     /// `aimIKLayer` (Int32)
-    #[serde(default)]
     pub aim_iklayer: i32,
     /// `lookIKLayer` (Int32)
-    #[serde(default)]
     pub look_iklayer: i32,
     /// `characterNameData` (Reference)
-    #[serde(default)]
     pub character_name_data: Option<CigGuid>,
     /// `skeletonConfig` (Reference)
-    #[serde(default)]
     pub skeleton_config: Option<CigGuid>,
     /// `ledgeGrabbingParams` (Reference)
-    #[serde(default)]
     pub ledge_grabbing_params: Option<CigGuid>,
     /// `jumpFallLandConfig` (Reference)
-    #[serde(default)]
     pub jump_fall_land_config: Option<CigGuid>,
     /// `carryConfig` (Reference)
-    #[serde(default)]
     pub carry_config: Option<CigGuid>,
     /// `playerAnimatedInteractionConfig` (Reference)
-    #[serde(default)]
     pub player_animated_interaction_config: Option<CigGuid>,
     /// `ladderConfig` (Reference)
-    #[serde(default)]
     pub ladder_config: Option<CigGuid>,
     /// `ladderConfigV2` (Reference)
-    #[serde(default)]
     pub ladder_config_v2: Option<CigGuid>,
     /// `proceduralAnimationRecord` (Reference)
-    #[serde(default)]
     pub procedural_animation_record: Option<CigGuid>,
     /// `movementModifiersRecord` (Reference)
-    #[serde(default)]
     pub movement_modifiers_record: Option<CigGuid>,
     /// `movementSetsRecord` (Reference)
-    #[serde(default)]
     pub movement_sets_record: Option<CigGuid>,
     /// `isMinimal` (Boolean)
-    #[serde(default)]
     pub is_minimal: bool,
     /// `aiDefaultStance` (EnumChoice)
-    #[serde(default)]
     pub ai_default_stance: ActorStateFilterByStanceState,
     /// `actorType` (EnumChoice)
-    #[serde(default)]
     pub actor_type: EActorType,
     /// `stancesDataRecord` (Reference)
-    #[serde(default)]
     pub stances_data_record: Option<CigGuid>,
     /// `actorStatusRecord` (Reference)
-    #[serde(default)]
     pub actor_status_record: Option<CigGuid>,
     /// `actorStatusRecordEA` (Reference)
-    #[serde(default)]
     pub actor_status_record_ea: Option<CigGuid>,
     /// `actorStatusRecordSQ42` (Reference)
-    #[serde(default)]
     pub actor_status_record_sq42: Option<CigGuid>,
     /// `takeDownConfig` (Reference)
-    #[serde(default)]
     pub take_down_config: Option<CigGuid>,
     /// `misfireFixConfig` (Reference)
-    #[serde(default)]
     pub misfire_fix_config: Option<CigGuid>,
     /// `hitReactionsDefRecord` (Reference)
-    #[serde(default)]
     pub hit_reactions_def_record: Option<CigGuid>,
     /// `forceReactionsDefRecord` (Reference)
-    #[serde(default)]
     pub force_reactions_def_record: Option<CigGuid>,
     /// `shakeRecordFirstPerson` (Reference)
-    #[serde(default)]
     pub shake_record_first_person: Option<CigGuid>,
     /// `shakeRecordThirdPerson` (Reference)
-    #[serde(default)]
     pub shake_record_third_person: Option<CigGuid>,
     /// `actorAimLimits` (Reference)
-    #[serde(default)]
     pub actor_aim_limits: Option<CigGuid>,
     /// `actorLookLimits` (Reference)
-    #[serde(default)]
     pub actor_look_limits: Option<CigGuid>,
     /// `turnAngles` (Class)
-    #[serde(default)]
     pub turn_angles: Option<Handle<ActorTurnAngles>>,
     /// `hazardParams` (Reference)
-    #[serde(default)]
     pub hazard_params: Option<CigGuid>,
     /// `duckingParams` (Reference)
-    #[serde(default)]
     pub ducking_params: Option<CigGuid>,
     /// `gforceParamsRecord` (Reference)
-    #[serde(default)]
     pub gforce_params_record: Option<CigGuid>,
     /// `gforceParamsRecordMasterModes` (Reference)
-    #[serde(default)]
     pub gforce_params_record_master_modes: Option<CigGuid>,
     /// `gforceHeadBobRecord` (Reference)
-    #[serde(default)]
     pub gforce_head_bob_record: Option<CigGuid>,
     /// `gforceCameraEffectsRecord` (Reference)
-    #[serde(default)]
     pub gforce_camera_effects_record: Option<CigGuid>,
     /// `adsCameraDefaultParams` (StrongPointer)
-    #[serde(default)]
     pub ads_camera_default_params: Option<Handle<AdsCameraParams>>,
     /// `abilityParamsRecord` (Reference)
-    #[serde(default)]
     pub ability_params_record: Option<CigGuid>,
     /// `breathingParamsRecord` (Reference)
-    #[serde(default)]
     pub breathing_params_record: Option<CigGuid>,
     /// `staminaParamsRecord` (Reference)
-    #[serde(default)]
     pub stamina_params_record: Option<CigGuid>,
     /// `actorEnvironmentRecord` (Reference)
-    #[serde(default)]
     pub actor_environment_record: Option<CigGuid>,
     /// `defaultLookAheadRecord` (Reference)
-    #[serde(default)]
     pub default_look_ahead_record: Option<CigGuid>,
     /// `locomotionPersonalityRecord` (Reference)
-    #[serde(default)]
     pub locomotion_personality_record: Option<CigGuid>,
     /// `weaponPortsParams` (Class)
-    #[serde(default)]
     pub weapon_ports_params: Option<Handle<WeaponPortsParams>>,
     /// `actorSpecies` (Locale)
-    #[serde(default)]
     pub actor_species: LocaleKey,
     /// `swapOutfitInteraction` (WeakPointer)
-    #[serde(default)]
     pub swap_outfit_interaction: Option<Handle<SSharedInteractionParams>>,
     /// `wingmanOrders` (Reference)
-    #[serde(default)]
     pub wingman_orders: Option<CigGuid>,
     /// `actorTargetedParams` (Reference)
-    #[serde(default)]
     pub actor_targeted_params: Option<CigGuid>,
     /// `actorSlidingParams` (Reference)
-    #[serde(default)]
     pub actor_sliding_params: Option<CigGuid>,
     /// `actorZeroGTraversalParams` (Reference)
-    #[serde(default)]
     pub actor_zero_gtraversal_params: Option<CigGuid>,
     /// `baseFoleyDef` (Reference)
-    #[serde(default)]
     pub base_foley_def: Option<CigGuid>,
     /// `baseFootstepDef` (Reference)
-    #[serde(default)]
     pub base_footstep_def: Option<CigGuid>,
     /// `deathBehaviour` (StrongPointer)
-    #[serde(default)]
     pub death_behaviour: Option<SActorDeathBehaviourPtr>,
 }
 
@@ -451,13 +370,10 @@ impl<'a> Extract<'a> for SDummyPlayerComponentParams {
 
 /// DCB type: `TerrainTrashCleanupGameplayTrigger`
 /// Inherits from: `SBaseInteractionGameplayTrigger`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct TerrainTrashCleanupGameplayTrigger {
     /// `enable` (Boolean)
-    #[serde(default)]
     pub enable: bool,
     /// `overrides` (StrongPointer)
-    #[serde(default)]
     pub overrides: Option<Handle<TerrainTrashCleanupComponentParams>>,
 }
 
@@ -481,40 +397,28 @@ impl<'a> Extract<'a> for TerrainTrashCleanupGameplayTrigger {
 
 /// DCB type: `UndergroundCreatureHelpersComponent`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct UndergroundCreatureHelpersComponent {
     /// `spineJoints` (String (array))
-    #[serde(default)]
     pub spine_joints: Vec<String>,
     /// `tailJoints` (String (array))
-    #[serde(default)]
     pub tail_joints: Vec<String>,
     /// `surfaceVFXJoint` (String)
-    #[serde(default)]
     pub surface_vfxjoint: String,
     /// `groundExitVFXJoint` (String)
-    #[serde(default)]
     pub ground_exit_vfxjoint: String,
     /// `groundEntryVFXJoint` (String)
-    #[serde(default)]
     pub ground_entry_vfxjoint: String,
     /// `spawnMolehillEntity` (Boolean)
-    #[serde(default)]
     pub spawn_molehill_entity: bool,
     /// `numOfStartingMolehillEntities` (Byte)
-    #[serde(default)]
     pub num_of_starting_molehill_entities: u32,
     /// `startExitDecayingImmediately` (Boolean)
-    #[serde(default)]
     pub start_exit_decaying_immediately: bool,
     /// `overrideExitDecayTimeToStart` (Single)
-    #[serde(default)]
     pub override_exit_decay_time_to_start: f32,
     /// `molehillClass` (Reference)
-    #[serde(default)]
     pub molehill_class: Option<CigGuid>,
     /// `triggerEmergeMolehillAtAnimationStart` (Boolean)
-    #[serde(default)]
     pub trigger_emerge_molehill_at_animation_start: bool,
 }
 

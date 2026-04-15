@@ -9,22 +9,15 @@
 
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
-use serde::{Deserialize, Serialize};
 use super::super::*;
 
 /// Pool storage for the `tacticalquery` feature.
-#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+#[derive(Default)]
 pub struct TacticalqueryPools {
-    #[serde(default)]
     pub tqsinput_int_value: Vec<Option<TQSInputIntValue>>,
-    #[serde(default)]
     pub tqsinput_dynamic_variable_value: Vec<Option<TQSInputDynamicVariableValue>>,
-    #[serde(default)]
     pub tqsweight_input_float_value: Vec<Option<TQSWeightInputFloatValue>>,
-    #[serde(default)]
     pub tqsweight_input_tag_value: Vec<Option<TQSWeightInputTagValue>>,
-    #[serde(default)]
     pub tqsoption_content_record: Vec<Option<TQSOptionContentRecord>>,
-    #[serde(default)]
     pub tqsoption_reference: Vec<Option<TQSOptionReference>>,
 }

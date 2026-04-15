@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,13 +19,10 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `SDensityClassLifetimeOverrideEntry`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SDensityClassLifetimeOverrideEntry {
     /// `densityClass` (Reference)
-    #[serde(default)]
     pub density_class: Option<CigGuid>,
     /// `lifetimeOverride` (StrongPointer)
-    #[serde(default)]
     pub lifetime_override: Option<TimeValue_BasePtr>,
 }
 
@@ -49,13 +45,10 @@ impl<'a> Extract<'a> for SDensityClassLifetimeOverrideEntry {
 }
 
 /// DCB type: `SDefaultDensityClassLifetimeOverrides`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SDefaultDensityClassLifetimeOverrides {
     /// `lifetimeOverride` (StrongPointer)
-    #[serde(default)]
     pub lifetime_override: Option<TimeValue_BasePtr>,
     /// `excludes` (Reference (array))
-    #[serde(default)]
     pub excludes: Vec<CigGuid>,
 }
 
@@ -80,10 +73,8 @@ impl<'a> Extract<'a> for SDefaultDensityClassLifetimeOverrides {
 }
 
 /// DCB type: `SEntityDensityClassOverridesRecord`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SEntityDensityClassOverridesRecord {
     /// `overrides` (Class)
-    #[serde(default)]
     pub overrides: Option<Handle<SEntityDensityClassOverridesManual>>,
 }
 
@@ -106,13 +97,10 @@ impl<'a> Extract<'a> for SEntityDensityClassOverridesRecord {
 
 /// DCB type: `SEntityDensityClassOverridesManual`
 /// Inherits from: `SEntityDensityClassOverridesBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SEntityDensityClassOverridesManual {
     /// `defaults` (StrongPointer)
-    #[serde(default)]
     pub defaults: Option<Handle<SDefaultDensityClassLifetimeOverrides>>,
     /// `densityClassLifetimeOverrides` (Class (array))
-    #[serde(default)]
     pub density_class_lifetime_overrides: Vec<Handle<SDensityClassLifetimeOverrideEntry>>,
 }
 

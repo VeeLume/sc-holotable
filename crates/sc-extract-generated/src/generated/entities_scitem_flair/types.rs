@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -21,13 +20,10 @@ use super::super::*;
 
 /// DCB type: `SCItemFishParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCItemFishParams {
     /// `species` (String)
-    #[serde(default)]
     pub species: String,
     /// `count` (Int32)
-    #[serde(default)]
     pub count: i32,
 }
 
@@ -48,13 +44,10 @@ impl<'a> Extract<'a> for SCItemFishParams {
 
 /// DCB type: `SCJukeboxParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCJukeboxParams {
     /// `startTrigger` (Class)
-    #[serde(default)]
     pub start_trigger: Option<Handle<GlobalResourceAudio>>,
     /// `stopTrigger` (Class)
-    #[serde(default)]
     pub stop_trigger: Option<Handle<GlobalResourceAudio>>,
 }
 

@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,49 +19,34 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `SGlobalCrosshairParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SGlobalCrosshairParams {
     /// `tag` (Reference)
-    #[serde(default)]
     pub tag: Option<CigGuid>,
     /// `lerpSpeed` (Single)
-    #[serde(default)]
     pub lerp_speed: f32,
     /// `positionSmoothFactor` (Single)
-    #[serde(default)]
     pub position_smooth_factor: f32,
     /// `distanceSmoothFactor` (Single)
-    #[serde(default)]
     pub distance_smooth_factor: f32,
     /// `range` (Single)
-    #[serde(default)]
     pub range: f32,
     /// `hitmarkerTimeForHit` (Single)
-    #[serde(default)]
     pub hitmarker_time_for_hit: f32,
     /// `hitmarkerTimeForKill` (Single)
-    #[serde(default)]
     pub hitmarker_time_for_kill: f32,
     /// `killInterruptsPreviousHit` (Boolean)
-    #[serde(default)]
     pub kill_interrupts_previous_hit: bool,
     /// `hitmarkerPositionMethod` (EnumChoice)
-    #[serde(default)]
     pub hitmarker_position_method: EHitmarkerPositionMethod,
     /// `crosshairInCombatTime` (Single)
-    #[serde(default)]
     pub crosshair_in_combat_time: f32,
     /// `hitMarkerSoundHead` (Class)
-    #[serde(default)]
     pub hit_marker_sound_head: Option<Handle<GlobalResourceAudio>>,
     /// `hitMarkerSoundBody` (Class)
-    #[serde(default)]
     pub hit_marker_sound_body: Option<Handle<GlobalResourceAudio>>,
     /// `timeSinceLastHitmarkerRTPC` (Class)
-    #[serde(default)]
     pub time_since_last_hitmarker_rtpc: Option<Handle<AudioRtpc>>,
     /// `killHitmarkerRTPC` (Class)
-    #[serde(default)]
     pub kill_hitmarker_rtpc: Option<Handle<AudioRtpc>>,
 }
 

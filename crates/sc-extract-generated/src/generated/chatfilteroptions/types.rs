@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,10 +19,8 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `ChatFilterOptions`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ChatFilterOptions {
     /// `options` (Class (array))
-    #[serde(default)]
     pub options: Vec<Handle<ChatFilter>>,
 }
 
@@ -48,13 +45,10 @@ impl<'a> Extract<'a> for ChatFilterOptions {
 }
 
 /// DCB type: `ChatFilter`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ChatFilter {
     /// `tagId` (Int32)
-    #[serde(default)]
     pub tag_id: i32,
     /// `localizedString` (String)
-    #[serde(default)]
     pub localized_string: String,
 }
 

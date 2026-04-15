@@ -10,19 +10,15 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
 use std::collections::HashMap;
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use crate::Handle;
 use super::super::*;
 
 /// Record index for the `starmap` feature.
-#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+#[derive(Default)]
 pub struct StarmapIndex {
-    #[serde(default)]
     pub star_map_object_types: HashMap<CigGuid, Handle<StarMapObjectTypes>>,
-    #[serde(default)]
     pub star_map_mission_object: HashMap<CigGuid, Handle<StarMapMissionObject>>,
-    #[serde(default)]
     pub star_map_party_member_object: HashMap<CigGuid, Handle<StarMapPartyMemberObject>>,
 }
 

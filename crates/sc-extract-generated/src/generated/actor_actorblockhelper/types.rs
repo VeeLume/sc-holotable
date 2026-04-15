@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -21,25 +20,18 @@ use super::super::*;
 
 /// DCB type: `BlockingHelperComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BlockingHelperComponentParams {
     /// `offsetL` (Class)
-    #[serde(default)]
     pub offset_l: Option<Handle<Vec3>>,
     /// `orientationL` (Class)
-    #[serde(default)]
     pub orientation_l: Option<Handle<Ang3>>,
     /// `scaleL` (Class)
-    #[serde(default)]
     pub scale_l: Option<Handle<Vec3>>,
     /// `offsetR` (Class)
-    #[serde(default)]
     pub offset_r: Option<Handle<Vec3>>,
     /// `orientationR` (Class)
-    #[serde(default)]
     pub orientation_r: Option<Handle<Ang3>>,
     /// `scaleR` (Class)
-    #[serde(default)]
     pub scale_r: Option<Handle<Vec3>>,
 }
 

@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,10 +19,8 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `ItemTypeCategory`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ItemTypeCategory {
     /// `name` (Locale)
-    #[serde(default)]
     pub name: LocaleKey,
 }
 
@@ -42,16 +39,12 @@ impl<'a> Extract<'a> for ItemTypeCategory {
 }
 
 /// DCB type: `ItemTypeCategoryException`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ItemTypeCategoryException {
     /// `subType` (EnumChoice)
-    #[serde(default)]
     pub sub_type: EItemSubType,
     /// `category` (WeakPointer)
-    #[serde(default)]
     pub category: Option<Handle<ItemTypeCategory>>,
     /// `showInElectronicAccess` (Boolean)
-    #[serde(default)]
     pub show_in_electronic_access: bool,
 }
 
@@ -75,16 +68,12 @@ impl<'a> Extract<'a> for ItemTypeCategoryException {
 }
 
 /// DCB type: `ItemTypeCategoryMap`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ItemTypeCategoryMap {
     /// `defaultCategory` (WeakPointer)
-    #[serde(default)]
     pub default_category: Option<Handle<ItemTypeCategory>>,
     /// `exceptions` (Class (array))
-    #[serde(default)]
     pub exceptions: Vec<Handle<ItemTypeCategoryException>>,
     /// `showInElectronicAccess` (Boolean)
-    #[serde(default)]
     pub show_in_electronic_access: bool,
 }
 
@@ -114,16 +103,12 @@ impl<'a> Extract<'a> for ItemTypeCategoryMap {
 }
 
 /// DCB type: `ItemTypeInfo`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ItemTypeInfo {
     /// `typeName` (Locale)
-    #[serde(default)]
     pub type_name: LocaleKey,
     /// `showInPlayerAssetManager` (Boolean)
-    #[serde(default)]
     pub show_in_player_asset_manager: bool,
     /// `categoryMap` (Class)
-    #[serde(default)]
     pub category_map: Option<Handle<ItemTypeCategoryMap>>,
 }
 
@@ -147,22 +132,16 @@ impl<'a> Extract<'a> for ItemTypeInfo {
 }
 
 /// DCB type: `ItemTypeDefinition`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ItemTypeDefinition {
     /// `defaultCategory` (WeakPointer)
-    #[serde(default)]
     pub default_category: Option<Handle<ItemTypeCategory>>,
     /// `categories` (Class (array))
-    #[serde(default)]
     pub categories: Vec<Handle<ItemTypeCategory>>,
     /// `typeInfo` (Class)
-    #[serde(default)]
     pub type_info: Option<Handle<ItemTypeInfo>>,
     /// `allCategoriesLabel` (Locale)
-    #[serde(default)]
     pub all_categories_label: LocaleKey,
     /// `allTypesLabel` (Locale)
-    #[serde(default)]
     pub all_types_label: LocaleKey,
 }
 

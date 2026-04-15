@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,25 +19,18 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `BoidsGroupComposition`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BoidsGroupComposition {
     /// `boidsEntityClasses` (Reference (array))
-    #[serde(default)]
     pub boids_entity_classes: Vec<CigGuid>,
     /// `amountOfEntities` (Int32)
-    #[serde(default)]
     pub amount_of_entities: i32,
     /// `amountOfEntitiesVariation` (Int32)
-    #[serde(default)]
     pub amount_of_entities_variation: i32,
     /// `sizeVariation` (Single)
-    #[serde(default)]
     pub size_variation: f32,
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
     /// `spawnOnNavmesh` (Boolean)
-    #[serde(default)]
     pub spawn_on_navmesh: bool,
 }
 
@@ -64,22 +56,16 @@ impl<'a> Extract<'a> for BoidsGroupComposition {
 }
 
 /// DCB type: `BoidTransition`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BoidTransition {
     /// `animationTag` (String)
-    #[serde(default)]
     pub animation_tag: String,
     /// `fragmentTag` (String)
-    #[serde(default)]
     pub fragment_tag: String,
     /// `transition` (WeakPointer)
-    #[serde(default)]
     pub transition: Option<Handle<BoidState>>,
     /// `instantTransition` (Boolean)
-    #[serde(default)]
     pub instant_transition: bool,
     /// `allowWhileTransitioning` (Boolean)
-    #[serde(default)]
     pub allow_while_transitioning: bool,
 }
 
@@ -105,31 +91,22 @@ impl<'a> Extract<'a> for BoidTransition {
 }
 
 /// DCB type: `BoidState`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BoidState {
     /// `stateName` (String)
-    #[serde(default)]
     pub state_name: String,
     /// `rules` (Class (array))
-    #[serde(default)]
     pub rules: Vec<Handle<BoidsBehaviorRuleContainer>>,
     /// `shouldBeOnNavmesh` (Boolean)
-    #[serde(default)]
     pub should_be_on_navmesh: bool,
     /// `deterministic` (Boolean)
-    #[serde(default)]
     pub deterministic: bool,
     /// `boidTransitions` (StrongPointer (array))
-    #[serde(default)]
     pub boid_transitions: Vec<BoidTransitionPtr>,
     /// `animationTag` (String)
-    #[serde(default)]
     pub animation_tag: String,
     /// `fragmentTag` (String)
-    #[serde(default)]
     pub fragment_tag: String,
     /// `maxLinearSpeed` (Single)
-    #[serde(default)]
     pub max_linear_speed: f32,
 }
 
@@ -167,28 +144,20 @@ impl<'a> Extract<'a> for BoidState {
 
 /// DCB type: `BoidRandomTransition`
 /// Inherits from: `BoidTransition`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BoidRandomTransition {
     /// `animationTag` (String)
-    #[serde(default)]
     pub animation_tag: String,
     /// `fragmentTag` (String)
-    #[serde(default)]
     pub fragment_tag: String,
     /// `transition` (WeakPointer)
-    #[serde(default)]
     pub transition: Option<Handle<BoidState>>,
     /// `instantTransition` (Boolean)
-    #[serde(default)]
     pub instant_transition: bool,
     /// `allowWhileTransitioning` (Boolean)
-    #[serde(default)]
     pub allow_while_transitioning: bool,
     /// `interval` (Single)
-    #[serde(default)]
     pub interval: f32,
     /// `chance` (Single)
-    #[serde(default)]
     pub chance: f32,
 }
 
@@ -217,22 +186,16 @@ impl<'a> Extract<'a> for BoidRandomTransition {
 
 /// DCB type: `BoidAlertedTransition`
 /// Inherits from: `BoidTransition`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BoidAlertedTransition {
     /// `animationTag` (String)
-    #[serde(default)]
     pub animation_tag: String,
     /// `fragmentTag` (String)
-    #[serde(default)]
     pub fragment_tag: String,
     /// `transition` (WeakPointer)
-    #[serde(default)]
     pub transition: Option<Handle<BoidState>>,
     /// `instantTransition` (Boolean)
-    #[serde(default)]
     pub instant_transition: bool,
     /// `allowWhileTransitioning` (Boolean)
-    #[serde(default)]
     pub allow_while_transitioning: bool,
 }
 
@@ -259,25 +222,18 @@ impl<'a> Extract<'a> for BoidAlertedTransition {
 
 /// DCB type: `BoidActorProximityTransition`
 /// Inherits from: `BoidTransition`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BoidActorProximityTransition {
     /// `animationTag` (String)
-    #[serde(default)]
     pub animation_tag: String,
     /// `fragmentTag` (String)
-    #[serde(default)]
     pub fragment_tag: String,
     /// `transition` (WeakPointer)
-    #[serde(default)]
     pub transition: Option<Handle<BoidState>>,
     /// `instantTransition` (Boolean)
-    #[serde(default)]
     pub instant_transition: bool,
     /// `allowWhileTransitioning` (Boolean)
-    #[serde(default)]
     pub allow_while_transitioning: bool,
     /// `distance` (Single)
-    #[serde(default)]
     pub distance: f32,
 }
 
@@ -304,10 +260,8 @@ impl<'a> Extract<'a> for BoidActorProximityTransition {
 }
 
 /// DCB type: `BoidsBehaviorRule`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BoidsBehaviorRule {
     /// `velocityScale` (Single)
-    #[serde(default)]
     pub velocity_scale: f32,
 }
 
@@ -327,10 +281,8 @@ impl<'a> Extract<'a> for BoidsBehaviorRule {
 
 /// DCB type: `BoidsAlignmentRule`
 /// Inherits from: `BoidsBehaviorRule`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BoidsAlignmentRule {
     /// `velocityScale` (Single)
-    #[serde(default)]
     pub velocity_scale: f32,
 }
 
@@ -350,16 +302,12 @@ impl<'a> Extract<'a> for BoidsAlignmentRule {
 
 /// DCB type: `BoidsSeparationRule`
 /// Inherits from: `BoidsBehaviorRule`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BoidsSeparationRule {
     /// `velocityScale` (Single)
-    #[serde(default)]
     pub velocity_scale: f32,
     /// `decayCoefficient` (Single)
-    #[serde(default)]
     pub decay_coefficient: f32,
     /// `maxAcceleration` (Single)
-    #[serde(default)]
     pub max_acceleration: f32,
 }
 
@@ -381,10 +329,8 @@ impl<'a> Extract<'a> for BoidsSeparationRule {
 
 /// DCB type: `BoidsCohesionRule`
 /// Inherits from: `BoidsBehaviorRule`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BoidsCohesionRule {
     /// `velocityScale` (Single)
-    #[serde(default)]
     pub velocity_scale: f32,
 }
 
@@ -404,16 +350,12 @@ impl<'a> Extract<'a> for BoidsCohesionRule {
 
 /// DCB type: `BoidsSphericalLimiterRule`
 /// Inherits from: `BoidsBehaviorRule`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BoidsSphericalLimiterRule {
     /// `velocityScale` (Single)
-    #[serde(default)]
     pub velocity_scale: f32,
     /// `radius` (Single)
-    #[serde(default)]
     pub radius: f32,
     /// `effectDistance` (Single)
-    #[serde(default)]
     pub effect_distance: f32,
 }
 
@@ -435,16 +377,12 @@ impl<'a> Extract<'a> for BoidsSphericalLimiterRule {
 
 /// DCB type: `BoidsOceanSurfaceRepelRule`
 /// Inherits from: `BoidsBehaviorRule`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BoidsOceanSurfaceRepelRule {
     /// `velocityScale` (Single)
-    #[serde(default)]
     pub velocity_scale: f32,
     /// `effectDistance` (Single)
-    #[serde(default)]
     pub effect_distance: f32,
     /// `belowOcean` (Boolean)
-    #[serde(default)]
     pub below_ocean: bool,
 }
 
@@ -466,13 +404,10 @@ impl<'a> Extract<'a> for BoidsOceanSurfaceRepelRule {
 
 /// DCB type: `BoidsTerrainSurfaceRepelRule`
 /// Inherits from: `BoidsBehaviorRule`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BoidsTerrainSurfaceRepelRule {
     /// `velocityScale` (Single)
-    #[serde(default)]
     pub velocity_scale: f32,
     /// `effectDistance` (Single)
-    #[serde(default)]
     pub effect_distance: f32,
 }
 
@@ -493,19 +428,14 @@ impl<'a> Extract<'a> for BoidsTerrainSurfaceRepelRule {
 
 /// DCB type: `BoidsNavmeshEdgeRepelRule`
 /// Inherits from: `BoidsBehaviorRule`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BoidsNavmeshEdgeRepelRule {
     /// `velocityScale` (Single)
-    #[serde(default)]
     pub velocity_scale: f32,
     /// `effectDistance` (Single)
-    #[serde(default)]
     pub effect_distance: f32,
     /// `decayCoefficient` (Single)
-    #[serde(default)]
     pub decay_coefficient: f32,
     /// `maxAcceleration` (Single)
-    #[serde(default)]
     pub max_acceleration: f32,
 }
 
@@ -528,16 +458,12 @@ impl<'a> Extract<'a> for BoidsNavmeshEdgeRepelRule {
 
 /// DCB type: `BoidsAlertPointRepelRule`
 /// Inherits from: `BoidsBehaviorRule`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BoidsAlertPointRepelRule {
     /// `velocityScale` (Single)
-    #[serde(default)]
     pub velocity_scale: f32,
     /// `decayCoefficient` (Single)
-    #[serde(default)]
     pub decay_coefficient: f32,
     /// `maxAcceleration` (Single)
-    #[serde(default)]
     pub max_acceleration: f32,
 }
 
@@ -558,13 +484,10 @@ impl<'a> Extract<'a> for BoidsAlertPointRepelRule {
 }
 
 /// DCB type: `BoidsBehaviorRuleContainer`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BoidsBehaviorRuleContainer {
     /// `enabled` (Boolean)
-    #[serde(default)]
     pub enabled: bool,
     /// `rule` (StrongPointer)
-    #[serde(default)]
     pub rule: Option<BoidsBehaviorRulePtr>,
 }
 
@@ -588,13 +511,10 @@ impl<'a> Extract<'a> for BoidsBehaviorRuleContainer {
 
 /// DCB type: `BoidsActorRepelRule`
 /// Inherits from: `BoidsBehaviorRule`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BoidsActorRepelRule {
     /// `velocityScale` (Single)
-    #[serde(default)]
     pub velocity_scale: f32,
     /// `effectDistance` (Single)
-    #[serde(default)]
     pub effect_distance: f32,
 }
 
@@ -615,13 +535,10 @@ impl<'a> Extract<'a> for BoidsActorRepelRule {
 
 /// DCB type: `BoidsVehicleRepelRule`
 /// Inherits from: `BoidsBehaviorRule`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BoidsVehicleRepelRule {
     /// `velocityScale` (Single)
-    #[serde(default)]
     pub velocity_scale: f32,
     /// `effectDistance` (Single)
-    #[serde(default)]
     pub effect_distance: f32,
 }
 
@@ -642,19 +559,14 @@ impl<'a> Extract<'a> for BoidsVehicleRepelRule {
 
 /// DCB type: `BoidsComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BoidsComponentParams {
     /// `boidsGroups` (Class (array))
-    #[serde(default)]
     pub boids_groups: Vec<Handle<BoidsGroupComposition>>,
     /// `groupInfluenceRange` (Single)
-    #[serde(default)]
     pub group_influence_range: f32,
     /// `boidStates` (Class (array))
-    #[serde(default)]
     pub boid_states: Vec<Handle<BoidState>>,
     /// `querySphereRadius` (Single)
-    #[serde(default)]
     pub query_sphere_radius: f32,
 }
 
@@ -689,13 +601,10 @@ impl<'a> Extract<'a> for BoidsComponentParams {
 
 /// DCB type: `BoidAgentComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BoidAgentComponentParams {
     /// `deathMannequinTag` (String)
-    #[serde(default)]
     pub death_mannequin_tag: String,
     /// `deathMannequinFragment` (String)
-    #[serde(default)]
     pub death_mannequin_fragment: String,
 }
 

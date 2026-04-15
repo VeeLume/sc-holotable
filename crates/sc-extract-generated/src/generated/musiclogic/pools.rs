@@ -9,26 +9,17 @@
 
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
-use serde::{Deserialize, Serialize};
 use super::super::*;
 
 /// Pool storage for the `musiclogic` feature.
-#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+#[derive(Default)]
 pub struct MusiclogicPools {
-    #[serde(default)]
     pub cinematic_config: Vec<Option<CinematicConfig>>,
-    #[serde(default)]
     pub attack_detection_config: Vec<Option<AttackDetectionConfig>>,
-    #[serde(default)]
     pub enemy_awareness_config: Vec<Option<EnemyAwarenessConfig>>,
-    #[serde(default)]
     pub playlist_rngconfig: Vec<Option<PlaylistRNGConfig>>,
-    #[serde(default)]
     pub location_music_config: Vec<Option<LocationMusicConfig>>,
-    #[serde(default)]
     pub music_logic_config: Vec<Option<MusicLogicConfig>>,
-    #[serde(default)]
     pub music_logic_event_list: Vec<Option<MusicLogicEventList>>,
-    #[serde(default)]
     pub music_logic_switch_value: Vec<Option<MusicLogicSwitchValue>>,
 }

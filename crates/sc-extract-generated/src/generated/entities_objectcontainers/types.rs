@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -21,7 +20,6 @@ use super::super::*;
 
 /// DCB type: `SMovableObjectContainerParams`
 /// Inherits from: `EntityClassStaticDataParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SMovableObjectContainerParams {
 }
 
@@ -39,10 +37,8 @@ impl<'a> Extract<'a> for SMovableObjectContainerParams {
 }
 
 /// DCB type: `SOCInstanceSlot`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SOCInstanceSlot {
     /// `objectContainerRef` (String)
-    #[serde(default)]
     pub object_container_ref: String,
 }
 
@@ -62,13 +58,10 @@ impl<'a> Extract<'a> for SOCInstanceSlot {
 
 /// DCB type: `SOCInstanceComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SOCInstanceComponentParams {
     /// `slots` (Class)
-    #[serde(default)]
     pub slots: Option<Handle<SOCInstanceSlot>>,
     /// `rulesConfig` (Reference)
-    #[serde(default)]
     pub rules_config: Option<CigGuid>,
 }
 
@@ -92,22 +85,16 @@ impl<'a> Extract<'a> for SOCInstanceComponentParams {
 
 /// DCB type: `SEntityComponentProceduralOCModifierParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SEntityComponentProceduralOCModifierParams {
     /// `ExteriorWearFactor` (Single)
-    #[serde(default)]
     pub exterior_wear_factor: f32,
     /// `ExteriorDirtFactor` (Single)
-    #[serde(default)]
     pub exterior_dirt_factor: f32,
     /// `InteriorWearFactor` (Single)
-    #[serde(default)]
     pub interior_wear_factor: f32,
     /// `InteriorDirtFactor` (Single)
-    #[serde(default)]
     pub interior_dirt_factor: f32,
     /// `OverrideTintPalette` (Reference)
-    #[serde(default)]
     pub override_tint_palette: Option<CigGuid>,
 }
 
@@ -131,19 +118,14 @@ impl<'a> Extract<'a> for SEntityComponentProceduralOCModifierParams {
 
 /// DCB type: `SOrbitComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SOrbitComponentParams {
     /// `OrbitalRadius` (Double)
-    #[serde(default)]
     pub orbital_radius: f64,
     /// `OrbitalSpeed` (Double)
-    #[serde(default)]
     pub orbital_speed: f64,
     /// `OrbitalAngle` (Double)
-    #[serde(default)]
     pub orbital_angle: f64,
     /// `parentGUID` (String)
-    #[serde(default)]
     pub parent_guid: String,
 }
 
@@ -166,10 +148,8 @@ impl<'a> Extract<'a> for SOrbitComponentParams {
 
 /// DCB type: `SEntityComponentPhysicsGridParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SEntityComponentPhysicsGridParams {
     /// `PhysGridType` (StrongPointer)
-    #[serde(default)]
     pub phys_grid_type: Option<SEntityBasePhysicsGridParamsPtr>,
 }
 
@@ -191,25 +171,18 @@ impl<'a> Extract<'a> for SEntityComponentPhysicsGridParams {
 }
 
 /// DCB type: `SEntityBasePhysicsGridParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SEntityBasePhysicsGridParams {
     /// `inheritGravity` (Boolean)
-    #[serde(default)]
     pub inherit_gravity: bool,
     /// `gravity` (Class)
-    #[serde(default)]
     pub gravity: Option<Handle<Vec3>>,
     /// `gridType` (EnumChoice)
-    #[serde(default)]
     pub grid_type: GRID_TYPE,
     /// `cellSize` (Single)
-    #[serde(default)]
     pub cell_size: f32,
     /// `gridPartsOnly` (Boolean)
-    #[serde(default)]
     pub grid_parts_only: bool,
     /// `portalExclusiveMode` (Boolean)
-    #[serde(default)]
     pub portal_exclusive_mode: bool,
 }
 

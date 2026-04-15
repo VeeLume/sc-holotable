@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -21,19 +20,14 @@ use super::super::*;
 
 /// DCB type: `SAnalyticShadowComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SAnalyticShadowComponentParams {
     /// `active` (Boolean)
-    #[serde(default)]
     pub active: bool,
     /// `radius` (Single)
-    #[serde(default)]
     pub radius: f32,
     /// `penumbraWidth` (Single)
-    #[serde(default)]
     pub penumbra_width: f32,
     /// `maxRange` (Single)
-    #[serde(default)]
     pub max_range: f32,
 }
 

@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -21,25 +20,18 @@ use super::super::*;
 
 /// DCB type: `LegacyMobiGlasParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LegacyMobiGlasParams {
     /// `baseXOffset` (Single)
-    #[serde(default)]
     pub base_xoffset: f32,
     /// `baseXOffsetMultiplier` (Single)
-    #[serde(default)]
     pub base_xoffset_multiplier: f32,
     /// `baseYOffset` (Single)
-    #[serde(default)]
     pub base_yoffset: f32,
     /// `baseYOffsetMultiplier` (Single)
-    #[serde(default)]
     pub base_yoffset_multiplier: f32,
     /// `baseXAngleMultiplier` (Single)
-    #[serde(default)]
     pub base_xangle_multiplier: f32,
     /// `baseYAngleMultiplier` (Single)
-    #[serde(default)]
     pub base_yangle_multiplier: f32,
 }
 
@@ -64,7 +56,6 @@ impl<'a> Extract<'a> for LegacyMobiGlasParams {
 
 /// DCB type: `LandingAreaServicesParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LandingAreaServicesParams {
 }
 
@@ -83,7 +74,6 @@ impl<'a> Extract<'a> for LandingAreaServicesParams {
 
 /// DCB type: `EntityComponentDockingHubParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EntityComponentDockingHubParams {
 }
 
@@ -102,7 +92,6 @@ impl<'a> Extract<'a> for EntityComponentDockingHubParams {
 
 /// DCB type: `SMissionBrokerInterfaceComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SMissionBrokerInterfaceComponentParams {
 }
 
@@ -120,19 +109,14 @@ impl<'a> Extract<'a> for SMissionBrokerInterfaceComponentParams {
 }
 
 /// DCB type: `MobiGlasPositionParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MobiGlasPositionParams {
     /// `offset` (Class)
-    #[serde(default)]
     pub offset: Option<Handle<Vec3>>,
     /// `scale` (Single)
-    #[serde(default)]
     pub scale: f32,
     /// `angle` (Single)
-    #[serde(default)]
     pub angle: f32,
     /// `tilt` (Single)
-    #[serde(default)]
     pub tilt: f32,
 }
 
@@ -157,16 +141,12 @@ impl<'a> Extract<'a> for MobiGlasPositionParams {
 }
 
 /// DCB type: `MobiGlasClientParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MobiGlasClientParams {
     /// `armPositionParams` (Class)
-    #[serde(default)]
     pub arm_position_params: Option<Handle<MobiGlasPositionParams>>,
     /// `headPositionParams` (Class)
-    #[serde(default)]
     pub head_position_params: Option<Handle<MobiGlasPositionParams>>,
     /// `procBreathingSetup` (Reference)
-    #[serde(default)]
     pub proc_breathing_setup: Option<CigGuid>,
 }
 
@@ -194,22 +174,16 @@ impl<'a> Extract<'a> for MobiGlasClientParams {
 
 /// DCB type: `MobiGlasRemoteParams`
 /// Inherits from: `MobiGlasClientParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MobiGlasRemoteParams {
     /// `armPositionParams` (Class)
-    #[serde(default)]
     pub arm_position_params: Option<Handle<MobiGlasPositionParams>>,
     /// `headPositionParams` (Class)
-    #[serde(default)]
     pub head_position_params: Option<Handle<MobiGlasPositionParams>>,
     /// `procBreathingSetup` (Reference)
-    #[serde(default)]
     pub proc_breathing_setup: Option<CigGuid>,
     /// `materialGlow` (Single)
-    #[serde(default)]
     pub material_glow: f32,
     /// `objModel` (Class)
-    #[serde(default)]
     pub obj_model: Option<Handle<GlobalResourceGeometry>>,
 }
 
@@ -241,13 +215,10 @@ impl<'a> Extract<'a> for MobiGlasRemoteParams {
 }
 
 /// DCB type: `MobiGlasEffectParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MobiGlasEffectParams {
     /// `projectionFadeInDuration` (Single)
-    #[serde(default)]
     pub projection_fade_in_duration: f32,
     /// `projectionFadeOutDuration` (Single)
-    #[serde(default)]
     pub projection_fade_out_duration: f32,
 }
 
@@ -268,16 +239,12 @@ impl<'a> Extract<'a> for MobiGlasEffectParams {
 
 /// DCB type: `SCItemMobiGlasParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCItemMobiGlasParams {
     /// `clientParams` (Class)
-    #[serde(default)]
     pub client_params: Option<Handle<MobiGlasClientParams>>,
     /// `remoteParams` (Class)
-    #[serde(default)]
     pub remote_params: Option<Handle<MobiGlasRemoteParams>>,
     /// `effectSettings` (Class)
-    #[serde(default)]
     pub effect_settings: Option<Handle<MobiGlasEffectParams>>,
 }
 
@@ -308,13 +275,10 @@ impl<'a> Extract<'a> for SCItemMobiGlasParams {
 
 /// DCB type: `PlayerAssetManagerProviderParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PlayerAssetManagerProviderParams {
     /// `inventoryItemsPerPage` (UInt32)
-    #[serde(default)]
     pub inventory_items_per_page: u32,
     /// `inventoryPaintGeoTag` (String)
-    #[serde(default)]
     pub inventory_paint_geo_tag: String,
 }
 
@@ -335,7 +299,6 @@ impl<'a> Extract<'a> for PlayerAssetManagerProviderParams {
 
 /// DCB type: `PlayerTradeProviderParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PlayerTradeProviderParams {
 }
 
@@ -354,7 +317,6 @@ impl<'a> Extract<'a> for PlayerTradeProviderParams {
 
 /// DCB type: `ReputationProviderParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ReputationProviderParams {
 }
 

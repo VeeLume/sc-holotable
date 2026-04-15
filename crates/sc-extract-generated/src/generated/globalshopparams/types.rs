@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,37 +19,26 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `SAutoLoadingBoxSizePrices`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SAutoLoadingBoxSizePrices {
     /// `one_eighthSCU` (Int32)
-    #[serde(default)]
     pub one_eighth_scu: i32,
     /// `one_quarterSCU` (Int32)
-    #[serde(default)]
     pub one_quarter_scu: i32,
     /// `one_halfSCU` (Int32)
-    #[serde(default)]
     pub one_half_scu: i32,
     /// `oneSCU` (Int32)
-    #[serde(default)]
     pub one_scu: i32,
     /// `twoSCU` (Int32)
-    #[serde(default)]
     pub two_scu: i32,
     /// `fourSCU` (Int32)
-    #[serde(default)]
     pub four_scu: i32,
     /// `eightSCU` (Int32)
-    #[serde(default)]
     pub eight_scu: i32,
     /// `sixteenSCU` (Int32)
-    #[serde(default)]
     pub sixteen_scu: i32,
     /// `twentyFourSCU` (Int32)
-    #[serde(default)]
     pub twenty_four_scu: i32,
     /// `thirtyTwoSCU` (Int32)
-    #[serde(default)]
     pub thirty_two_scu: i32,
 }
 
@@ -78,82 +66,56 @@ impl<'a> Extract<'a> for SAutoLoadingBoxSizePrices {
 }
 
 /// DCB type: `GlobalShopCommodityParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GlobalShopCommodityParams {
     /// `MaxKioskCargoGridDisplaySize` (Int32)
-    #[serde(default)]
     pub max_kiosk_cargo_grid_display_size: i32,
     /// `autoLoadingBasePrice` (Int32)
-    #[serde(default)]
     pub auto_loading_base_price: i32,
     /// `autoLoadingBoxSizePrices` (Class)
-    #[serde(default)]
     pub auto_loading_box_size_prices: Option<Handle<SAutoLoadingBoxSizePrices>>,
     /// `noSupplyLevel` (Single)
-    #[serde(default)]
     pub no_supply_level: f32,
     /// `VeryLowSupplyLevel` (Single)
-    #[serde(default)]
     pub very_low_supply_level: f32,
     /// `LowSupplyLevel` (Single)
-    #[serde(default)]
     pub low_supply_level: f32,
     /// `MediumSupplyLevel` (Single)
-    #[serde(default)]
     pub medium_supply_level: f32,
     /// `HighSupplyLevel` (Single)
-    #[serde(default)]
     pub high_supply_level: f32,
     /// `VeryHighSupplyLevel` (Single)
-    #[serde(default)]
     pub very_high_supply_level: f32,
     /// `noDemandLevel` (Single)
-    #[serde(default)]
     pub no_demand_level: f32,
     /// `VeryLowDemandLevel` (Single)
-    #[serde(default)]
     pub very_low_demand_level: f32,
     /// `LowDemandLevel` (Single)
-    #[serde(default)]
     pub low_demand_level: f32,
     /// `MediumDemandLevel` (Single)
-    #[serde(default)]
     pub medium_demand_level: f32,
     /// `HighDemandLevel` (Single)
-    #[serde(default)]
     pub high_demand_level: f32,
     /// `VeryHighDemandLevel` (Single)
-    #[serde(default)]
     pub very_high_demand_level: f32,
     /// `transactionSupportedResourceContainerTypes` (Class (array))
-    #[serde(default)]
     pub transaction_supported_resource_container_types: Vec<Handle<SItemPortDefTypes>>,
     /// `RMC_ResourceType` (Reference)
-    #[serde(default)]
     pub rmc_resource_type: Option<CigGuid>,
     /// `RMC_SalvageCannisterEntity` (Reference)
-    #[serde(default)]
     pub rmc_salvage_cannister_entity: Option<CigGuid>,
     /// `genericCrates` (Class)
-    #[serde(default)]
     pub generic_crates: Option<Handle<SResourceTypeDefaultCargoContainers>>,
     /// `Location_Select` (Locale)
-    #[serde(default)]
     pub location_select: LocaleKey,
     /// `subLocation_All` (Locale)
-    #[serde(default)]
     pub sub_location_all: LocaleKey,
     /// `subLocation_CargoGrid` (Locale)
-    #[serde(default)]
     pub sub_location_cargo_grid: LocaleKey,
     /// `subLocation_GeneralStorage` (Locale)
-    #[serde(default)]
     pub sub_location_general_storage: LocaleKey,
     /// `subLocation_ResourceContainers` (Locale)
-    #[serde(default)]
     pub sub_location_resource_containers: LocaleKey,
     /// `subLocationItems_All` (Locale)
-    #[serde(default)]
     pub sub_location_items_all: LocaleKey,
 }
 
@@ -208,25 +170,18 @@ impl<'a> Extract<'a> for GlobalShopCommodityParams {
 }
 
 /// DCB type: `GlobalShopTerminalParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GlobalShopTerminalParams {
     /// `displayedItemsPerPage` (Int32)
-    #[serde(default)]
     pub displayed_items_per_page: i32,
     /// `confirmationAutoCloseTime` (Single)
-    #[serde(default)]
     pub confirmation_auto_close_time: f32,
     /// `maxBuyingMultiplier` (Int32)
-    #[serde(default)]
     pub max_buying_multiplier: i32,
     /// `inventoryQueryItemsType` (EnumChoice (array))
-    #[serde(default)]
     pub inventory_query_items_type: Vec<EItemType>,
     /// `all_items_category` (Locale)
-    #[serde(default)]
     pub all_items_category: LocaleKey,
     /// `shopErrors` (Class)
-    #[serde(default)]
     pub shop_errors: Option<Handle<SGlobalShopErrors>>,
 }
 
@@ -255,193 +210,130 @@ impl<'a> Extract<'a> for GlobalShopTerminalParams {
 }
 
 /// DCB type: `SGlobalShopErrors`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SGlobalShopErrors {
     /// `confirmation_success` (Locale)
-    #[serde(default)]
     pub confirmation_success: LocaleKey,
     /// `confirmation_fail` (Locale)
-    #[serde(default)]
     pub confirmation_fail: LocaleKey,
     /// `confirmation_fail_AuthorityError` (Locale)
-    #[serde(default)]
     pub confirmation_fail_authority_error: LocaleKey,
     /// `confirmation_fail_TransactionServiceError` (Locale)
-    #[serde(default)]
     pub confirmation_fail_transaction_service_error: LocaleKey,
     /// `confirmation_fail_InvalidLocation` (Locale)
-    #[serde(default)]
     pub confirmation_fail_invalid_location: LocaleKey,
     /// `confirmation_fail_InvalidPlayerInventoryId` (Locale)
-    #[serde(default)]
     pub confirmation_fail_invalid_player_inventory_id: LocaleKey,
     /// `confirmation_fail_InventoryContainerRequestFail` (Locale)
-    #[serde(default)]
     pub confirmation_fail_inventory_container_request_fail: LocaleKey,
     /// `confirmation_fail_InventoryItemFail` (Locale)
-    #[serde(default)]
     pub confirmation_fail_inventory_item_fail: LocaleKey,
     /// `confirmation_fail_InventoryItemContentFail` (Locale)
-    #[serde(default)]
     pub confirmation_fail_inventory_item_content_fail: LocaleKey,
     /// `confirmation_fail_InvalidQuantityError` (Locale)
-    #[serde(default)]
     pub confirmation_fail_invalid_quantity_error: LocaleKey,
     /// `confirmation_fail_QuickBuyRestockingError` (Locale)
-    #[serde(default)]
     pub confirmation_fail_quick_buy_restocking_error: LocaleKey,
     /// `confirmation_fail_InvalidTransactionFlow` (Locale)
-    #[serde(default)]
     pub confirmation_fail_invalid_transaction_flow: LocaleKey,
     /// `confirmation_fail_InvalidLocationSource` (Locale)
-    #[serde(default)]
     pub confirmation_fail_invalid_location_source: LocaleKey,
     /// `confirmation_fail_InvalidShop` (Locale)
-    #[serde(default)]
     pub confirmation_fail_invalid_shop: LocaleKey,
     /// `confirmation_fail_InvalidShopType` (Locale)
-    #[serde(default)]
     pub confirmation_fail_invalid_shop_type: LocaleKey,
     /// `confirmation_fail_InternalError` (Locale)
-    #[serde(default)]
     pub confirmation_fail_internal_error: LocaleKey,
     /// `confirmation_fail_InvalidRentalOption` (Locale)
-    #[serde(default)]
     pub confirmation_fail_invalid_rental_option: LocaleKey,
     /// `confirmation_fail_ShipNotInValidLocation` (Locale)
-    #[serde(default)]
     pub confirmation_fail_ship_not_in_valid_location: LocaleKey,
     /// `confirmation_fail_NoItemsInSaleError` (Locale)
-    #[serde(default)]
     pub confirmation_fail_no_items_in_sale_error: LocaleKey,
     /// `confirmation_fail_WaitingForPendingResult` (Locale)
-    #[serde(default)]
     pub confirmation_fail_waiting_for_pending_result: LocaleKey,
     /// `confirmation_fail_ActorDoesNotOwnSaleItem` (Locale)
-    #[serde(default)]
     pub confirmation_fail_actor_does_not_own_sale_item: LocaleKey,
     /// `confirmation_fail_TransactionCostMismatch` (Locale)
-    #[serde(default)]
     pub confirmation_fail_transaction_cost_mismatch: LocaleKey,
     /// `confirmation_fail_ItemMaxStockError` (Locale)
-    #[serde(default)]
     pub confirmation_fail_item_max_stock_error: LocaleKey,
     /// `confirmation_fail_ItemNotSellable` (Locale)
-    #[serde(default)]
     pub confirmation_fail_item_not_sellable: LocaleKey,
     /// `confirmation_fail_ItemNotBuyable` (Locale)
-    #[serde(default)]
     pub confirmation_fail_item_not_buyable: LocaleKey,
     /// `confirmation_fail_TimedOut` (Locale)
-    #[serde(default)]
     pub confirmation_fail_timed_out: LocaleKey,
     /// `confirmation_fail_InsuffientStock` (Locale)
-    #[serde(default)]
     pub confirmation_fail_insuffient_stock: LocaleKey,
     /// `confirmation_fail_ServiceError` (Locale)
-    #[serde(default)]
     pub confirmation_fail_service_error: LocaleKey,
     /// `confirmation_fail_DatabaseError` (Locale)
-    #[serde(default)]
     pub confirmation_fail_database_error: LocaleKey,
     /// `confirmation_fail_InvalidBuyer` (Locale)
-    #[serde(default)]
     pub confirmation_fail_invalid_buyer: LocaleKey,
     /// `confirmation_fail_InvalidItem` (Locale)
-    #[serde(default)]
     pub confirmation_fail_invalid_item: LocaleKey,
     /// `confirmation_fail_InvalidRequest` (Locale)
-    #[serde(default)]
     pub confirmation_fail_invalid_request: LocaleKey,
     /// `confirmation_fail_InsufficentFunds` (Locale)
-    #[serde(default)]
     pub confirmation_fail_insufficent_funds: LocaleKey,
     /// `confirmation_fail_InvalidEntityClassGUID` (Locale)
-    #[serde(default)]
     pub confirmation_fail_invalid_entity_class_guid: LocaleKey,
     /// `confirmation_fail_InvalidKioskId` (Locale)
-    #[serde(default)]
     pub confirmation_fail_invalid_kiosk_id: LocaleKey,
     /// `confirmation_fail_InvalidSellPrice` (Locale)
-    #[serde(default)]
     pub confirmation_fail_invalid_sell_price: LocaleKey,
     /// `confirmation_fail_InvalidMineableEntry` (Locale)
-    #[serde(default)]
     pub confirmation_fail_invalid_mineable_entry: LocaleKey,
     /// `confirmation_fail_PlayerIdMismatch` (Locale)
-    #[serde(default)]
     pub confirmation_fail_player_id_mismatch: LocaleKey,
     /// `confirmation_fail_CargoCreationFailed` (Locale)
-    #[serde(default)]
     pub confirmation_fail_cargo_creation_failed: LocaleKey,
     /// `confirmation_fail_WalletNotFound` (Locale)
-    #[serde(default)]
     pub confirmation_fail_wallet_not_found: LocaleKey,
     /// `confirmation_fail_MissingResourceDataType` (Locale)
-    #[serde(default)]
     pub confirmation_fail_missing_resource_data_type: LocaleKey,
     /// `confirmation_fail_PlayerInVehicleDuringCargoTransaction` (Locale)
-    #[serde(default)]
     pub confirmation_fail_player_in_vehicle_during_cargo_transaction: LocaleKey,
     /// `confirmation_fail_InvalidParentState` (Locale)
-    #[serde(default)]
     pub confirmation_fail_invalid_parent_state: LocaleKey,
     /// `confirmation_fail_InvalidResourceTypeGUID` (Locale)
-    #[serde(default)]
     pub confirmation_fail_invalid_resource_type_guid: LocaleKey,
     /// `confirmation_fail_CargoRemovalFailed` (Locale)
-    #[serde(default)]
     pub confirmation_fail_cargo_removal_failed: LocaleKey,
     /// `confirmation_fail_WalletUpdateFailed` (Locale)
-    #[serde(default)]
     pub confirmation_fail_wallet_update_failed: LocaleKey,
     /// `confirmation_fail_ResourceContainerQueryFailed` (Locale)
-    #[serde(default)]
     pub confirmation_fail_resource_container_query_failed: LocaleKey,
     /// `confirmation_fail_PricePerUnitMismatch` (Locale)
-    #[serde(default)]
     pub confirmation_fail_price_per_unit_mismatch: LocaleKey,
     /// `confirmation_fail_InvalidContainer` (Locale)
-    #[serde(default)]
     pub confirmation_fail_invalid_container: LocaleKey,
     /// `confirmation_fail_EntityQueryFailed` (Locale)
-    #[serde(default)]
     pub confirmation_fail_entity_query_failed: LocaleKey,
     /// `confirmation_fail_MissingSnapshot` (Locale)
-    #[serde(default)]
     pub confirmation_fail_missing_snapshot: LocaleKey,
     /// `confirmation_fail_MissingSnapshotData` (Locale)
-    #[serde(default)]
     pub confirmation_fail_missing_snapshot_data: LocaleKey,
     /// `confirmation_fail_SnapshotGetFail` (Locale)
-    #[serde(default)]
     pub confirmation_fail_snapshot_get_fail: LocaleKey,
     /// `confirmation_fail_ExceededBuyLimit` (Locale)
-    #[serde(default)]
     pub confirmation_fail_exceeded_buy_limit: LocaleKey,
     /// `confirmation_fail_LicenseError` (Locale)
-    #[serde(default)]
     pub confirmation_fail_license_error: LocaleKey,
     /// `confirmation_fail_InvalidPlayerState` (Locale)
-    #[serde(default)]
     pub confirmation_fail_invalid_player_state: LocaleKey,
     /// `confirmation_fail_InvalidBoxSize` (Locale)
-    #[serde(default)]
     pub confirmation_fail_invalid_box_size: LocaleKey,
     /// `confirmation_fail_InvalidBoxClass` (Locale)
-    #[serde(default)]
     pub confirmation_fail_invalid_box_class: LocaleKey,
     /// `confirmation_fail_MissingAutoLoadRate` (Locale)
-    #[serde(default)]
     pub confirmation_fail_missing_auto_load_rate: LocaleKey,
     /// `confirmation_fail_AutoLoadPriceMismatch` (Locale)
-    #[serde(default)]
     pub confirmation_fail_auto_load_price_mismatch: LocaleKey,
     /// `confirmation_fail_AutoLoadTimeMismatch` (Locale)
-    #[serde(default)]
     pub confirmation_fail_auto_load_time_mismatch: LocaleKey,
     /// `confirmation_fail_AutoLoadStartFailed` (Locale)
-    #[serde(default)]
     pub confirmation_fail_auto_load_start_failed: LocaleKey,
 }
 
@@ -521,16 +413,12 @@ impl<'a> Extract<'a> for SGlobalShopErrors {
 }
 
 /// DCB type: `ItemTypeModifier`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ItemTypeModifier {
     /// `Type` (EnumChoice)
-    #[serde(default)]
     pub r#type: EItemType,
     /// `SubType` (EnumChoice)
-    #[serde(default)]
     pub sub_type: EItemSubType,
     /// `matchPercentage` (Single)
-    #[serde(default)]
     pub match_percentage: f32,
 }
 
@@ -551,25 +439,18 @@ impl<'a> Extract<'a> for ItemTypeModifier {
 }
 
 /// DCB type: `GlobalShopSellingParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GlobalShopSellingParams {
     /// `matchPercentage` (Single)
-    #[serde(default)]
     pub match_percentage: f32,
     /// `noMatchPercentage` (Single)
-    #[serde(default)]
     pub no_match_percentage: f32,
     /// `missionItemSellPriceReductionPercentage` (Single)
-    #[serde(default)]
     pub mission_item_sell_price_reduction_percentage: f32,
     /// `maxInventoryCurve` (Single (array))
-    #[serde(default)]
     pub max_inventory_curve: Vec<f32>,
     /// `wearCurve` (Single (array))
-    #[serde(default)]
     pub wear_curve: Vec<f32>,
     /// `itemTypeModifiers` (Class (array))
-    #[serde(default)]
     pub item_type_modifiers: Vec<Handle<ItemTypeModifier>>,
 }
 
@@ -603,19 +484,14 @@ impl<'a> Extract<'a> for GlobalShopSellingParams {
 }
 
 /// DCB type: `LicensedItemModifier`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LicensedItemModifier {
     /// `LicensedItem` (Reference)
-    #[serde(default)]
     pub licensed_item: Option<CigGuid>,
     /// `Type` (EnumChoice)
-    #[serde(default)]
     pub r#type: ELicenseType,
     /// `PercentageModifier` (Single)
-    #[serde(default)]
     pub percentage_modifier: f32,
     /// `DisableDuplicateBadgeCheck` (Boolean)
-    #[serde(default)]
     pub disable_duplicate_badge_check: bool,
 }
 
@@ -637,13 +513,10 @@ impl<'a> Extract<'a> for LicensedItemModifier {
 }
 
 /// DCB type: `GlobalShopBuyingParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GlobalShopBuyingParams {
     /// `tutorialItemBuyLimitPerHour` (UInt32)
-    #[serde(default)]
     pub tutorial_item_buy_limit_per_hour: u32,
     /// `licensedItemModifiers` (Class (array))
-    #[serde(default)]
     pub licensed_item_modifiers: Vec<Handle<LicensedItemModifier>>,
 }
 

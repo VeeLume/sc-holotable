@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,16 +19,12 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `PlayerChoice_Option`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PlayerChoice_Option {
     /// `text` (Locale)
-    #[serde(default)]
     pub text: LocaleKey,
     /// `id` (Int32)
-    #[serde(default)]
     pub id: i32,
     /// `isPrimary` (Boolean)
-    #[serde(default)]
     pub is_primary: bool,
 }
 
@@ -50,13 +45,10 @@ impl<'a> Extract<'a> for PlayerChoice_Option {
 }
 
 /// DCB type: `PlayerChoice_OptionList`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PlayerChoice_OptionList {
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
     /// `options` (Class (array))
-    #[serde(default)]
     pub options: Vec<Handle<PlayerChoice_Option>>,
 }
 
@@ -82,10 +74,8 @@ impl<'a> Extract<'a> for PlayerChoice_OptionList {
 }
 
 /// DCB type: `PlayerChoice_Library`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PlayerChoice_Library {
     /// `optionLists` (Class (array))
-    #[serde(default)]
     pub option_lists: Vec<Handle<PlayerChoice_OptionList>>,
 }
 

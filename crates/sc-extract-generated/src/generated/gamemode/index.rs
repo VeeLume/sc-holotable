@@ -10,19 +10,15 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
 use std::collections::HashMap;
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use crate::Handle;
 use super::super::*;
 
 /// Record index for the `gamemode` feature.
-#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+#[derive(Default)]
 pub struct GamemodeIndex {
-    #[serde(default)]
     pub seaplayer_loadout_snapshots: HashMap<CigGuid, Handle<SEAPlayerLoadoutSnapshots>>,
-    #[serde(default)]
     pub entity_default_loadout_params: HashMap<CigGuid, Handle<EntityDefaultLoadoutParams>>,
-    #[serde(default)]
     pub player_ship_respawn: HashMap<CigGuid, Handle<PlayerShipRespawn>>,
 }
 

@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -21,7 +20,6 @@ use super::super::*;
 
 /// DCB type: `PlanetNavigationVolumeParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PlanetNavigationVolumeParams {
 }
 
@@ -39,49 +37,34 @@ impl<'a> Extract<'a> for PlanetNavigationVolumeParams {
 }
 
 /// DCB type: `AsteroidFieldShapeLinkParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AsteroidFieldShapeLinkParams {
     /// `shapeLinkName` (String (array))
-    #[serde(default)]
     pub shape_link_name: Vec<String>,
     /// `rngSeed` (Int32)
-    #[serde(default)]
     pub rng_seed: i32,
     /// `viewDistRatio` (Byte)
-    #[serde(default)]
     pub view_dist_ratio: u32,
     /// `lodRatio` (Byte)
-    #[serde(default)]
     pub lod_ratio: u32,
     /// `composition` (Reference)
-    #[serde(default)]
     pub composition: Option<CigGuid>,
     /// `densityScale` (Single)
-    #[serde(default)]
     pub density_scale: f32,
     /// `noiseAmplitude` (Single)
-    #[serde(default)]
     pub noise_amplitude: f32,
     /// `noiseRoughness` (Single)
-    #[serde(default)]
     pub noise_roughness: f32,
     /// `noiseGranularity` (Single)
-    #[serde(default)]
     pub noise_granularity: f32,
     /// `falloffCeiling` (Single)
-    #[serde(default)]
     pub falloff_ceiling: f32,
     /// `shapeStrength` (Single)
-    #[serde(default)]
     pub shape_strength: f32,
     /// `noiseFrequencyX` (Single)
-    #[serde(default)]
     pub noise_frequency_x: f32,
     /// `noiseFrequencyY` (Single)
-    #[serde(default)]
     pub noise_frequency_y: f32,
     /// `noiseFrequencyZ` (Single)
-    #[serde(default)]
     pub noise_frequency_z: f32,
 }
 
@@ -116,49 +99,34 @@ impl<'a> Extract<'a> for AsteroidFieldShapeLinkParams {
 
 /// DCB type: `SAsteroidClusterComponentParams`
 /// Inherits from: `SAsteroidFieldComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SAsteroidClusterComponentParams {
     /// `rngSeed` (Int32)
-    #[serde(default)]
     pub rng_seed: i32,
     /// `viewDistRatio` (Byte)
-    #[serde(default)]
     pub view_dist_ratio: u32,
     /// `lodRatio` (Byte)
-    #[serde(default)]
     pub lod_ratio: u32,
     /// `composition` (String)
-    #[serde(default)]
     pub composition: String,
     /// `noiseAmplitude` (Single)
-    #[serde(default)]
     pub noise_amplitude: f32,
     /// `noiseRoughness` (Single)
-    #[serde(default)]
     pub noise_roughness: f32,
     /// `noiseGranularity` (Single)
-    #[serde(default)]
     pub noise_granularity: f32,
     /// `densityScale` (Single)
-    #[serde(default)]
     pub density_scale: f32,
     /// `widthKm` (Double)
-    #[serde(default)]
     pub width_km: f64,
     /// `lengthKm` (Double)
-    #[serde(default)]
     pub length_km: f64,
     /// `heightKm` (Double)
-    #[serde(default)]
     pub height_km: f64,
     /// `noiseFrequencyX` (Single)
-    #[serde(default)]
     pub noise_frequency_x: f32,
     /// `noiseFrequencyY` (Single)
-    #[serde(default)]
     pub noise_frequency_y: f32,
     /// `noiseFrequencyZ` (Single)
-    #[serde(default)]
     pub noise_frequency_z: f32,
 }
 
@@ -191,43 +159,30 @@ impl<'a> Extract<'a> for SAsteroidClusterComponentParams {
 
 /// DCB type: `SAsteroidRingComponentParams`
 /// Inherits from: `SAsteroidFieldComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SAsteroidRingComponentParams {
     /// `rngSeed` (Int32)
-    #[serde(default)]
     pub rng_seed: i32,
     /// `viewDistRatio` (Byte)
-    #[serde(default)]
     pub view_dist_ratio: u32,
     /// `lodRatio` (Byte)
-    #[serde(default)]
     pub lod_ratio: u32,
     /// `composition` (String)
-    #[serde(default)]
     pub composition: String,
     /// `noiseAmplitude` (Single)
-    #[serde(default)]
     pub noise_amplitude: f32,
     /// `noiseRoughness` (Single)
-    #[serde(default)]
     pub noise_roughness: f32,
     /// `noiseGranularity` (Single)
-    #[serde(default)]
     pub noise_granularity: f32,
     /// `densityScale` (Single)
-    #[serde(default)]
     pub density_scale: f32,
     /// `innerRadiusKm` (Double)
-    #[serde(default)]
     pub inner_radius_km: f64,
     /// `outerRadiusKm` (Double)
-    #[serde(default)]
     pub outer_radius_km: f64,
     /// `depthKm` (Double)
-    #[serde(default)]
     pub depth_km: f64,
     /// `noiseFrequencyRadial` (Single)
-    #[serde(default)]
     pub noise_frequency_radial: f32,
 }
 
@@ -258,40 +213,28 @@ impl<'a> Extract<'a> for SAsteroidRingComponentParams {
 
 /// DCB type: `SAsteroidGasCloudComponentParams`
 /// Inherits from: `SAsteroidFieldComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SAsteroidGasCloudComponentParams {
     /// `rngSeed` (Int32)
-    #[serde(default)]
     pub rng_seed: i32,
     /// `viewDistRatio` (Byte)
-    #[serde(default)]
     pub view_dist_ratio: u32,
     /// `lodRatio` (Byte)
-    #[serde(default)]
     pub lod_ratio: u32,
     /// `composition` (String)
-    #[serde(default)]
     pub composition: String,
     /// `noiseAmplitude` (Single)
-    #[serde(default)]
     pub noise_amplitude: f32,
     /// `noiseRoughness` (Single)
-    #[serde(default)]
     pub noise_roughness: f32,
     /// `noiseGranularity` (Single)
-    #[serde(default)]
     pub noise_granularity: f32,
     /// `densityScale` (Single)
-    #[serde(default)]
     pub density_scale: f32,
     /// `densityExponent` (Single)
-    #[serde(default)]
     pub density_exponent: f32,
     /// `densityMinimum` (Single)
-    #[serde(default)]
     pub density_minimum: f32,
     /// `densityMaximum` (Single)
-    #[serde(default)]
     pub density_maximum: f32,
 }
 
@@ -321,46 +264,32 @@ impl<'a> Extract<'a> for SAsteroidGasCloudComponentParams {
 
 /// DCB type: `SAsteroidShapeComponentParams`
 /// Inherits from: `SAsteroidFieldComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SAsteroidShapeComponentParams {
     /// `rngSeed` (Int32)
-    #[serde(default)]
     pub rng_seed: i32,
     /// `viewDistRatio` (Byte)
-    #[serde(default)]
     pub view_dist_ratio: u32,
     /// `lodRatio` (Byte)
-    #[serde(default)]
     pub lod_ratio: u32,
     /// `composition` (String)
-    #[serde(default)]
     pub composition: String,
     /// `noiseAmplitude` (Single)
-    #[serde(default)]
     pub noise_amplitude: f32,
     /// `noiseRoughness` (Single)
-    #[serde(default)]
     pub noise_roughness: f32,
     /// `noiseGranularity` (Single)
-    #[serde(default)]
     pub noise_granularity: f32,
     /// `densityScale` (Single)
-    #[serde(default)]
     pub density_scale: f32,
     /// `noiseFrequencyX` (Single)
-    #[serde(default)]
     pub noise_frequency_x: f32,
     /// `noiseFrequencyY` (Single)
-    #[serde(default)]
     pub noise_frequency_y: f32,
     /// `noiseFrequencyZ` (Single)
-    #[serde(default)]
     pub noise_frequency_z: f32,
     /// `shapeLinks` (Class (array))
-    #[serde(default)]
     pub shape_links: Vec<Handle<AsteroidFieldShapeLinkParams>>,
     /// `exclusionShapeLinks` (String (array))
-    #[serde(default)]
     pub exclusion_shape_links: Vec<String>,
 }
 
@@ -400,76 +329,52 @@ impl<'a> Extract<'a> for SAsteroidShapeComponentParams {
 
 /// DCB type: `FogVolumeComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct FogVolumeComponentParams {
     /// `active` (Boolean)
-    #[serde(default)]
     pub active: bool,
     /// `volumeType` (Int32)
-    #[serde(default)]
     pub volume_type: i32,
     /// `size` (Class)
-    #[serde(default)]
     pub size: Option<Handle<Vec3>>,
     /// `color` (Class)
-    #[serde(default)]
     pub color: Option<Handle<RGB>>,
     /// `hdrDynamic` (Single)
-    #[serde(default)]
     pub hdr_dynamic: f32,
     /// `useGlobalFogColor` (Boolean)
-    #[serde(default)]
     pub use_global_fog_color: bool,
     /// `globalDensity` (Single)
-    #[serde(default)]
     pub global_density: f32,
     /// `densityOffset` (Single)
-    #[serde(default)]
     pub density_offset: f32,
     /// `fallOffDirLong` (Single)
-    #[serde(default)]
     pub fall_off_dir_long: f32,
     /// `fallOffDirLati` (Single)
-    #[serde(default)]
     pub fall_off_dir_lati: f32,
     /// `fallOffShift` (Single)
-    #[serde(default)]
     pub fall_off_shift: f32,
     /// `fallOffScale` (Single)
-    #[serde(default)]
     pub fall_off_scale: f32,
     /// `softEdges` (Single)
-    #[serde(default)]
     pub soft_edges: f32,
     /// `rampStart` (Single)
-    #[serde(default)]
     pub ramp_start: f32,
     /// `rampEnd` (Single)
-    #[serde(default)]
     pub ramp_end: f32,
     /// `rampInfluence` (Single)
-    #[serde(default)]
     pub ramp_influence: f32,
     /// `densityNoiseScale` (Single)
-    #[serde(default)]
     pub density_noise_scale: f32,
     /// `densityNoiseOffset` (Single)
-    #[serde(default)]
     pub density_noise_offset: f32,
     /// `densityNoiseTimeFrequency` (Single)
-    #[serde(default)]
     pub density_noise_time_frequency: f32,
     /// `densityNoiseSize` (Class)
-    #[serde(default)]
     pub density_noise_size: Option<Handle<Vec3>>,
     /// `densityNoiseWindInfluence` (Single)
-    #[serde(default)]
     pub density_noise_wind_influence: f32,
     /// `affectsThisAreaOnly` (Boolean)
-    #[serde(default)]
     pub affects_this_area_only: bool,
     /// `maxDistance` (Single)
-    #[serde(default)]
     pub max_distance: f32,
 }
 
@@ -520,10 +425,8 @@ impl<'a> Extract<'a> for FogVolumeComponentParams {
 
 /// DCB type: `HarvestableProviderParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct HarvestableProviderParams {
     /// `preset` (Reference)
-    #[serde(default)]
     pub preset: Option<CigGuid>,
 }
 
@@ -543,7 +446,6 @@ impl<'a> Extract<'a> for HarvestableProviderParams {
 
 /// DCB type: `SEntityComponentManagedEntityRegionParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SEntityComponentManagedEntityRegionParams {
 }
 
@@ -562,7 +464,6 @@ impl<'a> Extract<'a> for SEntityComponentManagedEntityRegionParams {
 
 /// DCB type: `SEntityComponentManagedEntityZoneParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SEntityComponentManagedEntityZoneParams {
 }
 
@@ -581,13 +482,10 @@ impl<'a> Extract<'a> for SEntityComponentManagedEntityZoneParams {
 
 /// DCB type: `ProceduralPlanetAudioComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ProceduralPlanetAudioComponentParams {
     /// `planetAudioData` (Reference)
-    #[serde(default)]
     pub planet_audio_data: Option<CigGuid>,
     /// `riverAudioData` (Reference)
-    #[serde(default)]
     pub river_audio_data: Option<CigGuid>,
 }
 
@@ -608,10 +506,8 @@ impl<'a> Extract<'a> for ProceduralPlanetAudioComponentParams {
 
 /// DCB type: `PlanetOceanAudioComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PlanetOceanAudioComponentParams {
     /// `planetOceanAudioData` (Reference)
-    #[serde(default)]
     pub planet_ocean_audio_data: Option<CigGuid>,
 }
 
@@ -630,13 +526,10 @@ impl<'a> Extract<'a> for PlanetOceanAudioComponentParams {
 }
 
 /// DCB type: `DefaultSphereGeom`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DefaultSphereGeom {
     /// `disable` (Boolean)
-    #[serde(default)]
     pub disable: bool,
     /// `radiusInflation` (Single)
-    #[serde(default)]
     pub radius_inflation: f32,
 }
 
@@ -656,13 +549,10 @@ impl<'a> Extract<'a> for DefaultSphereGeom {
 }
 
 /// DCB type: `SphereFieldGeom`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SphereFieldGeom {
     /// `center` (Class)
-    #[serde(default)]
     pub center: Option<Handle<Vec3>>,
     /// `R` (Single)
-    #[serde(default)]
     pub r: f32,
 }
 
@@ -685,19 +575,14 @@ impl<'a> Extract<'a> for SphereFieldGeom {
 }
 
 /// DCB type: `BoxFieldGeom`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BoxFieldGeom {
     /// `center` (Class)
-    #[serde(default)]
     pub center: Option<Handle<Vec3>>,
     /// `oriented` (Boolean)
-    #[serde(default)]
     pub oriented: bool,
     /// `basis` (Class)
-    #[serde(default)]
     pub basis: Option<Handle<Quat>>,
     /// `size` (Class)
-    #[serde(default)]
     pub size: Option<Handle<Vec3>>,
 }
 
@@ -728,19 +613,14 @@ impl<'a> Extract<'a> for BoxFieldGeom {
 }
 
 /// DCB type: `CylinderFieldGeom`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CylinderFieldGeom {
     /// `center` (Class)
-    #[serde(default)]
     pub center: Option<Handle<Vec3>>,
     /// `axis` (Class)
-    #[serde(default)]
     pub axis: Option<Handle<Vec3>>,
     /// `radius` (Single)
-    #[serde(default)]
     pub radius: f32,
     /// `hh` (Single)
-    #[serde(default)]
     pub hh: f32,
 }
 
@@ -768,19 +648,14 @@ impl<'a> Extract<'a> for CylinderFieldGeom {
 }
 
 /// DCB type: `CapsuleFieldGeom`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CapsuleFieldGeom {
     /// `center` (Class)
-    #[serde(default)]
     pub center: Option<Handle<Vec3>>,
     /// `axis` (Class)
-    #[serde(default)]
     pub axis: Option<Handle<Vec3>>,
     /// `radius` (Single)
-    #[serde(default)]
     pub radius: f32,
     /// `hh` (Single)
-    #[serde(default)]
     pub hh: f32,
 }
 
@@ -808,19 +683,14 @@ impl<'a> Extract<'a> for CapsuleFieldGeom {
 }
 
 /// DCB type: `TorusFieldGeom`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct TorusFieldGeom {
     /// `center` (Class)
-    #[serde(default)]
     pub center: Option<Handle<Vec3>>,
     /// `axis` (Class)
-    #[serde(default)]
     pub axis: Option<Handle<Vec3>>,
     /// `R` (Single)
-    #[serde(default)]
     pub r: f32,
     /// `r` (Single)
-    #[serde(default)]
     pub r_2: f32,
 }
 
@@ -848,10 +718,8 @@ impl<'a> Extract<'a> for TorusFieldGeom {
 }
 
 /// DCB type: `MeshFieldGeom`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MeshFieldGeom {
     /// `geometry` (Class)
-    #[serde(default)]
     pub geometry: Option<Handle<GlobalResourceGeometry>>,
 }
 
@@ -873,19 +741,14 @@ impl<'a> Extract<'a> for MeshFieldGeom {
 }
 
 /// DCB type: `Texture3DFieldGeom`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Texture3DFieldGeom {
     /// `texture3D` (String)
-    #[serde(default)]
     pub texture3_d: String,
     /// `size` (Class)
-    #[serde(default)]
     pub size: Option<Handle<Vec3>>,
     /// `posOffset` (Class)
-    #[serde(default)]
     pub pos_offset: Option<Handle<Vec3>>,
     /// `rotOffset` (Class)
-    #[serde(default)]
     pub rot_offset: Option<Handle<Ang3>>,
 }
 
@@ -917,31 +780,22 @@ impl<'a> Extract<'a> for Texture3DFieldGeom {
 
 /// DCB type: `QuantumObstacleParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct QuantumObstacleParams {
     /// `defaultSphereFieldGeometry` (Class)
-    #[serde(default)]
     pub default_sphere_field_geometry: Option<Handle<DefaultSphereGeom>>,
     /// `sphereFieldGeometries` (Class (array))
-    #[serde(default)]
     pub sphere_field_geometries: Vec<Handle<SphereFieldGeom>>,
     /// `boxFieldGeometries` (Class (array))
-    #[serde(default)]
     pub box_field_geometries: Vec<Handle<BoxFieldGeom>>,
     /// `cylinderFieldGeometries` (Class (array))
-    #[serde(default)]
     pub cylinder_field_geometries: Vec<Handle<CylinderFieldGeom>>,
     /// `capsuleFieldGeometries` (Class (array))
-    #[serde(default)]
     pub capsule_field_geometries: Vec<Handle<CapsuleFieldGeom>>,
     /// `torusFieldGeometries` (Class (array))
-    #[serde(default)]
     pub torus_field_geometries: Vec<Handle<TorusFieldGeom>>,
     /// `meshFieldGeometries` (Class (array))
-    #[serde(default)]
     pub mesh_field_geometries: Vec<Handle<MeshFieldGeom>>,
     /// `texture3DFieldGeometries` (Class (array))
-    #[serde(default)]
     pub texture3_dfield_geometries: Vec<Handle<Texture3DFieldGeom>>,
 }
 
@@ -1013,7 +867,6 @@ impl<'a> Extract<'a> for QuantumObstacleParams {
 
 /// DCB type: `SolarSystemComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SolarSystemComponentParams {
 }
 
@@ -1032,19 +885,14 @@ impl<'a> Extract<'a> for SolarSystemComponentParams {
 
 /// DCB type: `SEntityComponentNoisySmoothingModificationObjectParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SEntityComponentNoisySmoothingModificationObjectParams {
     /// `smoothingParams` (Class)
-    #[serde(default)]
     pub smoothing_params: Option<Handle<SEntityComponentSmoothingModificationObjectParams>>,
     /// `noiseAmount` (Single)
-    #[serde(default)]
     pub noise_amount: f32,
     /// `noiseFrequency` (Single)
-    #[serde(default)]
     pub noise_frequency: f32,
     /// `seed` (Int32)
-    #[serde(default)]
     pub seed: i32,
 }
 
@@ -1070,22 +918,16 @@ impl<'a> Extract<'a> for SEntityComponentNoisySmoothingModificationObjectParams 
 
 /// DCB type: `SEntityComponentPlanetAreaParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SEntityComponentPlanetAreaParams {
     /// `size` (Class)
-    #[serde(default)]
     pub size: Option<Handle<Vec3>>,
     /// `areaType` (EnumChoice)
-    #[serde(default)]
     pub area_type: PlanetAreaType,
     /// `lodLevel` (Int32)
-    #[serde(default)]
     pub lod_level: i32,
     /// `bOverride` (Boolean)
-    #[serde(default)]
     pub b_override: bool,
     /// `areaFitting` (EnumChoice)
-    #[serde(default)]
     pub area_fitting: PlanetAreaFitting,
 }
 
@@ -1112,28 +954,20 @@ impl<'a> Extract<'a> for SEntityComponentPlanetAreaParams {
 
 /// DCB type: `SEntityComponentPushPullModificationObjectParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SEntityComponentPushPullModificationObjectParams {
     /// `size` (Single)
-    #[serde(default)]
     pub size: f32,
     /// `strength` (Single)
-    #[serde(default)]
     pub strength: f32,
     /// `pull` (Boolean)
-    #[serde(default)]
     pub pull: bool,
     /// `steepness` (Single)
-    #[serde(default)]
     pub steepness: f32,
     /// `elliptical` (Boolean)
-    #[serde(default)]
     pub elliptical: bool,
     /// `rimRadius` (Single)
-    #[serde(default)]
     pub rim_radius: f32,
     /// `sortOrder` (Int32)
-    #[serde(default)]
     pub sort_order: i32,
 }
 
@@ -1159,22 +993,16 @@ impl<'a> Extract<'a> for SEntityComponentPushPullModificationObjectParams {
 
 /// DCB type: `SEntityComponentRectangleModificationObjectParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SEntityComponentRectangleModificationObjectParams {
     /// `size` (Class)
-    #[serde(default)]
     pub size: Option<Handle<Vec3>>,
     /// `rollOff` (Single)
-    #[serde(default)]
     pub roll_off: f32,
     /// `strength` (Single)
-    #[serde(default)]
     pub strength: f32,
     /// `dishEffect` (Single)
-    #[serde(default)]
     pub dish_effect: f32,
     /// `sortOrder` (Int32)
-    #[serde(default)]
     pub sort_order: i32,
 }
 
@@ -1201,19 +1029,14 @@ impl<'a> Extract<'a> for SEntityComponentRectangleModificationObjectParams {
 
 /// DCB type: `SEntityComponentSmoothingModificationObjectParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SEntityComponentSmoothingModificationObjectParams {
     /// `size` (Single)
-    #[serde(default)]
     pub size: f32,
     /// `rollOff` (Single)
-    #[serde(default)]
     pub roll_off: f32,
     /// `strength` (Single)
-    #[serde(default)]
     pub strength: f32,
     /// `sortOrder` (Int32)
-    #[serde(default)]
     pub sort_order: i32,
 }
 
@@ -1235,19 +1058,14 @@ impl<'a> Extract<'a> for SEntityComponentSmoothingModificationObjectParams {
 }
 
 /// DCB type: `GasCloudSunShadowParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GasCloudSunShadowParams {
     /// `enabled` (Boolean)
-    #[serde(default)]
     pub enabled: bool,
     /// `resScaleXY` (Single)
-    #[serde(default)]
     pub res_scale_xy: f32,
     /// `resScaleZ` (Single)
-    #[serde(default)]
     pub res_scale_z: f32,
     /// `shadowDistanceScale` (Single)
-    #[serde(default)]
     pub shadow_distance_scale: f32,
 }
 
@@ -1269,10 +1087,8 @@ impl<'a> Extract<'a> for GasCloudSunShadowParams {
 }
 
 /// DCB type: `GasCloudVDBDataParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GasCloudVDBDataParams {
     /// `file` (String)
-    #[serde(default)]
     pub file: String,
 }
 
@@ -1291,13 +1107,10 @@ impl<'a> Extract<'a> for GasCloudVDBDataParams {
 }
 
 /// DCB type: `GasCloudFadeSphereParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GasCloudFadeSphereParams {
     /// `radius` (Single)
-    #[serde(default)]
     pub radius: f32,
     /// `fade` (Single)
-    #[serde(default)]
     pub fade: f32,
 }
 
@@ -1317,25 +1130,18 @@ impl<'a> Extract<'a> for GasCloudFadeSphereParams {
 }
 
 /// DCB type: `GasCloudFadeCubeParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GasCloudFadeCubeParams {
     /// `sizeX` (Single)
-    #[serde(default)]
     pub size_x: f32,
     /// `sizeY` (Single)
-    #[serde(default)]
     pub size_y: f32,
     /// `sizeZ` (Single)
-    #[serde(default)]
     pub size_z: f32,
     /// `fadeX` (Single)
-    #[serde(default)]
     pub fade_x: f32,
     /// `fadeY` (Single)
-    #[serde(default)]
     pub fade_y: f32,
     /// `fadeZ` (Single)
-    #[serde(default)]
     pub fade_z: f32,
 }
 
@@ -1359,19 +1165,14 @@ impl<'a> Extract<'a> for GasCloudFadeCubeParams {
 }
 
 /// DCB type: `GasCloudFadeParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GasCloudFadeParams {
     /// `volumeType` (EnumChoice)
-    #[serde(default)]
     pub volume_type: EGasCloudFadeVolumeType,
     /// `sphereParams` (Class)
-    #[serde(default)]
     pub sphere_params: Option<Handle<GasCloudFadeSphereParams>>,
     /// `cubeParams` (Class)
-    #[serde(default)]
     pub cube_params: Option<Handle<GasCloudFadeCubeParams>>,
     /// `preview` (Boolean)
-    #[serde(default)]
     pub preview: bool,
 }
 
@@ -1399,58 +1200,40 @@ impl<'a> Extract<'a> for GasCloudFadeParams {
 }
 
 /// DCB type: `GasCloudVDBShapingParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GasCloudVDBShapingParams {
     /// `enabled` (Boolean)
-    #[serde(default)]
     pub enabled: bool,
     /// `extinctionToOpticalDensity` (Single)
-    #[serde(default)]
     pub extinction_to_optical_density: f32,
     /// `shapeNoiseTileFactor` (Single)
-    #[serde(default)]
     pub shape_noise_tile_factor: f32,
     /// `shapeNoiseMipBias` (Single)
-    #[serde(default)]
     pub shape_noise_mip_bias: f32,
     /// `shapeFactorControl` (Single)
-    #[serde(default)]
     pub shape_factor_control: f32,
     /// `shapeNoiseMin` (Single)
-    #[serde(default)]
     pub shape_noise_min: f32,
     /// `shapeNoiseMax` (Single)
-    #[serde(default)]
     pub shape_noise_max: f32,
     /// `shapeNoiseErosionScale` (Single)
-    #[serde(default)]
     pub shape_noise_erosion_scale: f32,
     /// `shapeNoiseErosionDensityBoost` (Single)
-    #[serde(default)]
     pub shape_noise_erosion_density_boost: f32,
     /// `erosionNoiseTileFactor` (Single)
-    #[serde(default)]
     pub erosion_noise_tile_factor: f32,
     /// `erosionNoiseMipBias` (Single)
-    #[serde(default)]
     pub erosion_noise_mip_bias: f32,
     /// `erosionScale` (Single)
-    #[serde(default)]
     pub erosion_scale: f32,
     /// `erosionDensityBoost` (Single)
-    #[serde(default)]
     pub erosion_density_boost: f32,
     /// `erosionHiFreqScale` (Single)
-    #[serde(default)]
     pub erosion_hi_freq_scale: f32,
     /// `erosionHiFreqDensityBoost` (Single)
-    #[serde(default)]
     pub erosion_hi_freq_density_boost: f32,
     /// `vdbDensityScale` (Single)
-    #[serde(default)]
     pub vdb_density_scale: f32,
     /// `vdbDensityBias` (Single)
-    #[serde(default)]
     pub vdb_density_bias: f32,
 }
 
@@ -1485,28 +1268,20 @@ impl<'a> Extract<'a> for GasCloudVDBShapingParams {
 }
 
 /// DCB type: `GasCloudVDBEdgeAlbedoControlParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GasCloudVDBEdgeAlbedoControlParams {
     /// `enabled` (Boolean)
-    #[serde(default)]
     pub enabled: bool,
     /// `amplitude` (Single)
-    #[serde(default)]
     pub amplitude: f32,
     /// `densityOffset` (Single)
-    #[serde(default)]
     pub density_offset: f32,
     /// `densityRamp` (Single)
-    #[serde(default)]
     pub density_ramp: f32,
     /// `densityFalloff` (Single)
-    #[serde(default)]
     pub density_falloff: f32,
     /// `environmentSensitivityGlobal` (Single)
-    #[serde(default)]
     pub environment_sensitivity_global: f32,
     /// `environmentSensitivityLocal` (Single)
-    #[serde(default)]
     pub environment_sensitivity_local: f32,
 }
 
@@ -1531,28 +1306,20 @@ impl<'a> Extract<'a> for GasCloudVDBEdgeAlbedoControlParams {
 }
 
 /// DCB type: `GasCloudVDBLightingParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GasCloudVDBLightingParams {
     /// `albedo` (Class)
-    #[serde(default)]
     pub albedo: Option<Handle<SRGB8>>,
     /// `lightLeakColor` (Class)
-    #[serde(default)]
     pub light_leak_color: Option<Handle<SRGB8>>,
     /// `lightLeakScale` (Single)
-    #[serde(default)]
     pub light_leak_scale: f32,
     /// `density` (Single)
-    #[serde(default)]
     pub density: f32,
     /// `inheritParentDensity` (Boolean)
-    #[serde(default)]
     pub inherit_parent_density: bool,
     /// `rayStepMultiplier` (Single)
-    #[serde(default)]
     pub ray_step_multiplier: f32,
     /// `fadeParams` (Class)
-    #[serde(default)]
     pub fade_params: Option<Handle<GasCloudFadeParams>>,
 }
 
@@ -1586,13 +1353,10 @@ impl<'a> Extract<'a> for GasCloudVDBLightingParams {
 }
 
 /// DCB type: `GasCloudVDBGamePlayParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GasCloudVDBGamePlayParams {
     /// `densityMultiplier` (Single)
-    #[serde(default)]
     pub density_multiplier: f32,
     /// `falloffStepDistance` (Single)
-    #[serde(default)]
     pub falloff_step_distance: f32,
 }
 
@@ -1613,28 +1377,20 @@ impl<'a> Extract<'a> for GasCloudVDBGamePlayParams {
 
 /// DCB type: `GasCloudVDBParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GasCloudVDBParams {
     /// `isChild` (Boolean)
-    #[serde(default)]
     pub is_child: bool,
     /// `data` (Class)
-    #[serde(default)]
     pub data: Option<Handle<GasCloudVDBDataParams>>,
     /// `shaping` (Class)
-    #[serde(default)]
     pub shaping: Option<Handle<GasCloudVDBShapingParams>>,
     /// `edgeAlbedoControl` (Class)
-    #[serde(default)]
     pub edge_albedo_control: Option<Handle<GasCloudVDBEdgeAlbedoControlParams>>,
     /// `lighting` (Class)
-    #[serde(default)]
     pub lighting: Option<Handle<GasCloudVDBLightingParams>>,
     /// `shadow` (Class)
-    #[serde(default)]
     pub shadow: Option<Handle<GasCloudSunShadowParams>>,
     /// `gamePlay` (Class)
-    #[serde(default)]
     pub game_play: Option<Handle<GasCloudVDBGamePlayParams>>,
 }
 
@@ -1677,10 +1433,8 @@ impl<'a> Extract<'a> for GasCloudVDBParams {
 }
 
 /// DCB type: `ProceduralEntityAudioParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ProceduralEntityAudioParams {
     /// `biomeSwitch` (Class)
-    #[serde(default)]
     pub biome_switch: Option<Handle<AudioSwitch>>,
 }
 
@@ -1702,37 +1456,26 @@ impl<'a> Extract<'a> for ProceduralEntityAudioParams {
 }
 
 /// DCB type: `PlanetWeatherParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PlanetWeatherParams {
     /// `maximumWindSpeed` (Single)
-    #[serde(default)]
     pub maximum_wind_speed: f32,
     /// `airDensity` (Single)
-    #[serde(default)]
     pub air_density: f32,
     /// `windMapOverride` (String)
-    #[serde(default)]
     pub wind_map_override: String,
     /// `windMapOffset` (Single)
-    #[serde(default)]
     pub wind_map_offset: f32,
     /// `windMapRotationSpeed` (Single)
-    #[serde(default)]
     pub wind_map_rotation_speed: f32,
     /// `windGustStrengthRange` (Single)
-    #[serde(default)]
     pub wind_gust_strength_range: f32,
     /// `windGustSpeedMultiplier` (Single)
-    #[serde(default)]
     pub wind_gust_speed_multiplier: f32,
     /// `elevationBeginWindSpeedDropOff` (Single)
-    #[serde(default)]
     pub elevation_begin_wind_speed_drop_off: f32,
     /// `windGustRepetitionAmount` (UInt16)
-    #[serde(default)]
     pub wind_gust_repetition_amount: u32,
     /// `enablePlanetaryGroundEffects` (Boolean)
-    #[serde(default)]
     pub enable_planetary_ground_effects: bool,
 }
 
@@ -1760,16 +1503,12 @@ impl<'a> Extract<'a> for PlanetWeatherParams {
 }
 
 /// DCB type: `PlanetRoomParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PlanetRoomParams {
     /// `TemperatureRange` (Single)
-    #[serde(default)]
     pub temperature_range: f32,
     /// `HumidityRange` (Single)
-    #[serde(default)]
     pub humidity_range: f32,
     /// `dayNightTemperatureParams` (StrongPointer)
-    #[serde(default)]
     pub day_night_temperature_params: Option<PlanetDayNightTemperatureBaseParamsPtr>,
 }
 
@@ -1793,10 +1532,8 @@ impl<'a> Extract<'a> for PlanetRoomParams {
 }
 
 /// DCB type: `PlanetAtmosphereParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PlanetAtmosphereParams {
     /// `PressureLinearFalloffInterpolation` (Double)
-    #[serde(default)]
     pub pressure_linear_falloff_interpolation: f64,
 }
 
@@ -1816,19 +1553,14 @@ impl<'a> Extract<'a> for PlanetAtmosphereParams {
 
 /// DCB type: `ProceduralEntityParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ProceduralEntityParams {
     /// `Weather` (Class)
-    #[serde(default)]
     pub weather: Option<Handle<PlanetWeatherParams>>,
     /// `Room` (Class)
-    #[serde(default)]
     pub room: Option<Handle<PlanetRoomParams>>,
     /// `Atmosphere` (Class)
-    #[serde(default)]
     pub atmosphere: Option<Handle<PlanetAtmosphereParams>>,
     /// `AudioParams` (Class)
-    #[serde(default)]
     pub audio_params: Option<Handle<ProceduralEntityAudioParams>>,
 }
 
@@ -1863,10 +1595,8 @@ impl<'a> Extract<'a> for ProceduralEntityParams {
 
 /// DCB type: `AsteroidStateRef`
 /// Inherits from: `AsteroidStateBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AsteroidStateRef {
     /// `stateTemplate` (Reference)
-    #[serde(default)]
     pub state_template: Option<CigGuid>,
 }
 
@@ -1886,16 +1616,12 @@ impl<'a> Extract<'a> for AsteroidStateRef {
 
 /// DCB type: `AtmosphereStateMultiRef`
 /// Inherits from: `AtmosphereStateBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AtmosphereStateMultiRef {
     /// `pressureTemplate` (Reference)
-    #[serde(default)]
     pub pressure_template: Option<CigGuid>,
     /// `temperatureTemplate` (Reference)
-    #[serde(default)]
     pub temperature_template: Option<CigGuid>,
     /// `humidityTemplate` (Reference)
-    #[serde(default)]
     pub humidity_template: Option<CigGuid>,
 }
 
@@ -1917,28 +1643,20 @@ impl<'a> Extract<'a> for AtmosphereStateMultiRef {
 
 /// DCB type: `RadiationState`
 /// Inherits from: `RadiationStateBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct RadiationState {
     /// `distortionMod` (EnumChoice)
-    #[serde(default)]
     pub distortion_mod: RoomStateModifyType,
     /// `distortion` (Single)
-    #[serde(default)]
     pub distortion: f32,
     /// `IR` (Class)
-    #[serde(default)]
     pub ir: Option<Handle<RadiationStatePropertyParams>>,
     /// `EM` (Class)
-    #[serde(default)]
     pub em: Option<Handle<RadiationStatePropertyParams>>,
     /// `CS` (Class)
-    #[serde(default)]
     pub cs: Option<Handle<RadiationStatePropertyParams>>,
     /// `hazardousRadiationMod` (EnumChoice)
-    #[serde(default)]
     pub hazardous_radiation_mod: RoomStateModifyType,
     /// `hazardousRadiationRate` (Single)
-    #[serde(default)]
     pub hazardous_radiation_rate: f32,
 }
 

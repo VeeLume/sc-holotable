@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,19 +19,14 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `MotionConnection`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MotionConnection {
     /// `waitUntillFinished` (Boolean)
-    #[serde(default)]
     pub wait_untill_finished: bool,
     /// `delaySeconds` (Single)
-    #[serde(default)]
     pub delay_seconds: f32,
     /// `waitForEvent` (String)
-    #[serde(default)]
     pub wait_for_event: String,
     /// `nextState` (WeakPointer)
-    #[serde(default)]
     pub next_state: Option<Handle<MotionState>>,
 }
 
@@ -57,28 +51,20 @@ impl<'a> Extract<'a> for MotionConnection {
 }
 
 /// DCB type: `MotionState`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MotionState {
     /// `type` (EnumChoice)
-    #[serde(default)]
     pub r#type: MotionStateType,
     /// `mannequinTags` (String)
-    #[serde(default)]
     pub mannequin_tags: String,
     /// `mannequinFragment` (String)
-    #[serde(default)]
     pub mannequin_fragment: String,
     /// `motionTypeFP` (EnumChoice)
-    #[serde(default)]
     pub motion_type_fp: MotionControlType,
     /// `motionTypeTP` (EnumChoice)
-    #[serde(default)]
     pub motion_type_tp: MotionControlType,
     /// `motionTypeRemote` (EnumChoice)
-    #[serde(default)]
     pub motion_type_remote: MotionControlType,
     /// `connections` (Class (array))
-    #[serde(default)]
     pub connections: Vec<Handle<MotionConnection>>,
 }
 
@@ -109,28 +95,20 @@ impl<'a> Extract<'a> for MotionState {
 }
 
 /// DCB type: `ProceduralIdleToMoveParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ProceduralIdleToMoveParams {
     /// `maxMovementSpeed` (Single)
-    #[serde(default)]
     pub max_movement_speed: f32,
     /// `maxHipTilt` (Single)
-    #[serde(default)]
     pub max_hip_tilt: f32,
     /// `maxHipVerticalOffset` (Single)
-    #[serde(default)]
     pub max_hip_vertical_offset: f32,
     /// `maxHipHorizontalOffset` (Single)
-    #[serde(default)]
     pub max_hip_horizontal_offset: f32,
     /// `maxSpineBend` (Single)
-    #[serde(default)]
     pub max_spine_bend: f32,
     /// `tiltDuration` (Single)
-    #[serde(default)]
     pub tilt_duration: f32,
     /// `tiltRestorationDuration` (Single)
-    #[serde(default)]
     pub tilt_restoration_duration: f32,
 }
 
@@ -155,25 +133,18 @@ impl<'a> Extract<'a> for ProceduralIdleToMoveParams {
 }
 
 /// DCB type: `MotionSmoothingParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MotionSmoothingParams {
     /// `enabled` (Boolean)
-    #[serde(default)]
     pub enabled: bool,
     /// `maxJitterRating` (Single)
-    #[serde(default)]
     pub max_jitter_rating: f32,
     /// `jitterSensitivity` (Single)
-    #[serde(default)]
     pub jitter_sensitivity: f32,
     /// `jitterDetectionThreshold` (Single)
-    #[serde(default)]
     pub jitter_detection_threshold: f32,
     /// `jitterDecayDuration` (Single)
-    #[serde(default)]
     pub jitter_decay_duration: f32,
     /// `speedSmoothingDuration` (Single)
-    #[serde(default)]
     pub speed_smoothing_duration: f32,
 }
 
@@ -197,16 +168,12 @@ impl<'a> Extract<'a> for MotionSmoothingParams {
 }
 
 /// DCB type: `MotionJukeParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MotionJukeParams {
     /// `enabled` (Boolean)
-    #[serde(default)]
     pub enabled: bool,
     /// `jukeTriggerAngle` (Single)
-    #[serde(default)]
     pub juke_trigger_angle: f32,
     /// `jukeDetectionDuration` (Single)
-    #[serde(default)]
     pub juke_detection_duration: f32,
 }
 
@@ -227,28 +194,20 @@ impl<'a> Extract<'a> for MotionJukeParams {
 }
 
 /// DCB type: `MotionTurnParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MotionTurnParams {
     /// `rightYawTrigger` (Single)
-    #[serde(default)]
     pub right_yaw_trigger: f32,
     /// `leftYawTrigger` (Single)
-    #[serde(default)]
     pub left_yaw_trigger: f32,
     /// `turnTriggerOffset` (Single)
-    #[serde(default)]
     pub turn_trigger_offset: f32,
     /// `targetOffset` (Single)
-    #[serde(default)]
     pub target_offset: f32,
     /// `snapOffset` (Single)
-    #[serde(default)]
     pub snap_offset: f32,
     /// `maxTurnSpeed` (Single)
-    #[serde(default)]
     pub max_turn_speed: f32,
     /// `delayIdleSeconds` (Single)
-    #[serde(default)]
     pub delay_idle_seconds: f32,
 }
 
@@ -274,52 +233,36 @@ impl<'a> Extract<'a> for MotionTurnParams {
 
 /// DCB type: `MotionTurnSetupFiltered`
 /// Inherits from: `ActorMotionStateFilter`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MotionTurnSetupFiltered {
     /// `filterName` (String)
-    #[serde(default)]
     pub filter_name: String,
     /// `filterByState` (EnumChoice)
-    #[serde(default)]
     pub filter_by_state: ActorStateFilterByState,
     /// `filterByMotionSpeed` (EnumChoice)
-    #[serde(default)]
     pub filter_by_motion_speed: ActorStateFilterByMotionSpeed,
     /// `filterByPoseState` (EnumChoice)
-    #[serde(default)]
     pub filter_by_pose_state: ActorStateFilterByPoseState,
     /// `filterByStanceState` (EnumChoice)
-    #[serde(default)]
     pub filter_by_stance_state: ActorStateFilterByStanceState,
     /// `filterByAimStanceState` (EnumChoice)
-    #[serde(default)]
     pub filter_by_aim_stance_state: ActorStateFilterByAimStanceState,
     /// `filterByLeanState` (EnumChoice)
-    #[serde(default)]
     pub filter_by_lean_state: ActorStateFilterByLeanState,
     /// `filterByHeldItemType` (EnumChoice)
-    #[serde(default)]
     pub filter_by_held_item_type: ActorStateFilterByHeldItemType,
     /// `filterBySkeleton` (EnumChoice)
-    #[serde(default)]
     pub filter_by_skeleton: ActorStateFilterBySkeleton,
     /// `filterByCharacterType` (EnumChoice)
-    #[serde(default)]
     pub filter_by_character_type: ActorStateFilterByCharacterType,
     /// `filterByRestrainedState` (EnumChoice)
-    #[serde(default)]
     pub filter_by_restrained_state: EActorStateFilterByBoolState,
     /// `filterByPlayerCamera` (EnumChoice)
-    #[serde(default)]
     pub filter_by_player_camera: EActorStateFilterByPlayerCamera,
     /// `filterByAimingRestriction` (EnumChoice)
-    #[serde(default)]
     pub filter_by_aiming_restriction: EActorStateFilterByAimingRestriction,
     /// `filterByLocomotionSet` (EnumChoice)
-    #[serde(default)]
     pub filter_by_locomotion_set: ActorStateFilterByLocomotionSet,
     /// `params` (Class)
-    #[serde(default)]
     pub params: Option<Handle<MotionTurnParams>>,
 }
 
@@ -355,10 +298,8 @@ impl<'a> Extract<'a> for MotionTurnSetupFiltered {
 }
 
 /// DCB type: `MotionTurnSetupList`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MotionTurnSetupList {
     /// `setupList` (Class (array))
-    #[serde(default)]
     pub setup_list: Vec<Handle<MotionTurnSetupFiltered>>,
 }
 
@@ -383,25 +324,18 @@ impl<'a> Extract<'a> for MotionTurnSetupList {
 }
 
 /// DCB type: `MotionFootPinningParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MotionFootPinningParams {
     /// `footShiftDuration` (Single)
-    #[serde(default)]
     pub foot_shift_duration: f32,
     /// `autoRepositionDistance` (Single)
-    #[serde(default)]
     pub auto_reposition_distance: f32,
     /// `animationDuration` (Single)
-    #[serde(default)]
     pub animation_duration: f32,
     /// `animationWeight` (Single)
-    #[serde(default)]
     pub animation_weight: f32,
     /// `animationBlendInDuration` (Single)
-    #[serde(default)]
     pub animation_blend_in_duration: f32,
     /// `animationBlendOutDuration` (Single)
-    #[serde(default)]
     pub animation_blend_out_duration: f32,
 }
 
@@ -425,34 +359,24 @@ impl<'a> Extract<'a> for MotionFootPinningParams {
 }
 
 /// DCB type: `MotionGraph`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MotionGraph {
     /// `motionStates` (Class (array))
-    #[serde(default)]
     pub motion_states: Vec<Handle<MotionState>>,
     /// `motionSmoothingConfig` (Class)
-    #[serde(default)]
     pub motion_smoothing_config: Option<Handle<MotionSmoothingParams>>,
     /// `jukeConfig` (Class)
-    #[serde(default)]
     pub juke_config: Option<Handle<MotionJukeParams>>,
     /// `idleToMoveProcParamsForward` (Class)
-    #[serde(default)]
     pub idle_to_move_proc_params_forward: Option<Handle<ProceduralIdleToMoveParams>>,
     /// `idleToMoveProcParamsBack` (Class)
-    #[serde(default)]
     pub idle_to_move_proc_params_back: Option<Handle<ProceduralIdleToMoveParams>>,
     /// `idleToMoveProcParamsRight` (Class)
-    #[serde(default)]
     pub idle_to_move_proc_params_right: Option<Handle<ProceduralIdleToMoveParams>>,
     /// `idleToMoveProcParamsLeft` (Class)
-    #[serde(default)]
     pub idle_to_move_proc_params_left: Option<Handle<ProceduralIdleToMoveParams>>,
     /// `turnConfig` (Class)
-    #[serde(default)]
     pub turn_config: Option<Handle<MotionTurnSetupList>>,
     /// `footPinningParams` (Class)
-    #[serde(default)]
     pub foot_pinning_params: Option<Handle<MotionFootPinningParams>>,
 }
 
@@ -509,10 +433,8 @@ impl<'a> Extract<'a> for MotionGraph {
 }
 
 /// DCB type: `SCProneMotionGraphDef`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCProneMotionGraphDef {
     /// `turnTriggerYawThreshold` (Single)
-    #[serde(default)]
     pub turn_trigger_yaw_threshold: f32,
 }
 

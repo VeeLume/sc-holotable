@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,10 +19,8 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `FactionPalettes`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct FactionPalettes {
     /// `Palettes` (Reference (array))
-    #[serde(default)]
     pub palettes: Vec<CigGuid>,
 }
 
@@ -44,46 +41,32 @@ impl<'a> Extract<'a> for FactionPalettes {
 }
 
 /// DCB type: `FactionPalette`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct FactionPalette {
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
     /// `tintingActive` (Boolean)
-    #[serde(default)]
     pub tinting_active: bool,
     /// `ExteriorMaterialOverride` (Class)
-    #[serde(default)]
     pub exterior_material_override: Option<Handle<GlobalResourceMaterial>>,
     /// `InteriorMaterialOverride` (Class)
-    #[serde(default)]
     pub interior_material_override: Option<Handle<GlobalResourceMaterial>>,
     /// `BrandingMaterialOverride` (Class)
-    #[serde(default)]
     pub branding_material_override: Option<Handle<GlobalResourceMaterial>>,
     /// `ExteriorPrimaryColor` (Class)
-    #[serde(default)]
     pub exterior_primary_color: Option<Handle<SRGB8>>,
     /// `ExteriorSecondaryColor` (Class)
-    #[serde(default)]
     pub exterior_secondary_color: Option<Handle<SRGB8>>,
     /// `ExteriorTertiaryColor` (Class)
-    #[serde(default)]
     pub exterior_tertiary_color: Option<Handle<SRGB8>>,
     /// `ExteriorGraphicsColor` (Class)
-    #[serde(default)]
     pub exterior_graphics_color: Option<Handle<SRGB8>>,
     /// `InteriorPrimaryColor` (Class)
-    #[serde(default)]
     pub interior_primary_color: Option<Handle<SRGB8>>,
     /// `InteriorSecondaryColor` (Class)
-    #[serde(default)]
     pub interior_secondary_color: Option<Handle<SRGB8>>,
     /// `InteriorTertiaryColor` (Class)
-    #[serde(default)]
     pub interior_tertiary_color: Option<Handle<SRGB8>>,
     /// `InteriorGraphicsColor` (Class)
-    #[serde(default)]
     pub interior_graphics_color: Option<Handle<SRGB8>>,
 }
 
@@ -148,10 +131,8 @@ impl<'a> Extract<'a> for FactionPalette {
 
 /// DCB type: `ProceduralLayoutNode_Start`
 /// Inherits from: `ProceduralLayoutNode_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ProceduralLayoutNode_Start {
     /// `next` (WeakPointer)
-    #[serde(default)]
     pub next: Option<ProceduralLayoutNode_BasePtr>,
 }
 
@@ -173,13 +154,10 @@ impl<'a> Extract<'a> for ProceduralLayoutNode_Start {
 }
 
 /// DCB type: `ProceduralLayoutNode_ElementProperties`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ProceduralLayoutNode_ElementProperties {
     /// `ElementTags` (Reference (array))
-    #[serde(default)]
     pub element_tags: Vec<CigGuid>,
     /// `ElementThemes` (Reference (array))
-    #[serde(default)]
     pub element_themes: Vec<CigGuid>,
 }
 
@@ -204,37 +182,26 @@ impl<'a> Extract<'a> for ProceduralLayoutNode_ElementProperties {
 
 /// DCB type: `ProceduralLayoutGraphNode_Element`
 /// Inherits from: `ProceduralLayoutGraphNode_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ProceduralLayoutGraphNode_Element {
     /// `MinDistance` (Int32)
-    #[serde(default)]
     pub min_distance: i32,
     /// `MaxDistance` (Int32)
-    #[serde(default)]
     pub max_distance: i32,
     /// `SpecificRoutingElementsTags` (Class (array))
-    #[serde(default)]
     pub specific_routing_elements_tags: Vec<Handle<TagList>>,
     /// `ChanceOfDoor` (Single)
-    #[serde(default)]
     pub chance_of_door: f32,
     /// `ChanceOfGeneration` (Single)
-    #[serde(default)]
     pub chance_of_generation: f32,
     /// `Mandatory` (Boolean)
-    #[serde(default)]
     pub mandatory: bool,
     /// `LayerSuffix` (String)
-    #[serde(default)]
     pub layer_suffix: String,
     /// `TintPalettePath` (String)
-    #[serde(default)]
     pub tint_palette_path: String,
     /// `outputLinks` (WeakPointer (array))
-    #[serde(default)]
     pub output_links: Vec<ProceduralLayoutNode_BasePtr>,
     /// `ElementProperties` (Class)
-    #[serde(default)]
     pub element_properties: Option<Handle<ProceduralLayoutNode_ElementProperties>>,
 }
 
@@ -277,46 +244,32 @@ impl<'a> Extract<'a> for ProceduralLayoutGraphNode_Element {
 
 /// DCB type: `ProceduralLayoutGraphNode_MultiElement`
 /// Inherits from: `ProceduralLayoutGraphNode_Element`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ProceduralLayoutGraphNode_MultiElement {
     /// `MinDistance` (Int32)
-    #[serde(default)]
     pub min_distance: i32,
     /// `MaxDistance` (Int32)
-    #[serde(default)]
     pub max_distance: i32,
     /// `SpecificRoutingElementsTags` (Class (array))
-    #[serde(default)]
     pub specific_routing_elements_tags: Vec<Handle<TagList>>,
     /// `ChanceOfDoor` (Single)
-    #[serde(default)]
     pub chance_of_door: f32,
     /// `ChanceOfGeneration` (Single)
-    #[serde(default)]
     pub chance_of_generation: f32,
     /// `Mandatory` (Boolean)
-    #[serde(default)]
     pub mandatory: bool,
     /// `LayerSuffix` (String)
-    #[serde(default)]
     pub layer_suffix: String,
     /// `TintPalettePath` (String)
-    #[serde(default)]
     pub tint_palette_path: String,
     /// `outputLinks` (WeakPointer (array))
-    #[serde(default)]
     pub output_links: Vec<ProceduralLayoutNode_BasePtr>,
     /// `ElementProperties` (Class)
-    #[serde(default)]
     pub element_properties: Option<Handle<ProceduralLayoutNode_ElementProperties>>,
     /// `MinElementsToGenerate` (Int32)
-    #[serde(default)]
     pub min_elements_to_generate: i32,
     /// `MaxElementsToGenerate` (Int32)
-    #[serde(default)]
     pub max_elements_to_generate: i32,
     /// `GenerateUniqueElements` (Boolean)
-    #[serde(default)]
     pub generate_unique_elements: bool,
 }
 
@@ -361,13 +314,10 @@ impl<'a> Extract<'a> for ProceduralLayoutGraphNode_MultiElement {
 }
 
 /// DCB type: `ProceduralLayout_SupplementaryElementTagsOptions`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ProceduralLayout_SupplementaryElementTagsOptions {
     /// `SupplementaryElementTags` (Reference (array))
-    #[serde(default)]
     pub supplementary_element_tags: Vec<CigGuid>,
     /// `MaxElementsToGenerate` (Int32)
-    #[serde(default)]
     pub max_elements_to_generate: i32,
 }
 
@@ -389,16 +339,12 @@ impl<'a> Extract<'a> for ProceduralLayout_SupplementaryElementTagsOptions {
 }
 
 /// DCB type: `ProceduralLayout_TagFilter`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ProceduralLayout_TagFilter {
     /// `GraphNodeTagsToFilter` (Class (array))
-    #[serde(default)]
     pub graph_node_tags_to_filter: Vec<Handle<TagList>>,
     /// `TagFilteringMode` (EnumChoice)
-    #[serde(default)]
     pub tag_filtering_mode: ProceduralLayout_TagFilteringMode,
     /// `SupplementaryElementTagsList` (Class (array))
-    #[serde(default)]
     pub supplementary_element_tags_list: Vec<Handle<ProceduralLayout_SupplementaryElementTagsOptions>>,
 }
 
@@ -431,40 +377,28 @@ impl<'a> Extract<'a> for ProceduralLayout_TagFilter {
 }
 
 /// DCB type: `ProceduralLayoutGraph`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ProceduralLayoutGraph {
     /// `ElementsLibraries` (String (array))
-    #[serde(default)]
     pub elements_libraries: Vec<String>,
     /// `RoutingElementsLibraries` (String (array))
-    #[serde(default)]
     pub routing_elements_libraries: Vec<String>,
     /// `ConnectorsLibraries` (String (array))
-    #[serde(default)]
     pub connectors_libraries: Vec<String>,
     /// `CapsLibraries` (String (array))
-    #[serde(default)]
     pub caps_libraries: Vec<String>,
     /// `SecondaryElementsLibraries` (String (array))
-    #[serde(default)]
     pub secondary_elements_libraries: Vec<String>,
     /// `DefaultRoutingElementsTags` (Class (array))
-    #[serde(default)]
     pub default_routing_elements_tags: Vec<Handle<TagList>>,
     /// `GlobalTagFiltering` (Class (array))
-    #[serde(default)]
     pub global_tag_filtering: Vec<Handle<ProceduralLayout_TagFilter>>,
     /// `GlobalAddOnElementsTags` (Class (array))
-    #[serde(default)]
     pub global_add_on_elements_tags: Vec<Handle<TagList>>,
     /// `GlobalAddOnElementsGenerationChance` (Single)
-    #[serde(default)]
     pub global_add_on_elements_generation_chance: f32,
     /// `TintPalettePath` (String)
-    #[serde(default)]
     pub tint_palette_path: String,
     /// `Nodes` (StrongPointer (array))
-    #[serde(default)]
     pub nodes: Vec<ProceduralLayoutNode_BasePtr>,
 }
 

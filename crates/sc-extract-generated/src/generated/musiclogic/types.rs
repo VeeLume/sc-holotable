@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,10 +19,8 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `CinematicConfig`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CinematicConfig {
     /// `globalState` (String)
-    #[serde(default)]
     pub global_state: String,
 }
 
@@ -42,16 +39,12 @@ impl<'a> Extract<'a> for CinematicConfig {
 }
 
 /// DCB type: `AttackDetectionConfig`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AttackDetectionConfig {
     /// `numHitsToClassAsAnAttack` (Int32)
-    #[serde(default)]
     pub num_hits_to_class_as_an_attack: i32,
     /// `attackDetectionTimeWindow` (Single)
-    #[serde(default)]
     pub attack_detection_time_window: f32,
     /// `attackDetectionTimeout` (Single)
-    #[serde(default)]
     pub attack_detection_timeout: f32,
 }
 
@@ -72,13 +65,10 @@ impl<'a> Extract<'a> for AttackDetectionConfig {
 }
 
 /// DCB type: `EnemyAwarenessConfig`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EnemyAwarenessConfig {
     /// `numAwareEnemiesParameter` (Reference)
-    #[serde(default)]
     pub num_aware_enemies_parameter: Option<CigGuid>,
     /// `numInCombatEnemiesParameter` (Reference)
-    #[serde(default)]
     pub num_in_combat_enemies_parameter: Option<CigGuid>,
 }
 
@@ -98,13 +88,10 @@ impl<'a> Extract<'a> for EnemyAwarenessConfig {
 }
 
 /// DCB type: `PlaylistRNGConfig`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PlaylistRNGConfig {
     /// `parameters` (Reference (array))
-    #[serde(default)]
     pub parameters: Vec<CigGuid>,
     /// `maxDeviation` (Single)
-    #[serde(default)]
     pub max_deviation: f32,
 }
 
@@ -126,19 +113,14 @@ impl<'a> Extract<'a> for PlaylistRNGConfig {
 }
 
 /// DCB type: `LocationMusicConfig`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LocationMusicConfig {
     /// `wwiseEventPrefix` (String)
-    #[serde(default)]
     pub wwise_event_prefix: String,
     /// `musicEventPrefix` (String)
-    #[serde(default)]
     pub music_event_prefix: String,
     /// `wwiseEventPrefixStarSystem` (String)
-    #[serde(default)]
     pub wwise_event_prefix_star_system: String,
     /// `musicEventPrefixStarSystem` (String)
-    #[serde(default)]
     pub music_event_prefix_star_system: String,
 }
 
@@ -160,28 +142,20 @@ impl<'a> Extract<'a> for LocationMusicConfig {
 }
 
 /// DCB type: `MusicLogicConfig`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MusicLogicConfig {
     /// `cinematicConfig` (Class)
-    #[serde(default)]
     pub cinematic_config: Option<Handle<CinematicConfig>>,
     /// `shipAttackDetectionConfig` (Class)
-    #[serde(default)]
     pub ship_attack_detection_config: Option<Handle<AttackDetectionConfig>>,
     /// `fpsAttackDetectionConfig` (Class)
-    #[serde(default)]
     pub fps_attack_detection_config: Option<Handle<AttackDetectionConfig>>,
     /// `playlistRNGConfig` (Class)
-    #[serde(default)]
     pub playlist_rngconfig: Option<Handle<PlaylistRNGConfig>>,
     /// `locationMusicConfig` (Class)
-    #[serde(default)]
     pub location_music_config: Option<Handle<LocationMusicConfig>>,
     /// `enemyAwarenessConfig` (Class)
-    #[serde(default)]
     pub enemy_awareness_config: Option<Handle<EnemyAwarenessConfig>>,
     /// `triggerParentMusicAreaOnLeave` (Boolean)
-    #[serde(default)]
     pub trigger_parent_music_area_on_leave: bool,
 }
 
@@ -224,10 +198,8 @@ impl<'a> Extract<'a> for MusicLogicConfig {
 }
 
 /// DCB type: `MusicLogicEventList`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MusicLogicEventList {
     /// `events` (Reference (array))
-    #[serde(default)]
     pub events: Vec<CigGuid>,
 }
 
@@ -248,10 +220,8 @@ impl<'a> Extract<'a> for MusicLogicEventList {
 }
 
 /// DCB type: `MusicLogicSwitchValue`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MusicLogicSwitchValue {
     /// `switchValue` (String)
-    #[serde(default)]
     pub switch_value: String,
 }
 

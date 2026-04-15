@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -21,16 +20,12 @@ use super::super::*;
 
 /// DCB type: `JournalEntryAudioLog`
 /// Inherits from: `BaseJournalEntry`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct JournalEntryAudioLog {
     /// `AudioLogName` (String)
-    #[serde(default)]
     pub audio_log_name: String,
     /// `Description` (Locale)
-    #[serde(default)]
     pub description: LocaleKey,
     /// `Transcript` (Locale)
-    #[serde(default)]
     pub transcript: LocaleKey,
 }
 
@@ -52,13 +47,10 @@ impl<'a> Extract<'a> for JournalEntryAudioLog {
 
 /// DCB type: `JournalEntryDialogueLog`
 /// Inherits from: `BaseJournalEntry`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct JournalEntryDialogueLog {
     /// `Dialogue` (Reference (array))
-    #[serde(default)]
     pub dialogue: Vec<CigGuid>,
     /// `Description` (Locale)
-    #[serde(default)]
     pub description: LocaleKey,
 }
 
@@ -81,13 +73,10 @@ impl<'a> Extract<'a> for JournalEntryDialogueLog {
 
 /// DCB type: `JournalEntryVideo`
 /// Inherits from: `BaseJournalEntry`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct JournalEntryVideo {
     /// `videoDef` (Reference)
-    #[serde(default)]
     pub video_def: Option<CigGuid>,
     /// `description` (Locale)
-    #[serde(default)]
     pub description: LocaleKey,
 }
 
@@ -107,16 +96,12 @@ impl<'a> Extract<'a> for JournalEntryVideo {
 }
 
 /// DCB type: `SReputationStandingJournalEntryParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SReputationStandingJournalEntryParams {
     /// `changeDirection` (EnumChoice)
-    #[serde(default)]
     pub change_direction: EReputationChangeReason,
     /// `standing` (Reference)
-    #[serde(default)]
     pub standing: Option<CigGuid>,
     /// `journalEntry` (Reference)
-    #[serde(default)]
     pub journal_entry: Option<CigGuid>,
 }
 
@@ -137,10 +122,8 @@ impl<'a> Extract<'a> for SReputationStandingJournalEntryParams {
 }
 
 /// DCB type: `SReputationJournalGroupParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SReputationJournalGroupParams {
     /// `standingEntries` (Class (array))
-    #[serde(default)]
     pub standing_entries: Vec<Handle<SReputationStandingJournalEntryParams>>,
 }
 
@@ -165,16 +148,12 @@ impl<'a> Extract<'a> for SReputationJournalGroupParams {
 }
 
 /// DCB type: `SReputationJournalEntriesParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SReputationJournalEntriesParams {
     /// `factionReputation` (Reference)
-    #[serde(default)]
     pub faction_reputation: Option<CigGuid>,
     /// `reputationScope` (Reference)
-    #[serde(default)]
     pub reputation_scope: Option<CigGuid>,
     /// `journalGroups` (Class (array))
-    #[serde(default)]
     pub journal_groups: Vec<Handle<SReputationJournalGroupParams>>,
 }
 
@@ -201,10 +180,8 @@ impl<'a> Extract<'a> for SReputationJournalEntriesParams {
 }
 
 /// DCB type: `SReputationJournalEntryHandlerParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SReputationJournalEntryHandlerParams {
     /// `reputationTypes` (Class (array))
-    #[serde(default)]
     pub reputation_types: Vec<Handle<SReputationJournalEntriesParams>>,
 }
 

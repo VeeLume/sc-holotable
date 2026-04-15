@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -21,7 +20,6 @@ use super::super::*;
 
 /// DCB type: `NavSplineAnchorPointComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct NavSplineAnchorPointComponentParams {
 }
 
@@ -40,10 +38,8 @@ impl<'a> Extract<'a> for NavSplineAnchorPointComponentParams {
 
 /// DCB type: `GroupEntityParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GroupEntityParams {
     /// `syncToClients` (Boolean)
-    #[serde(default)]
     pub sync_to_clients: bool,
 }
 
@@ -63,13 +59,10 @@ impl<'a> Extract<'a> for GroupEntityParams {
 
 /// DCB type: `LoudspeakerComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LoudspeakerComponentParams {
     /// `minRadius` (Single)
-    #[serde(default)]
     pub min_radius: f32,
     /// `maxRadius` (Single)
-    #[serde(default)]
     pub max_radius: f32,
 }
 
@@ -90,13 +83,10 @@ impl<'a> Extract<'a> for LoudspeakerComponentParams {
 
 /// DCB type: `RestrictedAreaSplineParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct RestrictedAreaSplineParams {
     /// `captureRadius` (Single)
-    #[serde(default)]
     pub capture_radius: f32,
     /// `autopilotMessage` (Locale)
-    #[serde(default)]
     pub autopilot_message: LocaleKey,
 }
 
@@ -117,31 +107,22 @@ impl<'a> Extract<'a> for RestrictedAreaSplineParams {
 
 /// DCB type: `LandingSplineVisualParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LandingSplineVisualParams {
     /// `distanceBetweenNodes` (Single)
-    #[serde(default)]
     pub distance_between_nodes: f32,
     /// `borderDimensions` (Class)
-    #[serde(default)]
     pub border_dimensions: Option<Handle<Vec2>>,
     /// `distanceMinimum` (Single)
-    #[serde(default)]
     pub distance_minimum: f32,
     /// `distanceMaximum` (Single)
-    #[serde(default)]
     pub distance_maximum: f32,
     /// `scaleMaximum` (Single)
-    #[serde(default)]
     pub scale_maximum: f32,
     /// `markerDistanceFromEnds` (Single)
-    #[serde(default)]
     pub marker_distance_from_ends: f32,
     /// `markerRadius` (Single)
-    #[serde(default)]
     pub marker_radius: f32,
     /// `markerMoveRadius` (Single)
-    #[serde(default)]
     pub marker_move_radius: f32,
 }
 
@@ -170,16 +151,12 @@ impl<'a> Extract<'a> for LandingSplineVisualParams {
 }
 
 /// DCB type: `EntityComponentWaterDisturbance_NoiseParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EntityComponentWaterDisturbance_NoiseParams {
     /// `lacunarity` (Single)
-    #[serde(default)]
     pub lacunarity: f32,
     /// `persistence` (Single)
-    #[serde(default)]
     pub persistence: f32,
     /// `amplitude` (Class)
-    #[serde(default)]
     pub amplitude: Option<Handle<Vec2>>,
 }
 
@@ -204,31 +181,22 @@ impl<'a> Extract<'a> for EntityComponentWaterDisturbance_NoiseParams {
 
 /// DCB type: `EntityComponentWaterDisturbanceParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EntityComponentWaterDisturbanceParams {
     /// `style` (EnumChoice)
-    #[serde(default)]
     pub style: DisturbanceStyle,
     /// `distributionArea` (Class)
-    #[serde(default)]
     pub distribution_area: Option<Handle<Vec2>>,
     /// `hitSize` (Single)
-    #[serde(default)]
     pub hit_size: f32,
     /// `depth` (Single)
-    #[serde(default)]
     pub depth: f32,
     /// `pressure` (Single)
-    #[serde(default)]
     pub pressure: f32,
     /// `foamAmount` (Single)
-    #[serde(default)]
     pub foam_amount: f32,
     /// `frequency` (Class)
-    #[serde(default)]
     pub frequency: Option<Handle<Vec2>>,
     /// `noiseParams` (Class)
-    #[serde(default)]
     pub noise_params: Option<Handle<EntityComponentWaterDisturbance_NoiseParams>>,
 }
 
@@ -264,16 +232,12 @@ impl<'a> Extract<'a> for EntityComponentWaterDisturbanceParams {
 
 /// DCB type: `EntityComponentWaterImpactTestParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EntityComponentWaterImpactTestParams {
     /// `type` (EnumChoice)
-    #[serde(default)]
     pub r#type: TestType,
     /// `distributionArea` (Class)
-    #[serde(default)]
     pub distribution_area: Option<Handle<Vec2>>,
     /// `radius` (Single)
-    #[serde(default)]
     pub radius: f32,
 }
 
@@ -298,7 +262,6 @@ impl<'a> Extract<'a> for EntityComponentWaterImpactTestParams {
 
 /// DCB type: `TransitNavSplineDataParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct TransitNavSplineDataParams {
 }
 

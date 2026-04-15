@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,16 +19,12 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `SHealingBeamBoneEntryParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SHealingBeamBoneEntryParams {
     /// `boneName` (String)
-    #[serde(default)]
     pub bone_name: String,
     /// `boneOffset` (Class)
-    #[serde(default)]
     pub bone_offset: Option<Handle<Vec3>>,
     /// `cardOffset` (Class)
-    #[serde(default)]
     pub card_offset: Option<Handle<Vec3>>,
 }
 
@@ -56,13 +51,10 @@ impl<'a> Extract<'a> for SHealingBeamBoneEntryParams {
 }
 
 /// DCB type: `SHealingBeamBodyPartHighlightingParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SHealingBeamBodyPartHighlightingParams {
     /// `characterAttachmentName` (String)
-    #[serde(default)]
     pub character_attachment_name: String,
     /// `zonesToShow` (EnumChoice (array))
-    #[serde(default)]
     pub zones_to_show: Vec<EMeshChunks>,
 }
 
@@ -84,19 +76,14 @@ impl<'a> Extract<'a> for SHealingBeamBodyPartHighlightingParams {
 }
 
 /// DCB type: `SHealingBeamBodyPartParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SHealingBeamBodyPartParams {
     /// `bodyPart` (Reference)
-    #[serde(default)]
     pub body_part: Option<CigGuid>,
     /// `displayName` (Locale)
-    #[serde(default)]
     pub display_name: LocaleKey,
     /// `boneEntry` (Class)
-    #[serde(default)]
     pub bone_entry: Option<Handle<SHealingBeamBoneEntryParams>>,
     /// `highlightParams` (Class)
-    #[serde(default)]
     pub highlight_params: Option<Handle<SHealingBeamBodyPartHighlightingParams>>,
 }
 
@@ -124,52 +111,36 @@ impl<'a> Extract<'a> for SHealingBeamBodyPartParams {
 }
 
 /// DCB type: `SGlobalHealingBeamParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SGlobalHealingBeamParams {
     /// `tag` (Reference)
-    #[serde(default)]
     pub tag: Option<CigGuid>,
     /// `medgunTag` (Reference)
-    #[serde(default)]
     pub medgun_tag: Option<CigGuid>,
     /// `bodyParts` (Class (array))
-    #[serde(default)]
     pub body_parts: Vec<Handle<SHealingBeamBodyPartParams>>,
     /// `cardDisplayTimeout` (Single)
-    #[serde(default)]
     pub card_display_timeout: f32,
     /// `limbSwitchTime` (Single)
-    #[serde(default)]
     pub limb_switch_time: f32,
     /// `cardPosLerpSpeed` (Single)
-    #[serde(default)]
     pub card_pos_lerp_speed: f32,
     /// `cardClosingLerpSpeedScalar` (Single)
-    #[serde(default)]
     pub card_closing_lerp_speed_scalar: f32,
     /// `targetModeActorCardBoneEntry` (Class)
-    #[serde(default)]
     pub target_mode_actor_card_bone_entry: Option<Handle<SHealingBeamBoneEntryParams>>,
     /// `selfHealModeActorCardBoneEntry` (Class)
-    #[serde(default)]
     pub self_heal_mode_actor_card_bone_entry: Option<Handle<SHealingBeamBoneEntryParams>>,
     /// `selfHealModeLimbCardBoneEntry` (Class)
-    #[serde(default)]
     pub self_heal_mode_limb_card_bone_entry: Option<Handle<SHealingBeamBoneEntryParams>>,
     /// `transparentMaterial` (Class)
-    #[serde(default)]
     pub transparent_material: Option<Handle<GlobalResourceMaterial>>,
     /// `injuryHighlightColors` (Class)
-    #[serde(default)]
     pub injury_highlight_colors: Option<Handle<RGB>>,
     /// `highlightOccludedAlpha` (Single)
-    #[serde(default)]
     pub highlight_occluded_alpha: f32,
     /// `highlightOutlineWidth` (Single)
-    #[serde(default)]
     pub highlight_outline_width: f32,
     /// `highlightOutlineOnly` (Boolean)
-    #[serde(default)]
     pub highlight_outline_only: bool,
 }
 

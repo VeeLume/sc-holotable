@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,10 +19,8 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `SEAPlayerLoadoutSnapshotEntry`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SEAPlayerLoadoutSnapshotEntry {
     /// `loadout` (StrongPointer)
-    #[serde(default)]
     pub loadout: Option<SItemPortLoadoutBaseParamsPtr>,
 }
 
@@ -45,10 +42,8 @@ impl<'a> Extract<'a> for SEAPlayerLoadoutSnapshotEntry {
 }
 
 /// DCB type: `SEAPlayerLoadoutSnapshots`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SEAPlayerLoadoutSnapshots {
     /// `entries` (Class)
-    #[serde(default)]
     pub entries: Option<Handle<SEAPlayerLoadoutSnapshotEntry>>,
 }
 
@@ -70,10 +65,8 @@ impl<'a> Extract<'a> for SEAPlayerLoadoutSnapshots {
 }
 
 /// DCB type: `EntityDefaultLoadoutParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EntityDefaultLoadoutParams {
     /// `loadout` (StrongPointer)
-    #[serde(default)]
     pub loadout: Option<SItemPortLoadoutBaseParamsPtr>,
 }
 
@@ -95,16 +88,12 @@ impl<'a> Extract<'a> for EntityDefaultLoadoutParams {
 }
 
 /// DCB type: `PlayerShipRespawnShipInfo`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PlayerShipRespawnShipInfo {
     /// `Name` (String)
-    #[serde(default)]
     pub name: String,
     /// `RespawnWaitTime` (Int32)
-    #[serde(default)]
     pub respawn_wait_time: i32,
     /// `InstantRespawnCost` (Int32)
-    #[serde(default)]
     pub instant_respawn_cost: i32,
 }
 
@@ -125,10 +114,8 @@ impl<'a> Extract<'a> for PlayerShipRespawnShipInfo {
 }
 
 /// DCB type: `PlayerShipRespawn`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PlayerShipRespawn {
     /// `Ships` (Class (array))
-    #[serde(default)]
     pub ships: Vec<Handle<PlayerShipRespawnShipInfo>>,
 }
 

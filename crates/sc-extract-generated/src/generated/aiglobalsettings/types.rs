@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,13 +19,10 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `AIFormulaScoreModifiers`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AIFormulaScoreModifiers {
     /// `exponent` (Single)
-    #[serde(default)]
     pub exponent: f32,
     /// `weight` (Single)
-    #[serde(default)]
     pub weight: f32,
 }
 
@@ -46,34 +42,24 @@ impl<'a> Extract<'a> for AIFormulaScoreModifiers {
 }
 
 /// DCB type: `AITargetingFormulaSettings`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AITargetingFormulaSettings {
     /// `onFootRangeMultiplier` (Single)
-    #[serde(default)]
     pub on_foot_range_multiplier: f32,
     /// `inVehicleRangeMultiplier` (Single)
-    #[serde(default)]
     pub in_vehicle_range_multiplier: f32,
     /// `selfDefenceMaxHealthMultiplier` (Single)
-    #[serde(default)]
     pub self_defence_max_health_multiplier: f32,
     /// `protectedMaxHealthMultiplier` (Single)
-    #[serde(default)]
     pub protected_max_health_multiplier: f32,
     /// `recentDamageDecayFactorPerSecond` (Single)
-    #[serde(default)]
     pub recent_damage_decay_factor_per_second: f32,
     /// `attackerCapacityScore` (Class)
-    #[serde(default)]
     pub attacker_capacity_score: Option<Handle<AIFormulaScoreModifiers>>,
     /// `distanceScore` (Class)
-    #[serde(default)]
     pub distance_score: Option<Handle<AIFormulaScoreModifiers>>,
     /// `selfDefenceScore` (Class)
-    #[serde(default)]
     pub self_defence_score: Option<Handle<AIFormulaScoreModifiers>>,
     /// `protectionScore` (Class)
-    #[serde(default)]
     pub protection_score: Option<Handle<AIFormulaScoreModifiers>>,
 }
 

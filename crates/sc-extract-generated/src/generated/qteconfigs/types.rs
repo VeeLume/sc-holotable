@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,37 +19,26 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `QTERequestConfig`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct QTERequestConfig {
     /// `blockActions` (Boolean)
-    #[serde(default)]
     pub block_actions: bool,
     /// `actionName` (Class)
-    #[serde(default)]
     pub action_name: Option<Handle<InputAction>>,
     /// `totalPressNum` (Int32)
-    #[serde(default)]
     pub total_press_num: i32,
     /// `maxQTETime` (Single)
-    #[serde(default)]
     pub max_qtetime: f32,
     /// `decayGracePeriod` (Single)
-    #[serde(default)]
     pub decay_grace_period: f32,
     /// `decayPerSecond` (Single)
-    #[serde(default)]
     pub decay_per_second: f32,
     /// `givewayBehaviour` (EnumChoice)
-    #[serde(default)]
     pub giveway_behaviour: EQTEPriorityGivewayBehaviour,
     /// `ownerName` (String)
-    #[serde(default)]
     pub owner_name: String,
     /// `QTEPriority` (EnumChoice)
-    #[serde(default)]
     pub qtepriority: EQTEPriority,
     /// `inputPromptConfig` (Reference)
-    #[serde(default)]
     pub input_prompt_config: Option<CigGuid>,
 }
 

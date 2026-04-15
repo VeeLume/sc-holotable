@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,19 +19,14 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `GasCloudLightNoiseParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GasCloudLightNoiseParams {
     /// `frequency` (Single)
-    #[serde(default)]
     pub frequency: f32,
     /// `octaves` (Single)
-    #[serde(default)]
     pub octaves: f32,
     /// `exponent` (Single)
-    #[serde(default)]
     pub exponent: f32,
     /// `effect` (Single)
-    #[serde(default)]
     pub effect: f32,
 }
 
@@ -54,16 +48,12 @@ impl<'a> Extract<'a> for GasCloudLightNoiseParams {
 }
 
 /// DCB type: `GasCloudLightShadowParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GasCloudLightShadowParams {
     /// `active` (Boolean)
-    #[serde(default)]
     pub active: bool,
     /// `resolution` (UInt32)
-    #[serde(default)]
     pub resolution: u32,
     /// `opaqueShadows` (Boolean)
-    #[serde(default)]
     pub opaque_shadows: bool,
 }
 
@@ -84,19 +74,14 @@ impl<'a> Extract<'a> for GasCloudLightShadowParams {
 }
 
 /// DCB type: `GasCloudLightFadeParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GasCloudLightFadeParams {
     /// `minDistance` (Single)
-    #[serde(default)]
     pub min_distance: f32,
     /// `minFade` (Single)
-    #[serde(default)]
     pub min_fade: f32,
     /// `maxDistance` (Single)
-    #[serde(default)]
     pub max_distance: f32,
     /// `maxFade` (Single)
-    #[serde(default)]
     pub max_fade: f32,
 }
 
@@ -118,13 +103,10 @@ impl<'a> Extract<'a> for GasCloudLightFadeParams {
 }
 
 /// DCB type: `GasCloudLightAudioParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GasCloudLightAudioParams {
     /// `gasCloudLoop` (Class)
-    #[serde(default)]
     pub gas_cloud_loop: Option<Handle<GlobalResourceAudio>>,
     /// `gasCloudNormIntensityRtpc` (Class)
-    #[serde(default)]
     pub gas_cloud_norm_intensity_rtpc: Option<Handle<AudioRtpc>>,
 }
 
@@ -151,49 +133,34 @@ impl<'a> Extract<'a> for GasCloudLightAudioParams {
 
 /// DCB type: `GasCloudLightParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GasCloudLightParams {
     /// `active` (Boolean)
-    #[serde(default)]
     pub active: bool,
     /// `lightType` (EnumChoice)
-    #[serde(default)]
     pub light_type: EGasCloudLightType,
     /// `color` (Class)
-    #[serde(default)]
     pub color: Option<Handle<RGB>>,
     /// `intensity` (Single)
-    #[serde(default)]
     pub intensity: f32,
     /// `innerRadius` (Single)
-    #[serde(default)]
     pub inner_radius: f32,
     /// `outerRadius` (Single)
-    #[serde(default)]
     pub outer_radius: f32,
     /// `affectsFog` (Boolean)
-    #[serde(default)]
     pub affects_fog: bool,
     /// `affectsObjects` (Boolean)
-    #[serde(default)]
     pub affects_objects: bool,
     /// `specular` (Boolean)
-    #[serde(default)]
     pub specular: bool,
     /// `projectorParams` (Class)
-    #[serde(default)]
     pub projector_params: Option<Handle<LightProjectorParams>>,
     /// `shadow` (Class)
-    #[serde(default)]
     pub shadow: Option<Handle<GasCloudLightShadowParams>>,
     /// `fade` (Class)
-    #[serde(default)]
     pub fade: Option<Handle<GasCloudLightFadeParams>>,
     /// `noise` (Class)
-    #[serde(default)]
     pub noise: Option<Handle<GasCloudLightNoiseParams>>,
     /// `audio` (Class)
-    #[serde(default)]
     pub audio: Option<Handle<GasCloudLightAudioParams>>,
 }
 
@@ -243,13 +210,10 @@ impl<'a> Extract<'a> for GasCloudLightParams {
 }
 
 /// DCB type: `GasCloudOverrideSphereVolumeParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GasCloudOverrideSphereVolumeParams {
     /// `radius` (Single)
-    #[serde(default)]
     pub radius: f32,
     /// `fade` (Single)
-    #[serde(default)]
     pub fade: f32,
 }
 
@@ -269,25 +233,18 @@ impl<'a> Extract<'a> for GasCloudOverrideSphereVolumeParams {
 }
 
 /// DCB type: `GasCloudOverrideCubeVolumeParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GasCloudOverrideCubeVolumeParams {
     /// `sizeX` (Single)
-    #[serde(default)]
     pub size_x: f32,
     /// `sizeY` (Single)
-    #[serde(default)]
     pub size_y: f32,
     /// `sizeZ` (Single)
-    #[serde(default)]
     pub size_z: f32,
     /// `fadeX` (Single)
-    #[serde(default)]
     pub fade_x: f32,
     /// `fadeY` (Single)
-    #[serde(default)]
     pub fade_y: f32,
     /// `fadeZ` (Single)
-    #[serde(default)]
     pub fade_z: f32,
 }
 
@@ -312,37 +269,26 @@ impl<'a> Extract<'a> for GasCloudOverrideCubeVolumeParams {
 
 /// DCB type: `GasCloudOverrideVolumeParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GasCloudOverrideVolumeParams {
     /// `volumeType` (EnumChoice)
-    #[serde(default)]
     pub volume_type: EGasCloudOverrideVolumeType,
     /// `sphereVolume` (Class)
-    #[serde(default)]
     pub sphere_volume: Option<Handle<GasCloudOverrideSphereVolumeParams>>,
     /// `cubeVolume` (Class)
-    #[serde(default)]
     pub cube_volume: Option<Handle<GasCloudOverrideCubeVolumeParams>>,
     /// `overrideAlbedo` (Boolean)
-    #[serde(default)]
     pub override_albedo: bool,
     /// `overrideLightLeak` (Boolean)
-    #[serde(default)]
     pub override_light_leak: bool,
     /// `overrideDensity` (Boolean)
-    #[serde(default)]
     pub override_density: bool,
     /// `albedo` (Class)
-    #[serde(default)]
     pub albedo: Option<Handle<RGB>>,
     /// `lightLeakColor` (Class)
-    #[serde(default)]
     pub light_leak_color: Option<Handle<RGB>>,
     /// `lightLeakScale` (Single)
-    #[serde(default)]
     pub light_leak_scale: f32,
     /// `density` (Single)
-    #[serde(default)]
     pub density: f32,
 }
 
@@ -382,16 +328,12 @@ impl<'a> Extract<'a> for GasCloudOverrideVolumeParams {
 }
 
 /// DCB type: `EntityLinkTargetingParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EntityLinkTargetingParams {
     /// `useAsSurfaceTargetEllipsoid` (Boolean)
-    #[serde(default)]
     pub use_as_surface_target_ellipsoid: bool,
     /// `surfaceTargetEllipsoidScale` (Class)
-    #[serde(default)]
     pub surface_target_ellipsoid_scale: Option<Handle<Vec3>>,
     /// `defaultToArea` (Boolean)
-    #[serde(default)]
     pub default_to_area: bool,
 }
 
@@ -415,82 +357,56 @@ impl<'a> Extract<'a> for EntityLinkTargetingParams {
 }
 
 /// DCB type: `LightningRegionLightningParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LightningRegionLightningParams {
     /// `lightningEffect` (Class)
-    #[serde(default)]
     pub lightning_effect: Option<Handle<GlobalResourceParticle>>,
     /// `targetingSeed` (UInt32)
-    #[serde(default)]
     pub targeting_seed: u32,
     /// `appearanceSeed` (Int32)
-    #[serde(default)]
     pub appearance_seed: i32,
     /// `strength` (Single)
-    #[serde(default)]
     pub strength: f32,
     /// `strikeArea` (Boolean)
-    #[serde(default)]
     pub strike_area: bool,
     /// `strikeLinks` (StrongPointer)
-    #[serde(default)]
     pub strike_links: Option<Handle<EntityLinkTargetingParams>>,
     /// `strikeSurfaces` (Boolean)
-    #[serde(default)]
     pub strike_surfaces: bool,
     /// `conductiveSurfaceSpawnProbability` (Single)
-    #[serde(default)]
     pub conductive_surface_spawn_probability: f32,
     /// `internalStrikeProbability` (Single)
-    #[serde(default)]
     pub internal_strike_probability: f32,
     /// `minimumInterval` (Single)
-    #[serde(default)]
     pub minimum_interval: f32,
     /// `maximumInterval` (Single)
-    #[serde(default)]
     pub maximum_interval: f32,
     /// `spawnRadius` (Single)
-    #[serde(default)]
     pub spawn_radius: f32,
     /// `targetRadius` (Single)
-    #[serde(default)]
     pub target_radius: f32,
     /// `minimumLength` (Single)
-    #[serde(default)]
     pub minimum_length: f32,
     /// `maximumLength` (Single)
-    #[serde(default)]
     pub maximum_length: f32,
     /// `minimumCameraDistance` (Single)
-    #[serde(default)]
     pub minimum_camera_distance: f32,
     /// `isCascadeTrigger` (Boolean)
-    #[serde(default)]
     pub is_cascade_trigger: bool,
     /// `cascadeRadius` (Single)
-    #[serde(default)]
     pub cascade_radius: f32,
     /// `cascadeBuildUpScale` (Single)
-    #[serde(default)]
     pub cascade_build_up_scale: f32,
     /// `cascadeMinimumInterval` (Single)
-    #[serde(default)]
     pub cascade_minimum_interval: f32,
     /// `cascadeTriggerMinimumInterval` (Single)
-    #[serde(default)]
     pub cascade_trigger_minimum_interval: f32,
     /// `localScale` (Class)
-    #[serde(default)]
     pub local_scale: Option<Handle<Vec3>>,
     /// `scaleMultiplier` (Single)
-    #[serde(default)]
     pub scale_multiplier: f32,
     /// `audioEmitterTrigger` (Class)
-    #[serde(default)]
     pub audio_emitter_trigger: Option<Handle<GlobalResourceAudio>>,
     /// `audioTargetTrigger` (Class)
-    #[serde(default)]
     pub audio_target_trigger: Option<Handle<GlobalResourceAudio>>,
 }
 
@@ -548,10 +464,8 @@ impl<'a> Extract<'a> for LightningRegionLightningParams {
 }
 
 /// DCB type: `InterferenceParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InterferenceParams {
     /// `fallOffDistance` (Single)
-    #[serde(default)]
     pub fall_off_distance: f32,
 }
 
@@ -571,16 +485,12 @@ impl<'a> Extract<'a> for InterferenceParams {
 
 /// DCB type: `LightningRegionParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LightningRegionParams {
     /// `active` (Boolean)
-    #[serde(default)]
     pub active: bool,
     /// `lightning` (Class)
-    #[serde(default)]
     pub lightning: Option<Handle<LightningRegionLightningParams>>,
     /// `interference` (StrongPointer)
-    #[serde(default)]
     pub interference: Option<InterferenceParamsPtr>,
 }
 

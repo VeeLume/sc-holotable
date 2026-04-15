@@ -16,14 +16,12 @@
 //!    goes through [`Handle::get`] → [`Pooled::pool`], which is only
 //!    implemented once per concrete type.
 //!
-//! Handles are `Copy` and serialize as plain `u32` (no discriminant, no
-//! type-parameter metadata), so snapshots stay small.
+//! Handles are `Copy` and erase their type parameter at runtime — the
+//! stored `u32` is just the pool slot index.
 
 use std::fmt;
 use std::hash::{Hash, Hasher};
 use std::marker::PhantomData;
-
-use serde::{Deserialize, Deserializer, Serialize, Serializer};
 
 use crate::DataPools;
 
@@ -46,9 +44,6 @@ pub trait Pooled: Sized {
 /// Phantom-typed in `T` so `Handle<Weapon>` and `Handle<Component>` are
 /// distinct at the type level. The stored `u32` is the index into the
 /// corresponding `Vec<Option<T>>` pool.
-///
-/// Handles always serialize as a bare `u32` — the phantom type is erased
-/// at the serde boundary so on-disk size is unchanged.
 pub struct Handle<T>(u32, PhantomData<fn() -> T>);
 
 impl<T> Handle<T> {
@@ -133,19 +128,5 @@ impl<T> fmt::Debug for Handle<T> {
             std::any::type_name::<T>().rsplit("::").next().unwrap_or("?"),
             self.0
         )
-    }
-}
-
-impl<T> Serialize for Handle<T> {
-    #[inline]
-    fn serialize<S: Serializer>(&self, s: S) -> Result<S::Ok, S::Error> {
-        self.0.serialize(s)
-    }
-}
-
-impl<'de, T> Deserialize<'de> for Handle<T> {
-    #[inline]
-    fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
-        u32::deserialize(d).map(Handle::new)
     }
 }

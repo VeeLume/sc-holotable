@@ -10,57 +10,34 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
 use std::collections::HashMap;
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use crate::Handle;
 use super::super::*;
 
 /// Record index for the `audio` feature.
-#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+#[derive(Default)]
 pub struct AudioIndex {
-    #[serde(default)]
     pub audio_breath_style_condition_list: HashMap<CigGuid, Handle<AudioBreathStyleConditionList>>,
-    #[serde(default)]
     pub entity_audio_controller_type_params: HashMap<CigGuid, Handle<EntityAudioControllerTypeParams>>,
-    #[serde(default)]
     pub entity_audio_controller_manager_params: HashMap<CigGuid, Handle<EntityAudioControllerManagerParams>>,
-    #[serde(default)]
     pub audio_whitelist: HashMap<CigGuid, Handle<AudioWhitelist>>,
-    #[serde(default)]
     pub audio_environment: HashMap<CigGuid, Handle<AudioEnvironment>>,
-    #[serde(default)]
     pub audio_budget_definition: HashMap<CigGuid, Handle<AudioBudgetDefinition>>,
-    #[serde(default)]
     pub audio_game_context_globals: HashMap<CigGuid, Handle<AudioGameContextGlobals>>,
-    #[serde(default)]
     pub audio_game_context_setup: HashMap<CigGuid, Handle<AudioGameContextSetup>>,
-    #[serde(default)]
     pub surface_audio_properties_definition: HashMap<CigGuid, Handle<SurfaceAudioPropertiesDefinition>>,
-    #[serde(default)]
     pub global_audio_settings: HashMap<CigGuid, Handle<GlobalAudioSettings>>,
-    #[serde(default)]
     pub audio_tag_action_list: HashMap<CigGuid, Handle<AudioTagActionList>>,
-    #[serde(default)]
     pub audio_value_output_setup: HashMap<CigGuid, Handle<AudioValueOutputSetup>>,
-    #[serde(default)]
     pub cockpit_response: HashMap<CigGuid, Handle<CockpitResponse>>,
-    #[serde(default)]
     pub cockpit_responses: HashMap<CigGuid, Handle<CockpitResponses>>,
-    #[serde(default)]
     pub audio_allegiance_switches: HashMap<CigGuid, Handle<AudioAllegianceSwitches>>,
-    #[serde(default)]
     pub audio_signal_list: HashMap<CigGuid, Handle<AudioSignalList>>,
-    #[serde(default)]
     pub tag_to_audio_rtpc_list: HashMap<CigGuid, Handle<TagToAudioRtpcList>>,
-    #[serde(default)]
     pub gpuparticle_audio_list: HashMap<CigGuid, Handle<GPUParticleAudioList>>,
-    #[serde(default)]
     pub comms_audio_effect: HashMap<CigGuid, Handle<CommsAudioEffect>>,
-    #[serde(default)]
     pub ship_computer_preset_list: HashMap<CigGuid, Handle<ShipComputerPresetList>>,
-    #[serde(default)]
     pub ship_computer_preset: HashMap<CigGuid, Handle<ShipComputerPreset>>,
-    #[serde(default)]
     pub video_comms_audio_params: HashMap<CigGuid, Handle<VideoCommsAudioParams>>,
 }
 

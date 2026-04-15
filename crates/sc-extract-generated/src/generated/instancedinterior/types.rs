@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,16 +19,12 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `InstancedInteriorLocationParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InstancedInteriorLocationParams {
     /// `location` (Reference)
-    #[serde(default)]
     pub location: Option<CigGuid>,
     /// `devOnly` (Boolean)
-    #[serde(default)]
     pub dev_only: bool,
     /// `defaultHangars` (Reference)
-    #[serde(default)]
     pub default_hangars: Option<CigGuid>,
 }
 
@@ -50,13 +45,10 @@ impl<'a> Extract<'a> for InstancedInteriorLocationParams {
 }
 
 /// DCB type: `InstancedInteriorLocationMap`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InstancedInteriorLocationMap {
     /// `exitTimeBuffer` (Single)
-    #[serde(default)]
     pub exit_time_buffer: f32,
     /// `locationInteriors` (Reference (array))
-    #[serde(default)]
     pub location_interiors: Vec<CigGuid>,
 }
 

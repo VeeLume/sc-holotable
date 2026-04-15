@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -21,19 +20,14 @@ use super::super::*;
 
 /// DCB type: `ColorGradientComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ColorGradientComponentParams {
     /// `texturePath` (String)
-    #[serde(default)]
     pub texture_path: String,
     /// `fadeInTime` (Single)
-    #[serde(default)]
     pub fade_in_time: f32,
     /// `priority` (Int32)
-    #[serde(default)]
     pub priority: i32,
     /// `radius` (Single)
-    #[serde(default)]
     pub radius: f32,
 }
 

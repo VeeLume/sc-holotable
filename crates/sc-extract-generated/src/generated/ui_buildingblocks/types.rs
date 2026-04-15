@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -21,7 +20,6 @@ use super::super::*;
 
 /// DCB type: `BindingsOperations_WaveformShapeTriangle`
 /// Inherits from: `BindingsOperations_WaveformShapeBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BindingsOperations_WaveformShapeTriangle {
 }
 
@@ -40,10 +38,8 @@ impl<'a> Extract<'a> for BindingsOperations_WaveformShapeTriangle {
 
 /// DCB type: `BindingsOperations_WaveformShapeSquare`
 /// Inherits from: `BindingsOperations_WaveformShapeBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BindingsOperations_WaveformShapeSquare {
     /// `interval` (Single)
-    #[serde(default)]
     pub interval: f32,
 }
 
@@ -63,10 +59,8 @@ impl<'a> Extract<'a> for BindingsOperations_WaveformShapeSquare {
 
 /// DCB type: `BindingsOperations_WaveformShapeSawtooth`
 /// Inherits from: `BindingsOperations_WaveformShapeBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BindingsOperations_WaveformShapeSawtooth {
     /// `isReversed` (Boolean)
-    #[serde(default)]
     pub is_reversed: bool,
 }
 
@@ -86,31 +80,22 @@ impl<'a> Extract<'a> for BindingsOperations_WaveformShapeSawtooth {
 
 /// DCB type: `BuildingBlocks_BindingsColorFromNumberRGBA`
 /// Inherits from: `BuildingBlocks_BindingsColorBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildingBlocks_BindingsColorFromNumberRGBA {
     /// `inputRed` (WeakPointer)
-    #[serde(default)]
     pub input_red: Option<BuildingBlocks_BindingsNumberBasePtr>,
     /// `inputGreen` (WeakPointer)
-    #[serde(default)]
     pub input_green: Option<BuildingBlocks_BindingsNumberBasePtr>,
     /// `inputBlue` (WeakPointer)
-    #[serde(default)]
     pub input_blue: Option<BuildingBlocks_BindingsNumberBasePtr>,
     /// `inputAlpha` (WeakPointer)
-    #[serde(default)]
     pub input_alpha: Option<BuildingBlocks_BindingsNumberBasePtr>,
     /// `defaultRedValue` (Single)
-    #[serde(default)]
     pub default_red_value: f32,
     /// `defaultGreenValue` (Single)
-    #[serde(default)]
     pub default_green_value: f32,
     /// `defaultBlueValue` (Single)
-    #[serde(default)]
     pub default_blue_value: f32,
     /// `defaultAlphaValue` (Single)
-    #[serde(default)]
     pub default_alpha_value: f32,
 }
 
@@ -149,10 +134,8 @@ impl<'a> Extract<'a> for BuildingBlocks_BindingsColorFromNumberRGBA {
 
 /// DCB type: `BuildingBlocks_FieldModifierEnumeratedTypeMaxHeightBehavior`
 /// Inherits from: `BuildingBlocks_FieldModifierEnumeratedTypeBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildingBlocks_FieldModifierEnumeratedTypeMaxHeightBehavior {
     /// `value` (EnumChoice)
-    #[serde(default)]
     pub value: BB_SizeBehavior,
 }
 
@@ -172,10 +155,8 @@ impl<'a> Extract<'a> for BuildingBlocks_FieldModifierEnumeratedTypeMaxHeightBeha
 
 /// DCB type: `BuildingBlocks_FieldModifierEnumeratedTypeStrokeAlignment`
 /// Inherits from: `BuildingBlocks_FieldModifierEnumeratedTypeBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildingBlocks_FieldModifierEnumeratedTypeStrokeAlignment {
     /// `value` (EnumChoice)
-    #[serde(default)]
     pub value: BB_StrokeAlignment,
 }
 
@@ -195,10 +176,8 @@ impl<'a> Extract<'a> for BuildingBlocks_FieldModifierEnumeratedTypeStrokeAlignme
 
 /// DCB type: `BuildingBlocks_TimingFunctionCustomCurve`
 /// Inherits from: `BuildingBlocks_TimingFunctionBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildingBlocks_TimingFunctionCustomCurve {
     /// `curve` (Class)
-    #[serde(default)]
     pub curve: Option<Handle<BezierCurve>>,
 }
 
@@ -220,13 +199,10 @@ impl<'a> Extract<'a> for BuildingBlocks_TimingFunctionCustomCurve {
 }
 
 /// DCB type: `BuildingBlocks_IntegerWidgetPairDef`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildingBlocks_IntegerWidgetPairDef {
     /// `first` (Int64)
-    #[serde(default)]
     pub first: i64,
     /// `second` (WeakPointer)
-    #[serde(default)]
     pub second: Option<BuildingBlocks_WidgetBasePtr>,
 }
 
@@ -250,184 +226,124 @@ impl<'a> Extract<'a> for BuildingBlocks_IntegerWidgetPairDef {
 
 /// DCB type: `BuildingBlocks_WidgetPolymorphic`
 /// Inherits from: `BuildingBlocks_DisplayWidget`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildingBlocks_WidgetPolymorphic {
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
     /// `styleTags` (Reference (array))
-    #[serde(default)]
     pub style_tags: Vec<CigGuid>,
     /// `rendererType` (EnumChoice)
-    #[serde(default)]
     pub renderer_type: BB_RendererType,
     /// `rendererPolicy` (StrongPointer)
-    #[serde(default)]
     pub renderer_policy: Option<BuildingBlocks_RendererPolicyBasePtr>,
     /// `primitiveSettings` (Class)
-    #[serde(default)]
     pub primitive_settings: Option<Handle<BuildingBlocks_PrimitiveSettings>>,
     /// `parent` (WeakPointer)
-    #[serde(default)]
     pub parent: Option<BuildingBlocks_WidgetBasePtr>,
     /// `previewScene` (WeakPointer)
-    #[serde(default)]
     pub preview_scene: Option<BuildingBlocks_PreviewScreenBasePtr>,
     /// `previewSceneFlattened` (WeakPointer)
-    #[serde(default)]
     pub preview_scene_flattened: Option<BuildingBlocks_PreviewScreenBasePtr>,
     /// `cullingLevel` (EnumChoice)
-    #[serde(default)]
     pub culling_level: BB_CullingLevel,
     /// `isActive` (Boolean)
-    #[serde(default)]
     pub is_active: bool,
     /// `affectsLayout` (Boolean)
-    #[serde(default)]
     pub affects_layout: bool,
     /// `affectsAutosize` (Boolean)
-    #[serde(default)]
     pub affects_autosize: bool,
     /// `exportNode` (Boolean)
-    #[serde(default)]
     pub export_node: bool,
     /// `position` (Class)
-    #[serde(default)]
     pub position: Option<Handle<Vec3>>,
     /// `positionOffset` (Class)
-    #[serde(default)]
     pub position_offset: Option<Handle<Vec3>>,
     /// `orientation` (Class)
-    #[serde(default)]
     pub orientation: Option<Handle<Deg3>>,
     /// `orientationOffset` (Class)
-    #[serde(default)]
     pub orientation_offset: Option<Handle<Deg3>>,
     /// `scale` (Class)
-    #[serde(default)]
     pub scale: Option<Handle<Vec3>>,
     /// `sizing` (Class)
-    #[serde(default)]
     pub sizing: Option<Handle<BuildingBlocks_Size>>,
     /// `autoScalingMethod` (EnumChoice)
-    #[serde(default)]
     pub auto_scaling_method: BB_AutoScalingMethod,
     /// `padding` (Class)
-    #[serde(default)]
     pub padding: Option<Handle<BuildingBlocks_TRBL>>,
     /// `margin` (Class)
-    #[serde(default)]
     pub margin: Option<Handle<BuildingBlocks_TRBL>>,
     /// `pivot` (Class)
-    #[serde(default)]
     pub pivot: Option<Handle<Vec3>>,
     /// `anchor` (Class)
-    #[serde(default)]
     pub anchor: Option<Handle<Vec3>>,
     /// `background` (Class)
-    #[serde(default)]
     pub background: Option<Handle<BuildingBlocks_Background>>,
     /// `segmentedFill` (Class)
-    #[serde(default)]
     pub segmented_fill: Option<Handle<BuildingBlocks_SegmentedFill>>,
     /// `svgFill` (Class)
-    #[serde(default)]
     pub svg_fill: Option<Handle<BuildingBlocks_SvgFill>>,
     /// `border` (Class)
-    #[serde(default)]
     pub border: Option<Handle<BuildingBlocks_Border>>,
     /// `layoutPolicy` (StrongPointer)
-    #[serde(default)]
     pub layout_policy: Option<BuildingBlocks_LayoutPolicyBasePtr>,
     /// `layoutPolicyItem` (StrongPointer)
-    #[serde(default)]
     pub layout_policy_item: Option<BuildingBlocks_LayoutPolicyItemBasePtr>,
     /// `layoutItemCommon` (StrongPointer)
-    #[serde(default)]
     pub layout_item_common: Option<Handle<BuildingBlocks_LayoutItemCommon>>,
     /// `dropTargetPolicy` (StrongPointer)
-    #[serde(default)]
     pub drop_target_policy: Option<BuildingBlocks_DropTargetPolicyBasePtr>,
     /// `draggablePolicy` (StrongPointer)
-    #[serde(default)]
     pub draggable_policy: Option<BuildingBlocks_DraggablePolicyBasePtr>,
     /// `tooltipPolicy` (StrongPointer)
-    #[serde(default)]
     pub tooltip_policy: Option<Handle<BuildingBlocks_TooltipPolicy>>,
     /// `contextMenuPolicy` (StrongPointer)
-    #[serde(default)]
     pub context_menu_policy: Option<Handle<BuildingBlocks_ContextMenuPolicy>>,
     /// `grabControlsPolicy` (StrongPointer)
-    #[serde(default)]
     pub grab_controls_policy: Option<Handle<BuildingBlocks_GrabControlsPolicy>>,
     /// `calloutSettings` (StrongPointer)
-    #[serde(default)]
     pub callout_settings: Option<Handle<BuildingBlocks_CalloutSettings>>,
     /// `virtualCursorPolicy` (StrongPointer)
-    #[serde(default)]
     pub virtual_cursor_policy: Option<Handle<BuildingBlocks_VirtualCursorPolicy>>,
     /// `overflow` (Class)
-    #[serde(default)]
     pub overflow: Option<Handle<BuildingBlocks_Overflow>>,
     /// `scrollPolicy` (StrongPointer)
-    #[serde(default)]
     pub scroll_policy: Option<BuildingBlocks_ScrollPolicyBasePtr>,
     /// `radialTransform` (Class)
-    #[serde(default)]
     pub radial_transform: Option<Handle<BuildingBlocks_RadialTransform>>,
     /// `radialTransformChild` (Class)
-    #[serde(default)]
     pub radial_transform_child: Option<Handle<BuildingBlocks_RadialTransformChild>>,
     /// `animation` (Class)
-    #[serde(default)]
     pub animation: Option<Handle<BuildingBlocks_Animation>>,
     /// `interactions` (Class)
-    #[serde(default)]
     pub interactions: Option<Handle<BuildingBlocks_Interactions>>,
     /// `inheritsScale` (Boolean)
-    #[serde(default)]
     pub inherits_scale: bool,
     /// `inheritsRotation` (Boolean)
-    #[serde(default)]
     pub inherits_rotation: bool,
     /// `inheritsTranslation` (Boolean)
-    #[serde(default)]
     pub inherits_translation: bool,
     /// `inheritsAlpha` (Boolean)
-    #[serde(default)]
     pub inherits_alpha: bool,
     /// `inheritsOverflow` (Boolean)
-    #[serde(default)]
     pub inherits_overflow: bool,
     /// `alpha` (Single)
-    #[serde(default)]
     pub alpha: f32,
     /// `layer` (Byte)
-    #[serde(default)]
     pub layer: u32,
     /// `aspectRatioLibrary` (Reference)
-    #[serde(default)]
     pub aspect_ratio_library: Option<CigGuid>,
     /// `focusIndex` (Int16)
-    #[serde(default)]
     pub focus_index: i32,
     /// `inlineStyles` (Class (array))
-    #[serde(default)]
     pub inline_styles: Vec<Handle<BuildingBlocks_StyleEntry>>,
     /// `hoverCursor` (EnumChoice)
-    #[serde(default)]
     pub hover_cursor: Cursor,
     /// `enableHeldCursor` (Boolean)
-    #[serde(default)]
     pub enable_held_cursor: bool,
     /// `heldCursor` (EnumChoice)
-    #[serde(default)]
     pub held_cursor: Cursor,
     /// `variableName` (String)
-    #[serde(default)]
     pub variable_name: String,
     /// `targetList` (Class (array))
-    #[serde(default)]
     pub target_list: Vec<Handle<BuildingBlocks_IntegerWidgetPairDef>>,
 }
 
@@ -624,181 +540,122 @@ impl<'a> Extract<'a> for BuildingBlocks_WidgetPolymorphic {
 
 /// DCB type: `BuildingBlocks_WidgetParticleEffect`
 /// Inherits from: `BuildingBlocks_WidgetBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildingBlocks_WidgetParticleEffect {
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
     /// `styleTags` (Reference (array))
-    #[serde(default)]
     pub style_tags: Vec<CigGuid>,
     /// `rendererType` (EnumChoice)
-    #[serde(default)]
     pub renderer_type: BB_RendererType,
     /// `rendererPolicy` (StrongPointer)
-    #[serde(default)]
     pub renderer_policy: Option<BuildingBlocks_RendererPolicyBasePtr>,
     /// `primitiveSettings` (Class)
-    #[serde(default)]
     pub primitive_settings: Option<Handle<BuildingBlocks_PrimitiveSettings>>,
     /// `parent` (WeakPointer)
-    #[serde(default)]
     pub parent: Option<BuildingBlocks_WidgetBasePtr>,
     /// `previewScene` (WeakPointer)
-    #[serde(default)]
     pub preview_scene: Option<BuildingBlocks_PreviewScreenBasePtr>,
     /// `previewSceneFlattened` (WeakPointer)
-    #[serde(default)]
     pub preview_scene_flattened: Option<BuildingBlocks_PreviewScreenBasePtr>,
     /// `cullingLevel` (EnumChoice)
-    #[serde(default)]
     pub culling_level: BB_CullingLevel,
     /// `isActive` (Boolean)
-    #[serde(default)]
     pub is_active: bool,
     /// `affectsLayout` (Boolean)
-    #[serde(default)]
     pub affects_layout: bool,
     /// `affectsAutosize` (Boolean)
-    #[serde(default)]
     pub affects_autosize: bool,
     /// `exportNode` (Boolean)
-    #[serde(default)]
     pub export_node: bool,
     /// `position` (Class)
-    #[serde(default)]
     pub position: Option<Handle<Vec3>>,
     /// `positionOffset` (Class)
-    #[serde(default)]
     pub position_offset: Option<Handle<Vec3>>,
     /// `orientation` (Class)
-    #[serde(default)]
     pub orientation: Option<Handle<Deg3>>,
     /// `orientationOffset` (Class)
-    #[serde(default)]
     pub orientation_offset: Option<Handle<Deg3>>,
     /// `scale` (Class)
-    #[serde(default)]
     pub scale: Option<Handle<Vec3>>,
     /// `sizing` (Class)
-    #[serde(default)]
     pub sizing: Option<Handle<BuildingBlocks_Size>>,
     /// `autoScalingMethod` (EnumChoice)
-    #[serde(default)]
     pub auto_scaling_method: BB_AutoScalingMethod,
     /// `padding` (Class)
-    #[serde(default)]
     pub padding: Option<Handle<BuildingBlocks_TRBL>>,
     /// `margin` (Class)
-    #[serde(default)]
     pub margin: Option<Handle<BuildingBlocks_TRBL>>,
     /// `pivot` (Class)
-    #[serde(default)]
     pub pivot: Option<Handle<Vec3>>,
     /// `anchor` (Class)
-    #[serde(default)]
     pub anchor: Option<Handle<Vec3>>,
     /// `background` (Class)
-    #[serde(default)]
     pub background: Option<Handle<BuildingBlocks_Background>>,
     /// `segmentedFill` (Class)
-    #[serde(default)]
     pub segmented_fill: Option<Handle<BuildingBlocks_SegmentedFill>>,
     /// `svgFill` (Class)
-    #[serde(default)]
     pub svg_fill: Option<Handle<BuildingBlocks_SvgFill>>,
     /// `border` (Class)
-    #[serde(default)]
     pub border: Option<Handle<BuildingBlocks_Border>>,
     /// `layoutPolicy` (StrongPointer)
-    #[serde(default)]
     pub layout_policy: Option<BuildingBlocks_LayoutPolicyBasePtr>,
     /// `layoutPolicyItem` (StrongPointer)
-    #[serde(default)]
     pub layout_policy_item: Option<BuildingBlocks_LayoutPolicyItemBasePtr>,
     /// `layoutItemCommon` (StrongPointer)
-    #[serde(default)]
     pub layout_item_common: Option<Handle<BuildingBlocks_LayoutItemCommon>>,
     /// `dropTargetPolicy` (StrongPointer)
-    #[serde(default)]
     pub drop_target_policy: Option<BuildingBlocks_DropTargetPolicyBasePtr>,
     /// `draggablePolicy` (StrongPointer)
-    #[serde(default)]
     pub draggable_policy: Option<BuildingBlocks_DraggablePolicyBasePtr>,
     /// `tooltipPolicy` (StrongPointer)
-    #[serde(default)]
     pub tooltip_policy: Option<Handle<BuildingBlocks_TooltipPolicy>>,
     /// `contextMenuPolicy` (StrongPointer)
-    #[serde(default)]
     pub context_menu_policy: Option<Handle<BuildingBlocks_ContextMenuPolicy>>,
     /// `grabControlsPolicy` (StrongPointer)
-    #[serde(default)]
     pub grab_controls_policy: Option<Handle<BuildingBlocks_GrabControlsPolicy>>,
     /// `calloutSettings` (StrongPointer)
-    #[serde(default)]
     pub callout_settings: Option<Handle<BuildingBlocks_CalloutSettings>>,
     /// `virtualCursorPolicy` (StrongPointer)
-    #[serde(default)]
     pub virtual_cursor_policy: Option<Handle<BuildingBlocks_VirtualCursorPolicy>>,
     /// `overflow` (Class)
-    #[serde(default)]
     pub overflow: Option<Handle<BuildingBlocks_Overflow>>,
     /// `scrollPolicy` (StrongPointer)
-    #[serde(default)]
     pub scroll_policy: Option<BuildingBlocks_ScrollPolicyBasePtr>,
     /// `radialTransform` (Class)
-    #[serde(default)]
     pub radial_transform: Option<Handle<BuildingBlocks_RadialTransform>>,
     /// `radialTransformChild` (Class)
-    #[serde(default)]
     pub radial_transform_child: Option<Handle<BuildingBlocks_RadialTransformChild>>,
     /// `animation` (Class)
-    #[serde(default)]
     pub animation: Option<Handle<BuildingBlocks_Animation>>,
     /// `interactions` (Class)
-    #[serde(default)]
     pub interactions: Option<Handle<BuildingBlocks_Interactions>>,
     /// `inheritsScale` (Boolean)
-    #[serde(default)]
     pub inherits_scale: bool,
     /// `inheritsRotation` (Boolean)
-    #[serde(default)]
     pub inherits_rotation: bool,
     /// `inheritsTranslation` (Boolean)
-    #[serde(default)]
     pub inherits_translation: bool,
     /// `inheritsAlpha` (Boolean)
-    #[serde(default)]
     pub inherits_alpha: bool,
     /// `inheritsOverflow` (Boolean)
-    #[serde(default)]
     pub inherits_overflow: bool,
     /// `alpha` (Single)
-    #[serde(default)]
     pub alpha: f32,
     /// `layer` (Byte)
-    #[serde(default)]
     pub layer: u32,
     /// `aspectRatioLibrary` (Reference)
-    #[serde(default)]
     pub aspect_ratio_library: Option<CigGuid>,
     /// `focusIndex` (Int16)
-    #[serde(default)]
     pub focus_index: i32,
     /// `inlineStyles` (Class (array))
-    #[serde(default)]
     pub inline_styles: Vec<Handle<BuildingBlocks_StyleEntry>>,
     /// `hoverCursor` (EnumChoice)
-    #[serde(default)]
     pub hover_cursor: Cursor,
     /// `enableHeldCursor` (Boolean)
-    #[serde(default)]
     pub enable_held_cursor: bool,
     /// `heldCursor` (EnumChoice)
-    #[serde(default)]
     pub held_cursor: Cursor,
     /// `effect` (Class)
-    #[serde(default)]
     pub effect: Option<Handle<GlobalResourceParticle>>,
 }
 
@@ -991,10 +848,8 @@ impl<'a> Extract<'a> for BuildingBlocks_WidgetParticleEffect {
 
 /// DCB type: `BuildingBlocks_LookAtTransformer`
 /// Inherits from: `BuildingBlocks_TransformerBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildingBlocks_LookAtTransformer {
     /// `position` (Class)
-    #[serde(default)]
     pub position: Option<Handle<Vec3>>,
 }
 
@@ -1017,190 +872,128 @@ impl<'a> Extract<'a> for BuildingBlocks_LookAtTransformer {
 
 /// DCB type: `BuildingBlocks_WidgetEnvironmentProbe`
 /// Inherits from: `BuildingBlocks_WidgetBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildingBlocks_WidgetEnvironmentProbe {
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
     /// `styleTags` (Reference (array))
-    #[serde(default)]
     pub style_tags: Vec<CigGuid>,
     /// `rendererType` (EnumChoice)
-    #[serde(default)]
     pub renderer_type: BB_RendererType,
     /// `rendererPolicy` (StrongPointer)
-    #[serde(default)]
     pub renderer_policy: Option<BuildingBlocks_RendererPolicyBasePtr>,
     /// `primitiveSettings` (Class)
-    #[serde(default)]
     pub primitive_settings: Option<Handle<BuildingBlocks_PrimitiveSettings>>,
     /// `parent` (WeakPointer)
-    #[serde(default)]
     pub parent: Option<BuildingBlocks_WidgetBasePtr>,
     /// `previewScene` (WeakPointer)
-    #[serde(default)]
     pub preview_scene: Option<BuildingBlocks_PreviewScreenBasePtr>,
     /// `previewSceneFlattened` (WeakPointer)
-    #[serde(default)]
     pub preview_scene_flattened: Option<BuildingBlocks_PreviewScreenBasePtr>,
     /// `cullingLevel` (EnumChoice)
-    #[serde(default)]
     pub culling_level: BB_CullingLevel,
     /// `isActive` (Boolean)
-    #[serde(default)]
     pub is_active: bool,
     /// `affectsLayout` (Boolean)
-    #[serde(default)]
     pub affects_layout: bool,
     /// `affectsAutosize` (Boolean)
-    #[serde(default)]
     pub affects_autosize: bool,
     /// `exportNode` (Boolean)
-    #[serde(default)]
     pub export_node: bool,
     /// `position` (Class)
-    #[serde(default)]
     pub position: Option<Handle<Vec3>>,
     /// `positionOffset` (Class)
-    #[serde(default)]
     pub position_offset: Option<Handle<Vec3>>,
     /// `orientation` (Class)
-    #[serde(default)]
     pub orientation: Option<Handle<Deg3>>,
     /// `orientationOffset` (Class)
-    #[serde(default)]
     pub orientation_offset: Option<Handle<Deg3>>,
     /// `scale` (Class)
-    #[serde(default)]
     pub scale: Option<Handle<Vec3>>,
     /// `sizing` (Class)
-    #[serde(default)]
     pub sizing: Option<Handle<BuildingBlocks_Size>>,
     /// `autoScalingMethod` (EnumChoice)
-    #[serde(default)]
     pub auto_scaling_method: BB_AutoScalingMethod,
     /// `padding` (Class)
-    #[serde(default)]
     pub padding: Option<Handle<BuildingBlocks_TRBL>>,
     /// `margin` (Class)
-    #[serde(default)]
     pub margin: Option<Handle<BuildingBlocks_TRBL>>,
     /// `pivot` (Class)
-    #[serde(default)]
     pub pivot: Option<Handle<Vec3>>,
     /// `anchor` (Class)
-    #[serde(default)]
     pub anchor: Option<Handle<Vec3>>,
     /// `background` (Class)
-    #[serde(default)]
     pub background: Option<Handle<BuildingBlocks_Background>>,
     /// `segmentedFill` (Class)
-    #[serde(default)]
     pub segmented_fill: Option<Handle<BuildingBlocks_SegmentedFill>>,
     /// `svgFill` (Class)
-    #[serde(default)]
     pub svg_fill: Option<Handle<BuildingBlocks_SvgFill>>,
     /// `border` (Class)
-    #[serde(default)]
     pub border: Option<Handle<BuildingBlocks_Border>>,
     /// `layoutPolicy` (StrongPointer)
-    #[serde(default)]
     pub layout_policy: Option<BuildingBlocks_LayoutPolicyBasePtr>,
     /// `layoutPolicyItem` (StrongPointer)
-    #[serde(default)]
     pub layout_policy_item: Option<BuildingBlocks_LayoutPolicyItemBasePtr>,
     /// `layoutItemCommon` (StrongPointer)
-    #[serde(default)]
     pub layout_item_common: Option<Handle<BuildingBlocks_LayoutItemCommon>>,
     /// `dropTargetPolicy` (StrongPointer)
-    #[serde(default)]
     pub drop_target_policy: Option<BuildingBlocks_DropTargetPolicyBasePtr>,
     /// `draggablePolicy` (StrongPointer)
-    #[serde(default)]
     pub draggable_policy: Option<BuildingBlocks_DraggablePolicyBasePtr>,
     /// `tooltipPolicy` (StrongPointer)
-    #[serde(default)]
     pub tooltip_policy: Option<Handle<BuildingBlocks_TooltipPolicy>>,
     /// `contextMenuPolicy` (StrongPointer)
-    #[serde(default)]
     pub context_menu_policy: Option<Handle<BuildingBlocks_ContextMenuPolicy>>,
     /// `grabControlsPolicy` (StrongPointer)
-    #[serde(default)]
     pub grab_controls_policy: Option<Handle<BuildingBlocks_GrabControlsPolicy>>,
     /// `calloutSettings` (StrongPointer)
-    #[serde(default)]
     pub callout_settings: Option<Handle<BuildingBlocks_CalloutSettings>>,
     /// `virtualCursorPolicy` (StrongPointer)
-    #[serde(default)]
     pub virtual_cursor_policy: Option<Handle<BuildingBlocks_VirtualCursorPolicy>>,
     /// `overflow` (Class)
-    #[serde(default)]
     pub overflow: Option<Handle<BuildingBlocks_Overflow>>,
     /// `scrollPolicy` (StrongPointer)
-    #[serde(default)]
     pub scroll_policy: Option<BuildingBlocks_ScrollPolicyBasePtr>,
     /// `radialTransform` (Class)
-    #[serde(default)]
     pub radial_transform: Option<Handle<BuildingBlocks_RadialTransform>>,
     /// `radialTransformChild` (Class)
-    #[serde(default)]
     pub radial_transform_child: Option<Handle<BuildingBlocks_RadialTransformChild>>,
     /// `animation` (Class)
-    #[serde(default)]
     pub animation: Option<Handle<BuildingBlocks_Animation>>,
     /// `interactions` (Class)
-    #[serde(default)]
     pub interactions: Option<Handle<BuildingBlocks_Interactions>>,
     /// `inheritsScale` (Boolean)
-    #[serde(default)]
     pub inherits_scale: bool,
     /// `inheritsRotation` (Boolean)
-    #[serde(default)]
     pub inherits_rotation: bool,
     /// `inheritsTranslation` (Boolean)
-    #[serde(default)]
     pub inherits_translation: bool,
     /// `inheritsAlpha` (Boolean)
-    #[serde(default)]
     pub inherits_alpha: bool,
     /// `inheritsOverflow` (Boolean)
-    #[serde(default)]
     pub inherits_overflow: bool,
     /// `alpha` (Single)
-    #[serde(default)]
     pub alpha: f32,
     /// `layer` (Byte)
-    #[serde(default)]
     pub layer: u32,
     /// `aspectRatioLibrary` (Reference)
-    #[serde(default)]
     pub aspect_ratio_library: Option<CigGuid>,
     /// `focusIndex` (Int16)
-    #[serde(default)]
     pub focus_index: i32,
     /// `inlineStyles` (Class (array))
-    #[serde(default)]
     pub inline_styles: Vec<Handle<BuildingBlocks_StyleEntry>>,
     /// `hoverCursor` (EnumChoice)
-    #[serde(default)]
     pub hover_cursor: Cursor,
     /// `enableHeldCursor` (Boolean)
-    #[serde(default)]
     pub enable_held_cursor: bool,
     /// `heldCursor` (EnumChoice)
-    #[serde(default)]
     pub held_cursor: Cursor,
     /// `probeRadius` (Single)
-    #[serde(default)]
     pub probe_radius: f32,
     /// `probeIntensity` (Single)
-    #[serde(default)]
     pub probe_intensity: f32,
     /// `probeColor` (StrongPointer)
-    #[serde(default)]
     pub probe_color: Option<BuildingBlocks_ColorBasePtr>,
     /// `specularImage` (String)
-    #[serde(default)]
     pub specular_image: String,
 }
 
@@ -1395,46 +1188,32 @@ impl<'a> Extract<'a> for BuildingBlocks_WidgetEnvironmentProbe {
 }
 
 /// DCB type: `GrabCameraControlParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GrabCameraControlParams {
     /// `responsiveness` (Single)
-    #[serde(default)]
     pub responsiveness: f32,
     /// `rotationSpeed` (Single)
-    #[serde(default)]
     pub rotation_speed: f32,
     /// `rotationSlowdown` (Single)
-    #[serde(default)]
     pub rotation_slowdown: f32,
     /// `zoomSpeed` (Single)
-    #[serde(default)]
     pub zoom_speed: f32,
     /// `zoomSlowdown` (Single)
-    #[serde(default)]
     pub zoom_slowdown: f32,
     /// `minimumZoomDistance` (Single)
-    #[serde(default)]
     pub minimum_zoom_distance: f32,
     /// `maximumZoomDistance` (Single)
-    #[serde(default)]
     pub maximum_zoom_distance: f32,
     /// `maximumZoomSpeed` (Single)
-    #[serde(default)]
     pub maximum_zoom_speed: f32,
     /// `isGrabbableOutOfBounds` (Boolean)
-    #[serde(default)]
     pub is_grabbable_out_of_bounds: bool,
     /// `grabRotationMode` (EnumChoice)
-    #[serde(default)]
     pub grab_rotation_mode: BB_GrabRotationMode,
     /// `panResponsiveness` (Single)
-    #[serde(default)]
     pub pan_responsiveness: f32,
     /// `panSpeed` (Single)
-    #[serde(default)]
     pub pan_speed: f32,
     /// `panSlowdown` (Single)
-    #[serde(default)]
     pub pan_slowdown: f32,
 }
 
@@ -1466,13 +1245,10 @@ impl<'a> Extract<'a> for GrabCameraControlParams {
 
 /// DCB type: `BuildingBlocks_TargetSlicer`
 /// Inherits from: `BuildingBlocks_SlicerBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildingBlocks_TargetSlicer {
     /// `target` (WeakPointer)
-    #[serde(default)]
     pub target: Option<BuildingBlocks_WidgetBasePtr>,
     /// `coordinateMethod` (EnumChoice)
-    #[serde(default)]
     pub coordinate_method: BB_CanvasCoordinateMethod,
 }
 
@@ -1496,217 +1272,146 @@ impl<'a> Extract<'a> for BuildingBlocks_TargetSlicer {
 
 /// DCB type: `BuildingBlocks_WidgetPagination`
 /// Inherits from: `BuildingBlocks_WidgetCanvas`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildingBlocks_WidgetPagination {
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
     /// `styleTags` (Reference (array))
-    #[serde(default)]
     pub style_tags: Vec<CigGuid>,
     /// `rendererType` (EnumChoice)
-    #[serde(default)]
     pub renderer_type: BB_RendererType,
     /// `rendererPolicy` (StrongPointer)
-    #[serde(default)]
     pub renderer_policy: Option<BuildingBlocks_RendererPolicyBasePtr>,
     /// `primitiveSettings` (Class)
-    #[serde(default)]
     pub primitive_settings: Option<Handle<BuildingBlocks_PrimitiveSettings>>,
     /// `parent` (WeakPointer)
-    #[serde(default)]
     pub parent: Option<BuildingBlocks_WidgetBasePtr>,
     /// `previewScene` (WeakPointer)
-    #[serde(default)]
     pub preview_scene: Option<BuildingBlocks_PreviewScreenBasePtr>,
     /// `previewSceneFlattened` (WeakPointer)
-    #[serde(default)]
     pub preview_scene_flattened: Option<BuildingBlocks_PreviewScreenBasePtr>,
     /// `cullingLevel` (EnumChoice)
-    #[serde(default)]
     pub culling_level: BB_CullingLevel,
     /// `isActive` (Boolean)
-    #[serde(default)]
     pub is_active: bool,
     /// `affectsLayout` (Boolean)
-    #[serde(default)]
     pub affects_layout: bool,
     /// `affectsAutosize` (Boolean)
-    #[serde(default)]
     pub affects_autosize: bool,
     /// `exportNode` (Boolean)
-    #[serde(default)]
     pub export_node: bool,
     /// `position` (Class)
-    #[serde(default)]
     pub position: Option<Handle<Vec3>>,
     /// `positionOffset` (Class)
-    #[serde(default)]
     pub position_offset: Option<Handle<Vec3>>,
     /// `orientation` (Class)
-    #[serde(default)]
     pub orientation: Option<Handle<Deg3>>,
     /// `orientationOffset` (Class)
-    #[serde(default)]
     pub orientation_offset: Option<Handle<Deg3>>,
     /// `scale` (Class)
-    #[serde(default)]
     pub scale: Option<Handle<Vec3>>,
     /// `sizing` (Class)
-    #[serde(default)]
     pub sizing: Option<Handle<BuildingBlocks_Size>>,
     /// `autoScalingMethod` (EnumChoice)
-    #[serde(default)]
     pub auto_scaling_method: BB_AutoScalingMethod,
     /// `padding` (Class)
-    #[serde(default)]
     pub padding: Option<Handle<BuildingBlocks_TRBL>>,
     /// `margin` (Class)
-    #[serde(default)]
     pub margin: Option<Handle<BuildingBlocks_TRBL>>,
     /// `pivot` (Class)
-    #[serde(default)]
     pub pivot: Option<Handle<Vec3>>,
     /// `anchor` (Class)
-    #[serde(default)]
     pub anchor: Option<Handle<Vec3>>,
     /// `background` (Class)
-    #[serde(default)]
     pub background: Option<Handle<BuildingBlocks_Background>>,
     /// `segmentedFill` (Class)
-    #[serde(default)]
     pub segmented_fill: Option<Handle<BuildingBlocks_SegmentedFill>>,
     /// `svgFill` (Class)
-    #[serde(default)]
     pub svg_fill: Option<Handle<BuildingBlocks_SvgFill>>,
     /// `border` (Class)
-    #[serde(default)]
     pub border: Option<Handle<BuildingBlocks_Border>>,
     /// `layoutPolicy` (StrongPointer)
-    #[serde(default)]
     pub layout_policy: Option<BuildingBlocks_LayoutPolicyBasePtr>,
     /// `layoutPolicyItem` (StrongPointer)
-    #[serde(default)]
     pub layout_policy_item: Option<BuildingBlocks_LayoutPolicyItemBasePtr>,
     /// `layoutItemCommon` (StrongPointer)
-    #[serde(default)]
     pub layout_item_common: Option<Handle<BuildingBlocks_LayoutItemCommon>>,
     /// `dropTargetPolicy` (StrongPointer)
-    #[serde(default)]
     pub drop_target_policy: Option<BuildingBlocks_DropTargetPolicyBasePtr>,
     /// `draggablePolicy` (StrongPointer)
-    #[serde(default)]
     pub draggable_policy: Option<BuildingBlocks_DraggablePolicyBasePtr>,
     /// `tooltipPolicy` (StrongPointer)
-    #[serde(default)]
     pub tooltip_policy: Option<Handle<BuildingBlocks_TooltipPolicy>>,
     /// `contextMenuPolicy` (StrongPointer)
-    #[serde(default)]
     pub context_menu_policy: Option<Handle<BuildingBlocks_ContextMenuPolicy>>,
     /// `grabControlsPolicy` (StrongPointer)
-    #[serde(default)]
     pub grab_controls_policy: Option<Handle<BuildingBlocks_GrabControlsPolicy>>,
     /// `calloutSettings` (StrongPointer)
-    #[serde(default)]
     pub callout_settings: Option<Handle<BuildingBlocks_CalloutSettings>>,
     /// `virtualCursorPolicy` (StrongPointer)
-    #[serde(default)]
     pub virtual_cursor_policy: Option<Handle<BuildingBlocks_VirtualCursorPolicy>>,
     /// `overflow` (Class)
-    #[serde(default)]
     pub overflow: Option<Handle<BuildingBlocks_Overflow>>,
     /// `scrollPolicy` (StrongPointer)
-    #[serde(default)]
     pub scroll_policy: Option<BuildingBlocks_ScrollPolicyBasePtr>,
     /// `radialTransform` (Class)
-    #[serde(default)]
     pub radial_transform: Option<Handle<BuildingBlocks_RadialTransform>>,
     /// `radialTransformChild` (Class)
-    #[serde(default)]
     pub radial_transform_child: Option<Handle<BuildingBlocks_RadialTransformChild>>,
     /// `animation` (Class)
-    #[serde(default)]
     pub animation: Option<Handle<BuildingBlocks_Animation>>,
     /// `interactions` (Class)
-    #[serde(default)]
     pub interactions: Option<Handle<BuildingBlocks_Interactions>>,
     /// `inheritsScale` (Boolean)
-    #[serde(default)]
     pub inherits_scale: bool,
     /// `inheritsRotation` (Boolean)
-    #[serde(default)]
     pub inherits_rotation: bool,
     /// `inheritsTranslation` (Boolean)
-    #[serde(default)]
     pub inherits_translation: bool,
     /// `inheritsAlpha` (Boolean)
-    #[serde(default)]
     pub inherits_alpha: bool,
     /// `inheritsOverflow` (Boolean)
-    #[serde(default)]
     pub inherits_overflow: bool,
     /// `alpha` (Single)
-    #[serde(default)]
     pub alpha: f32,
     /// `layer` (Byte)
-    #[serde(default)]
     pub layer: u32,
     /// `aspectRatioLibrary` (Reference)
-    #[serde(default)]
     pub aspect_ratio_library: Option<CigGuid>,
     /// `focusIndex` (Int16)
-    #[serde(default)]
     pub focus_index: i32,
     /// `inlineStyles` (Class (array))
-    #[serde(default)]
     pub inline_styles: Vec<Handle<BuildingBlocks_StyleEntry>>,
     /// `hoverCursor` (EnumChoice)
-    #[serde(default)]
     pub hover_cursor: Cursor,
     /// `enableHeldCursor` (Boolean)
-    #[serde(default)]
     pub enable_held_cursor: bool,
     /// `heldCursor` (EnumChoice)
-    #[serde(default)]
     pub held_cursor: Cursor,
     /// `instantiated` (Boolean)
-    #[serde(default)]
     pub instantiated: bool,
     /// `urlOptional` (String)
-    #[serde(default)]
     pub url_optional: String,
     /// `urlPostfix` (String)
-    #[serde(default)]
     pub url_postfix: String,
     /// `stylesheetOverride` (Reference)
-    #[serde(default)]
     pub stylesheet_override: Option<CigGuid>,
     /// `canvas` (Reference)
-    #[serde(default)]
     pub canvas: Option<CigGuid>,
     /// `sizingMethod` (EnumChoice)
-    #[serde(default)]
     pub sizing_method: BB_CanvasWidgetSizingMethod,
     /// `paramInputValues` (StrongPointer (array))
-    #[serde(default)]
     pub param_input_values: Vec<BuildingBlocks_ComponentParameterInputBasePtr>,
     /// `showFirstPageButton` (Boolean)
-    #[serde(default)]
     pub show_first_page_button: bool,
     /// `showPreviousPageButton` (Boolean)
-    #[serde(default)]
     pub show_previous_page_button: bool,
     /// `showNextPageButton` (Boolean)
-    #[serde(default)]
     pub show_next_page_button: bool,
     /// `showLastPageButton` (Boolean)
-    #[serde(default)]
     pub show_last_page_button: bool,
     /// `pageNumberURL` (String)
-    #[serde(default)]
     pub page_number_url: String,
     /// `numPagesURL` (String)
-    #[serde(default)]
     pub num_pages_url: String,
 }
 
@@ -1913,205 +1618,138 @@ impl<'a> Extract<'a> for BuildingBlocks_WidgetPagination {
 
 /// DCB type: `BuildingBlocks_WidgetRadioControl`
 /// Inherits from: `BuildingBlocks_TogglerBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildingBlocks_WidgetRadioControl {
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
     /// `styleTags` (Reference (array))
-    #[serde(default)]
     pub style_tags: Vec<CigGuid>,
     /// `rendererType` (EnumChoice)
-    #[serde(default)]
     pub renderer_type: BB_RendererType,
     /// `rendererPolicy` (StrongPointer)
-    #[serde(default)]
     pub renderer_policy: Option<BuildingBlocks_RendererPolicyBasePtr>,
     /// `primitiveSettings` (Class)
-    #[serde(default)]
     pub primitive_settings: Option<Handle<BuildingBlocks_PrimitiveSettings>>,
     /// `parent` (WeakPointer)
-    #[serde(default)]
     pub parent: Option<BuildingBlocks_WidgetBasePtr>,
     /// `previewScene` (WeakPointer)
-    #[serde(default)]
     pub preview_scene: Option<BuildingBlocks_PreviewScreenBasePtr>,
     /// `previewSceneFlattened` (WeakPointer)
-    #[serde(default)]
     pub preview_scene_flattened: Option<BuildingBlocks_PreviewScreenBasePtr>,
     /// `cullingLevel` (EnumChoice)
-    #[serde(default)]
     pub culling_level: BB_CullingLevel,
     /// `isActive` (Boolean)
-    #[serde(default)]
     pub is_active: bool,
     /// `affectsLayout` (Boolean)
-    #[serde(default)]
     pub affects_layout: bool,
     /// `affectsAutosize` (Boolean)
-    #[serde(default)]
     pub affects_autosize: bool,
     /// `exportNode` (Boolean)
-    #[serde(default)]
     pub export_node: bool,
     /// `position` (Class)
-    #[serde(default)]
     pub position: Option<Handle<Vec3>>,
     /// `positionOffset` (Class)
-    #[serde(default)]
     pub position_offset: Option<Handle<Vec3>>,
     /// `orientation` (Class)
-    #[serde(default)]
     pub orientation: Option<Handle<Deg3>>,
     /// `orientationOffset` (Class)
-    #[serde(default)]
     pub orientation_offset: Option<Handle<Deg3>>,
     /// `scale` (Class)
-    #[serde(default)]
     pub scale: Option<Handle<Vec3>>,
     /// `sizing` (Class)
-    #[serde(default)]
     pub sizing: Option<Handle<BuildingBlocks_Size>>,
     /// `autoScalingMethod` (EnumChoice)
-    #[serde(default)]
     pub auto_scaling_method: BB_AutoScalingMethod,
     /// `padding` (Class)
-    #[serde(default)]
     pub padding: Option<Handle<BuildingBlocks_TRBL>>,
     /// `margin` (Class)
-    #[serde(default)]
     pub margin: Option<Handle<BuildingBlocks_TRBL>>,
     /// `pivot` (Class)
-    #[serde(default)]
     pub pivot: Option<Handle<Vec3>>,
     /// `anchor` (Class)
-    #[serde(default)]
     pub anchor: Option<Handle<Vec3>>,
     /// `background` (Class)
-    #[serde(default)]
     pub background: Option<Handle<BuildingBlocks_Background>>,
     /// `segmentedFill` (Class)
-    #[serde(default)]
     pub segmented_fill: Option<Handle<BuildingBlocks_SegmentedFill>>,
     /// `svgFill` (Class)
-    #[serde(default)]
     pub svg_fill: Option<Handle<BuildingBlocks_SvgFill>>,
     /// `border` (Class)
-    #[serde(default)]
     pub border: Option<Handle<BuildingBlocks_Border>>,
     /// `layoutPolicy` (StrongPointer)
-    #[serde(default)]
     pub layout_policy: Option<BuildingBlocks_LayoutPolicyBasePtr>,
     /// `layoutPolicyItem` (StrongPointer)
-    #[serde(default)]
     pub layout_policy_item: Option<BuildingBlocks_LayoutPolicyItemBasePtr>,
     /// `layoutItemCommon` (StrongPointer)
-    #[serde(default)]
     pub layout_item_common: Option<Handle<BuildingBlocks_LayoutItemCommon>>,
     /// `dropTargetPolicy` (StrongPointer)
-    #[serde(default)]
     pub drop_target_policy: Option<BuildingBlocks_DropTargetPolicyBasePtr>,
     /// `draggablePolicy` (StrongPointer)
-    #[serde(default)]
     pub draggable_policy: Option<BuildingBlocks_DraggablePolicyBasePtr>,
     /// `tooltipPolicy` (StrongPointer)
-    #[serde(default)]
     pub tooltip_policy: Option<Handle<BuildingBlocks_TooltipPolicy>>,
     /// `contextMenuPolicy` (StrongPointer)
-    #[serde(default)]
     pub context_menu_policy: Option<Handle<BuildingBlocks_ContextMenuPolicy>>,
     /// `grabControlsPolicy` (StrongPointer)
-    #[serde(default)]
     pub grab_controls_policy: Option<Handle<BuildingBlocks_GrabControlsPolicy>>,
     /// `calloutSettings` (StrongPointer)
-    #[serde(default)]
     pub callout_settings: Option<Handle<BuildingBlocks_CalloutSettings>>,
     /// `virtualCursorPolicy` (StrongPointer)
-    #[serde(default)]
     pub virtual_cursor_policy: Option<Handle<BuildingBlocks_VirtualCursorPolicy>>,
     /// `overflow` (Class)
-    #[serde(default)]
     pub overflow: Option<Handle<BuildingBlocks_Overflow>>,
     /// `scrollPolicy` (StrongPointer)
-    #[serde(default)]
     pub scroll_policy: Option<BuildingBlocks_ScrollPolicyBasePtr>,
     /// `radialTransform` (Class)
-    #[serde(default)]
     pub radial_transform: Option<Handle<BuildingBlocks_RadialTransform>>,
     /// `radialTransformChild` (Class)
-    #[serde(default)]
     pub radial_transform_child: Option<Handle<BuildingBlocks_RadialTransformChild>>,
     /// `animation` (Class)
-    #[serde(default)]
     pub animation: Option<Handle<BuildingBlocks_Animation>>,
     /// `interactions` (Class)
-    #[serde(default)]
     pub interactions: Option<Handle<BuildingBlocks_Interactions>>,
     /// `inheritsScale` (Boolean)
-    #[serde(default)]
     pub inherits_scale: bool,
     /// `inheritsRotation` (Boolean)
-    #[serde(default)]
     pub inherits_rotation: bool,
     /// `inheritsTranslation` (Boolean)
-    #[serde(default)]
     pub inherits_translation: bool,
     /// `inheritsAlpha` (Boolean)
-    #[serde(default)]
     pub inherits_alpha: bool,
     /// `inheritsOverflow` (Boolean)
-    #[serde(default)]
     pub inherits_overflow: bool,
     /// `alpha` (Single)
-    #[serde(default)]
     pub alpha: f32,
     /// `layer` (Byte)
-    #[serde(default)]
     pub layer: u32,
     /// `aspectRatioLibrary` (Reference)
-    #[serde(default)]
     pub aspect_ratio_library: Option<CigGuid>,
     /// `focusIndex` (Int16)
-    #[serde(default)]
     pub focus_index: i32,
     /// `inlineStyles` (Class (array))
-    #[serde(default)]
     pub inline_styles: Vec<Handle<BuildingBlocks_StyleEntry>>,
     /// `hoverCursor` (EnumChoice)
-    #[serde(default)]
     pub hover_cursor: Cursor,
     /// `enableHeldCursor` (Boolean)
-    #[serde(default)]
     pub enable_held_cursor: bool,
     /// `heldCursor` (EnumChoice)
-    #[serde(default)]
     pub held_cursor: Cursor,
     /// `instantiated` (Boolean)
-    #[serde(default)]
     pub instantiated: bool,
     /// `urlOptional` (String)
-    #[serde(default)]
     pub url_optional: String,
     /// `urlPostfix` (String)
-    #[serde(default)]
     pub url_postfix: String,
     /// `stylesheetOverride` (Reference)
-    #[serde(default)]
     pub stylesheet_override: Option<CigGuid>,
     /// `canvas` (Reference)
-    #[serde(default)]
     pub canvas: Option<CigGuid>,
     /// `sizingMethod` (EnumChoice)
-    #[serde(default)]
     pub sizing_method: BB_CanvasWidgetSizingMethod,
     /// `paramInputValues` (StrongPointer (array))
-    #[serde(default)]
     pub param_input_values: Vec<BuildingBlocks_ComponentParameterInputBasePtr>,
     /// `variableName` (String)
-    #[serde(default)]
     pub variable_name: String,
     /// `toggleActivationEvent` (EnumChoice)
-    #[serde(default)]
     pub toggle_activation_event: BB_ActivationButtonAction,
 }
 
@@ -2314,205 +1952,138 @@ impl<'a> Extract<'a> for BuildingBlocks_WidgetRadioControl {
 
 /// DCB type: `BuildingBlocks_WidgetBadge`
 /// Inherits from: `BuildingBlocks_WidgetCanvas`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildingBlocks_WidgetBadge {
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
     /// `styleTags` (Reference (array))
-    #[serde(default)]
     pub style_tags: Vec<CigGuid>,
     /// `rendererType` (EnumChoice)
-    #[serde(default)]
     pub renderer_type: BB_RendererType,
     /// `rendererPolicy` (StrongPointer)
-    #[serde(default)]
     pub renderer_policy: Option<BuildingBlocks_RendererPolicyBasePtr>,
     /// `primitiveSettings` (Class)
-    #[serde(default)]
     pub primitive_settings: Option<Handle<BuildingBlocks_PrimitiveSettings>>,
     /// `parent` (WeakPointer)
-    #[serde(default)]
     pub parent: Option<BuildingBlocks_WidgetBasePtr>,
     /// `previewScene` (WeakPointer)
-    #[serde(default)]
     pub preview_scene: Option<BuildingBlocks_PreviewScreenBasePtr>,
     /// `previewSceneFlattened` (WeakPointer)
-    #[serde(default)]
     pub preview_scene_flattened: Option<BuildingBlocks_PreviewScreenBasePtr>,
     /// `cullingLevel` (EnumChoice)
-    #[serde(default)]
     pub culling_level: BB_CullingLevel,
     /// `isActive` (Boolean)
-    #[serde(default)]
     pub is_active: bool,
     /// `affectsLayout` (Boolean)
-    #[serde(default)]
     pub affects_layout: bool,
     /// `affectsAutosize` (Boolean)
-    #[serde(default)]
     pub affects_autosize: bool,
     /// `exportNode` (Boolean)
-    #[serde(default)]
     pub export_node: bool,
     /// `position` (Class)
-    #[serde(default)]
     pub position: Option<Handle<Vec3>>,
     /// `positionOffset` (Class)
-    #[serde(default)]
     pub position_offset: Option<Handle<Vec3>>,
     /// `orientation` (Class)
-    #[serde(default)]
     pub orientation: Option<Handle<Deg3>>,
     /// `orientationOffset` (Class)
-    #[serde(default)]
     pub orientation_offset: Option<Handle<Deg3>>,
     /// `scale` (Class)
-    #[serde(default)]
     pub scale: Option<Handle<Vec3>>,
     /// `sizing` (Class)
-    #[serde(default)]
     pub sizing: Option<Handle<BuildingBlocks_Size>>,
     /// `autoScalingMethod` (EnumChoice)
-    #[serde(default)]
     pub auto_scaling_method: BB_AutoScalingMethod,
     /// `padding` (Class)
-    #[serde(default)]
     pub padding: Option<Handle<BuildingBlocks_TRBL>>,
     /// `margin` (Class)
-    #[serde(default)]
     pub margin: Option<Handle<BuildingBlocks_TRBL>>,
     /// `pivot` (Class)
-    #[serde(default)]
     pub pivot: Option<Handle<Vec3>>,
     /// `anchor` (Class)
-    #[serde(default)]
     pub anchor: Option<Handle<Vec3>>,
     /// `background` (Class)
-    #[serde(default)]
     pub background: Option<Handle<BuildingBlocks_Background>>,
     /// `segmentedFill` (Class)
-    #[serde(default)]
     pub segmented_fill: Option<Handle<BuildingBlocks_SegmentedFill>>,
     /// `svgFill` (Class)
-    #[serde(default)]
     pub svg_fill: Option<Handle<BuildingBlocks_SvgFill>>,
     /// `border` (Class)
-    #[serde(default)]
     pub border: Option<Handle<BuildingBlocks_Border>>,
     /// `layoutPolicy` (StrongPointer)
-    #[serde(default)]
     pub layout_policy: Option<BuildingBlocks_LayoutPolicyBasePtr>,
     /// `layoutPolicyItem` (StrongPointer)
-    #[serde(default)]
     pub layout_policy_item: Option<BuildingBlocks_LayoutPolicyItemBasePtr>,
     /// `layoutItemCommon` (StrongPointer)
-    #[serde(default)]
     pub layout_item_common: Option<Handle<BuildingBlocks_LayoutItemCommon>>,
     /// `dropTargetPolicy` (StrongPointer)
-    #[serde(default)]
     pub drop_target_policy: Option<BuildingBlocks_DropTargetPolicyBasePtr>,
     /// `draggablePolicy` (StrongPointer)
-    #[serde(default)]
     pub draggable_policy: Option<BuildingBlocks_DraggablePolicyBasePtr>,
     /// `tooltipPolicy` (StrongPointer)
-    #[serde(default)]
     pub tooltip_policy: Option<Handle<BuildingBlocks_TooltipPolicy>>,
     /// `contextMenuPolicy` (StrongPointer)
-    #[serde(default)]
     pub context_menu_policy: Option<Handle<BuildingBlocks_ContextMenuPolicy>>,
     /// `grabControlsPolicy` (StrongPointer)
-    #[serde(default)]
     pub grab_controls_policy: Option<Handle<BuildingBlocks_GrabControlsPolicy>>,
     /// `calloutSettings` (StrongPointer)
-    #[serde(default)]
     pub callout_settings: Option<Handle<BuildingBlocks_CalloutSettings>>,
     /// `virtualCursorPolicy` (StrongPointer)
-    #[serde(default)]
     pub virtual_cursor_policy: Option<Handle<BuildingBlocks_VirtualCursorPolicy>>,
     /// `overflow` (Class)
-    #[serde(default)]
     pub overflow: Option<Handle<BuildingBlocks_Overflow>>,
     /// `scrollPolicy` (StrongPointer)
-    #[serde(default)]
     pub scroll_policy: Option<BuildingBlocks_ScrollPolicyBasePtr>,
     /// `radialTransform` (Class)
-    #[serde(default)]
     pub radial_transform: Option<Handle<BuildingBlocks_RadialTransform>>,
     /// `radialTransformChild` (Class)
-    #[serde(default)]
     pub radial_transform_child: Option<Handle<BuildingBlocks_RadialTransformChild>>,
     /// `animation` (Class)
-    #[serde(default)]
     pub animation: Option<Handle<BuildingBlocks_Animation>>,
     /// `interactions` (Class)
-    #[serde(default)]
     pub interactions: Option<Handle<BuildingBlocks_Interactions>>,
     /// `inheritsScale` (Boolean)
-    #[serde(default)]
     pub inherits_scale: bool,
     /// `inheritsRotation` (Boolean)
-    #[serde(default)]
     pub inherits_rotation: bool,
     /// `inheritsTranslation` (Boolean)
-    #[serde(default)]
     pub inherits_translation: bool,
     /// `inheritsAlpha` (Boolean)
-    #[serde(default)]
     pub inherits_alpha: bool,
     /// `inheritsOverflow` (Boolean)
-    #[serde(default)]
     pub inherits_overflow: bool,
     /// `alpha` (Single)
-    #[serde(default)]
     pub alpha: f32,
     /// `layer` (Byte)
-    #[serde(default)]
     pub layer: u32,
     /// `aspectRatioLibrary` (Reference)
-    #[serde(default)]
     pub aspect_ratio_library: Option<CigGuid>,
     /// `focusIndex` (Int16)
-    #[serde(default)]
     pub focus_index: i32,
     /// `inlineStyles` (Class (array))
-    #[serde(default)]
     pub inline_styles: Vec<Handle<BuildingBlocks_StyleEntry>>,
     /// `hoverCursor` (EnumChoice)
-    #[serde(default)]
     pub hover_cursor: Cursor,
     /// `enableHeldCursor` (Boolean)
-    #[serde(default)]
     pub enable_held_cursor: bool,
     /// `heldCursor` (EnumChoice)
-    #[serde(default)]
     pub held_cursor: Cursor,
     /// `instantiated` (Boolean)
-    #[serde(default)]
     pub instantiated: bool,
     /// `urlOptional` (String)
-    #[serde(default)]
     pub url_optional: String,
     /// `urlPostfix` (String)
-    #[serde(default)]
     pub url_postfix: String,
     /// `stylesheetOverride` (Reference)
-    #[serde(default)]
     pub stylesheet_override: Option<CigGuid>,
     /// `canvas` (Reference)
-    #[serde(default)]
     pub canvas: Option<CigGuid>,
     /// `sizingMethod` (EnumChoice)
-    #[serde(default)]
     pub sizing_method: BB_CanvasWidgetSizingMethod,
     /// `paramInputValues` (StrongPointer (array))
-    #[serde(default)]
     pub param_input_values: Vec<BuildingBlocks_ComponentParameterInputBasePtr>,
     /// `labelProperties` (Class)
-    #[serde(default)]
     pub label_properties: Option<Handle<BuildingBlocks_ComponentLabelProperties>>,
     /// `fillStyle` (EnumChoice)
-    #[serde(default)]
     pub fill_style: BB_FillStyle,
 }
 
@@ -2718,214 +2289,144 @@ impl<'a> Extract<'a> for BuildingBlocks_WidgetBadge {
 
 /// DCB type: `BuildingBlocks_ComponentRadioButton`
 /// Inherits from: `BuildingBlocks_TogglerBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildingBlocks_ComponentRadioButton {
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
     /// `styleTags` (Reference (array))
-    #[serde(default)]
     pub style_tags: Vec<CigGuid>,
     /// `rendererType` (EnumChoice)
-    #[serde(default)]
     pub renderer_type: BB_RendererType,
     /// `rendererPolicy` (StrongPointer)
-    #[serde(default)]
     pub renderer_policy: Option<BuildingBlocks_RendererPolicyBasePtr>,
     /// `primitiveSettings` (Class)
-    #[serde(default)]
     pub primitive_settings: Option<Handle<BuildingBlocks_PrimitiveSettings>>,
     /// `parent` (WeakPointer)
-    #[serde(default)]
     pub parent: Option<BuildingBlocks_WidgetBasePtr>,
     /// `previewScene` (WeakPointer)
-    #[serde(default)]
     pub preview_scene: Option<BuildingBlocks_PreviewScreenBasePtr>,
     /// `previewSceneFlattened` (WeakPointer)
-    #[serde(default)]
     pub preview_scene_flattened: Option<BuildingBlocks_PreviewScreenBasePtr>,
     /// `cullingLevel` (EnumChoice)
-    #[serde(default)]
     pub culling_level: BB_CullingLevel,
     /// `isActive` (Boolean)
-    #[serde(default)]
     pub is_active: bool,
     /// `affectsLayout` (Boolean)
-    #[serde(default)]
     pub affects_layout: bool,
     /// `affectsAutosize` (Boolean)
-    #[serde(default)]
     pub affects_autosize: bool,
     /// `exportNode` (Boolean)
-    #[serde(default)]
     pub export_node: bool,
     /// `position` (Class)
-    #[serde(default)]
     pub position: Option<Handle<Vec3>>,
     /// `positionOffset` (Class)
-    #[serde(default)]
     pub position_offset: Option<Handle<Vec3>>,
     /// `orientation` (Class)
-    #[serde(default)]
     pub orientation: Option<Handle<Deg3>>,
     /// `orientationOffset` (Class)
-    #[serde(default)]
     pub orientation_offset: Option<Handle<Deg3>>,
     /// `scale` (Class)
-    #[serde(default)]
     pub scale: Option<Handle<Vec3>>,
     /// `sizing` (Class)
-    #[serde(default)]
     pub sizing: Option<Handle<BuildingBlocks_Size>>,
     /// `autoScalingMethod` (EnumChoice)
-    #[serde(default)]
     pub auto_scaling_method: BB_AutoScalingMethod,
     /// `padding` (Class)
-    #[serde(default)]
     pub padding: Option<Handle<BuildingBlocks_TRBL>>,
     /// `margin` (Class)
-    #[serde(default)]
     pub margin: Option<Handle<BuildingBlocks_TRBL>>,
     /// `pivot` (Class)
-    #[serde(default)]
     pub pivot: Option<Handle<Vec3>>,
     /// `anchor` (Class)
-    #[serde(default)]
     pub anchor: Option<Handle<Vec3>>,
     /// `background` (Class)
-    #[serde(default)]
     pub background: Option<Handle<BuildingBlocks_Background>>,
     /// `segmentedFill` (Class)
-    #[serde(default)]
     pub segmented_fill: Option<Handle<BuildingBlocks_SegmentedFill>>,
     /// `svgFill` (Class)
-    #[serde(default)]
     pub svg_fill: Option<Handle<BuildingBlocks_SvgFill>>,
     /// `border` (Class)
-    #[serde(default)]
     pub border: Option<Handle<BuildingBlocks_Border>>,
     /// `layoutPolicy` (StrongPointer)
-    #[serde(default)]
     pub layout_policy: Option<BuildingBlocks_LayoutPolicyBasePtr>,
     /// `layoutPolicyItem` (StrongPointer)
-    #[serde(default)]
     pub layout_policy_item: Option<BuildingBlocks_LayoutPolicyItemBasePtr>,
     /// `layoutItemCommon` (StrongPointer)
-    #[serde(default)]
     pub layout_item_common: Option<Handle<BuildingBlocks_LayoutItemCommon>>,
     /// `dropTargetPolicy` (StrongPointer)
-    #[serde(default)]
     pub drop_target_policy: Option<BuildingBlocks_DropTargetPolicyBasePtr>,
     /// `draggablePolicy` (StrongPointer)
-    #[serde(default)]
     pub draggable_policy: Option<BuildingBlocks_DraggablePolicyBasePtr>,
     /// `tooltipPolicy` (StrongPointer)
-    #[serde(default)]
     pub tooltip_policy: Option<Handle<BuildingBlocks_TooltipPolicy>>,
     /// `contextMenuPolicy` (StrongPointer)
-    #[serde(default)]
     pub context_menu_policy: Option<Handle<BuildingBlocks_ContextMenuPolicy>>,
     /// `grabControlsPolicy` (StrongPointer)
-    #[serde(default)]
     pub grab_controls_policy: Option<Handle<BuildingBlocks_GrabControlsPolicy>>,
     /// `calloutSettings` (StrongPointer)
-    #[serde(default)]
     pub callout_settings: Option<Handle<BuildingBlocks_CalloutSettings>>,
     /// `virtualCursorPolicy` (StrongPointer)
-    #[serde(default)]
     pub virtual_cursor_policy: Option<Handle<BuildingBlocks_VirtualCursorPolicy>>,
     /// `overflow` (Class)
-    #[serde(default)]
     pub overflow: Option<Handle<BuildingBlocks_Overflow>>,
     /// `scrollPolicy` (StrongPointer)
-    #[serde(default)]
     pub scroll_policy: Option<BuildingBlocks_ScrollPolicyBasePtr>,
     /// `radialTransform` (Class)
-    #[serde(default)]
     pub radial_transform: Option<Handle<BuildingBlocks_RadialTransform>>,
     /// `radialTransformChild` (Class)
-    #[serde(default)]
     pub radial_transform_child: Option<Handle<BuildingBlocks_RadialTransformChild>>,
     /// `animation` (Class)
-    #[serde(default)]
     pub animation: Option<Handle<BuildingBlocks_Animation>>,
     /// `interactions` (Class)
-    #[serde(default)]
     pub interactions: Option<Handle<BuildingBlocks_Interactions>>,
     /// `inheritsScale` (Boolean)
-    #[serde(default)]
     pub inherits_scale: bool,
     /// `inheritsRotation` (Boolean)
-    #[serde(default)]
     pub inherits_rotation: bool,
     /// `inheritsTranslation` (Boolean)
-    #[serde(default)]
     pub inherits_translation: bool,
     /// `inheritsAlpha` (Boolean)
-    #[serde(default)]
     pub inherits_alpha: bool,
     /// `inheritsOverflow` (Boolean)
-    #[serde(default)]
     pub inherits_overflow: bool,
     /// `alpha` (Single)
-    #[serde(default)]
     pub alpha: f32,
     /// `layer` (Byte)
-    #[serde(default)]
     pub layer: u32,
     /// `aspectRatioLibrary` (Reference)
-    #[serde(default)]
     pub aspect_ratio_library: Option<CigGuid>,
     /// `focusIndex` (Int16)
-    #[serde(default)]
     pub focus_index: i32,
     /// `inlineStyles` (Class (array))
-    #[serde(default)]
     pub inline_styles: Vec<Handle<BuildingBlocks_StyleEntry>>,
     /// `hoverCursor` (EnumChoice)
-    #[serde(default)]
     pub hover_cursor: Cursor,
     /// `enableHeldCursor` (Boolean)
-    #[serde(default)]
     pub enable_held_cursor: bool,
     /// `heldCursor` (EnumChoice)
-    #[serde(default)]
     pub held_cursor: Cursor,
     /// `instantiated` (Boolean)
-    #[serde(default)]
     pub instantiated: bool,
     /// `urlOptional` (String)
-    #[serde(default)]
     pub url_optional: String,
     /// `urlPostfix` (String)
-    #[serde(default)]
     pub url_postfix: String,
     /// `stylesheetOverride` (Reference)
-    #[serde(default)]
     pub stylesheet_override: Option<CigGuid>,
     /// `canvas` (Reference)
-    #[serde(default)]
     pub canvas: Option<CigGuid>,
     /// `sizingMethod` (EnumChoice)
-    #[serde(default)]
     pub sizing_method: BB_CanvasWidgetSizingMethod,
     /// `paramInputValues` (StrongPointer (array))
-    #[serde(default)]
     pub param_input_values: Vec<BuildingBlocks_ComponentParameterInputBasePtr>,
     /// `variableName` (String)
-    #[serde(default)]
     pub variable_name: String,
     /// `toggleActivationEvent` (EnumChoice)
-    #[serde(default)]
     pub toggle_activation_event: BB_ActivationButtonAction,
     /// `labelProperties` (Class)
-    #[serde(default)]
     pub label_properties: Option<Handle<BuildingBlocks_ComponentLabelProperties>>,
     /// `captionProperties` (Class)
-    #[serde(default)]
     pub caption_properties: Option<Handle<BuildingBlocks_ComponentCaptionProperties>>,
     /// `alignment` (EnumChoice)
-    #[serde(default)]
     pub alignment: BB_TextAlignment,
 }
 
@@ -3137,217 +2638,146 @@ impl<'a> Extract<'a> for BuildingBlocks_ComponentRadioButton {
 
 /// DCB type: `BuildingBlocks_ComponentToggleListItem`
 /// Inherits from: `BuildingBlocks_TogglerBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildingBlocks_ComponentToggleListItem {
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
     /// `styleTags` (Reference (array))
-    #[serde(default)]
     pub style_tags: Vec<CigGuid>,
     /// `rendererType` (EnumChoice)
-    #[serde(default)]
     pub renderer_type: BB_RendererType,
     /// `rendererPolicy` (StrongPointer)
-    #[serde(default)]
     pub renderer_policy: Option<BuildingBlocks_RendererPolicyBasePtr>,
     /// `primitiveSettings` (Class)
-    #[serde(default)]
     pub primitive_settings: Option<Handle<BuildingBlocks_PrimitiveSettings>>,
     /// `parent` (WeakPointer)
-    #[serde(default)]
     pub parent: Option<BuildingBlocks_WidgetBasePtr>,
     /// `previewScene` (WeakPointer)
-    #[serde(default)]
     pub preview_scene: Option<BuildingBlocks_PreviewScreenBasePtr>,
     /// `previewSceneFlattened` (WeakPointer)
-    #[serde(default)]
     pub preview_scene_flattened: Option<BuildingBlocks_PreviewScreenBasePtr>,
     /// `cullingLevel` (EnumChoice)
-    #[serde(default)]
     pub culling_level: BB_CullingLevel,
     /// `isActive` (Boolean)
-    #[serde(default)]
     pub is_active: bool,
     /// `affectsLayout` (Boolean)
-    #[serde(default)]
     pub affects_layout: bool,
     /// `affectsAutosize` (Boolean)
-    #[serde(default)]
     pub affects_autosize: bool,
     /// `exportNode` (Boolean)
-    #[serde(default)]
     pub export_node: bool,
     /// `position` (Class)
-    #[serde(default)]
     pub position: Option<Handle<Vec3>>,
     /// `positionOffset` (Class)
-    #[serde(default)]
     pub position_offset: Option<Handle<Vec3>>,
     /// `orientation` (Class)
-    #[serde(default)]
     pub orientation: Option<Handle<Deg3>>,
     /// `orientationOffset` (Class)
-    #[serde(default)]
     pub orientation_offset: Option<Handle<Deg3>>,
     /// `scale` (Class)
-    #[serde(default)]
     pub scale: Option<Handle<Vec3>>,
     /// `sizing` (Class)
-    #[serde(default)]
     pub sizing: Option<Handle<BuildingBlocks_Size>>,
     /// `autoScalingMethod` (EnumChoice)
-    #[serde(default)]
     pub auto_scaling_method: BB_AutoScalingMethod,
     /// `padding` (Class)
-    #[serde(default)]
     pub padding: Option<Handle<BuildingBlocks_TRBL>>,
     /// `margin` (Class)
-    #[serde(default)]
     pub margin: Option<Handle<BuildingBlocks_TRBL>>,
     /// `pivot` (Class)
-    #[serde(default)]
     pub pivot: Option<Handle<Vec3>>,
     /// `anchor` (Class)
-    #[serde(default)]
     pub anchor: Option<Handle<Vec3>>,
     /// `background` (Class)
-    #[serde(default)]
     pub background: Option<Handle<BuildingBlocks_Background>>,
     /// `segmentedFill` (Class)
-    #[serde(default)]
     pub segmented_fill: Option<Handle<BuildingBlocks_SegmentedFill>>,
     /// `svgFill` (Class)
-    #[serde(default)]
     pub svg_fill: Option<Handle<BuildingBlocks_SvgFill>>,
     /// `border` (Class)
-    #[serde(default)]
     pub border: Option<Handle<BuildingBlocks_Border>>,
     /// `layoutPolicy` (StrongPointer)
-    #[serde(default)]
     pub layout_policy: Option<BuildingBlocks_LayoutPolicyBasePtr>,
     /// `layoutPolicyItem` (StrongPointer)
-    #[serde(default)]
     pub layout_policy_item: Option<BuildingBlocks_LayoutPolicyItemBasePtr>,
     /// `layoutItemCommon` (StrongPointer)
-    #[serde(default)]
     pub layout_item_common: Option<Handle<BuildingBlocks_LayoutItemCommon>>,
     /// `dropTargetPolicy` (StrongPointer)
-    #[serde(default)]
     pub drop_target_policy: Option<BuildingBlocks_DropTargetPolicyBasePtr>,
     /// `draggablePolicy` (StrongPointer)
-    #[serde(default)]
     pub draggable_policy: Option<BuildingBlocks_DraggablePolicyBasePtr>,
     /// `tooltipPolicy` (StrongPointer)
-    #[serde(default)]
     pub tooltip_policy: Option<Handle<BuildingBlocks_TooltipPolicy>>,
     /// `contextMenuPolicy` (StrongPointer)
-    #[serde(default)]
     pub context_menu_policy: Option<Handle<BuildingBlocks_ContextMenuPolicy>>,
     /// `grabControlsPolicy` (StrongPointer)
-    #[serde(default)]
     pub grab_controls_policy: Option<Handle<BuildingBlocks_GrabControlsPolicy>>,
     /// `calloutSettings` (StrongPointer)
-    #[serde(default)]
     pub callout_settings: Option<Handle<BuildingBlocks_CalloutSettings>>,
     /// `virtualCursorPolicy` (StrongPointer)
-    #[serde(default)]
     pub virtual_cursor_policy: Option<Handle<BuildingBlocks_VirtualCursorPolicy>>,
     /// `overflow` (Class)
-    #[serde(default)]
     pub overflow: Option<Handle<BuildingBlocks_Overflow>>,
     /// `scrollPolicy` (StrongPointer)
-    #[serde(default)]
     pub scroll_policy: Option<BuildingBlocks_ScrollPolicyBasePtr>,
     /// `radialTransform` (Class)
-    #[serde(default)]
     pub radial_transform: Option<Handle<BuildingBlocks_RadialTransform>>,
     /// `radialTransformChild` (Class)
-    #[serde(default)]
     pub radial_transform_child: Option<Handle<BuildingBlocks_RadialTransformChild>>,
     /// `animation` (Class)
-    #[serde(default)]
     pub animation: Option<Handle<BuildingBlocks_Animation>>,
     /// `interactions` (Class)
-    #[serde(default)]
     pub interactions: Option<Handle<BuildingBlocks_Interactions>>,
     /// `inheritsScale` (Boolean)
-    #[serde(default)]
     pub inherits_scale: bool,
     /// `inheritsRotation` (Boolean)
-    #[serde(default)]
     pub inherits_rotation: bool,
     /// `inheritsTranslation` (Boolean)
-    #[serde(default)]
     pub inherits_translation: bool,
     /// `inheritsAlpha` (Boolean)
-    #[serde(default)]
     pub inherits_alpha: bool,
     /// `inheritsOverflow` (Boolean)
-    #[serde(default)]
     pub inherits_overflow: bool,
     /// `alpha` (Single)
-    #[serde(default)]
     pub alpha: f32,
     /// `layer` (Byte)
-    #[serde(default)]
     pub layer: u32,
     /// `aspectRatioLibrary` (Reference)
-    #[serde(default)]
     pub aspect_ratio_library: Option<CigGuid>,
     /// `focusIndex` (Int16)
-    #[serde(default)]
     pub focus_index: i32,
     /// `inlineStyles` (Class (array))
-    #[serde(default)]
     pub inline_styles: Vec<Handle<BuildingBlocks_StyleEntry>>,
     /// `hoverCursor` (EnumChoice)
-    #[serde(default)]
     pub hover_cursor: Cursor,
     /// `enableHeldCursor` (Boolean)
-    #[serde(default)]
     pub enable_held_cursor: bool,
     /// `heldCursor` (EnumChoice)
-    #[serde(default)]
     pub held_cursor: Cursor,
     /// `instantiated` (Boolean)
-    #[serde(default)]
     pub instantiated: bool,
     /// `urlOptional` (String)
-    #[serde(default)]
     pub url_optional: String,
     /// `urlPostfix` (String)
-    #[serde(default)]
     pub url_postfix: String,
     /// `stylesheetOverride` (Reference)
-    #[serde(default)]
     pub stylesheet_override: Option<CigGuid>,
     /// `canvas` (Reference)
-    #[serde(default)]
     pub canvas: Option<CigGuid>,
     /// `sizingMethod` (EnumChoice)
-    #[serde(default)]
     pub sizing_method: BB_CanvasWidgetSizingMethod,
     /// `paramInputValues` (StrongPointer (array))
-    #[serde(default)]
     pub param_input_values: Vec<BuildingBlocks_ComponentParameterInputBasePtr>,
     /// `variableName` (String)
-    #[serde(default)]
     pub variable_name: String,
     /// `toggleActivationEvent` (EnumChoice)
-    #[serde(default)]
     pub toggle_activation_event: BB_ActivationButtonAction,
     /// `labelProperties` (Class)
-    #[serde(default)]
     pub label_properties: Option<Handle<BuildingBlocks_ComponentLabelProperties>>,
     /// `captionProperties` (Class)
-    #[serde(default)]
     pub caption_properties: Option<Handle<BuildingBlocks_ComponentCaptionProperties>>,
     /// `iconProperties` (Class)
-    #[serde(default)]
     pub icon_properties: Option<Handle<BuildingBlocks_ComponentIconProperties>>,
     /// `alignment` (EnumChoice)
-    #[serde(default)]
     pub alignment: BB_TextAlignment,
 }
 
@@ -3563,223 +2993,150 @@ impl<'a> Extract<'a> for BuildingBlocks_ComponentToggleListItem {
 
 /// DCB type: `BuildingBlocks_ComponentRadialRangeSlider`
 /// Inherits from: `BuildingBlocks_WidgetCanvas`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildingBlocks_ComponentRadialRangeSlider {
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
     /// `styleTags` (Reference (array))
-    #[serde(default)]
     pub style_tags: Vec<CigGuid>,
     /// `rendererType` (EnumChoice)
-    #[serde(default)]
     pub renderer_type: BB_RendererType,
     /// `rendererPolicy` (StrongPointer)
-    #[serde(default)]
     pub renderer_policy: Option<BuildingBlocks_RendererPolicyBasePtr>,
     /// `primitiveSettings` (Class)
-    #[serde(default)]
     pub primitive_settings: Option<Handle<BuildingBlocks_PrimitiveSettings>>,
     /// `parent` (WeakPointer)
-    #[serde(default)]
     pub parent: Option<BuildingBlocks_WidgetBasePtr>,
     /// `previewScene` (WeakPointer)
-    #[serde(default)]
     pub preview_scene: Option<BuildingBlocks_PreviewScreenBasePtr>,
     /// `previewSceneFlattened` (WeakPointer)
-    #[serde(default)]
     pub preview_scene_flattened: Option<BuildingBlocks_PreviewScreenBasePtr>,
     /// `cullingLevel` (EnumChoice)
-    #[serde(default)]
     pub culling_level: BB_CullingLevel,
     /// `isActive` (Boolean)
-    #[serde(default)]
     pub is_active: bool,
     /// `affectsLayout` (Boolean)
-    #[serde(default)]
     pub affects_layout: bool,
     /// `affectsAutosize` (Boolean)
-    #[serde(default)]
     pub affects_autosize: bool,
     /// `exportNode` (Boolean)
-    #[serde(default)]
     pub export_node: bool,
     /// `position` (Class)
-    #[serde(default)]
     pub position: Option<Handle<Vec3>>,
     /// `positionOffset` (Class)
-    #[serde(default)]
     pub position_offset: Option<Handle<Vec3>>,
     /// `orientation` (Class)
-    #[serde(default)]
     pub orientation: Option<Handle<Deg3>>,
     /// `orientationOffset` (Class)
-    #[serde(default)]
     pub orientation_offset: Option<Handle<Deg3>>,
     /// `scale` (Class)
-    #[serde(default)]
     pub scale: Option<Handle<Vec3>>,
     /// `sizing` (Class)
-    #[serde(default)]
     pub sizing: Option<Handle<BuildingBlocks_Size>>,
     /// `autoScalingMethod` (EnumChoice)
-    #[serde(default)]
     pub auto_scaling_method: BB_AutoScalingMethod,
     /// `padding` (Class)
-    #[serde(default)]
     pub padding: Option<Handle<BuildingBlocks_TRBL>>,
     /// `margin` (Class)
-    #[serde(default)]
     pub margin: Option<Handle<BuildingBlocks_TRBL>>,
     /// `pivot` (Class)
-    #[serde(default)]
     pub pivot: Option<Handle<Vec3>>,
     /// `anchor` (Class)
-    #[serde(default)]
     pub anchor: Option<Handle<Vec3>>,
     /// `background` (Class)
-    #[serde(default)]
     pub background: Option<Handle<BuildingBlocks_Background>>,
     /// `segmentedFill` (Class)
-    #[serde(default)]
     pub segmented_fill: Option<Handle<BuildingBlocks_SegmentedFill>>,
     /// `svgFill` (Class)
-    #[serde(default)]
     pub svg_fill: Option<Handle<BuildingBlocks_SvgFill>>,
     /// `border` (Class)
-    #[serde(default)]
     pub border: Option<Handle<BuildingBlocks_Border>>,
     /// `layoutPolicy` (StrongPointer)
-    #[serde(default)]
     pub layout_policy: Option<BuildingBlocks_LayoutPolicyBasePtr>,
     /// `layoutPolicyItem` (StrongPointer)
-    #[serde(default)]
     pub layout_policy_item: Option<BuildingBlocks_LayoutPolicyItemBasePtr>,
     /// `layoutItemCommon` (StrongPointer)
-    #[serde(default)]
     pub layout_item_common: Option<Handle<BuildingBlocks_LayoutItemCommon>>,
     /// `dropTargetPolicy` (StrongPointer)
-    #[serde(default)]
     pub drop_target_policy: Option<BuildingBlocks_DropTargetPolicyBasePtr>,
     /// `draggablePolicy` (StrongPointer)
-    #[serde(default)]
     pub draggable_policy: Option<BuildingBlocks_DraggablePolicyBasePtr>,
     /// `tooltipPolicy` (StrongPointer)
-    #[serde(default)]
     pub tooltip_policy: Option<Handle<BuildingBlocks_TooltipPolicy>>,
     /// `contextMenuPolicy` (StrongPointer)
-    #[serde(default)]
     pub context_menu_policy: Option<Handle<BuildingBlocks_ContextMenuPolicy>>,
     /// `grabControlsPolicy` (StrongPointer)
-    #[serde(default)]
     pub grab_controls_policy: Option<Handle<BuildingBlocks_GrabControlsPolicy>>,
     /// `calloutSettings` (StrongPointer)
-    #[serde(default)]
     pub callout_settings: Option<Handle<BuildingBlocks_CalloutSettings>>,
     /// `virtualCursorPolicy` (StrongPointer)
-    #[serde(default)]
     pub virtual_cursor_policy: Option<Handle<BuildingBlocks_VirtualCursorPolicy>>,
     /// `overflow` (Class)
-    #[serde(default)]
     pub overflow: Option<Handle<BuildingBlocks_Overflow>>,
     /// `scrollPolicy` (StrongPointer)
-    #[serde(default)]
     pub scroll_policy: Option<BuildingBlocks_ScrollPolicyBasePtr>,
     /// `radialTransform` (Class)
-    #[serde(default)]
     pub radial_transform: Option<Handle<BuildingBlocks_RadialTransform>>,
     /// `radialTransformChild` (Class)
-    #[serde(default)]
     pub radial_transform_child: Option<Handle<BuildingBlocks_RadialTransformChild>>,
     /// `animation` (Class)
-    #[serde(default)]
     pub animation: Option<Handle<BuildingBlocks_Animation>>,
     /// `interactions` (Class)
-    #[serde(default)]
     pub interactions: Option<Handle<BuildingBlocks_Interactions>>,
     /// `inheritsScale` (Boolean)
-    #[serde(default)]
     pub inherits_scale: bool,
     /// `inheritsRotation` (Boolean)
-    #[serde(default)]
     pub inherits_rotation: bool,
     /// `inheritsTranslation` (Boolean)
-    #[serde(default)]
     pub inherits_translation: bool,
     /// `inheritsAlpha` (Boolean)
-    #[serde(default)]
     pub inherits_alpha: bool,
     /// `inheritsOverflow` (Boolean)
-    #[serde(default)]
     pub inherits_overflow: bool,
     /// `alpha` (Single)
-    #[serde(default)]
     pub alpha: f32,
     /// `layer` (Byte)
-    #[serde(default)]
     pub layer: u32,
     /// `aspectRatioLibrary` (Reference)
-    #[serde(default)]
     pub aspect_ratio_library: Option<CigGuid>,
     /// `focusIndex` (Int16)
-    #[serde(default)]
     pub focus_index: i32,
     /// `inlineStyles` (Class (array))
-    #[serde(default)]
     pub inline_styles: Vec<Handle<BuildingBlocks_StyleEntry>>,
     /// `hoverCursor` (EnumChoice)
-    #[serde(default)]
     pub hover_cursor: Cursor,
     /// `enableHeldCursor` (Boolean)
-    #[serde(default)]
     pub enable_held_cursor: bool,
     /// `heldCursor` (EnumChoice)
-    #[serde(default)]
     pub held_cursor: Cursor,
     /// `instantiated` (Boolean)
-    #[serde(default)]
     pub instantiated: bool,
     /// `urlOptional` (String)
-    #[serde(default)]
     pub url_optional: String,
     /// `urlPostfix` (String)
-    #[serde(default)]
     pub url_postfix: String,
     /// `stylesheetOverride` (Reference)
-    #[serde(default)]
     pub stylesheet_override: Option<CigGuid>,
     /// `canvas` (Reference)
-    #[serde(default)]
     pub canvas: Option<CigGuid>,
     /// `sizingMethod` (EnumChoice)
-    #[serde(default)]
     pub sizing_method: BB_CanvasWidgetSizingMethod,
     /// `paramInputValues` (StrongPointer (array))
-    #[serde(default)]
     pub param_input_values: Vec<BuildingBlocks_ComponentParameterInputBasePtr>,
     /// `targetVariableName` (String)
-    #[serde(default)]
     pub target_variable_name: String,
     /// `currentVariableName` (String)
-    #[serde(default)]
     pub current_variable_name: String,
     /// `labelProperties` (Class)
-    #[serde(default)]
     pub label_properties: Option<Handle<BuildingBlocks_ComponentLabelProperties>>,
     /// `captionProperties` (Class)
-    #[serde(default)]
     pub caption_properties: Option<Handle<BuildingBlocks_ComponentCaptionProperties>>,
     /// `limiterAngle` (Single)
-    #[serde(default)]
     pub limiter_angle: f32,
     /// `startAngleOffset` (Single)
-    #[serde(default)]
     pub start_angle_offset: f32,
     /// `meterState` (EnumChoice)
-    #[serde(default)]
     pub meter_state: BB_ProgressMeterState,
     /// `incrementProportion` (UInt16)
-    #[serde(default)]
     pub increment_proportion: u32,
 }
 
@@ -3994,220 +3351,148 @@ impl<'a> Extract<'a> for BuildingBlocks_ComponentRadialRangeSlider {
 
 /// DCB type: `BuildingBlocks_ComponentNotification`
 /// Inherits from: `BuildingBlocks_TogglerBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildingBlocks_ComponentNotification {
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
     /// `styleTags` (Reference (array))
-    #[serde(default)]
     pub style_tags: Vec<CigGuid>,
     /// `rendererType` (EnumChoice)
-    #[serde(default)]
     pub renderer_type: BB_RendererType,
     /// `rendererPolicy` (StrongPointer)
-    #[serde(default)]
     pub renderer_policy: Option<BuildingBlocks_RendererPolicyBasePtr>,
     /// `primitiveSettings` (Class)
-    #[serde(default)]
     pub primitive_settings: Option<Handle<BuildingBlocks_PrimitiveSettings>>,
     /// `parent` (WeakPointer)
-    #[serde(default)]
     pub parent: Option<BuildingBlocks_WidgetBasePtr>,
     /// `previewScene` (WeakPointer)
-    #[serde(default)]
     pub preview_scene: Option<BuildingBlocks_PreviewScreenBasePtr>,
     /// `previewSceneFlattened` (WeakPointer)
-    #[serde(default)]
     pub preview_scene_flattened: Option<BuildingBlocks_PreviewScreenBasePtr>,
     /// `cullingLevel` (EnumChoice)
-    #[serde(default)]
     pub culling_level: BB_CullingLevel,
     /// `isActive` (Boolean)
-    #[serde(default)]
     pub is_active: bool,
     /// `affectsLayout` (Boolean)
-    #[serde(default)]
     pub affects_layout: bool,
     /// `affectsAutosize` (Boolean)
-    #[serde(default)]
     pub affects_autosize: bool,
     /// `exportNode` (Boolean)
-    #[serde(default)]
     pub export_node: bool,
     /// `position` (Class)
-    #[serde(default)]
     pub position: Option<Handle<Vec3>>,
     /// `positionOffset` (Class)
-    #[serde(default)]
     pub position_offset: Option<Handle<Vec3>>,
     /// `orientation` (Class)
-    #[serde(default)]
     pub orientation: Option<Handle<Deg3>>,
     /// `orientationOffset` (Class)
-    #[serde(default)]
     pub orientation_offset: Option<Handle<Deg3>>,
     /// `scale` (Class)
-    #[serde(default)]
     pub scale: Option<Handle<Vec3>>,
     /// `sizing` (Class)
-    #[serde(default)]
     pub sizing: Option<Handle<BuildingBlocks_Size>>,
     /// `autoScalingMethod` (EnumChoice)
-    #[serde(default)]
     pub auto_scaling_method: BB_AutoScalingMethod,
     /// `padding` (Class)
-    #[serde(default)]
     pub padding: Option<Handle<BuildingBlocks_TRBL>>,
     /// `margin` (Class)
-    #[serde(default)]
     pub margin: Option<Handle<BuildingBlocks_TRBL>>,
     /// `pivot` (Class)
-    #[serde(default)]
     pub pivot: Option<Handle<Vec3>>,
     /// `anchor` (Class)
-    #[serde(default)]
     pub anchor: Option<Handle<Vec3>>,
     /// `background` (Class)
-    #[serde(default)]
     pub background: Option<Handle<BuildingBlocks_Background>>,
     /// `segmentedFill` (Class)
-    #[serde(default)]
     pub segmented_fill: Option<Handle<BuildingBlocks_SegmentedFill>>,
     /// `svgFill` (Class)
-    #[serde(default)]
     pub svg_fill: Option<Handle<BuildingBlocks_SvgFill>>,
     /// `border` (Class)
-    #[serde(default)]
     pub border: Option<Handle<BuildingBlocks_Border>>,
     /// `layoutPolicy` (StrongPointer)
-    #[serde(default)]
     pub layout_policy: Option<BuildingBlocks_LayoutPolicyBasePtr>,
     /// `layoutPolicyItem` (StrongPointer)
-    #[serde(default)]
     pub layout_policy_item: Option<BuildingBlocks_LayoutPolicyItemBasePtr>,
     /// `layoutItemCommon` (StrongPointer)
-    #[serde(default)]
     pub layout_item_common: Option<Handle<BuildingBlocks_LayoutItemCommon>>,
     /// `dropTargetPolicy` (StrongPointer)
-    #[serde(default)]
     pub drop_target_policy: Option<BuildingBlocks_DropTargetPolicyBasePtr>,
     /// `draggablePolicy` (StrongPointer)
-    #[serde(default)]
     pub draggable_policy: Option<BuildingBlocks_DraggablePolicyBasePtr>,
     /// `tooltipPolicy` (StrongPointer)
-    #[serde(default)]
     pub tooltip_policy: Option<Handle<BuildingBlocks_TooltipPolicy>>,
     /// `contextMenuPolicy` (StrongPointer)
-    #[serde(default)]
     pub context_menu_policy: Option<Handle<BuildingBlocks_ContextMenuPolicy>>,
     /// `grabControlsPolicy` (StrongPointer)
-    #[serde(default)]
     pub grab_controls_policy: Option<Handle<BuildingBlocks_GrabControlsPolicy>>,
     /// `calloutSettings` (StrongPointer)
-    #[serde(default)]
     pub callout_settings: Option<Handle<BuildingBlocks_CalloutSettings>>,
     /// `virtualCursorPolicy` (StrongPointer)
-    #[serde(default)]
     pub virtual_cursor_policy: Option<Handle<BuildingBlocks_VirtualCursorPolicy>>,
     /// `overflow` (Class)
-    #[serde(default)]
     pub overflow: Option<Handle<BuildingBlocks_Overflow>>,
     /// `scrollPolicy` (StrongPointer)
-    #[serde(default)]
     pub scroll_policy: Option<BuildingBlocks_ScrollPolicyBasePtr>,
     /// `radialTransform` (Class)
-    #[serde(default)]
     pub radial_transform: Option<Handle<BuildingBlocks_RadialTransform>>,
     /// `radialTransformChild` (Class)
-    #[serde(default)]
     pub radial_transform_child: Option<Handle<BuildingBlocks_RadialTransformChild>>,
     /// `animation` (Class)
-    #[serde(default)]
     pub animation: Option<Handle<BuildingBlocks_Animation>>,
     /// `interactions` (Class)
-    #[serde(default)]
     pub interactions: Option<Handle<BuildingBlocks_Interactions>>,
     /// `inheritsScale` (Boolean)
-    #[serde(default)]
     pub inherits_scale: bool,
     /// `inheritsRotation` (Boolean)
-    #[serde(default)]
     pub inherits_rotation: bool,
     /// `inheritsTranslation` (Boolean)
-    #[serde(default)]
     pub inherits_translation: bool,
     /// `inheritsAlpha` (Boolean)
-    #[serde(default)]
     pub inherits_alpha: bool,
     /// `inheritsOverflow` (Boolean)
-    #[serde(default)]
     pub inherits_overflow: bool,
     /// `alpha` (Single)
-    #[serde(default)]
     pub alpha: f32,
     /// `layer` (Byte)
-    #[serde(default)]
     pub layer: u32,
     /// `aspectRatioLibrary` (Reference)
-    #[serde(default)]
     pub aspect_ratio_library: Option<CigGuid>,
     /// `focusIndex` (Int16)
-    #[serde(default)]
     pub focus_index: i32,
     /// `inlineStyles` (Class (array))
-    #[serde(default)]
     pub inline_styles: Vec<Handle<BuildingBlocks_StyleEntry>>,
     /// `hoverCursor` (EnumChoice)
-    #[serde(default)]
     pub hover_cursor: Cursor,
     /// `enableHeldCursor` (Boolean)
-    #[serde(default)]
     pub enable_held_cursor: bool,
     /// `heldCursor` (EnumChoice)
-    #[serde(default)]
     pub held_cursor: Cursor,
     /// `instantiated` (Boolean)
-    #[serde(default)]
     pub instantiated: bool,
     /// `urlOptional` (String)
-    #[serde(default)]
     pub url_optional: String,
     /// `urlPostfix` (String)
-    #[serde(default)]
     pub url_postfix: String,
     /// `stylesheetOverride` (Reference)
-    #[serde(default)]
     pub stylesheet_override: Option<CigGuid>,
     /// `canvas` (Reference)
-    #[serde(default)]
     pub canvas: Option<CigGuid>,
     /// `sizingMethod` (EnumChoice)
-    #[serde(default)]
     pub sizing_method: BB_CanvasWidgetSizingMethod,
     /// `paramInputValues` (StrongPointer (array))
-    #[serde(default)]
     pub param_input_values: Vec<BuildingBlocks_ComponentParameterInputBasePtr>,
     /// `variableName` (String)
-    #[serde(default)]
     pub variable_name: String,
     /// `toggleActivationEvent` (EnumChoice)
-    #[serde(default)]
     pub toggle_activation_event: BB_ActivationButtonAction,
     /// `labelProperties` (Class)
-    #[serde(default)]
     pub label_properties: Option<Handle<BuildingBlocks_ComponentLabelProperties>>,
     /// `captionProperties` (Class)
-    #[serde(default)]
     pub caption_properties: Option<Handle<BuildingBlocks_ComponentCaptionProperties>>,
     /// `iconProperties` (Class)
-    #[serde(default)]
     pub icon_properties: Option<Handle<BuildingBlocks_ComponentIconProperties>>,
     /// `alignment` (EnumChoice)
-    #[serde(default)]
     pub alignment: BB_TextAlignment,
     /// `closeButton` (Boolean)
-    #[serde(default)]
     pub close_button: bool,
 }
 
@@ -4423,16 +3708,12 @@ impl<'a> Extract<'a> for BuildingBlocks_ComponentNotification {
 }
 
 /// DCB type: `BuildingBlocks_FontReplacementPair`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildingBlocks_FontReplacementPair {
     /// `englishFont` (Reference)
-    #[serde(default)]
     pub english_font: Option<CigGuid>,
     /// `replacementFontName` (String)
-    #[serde(default)]
     pub replacement_font_name: String,
     /// `replacementFontPaintFile` (String)
-    #[serde(default)]
     pub replacement_font_paint_file: String,
 }
 
@@ -4453,10 +3734,8 @@ impl<'a> Extract<'a> for BuildingBlocks_FontReplacementPair {
 }
 
 /// DCB type: `BuildingBlocks_LanguageSpecificFontReplacement`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildingBlocks_LanguageSpecificFontReplacement {
     /// `fontReplacementList` (Class (array))
-    #[serde(default)]
     pub font_replacement_list: Vec<Handle<BuildingBlocks_FontReplacementPair>>,
 }
 
@@ -4482,13 +3761,10 @@ impl<'a> Extract<'a> for BuildingBlocks_LanguageSpecificFontReplacement {
 
 /// DCB type: `BuildingBlocks_TriggerNavigation`
 /// Inherits from: `BuildingBlocks_TriggerBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildingBlocks_TriggerNavigation {
     /// `layerName` (String)
-    #[serde(default)]
     pub layer_name: String,
     /// `type` (EnumChoice)
-    #[serde(default)]
     pub r#type: BB_NavigationType,
 }
 
@@ -4509,13 +3785,10 @@ impl<'a> Extract<'a> for BuildingBlocks_TriggerNavigation {
 
 /// DCB type: `BuildingBlocks_TriggerSubsumptionBroadcast`
 /// Inherits from: `BuildingBlocks_TriggerBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildingBlocks_TriggerSubsumptionBroadcast {
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
     /// `eventRange` (Single)
-    #[serde(default)]
     pub event_range: f32,
 }
 
@@ -4536,19 +3809,14 @@ impl<'a> Extract<'a> for BuildingBlocks_TriggerSubsumptionBroadcast {
 
 /// DCB type: `BuildingBlocks_ShapeCircle`
 /// Inherits from: `BuildingBlocks_ShapeBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildingBlocks_ShapeCircle {
     /// `center` (Class)
-    #[serde(default)]
     pub center: Option<Handle<Vec2>>,
     /// `showBoundsDebug` (Boolean)
-    #[serde(default)]
     pub show_bounds_debug: bool,
     /// `outerRadius` (Single)
-    #[serde(default)]
     pub outer_radius: f32,
     /// `innerRadius` (Single)
-    #[serde(default)]
     pub inner_radius: f32,
 }
 
@@ -4573,13 +3841,10 @@ impl<'a> Extract<'a> for BuildingBlocks_ShapeCircle {
 }
 
 /// DCB type: `DockingSensitivity`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DockingSensitivity {
     /// `DockingUIRotationalSensitivity` (Single)
-    #[serde(default)]
     pub docking_uirotational_sensitivity: f32,
     /// `DockingUILinearSensitivity` (Single)
-    #[serde(default)]
     pub docking_uilinear_sensitivity: f32,
 }
 
@@ -4599,22 +3864,16 @@ impl<'a> Extract<'a> for DockingSensitivity {
 }
 
 /// DCB type: `DisplayState`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DisplayState {
     /// `minimumValue` (Single)
-    #[serde(default)]
     pub minimum_value: f32,
     /// `maximumValue` (Single)
-    #[serde(default)]
     pub maximum_value: f32,
     /// `displayDuration` (Single)
-    #[serde(default)]
     pub display_duration: f32,
     /// `activeRange` (EnumChoice)
-    #[serde(default)]
     pub active_range: ActiveRange,
     /// `enabled` (Boolean)
-    #[serde(default)]
     pub enabled: bool,
 }
 
@@ -4637,31 +3896,22 @@ impl<'a> Extract<'a> for DisplayState {
 }
 
 /// DCB type: `StatusWidgetDisplayPreset`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct StatusWidgetDisplayPreset {
     /// `ranges` (Class)
-    #[serde(default)]
     pub ranges: Option<Handle<DisplayState>>,
     /// `incrementDisplayDuration` (Single)
-    #[serde(default)]
     pub increment_display_duration: f32,
     /// `incrementStep` (Single)
-    #[serde(default)]
     pub increment_step: f32,
     /// `maximumChangePerSecond` (Single)
-    #[serde(default)]
     pub maximum_change_per_second: f32,
     /// `historySeconds` (Int32)
-    #[serde(default)]
     pub history_seconds: i32,
     /// `historySamplesPerSecond` (Int32)
-    #[serde(default)]
     pub history_samples_per_second: i32,
     /// `shownOnLens` (Boolean)
-    #[serde(default)]
     pub shown_on_lens: bool,
     /// `shownOnVisor` (Boolean)
-    #[serde(default)]
     pub shown_on_visor: bool,
 }
 
@@ -4690,10 +3940,8 @@ impl<'a> Extract<'a> for StatusWidgetDisplayPreset {
 }
 
 /// DCB type: `VisorLens_Layout`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct VisorLens_Layout {
     /// `regions` (Reference (array))
-    #[serde(default)]
     pub regions: Vec<CigGuid>,
 }
 
@@ -4714,37 +3962,26 @@ impl<'a> Extract<'a> for VisorLens_Layout {
 }
 
 /// DCB type: `VisorLens_Region`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct VisorLens_Region {
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
     /// `orientation` (Class)
-    #[serde(default)]
     pub orientation: Option<Handle<Deg3>>,
     /// `size` (Class)
-    #[serde(default)]
     pub size: Option<Handle<Vec3>>,
     /// `anchor` (Class)
-    #[serde(default)]
     pub anchor: Option<Handle<Vec3>>,
     /// `pivot` (Class)
-    #[serde(default)]
     pub pivot: Option<Handle<Vec3>>,
     /// `flexDirection` (EnumChoice)
-    #[serde(default)]
     pub flex_direction: BB_FlexDirection,
     /// `flexAxisJustification` (EnumChoice)
-    #[serde(default)]
     pub flex_axis_justification: BB_FlexAxisJustification,
     /// `flexCrossAxisJustification` (EnumChoice)
-    #[serde(default)]
     pub flex_cross_axis_justification: BB_FlexAxisJustification,
     /// `flexItemAlignment` (EnumChoice)
-    #[serde(default)]
     pub flex_item_alignment: BB_FlexItemAlignment,
     /// `widgets` (Class (array))
-    #[serde(default)]
     pub widgets: Vec<Handle<VisorLens_Widget>>,
 }
 
@@ -4790,31 +4027,22 @@ impl<'a> Extract<'a> for VisorLens_Region {
 }
 
 /// DCB type: `VisorLens_Widget`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct VisorLens_Widget {
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
     /// `namespace` (String)
-    #[serde(default)]
     pub namespace: String,
     /// `canvas` (Reference)
-    #[serde(default)]
     pub canvas: Option<CigGuid>,
     /// `size` (Class)
-    #[serde(default)]
     pub size: Option<Handle<Vec3>>,
     /// `orientation` (Class)
-    #[serde(default)]
     pub orientation: Option<Handle<Ang3>>,
     /// `slot` (Int32)
-    #[serde(default)]
     pub slot: i32,
     /// `showTags` (Reference (array))
-    #[serde(default)]
     pub show_tags: Vec<CigGuid>,
     /// `hideTags` (Reference (array))
-    #[serde(default)]
     pub hide_tags: Vec<CigGuid>,
 }
 

@@ -10,19 +10,15 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
 use std::collections::HashMap;
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use crate::Handle;
 use super::super::*;
 
 /// Record index for the `ifcs` feature.
-#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+#[derive(Default)]
 pub struct IfcsIndex {
-    #[serde(default)]
     pub espparams: HashMap<CigGuid, Handle<ESPParams>>,
-    #[serde(default)]
     pub sifcsesp: HashMap<CigGuid, Handle<SIFCSEsp>>,
-    #[serde(default)]
     pub sifcsgame_mode_params: HashMap<CigGuid, Handle<SIFCSGameModeParams>>,
 }
 

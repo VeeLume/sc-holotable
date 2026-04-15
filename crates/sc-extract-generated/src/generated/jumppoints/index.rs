@@ -10,21 +10,16 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
 use std::collections::HashMap;
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use crate::Handle;
 use super::super::*;
 
 /// Record index for the `jumppoints` feature.
-#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+#[derive(Default)]
 pub struct JumppointsIndex {
-    #[serde(default)]
     pub global_jump_point_params: HashMap<CigGuid, Handle<GlobalJumpPointParams>>,
-    #[serde(default)]
     pub global_jump_tunnel_host_params: HashMap<CigGuid, Handle<GlobalJumpTunnelHostParams>>,
-    #[serde(default)]
     pub global_jump_drive_params: HashMap<CigGuid, Handle<GlobalJumpDriveParams>>,
-    #[serde(default)]
     pub jump_travel_camera_params: HashMap<CigGuid, Handle<JumpTravelCameraParams>>,
 }
 

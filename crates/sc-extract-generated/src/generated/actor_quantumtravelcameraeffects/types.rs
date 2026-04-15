@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,10 +19,8 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `SQuantumCameraStateMappingDef`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SQuantumCameraStateMappingDef {
     /// `strengthMapping` (Class)
-    #[serde(default)]
     pub strength_mapping: Option<Handle<BezierCurve>>,
 }
 
@@ -45,25 +42,18 @@ impl<'a> Extract<'a> for SQuantumCameraStateMappingDef {
 }
 
 /// DCB type: `SQuantumCameraStateEffectsDef`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SQuantumCameraStateEffectsDef {
     /// `angleOuter` (Single)
-    #[serde(default)]
     pub angle_outer: f32,
     /// `angleInner` (Single)
-    #[serde(default)]
     pub angle_inner: f32,
     /// `fovScale` (Single)
-    #[serde(default)]
     pub fov_scale: f32,
     /// `focusDistance` (Single)
-    #[serde(default)]
     pub focus_distance: f32,
     /// `genericModifiers` (Class)
-    #[serde(default)]
     pub generic_modifiers: Option<Handle<CameraEffectsModifiers>>,
     /// `customMapping` (StrongPointer)
-    #[serde(default)]
     pub custom_mapping: Option<SQuantumCameraStateMappingDefPtr>,
 }
 
@@ -93,13 +83,10 @@ impl<'a> Extract<'a> for SQuantumCameraStateEffectsDef {
 }
 
 /// DCB type: `SQuantumCameraEffectsDef`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SQuantumCameraEffectsDef {
     /// `cameraByState` (StrongPointer)
-    #[serde(default)]
     pub camera_by_state: Option<Handle<SQuantumCameraStateEffectsDef>>,
     /// `smoothingFallback` (Single)
-    #[serde(default)]
     pub smoothing_fallback: f32,
 }
 

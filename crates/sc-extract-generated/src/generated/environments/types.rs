@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,34 +19,24 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `AsteroidProcedural`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AsteroidProcedural {
     /// `minScale` (Single)
-    #[serde(default)]
     pub min_scale: f32,
     /// `maxScale` (Single)
-    #[serde(default)]
     pub max_scale: f32,
     /// `minRotationSpeed` (Single)
-    #[serde(default)]
     pub min_rotation_speed: f32,
     /// `maxRotationSpeed` (Single)
-    #[serde(default)]
     pub max_rotation_speed: f32,
     /// `distributionA` (Single)
-    #[serde(default)]
     pub distribution_a: f32,
     /// `distributionB` (Single)
-    #[serde(default)]
     pub distribution_b: f32,
     /// `tint` (Class)
-    #[serde(default)]
     pub tint: Option<Handle<RGB>>,
     /// `mesh` (Class)
-    #[serde(default)]
     pub mesh: Option<Handle<GlobalResourceCGF>>,
     /// `material` (Class)
-    #[serde(default)]
     pub material: Option<Handle<GlobalResourceMaterial>>,
 }
 
@@ -83,19 +72,14 @@ impl<'a> Extract<'a> for AsteroidProcedural {
 }
 
 /// DCB type: `AsteroidFieldComposition`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AsteroidFieldComposition {
     /// `fogDensity` (Single)
-    #[serde(default)]
     pub fog_density: f32,
     /// `fogNoiseScale` (Single)
-    #[serde(default)]
     pub fog_noise_scale: f32,
     /// `fogAlbedo` (Class)
-    #[serde(default)]
     pub fog_albedo: Option<Handle<RGB>>,
     /// `asteroids` (Class (array))
-    #[serde(default)]
     pub asteroids: Vec<Handle<AsteroidProcedural>>,
 }
 

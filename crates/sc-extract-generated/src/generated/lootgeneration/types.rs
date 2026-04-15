@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,25 +19,18 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `LootGenerationSpecialEventArchetype`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LootGenerationSpecialEventArchetype {
     /// `eventString` (String)
-    #[serde(default)]
     pub event_string: String,
     /// `probabilityPerContainer` (Single)
-    #[serde(default)]
     pub probability_per_container: f32,
     /// `minEntriesPerContainer` (Int32)
-    #[serde(default)]
     pub min_entries_per_container: i32,
     /// `maxEntriesPerContainer` (Int32)
-    #[serde(default)]
     pub max_entries_per_container: i32,
     /// `archetype` (Reference)
-    #[serde(default)]
     pub archetype: Option<CigGuid>,
     /// `archetypeV3` (StrongPointer)
-    #[serde(default)]
     pub archetype_v3: Option<LootArchetypeV3_BasePtr>,
 }
 
@@ -65,10 +57,8 @@ impl<'a> Extract<'a> for LootGenerationSpecialEventArchetype {
 }
 
 /// DCB type: `LootGenerationGlobalParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LootGenerationGlobalParams {
     /// `specialEventArchetypes` (Class (array))
-    #[serde(default)]
     pub special_event_archetypes: Vec<Handle<LootGenerationSpecialEventArchetype>>,
 }
 

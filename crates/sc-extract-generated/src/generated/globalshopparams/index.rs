@@ -10,21 +10,16 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
 use std::collections::HashMap;
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use crate::Handle;
 use super::super::*;
 
 /// Record index for the `globalshopparams` feature.
-#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+#[derive(Default)]
 pub struct GlobalshopparamsIndex {
-    #[serde(default)]
     pub global_shop_commodity_params: HashMap<CigGuid, Handle<GlobalShopCommodityParams>>,
-    #[serde(default)]
     pub global_shop_terminal_params: HashMap<CigGuid, Handle<GlobalShopTerminalParams>>,
-    #[serde(default)]
     pub global_shop_selling_params: HashMap<CigGuid, Handle<GlobalShopSellingParams>>,
-    #[serde(default)]
     pub global_shop_buying_params: HashMap<CigGuid, Handle<GlobalShopBuyingParams>>,
 }
 

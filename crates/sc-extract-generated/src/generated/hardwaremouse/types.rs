@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,34 +19,24 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `VirtualCursorParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct VirtualCursorParams {
     /// `accelerationEnabled` (Boolean)
-    #[serde(default)]
     pub acceleration_enabled: bool,
     /// `accelerationMax` (Single)
-    #[serde(default)]
     pub acceleration_max: f32,
     /// `accelerationRate` (Single)
-    #[serde(default)]
     pub acceleration_rate: f32,
     /// `accelerationDeadZone` (Single)
-    #[serde(default)]
     pub acceleration_dead_zone: f32,
     /// `sensitivity` (Single)
-    #[serde(default)]
     pub sensitivity: f32,
     /// `sensitivityPower` (Single)
-    #[serde(default)]
     pub sensitivity_power: f32,
     /// `deadZone` (Single)
-    #[serde(default)]
     pub dead_zone: f32,
     /// `consoleCursorEnable` (Boolean)
-    #[serde(default)]
     pub console_cursor_enable: bool,
     /// `consoleCursorScale` (Single)
-    #[serde(default)]
     pub console_cursor_scale: f32,
 }
 
@@ -74,13 +63,10 @@ impl<'a> Extract<'a> for VirtualCursorParams {
 }
 
 /// DCB type: `VirtualCursorHoverFrictionParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct VirtualCursorHoverFrictionParams {
     /// `maxFriction` (Single)
-    #[serde(default)]
     pub max_friction: f32,
     /// `elementSizeTreshold` (Single)
-    #[serde(default)]
     pub element_size_treshold: f32,
 }
 
@@ -100,25 +86,18 @@ impl<'a> Extract<'a> for VirtualCursorHoverFrictionParams {
 }
 
 /// DCB type: `VirtualCursorWheelParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct VirtualCursorWheelParams {
     /// `speed` (Single)
-    #[serde(default)]
     pub speed: f32,
     /// `timeMax` (Single)
-    #[serde(default)]
     pub time_max: f32,
     /// `timeMultiplier` (Single)
-    #[serde(default)]
     pub time_multiplier: f32,
     /// `linearTime` (Single)
-    #[serde(default)]
     pub linear_time: f32,
     /// `secondStepDelay` (Single)
-    #[serde(default)]
     pub second_step_delay: f32,
     /// `deadZone` (Single)
-    #[serde(default)]
     pub dead_zone: f32,
 }
 
@@ -142,19 +121,14 @@ impl<'a> Extract<'a> for VirtualCursorWheelParams {
 }
 
 /// DCB type: `HardwareMouseParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct HardwareMouseParams {
     /// `cursor` (Class)
-    #[serde(default)]
     pub cursor: Option<Handle<VirtualCursorParams>>,
     /// `hoverFriction` (Class)
-    #[serde(default)]
     pub hover_friction: Option<Handle<VirtualCursorHoverFrictionParams>>,
     /// `wheel` (Class)
-    #[serde(default)]
     pub wheel: Option<Handle<VirtualCursorWheelParams>>,
     /// `enableDPadNavigation` (Boolean)
-    #[serde(default)]
     pub enable_dpad_navigation: bool,
 }
 

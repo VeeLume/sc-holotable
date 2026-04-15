@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,19 +19,14 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `CommunicationATLConfig`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CommunicationATLConfig {
     /// `playTriggerPrefix` (String)
-    #[serde(default)]
     pub play_trigger_prefix: String,
     /// `stopTriggerPrefix` (String)
-    #[serde(default)]
     pub stop_trigger_prefix: String,
     /// `speakerVoiceSwitch` (String)
-    #[serde(default)]
     pub speaker_voice_switch: String,
     /// `speakerTypeSwitch` (String)
-    #[serde(default)]
     pub speaker_type_switch: String,
 }
 

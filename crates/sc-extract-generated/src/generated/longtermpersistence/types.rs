@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,13 +19,10 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `LongTermPersistenceWhiteListSubTypeEntry`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LongTermPersistenceWhiteListSubTypeEntry {
     /// `ItemSubType` (EnumChoice)
-    #[serde(default)]
     pub item_sub_type: EItemSubType,
     /// `NotRemove` (Boolean)
-    #[serde(default)]
     pub not_remove: bool,
 }
 
@@ -47,10 +43,8 @@ impl<'a> Extract<'a> for LongTermPersistenceWhiteListSubTypeEntry {
 
 /// DCB type: `LongTermPersistenceSubTypeAll`
 /// Inherits from: `LongTermPersistenceSubTypeListOption`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LongTermPersistenceSubTypeAll {
     /// `NotRemove` (Boolean)
-    #[serde(default)]
     pub not_remove: bool,
 }
 
@@ -70,10 +64,8 @@ impl<'a> Extract<'a> for LongTermPersistenceSubTypeAll {
 
 /// DCB type: `LongTermPersistenceSubTypeList`
 /// Inherits from: `LongTermPersistenceSubTypeListOption`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LongTermPersistenceSubTypeList {
     /// `ItemSubTypeEntries` (Class (array))
-    #[serde(default)]
     pub item_sub_type_entries: Vec<Handle<LongTermPersistenceWhiteListSubTypeEntry>>,
 }
 
@@ -98,13 +90,10 @@ impl<'a> Extract<'a> for LongTermPersistenceSubTypeList {
 }
 
 /// DCB type: `LongTermPersistenceWhiteListEntry`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LongTermPersistenceWhiteListEntry {
     /// `ItemType` (EnumChoice)
-    #[serde(default)]
     pub item_type: EItemType,
     /// `SubTypeListOption` (StrongPointer)
-    #[serde(default)]
     pub sub_type_list_option: Option<LongTermPersistenceSubTypeListOptionPtr>,
 }
 
@@ -127,10 +116,8 @@ impl<'a> Extract<'a> for LongTermPersistenceWhiteListEntry {
 }
 
 /// DCB type: `LongTermPersistenceGlobalParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LongTermPersistenceGlobalParams {
     /// `LongTermPersistenceWhiteList` (Class (array))
-    #[serde(default)]
     pub long_term_persistence_white_list: Vec<Handle<LongTermPersistenceWhiteListEntry>>,
 }
 

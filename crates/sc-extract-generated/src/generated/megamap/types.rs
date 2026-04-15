@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,16 +19,12 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `ArenaCommanderLocationObjectContainersParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ArenaCommanderLocationObjectContainersParams {
     /// `location` (Reference)
-    #[serde(default)]
     pub location: Option<CigGuid>,
     /// `overrideRootOC` (Boolean)
-    #[serde(default)]
     pub override_root_oc: bool,
     /// `objectContainers` (String (array))
-    #[serde(default)]
     pub object_containers: Vec<String>,
 }
 
@@ -52,13 +47,10 @@ impl<'a> Extract<'a> for ArenaCommanderLocationObjectContainersParams {
 }
 
 /// DCB type: `ArenaCommanderPlanetOverrideParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ArenaCommanderPlanetOverrideParams {
     /// `location` (Reference)
-    #[serde(default)]
     pub location: Option<CigGuid>,
     /// `fixedRotation` (Single)
-    #[serde(default)]
     pub fixed_rotation: f32,
 }
 
@@ -78,13 +70,10 @@ impl<'a> Extract<'a> for ArenaCommanderPlanetOverrideParams {
 }
 
 /// DCB type: `ArenaCommanderScenarioParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ArenaCommanderScenarioParams {
     /// `locationObjectContainersParams` (StrongPointer)
-    #[serde(default)]
     pub location_object_containers_params: Option<Handle<ArenaCommanderLocationObjectContainersParams>>,
     /// `planetOverrideParams` (StrongPointer)
-    #[serde(default)]
     pub planet_override_params: Option<Handle<ArenaCommanderPlanetOverrideParams>>,
 }
 
@@ -110,13 +99,10 @@ impl<'a> Extract<'a> for ArenaCommanderScenarioParams {
 }
 
 /// DCB type: `SMegaMapSolarSystem`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SMegaMapSolarSystem {
     /// `Record` (Reference)
-    #[serde(default)]
     pub record: Option<CigGuid>,
     /// `ObjectContainers` (String (array))
-    #[serde(default)]
     pub object_containers: Vec<String>,
 }
 
@@ -138,61 +124,42 @@ impl<'a> Extract<'a> for SMegaMapSolarSystem {
 }
 
 /// DCB type: `MegaMap`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MegaMap {
     /// `gameMode` (Reference)
-    #[serde(default)]
     pub game_mode: Option<CigGuid>,
     /// `SolarSystems` (Class (array))
-    #[serde(default)]
     pub solar_systems: Vec<Handle<SMegaMapSolarSystem>>,
     /// `singlePlayerOrMultiplayer` (EnumChoice)
-    #[serde(default)]
     pub single_player_or_multiplayer: SinglePlayerOrMultiplayer,
     /// `subsumptionMission` (String)
-    #[serde(default)]
     pub subsumption_mission: String,
     /// `subsumptionMissionInitParams` (StrongPointer (array))
-    #[serde(default)]
     pub subsumption_mission_init_params: Vec<AbstractMissionInitParamPtr>,
     /// `arenaCommanderScenarioParams` (StrongPointer)
-    #[serde(default)]
     pub arena_commander_scenario_params: Option<Handle<ArenaCommanderScenarioParams>>,
     /// `level` (Reference)
-    #[serde(default)]
     pub level: Option<CigGuid>,
     /// `trackViewIntro` (String)
-    #[serde(default)]
     pub track_view_intro: String,
     /// `rootLocation` (Reference)
-    #[serde(default)]
     pub root_location: Option<CigGuid>,
     /// `streamingMode` (EnumChoice)
-    #[serde(default)]
     pub streaming_mode: LevelStreamingMode,
     /// `bindCullingEnabled` (Boolean)
-    #[serde(default)]
     pub bind_culling_enabled: bool,
     /// `defaultWinningTeamOverride` (Int32)
-    #[serde(default)]
     pub default_winning_team_override: i32,
     /// `displayName` (Locale)
-    #[serde(default)]
     pub display_name: LocaleKey,
     /// `appearsInS42LevelSelect` (Boolean)
-    #[serde(default)]
     pub appears_in_s42_level_select: bool,
     /// `chapter` (Reference)
-    #[serde(default)]
     pub chapter: Option<CigGuid>,
     /// `chapterAlias` (String)
-    #[serde(default)]
     pub chapter_alias: String,
     /// `skipLoadScreen` (Boolean)
-    #[serde(default)]
     pub skip_load_screen: bool,
     /// `devDebugSkip` (Boolean)
-    #[serde(default)]
     pub dev_debug_skip: bool,
 }
 

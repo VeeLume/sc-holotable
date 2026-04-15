@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,13 +19,10 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `LightStatusMultiplier`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LightStatusMultiplier {
     /// `status` (EnumChoice)
-    #[serde(default)]
     pub status: ELightState,
     /// `multiplier` (Single)
-    #[serde(default)]
     pub multiplier: f32,
 }
 
@@ -47,10 +43,8 @@ impl<'a> Extract<'a> for LightStatusMultiplier {
 
 /// DCB type: `ActionAreaAudioNoiseExtension`
 /// Inherits from: `ActionAreaExtensionType`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ActionAreaAudioNoiseExtension {
     /// `defaultAudioNoiseLevel` (Single)
-    #[serde(default)]
     pub default_audio_noise_level: f32,
 }
 
@@ -70,10 +64,8 @@ impl<'a> Extract<'a> for ActionAreaAudioNoiseExtension {
 
 /// DCB type: `ActionAreaLightExtension`
 /// Inherits from: `ActionAreaExtensionType`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ActionAreaLightExtension {
     /// `lightStatusMultipliers` (StrongPointer (array))
-    #[serde(default)]
     pub light_status_multipliers: Vec<Handle<LightStatusMultiplier>>,
 }
 

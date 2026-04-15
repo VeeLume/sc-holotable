@@ -9,12 +9,10 @@
 
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
-use serde::{Deserialize, Serialize};
 use super::super::*;
 
 /// Pool storage for the `analytics` feature.
-#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+#[derive(Default)]
 pub struct AnalyticsPools {
-    #[serde(default)]
     pub sanalytics_event_database: Vec<Option<SAnalyticsEventDatabase>>,
 }

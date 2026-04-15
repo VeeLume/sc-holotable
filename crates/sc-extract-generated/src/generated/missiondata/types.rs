@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,10 +19,8 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `MissionLocationTemplate`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MissionLocationTemplate {
     /// `locationData` (Class)
-    #[serde(default)]
     pub location_data: Option<Handle<MissionLocationData>>,
 }
 
@@ -45,7 +42,6 @@ impl<'a> Extract<'a> for MissionLocationTemplate {
 }
 
 /// DCB type: `EntityClusterId`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EntityClusterId {
 }
 
@@ -63,10 +59,8 @@ impl<'a> Extract<'a> for EntityClusterId {
 }
 
 /// DCB type: `EntityClusterMember`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EntityClusterMember {
     /// `variables` (StrongPointer (array))
-    #[serde(default)]
     pub variables: Vec<MissionVariableBasePtr>,
 }
 
@@ -91,16 +85,12 @@ impl<'a> Extract<'a> for EntityClusterMember {
 
 /// DCB type: `MissionVariableBoolean`
 /// Inherits from: `MissionVariableBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MissionVariableBoolean {
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
     /// `description` (String)
-    #[serde(default)]
     pub description: String,
     /// `value` (Boolean)
-    #[serde(default)]
     pub value: bool,
 }
 
@@ -122,16 +112,12 @@ impl<'a> Extract<'a> for MissionVariableBoolean {
 
 /// DCB type: `MissionVariableInteger`
 /// Inherits from: `MissionVariableBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MissionVariableInteger {
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
     /// `description` (String)
-    #[serde(default)]
     pub description: String,
     /// `value` (Int32)
-    #[serde(default)]
     pub value: i32,
 }
 
@@ -152,13 +138,10 @@ impl<'a> Extract<'a> for MissionVariableInteger {
 }
 
 /// DCB type: `LocationResourceSlot`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LocationResourceSlot {
     /// `resourceSlotTag` (Reference)
-    #[serde(default)]
     pub resource_slot_tag: Option<CigGuid>,
     /// `autoConsumeIfPlayerAtLocation` (Boolean)
-    #[serde(default)]
     pub auto_consume_if_player_at_location: bool,
 }
 
@@ -179,7 +162,6 @@ impl<'a> Extract<'a> for LocationResourceSlot {
 
 /// DCB type: `LocationEntityType_StaticEntity`
 /// Inherits from: `LocationEntityType_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LocationEntityType_StaticEntity {
 }
 
@@ -197,13 +179,10 @@ impl<'a> Extract<'a> for LocationEntityType_StaticEntity {
 }
 
 /// DCB type: `ModuleLocationEntities`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ModuleLocationEntities {
     /// `debugName` (String)
-    #[serde(default)]
     pub debug_name: String,
     /// `optional` (Boolean)
-    #[serde(default)]
     pub optional: bool,
 }
 
@@ -224,16 +203,12 @@ impl<'a> Extract<'a> for ModuleLocationEntities {
 
 /// DCB type: `ModuleLocationEntities_Static`
 /// Inherits from: `ModuleLocationEntities`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ModuleLocationEntities_Static {
     /// `debugName` (String)
-    #[serde(default)]
     pub debug_name: String,
     /// `optional` (Boolean)
-    #[serde(default)]
     pub optional: bool,
     /// `entityDeclarations` (Reference (array))
-    #[serde(default)]
     pub entity_declarations: Vec<CigGuid>,
 }
 
@@ -257,16 +232,12 @@ impl<'a> Extract<'a> for ModuleLocationEntities_Static {
 
 /// DCB type: `ModuleDeclarationType_Mission`
 /// Inherits from: `ModuleDeclarationType_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ModuleDeclarationType_Mission {
     /// `locationEntities` (StrongPointer (array))
-    #[serde(default)]
     pub location_entities: Vec<ModuleLocationEntitiesPtr>,
     /// `requiredLocationModules` (Reference (array))
-    #[serde(default)]
     pub required_location_modules: Vec<CigGuid>,
     /// `requiredResourceSlot` (Reference)
-    #[serde(default)]
     pub required_resource_slot: Option<CigGuid>,
 }
 
@@ -295,10 +266,8 @@ impl<'a> Extract<'a> for ModuleDeclarationType_Mission {
 
 /// DCB type: `ModuleDeclarationType_Location`
 /// Inherits from: `ModuleDeclarationType_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ModuleDeclarationType_Location {
     /// `isPersistent` (Boolean)
-    #[serde(default)]
     pub is_persistent: bool,
 }
 
@@ -317,16 +286,12 @@ impl<'a> Extract<'a> for ModuleDeclarationType_Location {
 }
 
 /// DCB type: `ModuleDeclaration`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ModuleDeclaration {
     /// `module` (String)
-    #[serde(default)]
     pub module: String,
     /// `moduleType` (StrongPointer)
-    #[serde(default)]
     pub module_type: Option<ModuleDeclarationType_BasePtr>,
     /// `properties` (Class (array))
-    #[serde(default)]
     pub properties: Vec<Handle<MissionProperty>>,
 }
 
@@ -357,13 +322,10 @@ impl<'a> Extract<'a> for ModuleDeclaration {
 
 /// DCB type: `MissionInitParamBoolean`
 /// Inherits from: `AbstractMissionInitParam`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MissionInitParamBoolean {
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
     /// `value` (Boolean)
-    #[serde(default)]
     pub value: bool,
 }
 
@@ -384,13 +346,10 @@ impl<'a> Extract<'a> for MissionInitParamBoolean {
 
 /// DCB type: `MissionInitParamInteger`
 /// Inherits from: `AbstractMissionInitParam`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MissionInitParamInteger {
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
     /// `value` (Int32)
-    #[serde(default)]
     pub value: i32,
 }
 
@@ -411,13 +370,10 @@ impl<'a> Extract<'a> for MissionInitParamInteger {
 
 /// DCB type: `MissionInitParamTag`
 /// Inherits from: `AbstractMissionInitParam`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MissionInitParamTag {
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
     /// `value` (Class)
-    #[serde(default)]
     pub value: Option<Handle<TagSearchTerm>>,
 }
 
@@ -441,13 +397,10 @@ impl<'a> Extract<'a> for MissionInitParamTag {
 
 /// DCB type: `MissionInitParamFloat`
 /// Inherits from: `AbstractMissionInitParam`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MissionInitParamFloat {
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
     /// `value` (Single)
-    #[serde(default)]
     pub value: f32,
 }
 
@@ -467,13 +420,10 @@ impl<'a> Extract<'a> for MissionInitParamFloat {
 }
 
 /// DCB type: `SpawnDescriptionEntry`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SpawnDescriptionEntry {
     /// `description` (String)
-    #[serde(default)]
     pub description: String,
     /// `spawnGroup` (StrongPointer)
-    #[serde(default)]
     pub spawn_group: Option<BaseMissionPropertyValuePtr>,
 }
 
@@ -496,10 +446,8 @@ impl<'a> Extract<'a> for SpawnDescriptionEntry {
 }
 
 /// DCB type: `SpawnDescriptions`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SpawnDescriptions {
     /// `spawnDescriptions` (Class (array))
-    #[serde(default)]
     pub spawn_descriptions: Vec<Handle<SpawnDescriptionEntry>>,
 }
 

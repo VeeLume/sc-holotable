@@ -10,25 +10,18 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
 use std::collections::HashMap;
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use crate::Handle;
 use super::super::*;
 
 /// Record index for the `missiondata` feature.
-#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+#[derive(Default)]
 pub struct MissiondataIndex {
-    #[serde(default)]
     pub mission_location_template: HashMap<CigGuid, Handle<MissionLocationTemplate>>,
-    #[serde(default)]
     pub entity_cluster_id: HashMap<CigGuid, Handle<EntityClusterId>>,
-    #[serde(default)]
     pub entity_cluster_member: HashMap<CigGuid, Handle<EntityClusterMember>>,
-    #[serde(default)]
     pub location_resource_slot: HashMap<CigGuid, Handle<LocationResourceSlot>>,
-    #[serde(default)]
     pub module_declaration: HashMap<CigGuid, Handle<ModuleDeclaration>>,
-    #[serde(default)]
     pub spawn_descriptions: HashMap<CigGuid, Handle<SpawnDescriptions>>,
 }
 

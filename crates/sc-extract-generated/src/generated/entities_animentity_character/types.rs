@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -21,25 +20,18 @@ use super::super::*;
 
 /// DCB type: `SItemPortActorRecordParams`
 /// Inherits from: `SItemPortLoadoutBaseParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SItemPortActorRecordParams {
     /// `WearRange` (StrongPointer)
-    #[serde(default)]
     pub wear_range: Option<Handle<Range>>,
     /// `DirtRange` (StrongPointer)
-    #[serde(default)]
     pub dirt_range: Option<Handle<Range>>,
     /// `SkipInventoryItemsOnMissionEntities` (Boolean)
-    #[serde(default)]
     pub skip_inventory_items_on_mission_entities: bool,
     /// `InventoryItems` (Class (array))
-    #[serde(default)]
     pub inventory_items: Vec<Handle<SLoadoutInventoryItem>>,
     /// `actorRecord` (Reference)
-    #[serde(default)]
     pub actor_record: Option<CigGuid>,
     /// `OutfitNameTags` (Reference (array))
-    #[serde(default)]
     pub outfit_name_tags: Vec<CigGuid>,
 }
 

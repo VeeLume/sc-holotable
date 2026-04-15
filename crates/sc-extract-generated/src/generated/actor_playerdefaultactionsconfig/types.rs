@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -21,10 +20,8 @@ use super::super::*;
 
 /// DCB type: `DefaultAction_InteractionDef`
 /// Inherits from: `DefaultActionDef`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DefaultAction_InteractionDef {
     /// `interactionName` (String)
-    #[serde(default)]
     pub interaction_name: String,
 }
 
@@ -44,10 +41,8 @@ impl<'a> Extract<'a> for DefaultAction_InteractionDef {
 
 /// DCB type: `DefaultAction_CarryableInteractionDef`
 /// Inherits from: `DefaultActionDef`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DefaultAction_CarryableInteractionDef {
     /// `carryableInteraction` (EnumChoice)
-    #[serde(default)]
     pub carryable_interaction: ECarryableDefaultInteractions,
 }
 
@@ -67,10 +62,8 @@ impl<'a> Extract<'a> for DefaultAction_CarryableInteractionDef {
 
 /// DCB type: `DefaultAction_LootingInteractionDef`
 /// Inherits from: `DefaultActionDef`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DefaultAction_LootingInteractionDef {
     /// `lootingInteraction` (EnumChoice)
-    #[serde(default)]
     pub looting_interaction: ELootingDefaultInteractions,
 }
 
@@ -90,13 +83,10 @@ impl<'a> Extract<'a> for DefaultAction_LootingInteractionDef {
 
 /// DCB type: `DefaultAction_ActionDef`
 /// Inherits from: `DefaultActionDef`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DefaultAction_ActionDef {
     /// `name` (Class)
-    #[serde(default)]
     pub name: Option<Handle<InputAction>>,
     /// `trigger` (Boolean)
-    #[serde(default)]
     pub trigger: bool,
 }
 
@@ -119,13 +109,10 @@ impl<'a> Extract<'a> for DefaultAction_ActionDef {
 }
 
 /// DCB type: `DefaultActionsParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DefaultActionsParams {
     /// `states` (StrongPointer (array))
-    #[serde(default)]
     pub states: Vec<DefaultActionsEntityStatePtr>,
     /// `defaultActions` (StrongPointer)
-    #[serde(default)]
     pub default_actions: Option<DefaultActionDefPtr>,
 }
 
@@ -153,10 +140,8 @@ impl<'a> Extract<'a> for DefaultActionsParams {
 }
 
 /// DCB type: `DefaultActions`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DefaultActions {
     /// `defaultActionsPerState` (Class (array))
-    #[serde(default)]
     pub default_actions_per_state: Vec<Handle<DefaultActionsParams>>,
 }
 
@@ -181,13 +166,10 @@ impl<'a> Extract<'a> for DefaultActions {
 }
 
 /// DCB type: `DefaultActionDescriptionOverride`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DefaultActionDescriptionOverride {
     /// `action` (String)
-    #[serde(default)]
     pub action: String,
     /// `actionsDescription` (Locale)
-    #[serde(default)]
     pub actions_description: LocaleKey,
 }
 
@@ -207,16 +189,12 @@ impl<'a> Extract<'a> for DefaultActionDescriptionOverride {
 }
 
 /// DCB type: `DefaultActionsEntry`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DefaultActionsEntry {
     /// `description` (String)
-    #[serde(default)]
     pub description: String,
     /// `conditions` (StrongPointer (array))
-    #[serde(default)]
     pub conditions: Vec<DefaultActionsEntityEntryConditionPtr>,
     /// `defaultActions` (Class)
-    #[serde(default)]
     pub default_actions: Option<Handle<DefaultActions>>,
 }
 
@@ -245,16 +223,12 @@ impl<'a> Extract<'a> for DefaultActionsEntry {
 }
 
 /// DCB type: `ActorDefaultActionsConfig`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ActorDefaultActionsConfig {
     /// `versionID` (Int32)
-    #[serde(default)]
     pub version_id: i32,
     /// `defaultActionsList` (Class (array))
-    #[serde(default)]
     pub default_actions_list: Vec<Handle<DefaultActionsEntry>>,
     /// `defaultActionsDescriptions` (Class (array))
-    #[serde(default)]
     pub default_actions_descriptions: Vec<Handle<DefaultActionDescriptionOverride>>,
 }
 
@@ -288,10 +262,8 @@ impl<'a> Extract<'a> for ActorDefaultActionsConfig {
 
 /// DCB type: `DefaultActionsEntityEntryCondition_AND`
 /// Inherits from: `DefaultActionsEntityEntryCondition`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DefaultActionsEntityEntryCondition_AND {
     /// `conditions` (StrongPointer (array))
-    #[serde(default)]
     pub conditions: Vec<DefaultActionsEntityEntryConditionPtr>,
 }
 
@@ -316,10 +288,8 @@ impl<'a> Extract<'a> for DefaultActionsEntityEntryCondition_AND {
 
 /// DCB type: `DefaultActionsEntityEntryCondition_OR`
 /// Inherits from: `DefaultActionsEntityEntryCondition`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DefaultActionsEntityEntryCondition_OR {
     /// `conditions` (StrongPointer (array))
-    #[serde(default)]
     pub conditions: Vec<DefaultActionsEntityEntryConditionPtr>,
 }
 
@@ -344,13 +314,10 @@ impl<'a> Extract<'a> for DefaultActionsEntityEntryCondition_OR {
 
 /// DCB type: `DefaultActionsEntityEntryCondition_AttachableItems`
 /// Inherits from: `DefaultActionsEntityEntryCondition`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DefaultActionsEntityEntryCondition_AttachableItems {
     /// `type` (EnumChoice)
-    #[serde(default)]
     pub r#type: EItemType,
     /// `subType` (EnumChoice)
-    #[serde(default)]
     pub sub_type: EItemSubType,
 }
 
@@ -371,10 +338,8 @@ impl<'a> Extract<'a> for DefaultActionsEntityEntryCondition_AttachableItems {
 
 /// DCB type: `DefaultActionsEntityEntryCondition_EntityTypes`
 /// Inherits from: `DefaultActionsEntityEntryCondition`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DefaultActionsEntityEntryCondition_EntityTypes {
     /// `type` (EnumChoice)
-    #[serde(default)]
     pub r#type: EDefaultActionsEntityType,
 }
 
@@ -394,10 +359,8 @@ impl<'a> Extract<'a> for DefaultActionsEntityEntryCondition_EntityTypes {
 
 /// DCB type: `DefaultActionsEntityEntryCondition_Customisable`
 /// Inherits from: `DefaultActionsEntityEntryCondition`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DefaultActionsEntityEntryCondition_Customisable {
     /// `isCustomisable` (Boolean)
-    #[serde(default)]
     pub is_customisable: bool,
 }
 
@@ -417,10 +380,8 @@ impl<'a> Extract<'a> for DefaultActionsEntityEntryCondition_Customisable {
 
 /// DCB type: `DefaultActionsEntityEntryCondition_Primed`
 /// Inherits from: `DefaultActionsEntityEntryCondition`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DefaultActionsEntityEntryCondition_Primed {
     /// `isPrimed` (Boolean)
-    #[serde(default)]
     pub is_primed: bool,
 }
 
@@ -440,13 +401,10 @@ impl<'a> Extract<'a> for DefaultActionsEntityEntryCondition_Primed {
 
 /// DCB type: `DefaultActionsEntityEntryCondition_Tags`
 /// Inherits from: `DefaultActionsEntityEntryCondition`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DefaultActionsEntityEntryCondition_Tags {
     /// `hasTags` (Boolean)
-    #[serde(default)]
     pub has_tags: bool,
     /// `tags` (Class)
-    #[serde(default)]
     pub tags: Option<Handle<TagList>>,
 }
 
@@ -470,13 +428,10 @@ impl<'a> Extract<'a> for DefaultActionsEntityEntryCondition_Tags {
 
 /// DCB type: `DefaultActionsEntityEntryConditionDef_InventoryContainerCapacity`
 /// Inherits from: `DefaultActionsEntityEntryCondition`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DefaultActionsEntityEntryConditionDef_InventoryContainerCapacity {
     /// `minCapacity` (StrongPointer)
-    #[serde(default)]
     pub min_capacity: Option<SBaseCargoUnitPtr>,
     /// `maxCapacity` (StrongPointer)
-    #[serde(default)]
     pub max_capacity: Option<SBaseCargoUnitPtr>,
 }
 
@@ -503,10 +458,8 @@ impl<'a> Extract<'a> for DefaultActionsEntityEntryConditionDef_InventoryContaine
 
 /// DCB type: `DefaultActionsEntityState_AND`
 /// Inherits from: `DefaultActionsEntityState`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DefaultActionsEntityState_AND {
     /// `states` (StrongPointer (array))
-    #[serde(default)]
     pub states: Vec<DefaultActionsEntityStatePtr>,
 }
 
@@ -531,10 +484,8 @@ impl<'a> Extract<'a> for DefaultActionsEntityState_AND {
 
 /// DCB type: `DefaultActionsEntityState_OR`
 /// Inherits from: `DefaultActionsEntityState`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DefaultActionsEntityState_OR {
     /// `states` (StrongPointer (array))
-    #[serde(default)]
     pub states: Vec<DefaultActionsEntityStatePtr>,
 }
 
@@ -559,10 +510,8 @@ impl<'a> Extract<'a> for DefaultActionsEntityState_OR {
 
 /// DCB type: `DefaultActionsEntityState_NOT`
 /// Inherits from: `DefaultActionsEntityState`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DefaultActionsEntityState_NOT {
     /// `state` (StrongPointer)
-    #[serde(default)]
     pub state: Option<DefaultActionsEntityStatePtr>,
 }
 
@@ -585,10 +534,8 @@ impl<'a> Extract<'a> for DefaultActionsEntityState_NOT {
 
 /// DCB type: `DefaultActionsEntityState_CarryableState`
 /// Inherits from: `DefaultActionsEntityState`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DefaultActionsEntityState_CarryableState {
     /// `state` (EnumChoice)
-    #[serde(default)]
     pub state: EActorActionEntityCarryableState,
 }
 
@@ -608,10 +555,8 @@ impl<'a> Extract<'a> for DefaultActionsEntityState_CarryableState {
 
 /// DCB type: `DefaultActionsEntityState_InteractionStateMachineStateTag`
 /// Inherits from: `DefaultActionsEntityState`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DefaultActionsEntityState_InteractionStateMachineStateTag {
     /// `interactionStateMachineStateTag` (Reference)
-    #[serde(default)]
     pub interaction_state_machine_state_tag: Option<CigGuid>,
 }
 
@@ -631,7 +576,6 @@ impl<'a> Extract<'a> for DefaultActionsEntityState_InteractionStateMachineStateT
 
 /// DCB type: `DefaultActionsEntityState_InTakedownRange`
 /// Inherits from: `DefaultActionsEntityState`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DefaultActionsEntityState_InTakedownRange {
 }
 
@@ -650,7 +594,6 @@ impl<'a> Extract<'a> for DefaultActionsEntityState_InTakedownRange {
 
 /// DCB type: `DefaultActionsEntityState_CanAttachToHeldWeapon`
 /// Inherits from: `DefaultActionsEntityState`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DefaultActionsEntityState_CanAttachToHeldWeapon {
 }
 
@@ -669,7 +612,6 @@ impl<'a> Extract<'a> for DefaultActionsEntityState_CanAttachToHeldWeapon {
 
 /// DCB type: `DefaultActionsEntityState_HasAvailableCommsTap`
 /// Inherits from: `DefaultActionsEntityState`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DefaultActionsEntityState_HasAvailableCommsTap {
 }
 

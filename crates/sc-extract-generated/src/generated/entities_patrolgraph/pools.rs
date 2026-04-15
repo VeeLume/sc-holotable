@@ -9,12 +9,10 @@
 
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
-use serde::{Deserialize, Serialize};
 use super::super::*;
 
 /// Pool storage for the `entities-patrolgraph` feature.
-#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+#[derive(Default)]
 pub struct EntitiesPatrolgraphPools {
-    #[serde(default)]
     pub patrol_graph_component_params: Vec<Option<PatrolGraphComponentParams>>,
 }

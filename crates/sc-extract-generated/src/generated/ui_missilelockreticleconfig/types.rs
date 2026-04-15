@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,22 +19,16 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `MissileLockReticleSegmentDef`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MissileLockReticleSegmentDef {
     /// `widthRatio` (Single)
-    #[serde(default)]
     pub width_ratio: f32,
     /// `heightRatio` (Single)
-    #[serde(default)]
     pub height_ratio: f32,
     /// `anchorX` (Single)
-    #[serde(default)]
     pub anchor_x: f32,
     /// `anchorY` (Single)
-    #[serde(default)]
     pub anchor_y: f32,
     /// `geometryPath` (String)
-    #[serde(default)]
     pub geometry_path: String,
 }
 
@@ -58,10 +51,8 @@ impl<'a> Extract<'a> for MissileLockReticleSegmentDef {
 }
 
 /// DCB type: `MissileLockReticle_Config`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MissileLockReticle_Config {
     /// `segments` (Class (array))
-    #[serde(default)]
     pub segments: Vec<Handle<MissileLockReticleSegmentDef>>,
 }
 

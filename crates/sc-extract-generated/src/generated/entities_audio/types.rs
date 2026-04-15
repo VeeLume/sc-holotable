@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -21,22 +20,16 @@ use super::super::*;
 
 /// DCB type: `SAudioGroupControllerComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SAudioGroupControllerComponentParams {
     /// `powerLevelRtpc` (String)
-    #[serde(default)]
     pub power_level_rtpc: String,
     /// `powerOnDefaultSwitchState` (String)
-    #[serde(default)]
     pub power_on_default_switch_state: String,
     /// `powerOnAuxiliarySwitchState` (String)
-    #[serde(default)]
     pub power_on_auxiliary_switch_state: String,
     /// `powerOnEmergencySwitchState` (String)
-    #[serde(default)]
     pub power_on_emergency_switch_state: String,
     /// `powerOffSwitchState` (String)
-    #[serde(default)]
     pub power_off_switch_state: String,
 }
 
@@ -60,58 +53,40 @@ impl<'a> Extract<'a> for SAudioGroupControllerComponentParams {
 
 /// DCB type: `AudioAreaAmbienceComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AudioAreaAmbienceComponentParams {
     /// `isEnabled` (Boolean)
-    #[serde(default)]
     pub is_enabled: bool,
     /// `audioPlayTrigger` (Class)
-    #[serde(default)]
     pub audio_play_trigger: Option<Handle<GlobalResourceAudio>>,
     /// `audioStopTrigger` (Class)
-    #[serde(default)]
     pub audio_stop_trigger: Option<Handle<GlobalResourceAudio>>,
     /// `areaFadeRTPC` (Class)
-    #[serde(default)]
     pub area_fade_rtpc: Option<Handle<AudioRtpc>>,
     /// `audioEnvironment` (String)
-    #[serde(default)]
     pub audio_environment: String,
     /// `audioSwitch` (String)
-    #[serde(default)]
     pub audio_switch: String,
     /// `audioSwitchStateInside` (String)
-    #[serde(default)]
     pub audio_switch_state_inside: String,
     /// `audioSwitchStateNear` (String)
-    #[serde(default)]
     pub audio_switch_state_near: String,
     /// `audioSwitchStateFar` (String)
-    #[serde(default)]
     pub audio_switch_state_far: String,
     /// `fadeDistance` (Single)
-    #[serde(default)]
     pub fade_distance: f32,
     /// `environmentFadeDistance` (Single)
-    #[serde(default)]
     pub environment_fade_distance: f32,
     /// `audioSignature` (Single)
-    #[serde(default)]
     pub audio_signature: f32,
     /// `positionFadeDistance` (Single)
-    #[serde(default)]
     pub position_fade_distance: f32,
     /// `pitch` (Single)
-    #[serde(default)]
     pub pitch: f32,
     /// `volume` (Single)
-    #[serde(default)]
     pub volume: f32,
     /// `atsVolumeOffset` (Single)
-    #[serde(default)]
     pub ats_volume_offset: f32,
     /// `isManagedAudioObject` (Boolean)
-    #[serde(default)]
     pub is_managed_audio_object: bool,
 }
 
@@ -156,97 +131,66 @@ impl<'a> Extract<'a> for AudioAreaAmbienceComponentParams {
 
 /// DCB type: `AudioTriggerSpotParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AudioTriggerSpotParams {
     /// `enabled` (Boolean)
-    #[serde(default)]
     pub enabled: bool,
     /// `audioTriggerPlayTriggerName` (Class)
-    #[serde(default)]
     pub audio_trigger_play_trigger_name: Option<Handle<GlobalResourceAudio>>,
     /// `audioTriggerStopTriggerName` (Class)
-    #[serde(default)]
     pub audio_trigger_stop_trigger_name: Option<Handle<GlobalResourceAudio>>,
     /// `attenuationScalingFactor` (Single)
-    #[serde(default)]
     pub attenuation_scaling_factor: f32,
     /// `volume` (Single)
-    #[serde(default)]
     pub volume: f32,
     /// `pitch` (Single)
-    #[serde(default)]
     pub pitch: f32,
     /// `lowPassFilter` (Single)
-    #[serde(default)]
     pub low_pass_filter: f32,
     /// `highPassFilter` (Single)
-    #[serde(default)]
     pub high_pass_filter: f32,
     /// `volumeRandomRange` (Single)
-    #[serde(default)]
     pub volume_random_range: f32,
     /// `pitchRandomRange` (Single)
-    #[serde(default)]
     pub pitch_random_range: f32,
     /// `playRandom` (Boolean)
-    #[serde(default)]
     pub play_random: bool,
     /// `minDelay` (Single)
-    #[serde(default)]
     pub min_delay: f32,
     /// `maxDelay` (Single)
-    #[serde(default)]
     pub max_delay: f32,
     /// `delayIsFromEnd` (Boolean)
-    #[serde(default)]
     pub delay_is_from_end: bool,
     /// `radiusRandom` (Single)
-    #[serde(default)]
     pub radius_random: f32,
     /// `playOnX` (Boolean)
-    #[serde(default)]
     pub play_on_x: bool,
     /// `playOnY` (Boolean)
-    #[serde(default)]
     pub play_on_y: bool,
     /// `playOnZ` (Boolean)
-    #[serde(default)]
     pub play_on_z: bool,
     /// `audioRTPCUserRtpc1Name` (Class)
-    #[serde(default)]
     pub audio_rtpcuser_rtpc1_name: Option<Handle<AudioRtpc>>,
     /// `userRtpc1Value` (Single)
-    #[serde(default)]
     pub user_rtpc1_value: f32,
     /// `audioRTPCUserRtpc2Name` (Class)
-    #[serde(default)]
     pub audio_rtpcuser_rtpc2_name: Option<Handle<AudioRtpc>>,
     /// `userRtpc2Value` (Single)
-    #[serde(default)]
     pub user_rtpc2_value: f32,
     /// `audioRTPCUserRtpc3Name` (Class)
-    #[serde(default)]
     pub audio_rtpcuser_rtpc3_name: Option<Handle<AudioRtpc>>,
     /// `userRtpc3Value` (Single)
-    #[serde(default)]
     pub user_rtpc3_value: f32,
     /// `voiceStealingRule` (Int32)
-    #[serde(default)]
     pub voice_stealing_rule: i32,
     /// `voiceCount` (Int32)
-    #[serde(default)]
     pub voice_count: i32,
     /// `multiPositionType` (Int32)
-    #[serde(default)]
     pub multi_position_type: i32,
     /// `audioRTPCAreaFadeRtpc` (Class)
-    #[serde(default)]
     pub audio_rtpcarea_fade_rtpc: Option<Handle<AudioRtpc>>,
     /// `enablePropagationAndSoundsim` (Boolean)
-    #[serde(default)]
     pub enable_propagation_and_soundsim: bool,
     /// `commsChannel` (Reference)
-    #[serde(default)]
     pub comms_channel: Option<CigGuid>,
 }
 
@@ -313,13 +257,10 @@ impl<'a> Extract<'a> for AudioTriggerSpotParams {
 
 /// DCB type: `EntityAudioControllerRtpcSubscriberParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EntityAudioControllerRtpcSubscriberParams {
     /// `rtpcs` (Class (array))
-    #[serde(default)]
     pub rtpcs: Vec<Handle<AudioRtpc>>,
     /// `rtpcLists` (Reference (array))
-    #[serde(default)]
     pub rtpc_lists: Vec<CigGuid>,
 }
 
@@ -348,10 +289,8 @@ impl<'a> Extract<'a> for EntityAudioControllerRtpcSubscriberParams {
 
 /// DCB type: `EntityComponentAudioEnvironmentFeedbackPointParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EntityComponentAudioEnvironmentFeedbackPointParams {
     /// `feedbackPointDef` (Reference)
-    #[serde(default)]
     pub feedback_point_def: Option<CigGuid>,
 }
 
@@ -371,31 +310,22 @@ impl<'a> Extract<'a> for EntityComponentAudioEnvironmentFeedbackPointParams {
 
 /// DCB type: `EntityComponentVehicleAudioPointParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EntityComponentVehicleAudioPointParams {
     /// `loopStart` (Class)
-    #[serde(default)]
     pub loop_start: Option<Handle<GlobalResourceAudio>>,
     /// `loopStop` (Class)
-    #[serde(default)]
     pub loop_stop: Option<Handle<GlobalResourceAudio>>,
     /// `soundSimOnOneshot` (Class)
-    #[serde(default)]
     pub sound_sim_on_oneshot: Option<Handle<GlobalResourceAudio>>,
     /// `soundSimOffOneshot` (Class)
-    #[serde(default)]
     pub sound_sim_off_oneshot: Option<Handle<GlobalResourceAudio>>,
     /// `shipAudioOnOneshot` (Class)
-    #[serde(default)]
     pub ship_audio_on_oneshot: Option<Handle<GlobalResourceAudio>>,
     /// `shipAudioOffOneshot` (Class)
-    #[serde(default)]
     pub ship_audio_off_oneshot: Option<Handle<GlobalResourceAudio>>,
     /// `rtpcs` (Class (array))
-    #[serde(default)]
     pub rtpcs: Vec<Handle<AudioRtpc>>,
     /// `rtpcLists` (Reference (array))
-    #[serde(default)]
     pub rtpc_lists: Vec<CigGuid>,
 }
 
@@ -448,49 +378,34 @@ impl<'a> Extract<'a> for EntityComponentVehicleAudioPointParams {
 
 /// DCB type: `MusicAreaComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MusicAreaComponentParams {
     /// `onEnterWwiseEvent` (Class)
-    #[serde(default)]
     pub on_enter_wwise_event: Option<Handle<GlobalResourceAudio>>,
     /// `onLeaveWwiseEvent` (Class)
-    #[serde(default)]
     pub on_leave_wwise_event: Option<Handle<GlobalResourceAudio>>,
     /// `onEnterCueSwitch` (Reference)
-    #[serde(default)]
     pub on_enter_cue_switch: Option<CigGuid>,
     /// `radius` (Single)
-    #[serde(default)]
     pub radius: f32,
     /// `maxRetriggerCount` (Int32)
-    #[serde(default)]
     pub max_retrigger_count: i32,
     /// `retriggerDelaySecs` (Single)
-    #[serde(default)]
     pub retrigger_delay_secs: f32,
     /// `retriggerDelayOnlyOnEnter` (Boolean)
-    #[serde(default)]
     pub retrigger_delay_only_on_enter: bool,
     /// `stopMusicOnExit` (Boolean)
-    #[serde(default)]
     pub stop_music_on_exit: bool,
     /// `bounds` (Class)
-    #[serde(default)]
     pub bounds: Option<Handle<Vec3>>,
     /// `onEnterSecondarySwitch` (Reference)
-    #[serde(default)]
     pub on_enter_secondary_switch: Option<CigGuid>,
     /// `onLeaveSecondarySwitch` (Reference)
-    #[serde(default)]
     pub on_leave_secondary_switch: Option<CigGuid>,
     /// `distToCentreParameter` (Reference)
-    #[serde(default)]
     pub dist_to_centre_parameter: Option<CigGuid>,
     /// `distToCentreRtpc` (Class)
-    #[serde(default)]
     pub dist_to_centre_rtpc: Option<Handle<AudioRtpc>>,
     /// `useAreaComponent` (Boolean)
-    #[serde(default)]
     pub use_area_component: bool,
 }
 
@@ -535,22 +450,16 @@ impl<'a> Extract<'a> for MusicAreaComponentParams {
 
 /// DCB type: `AudioSplineParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AudioSplineParams {
     /// `activatedRoute` (Boolean)
-    #[serde(default)]
     pub activated_route: bool,
     /// `moveTowardsListener` (Boolean)
-    #[serde(default)]
     pub move_towards_listener: bool,
     /// `traversalDuration` (Single)
-    #[serde(default)]
     pub traversal_duration: f32,
     /// `audioRTPCDistanceTravelled` (Class)
-    #[serde(default)]
     pub audio_rtpcdistance_travelled: Option<Handle<AudioRtpc>>,
     /// `activationTag` (Reference)
-    #[serde(default)]
     pub activation_tag: Option<CigGuid>,
 }
 
@@ -577,10 +486,8 @@ impl<'a> Extract<'a> for AudioSplineParams {
 
 /// DCB type: `EntityComponentVibrationAudioPointParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EntityComponentVibrationAudioPointParams {
     /// `pointDefinition` (Reference)
-    #[serde(default)]
     pub point_definition: Option<CigGuid>,
 }
 

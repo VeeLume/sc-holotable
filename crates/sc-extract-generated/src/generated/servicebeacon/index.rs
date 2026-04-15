@@ -10,19 +10,15 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
 use std::collections::HashMap;
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use crate::Handle;
 use super::super::*;
 
 /// Record index for the `servicebeacon` feature.
-#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+#[derive(Default)]
 pub struct ServicebeaconIndex {
-    #[serde(default)]
     pub beacons_contracts: HashMap<CigGuid, Handle<BeaconsContracts>>,
-    #[serde(default)]
     pub service_beacon_params: HashMap<CigGuid, Handle<ServiceBeaconParams>>,
-    #[serde(default)]
     pub service_beacon_global_params: HashMap<CigGuid, Handle<ServiceBeaconGlobalParams>>,
 }
 

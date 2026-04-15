@@ -14,8 +14,6 @@
 //! everything here), so the newtype itself lives at this layer and
 //! `sc-extract` re-exports it from its `locale` module.
 
-use serde::{Deserialize, Serialize};
-
 /// A localization key referenced from DCB records.
 ///
 /// In the DCB, localization references appear as strings like
@@ -24,7 +22,7 @@ use serde::{Deserialize, Serialize};
 /// in `global.ini`. `LocaleMap::resolve` handles the `@` prefix
 /// transparently; `LocaleMap::get` requires the caller to pass the key
 /// without the prefix — use [`LocaleKey::stripped`] for that.
-#[derive(Debug, Clone, Default, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, Default, PartialEq, Eq, Hash)]
 pub struct LocaleKey(pub String);
 
 impl LocaleKey {

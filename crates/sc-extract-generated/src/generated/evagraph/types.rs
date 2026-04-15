@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,19 +19,14 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `EVAConnection`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EVAConnection {
     /// `waitUntillFinished` (Boolean)
-    #[serde(default)]
     pub wait_untill_finished: bool,
     /// `delaySeconds` (Single)
-    #[serde(default)]
     pub delay_seconds: f32,
     /// `waitForEvent` (String)
-    #[serde(default)]
     pub wait_for_event: String,
     /// `nextState` (WeakPointer)
-    #[serde(default)]
     pub next_state: Option<Handle<EVAState>>,
 }
 
@@ -57,19 +51,14 @@ impl<'a> Extract<'a> for EVAConnection {
 }
 
 /// DCB type: `EVAState`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EVAState {
     /// `type` (EnumChoice)
-    #[serde(default)]
     pub r#type: EVAStateType,
     /// `mannequinTags` (String)
-    #[serde(default)]
     pub mannequin_tags: String,
     /// `mannequinFragment` (String)
-    #[serde(default)]
     pub mannequin_fragment: String,
     /// `connections` (Class (array))
-    #[serde(default)]
     pub connections: Vec<Handle<EVAConnection>>,
 }
 
@@ -97,10 +86,8 @@ impl<'a> Extract<'a> for EVAState {
 }
 
 /// DCB type: `EVAGraph`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EVAGraph {
     /// `EVAStates` (Class (array))
-    #[serde(default)]
     pub evastates: Vec<Handle<EVAState>>,
 }
 

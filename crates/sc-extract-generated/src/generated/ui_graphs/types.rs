@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -21,13 +20,10 @@ use super::super::*;
 
 /// DCB type: `UIGraph_BlockingMessagePopUpComponent`
 /// Inherits from: `CtxGraph_Component`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct UIGraph_BlockingMessagePopUpComponent {
     /// `errorFormat` (String)
-    #[serde(default)]
     pub error_format: String,
     /// `provider` (EnumChoice)
-    #[serde(default)]
     pub provider: UIGraph_BlockingMessagePopUpProvider,
 }
 

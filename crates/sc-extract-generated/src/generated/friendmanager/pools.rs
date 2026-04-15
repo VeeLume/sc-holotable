@@ -9,14 +9,11 @@
 
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
-use serde::{Deserialize, Serialize};
 use super::super::*;
 
 /// Pool storage for the `friendmanager` feature.
-#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+#[derive(Default)]
 pub struct FriendmanagerPools {
-    #[serde(default)]
     pub friend_manager_notifications_params: Vec<Option<FriendManagerNotificationsParams>>,
-    #[serde(default)]
     pub friend_manager_global_params: Vec<Option<FriendManagerGlobalParams>>,
 }

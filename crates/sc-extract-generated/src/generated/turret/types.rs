@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,10 +19,8 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `STurretHealthModifierDef`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct STurretHealthModifierDef {
     /// `damageMovementModifier` (Class)
-    #[serde(default)]
     pub damage_movement_modifier: Option<Handle<BezierCurve>>,
 }
 
@@ -45,37 +42,26 @@ impl<'a> Extract<'a> for STurretHealthModifierDef {
 }
 
 /// DCB type: `STurretESP`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct STurretESP {
     /// `triggerZoneRampInCurve` (Class)
-    #[serde(default)]
     pub trigger_zone_ramp_in_curve: Option<Handle<BezierCurve>>,
     /// `maxTrackingStrength` (Single)
-    #[serde(default)]
     pub max_tracking_strength: f32,
     /// `distanceFalloffStart` (Single)
-    #[serde(default)]
     pub distance_falloff_start: f32,
     /// `distanceFalloffEnd` (Single)
-    #[serde(default)]
     pub distance_falloff_end: f32,
     /// `outerZoneDeg` (Single)
-    #[serde(default)]
     pub outer_zone_deg: f32,
     /// `innerZoneRatio` (Single)
-    #[serde(default)]
     pub inner_zone_ratio: f32,
     /// `adsZoneMinSizeDeg` (Single)
-    #[serde(default)]
     pub ads_zone_min_size_deg: f32,
     /// `inputScalerMin` (Single)
-    #[serde(default)]
     pub input_scaler_min: f32,
     /// `inputScalerMax` (Single)
-    #[serde(default)]
     pub input_scaler_max: f32,
     /// `allowWithRelativeMouseModes` (Boolean)
-    #[serde(default)]
     pub allow_with_relative_mouse_modes: bool,
 }
 
@@ -106,40 +92,28 @@ impl<'a> Extract<'a> for STurretESP {
 }
 
 /// DCB type: `STurretGlobalParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct STurretGlobalParams {
     /// `pointerModeAllowed` (Boolean)
-    #[serde(default)]
     pub pointer_mode_allowed: bool,
     /// `pointerModeInputSmoothing` (Single)
-    #[serde(default)]
     pub pointer_mode_input_smoothing: f32,
     /// `pointerModeInnerAngle` (Single)
-    #[serde(default)]
     pub pointer_mode_inner_angle: f32,
     /// `pointerModeInnerAngleMaxSpeedModifier` (Single)
-    #[serde(default)]
     pub pointer_mode_inner_angle_max_speed_modifier: f32,
     /// `pointerModeInnerAngleTurretSmoothing` (Single)
-    #[serde(default)]
     pub pointer_mode_inner_angle_turret_smoothing: f32,
     /// `pointerModeMiddleAngle` (Single)
-    #[serde(default)]
     pub pointer_mode_middle_angle: f32,
     /// `pointerModeOuterAngle` (Single)
-    #[serde(default)]
     pub pointer_mode_outer_angle: f32,
     /// `pointerModeOuterAngleTurretSmoothing` (Single)
-    #[serde(default)]
     pub pointer_mode_outer_angle_turret_smoothing: f32,
     /// `pointerModeMaxDegPerSec` (Single)
-    #[serde(default)]
     pub pointer_mode_max_deg_per_sec: f32,
     /// `relativeInputAllowed` (Boolean)
-    #[serde(default)]
     pub relative_input_allowed: bool,
     /// `relativeInputSmoothing` (Single)
-    #[serde(default)]
     pub relative_input_smoothing: f32,
 }
 

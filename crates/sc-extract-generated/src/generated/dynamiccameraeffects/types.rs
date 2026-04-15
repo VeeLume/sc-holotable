@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,49 +19,34 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `DynamicCameraEffectsList`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DynamicCameraEffectsList {
     /// `conversation` (Reference)
-    #[serde(default)]
     pub conversation: Option<CigGuid>,
     /// `interactionModeFocus` (Reference)
-    #[serde(default)]
     pub interaction_mode_focus: Option<CigGuid>,
     /// `mobiglas` (Reference)
-    #[serde(default)]
     pub mobiglas: Option<CigGuid>,
     /// `personalInnerThought` (Reference)
-    #[serde(default)]
     pub personal_inner_thought: Option<CigGuid>,
     /// `externalInventory` (Reference)
-    #[serde(default)]
     pub external_inventory: Option<CigGuid>,
     /// `personalInventory` (Reference)
-    #[serde(default)]
     pub personal_inventory: Option<CigGuid>,
     /// `lootInventory` (Reference)
-    #[serde(default)]
     pub loot_inventory: Option<CigGuid>,
     /// `onFoot` (Reference)
-    #[serde(default)]
     pub on_foot: Option<CigGuid>,
     /// `vehicleSeat` (Reference)
-    #[serde(default)]
     pub vehicle_seat: Option<CigGuid>,
     /// `hacking` (Reference)
-    #[serde(default)]
     pub hacking: Option<CigGuid>,
     /// `inspectMode` (Reference)
-    #[serde(default)]
     pub inspect_mode: Option<CigGuid>,
     /// `prototypeMobiGlas` (Reference)
-    #[serde(default)]
     pub prototype_mobi_glas: Option<CigGuid>,
     /// `simpod` (Reference)
-    #[serde(default)]
     pub simpod: Option<CigGuid>,
     /// `jumpTravel` (Reference)
-    #[serde(default)]
     pub jump_travel: Option<CigGuid>,
 }
 
@@ -94,13 +78,10 @@ impl<'a> Extract<'a> for DynamicCameraEffectsList {
 }
 
 /// DCB type: `ConstantDOFPosWeights`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ConstantDOFPosWeights {
     /// `gridDistance` (Int32)
-    #[serde(default)]
     pub grid_distance: i32,
     /// `weight` (Single)
-    #[serde(default)]
     pub weight: f32,
 }
 
@@ -120,28 +101,20 @@ impl<'a> Extract<'a> for ConstantDOFPosWeights {
 }
 
 /// DCB type: `ConstantDOFWeights`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ConstantDOFWeights {
     /// `maxPositionWeight` (Single)
-    #[serde(default)]
     pub max_position_weight: f32,
     /// `positionWeights` (Class (array))
-    #[serde(default)]
     pub position_weights: Vec<Handle<ConstantDOFPosWeights>>,
     /// `NPC` (Single)
-    #[serde(default)]
     pub npc: f32,
     /// `localPlayer` (Single)
-    #[serde(default)]
     pub local_player: f32,
     /// `entity` (Single)
-    #[serde(default)]
     pub entity: f32,
     /// `actorLookingAtPlayer` (Single)
-    #[serde(default)]
     pub actor_looking_at_player: f32,
     /// `door` (Single)
-    #[serde(default)]
     pub door: f32,
 }
 
@@ -172,19 +145,14 @@ impl<'a> Extract<'a> for ConstantDOFWeights {
 }
 
 /// DCB type: `ConstantDOFGrid`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ConstantDOFGrid {
     /// `verticalGridSize` (Int32)
-    #[serde(default)]
     pub vertical_grid_size: i32,
     /// `horizontalGridSize` (Int32)
-    #[serde(default)]
     pub horizontal_grid_size: i32,
     /// `verticalSpacing` (Single)
-    #[serde(default)]
     pub vertical_spacing: f32,
     /// `horizontalSpacing` (Single)
-    #[serde(default)]
     pub horizontal_spacing: f32,
 }
 
@@ -206,37 +174,26 @@ impl<'a> Extract<'a> for ConstantDOFGrid {
 }
 
 /// DCB type: `ConstantDOFGlobalData`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ConstantDOFGlobalData {
     /// `movementThresholdToIgnorePlayer` (Single)
-    #[serde(default)]
     pub movement_threshold_to_ignore_player: f32,
     /// `distanceToIgnorePlayer` (Single)
-    #[serde(default)]
     pub distance_to_ignore_player: f32,
     /// `rotationThresholdToDisable` (Single)
-    #[serde(default)]
     pub rotation_threshold_to_disable: f32,
     /// `pierceability` (Int32)
-    #[serde(default)]
     pub pierceability: i32,
     /// `nonEntityDistanceScale` (Single)
-    #[serde(default)]
     pub non_entity_distance_scale: f32,
     /// `LODBiasOnTarget` (Int32)
-    #[serde(default)]
     pub lodbias_on_target: i32,
     /// `maxRangeScale` (Single)
-    #[serde(default)]
     pub max_range_scale: f32,
     /// `circleOfConfusion` (Single)
-    #[serde(default)]
     pub circle_of_confusion: f32,
     /// `gridParams` (Class)
-    #[serde(default)]
     pub grid_params: Option<Handle<ConstantDOFGrid>>,
     /// `weights` (Class)
-    #[serde(default)]
     pub weights: Option<Handle<ConstantDOFWeights>>,
 }
 

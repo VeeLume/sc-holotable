@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,13 +19,10 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `MasterModeExclusion`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MasterModeExclusion {
     /// `itemType` (EnumChoice)
-    #[serde(default)]
     pub item_type: EItemType,
     /// `masterModeExclusions` (EnumChoice (array))
-    #[serde(default)]
     pub master_mode_exclusions: Vec<EMasterMode>,
 }
 
@@ -48,10 +44,8 @@ impl<'a> Extract<'a> for MasterModeExclusion {
 }
 
 /// DCB type: `MasterModeExclusionGlobalParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MasterModeExclusionGlobalParams {
     /// `exclusions` (Class (array))
-    #[serde(default)]
     pub exclusions: Vec<Handle<MasterModeExclusion>>,
 }
 

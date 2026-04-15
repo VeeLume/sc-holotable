@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -21,7 +20,6 @@ use super::super::*;
 
 /// DCB type: `CommodityCrateComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CommodityCrateComponentParams {
 }
 
@@ -40,7 +38,6 @@ impl<'a> Extract<'a> for CommodityCrateComponentParams {
 
 /// DCB type: `MiningShopProviderEntityComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MiningShopProviderEntityComponentParams {
 }
 
@@ -59,13 +56,10 @@ impl<'a> Extract<'a> for MiningShopProviderEntityComponentParams {
 
 /// DCB type: `SDespawnRule_OnFallBelow`
 /// Inherits from: `SDespawnRule`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SDespawnRule_OnFallBelow {
     /// `ruleDelaySeconds` (Single)
-    #[serde(default)]
     pub rule_delay_seconds: f32,
     /// `distance` (Single)
-    #[serde(default)]
     pub distance: f32,
 }
 
@@ -86,79 +80,54 @@ impl<'a> Extract<'a> for SDespawnRule_OnFallBelow {
 
 /// DCB type: `DeliveryLockerComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DeliveryLockerComponentParams {
     /// `placeInteraction` (WeakPointer)
-    #[serde(default)]
     pub place_interaction: Option<Handle<SSharedInteractionParams>>,
     /// `pickupInteraction` (WeakPointer)
-    #[serde(default)]
     pub pickup_interaction: Option<Handle<SSharedInteractionParams>>,
     /// `dropOffInteraction` (WeakPointer)
-    #[serde(default)]
     pub drop_off_interaction: Option<Handle<SSharedInteractionParams>>,
     /// `openHatchInteraction` (WeakPointer)
-    #[serde(default)]
     pub open_hatch_interaction: Option<Handle<SSharedInteractionParams>>,
     /// `closeHatchInteraction` (WeakPointer)
-    #[serde(default)]
     pub close_hatch_interaction: Option<Handle<SSharedInteractionParams>>,
     /// `hatchOpenState` (WeakPointer)
-    #[serde(default)]
     pub hatch_open_state: Option<Handle<SInteractionState>>,
     /// `hatchClosedState` (WeakPointer)
-    #[serde(default)]
     pub hatch_closed_state: Option<Handle<SInteractionState>>,
     /// `homeState` (WeakPointer)
-    #[serde(default)]
     pub home_state: Option<Handle<SInteractionState>>,
     /// `checkingState` (WeakPointer)
-    #[serde(default)]
     pub checking_state: Option<Handle<SInteractionState>>,
     /// `collectPackageState` (WeakPointer)
-    #[serde(default)]
     pub collect_package_state: Option<Handle<SInteractionState>>,
     /// `deliverPackageState` (WeakPointer)
-    #[serde(default)]
     pub deliver_package_state: Option<Handle<SInteractionState>>,
     /// `completeState` (WeakPointer)
-    #[serde(default)]
     pub complete_state: Option<Handle<SInteractionState>>,
     /// `timedOutState` (WeakPointer)
-    #[serde(default)]
     pub timed_out_state: Option<Handle<SInteractionState>>,
     /// `wrongItemState` (WeakPointer)
-    #[serde(default)]
     pub wrong_item_state: Option<Handle<SInteractionState>>,
     /// `failedRequestState` (WeakPointer)
-    #[serde(default)]
     pub failed_request_state: Option<Handle<SInteractionState>>,
     /// `spawnTimeOutSeconds` (Single)
-    #[serde(default)]
     pub spawn_time_out_seconds: f32,
     /// `requestProcessSeconds` (Single)
-    #[serde(default)]
     pub request_process_seconds: f32,
     /// `waitForPickupSeconds` (Single)
-    #[serde(default)]
     pub wait_for_pickup_seconds: f32,
     /// `finishedPickupSeconds` (Single)
-    #[serde(default)]
     pub finished_pickup_seconds: f32,
     /// `despawnFailedPickupSeconds` (Single)
-    #[serde(default)]
     pub despawn_failed_pickup_seconds: f32,
     /// `pickUpShutterDelaySeconds` (Single)
-    #[serde(default)]
     pub pick_up_shutter_delay_seconds: f32,
     /// `waitForDropOffSeconds` (Single)
-    #[serde(default)]
     pub wait_for_drop_off_seconds: f32,
     /// `dropOffShutterDelaySeconds` (Single)
-    #[serde(default)]
     pub drop_off_shutter_delay_seconds: f32,
     /// `wrongItemPickUpSeconds` (Single)
-    #[serde(default)]
     pub wrong_item_pick_up_seconds: f32,
 }
 
@@ -246,10 +215,8 @@ impl<'a> Extract<'a> for DeliveryLockerComponentParams {
 
 /// DCB type: `ClassEntityFilter`
 /// Inherits from: `EntityFilter`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ClassEntityFilter {
     /// `entityClass` (Reference)
-    #[serde(default)]
     pub entity_class: Option<CigGuid>,
 }
 
@@ -269,10 +236,8 @@ impl<'a> Extract<'a> for ClassEntityFilter {
 
 /// DCB type: `GameplayTriggerConditionNOT`
 /// Inherits from: `GameplayTriggerCondition`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GameplayTriggerConditionNOT {
     /// `input` (StrongPointer)
-    #[serde(default)]
     pub input: Option<GameplayTriggerConditionPtr>,
 }
 
@@ -295,13 +260,10 @@ impl<'a> Extract<'a> for GameplayTriggerConditionNOT {
 
 /// DCB type: `UserVariableCheckIntLess`
 /// Inherits from: `UserVariableCheck`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct UserVariableCheckIntLess {
     /// `variableName` (String)
-    #[serde(default)]
     pub variable_name: String,
     /// `valueToCheck` (Int32)
-    #[serde(default)]
     pub value_to_check: i32,
 }
 
@@ -322,13 +284,10 @@ impl<'a> Extract<'a> for UserVariableCheckIntLess {
 
 /// DCB type: `UserVariableSubtractIntValue`
 /// Inherits from: `UserVariableComputeValueBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct UserVariableSubtractIntValue {
     /// `variableName` (String)
-    #[serde(default)]
     pub variable_name: String,
     /// `valueToSubtract` (Int32)
-    #[serde(default)]
     pub value_to_subtract: i32,
 }
 

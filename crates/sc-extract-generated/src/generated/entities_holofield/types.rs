@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -21,49 +20,34 @@ use super::super::*;
 
 /// DCB type: `SHoloFieldComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SHoloFieldComponentParams {
     /// `shape` (EnumChoice)
-    #[serde(default)]
     pub shape: EHoloFieldShape,
     /// `model` (String)
-    #[serde(default)]
     pub model: String,
     /// `material` (String)
-    #[serde(default)]
     pub material: String,
     /// `audioMessageDistance` (Single)
-    #[serde(default)]
     pub audio_message_distance: f32,
     /// `audioMessageDistanceNoVehicle` (Single)
-    #[serde(default)]
     pub audio_message_distance_no_vehicle: f32,
     /// `audioMessageDelay` (Single)
-    #[serde(default)]
     pub audio_message_delay: f32,
     /// `vehicleDestroyDistance` (Single)
-    #[serde(default)]
     pub vehicle_destroy_distance: f32,
     /// `hitRadius` (Single)
-    #[serde(default)]
     pub hit_radius: f32,
     /// `hitDuration` (Single)
-    #[serde(default)]
     pub hit_duration: f32,
     /// `repeatHitTime` (Single)
-    #[serde(default)]
     pub repeat_hit_time: f32,
     /// `repeatHitDistance` (Single)
-    #[serde(default)]
     pub repeat_hit_distance: f32,
     /// `damageMultiplier` (Single)
-    #[serde(default)]
     pub damage_multiplier: f32,
     /// `maxDamage` (Single)
-    #[serde(default)]
     pub max_damage: f32,
     /// `particleHitScale` (Single)
-    #[serde(default)]
     pub particle_hit_scale: f32,
 }
 

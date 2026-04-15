@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,7 +19,6 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `ActivityBehaviorRequestCondition`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ActivityBehaviorRequestCondition {
 }
 
@@ -38,7 +36,6 @@ impl<'a> Extract<'a> for ActivityBehaviorRequestCondition {
 }
 
 /// DCB type: `IObservableExtender`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct IObservableExtender {
 }
 
@@ -56,7 +53,6 @@ impl<'a> Extract<'a> for IObservableExtender {
 }
 
 /// DCB type: `IVisionComponentAdapter`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct IVisionComponentAdapter {
 }
 
@@ -74,7 +70,6 @@ impl<'a> Extract<'a> for IVisionComponentAdapter {
 }
 
 /// DCB type: `MovementSystemAdditionalParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MovementSystemAdditionalParams {
 }
 
@@ -92,7 +87,6 @@ impl<'a> Extract<'a> for MovementSystemAdditionalParams {
 }
 
 /// DCB type: `NavLinkLocation`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct NavLinkLocation {
 }
 
@@ -110,7 +104,6 @@ impl<'a> Extract<'a> for NavLinkLocation {
 }
 
 /// DCB type: `NavigationLinkController`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct NavigationLinkController {
 }
 
@@ -128,7 +121,6 @@ impl<'a> Extract<'a> for NavigationLinkController {
 }
 
 /// DCB type: `TraversalCostShapeConfig`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct TraversalCostShapeConfig {
 }
 
@@ -146,7 +138,6 @@ impl<'a> Extract<'a> for TraversalCostShapeConfig {
 }
 
 /// DCB type: `NavigationTriggerAdapter`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct NavigationTriggerAdapter {
 }
 
@@ -164,7 +155,6 @@ impl<'a> Extract<'a> for NavigationTriggerAdapter {
 }
 
 /// DCB type: `INavigationCostVolumeExtender`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct INavigationCostVolumeExtender {
 }
 
@@ -182,7 +172,6 @@ impl<'a> Extract<'a> for INavigationCostVolumeExtender {
 }
 
 /// DCB type: `ActionAreaExtensionType`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ActionAreaExtensionType {
 }
 
@@ -200,7 +189,6 @@ impl<'a> Extract<'a> for ActionAreaExtensionType {
 }
 
 /// DCB type: `SActorForceReactionProceduralLeanPoseList`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SActorForceReactionProceduralLeanPoseList {
 }
 
@@ -218,7 +206,6 @@ impl<'a> Extract<'a> for SActorForceReactionProceduralLeanPoseList {
 }
 
 /// DCB type: `IMannequinActionDef`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct IMannequinActionDef {
 }
 
@@ -236,7 +223,6 @@ impl<'a> Extract<'a> for IMannequinActionDef {
 }
 
 /// DCB type: `SActorStanceDimensionsExtraDef`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SActorStanceDimensionsExtraDef {
 }
 
@@ -254,7 +240,6 @@ impl<'a> Extract<'a> for SActorStanceDimensionsExtraDef {
 }
 
 /// DCB type: `StatusEffectValue`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct StatusEffectValue {
 }
 
@@ -272,7 +257,6 @@ impl<'a> Extract<'a> for StatusEffectValue {
 }
 
 /// DCB type: `StatusEffectSetupBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct StatusEffectSetupBase {
 }
 
@@ -290,7 +274,6 @@ impl<'a> Extract<'a> for StatusEffectSetupBase {
 }
 
 /// DCB type: `StatusMaskedRetriggerSetupBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct StatusMaskedRetriggerSetupBase {
 }
 
@@ -308,7 +291,6 @@ impl<'a> Extract<'a> for StatusMaskedRetriggerSetupBase {
 }
 
 /// DCB type: `LinkedStatPassValueBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LinkedStatPassValueBase {
 }
 
@@ -326,7 +308,6 @@ impl<'a> Extract<'a> for LinkedStatPassValueBase {
 }
 
 /// DCB type: `LinkedStatRuleBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LinkedStatRuleBase {
 }
 
@@ -344,7 +325,6 @@ impl<'a> Extract<'a> for LinkedStatRuleBase {
 }
 
 /// DCB type: `StatusBuffTypeBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct StatusBuffTypeBase {
 }
 
@@ -362,7 +342,6 @@ impl<'a> Extract<'a> for StatusBuffTypeBase {
 }
 
 /// DCB type: `BuffDurationBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuffDurationBase {
 }
 
@@ -380,7 +359,6 @@ impl<'a> Extract<'a> for BuffDurationBase {
 }
 
 /// DCB type: `CounterMeasureBaseParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CounterMeasureBaseParams {
 }
 
@@ -399,7 +377,6 @@ impl<'a> Extract<'a> for CounterMeasureBaseParams {
 
 /// DCB type: `SSequencerAnimationTaskParamsBase`
 /// Inherits from: `SSequencerDefTaskParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SSequencerAnimationTaskParamsBase {
 }
 
@@ -417,7 +394,6 @@ impl<'a> Extract<'a> for SSequencerAnimationTaskParamsBase {
 }
 
 /// DCB type: `AudioBreathStyleBaseNode`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AudioBreathStyleBaseNode {
 }
 
@@ -435,7 +411,6 @@ impl<'a> Extract<'a> for AudioBreathStyleBaseNode {
 }
 
 /// DCB type: `BuildingBlocks_Node`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildingBlocks_Node {
 }
 
@@ -453,7 +428,6 @@ impl<'a> Extract<'a> for BuildingBlocks_Node {
 }
 
 /// DCB type: `BuildingBlocks_BindingsPathBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildingBlocks_BindingsPathBase {
 }
 
@@ -472,7 +446,6 @@ impl<'a> Extract<'a> for BuildingBlocks_BindingsPathBase {
 
 /// DCB type: `BuildingBlocks_BindingsBooleanBase`
 /// Inherits from: `BuildingBlocks_BindingsOperationBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildingBlocks_BindingsBooleanBase {
 }
 
@@ -491,7 +464,6 @@ impl<'a> Extract<'a> for BuildingBlocks_BindingsBooleanBase {
 
 /// DCB type: `BuildingBlocks_BindingsIntegerBase`
 /// Inherits from: `BuildingBlocks_BindingsOperationBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildingBlocks_BindingsIntegerBase {
 }
 
@@ -510,7 +482,6 @@ impl<'a> Extract<'a> for BuildingBlocks_BindingsIntegerBase {
 
 /// DCB type: `BuildingBlocks_BindingsNumberBase`
 /// Inherits from: `BuildingBlocks_BindingsOperationBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildingBlocks_BindingsNumberBase {
 }
 
@@ -528,7 +499,6 @@ impl<'a> Extract<'a> for BuildingBlocks_BindingsNumberBase {
 }
 
 /// DCB type: `BindingsOperations_WaveformShapeBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BindingsOperations_WaveformShapeBase {
 }
 
@@ -547,7 +517,6 @@ impl<'a> Extract<'a> for BindingsOperations_WaveformShapeBase {
 
 /// DCB type: `BuildingBlocks_BindingsStringBase`
 /// Inherits from: `BuildingBlocks_BindingsOperationBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildingBlocks_BindingsStringBase {
 }
 
@@ -566,7 +535,6 @@ impl<'a> Extract<'a> for BuildingBlocks_BindingsStringBase {
 
 /// DCB type: `BuildingBlocks_BindingsLocalizedBase`
 /// Inherits from: `BuildingBlocks_BindingsOperationBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildingBlocks_BindingsLocalizedBase {
 }
 
@@ -585,7 +553,6 @@ impl<'a> Extract<'a> for BuildingBlocks_BindingsLocalizedBase {
 
 /// DCB type: `BuildingBlocks_BindingsColorBase`
 /// Inherits from: `BuildingBlocks_BindingsOperationBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildingBlocks_BindingsColorBase {
 }
 
@@ -604,7 +571,6 @@ impl<'a> Extract<'a> for BuildingBlocks_BindingsColorBase {
 
 /// DCB type: `BuildingBlocks_BindingsVectorBase`
 /// Inherits from: `BuildingBlocks_BindingsOperationBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildingBlocks_BindingsVectorBase {
 }
 
@@ -623,7 +589,6 @@ impl<'a> Extract<'a> for BuildingBlocks_BindingsVectorBase {
 
 /// DCB type: `BuildingBlocks_BindingsRotationBase`
 /// Inherits from: `BuildingBlocks_BindingsOperationBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildingBlocks_BindingsRotationBase {
 }
 
@@ -642,7 +607,6 @@ impl<'a> Extract<'a> for BuildingBlocks_BindingsRotationBase {
 
 /// DCB type: `BuildingBlocks_BindingsTransformBase`
 /// Inherits from: `BuildingBlocks_BindingsOperationBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildingBlocks_BindingsTransformBase {
 }
 
@@ -660,7 +624,6 @@ impl<'a> Extract<'a> for BuildingBlocks_BindingsTransformBase {
 }
 
 /// DCB type: `BuildingBlocks_LayoutPolicyBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildingBlocks_LayoutPolicyBase {
 }
 
@@ -678,7 +641,6 @@ impl<'a> Extract<'a> for BuildingBlocks_LayoutPolicyBase {
 }
 
 /// DCB type: `BuildingBlocks_LayoutPolicyItemBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildingBlocks_LayoutPolicyItemBase {
 }
 
@@ -696,7 +658,6 @@ impl<'a> Extract<'a> for BuildingBlocks_LayoutPolicyItemBase {
 }
 
 /// DCB type: `BuildingBlocks_ScrollPolicyBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildingBlocks_ScrollPolicyBase {
 }
 
@@ -714,7 +675,6 @@ impl<'a> Extract<'a> for BuildingBlocks_ScrollPolicyBase {
 }
 
 /// DCB type: `BuildingBlocks_FieldModifierBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildingBlocks_FieldModifierBase {
 }
 
@@ -732,7 +692,6 @@ impl<'a> Extract<'a> for BuildingBlocks_FieldModifierBase {
 }
 
 /// DCB type: `BuildingBlocks_FieldModifierEnumeratedTypeBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildingBlocks_FieldModifierEnumeratedTypeBase {
 }
 
@@ -750,7 +709,6 @@ impl<'a> Extract<'a> for BuildingBlocks_FieldModifierEnumeratedTypeBase {
 }
 
 /// DCB type: `BuildingBlocks_RendererPolicyBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildingBlocks_RendererPolicyBase {
 }
 
@@ -768,7 +726,6 @@ impl<'a> Extract<'a> for BuildingBlocks_RendererPolicyBase {
 }
 
 /// DCB type: `BuildingBlocks_FieldModifierRecordRefTypeBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildingBlocks_FieldModifierRecordRefTypeBase {
 }
 
@@ -786,7 +743,6 @@ impl<'a> Extract<'a> for BuildingBlocks_FieldModifierRecordRefTypeBase {
 }
 
 /// DCB type: `BuildingBlocks_TimingFunctionBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildingBlocks_TimingFunctionBase {
 }
 
@@ -804,7 +760,6 @@ impl<'a> Extract<'a> for BuildingBlocks_TimingFunctionBase {
 }
 
 /// DCB type: `BuildingBlocks_TimelineTypeBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildingBlocks_TimelineTypeBase {
 }
 
@@ -822,7 +777,6 @@ impl<'a> Extract<'a> for BuildingBlocks_TimelineTypeBase {
 }
 
 /// DCB type: `BuildingBlocks_TransformerBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildingBlocks_TransformerBase {
 }
 
@@ -840,7 +794,6 @@ impl<'a> Extract<'a> for BuildingBlocks_TransformerBase {
 }
 
 /// DCB type: `BuildingBlocks_SlicerBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildingBlocks_SlicerBase {
 }
 
@@ -858,7 +811,6 @@ impl<'a> Extract<'a> for BuildingBlocks_SlicerBase {
 }
 
 /// DCB type: `BuildingBlocks_TriggerBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildingBlocks_TriggerBase {
 }
 
@@ -876,7 +828,6 @@ impl<'a> Extract<'a> for BuildingBlocks_TriggerBase {
 }
 
 /// DCB type: `BuildingBlocks_TextFormatModifierBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildingBlocks_TextFormatModifierBase {
 }
 
@@ -894,7 +845,6 @@ impl<'a> Extract<'a> for BuildingBlocks_TextFormatModifierBase {
 }
 
 /// DCB type: `BuildingBlocks_StyleSelectorConditionBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildingBlocks_StyleSelectorConditionBase {
 }
 
@@ -912,7 +862,6 @@ impl<'a> Extract<'a> for BuildingBlocks_StyleSelectorConditionBase {
 }
 
 /// DCB type: `BuildingBlocks_ColorBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildingBlocks_ColorBase {
 }
 
@@ -930,7 +879,6 @@ impl<'a> Extract<'a> for BuildingBlocks_ColorBase {
 }
 
 /// DCB type: `BuildingBlocks_ContainerModeBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BuildingBlocks_ContainerModeBase {
 }
 
@@ -948,7 +896,6 @@ impl<'a> Extract<'a> for BuildingBlocks_ContainerModeBase {
 }
 
 /// DCB type: `BaseCargoFillCapacityValue`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BaseCargoFillCapacityValue {
 }
 
@@ -966,7 +913,6 @@ impl<'a> Extract<'a> for BaseCargoFillCapacityValue {
 }
 
 /// DCB type: `SCustomzierColorDefBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCustomzierColorDefBase {
 }
 
@@ -984,7 +930,6 @@ impl<'a> Extract<'a> for SCustomzierColorDefBase {
 }
 
 /// DCB type: `SCharacterCustomizerRandomizationParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCharacterCustomizerRandomizationParams {
 }
 
@@ -1002,7 +947,6 @@ impl<'a> Extract<'a> for SCharacterCustomizerRandomizationParams {
 }
 
 /// DCB type: `SCharacterValidationParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCharacterValidationParams {
 }
 
@@ -1020,7 +964,6 @@ impl<'a> Extract<'a> for SCharacterValidationParams {
 }
 
 /// DCB type: `TemperatureDamageControl`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct TemperatureDamageControl {
 }
 
@@ -1038,7 +981,6 @@ impl<'a> Extract<'a> for TemperatureDamageControl {
 }
 
 /// DCB type: `LegacyCraftingCost_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LegacyCraftingCost_Base {
 }
 
@@ -1056,7 +998,6 @@ impl<'a> Extract<'a> for LegacyCraftingCost_Base {
 }
 
 /// DCB type: `LegacyCraftingOutput_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LegacyCraftingOutput_Base {
 }
 
@@ -1074,7 +1015,6 @@ impl<'a> Extract<'a> for LegacyCraftingOutput_Base {
 }
 
 /// DCB type: `LegacyCraftingRecipe_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LegacyCraftingRecipe_Base {
 }
 
@@ -1092,7 +1032,6 @@ impl<'a> Extract<'a> for LegacyCraftingRecipe_Base {
 }
 
 /// DCB type: `LegacyCraftingRecipeDef_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LegacyCraftingRecipeDef_Base {
 }
 
@@ -1110,7 +1049,6 @@ impl<'a> Extract<'a> for LegacyCraftingRecipeDef_Base {
 }
 
 /// DCB type: `LegacyCraftingRecipeList_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LegacyCraftingRecipeList_Base {
 }
 
@@ -1128,7 +1066,6 @@ impl<'a> Extract<'a> for LegacyCraftingRecipeList_Base {
 }
 
 /// DCB type: `SSensorMineTriggerType`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SSensorMineTriggerType {
 }
 
@@ -1146,7 +1083,6 @@ impl<'a> Extract<'a> for SSensorMineTriggerType {
 }
 
 /// DCB type: `HandholdAttachPointChoiceParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct HandholdAttachPointChoiceParams {
 }
 
@@ -1164,7 +1100,6 @@ impl<'a> Extract<'a> for HandholdAttachPointChoiceParams {
 }
 
 /// DCB type: `HarvestableTagListBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct HarvestableTagListBase {
 }
 
@@ -1182,7 +1117,6 @@ impl<'a> Extract<'a> for HarvestableTagListBase {
 }
 
 /// DCB type: `SubHarvestableConfigBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SubHarvestableConfigBase {
 }
 
@@ -1200,7 +1134,6 @@ impl<'a> Extract<'a> for SubHarvestableConfigBase {
 }
 
 /// DCB type: `SubHarvestableConfigSingleBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SubHarvestableConfigSingleBase {
 }
 
@@ -1218,7 +1151,6 @@ impl<'a> Extract<'a> for SubHarvestableConfigSingleBase {
 }
 
 /// DCB type: `HarvestConditionBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct HarvestConditionBase {
 }
 
@@ -1236,7 +1168,6 @@ impl<'a> Extract<'a> for HarvestConditionBase {
 }
 
 /// DCB type: `HarvestableAreaTypeBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct HarvestableAreaTypeBase {
 }
 
@@ -1254,7 +1185,6 @@ impl<'a> Extract<'a> for HarvestableAreaTypeBase {
 }
 
 /// DCB type: `ItemThrottleParamsBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ItemThrottleParamsBase {
 }
 
@@ -1272,7 +1202,6 @@ impl<'a> Extract<'a> for ItemThrottleParamsBase {
 }
 
 /// DCB type: `ItemModifierLifetime`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ItemModifierLifetime {
 }
 
@@ -1290,7 +1219,6 @@ impl<'a> Extract<'a> for ItemModifierLifetime {
 }
 
 /// DCB type: `BaseItemModifierParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BaseItemModifierParams {
 }
 
@@ -1308,7 +1236,6 @@ impl<'a> Extract<'a> for BaseItemModifierParams {
 }
 
 /// DCB type: `LightFlickerWaveParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LightFlickerWaveParams {
 }
 
@@ -1326,7 +1253,6 @@ impl<'a> Extract<'a> for LightFlickerWaveParams {
 }
 
 /// DCB type: `SMisfireCondition`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SMisfireCondition {
 }
 
@@ -1344,7 +1270,6 @@ impl<'a> Extract<'a> for SMisfireCondition {
 }
 
 /// DCB type: `SMisfireDamage`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SMisfireDamage {
 }
 
@@ -1362,7 +1287,6 @@ impl<'a> Extract<'a> for SMisfireDamage {
 }
 
 /// DCB type: `SLegacyItemMisfireParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SLegacyItemMisfireParams {
 }
 
@@ -1380,7 +1304,6 @@ impl<'a> Extract<'a> for SLegacyItemMisfireParams {
 }
 
 /// DCB type: `ParticleEffectNoneTintingParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ParticleEffectNoneTintingParams {
 }
 
@@ -1398,7 +1321,6 @@ impl<'a> Extract<'a> for ParticleEffectNoneTintingParams {
 }
 
 /// DCB type: `SQedVisualGraphTransitionTypeParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SQedVisualGraphTransitionTypeParams {
 }
 
@@ -1416,7 +1338,6 @@ impl<'a> Extract<'a> for SQedVisualGraphTransitionTypeParams {
 }
 
 /// DCB type: `STargetingMethodBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct STargetingMethodBase {
 }
 
@@ -1434,7 +1355,6 @@ impl<'a> Extract<'a> for STargetingMethodBase {
 }
 
 /// DCB type: `CtxGraph_Node`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CtxGraph_Node {
 }
 
@@ -1453,7 +1373,6 @@ impl<'a> Extract<'a> for CtxGraph_Node {
 
 /// DCB type: `CtxGraph_Component`
 /// Inherits from: `CtxGraph_Node`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CtxGraph_Component {
 }
 
@@ -1471,7 +1390,6 @@ impl<'a> Extract<'a> for CtxGraph_Component {
 }
 
 /// DCB type: `SCItemControllableParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCItemControllableParams {
 }
 
@@ -1489,7 +1407,6 @@ impl<'a> Extract<'a> for SCItemControllableParams {
 }
 
 /// DCB type: `SCItemControlCondition_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCItemControlCondition_Base {
 }
 
@@ -1507,7 +1424,6 @@ impl<'a> Extract<'a> for SCItemControlCondition_Base {
 }
 
 /// DCB type: `SCItemControlBaseParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCItemControlBaseParams {
 }
 
@@ -1525,7 +1441,6 @@ impl<'a> Extract<'a> for SCItemControlBaseParams {
 }
 
 /// DCB type: `SCItemControlPriorityValue`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCItemControlPriorityValue {
 }
 
@@ -1543,7 +1458,6 @@ impl<'a> Extract<'a> for SCItemControlPriorityValue {
 }
 
 /// DCB type: `ConversationNode_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ConversationNode_Base {
 }
 
@@ -1561,7 +1475,6 @@ impl<'a> Extract<'a> for ConversationNode_Base {
 }
 
 /// DCB type: `CraftingCostContext_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CraftingCostContext_Base {
 }
 
@@ -1579,7 +1492,6 @@ impl<'a> Extract<'a> for CraftingCostContext_Base {
 }
 
 /// DCB type: `CraftingOptionalEffect_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CraftingOptionalEffect_Base {
 }
 
@@ -1597,7 +1509,6 @@ impl<'a> Extract<'a> for CraftingOptionalEffect_Base {
 }
 
 /// DCB type: `CraftingGameplayPropertyModifierValueRange_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CraftingGameplayPropertyModifierValueRange_Base {
 }
 
@@ -1615,7 +1526,6 @@ impl<'a> Extract<'a> for CraftingGameplayPropertyModifierValueRange_Base {
 }
 
 /// DCB type: `CraftingGameplayPropertyModifier_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CraftingGameplayPropertyModifier_Base {
 }
 
@@ -1633,7 +1543,6 @@ impl<'a> Extract<'a> for CraftingGameplayPropertyModifier_Base {
 }
 
 /// DCB type: `CraftingGameplayPropertyModifiers_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CraftingGameplayPropertyModifiers_Base {
 }
 
@@ -1651,7 +1560,6 @@ impl<'a> Extract<'a> for CraftingGameplayPropertyModifiers_Base {
 }
 
 /// DCB type: `CraftingResult_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CraftingResult_Base {
 }
 
@@ -1669,7 +1577,6 @@ impl<'a> Extract<'a> for CraftingResult_Base {
 }
 
 /// DCB type: `CraftingRecipeCosts_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CraftingRecipeCosts_Base {
 }
 
@@ -1688,7 +1595,6 @@ impl<'a> Extract<'a> for CraftingRecipeCosts_Base {
 
 /// DCB type: `CraftingRecipeCosts_Base_NonRef`
 /// Inherits from: `CraftingRecipeCosts_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CraftingRecipeCosts_Base_NonRef {
 }
 
@@ -1706,7 +1612,6 @@ impl<'a> Extract<'a> for CraftingRecipeCosts_Base_NonRef {
 }
 
 /// DCB type: `CraftingRecipeResults_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CraftingRecipeResults_Base {
 }
 
@@ -1724,7 +1629,6 @@ impl<'a> Extract<'a> for CraftingRecipeResults_Base {
 }
 
 /// DCB type: `CraftingProcessSpecificRecipeData_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CraftingProcessSpecificRecipeData_Base {
 }
 
@@ -1742,7 +1646,6 @@ impl<'a> Extract<'a> for CraftingProcessSpecificRecipeData_Base {
 }
 
 /// DCB type: `CraftingRecipe_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CraftingRecipe_Base {
 }
 
@@ -1761,7 +1664,6 @@ impl<'a> Extract<'a> for CraftingRecipe_Base {
 
 /// DCB type: `CraftingRecipe_Base_NonRef`
 /// Inherits from: `CraftingRecipe_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CraftingRecipe_Base_NonRef {
 }
 
@@ -1779,7 +1681,6 @@ impl<'a> Extract<'a> for CraftingRecipe_Base_NonRef {
 }
 
 /// DCB type: `CraftingResearchUnlock_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CraftingResearchUnlock_Base {
 }
 
@@ -1797,7 +1698,6 @@ impl<'a> Extract<'a> for CraftingResearchUnlock_Base {
 }
 
 /// DCB type: `CraftingResearch_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CraftingResearch_Base {
 }
 
@@ -1815,7 +1715,6 @@ impl<'a> Extract<'a> for CraftingResearch_Base {
 }
 
 /// DCB type: `CraftingBlueprintTier_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CraftingBlueprintTier_Base {
 }
 
@@ -1833,7 +1732,6 @@ impl<'a> Extract<'a> for CraftingBlueprintTier_Base {
 }
 
 /// DCB type: `BlueprintCategoryAvailability_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BlueprintCategoryAvailability_Base {
 }
 
@@ -1851,7 +1749,6 @@ impl<'a> Extract<'a> for BlueprintCategoryAvailability_Base {
 }
 
 /// DCB type: `CraftingProcess_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CraftingProcess_Base {
 }
 
@@ -1869,7 +1766,6 @@ impl<'a> Extract<'a> for CraftingProcess_Base {
 }
 
 /// DCB type: `GenericCraftingProcess_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GenericCraftingProcess_Base {
 }
 
@@ -1888,7 +1784,6 @@ impl<'a> Extract<'a> for GenericCraftingProcess_Base {
 
 /// DCB type: `CraftingBlueprint_Base_NonRef`
 /// Inherits from: `CraftingBlueprint_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CraftingBlueprint_Base_NonRef {
 }
 
@@ -1906,7 +1801,6 @@ impl<'a> Extract<'a> for CraftingBlueprint_Base_NonRef {
 }
 
 /// DCB type: `DefaultBlueprintSelection_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DefaultBlueprintSelection_Base {
 }
 
@@ -1924,7 +1818,6 @@ impl<'a> Extract<'a> for DefaultBlueprintSelection_Base {
 }
 
 /// DCB type: `CraftingQualityDistribution_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CraftingQualityDistribution_Base {
 }
 
@@ -1943,7 +1836,6 @@ impl<'a> Extract<'a> for CraftingQualityDistribution_Base {
 
 /// DCB type: `CraftingQualityDistribution_Base_NonRef`
 /// Inherits from: `CraftingQualityDistribution_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CraftingQualityDistribution_Base_NonRef {
 }
 
@@ -1961,7 +1853,6 @@ impl<'a> Extract<'a> for CraftingQualityDistribution_Base_NonRef {
 }
 
 /// DCB type: `CraftingQualityLocationOverride_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CraftingQualityLocationOverride_Base {
 }
 
@@ -1980,7 +1871,6 @@ impl<'a> Extract<'a> for CraftingQualityLocationOverride_Base {
 
 /// DCB type: `CraftingQualityLocationOverride_Base_NonRef`
 /// Inherits from: `CraftingQualityLocationOverride_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CraftingQualityLocationOverride_Base_NonRef {
 }
 
@@ -1998,7 +1888,6 @@ impl<'a> Extract<'a> for CraftingQualityLocationOverride_Base_NonRef {
 }
 
 /// DCB type: `CustomFloat`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CustomFloat {
 }
 
@@ -2016,7 +1905,6 @@ impl<'a> Extract<'a> for CustomFloat {
 }
 
 /// DCB type: `DamageBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DamageBase {
 }
 
@@ -2034,7 +1922,6 @@ impl<'a> Extract<'a> for DamageBase {
 }
 
 /// DCB type: `DamageResistanceBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DamageResistanceBase {
 }
 
@@ -2052,7 +1939,6 @@ impl<'a> Extract<'a> for DamageResistanceBase {
 }
 
 /// DCB type: `ExplosionBaseParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ExplosionBaseParams {
 }
 
@@ -2070,7 +1956,6 @@ impl<'a> Extract<'a> for ExplosionBaseParams {
 }
 
 /// DCB type: `DefaultActionDef`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DefaultActionDef {
 }
 
@@ -2088,7 +1973,6 @@ impl<'a> Extract<'a> for DefaultActionDef {
 }
 
 /// DCB type: `DefaultActionsEntityEntryCondition`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DefaultActionsEntityEntryCondition {
 }
 
@@ -2106,7 +1990,6 @@ impl<'a> Extract<'a> for DefaultActionsEntityEntryCondition {
 }
 
 /// DCB type: `DefaultActionsEntityState`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DefaultActionsEntityState {
 }
 
@@ -2124,7 +2007,6 @@ impl<'a> Extract<'a> for DefaultActionsEntityState {
 }
 
 /// DCB type: `DialogueContextEntry`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DialogueContextEntry {
 }
 
@@ -2143,7 +2025,6 @@ impl<'a> Extract<'a> for DialogueContextEntry {
 
 /// DCB type: `SIRoundsModule`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SIRoundsModule {
 }
 
@@ -2161,7 +2042,6 @@ impl<'a> Extract<'a> for SIRoundsModule {
 }
 
 /// DCB type: `SEffectParamsNodeBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SEffectParamsNodeBase {
 }
 
@@ -2179,7 +2059,6 @@ impl<'a> Extract<'a> for SEffectParamsNodeBase {
 }
 
 /// DCB type: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DataForgeComponentParams {
 }
 
@@ -2197,7 +2076,6 @@ impl<'a> Extract<'a> for DataForgeComponentParams {
 }
 
 /// DCB type: `EntityClassStaticDataParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EntityClassStaticDataParams {
 }
 
@@ -2215,7 +2093,6 @@ impl<'a> Extract<'a> for EntityClassStaticDataParams {
 }
 
 /// DCB type: `SHazardAreaShapeParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SHazardAreaShapeParams {
 }
 
@@ -2234,7 +2111,6 @@ impl<'a> Extract<'a> for SHazardAreaShapeParams {
 
 /// DCB type: `FloatUserVariableTask`
 /// Inherits from: `SSequencerDefTaskParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct FloatUserVariableTask {
 }
 
@@ -2253,7 +2129,6 @@ impl<'a> Extract<'a> for FloatUserVariableTask {
 
 /// DCB type: `IntUserVariableTask`
 /// Inherits from: `SSequencerDefTaskParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct IntUserVariableTask {
 }
 
@@ -2272,7 +2147,6 @@ impl<'a> Extract<'a> for IntUserVariableTask {
 
 /// DCB type: `BoolUserVariableTask`
 /// Inherits from: `SSequencerDefTaskParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BoolUserVariableTask {
 }
 
@@ -2291,7 +2165,6 @@ impl<'a> Extract<'a> for BoolUserVariableTask {
 
 /// DCB type: `StringUserVariableTask`
 /// Inherits from: `SSequencerDefTaskParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct StringUserVariableTask {
 }
 
@@ -2309,7 +2182,6 @@ impl<'a> Extract<'a> for StringUserVariableTask {
 }
 
 /// DCB type: `RecordRefUserVariableTypeBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct RecordRefUserVariableTypeBase {
 }
 
@@ -2327,7 +2199,6 @@ impl<'a> Extract<'a> for RecordRefUserVariableTypeBase {
 }
 
 /// DCB type: `CloneLocationMedicalTier`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CloneLocationMedicalTier {
 }
 
@@ -2346,7 +2217,6 @@ impl<'a> Extract<'a> for CloneLocationMedicalTier {
 
 /// DCB type: `SSequencerCarryableTaskParams`
 /// Inherits from: `SSequencerDefTaskParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SSequencerCarryableTaskParams {
 }
 
@@ -2364,7 +2234,6 @@ impl<'a> Extract<'a> for SSequencerCarryableTaskParams {
 }
 
 /// DCB type: `ChatProviderSettingsBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ChatProviderSettingsBase {
 }
 
@@ -2382,7 +2251,6 @@ impl<'a> Extract<'a> for ChatProviderSettingsBase {
 }
 
 /// DCB type: `SLoadoutRequirementBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SLoadoutRequirementBase {
 }
 
@@ -2401,7 +2269,6 @@ impl<'a> Extract<'a> for SLoadoutRequirementBase {
 
 /// DCB type: `SSequencerEntityDragTaskParams`
 /// Inherits from: `SSequencerDefTaskParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SSequencerEntityDragTaskParams {
 }
 
@@ -2419,7 +2286,6 @@ impl<'a> Extract<'a> for SSequencerEntityDragTaskParams {
 }
 
 /// DCB type: `EATransportBaseTransitionParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EATransportBaseTransitionParams {
 }
 
@@ -2437,7 +2303,6 @@ impl<'a> Extract<'a> for EATransportBaseTransitionParams {
 }
 
 /// DCB type: `SItemMisfireParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SItemMisfireParams {
 }
 
@@ -2455,7 +2320,6 @@ impl<'a> Extract<'a> for SItemMisfireParams {
 }
 
 /// DCB type: `SObjectMetadataParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SObjectMetadataParams {
 }
 
@@ -2473,7 +2337,6 @@ impl<'a> Extract<'a> for SObjectMetadataParams {
 }
 
 /// DCB type: `SAnimatedOutfitSwapData`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SAnimatedOutfitSwapData {
 }
 
@@ -2491,7 +2354,6 @@ impl<'a> Extract<'a> for SAnimatedOutfitSwapData {
 }
 
 /// DCB type: `SSequencerDefTaskParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SSequencerDefTaskParams {
 }
 
@@ -2509,7 +2371,6 @@ impl<'a> Extract<'a> for SSequencerDefTaskParams {
 }
 
 /// DCB type: `SSpawnRules`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SSpawnRules {
 }
 
@@ -2527,7 +2388,6 @@ impl<'a> Extract<'a> for SSpawnRules {
 }
 
 /// DCB type: `BasePortRefillData`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BasePortRefillData {
 }
 
@@ -2545,7 +2405,6 @@ impl<'a> Extract<'a> for BasePortRefillData {
 }
 
 /// DCB type: `BaseSpawnerPrerequisite`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BaseSpawnerPrerequisite {
 }
 
@@ -2564,7 +2423,6 @@ impl<'a> Extract<'a> for BaseSpawnerPrerequisite {
 
 /// DCB type: `SSequencerSpawnerTaskParams`
 /// Inherits from: `SSequencerDefTaskParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SSequencerSpawnerTaskParams {
 }
 
@@ -2583,7 +2441,6 @@ impl<'a> Extract<'a> for SSequencerSpawnerTaskParams {
 
 /// DCB type: `SSequencerDespawnerTaskParams`
 /// Inherits from: `SSequencerDefTaskParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SSequencerDespawnerTaskParams {
 }
 
@@ -2601,7 +2458,6 @@ impl<'a> Extract<'a> for SSequencerDespawnerTaskParams {
 }
 
 /// DCB type: `SEntityEffectSystem_PropertyModifier`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SEntityEffectSystem_PropertyModifier {
 }
 
@@ -2620,7 +2476,6 @@ impl<'a> Extract<'a> for SEntityEffectSystem_PropertyModifier {
 
 /// DCB type: `EntityEffectSystem_BaseSequencerTask`
 /// Inherits from: `SSequencerDefTaskParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EntityEffectSystem_BaseSequencerTask {
 }
 
@@ -2638,7 +2493,6 @@ impl<'a> Extract<'a> for EntityEffectSystem_BaseSequencerTask {
 }
 
 /// DCB type: `EventDispatcher`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EventDispatcher {
 }
 
@@ -2656,7 +2510,6 @@ impl<'a> Extract<'a> for EventDispatcher {
 }
 
 /// DCB type: `SEntityDensityClassOverridesBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SEntityDensityClassOverridesBase {
 }
 
@@ -2674,7 +2527,6 @@ impl<'a> Extract<'a> for SEntityDensityClassOverridesBase {
 }
 
 /// DCB type: `SEntityTraversingNodeTypeParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SEntityTraversingNodeTypeParams {
 }
 
@@ -2692,7 +2544,6 @@ impl<'a> Extract<'a> for SEntityTraversingNodeTypeParams {
 }
 
 /// DCB type: `SEntityTraversingExecuteNodeBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SEntityTraversingExecuteNodeBase {
 }
 
@@ -2710,7 +2561,6 @@ impl<'a> Extract<'a> for SEntityTraversingExecuteNodeBase {
 }
 
 /// DCB type: `FireVoxelSelectionShape`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct FireVoxelSelectionShape {
 }
 
@@ -2728,7 +2578,6 @@ impl<'a> Extract<'a> for FireVoxelSelectionShape {
 }
 
 /// DCB type: `ExtinguishType_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ExtinguishType_Base {
 }
 
@@ -2746,7 +2595,6 @@ impl<'a> Extract<'a> for ExtinguishType_Base {
 }
 
 /// DCB type: `FireRepairerType_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct FireRepairerType_Base {
 }
 
@@ -2764,7 +2612,6 @@ impl<'a> Extract<'a> for FireRepairerType_Base {
 }
 
 /// DCB type: `SRtpcBehaviour`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SRtpcBehaviour {
 }
 
@@ -2783,7 +2630,6 @@ impl<'a> Extract<'a> for SRtpcBehaviour {
 
 /// DCB type: `SIPickupModule`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SIPickupModule {
 }
 
@@ -2802,7 +2648,6 @@ impl<'a> Extract<'a> for SIPickupModule {
 
 /// DCB type: `SIDamageHandlingModule`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SIDamageHandlingModule {
 }
 
@@ -2821,7 +2666,6 @@ impl<'a> Extract<'a> for SIDamageHandlingModule {
 
 /// DCB type: `SISpectatorModule`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SISpectatorModule {
 }
 
@@ -2840,7 +2684,6 @@ impl<'a> Extract<'a> for SISpectatorModule {
 
 /// DCB type: `SIPlayerSetupModule`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SIPlayerSetupModule {
 }
 
@@ -2859,7 +2702,6 @@ impl<'a> Extract<'a> for SIPlayerSetupModule {
 
 /// DCB type: `SIStatsRecordingModule`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SIStatsRecordingModule {
 }
 
@@ -2878,7 +2720,6 @@ impl<'a> Extract<'a> for SIStatsRecordingModule {
 
 /// DCB type: `SINotificationsModule`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SINotificationsModule {
 }
 
@@ -2897,7 +2738,6 @@ impl<'a> Extract<'a> for SINotificationsModule {
 
 /// DCB type: `SIObjectives`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SIObjectives {
 }
 
@@ -2916,7 +2756,6 @@ impl<'a> Extract<'a> for SIObjectives {
 
 /// DCB type: `SICamerasModule`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SICamerasModule {
 }
 
@@ -2935,7 +2774,6 @@ impl<'a> Extract<'a> for SICamerasModule {
 
 /// DCB type: `SIPlayerStats`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SIPlayerStats {
 }
 
@@ -2954,7 +2792,6 @@ impl<'a> Extract<'a> for SIPlayerStats {
 
 /// DCB type: `SISpawning`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SISpawning {
 }
 
@@ -2972,7 +2809,6 @@ impl<'a> Extract<'a> for SISpawning {
 }
 
 /// DCB type: `SEASpawnRespawnSchedulerParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SEASpawnRespawnSchedulerParams {
 }
 
@@ -2991,7 +2827,6 @@ impl<'a> Extract<'a> for SEASpawnRespawnSchedulerParams {
 
 /// DCB type: `SIVictoryConditionsModule`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SIVictoryConditionsModule {
 }
 
@@ -3010,7 +2845,6 @@ impl<'a> Extract<'a> for SIVictoryConditionsModule {
 
 /// DCB type: `SIParamsModule`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SIParamsModule {
 }
 
@@ -3029,7 +2863,6 @@ impl<'a> Extract<'a> for SIParamsModule {
 
 /// DCB type: `SISubsumptionMissionModule`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SISubsumptionMissionModule {
 }
 
@@ -3047,7 +2880,6 @@ impl<'a> Extract<'a> for SISubsumptionMissionModule {
 }
 
 /// DCB type: `SChatChannelTypeBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SChatChannelTypeBase {
 }
 
@@ -3066,7 +2898,6 @@ impl<'a> Extract<'a> for SChatChannelTypeBase {
 
 /// DCB type: `ChatSystemOptionsModule`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ChatSystemOptionsModule {
 }
 
@@ -3085,7 +2916,6 @@ impl<'a> Extract<'a> for ChatSystemOptionsModule {
 
 /// DCB type: `SIBettingModule`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SIBettingModule {
 }
 
@@ -3104,7 +2934,6 @@ impl<'a> Extract<'a> for SIBettingModule {
 
 /// DCB type: `SIDifficultyModule`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SIDifficultyModule {
 }
 
@@ -3123,7 +2952,6 @@ impl<'a> Extract<'a> for SIDifficultyModule {
 
 /// DCB type: `SIReputationModule`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SIReputationModule {
 }
 
@@ -3142,7 +2970,6 @@ impl<'a> Extract<'a> for SIReputationModule {
 
 /// DCB type: `SIStateModule`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SIStateModule {
 }
 
@@ -3161,7 +2988,6 @@ impl<'a> Extract<'a> for SIStateModule {
 
 /// DCB type: `SITeamsModule`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SITeamsModule {
 }
 
@@ -3180,7 +3006,6 @@ impl<'a> Extract<'a> for SITeamsModule {
 
 /// DCB type: `SIVotingModule`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SIVotingModule {
 }
 
@@ -3198,7 +3023,6 @@ impl<'a> Extract<'a> for SIVotingModule {
 }
 
 /// DCB type: `SGeometryModelTagBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SGeometryModelTagBase {
 }
 
@@ -3216,7 +3040,6 @@ impl<'a> Extract<'a> for SGeometryModelTagBase {
 }
 
 /// DCB type: `SInitialDamageSpecifierBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SInitialDamageSpecifierBase {
 }
 
@@ -3235,7 +3058,6 @@ impl<'a> Extract<'a> for SInitialDamageSpecifierBase {
 
 /// DCB type: `EntityComponentHealth_SBaseSequencerTask`
 /// Inherits from: `SSequencerDefTaskParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EntityComponentHealth_SBaseSequencerTask {
 }
 
@@ -3253,7 +3075,6 @@ impl<'a> Extract<'a> for EntityComponentHealth_SBaseSequencerTask {
 }
 
 /// DCB type: `HitBehaviorBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct HitBehaviorBase {
 }
 
@@ -3271,7 +3092,6 @@ impl<'a> Extract<'a> for HitBehaviorBase {
 }
 
 /// DCB type: `InnerThought_LayoutBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InnerThought_LayoutBase {
 }
 
@@ -3289,7 +3109,6 @@ impl<'a> Extract<'a> for InnerThought_LayoutBase {
 }
 
 /// DCB type: `SHighlightBehaviorNodeParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SHighlightBehaviorNodeParams {
 }
 
@@ -3307,7 +3126,6 @@ impl<'a> Extract<'a> for SHighlightBehaviorNodeParams {
 }
 
 /// DCB type: `SInteractionPointPrimitiveParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SInteractionPointPrimitiveParams {
 }
 
@@ -3325,7 +3143,6 @@ impl<'a> Extract<'a> for SInteractionPointPrimitiveParams {
 }
 
 /// DCB type: `SStateModifier`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SStateModifier {
 }
 
@@ -3343,7 +3160,6 @@ impl<'a> Extract<'a> for SStateModifier {
 }
 
 /// DCB type: `SEntityContextBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SEntityContextBase {
 }
 
@@ -3361,7 +3177,6 @@ impl<'a> Extract<'a> for SEntityContextBase {
 }
 
 /// DCB type: `AttachableStateModifierContextBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AttachableStateModifierContextBase {
 }
 
@@ -3379,7 +3194,6 @@ impl<'a> Extract<'a> for AttachableStateModifierContextBase {
 }
 
 /// DCB type: `SBaseCargoUnit`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SBaseCargoUnit {
 }
 
@@ -3397,7 +3211,6 @@ impl<'a> Extract<'a> for SBaseCargoUnit {
 }
 
 /// DCB type: `InventoryContainerGridCellSizeBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InventoryContainerGridCellSizeBase {
 }
 
@@ -3415,7 +3228,6 @@ impl<'a> Extract<'a> for InventoryContainerGridCellSizeBase {
 }
 
 /// DCB type: `InventoryContainerTypeBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InventoryContainerTypeBase {
 }
 
@@ -3433,7 +3245,6 @@ impl<'a> Extract<'a> for InventoryContainerTypeBase {
 }
 
 /// DCB type: `BaseItem`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BaseItem {
 }
 
@@ -3451,7 +3262,6 @@ impl<'a> Extract<'a> for BaseItem {
 }
 
 /// DCB type: `BaseExpirationTypeParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BaseExpirationTypeParams {
 }
 
@@ -3469,7 +3279,6 @@ impl<'a> Extract<'a> for BaseExpirationTypeParams {
 }
 
 /// DCB type: `SItemPortRuleDef`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SItemPortRuleDef {
 }
 
@@ -3487,7 +3296,6 @@ impl<'a> Extract<'a> for SItemPortRuleDef {
 }
 
 /// DCB type: `SItemPortDefExtensionBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SItemPortDefExtensionBase {
 }
 
@@ -3505,7 +3313,6 @@ impl<'a> Extract<'a> for SItemPortDefExtensionBase {
 }
 
 /// DCB type: `SItemPortDefAttachmentImplementationBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SItemPortDefAttachmentImplementationBase {
 }
 
@@ -3523,7 +3330,6 @@ impl<'a> Extract<'a> for SItemPortDefAttachmentImplementationBase {
 }
 
 /// DCB type: `PlacementValidator`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PlacementValidator {
 }
 
@@ -3541,7 +3347,6 @@ impl<'a> Extract<'a> for PlacementValidator {
 }
 
 /// DCB type: `ItemResourceDynamicAmountBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ItemResourceDynamicAmountBase {
 }
 
@@ -3559,7 +3364,6 @@ impl<'a> Extract<'a> for ItemResourceDynamicAmountBase {
 }
 
 /// DCB type: `ItemResourceConversionModifierBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ItemResourceConversionModifierBase {
 }
 
@@ -3577,7 +3381,6 @@ impl<'a> Extract<'a> for ItemResourceConversionModifierBase {
 }
 
 /// DCB type: `ItemResourceDynamicCompositionBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ItemResourceDynamicCompositionBase {
 }
 
@@ -3595,7 +3398,6 @@ impl<'a> Extract<'a> for ItemResourceDynamicCompositionBase {
 }
 
 /// DCB type: `ItemResourceControlOutputBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ItemResourceControlOutputBase {
 }
 
@@ -3613,7 +3415,6 @@ impl<'a> Extract<'a> for ItemResourceControlOutputBase {
 }
 
 /// DCB type: `ItemResourceControlParameterBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ItemResourceControlParameterBase {
 }
 
@@ -3631,7 +3432,6 @@ impl<'a> Extract<'a> for ItemResourceControlParameterBase {
 }
 
 /// DCB type: `ItemResourceControlConditionBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ItemResourceControlConditionBase {
 }
 
@@ -3649,7 +3449,6 @@ impl<'a> Extract<'a> for ItemResourceControlConditionBase {
 }
 
 /// DCB type: `ItemResourceDynamicResourceBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ItemResourceDynamicResourceBase {
 }
 
@@ -3667,7 +3466,6 @@ impl<'a> Extract<'a> for ItemResourceDynamicResourceBase {
 }
 
 /// DCB type: `SBaseResourceUnit`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SBaseResourceUnit {
 }
 
@@ -3685,7 +3483,6 @@ impl<'a> Extract<'a> for SBaseResourceUnit {
 }
 
 /// DCB type: `ItemResourceDeltaBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ItemResourceDeltaBase {
 }
 
@@ -3703,7 +3500,6 @@ impl<'a> Extract<'a> for ItemResourceDeltaBase {
 }
 
 /// DCB type: `FunctionalityModifierBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct FunctionalityModifierBase {
 }
 
@@ -3721,7 +3517,6 @@ impl<'a> Extract<'a> for FunctionalityModifierBase {
 }
 
 /// DCB type: `BaseJournalEntry`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BaseJournalEntry {
 }
 
@@ -3739,7 +3534,6 @@ impl<'a> Extract<'a> for BaseJournalEntry {
 }
 
 /// DCB type: `ILightAIExtender`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ILightAIExtender {
 }
 
@@ -3757,7 +3551,6 @@ impl<'a> Extract<'a> for ILightAIExtender {
 }
 
 /// DCB type: `ControlHintCondition`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ControlHintCondition {
 }
 
@@ -3775,7 +3568,6 @@ impl<'a> Extract<'a> for ControlHintCondition {
 }
 
 /// DCB type: `ControlHintAlwaysDisplayCondition`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ControlHintAlwaysDisplayCondition {
 }
 
@@ -3793,7 +3585,6 @@ impl<'a> Extract<'a> for ControlHintAlwaysDisplayCondition {
 }
 
 /// DCB type: `LongTermPersistenceSubTypeListOption`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LongTermPersistenceSubTypeListOption {
 }
 
@@ -3811,7 +3602,6 @@ impl<'a> Extract<'a> for LongTermPersistenceSubTypeListOption {
 }
 
 /// DCB type: `EntryOptionalData_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EntryOptionalData_Base {
 }
 
@@ -3829,7 +3619,6 @@ impl<'a> Extract<'a> for EntryOptionalData_Base {
 }
 
 /// DCB type: `EntityClassList_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EntityClassList_Base {
 }
 
@@ -3847,7 +3636,6 @@ impl<'a> Extract<'a> for EntityClassList_Base {
 }
 
 /// DCB type: `PoolFilter_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PoolFilter_Base {
 }
 
@@ -3866,7 +3654,6 @@ impl<'a> Extract<'a> for PoolFilter_Base {
 
 /// DCB type: `PoolFilter_NoRef`
 /// Inherits from: `PoolFilter_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PoolFilter_NoRef {
 }
 
@@ -3885,7 +3672,6 @@ impl<'a> Extract<'a> for PoolFilter_NoRef {
 
 /// DCB type: `LootTableV3_NoRef`
 /// Inherits from: `LootTableV3_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LootTableV3_NoRef {
 }
 
@@ -3903,7 +3689,6 @@ impl<'a> Extract<'a> for LootTableV3_NoRef {
 }
 
 /// DCB type: `LootArchetypeV3_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LootArchetypeV3_Base {
 }
 
@@ -3922,7 +3707,6 @@ impl<'a> Extract<'a> for LootArchetypeV3_Base {
 
 /// DCB type: `LootArchetypeV3_NoRef`
 /// Inherits from: `LootArchetypeV3_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LootArchetypeV3_NoRef {
 }
 
@@ -3940,7 +3724,6 @@ impl<'a> Extract<'a> for LootArchetypeV3_NoRef {
 }
 
 /// DCB type: `LootArchetypeV3Selector_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LootArchetypeV3Selector_Base {
 }
 
@@ -3958,7 +3741,6 @@ impl<'a> Extract<'a> for LootArchetypeV3Selector_Base {
 }
 
 /// DCB type: `ArchetypeOptionalDataV3_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ArchetypeOptionalDataV3_Base {
 }
 
@@ -3976,7 +3758,6 @@ impl<'a> Extract<'a> for ArchetypeOptionalDataV3_Base {
 }
 
 /// DCB type: `SpawnWithV3Selector_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SpawnWithV3Selector_Base {
 }
 
@@ -3994,7 +3775,6 @@ impl<'a> Extract<'a> for SpawnWithV3Selector_Base {
 }
 
 /// DCB type: `LootTableOptionalDataV3_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LootTableOptionalDataV3_Base {
 }
 
@@ -4012,7 +3792,6 @@ impl<'a> Extract<'a> for LootTableOptionalDataV3_Base {
 }
 
 /// DCB type: `LootV3SecondaryChoicesRecordRef_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LootV3SecondaryChoicesRecordRef_Base {
 }
 
@@ -4030,7 +3809,6 @@ impl<'a> Extract<'a> for LootV3SecondaryChoicesRecordRef_Base {
 }
 
 /// DCB type: `LootV3SecondaryChoiceEntrySelector_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LootV3SecondaryChoiceEntrySelector_Base {
 }
 
@@ -4048,7 +3826,6 @@ impl<'a> Extract<'a> for LootV3SecondaryChoiceEntrySelector_Base {
 }
 
 /// DCB type: `QuantityRange_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct QuantityRange_Base {
 }
 
@@ -4066,7 +3843,6 @@ impl<'a> Extract<'a> for QuantityRange_Base {
 }
 
 /// DCB type: `MapDisplayStartModeBaseParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MapDisplayStartModeBaseParams {
 }
 
@@ -4084,7 +3860,6 @@ impl<'a> Extract<'a> for MapDisplayStartModeBaseParams {
 }
 
 /// DCB type: `Marker_ShowRule`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Marker_ShowRule {
 }
 
@@ -4102,7 +3877,6 @@ impl<'a> Extract<'a> for Marker_ShowRule {
 }
 
 /// DCB type: `Marker_AbilityBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Marker_AbilityBase {
 }
 
@@ -4120,7 +3894,6 @@ impl<'a> Extract<'a> for Marker_AbilityBase {
 }
 
 /// DCB type: `VisibilityConditionDef`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct VisibilityConditionDef {
 }
 
@@ -4138,7 +3911,6 @@ impl<'a> Extract<'a> for VisibilityConditionDef {
 }
 
 /// DCB type: `MissionLocationValidation`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MissionLocationValidation {
 }
 
@@ -4156,7 +3928,6 @@ impl<'a> Extract<'a> for MissionLocationValidation {
 }
 
 /// DCB type: `ContractGenerationParamsBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ContractGenerationParamsBase {
 }
 
@@ -4174,7 +3945,6 @@ impl<'a> Extract<'a> for ContractGenerationParamsBase {
 }
 
 /// DCB type: `SContractPlugin_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SContractPlugin_Base {
 }
 
@@ -4192,7 +3962,6 @@ impl<'a> Extract<'a> for SContractPlugin_Base {
 }
 
 /// DCB type: `ContractPrerequisiteBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ContractPrerequisiteBase {
 }
 
@@ -4210,7 +3979,6 @@ impl<'a> Extract<'a> for ContractPrerequisiteBase {
 }
 
 /// DCB type: `ItemAwardWeightingsBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ItemAwardWeightingsBase {
 }
 
@@ -4228,7 +3996,6 @@ impl<'a> Extract<'a> for ItemAwardWeightingsBase {
 }
 
 /// DCB type: `ContractClassBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ContractClassBase {
 }
 
@@ -4246,7 +4013,6 @@ impl<'a> Extract<'a> for ContractClassBase {
 }
 
 /// DCB type: `HaulingOrderContentBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct HaulingOrderContentBase {
 }
 
@@ -4264,7 +4030,6 @@ impl<'a> Extract<'a> for HaulingOrderContentBase {
 }
 
 /// DCB type: `Hauling_EntityClassListBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Hauling_EntityClassListBase {
 }
 
@@ -4282,7 +4047,6 @@ impl<'a> Extract<'a> for Hauling_EntityClassListBase {
 }
 
 /// DCB type: `HaulingOrder_OrOption_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct HaulingOrder_OrOption_Base {
 }
 
@@ -4300,7 +4064,6 @@ impl<'a> Extract<'a> for HaulingOrder_OrOption_Base {
 }
 
 /// DCB type: `MissionFlowConditionBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MissionFlowConditionBase {
 }
 
@@ -4318,7 +4081,6 @@ impl<'a> Extract<'a> for MissionFlowConditionBase {
 }
 
 /// DCB type: `MissionFlowActionBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MissionFlowActionBase {
 }
 
@@ -4336,7 +4098,6 @@ impl<'a> Extract<'a> for MissionFlowActionBase {
 }
 
 /// DCB type: `BaseMissionPropertyValue`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BaseMissionPropertyValue {
 }
 
@@ -4354,7 +4115,6 @@ impl<'a> Extract<'a> for BaseMissionPropertyValue {
 }
 
 /// DCB type: `BaseDataSetMatchCondition`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BaseDataSetMatchCondition {
 }
 
@@ -4372,7 +4132,6 @@ impl<'a> Extract<'a> for BaseDataSetMatchCondition {
 }
 
 /// DCB type: `LocationEntityType_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LocationEntityType_Base {
 }
 
@@ -4390,7 +4149,6 @@ impl<'a> Extract<'a> for LocationEntityType_Base {
 }
 
 /// DCB type: `ModuleDeclarationType_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ModuleDeclarationType_Base {
 }
 
@@ -4408,7 +4166,6 @@ impl<'a> Extract<'a> for ModuleDeclarationType_Base {
 }
 
 /// DCB type: `ObjectivePropertyBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ObjectivePropertyBase {
 }
 
@@ -4426,7 +4183,6 @@ impl<'a> Extract<'a> for ObjectivePropertyBase {
 }
 
 /// DCB type: `ObjectiveHandlerBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ObjectiveHandlerBase {
 }
 
@@ -4444,7 +4200,6 @@ impl<'a> Extract<'a> for ObjectiveHandlerBase {
 }
 
 /// DCB type: `ObjectiveRewardContributionBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ObjectiveRewardContributionBase {
 }
 
@@ -4462,7 +4217,6 @@ impl<'a> Extract<'a> for ObjectiveRewardContributionBase {
 }
 
 /// DCB type: `MusicLogicNode`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MusicLogicNode {
 }
 
@@ -4480,7 +4234,6 @@ impl<'a> Extract<'a> for MusicLogicNode {
 }
 
 /// DCB type: `SObjectDataBankEntryTrackerParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SObjectDataBankEntryTrackerParams {
 }
 
@@ -4498,7 +4251,6 @@ impl<'a> Extract<'a> for SObjectDataBankEntryTrackerParams {
 }
 
 /// DCB type: `SandboxInfractionBaseDef`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SandboxInfractionBaseDef {
 }
 
@@ -4516,7 +4268,6 @@ impl<'a> Extract<'a> for SandboxInfractionBaseDef {
 }
 
 /// DCB type: `SandboxTriggerBaseDef`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SandboxTriggerBaseDef {
 }
 
@@ -4534,7 +4285,6 @@ impl<'a> Extract<'a> for SandboxTriggerBaseDef {
 }
 
 /// DCB type: `MissionCompletePerkBaseDef`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MissionCompletePerkBaseDef {
 }
 
@@ -4552,7 +4302,6 @@ impl<'a> Extract<'a> for MissionCompletePerkBaseDef {
 }
 
 /// DCB type: `CoolingEqualizationParamsBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CoolingEqualizationParamsBase {
 }
 
@@ -4570,7 +4319,6 @@ impl<'a> Extract<'a> for CoolingEqualizationParamsBase {
 }
 
 /// DCB type: `PlayerAnimatedInteractionBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PlayerAnimatedInteractionBase {
 }
 
@@ -4588,7 +4336,6 @@ impl<'a> Extract<'a> for PlayerAnimatedInteractionBase {
 }
 
 /// DCB type: `PlayerChoiceMenuOption`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PlayerChoiceMenuOption {
 }
 
@@ -4606,7 +4353,6 @@ impl<'a> Extract<'a> for PlayerChoiceMenuOption {
 }
 
 /// DCB type: `PlanetDayNightTemperatureBaseParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PlanetDayNightTemperatureBaseParams {
 }
 
@@ -4624,7 +4370,6 @@ impl<'a> Extract<'a> for PlanetDayNightTemperatureBaseParams {
 }
 
 /// DCB type: `ProceduralLayoutNode_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ProceduralLayoutNode_Base {
 }
 
@@ -4642,7 +4387,6 @@ impl<'a> Extract<'a> for ProceduralLayoutNode_Base {
 }
 
 /// DCB type: `SQuantumDriveEffectBaseParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SQuantumDriveEffectBaseParams {
 }
 
@@ -4660,7 +4404,6 @@ impl<'a> Extract<'a> for SQuantumDriveEffectBaseParams {
 }
 
 /// DCB type: `SCItemRadarSensitivityModifierType`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCItemRadarSensitivityModifierType {
 }
 
@@ -4678,7 +4421,6 @@ impl<'a> Extract<'a> for SCItemRadarSensitivityModifierType {
 }
 
 /// DCB type: `ScanCustomValue`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ScanCustomValue {
 }
 
@@ -4696,7 +4438,6 @@ impl<'a> Extract<'a> for ScanCustomValue {
 }
 
 /// DCB type: `ScanDisplayConditionBaseParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ScanDisplayConditionBaseParams {
 }
 
@@ -4714,7 +4455,6 @@ impl<'a> Extract<'a> for ScanDisplayConditionBaseParams {
 }
 
 /// DCB type: `SBBDynamicPropertyBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SBBDynamicPropertyBase {
 }
 
@@ -4732,7 +4472,6 @@ impl<'a> Extract<'a> for SBBDynamicPropertyBase {
 }
 
 /// DCB type: `SReputationStateModifierBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SReputationStateModifierBase {
 }
 
@@ -4750,7 +4489,6 @@ impl<'a> Extract<'a> for SReputationStateModifierBase {
 }
 
 /// DCB type: `SReputationMissionRequirementExpressionElement`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SReputationMissionRequirementExpressionElement {
 }
 
@@ -4768,7 +4506,6 @@ impl<'a> Extract<'a> for SReputationMissionRequirementExpressionElement {
 }
 
 /// DCB type: `BaseDensityUnit`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BaseDensityUnit {
 }
 
@@ -4786,7 +4523,6 @@ impl<'a> Extract<'a> for BaseDensityUnit {
 }
 
 /// DCB type: `ResourceTypeDensityType`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ResourceTypeDensityType {
 }
 
@@ -4804,7 +4540,6 @@ impl<'a> Extract<'a> for ResourceTypeDensityType {
 }
 
 /// DCB type: `RoomExtension`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct RoomExtension {
 }
 
@@ -4822,7 +4557,6 @@ impl<'a> Extract<'a> for RoomExtension {
 }
 
 /// DCB type: `VolumeShape`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct VolumeShape {
 }
 
@@ -4840,7 +4574,6 @@ impl<'a> Extract<'a> for VolumeShape {
 }
 
 /// DCB type: `SAtmosphericCompositionBaseParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SAtmosphericCompositionBaseParams {
 }
 
@@ -4858,7 +4591,6 @@ impl<'a> Extract<'a> for SAtmosphericCompositionBaseParams {
 }
 
 /// DCB type: `AsteroidStateBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AsteroidStateBase {
 }
 
@@ -4876,7 +4608,6 @@ impl<'a> Extract<'a> for AsteroidStateBase {
 }
 
 /// DCB type: `AtmosphereStateBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AtmosphereStateBase {
 }
 
@@ -4894,7 +4625,6 @@ impl<'a> Extract<'a> for AtmosphereStateBase {
 }
 
 /// DCB type: `AerodynamicTrailCalculation`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AerodynamicTrailCalculation {
 }
 
@@ -4912,7 +4642,6 @@ impl<'a> Extract<'a> for AerodynamicTrailCalculation {
 }
 
 /// DCB type: `ElectricalStateBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ElectricalStateBase {
 }
 
@@ -4930,7 +4659,6 @@ impl<'a> Extract<'a> for ElectricalStateBase {
 }
 
 /// DCB type: `RadiationStateBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct RadiationStateBase {
 }
 
@@ -4948,7 +4676,6 @@ impl<'a> Extract<'a> for RadiationStateBase {
 }
 
 /// DCB type: `SBaseInteractionGameplayTrigger`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SBaseInteractionGameplayTrigger {
 }
 
@@ -4966,7 +4693,6 @@ impl<'a> Extract<'a> for SBaseInteractionGameplayTrigger {
 }
 
 /// DCB type: `SDisruptionGameplayTriggerType`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SDisruptionGameplayTriggerType {
 }
 
@@ -4984,7 +4710,6 @@ impl<'a> Extract<'a> for SDisruptionGameplayTriggerType {
 }
 
 /// DCB type: `DegradationAction`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DegradationAction {
 }
 
@@ -5002,7 +4727,6 @@ impl<'a> Extract<'a> for DegradationAction {
 }
 
 /// DCB type: `LoadoutCheckType`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LoadoutCheckType {
 }
 
@@ -5020,7 +4744,6 @@ impl<'a> Extract<'a> for LoadoutCheckType {
 }
 
 /// DCB type: `SCheckType`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCheckType {
 }
 
@@ -5038,7 +4761,6 @@ impl<'a> Extract<'a> for SCheckType {
 }
 
 /// DCB type: `GameplayTrigger_TargetType_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GameplayTrigger_TargetType_Base {
 }
 
@@ -5056,7 +4778,6 @@ impl<'a> Extract<'a> for GameplayTrigger_TargetType_Base {
 }
 
 /// DCB type: `GameplayTrigger_FilterType_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GameplayTrigger_FilterType_Base {
 }
 
@@ -5075,7 +4796,6 @@ impl<'a> Extract<'a> for GameplayTrigger_FilterType_Base {
 
 /// DCB type: `GameplayTrigger_Executor_ActivateInteraction_Base`
 /// Inherits from: `GameplayTrigger_Executor_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GameplayTrigger_Executor_ActivateInteraction_Base {
 }
 
@@ -5094,7 +4814,6 @@ impl<'a> Extract<'a> for GameplayTrigger_Executor_ActivateInteraction_Base {
 
 /// DCB type: `GameplayTrigger_Executor_SetInteractionState_Base`
 /// Inherits from: `GameplayTrigger_Executor_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GameplayTrigger_Executor_SetInteractionState_Base {
 }
 
@@ -5112,7 +4831,6 @@ impl<'a> Extract<'a> for GameplayTrigger_Executor_SetInteractionState_Base {
 }
 
 /// DCB type: `GT_CommunicationMessage`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GT_CommunicationMessage {
 }
 
@@ -5130,7 +4848,6 @@ impl<'a> Extract<'a> for GT_CommunicationMessage {
 }
 
 /// DCB type: `GT_CommunicationTarget`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GT_CommunicationTarget {
 }
 
@@ -5148,7 +4865,6 @@ impl<'a> Extract<'a> for GT_CommunicationTarget {
 }
 
 /// DCB type: `EntityFilter`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EntityFilter {
 }
 
@@ -5166,7 +4882,6 @@ impl<'a> Extract<'a> for EntityFilter {
 }
 
 /// DCB type: `AreaCommunicationMessage`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AreaCommunicationMessage {
 }
 
@@ -5184,7 +4899,6 @@ impl<'a> Extract<'a> for AreaCommunicationMessage {
 }
 
 /// DCB type: `SelfCommunicationMessage`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SelfCommunicationMessage {
 }
 
@@ -5202,7 +4916,6 @@ impl<'a> Extract<'a> for SelfCommunicationMessage {
 }
 
 /// DCB type: `GameplayTriggerCondition`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GameplayTriggerCondition {
 }
 
@@ -5220,7 +4933,6 @@ impl<'a> Extract<'a> for GameplayTriggerCondition {
 }
 
 /// DCB type: `ConditionalResult`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ConditionalResult {
 }
 
@@ -5238,7 +4950,6 @@ impl<'a> Extract<'a> for ConditionalResult {
 }
 
 /// DCB type: `TriggeredHealth`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct TriggeredHealth {
 }
 
@@ -5256,7 +4967,6 @@ impl<'a> Extract<'a> for TriggeredHealth {
 }
 
 /// DCB type: `SModHealth`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SModHealth {
 }
 
@@ -5274,7 +4984,6 @@ impl<'a> Extract<'a> for SModHealth {
 }
 
 /// DCB type: `VulnerabilityState`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct VulnerabilityState {
 }
 
@@ -5292,7 +5001,6 @@ impl<'a> Extract<'a> for VulnerabilityState {
 }
 
 /// DCB type: `GameplayTrigger_Physics_SetParameter_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GameplayTrigger_Physics_SetParameter_Base {
 }
 
@@ -5310,7 +5018,6 @@ impl<'a> Extract<'a> for GameplayTrigger_Physics_SetParameter_Base {
 }
 
 /// DCB type: `SUserVariableOperationType`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SUserVariableOperationType {
 }
 
@@ -5328,7 +5035,6 @@ impl<'a> Extract<'a> for SUserVariableOperationType {
 }
 
 /// DCB type: `GameplayTrigger_InterpolationType`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GameplayTrigger_InterpolationType {
 }
 
@@ -5346,7 +5052,6 @@ impl<'a> Extract<'a> for GameplayTrigger_InterpolationType {
 }
 
 /// DCB type: `ClothingType`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ClothingType {
 }
 
@@ -5364,7 +5069,6 @@ impl<'a> Extract<'a> for ClothingType {
 }
 
 /// DCB type: `PurchasableDisplayBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PurchasableDisplayBase {
 }
 
@@ -5382,7 +5086,6 @@ impl<'a> Extract<'a> for PurchasableDisplayBase {
 }
 
 /// DCB type: `SCItemProximitySensorShapeParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCItemProximitySensorShapeParams {
 }
 
@@ -5400,7 +5103,6 @@ impl<'a> Extract<'a> for SCItemProximitySensorShapeParams {
 }
 
 /// DCB type: `SDoorCollisionReactionBaseParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SDoorCollisionReactionBaseParams {
 }
 
@@ -5418,7 +5120,6 @@ impl<'a> Extract<'a> for SDoorCollisionReactionBaseParams {
 }
 
 /// DCB type: `SCItemDoorPortalModeParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCItemDoorPortalModeParams {
 }
 
@@ -5437,7 +5138,6 @@ impl<'a> Extract<'a> for SCItemDoorPortalModeParams {
 
 /// DCB type: `SSequencerItemDoorTaskParams`
 /// Inherits from: `SSequencerDefTaskParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SSequencerItemDoorTaskParams {
 }
 
@@ -5455,7 +5155,6 @@ impl<'a> Extract<'a> for SSequencerItemDoorTaskParams {
 }
 
 /// DCB type: `AccessibilityBaseParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AccessibilityBaseParams {
 }
 
@@ -5473,7 +5172,6 @@ impl<'a> Extract<'a> for AccessibilityBaseParams {
 }
 
 /// DCB type: `SElevatorBaseCollisionParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SElevatorBaseCollisionParams {
 }
 
@@ -5492,7 +5190,6 @@ impl<'a> Extract<'a> for SElevatorBaseCollisionParams {
 
 /// DCB type: `BaseHoloDisplayProvider`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BaseHoloDisplayProvider {
 }
 
@@ -5510,7 +5207,6 @@ impl<'a> Extract<'a> for BaseHoloDisplayProvider {
 }
 
 /// DCB type: `WorldDisplayEnvironmentColor`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct WorldDisplayEnvironmentColor {
 }
 
@@ -5528,7 +5224,6 @@ impl<'a> Extract<'a> for WorldDisplayEnvironmentColor {
 }
 
 /// DCB type: `SToolArmDeployCondition_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SToolArmDeployCondition_Base {
 }
 
@@ -5546,7 +5241,6 @@ impl<'a> Extract<'a> for SToolArmDeployCondition_Base {
 }
 
 /// DCB type: `SCItemTurretAngleLimitParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCItemTurretAngleLimitParams {
 }
 
@@ -5564,7 +5258,6 @@ impl<'a> Extract<'a> for SCItemTurretAngleLimitParams {
 }
 
 /// DCB type: `WeaponAIAimingMethod`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct WeaponAIAimingMethod {
 }
 
@@ -5582,7 +5275,6 @@ impl<'a> Extract<'a> for WeaponAIAimingMethod {
 }
 
 /// DCB type: `SLauncherBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SLauncherBase {
 }
 
@@ -5600,7 +5292,6 @@ impl<'a> Extract<'a> for SLauncherBase {
 }
 
 /// DCB type: `SWeaponConditionBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SWeaponConditionBase {
 }
 
@@ -5618,7 +5309,6 @@ impl<'a> Extract<'a> for SWeaponConditionBase {
 }
 
 /// DCB type: `SAuxiliaryWeaponActionParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SAuxiliaryWeaponActionParams {
 }
 
@@ -5636,7 +5326,6 @@ impl<'a> Extract<'a> for SAuxiliaryWeaponActionParams {
 }
 
 /// DCB type: `ItemRecoverySetConditionDef`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ItemRecoverySetConditionDef {
 }
 
@@ -5654,7 +5343,6 @@ impl<'a> Extract<'a> for ItemRecoverySetConditionDef {
 }
 
 /// DCB type: `SSCSignatureEmissionBaseModifier`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SSCSignatureEmissionBaseModifier {
 }
 
@@ -5672,7 +5360,6 @@ impl<'a> Extract<'a> for SSCSignatureEmissionBaseModifier {
 }
 
 /// DCB type: `SSCSignatureParamsBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SSCSignatureParamsBase {
 }
 
@@ -5690,7 +5377,6 @@ impl<'a> Extract<'a> for SSCSignatureParamsBase {
 }
 
 /// DCB type: `SSCSignatureSystemCrossSectionParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SSCSignatureSystemCrossSectionParams {
 }
 
@@ -5708,7 +5394,6 @@ impl<'a> Extract<'a> for SSCSignatureSystemCrossSectionParams {
 }
 
 /// DCB type: `SSCSignatureSystemAudioModifier`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SSCSignatureSystemAudioModifier {
 }
 
@@ -5726,7 +5411,6 @@ impl<'a> Extract<'a> for SSCSignatureSystemAudioModifier {
 }
 
 /// DCB type: `SSCSignatureSystemAudioSubRule`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SSCSignatureSystemAudioSubRule {
 }
 
@@ -5744,7 +5428,6 @@ impl<'a> Extract<'a> for SSCSignatureSystemAudioSubRule {
 }
 
 /// DCB type: `CompletionTypeBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CompletionTypeBase {
 }
 
@@ -5762,7 +5445,6 @@ impl<'a> Extract<'a> for CompletionTypeBase {
 }
 
 /// DCB type: `ScreenEffects_ParamValue`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ScreenEffects_ParamValue {
 }
 
@@ -5780,7 +5462,6 @@ impl<'a> Extract<'a> for ScreenEffects_ParamValue {
 }
 
 /// DCB type: `SecurityClearance_OutfitRequirementDef`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SecurityClearance_OutfitRequirementDef {
 }
 
@@ -5798,7 +5479,6 @@ impl<'a> Extract<'a> for SecurityClearance_OutfitRequirementDef {
 }
 
 /// DCB type: `SecurityManualInput`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SecurityManualInput {
 }
 
@@ -5816,7 +5496,6 @@ impl<'a> Extract<'a> for SecurityManualInput {
 }
 
 /// DCB type: `SecurityNotifications`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SecurityNotifications {
 }
 
@@ -5834,7 +5513,6 @@ impl<'a> Extract<'a> for SecurityNotifications {
 }
 
 /// DCB type: `SecurityNetworkVariableValue_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SecurityNetworkVariableValue_Base {
 }
 
@@ -5852,7 +5530,6 @@ impl<'a> Extract<'a> for SecurityNetworkVariableValue_Base {
 }
 
 /// DCB type: `SecurityNetworkVariableEffect_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SecurityNetworkVariableEffect_Base {
 }
 
@@ -5870,7 +5547,6 @@ impl<'a> Extract<'a> for SecurityNetworkVariableEffect_Base {
 }
 
 /// DCB type: `SServiceBeaconCreatorParamsBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SServiceBeaconCreatorParamsBase {
 }
 
@@ -5888,7 +5564,6 @@ impl<'a> Extract<'a> for SServiceBeaconCreatorParamsBase {
 }
 
 /// DCB type: `TimeValue_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct TimeValue_Base {
 }
 
@@ -5906,7 +5581,6 @@ impl<'a> Extract<'a> for TimeValue_Base {
 }
 
 /// DCB type: `TransportPermissionsInterface`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct TransportPermissionsInterface {
 }
 
@@ -5924,7 +5598,6 @@ impl<'a> Extract<'a> for TransportPermissionsInterface {
 }
 
 /// DCB type: `ItemPortViewInformation`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ItemPortViewInformation {
 }
 
@@ -5942,7 +5615,6 @@ impl<'a> Extract<'a> for ItemPortViewInformation {
 }
 
 /// DCB type: `LoadoutEditorAdditionalParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LoadoutEditorAdditionalParams {
 }
 
@@ -5960,7 +5632,6 @@ impl<'a> Extract<'a> for LoadoutEditorAdditionalParams {
 }
 
 /// DCB type: `AreaAlignmentSlotTypeParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AreaAlignmentSlotTypeParams {
 }
 
@@ -5978,7 +5649,6 @@ impl<'a> Extract<'a> for AreaAlignmentSlotTypeParams {
 }
 
 /// DCB type: `SSpecializedDataEntry`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SSpecializedDataEntry {
 }
 
@@ -5996,7 +5666,6 @@ impl<'a> Extract<'a> for SSpecializedDataEntry {
 }
 
 /// DCB type: `UsableSlottingReferenceElementBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct UsableSlottingReferenceElementBase {
 }
 
@@ -6015,7 +5684,6 @@ impl<'a> Extract<'a> for UsableSlottingReferenceElementBase {
 
 /// DCB type: `SSequencerUsableTask`
 /// Inherits from: `SSequencerDefTaskParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SSequencerUsableTask {
 }
 
@@ -6033,7 +5701,6 @@ impl<'a> Extract<'a> for SSequencerUsableTask {
 }
 
 /// DCB type: `WeatherEffects_Asteroid`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct WeatherEffects_Asteroid {
 }
 
@@ -6051,7 +5718,6 @@ impl<'a> Extract<'a> for WeatherEffects_Asteroid {
 }
 
 /// DCB type: `WeatherEffects_Atmosphere`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct WeatherEffects_Atmosphere {
 }
 
@@ -6069,7 +5735,6 @@ impl<'a> Extract<'a> for WeatherEffects_Atmosphere {
 }
 
 /// DCB type: `MobiGlasAppDataBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MobiGlasAppDataBase {
 }
 
@@ -6087,7 +5752,6 @@ impl<'a> Extract<'a> for MobiGlasAppDataBase {
 }
 
 /// DCB type: `SMobiGlasAppDataPacketBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SMobiGlasAppDataPacketBase {
 }
 
@@ -6105,7 +5769,6 @@ impl<'a> Extract<'a> for SMobiGlasAppDataPacketBase {
 }
 
 /// DCB type: `SMobiGlasAppParamsBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SMobiGlasAppParamsBase {
 }
 

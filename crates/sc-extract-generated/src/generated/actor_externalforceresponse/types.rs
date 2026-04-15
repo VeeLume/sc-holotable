@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -21,25 +20,18 @@ use super::super::*;
 
 /// DCB type: `SActorForceReactionProceduralXianLeanPose`
 /// Inherits from: `SActorForceReactionProceduralLeanPose`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SActorForceReactionProceduralXianLeanPose {
     /// `hipOffsetScaleFB` (Single)
-    #[serde(default)]
     pub hip_offset_scale_fb: f32,
     /// `hipOffsetScaleLR` (Single)
-    #[serde(default)]
     pub hip_offset_scale_lr: f32,
     /// `footOffsetScale` (Single)
-    #[serde(default)]
     pub foot_offset_scale: f32,
     /// `firstPersonLeanPitchScale` (Single)
-    #[serde(default)]
     pub first_person_lean_pitch_scale: f32,
     /// `firstPersonLeanRollScale` (Single)
-    #[serde(default)]
     pub first_person_lean_roll_scale: f32,
     /// `spineBones` (Class)
-    #[serde(default)]
     pub spine_bones: Option<Handle<SActorForceReactionLeanBoneDef>>,
 }
 
@@ -67,10 +59,8 @@ impl<'a> Extract<'a> for SActorForceReactionProceduralXianLeanPose {
 
 /// DCB type: `SActorForceReactionProceduralXianLeanPoseList`
 /// Inherits from: `SActorForceReactionProceduralLeanPoseList`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SActorForceReactionProceduralXianLeanPoseList {
     /// `poseTypes` (Class)
-    #[serde(default)]
     pub pose_types: Option<Handle<SActorForceReactionProceduralXianLeanPose>>,
 }
 
@@ -92,34 +82,24 @@ impl<'a> Extract<'a> for SActorForceReactionProceduralXianLeanPoseList {
 }
 
 /// DCB type: `SActorForceReactionsProceduralLeanOverride`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SActorForceReactionsProceduralLeanOverride {
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
     /// `enabled` (Boolean)
-    #[serde(default)]
     pub enabled: bool,
     /// `maxLeanForward` (Single)
-    #[serde(default)]
     pub max_lean_forward: f32,
     /// `maxLeanBackward` (Single)
-    #[serde(default)]
     pub max_lean_backward: f32,
     /// `maxLeanLeft` (Single)
-    #[serde(default)]
     pub max_lean_left: f32,
     /// `maxLeanRight` (Single)
-    #[serde(default)]
     pub max_lean_right: f32,
     /// `moveHips` (Boolean)
-    #[serde(default)]
     pub move_hips: bool,
     /// `lockHands` (Boolean)
-    #[serde(default)]
     pub lock_hands: bool,
     /// `pose` (EnumChoice)
-    #[serde(default)]
     pub pose: EProcLeanPoseType,
 }
 
@@ -146,10 +126,8 @@ impl<'a> Extract<'a> for SActorForceReactionsProceduralLeanOverride {
 }
 
 /// DCB type: `SActorForceReactionsPresetRecord`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SActorForceReactionsPresetRecord {
     /// `procLeanOverrides` (Class (array))
-    #[serde(default)]
     pub proc_lean_overrides: Vec<Handle<SActorForceReactionsProceduralLeanOverride>>,
 }
 

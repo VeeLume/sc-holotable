@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,13 +19,10 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `CommunicationChannelConfig`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CommunicationChannelConfig {
     /// `ChannelConfigName` (String)
-    #[serde(default)]
     pub channel_config_name: String,
     /// `Channels` (Class (array))
-    #[serde(default)]
     pub channels: Vec<Handle<CommunicationChannel>>,
 }
 
@@ -52,43 +48,30 @@ impl<'a> Extract<'a> for CommunicationChannelConfig {
 }
 
 /// DCB type: `CommunicationChannel`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CommunicationChannel {
     /// `name` (Reference)
-    #[serde(default)]
     pub name: Option<CigGuid>,
     /// `audioEventForExternalSources` (String)
-    #[serde(default)]
     pub audio_event_for_external_sources: String,
     /// `minSilence` (Single)
-    #[serde(default)]
     pub min_silence: f32,
     /// `flushSilence` (Single)
-    #[serde(default)]
     pub flush_silence: f32,
     /// `type` (EnumChoice)
-    #[serde(default)]
     pub r#type: eCommunicationChannelType,
     /// `priority` (Int32)
-    #[serde(default)]
     pub priority: i32,
     /// `animationPriorityOverride` (Int32)
-    #[serde(default)]
     pub animation_priority_override: i32,
     /// `minSpeakerSilence` (Single)
-    #[serde(default)]
     pub min_speaker_silence: f32,
     /// `ignoreSpeakerSilence` (Boolean)
-    #[serde(default)]
     pub ignore_speaker_silence: bool,
     /// `subtitles` (Class)
-    #[serde(default)]
     pub subtitles: Option<Handle<CommunicationSubtitleSettings>>,
     /// `audioRTPC` (StrongPointer)
-    #[serde(default)]
     pub audio_rtpc: Option<Handle<CommunicationAudioRTPC>>,
     /// `subChannels` (Class (array))
-    #[serde(default)]
     pub sub_channels: Vec<Handle<CommunicationChannel>>,
 }
 
@@ -130,13 +113,10 @@ impl<'a> Extract<'a> for CommunicationChannel {
 }
 
 /// DCB type: `CommunicationSubtitleSettings`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CommunicationSubtitleSettings {
     /// `allow` (Boolean)
-    #[serde(default)]
     pub allow: bool,
     /// `variableName` (String)
-    #[serde(default)]
     pub variable_name: String,
 }
 
@@ -156,13 +136,10 @@ impl<'a> Extract<'a> for CommunicationSubtitleSettings {
 }
 
 /// DCB type: `CommunicationAudioRTPC`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CommunicationAudioRTPC {
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
     /// `value` (Single)
-    #[serde(default)]
     pub value: f32,
 }
 
@@ -182,19 +159,14 @@ impl<'a> Extract<'a> for CommunicationAudioRTPC {
 }
 
 /// DCB type: `CommunicationLocationAutoTags`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CommunicationLocationAutoTags {
     /// `starMapObject` (Reference)
-    #[serde(default)]
     pub star_map_object: Option<CigGuid>,
     /// `actorInLocationMannequinTags` (String)
-    #[serde(default)]
     pub actor_in_location_mannequin_tags: String,
     /// `availableConversationTopics` (Reference (array))
-    #[serde(default)]
     pub available_conversation_topics: Vec<CigGuid>,
     /// `conversationTopicsToExclude` (Reference (array))
-    #[serde(default)]
     pub conversation_topics_to_exclude: Vec<CigGuid>,
 }
 
@@ -220,40 +192,28 @@ impl<'a> Extract<'a> for CommunicationLocationAutoTags {
 }
 
 /// DCB type: `CommunicationAutoMannequinTagsConfig`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CommunicationAutoMannequinTagsConfig {
     /// `actorIsPlayerFragmentTags` (String)
-    #[serde(default)]
     pub actor_is_player_fragment_tags: String,
     /// `targetIsPlayerFragmentTags` (String)
-    #[serde(default)]
     pub target_is_player_fragment_tags: String,
     /// `targetIsAllyFragmentTags` (String)
-    #[serde(default)]
     pub target_is_ally_fragment_tags: String,
     /// `targetIsNeutralFragmentTags` (String)
-    #[serde(default)]
     pub target_is_neutral_fragment_tags: String,
     /// `targetIsEnemyFragmentTags` (String)
-    #[serde(default)]
     pub target_is_enemy_fragment_tags: String,
     /// `subjectIsPlayerFragmentTags` (String)
-    #[serde(default)]
     pub subject_is_player_fragment_tags: String,
     /// `subjectIsAllyFragmentTags` (String)
-    #[serde(default)]
     pub subject_is_ally_fragment_tags: String,
     /// `subjectIsNeutralFragmentTags` (String)
-    #[serde(default)]
     pub subject_is_neutral_fragment_tags: String,
     /// `subjectIsEnemyFragmentTags` (String)
-    #[serde(default)]
     pub subject_is_enemy_fragment_tags: String,
     /// `subjectIsDisguisedFragmentTags` (String)
-    #[serde(default)]
     pub subject_is_disguised_fragment_tags: String,
     /// `locationsAutoTags` (Class (array))
-    #[serde(default)]
     pub locations_auto_tags: Vec<Handle<CommunicationLocationAutoTags>>,
 }
 

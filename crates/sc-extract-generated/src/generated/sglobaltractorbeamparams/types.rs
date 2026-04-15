@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,28 +19,20 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `STractorBeamHoloVisualParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct STractorBeamHoloVisualParams {
     /// `minAlignmentValidHolo` (Single)
-    #[serde(default)]
     pub min_alignment_valid_holo: f32,
     /// `validHoloColor` (Class)
-    #[serde(default)]
     pub valid_holo_color: Option<Handle<RGB>>,
     /// `warningHoloColor` (Class)
-    #[serde(default)]
     pub warning_holo_color: Option<Handle<RGB>>,
     /// `invalidHoloColor` (Class)
-    #[serde(default)]
     pub invalid_holo_color: Option<Handle<RGB>>,
     /// `cargoHoloPreviewColor` (Class)
-    #[serde(default)]
     pub cargo_holo_preview_color: Option<Handle<RGBA>>,
     /// `holoOpacity` (Single)
-    #[serde(default)]
     pub holo_opacity: f32,
     /// `holoMaterial` (Class)
-    #[serde(default)]
     pub holo_material: Option<Handle<GlobalResourceMaterial>>,
 }
 
@@ -81,16 +72,12 @@ impl<'a> Extract<'a> for STractorBeamHoloVisualParams {
 }
 
 /// DCB type: `STractorBeamOutlineVisualParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct STractorBeamOutlineVisualParams {
     /// `minOutlineWidth` (Single)
-    #[serde(default)]
     pub min_outline_width: f32,
     /// `maxOutlineWidth` (Single)
-    #[serde(default)]
     pub max_outline_width: f32,
     /// `outlineOpacity` (Single)
-    #[serde(default)]
     pub outline_opacity: f32,
 }
 
@@ -111,31 +98,22 @@ impl<'a> Extract<'a> for STractorBeamOutlineVisualParams {
 }
 
 /// DCB type: `SGlobalTractorBeamParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SGlobalTractorBeamParams {
     /// `holoVisualParams` (Class)
-    #[serde(default)]
     pub holo_visual_params: Option<Handle<STractorBeamHoloVisualParams>>,
     /// `outlineVisualParams` (Class)
-    #[serde(default)]
     pub outline_visual_params: Option<Handle<STractorBeamOutlineVisualParams>>,
     /// `beingTractorBeamedTag` (Reference)
-    #[serde(default)]
     pub being_tractor_beamed_tag: Option<CigGuid>,
     /// `contractedTag` (Reference)
-    #[serde(default)]
     pub contracted_tag: Option<CigGuid>,
     /// `showLifetimeTag` (Reference)
-    #[serde(default)]
     pub show_lifetime_tag: Option<CigGuid>,
     /// `ignoreEntityTag` (Reference)
-    #[serde(default)]
     pub ignore_entity_tag: Option<CigGuid>,
     /// `magLockedTag` (Reference)
-    #[serde(default)]
     pub mag_locked_tag: Option<CigGuid>,
     /// `checkParentForIgnoreTag` (Boolean)
-    #[serde(default)]
     pub check_parent_for_ignore_tag: bool,
 }
 

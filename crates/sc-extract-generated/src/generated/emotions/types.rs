@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,13 +19,10 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `EmotionDescription`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EmotionDescription {
     /// `emotionName` (String)
-    #[serde(default)]
     pub emotion_name: String,
     /// `facialEmotionTag` (String)
-    #[serde(default)]
     pub facial_emotion_tag: String,
 }
 
@@ -46,10 +42,8 @@ impl<'a> Extract<'a> for EmotionDescription {
 }
 
 /// DCB type: `EmotionList`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EmotionList {
     /// `emotions` (Class (array))
-    #[serde(default)]
     pub emotions: Vec<Handle<EmotionDescription>>,
 }
 

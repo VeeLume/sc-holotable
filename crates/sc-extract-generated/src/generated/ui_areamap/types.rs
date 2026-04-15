@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,34 +19,24 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `AreaMapCameraParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AreaMapCameraParams {
     /// `cameraDist` (Single)
-    #[serde(default)]
     pub camera_dist: f32,
     /// `cameraPitch` (Single)
-    #[serde(default)]
     pub camera_pitch: f32,
     /// `cameraYaw` (Single)
-    #[serde(default)]
     pub camera_yaw: f32,
     /// `cameraZoomMax` (Single)
-    #[serde(default)]
     pub camera_zoom_max: f32,
     /// `cameraZoomMin` (Single)
-    #[serde(default)]
     pub camera_zoom_min: f32,
     /// `cameraPanCurve` (Class)
-    #[serde(default)]
     pub camera_pan_curve: Option<Handle<BezierCurve>>,
     /// `cameraPanMultiplier` (Single)
-    #[serde(default)]
     pub camera_pan_multiplier: f32,
     /// `cameraZoomCurve` (Class)
-    #[serde(default)]
     pub camera_zoom_curve: Option<Handle<BezierCurve>>,
     /// `cameraZoomMultiplier` (Single)
-    #[serde(default)]
     pub camera_zoom_multiplier: f32,
 }
 
@@ -81,61 +70,42 @@ impl<'a> Extract<'a> for AreaMapCameraParams {
 
 /// DCB type: `AreaMapParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AreaMapParams {
     /// `groundMaterial` (String)
-    #[serde(default)]
     pub ground_material: String,
     /// `wallMaterial` (String)
-    #[serde(default)]
     pub wall_material: String,
     /// `groundMaterialFaded` (String)
-    #[serde(default)]
     pub ground_material_faded: String,
     /// `wallMaterialFaded` (String)
-    #[serde(default)]
     pub wall_material_faded: String,
     /// `doorMaterial` (String)
-    #[serde(default)]
     pub door_material: String,
     /// `markerMaterial` (String)
-    #[serde(default)]
     pub marker_material: String,
     /// `markerGeomName` (String)
-    #[serde(default)]
     pub marker_geom_name: String,
     /// `doorGeomName` (String)
-    #[serde(default)]
     pub door_geom_name: String,
     /// `rttGeomMaterial` (String)
-    #[serde(default)]
     pub rtt_geom_material: String,
     /// `entityClipName` (String)
-    #[serde(default)]
     pub entity_clip_name: String,
     /// `rttoName` (String)
-    #[serde(default)]
     pub rtto_name: String,
     /// `outlineMaterial` (String)
-    #[serde(default)]
     pub outline_material: String,
     /// `entityComponentRoomTag` (Reference)
-    #[serde(default)]
     pub entity_component_room_tag: Option<CigGuid>,
     /// `entityComponentRoomConnectorTag` (Reference)
-    #[serde(default)]
     pub entity_component_room_connector_tag: Option<CigGuid>,
     /// `entityComponentRoomGroupTag` (Reference)
-    #[serde(default)]
     pub entity_component_room_group_tag: Option<CigGuid>,
     /// `cameraParams` (Class)
-    #[serde(default)]
     pub camera_params: Option<Handle<AreaMapCameraParams>>,
     /// `inputParams` (Class)
-    #[serde(default)]
     pub input_params: Option<Handle<UI3DDisplayInputParams>>,
     /// `rttGeomDimensions` (Class)
-    #[serde(default)]
     pub rtt_geom_dimensions: Option<Handle<Vec2>>,
 }
 
@@ -181,13 +151,10 @@ impl<'a> Extract<'a> for AreaMapParams {
 
 /// DCB type: `FontSupportParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct FontSupportParams {
     /// `letterMaterial` (String)
-    #[serde(default)]
     pub letter_material: String,
     /// `fontParams` (Class)
-    #[serde(default)]
     pub font_params: Option<Handle<InnerThought_Config>>,
 }
 
@@ -211,10 +178,8 @@ impl<'a> Extract<'a> for FontSupportParams {
 
 /// DCB type: `SEntityComponentLocationDataParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SEntityComponentLocationDataParams {
     /// `DisplayMesh` (String)
-    #[serde(default)]
     pub display_mesh: String,
 }
 

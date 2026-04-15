@@ -9,16 +9,12 @@
 
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
-use serde::{Deserialize, Serialize};
 use super::super::*;
 
 /// Pool storage for the `ui-dockingslotvisibility` feature.
-#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+#[derive(Default)]
 pub struct UiDockingslotvisibilityPools {
-    #[serde(default)]
     pub docking_slot_visibility_tag_set: Vec<Option<DockingSlotVisibilityTagSet>>,
-    #[serde(default)]
     pub docking_slot_visibility_rule: Vec<Option<DockingSlotVisibilityRule>>,
-    #[serde(default)]
     pub docking_slot_visibility: Vec<Option<DockingSlotVisibility>>,
 }

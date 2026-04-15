@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,34 +19,24 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `UIConfig`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct UIConfig {
     /// `DamageColours` (StrongPointer)
-    #[serde(default)]
     pub damage_colours: Option<Handle<Flash_Palette>>,
     /// `ColorStates` (StrongPointer)
-    #[serde(default)]
     pub color_states: Option<Handle<UIStateColor>>,
     /// `InnerThought` (StrongPointer)
-    #[serde(default)]
     pub inner_thought: Option<Handle<InnerThought_Config>>,
     /// `FPSReticleConfig` (StrongPointer)
-    #[serde(default)]
     pub fpsreticle_config: Option<Handle<FPSReticle_Config>>,
     /// `EVAReticleConfig` (StrongPointer)
-    #[serde(default)]
     pub evareticle_config: Option<Handle<EVAReticle_Config>>,
     /// `playerChoiceIMConfig` (Reference)
-    #[serde(default)]
     pub player_choice_imconfig: Option<CigGuid>,
     /// `visorHUDConfig` (Reference)
-    #[serde(default)]
     pub visor_hudconfig: Option<CigGuid>,
     /// `playerChoicePITConfig` (Reference)
-    #[serde(default)]
     pub player_choice_pitconfig: Option<CigGuid>,
     /// `flightHUDUIViewConfig` (Reference)
-    #[serde(default)]
     pub flight_huduiview_config: Option<CigGuid>,
 }
 
@@ -89,43 +78,30 @@ impl<'a> Extract<'a> for UIConfig {
 }
 
 /// DCB type: `FPSReticle_Config`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct FPSReticle_Config {
     /// `AimAveragePoints` (Byte)
-    #[serde(default)]
     pub aim_average_points: u32,
     /// `FlashWidth` (UInt16)
-    #[serde(default)]
     pub flash_width: u32,
     /// `FlashHeight` (UInt16)
-    #[serde(default)]
     pub flash_height: u32,
     /// `SpreadSize` (Single)
-    #[serde(default)]
     pub spread_size: f32,
     /// `SpreadScaleMax` (Single)
-    #[serde(default)]
     pub spread_scale_max: f32,
     /// `SpreadScaleInterpNeg` (Single)
-    #[serde(default)]
     pub spread_scale_interp_neg: f32,
     /// `SpreadScaleInterpPos` (Single)
-    #[serde(default)]
     pub spread_scale_interp_pos: f32,
     /// `SpreadAlphaInterpNeg` (Single)
-    #[serde(default)]
     pub spread_alpha_interp_neg: f32,
     /// `SpreadAlphaInterpPos` (Single)
-    #[serde(default)]
     pub spread_alpha_interp_pos: f32,
     /// `HiddenAlphaInterpNeg` (Single)
-    #[serde(default)]
     pub hidden_alpha_interp_neg: f32,
     /// `MoveAlphaMinimum` (Single)
-    #[serde(default)]
     pub move_alpha_minimum: f32,
     /// `MoveAlphaRange` (Single)
-    #[serde(default)]
     pub move_alpha_range: f32,
 }
 
@@ -155,19 +131,14 @@ impl<'a> Extract<'a> for FPSReticle_Config {
 }
 
 /// DCB type: `EVAReticle_Config`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EVAReticle_Config {
     /// `EnableFixedReticle` (Boolean)
-    #[serde(default)]
     pub enable_fixed_reticle: bool,
     /// `EnableLookReticle` (Boolean)
-    #[serde(default)]
     pub enable_look_reticle: bool,
     /// `EnableVelocityVector` (Boolean)
-    #[serde(default)]
     pub enable_velocity_vector: bool,
     /// `EnableControlFrameReticle` (Boolean)
-    #[serde(default)]
     pub enable_control_frame_reticle: bool,
 }
 
@@ -189,10 +160,8 @@ impl<'a> Extract<'a> for EVAReticle_Config {
 }
 
 /// DCB type: `Flash_Palette`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Flash_Palette {
     /// `Entries` (Class (array))
-    #[serde(default)]
     pub entries: Vec<Handle<Flash_PaletteEntry>>,
 }
 
@@ -217,13 +186,10 @@ impl<'a> Extract<'a> for Flash_Palette {
 }
 
 /// DCB type: `Flash_PaletteEntry`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Flash_PaletteEntry {
     /// `Name` (String)
-    #[serde(default)]
     pub name: String,
     /// `FlashColor` (StrongPointer)
-    #[serde(default)]
     pub flash_color: Option<Handle<SRGBA8>>,
 }
 
@@ -246,10 +212,8 @@ impl<'a> Extract<'a> for Flash_PaletteEntry {
 }
 
 /// DCB type: `UIStateColor`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct UIStateColor {
     /// `thresholds` (Class (array))
-    #[serde(default)]
     pub thresholds: Vec<Handle<UIStateColor_Threshold>>,
 }
 
@@ -274,13 +238,10 @@ impl<'a> Extract<'a> for UIStateColor {
 }
 
 /// DCB type: `UIStateColor_Threshold`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct UIStateColor_Threshold {
     /// `minThresholdValue` (Single)
-    #[serde(default)]
     pub min_threshold_value: f32,
     /// `stateColor` (EnumChoice)
-    #[serde(default)]
     pub state_color: HUDPalleteEntry,
 }
 

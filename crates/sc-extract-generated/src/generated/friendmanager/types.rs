@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,16 +19,12 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `FriendManagerNotificationsParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct FriendManagerNotificationsParams {
     /// `friendAdded` (Class)
-    #[serde(default)]
     pub friend_added: Option<Handle<PlayerNotificationBannerParams>>,
     /// `friendRequestReceived` (Class)
-    #[serde(default)]
     pub friend_request_received: Option<Handle<PlayerNotificationBannerParams>>,
     /// `friendRequestDeclined` (Class)
-    #[serde(default)]
     pub friend_request_declined: Option<Handle<PlayerNotificationBannerParams>>,
 }
 
@@ -59,10 +54,8 @@ impl<'a> Extract<'a> for FriendManagerNotificationsParams {
 }
 
 /// DCB type: `FriendManagerGlobalParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct FriendManagerGlobalParams {
     /// `notificationsParams` (Class)
-    #[serde(default)]
     pub notifications_params: Option<Handle<FriendManagerNotificationsParams>>,
 }
 

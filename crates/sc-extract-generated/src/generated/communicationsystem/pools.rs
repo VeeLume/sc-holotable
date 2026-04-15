@@ -9,22 +9,15 @@
 
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
-use serde::{Deserialize, Serialize};
 use super::super::*;
 
 /// Pool storage for the `communicationsystem` feature.
-#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+#[derive(Default)]
 pub struct CommunicationsystemPools {
-    #[serde(default)]
     pub communication_channel_config: Vec<Option<CommunicationChannelConfig>>,
-    #[serde(default)]
     pub communication_channel: Vec<Option<CommunicationChannel>>,
-    #[serde(default)]
     pub communication_subtitle_settings: Vec<Option<CommunicationSubtitleSettings>>,
-    #[serde(default)]
     pub communication_audio_rtpc: Vec<Option<CommunicationAudioRTPC>>,
-    #[serde(default)]
     pub communication_location_auto_tags: Vec<Option<CommunicationLocationAutoTags>>,
-    #[serde(default)]
     pub communication_auto_mannequin_tags_config: Vec<Option<CommunicationAutoMannequinTagsConfig>>,
 }

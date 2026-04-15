@@ -10,19 +10,15 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
 use std::collections::HashMap;
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use crate::Handle;
 use super::super::*;
 
 /// Record index for the `rastar` feature.
-#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+#[derive(Default)]
 pub struct RastarIndex {
-    #[serde(default)]
     pub hologram_params: HashMap<CigGuid, Handle<HologramParams>>,
-    #[serde(default)]
     pub ra_sta_rlibrary_element: HashMap<CigGuid, Handle<RaSTaRLibraryElement>>,
-    #[serde(default)]
     pub ra_sta_rlibrary: HashMap<CigGuid, Handle<RaSTaRLibrary>>,
 }
 

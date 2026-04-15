@@ -9,14 +9,11 @@
 
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
-use serde::{Deserialize, Serialize};
 use super::super::*;
 
 /// Pool storage for the `globalarmarkerparams` feature.
-#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+#[derive(Default)]
 pub struct GlobalarmarkerparamsPools {
-    #[serde(default)]
     pub armarker_player_offset_params: Vec<Option<ARMarkerPlayerOffsetParams>>,
-    #[serde(default)]
     pub armarker_global_params: Vec<Option<ARMarkerGlobalParams>>,
 }

@@ -10,27 +10,19 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
 use std::collections::HashMap;
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use crate::Handle;
 use super::super::*;
 
 /// Record index for the `radarsystem` feature.
-#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+#[derive(Default)]
 pub struct RadarsystemIndex {
-    #[serde(default)]
     pub radar_system_global_params: HashMap<CigGuid, Handle<RadarSystemGlobalParams>>,
-    #[serde(default)]
     pub scan_information_table: HashMap<CigGuid, Handle<ScanInformationTable>>,
-    #[serde(default)]
     pub radar_signature_category_definition: HashMap<CigGuid, Handle<RadarSignatureCategoryDefinition>>,
-    #[serde(default)]
     pub radar_signature_category_entry: HashMap<CigGuid, Handle<RadarSignatureCategoryEntry>>,
-    #[serde(default)]
     pub radar_contact_type_definition: HashMap<CigGuid, Handle<RadarContactTypeDefinition>>,
-    #[serde(default)]
     pub radar_contact_group_definition: HashMap<CigGuid, Handle<RadarContactGroupDefinition>>,
-    #[serde(default)]
     pub radar_delta_signature_definition: HashMap<CigGuid, Handle<RadarDeltaSignatureDefinition>>,
 }
 

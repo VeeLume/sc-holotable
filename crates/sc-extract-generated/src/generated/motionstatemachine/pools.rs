@@ -9,32 +9,20 @@
 
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
-use serde::{Deserialize, Serialize};
 use super::super::*;
 
 /// Pool storage for the `motionstatemachine` feature.
-#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+#[derive(Default)]
 pub struct MotionstatemachinePools {
-    #[serde(default)]
     pub motion_connection: Vec<Option<MotionConnection>>,
-    #[serde(default)]
     pub motion_state: Vec<Option<MotionState>>,
-    #[serde(default)]
     pub procedural_idle_to_move_params: Vec<Option<ProceduralIdleToMoveParams>>,
-    #[serde(default)]
     pub motion_smoothing_params: Vec<Option<MotionSmoothingParams>>,
-    #[serde(default)]
     pub motion_juke_params: Vec<Option<MotionJukeParams>>,
-    #[serde(default)]
     pub motion_turn_params: Vec<Option<MotionTurnParams>>,
-    #[serde(default)]
     pub motion_turn_setup_filtered: Vec<Option<MotionTurnSetupFiltered>>,
-    #[serde(default)]
     pub motion_turn_setup_list: Vec<Option<MotionTurnSetupList>>,
-    #[serde(default)]
     pub motion_foot_pinning_params: Vec<Option<MotionFootPinningParams>>,
-    #[serde(default)]
     pub motion_graph: Vec<Option<MotionGraph>>,
-    #[serde(default)]
     pub scprone_motion_graph_def: Vec<Option<SCProneMotionGraphDef>>,
 }

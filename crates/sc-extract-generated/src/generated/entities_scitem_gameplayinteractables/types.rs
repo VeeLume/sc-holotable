@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -21,10 +20,8 @@ use super::super::*;
 
 /// DCB type: `SpawnerPrerequisite_OR`
 /// Inherits from: `BaseSpawnerPrerequisite`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SpawnerPrerequisite_OR {
     /// `prerequisites` (StrongPointer (array))
-    #[serde(default)]
     pub prerequisites: Vec<BaseSpawnerPrerequisitePtr>,
 }
 
@@ -48,13 +45,10 @@ impl<'a> Extract<'a> for SpawnerPrerequisite_OR {
 }
 
 /// DCB type: `SWeightedRewardEntry`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SWeightedRewardEntry {
     /// `rewardEntityRecord` (Reference)
-    #[serde(default)]
     pub reward_entity_record: Option<CigGuid>,
     /// `weight` (Single)
-    #[serde(default)]
     pub weight: f32,
 }
 
@@ -75,28 +69,20 @@ impl<'a> Extract<'a> for SWeightedRewardEntry {
 
 /// DCB type: `SRewardGeneratorComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SRewardGeneratorComponentParams {
     /// `selectRandomRewardInteraction` (WeakPointer)
-    #[serde(default)]
     pub select_random_reward_interaction: Option<Handle<SSharedInteractionParams>>,
     /// `claimInteraction` (WeakPointer)
-    #[serde(default)]
     pub claim_interaction: Option<Handle<SSharedInteractionParams>>,
     /// `retrieveInteraction` (WeakPointer)
-    #[serde(default)]
     pub retrieve_interaction: Option<Handle<SSharedInteractionParams>>,
     /// `cleanupInteraction` (WeakPointer)
-    #[serde(default)]
     pub cleanup_interaction: Option<Handle<SSharedInteractionParams>>,
     /// `allowCleanupInSameRevolution` (Boolean)
-    #[serde(default)]
     pub allow_cleanup_in_same_revolution: bool,
     /// `missionScenario` (Reference)
-    #[serde(default)]
     pub mission_scenario: Option<CigGuid>,
     /// `rewardPool` (Class (array))
-    #[serde(default)]
     pub reward_pool: Vec<Handle<SWeightedRewardEntry>>,
 }
 
@@ -140,13 +126,10 @@ impl<'a> Extract<'a> for SRewardGeneratorComponentParams {
 
 /// DCB type: `SSpawnerAnalyticsEventGameplayTrigger`
 /// Inherits from: `SBaseAnalyticsEventGameplayTrigger`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SSpawnerAnalyticsEventGameplayTrigger {
     /// `analyticsEvent` (Reference)
-    #[serde(default)]
     pub analytics_event: Option<CigGuid>,
     /// `spawnedObjectFieldName` (String)
-    #[serde(default)]
     pub spawned_object_field_name: String,
 }
 
@@ -167,10 +150,8 @@ impl<'a> Extract<'a> for SSpawnerAnalyticsEventGameplayTrigger {
 
 /// DCB type: `SDissolveSelfGameplayTrigger`
 /// Inherits from: `SBaseInteractionGameplayTrigger`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SDissolveSelfGameplayTrigger {
     /// `enableDissolve` (Boolean)
-    #[serde(default)]
     pub enable_dissolve: bool,
 }
 
@@ -190,10 +171,8 @@ impl<'a> Extract<'a> for SDissolveSelfGameplayTrigger {
 
 /// DCB type: `SelfInteractionTrigger`
 /// Inherits from: `SelfCommunicationMessage`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SelfInteractionTrigger {
     /// `targetSelfInteraction` (WeakPointer)
-    #[serde(default)]
     pub target_self_interaction: Option<Handle<SSharedInteractionParams>>,
 }
 
@@ -216,10 +195,8 @@ impl<'a> Extract<'a> for SelfInteractionTrigger {
 
 /// DCB type: `GameplayTrigger_Physics_SetParameter_ProxyState`
 /// Inherits from: `GameplayTrigger_Physics_SetParameter_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GameplayTrigger_Physics_SetParameter_ProxyState {
     /// `proxyState` (EnumChoice)
-    #[serde(default)]
     pub proxy_state: GameplayTrigger_Toggle,
 }
 
@@ -239,10 +216,8 @@ impl<'a> Extract<'a> for GameplayTrigger_Physics_SetParameter_ProxyState {
 
 /// DCB type: `PhysicsSetParameterGameplayTrigger`
 /// Inherits from: `SBaseInteractionGameplayTrigger`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PhysicsSetParameterGameplayTrigger {
     /// `parametersToChange` (StrongPointer (array))
-    #[serde(default)]
     pub parameters_to_change: Vec<GameplayTrigger_Physics_SetParameter_BasePtr>,
 }
 

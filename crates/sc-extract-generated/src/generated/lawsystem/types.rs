@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,19 +19,14 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `SecurityNetworkRoomSettings`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SecurityNetworkRoomSettings {
     /// `defaultProtocol` (Class)
-    #[serde(default)]
     pub default_protocol: Option<Handle<SecurityNetworkProtocol>>,
     /// `roomIdentifier` (Reference)
-    #[serde(default)]
     pub room_identifier: Option<CigGuid>,
     /// `trespassWarningSeconds` (Single)
-    #[serde(default)]
     pub trespass_warning_seconds: f32,
     /// `trespassRevokeWarningSeconds` (Single)
-    #[serde(default)]
     pub trespass_revoke_warning_seconds: f32,
 }
 

@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,19 +19,14 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `MissionFailConditionParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MissionFailConditionParams {
     /// `triggerCondition` (Reference)
-    #[serde(default)]
     pub trigger_condition: Option<CigGuid>,
     /// `warningLevel` (Int32)
-    #[serde(default)]
     pub warning_level: i32,
     /// `displayText` (Locale)
-    #[serde(default)]
     pub display_text: LocaleKey,
     /// `useAutomaticFailureScreen` (Boolean)
-    #[serde(default)]
     pub use_automatic_failure_screen: bool,
 }
 
@@ -54,10 +48,8 @@ impl<'a> Extract<'a> for MissionFailConditionParams {
 }
 
 /// DCB type: `MissionFailConditionsList`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MissionFailConditionsList {
     /// `failureConditions` (Class (array))
-    #[serde(default)]
     pub failure_conditions: Vec<Handle<MissionFailConditionParams>>,
 }
 

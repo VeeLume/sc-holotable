@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -21,37 +20,26 @@ use super::super::*;
 
 /// DCB type: `SEffectInputParamsParticle`
 /// Inherits from: `SEffectInputParamsDC`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SEffectInputParamsParticle {
     /// `VarName` (String)
-    #[serde(default)]
     pub var_name: String,
     /// `ParamName` (String)
-    #[serde(default)]
     pub param_name: String,
     /// `MinRange` (Single)
-    #[serde(default)]
     pub min_range: f32,
     /// `MaxRange` (Single)
-    #[serde(default)]
     pub max_range: f32,
     /// `Multiplier` (Single)
-    #[serde(default)]
     pub multiplier: f32,
     /// `LerpTime` (Single)
-    #[serde(default)]
     pub lerp_time: f32,
     /// `VecGoal` (Class)
-    #[serde(default)]
     pub vec_goal: Option<Handle<Vec3>>,
     /// `DefaultValue` (Single)
-    #[serde(default)]
     pub default_value: f32,
     /// `Axis` (Class)
-    #[serde(default)]
     pub axis: Option<Handle<Vec3>>,
     /// `Type` (EnumChoice)
-    #[serde(default)]
     pub r#type: EParticleInputs,
 }
 
@@ -86,49 +74,34 @@ impl<'a> Extract<'a> for SEffectInputParamsParticle {
 
 /// DCB type: `SEffectParamParticle`
 /// Inherits from: `SEffectParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SEffectParamParticle {
     /// `Name` (String)
-    #[serde(default)]
     pub name: String,
     /// `tag` (String)
-    #[serde(default)]
     pub tag: String,
     /// `Helper` (String)
-    #[serde(default)]
     pub helper: String,
     /// `Offset` (Class)
-    #[serde(default)]
     pub offset: Option<Handle<QuatT>>,
     /// `IsLooped` (Boolean)
-    #[serde(default)]
     pub is_looped: bool,
     /// `Enabled` (Boolean)
-    #[serde(default)]
     pub enabled: bool,
     /// `Prime` (Boolean)
-    #[serde(default)]
     pub prime: bool,
     /// `Kill` (Boolean)
-    #[serde(default)]
     pub kill: bool,
     /// `Timer` (Single)
-    #[serde(default)]
     pub timer: f32,
     /// `RenderSlot` (Int32)
-    #[serde(default)]
     pub render_slot: i32,
     /// `ContextFlags` (UInt32)
-    #[serde(default)]
     pub context_flags: u32,
     /// `MultiPosition` (Boolean)
-    #[serde(default)]
     pub multi_position: bool,
     /// `Axis` (Class)
-    #[serde(default)]
     pub axis: Option<Handle<Vec3>>,
     /// `InputVariables` (Class (array))
-    #[serde(default)]
     pub input_variables: Vec<Handle<SEffectInputParamsParticle>>,
 }
 
@@ -173,16 +146,12 @@ impl<'a> Extract<'a> for SEffectParamParticle {
 
 /// DCB type: `SEffectParamsNodeParticle`
 /// Inherits from: `SEffectParamsNodeBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SEffectParamsNodeParticle {
     /// `GeomTags` (String)
-    #[serde(default)]
     pub geom_tags: String,
     /// `ParticleParams` (Class)
-    #[serde(default)]
     pub particle_params: Option<Handle<SEffectParamParticle>>,
     /// `SubNodes` (Class (array))
-    #[serde(default)]
     pub sub_nodes: Vec<Handle<SEffectParamsNodeParticle>>,
 }
 
@@ -213,7 +182,6 @@ impl<'a> Extract<'a> for SEffectParamsNodeParticle {
 
 /// DCB type: `GeomEntityGroupParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GeomEntityGroupParams {
 }
 
@@ -232,10 +200,8 @@ impl<'a> Extract<'a> for GeomEntityGroupParams {
 
 /// DCB type: `SetDoorPowerStateEvent`
 /// Inherits from: `EventDispatcher`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SetDoorPowerStateEvent {
     /// `newDoorPowerState` (EnumChoice)
-    #[serde(default)]
     pub new_door_power_state: EDoorPoweredState,
 }
 
@@ -255,7 +221,6 @@ impl<'a> Extract<'a> for SetDoorPowerStateEvent {
 
 /// DCB type: `SEntityTraversingNodeTypeZoneHostEntity`
 /// Inherits from: `SEntityTraversingNodeTypeParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SEntityTraversingNodeTypeZoneHostEntity {
 }
 
@@ -274,28 +239,20 @@ impl<'a> Extract<'a> for SEntityTraversingNodeTypeZoneHostEntity {
 
 /// DCB type: `SHydraulicPumpableComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SHydraulicPumpableComponentParams {
     /// `PumpPercentagePerSecondPerLever` (Single)
-    #[serde(default)]
     pub pump_percentage_per_second_per_lever: f32,
     /// `DecayPercentagePerSecond` (Single)
-    #[serde(default)]
     pub decay_percentage_per_second: f32,
     /// `EnabledInteractionWhenFullyCharged` (WeakPointer)
-    #[serde(default)]
     pub enabled_interaction_when_fully_charged: Option<Handle<SSharedInteractionParams>>,
     /// `StartChargingEffectTag` (Reference)
-    #[serde(default)]
     pub start_charging_effect_tag: Option<CigGuid>,
     /// `StartDecayingEffectTag` (Reference)
-    #[serde(default)]
     pub start_decaying_effect_tag: Option<CigGuid>,
     /// `FinishChargingEffectTag` (Reference)
-    #[serde(default)]
     pub finish_charging_effect_tag: Option<CigGuid>,
     /// `CurrentChargeRTPC` (Class)
-    #[serde(default)]
     pub current_charge_rtpc: Option<Handle<AudioRtpc>>,
 }
 
@@ -327,13 +284,10 @@ impl<'a> Extract<'a> for SHydraulicPumpableComponentParams {
 
 /// DCB type: `SInstancedInteriorGatewayParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SInstancedInteriorGatewayParams {
     /// `gatewaySize` (Int32)
-    #[serde(default)]
     pub gateway_size: i32,
     /// `instance` (Reference)
-    #[serde(default)]
     pub instance: Option<CigGuid>,
 }
 
@@ -354,10 +308,8 @@ impl<'a> Extract<'a> for SInstancedInteriorGatewayParams {
 
 /// DCB type: `InteractionConditionEligibleForPrisonRelease`
 /// Inherits from: `InteractionConditionParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InteractionConditionEligibleForPrisonRelease {
     /// `conditionDisplay` (StrongPointer)
-    #[serde(default)]
     pub condition_display: Option<Handle<ConditionDisplayParams>>,
 }
 
@@ -380,10 +332,8 @@ impl<'a> Extract<'a> for InteractionConditionEligibleForPrisonRelease {
 
 /// DCB type: `InteractionConditionAccessReservedRoom`
 /// Inherits from: `InteractionConditionParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InteractionConditionAccessReservedRoom {
     /// `conditionDisplay` (StrongPointer)
-    #[serde(default)]
     pub condition_display: Option<Handle<ConditionDisplayParams>>,
 }
 
@@ -406,13 +356,10 @@ impl<'a> Extract<'a> for InteractionConditionAccessReservedRoom {
 
 /// DCB type: `InteractionConditionPlayerInFront`
 /// Inherits from: `InteractionConditionParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InteractionConditionPlayerInFront {
     /// `conditionDisplay` (StrongPointer)
-    #[serde(default)]
     pub condition_display: Option<Handle<ConditionDisplayParams>>,
     /// `frontDirection` (Class)
-    #[serde(default)]
     pub front_direction: Option<Handle<Vec3>>,
 }
 
@@ -439,10 +386,8 @@ impl<'a> Extract<'a> for InteractionConditionPlayerInFront {
 
 /// DCB type: `SetDoorAutoCloseGameplayTrigger`
 /// Inherits from: `SBaseInteractionGameplayTrigger`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SetDoorAutoCloseGameplayTrigger {
     /// `useAutoCloseDelay` (Boolean)
-    #[serde(default)]
     pub use_auto_close_delay: bool,
 }
 
@@ -461,13 +406,10 @@ impl<'a> Extract<'a> for SetDoorAutoCloseGameplayTrigger {
 }
 
 /// DCB type: `LoadoutCheckGroup`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LoadoutCheckGroup {
     /// `debugName` (String)
-    #[serde(default)]
     pub debug_name: String,
     /// `requiredEntities` (Reference (array))
-    #[serde(default)]
     pub required_entities: Vec<CigGuid>,
 }
 
@@ -490,10 +432,8 @@ impl<'a> Extract<'a> for LoadoutCheckGroup {
 
 /// DCB type: `LoadoutEntityCheck`
 /// Inherits from: `LoadoutCheckType`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LoadoutEntityCheck {
     /// `entityGroup` (Class (array))
-    #[serde(default)]
     pub entity_group: Vec<Handle<LoadoutCheckGroup>>,
 }
 
@@ -519,16 +459,12 @@ impl<'a> Extract<'a> for LoadoutEntityCheck {
 
 /// DCB type: `CheckEntitiesOnActorsLoadoutWithinAreaGameplayTrigger`
 /// Inherits from: `SBaseInteractionGameplayTrigger`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CheckEntitiesOnActorsLoadoutWithinAreaGameplayTrigger {
     /// `checkType` (StrongPointer)
-    #[serde(default)]
     pub check_type: Option<LoadoutCheckTypePtr>,
     /// `successState` (WeakPointer)
-    #[serde(default)]
     pub success_state: Option<Handle<SInteractionState>>,
     /// `failState` (WeakPointer)
-    #[serde(default)]
     pub fail_state: Option<Handle<SInteractionState>>,
 }
 
@@ -559,13 +495,10 @@ impl<'a> Extract<'a> for CheckEntitiesOnActorsLoadoutWithinAreaGameplayTrigger {
 
 /// DCB type: `SCItemProximitySensorBoxParams`
 /// Inherits from: `SCItemProximitySensorShapeParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCItemProximitySensorBoxParams {
     /// `Extent` (Class)
-    #[serde(default)]
     pub extent: Option<Handle<Vec3>>,
     /// `Offset` (Class)
-    #[serde(default)]
     pub offset: Option<Handle<Vec3>>,
 }
 
@@ -592,25 +525,18 @@ impl<'a> Extract<'a> for SCItemProximitySensorBoxParams {
 
 /// DCB type: `SCItemDoorCodeProceduralParams`
 /// Inherits from: `SCItemDoorAnimationParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCItemDoorCodeProceduralParams {
     /// `DefaultAnimationDurationScale` (Single)
-    #[serde(default)]
     pub default_animation_duration_scale: f32,
     /// `SecondaryAnimationDurationScale` (Single)
-    #[serde(default)]
     pub secondary_animation_duration_scale: f32,
     /// `userAnimationParams` (StrongPointer)
-    #[serde(default)]
     pub user_animation_params: Option<Handle<SCItemDoorUserAnimationParams>>,
     /// `OpenedOffset` (Class)
-    #[serde(default)]
     pub opened_offset: Option<Handle<Vec3>>,
     /// `OpenCloseTime` (Single)
-    #[serde(default)]
     pub open_close_time: f32,
     /// `OpenCloseEasing` (Single)
-    #[serde(default)]
     pub open_close_easing: f32,
 }
 
@@ -641,10 +567,8 @@ impl<'a> Extract<'a> for SCItemDoorCodeProceduralParams {
 
 /// DCB type: `SDoorCollisionReactionToggleParams`
 /// Inherits from: `SDoorCollisionReactionParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SDoorCollisionReactionToggleParams {
     /// `CollisionReactionDirection` (EnumChoice)
-    #[serde(default)]
     pub collision_reaction_direction: EDoorCollisionReactionDirection,
 }
 
@@ -664,10 +588,8 @@ impl<'a> Extract<'a> for SDoorCollisionReactionToggleParams {
 
 /// DCB type: `SDoorCollisionReactionOpenParams`
 /// Inherits from: `SDoorCollisionReactionParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SDoorCollisionReactionOpenParams {
     /// `CollisionReactionDirection` (EnumChoice)
-    #[serde(default)]
     pub collision_reaction_direction: EDoorCollisionReactionDirection,
 }
 
@@ -687,19 +609,14 @@ impl<'a> Extract<'a> for SDoorCollisionReactionOpenParams {
 
 /// DCB type: `SCItemDoorHazardLightsParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCItemDoorHazardLightsParams {
     /// `ProbeOffset` (Class)
-    #[serde(default)]
     pub probe_offset: Option<Handle<Vec3>>,
     /// `NoHazardEffectGroup` (String)
-    #[serde(default)]
     pub no_hazard_effect_group: String,
     /// `MinorHazardEffectGroup` (String)
-    #[serde(default)]
     pub minor_hazard_effect_group: String,
     /// `MajorHazardEffectGroup` (String)
-    #[serde(default)]
     pub major_hazard_effect_group: String,
 }
 

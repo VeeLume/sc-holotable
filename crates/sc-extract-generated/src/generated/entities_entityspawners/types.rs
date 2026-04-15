@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -21,10 +20,8 @@ use super::super::*;
 
 /// DCB type: `SSpawnOnlyOnRequest`
 /// Inherits from: `SSpawnRules`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SSpawnOnlyOnRequest {
     /// `maxEntities` (Int32)
-    #[serde(default)]
     pub max_entities: i32,
 }
 
@@ -44,16 +41,12 @@ impl<'a> Extract<'a> for SSpawnOnlyOnRequest {
 
 /// DCB type: `SSequencerSpawnInUseableSpawnerTaskParams`
 /// Inherits from: `SSequencerSpawnerTaskParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SSequencerSpawnInUseableSpawnerTaskParams {
     /// `entityToSpawn` (Reference)
-    #[serde(default)]
     pub entity_to_spawn: Option<CigGuid>,
     /// `useChannel` (Reference)
-    #[serde(default)]
     pub use_channel: Option<CigGuid>,
     /// `triggerAreas` (Boolean)
-    #[serde(default)]
     pub trigger_areas: bool,
 }
 

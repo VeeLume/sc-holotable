@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,28 +19,20 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `FireHazardSurfaceProperties`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct FireHazardSurfaceProperties {
     /// `albedoTintStart` (Class)
-    #[serde(default)]
     pub albedo_tint_start: Option<Handle<SRGBA8>>,
     /// `albedoTintEnd` (Class)
-    #[serde(default)]
     pub albedo_tint_end: Option<Handle<SRGBA8>>,
     /// `specularTint` (Class)
-    #[serde(default)]
     pub specular_tint: Option<Handle<SRGBA8>>,
     /// `smoothnessTint` (Class)
-    #[serde(default)]
     pub smoothness_tint: Option<Handle<SRGBA8>>,
     /// `edgesIntensity` (Single)
-    #[serde(default)]
     pub edges_intensity: f32,
     /// `embersIntensity` (Single)
-    #[serde(default)]
     pub embers_intensity: f32,
     /// `burnSharpness` (Single)
-    #[serde(default)]
     pub burn_sharpness: f32,
 }
 
@@ -78,25 +69,18 @@ impl<'a> Extract<'a> for FireHazardSurfaceProperties {
 }
 
 /// DCB type: `FireHazardFireProperties`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct FireHazardFireProperties {
     /// `fireUnderlyingGlow` (Single)
-    #[serde(default)]
     pub fire_underlying_glow: f32,
     /// `fireIntensityMultiplier` (Single)
-    #[serde(default)]
     pub fire_intensity_multiplier: f32,
     /// `fireFlowmapMovementSpeed` (Single)
-    #[serde(default)]
     pub fire_flowmap_movement_speed: f32,
     /// `fireSwirlSpeed` (Single)
-    #[serde(default)]
     pub fire_swirl_speed: f32,
     /// `fireMovementSpeed` (Single)
-    #[serde(default)]
     pub fire_movement_speed: f32,
     /// `maximumLuminance` (Single)
-    #[serde(default)]
     pub maximum_luminance: f32,
 }
 
@@ -120,34 +104,24 @@ impl<'a> Extract<'a> for FireHazardFireProperties {
 }
 
 /// DCB type: `FireHazardAfterglowProperties`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct FireHazardAfterglowProperties {
     /// `maximumTemperature` (Single)
-    #[serde(default)]
     pub maximum_temperature: f32,
     /// `temperatureMultiplier` (Single)
-    #[serde(default)]
     pub temperature_multiplier: f32,
     /// `burnMaskEdgesStart` (Single)
-    #[serde(default)]
     pub burn_mask_edges_start: f32,
     /// `burnMaskEdgesEnd` (Single)
-    #[serde(default)]
     pub burn_mask_edges_end: f32,
     /// `incandescenceStrength` (Single)
-    #[serde(default)]
     pub incandescence_strength: f32,
     /// `edgesGlowStrength` (Single)
-    #[serde(default)]
     pub edges_glow_strength: f32,
     /// `edgesPerimeterStrength` (Single)
-    #[serde(default)]
     pub edges_perimeter_strength: f32,
     /// `edgesEmbersStrength` (Single)
-    #[serde(default)]
     pub edges_embers_strength: f32,
     /// `maximumLuminance` (Single)
-    #[serde(default)]
     pub maximum_luminance: f32,
 }
 
@@ -174,34 +148,24 @@ impl<'a> Extract<'a> for FireHazardAfterglowProperties {
 }
 
 /// DCB type: `FireHazardPermanentEffects`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct FireHazardPermanentEffects {
     /// `burnSize` (Single)
-    #[serde(default)]
     pub burn_size: f32,
     /// `heightmapSize` (Single)
-    #[serde(default)]
     pub heightmap_size: f32,
     /// `fireSize` (Single)
-    #[serde(default)]
     pub fire_size: f32,
     /// `triplanarDitherRepeat` (Single)
-    #[serde(default)]
     pub triplanar_dither_repeat: f32,
     /// `triplanarDitherMaxAngle` (Single)
-    #[serde(default)]
     pub triplanar_dither_max_angle: f32,
     /// `breakupSize` (Single)
-    #[serde(default)]
     pub breakup_size: f32,
     /// `fire` (Class)
-    #[serde(default)]
     pub fire: Option<Handle<FireHazardFireProperties>>,
     /// `afterglow` (Class)
-    #[serde(default)]
     pub afterglow: Option<Handle<FireHazardAfterglowProperties>>,
     /// `surfaces` (Class)
-    #[serde(default)]
     pub surfaces: Option<Handle<FireHazardSurfaceProperties>>,
 }
 
@@ -237,22 +201,16 @@ impl<'a> Extract<'a> for FireHazardPermanentEffects {
 }
 
 /// DCB type: `FireHazardSpawnParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct FireHazardSpawnParams {
     /// `floorMaxAngle` (Single)
-    #[serde(default)]
     pub floor_max_angle: f32,
     /// `wallsMaxAngle` (Single)
-    #[serde(default)]
     pub walls_max_angle: f32,
     /// `ceilingMaxAngle` (Single)
-    #[serde(default)]
     pub ceiling_max_angle: f32,
     /// `lodTransitionDistance` (Single)
-    #[serde(default)]
     pub lod_transition_distance: f32,
     /// `lodEffectReferenceVolume` (Single)
-    #[serde(default)]
     pub lod_effect_reference_volume: f32,
 }
 
@@ -275,19 +233,14 @@ impl<'a> Extract<'a> for FireHazardSpawnParams {
 }
 
 /// DCB type: `FireHazardFogNoiseParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct FireHazardFogNoiseParams {
     /// `noiseFrequency` (Class)
-    #[serde(default)]
     pub noise_frequency: Option<Handle<Vec3>>,
     /// `noiseScale` (Single)
-    #[serde(default)]
     pub noise_scale: f32,
     /// `noiseSpeed` (Single)
-    #[serde(default)]
     pub noise_speed: f32,
     /// `noiseTexture` (EnumChoice)
-    #[serde(default)]
     pub noise_texture: FireHazardFogNoiseTextures,
 }
 
@@ -312,31 +265,22 @@ impl<'a> Extract<'a> for FireHazardFogNoiseParams {
 }
 
 /// DCB type: `FireHazardFogParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct FireHazardFogParams {
     /// `softEdges` (Single)
-    #[serde(default)]
     pub soft_edges: f32,
     /// `densityOffset` (Single)
-    #[serde(default)]
     pub density_offset: f32,
     /// `densityMultiplier` (Single)
-    #[serde(default)]
     pub density_multiplier: f32,
     /// `maximumDistance` (Single)
-    #[serde(default)]
     pub maximum_distance: f32,
     /// `saturationDensity` (Single)
-    #[serde(default)]
     pub saturation_density: f32,
     /// `falloffSharpness` (Single)
-    #[serde(default)]
     pub falloff_sharpness: f32,
     /// `noiseVolumeOffset` (Single)
-    #[serde(default)]
     pub noise_volume_offset: f32,
     /// `noise` (Class)
-    #[serde(default)]
     pub noise: Option<Handle<FireHazardFogNoiseParams>>,
 }
 
@@ -365,43 +309,30 @@ impl<'a> Extract<'a> for FireHazardFogParams {
 }
 
 /// DCB type: `FireHazardGlobalParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct FireHazardGlobalParams {
     /// `update` (Class)
-    #[serde(default)]
     pub update: Option<Handle<FireHazardGlobalUpdate>>,
     /// `ignition` (Class)
-    #[serde(default)]
     pub ignition: Option<Handle<FireHazardGlobalIgnition>>,
     /// `propagation` (Class)
-    #[serde(default)]
     pub propagation: Option<Handle<FireHazardGlobalPropagation>>,
     /// `smoke` (Class)
-    #[serde(default)]
     pub smoke: Option<Handle<FireHazardGlobalSmokeParams>>,
     /// `damageToHealth` (Class)
-    #[serde(default)]
     pub damage_to_health: Option<Handle<FireHazardGlobalDamageToHealthParams>>,
     /// `extinguishing` (Class)
-    #[serde(default)]
     pub extinguishing: Option<Handle<FireHazardGlobalExtinguishing>>,
     /// `defaultEffects` (Class)
-    #[serde(default)]
     pub default_effects: Option<Handle<FireHazardGlobalDefaultEffects>>,
     /// `lightParams` (Class)
-    #[serde(default)]
     pub light_params: Option<Handle<FireHazardGlobalLightParams>>,
     /// `roomConnector` (Class)
-    #[serde(default)]
     pub room_connector: Option<Handle<FireHazardGlobalRoomConnectorParams>>,
     /// `particleSpawning` (Class)
-    #[serde(default)]
     pub particle_spawning: Option<Handle<FireHazardSpawnParams>>,
     /// `fog` (Class)
-    #[serde(default)]
     pub fog: Option<Handle<FireHazardFogParams>>,
     /// `permanentEffects` (Class)
-    #[serde(default)]
     pub permanent_effects: Option<Handle<FireHazardPermanentEffects>>,
 }
 
@@ -467,10 +398,8 @@ impl<'a> Extract<'a> for FireHazardGlobalParams {
 }
 
 /// DCB type: `FireHazardGlobalUpdate`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct FireHazardGlobalUpdate {
     /// `fixedFPS` (Int32)
-    #[serde(default)]
     pub fixed_fps: i32,
 }
 
@@ -489,28 +418,20 @@ impl<'a> Extract<'a> for FireHazardGlobalUpdate {
 }
 
 /// DCB type: `FireHazardGlobalIgnition`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct FireHazardGlobalIgnition {
     /// `globalIgnitionChanceMultiplier` (Single)
-    #[serde(default)]
     pub global_ignition_chance_multiplier: f32,
     /// `explosionChanceMultiplier` (Single)
-    #[serde(default)]
     pub explosion_chance_multiplier: f32,
     /// `projectileChanceMultiplier` (Single)
-    #[serde(default)]
     pub projectile_chance_multiplier: f32,
     /// `collisionChanceMultiplier` (Single)
-    #[serde(default)]
     pub collision_chance_multiplier: f32,
     /// `fallbackChanceMultiplier` (Single)
-    #[serde(default)]
     pub fallback_chance_multiplier: f32,
     /// `globalFlashIgnitionThresholdMultiplier` (Single)
-    #[serde(default)]
     pub global_flash_ignition_threshold_multiplier: f32,
     /// `damageTypeIgnitionModifiers` (Single)
-    #[serde(default)]
     pub damage_type_ignition_modifiers: f32,
 }
 
@@ -535,34 +456,24 @@ impl<'a> Extract<'a> for FireHazardGlobalIgnition {
 }
 
 /// DCB type: `FireHazardGlobalPropagation`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct FireHazardGlobalPropagation {
     /// `fireMassThreshold` (Single)
-    #[serde(default)]
     pub fire_mass_threshold: f32,
     /// `radiativeFactor` (Single)
-    #[serde(default)]
     pub radiative_factor: f32,
     /// `minimumHeatIntensityOutput` (Single)
-    #[serde(default)]
     pub minimum_heat_intensity_output: f32,
     /// `maximumRadiationRadius` (Single)
-    #[serde(default)]
     pub maximum_radiation_radius: f32,
     /// `maximumConvectionDistance` (Single)
-    #[serde(default)]
     pub maximum_convection_distance: f32,
     /// `standardConvectionTemperature` (Single)
-    #[serde(default)]
     pub standard_convection_temperature: f32,
     /// `surfaceAreaBurnRateCurveVoxels` (Single)
-    #[serde(default)]
     pub surface_area_burn_rate_curve_voxels: f32,
     /// `surfaceAreaBurnRateCurveEntities` (Single)
-    #[serde(default)]
     pub surface_area_burn_rate_curve_entities: f32,
     /// `oxygenPressureRange` (Class)
-    #[serde(default)]
     pub oxygen_pressure_range: Option<Handle<Range>>,
 }
 
@@ -592,19 +503,14 @@ impl<'a> Extract<'a> for FireHazardGlobalPropagation {
 }
 
 /// DCB type: `FireHazardGlobalSmokeParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct FireHazardGlobalSmokeParams {
     /// `defaultSmokeComposition` (Reference)
-    #[serde(default)]
     pub default_smoke_composition: Option<CigGuid>,
     /// `dynamicPart` (Single)
-    #[serde(default)]
     pub dynamic_part: f32,
     /// `particulateMatter` (Reference)
-    #[serde(default)]
     pub particulate_matter: Option<CigGuid>,
     /// `waterVapor` (Reference)
-    #[serde(default)]
     pub water_vapor: Option<CigGuid>,
 }
 
@@ -626,22 +532,16 @@ impl<'a> Extract<'a> for FireHazardGlobalSmokeParams {
 }
 
 /// DCB type: `FireHazardGlobalDamageToHealthParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct FireHazardGlobalDamageToHealthParams {
     /// `minimumDamageTemperature` (Single)
-    #[serde(default)]
     pub minimum_damage_temperature: f32,
     /// `baseDamage` (Single)
-    #[serde(default)]
     pub base_damage: f32,
     /// `referenceHealth` (Single)
-    #[serde(default)]
     pub reference_health: f32,
     /// `curveAngle` (Single)
-    #[serde(default)]
     pub curve_angle: f32,
     /// `curveOffset` (Single)
-    #[serde(default)]
     pub curve_offset: f32,
 }
 
@@ -664,22 +564,16 @@ impl<'a> Extract<'a> for FireHazardGlobalDamageToHealthParams {
 }
 
 /// DCB type: `FireHazardGlobalExtinguishing`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct FireHazardGlobalExtinguishing {
     /// `oxygenReduction` (Single)
-    #[serde(default)]
     pub oxygen_reduction: f32,
     /// `heatTransferMultiplier` (Single)
-    #[serde(default)]
     pub heat_transfer_multiplier: f32,
     /// `radiationAbsorption` (Single)
-    #[serde(default)]
     pub radiation_absorption: f32,
     /// `vectorFieldPathSpray` (String)
-    #[serde(default)]
     pub vector_field_path_spray: String,
     /// `vectorFieldPathSphere` (String)
-    #[serde(default)]
     pub vector_field_path_sphere: String,
 }
 
@@ -702,34 +596,24 @@ impl<'a> Extract<'a> for FireHazardGlobalExtinguishing {
 }
 
 /// DCB type: `FireHazardGlobalDefaultEffects`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct FireHazardGlobalDefaultEffects {
     /// `voxelFireEffect` (String)
-    #[serde(default)]
     pub voxel_fire_effect: String,
     /// `voxelFlashIgnitionEffect` (Class)
-    #[serde(default)]
     pub voxel_flash_ignition_effect: Option<Handle<GlobalResourceParticle>>,
     /// `entityFireEffect` (Class)
-    #[serde(default)]
     pub entity_fire_effect: Option<Handle<GlobalResourceParticle>>,
     /// `entitySmokeEffect` (Class)
-    #[serde(default)]
     pub entity_smoke_effect: Option<Handle<GlobalResourceParticle>>,
     /// `defaultSprayExtinguishingEffect` (Class)
-    #[serde(default)]
     pub default_spray_extinguishing_effect: Option<Handle<GlobalResourceParticle>>,
     /// `defaultSphereExtinguishingEffect` (Class)
-    #[serde(default)]
     pub default_sphere_extinguishing_effect: Option<Handle<GlobalResourceParticle>>,
     /// `maximumSmokeEmission` (Single)
-    #[serde(default)]
     pub maximum_smoke_emission: f32,
     /// `entityReferenceSize` (Single)
-    #[serde(default)]
     pub entity_reference_size: f32,
     /// `entityMinimumSize` (Single)
-    #[serde(default)]
     pub entity_minimum_size: f32,
 }
 
@@ -771,70 +655,48 @@ impl<'a> Extract<'a> for FireHazardGlobalDefaultEffects {
 }
 
 /// DCB type: `FireHazardGlobalLightParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct FireHazardGlobalLightParams {
     /// `lightColor` (Class)
-    #[serde(default)]
     pub light_color: Option<Handle<RGB>>,
     /// `maxLights` (Int32)
-    #[serde(default)]
     pub max_lights: i32,
     /// `teleportCooldown` (Single)
-    #[serde(default)]
     pub teleport_cooldown: f32,
     /// `selectionRadius` (Single)
-    #[serde(default)]
     pub selection_radius: f32,
     /// `animMoveSpeed` (Single)
-    #[serde(default)]
     pub anim_move_speed: f32,
     /// `animGrowSpeed` (Single)
-    #[serde(default)]
     pub anim_grow_speed: f32,
     /// `animShrinkSpeed` (Single)
-    #[serde(default)]
     pub anim_shrink_speed: f32,
     /// `radius` (Single)
-    #[serde(default)]
     pub radius: f32,
     /// `bulbRadiusRange` (Class)
-    #[serde(default)]
     pub bulb_radius_range: Option<Handle<Range>>,
     /// `lightIntensityRange` (Class)
-    #[serde(default)]
     pub light_intensity_range: Option<Handle<Range>>,
     /// `specularMultiplier` (Single)
-    #[serde(default)]
     pub specular_multiplier: f32,
     /// `fogMultiplier` (Single)
-    #[serde(default)]
     pub fog_multiplier: f32,
     /// `fogOcclusionFalloff` (Single)
-    #[serde(default)]
     pub fog_occlusion_falloff: f32,
     /// `lightAnimStyle` (Byte)
-    #[serde(default)]
     pub light_anim_style: u32,
     /// `lightAnimSpeed` (Single)
-    #[serde(default)]
     pub light_anim_speed: f32,
     /// `softness` (Single)
-    #[serde(default)]
     pub softness: f32,
     /// `maxHeatReleaseRate` (Single)
-    #[serde(default)]
     pub max_heat_release_rate: f32,
     /// `lightTemperature` (Single)
-    #[serde(default)]
     pub light_temperature: f32,
     /// `useTemperature` (Boolean)
-    #[serde(default)]
     pub use_temperature: bool,
     /// `affectsFog` (Boolean)
-    #[serde(default)]
     pub affects_fog: bool,
     /// `shadowMap` (Boolean)
-    #[serde(default)]
     pub shadow_map: bool,
 }
 
@@ -882,37 +744,26 @@ impl<'a> Extract<'a> for FireHazardGlobalLightParams {
 }
 
 /// DCB type: `FireHazardGlobalRoomConnectorParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct FireHazardGlobalRoomConnectorParams {
     /// `igniteThreshold` (Single)
-    #[serde(default)]
     pub ignite_threshold: f32,
     /// `maxVolumeRadius` (Single)
-    #[serde(default)]
     pub max_volume_radius: f32,
     /// `vectorFieldPath` (String)
-    #[serde(default)]
     pub vector_field_path: String,
     /// `vectorFieldRotation` (Single)
-    #[serde(default)]
     pub vector_field_rotation: f32,
     /// `vectorFieldRadius` (Single)
-    #[serde(default)]
     pub vector_field_radius: f32,
     /// `vectorFieldFalloff` (Single)
-    #[serde(default)]
     pub vector_field_falloff: f32,
     /// `vectorFieldThreshold` (Single)
-    #[serde(default)]
     pub vector_field_threshold: f32,
     /// `vectorFieldMaxHeatReleaseRateDiff` (Single)
-    #[serde(default)]
     pub vector_field_max_heat_release_rate_diff: f32,
     /// `vectorFieldMaxStrength` (Single)
-    #[serde(default)]
     pub vector_field_max_strength: f32,
     /// `vectorFieldDepth` (Single)
-    #[serde(default)]
     pub vector_field_depth: f32,
 }
 
@@ -940,10 +791,8 @@ impl<'a> Extract<'a> for FireHazardGlobalRoomConnectorParams {
 }
 
 /// DCB type: `LightningBehavior`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LightningBehavior {
     /// `effects` (Class (array))
-    #[serde(default)]
     pub effects: Vec<Handle<LightningBehavior_Effect>>,
 }
 
@@ -968,16 +817,12 @@ impl<'a> Extract<'a> for LightningBehavior {
 }
 
 /// DCB type: `LightningBehavior_Effect`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LightningBehavior_Effect {
     /// `lightningEffect` (String)
-    #[serde(default)]
     pub lightning_effect: String,
     /// `targetModes` (StrongPointer (array))
-    #[serde(default)]
     pub target_modes: Vec<LightningTargetModePtr>,
     /// `audio` (Class)
-    #[serde(default)]
     pub audio: Option<Handle<LightningStrikeAudio>>,
 }
 
@@ -1006,10 +851,8 @@ impl<'a> Extract<'a> for LightningBehavior_Effect {
 }
 
 /// DCB type: `LightningTargetMode`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LightningTargetMode {
     /// `enable` (Boolean)
-    #[serde(default)]
     pub enable: bool,
 }
 
@@ -1028,25 +871,18 @@ impl<'a> Extract<'a> for LightningTargetMode {
 }
 
 /// DCB type: `ApparentTemperatureParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ApparentTemperatureParams {
     /// `heatIndexBlendThreshold` (Double)
-    #[serde(default)]
     pub heat_index_blend_threshold: f64,
     /// `heatIndexHardThreshold` (Double)
-    #[serde(default)]
     pub heat_index_hard_threshold: f64,
     /// `windChillBlendThreshold` (Double)
-    #[serde(default)]
     pub wind_chill_blend_threshold: f64,
     /// `windChillHardThreshold` (Double)
-    #[serde(default)]
     pub wind_chill_hard_threshold: f64,
     /// `maxPressureForScaling` (Double)
-    #[serde(default)]
     pub max_pressure_for_scaling: f64,
     /// `defaultTemperatureForPressureScaling` (Double)
-    #[serde(default)]
     pub default_temperature_for_pressure_scaling: f64,
 }
 
@@ -1070,46 +906,32 @@ impl<'a> Extract<'a> for ApparentTemperatureParams {
 }
 
 /// DCB type: `GlobalGasParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GlobalGasParams {
     /// `transferRatePerAtmosphereSquareMetre` (Double)
-    #[serde(default)]
     pub transfer_rate_per_atmosphere_square_metre: f64,
     /// `minimumTransferRate` (Double)
-    #[serde(default)]
     pub minimum_transfer_rate: f64,
     /// `mixRatePerSquareMetre` (Double)
-    #[serde(default)]
     pub mix_rate_per_square_metre: f64,
     /// `mixAbsPressureDifferenceThreshold` (Double)
-    #[serde(default)]
     pub mix_abs_pressure_difference_threshold: f64,
     /// `massAdditionRatePerCubicMetre_MatchingGases` (Double)
-    #[serde(default)]
     pub mass_addition_rate_per_cubic_metre_matching_gases: f64,
     /// `massSubtractionRatePerCubicMetre_MatchingGases` (Double)
-    #[serde(default)]
     pub mass_subtraction_rate_per_cubic_metre_matching_gases: f64,
     /// `massSubtractionRatePerCubicMetre_ForeignGases` (Double)
-    #[serde(default)]
     pub mass_subtraction_rate_per_cubic_metre_foreign_gases: f64,
     /// `resourceCostPerKilogramCorrected` (Double)
-    #[serde(default)]
     pub resource_cost_per_kilogram_corrected: f64,
     /// `thermalEnergyCorrectionRatePerCubicMetre` (Double)
-    #[serde(default)]
     pub thermal_energy_correction_rate_per_cubic_metre: f64,
     /// `resourceCostPerJoule` (Double)
-    #[serde(default)]
     pub resource_cost_per_joule: f64,
     /// `humidityCorrectionRate` (Double)
-    #[serde(default)]
     pub humidity_correction_rate: f64,
     /// `resourceCostPerHumidity` (Double)
-    #[serde(default)]
     pub resource_cost_per_humidity: f64,
     /// `apparentTemperatureParams` (Class)
-    #[serde(default)]
     pub apparent_temperature_params: Option<Handle<ApparentTemperatureParams>>,
 }
 
@@ -1143,19 +965,14 @@ impl<'a> Extract<'a> for GlobalGasParams {
 }
 
 /// DCB type: `GlobalRoomStateParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GlobalRoomStateParams {
     /// `typeRanges` (Class)
-    #[serde(default)]
     pub type_ranges: Option<Handle<Range>>,
     /// `typeDebugColors` (Class)
-    #[serde(default)]
     pub type_debug_colors: Option<Handle<RGB>>,
     /// `debugParticles` (Class)
-    #[serde(default)]
     pub debug_particles: Option<Handle<GlobalResourceParticle>>,
     /// `defaultSpaceDust` (Class)
-    #[serde(default)]
     pub default_space_dust: Option<Handle<WeatherEffects_SpaceLoopEffect>>,
 }
 
@@ -1190,13 +1007,10 @@ impl<'a> Extract<'a> for GlobalRoomStateParams {
 
 /// DCB type: `ElectricalStateTemplateInternal`
 /// Inherits from: `ElectricalState`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ElectricalStateTemplateInternal {
     /// `chargeMod` (EnumChoice)
-    #[serde(default)]
     pub charge_mod: RoomStateModifyType,
     /// `charge` (Single)
-    #[serde(default)]
     pub charge: f32,
 }
 
@@ -1216,10 +1030,8 @@ impl<'a> Extract<'a> for ElectricalStateTemplateInternal {
 }
 
 /// DCB type: `ElectricalStateTemplate`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ElectricalStateTemplate {
     /// `state` (Class)
-    #[serde(default)]
     pub state: Option<Handle<ElectricalStateTemplateInternal>>,
 }
 
@@ -1241,13 +1053,10 @@ impl<'a> Extract<'a> for ElectricalStateTemplate {
 }
 
 /// DCB type: `ElectricalCalculationPropertyRange`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ElectricalCalculationPropertyRange {
     /// `type` (EnumChoice)
-    #[serde(default)]
     pub r#type: ElectricalCalculationPropertyType,
     /// `range` (Class)
-    #[serde(default)]
     pub range: Option<Handle<Range>>,
 }
 
@@ -1271,19 +1080,14 @@ impl<'a> Extract<'a> for ElectricalCalculationPropertyRange {
 
 /// DCB type: `Behavior_ElectricalVehicleEffectParams`
 /// Inherits from: `Behavior_VehicleEffectParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Behavior_ElectricalVehicleEffectParams {
     /// `enableEngineTrails` (Boolean)
-    #[serde(default)]
     pub enable_engine_trails: bool,
     /// `enableEngineContrails` (Boolean)
-    #[serde(default)]
     pub enable_engine_contrails: bool,
     /// `customVehicleEffects` (StrongPointer)
-    #[serde(default)]
     pub custom_vehicle_effects: Option<Handle<Behavior_CustomVehicleEffectsPreset>>,
     /// `customVehicleCalculation` (Class)
-    #[serde(default)]
     pub custom_vehicle_calculation: Option<Handle<ElectricalCalculationPropertyRange>>,
 }
 
@@ -1311,13 +1115,10 @@ impl<'a> Extract<'a> for Behavior_ElectricalVehicleEffectParams {
 }
 
 /// DCB type: `ElectricalBehavior`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ElectricalBehavior {
     /// `lightning` (Class)
-    #[serde(default)]
     pub lightning: Option<Handle<LightningBehavior>>,
     /// `vehicleEffects` (Class)
-    #[serde(default)]
     pub vehicle_effects: Option<Handle<Behavior_ElectricalVehicleEffectParams>>,
 }
 
@@ -1344,16 +1145,12 @@ impl<'a> Extract<'a> for ElectricalBehavior {
 
 /// DCB type: `RadiationBehavior_AsteroidDesignCurveSurfaceRadiationParams`
 /// Inherits from: `RadiationBehavior_SurfaceRadiationParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct RadiationBehavior_AsteroidDesignCurveSurfaceRadiationParams {
     /// `scaleOnLargestAsteroid` (Single)
-    #[serde(default)]
     pub scale_on_largest_asteroid: f32,
     /// `radiusRange` (Class)
-    #[serde(default)]
     pub radius_range: Option<Handle<Range>>,
     /// `curve` (Class)
-    #[serde(default)]
     pub curve: Option<Handle<BezierCurve>>,
 }
 
@@ -1381,19 +1178,14 @@ impl<'a> Extract<'a> for RadiationBehavior_AsteroidDesignCurveSurfaceRadiationPa
 
 /// DCB type: `RadiationBehavior_AsteroidInverseSquareSurfaceRadiationParams`
 /// Inherits from: `RadiationBehavior_SurfaceRadiationParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct RadiationBehavior_AsteroidInverseSquareSurfaceRadiationParams {
     /// `scaleOnLargestAsteroid` (Single)
-    #[serde(default)]
     pub scale_on_largest_asteroid: f32,
     /// `radiusScale` (Single)
-    #[serde(default)]
     pub radius_scale: f32,
     /// `intensityScale` (Single)
-    #[serde(default)]
     pub intensity_scale: f32,
     /// `intensityCutoff` (Single)
-    #[serde(default)]
     pub intensity_cutoff: f32,
 }
 
@@ -1415,13 +1207,10 @@ impl<'a> Extract<'a> for RadiationBehavior_AsteroidInverseSquareSurfaceRadiation
 }
 
 /// DCB type: `WeatherEffects_Atmosphere_Property`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct WeatherEffects_Atmosphere_Property {
     /// `type` (EnumChoice)
-    #[serde(default)]
     pub r#type: AtmosphereStatePropertyType,
     /// `interpolationRange` (Class)
-    #[serde(default)]
     pub interpolation_range: Option<Handle<Range>>,
 }
 
@@ -1445,16 +1234,12 @@ impl<'a> Extract<'a> for WeatherEffects_Atmosphere_Property {
 
 /// DCB type: `WeatherEffects_Atmosphere_MultiPropertyValue`
 /// Inherits from: `WeatherEffects_Atmosphere`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct WeatherEffects_Atmosphere_MultiPropertyValue {
     /// `spaceLoopEffect` (Class)
-    #[serde(default)]
     pub space_loop_effect: Option<Handle<WeatherEffects_SpaceLoopEffect>>,
     /// `causesPuddles` (Boolean)
-    #[serde(default)]
     pub causes_puddles: bool,
     /// `properties` (Class (array))
-    #[serde(default)]
     pub properties: Vec<Handle<WeatherEffects_Atmosphere_Property>>,
 }
 
@@ -1485,13 +1270,10 @@ impl<'a> Extract<'a> for WeatherEffects_Atmosphere_MultiPropertyValue {
 
 /// DCB type: `WeatherEffects_Atmosphere_GasCloudOpticalDensity`
 /// Inherits from: `WeatherEffects_Atmosphere`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct WeatherEffects_Atmosphere_GasCloudOpticalDensity {
     /// `spaceLoopEffect` (Class)
-    #[serde(default)]
     pub space_loop_effect: Option<Handle<WeatherEffects_SpaceLoopEffect>>,
     /// `interpolationRange` (Class)
-    #[serde(default)]
     pub interpolation_range: Option<Handle<Range>>,
 }
 

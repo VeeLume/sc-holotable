@@ -9,14 +9,11 @@
 
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
-use serde::{Deserialize, Serialize};
 use super::super::*;
 
 /// Pool storage for the `ui-digitalsignage` feature.
-#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+#[derive(Default)]
 pub struct UiDigitalsignagePools {
-    #[serde(default)]
     pub digital_signage_content: Vec<Option<DigitalSignageContent>>,
-    #[serde(default)]
     pub digital_signage_content_set: Vec<Option<DigitalSignageContentSet>>,
 }

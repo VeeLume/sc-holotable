@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,28 +19,20 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `JumpTunnelEffectTintingParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct JumpTunnelEffectTintingParams {
     /// `startColor` (Class)
-    #[serde(default)]
     pub start_color: Option<Handle<RGB>>,
     /// `midColor` (Class)
-    #[serde(default)]
     pub mid_color: Option<Handle<RGB>>,
     /// `endColor` (Class)
-    #[serde(default)]
     pub end_color: Option<Handle<RGB>>,
     /// `startGlow` (Single)
-    #[serde(default)]
     pub start_glow: f32,
     /// `endGlow` (Single)
-    #[serde(default)]
     pub end_glow: f32,
     /// `distanceBeforeMidPoint` (Single)
-    #[serde(default)]
     pub distance_before_mid_point: f32,
     /// `distanceAfterMidPoint` (Single)
-    #[serde(default)]
     pub distance_after_mid_point: f32,
 }
 
@@ -75,19 +66,14 @@ impl<'a> Extract<'a> for JumpTunnelEffectTintingParams {
 }
 
 /// DCB type: `JumpTunnelCubeMapParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct JumpTunnelCubeMapParams {
     /// `entrySpecProbe` (Class)
-    #[serde(default)]
     pub entry_spec_probe: Option<Handle<GlobalResourceTextureDDS>>,
     /// `entryDiffProbe` (Class)
-    #[serde(default)]
     pub entry_diff_probe: Option<Handle<GlobalResourceTextureDDS>>,
     /// `exitSpecProbe` (Class)
-    #[serde(default)]
     pub exit_spec_probe: Option<Handle<GlobalResourceTextureDDS>>,
     /// `exitDiffProbe` (Class)
-    #[serde(default)]
     pub exit_diff_probe: Option<Handle<GlobalResourceTextureDDS>>,
 }
 
@@ -121,13 +107,10 @@ impl<'a> Extract<'a> for JumpTunnelCubeMapParams {
 }
 
 /// DCB type: `JumpPointEffectParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct JumpPointEffectParams {
     /// `tunnelEffectTinting` (Class)
-    #[serde(default)]
     pub tunnel_effect_tinting: Option<Handle<JumpTunnelEffectTintingParams>>,
     /// `cubeMapParams` (Class)
-    #[serde(default)]
     pub cube_map_params: Option<Handle<JumpTunnelCubeMapParams>>,
 }
 
@@ -154,28 +137,20 @@ impl<'a> Extract<'a> for JumpPointEffectParams {
 
 /// DCB type: `SJumpPointParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SJumpPointParams {
     /// `jumpGateSuperGuid` (String)
-    #[serde(default)]
     pub jump_gate_super_guid: String,
     /// `effectParams` (Class)
-    #[serde(default)]
     pub effect_params: Option<Handle<JumpPointEffectParams>>,
     /// `entrancePushAreaParams` (Class)
-    #[serde(default)]
     pub entrance_push_area_params: Option<Handle<SJumpPointPushAreaParams>>,
     /// `pushAreaRadarGeometryName` (String)
-    #[serde(default)]
     pub push_area_radar_geometry_name: String,
     /// `largestShipSize` (Reference)
-    #[serde(default)]
     pub largest_ship_size: Option<CigGuid>,
     /// `linkingRange` (Single)
-    #[serde(default)]
     pub linking_range: f32,
     /// `requiredFuel` (Single)
-    #[serde(default)]
     pub required_fuel: f32,
 }
 
@@ -207,7 +182,6 @@ impl<'a> Extract<'a> for SJumpPointParams {
 
 /// DCB type: `SJumpPointATCParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SJumpPointATCParams {
 }
 
@@ -226,7 +200,6 @@ impl<'a> Extract<'a> for SJumpPointATCParams {
 
 /// DCB type: `SJumpTunnelHostParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SJumpTunnelHostParams {
 }
 
@@ -245,10 +218,8 @@ impl<'a> Extract<'a> for SJumpTunnelHostParams {
 
 /// DCB type: `GlobalResourceTextureDDS`
 /// Inherits from: `GlobalResourceBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GlobalResourceTextureDDS {
     /// `path` (String)
-    #[serde(default)]
     pub path: String,
 }
 

@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -21,19 +20,14 @@ use super::super::*;
 
 /// DCB type: `LadderNavigationLink`
 /// Inherits from: `NavigationLinkType`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LadderNavigationLink {
     /// `linkValidForAgentType` (String)
-    #[serde(default)]
     pub link_valid_for_agent_type: String,
     /// `costMultiplierSetup` (Class)
-    #[serde(default)]
     pub cost_multiplier_setup: Option<Handle<NavigationLinkCostCustomization>>,
     /// `linkingType` (EnumChoice)
-    #[serde(default)]
     pub linking_type: ENavigationLinkLinkingType,
     /// `useChannel` (WeakPointer)
-    #[serde(default)]
     pub use_channel: Option<Handle<UsableUseChannelInstance>>,
 }
 
@@ -61,13 +55,10 @@ impl<'a> Extract<'a> for LadderNavigationLink {
 }
 
 /// DCB type: `ExitCollisionCheckOverrideParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ExitCollisionCheckOverrideParams {
     /// `offset` (Class)
-    #[serde(default)]
     pub offset: Option<Handle<Vec3>>,
     /// `scale` (Single)
-    #[serde(default)]
     pub scale: f32,
 }
 
@@ -90,19 +81,14 @@ impl<'a> Extract<'a> for ExitCollisionCheckOverrideParams {
 }
 
 /// DCB type: `AutoMountRadiusParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AutoMountRadiusParams {
     /// `radiusWhenWalking` (Single)
-    #[serde(default)]
     pub radius_when_walking: f32,
     /// `radiusWhenRunning` (Single)
-    #[serde(default)]
     pub radius_when_running: f32,
     /// `radiusWhenSprinting` (Single)
-    #[serde(default)]
     pub radius_when_sprinting: f32,
     /// `radiusOffset` (Single)
-    #[serde(default)]
     pub radius_offset: f32,
 }
 
@@ -124,25 +110,18 @@ impl<'a> Extract<'a> for AutoMountRadiusParams {
 }
 
 /// DCB type: `LadderAccessClimbParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LadderAccessClimbParams {
     /// `approachAngle` (Single)
-    #[serde(default)]
     pub approach_angle: f32,
     /// `facingAngle` (Single)
-    #[serde(default)]
     pub facing_angle: f32,
     /// `autoMountRadiusOffset` (Single)
-    #[serde(default)]
     pub auto_mount_radius_offset: f32,
     /// `autoMountRadius` (Single)
-    #[serde(default)]
     pub auto_mount_radius: f32,
     /// `exitCollisionCheckOverride` (StrongPointer)
-    #[serde(default)]
     pub exit_collision_check_override: Option<Handle<ExitCollisionCheckOverrideParams>>,
     /// `enterAnimWillGoUnderneath` (Boolean)
-    #[serde(default)]
     pub enter_anim_will_go_underneath: bool,
 }
 
@@ -169,28 +148,20 @@ impl<'a> Extract<'a> for LadderAccessClimbParams {
 }
 
 /// DCB type: `LadderAccessPointParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LadderAccessPointParams {
     /// `rungNumber` (Int32)
-    #[serde(default)]
     pub rung_number: i32,
     /// `directionIncludesFront` (Boolean)
-    #[serde(default)]
     pub direction_includes_front: bool,
     /// `frontEntryParams` (Class)
-    #[serde(default)]
     pub front_entry_params: Option<Handle<LadderAccessClimbParams>>,
     /// `directionIncludesLeft` (Boolean)
-    #[serde(default)]
     pub direction_includes_left: bool,
     /// `leftEntryParams` (Class)
-    #[serde(default)]
     pub left_entry_params: Option<Handle<LadderAccessClimbParams>>,
     /// `directionIncludesRight` (Boolean)
-    #[serde(default)]
     pub direction_includes_right: bool,
     /// `rightEntryParams` (Class)
-    #[serde(default)]
     pub right_entry_params: Option<Handle<LadderAccessClimbParams>>,
 }
 
@@ -225,70 +196,48 @@ impl<'a> Extract<'a> for LadderAccessPointParams {
 
 /// DCB type: `LadderComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LadderComponentParams {
     /// `height` (Single)
-    #[serde(default)]
     pub height: f32,
     /// `userIgnoreStaticCollisions` (Boolean)
-    #[serde(default)]
     pub user_ignore_static_collisions: bool,
     /// `slideable` (Boolean)
-    #[serde(default)]
     pub slideable: bool,
     /// `autoMountable` (Boolean)
-    #[serde(default)]
     pub auto_mountable: bool,
     /// `autoMountableRadiusParametersAtBottom` (Class)
-    #[serde(default)]
     pub auto_mountable_radius_parameters_at_bottom: Option<Handle<AutoMountRadiusParams>>,
     /// `approachAngleAtBottom` (Single)
-    #[serde(default)]
     pub approach_angle_at_bottom: f32,
     /// `facingAngleAtBottom` (Single)
-    #[serde(default)]
     pub facing_angle_at_bottom: f32,
     /// `remountDelayAtBottom` (Single)
-    #[serde(default)]
     pub remount_delay_at_bottom: f32,
     /// `autoMountableRadiusParametersAtTop` (Class)
-    #[serde(default)]
     pub auto_mountable_radius_parameters_at_top: Option<Handle<AutoMountRadiusParams>>,
     /// `approachAngleAtTop` (Single)
-    #[serde(default)]
     pub approach_angle_at_top: f32,
     /// `facingAngleAtTop` (Single)
-    #[serde(default)]
     pub facing_angle_at_top: f32,
     /// `remountDelayAtTop` (Single)
-    #[serde(default)]
     pub remount_delay_at_top: f32,
     /// `directionAtTopIncludesBack` (Boolean)
-    #[serde(default)]
     pub direction_at_top_includes_back: bool,
     /// `topBackExitCollisionCheckOverride` (StrongPointer)
-    #[serde(default)]
     pub top_back_exit_collision_check_override: Option<Handle<ExitCollisionCheckOverrideParams>>,
     /// `directionAtTopIncludesLeft` (Boolean)
-    #[serde(default)]
     pub direction_at_top_includes_left: bool,
     /// `topLeftExitCollisionCheckOverride` (StrongPointer)
-    #[serde(default)]
     pub top_left_exit_collision_check_override: Option<Handle<ExitCollisionCheckOverrideParams>>,
     /// `directionAtTopIncludesRight` (Boolean)
-    #[serde(default)]
     pub direction_at_top_includes_right: bool,
     /// `topRightExitCollisionCheckOverride` (StrongPointer)
-    #[serde(default)]
     pub top_right_exit_collision_check_override: Option<Handle<ExitCollisionCheckOverrideParams>>,
     /// `autoDismountOnHighestMidPointWhenNoTopAvailable` (Boolean)
-    #[serde(default)]
     pub auto_dismount_on_highest_mid_point_when_no_top_available: bool,
     /// `midAccessPoints` (Class (array))
-    #[serde(default)]
     pub mid_access_points: Vec<Handle<LadderAccessPointParams>>,
     /// `HACKUseParentZoneExitingLadderTopHACK` (Boolean)
-    #[serde(default)]
     pub hackuse_parent_zone_exiting_ladder_top_hack: bool,
 }
 

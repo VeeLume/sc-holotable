@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -21,19 +20,14 @@ use super::super::*;
 
 /// DCB type: `SQuantumTrailParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SQuantumTrailParams {
     /// `destructionTime` (Single)
-    #[serde(default)]
     pub destruction_time: f32,
     /// `trailLength` (Single)
-    #[serde(default)]
     pub trail_length: f32,
     /// `viewableDistance` (Single)
-    #[serde(default)]
     pub viewable_distance: f32,
     /// `maxVisibleLength` (Single)
-    #[serde(default)]
     pub max_visible_length: f32,
 }
 

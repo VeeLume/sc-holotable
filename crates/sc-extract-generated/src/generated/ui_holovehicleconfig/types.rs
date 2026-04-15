@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,139 +19,94 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `UIHoloVehicle_Config`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct UIHoloVehicle_Config {
     /// `hitEffectTime` (Single)
-    #[serde(default)]
     pub hit_effect_time: f32,
     /// `highlightEffectTime` (Single)
-    #[serde(default)]
     pub highlight_effect_time: f32,
     /// `flickerTime` (Single)
-    #[serde(default)]
     pub flicker_time: f32,
     /// `shieldDistance` (Single)
-    #[serde(default)]
     pub shield_distance: f32,
     /// `unknownMarkerProxyModel` (String)
-    #[serde(default)]
     pub unknown_marker_proxy_model: String,
     /// `shieldProxyModel` (String)
-    #[serde(default)]
     pub shield_proxy_model: String,
     /// `turretViewProxyModel` (String)
-    #[serde(default)]
     pub turret_view_proxy_model: String,
     /// `turretViewLengthRatio` (Single)
-    #[serde(default)]
     pub turret_view_length_ratio: f32,
     /// `turretViewWidthRatio` (Single)
-    #[serde(default)]
     pub turret_view_width_ratio: f32,
     /// `turretViewPitch` (Single)
-    #[serde(default)]
     pub turret_view_pitch: f32,
     /// `turretViewRoll` (Single)
-    #[serde(default)]
     pub turret_view_roll: f32,
     /// `turretViewYaw` (Single)
-    #[serde(default)]
     pub turret_view_yaw: f32,
     /// `turretAimProxyModel` (String)
-    #[serde(default)]
     pub turret_aim_proxy_model: String,
     /// `turretAimWidthRatio` (Single)
-    #[serde(default)]
     pub turret_aim_width_ratio: f32,
     /// `cameraFOV` (Single)
-    #[serde(default)]
     pub camera_fov: f32,
     /// `ownCameraDistanceScaler` (Single)
-    #[serde(default)]
     pub own_camera_distance_scaler: f32,
     /// `ownAngularOffsetRange` (Single)
-    #[serde(default)]
     pub own_angular_offset_range: f32,
     /// `ownDefaultViewAngle` (Single)
-    #[serde(default)]
     pub own_default_view_angle: f32,
     /// `ownTranslationSmoothingTime` (Single)
-    #[serde(default)]
     pub own_translation_smoothing_time: f32,
     /// `ownTranslationOffsetRadiusRatio` (Single)
-    #[serde(default)]
     pub own_translation_offset_radius_ratio: f32,
     /// `hitMaterialDarkenFactor` (Single)
-    #[serde(default)]
     pub hit_material_darken_factor: f32,
     /// `hitIndicatorAnimTime` (Single)
-    #[serde(default)]
     pub hit_indicator_anim_time: f32,
     /// `targetCameraDistanceScaler` (Single)
-    #[serde(default)]
     pub target_camera_distance_scaler: f32,
     /// `cameraIntroTime` (Single)
-    #[serde(default)]
     pub camera_intro_time: f32,
     /// `cameraIntroDistanceScaler` (Single)
-    #[serde(default)]
     pub camera_intro_distance_scaler: f32,
     /// `cameraIntroInterpolationMode` (EnumChoice)
-    #[serde(default)]
     pub camera_intro_interpolation_mode: InterpolationMode,
     /// `cameraViewsTransitionTime` (Single)
-    #[serde(default)]
     pub camera_views_transition_time: f32,
     /// `cameraViewTransitionMode` (EnumChoice)
-    #[serde(default)]
     pub camera_view_transition_mode: CameraViewTransitionMode,
     /// `vehicleMaterial` (String)
-    #[serde(default)]
     pub vehicle_material: String,
     /// `itemHighlightMaterial` (String)
-    #[serde(default)]
     pub item_highlight_material: String,
     /// `shieldMaterial` (String)
-    #[serde(default)]
     pub shield_material: String,
     /// `turretViewStandbyMaterial` (String)
-    #[serde(default)]
     pub turret_view_standby_material: String,
     /// `turretViewFireMaterial` (String)
-    #[serde(default)]
     pub turret_view_fire_material: String,
     /// `turretAimMaterial` (String)
-    #[serde(default)]
     pub turret_aim_material: String,
     /// `vehicleHitMaterial` (String)
-    #[serde(default)]
     pub vehicle_hit_material: String,
     /// `shieldHitMaterial` (String)
-    #[serde(default)]
     pub shield_hit_material: String,
     /// `itemTypeWhitelist` (EnumChoice (array))
-    #[serde(default)]
     pub item_type_whitelist: Vec<EItemType>,
     /// `silhouetteParams` (Class)
-    #[serde(default)]
     pub silhouette_params: Option<Handle<SSilhouetteParamsDef>>,
     /// `directionArrowGeomName` (String)
-    #[serde(default)]
     pub direction_arrow_geom_name: String,
     /// `directionArrowTipGeomName` (String)
-    #[serde(default)]
     pub direction_arrow_tip_geom_name: String,
     /// `directionArrowScale` (Single)
-    #[serde(default)]
     pub direction_arrow_scale: f32,
     /// `directionArrowForwardOffset` (Single)
-    #[serde(default)]
     pub direction_arrow_forward_offset: f32,
     /// `directionArrowUpOffset` (Single)
-    #[serde(default)]
     pub direction_arrow_up_offset: f32,
     /// `directionArrowRightOffset` (Single)
-    #[serde(default)]
     pub direction_arrow_right_offset: f32,
 }
 

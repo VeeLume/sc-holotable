@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,19 +19,14 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `SChargeDrainHighlightOutlineValues`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SChargeDrainHighlightOutlineValues {
     /// `color` (Class)
-    #[serde(default)]
     pub color: Option<Handle<RGB>>,
     /// `occludedAlpha` (Single)
-    #[serde(default)]
     pub occluded_alpha: f32,
     /// `outlineWidth` (Single)
-    #[serde(default)]
     pub outline_width: f32,
     /// `outlineOnly` (Boolean)
-    #[serde(default)]
     pub outline_only: bool,
 }
 
@@ -57,19 +51,14 @@ impl<'a> Extract<'a> for SChargeDrainHighlightOutlineValues {
 }
 
 /// DCB type: `SChargeDrainTargetStateOutlineParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SChargeDrainTargetStateOutlineParams {
     /// `inoperableOutlineValues` (Class)
-    #[serde(default)]
     pub inoperable_outline_values: Option<Handle<SChargeDrainHighlightOutlineValues>>,
     /// `jumpstartRequiredOutlineValues` (Class)
-    #[serde(default)]
     pub jumpstart_required_outline_values: Option<Handle<SChargeDrainHighlightOutlineValues>>,
     /// `jumpstartPossibleOutlineValues` (Class)
-    #[serde(default)]
     pub jumpstart_possible_outline_values: Option<Handle<SChargeDrainHighlightOutlineValues>>,
     /// `validTargetOutlineValues` (Class)
-    #[serde(default)]
     pub valid_target_outline_values: Option<Handle<SChargeDrainHighlightOutlineValues>>,
 }
 
@@ -103,28 +92,20 @@ impl<'a> Extract<'a> for SChargeDrainTargetStateOutlineParams {
 }
 
 /// DCB type: `SChargeDrainCardParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SChargeDrainCardParams {
     /// `cardLerpSpeed` (Single)
-    #[serde(default)]
     pub card_lerp_speed: f32,
     /// `attachPointLerpSpeed` (Single)
-    #[serde(default)]
     pub attach_point_lerp_speed: f32,
     /// `closingDelay` (Single)
-    #[serde(default)]
     pub closing_delay: f32,
     /// `closingTransitionTime` (Single)
-    #[serde(default)]
     pub closing_transition_time: f32,
     /// `nearDistance` (Single)
-    #[serde(default)]
     pub near_distance: f32,
     /// `defaultScreenPos` (Class)
-    #[serde(default)]
     pub default_screen_pos: Option<Handle<Vec2>>,
     /// `maxDistScreenPosScale` (Single)
-    #[serde(default)]
     pub max_dist_screen_pos_scale: f32,
 }
 
@@ -152,16 +133,12 @@ impl<'a> Extract<'a> for SChargeDrainCardParams {
 }
 
 /// DCB type: `SGlobalChargeDrainBeamParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SGlobalChargeDrainBeamParams {
     /// `targetStateOutlineParams` (Class)
-    #[serde(default)]
     pub target_state_outline_params: Option<Handle<SChargeDrainTargetStateOutlineParams>>,
     /// `targetCardParams` (Class)
-    #[serde(default)]
     pub target_card_params: Option<Handle<SChargeDrainCardParams>>,
     /// `chargeCardParams` (Class)
-    #[serde(default)]
     pub charge_card_params: Option<Handle<SChargeDrainCardParams>>,
 }
 

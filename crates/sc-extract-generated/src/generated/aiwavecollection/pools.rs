@@ -9,16 +9,12 @@
 
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
-use serde::{Deserialize, Serialize};
 use super::super::*;
 
 /// Pool storage for the `aiwavecollection` feature.
-#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+#[derive(Default)]
 pub struct AiwavecollectionPools {
-    #[serde(default)]
     pub aiwave_collection: Vec<Option<AIWaveCollection>>,
-    #[serde(default)]
     pub aiwave: Vec<Option<AIWave>>,
-    #[serde(default)]
     pub aiwave_member: Vec<Option<AIWaveMember>>,
 }

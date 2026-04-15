@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,13 +19,10 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `SSalvageRepairHighlightColorParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SSalvageRepairHighlightColorParams {
     /// `color` (Class)
-    #[serde(default)]
     pub color: Option<Handle<RGB>>,
     /// `hullThreshold` (Single)
-    #[serde(default)]
     pub hull_threshold: f32,
 }
 
@@ -49,16 +45,12 @@ impl<'a> Extract<'a> for SSalvageRepairHighlightColorParams {
 }
 
 /// DCB type: `SSalvageRepairHighlightOutlineValues`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SSalvageRepairHighlightOutlineValues {
     /// `occludedAlpha` (Single)
-    #[serde(default)]
     pub occluded_alpha: f32,
     /// `outlineWidth` (Single)
-    #[serde(default)]
     pub outline_width: f32,
     /// `outlineOnly` (Boolean)
-    #[serde(default)]
     pub outline_only: bool,
 }
 
@@ -79,13 +71,10 @@ impl<'a> Extract<'a> for SSalvageRepairHighlightOutlineValues {
 }
 
 /// DCB type: `SItemTypeFilter`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SItemTypeFilter {
     /// `itemType` (EnumChoice)
-    #[serde(default)]
     pub item_type: EItemType,
     /// `itemSubTypes` (EnumChoice (array))
-    #[serde(default)]
     pub item_sub_types: Vec<EItemSubType>,
 }
 
@@ -107,22 +96,16 @@ impl<'a> Extract<'a> for SItemTypeFilter {
 }
 
 /// DCB type: `SSalvageRepairHighlightParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SSalvageRepairHighlightParams {
     /// `colors` (Class (array))
-    #[serde(default)]
     pub colors: Vec<Handle<SSalvageRepairHighlightColorParams>>,
     /// `validOutlineValues` (Class)
-    #[serde(default)]
     pub valid_outline_values: Option<Handle<SSalvageRepairHighlightOutlineValues>>,
     /// `invalidTargetColor` (Class)
-    #[serde(default)]
     pub invalid_target_color: Option<Handle<RGB>>,
     /// `invalidOutlineValues` (Class)
-    #[serde(default)]
     pub invalid_outline_values: Option<Handle<SSalvageRepairHighlightOutlineValues>>,
     /// `filterItemTypes` (Class (array))
-    #[serde(default)]
     pub filter_item_types: Vec<Handle<SItemTypeFilter>>,
 }
 
@@ -166,25 +149,18 @@ impl<'a> Extract<'a> for SSalvageRepairHighlightParams {
 }
 
 /// DCB type: `SSalvageRepairCardParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SSalvageRepairCardParams {
     /// `cardLerpSpeed` (Single)
-    #[serde(default)]
     pub card_lerp_speed: f32,
     /// `attachPointLerpSpeed` (Single)
-    #[serde(default)]
     pub attach_point_lerp_speed: f32,
     /// `closingTransitionTime` (Single)
-    #[serde(default)]
     pub closing_transition_time: f32,
     /// `nearDistance` (Single)
-    #[serde(default)]
     pub near_distance: f32,
     /// `defaultScreenPos` (Class)
-    #[serde(default)]
     pub default_screen_pos: Option<Handle<Vec2>>,
     /// `maxDistScreenPosScale` (Single)
-    #[serde(default)]
     pub max_dist_screen_pos_scale: f32,
 }
 
@@ -211,13 +187,10 @@ impl<'a> Extract<'a> for SSalvageRepairCardParams {
 }
 
 /// DCB type: `SSalvageRepairItemTypeLocalizationPair`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SSalvageRepairItemTypeLocalizationPair {
     /// `itemType` (EnumChoice)
-    #[serde(default)]
     pub item_type: EItemType,
     /// `typeLoc` (Locale)
-    #[serde(default)]
     pub type_loc: LocaleKey,
 }
 
@@ -237,16 +210,12 @@ impl<'a> Extract<'a> for SSalvageRepairItemTypeLocalizationPair {
 }
 
 /// DCB type: `SSalvageRepairLocalizationParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SSalvageRepairLocalizationParams {
     /// `hullLoc` (Locale)
-    #[serde(default)]
     pub hull_loc: LocaleKey,
     /// `itemTypeLocalizationPairs` (Class (array))
-    #[serde(default)]
     pub item_type_localization_pairs: Vec<Handle<SSalvageRepairItemTypeLocalizationPair>>,
     /// `itemTypeNotFoundLoc` (Locale)
-    #[serde(default)]
     pub item_type_not_found_loc: LocaleKey,
 }
 
@@ -273,16 +242,12 @@ impl<'a> Extract<'a> for SSalvageRepairLocalizationParams {
 }
 
 /// DCB type: `SSalvageRepairMaterialParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SSalvageRepairMaterialParams {
     /// `hullThicknessMeters` (Single)
-    #[serde(default)]
     pub hull_thickness_meters: f32,
     /// `ammoToMaterialFactor` (Single)
-    #[serde(default)]
     pub ammo_to_material_factor: f32,
     /// `RMCResourceType` (Reference)
-    #[serde(default)]
     pub rmcresource_type: Option<CigGuid>,
 }
 
@@ -303,13 +268,10 @@ impl<'a> Extract<'a> for SSalvageRepairMaterialParams {
 }
 
 /// DCB type: `SSalvageRepairAudioParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SSalvageRepairAudioParams {
     /// `salvageCargoOccupancyFactorRTPC` (Class)
-    #[serde(default)]
     pub salvage_cargo_occupancy_factor_rtpc: Option<Handle<AudioRtpc>>,
     /// `friendlyFireMessageCooldownScale` (Single)
-    #[serde(default)]
     pub friendly_fire_message_cooldown_scale: f32,
 }
 
@@ -332,31 +294,22 @@ impl<'a> Extract<'a> for SSalvageRepairAudioParams {
 }
 
 /// DCB type: `SGlobalSalvageRepairBeamParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SGlobalSalvageRepairBeamParams {
     /// `tag` (Reference)
-    #[serde(default)]
     pub tag: Option<CigGuid>,
     /// `cardParams` (Class)
-    #[serde(default)]
     pub card_params: Option<Handle<SSalvageRepairCardParams>>,
     /// `highlightParams` (Class)
-    #[serde(default)]
     pub highlight_params: Option<Handle<SSalvageRepairHighlightParams>>,
     /// `localizationParams` (Class)
-    #[serde(default)]
     pub localization_params: Option<Handle<SSalvageRepairLocalizationParams>>,
     /// `materialParams` (Class)
-    #[serde(default)]
     pub material_params: Option<Handle<SSalvageRepairMaterialParams>>,
     /// `globalSalvageAudioParams` (Class)
-    #[serde(default)]
     pub global_salvage_audio_params: Option<Handle<SSalvageRepairAudioParams>>,
     /// `hitsPerSecond` (Single)
-    #[serde(default)]
     pub hits_per_second: f32,
     /// `hitDuration` (Single)
-    #[serde(default)]
     pub hit_duration: f32,
 }
 

@@ -9,16 +9,12 @@
 
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
-use serde::{Deserialize, Serialize};
 use super::super::*;
 
 /// Pool storage for the `chatmanager` feature.
-#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+#[derive(Default)]
 pub struct ChatmanagerPools {
-    #[serde(default)]
     pub chat_manager_default_channel_color: Vec<Option<ChatManagerDefaultChannelColor>>,
-    #[serde(default)]
     pub chat_manager_color: Vec<Option<ChatManagerColor>>,
-    #[serde(default)]
     pub chat_manager_global_params: Vec<Option<ChatManagerGlobalParams>>,
 }

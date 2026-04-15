@@ -9,20 +9,14 @@
 
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
-use serde::{Deserialize, Serialize};
 use super::super::*;
 
 /// Pool storage for the `forcefeedback_forcefeedbackeffects` feature.
-#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+#[derive(Default)]
 pub struct Forcefeedback_forcefeedbackeffectsPools {
-    #[serde(default)]
     pub force_feedback: Vec<Option<ForceFeedback>>,
-    #[serde(default)]
     pub force_feedback_pattern: Vec<Option<ForceFeedbackPattern>>,
-    #[serde(default)]
     pub force_feedback_envelope: Vec<Option<ForceFeedbackEnvelope>>,
-    #[serde(default)]
     pub force_feedback_effect: Vec<Option<ForceFeedbackEffect>>,
-    #[serde(default)]
     pub force_feedback_motor: Vec<Option<ForceFeedbackMotor>>,
 }

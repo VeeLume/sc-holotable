@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,19 +19,14 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `GlobalMarkerConfigs`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GlobalMarkerConfigs {
     /// `missionPointMarkerConfig` (Reference)
-    #[serde(default)]
     pub mission_point_marker_config: Option<CigGuid>,
     /// `partyMemberMarkerConfig` (Reference)
-    #[serde(default)]
     pub party_member_marker_config: Option<CigGuid>,
     /// `landingAreaMarkerConfig` (Reference)
-    #[serde(default)]
     pub landing_area_marker_config: Option<CigGuid>,
     /// `unattendedVehicleMarkerConfig` (Reference)
-    #[serde(default)]
     pub unattended_vehicle_marker_config: Option<CigGuid>,
 }
 
@@ -55,16 +49,12 @@ impl<'a> Extract<'a> for GlobalMarkerConfigs {
 
 /// DCB type: `Marker_AbilityNearestFace`
 /// Inherits from: `Marker_AbilityBase`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Marker_AbilityNearestFace {
     /// `flipAngle` (Single)
-    #[serde(default)]
     pub flip_angle: f32,
     /// `flipTime` (Single)
-    #[serde(default)]
     pub flip_time: f32,
     /// `easeType` (EnumChoice)
-    #[serde(default)]
     pub ease_type: InterpolationMode,
 }
 

@@ -10,17 +10,14 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
 use std::collections::HashMap;
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use crate::Handle;
 use super::super::*;
 
 /// Record index for the `contracts` feature.
-#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+#[derive(Default)]
 pub struct ContractsIndex {
-    #[serde(default)]
     pub mission_module_hierarchy: HashMap<CigGuid, Handle<MissionModuleHierarchy>>,
-    #[serde(default)]
     pub global_mission_settings: HashMap<CigGuid, Handle<GlobalMissionSettings>>,
 }
 

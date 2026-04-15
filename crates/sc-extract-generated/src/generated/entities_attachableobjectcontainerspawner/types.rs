@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,16 +19,12 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `SAttachableObjectContainerData`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SAttachableObjectContainerData {
     /// `fileName` (String)
-    #[serde(default)]
     pub file_name: String,
     /// `guid` (String)
-    #[serde(default)]
     pub guid: String,
     /// `Offset` (Class)
-    #[serde(default)]
     pub offset: Option<Handle<QuatT>>,
 }
 
@@ -54,10 +49,8 @@ impl<'a> Extract<'a> for SAttachableObjectContainerData {
 
 /// DCB type: `SAttachableObjectContainerSpawnerParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SAttachableObjectContainerSpawnerParams {
     /// `ObjectContainers` (Class (array))
-    #[serde(default)]
     pub object_containers: Vec<Handle<SAttachableObjectContainerData>>,
 }
 

@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -21,46 +20,32 @@ use super::super::*;
 
 /// DCB type: `SunLightComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SunLightComponentParams {
     /// `lightColor` (Class)
-    #[serde(default)]
     pub light_color: Option<Handle<SRGB8>>,
     /// `radius` (Single)
-    #[serde(default)]
     pub radius: f32,
     /// `surfaceIntensity` (Single)
-    #[serde(default)]
     pub surface_intensity: f32,
     /// `surfaceColor` (Class)
-    #[serde(default)]
     pub surface_color: Option<Handle<SRGB8>>,
     /// `dist1` (Single)
-    #[serde(default)]
     pub dist1: f32,
     /// `dist2` (Single)
-    #[serde(default)]
     pub dist2: f32,
     /// `dist3` (Single)
-    #[serde(default)]
     pub dist3: f32,
     /// `dist4` (Single)
-    #[serde(default)]
     pub dist4: f32,
     /// `distCull` (Single)
-    #[serde(default)]
     pub dist_cull: f32,
     /// `intensity1` (Single)
-    #[serde(default)]
     pub intensity1: f32,
     /// `intensity2` (Single)
-    #[serde(default)]
     pub intensity2: f32,
     /// `intensity3` (Single)
-    #[serde(default)]
     pub intensity3: f32,
     /// `intensity4` (Single)
-    #[serde(default)]
     pub intensity4: f32,
 }
 

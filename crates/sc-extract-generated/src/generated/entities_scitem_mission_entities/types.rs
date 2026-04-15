@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -21,64 +20,44 @@ use super::super::*;
 
 /// DCB type: `HackableParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct HackableParams {
     /// `baseDuration` (Single)
-    #[serde(default)]
     pub base_duration: f32,
     /// `baseErrorChance` (Single)
-    #[serde(default)]
     pub base_error_chance: f32,
     /// `numErrorChecks` (UInt32)
-    #[serde(default)]
     pub num_error_checks: u32,
     /// `maxPauseDuration` (Single)
-    #[serde(default)]
     pub max_pause_duration: f32,
     /// `updateProgressDeltaTime` (Single)
-    #[serde(default)]
     pub update_progress_delta_time: f32,
     /// `resetAfterHackSuccess` (Boolean)
-    #[serde(default)]
     pub reset_after_hack_success: bool,
     /// `audioTriggerProgressLoopStart` (Class)
-    #[serde(default)]
     pub audio_trigger_progress_loop_start: Option<Handle<GlobalResourceAudio>>,
     /// `audioTriggerProgressLoopStop` (Class)
-    #[serde(default)]
     pub audio_trigger_progress_loop_stop: Option<Handle<GlobalResourceAudio>>,
     /// `audioTriggerStart` (Class)
-    #[serde(default)]
     pub audio_trigger_start: Option<Handle<GlobalResourceAudio>>,
     /// `audioTriggerPause` (Class)
-    #[serde(default)]
     pub audio_trigger_pause: Option<Handle<GlobalResourceAudio>>,
     /// `audioTriggerResume` (Class)
-    #[serde(default)]
     pub audio_trigger_resume: Option<Handle<GlobalResourceAudio>>,
     /// `audioTriggerError` (Class)
-    #[serde(default)]
     pub audio_trigger_error: Option<Handle<GlobalResourceAudio>>,
     /// `audioTriggerPartSuccess` (Class)
-    #[serde(default)]
     pub audio_trigger_part_success: Option<Handle<GlobalResourceAudio>>,
     /// `audioTriggerSuccess` (Class)
-    #[serde(default)]
     pub audio_trigger_success: Option<Handle<GlobalResourceAudio>>,
     /// `audioTriggerReset` (Class)
-    #[serde(default)]
     pub audio_trigger_reset: Option<Handle<GlobalResourceAudio>>,
     /// `audioRtpcOverallProgress` (Class)
-    #[serde(default)]
     pub audio_rtpc_overall_progress: Option<Handle<AudioRtpc>>,
     /// `audioRtpcPartProgress` (Class)
-    #[serde(default)]
     pub audio_rtpc_part_progress: Option<Handle<AudioRtpc>>,
     /// `audioRtpcTotalDuration` (Class)
-    #[serde(default)]
     pub audio_rtpc_total_duration: Option<Handle<AudioRtpc>>,
     /// `audioRtpcRemainingDuration` (Class)
-    #[serde(default)]
     pub audio_rtpc_remaining_duration: Option<Handle<AudioRtpc>>,
 }
 
@@ -154,13 +133,10 @@ impl<'a> Extract<'a> for HackableParams {
 }
 
 /// DCB type: `SShopUIProviderCategoryIcon`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SShopUIProviderCategoryIcon {
     /// `category` (EnumChoice)
-    #[serde(default)]
     pub category: EItemType,
     /// `icon` (String)
-    #[serde(default)]
     pub icon: String,
 }
 
@@ -181,16 +157,12 @@ impl<'a> Extract<'a> for SShopUIProviderCategoryIcon {
 
 /// DCB type: `SShopUIProviderParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SShopUIProviderParams {
     /// `categoryIcons` (Class (array))
-    #[serde(default)]
     pub category_icons: Vec<Handle<SShopUIProviderCategoryIcon>>,
     /// `defaultModeBuying` (Boolean)
-    #[serde(default)]
     pub default_mode_buying: bool,
     /// `degradationIcon` (String)
-    #[serde(default)]
     pub degradation_icon: String,
 }
 
@@ -218,7 +190,6 @@ impl<'a> Extract<'a> for SShopUIProviderParams {
 
 /// DCB type: `SCommodityUIProviderParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCommodityUIProviderParams {
 }
 
@@ -237,13 +208,10 @@ impl<'a> Extract<'a> for SCommodityUIProviderParams {
 
 /// DCB type: `MonitoredZoneControllerParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MonitoredZoneControllerParams {
     /// `stateToEnable` (WeakPointer)
-    #[serde(default)]
     pub state_to_enable: Option<Handle<SInteractionState>>,
     /// `stateToDisable` (WeakPointer)
-    #[serde(default)]
     pub state_to_disable: Option<Handle<SInteractionState>>,
 }
 
@@ -270,22 +238,16 @@ impl<'a> Extract<'a> for MonitoredZoneControllerParams {
 
 /// DCB type: `SCriminalRecordStateModifier`
 /// Inherits from: `SStateModifier`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCriminalRecordStateModifier {
     /// `onInfractionSelectedState` (WeakPointer)
-    #[serde(default)]
     pub on_infraction_selected_state: Option<Handle<SInteractionState>>,
     /// `onInfractionAddedState` (WeakPointer)
-    #[serde(default)]
     pub on_infraction_added_state: Option<Handle<SInteractionState>>,
     /// `onInfractionRemovedState` (WeakPointer)
-    #[serde(default)]
     pub on_infraction_removed_state: Option<Handle<SInteractionState>>,
     /// `onInfractionPaidState` (WeakPointer)
-    #[serde(default)]
     pub on_infraction_paid_state: Option<Handle<SInteractionState>>,
     /// `onInfractionRemoveTimeEndState` (WeakPointer)
-    #[serde(default)]
     pub on_infraction_remove_time_end_state: Option<Handle<SInteractionState>>,
 }
 
@@ -324,22 +286,16 @@ impl<'a> Extract<'a> for SCriminalRecordStateModifier {
 
 /// DCB type: `SCriminalRecordHackingStateModifier`
 /// Inherits from: `SStateModifier`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SCriminalRecordHackingStateModifier {
     /// `maxUnchallengedRemovals` (Int32)
-    #[serde(default)]
     pub max_unchallenged_removals: i32,
     /// `detectionChance` (Single)
-    #[serde(default)]
     pub detection_chance: f32,
     /// `onCrimeHackingDetectedState` (WeakPointer)
-    #[serde(default)]
     pub on_crime_hacking_detected_state: Option<Handle<SInteractionState>>,
     /// `itemPort` (WeakPointer)
-    #[serde(default)]
     pub item_port: Option<Handle<SItemPortDef>>,
     /// `detectionChanceMultiplierName` (String)
-    #[serde(default)]
     pub detection_chance_multiplier_name: String,
 }
 
@@ -369,13 +325,10 @@ impl<'a> Extract<'a> for SCriminalRecordHackingStateModifier {
 
 /// DCB type: `SGasTankFillerStateModifier`
 /// Inherits from: `SStateModifier`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SGasTankFillerStateModifier {
     /// `onGasTankFullState` (WeakPointer)
-    #[serde(default)]
     pub on_gas_tank_full_state: Option<Handle<SInteractionState>>,
     /// `onGasTankFillerEmptyState` (WeakPointer)
-    #[serde(default)]
     pub on_gas_tank_filler_empty_state: Option<Handle<SInteractionState>>,
 }
 
@@ -402,16 +355,12 @@ impl<'a> Extract<'a> for SGasTankFillerStateModifier {
 
 /// DCB type: `SHackableStateModifier`
 /// Inherits from: `SStateModifier`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SHackableStateModifier {
     /// `onHackingSuccessState` (WeakPointer)
-    #[serde(default)]
     pub on_hacking_success_state: Option<Handle<SInteractionState>>,
     /// `onHackingErrorState` (WeakPointer)
-    #[serde(default)]
     pub on_hacking_error_state: Option<Handle<SInteractionState>>,
     /// `onHackingResetState` (WeakPointer)
-    #[serde(default)]
     pub on_hacking_reset_state: Option<Handle<SInteractionState>>,
 }
 
@@ -442,34 +391,24 @@ impl<'a> Extract<'a> for SHackableStateModifier {
 
 /// DCB type: `SVendingMachineStateModifier`
 /// Inherits from: `SStateModifier`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SVendingMachineStateModifier {
     /// `onCooldownEnd` (WeakPointer)
-    #[serde(default)]
     pub on_cooldown_end: Option<Handle<SInteractionState>>,
     /// `onItemSpawned` (WeakPointer)
-    #[serde(default)]
     pub on_item_spawned: Option<Handle<SInteractionState>>,
     /// `onItemDespawned` (WeakPointer)
-    #[serde(default)]
     pub on_item_despawned: Option<Handle<SInteractionState>>,
     /// `onItemDetached` (WeakPointer)
-    #[serde(default)]
     pub on_item_detached: Option<Handle<SInteractionState>>,
     /// `onItemInteracted` (WeakPointer)
-    #[serde(default)]
     pub on_item_interacted: Option<Handle<SInteractionState>>,
     /// `onTransactionComplete` (WeakPointer)
-    #[serde(default)]
     pub on_transaction_complete: Option<Handle<SInteractionState>>,
     /// `onHatchShouldOpen` (WeakPointer)
-    #[serde(default)]
     pub on_hatch_should_open: Option<Handle<SInteractionState>>,
     /// `onHatchShouldClose` (WeakPointer)
-    #[serde(default)]
     pub on_hatch_should_close: Option<Handle<SInteractionState>>,
     /// `onTransactionShouldClose` (WeakPointer)
-    #[serde(default)]
     pub on_transaction_should_close: Option<Handle<SInteractionState>>,
 }
 
@@ -524,10 +463,8 @@ impl<'a> Extract<'a> for SVendingMachineStateModifier {
 
 /// DCB type: `SRemoveCrimesGameplayTrigger`
 /// Inherits from: `SBaseInteractionGameplayTrigger`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SRemoveCrimesGameplayTrigger {
     /// `removeSelectedInfractionOnly` (Boolean)
-    #[serde(default)]
     pub remove_selected_infraction_only: bool,
 }
 
@@ -547,7 +484,6 @@ impl<'a> Extract<'a> for SRemoveCrimesGameplayTrigger {
 
 /// DCB type: `SStartRemoveInfractionTimerGameplayTrigger`
 /// Inherits from: `SBaseInteractionGameplayTrigger`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SStartRemoveInfractionTimerGameplayTrigger {
 }
 
@@ -566,7 +502,6 @@ impl<'a> Extract<'a> for SStartRemoveInfractionTimerGameplayTrigger {
 
 /// DCB type: `VendingMachineShopParams`
 /// Inherits from: `DataForgeComponentParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct VendingMachineShopParams {
 }
 

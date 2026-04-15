@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,13 +19,10 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `SReputationContextBBEntityListParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SReputationContextBBEntityListParams {
     /// `entityTabName` (Locale)
-    #[serde(default)]
     pub entity_tab_name: LocaleKey,
     /// `entityType` (EnumChoice)
-    #[serde(default)]
     pub entity_type: EReputationEntityType,
 }
 
@@ -46,16 +42,12 @@ impl<'a> Extract<'a> for SReputationContextBBEntityListParams {
 }
 
 /// DCB type: `SReputationGlobalContextBBParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SReputationGlobalContextBBParams {
     /// `infoTabNames` (Locale (array))
-    #[serde(default)]
     pub info_tab_names: Vec<LocaleKey>,
     /// `entityTabs` (Class (array))
-    #[serde(default)]
     pub entity_tabs: Vec<Handle<SReputationContextBBEntityListParams>>,
     /// `entitySortOrder` (EnumChoice)
-    #[serde(default)]
     pub entity_sort_order: EReputationSortOrderEntity,
 }
 

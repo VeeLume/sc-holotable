@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,37 +19,26 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `MarkerTrackingCommonMapParameters`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MarkerTrackingCommonMapParameters {
     /// `minimumDistanceMultiplierCosmeticScaling` (Single)
-    #[serde(default)]
     pub minimum_distance_multiplier_cosmetic_scaling: f32,
     /// `maximumDistanceMultiplierCosmeticScaling` (Single)
-    #[serde(default)]
     pub maximum_distance_multiplier_cosmetic_scaling: f32,
     /// `cosmeticScalingSmoothingDistanceMultiplier` (Single)
-    #[serde(default)]
     pub cosmetic_scaling_smoothing_distance_multiplier: f32,
     /// `framingRatioOfScreenSize` (Single)
-    #[serde(default)]
     pub framing_ratio_of_screen_size: f32,
     /// `focusZoomDistanceMultiplier` (Single)
-    #[serde(default)]
     pub focus_zoom_distance_multiplier: f32,
     /// `childlessMarkerRadiusMultiplier` (Single)
-    #[serde(default)]
     pub childless_marker_radius_multiplier: f32,
     /// `lightScaleModifier` (Single)
-    #[serde(default)]
     pub light_scale_modifier: f32,
     /// `zoomIncrement` (Single)
-    #[serde(default)]
     pub zoom_increment: f32,
     /// `cameraBlendTimeInSeconds` (Single)
-    #[serde(default)]
     pub camera_blend_time_in_seconds: f32,
     /// `labelParams` (Class)
-    #[serde(default)]
     pub label_params: Option<Handle<MarkerTrackingLabelParameters>>,
 }
 
@@ -81,34 +69,24 @@ impl<'a> Extract<'a> for MarkerTrackingCommonMapParameters {
 }
 
 /// DCB type: `MarkerTrackingLabelParameters`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MarkerTrackingLabelParameters {
     /// `headerTextScale` (Single)
-    #[serde(default)]
     pub header_text_scale: f32,
     /// `subTextScale` (Single)
-    #[serde(default)]
     pub sub_text_scale: f32,
     /// `minimumHeaderTextSize` (Single)
-    #[serde(default)]
     pub minimum_header_text_size: f32,
     /// `maximumHeaderTextSize` (Single)
-    #[serde(default)]
     pub maximum_header_text_size: f32,
     /// `minimumSize` (Single)
-    #[serde(default)]
     pub minimum_size: f32,
     /// `maximumSize` (Single)
-    #[serde(default)]
     pub maximum_size: f32,
     /// `minimumFadeOffset` (Single)
-    #[serde(default)]
     pub minimum_fade_offset: f32,
     /// `maximumFadeOffset` (Single)
-    #[serde(default)]
     pub maximum_fade_offset: f32,
     /// `positionOffsetMultiplier` (Single)
-    #[serde(default)]
     pub position_offset_multiplier: f32,
 }
 

@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,10 +19,8 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `CameraTransitionInterpolationCurveRecord`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CameraTransitionInterpolationCurveRecord {
     /// `curve` (Class)
-    #[serde(default)]
     pub curve: Option<Handle<BezierCurve>>,
 }
 
@@ -45,22 +42,16 @@ impl<'a> Extract<'a> for CameraTransitionInterpolationCurveRecord {
 }
 
 /// DCB type: `CinematicFlythroughPoint`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CinematicFlythroughPoint {
     /// `position` (Class)
-    #[serde(default)]
     pub position: Option<Handle<Vec3>>,
     /// `rotation` (Class)
-    #[serde(default)]
     pub rotation: Option<Handle<Quat>>,
     /// `duration` (Single)
-    #[serde(default)]
     pub duration: f32,
     /// `relativeTo` (EnumChoice)
-    #[serde(default)]
     pub relative_to: ECameraTransitionRelativeTo,
     /// `interpolationToPoint` (Reference)
-    #[serde(default)]
     pub interpolation_to_point: Option<CigGuid>,
 }
 
@@ -89,10 +80,8 @@ impl<'a> Extract<'a> for CinematicFlythroughPoint {
 }
 
 /// DCB type: `CinematicFlightPointsRecord`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CinematicFlightPointsRecord {
     /// `flightPoints` (Class (array))
-    #[serde(default)]
     pub flight_points: Vec<Handle<CinematicFlythroughPoint>>,
 }
 

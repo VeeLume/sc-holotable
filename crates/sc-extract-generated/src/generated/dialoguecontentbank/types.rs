@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,25 +19,18 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `DialogueContent`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DialogueContent {
     /// `localizedSubtitleText` (Locale)
-    #[serde(default)]
     pub localized_subtitle_text: LocaleKey,
     /// `unlocalizedSubtitleText` (Locale)
-    #[serde(default)]
     pub unlocalized_subtitle_text: LocaleKey,
     /// `subtitleShowDelay` (Single)
-    #[serde(default)]
     pub subtitle_show_delay: f32,
     /// `subtitleDisplayDurationOverride` (Single)
-    #[serde(default)]
     pub subtitle_display_duration_override: f32,
     /// `tempText` (String)
-    #[serde(default)]
     pub temp_text: String,
     /// `externalSources` (Reference (array))
-    #[serde(default)]
     pub external_sources: Vec<CigGuid>,
 }
 
@@ -64,16 +56,12 @@ impl<'a> Extract<'a> for DialogueContent {
 }
 
 /// DCB type: `DialogueContentBank`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DialogueContentBank {
     /// `realm` (Reference)
-    #[serde(default)]
     pub realm: Option<CigGuid>,
     /// `character` (Reference)
-    #[serde(default)]
     pub character: Option<CigGuid>,
     /// `contents` (Reference (array))
-    #[serde(default)]
     pub contents: Vec<CigGuid>,
 }
 

@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,52 +19,36 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `ESPParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ESPParams {
     /// `triggerZoneRampInCurve` (Class)
-    #[serde(default)]
     pub trigger_zone_ramp_in_curve: Option<Handle<BezierCurve>>,
     /// `trackingStrength` (Single)
-    #[serde(default)]
     pub tracking_strength: f32,
     /// `distanceFalloffStart` (Single)
-    #[serde(default)]
     pub distance_falloff_start: f32,
     /// `distanceFalloffEnd` (Single)
-    #[serde(default)]
     pub distance_falloff_end: f32,
     /// `outerZoneDeg` (Single)
-    #[serde(default)]
     pub outer_zone_deg: f32,
     /// `innerZoneRatio` (Single)
-    #[serde(default)]
     pub inner_zone_ratio: f32,
     /// `adsZoneMinSizeDeg` (Single)
-    #[serde(default)]
     pub ads_zone_min_size_deg: f32,
     /// `inputDisengageCurve` (Single)
-    #[serde(default)]
     pub input_disengage_curve: f32,
     /// `directionSimilaritySmoothSpeed` (Single)
-    #[serde(default)]
     pub direction_similarity_smooth_speed: f32,
     /// `assistRelaxSpeed` (Single)
-    #[serde(default)]
     pub assist_relax_speed: f32,
     /// `alignmentAngleCurve` (Single)
-    #[serde(default)]
     pub alignment_angle_curve: f32,
     /// `dampeningMin` (Single)
-    #[serde(default)]
     pub dampening_min: f32,
     /// `dampeningMax` (Single)
-    #[serde(default)]
     pub dampening_max: f32,
     /// `allowPulling` (Boolean)
-    #[serde(default)]
     pub allow_pulling: bool,
     /// `allowWithRelativeMouseModes` (Boolean)
-    #[serde(default)]
     pub allow_with_relative_mouse_modes: bool,
 }
 
@@ -101,55 +84,38 @@ impl<'a> Extract<'a> for ESPParams {
 }
 
 /// DCB type: `SIFCSEspParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SIFCSEspParams {
     /// `triggerZoneRampInCurve` (Class)
-    #[serde(default)]
     pub trigger_zone_ramp_in_curve: Option<Handle<BezierCurve>>,
     /// `maxTrackingStrength` (Single)
-    #[serde(default)]
     pub max_tracking_strength: f32,
     /// `distanceFalloffStart` (Single)
-    #[serde(default)]
     pub distance_falloff_start: f32,
     /// `distanceFalloffEnd` (Single)
-    #[serde(default)]
     pub distance_falloff_end: f32,
     /// `outerZoneDeg` (Single)
-    #[serde(default)]
     pub outer_zone_deg: f32,
     /// `innerZoneRatio` (Single)
-    #[serde(default)]
     pub inner_zone_ratio: f32,
     /// `adsZoneMinSizeDeg` (Single)
-    #[serde(default)]
     pub ads_zone_min_size_deg: f32,
     /// `targetChangedRampTime` (Single)
-    #[serde(default)]
     pub target_changed_ramp_time: f32,
     /// `dampeningRange` (Single)
-    #[serde(default)]
     pub dampening_range: f32,
     /// `inputScalerMin` (Single)
-    #[serde(default)]
     pub input_scaler_min: f32,
     /// `inputScalerMax` (Single)
-    #[serde(default)]
     pub input_scaler_max: f32,
     /// `inputScalerSmoothTime` (Single)
-    #[serde(default)]
     pub input_scaler_smooth_time: f32,
     /// `inputRelaxSpeed` (Single)
-    #[serde(default)]
     pub input_relax_speed: f32,
     /// `allowPulling` (Boolean)
-    #[serde(default)]
     pub allow_pulling: bool,
     /// `smoothingTime` (Single)
-    #[serde(default)]
     pub smoothing_time: f32,
     /// `smoothingTimeDecreaseMultiplier` (Single)
-    #[serde(default)]
     pub smoothing_time_decrease_multiplier: f32,
 }
 
@@ -186,10 +152,8 @@ impl<'a> Extract<'a> for SIFCSEspParams {
 }
 
 /// DCB type: `SIFCSEsp`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SIFCSEsp {
     /// `espPerType` (Class)
-    #[serde(default)]
     pub esp_per_type: Option<Handle<SIFCSEspParams>>,
 }
 
@@ -211,13 +175,10 @@ impl<'a> Extract<'a> for SIFCSEsp {
 }
 
 /// DCB type: `SIFCSGameModePhysicsDamping`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SIFCSGameModePhysicsDamping {
     /// `dampingValue` (Single)
-    #[serde(default)]
     pub damping_value: f32,
     /// `transitionTime` (Single)
-    #[serde(default)]
     pub transition_time: f32,
 }
 
@@ -237,34 +198,24 @@ impl<'a> Extract<'a> for SIFCSGameModePhysicsDamping {
 }
 
 /// DCB type: `SIFCSGameModeParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SIFCSGameModeParams {
     /// `enableNewModel` (Boolean)
-    #[serde(default)]
     pub enable_new_model: bool,
     /// `enforceLegacyEspForNewModel` (Boolean)
-    #[serde(default)]
     pub enforce_legacy_esp_for_new_model: bool,
     /// `enableDecoupledGlidingDefault` (Boolean)
-    #[serde(default)]
     pub enable_decoupled_gliding_default: bool,
     /// `enableDecoupledGlidingCoreOff` (Boolean)
-    #[serde(default)]
     pub enable_decoupled_gliding_core_off: bool,
     /// `allowDisablingIFCSCore` (Boolean)
-    #[serde(default)]
     pub allow_disabling_ifcscore: bool,
     /// `cruiseModeOnByDefault` (Boolean)
-    #[serde(default)]
     pub cruise_mode_on_by_default: bool,
     /// `physicsDamping` (Class)
-    #[serde(default)]
     pub physics_damping: Option<Handle<SIFCSGameModePhysicsDamping>>,
     /// `legacyIncludeWindInAerodynamics` (Boolean)
-    #[serde(default)]
     pub legacy_include_wind_in_aerodynamics: bool,
     /// `legacyMaxAcceptedWindSpeed` (Single)
-    #[serde(default)]
     pub legacy_max_accepted_wind_speed: f32,
 }
 

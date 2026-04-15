@@ -12,7 +12,6 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
 use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
@@ -20,16 +19,12 @@ use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use super::super::*;
 
 /// DCB type: `RadarSystemGlobalParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct RadarSystemGlobalParams {
     /// `paramsVersion` (UInt32)
-    #[serde(default)]
     pub params_version: u32,
     /// `signatureSystemParams` (Class)
-    #[serde(default)]
     pub signature_system_params: Option<Handle<SignatureSystemGlobalParams>>,
     /// `contactStateParams` (Class)
-    #[serde(default)]
     pub contact_state_params: Option<Handle<ContactStateGlobalParams>>,
 }
 
@@ -56,13 +51,10 @@ impl<'a> Extract<'a> for RadarSystemGlobalParams {
 }
 
 /// DCB type: `MasterModeSwitchDeltaSignatureTypes`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MasterModeSwitchDeltaSignatureTypes {
     /// `scmToNav` (Reference)
-    #[serde(default)]
     pub scm_to_nav: Option<CigGuid>,
     /// `navToScm` (Reference)
-    #[serde(default)]
     pub nav_to_scm: Option<CigGuid>,
 }
 
@@ -82,34 +74,24 @@ impl<'a> Extract<'a> for MasterModeSwitchDeltaSignatureTypes {
 }
 
 /// DCB type: `SignatureSystemGlobalParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SignatureSystemGlobalParams {
     /// `globalDBFactor` (Single)
-    #[serde(default)]
     pub global_dbfactor: f32,
     /// `globalAmbientIRFactor` (Single)
-    #[serde(default)]
     pub global_ambient_irfactor: f32,
     /// `dBSignaturePeakHoldTime` (Single)
-    #[serde(default)]
     pub d_bsignature_peak_hold_time: f32,
     /// `signatureUIParams` (Class)
-    #[serde(default)]
     pub signature_uiparams: Option<Handle<SignatureUIGlobalParams>>,
     /// `actorMultiplierParams` (Class)
-    #[serde(default)]
     pub actor_multiplier_params: Option<Handle<ActorSignatureMultiplierGlobalParams>>,
     /// `crossSectionParams` (Class)
-    #[serde(default)]
     pub cross_section_params: Option<Handle<CrossSectionGlobalParams>>,
     /// `signatureTypeParams` (Class)
-    #[serde(default)]
     pub signature_type_params: Option<Handle<SignatureTypeGlobalParams>>,
     /// `masterModeDeltaSignatureType` (Class)
-    #[serde(default)]
     pub master_mode_delta_signature_type: Option<Handle<MasterModeSwitchDeltaSignatureTypes>>,
     /// `scanWaveTriggeredDeltaSignatureType` (Reference)
-    #[serde(default)]
     pub scan_wave_triggered_delta_signature_type: Option<CigGuid>,
 }
 
@@ -151,10 +133,8 @@ impl<'a> Extract<'a> for SignatureSystemGlobalParams {
 }
 
 /// DCB type: `ContactStateGlobalParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ContactStateGlobalParams {
     /// `contactStateIcons` (String)
-    #[serde(default)]
     pub contact_state_icons: String,
 }
 
@@ -173,22 +153,16 @@ impl<'a> Extract<'a> for ContactStateGlobalParams {
 }
 
 /// DCB type: `SignatureUIGlobalParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SignatureUIGlobalParams {
     /// `warningUnderStateTime` (Single)
-    #[serde(default)]
     pub warning_under_state_time: f32,
     /// `signatureDisplayTime` (Single)
-    #[serde(default)]
     pub signature_display_time: f32,
     /// `signatureFadeTime` (Single)
-    #[serde(default)]
     pub signature_fade_time: f32,
     /// `emissionDisplayIncrease` (Single)
-    #[serde(default)]
     pub emission_display_increase: f32,
     /// `emissionMemoryTime` (Single)
-    #[serde(default)]
     pub emission_memory_time: f32,
 }
 
@@ -211,19 +185,14 @@ impl<'a> Extract<'a> for SignatureUIGlobalParams {
 }
 
 /// DCB type: `ActorSignatureMultiplierGlobalParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ActorSignatureMultiplierGlobalParams {
     /// `bodyTemperatureToIRMultiplier` (Single)
-    #[serde(default)]
     pub body_temperature_to_irmultiplier: f32,
     /// `staminaToIRMultiplier` (Single)
-    #[serde(default)]
     pub stamina_to_irmultiplier: f32,
     /// `staminaToIRDecayDelay` (Single)
-    #[serde(default)]
     pub stamina_to_irdecay_delay: f32,
     /// `staminaToIRDecayRate` (Single)
-    #[serde(default)]
     pub stamina_to_irdecay_rate: f32,
 }
 
@@ -245,16 +214,12 @@ impl<'a> Extract<'a> for ActorSignatureMultiplierGlobalParams {
 }
 
 /// DCB type: `CrossSectionGlobalParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CrossSectionGlobalParams {
     /// `globalCSFactor` (Class)
-    #[serde(default)]
     pub global_csfactor: Option<Handle<Vec3>>,
     /// `maxDistance` (Single)
-    #[serde(default)]
     pub max_distance: f32,
     /// `lineOfSightAngle` (Single)
-    #[serde(default)]
     pub line_of_sight_angle: f32,
 }
 
@@ -278,25 +243,18 @@ impl<'a> Extract<'a> for CrossSectionGlobalParams {
 }
 
 /// DCB type: `SignatureTypeGlobalParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SignatureTypeGlobalParams {
     /// `displayName` (Locale)
-    #[serde(default)]
     pub display_name: LocaleKey,
     /// `allowDampening` (Boolean)
-    #[serde(default)]
     pub allow_dampening: bool,
     /// `allowGenerateUnknownContacts` (Boolean)
-    #[serde(default)]
     pub allow_generate_unknown_contacts: bool,
     /// `allowVisibleContacts` (Boolean)
-    #[serde(default)]
     pub allow_visible_contacts: bool,
     /// `allowGenerateBlobs` (Boolean)
-    #[serde(default)]
     pub allow_generate_blobs: bool,
     /// `nearbyAmbientMultiplier` (Single)
-    #[serde(default)]
     pub nearby_ambient_multiplier: f32,
 }
 
@@ -320,10 +278,8 @@ impl<'a> Extract<'a> for SignatureTypeGlobalParams {
 }
 
 /// DCB type: `ScanInformationTable`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ScanInformationTable {
     /// `defs` (Reference (array))
-    #[serde(default)]
     pub defs: Vec<CigGuid>,
 }
 
@@ -345,22 +301,16 @@ impl<'a> Extract<'a> for ScanInformationTable {
 
 /// DCB type: `ScanDisplayConditionCompareParams`
 /// Inherits from: `ScanDisplayConditionBaseParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ScanDisplayConditionCompareParams {
     /// `scanCategory` (EnumChoice)
-    #[serde(default)]
     pub scan_category: EScanCategory,
     /// `scanInformation` (EnumChoice)
-    #[serde(default)]
     pub scan_information: EScanInformation,
     /// `thresholdValue` (Single)
-    #[serde(default)]
     pub threshold_value: f32,
     /// `comparison` (EnumChoice)
-    #[serde(default)]
     pub comparison: RadarPriorityComparison,
     /// `displayValue` (Locale)
-    #[serde(default)]
     pub display_value: LocaleKey,
 }
 
@@ -384,34 +334,24 @@ impl<'a> Extract<'a> for ScanDisplayConditionCompareParams {
 
 /// DCB type: `ScanDisplayConditionVariableParams`
 /// Inherits from: `ScanDisplayVariableParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ScanDisplayConditionVariableParams {
     /// `truncateSize` (Byte)
-    #[serde(default)]
     pub truncate_size: u32,
     /// `displayIsHidden` (Boolean)
-    #[serde(default)]
     pub display_is_hidden: bool,
     /// `displayInBrackets` (Boolean)
-    #[serde(default)]
     pub display_in_brackets: bool,
     /// `suffixArrayIndex` (Boolean)
-    #[serde(default)]
     pub suffix_array_index: bool,
     /// `suffixSemiColon` (Boolean)
-    #[serde(default)]
     pub suffix_semi_colon: bool,
     /// `auxiliaryFlag` (EnumChoice)
-    #[serde(default)]
     pub auxiliary_flag: EScanDisplayVariableAuxiliaryType,
     /// `fallback` (StrongPointer)
-    #[serde(default)]
     pub fallback: Option<ScanDisplayVariableParamsPtr>,
     /// `defaultValue` (Locale)
-    #[serde(default)]
     pub default_value: LocaleKey,
     /// `conditionValues` (StrongPointer (array))
-    #[serde(default)]
     pub condition_values: Vec<ScanDisplayConditionBaseParamsPtr>,
 }
 
@@ -446,13 +386,10 @@ impl<'a> Extract<'a> for ScanDisplayConditionVariableParams {
 }
 
 /// DCB type: `RadarSignatureCategoryDefinition`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct RadarSignatureCategoryDefinition {
     /// `default` (Reference)
-    #[serde(default)]
     pub default: Option<CigGuid>,
     /// `types` (Reference (array))
-    #[serde(default)]
     pub types: Vec<CigGuid>,
 }
 
@@ -474,13 +411,10 @@ impl<'a> Extract<'a> for RadarSignatureCategoryDefinition {
 }
 
 /// DCB type: `RadarSignatureCategoryEntry`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct RadarSignatureCategoryEntry {
     /// `name` (String)
-    #[serde(default)]
     pub name: String,
     /// `displayName` (Locale)
-    #[serde(default)]
     pub display_name: LocaleKey,
 }
 
@@ -500,16 +434,12 @@ impl<'a> Extract<'a> for RadarSignatureCategoryEntry {
 }
 
 /// DCB type: `RadarContactTypeDefinition`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct RadarContactTypeDefinition {
     /// `unknownType` (Reference)
-    #[serde(default)]
     pub unknown_type: Option<CigGuid>,
     /// `defaultAudioType` (Reference)
-    #[serde(default)]
     pub default_audio_type: Option<CigGuid>,
     /// `types` (Reference (array))
-    #[serde(default)]
     pub types: Vec<CigGuid>,
 }
 
@@ -532,10 +462,8 @@ impl<'a> Extract<'a> for RadarContactTypeDefinition {
 }
 
 /// DCB type: `RadarContactGroupDefinition`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct RadarContactGroupDefinition {
     /// `groups` (Reference (array))
-    #[serde(default)]
     pub groups: Vec<CigGuid>,
 }
 
@@ -556,10 +484,8 @@ impl<'a> Extract<'a> for RadarContactGroupDefinition {
 }
 
 /// DCB type: `RadarDeltaSignatureDefinition`
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct RadarDeltaSignatureDefinition {
     /// `types` (Reference (array))
-    #[serde(default)]
     pub types: Vec<CigGuid>,
 }
 
