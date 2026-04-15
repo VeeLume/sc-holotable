@@ -143,7 +143,7 @@ at 11.7 GB is much more manageable and still useful for iteration.
 
 ## Latest results
 
-*No current run. Previous results are archived in the History section below. Run `.\tools\bench\bench.ps1 -Mode all -KillRa` to populate this section.*
+*No current run. Previous results are archived in the History section below. Run `.\tools\bench\bench.ps1 -Mode all -Features entities-scitem-ships -KillRa` to populate this section.*
 
 <!-- BENCH:RESULTS-END -->
 
@@ -153,6 +153,18 @@ Previous benchmark runs for trend tracking. **Before re-running the
 script, copy the tables from the "Latest results" section above into
 a new dated subsection here** — the script's auto-update does not
 merge old results.
+
+### `entities-scitem-ships` + graph — iteration log
+
+Compact one-row-per-run log for the current compile-time iteration
+cycle. Feature set is `entities-scitem-ships` on every row; runtime
+numbers are with reference graph (`DatacoreConfig::all()`). Build
+config notes describe the delta vs. the previous row.
+
+| When | Build config | Check | Release build | Parse (std) | Parse (+graph) | Peak build RAM | Peak runtime RAM |
+|---|---|---:|---:|---:|---:|---:|---:|
+| 2026-04-15 23:03 | clean slate, cargo defaults (release: opt=3/cu=16/lto=off, no `.cargo/config.toml`) | 16.04s | 1m 44.5s | 29.30s | 35.15s | 1.88 GB | 4.37 GB |
+
 
 ### Pre-2026-04-15 (stale, retained for context)
 
