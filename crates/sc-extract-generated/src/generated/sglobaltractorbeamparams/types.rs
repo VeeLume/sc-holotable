@@ -15,7 +15,7 @@
 use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, Pooled};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -57,38 +57,23 @@ impl<'a> Extract<'a> for STractorBeamHoloVisualParams {
             min_alignment_valid_holo: inst.get_f32("minAlignmentValidHolo").unwrap_or_default(),
             valid_holo_color: match inst.get("validHoloColor") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<RGB>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<RGB>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             warning_holo_color: match inst.get("warningHoloColor") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<RGB>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<RGB>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             invalid_holo_color: match inst.get("invalidHoloColor") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<RGB>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<RGB>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             cargo_holo_preview_color: match inst.get("cargoHoloPreviewColor") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<RGBA>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<RGBA>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             holo_opacity: inst.get_f32("holoOpacity").unwrap_or_default(),
             holo_material: match inst.get("holoMaterial") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceMaterial>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<GlobalResourceMaterial>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
         }
@@ -165,16 +150,10 @@ impl<'a> Extract<'a> for SGlobalTractorBeamParams {
         Self {
             holo_visual_params: match inst.get("holoVisualParams") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<STractorBeamHoloVisualParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<STractorBeamHoloVisualParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             outline_visual_params: match inst.get("outlineVisualParams") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<STractorBeamOutlineVisualParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<STractorBeamOutlineVisualParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             being_tractor_beamed_tag: inst.get("beingTractorBeamedTag").and_then(|v| v.as_record_ref()).map(|r| r.guid),

@@ -15,7 +15,7 @@
 use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, Pooled};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -77,9 +77,10 @@ impl<'a> Extract<'a> for SJumpTunnelVisualParams {
     }
 }
 
-/// DCB type: `SMisfireEffect`
+/// DCB type: `SSpreadMisfireEffect`
+/// Inherits from: `SMisfireEffect`
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct SMisfireEffect {
+pub struct SSpreadMisfireEffect {
     /// `effectTrigger` (Reference)
     #[serde(default)]
     pub effect_trigger: Option<CigGuid>,
@@ -88,13 +89,13 @@ pub struct SMisfireEffect {
     pub effect_tag: Option<CigGuid>,
 }
 
-impl Pooled for SMisfireEffect {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.jumppoints.smisfire_effect }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.jumppoints.smisfire_effect }
+impl Pooled for SSpreadMisfireEffect {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.jumppoints.sspread_misfire_effect }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.jumppoints.sspread_misfire_effect }
 }
 
-impl<'a> Extract<'a> for SMisfireEffect {
-    const TYPE_NAME: &'static str = "SMisfireEffect";
+impl<'a> Extract<'a> for SSpreadMisfireEffect {
+    const TYPE_NAME: &'static str = "SSpreadMisfireEffect";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
             effect_trigger: inst.get("effectTrigger").and_then(|v| v.as_record_ref()).map(|r| r.guid),
@@ -172,9 +173,6 @@ impl<'a> Extract<'a> for GlobalJumpPointOpeningParams {
             reveal_time: inst.get_f32("revealTime").unwrap_or_default(),
             reveal_anim_curve: match inst.get("revealAnimCurve") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BezierCurve>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<BezierCurve>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             reveal_fade_delay: inst.get_f32("revealFadeDelay").unwrap_or_default(),
@@ -182,9 +180,6 @@ impl<'a> Extract<'a> for GlobalJumpPointOpeningParams {
             opening_end_delay: inst.get_f32("openingEndDelay").unwrap_or_default(),
             aperture_time_scale_range: match inst.get("apertureTimeScaleRange") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<Range>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
         }
@@ -246,23 +241,14 @@ impl<'a> Extract<'a> for GlobalJumpPointEffectParams {
         Self {
             tuning_params: match inst.get("tuningParams") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalJumpPointTuningParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<GlobalJumpPointTuningParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             opening_params: match inst.get("openingParams") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalJumpPointOpeningParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<GlobalJumpPointOpeningParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             closing_params: match inst.get("closingParams") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalJumpPointClosingParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<GlobalJumpPointClosingParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
         }
@@ -353,56 +339,12 @@ impl<'a> Extract<'a> for GlobalJumpPointParams {
             debris_push_out_maximum_speed: inst.get_f32("debrisPushOutMaximumSpeed").unwrap_or_default(),
             effect_params: match inst.get("effectParams") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalJumpPointEffectParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<GlobalJumpPointEffectParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             ui_cone_params: match inst.get("uiConeParams") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<JumpDriveUIConeParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<JumpDriveUIConeParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
-        }
-    }
-}
-
-/// DCB type: `SJumpPointPushAreaParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct SJumpPointPushAreaParams {
-    /// `areaRadius` (Single)
-    #[serde(default)]
-    pub area_radius: f32,
-    /// `softPushAreaDistance` (Single)
-    #[serde(default)]
-    pub soft_push_area_distance: f32,
-    /// `strength` (Single)
-    #[serde(default)]
-    pub strength: f32,
-    /// `damping` (Single)
-    #[serde(default)]
-    pub damping: f32,
-    /// `falloffRatio` (Single)
-    #[serde(default)]
-    pub falloff_ratio: f32,
-}
-
-impl Pooled for SJumpPointPushAreaParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.jumppoints.sjump_point_push_area_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.jumppoints.sjump_point_push_area_params }
-}
-
-impl<'a> Extract<'a> for SJumpPointPushAreaParams {
-    const TYPE_NAME: &'static str = "SJumpPointPushAreaParams";
-    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
-            area_radius: inst.get_f32("areaRadius").unwrap_or_default(),
-            soft_push_area_distance: inst.get_f32("softPushAreaDistance").unwrap_or_default(),
-            strength: inst.get_f32("strength").unwrap_or_default(),
-            damping: inst.get_f32("damping").unwrap_or_default(),
-            falloff_ratio: inst.get_f32("falloffRatio").unwrap_or_default(),
         }
     }
 }
@@ -428,10 +370,7 @@ impl<'a> Extract<'a> for SJumpTunnelSectionProbabilityParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             section: match inst.get("section") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SJumpTunnelSectionGenerationParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SJumpTunnelSectionGenerationParams>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SJumpTunnelSectionGenerationParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             probability: inst.get_f32("probability").unwrap_or_default(),
@@ -464,23 +403,14 @@ impl<'a> Extract<'a> for SJumpTunnelSectionControlPointGenerationParams {
         Self {
             section_offset: match inst.get("sectionOffset") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<Range>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             section_length: match inst.get("sectionLength") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<Range>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             angle_offset: match inst.get("angleOffset") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<Range>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
         }
@@ -512,23 +442,14 @@ impl<'a> Extract<'a> for SJumpTunnelObstacleGenerationParams {
         Self {
             size: match inst.get("size") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<Range>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             offset: match inst.get("offset") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<Range>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             angle: match inst.get("angle") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<Range>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
         }
@@ -574,18 +495,12 @@ impl<'a> Extract<'a> for SJumpTunnelEllipticalParams {
             max_radius: inst.get_f32("maxRadius").unwrap_or_default(),
             radius_multiplier: match inst.get("radiusMultiplier") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BezierCurve>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<BezierCurve>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             min_aspect_ratio: inst.get_f32("minAspectRatio").unwrap_or_default(),
             max_aspect_ratio: inst.get_f32("maxAspectRatio").unwrap_or_default(),
             aspect_ratio_multiplier: match inst.get("aspectRatioMultiplier") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BezierCurve>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<BezierCurve>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             chance_to_follow_curvature: inst.get_f32("chanceToFollowCurvature").unwrap_or_default(),
@@ -636,41 +551,28 @@ impl<'a> Extract<'a> for SJumpTunnelSectionGenerationParams {
             next_section_probabilities: inst.get_array("nextSectionProbabilities")
                 .map(|arr| arr.filter_map(|v| match v {
                         Value::Class { struct_index, data } => Some(b.alloc_nested::<SJumpTunnelSectionProbabilityParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r)
-                        | Value::StrongPointer(Some(r))
-                        | Value::WeakPointer(Some(r)) => Some(b.alloc_nested::<SJumpTunnelSectionProbabilityParams>(b.db.instance(r.struct_index, r.instance_index), true)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<SJumpTunnelSectionProbabilityParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
                     }).collect())
                 .unwrap_or_default(),
             control_points: inst.get_array("controlPoints")
                 .map(|arr| arr.filter_map(|v| match v {
                         Value::Class { struct_index, data } => Some(b.alloc_nested::<SJumpTunnelSectionControlPointGenerationParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r)
-                        | Value::StrongPointer(Some(r))
-                        | Value::WeakPointer(Some(r)) => Some(b.alloc_nested::<SJumpTunnelSectionControlPointGenerationParams>(b.db.instance(r.struct_index, r.instance_index), true)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<SJumpTunnelSectionControlPointGenerationParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
                     }).collect())
                 .unwrap_or_default(),
             chance_of_obstacles: inst.get_f32("chanceOfObstacles").unwrap_or_default(),
             number_of_obstacles: match inst.get("numberOfObstacles") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<Range>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             obstacle_generation: match inst.get("obstacleGeneration") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SJumpTunnelObstacleGenerationParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SJumpTunnelObstacleGenerationParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             elliptical_params: match inst.get("ellipticalParams") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SJumpTunnelEllipticalParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SJumpTunnelEllipticalParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
         }
@@ -725,33 +627,23 @@ impl<'a> Extract<'a> for SJumpTunnelGenerationParams {
             exit_length: inst.get_f32("exitLength").unwrap_or_default(),
             entrance_elliptical_params: match inst.get("entranceEllipticalParams") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SJumpTunnelEllipticalParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SJumpTunnelEllipticalParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             exit_elliptical_params: match inst.get("exitEllipticalParams") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SJumpTunnelEllipticalParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SJumpTunnelEllipticalParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             first_section_probabilities: inst.get_array("firstSectionProbabilities")
                 .map(|arr| arr.filter_map(|v| match v {
                         Value::Class { struct_index, data } => Some(b.alloc_nested::<SJumpTunnelSectionProbabilityParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r)
-                        | Value::StrongPointer(Some(r))
-                        | Value::WeakPointer(Some(r)) => Some(b.alloc_nested::<SJumpTunnelSectionProbabilityParams>(b.db.instance(r.struct_index, r.instance_index), true)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<SJumpTunnelSectionProbabilityParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
                     }).collect())
                 .unwrap_or_default(),
             gen_params: inst.get_array("genParams")
                 .map(|arr| arr.filter_map(|v| match v {
                         Value::Class { struct_index, data } => Some(b.alloc_nested::<SJumpTunnelSectionGenerationParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r)
-                        | Value::StrongPointer(Some(r))
-                        | Value::WeakPointer(Some(r)) => Some(b.alloc_nested::<SJumpTunnelSectionGenerationParams>(b.db.instance(r.struct_index, r.instance_index), true)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<SJumpTunnelSectionGenerationParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
                     }).collect())
                 .unwrap_or_default(),
@@ -831,16 +723,10 @@ impl<'a> Extract<'a> for GlobalJumpTunnelFogParams {
             fog_end_offset: inst.get_f32("fogEndOffset").unwrap_or_default(),
             fog_end_intensity_distance_range: match inst.get("fogEndIntensityDistanceRange") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<Range>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             fog_animated_intensity_scale_range: match inst.get("fogAnimatedIntensityScaleRange") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<Range>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
         }
@@ -896,51 +782,30 @@ impl<'a> Extract<'a> for GlobalJumpTunnelPassByLightParams {
         Self {
             intensity_range: match inst.get("intensityRange") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<Range>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             radius_range: match inst.get("radiusRange") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<Range>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             bulb_range: match inst.get("bulbRange") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<Range>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             spacing_range: match inst.get("spacingRange") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<Range>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             distance_from_spline: match inst.get("distanceFromSpline") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<Range>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             speed_range: match inst.get("speedRange") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<Range>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             color_random_offset_range: match inst.get("colorRandomOffsetRange") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<Range>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             entrance_offset: inst.get_f32("entranceOffset").unwrap_or_default(),
@@ -1022,72 +887,42 @@ impl<'a> Extract<'a> for GlobalJumpTunnelEffectParams {
         Self {
             fail_effect: match inst.get("failEffect") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceParticle>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<GlobalResourceParticle>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             interior_exit_effect: match inst.get("interiorExitEffect") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceParticle>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<GlobalResourceParticle>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             spaceloop_effect: match inst.get("spaceloopEffect") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceParticle>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<GlobalResourceParticle>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             central_spline_effect: match inst.get("centralSplineEffect") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceParticle>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<GlobalResourceParticle>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             space_filling_spline_effect: match inst.get("spaceFillingSplineEffect") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceParticle>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<GlobalResourceParticle>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             sun_flare_effect: match inst.get("sunFlareEffect") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceParticle>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<GlobalResourceParticle>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             sun_light_params: match inst.get("sunLightParams") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalJumpTunnelLightParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<GlobalJumpTunnelLightParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             probe_params: match inst.get("probeParams") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalJumpTunnelProbeParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<GlobalJumpTunnelProbeParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             fog_params: match inst.get("fogParams") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalJumpTunnelFogParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<GlobalJumpTunnelFogParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             pass_by_light_params: match inst.get("passByLightParams") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalJumpTunnelPassByLightParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<GlobalJumpTunnelPassByLightParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             spline_length: inst.get_f32("splineLength").unwrap_or_default(),
@@ -1151,44 +986,26 @@ impl<'a> Extract<'a> for JumpTunnelCameraEffects {
         Self {
             blur: match inst.get("blur") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<JumpTunnelCameraEffectParam>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<JumpTunnelCameraEffectParam>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             bloom: match inst.get("bloom") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<JumpTunnelCameraEffectParam>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<JumpTunnelCameraEffectParam>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             chromatic_aberation: match inst.get("chromaticAberation") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<JumpTunnelCameraEffectParam>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<JumpTunnelCameraEffectParam>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             shutter_speed: match inst.get("shutterSpeed") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<JumpTunnelCameraEffectParam>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<JumpTunnelCameraEffectParam>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             fov: match inst.get("fov") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<JumpTunnelCameraEffectParam>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<JumpTunnelCameraEffectParam>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             fov_scale: match inst.get("fovScale") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<JumpTunnelCameraEffectParam>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<JumpTunnelCameraEffectParam>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
         }
@@ -1258,51 +1075,30 @@ impl<'a> Extract<'a> for GlobalJumpTunnelCameraEffectParams {
         Self {
             alignment_to_spline: match inst.get("alignmentToSpline") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<JumpTunnelCameraEffects>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<JumpTunnelCameraEffects>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             distortion_ratio: match inst.get("distortionRatio") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<JumpTunnelCameraEffects>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<JumpTunnelCameraEffects>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             opening_proximity: match inst.get("openingProximity") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<JumpTunnelCameraEffects>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<JumpTunnelCameraEffects>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             wall_proximity: match inst.get("wallProximity") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<JumpTunnelCameraEffects>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<JumpTunnelCameraEffects>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             failure_state: match inst.get("failureState") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<JumpTunnelCameraEffects>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<JumpTunnelCameraEffects>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             velocity_strength: match inst.get("velocityStrength") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<JumpTunnelCameraEffects>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<JumpTunnelCameraEffects>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             velocity_strength_params: match inst.get("velocityStrengthParams") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<JumpDriveVelocityStrengthParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<JumpDriveVelocityStrengthParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
         }
@@ -1397,9 +1193,6 @@ impl<'a> Extract<'a> for SJumpTunnelFailureParams {
             ratio_of_max_hull_wear_damage: inst.get_f32("ratioOfMaxHullWearDamage").unwrap_or_default(),
             teleport_range_offset: match inst.get("teleportRangeOffset") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<Range>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             teleport_max_height: inst.get_f32("teleportMaxHeight").unwrap_or_default(),
@@ -1432,17 +1225,11 @@ impl<'a> Extract<'a> for SJumpTunnelExitParams {
         Self {
             default_distance_range: match inst.get("defaultDistanceRange") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<Range>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             default_max_height: inst.get_f32("defaultMaxHeight").unwrap_or_default(),
             exit_push_area: match inst.get("exitPushArea") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SJumpPointPushAreaParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SJumpPointPushAreaParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
         }
@@ -1489,51 +1276,30 @@ impl<'a> Extract<'a> for GlobalJumpTunnelHostParams {
         Self {
             material: match inst.get("material") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceMaterial>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<GlobalResourceMaterial>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             tunnel_generation_params: match inst.get("tunnelGenerationParams") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SJumpTunnelGenerationParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SJumpTunnelGenerationParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             tunnel_distortion_params: match inst.get("tunnelDistortionParams") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SJumpTunnelDistortionParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SJumpTunnelDistortionParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             tunnel_failure_params: match inst.get("tunnelFailureParams") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SJumpTunnelFailureParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SJumpTunnelFailureParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             tunnel_exit_params: match inst.get("tunnelExitParams") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SJumpTunnelExitParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SJumpTunnelExitParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             visual_params: match inst.get("visualParams") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SJumpTunnelVisualParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SJumpTunnelVisualParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             effect_params: match inst.get("effectParams") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalJumpTunnelEffectParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<GlobalJumpTunnelEffectParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             entity_pull_in_acceleration: inst.get_f32("entityPullInAcceleration").unwrap_or_default(),
@@ -1555,7 +1321,7 @@ pub struct JumpDriveStateAudioMap {
     pub exit_state_loop: Option<Handle<GlobalResourceAudio>>,
     /// `jumpDriveState` (EnumChoice)
     #[serde(default)]
-    pub jump_drive_state: String,
+    pub jump_drive_state: ItemJumpDriveState,
 }
 
 impl Pooled for JumpDriveStateAudioMap {
@@ -1569,26 +1335,17 @@ impl<'a> Extract<'a> for JumpDriveStateAudioMap {
         Self {
             enter_state_loop: match inst.get("enterStateLoop") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<GlobalResourceAudio>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             enter_state_one_shot: match inst.get("enterStateOneShot") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<GlobalResourceAudio>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             exit_state_loop: match inst.get("exitStateLoop") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<GlobalResourceAudio>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
-            jump_drive_state: inst.get_str("jumpDriveState").map(String::from).unwrap_or_default(),
+            jump_drive_state: ItemJumpDriveState::from_dcb_str(inst.get_str("jumpDriveState").unwrap_or("")),
         }
     }
 }
@@ -1684,177 +1441,102 @@ impl<'a> Extract<'a> for JumpDriveAudioMovementParams {
         Self {
             ship_linear_acceleration_rl: match inst.get("shipLinearAccelerationRL") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<AudioRtpc>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             ship_linear_acceleration_fb: match inst.get("shipLinearAccelerationFB") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<AudioRtpc>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             ship_linear_acceleration_ud: match inst.get("shipLinearAccelerationUD") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<AudioRtpc>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             ship_angular_acceleration_pitch: match inst.get("shipAngularAccelerationPitch") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<AudioRtpc>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             ship_angular_acceleration_roll: match inst.get("shipAngularAccelerationRoll") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<AudioRtpc>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             ship_angular_acceleration_yaw: match inst.get("shipAngularAccelerationYaw") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<AudioRtpc>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             ship_angular_turbulence_pitch: match inst.get("shipAngularTurbulencePitch") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<AudioRtpc>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             ship_angular_turbulence_roll: match inst.get("shipAngularTurbulenceRoll") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<AudioRtpc>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             ship_angular_turbulence_yaw: match inst.get("shipAngularTurbulenceYaw") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<AudioRtpc>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             ship_linear_velocity_rl: match inst.get("shipLinearVelocityRL") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<AudioRtpc>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             ship_linear_velocity_fb: match inst.get("shipLinearVelocityFB") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<AudioRtpc>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             ship_linear_velocity_ud: match inst.get("shipLinearVelocityUD") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<AudioRtpc>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             tunnel_linear_acceleration_rl: match inst.get("tunnelLinearAccelerationRL") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<AudioRtpc>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             tunnel_linear_acceleration_fb: match inst.get("tunnelLinearAccelerationFB") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<AudioRtpc>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             tunnel_linear_acceleration_ud: match inst.get("tunnelLinearAccelerationUD") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<AudioRtpc>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             tunnel_angular_acceleration_pitch: match inst.get("tunnelAngularAccelerationPitch") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<AudioRtpc>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             tunnel_angular_acceleration_roll: match inst.get("tunnelAngularAccelerationRoll") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<AudioRtpc>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             tunnel_angular_acceleration_yaw: match inst.get("tunnelAngularAccelerationYaw") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<AudioRtpc>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             player_input_pitch: match inst.get("playerInputPitch") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<AudioRtpc>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             player_input_roll: match inst.get("playerInputRoll") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<AudioRtpc>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             player_input_yaw: match inst.get("playerInputYaw") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<AudioRtpc>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             player_input_strafe_rl: match inst.get("playerInputStrafeRL") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<AudioRtpc>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             player_input_strafe_fb: match inst.get("playerInputStrafeFB") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<AudioRtpc>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             player_input_strafe_ud: match inst.get("playerInputStrafeUD") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<AudioRtpc>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             afterburner_requested_rtpc: match inst.get("afterburnerRequestedRtpc") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<AudioRtpc>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
         }
@@ -1937,30 +1619,18 @@ impl<'a> Extract<'a> for JumpDriveAudioParams {
         Self {
             state_map: match inst.get("stateMap") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<JumpDriveStateAudioMap>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<JumpDriveStateAudioMap>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             tunnel_progress_rtpc: match inst.get("tunnelProgressRtpc") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<AudioRtpc>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             in_jump_tunnel_rtpc: match inst.get("inJumpTunnelRtpc") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<AudioRtpc>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             distance_from_spline_rtpc: match inst.get("distanceFromSplineRtpc") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<AudioRtpc>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             wall_impact_speed_threshold: inst.get_f32("wallImpactSpeedThreshold").unwrap_or_default(),
@@ -1968,93 +1638,54 @@ impl<'a> Extract<'a> for JumpDriveAudioParams {
             pass_by_light_distance_threshold: inst.get_f32("passByLightDistanceThreshold").unwrap_or_default(),
             pass_by_light_distance_norm_rtpc: match inst.get("passByLightDistanceNormRtpc") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<AudioRtpc>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             pass_by_light_dot_rtpc: match inst.get("passByLightDotRtpc") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<AudioRtpc>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             tunnel_wall_impact_speed_rtpc: match inst.get("tunnelWallImpactSpeedRtpc") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<AudioRtpc>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             tunnel_wall_impact_one_shot: match inst.get("tunnelWallImpactOneShot") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<GlobalResourceAudio>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             start_tunnel_wall_contact_loop: match inst.get("startTunnelWallContactLoop") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<GlobalResourceAudio>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             stop_tunnel_wall_contact_loop: match inst.get("stopTunnelWallContactLoop") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<GlobalResourceAudio>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             spline_vel_rtpc: match inst.get("splineVelRtpc") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<AudioRtpc>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             distortion_rtpc: match inst.get("distortionRtpc") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<AudioRtpc>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             start_spline_center_loop: match inst.get("startSplineCenterLoop") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<GlobalResourceAudio>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             stop_spline_center_loop: match inst.get("stopSplineCenterLoop") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<GlobalResourceAudio>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             start_ship_tunnel_midpoint_loop: match inst.get("startShipTunnelMidpointLoop") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<GlobalResourceAudio>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             stop_ship_tunnel_midpoint_loop: match inst.get("stopShipTunnelMidpointLoop") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<GlobalResourceAudio>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             movement_params: match inst.get("movementParams") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<JumpDriveAudioMovementParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<JumpDriveAudioMovementParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
         }
@@ -2084,9 +1715,6 @@ impl<'a> Extract<'a> for JumpDriveMusicEvent {
             music_logic_event: inst.get("musicLogicEvent").and_then(|v| v.as_record_ref()).map(|r| r.guid),
             music_wwise_event: match inst.get("musicWwiseEvent") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<GlobalResourceAudio>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
         }
@@ -2101,7 +1729,7 @@ pub struct JumpDriveStateMusicMap {
     pub music_event: Option<Handle<JumpDriveMusicEvent>>,
     /// `jumpDriveState` (EnumChoice)
     #[serde(default)]
-    pub jump_drive_state: String,
+    pub jump_drive_state: ItemJumpDriveState,
 }
 
 impl Pooled for JumpDriveStateMusicMap {
@@ -2115,12 +1743,9 @@ impl<'a> Extract<'a> for JumpDriveStateMusicMap {
         Self {
             music_event: match inst.get("musicEvent") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<JumpDriveMusicEvent>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<JumpDriveMusicEvent>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
-            jump_drive_state: inst.get_str("jumpDriveState").map(String::from).unwrap_or_default(),
+            jump_drive_state: ItemJumpDriveState::from_dcb_str(inst.get_str("jumpDriveState").unwrap_or("")),
         }
     }
 }
@@ -2153,26 +1778,18 @@ impl<'a> Extract<'a> for JumpDriveMusicParams {
         Self {
             tunnel_progress_rtpc: match inst.get("tunnelProgressRtpc") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<AudioRtpc>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             state_map: inst.get_array("stateMap")
                 .map(|arr| arr.filter_map(|v| match v {
                         Value::Class { struct_index, data } => Some(b.alloc_nested::<JumpDriveStateMusicMap>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r)
-                        | Value::StrongPointer(Some(r))
-                        | Value::WeakPointer(Some(r)) => Some(b.alloc_nested::<JumpDriveStateMusicMap>(b.db.instance(r.struct_index, r.instance_index), true)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<JumpDriveStateMusicMap>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
                     }).collect())
                 .unwrap_or_default(),
             pre_arrival_duration_secs: inst.get_f32("preArrivalDurationSecs").unwrap_or_default(),
             pre_arrival_music_event: match inst.get("preArrivalMusicEvent") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<JumpDriveMusicEvent>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<JumpDriveMusicEvent>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
         }
@@ -2280,23 +1897,14 @@ impl<'a> Extract<'a> for GlobalJumpDriveEffectParams {
         Self {
             tuning_params: match inst.get("tuningParams") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalJumpDriveTuningEffectParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<GlobalJumpDriveTuningEffectParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             entry_params: match inst.get("entryParams") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalJumpDriveEntryEffectParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<GlobalJumpDriveEntryEffectParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             exit_params: match inst.get("exitParams") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalJumpDriveExitEffectParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<GlobalJumpDriveExitEffectParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             failure_build_up_time: inst.get_f32("failureBuildUpTime").unwrap_or_default(),
@@ -2352,7 +1960,7 @@ pub struct GlobalJumpDriveParams {
     pub approach_ring_params: Option<Handle<JumpDriveApproachRingsParams>>,
     /// `malfunction` (StrongPointer)
     #[serde(default)]
-    pub malfunction: Option<Handle<SMisfireEffect>>,
+    pub malfunction: Option<SMisfireEffectPtr>,
     /// `checksPassedDelay` (Single)
     #[serde(default)]
     pub checks_passed_delay: f32,
@@ -2375,37 +1983,22 @@ impl<'a> Extract<'a> for GlobalJumpDriveParams {
         Self {
             audio_params: match inst.get("audioParams") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<JumpDriveAudioParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<JumpDriveAudioParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             music_params: match inst.get("musicParams") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<JumpDriveMusicParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<JumpDriveMusicParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             effect_params: match inst.get("effectParams") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalJumpDriveEffectParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<GlobalJumpDriveEffectParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             approach_ring_params: match inst.get("approachRingParams") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<JumpDriveApproachRingsParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<JumpDriveApproachRingsParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             malfunction: match inst.get("malfunction") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SMisfireEffect>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SMisfireEffect>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(SMisfireEffectPtr::from_ref(b, r)),
                 _ => None,
             },
             checks_passed_delay: inst.get_f32("checksPassedDelay").unwrap_or_default(),
@@ -2437,16 +2030,10 @@ impl<'a> Extract<'a> for JumpTravelCameraParams {
         Self {
             generic_modifiers: match inst.get("genericModifiers") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<CameraEffectsModifiers>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<CameraEffectsModifiers>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             camera_effect_params: match inst.get("cameraEffectParams") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalJumpTunnelCameraEffectParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<GlobalJumpTunnelCameraEffectParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
         }

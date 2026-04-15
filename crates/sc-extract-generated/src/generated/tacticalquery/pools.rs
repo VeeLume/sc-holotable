@@ -7,7 +7,7 @@
 //
 // Any hand edits will be lost on the next run.
 
-#![allow(non_snake_case, dead_code, unused_imports)]
+#![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
 use serde::{Deserialize, Serialize};
 use super::super::*;
@@ -16,15 +16,15 @@ use super::super::*;
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct TacticalqueryPools {
     #[serde(default)]
-    pub tactical_query: Vec<Option<TacticalQuery>>,
+    pub tqsinput_int_value: Vec<Option<TQSInputIntValue>>,
     #[serde(default)]
-    pub tqsinput: Vec<Option<TQSInput>>,
+    pub tqsinput_dynamic_variable_value: Vec<Option<TQSInputDynamicVariableValue>>,
     #[serde(default)]
-    pub tqsweight_input: Vec<Option<TQSWeightInput>>,
+    pub tqsweight_input_float_value: Vec<Option<TQSWeightInputFloatValue>>,
     #[serde(default)]
-    pub tqsoption: Vec<Option<TQSOption>>,
+    pub tqsweight_input_tag_value: Vec<Option<TQSWeightInputTagValue>>,
     #[serde(default)]
     pub tqsoption_content_record: Vec<Option<TQSOptionContentRecord>>,
     #[serde(default)]
-    pub tqsoption_content: Vec<Option<TQSOptionContent>>,
+    pub tqsoption_reference: Vec<Option<TQSOptionReference>>,
 }

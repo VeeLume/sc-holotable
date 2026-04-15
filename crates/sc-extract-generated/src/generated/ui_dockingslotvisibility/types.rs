@@ -15,7 +15,7 @@
 use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, Pooled};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -48,7 +48,7 @@ impl<'a> Extract<'a> for DockingSlotVisibilityTagSet {
 pub struct DockingSlotVisibilityRule {
     /// `modes` (EnumChoice (array))
     #[serde(default)]
-    pub modes: Vec<String>,
+    pub modes: Vec<UIBlockingMode>,
     /// `tagSets` (Class (array))
     #[serde(default)]
     pub tag_sets: Vec<Handle<DockingSlotVisibilityTagSet>>,
@@ -64,14 +64,12 @@ impl<'a> Extract<'a> for DockingSlotVisibilityRule {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             modes: inst.get_array("modes")
-                .map(|arr| arr.filter_map(|v| v.as_str().map(String::from)).collect())
+                .map(|arr| arr.filter_map(|v| v.as_str().map(UIBlockingMode::from_dcb_str)).collect())
                 .unwrap_or_default(),
             tag_sets: inst.get_array("tagSets")
                 .map(|arr| arr.filter_map(|v| match v {
                         Value::Class { struct_index, data } => Some(b.alloc_nested::<DockingSlotVisibilityTagSet>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r)
-                        | Value::StrongPointer(Some(r))
-                        | Value::WeakPointer(Some(r)) => Some(b.alloc_nested::<DockingSlotVisibilityTagSet>(b.db.instance(r.struct_index, r.instance_index), true)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<DockingSlotVisibilityTagSet>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
                     }).collect())
                 .unwrap_or_default(),
@@ -99,9 +97,7 @@ impl<'a> Extract<'a> for DockingSlotVisibility {
             rules: inst.get_array("rules")
                 .map(|arr| arr.filter_map(|v| match v {
                         Value::Class { struct_index, data } => Some(b.alloc_nested::<DockingSlotVisibilityRule>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r)
-                        | Value::StrongPointer(Some(r))
-                        | Value::WeakPointer(Some(r)) => Some(b.alloc_nested::<DockingSlotVisibilityRule>(b.db.instance(r.struct_index, r.instance_index), true)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<DockingSlotVisibilityRule>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
                     }).collect())
                 .unwrap_or_default(),

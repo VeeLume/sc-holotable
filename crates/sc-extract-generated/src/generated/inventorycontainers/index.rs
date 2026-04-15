@@ -7,7 +7,7 @@
 //
 // Any hand edits will be lost on the next run.
 
-#![allow(non_snake_case, dead_code, unused_imports)]
+#![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
 use std::collections::HashMap;
 use serde::{Deserialize, Serialize};
@@ -20,14 +20,14 @@ use super::super::*;
 pub struct InventorycontainersIndex {
     #[serde(default)]
     pub inventory_container_manager: HashMap<CigGuid, Handle<InventoryContainerManager>>,
-    #[serde(default)]
-    pub landing_zone_inventory: HashMap<CigGuid, Handle<LandingZoneInventory>>,
 }
 
 impl InventorycontainersIndex {
+    #[allow(unused_mut)]
     pub fn len(&self) -> usize {
-        self.inventory_container_manager.len()
-            + self.landing_zone_inventory.len()
+        let mut total = 0usize;
+        total += self.inventory_container_manager.len();
+        total
     }
 
     pub fn is_empty(&self) -> bool { self.len() == 0 }

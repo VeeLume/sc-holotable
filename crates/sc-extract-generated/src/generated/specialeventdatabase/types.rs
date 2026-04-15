@@ -15,7 +15,7 @@
 use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, Pooled};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -45,7 +45,7 @@ pub struct SpecialEventDay {
     pub manufacturers: Vec<CigGuid>,
     /// `displayNames` (Locale (array))
     #[serde(default)]
-    pub display_names: Vec<String>,
+    pub display_names: Vec<LocaleKey>,
 }
 
 impl Pooled for SpecialEventDay {
@@ -61,7 +61,7 @@ impl<'a> Extract<'a> for SpecialEventDay {
                 .map(|arr| arr.filter_map(|v| if let Value::Reference(Some(r)) = v { Some(r.guid) } else { None }).collect())
                 .unwrap_or_default(),
             display_names: inst.get_array("displayNames")
-                .map(|arr| arr.filter_map(|v| v.as_str().map(String::from)).collect())
+                .map(|arr| arr.filter_map(|v| v.as_str().map(LocaleKey::from)).collect())
                 .unwrap_or_default(),
         }
     }

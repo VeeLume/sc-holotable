@@ -7,7 +7,7 @@
 //
 // Any hand edits will be lost on the next run.
 
-#![allow(non_snake_case, dead_code, unused_imports)]
+#![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
 use serde::{Deserialize, Serialize};
 use super::super::*;
@@ -16,15 +16,7 @@ use super::super::*;
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct UiArmarkerconfigurationPools {
     #[serde(default)]
-    pub marker_decluttering_culling_order: Vec<Option<MarkerDeclutteringCullingOrder>>,
-    #[serde(default)]
     pub global_marker_configs: Vec<Option<GlobalMarkerConfigs>>,
     #[serde(default)]
-    pub marker_configuration: Vec<Option<Marker_Configuration>>,
-    #[serde(default)]
-    pub marker_show_rule: Vec<Option<Marker_ShowRule>>,
-    #[serde(default)]
-    pub marker_show_rule_map_display_mode: Vec<Option<Marker_ShowRuleMapDisplayMode>>,
-    #[serde(default)]
-    pub marker_ability_base: Vec<Option<Marker_AbilityBase>>,
+    pub marker_ability_nearest_face: Vec<Option<Marker_AbilityNearestFace>>,
 }

@@ -7,7 +7,7 @@
 //
 // Any hand edits will be lost on the next run.
 
-#![allow(non_snake_case, dead_code, unused_imports)]
+#![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
 use std::collections::HashMap;
 use serde::{Deserialize, Serialize};
@@ -31,12 +31,15 @@ pub struct HudparamsIndex {
 }
 
 impl HudparamsIndex {
+    #[allow(unused_mut)]
     pub fn len(&self) -> usize {
-        self.starget_selector_hud_params.len()
-            + self.sprojected_hud_params.len()
-            + self.svehicle_hud_params.len()
-            + self.saimable_gimbal_mode_labels.len()
-            + self.saimable_controller_hud_params.len()
+        let mut total = 0usize;
+        total += self.starget_selector_hud_params.len();
+        total += self.sprojected_hud_params.len();
+        total += self.svehicle_hud_params.len();
+        total += self.saimable_gimbal_mode_labels.len();
+        total += self.saimable_controller_hud_params.len();
+        total
     }
 
     pub fn is_empty(&self) -> bool { self.len() == 0 }

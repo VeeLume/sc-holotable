@@ -9,10 +9,10 @@
 
 //! Feature module: `entities-scitem-actormovables`
 
-pub mod types;
-pub mod pools;
-pub mod index;
+#[allow(unused_imports)]
+mod types;
+mod pools;
 
+#[allow(unused_imports)]
 pub use types::*;
 pub use pools::*;
-pub use index::*;

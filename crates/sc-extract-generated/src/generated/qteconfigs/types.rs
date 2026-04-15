@@ -15,7 +15,7 @@
 use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, Pooled};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -42,13 +42,13 @@ pub struct QTERequestConfig {
     pub decay_per_second: f32,
     /// `givewayBehaviour` (EnumChoice)
     #[serde(default)]
-    pub giveway_behaviour: String,
+    pub giveway_behaviour: EQTEPriorityGivewayBehaviour,
     /// `ownerName` (String)
     #[serde(default)]
     pub owner_name: String,
     /// `QTEPriority` (EnumChoice)
     #[serde(default)]
-    pub qtepriority: String,
+    pub qtepriority: EQTEPriority,
     /// `inputPromptConfig` (Reference)
     #[serde(default)]
     pub input_prompt_config: Option<CigGuid>,
@@ -66,18 +66,15 @@ impl<'a> Extract<'a> for QTERequestConfig {
             block_actions: inst.get_bool("blockActions").unwrap_or_default(),
             action_name: match inst.get("actionName") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<InputAction>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<InputAction>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             total_press_num: inst.get_i32("totalPressNum").unwrap_or_default(),
             max_qtetime: inst.get_f32("maxQTETime").unwrap_or_default(),
             decay_grace_period: inst.get_f32("decayGracePeriod").unwrap_or_default(),
             decay_per_second: inst.get_f32("decayPerSecond").unwrap_or_default(),
-            giveway_behaviour: inst.get_str("givewayBehaviour").map(String::from).unwrap_or_default(),
+            giveway_behaviour: EQTEPriorityGivewayBehaviour::from_dcb_str(inst.get_str("givewayBehaviour").unwrap_or("")),
             owner_name: inst.get_str("ownerName").map(String::from).unwrap_or_default(),
-            qtepriority: inst.get_str("QTEPriority").map(String::from).unwrap_or_default(),
+            qtepriority: EQTEPriority::from_dcb_str(inst.get_str("QTEPriority").unwrap_or("")),
             input_prompt_config: inst.get("inputPromptConfig").and_then(|v| v.as_record_ref()).map(|r| r.guid),
         }
     }

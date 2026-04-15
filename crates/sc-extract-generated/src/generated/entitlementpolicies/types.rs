@@ -15,44 +15,16 @@
 use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, Pooled};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
-
-/// DCB type: `DefaultEntitlementRecord`
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct DefaultEntitlementRecord {
-    /// `Entitlements` (EnumChoice (array))
-    #[serde(default)]
-    pub entitlements: Vec<String>,
-    /// `subscribersOnly` (Boolean)
-    #[serde(default)]
-    pub subscribers_only: bool,
-}
-
-impl Pooled for DefaultEntitlementRecord {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entitlementpolicies.default_entitlement_record }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entitlementpolicies.default_entitlement_record }
-}
-
-impl<'a> Extract<'a> for DefaultEntitlementRecord {
-    const TYPE_NAME: &'static str = "DefaultEntitlementRecord";
-    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
-            entitlements: inst.get_array("Entitlements")
-                .map(|arr| arr.filter_map(|v| v.as_str().map(String::from)).collect())
-                .unwrap_or_default(),
-            subscribers_only: inst.get_bool("subscribersOnly").unwrap_or_default(),
-        }
-    }
-}
 
 /// DCB type: `EntitlementItemType`
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EntitlementItemType {
     /// `Type` (EnumChoice)
     #[serde(default)]
-    pub r#type: String,
+    pub r#type: EItemType,
 }
 
 impl Pooled for EntitlementItemType {
@@ -64,7 +36,7 @@ impl<'a> Extract<'a> for EntitlementItemType {
     const TYPE_NAME: &'static str = "EntitlementItemType";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            r#type: inst.get_str("Type").map(String::from).unwrap_or_default(),
+            r#type: EItemType::from_dcb_str(inst.get_str("Type").unwrap_or("")),
         }
     }
 }
@@ -89,9 +61,7 @@ impl<'a> Extract<'a> for EntitlementAccountItemGlobalParams {
             account_item_types: inst.get_array("accountItemTypes")
                 .map(|arr| arr.filter_map(|v| match v {
                         Value::Class { struct_index, data } => Some(b.alloc_nested::<EntitlementItemType>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r)
-                        | Value::StrongPointer(Some(r))
-                        | Value::WeakPointer(Some(r)) => Some(b.alloc_nested::<EntitlementItemType>(b.db.instance(r.struct_index, r.instance_index), true)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<EntitlementItemType>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
                     }).collect())
                 .unwrap_or_default(),
@@ -119,9 +89,7 @@ impl<'a> Extract<'a> for EntitlementNonInventoryStorableItemGlobalParams {
             item_types: inst.get_array("itemTypes")
                 .map(|arr| arr.filter_map(|v| match v {
                         Value::Class { struct_index, data } => Some(b.alloc_nested::<EntitlementItemType>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r)
-                        | Value::StrongPointer(Some(r))
-                        | Value::WeakPointer(Some(r)) => Some(b.alloc_nested::<EntitlementItemType>(b.db.instance(r.struct_index, r.instance_index), true)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<EntitlementItemType>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
                     }).collect())
                 .unwrap_or_default(),
@@ -140,10 +108,10 @@ pub struct CorpseInteractionParams {
     pub corpse_classes: Vec<CigGuid>,
     /// `allowedTypes` (EnumChoice (array))
     #[serde(default)]
-    pub allowed_types: Vec<String>,
+    pub allowed_types: Vec<EItemType>,
     /// `allowedSubTypes` (EnumChoice (array))
     #[serde(default)]
-    pub allowed_sub_types: Vec<String>,
+    pub allowed_sub_types: Vec<EItemSubType>,
 }
 
 impl Pooled for CorpseInteractionParams {
@@ -162,10 +130,10 @@ impl<'a> Extract<'a> for CorpseInteractionParams {
                 .map(|arr| arr.filter_map(|v| if let Value::Reference(Some(r)) = v { Some(r.guid) } else { None }).collect())
                 .unwrap_or_default(),
             allowed_types: inst.get_array("allowedTypes")
-                .map(|arr| arr.filter_map(|v| v.as_str().map(String::from)).collect())
+                .map(|arr| arr.filter_map(|v| v.as_str().map(EItemType::from_dcb_str)).collect())
                 .unwrap_or_default(),
             allowed_sub_types: inst.get_array("allowedSubTypes")
-                .map(|arr| arr.filter_map(|v| v.as_str().map(String::from)).collect())
+                .map(|arr| arr.filter_map(|v| v.as_str().map(EItemSubType::from_dcb_str)).collect())
                 .unwrap_or_default(),
         }
     }
@@ -176,13 +144,13 @@ impl<'a> Extract<'a> for CorpseInteractionParams {
 pub struct ItemRecoveryConfigurationParams {
     /// `nonEligibleItems` (StrongPointer (array))
     #[serde(default)]
-    pub non_eligible_items: Vec<Handle<ItemRecoverySetConditionDef>>,
+    pub non_eligible_items: Vec<ItemRecoverySetConditionDefPtr>,
     /// `consumableItems` (StrongPointer (array))
     #[serde(default)]
-    pub consumable_items: Vec<Handle<ItemRecoverySetConditionDef>>,
+    pub consumable_items: Vec<ItemRecoverySetConditionDefPtr>,
     /// `dontEquipBrickedItems` (StrongPointer (array))
     #[serde(default)]
-    pub dont_equip_bricked_items: Vec<Handle<ItemRecoverySetConditionDef>>,
+    pub dont_equip_bricked_items: Vec<ItemRecoverySetConditionDefPtr>,
     /// `economyParams` (Class)
     #[serde(default)]
     pub economy_params: Option<Handle<ItemRecoveryEconomyParams>>,
@@ -202,63 +170,30 @@ impl<'a> Extract<'a> for ItemRecoveryConfigurationParams {
         Self {
             non_eligible_items: inst.get_array("nonEligibleItems")
                 .map(|arr| arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<ItemRecoverySetConditionDef>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r)
-                        | Value::StrongPointer(Some(r))
-                        | Value::WeakPointer(Some(r)) => Some(b.alloc_nested::<ItemRecoverySetConditionDef>(b.db.instance(r.struct_index, r.instance_index), true)),
+                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => Some(ItemRecoverySetConditionDefPtr::from_ref(b, r)),
                         _ => None,
                     }).collect())
                 .unwrap_or_default(),
             consumable_items: inst.get_array("consumableItems")
                 .map(|arr| arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<ItemRecoverySetConditionDef>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r)
-                        | Value::StrongPointer(Some(r))
-                        | Value::WeakPointer(Some(r)) => Some(b.alloc_nested::<ItemRecoverySetConditionDef>(b.db.instance(r.struct_index, r.instance_index), true)),
+                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => Some(ItemRecoverySetConditionDefPtr::from_ref(b, r)),
                         _ => None,
                     }).collect())
                 .unwrap_or_default(),
             dont_equip_bricked_items: inst.get_array("dontEquipBrickedItems")
                 .map(|arr| arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<ItemRecoverySetConditionDef>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r)
-                        | Value::StrongPointer(Some(r))
-                        | Value::WeakPointer(Some(r)) => Some(b.alloc_nested::<ItemRecoverySetConditionDef>(b.db.instance(r.struct_index, r.instance_index), true)),
+                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => Some(ItemRecoverySetConditionDefPtr::from_ref(b, r)),
                         _ => None,
                     }).collect())
                 .unwrap_or_default(),
             economy_params: match inst.get("economyParams") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<ItemRecoveryEconomyParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<ItemRecoveryEconomyParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             notification_params: match inst.get("notificationParams") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<ItemRecoveryNotificationParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<ItemRecoveryNotificationParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
-        }
-    }
-}
-
-/// DCB type: `ItemRecoverySetConditionDef`
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct ItemRecoverySetConditionDef {
-}
-
-impl Pooled for ItemRecoverySetConditionDef {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entitlementpolicies.item_recovery_set_condition_def }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entitlementpolicies.item_recovery_set_condition_def }
-}
-
-impl<'a> Extract<'a> for ItemRecoverySetConditionDef {
-    const TYPE_NAME: &'static str = "ItemRecoverySetConditionDef";
-    fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
         }
     }
 }
@@ -268,31 +203,31 @@ impl<'a> Extract<'a> for ItemRecoverySetConditionDef {
 pub struct ItemRecoveryNotificationParams {
     /// `itemBricked_Title` (Locale)
     #[serde(default)]
-    pub item_bricked_title: String,
+    pub item_bricked_title: LocaleKey,
     /// `itemBricked_Body` (Locale)
     #[serde(default)]
-    pub item_bricked_body: String,
+    pub item_bricked_body: LocaleKey,
     /// `itemBricking_Title` (Locale)
     #[serde(default)]
-    pub item_bricking_title: String,
+    pub item_bricking_title: LocaleKey,
     /// `itemBricking_Body` (Locale)
     #[serde(default)]
-    pub item_bricking_body: String,
+    pub item_bricking_body: LocaleKey,
     /// `onBrickedItemUseNotificationBuffer` (Single)
     #[serde(default)]
     pub on_bricked_item_use_notification_buffer: f32,
     /// `onBrickedItemUsed_Title` (Locale)
     #[serde(default)]
-    pub on_bricked_item_used_title: String,
+    pub on_bricked_item_used_title: LocaleKey,
     /// `onBrickedItemUsed_CannotEquip` (Locale)
     #[serde(default)]
-    pub on_bricked_item_used_cannot_equip: String,
+    pub on_bricked_item_used_cannot_equip: LocaleKey,
     /// `onBrickedItemUsed_CannotFire` (Locale)
     #[serde(default)]
-    pub on_bricked_item_used_cannot_fire: String,
+    pub on_bricked_item_used_cannot_fire: LocaleKey,
     /// `onBrickedItemUsed_CannotUse` (Locale)
     #[serde(default)]
-    pub on_bricked_item_used_cannot_use: String,
+    pub on_bricked_item_used_cannot_use: LocaleKey,
 }
 
 impl Pooled for ItemRecoveryNotificationParams {
@@ -304,15 +239,15 @@ impl<'a> Extract<'a> for ItemRecoveryNotificationParams {
     const TYPE_NAME: &'static str = "ItemRecoveryNotificationParams";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            item_bricked_title: inst.get_str("itemBricked_Title").map(String::from).unwrap_or_default(),
-            item_bricked_body: inst.get_str("itemBricked_Body").map(String::from).unwrap_or_default(),
-            item_bricking_title: inst.get_str("itemBricking_Title").map(String::from).unwrap_or_default(),
-            item_bricking_body: inst.get_str("itemBricking_Body").map(String::from).unwrap_or_default(),
+            item_bricked_title: inst.get_str("itemBricked_Title").map(LocaleKey::from).unwrap_or_default(),
+            item_bricked_body: inst.get_str("itemBricked_Body").map(LocaleKey::from).unwrap_or_default(),
+            item_bricking_title: inst.get_str("itemBricking_Title").map(LocaleKey::from).unwrap_or_default(),
+            item_bricking_body: inst.get_str("itemBricking_Body").map(LocaleKey::from).unwrap_or_default(),
             on_bricked_item_use_notification_buffer: inst.get_f32("onBrickedItemUseNotificationBuffer").unwrap_or_default(),
-            on_bricked_item_used_title: inst.get_str("onBrickedItemUsed_Title").map(String::from).unwrap_or_default(),
-            on_bricked_item_used_cannot_equip: inst.get_str("onBrickedItemUsed_CannotEquip").map(String::from).unwrap_or_default(),
-            on_bricked_item_used_cannot_fire: inst.get_str("onBrickedItemUsed_CannotFire").map(String::from).unwrap_or_default(),
-            on_bricked_item_used_cannot_use: inst.get_str("onBrickedItemUsed_CannotUse").map(String::from).unwrap_or_default(),
+            on_bricked_item_used_title: inst.get_str("onBrickedItemUsed_Title").map(LocaleKey::from).unwrap_or_default(),
+            on_bricked_item_used_cannot_equip: inst.get_str("onBrickedItemUsed_CannotEquip").map(LocaleKey::from).unwrap_or_default(),
+            on_bricked_item_used_cannot_fire: inst.get_str("onBrickedItemUsed_CannotFire").map(LocaleKey::from).unwrap_or_default(),
+            on_bricked_item_used_cannot_use: inst.get_str("onBrickedItemUsed_CannotUse").map(LocaleKey::from).unwrap_or_default(),
         }
     }
 }
@@ -351,6 +286,56 @@ impl<'a> Extract<'a> for ItemRecoveryEconomyParams {
             scaling_price_floor: inst.get_f32("scalingPriceFloor").unwrap_or_default(),
             a_uecper_second: inst.get_f32("aUECperSecond").unwrap_or_default(),
             claim_cost_multiplier: inst.get_f32("claimCostMultiplier").unwrap_or_default(),
+        }
+    }
+}
+
+/// DCB type: `ItemRecoveryCondition_ItemType`
+/// Inherits from: `ItemRecoverySetConditionDef`
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct ItemRecoveryCondition_ItemType {
+    /// `type` (EnumChoice)
+    #[serde(default)]
+    pub r#type: EItemType,
+    /// `subType` (EnumChoice)
+    #[serde(default)]
+    pub sub_type: EItemSubType,
+}
+
+impl Pooled for ItemRecoveryCondition_ItemType {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entitlementpolicies.item_recovery_condition_item_type }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entitlementpolicies.item_recovery_condition_item_type }
+}
+
+impl<'a> Extract<'a> for ItemRecoveryCondition_ItemType {
+    const TYPE_NAME: &'static str = "ItemRecoveryCondition_ItemType";
+    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {
+            r#type: EItemType::from_dcb_str(inst.get_str("type").unwrap_or("")),
+            sub_type: EItemSubType::from_dcb_str(inst.get_str("subType").unwrap_or("")),
+        }
+    }
+}
+
+/// DCB type: `ItemRecoveryCondition_EntityClass`
+/// Inherits from: `ItemRecoverySetConditionDef`
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct ItemRecoveryCondition_EntityClass {
+    /// `classDef` (Reference)
+    #[serde(default)]
+    pub class_def: Option<CigGuid>,
+}
+
+impl Pooled for ItemRecoveryCondition_EntityClass {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entitlementpolicies.item_recovery_condition_entity_class }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entitlementpolicies.item_recovery_condition_entity_class }
+}
+
+impl<'a> Extract<'a> for ItemRecoveryCondition_EntityClass {
+    const TYPE_NAME: &'static str = "ItemRecoveryCondition_EntityClass";
+    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {
+            class_def: inst.get("classDef").and_then(|v| v.as_record_ref()).map(|r| r.guid),
         }
     }
 }
@@ -401,9 +386,7 @@ impl<'a> Extract<'a> for WebCustomizationDebug {
             debug_loadout_kits: inst.get_array("debugLoadoutKits")
                 .map(|arr| arr.filter_map(|v| match v {
                         Value::Class { struct_index, data } => Some(b.alloc_nested::<DebugLoadoutKit>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r)
-                        | Value::StrongPointer(Some(r))
-                        | Value::WeakPointer(Some(r)) => Some(b.alloc_nested::<DebugLoadoutKit>(b.db.instance(r.struct_index, r.instance_index), true)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<DebugLoadoutKit>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
                     }).collect())
                 .unwrap_or_default(),
@@ -416,10 +399,10 @@ impl<'a> Extract<'a> for WebCustomizationDebug {
 pub struct WebCustomizationItemTypeName {
     /// `name` (Locale)
     #[serde(default)]
-    pub name: String,
+    pub name: LocaleKey,
     /// `itemTypes` (EnumChoice (array))
     #[serde(default)]
-    pub item_types: Vec<String>,
+    pub item_types: Vec<EItemType>,
 }
 
 impl Pooled for WebCustomizationItemTypeName {
@@ -431,9 +414,9 @@ impl<'a> Extract<'a> for WebCustomizationItemTypeName {
     const TYPE_NAME: &'static str = "WebCustomizationItemTypeName";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            name: inst.get_str("name").map(String::from).unwrap_or_default(),
+            name: inst.get_str("name").map(LocaleKey::from).unwrap_or_default(),
             item_types: inst.get_array("itemTypes")
-                .map(|arr| arr.filter_map(|v| v.as_str().map(String::from)).collect())
+                .map(|arr| arr.filter_map(|v| v.as_str().map(EItemType::from_dcb_str)).collect())
                 .unwrap_or_default(),
         }
     }
@@ -444,7 +427,7 @@ impl<'a> Extract<'a> for WebCustomizationItemTypeName {
 pub struct WebCustomizationGlobalParams {
     /// `defaultLoadoutKitName` (Locale)
     #[serde(default)]
-    pub default_loadout_kit_name: String,
+    pub default_loadout_kit_name: LocaleKey,
     /// `typeNames` (Class (array))
     #[serde(default)]
     pub type_names: Vec<Handle<WebCustomizationItemTypeName>>,
@@ -459,13 +442,11 @@ impl<'a> Extract<'a> for WebCustomizationGlobalParams {
     const TYPE_NAME: &'static str = "WebCustomizationGlobalParams";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            default_loadout_kit_name: inst.get_str("defaultLoadoutKitName").map(String::from).unwrap_or_default(),
+            default_loadout_kit_name: inst.get_str("defaultLoadoutKitName").map(LocaleKey::from).unwrap_or_default(),
             type_names: inst.get_array("typeNames")
                 .map(|arr| arr.filter_map(|v| match v {
                         Value::Class { struct_index, data } => Some(b.alloc_nested::<WebCustomizationItemTypeName>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r)
-                        | Value::StrongPointer(Some(r))
-                        | Value::WeakPointer(Some(r)) => Some(b.alloc_nested::<WebCustomizationItemTypeName>(b.db.instance(r.struct_index, r.instance_index), true)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<WebCustomizationItemTypeName>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
                     }).collect())
                 .unwrap_or_default(),

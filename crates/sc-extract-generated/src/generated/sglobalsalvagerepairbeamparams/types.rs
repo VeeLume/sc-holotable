@@ -15,7 +15,7 @@
 use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, Pooled};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -41,9 +41,6 @@ impl<'a> Extract<'a> for SSalvageRepairHighlightColorParams {
         Self {
             color: match inst.get("color") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<RGB>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<RGB>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             hull_threshold: inst.get_f32("hullThreshold").unwrap_or_default(),
@@ -86,10 +83,10 @@ impl<'a> Extract<'a> for SSalvageRepairHighlightOutlineValues {
 pub struct SItemTypeFilter {
     /// `itemType` (EnumChoice)
     #[serde(default)]
-    pub item_type: String,
+    pub item_type: EItemType,
     /// `itemSubTypes` (EnumChoice (array))
     #[serde(default)]
-    pub item_sub_types: Vec<String>,
+    pub item_sub_types: Vec<EItemSubType>,
 }
 
 impl Pooled for SItemTypeFilter {
@@ -101,9 +98,9 @@ impl<'a> Extract<'a> for SItemTypeFilter {
     const TYPE_NAME: &'static str = "SItemTypeFilter";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            item_type: inst.get_str("itemType").map(String::from).unwrap_or_default(),
+            item_type: EItemType::from_dcb_str(inst.get_str("itemType").unwrap_or("")),
             item_sub_types: inst.get_array("itemSubTypes")
-                .map(|arr| arr.filter_map(|v| v.as_str().map(String::from)).collect())
+                .map(|arr| arr.filter_map(|v| v.as_str().map(EItemSubType::from_dcb_str)).collect())
                 .unwrap_or_default(),
         }
     }
@@ -141,39 +138,26 @@ impl<'a> Extract<'a> for SSalvageRepairHighlightParams {
             colors: inst.get_array("colors")
                 .map(|arr| arr.filter_map(|v| match v {
                         Value::Class { struct_index, data } => Some(b.alloc_nested::<SSalvageRepairHighlightColorParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r)
-                        | Value::StrongPointer(Some(r))
-                        | Value::WeakPointer(Some(r)) => Some(b.alloc_nested::<SSalvageRepairHighlightColorParams>(b.db.instance(r.struct_index, r.instance_index), true)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<SSalvageRepairHighlightColorParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
                     }).collect())
                 .unwrap_or_default(),
             valid_outline_values: match inst.get("validOutlineValues") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SSalvageRepairHighlightOutlineValues>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SSalvageRepairHighlightOutlineValues>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             invalid_target_color: match inst.get("invalidTargetColor") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<RGB>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<RGB>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             invalid_outline_values: match inst.get("invalidOutlineValues") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SSalvageRepairHighlightOutlineValues>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SSalvageRepairHighlightOutlineValues>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             filter_item_types: inst.get_array("filterItemTypes")
                 .map(|arr| arr.filter_map(|v| match v {
                         Value::Class { struct_index, data } => Some(b.alloc_nested::<SItemTypeFilter>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r)
-                        | Value::StrongPointer(Some(r))
-                        | Value::WeakPointer(Some(r)) => Some(b.alloc_nested::<SItemTypeFilter>(b.db.instance(r.struct_index, r.instance_index), true)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<SItemTypeFilter>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
                     }).collect())
                 .unwrap_or_default(),
@@ -219,9 +203,6 @@ impl<'a> Extract<'a> for SSalvageRepairCardParams {
             near_distance: inst.get_f32("nearDistance").unwrap_or_default(),
             default_screen_pos: match inst.get("defaultScreenPos") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec2>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<Vec2>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             max_dist_screen_pos_scale: inst.get_f32("maxDistScreenPosScale").unwrap_or_default(),
@@ -234,10 +215,10 @@ impl<'a> Extract<'a> for SSalvageRepairCardParams {
 pub struct SSalvageRepairItemTypeLocalizationPair {
     /// `itemType` (EnumChoice)
     #[serde(default)]
-    pub item_type: String,
+    pub item_type: EItemType,
     /// `typeLoc` (Locale)
     #[serde(default)]
-    pub type_loc: String,
+    pub type_loc: LocaleKey,
 }
 
 impl Pooled for SSalvageRepairItemTypeLocalizationPair {
@@ -249,8 +230,8 @@ impl<'a> Extract<'a> for SSalvageRepairItemTypeLocalizationPair {
     const TYPE_NAME: &'static str = "SSalvageRepairItemTypeLocalizationPair";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            item_type: inst.get_str("itemType").map(String::from).unwrap_or_default(),
-            type_loc: inst.get_str("typeLoc").map(String::from).unwrap_or_default(),
+            item_type: EItemType::from_dcb_str(inst.get_str("itemType").unwrap_or("")),
+            type_loc: inst.get_str("typeLoc").map(LocaleKey::from).unwrap_or_default(),
         }
     }
 }
@@ -260,13 +241,13 @@ impl<'a> Extract<'a> for SSalvageRepairItemTypeLocalizationPair {
 pub struct SSalvageRepairLocalizationParams {
     /// `hullLoc` (Locale)
     #[serde(default)]
-    pub hull_loc: String,
+    pub hull_loc: LocaleKey,
     /// `itemTypeLocalizationPairs` (Class (array))
     #[serde(default)]
     pub item_type_localization_pairs: Vec<Handle<SSalvageRepairItemTypeLocalizationPair>>,
     /// `itemTypeNotFoundLoc` (Locale)
     #[serde(default)]
-    pub item_type_not_found_loc: String,
+    pub item_type_not_found_loc: LocaleKey,
 }
 
 impl Pooled for SSalvageRepairLocalizationParams {
@@ -278,17 +259,15 @@ impl<'a> Extract<'a> for SSalvageRepairLocalizationParams {
     const TYPE_NAME: &'static str = "SSalvageRepairLocalizationParams";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            hull_loc: inst.get_str("hullLoc").map(String::from).unwrap_or_default(),
+            hull_loc: inst.get_str("hullLoc").map(LocaleKey::from).unwrap_or_default(),
             item_type_localization_pairs: inst.get_array("itemTypeLocalizationPairs")
                 .map(|arr| arr.filter_map(|v| match v {
                         Value::Class { struct_index, data } => Some(b.alloc_nested::<SSalvageRepairItemTypeLocalizationPair>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r)
-                        | Value::StrongPointer(Some(r))
-                        | Value::WeakPointer(Some(r)) => Some(b.alloc_nested::<SSalvageRepairItemTypeLocalizationPair>(b.db.instance(r.struct_index, r.instance_index), true)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<SSalvageRepairItemTypeLocalizationPair>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
                     }).collect())
                 .unwrap_or_default(),
-            item_type_not_found_loc: inst.get_str("itemTypeNotFoundLoc").map(String::from).unwrap_or_default(),
+            item_type_not_found_loc: inst.get_str("itemTypeNotFoundLoc").map(LocaleKey::from).unwrap_or_default(),
         }
     }
 }
@@ -345,9 +324,6 @@ impl<'a> Extract<'a> for SSalvageRepairAudioParams {
         Self {
             salvage_cargo_occupancy_factor_rtpc: match inst.get("salvageCargoOccupancyFactorRTPC") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<AudioRtpc>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             friendly_fire_message_cooldown_scale: inst.get_f32("friendlyFireMessageCooldownScale").unwrap_or_default(),
@@ -396,37 +372,22 @@ impl<'a> Extract<'a> for SGlobalSalvageRepairBeamParams {
             tag: inst.get("tag").and_then(|v| v.as_record_ref()).map(|r| r.guid),
             card_params: match inst.get("cardParams") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SSalvageRepairCardParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SSalvageRepairCardParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             highlight_params: match inst.get("highlightParams") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SSalvageRepairHighlightParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SSalvageRepairHighlightParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             localization_params: match inst.get("localizationParams") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SSalvageRepairLocalizationParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SSalvageRepairLocalizationParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             material_params: match inst.get("materialParams") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SSalvageRepairMaterialParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SSalvageRepairMaterialParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             global_salvage_audio_params: match inst.get("globalSalvageAudioParams") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SSalvageRepairAudioParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SSalvageRepairAudioParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             hits_per_second: inst.get_f32("hitsPerSecond").unwrap_or_default(),

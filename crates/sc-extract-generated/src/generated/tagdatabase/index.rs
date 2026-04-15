@@ -7,7 +7,7 @@
 //
 // Any hand edits will be lost on the next run.
 
-#![allow(non_snake_case, dead_code, unused_imports)]
+#![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
 use std::collections::HashMap;
 use serde::{Deserialize, Serialize};
@@ -19,15 +19,15 @@ use super::super::*;
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct TagdatabaseIndex {
     #[serde(default)]
-    pub tag: HashMap<CigGuid, Handle<Tag>>,
-    #[serde(default)]
     pub tag_database: HashMap<CigGuid, Handle<TagDatabase>>,
 }
 
 impl TagdatabaseIndex {
+    #[allow(unused_mut)]
     pub fn len(&self) -> usize {
-        self.tag.len()
-            + self.tag_database.len()
+        let mut total = 0usize;
+        total += self.tag_database.len();
+        total
     }
 
     pub fn is_empty(&self) -> bool { self.len() == 0 }

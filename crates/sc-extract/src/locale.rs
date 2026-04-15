@@ -7,7 +7,7 @@
 //! before lookup.
 //!
 //! This module provides [`LocaleMap`] for parsing, lookup, mutation, and
-//! round-trip serialization, plus a [`LocKey`] newtype for type-safe
+//! round-trip serialization, plus a [`LocaleKey`] newtype for type-safe
 //! localization references.
 
 use std::collections::HashMap;
@@ -18,50 +18,10 @@ use serde::{Deserialize, Serialize};
 
 use crate::error::{Error, Result};
 
-/// A localization key referenced from DCB records.
-///
-/// In the DCB, localization references appear as strings like
-/// `"@item_NameGATS_Ballistic_S4"`. The leading `@` is a convention marker
-/// used by the game engine but is **not** part of the actual key in
-/// `global.ini`. [`LocaleMap::resolve`] handles the `@` prefix
-/// transparently; [`LocaleMap::get`] requires the caller to pass the key
-/// without the prefix.
-///
-/// `LocKey` wraps a string so callers can explicitly say "this is a
-/// localization reference" without worrying about whether the `@` has been
-/// stripped yet.
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
-pub struct LocKey(pub String);
-
-impl LocKey {
-    /// Create a new [`LocKey`] from an owned string.
-    pub fn new(s: impl Into<String>) -> Self {
-        Self(s.into())
-    }
-
-    /// The raw key string, including any leading `@` prefix.
-    pub fn as_str(&self) -> &str {
-        &self.0
-    }
-
-    /// The key with the leading `@` stripped, if present.
-    /// Suitable for passing to [`LocaleMap::get`].
-    pub fn stripped(&self) -> &str {
-        self.0.strip_prefix('@').unwrap_or(&self.0)
-    }
-}
-
-impl From<String> for LocKey {
-    fn from(s: String) -> Self {
-        Self(s)
-    }
-}
-
-impl From<&str> for LocKey {
-    fn from(s: &str) -> Self {
-        Self(s.to_string())
-    }
-}
+/// Re-exported from `sc-extract-generated` so that every generated struct
+/// field of DCB type `Locale` uses the same newtype the hand-written
+/// lookup API accepts. See the generated crate for the type definition.
+pub use sc_extract_generated::LocaleKey;
 
 /// An in-memory representation of a parsed `global.ini` localization file.
 ///
@@ -180,21 +140,27 @@ impl LocaleMap {
     // ── Lookup ──────────────────────────────────────────────────────────
 
     /// Look up a raw localization key (without leading `@`).
-    pub fn get(&self, key: &str) -> Option<&str> {
-        self.entries.get(key).map(String::as_str)
+    ///
+    /// Accepts either a `&str` or a [`LocaleKey`] reference — anything that
+    /// implements [`AsRef<str>`]. Pass a `LocaleKey` through
+    /// [`LocaleKey::stripped`] first if it might contain the `@` prefix, or
+    /// use [`LocaleMap::resolve`] which strips it for you.
+    pub fn get(&self, key: impl AsRef<str>) -> Option<&str> {
+        self.entries.get(key.as_ref()).map(String::as_str)
     }
 
     /// Resolve a localization key that may have an `@` prefix.
     ///
     /// `"@item_NameGATS_Ballistic_S4"` and `"item_NameGATS_Ballistic_S4"`
-    /// both look up the same entry.
-    pub fn resolve(&self, loc_key: &str) -> Option<&str> {
-        self.get(loc_key.strip_prefix('@').unwrap_or(loc_key))
+    /// both look up the same entry. Accepts either `&str` or `&LocaleKey`.
+    pub fn resolve(&self, loc_key: impl AsRef<str>) -> Option<&str> {
+        let s = loc_key.as_ref();
+        self.get(s.strip_prefix('@').unwrap_or(s))
     }
 
     /// True if this map contains the given key (raw, no `@` handling).
-    pub fn contains_key(&self, key: &str) -> bool {
-        self.entries.contains_key(key)
+    pub fn contains_key(&self, key: impl AsRef<str>) -> bool {
+        self.entries.contains_key(key.as_ref())
     }
 
     /// Number of entries in the map.
@@ -272,24 +238,24 @@ mod tests {
         bytes
     }
 
-    // ── LocKey tests ────────────────────────────────────────────────────
+    // ── LocaleKey tests ────────────────────────────────────────────────────
 
     #[test]
     fn lockey_stripped_removes_at_prefix() {
-        let k = LocKey::new("@item_NameGATS");
+        let k = LocaleKey::new("@item_NameGATS");
         assert_eq!(k.stripped(), "item_NameGATS");
         assert_eq!(k.as_str(), "@item_NameGATS");
     }
 
     #[test]
     fn lockey_stripped_without_prefix() {
-        let k = LocKey::new("item_NameGATS");
+        let k = LocaleKey::new("item_NameGATS");
         assert_eq!(k.stripped(), "item_NameGATS");
     }
 
     #[test]
     fn lockey_from_str() {
-        let k: LocKey = "foo".into();
+        let k: LocaleKey = "foo".into();
         assert_eq!(k.as_str(), "foo");
     }
 
@@ -386,6 +352,15 @@ mod tests {
         let map = LocaleMap::parse(&utf16_le_with_bom(ini)).unwrap();
         assert_eq!(map.resolve("@item_Foo"), Some("Foo Display"));
         assert_eq!(map.resolve("item_Foo"), Some("Foo Display"));
+    }
+
+    #[test]
+    fn resolve_accepts_lockey_newtype() {
+        let ini = "item_Foo=Foo Display\r\n";
+        let map = LocaleMap::parse(&utf16_le_with_bom(ini)).unwrap();
+        let key = LocaleKey::new("@item_Foo");
+        assert_eq!(map.resolve(&key), Some("Foo Display"));
+        assert_eq!(map.get(key.stripped()), Some("Foo Display"));
     }
 
     #[test]

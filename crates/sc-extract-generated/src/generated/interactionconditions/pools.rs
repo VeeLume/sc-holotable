@@ -7,7 +7,7 @@
 //
 // Any hand edits will be lost on the next run.
 
-#![allow(non_snake_case, dead_code, unused_imports)]
+#![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
 use serde::{Deserialize, Serialize};
 use super::super::*;
@@ -16,7 +16,9 @@ use super::super::*;
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct InteractionconditionsPools {
     #[serde(default)]
-    pub interaction_condition_preset: Vec<Option<InteractionConditionPreset>>,
+    pub interaction_condition_can_afford_item: Vec<Option<InteractionConditionCanAffordItem>>,
+    #[serde(default)]
+    pub interaction_condition_can_be_body_dragged: Vec<Option<InteractionConditionCanBeBodyDragged>>,
     #[serde(default)]
     pub shop_interaction_data: Vec<Option<ShopInteractionData>>,
 }

@@ -15,7 +15,7 @@
 use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, Pooled};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -98,17 +98,11 @@ impl<'a> Extract<'a> for ArenaCommanderScenarioParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             location_object_containers_params: match inst.get("locationObjectContainersParams") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<ArenaCommanderLocationObjectContainersParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<ArenaCommanderLocationObjectContainersParams>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<ArenaCommanderLocationObjectContainersParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             planet_override_params: match inst.get("planetOverrideParams") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<ArenaCommanderPlanetOverrideParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<ArenaCommanderPlanetOverrideParams>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<ArenaCommanderPlanetOverrideParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
         }
@@ -154,13 +148,13 @@ pub struct MegaMap {
     pub solar_systems: Vec<Handle<SMegaMapSolarSystem>>,
     /// `singlePlayerOrMultiplayer` (EnumChoice)
     #[serde(default)]
-    pub single_player_or_multiplayer: String,
+    pub single_player_or_multiplayer: SinglePlayerOrMultiplayer,
     /// `subsumptionMission` (String)
     #[serde(default)]
     pub subsumption_mission: String,
     /// `subsumptionMissionInitParams` (StrongPointer (array))
     #[serde(default)]
-    pub subsumption_mission_init_params: Vec<Handle<AbstractMissionInitParam>>,
+    pub subsumption_mission_init_params: Vec<AbstractMissionInitParamPtr>,
     /// `arenaCommanderScenarioParams` (StrongPointer)
     #[serde(default)]
     pub arena_commander_scenario_params: Option<Handle<ArenaCommanderScenarioParams>>,
@@ -175,7 +169,7 @@ pub struct MegaMap {
     pub root_location: Option<CigGuid>,
     /// `streamingMode` (EnumChoice)
     #[serde(default)]
-    pub streaming_mode: String,
+    pub streaming_mode: LevelStreamingMode,
     /// `bindCullingEnabled` (Boolean)
     #[serde(default)]
     pub bind_culling_enabled: bool,
@@ -184,7 +178,7 @@ pub struct MegaMap {
     pub default_winning_team_override: i32,
     /// `displayName` (Locale)
     #[serde(default)]
-    pub display_name: String,
+    pub display_name: LocaleKey,
     /// `appearsInS42LevelSelect` (Boolean)
     #[serde(default)]
     pub appears_in_s42_level_select: bool,
@@ -215,37 +209,29 @@ impl<'a> Extract<'a> for MegaMap {
             solar_systems: inst.get_array("SolarSystems")
                 .map(|arr| arr.filter_map(|v| match v {
                         Value::Class { struct_index, data } => Some(b.alloc_nested::<SMegaMapSolarSystem>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r)
-                        | Value::StrongPointer(Some(r))
-                        | Value::WeakPointer(Some(r)) => Some(b.alloc_nested::<SMegaMapSolarSystem>(b.db.instance(r.struct_index, r.instance_index), true)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<SMegaMapSolarSystem>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
                     }).collect())
                 .unwrap_or_default(),
-            single_player_or_multiplayer: inst.get_str("singlePlayerOrMultiplayer").map(String::from).unwrap_or_default(),
+            single_player_or_multiplayer: SinglePlayerOrMultiplayer::from_dcb_str(inst.get_str("singlePlayerOrMultiplayer").unwrap_or("")),
             subsumption_mission: inst.get_str("subsumptionMission").map(String::from).unwrap_or_default(),
             subsumption_mission_init_params: inst.get_array("subsumptionMissionInitParams")
                 .map(|arr| arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<AbstractMissionInitParam>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r)
-                        | Value::StrongPointer(Some(r))
-                        | Value::WeakPointer(Some(r)) => Some(b.alloc_nested::<AbstractMissionInitParam>(b.db.instance(r.struct_index, r.instance_index), true)),
+                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => Some(AbstractMissionInitParamPtr::from_ref(b, r)),
                         _ => None,
                     }).collect())
                 .unwrap_or_default(),
             arena_commander_scenario_params: match inst.get("arenaCommanderScenarioParams") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<ArenaCommanderScenarioParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<ArenaCommanderScenarioParams>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<ArenaCommanderScenarioParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             level: inst.get("level").and_then(|v| v.as_record_ref()).map(|r| r.guid),
             track_view_intro: inst.get_str("trackViewIntro").map(String::from).unwrap_or_default(),
             root_location: inst.get("rootLocation").and_then(|v| v.as_record_ref()).map(|r| r.guid),
-            streaming_mode: inst.get_str("streamingMode").map(String::from).unwrap_or_default(),
+            streaming_mode: LevelStreamingMode::from_dcb_str(inst.get_str("streamingMode").unwrap_or("")),
             bind_culling_enabled: inst.get_bool("bindCullingEnabled").unwrap_or_default(),
             default_winning_team_override: inst.get_i32("defaultWinningTeamOverride").unwrap_or_default(),
-            display_name: inst.get_str("displayName").map(String::from).unwrap_or_default(),
+            display_name: inst.get_str("displayName").map(LocaleKey::from).unwrap_or_default(),
             appears_in_s42_level_select: inst.get_bool("appearsInS42LevelSelect").unwrap_or_default(),
             chapter: inst.get("chapter").and_then(|v| v.as_record_ref()).map(|r| r.guid),
             chapter_alias: inst.get_str("chapterAlias").map(String::from).unwrap_or_default(),

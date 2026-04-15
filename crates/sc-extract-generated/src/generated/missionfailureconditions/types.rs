@@ -15,7 +15,7 @@
 use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, Pooled};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -30,7 +30,7 @@ pub struct MissionFailConditionParams {
     pub warning_level: i32,
     /// `displayText` (Locale)
     #[serde(default)]
-    pub display_text: String,
+    pub display_text: LocaleKey,
     /// `useAutomaticFailureScreen` (Boolean)
     #[serde(default)]
     pub use_automatic_failure_screen: bool,
@@ -47,7 +47,7 @@ impl<'a> Extract<'a> for MissionFailConditionParams {
         Self {
             trigger_condition: inst.get("triggerCondition").and_then(|v| v.as_record_ref()).map(|r| r.guid),
             warning_level: inst.get_i32("warningLevel").unwrap_or_default(),
-            display_text: inst.get_str("displayText").map(String::from).unwrap_or_default(),
+            display_text: inst.get_str("displayText").map(LocaleKey::from).unwrap_or_default(),
             use_automatic_failure_screen: inst.get_bool("useAutomaticFailureScreen").unwrap_or_default(),
         }
     }
@@ -73,9 +73,7 @@ impl<'a> Extract<'a> for MissionFailConditionsList {
             failure_conditions: inst.get_array("failureConditions")
                 .map(|arr| arr.filter_map(|v| match v {
                         Value::Class { struct_index, data } => Some(b.alloc_nested::<MissionFailConditionParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r)
-                        | Value::StrongPointer(Some(r))
-                        | Value::WeakPointer(Some(r)) => Some(b.alloc_nested::<MissionFailConditionParams>(b.db.instance(r.struct_index, r.instance_index), true)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<MissionFailConditionParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
                     }).collect())
                 .unwrap_or_default(),

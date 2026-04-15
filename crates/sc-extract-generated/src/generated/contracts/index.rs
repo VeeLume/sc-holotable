@@ -7,7 +7,7 @@
 //
 // Any hand edits will be lost on the next run.
 
-#![allow(non_snake_case, dead_code, unused_imports)]
+#![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
 use std::collections::HashMap;
 use serde::{Deserialize, Serialize};
@@ -19,18 +19,18 @@ use super::super::*;
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct ContractsIndex {
     #[serde(default)]
-    pub contract_difficulty_profile: HashMap<CigGuid, Handle<ContractDifficultyProfile>>,
-    #[serde(default)]
     pub mission_module_hierarchy: HashMap<CigGuid, Handle<MissionModuleHierarchy>>,
     #[serde(default)]
     pub global_mission_settings: HashMap<CigGuid, Handle<GlobalMissionSettings>>,
 }
 
 impl ContractsIndex {
+    #[allow(unused_mut)]
     pub fn len(&self) -> usize {
-        self.contract_difficulty_profile.len()
-            + self.mission_module_hierarchy.len()
-            + self.global_mission_settings.len()
+        let mut total = 0usize;
+        total += self.mission_module_hierarchy.len();
+        total += self.global_mission_settings.len();
+        total
     }
 
     pub fn is_empty(&self) -> bool { self.len() == 0 }

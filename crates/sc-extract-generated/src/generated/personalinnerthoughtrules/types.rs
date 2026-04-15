@@ -15,36 +15,36 @@
 use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, Pooled};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
-/// DCB type: `PersonalInnerThoughtActionRulePreset`
+/// DCB type: `ActionRuleNotAllowedInContext`
+/// Inherits from: `ActionRuleParams`
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct PersonalInnerThoughtActionRulePreset {
-    /// `rules` (StrongPointer (array))
+pub struct ActionRuleNotAllowedInContext {
+    /// `ruleDisplay` (StrongPointer)
     #[serde(default)]
-    pub rules: Vec<Handle<ActionRuleParams>>,
+    pub rule_display: Option<Handle<ActionRuleDisplayParams>>,
+    /// `context` (EnumChoice)
+    #[serde(default)]
+    pub context: PersonalThoughtContext,
 }
 
-impl Pooled for PersonalInnerThoughtActionRulePreset {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.personalinnerthoughtrules.personal_inner_thought_action_rule_preset }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.personalinnerthoughtrules.personal_inner_thought_action_rule_preset }
+impl Pooled for ActionRuleNotAllowedInContext {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.personalinnerthoughtrules.action_rule_not_allowed_in_context }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.personalinnerthoughtrules.action_rule_not_allowed_in_context }
 }
 
-impl<'a> Extract<'a> for PersonalInnerThoughtActionRulePreset {
-    const TYPE_NAME: &'static str = "PersonalInnerThoughtActionRulePreset";
+impl<'a> Extract<'a> for ActionRuleNotAllowedInContext {
+    const TYPE_NAME: &'static str = "ActionRuleNotAllowedInContext";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            rules: inst.get_array("rules")
-                .map(|arr| arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<ActionRuleParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r)
-                        | Value::StrongPointer(Some(r))
-                        | Value::WeakPointer(Some(r)) => Some(b.alloc_nested::<ActionRuleParams>(b.db.instance(r.struct_index, r.instance_index), true)),
-                        _ => None,
-                    }).collect())
-                .unwrap_or_default(),
+            rule_display: match inst.get("ruleDisplay") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<ActionRuleDisplayParams>(b.db.instance(r.struct_index, r.instance_index), true)),
+                _ => None,
+            },
+            context: PersonalThoughtContext::from_dcb_str(inst.get_str("context").unwrap_or("")),
         }
     }
 }

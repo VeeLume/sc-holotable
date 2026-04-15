@@ -15,7 +15,7 @@
 use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, Pooled};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -47,9 +47,6 @@ impl<'a> Extract<'a> for SChargeDrainHighlightOutlineValues {
         Self {
             color: match inst.get("color") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<RGB>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<RGB>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             occluded_alpha: inst.get_f32("occludedAlpha").unwrap_or_default(),
@@ -87,30 +84,18 @@ impl<'a> Extract<'a> for SChargeDrainTargetStateOutlineParams {
         Self {
             inoperable_outline_values: match inst.get("inoperableOutlineValues") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SChargeDrainHighlightOutlineValues>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SChargeDrainHighlightOutlineValues>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             jumpstart_required_outline_values: match inst.get("jumpstartRequiredOutlineValues") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SChargeDrainHighlightOutlineValues>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SChargeDrainHighlightOutlineValues>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             jumpstart_possible_outline_values: match inst.get("jumpstartPossibleOutlineValues") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SChargeDrainHighlightOutlineValues>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SChargeDrainHighlightOutlineValues>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             valid_target_outline_values: match inst.get("validTargetOutlineValues") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SChargeDrainHighlightOutlineValues>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SChargeDrainHighlightOutlineValues>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
         }
@@ -159,9 +144,6 @@ impl<'a> Extract<'a> for SChargeDrainCardParams {
             near_distance: inst.get_f32("nearDistance").unwrap_or_default(),
             default_screen_pos: match inst.get("defaultScreenPos") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec2>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<Vec2>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             max_dist_screen_pos_scale: inst.get_f32("maxDistScreenPosScale").unwrap_or_default(),
@@ -194,23 +176,14 @@ impl<'a> Extract<'a> for SGlobalChargeDrainBeamParams {
         Self {
             target_state_outline_params: match inst.get("targetStateOutlineParams") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SChargeDrainTargetStateOutlineParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SChargeDrainTargetStateOutlineParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             target_card_params: match inst.get("targetCardParams") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SChargeDrainCardParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SChargeDrainCardParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             charge_card_params: match inst.get("chargeCardParams") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SChargeDrainCardParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SChargeDrainCardParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
         }

@@ -15,7 +15,7 @@
 use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, Pooled};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -57,44 +57,26 @@ impl<'a> Extract<'a> for AtmosphericFlightEffects {
             max_atmospheric_pressure: inst.get_f32("maxAtmosphericPressure").unwrap_or_default(),
             trail_fading: match inst.get("trailFading") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<TrailFadingSettings>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<TrailFadingSettings>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             reverse_trail_disabling: match inst.get("reverseTrailDisabling") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<ReverseTrailsSetting>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<ReverseTrailsSetting>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<ReverseTrailsSetting>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             engine_trails: match inst.get("engineTrails") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalEngineTrailsSetting>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<GlobalEngineTrailsSetting>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             aerodynamic_trails: match inst.get("aerodynamicTrails") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalAerodynamicTrailSettings>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<GlobalAerodynamicTrailSettings>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             atmospheric_heating: match inst.get("atmosphericHeating") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalAtmosphericHeatingSettings>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<GlobalAtmosphericHeatingSettings>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             custom_environment_effects: match inst.get("customEnvironmentEffects") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalEnvironmentEffectSettings>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<GlobalEnvironmentEffectSettings>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
         }
@@ -192,9 +174,6 @@ impl<'a> Extract<'a> for GlobalEngineTrailsSetting {
             contrail_pressure_fade_range: inst.get_f32("contrailPressureFadeRange").unwrap_or_default(),
             contrail_cloud_density_range: match inst.get("contrailCloudDensityRange") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<Range>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
         }
@@ -243,9 +222,6 @@ impl<'a> Extract<'a> for GlobalAtmosphericHeatingSettings {
             gravity_direction_bias: inst.get_f32("gravityDirectionBias").unwrap_or_default(),
             relative_altitude_range: match inst.get("relativeAltitudeRange") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<Range>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             relative_altitude_peak_strength: inst.get_f32("relativeAltitudePeakStrength").unwrap_or_default(),
@@ -253,16 +229,10 @@ impl<'a> Extract<'a> for GlobalAtmosphericHeatingSettings {
             maximum_non_vehicle_speed: inst.get_f32("maximumNonVehicleSpeed").unwrap_or_default(),
             maximum_non_vehicle_angular_velocity: match inst.get("maximumNonVehicleAngularVelocity") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<Vec3>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             fade_angle_range: match inst.get("fadeAngleRange") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<Range>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
         }
@@ -312,9 +282,6 @@ impl<'a> Extract<'a> for GlobalAerodynamicTrailSettings {
             heating_reduction: inst.get_f32("heatingReduction").unwrap_or_default(),
             cloud_density_range: match inst.get("cloudDensityRange") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<Range>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
         }
@@ -369,16 +336,10 @@ impl<'a> Extract<'a> for DamageMapDamageTypes {
         Self {
             physical: match inst.get("physical") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<DamageMapChannels>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<DamageMapChannels>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             energy: match inst.get("energy") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<DamageMapChannels>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<DamageMapChannels>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
         }
@@ -413,30 +374,18 @@ impl<'a> Extract<'a> for DamageMapDamageForm {
         Self {
             damage_strength_multipliers: match inst.get("damageStrengthMultipliers") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<DamageMapDamageTypes>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<DamageMapDamageTypes>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             inner_radius_multipliers: match inst.get("innerRadiusMultipliers") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<DamageMapChannels>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<DamageMapChannels>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             outer_radius_multipliers: match inst.get("outerRadiusMultipliers") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<DamageMapChannels>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<DamageMapChannels>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             noise_strength: match inst.get("noiseStrength") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<DamageMapChannels>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<DamageMapChannels>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
         }
@@ -468,23 +417,14 @@ impl<'a> Extract<'a> for DamageMapGlobalParams {
         Self {
             impact: match inst.get("impact") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<DamageMapDamageForm>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<DamageMapDamageForm>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             squib: match inst.get("squib") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<DamageMapDamageForm>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<DamageMapDamageForm>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             explosions: match inst.get("explosions") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<DamageMapDamageForm>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<DamageMapDamageForm>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
         }
@@ -530,37 +470,22 @@ impl<'a> Extract<'a> for DematerializeAnimation {
             dissolve_duration: inst.get_f32("dissolveDuration").unwrap_or_default(),
             head_effect: match inst.get("headEffect") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceParticle>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<GlobalResourceParticle>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             arm_effect: match inst.get("armEffect") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceParticle>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<GlobalResourceParticle>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             leg_effect: match inst.get("legEffect") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceParticle>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<GlobalResourceParticle>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             torso_effect: match inst.get("torsoEffect") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceParticle>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<GlobalResourceParticle>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             debug_effect: match inst.get("debugEffect") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceParticle>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<GlobalResourceParticle>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
         }
@@ -589,16 +514,10 @@ impl<'a> Extract<'a> for GlobalGasCloudVDB_GameplayParams {
         Self {
             optical_density_range: match inst.get("opticalDensityRange") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<Range>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             gameplay_density_curve: match inst.get("gameplayDensityCurve") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BezierCurve>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<BezierCurve>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
         }
@@ -624,9 +543,6 @@ impl<'a> Extract<'a> for GlobalGasCloudVDBParams {
         Self {
             gameplay: match inst.get("gameplay") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalGasCloudVDB_GameplayParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<GlobalGasCloudVDB_GameplayParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
         }
@@ -697,9 +613,6 @@ impl<'a> Extract<'a> for GlobalFogVolume {
         Self {
             fog_size: match inst.get("fogSize") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<Vec3>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             noise_life_time: inst.get_f32("noiseLifeTime").unwrap_or_default(),
@@ -743,17 +656,12 @@ impl<'a> Extract<'a> for PlanetEffectLOD {
             lodlist: inst.get_array("LODList")
                 .map(|arr| arr.filter_map(|v| match v {
                         Value::Class { struct_index, data } => Some(b.alloc_nested::<PlanetEffectLODDistance>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r)
-                        | Value::StrongPointer(Some(r))
-                        | Value::WeakPointer(Some(r)) => Some(b.alloc_nested::<PlanetEffectLODDistance>(b.db.instance(r.struct_index, r.instance_index), true)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<PlanetEffectLODDistance>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
                     }).collect())
                 .unwrap_or_default(),
             global_fog_volume: match inst.get("globalFogVolume") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalFogVolume>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<GlobalFogVolume>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             tint_color_sample_cells: inst.get_u32("tintColorSampleCells").unwrap_or_default(),
@@ -832,7 +740,7 @@ pub struct ScreenEffects_Effect {
     pub disable_in_third_person: bool,
     /// `sharedPattern` (StrongPointer)
     #[serde(default)]
-    pub shared_pattern: Option<Handle<ScreenEffects_Pattern>>,
+    pub shared_pattern: Option<ScreenEffects_PatternPtr>,
     /// `parameters` (Class (array))
     #[serde(default)]
     pub parameters: Vec<Handle<ScreenEffects_Param>>,
@@ -850,18 +758,13 @@ impl<'a> Extract<'a> for ScreenEffects_Effect {
             name: inst.get("name").and_then(|v| v.as_record_ref()).map(|r| r.guid),
             disable_in_third_person: inst.get_bool("disableInThirdPerson").unwrap_or_default(),
             shared_pattern: match inst.get("sharedPattern") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<ScreenEffects_Pattern>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<ScreenEffects_Pattern>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(ScreenEffects_PatternPtr::from_ref(b, r)),
                 _ => None,
             },
             parameters: inst.get_array("parameters")
                 .map(|arr| arr.filter_map(|v| match v {
                         Value::Class { struct_index, data } => Some(b.alloc_nested::<ScreenEffects_Param>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r)
-                        | Value::StrongPointer(Some(r))
-                        | Value::WeakPointer(Some(r)) => Some(b.alloc_nested::<ScreenEffects_Param>(b.db.instance(r.struct_index, r.instance_index), true)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<ScreenEffects_Param>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
                     }).collect())
                 .unwrap_or_default(),
@@ -896,13 +799,13 @@ impl<'a> Extract<'a> for ScreenEffects_Pattern {
 pub struct ScreenEffects_Param {
     /// `parameter` (EnumChoice)
     #[serde(default)]
-    pub parameter: String,
+    pub parameter: PostEffectParams,
     /// `value` (StrongPointer)
     #[serde(default)]
-    pub value: Option<Handle<ScreenEffects_ParamValue>>,
+    pub value: Option<ScreenEffects_ParamValuePtr>,
     /// `strengthBehavior` (StrongPointer)
     #[serde(default)]
-    pub strength_behavior: Option<Handle<ScreenEffects_ParamStrengthBehavior>>,
+    pub strength_behavior: Option<ScreenEffects_ParamStrengthBehaviorPtr>,
 }
 
 impl Pooled for ScreenEffects_Param {
@@ -914,39 +817,15 @@ impl<'a> Extract<'a> for ScreenEffects_Param {
     const TYPE_NAME: &'static str = "ScreenEffects_Param";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            parameter: inst.get_str("parameter").map(String::from).unwrap_or_default(),
+            parameter: PostEffectParams::from_dcb_str(inst.get_str("parameter").unwrap_or("")),
             value: match inst.get("value") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<ScreenEffects_ParamValue>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<ScreenEffects_ParamValue>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(ScreenEffects_ParamValuePtr::from_ref(b, r)),
                 _ => None,
             },
             strength_behavior: match inst.get("strengthBehavior") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<ScreenEffects_ParamStrengthBehavior>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<ScreenEffects_ParamStrengthBehavior>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(ScreenEffects_ParamStrengthBehaviorPtr::from_ref(b, r)),
                 _ => None,
             },
-        }
-    }
-}
-
-/// DCB type: `ScreenEffects_ParamValue`
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct ScreenEffects_ParamValue {
-}
-
-impl Pooled for ScreenEffects_ParamValue {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.vfx.screen_effects_param_value }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.vfx.screen_effects_param_value }
-}
-
-impl<'a> Extract<'a> for ScreenEffects_ParamValue {
-    const TYPE_NAME: &'static str = "ScreenEffects_ParamValue";
-    fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
         }
     }
 }
@@ -973,6 +852,126 @@ impl<'a> Extract<'a> for ScreenEffects_ParamStrengthBehavior {
     }
 }
 
+/// DCB type: `ScreenEffects_Pattern_Linear`
+/// Inherits from: `ScreenEffects_Pattern`
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct ScreenEffects_Pattern_Linear {
+    /// `duration` (Single)
+    #[serde(default)]
+    pub duration: f32,
+    /// `mirrored` (Boolean)
+    #[serde(default)]
+    pub mirrored: bool,
+}
+
+impl Pooled for ScreenEffects_Pattern_Linear {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.vfx.screen_effects_pattern_linear }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.vfx.screen_effects_pattern_linear }
+}
+
+impl<'a> Extract<'a> for ScreenEffects_Pattern_Linear {
+    const TYPE_NAME: &'static str = "ScreenEffects_Pattern_Linear";
+    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {
+            duration: inst.get_f32("duration").unwrap_or_default(),
+            mirrored: inst.get_bool("mirrored").unwrap_or_default(),
+        }
+    }
+}
+
+/// DCB type: `ScreenEffects_ParamValue_Float`
+/// Inherits from: `ScreenEffects_ParamValue`
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct ScreenEffects_ParamValue_Float {
+    /// `value` (Single)
+    #[serde(default)]
+    pub value: f32,
+    /// `limitStacking` (Boolean)
+    #[serde(default)]
+    pub limit_stacking: bool,
+}
+
+impl Pooled for ScreenEffects_ParamValue_Float {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.vfx.screen_effects_param_value_float }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.vfx.screen_effects_param_value_float }
+}
+
+impl<'a> Extract<'a> for ScreenEffects_ParamValue_Float {
+    const TYPE_NAME: &'static str = "ScreenEffects_ParamValue_Float";
+    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {
+            value: inst.get_f32("value").unwrap_or_default(),
+            limit_stacking: inst.get_bool("limitStacking").unwrap_or_default(),
+        }
+    }
+}
+
+/// DCB type: `ScreenEffects_ParamStrengthBehavior_RangeEnable`
+/// Inherits from: `ScreenEffects_ParamStrengthBehavior`
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct ScreenEffects_ParamStrengthBehavior_RangeEnable {
+    /// `strengthTag` (Reference)
+    #[serde(default)]
+    pub strength_tag: Option<CigGuid>,
+    /// `rangeStart` (Single)
+    #[serde(default)]
+    pub range_start: f32,
+    /// `rangeEnd` (Single)
+    #[serde(default)]
+    pub range_end: f32,
+}
+
+impl Pooled for ScreenEffects_ParamStrengthBehavior_RangeEnable {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.vfx.screen_effects_param_strength_behavior_range_enable }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.vfx.screen_effects_param_strength_behavior_range_enable }
+}
+
+impl<'a> Extract<'a> for ScreenEffects_ParamStrengthBehavior_RangeEnable {
+    const TYPE_NAME: &'static str = "ScreenEffects_ParamStrengthBehavior_RangeEnable";
+    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {
+            strength_tag: inst.get("strengthTag").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            range_start: inst.get_f32("rangeStart").unwrap_or_default(),
+            range_end: inst.get_f32("rangeEnd").unwrap_or_default(),
+        }
+    }
+}
+
+/// DCB type: `ScreenEffects_ParamStrengthBehavior_RangeFade`
+/// Inherits from: `ScreenEffects_ParamStrengthBehavior`
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct ScreenEffects_ParamStrengthBehavior_RangeFade {
+    /// `strengthTag` (Reference)
+    #[serde(default)]
+    pub strength_tag: Option<CigGuid>,
+    /// `rangeStart` (Single)
+    #[serde(default)]
+    pub range_start: f32,
+    /// `rangeEnd` (Single)
+    #[serde(default)]
+    pub range_end: f32,
+    /// `useSharedPattern` (Boolean)
+    #[serde(default)]
+    pub use_shared_pattern: bool,
+}
+
+impl Pooled for ScreenEffects_ParamStrengthBehavior_RangeFade {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.vfx.screen_effects_param_strength_behavior_range_fade }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.vfx.screen_effects_param_strength_behavior_range_fade }
+}
+
+impl<'a> Extract<'a> for ScreenEffects_ParamStrengthBehavior_RangeFade {
+    const TYPE_NAME: &'static str = "ScreenEffects_ParamStrengthBehavior_RangeFade";
+    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {
+            strength_tag: inst.get("strengthTag").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            range_start: inst.get_f32("rangeStart").unwrap_or_default(),
+            range_end: inst.get_f32("rangeEnd").unwrap_or_default(),
+            use_shared_pattern: inst.get_bool("useSharedPattern").unwrap_or_default(),
+        }
+    }
+}
+
 /// DCB type: `ScreenEffects_Debug`
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ScreenEffects_Debug {
@@ -993,9 +992,7 @@ impl<'a> Extract<'a> for ScreenEffects_Debug {
             effect_list: inst.get_array("effectList")
                 .map(|arr| arr.filter_map(|v| match v {
                         Value::Class { struct_index, data } => Some(b.alloc_nested::<ScreenEffects_DebugEffect>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r)
-                        | Value::StrongPointer(Some(r))
-                        | Value::WeakPointer(Some(r)) => Some(b.alloc_nested::<ScreenEffects_DebugEffect>(b.db.instance(r.struct_index, r.instance_index), true)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<ScreenEffects_DebugEffect>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
                     }).collect())
                 .unwrap_or_default(),
@@ -1031,9 +1028,7 @@ impl<'a> Extract<'a> for ScreenEffects_DebugEffect {
             parameters: inst.get_array("parameters")
                 .map(|arr| arr.filter_map(|v| match v {
                         Value::Class { struct_index, data } => Some(b.alloc_nested::<ScreenEffects_DebugParam>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r)
-                        | Value::StrongPointer(Some(r))
-                        | Value::WeakPointer(Some(r)) => Some(b.alloc_nested::<ScreenEffects_DebugParam>(b.db.instance(r.struct_index, r.instance_index), true)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<ScreenEffects_DebugParam>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
                     }).collect())
                 .unwrap_or_default(),
@@ -1063,78 +1058,6 @@ impl<'a> Extract<'a> for ScreenEffects_DebugParam {
         Self {
             strength_tag: inst.get("strengthTag").and_then(|v| v.as_record_ref()).map(|r| r.guid),
             strength: inst.get_f32("strength").unwrap_or_default(),
-        }
-    }
-}
-
-/// DCB type: `ShieldTypeParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct ShieldTypeParams {
-    /// `impactEffect` (Class)
-    #[serde(default)]
-    pub impact_effect: Option<Handle<GlobalResourceParticle>>,
-    /// `minHealthColor` (Class)
-    #[serde(default)]
-    pub min_health_color: Option<Handle<SRGB8>>,
-    /// `maxHealthColor` (Class)
-    #[serde(default)]
-    pub max_health_color: Option<Handle<SRGB8>>,
-    /// `maxDamageStrength` (Single)
-    #[serde(default)]
-    pub max_damage_strength: f32,
-    /// `sizeScaleMultiplier` (Single)
-    #[serde(default)]
-    pub size_scale_multiplier: f32,
-    /// `sizeScale1stPerson` (Single)
-    #[serde(default)]
-    pub size_scale1st_person: f32,
-    /// `alphaScaleDefault` (Single)
-    #[serde(default)]
-    pub alpha_scale_default: f32,
-    /// `alphaScale1stPerson` (Single)
-    #[serde(default)]
-    pub alpha_scale1st_person: f32,
-    /// `maxHitImpact` (Int32)
-    #[serde(default)]
-    pub max_hit_impact: i32,
-}
-
-impl Pooled for ShieldTypeParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.vfx.shield_type_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.vfx.shield_type_params }
-}
-
-impl<'a> Extract<'a> for ShieldTypeParams {
-    const TYPE_NAME: &'static str = "ShieldTypeParams";
-    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
-        Self {
-            impact_effect: match inst.get("impactEffect") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceParticle>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<GlobalResourceParticle>(b.db.instance(r.struct_index, r.instance_index), true)),
-                _ => None,
-            },
-            min_health_color: match inst.get("minHealthColor") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SRGB8>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SRGB8>(b.db.instance(r.struct_index, r.instance_index), true)),
-                _ => None,
-            },
-            max_health_color: match inst.get("maxHealthColor") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SRGB8>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SRGB8>(b.db.instance(r.struct_index, r.instance_index), true)),
-                _ => None,
-            },
-            max_damage_strength: inst.get_f32("maxDamageStrength").unwrap_or_default(),
-            size_scale_multiplier: inst.get_f32("sizeScaleMultiplier").unwrap_or_default(),
-            size_scale1st_person: inst.get_f32("sizeScale1stPerson").unwrap_or_default(),
-            alpha_scale_default: inst.get_f32("alphaScaleDefault").unwrap_or_default(),
-            alpha_scale1st_person: inst.get_f32("alphaScale1stPerson").unwrap_or_default(),
-            max_hit_impact: inst.get_i32("maxHitImpact").unwrap_or_default(),
         }
     }
 }
@@ -1179,44 +1102,26 @@ impl<'a> Extract<'a> for VideoCommsShaderParams {
         Self {
             fade_in_spline_high_tech: match inst.get("fadeInSplineHighTech") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BezierCurve>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<BezierCurve>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             fade_out_spline_high_tech: match inst.get("fadeOutSplineHighTech") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BezierCurve>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<BezierCurve>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             switch_comms_spline_high_tech: match inst.get("switchCommsSplineHighTech") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BezierCurve>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<BezierCurve>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             fade_in_spline_low_tech: match inst.get("fadeInSplineLowTech") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BezierCurve>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<BezierCurve>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             fade_out_spline_low_tech: match inst.get("fadeOutSplineLowTech") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BezierCurve>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<BezierCurve>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             switch_comms_spline_low_tech: match inst.get("switchCommsSplineLowTech") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BezierCurve>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<BezierCurve>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             low_tech_material: inst.get_str("lowTechMaterial").map(String::from).unwrap_or_default(),
@@ -1250,17 +1155,11 @@ impl<'a> Extract<'a> for WaterInteractionEffectParams {
         Self {
             effect: match inst.get("effect") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceParticle>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<GlobalResourceParticle>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             max_duration: inst.get_f32("maxDuration").unwrap_or_default(),
             velocity_range: match inst.get("velocityRange") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<Range>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
         }
@@ -1289,16 +1188,10 @@ impl<'a> Extract<'a> for WaterEffectsGlobalParams {
         Self {
             exit_water_effect: match inst.get("exitWaterEffect") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<WaterInteractionEffectParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<WaterInteractionEffectParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             enter_water_effect: match inst.get("enterWaterEffect") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<WaterInteractionEffectParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<WaterInteractionEffectParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
         }

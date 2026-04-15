@@ -15,24 +15,36 @@
 use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, Pooled};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
-/// DCB type: `BaseItem`
+/// DCB type: `GameTokens`
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct BaseItem {
+pub struct GameTokens {
+    /// `GameTokenLibraries` (String (array))
+    #[serde(default)]
+    pub game_token_libraries: Vec<String>,
+    /// `FlowGraphs` (String (array))
+    #[serde(default)]
+    pub flow_graphs: Vec<String>,
 }
 
-impl Pooled for BaseItem {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.item.base_item }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.item.base_item }
+impl Pooled for GameTokens {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.item.game_tokens }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.item.game_tokens }
 }
 
-impl<'a> Extract<'a> for BaseItem {
-    const TYPE_NAME: &'static str = "BaseItem";
-    fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+impl<'a> Extract<'a> for GameTokens {
+    const TYPE_NAME: &'static str = "GameTokens";
+    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
+            game_token_libraries: inst.get_array("GameTokenLibraries")
+                .map(|arr| arr.filter_map(|v| v.as_str().map(String::from)).collect())
+                .unwrap_or_default(),
+            flow_graphs: inst.get_array("FlowGraphs")
+                .map(|arr| arr.filter_map(|v| v.as_str().map(String::from)).collect())
+                .unwrap_or_default(),
         }
     }
 }
@@ -42,7 +54,7 @@ impl<'a> Extract<'a> for BaseItem {
 pub struct Item {
     /// `type` (StrongPointer)
     #[serde(default)]
-    pub r#type: Option<Handle<BaseItem>>,
+    pub r#type: Option<BaseItemPtr>,
 }
 
 impl Pooled for Item {
@@ -55,10 +67,33 @@ impl<'a> Extract<'a> for Item {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             r#type: match inst.get("type") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BaseItem>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<BaseItem>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BaseItemPtr::from_ref(b, r)),
+                _ => None,
+            },
+        }
+    }
+}
+
+/// DCB type: `VehicleItemInteriorController`
+/// Inherits from: `VehicleItem`
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct VehicleItemInteriorController {
+    /// `GameTokenList` (Class)
+    #[serde(default)]
+    pub game_token_list: Option<Handle<GameTokens>>,
+}
+
+impl Pooled for VehicleItemInteriorController {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.item.vehicle_item_interior_controller }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.item.vehicle_item_interior_controller }
+}
+
+impl<'a> Extract<'a> for VehicleItemInteriorController {
+    const TYPE_NAME: &'static str = "VehicleItemInteriorController";
+    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
+        Self {
+            game_token_list: match inst.get("GameTokenList") {
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GameTokens>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
@@ -70,10 +105,10 @@ impl<'a> Extract<'a> for Item {
 pub struct SHelmetLinkedState {
     /// `stateMachine` (EnumChoice)
     #[serde(default)]
-    pub state_machine: String,
+    pub state_machine: EHelmetStateMachine,
     /// `stateToEnter` (EnumChoice)
     #[serde(default)]
-    pub state_to_enter: String,
+    pub state_to_enter: EHelmetState,
 }
 
 impl Pooled for SHelmetLinkedState {
@@ -85,8 +120,8 @@ impl<'a> Extract<'a> for SHelmetLinkedState {
     const TYPE_NAME: &'static str = "SHelmetLinkedState";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            state_machine: inst.get_str("stateMachine").map(String::from).unwrap_or_default(),
-            state_to_enter: inst.get_str("stateToEnter").map(String::from).unwrap_or_default(),
+            state_machine: EHelmetStateMachine::from_dcb_str(inst.get_str("stateMachine").unwrap_or("")),
+            state_to_enter: EHelmetState::from_dcb_str(inst.get_str("stateToEnter").unwrap_or("")),
         }
     }
 }
@@ -96,10 +131,10 @@ impl<'a> Extract<'a> for SHelmetLinkedState {
 pub struct SHelmetStateBaseParams {
     /// `state` (EnumChoice)
     #[serde(default)]
-    pub state: String,
+    pub state: EHelmetState,
     /// `nextState` (EnumChoice)
     #[serde(default)]
-    pub next_state: String,
+    pub next_state: EHelmetState,
     /// `linkedStates` (Class (array))
     #[serde(default)]
     pub linked_states: Vec<Handle<SHelmetLinkedState>>,
@@ -114,14 +149,12 @@ impl<'a> Extract<'a> for SHelmetStateBaseParams {
     const TYPE_NAME: &'static str = "SHelmetStateBaseParams";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            state: inst.get_str("state").map(String::from).unwrap_or_default(),
-            next_state: inst.get_str("nextState").map(String::from).unwrap_or_default(),
+            state: EHelmetState::from_dcb_str(inst.get_str("state").unwrap_or("")),
+            next_state: EHelmetState::from_dcb_str(inst.get_str("nextState").unwrap_or("")),
             linked_states: inst.get_array("linkedStates")
                 .map(|arr| arr.filter_map(|v| match v {
                         Value::Class { struct_index, data } => Some(b.alloc_nested::<SHelmetLinkedState>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r)
-                        | Value::StrongPointer(Some(r))
-                        | Value::WeakPointer(Some(r)) => Some(b.alloc_nested::<SHelmetLinkedState>(b.db.instance(r.struct_index, r.instance_index), true)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<SHelmetLinkedState>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
                     }).collect())
                 .unwrap_or_default(),
@@ -134,13 +167,13 @@ impl<'a> Extract<'a> for SHelmetStateBaseParams {
 pub struct SHelmetStateMachineParams {
     /// `stateMachine` (EnumChoice)
     #[serde(default)]
-    pub state_machine: String,
+    pub state_machine: EHelmetStateMachine,
     /// `states` (StrongPointer (array))
     #[serde(default)]
-    pub states: Vec<Handle<SHelmetStateBaseParams>>,
+    pub states: Vec<SHelmetStateBaseParamsPtr>,
     /// `startState` (EnumChoice)
     #[serde(default)]
-    pub start_state: String,
+    pub start_state: EHelmetState,
 }
 
 impl Pooled for SHelmetStateMachineParams {
@@ -152,17 +185,14 @@ impl<'a> Extract<'a> for SHelmetStateMachineParams {
     const TYPE_NAME: &'static str = "SHelmetStateMachineParams";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            state_machine: inst.get_str("stateMachine").map(String::from).unwrap_or_default(),
+            state_machine: EHelmetStateMachine::from_dcb_str(inst.get_str("stateMachine").unwrap_or("")),
             states: inst.get_array("states")
                 .map(|arr| arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<SHelmetStateBaseParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r)
-                        | Value::StrongPointer(Some(r))
-                        | Value::WeakPointer(Some(r)) => Some(b.alloc_nested::<SHelmetStateBaseParams>(b.db.instance(r.struct_index, r.instance_index), true)),
+                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => Some(SHelmetStateBaseParamsPtr::from_ref(b, r)),
                         _ => None,
                     }).collect())
                 .unwrap_or_default(),
-            start_state: inst.get_str("startState").map(String::from).unwrap_or_default(),
+            start_state: EHelmetState::from_dcb_str(inst.get_str("startState").unwrap_or("")),
         }
     }
 }
@@ -187,9 +217,7 @@ impl<'a> Extract<'a> for AnimatedHelmetParams {
             state_machines: inst.get_array("stateMachines")
                 .map(|arr| arr.filter_map(|v| match v {
                         Value::Class { struct_index, data } => Some(b.alloc_nested::<SHelmetStateMachineParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r)
-                        | Value::StrongPointer(Some(r))
-                        | Value::WeakPointer(Some(r)) => Some(b.alloc_nested::<SHelmetStateMachineParams>(b.db.instance(r.struct_index, r.instance_index), true)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<SHelmetStateMachineParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
                     }).collect())
                 .unwrap_or_default(),

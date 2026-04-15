@@ -9,10 +9,12 @@
 
 //! Feature module: `chatemoterecord`
 
-pub mod types;
-pub mod pools;
-pub mod index;
+#[allow(unused_imports)]
+mod types;
+mod pools;
+mod index;
 
+#[allow(unused_imports)]
 pub use types::*;
 pub use pools::*;
 pub use index::*;

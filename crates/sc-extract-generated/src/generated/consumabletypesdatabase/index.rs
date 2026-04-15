@@ -7,7 +7,7 @@
 //
 // Any hand edits will be lost on the next run.
 
-#![allow(non_snake_case, dead_code, unused_imports)]
+#![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
 use std::collections::HashMap;
 use serde::{Deserialize, Serialize};
@@ -19,18 +19,15 @@ use super::super::*;
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct ConsumabletypesdatabaseIndex {
     #[serde(default)]
-    pub consumable_type: HashMap<CigGuid, Handle<ConsumableType>>,
-    #[serde(default)]
-    pub consumable_subtype: HashMap<CigGuid, Handle<ConsumableSubtype>>,
-    #[serde(default)]
     pub consumable_type_database: HashMap<CigGuid, Handle<ConsumableTypeDatabase>>,
 }
 
 impl ConsumabletypesdatabaseIndex {
+    #[allow(unused_mut)]
     pub fn len(&self) -> usize {
-        self.consumable_type.len()
-            + self.consumable_subtype.len()
-            + self.consumable_type_database.len()
+        let mut total = 0usize;
+        total += self.consumable_type_database.len();
+        total
     }
 
     pub fn is_empty(&self) -> bool { self.len() == 0 }

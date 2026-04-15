@@ -15,7 +15,7 @@
 use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, Pooled};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -39,9 +39,7 @@ impl<'a> Extract<'a> for FlashObjectBindingGroup {
             variable_objects: inst.get_array("variableObjects")
                 .map(|arr| arr.filter_map(|v| match v {
                         Value::Class { struct_index, data } => Some(b.alloc_nested::<FlashVariableObject>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r)
-                        | Value::StrongPointer(Some(r))
-                        | Value::WeakPointer(Some(r)) => Some(b.alloc_nested::<FlashVariableObject>(b.db.instance(r.struct_index, r.instance_index), true)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<FlashVariableObject>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
                     }).collect())
                 .unwrap_or_default(),
@@ -69,13 +67,13 @@ pub struct FlashVariableObject {
     pub current_frame: u32,
     /// `modeX` (EnumChoice)
     #[serde(default)]
-    pub mode_x: String,
+    pub mode_x: FlashValueUpdateMode,
     /// `modeY` (EnumChoice)
     #[serde(default)]
-    pub mode_y: String,
+    pub mode_y: FlashValueUpdateMode,
     /// `modeZ` (EnumChoice)
     #[serde(default)]
-    pub mode_z: String,
+    pub mode_z: FlashValueUpdateMode,
     /// `x` (Single)
     #[serde(default)]
     pub x: f32,
@@ -93,13 +91,13 @@ pub struct FlashVariableObject {
     pub attach_y: f32,
     /// `modeRotationX` (EnumChoice)
     #[serde(default)]
-    pub mode_rotation_x: String,
+    pub mode_rotation_x: FlashValueUpdateMode,
     /// `modeRotationY` (EnumChoice)
     #[serde(default)]
-    pub mode_rotation_y: String,
+    pub mode_rotation_y: FlashValueUpdateMode,
     /// `modeRotationZ` (EnumChoice)
     #[serde(default)]
-    pub mode_rotation_z: String,
+    pub mode_rotation_z: FlashValueUpdateMode,
     /// `rotationX` (Single)
     #[serde(default)]
     pub rotation_x: f32,
@@ -158,17 +156,17 @@ impl<'a> Extract<'a> for FlashVariableObject {
             alpha: inst.get_f32("alpha").unwrap_or_default(),
             set_current_frame: inst.get_bool("setCurrentFrame").unwrap_or_default(),
             current_frame: inst.get_u32("currentFrame").unwrap_or_default(),
-            mode_x: inst.get_str("modeX").map(String::from).unwrap_or_default(),
-            mode_y: inst.get_str("modeY").map(String::from).unwrap_or_default(),
-            mode_z: inst.get_str("modeZ").map(String::from).unwrap_or_default(),
+            mode_x: FlashValueUpdateMode::from_dcb_str(inst.get_str("modeX").unwrap_or("")),
+            mode_y: FlashValueUpdateMode::from_dcb_str(inst.get_str("modeY").unwrap_or("")),
+            mode_z: FlashValueUpdateMode::from_dcb_str(inst.get_str("modeZ").unwrap_or("")),
             x: inst.get_f32("x").unwrap_or_default(),
             y: inst.get_f32("y").unwrap_or_default(),
             z: inst.get_f32("z").unwrap_or_default(),
             attach_x: inst.get_f32("attachX").unwrap_or_default(),
             attach_y: inst.get_f32("attachY").unwrap_or_default(),
-            mode_rotation_x: inst.get_str("modeRotationX").map(String::from).unwrap_or_default(),
-            mode_rotation_y: inst.get_str("modeRotationY").map(String::from).unwrap_or_default(),
-            mode_rotation_z: inst.get_str("modeRotationZ").map(String::from).unwrap_or_default(),
+            mode_rotation_x: FlashValueUpdateMode::from_dcb_str(inst.get_str("modeRotationX").unwrap_or("")),
+            mode_rotation_y: FlashValueUpdateMode::from_dcb_str(inst.get_str("modeRotationY").unwrap_or("")),
+            mode_rotation_z: FlashValueUpdateMode::from_dcb_str(inst.get_str("modeRotationZ").unwrap_or("")),
             rotation_x: inst.get_f32("rotationX").unwrap_or_default(),
             rotation_y: inst.get_f32("rotationY").unwrap_or_default(),
             rotation_z: inst.get_f32("rotationZ").unwrap_or_default(),

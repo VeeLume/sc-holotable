@@ -15,48 +15,58 @@
 use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, Pooled};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
-/// DCB type: `InteractionConditionPreset`
+/// DCB type: `InteractionConditionCanAffordItem`
+/// Inherits from: `InteractionConditionParams`
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct InteractionConditionPreset {
-    /// `conditions` (StrongPointer (array))
+pub struct InteractionConditionCanAffordItem {
+    /// `conditionDisplay` (StrongPointer)
     #[serde(default)]
-    pub conditions: Vec<Handle<InteractionConditionParams>>,
-    /// `conditionToHideParams` (StrongPointer (array))
-    #[serde(default)]
-    pub condition_to_hide_params: Vec<Handle<InteractionConditionParams>>,
+    pub condition_display: Option<Handle<ConditionDisplayParams>>,
 }
 
-impl Pooled for InteractionConditionPreset {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.interactionconditions.interaction_condition_preset }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.interactionconditions.interaction_condition_preset }
+impl Pooled for InteractionConditionCanAffordItem {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.interactionconditions.interaction_condition_can_afford_item }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.interactionconditions.interaction_condition_can_afford_item }
 }
 
-impl<'a> Extract<'a> for InteractionConditionPreset {
-    const TYPE_NAME: &'static str = "InteractionConditionPreset";
+impl<'a> Extract<'a> for InteractionConditionCanAffordItem {
+    const TYPE_NAME: &'static str = "InteractionConditionCanAffordItem";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            conditions: inst.get_array("conditions")
-                .map(|arr| arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<InteractionConditionParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r)
-                        | Value::StrongPointer(Some(r))
-                        | Value::WeakPointer(Some(r)) => Some(b.alloc_nested::<InteractionConditionParams>(b.db.instance(r.struct_index, r.instance_index), true)),
-                        _ => None,
-                    }).collect())
-                .unwrap_or_default(),
-            condition_to_hide_params: inst.get_array("conditionToHideParams")
-                .map(|arr| arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<InteractionConditionParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r)
-                        | Value::StrongPointer(Some(r))
-                        | Value::WeakPointer(Some(r)) => Some(b.alloc_nested::<InteractionConditionParams>(b.db.instance(r.struct_index, r.instance_index), true)),
-                        _ => None,
-                    }).collect())
-                .unwrap_or_default(),
+            condition_display: match inst.get("conditionDisplay") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<ConditionDisplayParams>(b.db.instance(r.struct_index, r.instance_index), true)),
+                _ => None,
+            },
+        }
+    }
+}
+
+/// DCB type: `InteractionConditionCanBeBodyDragged`
+/// Inherits from: `InteractionConditionParams`
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct InteractionConditionCanBeBodyDragged {
+    /// `conditionDisplay` (StrongPointer)
+    #[serde(default)]
+    pub condition_display: Option<Handle<ConditionDisplayParams>>,
+}
+
+impl Pooled for InteractionConditionCanBeBodyDragged {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.interactionconditions.interaction_condition_can_be_body_dragged }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.interactionconditions.interaction_condition_can_be_body_dragged }
+}
+
+impl<'a> Extract<'a> for InteractionConditionCanBeBodyDragged {
+    const TYPE_NAME: &'static str = "InteractionConditionCanBeBodyDragged";
+    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
+        Self {
+            condition_display: match inst.get("conditionDisplay") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<ConditionDisplayParams>(b.db.instance(r.struct_index, r.instance_index), true)),
+                _ => None,
+            },
         }
     }
 }
@@ -69,13 +79,13 @@ pub struct ShopInteractionData {
     pub quick_buy_condition_list: Option<Handle<InteractionConditionList>>,
     /// `quickBuyInteractionText` (Locale)
     #[serde(default)]
-    pub quick_buy_interaction_text: String,
+    pub quick_buy_interaction_text: LocaleKey,
     /// `quickBuyPriceStringToken` (String)
     #[serde(default)]
     pub quick_buy_price_string_token: String,
     /// `moreInfoInteractionText` (Locale)
     #[serde(default)]
-    pub more_info_interaction_text: String,
+    pub more_info_interaction_text: LocaleKey,
 }
 
 impl Pooled for ShopInteractionData {
@@ -89,14 +99,11 @@ impl<'a> Extract<'a> for ShopInteractionData {
         Self {
             quick_buy_condition_list: match inst.get("quickBuyConditionList") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<InteractionConditionList>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<InteractionConditionList>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
-            quick_buy_interaction_text: inst.get_str("quickBuyInteractionText").map(String::from).unwrap_or_default(),
+            quick_buy_interaction_text: inst.get_str("quickBuyInteractionText").map(LocaleKey::from).unwrap_or_default(),
             quick_buy_price_string_token: inst.get_str("quickBuyPriceStringToken").map(String::from).unwrap_or_default(),
-            more_info_interaction_text: inst.get_str("moreInfoInteractionText").map(String::from).unwrap_or_default(),
+            more_info_interaction_text: inst.get_str("moreInfoInteractionText").map(LocaleKey::from).unwrap_or_default(),
         }
     }
 }

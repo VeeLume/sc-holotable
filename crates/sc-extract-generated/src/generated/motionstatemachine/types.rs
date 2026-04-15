@@ -15,7 +15,7 @@
 use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, Pooled};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -49,10 +49,7 @@ impl<'a> Extract<'a> for MotionConnection {
             delay_seconds: inst.get_f32("delaySeconds").unwrap_or_default(),
             wait_for_event: inst.get_str("waitForEvent").map(String::from).unwrap_or_default(),
             next_state: match inst.get("nextState") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<MotionState>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<MotionState>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<MotionState>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
         }
@@ -64,7 +61,7 @@ impl<'a> Extract<'a> for MotionConnection {
 pub struct MotionState {
     /// `type` (EnumChoice)
     #[serde(default)]
-    pub r#type: String,
+    pub r#type: MotionStateType,
     /// `mannequinTags` (String)
     #[serde(default)]
     pub mannequin_tags: String,
@@ -73,13 +70,13 @@ pub struct MotionState {
     pub mannequin_fragment: String,
     /// `motionTypeFP` (EnumChoice)
     #[serde(default)]
-    pub motion_type_fp: String,
+    pub motion_type_fp: MotionControlType,
     /// `motionTypeTP` (EnumChoice)
     #[serde(default)]
-    pub motion_type_tp: String,
+    pub motion_type_tp: MotionControlType,
     /// `motionTypeRemote` (EnumChoice)
     #[serde(default)]
-    pub motion_type_remote: String,
+    pub motion_type_remote: MotionControlType,
     /// `connections` (Class (array))
     #[serde(default)]
     pub connections: Vec<Handle<MotionConnection>>,
@@ -94,18 +91,16 @@ impl<'a> Extract<'a> for MotionState {
     const TYPE_NAME: &'static str = "MotionState";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            r#type: inst.get_str("type").map(String::from).unwrap_or_default(),
+            r#type: MotionStateType::from_dcb_str(inst.get_str("type").unwrap_or("")),
             mannequin_tags: inst.get_str("mannequinTags").map(String::from).unwrap_or_default(),
             mannequin_fragment: inst.get_str("mannequinFragment").map(String::from).unwrap_or_default(),
-            motion_type_fp: inst.get_str("motionTypeFP").map(String::from).unwrap_or_default(),
-            motion_type_tp: inst.get_str("motionTypeTP").map(String::from).unwrap_or_default(),
-            motion_type_remote: inst.get_str("motionTypeRemote").map(String::from).unwrap_or_default(),
+            motion_type_fp: MotionControlType::from_dcb_str(inst.get_str("motionTypeFP").unwrap_or("")),
+            motion_type_tp: MotionControlType::from_dcb_str(inst.get_str("motionTypeTP").unwrap_or("")),
+            motion_type_remote: MotionControlType::from_dcb_str(inst.get_str("motionTypeRemote").unwrap_or("")),
             connections: inst.get_array("connections")
                 .map(|arr| arr.filter_map(|v| match v {
                         Value::Class { struct_index, data } => Some(b.alloc_nested::<MotionConnection>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r)
-                        | Value::StrongPointer(Some(r))
-                        | Value::WeakPointer(Some(r)) => Some(b.alloc_nested::<MotionConnection>(b.db.instance(r.struct_index, r.instance_index), true)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<MotionConnection>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
                     }).collect())
                 .unwrap_or_default(),
@@ -286,43 +281,43 @@ pub struct MotionTurnSetupFiltered {
     pub filter_name: String,
     /// `filterByState` (EnumChoice)
     #[serde(default)]
-    pub filter_by_state: String,
+    pub filter_by_state: ActorStateFilterByState,
     /// `filterByMotionSpeed` (EnumChoice)
     #[serde(default)]
-    pub filter_by_motion_speed: String,
+    pub filter_by_motion_speed: ActorStateFilterByMotionSpeed,
     /// `filterByPoseState` (EnumChoice)
     #[serde(default)]
-    pub filter_by_pose_state: String,
+    pub filter_by_pose_state: ActorStateFilterByPoseState,
     /// `filterByStanceState` (EnumChoice)
     #[serde(default)]
-    pub filter_by_stance_state: String,
+    pub filter_by_stance_state: ActorStateFilterByStanceState,
     /// `filterByAimStanceState` (EnumChoice)
     #[serde(default)]
-    pub filter_by_aim_stance_state: String,
+    pub filter_by_aim_stance_state: ActorStateFilterByAimStanceState,
     /// `filterByLeanState` (EnumChoice)
     #[serde(default)]
-    pub filter_by_lean_state: String,
+    pub filter_by_lean_state: ActorStateFilterByLeanState,
     /// `filterByHeldItemType` (EnumChoice)
     #[serde(default)]
-    pub filter_by_held_item_type: String,
+    pub filter_by_held_item_type: ActorStateFilterByHeldItemType,
     /// `filterBySkeleton` (EnumChoice)
     #[serde(default)]
-    pub filter_by_skeleton: String,
+    pub filter_by_skeleton: ActorStateFilterBySkeleton,
     /// `filterByCharacterType` (EnumChoice)
     #[serde(default)]
-    pub filter_by_character_type: String,
+    pub filter_by_character_type: ActorStateFilterByCharacterType,
     /// `filterByRestrainedState` (EnumChoice)
     #[serde(default)]
-    pub filter_by_restrained_state: String,
+    pub filter_by_restrained_state: EActorStateFilterByBoolState,
     /// `filterByPlayerCamera` (EnumChoice)
     #[serde(default)]
-    pub filter_by_player_camera: String,
+    pub filter_by_player_camera: EActorStateFilterByPlayerCamera,
     /// `filterByAimingRestriction` (EnumChoice)
     #[serde(default)]
-    pub filter_by_aiming_restriction: String,
+    pub filter_by_aiming_restriction: EActorStateFilterByAimingRestriction,
     /// `filterByLocomotionSet` (EnumChoice)
     #[serde(default)]
-    pub filter_by_locomotion_set: String,
+    pub filter_by_locomotion_set: ActorStateFilterByLocomotionSet,
     /// `params` (Class)
     #[serde(default)]
     pub params: Option<Handle<MotionTurnParams>>,
@@ -338,24 +333,21 @@ impl<'a> Extract<'a> for MotionTurnSetupFiltered {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             filter_name: inst.get_str("filterName").map(String::from).unwrap_or_default(),
-            filter_by_state: inst.get_str("filterByState").map(String::from).unwrap_or_default(),
-            filter_by_motion_speed: inst.get_str("filterByMotionSpeed").map(String::from).unwrap_or_default(),
-            filter_by_pose_state: inst.get_str("filterByPoseState").map(String::from).unwrap_or_default(),
-            filter_by_stance_state: inst.get_str("filterByStanceState").map(String::from).unwrap_or_default(),
-            filter_by_aim_stance_state: inst.get_str("filterByAimStanceState").map(String::from).unwrap_or_default(),
-            filter_by_lean_state: inst.get_str("filterByLeanState").map(String::from).unwrap_or_default(),
-            filter_by_held_item_type: inst.get_str("filterByHeldItemType").map(String::from).unwrap_or_default(),
-            filter_by_skeleton: inst.get_str("filterBySkeleton").map(String::from).unwrap_or_default(),
-            filter_by_character_type: inst.get_str("filterByCharacterType").map(String::from).unwrap_or_default(),
-            filter_by_restrained_state: inst.get_str("filterByRestrainedState").map(String::from).unwrap_or_default(),
-            filter_by_player_camera: inst.get_str("filterByPlayerCamera").map(String::from).unwrap_or_default(),
-            filter_by_aiming_restriction: inst.get_str("filterByAimingRestriction").map(String::from).unwrap_or_default(),
-            filter_by_locomotion_set: inst.get_str("filterByLocomotionSet").map(String::from).unwrap_or_default(),
+            filter_by_state: ActorStateFilterByState::from_dcb_str(inst.get_str("filterByState").unwrap_or("")),
+            filter_by_motion_speed: ActorStateFilterByMotionSpeed::from_dcb_str(inst.get_str("filterByMotionSpeed").unwrap_or("")),
+            filter_by_pose_state: ActorStateFilterByPoseState::from_dcb_str(inst.get_str("filterByPoseState").unwrap_or("")),
+            filter_by_stance_state: ActorStateFilterByStanceState::from_dcb_str(inst.get_str("filterByStanceState").unwrap_or("")),
+            filter_by_aim_stance_state: ActorStateFilterByAimStanceState::from_dcb_str(inst.get_str("filterByAimStanceState").unwrap_or("")),
+            filter_by_lean_state: ActorStateFilterByLeanState::from_dcb_str(inst.get_str("filterByLeanState").unwrap_or("")),
+            filter_by_held_item_type: ActorStateFilterByHeldItemType::from_dcb_str(inst.get_str("filterByHeldItemType").unwrap_or("")),
+            filter_by_skeleton: ActorStateFilterBySkeleton::from_dcb_str(inst.get_str("filterBySkeleton").unwrap_or("")),
+            filter_by_character_type: ActorStateFilterByCharacterType::from_dcb_str(inst.get_str("filterByCharacterType").unwrap_or("")),
+            filter_by_restrained_state: EActorStateFilterByBoolState::from_dcb_str(inst.get_str("filterByRestrainedState").unwrap_or("")),
+            filter_by_player_camera: EActorStateFilterByPlayerCamera::from_dcb_str(inst.get_str("filterByPlayerCamera").unwrap_or("")),
+            filter_by_aiming_restriction: EActorStateFilterByAimingRestriction::from_dcb_str(inst.get_str("filterByAimingRestriction").unwrap_or("")),
+            filter_by_locomotion_set: ActorStateFilterByLocomotionSet::from_dcb_str(inst.get_str("filterByLocomotionSet").unwrap_or("")),
             params: match inst.get("params") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<MotionTurnParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<MotionTurnParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
         }
@@ -382,9 +374,7 @@ impl<'a> Extract<'a> for MotionTurnSetupList {
             setup_list: inst.get_array("setupList")
                 .map(|arr| arr.filter_map(|v| match v {
                         Value::Class { struct_index, data } => Some(b.alloc_nested::<MotionTurnSetupFiltered>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r)
-                        | Value::StrongPointer(Some(r))
-                        | Value::WeakPointer(Some(r)) => Some(b.alloc_nested::<MotionTurnSetupFiltered>(b.db.instance(r.struct_index, r.instance_index), true)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<MotionTurnSetupFiltered>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
                     }).collect())
                 .unwrap_or_default(),
@@ -478,66 +468,40 @@ impl<'a> Extract<'a> for MotionGraph {
             motion_states: inst.get_array("motionStates")
                 .map(|arr| arr.filter_map(|v| match v {
                         Value::Class { struct_index, data } => Some(b.alloc_nested::<MotionState>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r)
-                        | Value::StrongPointer(Some(r))
-                        | Value::WeakPointer(Some(r)) => Some(b.alloc_nested::<MotionState>(b.db.instance(r.struct_index, r.instance_index), true)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<MotionState>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
                     }).collect())
                 .unwrap_or_default(),
             motion_smoothing_config: match inst.get("motionSmoothingConfig") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<MotionSmoothingParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<MotionSmoothingParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             juke_config: match inst.get("jukeConfig") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<MotionJukeParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<MotionJukeParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             idle_to_move_proc_params_forward: match inst.get("idleToMoveProcParamsForward") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<ProceduralIdleToMoveParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<ProceduralIdleToMoveParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             idle_to_move_proc_params_back: match inst.get("idleToMoveProcParamsBack") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<ProceduralIdleToMoveParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<ProceduralIdleToMoveParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             idle_to_move_proc_params_right: match inst.get("idleToMoveProcParamsRight") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<ProceduralIdleToMoveParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<ProceduralIdleToMoveParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             idle_to_move_proc_params_left: match inst.get("idleToMoveProcParamsLeft") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<ProceduralIdleToMoveParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<ProceduralIdleToMoveParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             turn_config: match inst.get("turnConfig") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<MotionTurnSetupList>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<MotionTurnSetupList>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             foot_pinning_params: match inst.get("footPinningParams") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<MotionFootPinningParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<MotionFootPinningParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
         }
@@ -562,52 +526,6 @@ impl<'a> Extract<'a> for SCProneMotionGraphDef {
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
             turn_trigger_yaw_threshold: inst.get_f32("turnTriggerYawThreshold").unwrap_or_default(),
-        }
-    }
-}
-
-/// DCB type: `IMannequinActionDef`
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct IMannequinActionDef {
-}
-
-impl Pooled for IMannequinActionDef {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.motionstatemachine.imannequin_action_def }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.motionstatemachine.imannequin_action_def }
-}
-
-impl<'a> Extract<'a> for IMannequinActionDef {
-    const TYPE_NAME: &'static str = "IMannequinActionDef";
-    fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
-        }
-    }
-}
-
-/// DCB type: `SMannequinActionDefRecord`
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct SMannequinActionDefRecord {
-    /// `actionDef` (StrongPointer)
-    #[serde(default)]
-    pub action_def: Option<Handle<IMannequinActionDef>>,
-}
-
-impl Pooled for SMannequinActionDefRecord {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.motionstatemachine.smannequin_action_def_record }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.motionstatemachine.smannequin_action_def_record }
-}
-
-impl<'a> Extract<'a> for SMannequinActionDefRecord {
-    const TYPE_NAME: &'static str = "SMannequinActionDefRecord";
-    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
-        Self {
-            action_def: match inst.get("actionDef") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<IMannequinActionDef>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<IMannequinActionDef>(b.db.instance(r.struct_index, r.instance_index), true)),
-                _ => None,
-            },
         }
     }
 }

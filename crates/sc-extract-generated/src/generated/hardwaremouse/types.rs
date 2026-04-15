@@ -15,7 +15,7 @@
 use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, Pooled};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -169,23 +169,14 @@ impl<'a> Extract<'a> for HardwareMouseParams {
         Self {
             cursor: match inst.get("cursor") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<VirtualCursorParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<VirtualCursorParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             hover_friction: match inst.get("hoverFriction") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<VirtualCursorHoverFrictionParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<VirtualCursorHoverFrictionParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             wheel: match inst.get("wheel") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<VirtualCursorWheelParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<VirtualCursorWheelParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             enable_dpad_navigation: inst.get_bool("enableDPadNavigation").unwrap_or_default(),

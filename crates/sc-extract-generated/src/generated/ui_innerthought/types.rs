@@ -15,358 +15,383 @@
 use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, Pooled};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
-/// DCB type: `InnerThought_AnimBase`
+/// DCB type: `InnerThought_CycleAnimBase`
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct InnerThought_AnimBase {
-    /// `glyphStagger` (Single)
-    #[serde(default)]
-    pub glyph_stagger: f32,
+pub struct InnerThought_CycleAnimBase {
     /// `length` (Single)
     #[serde(default)]
     pub length: f32,
-    /// `randomStagger` (Boolean)
+    /// `amount` (Single)
     #[serde(default)]
-    pub random_stagger: bool,
-    /// `interpolationMode` (EnumChoice)
+    pub amount: f32,
+    /// `stagger` (Single)
     #[serde(default)]
-    pub interpolation_mode: String,
+    pub stagger: f32,
 }
 
-impl Pooled for InnerThought_AnimBase {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_innerthought.inner_thought_anim_base }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_innerthought.inner_thought_anim_base }
+impl Pooled for InnerThought_CycleAnimBase {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_innerthought.inner_thought_cycle_anim_base }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_innerthought.inner_thought_cycle_anim_base }
 }
 
-impl<'a> Extract<'a> for InnerThought_AnimBase {
-    const TYPE_NAME: &'static str = "InnerThought_AnimBase";
+impl<'a> Extract<'a> for InnerThought_CycleAnimBase {
+    const TYPE_NAME: &'static str = "InnerThought_CycleAnimBase";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            glyph_stagger: inst.get_f32("glyphStagger").unwrap_or_default(),
             length: inst.get_f32("length").unwrap_or_default(),
-            random_stagger: inst.get_bool("randomStagger").unwrap_or_default(),
-            interpolation_mode: inst.get_str("interpolationMode").map(String::from).unwrap_or_default(),
+            amount: inst.get_f32("amount").unwrap_or_default(),
+            stagger: inst.get_f32("stagger").unwrap_or_default(),
         }
     }
 }
 
-/// DCB type: `InnerThought_Anim`
+/// DCB type: `InnerThought_CycleAnimRotateX`
+/// Inherits from: `InnerThought_CycleAnimBase`
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct InnerThought_Anim {
-    /// `type` (StrongPointer)
+pub struct InnerThought_CycleAnimRotateX {
+    /// `length` (Single)
     #[serde(default)]
-    pub r#type: Option<Handle<InnerThought_AnimBase>>,
+    pub length: f32,
+    /// `amount` (Single)
+    #[serde(default)]
+    pub amount: f32,
+    /// `stagger` (Single)
+    #[serde(default)]
+    pub stagger: f32,
 }
 
-impl Pooled for InnerThought_Anim {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_innerthought.inner_thought_anim }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_innerthought.inner_thought_anim }
+impl Pooled for InnerThought_CycleAnimRotateX {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_innerthought.inner_thought_cycle_anim_rotate_x }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_innerthought.inner_thought_cycle_anim_rotate_x }
 }
 
-impl<'a> Extract<'a> for InnerThought_Anim {
-    const TYPE_NAME: &'static str = "InnerThought_Anim";
+impl<'a> Extract<'a> for InnerThought_CycleAnimRotateX {
+    const TYPE_NAME: &'static str = "InnerThought_CycleAnimRotateX";
+    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {
+            length: inst.get_f32("length").unwrap_or_default(),
+            amount: inst.get_f32("amount").unwrap_or_default(),
+            stagger: inst.get_f32("stagger").unwrap_or_default(),
+        }
+    }
+}
+
+/// DCB type: `InnerThought_CycleAnimRotateY`
+/// Inherits from: `InnerThought_CycleAnimBase`
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct InnerThought_CycleAnimRotateY {
+    /// `length` (Single)
+    #[serde(default)]
+    pub length: f32,
+    /// `amount` (Single)
+    #[serde(default)]
+    pub amount: f32,
+    /// `stagger` (Single)
+    #[serde(default)]
+    pub stagger: f32,
+}
+
+impl Pooled for InnerThought_CycleAnimRotateY {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_innerthought.inner_thought_cycle_anim_rotate_y }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_innerthought.inner_thought_cycle_anim_rotate_y }
+}
+
+impl<'a> Extract<'a> for InnerThought_CycleAnimRotateY {
+    const TYPE_NAME: &'static str = "InnerThought_CycleAnimRotateY";
+    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {
+            length: inst.get_f32("length").unwrap_or_default(),
+            amount: inst.get_f32("amount").unwrap_or_default(),
+            stagger: inst.get_f32("stagger").unwrap_or_default(),
+        }
+    }
+}
+
+/// DCB type: `InnerThought_CycleAnimRotateZ`
+/// Inherits from: `InnerThought_CycleAnimBase`
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct InnerThought_CycleAnimRotateZ {
+    /// `length` (Single)
+    #[serde(default)]
+    pub length: f32,
+    /// `amount` (Single)
+    #[serde(default)]
+    pub amount: f32,
+    /// `stagger` (Single)
+    #[serde(default)]
+    pub stagger: f32,
+}
+
+impl Pooled for InnerThought_CycleAnimRotateZ {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_innerthought.inner_thought_cycle_anim_rotate_z }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_innerthought.inner_thought_cycle_anim_rotate_z }
+}
+
+impl<'a> Extract<'a> for InnerThought_CycleAnimRotateZ {
+    const TYPE_NAME: &'static str = "InnerThought_CycleAnimRotateZ";
+    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {
+            length: inst.get_f32("length").unwrap_or_default(),
+            amount: inst.get_f32("amount").unwrap_or_default(),
+            stagger: inst.get_f32("stagger").unwrap_or_default(),
+        }
+    }
+}
+
+/// DCB type: `InnerThought_LayoutGridSetThought`
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct InnerThought_LayoutGridSetThought {
+    /// `justification` (EnumChoice)
+    #[serde(default)]
+    pub justification: InnerThoughtJustification,
+    /// `offset` (Class)
+    #[serde(default)]
+    pub offset: Option<Handle<Vec3>>,
+    /// `angle` (Class)
+    #[serde(default)]
+    pub angle: Option<Handle<Quat>>,
+}
+
+impl Pooled for InnerThought_LayoutGridSetThought {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_innerthought.inner_thought_layout_grid_set_thought }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_innerthought.inner_thought_layout_grid_set_thought }
+}
+
+impl<'a> Extract<'a> for InnerThought_LayoutGridSetThought {
+    const TYPE_NAME: &'static str = "InnerThought_LayoutGridSetThought";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            r#type: match inst.get("type") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<InnerThought_AnimBase>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<InnerThought_AnimBase>(b.db.instance(r.struct_index, r.instance_index), true)),
+            justification: InnerThoughtJustification::from_dcb_str(inst.get_str("justification").unwrap_or("")),
+            offset: match inst.get("offset") {
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                _ => None,
+            },
+            angle: match inst.get("angle") {
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Quat>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
     }
 }
 
-/// DCB type: `InnerThought_LayoutBase`
+/// DCB type: `InnerThought_LayoutGridSet`
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct InnerThought_LayoutBase {
+pub struct InnerThought_LayoutGridSet {
+    /// `thoughts` (Class (array))
+    #[serde(default)]
+    pub thoughts: Vec<Handle<InnerThought_LayoutGridSetThought>>,
 }
 
-impl Pooled for InnerThought_LayoutBase {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_innerthought.inner_thought_layout_base }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_innerthought.inner_thought_layout_base }
+impl Pooled for InnerThought_LayoutGridSet {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_innerthought.inner_thought_layout_grid_set }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_innerthought.inner_thought_layout_grid_set }
 }
 
-impl<'a> Extract<'a> for InnerThought_LayoutBase {
-    const TYPE_NAME: &'static str = "InnerThought_LayoutBase";
-    fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
-        }
-    }
-}
-
-/// DCB type: `InnerThought_ColorParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct InnerThought_ColorParams {
-    /// `diffuseColor` (Class)
-    #[serde(default)]
-    pub diffuse_color: Option<Handle<RGB>>,
-    /// `emissiveColor` (Class)
-    #[serde(default)]
-    pub emissive_color: Option<Handle<RGB>>,
-    /// `rimColor` (Class)
-    #[serde(default)]
-    pub rim_color: Option<Handle<RGB>>,
-    /// `silhouetteColor` (Class)
-    #[serde(default)]
-    pub silhouette_color: Option<Handle<RGB>>,
-    /// `opacity` (Single)
-    #[serde(default)]
-    pub opacity: f32,
-    /// `glow` (Single)
-    #[serde(default)]
-    pub glow: f32,
-    /// `diffuseOpacity` (Single)
-    #[serde(default)]
-    pub diffuse_opacity: f32,
-    /// `rimOpacity` (Single)
-    #[serde(default)]
-    pub rim_opacity: f32,
-    /// `silhouetteOpacity` (Single)
-    #[serde(default)]
-    pub silhouette_opacity: f32,
-    /// `silhouetteThickness` (Single)
-    #[serde(default)]
-    pub silhouette_thickness: f32,
-}
-
-impl Pooled for InnerThought_ColorParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_innerthought.inner_thought_color_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_innerthought.inner_thought_color_params }
-}
-
-impl<'a> Extract<'a> for InnerThought_ColorParams {
-    const TYPE_NAME: &'static str = "InnerThought_ColorParams";
+impl<'a> Extract<'a> for InnerThought_LayoutGridSet {
+    const TYPE_NAME: &'static str = "InnerThought_LayoutGridSet";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            diffuse_color: match inst.get("diffuseColor") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<RGB>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<RGB>(b.db.instance(r.struct_index, r.instance_index), true)),
-                _ => None,
-            },
-            emissive_color: match inst.get("emissiveColor") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<RGB>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<RGB>(b.db.instance(r.struct_index, r.instance_index), true)),
-                _ => None,
-            },
-            rim_color: match inst.get("rimColor") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<RGB>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<RGB>(b.db.instance(r.struct_index, r.instance_index), true)),
-                _ => None,
-            },
-            silhouette_color: match inst.get("silhouetteColor") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<RGB>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<RGB>(b.db.instance(r.struct_index, r.instance_index), true)),
-                _ => None,
-            },
-            opacity: inst.get_f32("opacity").unwrap_or_default(),
-            glow: inst.get_f32("glow").unwrap_or_default(),
-            diffuse_opacity: inst.get_f32("diffuseOpacity").unwrap_or_default(),
-            rim_opacity: inst.get_f32("rimOpacity").unwrap_or_default(),
-            silhouette_opacity: inst.get_f32("silhouetteOpacity").unwrap_or_default(),
-            silhouette_thickness: inst.get_f32("silhouetteThickness").unwrap_or_default(),
-        }
-    }
-}
-
-/// DCB type: `InnerThought_LayoutStates`
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct InnerThought_LayoutStates {
-    /// `name` (String)
-    #[serde(default)]
-    pub name: String,
-    /// `layout` (StrongPointer)
-    #[serde(default)]
-    pub layout: Option<Handle<InnerThought_LayoutBase>>,
-}
-
-impl Pooled for InnerThought_LayoutStates {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_innerthought.inner_thought_layout_states }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_innerthought.inner_thought_layout_states }
-}
-
-impl<'a> Extract<'a> for InnerThought_LayoutStates {
-    const TYPE_NAME: &'static str = "InnerThought_LayoutStates";
-    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
-        Self {
-            name: inst.get_str("name").map(String::from).unwrap_or_default(),
-            layout: match inst.get("layout") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<InnerThought_LayoutBase>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<InnerThought_LayoutBase>(b.db.instance(r.struct_index, r.instance_index), true)),
-                _ => None,
-            },
-        }
-    }
-}
-
-/// DCB type: `InnerThought_Params`
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct InnerThought_Params {
-    /// `fontSize` (Single)
-    #[serde(default)]
-    pub font_size: f32,
-    /// `radialSelection` (Boolean)
-    #[serde(default)]
-    pub radial_selection: bool,
-    /// `loopedSelection` (Boolean)
-    #[serde(default)]
-    pub looped_selection: bool,
-    /// `useDepthTest` (Boolean)
-    #[serde(default)]
-    pub use_depth_test: bool,
-    /// `states` (Class (array))
-    #[serde(default)]
-    pub states: Vec<Handle<InnerThought_LayoutStates>>,
-    /// `stateAnim` (Reference)
-    #[serde(default)]
-    pub state_anim: Option<CigGuid>,
-    /// `selectionAnim` (Reference)
-    #[serde(default)]
-    pub selection_anim: Option<CigGuid>,
-}
-
-impl Pooled for InnerThought_Params {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_innerthought.inner_thought_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_innerthought.inner_thought_params }
-}
-
-impl<'a> Extract<'a> for InnerThought_Params {
-    const TYPE_NAME: &'static str = "InnerThought_Params";
-    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
-        Self {
-            font_size: inst.get_f32("fontSize").unwrap_or_default(),
-            radial_selection: inst.get_bool("radialSelection").unwrap_or_default(),
-            looped_selection: inst.get_bool("loopedSelection").unwrap_or_default(),
-            use_depth_test: inst.get_bool("useDepthTest").unwrap_or_default(),
-            states: inst.get_array("states")
+            thoughts: inst.get_array("thoughts")
                 .map(|arr| arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<InnerThought_LayoutStates>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r)
-                        | Value::StrongPointer(Some(r))
-                        | Value::WeakPointer(Some(r)) => Some(b.alloc_nested::<InnerThought_LayoutStates>(b.db.instance(r.struct_index, r.instance_index), true)),
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<InnerThought_LayoutGridSetThought>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<InnerThought_LayoutGridSetThought>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
                     }).collect())
                 .unwrap_or_default(),
-            state_anim: inst.get("stateAnim").and_then(|v| v.as_record_ref()).map(|r| r.guid),
-            selection_anim: inst.get("selectionAnim").and_then(|v| v.as_record_ref()).map(|r| r.guid),
         }
     }
 }
 
-/// DCB type: `InnerThought_ConversationSystemConfig`
+/// DCB type: `InnerThought_LayoutGrid`
+/// Inherits from: `InnerThought_LayoutChoiceBase`
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct InnerThought_ConversationSystemConfig {
-    /// `minDistance` (Single)
+pub struct InnerThought_LayoutGrid {
+    /// `selectedColor` (Reference)
     #[serde(default)]
-    pub min_distance: f32,
-    /// `maxDistance` (Single)
+    pub selected_color: Option<CigGuid>,
+    /// `unselectedColor` (Reference)
     #[serde(default)]
-    pub max_distance: f32,
-    /// `maxHorizontalAngle` (Single)
+    pub unselected_color: Option<CigGuid>,
+    /// `secondaryColor` (Reference)
     #[serde(default)]
-    pub max_horizontal_angle: f32,
-    /// `maxVerticalAngle` (Single)
+    pub secondary_color: Option<CigGuid>,
+    /// `selectedOffset` (Class)
     #[serde(default)]
-    pub max_vertical_angle: f32,
-    /// `rotation` (Class)
+    pub selected_offset: Option<Handle<Vec3>>,
+    /// `unselectedOffset` (Class)
     #[serde(default)]
-    pub rotation: Option<Handle<Deg3>>,
-    /// `bone` (EnumChoice)
+    pub unselected_offset: Option<Handle<Vec3>>,
+    /// `secondaryOffset` (Class)
     #[serde(default)]
-    pub bone: String,
-    /// `boneOffset` (Class)
+    pub secondary_offset: Option<Handle<Vec3>>,
+    /// `primarySets` (Class (array))
     #[serde(default)]
-    pub bone_offset: Option<Handle<Vec3>>,
-    /// `rotationRate` (Single)
+    pub primary_sets: Vec<Handle<InnerThought_LayoutGridSet>>,
+    /// `secondarySets` (Class (array))
     #[serde(default)]
-    pub rotation_rate: f32,
-    /// `translationRate` (Single)
-    #[serde(default)]
-    pub translation_rate: f32,
-    /// `innerThought` (Reference)
-    #[serde(default)]
-    pub inner_thought: Option<CigGuid>,
+    pub secondary_sets: Vec<Handle<InnerThought_LayoutGridSet>>,
 }
 
-impl Pooled for InnerThought_ConversationSystemConfig {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_innerthought.inner_thought_conversation_system_config }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_innerthought.inner_thought_conversation_system_config }
+impl Pooled for InnerThought_LayoutGrid {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_innerthought.inner_thought_layout_grid }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_innerthought.inner_thought_layout_grid }
 }
 
-impl<'a> Extract<'a> for InnerThought_ConversationSystemConfig {
-    const TYPE_NAME: &'static str = "InnerThought_ConversationSystemConfig";
+impl<'a> Extract<'a> for InnerThought_LayoutGrid {
+    const TYPE_NAME: &'static str = "InnerThought_LayoutGrid";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            min_distance: inst.get_f32("minDistance").unwrap_or_default(),
-            max_distance: inst.get_f32("maxDistance").unwrap_or_default(),
-            max_horizontal_angle: inst.get_f32("maxHorizontalAngle").unwrap_or_default(),
-            max_vertical_angle: inst.get_f32("maxVerticalAngle").unwrap_or_default(),
-            rotation: match inst.get("rotation") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Deg3>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<Deg3>(b.db.instance(r.struct_index, r.instance_index), true)),
-                _ => None,
-            },
-            bone: inst.get_str("bone").map(String::from).unwrap_or_default(),
-            bone_offset: match inst.get("boneOffset") {
+            selected_color: inst.get("selectedColor").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            unselected_color: inst.get("unselectedColor").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            secondary_color: inst.get("secondaryColor").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            selected_offset: match inst.get("selectedOffset") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<Vec3>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
-            rotation_rate: inst.get_f32("rotationRate").unwrap_or_default(),
-            translation_rate: inst.get_f32("translationRate").unwrap_or_default(),
-            inner_thought: inst.get("innerThought").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            unselected_offset: match inst.get("unselectedOffset") {
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                _ => None,
+            },
+            secondary_offset: match inst.get("secondaryOffset") {
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                _ => None,
+            },
+            primary_sets: inst.get_array("primarySets")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<InnerThought_LayoutGridSet>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<InnerThought_LayoutGridSet>(b.db.instance(r.struct_index, r.instance_index), true)),
+                        _ => None,
+                    }).collect())
+                .unwrap_or_default(),
+            secondary_sets: inst.get_array("secondarySets")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<InnerThought_LayoutGridSet>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<InnerThought_LayoutGridSet>(b.db.instance(r.struct_index, r.instance_index), true)),
+                        _ => None,
+                    }).collect())
+                .unwrap_or_default(),
         }
     }
 }
 
-/// DCB type: `InnerThought_InteractionSystemConfig`
+/// DCB type: `InnerThought_LayoutCurve`
+/// Inherits from: `InnerThought_LayoutBase`
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct InnerThought_InteractionSystemConfig {
-    /// `minDistance` (Single)
+pub struct InnerThought_LayoutCurve {
+    /// `shuffleSelectedToBottom` (Boolean)
     #[serde(default)]
-    pub min_distance: f32,
-    /// `maxDistance` (Single)
+    pub shuffle_selected_to_bottom: bool,
+    /// `radius` (Single)
     #[serde(default)]
-    pub max_distance: f32,
-    /// `rotationRate` (Single)
+    pub radius: f32,
+    /// `angle` (Single)
     #[serde(default)]
-    pub rotation_rate: f32,
-    /// `innerThought` (Reference)
+    pub angle: f32,
+    /// `radiusOrientation` (Class)
     #[serde(default)]
-    pub inner_thought: Option<CigGuid>,
+    pub radius_orientation: Option<Handle<Quat>>,
+    /// `cycles` (StrongPointer (array))
+    #[serde(default)]
+    pub cycles: Vec<InnerThought_CycleAnimBasePtr>,
+    /// `selectedColor` (Reference)
+    #[serde(default)]
+    pub selected_color: Option<CigGuid>,
+    /// `unselectedColorStart` (Reference)
+    #[serde(default)]
+    pub unselected_color_start: Option<CigGuid>,
+    /// `unselectedColorEnd` (Reference)
+    #[serde(default)]
+    pub unselected_color_end: Option<CigGuid>,
+    /// `selectedOffset` (Class)
+    #[serde(default)]
+    pub selected_offset: Option<Handle<Vec3>>,
+    /// `unselectedOffset` (Class)
+    #[serde(default)]
+    pub unselected_offset: Option<Handle<Vec3>>,
+    /// `selectedRotation` (Class)
+    #[serde(default)]
+    pub selected_rotation: Option<Handle<Deg3>>,
+    /// `unselectedRotation` (Class)
+    #[serde(default)]
+    pub unselected_rotation: Option<Handle<Deg3>>,
 }
 
-impl Pooled for InnerThought_InteractionSystemConfig {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_innerthought.inner_thought_interaction_system_config }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_innerthought.inner_thought_interaction_system_config }
+impl Pooled for InnerThought_LayoutCurve {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_innerthought.inner_thought_layout_curve }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_innerthought.inner_thought_layout_curve }
 }
 
-impl<'a> Extract<'a> for InnerThought_InteractionSystemConfig {
-    const TYPE_NAME: &'static str = "InnerThought_InteractionSystemConfig";
+impl<'a> Extract<'a> for InnerThought_LayoutCurve {
+    const TYPE_NAME: &'static str = "InnerThought_LayoutCurve";
+    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
+        Self {
+            shuffle_selected_to_bottom: inst.get_bool("shuffleSelectedToBottom").unwrap_or_default(),
+            radius: inst.get_f32("radius").unwrap_or_default(),
+            angle: inst.get_f32("angle").unwrap_or_default(),
+            radius_orientation: match inst.get("radiusOrientation") {
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Quat>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                _ => None,
+            },
+            cycles: inst.get_array("cycles")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => Some(InnerThought_CycleAnimBasePtr::from_ref(b, r)),
+                        _ => None,
+                    }).collect())
+                .unwrap_or_default(),
+            selected_color: inst.get("selectedColor").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            unselected_color_start: inst.get("unselectedColorStart").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            unselected_color_end: inst.get("unselectedColorEnd").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            selected_offset: match inst.get("selectedOffset") {
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                _ => None,
+            },
+            unselected_offset: match inst.get("unselectedOffset") {
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                _ => None,
+            },
+            selected_rotation: match inst.get("selectedRotation") {
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Deg3>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                _ => None,
+            },
+            unselected_rotation: match inst.get("unselectedRotation") {
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Deg3>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                _ => None,
+            },
+        }
+    }
+}
+
+/// DCB type: `InnerThought_LayoutPIT`
+/// Inherits from: `InnerThought_LayoutBase`
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct InnerThought_LayoutPIT {
+    /// `selectedColor` (Reference)
+    #[serde(default)]
+    pub selected_color: Option<CigGuid>,
+    /// `unselectedColor` (Reference)
+    #[serde(default)]
+    pub unselected_color: Option<CigGuid>,
+    /// `inactiveColor` (Reference)
+    #[serde(default)]
+    pub inactive_color: Option<CigGuid>,
+}
+
+impl Pooled for InnerThought_LayoutPIT {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_innerthought.inner_thought_layout_pit }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_innerthought.inner_thought_layout_pit }
+}
+
+impl<'a> Extract<'a> for InnerThought_LayoutPIT {
+    const TYPE_NAME: &'static str = "InnerThought_LayoutPIT";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            min_distance: inst.get_f32("minDistance").unwrap_or_default(),
-            max_distance: inst.get_f32("maxDistance").unwrap_or_default(),
-            rotation_rate: inst.get_f32("rotationRate").unwrap_or_default(),
-            inner_thought: inst.get("innerThought").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            selected_color: inst.get("selectedColor").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            unselected_color: inst.get("unselectedColor").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            inactive_color: inst.get("inactiveColor").and_then(|v| v.as_record_ref()).map(|r| r.guid),
         }
     }
 }

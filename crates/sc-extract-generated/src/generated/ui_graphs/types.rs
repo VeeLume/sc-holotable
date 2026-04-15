@@ -15,205 +15,33 @@
 use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, Pooled};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
-/// DCB type: `CtxGraph_Node`
+/// DCB type: `UIGraph_BlockingMessagePopUpComponent`
+/// Inherits from: `CtxGraph_Component`
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct CtxGraph_Node {
+pub struct UIGraph_BlockingMessagePopUpComponent {
+    /// `errorFormat` (String)
+    #[serde(default)]
+    pub error_format: String,
+    /// `provider` (EnumChoice)
+    #[serde(default)]
+    pub provider: UIGraph_BlockingMessagePopUpProvider,
 }
 
-impl Pooled for CtxGraph_Node {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_graphs.ctx_graph_node }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_graphs.ctx_graph_node }
+impl Pooled for UIGraph_BlockingMessagePopUpComponent {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_graphs.uigraph_blocking_message_pop_up_component }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_graphs.uigraph_blocking_message_pop_up_component }
 }
 
-impl<'a> Extract<'a> for CtxGraph_Node {
-    const TYPE_NAME: &'static str = "CtxGraph_Node";
-    fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+impl<'a> Extract<'a> for UIGraph_BlockingMessagePopUpComponent {
+    const TYPE_NAME: &'static str = "UIGraph_BlockingMessagePopUpComponent";
+    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-        }
-    }
-}
-
-/// DCB type: `CtxGraph_Dependency`
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct CtxGraph_Dependency {
-    /// `reason` (EnumChoice)
-    #[serde(default)]
-    pub reason: String,
-    /// `first` (WeakPointer)
-    #[serde(default)]
-    pub first: Option<Handle<CtxGraph_Component>>,
-    /// `second` (WeakPointer)
-    #[serde(default)]
-    pub second: Option<Handle<CtxGraph_Component>>,
-}
-
-impl Pooled for CtxGraph_Dependency {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_graphs.ctx_graph_dependency }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_graphs.ctx_graph_dependency }
-}
-
-impl<'a> Extract<'a> for CtxGraph_Dependency {
-    const TYPE_NAME: &'static str = "CtxGraph_Dependency";
-    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
-        Self {
-            reason: inst.get_str("reason").map(String::from).unwrap_or_default(),
-            first: match inst.get("first") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<CtxGraph_Component>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<CtxGraph_Component>(b.db.instance(r.struct_index, r.instance_index), true)),
-                _ => None,
-            },
-            second: match inst.get("second") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<CtxGraph_Component>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<CtxGraph_Component>(b.db.instance(r.struct_index, r.instance_index), true)),
-                _ => None,
-            },
-        }
-    }
-}
-
-/// DCB type: `CtxGraph_Group`
-/// Inherits from: `CtxGraph_Node`
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct CtxGraph_Group {
-    /// `contexts` (WeakPointer (array))
-    #[serde(default)]
-    pub contexts: Vec<Handle<CtxGraph_Context>>,
-}
-
-impl Pooled for CtxGraph_Group {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_graphs.ctx_graph_group }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_graphs.ctx_graph_group }
-}
-
-impl<'a> Extract<'a> for CtxGraph_Group {
-    const TYPE_NAME: &'static str = "CtxGraph_Group";
-    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
-        Self {
-            contexts: inst.get_array("contexts")
-                .map(|arr| arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<CtxGraph_Context>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r)
-                        | Value::StrongPointer(Some(r))
-                        | Value::WeakPointer(Some(r)) => Some(b.alloc_nested::<CtxGraph_Context>(b.db.instance(r.struct_index, r.instance_index), true)),
-                        _ => None,
-                    }).collect())
-                .unwrap_or_default(),
-        }
-    }
-}
-
-/// DCB type: `CtxGraph_Context`
-/// Inherits from: `CtxGraph_Node`
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct CtxGraph_Context {
-    /// `name` (String)
-    #[serde(default)]
-    pub name: String,
-    /// `dependencies` (Class (array))
-    #[serde(default)]
-    pub dependencies: Vec<Handle<CtxGraph_Dependency>>,
-    /// `components` (WeakPointer (array))
-    #[serde(default)]
-    pub components: Vec<Handle<CtxGraph_Component>>,
-}
-
-impl Pooled for CtxGraph_Context {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_graphs.ctx_graph_context }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_graphs.ctx_graph_context }
-}
-
-impl<'a> Extract<'a> for CtxGraph_Context {
-    const TYPE_NAME: &'static str = "CtxGraph_Context";
-    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
-        Self {
-            name: inst.get_str("name").map(String::from).unwrap_or_default(),
-            dependencies: inst.get_array("dependencies")
-                .map(|arr| arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<CtxGraph_Dependency>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r)
-                        | Value::StrongPointer(Some(r))
-                        | Value::WeakPointer(Some(r)) => Some(b.alloc_nested::<CtxGraph_Dependency>(b.db.instance(r.struct_index, r.instance_index), true)),
-                        _ => None,
-                    }).collect())
-                .unwrap_or_default(),
-            components: inst.get_array("components")
-                .map(|arr| arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<CtxGraph_Component>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r)
-                        | Value::StrongPointer(Some(r))
-                        | Value::WeakPointer(Some(r)) => Some(b.alloc_nested::<CtxGraph_Component>(b.db.instance(r.struct_index, r.instance_index), true)),
-                        _ => None,
-                    }).collect())
-                .unwrap_or_default(),
-        }
-    }
-}
-
-/// DCB type: `CtxGraph_Component`
-/// Inherits from: `CtxGraph_Node`
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct CtxGraph_Component {
-}
-
-impl Pooled for CtxGraph_Component {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_graphs.ctx_graph_component }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_graphs.ctx_graph_component }
-}
-
-impl<'a> Extract<'a> for CtxGraph_Component {
-    const TYPE_NAME: &'static str = "CtxGraph_Component";
-    fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
-        }
-    }
-}
-
-/// DCB type: `CtxGraph`
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct CtxGraph {
-    /// `groups` (WeakPointer (array))
-    #[serde(default)]
-    pub groups: Vec<Handle<CtxGraph_Group>>,
-    /// `nodes` (StrongPointer (array))
-    #[serde(default)]
-    pub nodes: Vec<Handle<CtxGraph_Node>>,
-}
-
-impl Pooled for CtxGraph {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_graphs.ctx_graph }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_graphs.ctx_graph }
-}
-
-impl<'a> Extract<'a> for CtxGraph {
-    const TYPE_NAME: &'static str = "CtxGraph";
-    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
-        Self {
-            groups: inst.get_array("groups")
-                .map(|arr| arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<CtxGraph_Group>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r)
-                        | Value::StrongPointer(Some(r))
-                        | Value::WeakPointer(Some(r)) => Some(b.alloc_nested::<CtxGraph_Group>(b.db.instance(r.struct_index, r.instance_index), true)),
-                        _ => None,
-                    }).collect())
-                .unwrap_or_default(),
-            nodes: inst.get_array("nodes")
-                .map(|arr| arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<CtxGraph_Node>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r)
-                        | Value::StrongPointer(Some(r))
-                        | Value::WeakPointer(Some(r)) => Some(b.alloc_nested::<CtxGraph_Node>(b.db.instance(r.struct_index, r.instance_index), true)),
-                        _ => None,
-                    }).collect())
-                .unwrap_or_default(),
+            error_format: inst.get_str("errorFormat").map(String::from).unwrap_or_default(),
+            provider: UIGraph_BlockingMessagePopUpProvider::from_dcb_str(inst.get_str("provider").unwrap_or("")),
         }
     }
 }

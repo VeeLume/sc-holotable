@@ -34,356 +34,141 @@ tracing-subscriber = { version = "0.3", features = ["env-filter"] }
 [features]
 default = []
 full = ["sc-extract-generated/full"]
-actor = [
-    "sc-extract-generated/actor-actorledgegrabbing",
-    "sc-extract-generated/actor-actortargetedparams",
-    "sc-extract-generated/actor-actorviewlimits",
-    "sc-extract-generated/actor-actorzerogtraversalparams",
-    "sc-extract-generated/actor-atls_geo_jumppackconfig",
-    "sc-extract-generated/actor-externalforceresponse",
-    "sc-extract-generated/actor-gforce",
-    "sc-extract-generated/actor-headtrackinglimits",
-    "sc-extract-generated/actor-inputdeflectiontime",
-    "sc-extract-generated/actor-locomotionpersonality",
-    "sc-extract-generated/actor-lookahead",
-    "sc-extract-generated/actor-playeranimatedinteractionconfig",
-    "sc-extract-generated/actor-playerdefaultactionsconfig",
-    "sc-extract-generated/actor-quantumtravelcameraeffects",
-    "sc-extract-generated/actor-skeletonconfigs",
-    "sc-extract-generated/actor-stanceinfo",
-    "sc-extract-generated/actor-targettrackingautozoom",
-]
-entities = [
-    "sc-extract-generated/entities-haulingentityclass",
-    "sc-extract-generated/entities-scitem-actormovables",
-    "sc-extract-generated/entities-scitem-mastermodeexclusionglobalparams",
-    "sc-extract-generated/entities-scitem-operatormoderecords",
-    "sc-extract-generated/entities-scitem-ships",
-    "sc-extract-generated/entities-scitem-usables",
-    "sc-extract-generated/entities-ui",
-    "sc-extract-generated/entities-vfx",
-]
-entities-scitem = [
-    "sc-extract-generated/entities-scitem-actormovables",
-    "sc-extract-generated/entities-scitem-mastermodeexclusionglobalparams",
-    "sc-extract-generated/entities-scitem-operatormoderecords",
-    "sc-extract-generated/entities-scitem-ships",
-    "sc-extract-generated/entities-scitem-usables",
-]
-libs-foundry-records = [
-    "sc-extract-generated/actor-actorledgegrabbing",
-    "sc-extract-generated/actor-actortargetedparams",
-    "sc-extract-generated/actor-actorviewlimits",
-    "sc-extract-generated/actor-actorzerogtraversalparams",
-    "sc-extract-generated/actor-atls_geo_jumppackconfig",
-    "sc-extract-generated/actor-externalforceresponse",
-    "sc-extract-generated/actor-gforce",
-    "sc-extract-generated/actor-headtrackinglimits",
-    "sc-extract-generated/actor-inputdeflectiontime",
-    "sc-extract-generated/actor-locomotionpersonality",
-    "sc-extract-generated/actor-lookahead",
-    "sc-extract-generated/actor-playeranimatedinteractionconfig",
-    "sc-extract-generated/actor-playerdefaultactionsconfig",
-    "sc-extract-generated/actor-quantumtravelcameraeffects",
-    "sc-extract-generated/actor-skeletonconfigs",
-    "sc-extract-generated/actor-stanceinfo",
-    "sc-extract-generated/actor-targettrackingautozoom",
-    "sc-extract-generated/ads",
-    "sc-extract-generated/aianimationdata",
-    "sc-extract-generated/aiglobalsettings",
-    "sc-extract-generated/aimotive",
-    "sc-extract-generated/aiprofile",
-    "sc-extract-generated/aiwavecollection",
-    "sc-extract-generated/ammoparams",
-    "sc-extract-generated/analytics",
-    "sc-extract-generated/announcer",
-    "sc-extract-generated/areaservices",
-    "sc-extract-generated/audio",
-    "sc-extract-generated/awardservice",
-    "sc-extract-generated/cameras",
-    "sc-extract-generated/capacitorassignment",
-    "sc-extract-generated/cargomanifest",
-    "sc-extract-generated/character",
-    "sc-extract-generated/chatchannelfilters",
-    "sc-extract-generated/chatcommandfastaccess",
-    "sc-extract-generated/chatemoterecord",
-    "sc-extract-generated/chatfilteroptions",
-    "sc-extract-generated/chatmanager",
-    "sc-extract-generated/closecombat",
-    "sc-extract-generated/commodityconfiguration",
-    "sc-extract-generated/commoditytypedatabase",
-    "sc-extract-generated/commsnotifications",
-    "sc-extract-generated/communicationatlconfig",
-    "sc-extract-generated/communicationconfig",
-    "sc-extract-generated/communicationname",
-    "sc-extract-generated/communicationsystem",
-    "sc-extract-generated/communicationvariableconfig",
-    "sc-extract-generated/consumabletypesdatabase",
-    "sc-extract-generated/contextualcommunicationconfig",
-    "sc-extract-generated/contracts",
-    "sc-extract-generated/conversation",
-    "sc-extract-generated/crafting",
-    "sc-extract-generated/crewmanifest",
-    "sc-extract-generated/damage",
-    "sc-extract-generated/densityclasses",
-    "sc-extract-generated/dialoguecontentbank",
-    "sc-extract-generated/dialoguerealm",
-    "sc-extract-generated/dynamiccameraeffects",
-    "sc-extract-generated/dynamiclightingrig",
-    "sc-extract-generated/emotions",
-    "sc-extract-generated/entities-haulingentityclass",
-    "sc-extract-generated/entities-scitem-actormovables",
-    "sc-extract-generated/entities-scitem-mastermodeexclusionglobalparams",
-    "sc-extract-generated/entities-scitem-operatormoderecords",
-    "sc-extract-generated/entities-scitem-ships",
-    "sc-extract-generated/entities-scitem-usables",
-    "sc-extract-generated/entities-ui",
-    "sc-extract-generated/entities-vfx",
-    "sc-extract-generated/entitlementpolicies",
-    "sc-extract-generated/environments",
-    "sc-extract-generated/evagraph",
-    "sc-extract-generated/explosiveordnance",
-    "sc-extract-generated/factions",
-    "sc-extract-generated/fidgetconfig",
-    "sc-extract-generated/foley",
-    "sc-extract-generated/forcefeedback_forcefeedbackeffects",
-    "sc-extract-generated/formation",
-    "sc-extract-generated/friendmanager",
-    "sc-extract-generated/fuelparams",
-    "sc-extract-generated/gamemode",
-    "sc-extract-generated/gamemodule",
-    "sc-extract-generated/globalarmarkerparams",
-    "sc-extract-generated/globalcargoloadingparams",
-    "sc-extract-generated/globalcommsnotificationparams",
-    "sc-extract-generated/globalcuttableshapeparams",
-    "sc-extract-generated/globalinteractionparams",
-    "sc-extract-generated/globalinventoryparams",
-    "sc-extract-generated/globalquantumdriveparams",
-    "sc-extract-generated/globalshopparams",
-    "sc-extract-generated/globaltutorialparams",
-    "sc-extract-generated/grips",
-    "sc-extract-generated/handholdgripdatabase",
-    "sc-extract-generated/hardwaremouse",
-    "sc-extract-generated/harvestable",
-    "sc-extract-generated/hazardawarenessparams",
-    "sc-extract-generated/hints",
-    "sc-extract-generated/hudparams",
-    "sc-extract-generated/ifcs",
-    "sc-extract-generated/initialdamageoverrides",
-    "sc-extract-generated/inputpromptconfig",
-    "sc-extract-generated/instancedinterior",
-    "sc-extract-generated/interactionconditions",
-    "sc-extract-generated/intoxication",
-    "sc-extract-generated/inventorycontainers",
-    "sc-extract-generated/item",
-    "sc-extract-generated/journalentry",
-    "sc-extract-generated/jumppoints",
-    "sc-extract-generated/landingpadsize",
-    "sc-extract-generated/lawsystem",
-    "sc-extract-generated/leangraph",
-    "sc-extract-generated/level",
-    "sc-extract-generated/loadoutkits",
-    "sc-extract-generated/longtermpersistence",
-    "sc-extract-generated/lootgeneration",
-    "sc-extract-generated/megamap",
-    "sc-extract-generated/mining",
-    "sc-extract-generated/missionbroker",
-    "sc-extract-generated/missiondata",
-    "sc-extract-generated/missionfailureconditions",
-    "sc-extract-generated/missiongiver",
-    "sc-extract-generated/missionscenarios",
-    "sc-extract-generated/missiontype",
-    "sc-extract-generated/motionstatemachine",
-    "sc-extract-generated/moveviewrestrictionpenalties",
-    "sc-extract-generated/musiclogic",
-    "sc-extract-generated/personalinnerthoughtrules",
-    "sc-extract-generated/planetdaynighttemperatureparams",
-    "sc-extract-generated/posturedatabase",
-    "sc-extract-generated/procbreathing",
-    "sc-extract-generated/proceduralaimrigrecord",
-    "sc-extract-generated/proceduralanimations",
-    "sc-extract-generated/procedurallandingsetup",
-    "sc-extract-generated/procedurallayout",
-    "sc-extract-generated/qteconfigs",
-    "sc-extract-generated/radarsystem",
-    "sc-extract-generated/rastar",
-    "sc-extract-generated/refinerynotificationconfiguration",
-    "sc-extract-generated/refiningprocess",
-    "sc-extract-generated/rendererpresets",
-    "sc-extract-generated/rentalnotificationparams",
-    "sc-extract-generated/reputation",
-    "sc-extract-generated/resourcetypedatabase",
-    "sc-extract-generated/roomsystem",
-    "sc-extract-generated/scarryableikinteractionlist",
-    "sc-extract-generated/scitemcommscomponentsetup",
-    "sc-extract-generated/scitemdisplayscreenpreset",
-    "sc-extract-generated/scitemmanufacturer",
-    "sc-extract-generated/scuttableshapedefinition",
-    "sc-extract-generated/seatcdikconfigs",
-    "sc-extract-generated/servicebeacon",
-    "sc-extract-generated/sgeometryviewdistanceratiocategories",
-    "sc-extract-generated/sglobalchargedrainbeamparams",
-    "sc-extract-generated/sglobalcrosshairparams",
-    "sc-extract-generated/sglobalelectronparams",
-    "sc-extract-generated/sglobalhealingbeamparams",
-    "sc-extract-generated/sglobalhitbehaviorparams",
-    "sc-extract-generated/sglobalsalvagerepairbeamparams",
-    "sc-extract-generated/sglobaltractorbeamparams",
-    "sc-extract-generated/shipinsurancerecord",
-    "sc-extract-generated/specialeventdatabase",
-    "sc-extract-generated/squantumdriveeffecttagstemplate",
-    "sc-extract-generated/sreputationglobalcontextbbparams",
-    "sc-extract-generated/ssolarsystem",
-    "sc-extract-generated/starmap",
-    "sc-extract-generated/tacticalquery",
-    "sc-extract-generated/tagdatabase",
-    "sc-extract-generated/targetselector",
-    "sc-extract-generated/tintpalettes",
-    "sc-extract-generated/trackview",
-    "sc-extract-generated/traversalcostconfig",
-    "sc-extract-generated/turret",
-    "sc-extract-generated/ui-animatedmarkers",
-    "sc-extract-generated/ui-armarkerconfiguration",
-    "sc-extract-generated/ui-buildingblocks",
-    "sc-extract-generated/ui-digitalsignage",
-    "sc-extract-generated/ui-directrtt",
-    "sc-extract-generated/ui-dockingslotvisibility",
-    "sc-extract-generated/ui-elementsounds_deprecated",
-    "sc-extract-generated/ui-flashobjectbindinggroups",
-    "sc-extract-generated/ui-flighthudmessages",
-    "sc-extract-generated/ui-frontend",
-    "sc-extract-generated/ui-graphs",
-    "sc-extract-generated/ui-holovehicleconfig",
-    "sc-extract-generated/ui-hudcolors_shipcolorpalettes",
-    "sc-extract-generated/ui-innerthought",
-    "sc-extract-generated/ui-itemkiosk",
-    "sc-extract-generated/ui-itempreview_config",
-    "sc-extract-generated/ui-itemtypedefinition",
-    "sc-extract-generated/ui-localplayershoppingdata",
-    "sc-extract-generated/ui-marker_config",
-    "sc-extract-generated/ui-markertrackingvolumeconfig",
-    "sc-extract-generated/ui-missilelockreticleconfig",
-    "sc-extract-generated/ui-mobiglas",
-    "sc-extract-generated/ui-objectdatabankentrymarkerconfig",
-    "sc-extract-generated/ui-playerchoice_imconfig_playerchoiceim",
-    "sc-extract-generated/ui-playerchoice_library_playerchoicelibrary",
-    "sc-extract-generated/ui-playerchoice_pitconfig_playerchoicepersonalthought",
-    "sc-extract-generated/ui-playerchoice_signalconfig_interactorsignalconfig",
-    "sc-extract-generated/ui-playerecggraph_config_playerecggraphconfig",
-    "sc-extract-generated/ui-pointofinterestdata",
-    "sc-extract-generated/ui-popups",
-    "sc-extract-generated/ui-radar3dpresets",
-    "sc-extract-generated/ui-radardisplay_config_radar",
-    "sc-extract-generated/ui-seatreticlearchetype",
-    "sc-extract-generated/ui-transformationinterpolatorrecords",
-    "sc-extract-generated/ui-uiconfig_starcitizen",
-    "sc-extract-generated/ui-uielements",
-    "sc-extract-generated/ui-uimodes",
-    "sc-extract-generated/ui-uistatedisplay",
-    "sc-extract-generated/ui-vehicleentrance",
-    "sc-extract-generated/ui-videocomms",
-    "sc-extract-generated/ui-visor",
-    "sc-extract-generated/ui-worlddisplay",
-    "sc-extract-generated/unittest_unittestb",
-    "sc-extract-generated/vehicle",
-    "sc-extract-generated/vfx",
-    "sc-extract-generated/vibrations",
-    "sc-extract-generated/videocommschannels",
-    "sc-extract-generated/voicebundle",
-    "sc-extract-generated/voicechannelsettingsrecord",
-    "sc-extract-generated/voicesingle",
-    "sc-extract-generated/weaponarmodifiers",
-    "sc-extract-generated/weaponmisfiredef",
-    "sc-extract-generated/weaponproceduralanimation",
-    "sc-extract-generated/weaponproceduralclip",
-    "sc-extract-generated/weaponproceduralrecoil",
-    "sc-extract-generated/zerogtraversalgraph",
-]
-ui = [
-    "sc-extract-generated/ui-animatedmarkers",
-    "sc-extract-generated/ui-armarkerconfiguration",
-    "sc-extract-generated/ui-buildingblocks",
-    "sc-extract-generated/ui-digitalsignage",
-    "sc-extract-generated/ui-directrtt",
-    "sc-extract-generated/ui-dockingslotvisibility",
-    "sc-extract-generated/ui-elementsounds_deprecated",
-    "sc-extract-generated/ui-flashobjectbindinggroups",
-    "sc-extract-generated/ui-flighthudmessages",
-    "sc-extract-generated/ui-frontend",
-    "sc-extract-generated/ui-graphs",
-    "sc-extract-generated/ui-holovehicleconfig",
-    "sc-extract-generated/ui-hudcolors_shipcolorpalettes",
-    "sc-extract-generated/ui-innerthought",
-    "sc-extract-generated/ui-itemkiosk",
-    "sc-extract-generated/ui-itempreview_config",
-    "sc-extract-generated/ui-itemtypedefinition",
-    "sc-extract-generated/ui-localplayershoppingdata",
-    "sc-extract-generated/ui-marker_config",
-    "sc-extract-generated/ui-markertrackingvolumeconfig",
-    "sc-extract-generated/ui-missilelockreticleconfig",
-    "sc-extract-generated/ui-mobiglas",
-    "sc-extract-generated/ui-objectdatabankentrymarkerconfig",
-    "sc-extract-generated/ui-playerchoice_imconfig_playerchoiceim",
-    "sc-extract-generated/ui-playerchoice_library_playerchoicelibrary",
-    "sc-extract-generated/ui-playerchoice_pitconfig_playerchoicepersonalthought",
-    "sc-extract-generated/ui-playerchoice_signalconfig_interactorsignalconfig",
-    "sc-extract-generated/ui-playerecggraph_config_playerecggraphconfig",
-    "sc-extract-generated/ui-pointofinterestdata",
-    "sc-extract-generated/ui-popups",
-    "sc-extract-generated/ui-radar3dpresets",
-    "sc-extract-generated/ui-radardisplay_config_radar",
-    "sc-extract-generated/ui-seatreticlearchetype",
-    "sc-extract-generated/ui-transformationinterpolatorrecords",
-    "sc-extract-generated/ui-uiconfig_starcitizen",
-    "sc-extract-generated/ui-uielements",
-    "sc-extract-generated/ui-uimodes",
-    "sc-extract-generated/ui-uistatedisplay",
-    "sc-extract-generated/ui-vehicleentrance",
-    "sc-extract-generated/ui-videocomms",
-    "sc-extract-generated/ui-visor",
-    "sc-extract-generated/ui-worlddisplay",
-]
+dormant = ["sc-extract-generated/dormant"]
+actor = ["sc-extract-generated/actor-actorblockhelper", "sc-extract-generated/actor-actorjumpfalllandatlsgeoparams", "sc-extract-generated/actor-actorjumpfalllandatlsparams", "sc-extract-generated/actor-actorjumpfalllanddefaultparams", "sc-extract-generated/actor-actorjumpfalllandplayerparams", "sc-extract-generated/actor-actorladderconfig", "sc-extract-generated/actor-actorladderconfig_v2", "sc-extract-generated/actor-actorledgegrabbing", "sc-extract-generated/actor-actormeleecombat", "sc-extract-generated/actor-actormovementmodifiers_powersuit", "sc-extract-generated/actor-actormovementsets", "sc-extract-generated/actor-actors", "sc-extract-generated/actor-actorslidingparam", "sc-extract-generated/actor-actorspeedcameraeffect_slide", "sc-extract-generated/actor-actorstanceconfig", "sc-extract-generated/actor-actorstanceconfig_npc_human", "sc-extract-generated/actor-actorstanceconfig_npc_kopion", "sc-extract-generated/actor-actorstanceconfig_npc_quasigrazer", "sc-extract-generated/actor-actorstanceconfig_npc_vanduul", "sc-extract-generated/actor-actorstanceconfig_npc_vlk", "sc-extract-generated/actor-actorstanceconfig_npc_vlkadult", "sc-extract-generated/actor-actorstanceconfig_npc_vlkapex", "sc-extract-generated/actor-actorstanceconfig_npc_vlkjuvenile", "sc-extract-generated/actor-actorstanceconfig_npc_webhound", "sc-extract-generated/actor-actorstanceconfig_transport_powersuit", "sc-extract-generated/actor-actorstanceconfig_transport_powersuit_argo_atls", "sc-extract-generated/actor-actorstatevalidation", "sc-extract-generated/actor-actortargetedparams", "sc-extract-generated/actor-actorviewlimits", "sc-extract-generated/actor-actorzerogtraversalparams", "sc-extract-generated/actor-atls_geo_jumppackconfig", "sc-extract-generated/actor-creaturejumpfalllandflow", "sc-extract-generated/actor-externalforceresponse", "sc-extract-generated/actor-gforce", "sc-extract-generated/actor-headtrackinglimits", "sc-extract-generated/actor-inputdeflectiontime", "sc-extract-generated/actor-locomotionpersonality", "sc-extract-generated/actor-lookahead", "sc-extract-generated/actor-npcjumpfalllandflow", "sc-extract-generated/actor-playeranimatedinteractionconfig", "sc-extract-generated/actor-playercarryconfig", "sc-extract-generated/actor-playerdefaultactionsconfig", "sc-extract-generated/actor-playerjumpfallandflow", "sc-extract-generated/actor-playermovementmodifiers", "sc-extract-generated/actor-quantumtravelcameraeffects", "sc-extract-generated/actor-skeletonconfigs", "sc-extract-generated/actor-stanceinfo", "sc-extract-generated/actor-targettrackingautozoom", "sc-extract-generated/actor-transportjumpfallandflow", "sc-extract-generated/actor-valakkarcarryconfig", "sc-extract-generated/actorabilitycomponent-actorabilitycomponent_playerabilities", "sc-extract-generated/actorabilitycomponent-npcabilities", "sc-extract-generated/actorabilitycomponent-playerlimitations", "sc-extract-generated/actorabilitycomponent-transportabilities", "sc-extract-generated/actorduckingparams-maleduckingparams", "sc-extract-generated/actorenvironmentcomponent-actorenvironment", "sc-extract-generated/actorgforcecomponent-actorgforcecomponent_playergforce", "sc-extract-generated/actorgforcecomponent-npcgforce", "sc-extract-generated/actorgforcecomponent-playergforce_mm", "sc-extract-generated/actorhealthcomponent-bodymapping", "sc-extract-generated/actorhealthcomponent-healthconfig", "sc-extract-generated/actorhealthcomponent-healthtemplate_ai", "sc-extract-generated/actorhealthcomponent-healthtemplate_ai_juggernaut", "sc-extract-generated/actorhealthcomponent-healthtemplate_invulnerable", "sc-extract-generated/actorhealthcomponent-healthtemplate_kopion", "sc-extract-generated/actorhealthcomponent-healthtemplate_player", "sc-extract-generated/actorhealthcomponent-healthtemplate_powersuit", "sc-extract-generated/actorhealthcomponent-healthtemplate_powersuit_combat", "sc-extract-generated/actorhealthcomponent-healthtemplate_quasigrazer", "sc-extract-generated/actorhealthcomponent-healthtemplate_stunonly", "sc-extract-generated/actorhealthcomponent-healthtemplate_vanduul", "sc-extract-generated/actorhealthcomponent-healthtemplate_vlk", "sc-extract-generated/actorhealthcomponent-healthtemplate_vlk_irridiatated", "sc-extract-generated/actorhealthcomponent-healthtemplate_vlk_irridiatated_apex", "sc-extract-generated/actorhealthcomponent-healthtemplate_vlk_nonapex", "sc-extract-generated/actorhealthcomponent-healthtemplate_yormandi", "sc-extract-generated/actormovementsetsconfig-actormovementsetconfig", "sc-extract-generated/actorproceduralrecoil-actorproceduralrecoilconfig", "sc-extract-generated/actorproceduralrecoil-actorproceduralrecoilmodifiers", "sc-extract-generated/actorstaminacomponent-actorbreathinghelper", "sc-extract-generated/actorstaminacomponent-actorstaminacomponent_playerstamina", "sc-extract-generated/actorstatuscomponent-globalactorstatusparams", "sc-extract-generated/actorstatuscomponent-medicaltieritemconfig", "sc-extract-generated/actorstatuscomponent-playerstatus", "sc-extract-generated/actorstatuscomponent-playerstatus_aiboss", "sc-extract-generated/actorstatuscomponent-playerstatus_aibosssuper", "sc-extract-generated/actorstatuscomponent-playerstatusai", "sc-extract-generated/actorstatuscomponent-playerstatusai_captain", "sc-extract-generated/actorstatuscomponent-playerstatusai_elite", "sc-extract-generated/actorstatuscomponent-playerstatusai_juggernaut", "sc-extract-generated/actorstatuscomponent-playerstatusai_unconscious_rescuemission", "sc-extract-generated/actorstatuscomponent-playerstatusai_vanduul", "sc-extract-generated/actorstatuscomponent-playerstatusai_vlk_adult", "sc-extract-generated/actorstatuscomponent-playerstatusai_vlk_adult_irridatated", "sc-extract-generated/actorstatuscomponent-playerstatusai_vlk_juvi", "sc-extract-generated/actorstatuscomponent-playerstatusai_vlk_juvi_irridatated", "sc-extract-generated/actorstatuscomponent-playerstatusai_vlkapex", "sc-extract-generated/actorstatuscomponent-playerstatusai_vlkapex_irridatated", "sc-extract-generated/actorstatuscomponent-playerstatusai_vlkapex_stormbreaker", "sc-extract-generated/actorstatuscomponent-playerstatusai_yormandi", "sc-extract-generated/actorstatuscomponent-playerstatuscorpse", "sc-extract-generated/actorstatuscomponent-playerstatuscreature", "sc-extract-generated/actorstatuscomponent-playerstatusea", "sc-extract-generated/actorstatuscomponent-playerstatuspu", "sc-extract-generated/actorstatuscomponent-powersuitstatus", "sc-extract-generated/actorstatuscomponent-powersuitstatus_combat", "sc-extract-generated/actorstatuscomponent-transportstatus", "sc-extract-generated/actorviewlimitpresetdatabase-viewlimitpresetdatabase"]
+entities = ["sc-extract-generated/entities-aft", "sc-extract-generated/entities-aicoversurface", "sc-extract-generated/entities-aigroupentity", "sc-extract-generated/entities-ainavigationobstacle", "sc-extract-generated/entities-aipath", "sc-extract-generated/entities-analyticshadow", "sc-extract-generated/entities-animentity", "sc-extract-generated/entities-animentity_attachable", "sc-extract-generated/entities-animentity_attachable_espr_prowler_glass", "sc-extract-generated/entities-animentity_attachable_espr_prowler_glass_copilot", "sc-extract-generated/entities-animentity_attachable_espr_talon_glass", "sc-extract-generated/entities-animentity_character", "sc-extract-generated/entities-animentity_floatinghead_01", "sc-extract-generated/entities-animentity_floatinghead_charactercustomizer", "sc-extract-generated/entities-animentity_floatinghead_charactercustomizer_dnalib", "sc-extract-generated/entities-animentity_floatinghead_charactercustomizer_featurelib", "sc-extract-generated/entities-animentity_human", "sc-extract-generated/entities-animentity_human_female", "sc-extract-generated/entities-animentity_toggleable", "sc-extract-generated/entities-area", "sc-extract-generated/entities-asd", "sc-extract-generated/entities-attachableobjectcontainer", "sc-extract-generated/entities-attachableobjectcontainerspawner", "sc-extract-generated/entities-attackarea", "sc-extract-generated/entities-audio", "sc-extract-generated/entities-basebuilding", "sc-extract-generated/entities-baselocationtemplate", "sc-extract-generated/entities-booth_table_centered_seats", "sc-extract-generated/entities-breakablerock", "sc-extract-generated/entities-buildingblocksscreens", "sc-extract-generated/entities-cameralens", "sc-extract-generated/entities-camerarttview", "sc-extract-generated/entities-camerasource", "sc-extract-generated/entities-camerasourcefuelnozzle", "sc-extract-generated/entities-cameratarget", "sc-extract-generated/entities-canvasgeoment", "sc-extract-generated/entities-canvasgeoment_vars", "sc-extract-generated/entities-capturearea", "sc-extract-generated/entities-carryable_damage_sensitive_canister", "sc-extract-generated/entities-carryabletemplate", "sc-extract-generated/entities-charactercustomizer", "sc-extract-generated/entities-cinematiclabel", "sc-extract-generated/entities-cinematiclabelwithvehicle", "sc-extract-generated/entities-cinematictitling_base", "sc-extract-generated/entities-cinematictitling_standard", "sc-extract-generated/entities-cinematictrigger_sticky", "sc-extract-generated/entities-commententity_quickfade", "sc-extract-generated/entities-commodities", "sc-extract-generated/entities-contactblobentity", "sc-extract-generated/entities-corpsemarker", "sc-extract-generated/entities-cuttableshape", "sc-extract-generated/entities-debris_1_floor_a", "sc-extract-generated/entities-debris_1_floor_b", "sc-extract-generated/entities-debris_1_floor_c", "sc-extract-generated/entities-debris_1_floor_d", "sc-extract-generated/entities-debris_1_floor_e", "sc-extract-generated/entities-debris_1_floor_f", "sc-extract-generated/entities-decorations", "sc-extract-generated/entities-default", "sc-extract-generated/entities-defaultwithaudio", "sc-extract-generated/entities-defendarea", "sc-extract-generated/entities-destruction", "sc-extract-generated/entities-dev", "sc-extract-generated/entities-displayscreens", "sc-extract-generated/entities-ea", "sc-extract-generated/entities-editorcamera", "sc-extract-generated/entities-energysource", "sc-extract-generated/entities-entityclassdefinition_actionarea", "sc-extract-generated/entities-entityclassdefinition_cinematictrigger", "sc-extract-generated/entities-entityclassdefinition_colorgradient", "sc-extract-generated/entities-entityclassdefinition_commententity", "sc-extract-generated/entities-entityclassdefinition_explosion", "sc-extract-generated/entities-entityclassdefinition_hint", "sc-extract-generated/entities-entityclassdefinition_holographicvolume", "sc-extract-generated/entities-entityclassdefinition_missionentity", "sc-extract-generated/entities-entityclassdefinition_navpoint_general", "sc-extract-generated/entities-entityclassdefinition_pointofinterestprovider", "sc-extract-generated/entities-entityclassdefinition_proceduralpointofinterestproxy", "sc-extract-generated/entities-entityclassdefinition_racecheckpoint", "sc-extract-generated/entities-entityclassdefinition_rendertotextureview", "sc-extract-generated/entities-entityclassdefinition_rotationsimple", "sc-extract-generated/entities-entityclassdefinition_screen_9x16_1_a", "sc-extract-generated/entities-entityclassdefinition_scshop", "sc-extract-generated/entities-entityclassdefinition_shipselectorkiosk", "sc-extract-generated/entities-entityclassdefinition_shipselectorkiosk_levskiground", "sc-extract-generated/entities-entityclassdefinition_shipselectorkiosk_levskiships", "sc-extract-generated/entities-entityclassdefinition_shipselectorkiosk_v001", "sc-extract-generated/entities-entityclassdefinition_shipselectorkiosk_v002", "sc-extract-generated/entities-entityclassdefinition_shopkiosk", "sc-extract-generated/entities-entityclassdefinition_shoppingkiosk", "sc-extract-generated/entities-entityclassdefinition_spawnpoint", "sc-extract-generated/entities-entityclassdefinition_spawnprotectionbarrier", "sc-extract-generated/entities-entityclassdefinition_spectatorpoint", "sc-extract-generated/entities-entityclassdefinition_tilesocket", "sc-extract-generated/entities-entityealockedspawnlocation", "sc-extract-generated/entities-entityeaspawnlocation", "sc-extract-generated/entities-entityspawncameracontroller", "sc-extract-generated/entities-entityspawners", "sc-extract-generated/entities-environment", "sc-extract-generated/entities-environmentscreen", "sc-extract-generated/entities-fan_prisonbroken", "sc-extract-generated/entities-flair_radegast_whiskey_concierge", "sc-extract-generated/entities-fronthud_center", "sc-extract-generated/entities-fronthud_displaymanager", "sc-extract-generated/entities-fronthud_left", "sc-extract-generated/entities-fronthud_right", "sc-extract-generated/entities-fronthud_top", "sc-extract-generated/entities-gamerulessingleton", "sc-extract-generated/entities-gamevolumecomponent", "sc-extract-generated/entities-gascloud", "sc-extract-generated/entities-geomentity", "sc-extract-generated/entities-geomentity_areatrigger", "sc-extract-generated/entities-geomentity_dynamicobstacle", "sc-extract-generated/entities-geomentity_interactablelinked", "sc-extract-generated/entities-geomentity_nophysics", "sc-extract-generated/entities-geomentity_repairable", "sc-extract-generated/entities-geomentity_rttui", "sc-extract-generated/entities-geomentity_rttuiwithaudio", "sc-extract-generated/entities-geomentity_static", "sc-extract-generated/entities-geometryinstancer", "sc-extract-generated/entities-gotopointentity", "sc-extract-generated/entities-groundvehicles", "sc-extract-generated/entities-hackable", "sc-extract-generated/entities-handholdobject", "sc-extract-generated/entities-handholdobject_linkable", "sc-extract-generated/entities-haulingentityclass", "sc-extract-generated/entities-hazardzones", "sc-extract-generated/entities-hearingperceptionarea", "sc-extract-generated/entities-helpers", "sc-extract-generated/entities-holofield", "sc-extract-generated/entities-ht_table_bar_1_a", "sc-extract-generated/entities-impactcrater", "sc-extract-generated/entities-inventoryplaceholder", "sc-extract-generated/entities-irradiatedhazardzone", "sc-extract-generated/entities-itemport3drepresentation", "sc-extract-generated/entities-jumppoints", "sc-extract-generated/entities-kegr_roomhelper", "sc-extract-generated/entities-kiosk_mercury_anniversary_slides_16x9", "sc-extract-generated/entities-ladder", "sc-extract-generated/entities-landinguientity", "sc-extract-generated/entities-ledgeobject", "sc-extract-generated/entities-ledgeobjectusable", "sc-extract-generated/entities-legacyitems", "sc-extract-generated/entities-lights", "sc-extract-generated/entities-loadingplatformmanager", "sc-extract-generated/entities-locationmanager", "sc-extract-generated/entities-locationtemplate", "sc-extract-generated/entities-lt_hab_bathroom_1_a", "sc-extract-generated/entities-maglaunch", "sc-extract-generated/entities-mastercontrollerentities", "sc-extract-generated/entities-mineable", "sc-extract-generated/entities-missionlocationmanager", "sc-extract-generated/entities-missionlocationtemplate", "sc-extract-generated/entities-missionobjectivemarker", "sc-extract-generated/entities-missionsystem", "sc-extract-generated/entities-monitoredzone", "sc-extract-generated/entities-navpoint_dynamic", "sc-extract-generated/entities-navpoint_dynamic_spawnedbarge", "sc-extract-generated/entities-navpoint_interdictedentity", "sc-extract-generated/entities-navpoint_subpoint0", "sc-extract-generated/entities-navpoint_subpoint1", "sc-extract-generated/entities-navpoint_subpoint2", "sc-extract-generated/entities-navpoint_subpoint3", "sc-extract-generated/entities-navpoint_subpoint4", "sc-extract-generated/entities-navpoint_subpoint5", "sc-extract-generated/entities-objectcontainerrotating", "sc-extract-generated/entities-objectcontainers", "sc-extract-generated/entities-oscillationsimple", "sc-extract-generated/entities-others", "sc-extract-generated/entities-parkingroute", "sc-extract-generated/entities-partymembermarker", "sc-extract-generated/entities-patrolgraph", "sc-extract-generated/entities-patrolgraphlink", "sc-extract-generated/entities-patrolpoint", "sc-extract-generated/entities-perceptionmodifierarea", "sc-extract-generated/entities-physicalizedjobboard", "sc-extract-generated/entities-physics", "sc-extract-generated/entities-planetkillvolume", "sc-extract-generated/entities-playerscoresmanager", "sc-extract-generated/entities-precachecamera", "sc-extract-generated/entities-projectilespawnerentity", "sc-extract-generated/entities-prop_digitalclock", "sc-extract-generated/entities-proximityassistmodifier", "sc-extract-generated/entities-quantumcolorshift", "sc-extract-generated/entities-quantumtrail", "sc-extract-generated/entities-racering", "sc-extract-generated/entities-radarscanning", "sc-extract-generated/entities-rastar", "sc-extract-generated/entities-refinery", "sc-extract-generated/entities-refuelatmospheres", "sc-extract-generated/entities-render", "sc-extract-generated/entities-rendertotextureareamaphelperview", "sc-extract-generated/entities-restricted_areas", "sc-extract-generated/entities-restrictedareaboundarymesh", "sc-extract-generated/entities-restrictedareavisibleboundarymesh", "sc-extract-generated/entities-roomsystem", "sc-extract-generated/entities-safeteleportpoint", "sc-extract-generated/entities-safeteleportpoint_npc", "sc-extract-generated/entities-salvagable", "sc-extract-generated/entities-scarmorymanager", "sc-extract-generated/entities-schedulearea", "sc-extract-generated/entities-scitem-access", "sc-extract-generated/entities-scitem-actormovables", "sc-extract-generated/entities-scitem-aimodule_atc_grimhex", "sc-extract-generated/entities-scitem-aimodule_atc_levskiatc01", "sc-extract-generated/entities-scitem-aimodule_atc_lorvilleatc01", "sc-extract-generated/entities-scitem-aimodule_atc_newbabbage", "sc-extract-generated/entities-scitem-aimodule_atc_newbabbageatc01", "sc-extract-generated/entities-scitem-aimodule_atc_orisonatc01", "sc-extract-generated/entities-scitem-aimodule_atc_systematc01", "sc-extract-generated/entities-scitem-aimodule_cargo", "sc-extract-generated/entities-scitem-aimodule_collector", "sc-extract-generated/entities-scitem-aimodule_genatc02", "sc-extract-generated/entities-scitem-aimodule_pyro", "sc-extract-generated/entities-scitem-aimodule_silent_atc", "sc-extract-generated/entities-scitem-airlocks", "sc-extract-generated/entities-scitem-ammocrates", "sc-extract-generated/entities-scitem-arenacommander", "sc-extract-generated/entities-scitem-atc", "sc-extract-generated/entities-scitem-atc_datamanager_outpostplatinumbay", "sc-extract-generated/entities-scitem-atc_datamanager_port_lawful", "sc-extract-generated/entities-scitem-atc_datamanager_port_semilawful", "sc-extract-generated/entities-scitem-atc_datamanager_port_unlawful", "sc-extract-generated/entities-scitem-audiolog", "sc-extract-generated/entities-scitem-beer_can", "sc-extract-generated/entities-scitem-bottle_liquor", "sc-extract-generated/entities-scitem-cargo", "sc-extract-generated/entities-scitem-carryables", "sc-extract-generated/entities-scitem-characters", "sc-extract-generated/entities-scitem-chipsets", "sc-extract-generated/entities-scitem-commsreceiver", "sc-extract-generated/entities-scitem-commsspeaker", "sc-extract-generated/entities-scitem-consumables", "sc-extract-generated/entities-scitem-controlpanels", "sc-extract-generated/entities-scitem-counter_shop_2m_casaba_b", "sc-extract-generated/entities-scitem-counter_shop_2m_casaba_c", "sc-extract-generated/entities-scitem-counter_shop_2m_casaba_d", "sc-extract-generated/entities-scitem-decals", "sc-extract-generated/entities-scitem-default_lensdisplay", "sc-extract-generated/entities-scitem-default_lensdisplay_pu", "sc-extract-generated/entities-scitem-deliveryitemportmanager", "sc-extract-generated/entities-scitem-doors", "sc-extract-generated/entities-scitem-energy", "sc-extract-generated/entities-scitem-entityclassdefinition_aimodule_atc", "sc-extract-generated/entities-scitem-entityclassdefinition_atc_datamanager", "sc-extract-generated/entities-scitem-entityclassdefinition_atc_operatoraimodule", "sc-extract-generated/entities-scitem-entityclassdefinition_bar_mmhc_glass_coke_empty", "sc-extract-generated/entities-scitem-entityclassdefinition_glass_tumbler_1_a", "sc-extract-generated/entities-scitem-entityclassdefinition_glass_tumbler_2_a", "sc-extract-generated/entities-scitem-entityclassdefinition_janitormob", "sc-extract-generated/entities-scitem-entityclassdefinition_lightgroupitem", "sc-extract-generated/entities-scitem-entityclassdefinition_lightgrouppowereditem", "sc-extract-generated/entities-scitem-entityclassdefinition_morrowtour", "sc-extract-generated/entities-scitem-entityclassdefinition_satellite_power_plant_test", "sc-extract-generated/entities-scitem-entityclassdefinition_sequenceobjectitem", "sc-extract-generated/entities-scitem-entityclassdefinition_shelve_invisible_4x4", "sc-extract-generated/entities-scitem-entityclassdefinition_simplestool", "sc-extract-generated/entities-scitem-entityclassdefinition_simpletoilet", "sc-extract-generated/entities-scitem-entityclassdefinition_stool_template", "sc-extract-generated/entities-scitem-entityclassdefinition_tablet", "sc-extract-generated/entities-scitem-entityclassdefinition_tablet_small", "sc-extract-generated/entities-scitem-entityclassdefinition_test_gadget", "sc-extract-generated/entities-scitem-entityclassdefinition_test_mug", "sc-extract-generated/entities-scitem-entityclassdefinition_test_mug_carryable", "sc-extract-generated/entities-scitem-entityclassdefinition_test_shelf", "sc-extract-generated/entities-scitem-entityclassdefinition_test_shelf_missionblackboxdropoff", "sc-extract-generated/entities-scitem-entityclassdefinition_test_station_power_plant", "sc-extract-generated/entities-scitem-entityclassdefinition_testinteractionstatemachine", "sc-extract-generated/entities-scitem-environments", "sc-extract-generated/entities-scitem-externalinventory", "sc-extract-generated/entities-scitem-fauna", "sc-extract-generated/entities-scitem-flair", "sc-extract-generated/entities-scitem-fps_devices", "sc-extract-generated/entities-scitem-freightelevators", "sc-extract-generated/entities-scitem-gameplayinteractables", "sc-extract-generated/entities-scitem-geom_entity_template", "sc-extract-generated/entities-scitem-glass_alcohol", "sc-extract-generated/entities-scitem-handcuffs", "sc-extract-generated/entities-scitem-harvestables", "sc-extract-generated/entities-scitem-holoui", "sc-extract-generated/entities-scitem-human", "sc-extract-generated/entities-scitem-innerthought_dummies", "sc-extract-generated/entities-scitem-itembanks", "sc-extract-generated/entities-scitem-lerpmoveentity", "sc-extract-generated/entities-scitem-lifesupport", "sc-extract-generated/entities-scitem-locations", "sc-extract-generated/entities-scitem-lootables", "sc-extract-generated/entities-scitem-mastermodeexclusionglobalparams", "sc-extract-generated/entities-scitem-mission_entities", "sc-extract-generated/entities-scitem-missionstorage", "sc-extract-generated/entities-scitem-movable_bridge", "sc-extract-generated/entities-scitem-movable_bridge_plank", "sc-extract-generated/entities-scitem-movable_plank_pallet_0250x0125x00125", "sc-extract-generated/entities-scitem-movable_plank_pallet_0350x0125x00125", "sc-extract-generated/entities-scitem-movable_plank_pallet_0450x0125x00125", "sc-extract-generated/entities-scitem-navigationlinks", "sc-extract-generated/entities-scitem-nonusables", "sc-extract-generated/entities-scitem-openableobject", "sc-extract-generated/entities-scitem-operatormoderecords", "sc-extract-generated/entities-scitem-orbgn", "sc-extract-generated/entities-scitem-orcaobstacle", "sc-extract-generated/entities-scitem-placeholder", "sc-extract-generated/entities-scitem-prop", "sc-extract-generated/entities-scitem-prototypeentities", "sc-extract-generated/entities-scitem-remoteconnectionreceiver", "sc-extract-generated/entities-scitem-rotationsimple", "sc-extract-generated/entities-scitem-salvageablerepairable", "sc-extract-generated/entities-scitem-scitem_debris", "sc-extract-generated/entities-scitem-scitemdisplayscreen", "sc-extract-generated/entities-scitem-ship_weapon_ammo_racks", "sc-extract-generated/entities-scitem-ships", "sc-extract-generated/entities-scitem-shopdisplays", "sc-extract-generated/entities-scitem-simpleanimators", "sc-extract-generated/entities-scitem-simpleopenableobject_ammo_box_generic", "sc-extract-generated/entities-scitem-simpleopenableobject_bathroom_shower", "sc-extract-generated/entities-scitem-simpleopenableobject_bathroom_sink", "sc-extract-generated/entities-scitem-simpleopenableobject_bathroom_storage", "sc-extract-generated/entities-scitem-simpleopenableobject_bathroom_toilet", "sc-extract-generated/entities-scitem-simpleopenableobject_cnou_mustang_cargobox_door", "sc-extract-generated/entities-scitem-simpleopenableobject_col_a_radial_kitchen_counter_set_a_cupboard_doors_a", "sc-extract-generated/entities-scitem-simpleopenableobject_col_a_radial_kitchen_counter_set_a_cupboard_drawers_a", "sc-extract-generated/entities-scitem-simpleopenableobject_col_a_radial_kitchen_counter_set_a_oven_a", "sc-extract-generated/entities-scitem-simpleopenableobject_col_a_radial_kitchen_counter_set_a_oven_a_lid_a", "sc-extract-generated/entities-scitem-simpleopenableobject_col_a_shutters_a", "sc-extract-generated/entities-scitem-simpleopenableobject_col_a_shutters_b", "sc-extract-generated/entities-scitem-simpleopenableobject_col_a_shutters_c", "sc-extract-generated/entities-scitem-simpleopenableobject_col_a_shutters_d", "sc-extract-generated/entities-scitem-simpleopenableobject_habmodule_foldingtable", "sc-extract-generated/entities-scitem-simpleopenableobject_habmodule_kitchendoor", "sc-extract-generated/entities-scitem-simpleopenableobject_habmodule_storagedoor", "sc-extract-generated/entities-scitem-simpleopenableobject_habmodule_storagetray", "sc-extract-generated/entities-scitem-simpleopenableobject_habmodule_toiletdoor", "sc-extract-generated/entities-scitem-simpleopenableobject_screenarticulated", "sc-extract-generated/entities-scitem-simpleopenableobject_template", "sc-extract-generated/entities-scitem-spawers", "sc-extract-generated/entities-scitem-spawning", "sc-extract-generated/entities-scitem-starmarine", "sc-extract-generated/entities-scitem-storage", "sc-extract-generated/entities-scitem-storagecage", "sc-extract-generated/entities-scitem-suit", "sc-extract-generated/entities-scitem-template", "sc-extract-generated/entities-scitem-template_cuttableinteractable", "sc-extract-generated/entities-scitem-template_cuttableinteractable_surfacerelay", "sc-extract-generated/entities-scitem-test_ruto_projector", "sc-extract-generated/entities-scitem-toggleableentities", "sc-extract-generated/entities-scitem-ui_environmentscreen_phoenix_attractanim", "sc-extract-generated/entities-scitem-ui_environmentscreen_phoenix_attractanim_small", "sc-extract-generated/entities-scitem-ui_environmentscreen_phoenix_elevatorpanel_bottom", "sc-extract-generated/entities-scitem-ui_environmentscreen_phoenix_elevatorpanel_top", "sc-extract-generated/entities-scitem-ui_environmentscreen_phoenix_interactionpanel", "sc-extract-generated/entities-scitem-ui_flash_screen", "sc-extract-generated/entities-scitem-usables", "sc-extract-generated/entities-scitem-vehicles", "sc-extract-generated/entities-scitem-weaponmounts", "sc-extract-generated/entities-scitem-weapons", "sc-extract-generated/entities-screenattachment", "sc-extract-generated/entities-servicebeaconnavpoint", "sc-extract-generated/entities-shadowregionentity", "sc-extract-generated/entities-shipselectorkiosk_genatc02", "sc-extract-generated/entities-shipselectorkiosk_grimhex", "sc-extract-generated/entities-shipselectorkiosk_groundvehiclesonly", "sc-extract-generated/entities-shipselectorkiosk_hangar_hightech_1_a", "sc-extract-generated/entities-shipselectorkiosk_hangar_lowtech_1_a", "sc-extract-generated/entities-shipselectorkiosk_hangar_lowtech_1_b", "sc-extract-generated/entities-shipselectorkiosk_hangar_lowtech_2_a", "sc-extract-generated/entities-shipselectorkiosk_hangar_lowtech_2_b", "sc-extract-generated/entities-shipselectorkiosk_levski", "sc-extract-generated/entities-shipselectorkiosk_lorville", "sc-extract-generated/entities-shipselectorkiosk_lorvilleground", "sc-extract-generated/entities-shipselectorkiosk_newbab", "sc-extract-generated/entities-shipselectorkiosk_outpostground", "sc-extract-generated/entities-shipselectorkiosk_pyro", "sc-extract-generated/entities-shipselectorkiosk_shipsonly", "sc-extract-generated/entities-shipselectorkiosk_shipsonly_area18", "sc-extract-generated/entities-shipselectorkiosk_shipsonly_orison", "sc-extract-generated/entities-shipselectorkiosk_shipsonly_reststop", "sc-extract-generated/entities-shipselectorkiosk_test", "sc-extract-generated/entities-simpleobjectcontainer", "sc-extract-generated/entities-slotspawnpoint", "sc-extract-generated/entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a", "sc-extract-generated/entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a", "sc-extract-generated/entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a_extractonly", "sc-extract-generated/entities-spaceships", "sc-extract-generated/entities-spawncloset", "sc-extract-generated/entities-spawncloset_ships", "sc-extract-generated/entities-spawncloset_ships_javelin", "sc-extract-generated/entities-spawnclosetmanager", "sc-extract-generated/entities-spawnedactionarea", "sc-extract-generated/entities-spawnhelper", "sc-extract-generated/entities-starfield", "sc-extract-generated/entities-streamingobjectcontainer", "sc-extract-generated/entities-sunlight", "sc-extract-generated/entities-table_booth_circularbar_direct_8_seat", "sc-extract-generated/entities-table_booth_utilitarian_4_seat", "sc-extract-generated/entities-tagpoint", "sc-extract-generated/entities-test", "sc-extract-generated/entities-tinymachine", "sc-extract-generated/entities-trackview", "sc-extract-generated/entities-trackviewuser", "sc-extract-generated/entities-ui", "sc-extract-generated/entities-unattendedvehiclemarker", "sc-extract-generated/entities-uniqueplayercamera", "sc-extract-generated/entities-usablegroup", "sc-extract-generated/entities-usablegroupcoordinator", "sc-extract-generated/entities-vehicleobjectcontainer", "sc-extract-generated/entities-vfx", "sc-extract-generated/entities-vlk_adult_body", "sc-extract-generated/entities-vlk_apex_body", "sc-extract-generated/entities-vlk_apex_irradiated_body", "sc-extract-generated/entities-vlk_juvenile_body", "sc-extract-generated/entities-watervolume", "sc-extract-generated/entities-worlddisplay", "sc-extract-generated/entities-yormandi_apex_body"]
+entities-scitem = ["sc-extract-generated/entities-scitem-access", "sc-extract-generated/entities-scitem-actormovables", "sc-extract-generated/entities-scitem-aimodule_atc_grimhex", "sc-extract-generated/entities-scitem-aimodule_atc_levskiatc01", "sc-extract-generated/entities-scitem-aimodule_atc_lorvilleatc01", "sc-extract-generated/entities-scitem-aimodule_atc_newbabbage", "sc-extract-generated/entities-scitem-aimodule_atc_newbabbageatc01", "sc-extract-generated/entities-scitem-aimodule_atc_orisonatc01", "sc-extract-generated/entities-scitem-aimodule_atc_systematc01", "sc-extract-generated/entities-scitem-aimodule_cargo", "sc-extract-generated/entities-scitem-aimodule_collector", "sc-extract-generated/entities-scitem-aimodule_genatc02", "sc-extract-generated/entities-scitem-aimodule_pyro", "sc-extract-generated/entities-scitem-aimodule_silent_atc", "sc-extract-generated/entities-scitem-airlocks", "sc-extract-generated/entities-scitem-ammocrates", "sc-extract-generated/entities-scitem-arenacommander", "sc-extract-generated/entities-scitem-atc", "sc-extract-generated/entities-scitem-atc_datamanager_outpostplatinumbay", "sc-extract-generated/entities-scitem-atc_datamanager_port_lawful", "sc-extract-generated/entities-scitem-atc_datamanager_port_semilawful", "sc-extract-generated/entities-scitem-atc_datamanager_port_unlawful", "sc-extract-generated/entities-scitem-audiolog", "sc-extract-generated/entities-scitem-beer_can", "sc-extract-generated/entities-scitem-bottle_liquor", "sc-extract-generated/entities-scitem-cargo", "sc-extract-generated/entities-scitem-carryables", "sc-extract-generated/entities-scitem-characters", "sc-extract-generated/entities-scitem-chipsets", "sc-extract-generated/entities-scitem-commsreceiver", "sc-extract-generated/entities-scitem-commsspeaker", "sc-extract-generated/entities-scitem-consumables", "sc-extract-generated/entities-scitem-controlpanels", "sc-extract-generated/entities-scitem-counter_shop_2m_casaba_b", "sc-extract-generated/entities-scitem-counter_shop_2m_casaba_c", "sc-extract-generated/entities-scitem-counter_shop_2m_casaba_d", "sc-extract-generated/entities-scitem-decals", "sc-extract-generated/entities-scitem-default_lensdisplay", "sc-extract-generated/entities-scitem-default_lensdisplay_pu", "sc-extract-generated/entities-scitem-deliveryitemportmanager", "sc-extract-generated/entities-scitem-doors", "sc-extract-generated/entities-scitem-energy", "sc-extract-generated/entities-scitem-entityclassdefinition_aimodule_atc", "sc-extract-generated/entities-scitem-entityclassdefinition_atc_datamanager", "sc-extract-generated/entities-scitem-entityclassdefinition_atc_operatoraimodule", "sc-extract-generated/entities-scitem-entityclassdefinition_bar_mmhc_glass_coke_empty", "sc-extract-generated/entities-scitem-entityclassdefinition_glass_tumbler_1_a", "sc-extract-generated/entities-scitem-entityclassdefinition_glass_tumbler_2_a", "sc-extract-generated/entities-scitem-entityclassdefinition_janitormob", "sc-extract-generated/entities-scitem-entityclassdefinition_lightgroupitem", "sc-extract-generated/entities-scitem-entityclassdefinition_lightgrouppowereditem", "sc-extract-generated/entities-scitem-entityclassdefinition_morrowtour", "sc-extract-generated/entities-scitem-entityclassdefinition_satellite_power_plant_test", "sc-extract-generated/entities-scitem-entityclassdefinition_sequenceobjectitem", "sc-extract-generated/entities-scitem-entityclassdefinition_shelve_invisible_4x4", "sc-extract-generated/entities-scitem-entityclassdefinition_simplestool", "sc-extract-generated/entities-scitem-entityclassdefinition_simpletoilet", "sc-extract-generated/entities-scitem-entityclassdefinition_stool_template", "sc-extract-generated/entities-scitem-entityclassdefinition_tablet", "sc-extract-generated/entities-scitem-entityclassdefinition_tablet_small", "sc-extract-generated/entities-scitem-entityclassdefinition_test_gadget", "sc-extract-generated/entities-scitem-entityclassdefinition_test_mug", "sc-extract-generated/entities-scitem-entityclassdefinition_test_mug_carryable", "sc-extract-generated/entities-scitem-entityclassdefinition_test_shelf", "sc-extract-generated/entities-scitem-entityclassdefinition_test_shelf_missionblackboxdropoff", "sc-extract-generated/entities-scitem-entityclassdefinition_test_station_power_plant", "sc-extract-generated/entities-scitem-entityclassdefinition_testinteractionstatemachine", "sc-extract-generated/entities-scitem-environments", "sc-extract-generated/entities-scitem-externalinventory", "sc-extract-generated/entities-scitem-fauna", "sc-extract-generated/entities-scitem-flair", "sc-extract-generated/entities-scitem-fps_devices", "sc-extract-generated/entities-scitem-freightelevators", "sc-extract-generated/entities-scitem-gameplayinteractables", "sc-extract-generated/entities-scitem-geom_entity_template", "sc-extract-generated/entities-scitem-glass_alcohol", "sc-extract-generated/entities-scitem-handcuffs", "sc-extract-generated/entities-scitem-harvestables", "sc-extract-generated/entities-scitem-holoui", "sc-extract-generated/entities-scitem-human", "sc-extract-generated/entities-scitem-innerthought_dummies", "sc-extract-generated/entities-scitem-itembanks", "sc-extract-generated/entities-scitem-lerpmoveentity", "sc-extract-generated/entities-scitem-lifesupport", "sc-extract-generated/entities-scitem-locations", "sc-extract-generated/entities-scitem-lootables", "sc-extract-generated/entities-scitem-mastermodeexclusionglobalparams", "sc-extract-generated/entities-scitem-mission_entities", "sc-extract-generated/entities-scitem-missionstorage", "sc-extract-generated/entities-scitem-movable_bridge", "sc-extract-generated/entities-scitem-movable_bridge_plank", "sc-extract-generated/entities-scitem-movable_plank_pallet_0250x0125x00125", "sc-extract-generated/entities-scitem-movable_plank_pallet_0350x0125x00125", "sc-extract-generated/entities-scitem-movable_plank_pallet_0450x0125x00125", "sc-extract-generated/entities-scitem-navigationlinks", "sc-extract-generated/entities-scitem-nonusables", "sc-extract-generated/entities-scitem-openableobject", "sc-extract-generated/entities-scitem-operatormoderecords", "sc-extract-generated/entities-scitem-orbgn", "sc-extract-generated/entities-scitem-orcaobstacle", "sc-extract-generated/entities-scitem-placeholder", "sc-extract-generated/entities-scitem-prop", "sc-extract-generated/entities-scitem-prototypeentities", "sc-extract-generated/entities-scitem-remoteconnectionreceiver", "sc-extract-generated/entities-scitem-rotationsimple", "sc-extract-generated/entities-scitem-salvageablerepairable", "sc-extract-generated/entities-scitem-scitem_debris", "sc-extract-generated/entities-scitem-scitemdisplayscreen", "sc-extract-generated/entities-scitem-ship_weapon_ammo_racks", "sc-extract-generated/entities-scitem-ships", "sc-extract-generated/entities-scitem-shopdisplays", "sc-extract-generated/entities-scitem-simpleanimators", "sc-extract-generated/entities-scitem-simpleopenableobject_ammo_box_generic", "sc-extract-generated/entities-scitem-simpleopenableobject_bathroom_shower", "sc-extract-generated/entities-scitem-simpleopenableobject_bathroom_sink", "sc-extract-generated/entities-scitem-simpleopenableobject_bathroom_storage", "sc-extract-generated/entities-scitem-simpleopenableobject_bathroom_toilet", "sc-extract-generated/entities-scitem-simpleopenableobject_cnou_mustang_cargobox_door", "sc-extract-generated/entities-scitem-simpleopenableobject_col_a_radial_kitchen_counter_set_a_cupboard_doors_a", "sc-extract-generated/entities-scitem-simpleopenableobject_col_a_radial_kitchen_counter_set_a_cupboard_drawers_a", "sc-extract-generated/entities-scitem-simpleopenableobject_col_a_radial_kitchen_counter_set_a_oven_a", "sc-extract-generated/entities-scitem-simpleopenableobject_col_a_radial_kitchen_counter_set_a_oven_a_lid_a", "sc-extract-generated/entities-scitem-simpleopenableobject_col_a_shutters_a", "sc-extract-generated/entities-scitem-simpleopenableobject_col_a_shutters_b", "sc-extract-generated/entities-scitem-simpleopenableobject_col_a_shutters_c", "sc-extract-generated/entities-scitem-simpleopenableobject_col_a_shutters_d", "sc-extract-generated/entities-scitem-simpleopenableobject_habmodule_foldingtable", "sc-extract-generated/entities-scitem-simpleopenableobject_habmodule_kitchendoor", "sc-extract-generated/entities-scitem-simpleopenableobject_habmodule_storagedoor", "sc-extract-generated/entities-scitem-simpleopenableobject_habmodule_storagetray", "sc-extract-generated/entities-scitem-simpleopenableobject_habmodule_toiletdoor", "sc-extract-generated/entities-scitem-simpleopenableobject_screenarticulated", "sc-extract-generated/entities-scitem-simpleopenableobject_template", "sc-extract-generated/entities-scitem-spawers", "sc-extract-generated/entities-scitem-spawning", "sc-extract-generated/entities-scitem-starmarine", "sc-extract-generated/entities-scitem-storage", "sc-extract-generated/entities-scitem-storagecage", "sc-extract-generated/entities-scitem-suit", "sc-extract-generated/entities-scitem-template", "sc-extract-generated/entities-scitem-template_cuttableinteractable", "sc-extract-generated/entities-scitem-template_cuttableinteractable_surfacerelay", "sc-extract-generated/entities-scitem-test_ruto_projector", "sc-extract-generated/entities-scitem-toggleableentities", "sc-extract-generated/entities-scitem-ui_environmentscreen_phoenix_attractanim", "sc-extract-generated/entities-scitem-ui_environmentscreen_phoenix_attractanim_small", "sc-extract-generated/entities-scitem-ui_environmentscreen_phoenix_elevatorpanel_bottom", "sc-extract-generated/entities-scitem-ui_environmentscreen_phoenix_elevatorpanel_top", "sc-extract-generated/entities-scitem-ui_environmentscreen_phoenix_interactionpanel", "sc-extract-generated/entities-scitem-ui_flash_screen", "sc-extract-generated/entities-scitem-usables", "sc-extract-generated/entities-scitem-vehicles", "sc-extract-generated/entities-scitem-weaponmounts", "sc-extract-generated/entities-scitem-weapons"]
+libs-foundry-records = ["sc-extract-generated/actor-actorblockhelper", "sc-extract-generated/actor-actorjumpfalllandatlsgeoparams", "sc-extract-generated/actor-actorjumpfalllandatlsparams", "sc-extract-generated/actor-actorjumpfalllanddefaultparams", "sc-extract-generated/actor-actorjumpfalllandplayerparams", "sc-extract-generated/actor-actorladderconfig", "sc-extract-generated/actor-actorladderconfig_v2", "sc-extract-generated/actor-actorledgegrabbing", "sc-extract-generated/actor-actormeleecombat", "sc-extract-generated/actor-actormovementmodifiers_powersuit", "sc-extract-generated/actor-actormovementsets", "sc-extract-generated/actor-actors", "sc-extract-generated/actor-actorslidingparam", "sc-extract-generated/actor-actorspeedcameraeffect_slide", "sc-extract-generated/actor-actorstanceconfig", "sc-extract-generated/actor-actorstanceconfig_npc_human", "sc-extract-generated/actor-actorstanceconfig_npc_kopion", "sc-extract-generated/actor-actorstanceconfig_npc_quasigrazer", "sc-extract-generated/actor-actorstanceconfig_npc_vanduul", "sc-extract-generated/actor-actorstanceconfig_npc_vlk", "sc-extract-generated/actor-actorstanceconfig_npc_vlkadult", "sc-extract-generated/actor-actorstanceconfig_npc_vlkapex", "sc-extract-generated/actor-actorstanceconfig_npc_vlkjuvenile", "sc-extract-generated/actor-actorstanceconfig_npc_webhound", "sc-extract-generated/actor-actorstanceconfig_transport_powersuit", "sc-extract-generated/actor-actorstanceconfig_transport_powersuit_argo_atls", "sc-extract-generated/actor-actorstatevalidation", "sc-extract-generated/actor-actortargetedparams", "sc-extract-generated/actor-actorviewlimits", "sc-extract-generated/actor-actorzerogtraversalparams", "sc-extract-generated/actor-atls_geo_jumppackconfig", "sc-extract-generated/actor-creaturejumpfalllandflow", "sc-extract-generated/actor-externalforceresponse", "sc-extract-generated/actor-gforce", "sc-extract-generated/actor-headtrackinglimits", "sc-extract-generated/actor-inputdeflectiontime", "sc-extract-generated/actor-locomotionpersonality", "sc-extract-generated/actor-lookahead", "sc-extract-generated/actor-npcjumpfalllandflow", "sc-extract-generated/actor-playeranimatedinteractionconfig", "sc-extract-generated/actor-playercarryconfig", "sc-extract-generated/actor-playerdefaultactionsconfig", "sc-extract-generated/actor-playerjumpfallandflow", "sc-extract-generated/actor-playermovementmodifiers", "sc-extract-generated/actor-quantumtravelcameraeffects", "sc-extract-generated/actor-skeletonconfigs", "sc-extract-generated/actor-stanceinfo", "sc-extract-generated/actor-targettrackingautozoom", "sc-extract-generated/actor-transportjumpfallandflow", "sc-extract-generated/actor-valakkarcarryconfig", "sc-extract-generated/actorabilitycomponent", "sc-extract-generated/actorabilitycomponent-actorabilitycomponent_playerabilities", "sc-extract-generated/actorabilitycomponent-npcabilities", "sc-extract-generated/actorabilitycomponent-playerlimitations", "sc-extract-generated/actorabilitycomponent-transportabilities", "sc-extract-generated/actorduckingparams", "sc-extract-generated/actorduckingparams-maleduckingparams", "sc-extract-generated/actorenvironmentcomponent", "sc-extract-generated/actorenvironmentcomponent-actorenvironment", "sc-extract-generated/actorgforcecomponent", "sc-extract-generated/actorgforcecomponent-actorgforcecomponent_playergforce", "sc-extract-generated/actorgforcecomponent-npcgforce", "sc-extract-generated/actorgforcecomponent-playergforce_mm", "sc-extract-generated/actorhealthcomponent", "sc-extract-generated/actorhealthcomponent-bodymapping", "sc-extract-generated/actorhealthcomponent-healthconfig", "sc-extract-generated/actorhealthcomponent-healthtemplate_ai", "sc-extract-generated/actorhealthcomponent-healthtemplate_ai_juggernaut", "sc-extract-generated/actorhealthcomponent-healthtemplate_invulnerable", "sc-extract-generated/actorhealthcomponent-healthtemplate_kopion", "sc-extract-generated/actorhealthcomponent-healthtemplate_player", "sc-extract-generated/actorhealthcomponent-healthtemplate_powersuit", "sc-extract-generated/actorhealthcomponent-healthtemplate_powersuit_combat", "sc-extract-generated/actorhealthcomponent-healthtemplate_quasigrazer", "sc-extract-generated/actorhealthcomponent-healthtemplate_stunonly", "sc-extract-generated/actorhealthcomponent-healthtemplate_vanduul", "sc-extract-generated/actorhealthcomponent-healthtemplate_vlk", "sc-extract-generated/actorhealthcomponent-healthtemplate_vlk_irridiatated", "sc-extract-generated/actorhealthcomponent-healthtemplate_vlk_irridiatated_apex", "sc-extract-generated/actorhealthcomponent-healthtemplate_vlk_nonapex", "sc-extract-generated/actorhealthcomponent-healthtemplate_yormandi", "sc-extract-generated/actormovementsetsconfig", "sc-extract-generated/actormovementsetsconfig-actormovementsetconfig", "sc-extract-generated/actorproceduralrecoil", "sc-extract-generated/actorproceduralrecoil-actorproceduralrecoilconfig", "sc-extract-generated/actorproceduralrecoil-actorproceduralrecoilmodifiers", "sc-extract-generated/actorstaminacomponent", "sc-extract-generated/actorstaminacomponent-actorbreathinghelper", "sc-extract-generated/actorstaminacomponent-actorstaminacomponent_playerstamina", "sc-extract-generated/actorstatuscomponent", "sc-extract-generated/actorstatuscomponent-globalactorstatusparams", "sc-extract-generated/actorstatuscomponent-medicaltieritemconfig", "sc-extract-generated/actorstatuscomponent-playerstatus", "sc-extract-generated/actorstatuscomponent-playerstatus_aiboss", "sc-extract-generated/actorstatuscomponent-playerstatus_aibosssuper", "sc-extract-generated/actorstatuscomponent-playerstatusai", "sc-extract-generated/actorstatuscomponent-playerstatusai_captain", "sc-extract-generated/actorstatuscomponent-playerstatusai_elite", "sc-extract-generated/actorstatuscomponent-playerstatusai_juggernaut", "sc-extract-generated/actorstatuscomponent-playerstatusai_unconscious_rescuemission", "sc-extract-generated/actorstatuscomponent-playerstatusai_vanduul", "sc-extract-generated/actorstatuscomponent-playerstatusai_vlk_adult", "sc-extract-generated/actorstatuscomponent-playerstatusai_vlk_adult_irridatated", "sc-extract-generated/actorstatuscomponent-playerstatusai_vlk_juvi", "sc-extract-generated/actorstatuscomponent-playerstatusai_vlk_juvi_irridatated", "sc-extract-generated/actorstatuscomponent-playerstatusai_vlkapex", "sc-extract-generated/actorstatuscomponent-playerstatusai_vlkapex_irridatated", "sc-extract-generated/actorstatuscomponent-playerstatusai_vlkapex_stormbreaker", "sc-extract-generated/actorstatuscomponent-playerstatusai_yormandi", "sc-extract-generated/actorstatuscomponent-playerstatuscorpse", "sc-extract-generated/actorstatuscomponent-playerstatuscreature", "sc-extract-generated/actorstatuscomponent-playerstatusea", "sc-extract-generated/actorstatuscomponent-playerstatuspu", "sc-extract-generated/actorstatuscomponent-powersuitstatus", "sc-extract-generated/actorstatuscomponent-powersuitstatus_combat", "sc-extract-generated/actorstatuscomponent-transportstatus", "sc-extract-generated/actorviewlimitpresetdatabase", "sc-extract-generated/actorviewlimitpresetdatabase-viewlimitpresetdatabase", "sc-extract-generated/ads", "sc-extract-generated/aianimationdata", "sc-extract-generated/aifiredisciplinesettings", "sc-extract-generated/aiglobalsettings", "sc-extract-generated/aimotive", "sc-extract-generated/aiprofile", "sc-extract-generated/aitargetablesettings", "sc-extract-generated/aiwavecollection", "sc-extract-generated/ammobox", "sc-extract-generated/ammoparams", "sc-extract-generated/analytics", "sc-extract-generated/announcer", "sc-extract-generated/areaservices", "sc-extract-generated/audio", "sc-extract-generated/awardservice", "sc-extract-generated/cameras", "sc-extract-generated/capacitorassignment", "sc-extract-generated/cargomanifest", "sc-extract-generated/character", "sc-extract-generated/characternamedata", "sc-extract-generated/characterserializationpresets", "sc-extract-generated/chatchannelfilters", "sc-extract-generated/chatcommandfastaccess", "sc-extract-generated/chatemoterecord", "sc-extract-generated/chatfilteroptions", "sc-extract-generated/chatmanager", "sc-extract-generated/closecombat", "sc-extract-generated/commodityconfiguration", "sc-extract-generated/commoditytypedatabase", "sc-extract-generated/commsnotifications", "sc-extract-generated/commsnotificationstages", "sc-extract-generated/communicationatlconfig", "sc-extract-generated/communicationchannelname", "sc-extract-generated/communicationconfig", "sc-extract-generated/communicationname", "sc-extract-generated/communicationsystem", "sc-extract-generated/communicationvariableconfig", "sc-extract-generated/consumabletypesdatabase", "sc-extract-generated/contextualcommunicationconfig", "sc-extract-generated/contractawardconfig", "sc-extract-generated/contracts", "sc-extract-generated/conversation", "sc-extract-generated/conversationbank", "sc-extract-generated/crafting", "sc-extract-generated/creatures", "sc-extract-generated/crewmanifest", "sc-extract-generated/curves", "sc-extract-generated/damage", "sc-extract-generated/densityclasses", "sc-extract-generated/dev", "sc-extract-generated/devowners", "sc-extract-generated/dialoguecontentbank", "sc-extract-generated/dialoguecontext", "sc-extract-generated/dialoguecontextbank", "sc-extract-generated/dialoguerealm", "sc-extract-generated/dynamiccameraeffects", "sc-extract-generated/dynamiclightingrig", "sc-extract-generated/elevatorbase_teleportnode", "sc-extract-generated/emotions", "sc-extract-generated/entities-aft", "sc-extract-generated/entities-aicoversurface", "sc-extract-generated/entities-aigroupentity", "sc-extract-generated/entities-ainavigationobstacle", "sc-extract-generated/entities-aipath", "sc-extract-generated/entities-analyticshadow", "sc-extract-generated/entities-animentity", "sc-extract-generated/entities-animentity_attachable", "sc-extract-generated/entities-animentity_attachable_espr_prowler_glass", "sc-extract-generated/entities-animentity_attachable_espr_prowler_glass_copilot", "sc-extract-generated/entities-animentity_attachable_espr_talon_glass", "sc-extract-generated/entities-animentity_character", "sc-extract-generated/entities-animentity_floatinghead_01", "sc-extract-generated/entities-animentity_floatinghead_charactercustomizer", "sc-extract-generated/entities-animentity_floatinghead_charactercustomizer_dnalib", "sc-extract-generated/entities-animentity_floatinghead_charactercustomizer_featurelib", "sc-extract-generated/entities-animentity_human", "sc-extract-generated/entities-animentity_human_female", "sc-extract-generated/entities-animentity_toggleable", "sc-extract-generated/entities-area", "sc-extract-generated/entities-asd", "sc-extract-generated/entities-attachableobjectcontainer", "sc-extract-generated/entities-attachableobjectcontainerspawner", "sc-extract-generated/entities-attackarea", "sc-extract-generated/entities-audio", "sc-extract-generated/entities-basebuilding", "sc-extract-generated/entities-baselocationtemplate", "sc-extract-generated/entities-booth_table_centered_seats", "sc-extract-generated/entities-breakablerock", "sc-extract-generated/entities-buildingblocksscreens", "sc-extract-generated/entities-cameralens", "sc-extract-generated/entities-camerarttview", "sc-extract-generated/entities-camerasource", "sc-extract-generated/entities-camerasourcefuelnozzle", "sc-extract-generated/entities-cameratarget", "sc-extract-generated/entities-canvasgeoment", "sc-extract-generated/entities-canvasgeoment_vars", "sc-extract-generated/entities-capturearea", "sc-extract-generated/entities-carryable_damage_sensitive_canister", "sc-extract-generated/entities-carryabletemplate", "sc-extract-generated/entities-charactercustomizer", "sc-extract-generated/entities-cinematiclabel", "sc-extract-generated/entities-cinematiclabelwithvehicle", "sc-extract-generated/entities-cinematictitling_base", "sc-extract-generated/entities-cinematictitling_standard", "sc-extract-generated/entities-cinematictrigger_sticky", "sc-extract-generated/entities-commententity_quickfade", "sc-extract-generated/entities-commodities", "sc-extract-generated/entities-contactblobentity", "sc-extract-generated/entities-corpsemarker", "sc-extract-generated/entities-cuttableshape", "sc-extract-generated/entities-debris_1_floor_a", "sc-extract-generated/entities-debris_1_floor_b", "sc-extract-generated/entities-debris_1_floor_c", "sc-extract-generated/entities-debris_1_floor_d", "sc-extract-generated/entities-debris_1_floor_e", "sc-extract-generated/entities-debris_1_floor_f", "sc-extract-generated/entities-decorations", "sc-extract-generated/entities-default", "sc-extract-generated/entities-defaultwithaudio", "sc-extract-generated/entities-defendarea", "sc-extract-generated/entities-destruction", "sc-extract-generated/entities-dev", "sc-extract-generated/entities-displayscreens", "sc-extract-generated/entities-ea", "sc-extract-generated/entities-editorcamera", "sc-extract-generated/entities-energysource", "sc-extract-generated/entities-entityclassdefinition_actionarea", "sc-extract-generated/entities-entityclassdefinition_cinematictrigger", "sc-extract-generated/entities-entityclassdefinition_colorgradient", "sc-extract-generated/entities-entityclassdefinition_commententity", "sc-extract-generated/entities-entityclassdefinition_explosion", "sc-extract-generated/entities-entityclassdefinition_hint", "sc-extract-generated/entities-entityclassdefinition_holographicvolume", "sc-extract-generated/entities-entityclassdefinition_missionentity", "sc-extract-generated/entities-entityclassdefinition_navpoint_general", "sc-extract-generated/entities-entityclassdefinition_pointofinterestprovider", "sc-extract-generated/entities-entityclassdefinition_proceduralpointofinterestproxy", "sc-extract-generated/entities-entityclassdefinition_racecheckpoint", "sc-extract-generated/entities-entityclassdefinition_rendertotextureview", "sc-extract-generated/entities-entityclassdefinition_rotationsimple", "sc-extract-generated/entities-entityclassdefinition_screen_9x16_1_a", "sc-extract-generated/entities-entityclassdefinition_scshop", "sc-extract-generated/entities-entityclassdefinition_shipselectorkiosk", "sc-extract-generated/entities-entityclassdefinition_shipselectorkiosk_levskiground", "sc-extract-generated/entities-entityclassdefinition_shipselectorkiosk_levskiships", "sc-extract-generated/entities-entityclassdefinition_shipselectorkiosk_v001", "sc-extract-generated/entities-entityclassdefinition_shipselectorkiosk_v002", "sc-extract-generated/entities-entityclassdefinition_shopkiosk", "sc-extract-generated/entities-entityclassdefinition_shoppingkiosk", "sc-extract-generated/entities-entityclassdefinition_spawnpoint", "sc-extract-generated/entities-entityclassdefinition_spawnprotectionbarrier", "sc-extract-generated/entities-entityclassdefinition_spectatorpoint", "sc-extract-generated/entities-entityclassdefinition_tilesocket", "sc-extract-generated/entities-entityealockedspawnlocation", "sc-extract-generated/entities-entityeaspawnlocation", "sc-extract-generated/entities-entityspawncameracontroller", "sc-extract-generated/entities-entityspawners", "sc-extract-generated/entities-environment", "sc-extract-generated/entities-environmentscreen", "sc-extract-generated/entities-fan_prisonbroken", "sc-extract-generated/entities-flair_radegast_whiskey_concierge", "sc-extract-generated/entities-fronthud_center", "sc-extract-generated/entities-fronthud_displaymanager", "sc-extract-generated/entities-fronthud_left", "sc-extract-generated/entities-fronthud_right", "sc-extract-generated/entities-fronthud_top", "sc-extract-generated/entities-gamerulessingleton", "sc-extract-generated/entities-gamevolumecomponent", "sc-extract-generated/entities-gascloud", "sc-extract-generated/entities-geomentity", "sc-extract-generated/entities-geomentity_areatrigger", "sc-extract-generated/entities-geomentity_dynamicobstacle", "sc-extract-generated/entities-geomentity_interactablelinked", "sc-extract-generated/entities-geomentity_nophysics", "sc-extract-generated/entities-geomentity_repairable", "sc-extract-generated/entities-geomentity_rttui", "sc-extract-generated/entities-geomentity_rttuiwithaudio", "sc-extract-generated/entities-geomentity_static", "sc-extract-generated/entities-geometryinstancer", "sc-extract-generated/entities-gotopointentity", "sc-extract-generated/entities-groundvehicles", "sc-extract-generated/entities-hackable", "sc-extract-generated/entities-handholdobject", "sc-extract-generated/entities-handholdobject_linkable", "sc-extract-generated/entities-haulingentityclass", "sc-extract-generated/entities-hazardzones", "sc-extract-generated/entities-hearingperceptionarea", "sc-extract-generated/entities-helpers", "sc-extract-generated/entities-holofield", "sc-extract-generated/entities-ht_table_bar_1_a", "sc-extract-generated/entities-impactcrater", "sc-extract-generated/entities-inventoryplaceholder", "sc-extract-generated/entities-irradiatedhazardzone", "sc-extract-generated/entities-itemport3drepresentation", "sc-extract-generated/entities-jumppoints", "sc-extract-generated/entities-kegr_roomhelper", "sc-extract-generated/entities-kiosk_mercury_anniversary_slides_16x9", "sc-extract-generated/entities-ladder", "sc-extract-generated/entities-landinguientity", "sc-extract-generated/entities-ledgeobject", "sc-extract-generated/entities-ledgeobjectusable", "sc-extract-generated/entities-legacyitems", "sc-extract-generated/entities-lights", "sc-extract-generated/entities-loadingplatformmanager", "sc-extract-generated/entities-locationmanager", "sc-extract-generated/entities-locationtemplate", "sc-extract-generated/entities-lt_hab_bathroom_1_a", "sc-extract-generated/entities-maglaunch", "sc-extract-generated/entities-mastercontrollerentities", "sc-extract-generated/entities-mineable", "sc-extract-generated/entities-missionlocationmanager", "sc-extract-generated/entities-missionlocationtemplate", "sc-extract-generated/entities-missionobjectivemarker", "sc-extract-generated/entities-missionsystem", "sc-extract-generated/entities-monitoredzone", "sc-extract-generated/entities-navpoint_dynamic", "sc-extract-generated/entities-navpoint_dynamic_spawnedbarge", "sc-extract-generated/entities-navpoint_interdictedentity", "sc-extract-generated/entities-navpoint_subpoint0", "sc-extract-generated/entities-navpoint_subpoint1", "sc-extract-generated/entities-navpoint_subpoint2", "sc-extract-generated/entities-navpoint_subpoint3", "sc-extract-generated/entities-navpoint_subpoint4", "sc-extract-generated/entities-navpoint_subpoint5", "sc-extract-generated/entities-objectcontainerrotating", "sc-extract-generated/entities-objectcontainers", "sc-extract-generated/entities-oscillationsimple", "sc-extract-generated/entities-others", "sc-extract-generated/entities-parkingroute", "sc-extract-generated/entities-partymembermarker", "sc-extract-generated/entities-patrolgraph", "sc-extract-generated/entities-patrolgraphlink", "sc-extract-generated/entities-patrolpoint", "sc-extract-generated/entities-perceptionmodifierarea", "sc-extract-generated/entities-physicalizedjobboard", "sc-extract-generated/entities-physics", "sc-extract-generated/entities-planetkillvolume", "sc-extract-generated/entities-playerscoresmanager", "sc-extract-generated/entities-precachecamera", "sc-extract-generated/entities-projectilespawnerentity", "sc-extract-generated/entities-prop_digitalclock", "sc-extract-generated/entities-proximityassistmodifier", "sc-extract-generated/entities-quantumcolorshift", "sc-extract-generated/entities-quantumtrail", "sc-extract-generated/entities-racering", "sc-extract-generated/entities-radarscanning", "sc-extract-generated/entities-rastar", "sc-extract-generated/entities-refinery", "sc-extract-generated/entities-refuelatmospheres", "sc-extract-generated/entities-render", "sc-extract-generated/entities-rendertotextureareamaphelperview", "sc-extract-generated/entities-restricted_areas", "sc-extract-generated/entities-restrictedareaboundarymesh", "sc-extract-generated/entities-restrictedareavisibleboundarymesh", "sc-extract-generated/entities-roomsystem", "sc-extract-generated/entities-safeteleportpoint", "sc-extract-generated/entities-safeteleportpoint_npc", "sc-extract-generated/entities-salvagable", "sc-extract-generated/entities-scarmorymanager", "sc-extract-generated/entities-schedulearea", "sc-extract-generated/entities-scitem-access", "sc-extract-generated/entities-scitem-actormovables", "sc-extract-generated/entities-scitem-aimodule_atc_grimhex", "sc-extract-generated/entities-scitem-aimodule_atc_levskiatc01", "sc-extract-generated/entities-scitem-aimodule_atc_lorvilleatc01", "sc-extract-generated/entities-scitem-aimodule_atc_newbabbage", "sc-extract-generated/entities-scitem-aimodule_atc_newbabbageatc01", "sc-extract-generated/entities-scitem-aimodule_atc_orisonatc01", "sc-extract-generated/entities-scitem-aimodule_atc_systematc01", "sc-extract-generated/entities-scitem-aimodule_cargo", "sc-extract-generated/entities-scitem-aimodule_collector", "sc-extract-generated/entities-scitem-aimodule_genatc02", "sc-extract-generated/entities-scitem-aimodule_pyro", "sc-extract-generated/entities-scitem-aimodule_silent_atc", "sc-extract-generated/entities-scitem-airlocks", "sc-extract-generated/entities-scitem-ammocrates", "sc-extract-generated/entities-scitem-arenacommander", "sc-extract-generated/entities-scitem-atc", "sc-extract-generated/entities-scitem-atc_datamanager_outpostplatinumbay", "sc-extract-generated/entities-scitem-atc_datamanager_port_lawful", "sc-extract-generated/entities-scitem-atc_datamanager_port_semilawful", "sc-extract-generated/entities-scitem-atc_datamanager_port_unlawful", "sc-extract-generated/entities-scitem-audiolog", "sc-extract-generated/entities-scitem-beer_can", "sc-extract-generated/entities-scitem-bottle_liquor", "sc-extract-generated/entities-scitem-cargo", "sc-extract-generated/entities-scitem-carryables", "sc-extract-generated/entities-scitem-characters", "sc-extract-generated/entities-scitem-chipsets", "sc-extract-generated/entities-scitem-commsreceiver", "sc-extract-generated/entities-scitem-commsspeaker", "sc-extract-generated/entities-scitem-consumables", "sc-extract-generated/entities-scitem-controlpanels", "sc-extract-generated/entities-scitem-counter_shop_2m_casaba_b", "sc-extract-generated/entities-scitem-counter_shop_2m_casaba_c", "sc-extract-generated/entities-scitem-counter_shop_2m_casaba_d", "sc-extract-generated/entities-scitem-decals", "sc-extract-generated/entities-scitem-default_lensdisplay", "sc-extract-generated/entities-scitem-default_lensdisplay_pu", "sc-extract-generated/entities-scitem-deliveryitemportmanager", "sc-extract-generated/entities-scitem-doors", "sc-extract-generated/entities-scitem-energy", "sc-extract-generated/entities-scitem-entityclassdefinition_aimodule_atc", "sc-extract-generated/entities-scitem-entityclassdefinition_atc_datamanager", "sc-extract-generated/entities-scitem-entityclassdefinition_atc_operatoraimodule", "sc-extract-generated/entities-scitem-entityclassdefinition_bar_mmhc_glass_coke_empty", "sc-extract-generated/entities-scitem-entityclassdefinition_glass_tumbler_1_a", "sc-extract-generated/entities-scitem-entityclassdefinition_glass_tumbler_2_a", "sc-extract-generated/entities-scitem-entityclassdefinition_janitormob", "sc-extract-generated/entities-scitem-entityclassdefinition_lightgroupitem", "sc-extract-generated/entities-scitem-entityclassdefinition_lightgrouppowereditem", "sc-extract-generated/entities-scitem-entityclassdefinition_morrowtour", "sc-extract-generated/entities-scitem-entityclassdefinition_satellite_power_plant_test", "sc-extract-generated/entities-scitem-entityclassdefinition_sequenceobjectitem", "sc-extract-generated/entities-scitem-entityclassdefinition_shelve_invisible_4x4", "sc-extract-generated/entities-scitem-entityclassdefinition_simplestool", "sc-extract-generated/entities-scitem-entityclassdefinition_simpletoilet", "sc-extract-generated/entities-scitem-entityclassdefinition_stool_template", "sc-extract-generated/entities-scitem-entityclassdefinition_tablet", "sc-extract-generated/entities-scitem-entityclassdefinition_tablet_small", "sc-extract-generated/entities-scitem-entityclassdefinition_test_gadget", "sc-extract-generated/entities-scitem-entityclassdefinition_test_mug", "sc-extract-generated/entities-scitem-entityclassdefinition_test_mug_carryable", "sc-extract-generated/entities-scitem-entityclassdefinition_test_shelf", "sc-extract-generated/entities-scitem-entityclassdefinition_test_shelf_missionblackboxdropoff", "sc-extract-generated/entities-scitem-entityclassdefinition_test_station_power_plant", "sc-extract-generated/entities-scitem-entityclassdefinition_testinteractionstatemachine", "sc-extract-generated/entities-scitem-environments", "sc-extract-generated/entities-scitem-externalinventory", "sc-extract-generated/entities-scitem-fauna", "sc-extract-generated/entities-scitem-flair", "sc-extract-generated/entities-scitem-fps_devices", "sc-extract-generated/entities-scitem-freightelevators", "sc-extract-generated/entities-scitem-gameplayinteractables", "sc-extract-generated/entities-scitem-geom_entity_template", "sc-extract-generated/entities-scitem-glass_alcohol", "sc-extract-generated/entities-scitem-handcuffs", "sc-extract-generated/entities-scitem-harvestables", "sc-extract-generated/entities-scitem-holoui", "sc-extract-generated/entities-scitem-human", "sc-extract-generated/entities-scitem-innerthought_dummies", "sc-extract-generated/entities-scitem-itembanks", "sc-extract-generated/entities-scitem-lerpmoveentity", "sc-extract-generated/entities-scitem-lifesupport", "sc-extract-generated/entities-scitem-locations", "sc-extract-generated/entities-scitem-lootables", "sc-extract-generated/entities-scitem-mastermodeexclusionglobalparams", "sc-extract-generated/entities-scitem-mission_entities", "sc-extract-generated/entities-scitem-missionstorage", "sc-extract-generated/entities-scitem-movable_bridge", "sc-extract-generated/entities-scitem-movable_bridge_plank", "sc-extract-generated/entities-scitem-movable_plank_pallet_0250x0125x00125", "sc-extract-generated/entities-scitem-movable_plank_pallet_0350x0125x00125", "sc-extract-generated/entities-scitem-movable_plank_pallet_0450x0125x00125", "sc-extract-generated/entities-scitem-navigationlinks", "sc-extract-generated/entities-scitem-nonusables", "sc-extract-generated/entities-scitem-openableobject", "sc-extract-generated/entities-scitem-operatormoderecords", "sc-extract-generated/entities-scitem-orbgn", "sc-extract-generated/entities-scitem-orcaobstacle", "sc-extract-generated/entities-scitem-placeholder", "sc-extract-generated/entities-scitem-prop", "sc-extract-generated/entities-scitem-prototypeentities", "sc-extract-generated/entities-scitem-remoteconnectionreceiver", "sc-extract-generated/entities-scitem-rotationsimple", "sc-extract-generated/entities-scitem-salvageablerepairable", "sc-extract-generated/entities-scitem-scitem_debris", "sc-extract-generated/entities-scitem-scitemdisplayscreen", "sc-extract-generated/entities-scitem-ship_weapon_ammo_racks", "sc-extract-generated/entities-scitem-ships", "sc-extract-generated/entities-scitem-shopdisplays", "sc-extract-generated/entities-scitem-simpleanimators", "sc-extract-generated/entities-scitem-simpleopenableobject_ammo_box_generic", "sc-extract-generated/entities-scitem-simpleopenableobject_bathroom_shower", "sc-extract-generated/entities-scitem-simpleopenableobject_bathroom_sink", "sc-extract-generated/entities-scitem-simpleopenableobject_bathroom_storage", "sc-extract-generated/entities-scitem-simpleopenableobject_bathroom_toilet", "sc-extract-generated/entities-scitem-simpleopenableobject_cnou_mustang_cargobox_door", "sc-extract-generated/entities-scitem-simpleopenableobject_col_a_radial_kitchen_counter_set_a_cupboard_doors_a", "sc-extract-generated/entities-scitem-simpleopenableobject_col_a_radial_kitchen_counter_set_a_cupboard_drawers_a", "sc-extract-generated/entities-scitem-simpleopenableobject_col_a_radial_kitchen_counter_set_a_oven_a", "sc-extract-generated/entities-scitem-simpleopenableobject_col_a_radial_kitchen_counter_set_a_oven_a_lid_a", "sc-extract-generated/entities-scitem-simpleopenableobject_col_a_shutters_a", "sc-extract-generated/entities-scitem-simpleopenableobject_col_a_shutters_b", "sc-extract-generated/entities-scitem-simpleopenableobject_col_a_shutters_c", "sc-extract-generated/entities-scitem-simpleopenableobject_col_a_shutters_d", "sc-extract-generated/entities-scitem-simpleopenableobject_habmodule_foldingtable", "sc-extract-generated/entities-scitem-simpleopenableobject_habmodule_kitchendoor", "sc-extract-generated/entities-scitem-simpleopenableobject_habmodule_storagedoor", "sc-extract-generated/entities-scitem-simpleopenableobject_habmodule_storagetray", "sc-extract-generated/entities-scitem-simpleopenableobject_habmodule_toiletdoor", "sc-extract-generated/entities-scitem-simpleopenableobject_screenarticulated", "sc-extract-generated/entities-scitem-simpleopenableobject_template", "sc-extract-generated/entities-scitem-spawers", "sc-extract-generated/entities-scitem-spawning", "sc-extract-generated/entities-scitem-starmarine", "sc-extract-generated/entities-scitem-storage", "sc-extract-generated/entities-scitem-storagecage", "sc-extract-generated/entities-scitem-suit", "sc-extract-generated/entities-scitem-template", "sc-extract-generated/entities-scitem-template_cuttableinteractable", "sc-extract-generated/entities-scitem-template_cuttableinteractable_surfacerelay", "sc-extract-generated/entities-scitem-test_ruto_projector", "sc-extract-generated/entities-scitem-toggleableentities", "sc-extract-generated/entities-scitem-ui_environmentscreen_phoenix_attractanim", "sc-extract-generated/entities-scitem-ui_environmentscreen_phoenix_attractanim_small", "sc-extract-generated/entities-scitem-ui_environmentscreen_phoenix_elevatorpanel_bottom", "sc-extract-generated/entities-scitem-ui_environmentscreen_phoenix_elevatorpanel_top", "sc-extract-generated/entities-scitem-ui_environmentscreen_phoenix_interactionpanel", "sc-extract-generated/entities-scitem-ui_flash_screen", "sc-extract-generated/entities-scitem-usables", "sc-extract-generated/entities-scitem-vehicles", "sc-extract-generated/entities-scitem-weaponmounts", "sc-extract-generated/entities-scitem-weapons", "sc-extract-generated/entities-screenattachment", "sc-extract-generated/entities-servicebeaconnavpoint", "sc-extract-generated/entities-shadowregionentity", "sc-extract-generated/entities-shipselectorkiosk_genatc02", "sc-extract-generated/entities-shipselectorkiosk_grimhex", "sc-extract-generated/entities-shipselectorkiosk_groundvehiclesonly", "sc-extract-generated/entities-shipselectorkiosk_hangar_hightech_1_a", "sc-extract-generated/entities-shipselectorkiosk_hangar_lowtech_1_a", "sc-extract-generated/entities-shipselectorkiosk_hangar_lowtech_1_b", "sc-extract-generated/entities-shipselectorkiosk_hangar_lowtech_2_a", "sc-extract-generated/entities-shipselectorkiosk_hangar_lowtech_2_b", "sc-extract-generated/entities-shipselectorkiosk_levski", "sc-extract-generated/entities-shipselectorkiosk_lorville", "sc-extract-generated/entities-shipselectorkiosk_lorvilleground", "sc-extract-generated/entities-shipselectorkiosk_newbab", "sc-extract-generated/entities-shipselectorkiosk_outpostground", "sc-extract-generated/entities-shipselectorkiosk_pyro", "sc-extract-generated/entities-shipselectorkiosk_shipsonly", "sc-extract-generated/entities-shipselectorkiosk_shipsonly_area18", "sc-extract-generated/entities-shipselectorkiosk_shipsonly_orison", "sc-extract-generated/entities-shipselectorkiosk_shipsonly_reststop", "sc-extract-generated/entities-shipselectorkiosk_test", "sc-extract-generated/entities-simpleobjectcontainer", "sc-extract-generated/entities-slotspawnpoint", "sc-extract-generated/entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a", "sc-extract-generated/entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a", "sc-extract-generated/entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a_extractonly", "sc-extract-generated/entities-spaceships", "sc-extract-generated/entities-spawncloset", "sc-extract-generated/entities-spawncloset_ships", "sc-extract-generated/entities-spawncloset_ships_javelin", "sc-extract-generated/entities-spawnclosetmanager", "sc-extract-generated/entities-spawnedactionarea", "sc-extract-generated/entities-spawnhelper", "sc-extract-generated/entities-starfield", "sc-extract-generated/entities-streamingobjectcontainer", "sc-extract-generated/entities-sunlight", "sc-extract-generated/entities-table_booth_circularbar_direct_8_seat", "sc-extract-generated/entities-table_booth_utilitarian_4_seat", "sc-extract-generated/entities-tagpoint", "sc-extract-generated/entities-test", "sc-extract-generated/entities-tinymachine", "sc-extract-generated/entities-trackview", "sc-extract-generated/entities-trackviewuser", "sc-extract-generated/entities-ui", "sc-extract-generated/entities-unattendedvehiclemarker", "sc-extract-generated/entities-uniqueplayercamera", "sc-extract-generated/entities-usablegroup", "sc-extract-generated/entities-usablegroupcoordinator", "sc-extract-generated/entities-vehicleobjectcontainer", "sc-extract-generated/entities-vfx", "sc-extract-generated/entities-vlk_adult_body", "sc-extract-generated/entities-vlk_apex_body", "sc-extract-generated/entities-vlk_apex_irradiated_body", "sc-extract-generated/entities-vlk_juvenile_body", "sc-extract-generated/entities-watervolume", "sc-extract-generated/entities-worlddisplay", "sc-extract-generated/entities-yormandi_apex_body", "sc-extract-generated/entitlementpolicies", "sc-extract-generated/entityaudiocontrollerrtpcsubscriberlistdef", "sc-extract-generated/entityclassdefinition", "sc-extract-generated/environments", "sc-extract-generated/evagraph", "sc-extract-generated/explosiveordnance", "sc-extract-generated/factions", "sc-extract-generated/factions_legacy", "sc-extract-generated/fidgetconfig", "sc-extract-generated/foley", "sc-extract-generated/forcefeedback_forcefeedbackeffects", "sc-extract-generated/formation", "sc-extract-generated/fovaspectratiorangetables", "sc-extract-generated/franchises", "sc-extract-generated/friendmanager", "sc-extract-generated/fuelparams", "sc-extract-generated/gamemode", "sc-extract-generated/gamemodule", "sc-extract-generated/genericmobiterminals", "sc-extract-generated/globalarmarkerparams", "sc-extract-generated/globalcargoloadingparams", "sc-extract-generated/globalcommsnotificationparams", "sc-extract-generated/globalcuttableshapeparams", "sc-extract-generated/globalinteractionparams", "sc-extract-generated/globalinventoryparams", "sc-extract-generated/globalquantumdriveparams", "sc-extract-generated/globalshopparams", "sc-extract-generated/globaltutorialparams", "sc-extract-generated/gpuparticleaudio", "sc-extract-generated/grips", "sc-extract-generated/handholdgripdatabase", "sc-extract-generated/hardwaremouse", "sc-extract-generated/harvestable", "sc-extract-generated/hazardawarenessparams", "sc-extract-generated/hints", "sc-extract-generated/hudparams", "sc-extract-generated/ifcs", "sc-extract-generated/initialdamageoverrides", "sc-extract-generated/inputpromptconfig", "sc-extract-generated/instancedinterior", "sc-extract-generated/interactionconditions", "sc-extract-generated/intoxication", "sc-extract-generated/inventorycontainers", "sc-extract-generated/item", "sc-extract-generated/itemporttagsdictionary", "sc-extract-generated/itemresourcenetwork", "sc-extract-generated/journalentry", "sc-extract-generated/journalentrytype", "sc-extract-generated/jumppoints", "sc-extract-generated/kaboos_derelictships", "sc-extract-generated/landingpadsize", "sc-extract-generated/lawsystem", "sc-extract-generated/leangraph", "sc-extract-generated/level", "sc-extract-generated/lightamplification_aegs", "sc-extract-generated/lightamplification_anvl", "sc-extract-generated/lightamplification_argo", "sc-extract-generated/lightamplification_banu", "sc-extract-generated/lightamplification_cnou", "sc-extract-generated/lightamplification_crus", "sc-extract-generated/lightamplification_drak", "sc-extract-generated/lightamplification_espr", "sc-extract-generated/lightamplification_gama", "sc-extract-generated/lightamplification_grey", "sc-extract-generated/lightamplification_krig", "sc-extract-generated/lightamplification_misc", "sc-extract-generated/lightamplification_orig", "sc-extract-generated/lightamplification_rsi", "sc-extract-generated/lightamplification_vncl", "sc-extract-generated/lightamplification_xnaa", "sc-extract-generated/loadoutkits", "sc-extract-generated/longtermpersistence", "sc-extract-generated/lootgeneration", "sc-extract-generated/megamap", "sc-extract-generated/mining", "sc-extract-generated/miningaudioparams", "sc-extract-generated/missionbroker", "sc-extract-generated/missiondata", "sc-extract-generated/missionfailureconditions", "sc-extract-generated/missiongiver", "sc-extract-generated/missionscenarios", "sc-extract-generated/missiontype", "sc-extract-generated/motionstatemachine", "sc-extract-generated/moveviewrestrictionpenalties", "sc-extract-generated/musiclogic", "sc-extract-generated/personalinnerthoughtrules", "sc-extract-generated/planetdaynighttemperatureparams", "sc-extract-generated/player", "sc-extract-generated/playeranimatedinteractiontemplates", "sc-extract-generated/playerchoicemenuitems", "sc-extract-generated/playerchoicemenutypes", "sc-extract-generated/playerdockcontextcomponent", "sc-extract-generated/playergroupmanager", "sc-extract-generated/playernotificationsystem", "sc-extract-generated/playerspeedthrottle", "sc-extract-generated/playertoplayercommscallglobalparams", "sc-extract-generated/playertrade", "sc-extract-generated/posturedatabase", "sc-extract-generated/procbreathing", "sc-extract-generated/proceduralaimrigrecord", "sc-extract-generated/proceduralanimations", "sc-extract-generated/procedurallandingsetup", "sc-extract-generated/procedurallayout", "sc-extract-generated/prop", "sc-extract-generated/qteconfigs", "sc-extract-generated/radarsystem", "sc-extract-generated/rastar", "sc-extract-generated/refinerynotificationconfiguration", "sc-extract-generated/refiningprocess", "sc-extract-generated/rendererpresets", "sc-extract-generated/rentalnotificationparams", "sc-extract-generated/reputation", "sc-extract-generated/reputationvaluesettings", "sc-extract-generated/resourcetypedatabase", "sc-extract-generated/roomsystem", "sc-extract-generated/rsi_polaris_kaboos_exterior", "sc-extract-generated/scandisplayinstanceparams", "sc-extract-generated/scarryableikinteractionlist", "sc-extract-generated/scitemcommscomponentsetup", "sc-extract-generated/scitemdisplayscreenpreset", "sc-extract-generated/scitemmanufacturer", "sc-extract-generated/scuttableshapedefinition", "sc-extract-generated/seatcdikconfigs", "sc-extract-generated/servicebeacon", "sc-extract-generated/sgeometryviewdistanceratiocategories", "sc-extract-generated/sglobalchargedrainbeamparams", "sc-extract-generated/sglobalcrosshairparams", "sc-extract-generated/sglobalelectronparams", "sc-extract-generated/sglobalhealingbeamparams", "sc-extract-generated/sglobalhitbehaviorparams", "sc-extract-generated/sglobalsalvagerepairbeamparams", "sc-extract-generated/sglobaltractorbeamparams", "sc-extract-generated/shipinsurancerecord", "sc-extract-generated/sloadoutassortment", "sc-extract-generated/specialeventdatabase", "sc-extract-generated/squantumdriveeffecttagstemplate", "sc-extract-generated/sreputationglobalcontextbbparams", "sc-extract-generated/ssolarsystem", "sc-extract-generated/starmap", "sc-extract-generated/starmapamenitytypes", "sc-extract-generated/tacticalquery", "sc-extract-generated/tagdatabase", "sc-extract-generated/targetselector", "sc-extract-generated/tintpalettes", "sc-extract-generated/trackview", "sc-extract-generated/transitsystem", "sc-extract-generated/transponder", "sc-extract-generated/transportsystem", "sc-extract-generated/traversalcostconfig", "sc-extract-generated/turret", "sc-extract-generated/ui-animatedmarkers", "sc-extract-generated/ui-areamap", "sc-extract-generated/ui-armarkerconfiguration", "sc-extract-generated/ui-aspectratiototag_mfd", "sc-extract-generated/ui-buildingblocks", "sc-extract-generated/ui-digitalsignage", "sc-extract-generated/ui-directrtt", "sc-extract-generated/ui-dockingslotvisibility", "sc-extract-generated/ui-elementsounds_deprecated", "sc-extract-generated/ui-flashobjectbindinggroups", "sc-extract-generated/ui-flighthudmessages", "sc-extract-generated/ui-frontend", "sc-extract-generated/ui-graphs", "sc-extract-generated/ui-holovehicleconfig", "sc-extract-generated/ui-hudcolors_shipcolorpalettes", "sc-extract-generated/ui-innerthought", "sc-extract-generated/ui-innerthoughtentity", "sc-extract-generated/ui-innerthoughtentitydepth", "sc-extract-generated/ui-itemkiosk", "sc-extract-generated/ui-itempreview_config", "sc-extract-generated/ui-itemtypedefinition", "sc-extract-generated/ui-localplayershoppingdata", "sc-extract-generated/ui-map", "sc-extract-generated/ui-marker_config", "sc-extract-generated/ui-markertrackingvolumeconfig", "sc-extract-generated/ui-missilelockreticleconfig", "sc-extract-generated/ui-mobiglas", "sc-extract-generated/ui-objectdatabankentrymarkerconfig", "sc-extract-generated/ui-playerchoice_imconfig_playerchoiceim", "sc-extract-generated/ui-playerchoice_library_playerchoicelibrary", "sc-extract-generated/ui-playerchoice_pitconfig_playerchoicepersonalthought", "sc-extract-generated/ui-playerchoice_signalconfig_interactorsignalconfig", "sc-extract-generated/ui-playerecggraph_config_playerecggraphconfig", "sc-extract-generated/ui-pointofinterestdata", "sc-extract-generated/ui-popups", "sc-extract-generated/ui-radar3dpresets", "sc-extract-generated/ui-radardisplay_config_radar", "sc-extract-generated/ui-seatreticlearchetype", "sc-extract-generated/ui-simplespritesheet_holodisplaysprites", "sc-extract-generated/ui-simplespritesheet_innerthoughtsprites", "sc-extract-generated/ui-transformationinterpolatorrecords", "sc-extract-generated/ui-uiconfig_starcitizen", "sc-extract-generated/ui-uielements", "sc-extract-generated/ui-uimodes", "sc-extract-generated/ui-uistatedisplay", "sc-extract-generated/ui-vehicleentrance", "sc-extract-generated/ui-videocomms", "sc-extract-generated/ui-visor", "sc-extract-generated/ui-visorscreenconfig", "sc-extract-generated/ui-worlddisplay", "sc-extract-generated/unittest_unittesta", "sc-extract-generated/unittest_unittestb", "sc-extract-generated/vehicle", "sc-extract-generated/vehiclecombat", "sc-extract-generated/vehiclesalvageglobalparams", "sc-extract-generated/vendingmachine_2", "sc-extract-generated/vfx", "sc-extract-generated/vibrations", "sc-extract-generated/videocommschannels", "sc-extract-generated/voicebundle", "sc-extract-generated/voicechannelsettingsrecord", "sc-extract-generated/voicesingle", "sc-extract-generated/weaponarmodifiers", "sc-extract-generated/weaponmisfiredef", "sc-extract-generated/weaponproceduralanimation", "sc-extract-generated/weaponproceduralclip", "sc-extract-generated/weaponproceduralrecoil", "sc-extract-generated/zerogtraversalgraph"]
+ui = ["sc-extract-generated/ui-animatedmarkers", "sc-extract-generated/ui-areamap", "sc-extract-generated/ui-armarkerconfiguration", "sc-extract-generated/ui-aspectratiototag_mfd", "sc-extract-generated/ui-buildingblocks", "sc-extract-generated/ui-digitalsignage", "sc-extract-generated/ui-directrtt", "sc-extract-generated/ui-dockingslotvisibility", "sc-extract-generated/ui-elementsounds_deprecated", "sc-extract-generated/ui-flashobjectbindinggroups", "sc-extract-generated/ui-flighthudmessages", "sc-extract-generated/ui-frontend", "sc-extract-generated/ui-graphs", "sc-extract-generated/ui-holovehicleconfig", "sc-extract-generated/ui-hudcolors_shipcolorpalettes", "sc-extract-generated/ui-innerthought", "sc-extract-generated/ui-innerthoughtentity", "sc-extract-generated/ui-innerthoughtentitydepth", "sc-extract-generated/ui-itemkiosk", "sc-extract-generated/ui-itempreview_config", "sc-extract-generated/ui-itemtypedefinition", "sc-extract-generated/ui-localplayershoppingdata", "sc-extract-generated/ui-map", "sc-extract-generated/ui-marker_config", "sc-extract-generated/ui-markertrackingvolumeconfig", "sc-extract-generated/ui-missilelockreticleconfig", "sc-extract-generated/ui-mobiglas", "sc-extract-generated/ui-objectdatabankentrymarkerconfig", "sc-extract-generated/ui-playerchoice_imconfig_playerchoiceim", "sc-extract-generated/ui-playerchoice_library_playerchoicelibrary", "sc-extract-generated/ui-playerchoice_pitconfig_playerchoicepersonalthought", "sc-extract-generated/ui-playerchoice_signalconfig_interactorsignalconfig", "sc-extract-generated/ui-playerecggraph_config_playerecggraphconfig", "sc-extract-generated/ui-pointofinterestdata", "sc-extract-generated/ui-popups", "sc-extract-generated/ui-radar3dpresets", "sc-extract-generated/ui-radardisplay_config_radar", "sc-extract-generated/ui-seatreticlearchetype", "sc-extract-generated/ui-simplespritesheet_holodisplaysprites", "sc-extract-generated/ui-simplespritesheet_innerthoughtsprites", "sc-extract-generated/ui-transformationinterpolatorrecords", "sc-extract-generated/ui-uiconfig_starcitizen", "sc-extract-generated/ui-uielements", "sc-extract-generated/ui-uimodes", "sc-extract-generated/ui-uistatedisplay", "sc-extract-generated/ui-vehicleentrance", "sc-extract-generated/ui-videocomms", "sc-extract-generated/ui-visor", "sc-extract-generated/ui-visorscreenconfig", "sc-extract-generated/ui-worlddisplay"]
 
 # Auto-generated: each feature forwards to sc-extract-generated.
+actor-actorblockhelper = ["sc-extract-generated/actor-actorblockhelper"]
+actor-actorjumpfalllandatlsgeoparams = ["sc-extract-generated/actor-actorjumpfalllandatlsgeoparams"]
+actor-actorjumpfalllandatlsparams = ["sc-extract-generated/actor-actorjumpfalllandatlsparams"]
+actor-actorjumpfalllanddefaultparams = ["sc-extract-generated/actor-actorjumpfalllanddefaultparams"]
+actor-actorjumpfalllandplayerparams = ["sc-extract-generated/actor-actorjumpfalllandplayerparams"]
+actor-actorladderconfig = ["sc-extract-generated/actor-actorladderconfig"]
+actor-actorladderconfig_v2 = ["sc-extract-generated/actor-actorladderconfig_v2"]
 actor-actorledgegrabbing = ["sc-extract-generated/actor-actorledgegrabbing"]
+actor-actormeleecombat = ["sc-extract-generated/actor-actormeleecombat"]
+actor-actormovementmodifiers_powersuit = ["sc-extract-generated/actor-actormovementmodifiers_powersuit"]
+actor-actormovementsets = ["sc-extract-generated/actor-actormovementsets"]
+actor-actors = ["sc-extract-generated/actor-actors"]
+actor-actorslidingparam = ["sc-extract-generated/actor-actorslidingparam"]
+actor-actorspeedcameraeffect_slide = ["sc-extract-generated/actor-actorspeedcameraeffect_slide"]
+actor-actorstanceconfig = ["sc-extract-generated/actor-actorstanceconfig"]
+actor-actorstanceconfig_npc_human = ["sc-extract-generated/actor-actorstanceconfig_npc_human"]
+actor-actorstanceconfig_npc_kopion = ["sc-extract-generated/actor-actorstanceconfig_npc_kopion"]
+actor-actorstanceconfig_npc_quasigrazer = ["sc-extract-generated/actor-actorstanceconfig_npc_quasigrazer"]
+actor-actorstanceconfig_npc_vanduul = ["sc-extract-generated/actor-actorstanceconfig_npc_vanduul"]
+actor-actorstanceconfig_npc_vlk = ["sc-extract-generated/actor-actorstanceconfig_npc_vlk"]
+actor-actorstanceconfig_npc_vlkadult = ["sc-extract-generated/actor-actorstanceconfig_npc_vlkadult"]
+actor-actorstanceconfig_npc_vlkapex = ["sc-extract-generated/actor-actorstanceconfig_npc_vlkapex"]
+actor-actorstanceconfig_npc_vlkjuvenile = ["sc-extract-generated/actor-actorstanceconfig_npc_vlkjuvenile"]
+actor-actorstanceconfig_npc_webhound = ["sc-extract-generated/actor-actorstanceconfig_npc_webhound"]
+actor-actorstanceconfig_transport_powersuit = ["sc-extract-generated/actor-actorstanceconfig_transport_powersuit"]
+actor-actorstanceconfig_transport_powersuit_argo_atls = ["sc-extract-generated/actor-actorstanceconfig_transport_powersuit_argo_atls"]
+actor-actorstatevalidation = ["sc-extract-generated/actor-actorstatevalidation"]
 actor-actortargetedparams = ["sc-extract-generated/actor-actortargetedparams"]
 actor-actorviewlimits = ["sc-extract-generated/actor-actorviewlimits"]
-actor-actorzerogtraversalparams = [
-    "sc-extract-generated/actor-actorzerogtraversalparams",
-]
-actor-atls_geo_jumppackconfig = [
-    "sc-extract-generated/actor-atls_geo_jumppackconfig",
-]
-actor-externalforceresponse = [
-    "sc-extract-generated/actor-externalforceresponse",
-]
+actor-actorzerogtraversalparams = ["sc-extract-generated/actor-actorzerogtraversalparams"]
+actor-atls_geo_jumppackconfig = ["sc-extract-generated/actor-atls_geo_jumppackconfig"]
+actor-creaturejumpfalllandflow = ["sc-extract-generated/actor-creaturejumpfalllandflow"]
+actor-externalforceresponse = ["sc-extract-generated/actor-externalforceresponse"]
 actor-gforce = ["sc-extract-generated/actor-gforce"]
 actor-headtrackinglimits = ["sc-extract-generated/actor-headtrackinglimits"]
 actor-inputdeflectiontime = ["sc-extract-generated/actor-inputdeflectiontime"]
-actor-locomotionpersonality = [
-    "sc-extract-generated/actor-locomotionpersonality",
-]
+actor-locomotionpersonality = ["sc-extract-generated/actor-locomotionpersonality"]
 actor-lookahead = ["sc-extract-generated/actor-lookahead"]
-actor-playeranimatedinteractionconfig = [
-    "sc-extract-generated/actor-playeranimatedinteractionconfig",
-]
-actor-playerdefaultactionsconfig = [
-    "sc-extract-generated/actor-playerdefaultactionsconfig",
-]
-actor-quantumtravelcameraeffects = [
-    "sc-extract-generated/actor-quantumtravelcameraeffects",
-]
+actor-npcjumpfalllandflow = ["sc-extract-generated/actor-npcjumpfalllandflow"]
+actor-playeranimatedinteractionconfig = ["sc-extract-generated/actor-playeranimatedinteractionconfig"]
+actor-playercarryconfig = ["sc-extract-generated/actor-playercarryconfig"]
+actor-playerdefaultactionsconfig = ["sc-extract-generated/actor-playerdefaultactionsconfig"]
+actor-playerjumpfallandflow = ["sc-extract-generated/actor-playerjumpfallandflow"]
+actor-playermovementmodifiers = ["sc-extract-generated/actor-playermovementmodifiers"]
+actor-quantumtravelcameraeffects = ["sc-extract-generated/actor-quantumtravelcameraeffects"]
 actor-skeletonconfigs = ["sc-extract-generated/actor-skeletonconfigs"]
 actor-stanceinfo = ["sc-extract-generated/actor-stanceinfo"]
-actor-targettrackingautozoom = [
-    "sc-extract-generated/actor-targettrackingautozoom",
-]
+actor-targettrackingautozoom = ["sc-extract-generated/actor-targettrackingautozoom"]
+actor-transportjumpfallandflow = ["sc-extract-generated/actor-transportjumpfallandflow"]
+actor-valakkarcarryconfig = ["sc-extract-generated/actor-valakkarcarryconfig"]
+actorabilitycomponent = ["sc-extract-generated/actorabilitycomponent"]
+actorabilitycomponent-actorabilitycomponent_playerabilities = ["sc-extract-generated/actorabilitycomponent-actorabilitycomponent_playerabilities"]
+actorabilitycomponent-npcabilities = ["sc-extract-generated/actorabilitycomponent-npcabilities"]
+actorabilitycomponent-playerlimitations = ["sc-extract-generated/actorabilitycomponent-playerlimitations"]
+actorabilitycomponent-transportabilities = ["sc-extract-generated/actorabilitycomponent-transportabilities"]
+actorduckingparams = ["sc-extract-generated/actorduckingparams"]
+actorduckingparams-maleduckingparams = ["sc-extract-generated/actorduckingparams-maleduckingparams"]
+actorenvironmentcomponent = ["sc-extract-generated/actorenvironmentcomponent"]
+actorenvironmentcomponent-actorenvironment = ["sc-extract-generated/actorenvironmentcomponent-actorenvironment"]
+actorgforcecomponent = ["sc-extract-generated/actorgforcecomponent"]
+actorgforcecomponent-actorgforcecomponent_playergforce = ["sc-extract-generated/actorgforcecomponent-actorgforcecomponent_playergforce"]
+actorgforcecomponent-npcgforce = ["sc-extract-generated/actorgforcecomponent-npcgforce"]
+actorgforcecomponent-playergforce_mm = ["sc-extract-generated/actorgforcecomponent-playergforce_mm"]
+actorhealthcomponent = ["sc-extract-generated/actorhealthcomponent"]
+actorhealthcomponent-bodymapping = ["sc-extract-generated/actorhealthcomponent-bodymapping"]
+actorhealthcomponent-healthconfig = ["sc-extract-generated/actorhealthcomponent-healthconfig"]
+actorhealthcomponent-healthtemplate_ai = ["sc-extract-generated/actorhealthcomponent-healthtemplate_ai"]
+actorhealthcomponent-healthtemplate_ai_juggernaut = ["sc-extract-generated/actorhealthcomponent-healthtemplate_ai_juggernaut"]
+actorhealthcomponent-healthtemplate_invulnerable = ["sc-extract-generated/actorhealthcomponent-healthtemplate_invulnerable"]
+actorhealthcomponent-healthtemplate_kopion = ["sc-extract-generated/actorhealthcomponent-healthtemplate_kopion"]
+actorhealthcomponent-healthtemplate_player = ["sc-extract-generated/actorhealthcomponent-healthtemplate_player"]
+actorhealthcomponent-healthtemplate_powersuit = ["sc-extract-generated/actorhealthcomponent-healthtemplate_powersuit"]
+actorhealthcomponent-healthtemplate_powersuit_combat = ["sc-extract-generated/actorhealthcomponent-healthtemplate_powersuit_combat"]
+actorhealthcomponent-healthtemplate_quasigrazer = ["sc-extract-generated/actorhealthcomponent-healthtemplate_quasigrazer"]
+actorhealthcomponent-healthtemplate_stunonly = ["sc-extract-generated/actorhealthcomponent-healthtemplate_stunonly"]
+actorhealthcomponent-healthtemplate_vanduul = ["sc-extract-generated/actorhealthcomponent-healthtemplate_vanduul"]
+actorhealthcomponent-healthtemplate_vlk = ["sc-extract-generated/actorhealthcomponent-healthtemplate_vlk"]
+actorhealthcomponent-healthtemplate_vlk_irridiatated = ["sc-extract-generated/actorhealthcomponent-healthtemplate_vlk_irridiatated"]
+actorhealthcomponent-healthtemplate_vlk_irridiatated_apex = ["sc-extract-generated/actorhealthcomponent-healthtemplate_vlk_irridiatated_apex"]
+actorhealthcomponent-healthtemplate_vlk_nonapex = ["sc-extract-generated/actorhealthcomponent-healthtemplate_vlk_nonapex"]
+actorhealthcomponent-healthtemplate_yormandi = ["sc-extract-generated/actorhealthcomponent-healthtemplate_yormandi"]
+actormovementsetsconfig = ["sc-extract-generated/actormovementsetsconfig"]
+actormovementsetsconfig-actormovementsetconfig = ["sc-extract-generated/actormovementsetsconfig-actormovementsetconfig"]
+actorproceduralrecoil = ["sc-extract-generated/actorproceduralrecoil"]
+actorproceduralrecoil-actorproceduralrecoilconfig = ["sc-extract-generated/actorproceduralrecoil-actorproceduralrecoilconfig"]
+actorproceduralrecoil-actorproceduralrecoilmodifiers = ["sc-extract-generated/actorproceduralrecoil-actorproceduralrecoilmodifiers"]
+actorstaminacomponent = ["sc-extract-generated/actorstaminacomponent"]
+actorstaminacomponent-actorbreathinghelper = ["sc-extract-generated/actorstaminacomponent-actorbreathinghelper"]
+actorstaminacomponent-actorstaminacomponent_playerstamina = ["sc-extract-generated/actorstaminacomponent-actorstaminacomponent_playerstamina"]
+actorstatuscomponent = ["sc-extract-generated/actorstatuscomponent"]
+actorstatuscomponent-globalactorstatusparams = ["sc-extract-generated/actorstatuscomponent-globalactorstatusparams"]
+actorstatuscomponent-medicaltieritemconfig = ["sc-extract-generated/actorstatuscomponent-medicaltieritemconfig"]
+actorstatuscomponent-playerstatus = ["sc-extract-generated/actorstatuscomponent-playerstatus"]
+actorstatuscomponent-playerstatus_aiboss = ["sc-extract-generated/actorstatuscomponent-playerstatus_aiboss"]
+actorstatuscomponent-playerstatus_aibosssuper = ["sc-extract-generated/actorstatuscomponent-playerstatus_aibosssuper"]
+actorstatuscomponent-playerstatusai = ["sc-extract-generated/actorstatuscomponent-playerstatusai"]
+actorstatuscomponent-playerstatusai_captain = ["sc-extract-generated/actorstatuscomponent-playerstatusai_captain"]
+actorstatuscomponent-playerstatusai_elite = ["sc-extract-generated/actorstatuscomponent-playerstatusai_elite"]
+actorstatuscomponent-playerstatusai_juggernaut = ["sc-extract-generated/actorstatuscomponent-playerstatusai_juggernaut"]
+actorstatuscomponent-playerstatusai_unconscious_rescuemission = ["sc-extract-generated/actorstatuscomponent-playerstatusai_unconscious_rescuemission"]
+actorstatuscomponent-playerstatusai_vanduul = ["sc-extract-generated/actorstatuscomponent-playerstatusai_vanduul"]
+actorstatuscomponent-playerstatusai_vlk_adult = ["sc-extract-generated/actorstatuscomponent-playerstatusai_vlk_adult"]
+actorstatuscomponent-playerstatusai_vlk_adult_irridatated = ["sc-extract-generated/actorstatuscomponent-playerstatusai_vlk_adult_irridatated"]
+actorstatuscomponent-playerstatusai_vlk_juvi = ["sc-extract-generated/actorstatuscomponent-playerstatusai_vlk_juvi"]
+actorstatuscomponent-playerstatusai_vlk_juvi_irridatated = ["sc-extract-generated/actorstatuscomponent-playerstatusai_vlk_juvi_irridatated"]
+actorstatuscomponent-playerstatusai_vlkapex = ["sc-extract-generated/actorstatuscomponent-playerstatusai_vlkapex"]
+actorstatuscomponent-playerstatusai_vlkapex_irridatated = ["sc-extract-generated/actorstatuscomponent-playerstatusai_vlkapex_irridatated"]
+actorstatuscomponent-playerstatusai_vlkapex_stormbreaker = ["sc-extract-generated/actorstatuscomponent-playerstatusai_vlkapex_stormbreaker"]
+actorstatuscomponent-playerstatusai_yormandi = ["sc-extract-generated/actorstatuscomponent-playerstatusai_yormandi"]
+actorstatuscomponent-playerstatuscorpse = ["sc-extract-generated/actorstatuscomponent-playerstatuscorpse"]
+actorstatuscomponent-playerstatuscreature = ["sc-extract-generated/actorstatuscomponent-playerstatuscreature"]
+actorstatuscomponent-playerstatusea = ["sc-extract-generated/actorstatuscomponent-playerstatusea"]
+actorstatuscomponent-playerstatuspu = ["sc-extract-generated/actorstatuscomponent-playerstatuspu"]
+actorstatuscomponent-powersuitstatus = ["sc-extract-generated/actorstatuscomponent-powersuitstatus"]
+actorstatuscomponent-powersuitstatus_combat = ["sc-extract-generated/actorstatuscomponent-powersuitstatus_combat"]
+actorstatuscomponent-transportstatus = ["sc-extract-generated/actorstatuscomponent-transportstatus"]
+actorviewlimitpresetdatabase = ["sc-extract-generated/actorviewlimitpresetdatabase"]
+actorviewlimitpresetdatabase-viewlimitpresetdatabase = ["sc-extract-generated/actorviewlimitpresetdatabase-viewlimitpresetdatabase"]
 ads = ["sc-extract-generated/ads"]
 aianimationdata = ["sc-extract-generated/aianimationdata"]
+aifiredisciplinesettings = ["sc-extract-generated/aifiredisciplinesettings"]
 aiglobalsettings = ["sc-extract-generated/aiglobalsettings"]
 aimotive = ["sc-extract-generated/aimotive"]
 aiprofile = ["sc-extract-generated/aiprofile"]
+aitargetablesettings = ["sc-extract-generated/aitargetablesettings"]
 aiwavecollection = ["sc-extract-generated/aiwavecollection"]
+ammobox = ["sc-extract-generated/ammobox"]
 ammoparams = ["sc-extract-generated/ammoparams"]
 analytics = ["sc-extract-generated/analytics"]
 announcer = ["sc-extract-generated/announcer"]
@@ -394,6 +179,8 @@ cameras = ["sc-extract-generated/cameras"]
 capacitorassignment = ["sc-extract-generated/capacitorassignment"]
 cargomanifest = ["sc-extract-generated/cargomanifest"]
 character = ["sc-extract-generated/character"]
+characternamedata = ["sc-extract-generated/characternamedata"]
+characterserializationpresets = ["sc-extract-generated/characterserializationpresets"]
 chatchannelfilters = ["sc-extract-generated/chatchannelfilters"]
 chatcommandfastaccess = ["sc-extract-generated/chatcommandfastaccess"]
 chatemoterecord = ["sc-extract-generated/chatemoterecord"]
@@ -403,70 +190,477 @@ closecombat = ["sc-extract-generated/closecombat"]
 commodityconfiguration = ["sc-extract-generated/commodityconfiguration"]
 commoditytypedatabase = ["sc-extract-generated/commoditytypedatabase"]
 commsnotifications = ["sc-extract-generated/commsnotifications"]
+commsnotificationstages = ["sc-extract-generated/commsnotificationstages"]
 communicationatlconfig = ["sc-extract-generated/communicationatlconfig"]
+communicationchannelname = ["sc-extract-generated/communicationchannelname"]
 communicationconfig = ["sc-extract-generated/communicationconfig"]
 communicationname = ["sc-extract-generated/communicationname"]
 communicationsystem = ["sc-extract-generated/communicationsystem"]
-communicationvariableconfig = [
-    "sc-extract-generated/communicationvariableconfig",
-]
+communicationvariableconfig = ["sc-extract-generated/communicationvariableconfig"]
 consumabletypesdatabase = ["sc-extract-generated/consumabletypesdatabase"]
-contextualcommunicationconfig = [
-    "sc-extract-generated/contextualcommunicationconfig",
-]
+contextualcommunicationconfig = ["sc-extract-generated/contextualcommunicationconfig"]
+contractawardconfig = ["sc-extract-generated/contractawardconfig"]
 contracts = ["sc-extract-generated/contracts"]
 conversation = ["sc-extract-generated/conversation"]
+conversationbank = ["sc-extract-generated/conversationbank"]
 crafting = ["sc-extract-generated/crafting"]
+creatures = ["sc-extract-generated/creatures"]
 crewmanifest = ["sc-extract-generated/crewmanifest"]
+curves = ["sc-extract-generated/curves"]
 damage = ["sc-extract-generated/damage"]
 densityclasses = ["sc-extract-generated/densityclasses"]
+dev = ["sc-extract-generated/dev"]
+devowners = ["sc-extract-generated/devowners"]
 dialoguecontentbank = ["sc-extract-generated/dialoguecontentbank"]
+dialoguecontext = ["sc-extract-generated/dialoguecontext"]
+dialoguecontextbank = ["sc-extract-generated/dialoguecontextbank"]
 dialoguerealm = ["sc-extract-generated/dialoguerealm"]
 dynamiccameraeffects = ["sc-extract-generated/dynamiccameraeffects"]
 dynamiclightingrig = ["sc-extract-generated/dynamiclightingrig"]
+elevatorbase_teleportnode = ["sc-extract-generated/elevatorbase_teleportnode"]
 emotions = ["sc-extract-generated/emotions"]
-entities-haulingentityclass = [
-    "sc-extract-generated/entities-haulingentityclass",
-]
-entities-scitem-actormovables = [
-    "sc-extract-generated/entities-scitem-actormovables",
-]
-entities-scitem-mastermodeexclusionglobalparams = [
-    "sc-extract-generated/entities-scitem-mastermodeexclusionglobalparams",
-]
-entities-scitem-operatormoderecords = [
-    "sc-extract-generated/entities-scitem-operatormoderecords",
-]
+entities-aft = ["sc-extract-generated/entities-aft"]
+entities-aicoversurface = ["sc-extract-generated/entities-aicoversurface"]
+entities-aigroupentity = ["sc-extract-generated/entities-aigroupentity"]
+entities-ainavigationobstacle = ["sc-extract-generated/entities-ainavigationobstacle"]
+entities-aipath = ["sc-extract-generated/entities-aipath"]
+entities-analyticshadow = ["sc-extract-generated/entities-analyticshadow"]
+entities-animentity = ["sc-extract-generated/entities-animentity"]
+entities-animentity_attachable = ["sc-extract-generated/entities-animentity_attachable"]
+entities-animentity_attachable_espr_prowler_glass = ["sc-extract-generated/entities-animentity_attachable_espr_prowler_glass"]
+entities-animentity_attachable_espr_prowler_glass_copilot = ["sc-extract-generated/entities-animentity_attachable_espr_prowler_glass_copilot"]
+entities-animentity_attachable_espr_talon_glass = ["sc-extract-generated/entities-animentity_attachable_espr_talon_glass"]
+entities-animentity_character = ["sc-extract-generated/entities-animentity_character"]
+entities-animentity_floatinghead_01 = ["sc-extract-generated/entities-animentity_floatinghead_01"]
+entities-animentity_floatinghead_charactercustomizer = ["sc-extract-generated/entities-animentity_floatinghead_charactercustomizer"]
+entities-animentity_floatinghead_charactercustomizer_dnalib = ["sc-extract-generated/entities-animentity_floatinghead_charactercustomizer_dnalib"]
+entities-animentity_floatinghead_charactercustomizer_featurelib = ["sc-extract-generated/entities-animentity_floatinghead_charactercustomizer_featurelib"]
+entities-animentity_human = ["sc-extract-generated/entities-animentity_human"]
+entities-animentity_human_female = ["sc-extract-generated/entities-animentity_human_female"]
+entities-animentity_toggleable = ["sc-extract-generated/entities-animentity_toggleable"]
+entities-area = ["sc-extract-generated/entities-area"]
+entities-asd = ["sc-extract-generated/entities-asd"]
+entities-attachableobjectcontainer = ["sc-extract-generated/entities-attachableobjectcontainer"]
+entities-attachableobjectcontainerspawner = ["sc-extract-generated/entities-attachableobjectcontainerspawner"]
+entities-attackarea = ["sc-extract-generated/entities-attackarea"]
+entities-audio = ["sc-extract-generated/entities-audio"]
+entities-basebuilding = ["sc-extract-generated/entities-basebuilding"]
+entities-baselocationtemplate = ["sc-extract-generated/entities-baselocationtemplate"]
+entities-booth_table_centered_seats = ["sc-extract-generated/entities-booth_table_centered_seats"]
+entities-breakablerock = ["sc-extract-generated/entities-breakablerock"]
+entities-buildingblocksscreens = ["sc-extract-generated/entities-buildingblocksscreens"]
+entities-cameralens = ["sc-extract-generated/entities-cameralens"]
+entities-camerarttview = ["sc-extract-generated/entities-camerarttview"]
+entities-camerasource = ["sc-extract-generated/entities-camerasource"]
+entities-camerasourcefuelnozzle = ["sc-extract-generated/entities-camerasourcefuelnozzle"]
+entities-cameratarget = ["sc-extract-generated/entities-cameratarget"]
+entities-canvasgeoment = ["sc-extract-generated/entities-canvasgeoment"]
+entities-canvasgeoment_vars = ["sc-extract-generated/entities-canvasgeoment_vars"]
+entities-capturearea = ["sc-extract-generated/entities-capturearea"]
+entities-carryable_damage_sensitive_canister = ["sc-extract-generated/entities-carryable_damage_sensitive_canister"]
+entities-carryabletemplate = ["sc-extract-generated/entities-carryabletemplate"]
+entities-charactercustomizer = ["sc-extract-generated/entities-charactercustomizer"]
+entities-cinematiclabel = ["sc-extract-generated/entities-cinematiclabel"]
+entities-cinematiclabelwithvehicle = ["sc-extract-generated/entities-cinematiclabelwithvehicle"]
+entities-cinematictitling_base = ["sc-extract-generated/entities-cinematictitling_base"]
+entities-cinematictitling_standard = ["sc-extract-generated/entities-cinematictitling_standard"]
+entities-cinematictrigger_sticky = ["sc-extract-generated/entities-cinematictrigger_sticky"]
+entities-commententity_quickfade = ["sc-extract-generated/entities-commententity_quickfade"]
+entities-commodities = ["sc-extract-generated/entities-commodities"]
+entities-contactblobentity = ["sc-extract-generated/entities-contactblobentity"]
+entities-corpsemarker = ["sc-extract-generated/entities-corpsemarker"]
+entities-cuttableshape = ["sc-extract-generated/entities-cuttableshape"]
+entities-debris_1_floor_a = ["sc-extract-generated/entities-debris_1_floor_a"]
+entities-debris_1_floor_b = ["sc-extract-generated/entities-debris_1_floor_b"]
+entities-debris_1_floor_c = ["sc-extract-generated/entities-debris_1_floor_c"]
+entities-debris_1_floor_d = ["sc-extract-generated/entities-debris_1_floor_d"]
+entities-debris_1_floor_e = ["sc-extract-generated/entities-debris_1_floor_e"]
+entities-debris_1_floor_f = ["sc-extract-generated/entities-debris_1_floor_f"]
+entities-decorations = ["sc-extract-generated/entities-decorations"]
+entities-default = ["sc-extract-generated/entities-default"]
+entities-defaultwithaudio = ["sc-extract-generated/entities-defaultwithaudio"]
+entities-defendarea = ["sc-extract-generated/entities-defendarea"]
+entities-destruction = ["sc-extract-generated/entities-destruction"]
+entities-dev = ["sc-extract-generated/entities-dev"]
+entities-displayscreens = ["sc-extract-generated/entities-displayscreens"]
+entities-ea = ["sc-extract-generated/entities-ea"]
+entities-editorcamera = ["sc-extract-generated/entities-editorcamera"]
+entities-energysource = ["sc-extract-generated/entities-energysource"]
+entities-entityclassdefinition_actionarea = ["sc-extract-generated/entities-entityclassdefinition_actionarea"]
+entities-entityclassdefinition_cinematictrigger = ["sc-extract-generated/entities-entityclassdefinition_cinematictrigger"]
+entities-entityclassdefinition_colorgradient = ["sc-extract-generated/entities-entityclassdefinition_colorgradient"]
+entities-entityclassdefinition_commententity = ["sc-extract-generated/entities-entityclassdefinition_commententity"]
+entities-entityclassdefinition_explosion = ["sc-extract-generated/entities-entityclassdefinition_explosion"]
+entities-entityclassdefinition_hint = ["sc-extract-generated/entities-entityclassdefinition_hint"]
+entities-entityclassdefinition_holographicvolume = ["sc-extract-generated/entities-entityclassdefinition_holographicvolume"]
+entities-entityclassdefinition_missionentity = ["sc-extract-generated/entities-entityclassdefinition_missionentity"]
+entities-entityclassdefinition_navpoint_general = ["sc-extract-generated/entities-entityclassdefinition_navpoint_general"]
+entities-entityclassdefinition_pointofinterestprovider = ["sc-extract-generated/entities-entityclassdefinition_pointofinterestprovider"]
+entities-entityclassdefinition_proceduralpointofinterestproxy = ["sc-extract-generated/entities-entityclassdefinition_proceduralpointofinterestproxy"]
+entities-entityclassdefinition_racecheckpoint = ["sc-extract-generated/entities-entityclassdefinition_racecheckpoint"]
+entities-entityclassdefinition_rendertotextureview = ["sc-extract-generated/entities-entityclassdefinition_rendertotextureview"]
+entities-entityclassdefinition_rotationsimple = ["sc-extract-generated/entities-entityclassdefinition_rotationsimple"]
+entities-entityclassdefinition_screen_9x16_1_a = ["sc-extract-generated/entities-entityclassdefinition_screen_9x16_1_a"]
+entities-entityclassdefinition_scshop = ["sc-extract-generated/entities-entityclassdefinition_scshop"]
+entities-entityclassdefinition_shipselectorkiosk = ["sc-extract-generated/entities-entityclassdefinition_shipselectorkiosk"]
+entities-entityclassdefinition_shipselectorkiosk_levskiground = ["sc-extract-generated/entities-entityclassdefinition_shipselectorkiosk_levskiground"]
+entities-entityclassdefinition_shipselectorkiosk_levskiships = ["sc-extract-generated/entities-entityclassdefinition_shipselectorkiosk_levskiships"]
+entities-entityclassdefinition_shipselectorkiosk_v001 = ["sc-extract-generated/entities-entityclassdefinition_shipselectorkiosk_v001"]
+entities-entityclassdefinition_shipselectorkiosk_v002 = ["sc-extract-generated/entities-entityclassdefinition_shipselectorkiosk_v002"]
+entities-entityclassdefinition_shopkiosk = ["sc-extract-generated/entities-entityclassdefinition_shopkiosk"]
+entities-entityclassdefinition_shoppingkiosk = ["sc-extract-generated/entities-entityclassdefinition_shoppingkiosk"]
+entities-entityclassdefinition_spawnpoint = ["sc-extract-generated/entities-entityclassdefinition_spawnpoint"]
+entities-entityclassdefinition_spawnprotectionbarrier = ["sc-extract-generated/entities-entityclassdefinition_spawnprotectionbarrier"]
+entities-entityclassdefinition_spectatorpoint = ["sc-extract-generated/entities-entityclassdefinition_spectatorpoint"]
+entities-entityclassdefinition_tilesocket = ["sc-extract-generated/entities-entityclassdefinition_tilesocket"]
+entities-entityealockedspawnlocation = ["sc-extract-generated/entities-entityealockedspawnlocation"]
+entities-entityeaspawnlocation = ["sc-extract-generated/entities-entityeaspawnlocation"]
+entities-entityspawncameracontroller = ["sc-extract-generated/entities-entityspawncameracontroller"]
+entities-entityspawners = ["sc-extract-generated/entities-entityspawners"]
+entities-environment = ["sc-extract-generated/entities-environment"]
+entities-environmentscreen = ["sc-extract-generated/entities-environmentscreen"]
+entities-fan_prisonbroken = ["sc-extract-generated/entities-fan_prisonbroken"]
+entities-flair_radegast_whiskey_concierge = ["sc-extract-generated/entities-flair_radegast_whiskey_concierge"]
+entities-fronthud_center = ["sc-extract-generated/entities-fronthud_center"]
+entities-fronthud_displaymanager = ["sc-extract-generated/entities-fronthud_displaymanager"]
+entities-fronthud_left = ["sc-extract-generated/entities-fronthud_left"]
+entities-fronthud_right = ["sc-extract-generated/entities-fronthud_right"]
+entities-fronthud_top = ["sc-extract-generated/entities-fronthud_top"]
+entities-gamerulessingleton = ["sc-extract-generated/entities-gamerulessingleton"]
+entities-gamevolumecomponent = ["sc-extract-generated/entities-gamevolumecomponent"]
+entities-gascloud = ["sc-extract-generated/entities-gascloud"]
+entities-geomentity = ["sc-extract-generated/entities-geomentity"]
+entities-geomentity_areatrigger = ["sc-extract-generated/entities-geomentity_areatrigger"]
+entities-geomentity_dynamicobstacle = ["sc-extract-generated/entities-geomentity_dynamicobstacle"]
+entities-geomentity_interactablelinked = ["sc-extract-generated/entities-geomentity_interactablelinked"]
+entities-geomentity_nophysics = ["sc-extract-generated/entities-geomentity_nophysics"]
+entities-geomentity_repairable = ["sc-extract-generated/entities-geomentity_repairable"]
+entities-geomentity_rttui = ["sc-extract-generated/entities-geomentity_rttui"]
+entities-geomentity_rttuiwithaudio = ["sc-extract-generated/entities-geomentity_rttuiwithaudio"]
+entities-geomentity_static = ["sc-extract-generated/entities-geomentity_static"]
+entities-geometryinstancer = ["sc-extract-generated/entities-geometryinstancer"]
+entities-gotopointentity = ["sc-extract-generated/entities-gotopointentity"]
+entities-groundvehicles = ["sc-extract-generated/entities-groundvehicles"]
+entities-hackable = ["sc-extract-generated/entities-hackable"]
+entities-handholdobject = ["sc-extract-generated/entities-handholdobject"]
+entities-handholdobject_linkable = ["sc-extract-generated/entities-handholdobject_linkable"]
+entities-haulingentityclass = ["sc-extract-generated/entities-haulingentityclass"]
+entities-hazardzones = ["sc-extract-generated/entities-hazardzones"]
+entities-hearingperceptionarea = ["sc-extract-generated/entities-hearingperceptionarea"]
+entities-helpers = ["sc-extract-generated/entities-helpers"]
+entities-holofield = ["sc-extract-generated/entities-holofield"]
+entities-ht_table_bar_1_a = ["sc-extract-generated/entities-ht_table_bar_1_a"]
+entities-impactcrater = ["sc-extract-generated/entities-impactcrater"]
+entities-inventoryplaceholder = ["sc-extract-generated/entities-inventoryplaceholder"]
+entities-irradiatedhazardzone = ["sc-extract-generated/entities-irradiatedhazardzone"]
+entities-itemport3drepresentation = ["sc-extract-generated/entities-itemport3drepresentation"]
+entities-jumppoints = ["sc-extract-generated/entities-jumppoints"]
+entities-kegr_roomhelper = ["sc-extract-generated/entities-kegr_roomhelper"]
+entities-kiosk_mercury_anniversary_slides_16x9 = ["sc-extract-generated/entities-kiosk_mercury_anniversary_slides_16x9"]
+entities-ladder = ["sc-extract-generated/entities-ladder"]
+entities-landinguientity = ["sc-extract-generated/entities-landinguientity"]
+entities-ledgeobject = ["sc-extract-generated/entities-ledgeobject"]
+entities-ledgeobjectusable = ["sc-extract-generated/entities-ledgeobjectusable"]
+entities-legacyitems = ["sc-extract-generated/entities-legacyitems"]
+entities-lights = ["sc-extract-generated/entities-lights"]
+entities-loadingplatformmanager = ["sc-extract-generated/entities-loadingplatformmanager"]
+entities-locationmanager = ["sc-extract-generated/entities-locationmanager"]
+entities-locationtemplate = ["sc-extract-generated/entities-locationtemplate"]
+entities-lt_hab_bathroom_1_a = ["sc-extract-generated/entities-lt_hab_bathroom_1_a"]
+entities-maglaunch = ["sc-extract-generated/entities-maglaunch"]
+entities-mastercontrollerentities = ["sc-extract-generated/entities-mastercontrollerentities"]
+entities-mineable = ["sc-extract-generated/entities-mineable"]
+entities-missionlocationmanager = ["sc-extract-generated/entities-missionlocationmanager"]
+entities-missionlocationtemplate = ["sc-extract-generated/entities-missionlocationtemplate"]
+entities-missionobjectivemarker = ["sc-extract-generated/entities-missionobjectivemarker"]
+entities-missionsystem = ["sc-extract-generated/entities-missionsystem"]
+entities-monitoredzone = ["sc-extract-generated/entities-monitoredzone"]
+entities-navpoint_dynamic = ["sc-extract-generated/entities-navpoint_dynamic"]
+entities-navpoint_dynamic_spawnedbarge = ["sc-extract-generated/entities-navpoint_dynamic_spawnedbarge"]
+entities-navpoint_interdictedentity = ["sc-extract-generated/entities-navpoint_interdictedentity"]
+entities-navpoint_subpoint0 = ["sc-extract-generated/entities-navpoint_subpoint0"]
+entities-navpoint_subpoint1 = ["sc-extract-generated/entities-navpoint_subpoint1"]
+entities-navpoint_subpoint2 = ["sc-extract-generated/entities-navpoint_subpoint2"]
+entities-navpoint_subpoint3 = ["sc-extract-generated/entities-navpoint_subpoint3"]
+entities-navpoint_subpoint4 = ["sc-extract-generated/entities-navpoint_subpoint4"]
+entities-navpoint_subpoint5 = ["sc-extract-generated/entities-navpoint_subpoint5"]
+entities-objectcontainerrotating = ["sc-extract-generated/entities-objectcontainerrotating"]
+entities-objectcontainers = ["sc-extract-generated/entities-objectcontainers"]
+entities-oscillationsimple = ["sc-extract-generated/entities-oscillationsimple"]
+entities-others = ["sc-extract-generated/entities-others"]
+entities-parkingroute = ["sc-extract-generated/entities-parkingroute"]
+entities-partymembermarker = ["sc-extract-generated/entities-partymembermarker"]
+entities-patrolgraph = ["sc-extract-generated/entities-patrolgraph"]
+entities-patrolgraphlink = ["sc-extract-generated/entities-patrolgraphlink"]
+entities-patrolpoint = ["sc-extract-generated/entities-patrolpoint"]
+entities-perceptionmodifierarea = ["sc-extract-generated/entities-perceptionmodifierarea"]
+entities-physicalizedjobboard = ["sc-extract-generated/entities-physicalizedjobboard"]
+entities-physics = ["sc-extract-generated/entities-physics"]
+entities-planetkillvolume = ["sc-extract-generated/entities-planetkillvolume"]
+entities-playerscoresmanager = ["sc-extract-generated/entities-playerscoresmanager"]
+entities-precachecamera = ["sc-extract-generated/entities-precachecamera"]
+entities-projectilespawnerentity = ["sc-extract-generated/entities-projectilespawnerentity"]
+entities-prop_digitalclock = ["sc-extract-generated/entities-prop_digitalclock"]
+entities-proximityassistmodifier = ["sc-extract-generated/entities-proximityassistmodifier"]
+entities-quantumcolorshift = ["sc-extract-generated/entities-quantumcolorshift"]
+entities-quantumtrail = ["sc-extract-generated/entities-quantumtrail"]
+entities-racering = ["sc-extract-generated/entities-racering"]
+entities-radarscanning = ["sc-extract-generated/entities-radarscanning"]
+entities-rastar = ["sc-extract-generated/entities-rastar"]
+entities-refinery = ["sc-extract-generated/entities-refinery"]
+entities-refuelatmospheres = ["sc-extract-generated/entities-refuelatmospheres"]
+entities-render = ["sc-extract-generated/entities-render"]
+entities-rendertotextureareamaphelperview = ["sc-extract-generated/entities-rendertotextureareamaphelperview"]
+entities-restricted_areas = ["sc-extract-generated/entities-restricted_areas"]
+entities-restrictedareaboundarymesh = ["sc-extract-generated/entities-restrictedareaboundarymesh"]
+entities-restrictedareavisibleboundarymesh = ["sc-extract-generated/entities-restrictedareavisibleboundarymesh"]
+entities-roomsystem = ["sc-extract-generated/entities-roomsystem"]
+entities-safeteleportpoint = ["sc-extract-generated/entities-safeteleportpoint"]
+entities-safeteleportpoint_npc = ["sc-extract-generated/entities-safeteleportpoint_npc"]
+entities-salvagable = ["sc-extract-generated/entities-salvagable"]
+entities-scarmorymanager = ["sc-extract-generated/entities-scarmorymanager"]
+entities-schedulearea = ["sc-extract-generated/entities-schedulearea"]
+entities-scitem-access = ["sc-extract-generated/entities-scitem-access"]
+entities-scitem-actormovables = ["sc-extract-generated/entities-scitem-actormovables"]
+entities-scitem-aimodule_atc_grimhex = ["sc-extract-generated/entities-scitem-aimodule_atc_grimhex"]
+entities-scitem-aimodule_atc_levskiatc01 = ["sc-extract-generated/entities-scitem-aimodule_atc_levskiatc01"]
+entities-scitem-aimodule_atc_lorvilleatc01 = ["sc-extract-generated/entities-scitem-aimodule_atc_lorvilleatc01"]
+entities-scitem-aimodule_atc_newbabbage = ["sc-extract-generated/entities-scitem-aimodule_atc_newbabbage"]
+entities-scitem-aimodule_atc_newbabbageatc01 = ["sc-extract-generated/entities-scitem-aimodule_atc_newbabbageatc01"]
+entities-scitem-aimodule_atc_orisonatc01 = ["sc-extract-generated/entities-scitem-aimodule_atc_orisonatc01"]
+entities-scitem-aimodule_atc_systematc01 = ["sc-extract-generated/entities-scitem-aimodule_atc_systematc01"]
+entities-scitem-aimodule_cargo = ["sc-extract-generated/entities-scitem-aimodule_cargo"]
+entities-scitem-aimodule_collector = ["sc-extract-generated/entities-scitem-aimodule_collector"]
+entities-scitem-aimodule_genatc02 = ["sc-extract-generated/entities-scitem-aimodule_genatc02"]
+entities-scitem-aimodule_pyro = ["sc-extract-generated/entities-scitem-aimodule_pyro"]
+entities-scitem-aimodule_silent_atc = ["sc-extract-generated/entities-scitem-aimodule_silent_atc"]
+entities-scitem-airlocks = ["sc-extract-generated/entities-scitem-airlocks"]
+entities-scitem-ammocrates = ["sc-extract-generated/entities-scitem-ammocrates"]
+entities-scitem-arenacommander = ["sc-extract-generated/entities-scitem-arenacommander"]
+entities-scitem-atc = ["sc-extract-generated/entities-scitem-atc"]
+entities-scitem-atc_datamanager_outpostplatinumbay = ["sc-extract-generated/entities-scitem-atc_datamanager_outpostplatinumbay"]
+entities-scitem-atc_datamanager_port_lawful = ["sc-extract-generated/entities-scitem-atc_datamanager_port_lawful"]
+entities-scitem-atc_datamanager_port_semilawful = ["sc-extract-generated/entities-scitem-atc_datamanager_port_semilawful"]
+entities-scitem-atc_datamanager_port_unlawful = ["sc-extract-generated/entities-scitem-atc_datamanager_port_unlawful"]
+entities-scitem-audiolog = ["sc-extract-generated/entities-scitem-audiolog"]
+entities-scitem-beer_can = ["sc-extract-generated/entities-scitem-beer_can"]
+entities-scitem-bottle_liquor = ["sc-extract-generated/entities-scitem-bottle_liquor"]
+entities-scitem-cargo = ["sc-extract-generated/entities-scitem-cargo"]
+entities-scitem-carryables = ["sc-extract-generated/entities-scitem-carryables"]
+entities-scitem-characters = ["sc-extract-generated/entities-scitem-characters"]
+entities-scitem-chipsets = ["sc-extract-generated/entities-scitem-chipsets"]
+entities-scitem-commsreceiver = ["sc-extract-generated/entities-scitem-commsreceiver"]
+entities-scitem-commsspeaker = ["sc-extract-generated/entities-scitem-commsspeaker"]
+entities-scitem-consumables = ["sc-extract-generated/entities-scitem-consumables"]
+entities-scitem-controlpanels = ["sc-extract-generated/entities-scitem-controlpanels"]
+entities-scitem-counter_shop_2m_casaba_b = ["sc-extract-generated/entities-scitem-counter_shop_2m_casaba_b"]
+entities-scitem-counter_shop_2m_casaba_c = ["sc-extract-generated/entities-scitem-counter_shop_2m_casaba_c"]
+entities-scitem-counter_shop_2m_casaba_d = ["sc-extract-generated/entities-scitem-counter_shop_2m_casaba_d"]
+entities-scitem-decals = ["sc-extract-generated/entities-scitem-decals"]
+entities-scitem-default_lensdisplay = ["sc-extract-generated/entities-scitem-default_lensdisplay"]
+entities-scitem-default_lensdisplay_pu = ["sc-extract-generated/entities-scitem-default_lensdisplay_pu"]
+entities-scitem-deliveryitemportmanager = ["sc-extract-generated/entities-scitem-deliveryitemportmanager"]
+entities-scitem-doors = ["sc-extract-generated/entities-scitem-doors"]
+entities-scitem-energy = ["sc-extract-generated/entities-scitem-energy"]
+entities-scitem-entityclassdefinition_aimodule_atc = ["sc-extract-generated/entities-scitem-entityclassdefinition_aimodule_atc"]
+entities-scitem-entityclassdefinition_atc_datamanager = ["sc-extract-generated/entities-scitem-entityclassdefinition_atc_datamanager"]
+entities-scitem-entityclassdefinition_atc_operatoraimodule = ["sc-extract-generated/entities-scitem-entityclassdefinition_atc_operatoraimodule"]
+entities-scitem-entityclassdefinition_bar_mmhc_glass_coke_empty = ["sc-extract-generated/entities-scitem-entityclassdefinition_bar_mmhc_glass_coke_empty"]
+entities-scitem-entityclassdefinition_glass_tumbler_1_a = ["sc-extract-generated/entities-scitem-entityclassdefinition_glass_tumbler_1_a"]
+entities-scitem-entityclassdefinition_glass_tumbler_2_a = ["sc-extract-generated/entities-scitem-entityclassdefinition_glass_tumbler_2_a"]
+entities-scitem-entityclassdefinition_janitormob = ["sc-extract-generated/entities-scitem-entityclassdefinition_janitormob"]
+entities-scitem-entityclassdefinition_lightgroupitem = ["sc-extract-generated/entities-scitem-entityclassdefinition_lightgroupitem"]
+entities-scitem-entityclassdefinition_lightgrouppowereditem = ["sc-extract-generated/entities-scitem-entityclassdefinition_lightgrouppowereditem"]
+entities-scitem-entityclassdefinition_morrowtour = ["sc-extract-generated/entities-scitem-entityclassdefinition_morrowtour"]
+entities-scitem-entityclassdefinition_satellite_power_plant_test = ["sc-extract-generated/entities-scitem-entityclassdefinition_satellite_power_plant_test"]
+entities-scitem-entityclassdefinition_sequenceobjectitem = ["sc-extract-generated/entities-scitem-entityclassdefinition_sequenceobjectitem"]
+entities-scitem-entityclassdefinition_shelve_invisible_4x4 = ["sc-extract-generated/entities-scitem-entityclassdefinition_shelve_invisible_4x4"]
+entities-scitem-entityclassdefinition_simplestool = ["sc-extract-generated/entities-scitem-entityclassdefinition_simplestool"]
+entities-scitem-entityclassdefinition_simpletoilet = ["sc-extract-generated/entities-scitem-entityclassdefinition_simpletoilet"]
+entities-scitem-entityclassdefinition_stool_template = ["sc-extract-generated/entities-scitem-entityclassdefinition_stool_template"]
+entities-scitem-entityclassdefinition_tablet = ["sc-extract-generated/entities-scitem-entityclassdefinition_tablet"]
+entities-scitem-entityclassdefinition_tablet_small = ["sc-extract-generated/entities-scitem-entityclassdefinition_tablet_small"]
+entities-scitem-entityclassdefinition_test_gadget = ["sc-extract-generated/entities-scitem-entityclassdefinition_test_gadget"]
+entities-scitem-entityclassdefinition_test_mug = ["sc-extract-generated/entities-scitem-entityclassdefinition_test_mug"]
+entities-scitem-entityclassdefinition_test_mug_carryable = ["sc-extract-generated/entities-scitem-entityclassdefinition_test_mug_carryable"]
+entities-scitem-entityclassdefinition_test_shelf = ["sc-extract-generated/entities-scitem-entityclassdefinition_test_shelf"]
+entities-scitem-entityclassdefinition_test_shelf_missionblackboxdropoff = ["sc-extract-generated/entities-scitem-entityclassdefinition_test_shelf_missionblackboxdropoff"]
+entities-scitem-entityclassdefinition_test_station_power_plant = ["sc-extract-generated/entities-scitem-entityclassdefinition_test_station_power_plant"]
+entities-scitem-entityclassdefinition_testinteractionstatemachine = ["sc-extract-generated/entities-scitem-entityclassdefinition_testinteractionstatemachine"]
+entities-scitem-environments = ["sc-extract-generated/entities-scitem-environments"]
+entities-scitem-externalinventory = ["sc-extract-generated/entities-scitem-externalinventory"]
+entities-scitem-fauna = ["sc-extract-generated/entities-scitem-fauna"]
+entities-scitem-flair = ["sc-extract-generated/entities-scitem-flair"]
+entities-scitem-fps_devices = ["sc-extract-generated/entities-scitem-fps_devices"]
+entities-scitem-freightelevators = ["sc-extract-generated/entities-scitem-freightelevators"]
+entities-scitem-gameplayinteractables = ["sc-extract-generated/entities-scitem-gameplayinteractables"]
+entities-scitem-geom_entity_template = ["sc-extract-generated/entities-scitem-geom_entity_template"]
+entities-scitem-glass_alcohol = ["sc-extract-generated/entities-scitem-glass_alcohol"]
+entities-scitem-handcuffs = ["sc-extract-generated/entities-scitem-handcuffs"]
+entities-scitem-harvestables = ["sc-extract-generated/entities-scitem-harvestables"]
+entities-scitem-holoui = ["sc-extract-generated/entities-scitem-holoui"]
+entities-scitem-human = ["sc-extract-generated/entities-scitem-human"]
+entities-scitem-innerthought_dummies = ["sc-extract-generated/entities-scitem-innerthought_dummies"]
+entities-scitem-itembanks = ["sc-extract-generated/entities-scitem-itembanks"]
+entities-scitem-lerpmoveentity = ["sc-extract-generated/entities-scitem-lerpmoveentity"]
+entities-scitem-lifesupport = ["sc-extract-generated/entities-scitem-lifesupport"]
+entities-scitem-locations = ["sc-extract-generated/entities-scitem-locations"]
+entities-scitem-lootables = ["sc-extract-generated/entities-scitem-lootables"]
+entities-scitem-mastermodeexclusionglobalparams = ["sc-extract-generated/entities-scitem-mastermodeexclusionglobalparams"]
+entities-scitem-mission_entities = ["sc-extract-generated/entities-scitem-mission_entities"]
+entities-scitem-missionstorage = ["sc-extract-generated/entities-scitem-missionstorage"]
+entities-scitem-movable_bridge = ["sc-extract-generated/entities-scitem-movable_bridge"]
+entities-scitem-movable_bridge_plank = ["sc-extract-generated/entities-scitem-movable_bridge_plank"]
+entities-scitem-movable_plank_pallet_0250x0125x00125 = ["sc-extract-generated/entities-scitem-movable_plank_pallet_0250x0125x00125"]
+entities-scitem-movable_plank_pallet_0350x0125x00125 = ["sc-extract-generated/entities-scitem-movable_plank_pallet_0350x0125x00125"]
+entities-scitem-movable_plank_pallet_0450x0125x00125 = ["sc-extract-generated/entities-scitem-movable_plank_pallet_0450x0125x00125"]
+entities-scitem-navigationlinks = ["sc-extract-generated/entities-scitem-navigationlinks"]
+entities-scitem-nonusables = ["sc-extract-generated/entities-scitem-nonusables"]
+entities-scitem-openableobject = ["sc-extract-generated/entities-scitem-openableobject"]
+entities-scitem-operatormoderecords = ["sc-extract-generated/entities-scitem-operatormoderecords"]
+entities-scitem-orbgn = ["sc-extract-generated/entities-scitem-orbgn"]
+entities-scitem-orcaobstacle = ["sc-extract-generated/entities-scitem-orcaobstacle"]
+entities-scitem-placeholder = ["sc-extract-generated/entities-scitem-placeholder"]
+entities-scitem-prop = ["sc-extract-generated/entities-scitem-prop"]
+entities-scitem-prototypeentities = ["sc-extract-generated/entities-scitem-prototypeentities"]
+entities-scitem-remoteconnectionreceiver = ["sc-extract-generated/entities-scitem-remoteconnectionreceiver"]
+entities-scitem-rotationsimple = ["sc-extract-generated/entities-scitem-rotationsimple"]
+entities-scitem-salvageablerepairable = ["sc-extract-generated/entities-scitem-salvageablerepairable"]
+entities-scitem-scitem_debris = ["sc-extract-generated/entities-scitem-scitem_debris"]
+entities-scitem-scitemdisplayscreen = ["sc-extract-generated/entities-scitem-scitemdisplayscreen"]
+entities-scitem-ship_weapon_ammo_racks = ["sc-extract-generated/entities-scitem-ship_weapon_ammo_racks"]
 entities-scitem-ships = ["sc-extract-generated/entities-scitem-ships"]
+entities-scitem-shopdisplays = ["sc-extract-generated/entities-scitem-shopdisplays"]
+entities-scitem-simpleanimators = ["sc-extract-generated/entities-scitem-simpleanimators"]
+entities-scitem-simpleopenableobject_ammo_box_generic = ["sc-extract-generated/entities-scitem-simpleopenableobject_ammo_box_generic"]
+entities-scitem-simpleopenableobject_bathroom_shower = ["sc-extract-generated/entities-scitem-simpleopenableobject_bathroom_shower"]
+entities-scitem-simpleopenableobject_bathroom_sink = ["sc-extract-generated/entities-scitem-simpleopenableobject_bathroom_sink"]
+entities-scitem-simpleopenableobject_bathroom_storage = ["sc-extract-generated/entities-scitem-simpleopenableobject_bathroom_storage"]
+entities-scitem-simpleopenableobject_bathroom_toilet = ["sc-extract-generated/entities-scitem-simpleopenableobject_bathroom_toilet"]
+entities-scitem-simpleopenableobject_cnou_mustang_cargobox_door = ["sc-extract-generated/entities-scitem-simpleopenableobject_cnou_mustang_cargobox_door"]
+entities-scitem-simpleopenableobject_col_a_radial_kitchen_counter_set_a_cupboard_doors_a = ["sc-extract-generated/entities-scitem-simpleopenableobject_col_a_radial_kitchen_counter_set_a_cupboard_doors_a"]
+entities-scitem-simpleopenableobject_col_a_radial_kitchen_counter_set_a_cupboard_drawers_a = ["sc-extract-generated/entities-scitem-simpleopenableobject_col_a_radial_kitchen_counter_set_a_cupboard_drawers_a"]
+entities-scitem-simpleopenableobject_col_a_radial_kitchen_counter_set_a_oven_a = ["sc-extract-generated/entities-scitem-simpleopenableobject_col_a_radial_kitchen_counter_set_a_oven_a"]
+entities-scitem-simpleopenableobject_col_a_radial_kitchen_counter_set_a_oven_a_lid_a = ["sc-extract-generated/entities-scitem-simpleopenableobject_col_a_radial_kitchen_counter_set_a_oven_a_lid_a"]
+entities-scitem-simpleopenableobject_col_a_shutters_a = ["sc-extract-generated/entities-scitem-simpleopenableobject_col_a_shutters_a"]
+entities-scitem-simpleopenableobject_col_a_shutters_b = ["sc-extract-generated/entities-scitem-simpleopenableobject_col_a_shutters_b"]
+entities-scitem-simpleopenableobject_col_a_shutters_c = ["sc-extract-generated/entities-scitem-simpleopenableobject_col_a_shutters_c"]
+entities-scitem-simpleopenableobject_col_a_shutters_d = ["sc-extract-generated/entities-scitem-simpleopenableobject_col_a_shutters_d"]
+entities-scitem-simpleopenableobject_habmodule_foldingtable = ["sc-extract-generated/entities-scitem-simpleopenableobject_habmodule_foldingtable"]
+entities-scitem-simpleopenableobject_habmodule_kitchendoor = ["sc-extract-generated/entities-scitem-simpleopenableobject_habmodule_kitchendoor"]
+entities-scitem-simpleopenableobject_habmodule_storagedoor = ["sc-extract-generated/entities-scitem-simpleopenableobject_habmodule_storagedoor"]
+entities-scitem-simpleopenableobject_habmodule_storagetray = ["sc-extract-generated/entities-scitem-simpleopenableobject_habmodule_storagetray"]
+entities-scitem-simpleopenableobject_habmodule_toiletdoor = ["sc-extract-generated/entities-scitem-simpleopenableobject_habmodule_toiletdoor"]
+entities-scitem-simpleopenableobject_screenarticulated = ["sc-extract-generated/entities-scitem-simpleopenableobject_screenarticulated"]
+entities-scitem-simpleopenableobject_template = ["sc-extract-generated/entities-scitem-simpleopenableobject_template"]
+entities-scitem-spawers = ["sc-extract-generated/entities-scitem-spawers"]
+entities-scitem-spawning = ["sc-extract-generated/entities-scitem-spawning"]
+entities-scitem-starmarine = ["sc-extract-generated/entities-scitem-starmarine"]
+entities-scitem-storage = ["sc-extract-generated/entities-scitem-storage"]
+entities-scitem-storagecage = ["sc-extract-generated/entities-scitem-storagecage"]
+entities-scitem-suit = ["sc-extract-generated/entities-scitem-suit"]
+entities-scitem-template = ["sc-extract-generated/entities-scitem-template"]
+entities-scitem-template_cuttableinteractable = ["sc-extract-generated/entities-scitem-template_cuttableinteractable"]
+entities-scitem-template_cuttableinteractable_surfacerelay = ["sc-extract-generated/entities-scitem-template_cuttableinteractable_surfacerelay"]
+entities-scitem-test_ruto_projector = ["sc-extract-generated/entities-scitem-test_ruto_projector"]
+entities-scitem-toggleableentities = ["sc-extract-generated/entities-scitem-toggleableentities"]
+entities-scitem-ui_environmentscreen_phoenix_attractanim = ["sc-extract-generated/entities-scitem-ui_environmentscreen_phoenix_attractanim"]
+entities-scitem-ui_environmentscreen_phoenix_attractanim_small = ["sc-extract-generated/entities-scitem-ui_environmentscreen_phoenix_attractanim_small"]
+entities-scitem-ui_environmentscreen_phoenix_elevatorpanel_bottom = ["sc-extract-generated/entities-scitem-ui_environmentscreen_phoenix_elevatorpanel_bottom"]
+entities-scitem-ui_environmentscreen_phoenix_elevatorpanel_top = ["sc-extract-generated/entities-scitem-ui_environmentscreen_phoenix_elevatorpanel_top"]
+entities-scitem-ui_environmentscreen_phoenix_interactionpanel = ["sc-extract-generated/entities-scitem-ui_environmentscreen_phoenix_interactionpanel"]
+entities-scitem-ui_flash_screen = ["sc-extract-generated/entities-scitem-ui_flash_screen"]
 entities-scitem-usables = ["sc-extract-generated/entities-scitem-usables"]
+entities-scitem-vehicles = ["sc-extract-generated/entities-scitem-vehicles"]
+entities-scitem-weaponmounts = ["sc-extract-generated/entities-scitem-weaponmounts"]
+entities-scitem-weapons = ["sc-extract-generated/entities-scitem-weapons"]
+entities-screenattachment = ["sc-extract-generated/entities-screenattachment"]
+entities-servicebeaconnavpoint = ["sc-extract-generated/entities-servicebeaconnavpoint"]
+entities-shadowregionentity = ["sc-extract-generated/entities-shadowregionentity"]
+entities-shipselectorkiosk_genatc02 = ["sc-extract-generated/entities-shipselectorkiosk_genatc02"]
+entities-shipselectorkiosk_grimhex = ["sc-extract-generated/entities-shipselectorkiosk_grimhex"]
+entities-shipselectorkiosk_groundvehiclesonly = ["sc-extract-generated/entities-shipselectorkiosk_groundvehiclesonly"]
+entities-shipselectorkiosk_hangar_hightech_1_a = ["sc-extract-generated/entities-shipselectorkiosk_hangar_hightech_1_a"]
+entities-shipselectorkiosk_hangar_lowtech_1_a = ["sc-extract-generated/entities-shipselectorkiosk_hangar_lowtech_1_a"]
+entities-shipselectorkiosk_hangar_lowtech_1_b = ["sc-extract-generated/entities-shipselectorkiosk_hangar_lowtech_1_b"]
+entities-shipselectorkiosk_hangar_lowtech_2_a = ["sc-extract-generated/entities-shipselectorkiosk_hangar_lowtech_2_a"]
+entities-shipselectorkiosk_hangar_lowtech_2_b = ["sc-extract-generated/entities-shipselectorkiosk_hangar_lowtech_2_b"]
+entities-shipselectorkiosk_levski = ["sc-extract-generated/entities-shipselectorkiosk_levski"]
+entities-shipselectorkiosk_lorville = ["sc-extract-generated/entities-shipselectorkiosk_lorville"]
+entities-shipselectorkiosk_lorvilleground = ["sc-extract-generated/entities-shipselectorkiosk_lorvilleground"]
+entities-shipselectorkiosk_newbab = ["sc-extract-generated/entities-shipselectorkiosk_newbab"]
+entities-shipselectorkiosk_outpostground = ["sc-extract-generated/entities-shipselectorkiosk_outpostground"]
+entities-shipselectorkiosk_pyro = ["sc-extract-generated/entities-shipselectorkiosk_pyro"]
+entities-shipselectorkiosk_shipsonly = ["sc-extract-generated/entities-shipselectorkiosk_shipsonly"]
+entities-shipselectorkiosk_shipsonly_area18 = ["sc-extract-generated/entities-shipselectorkiosk_shipsonly_area18"]
+entities-shipselectorkiosk_shipsonly_orison = ["sc-extract-generated/entities-shipselectorkiosk_shipsonly_orison"]
+entities-shipselectorkiosk_shipsonly_reststop = ["sc-extract-generated/entities-shipselectorkiosk_shipsonly_reststop"]
+entities-shipselectorkiosk_test = ["sc-extract-generated/entities-shipselectorkiosk_test"]
+entities-simpleobjectcontainer = ["sc-extract-generated/entities-simpleobjectcontainer"]
+entities-slotspawnpoint = ["sc-extract-generated/entities-slotspawnpoint"]
+entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a = ["sc-extract-generated/entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a"]
+entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a = ["sc-extract-generated/entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a"]
+entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a_extractonly = ["sc-extract-generated/entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a_extractonly"]
+entities-spaceships = ["sc-extract-generated/entities-spaceships"]
+entities-spawncloset = ["sc-extract-generated/entities-spawncloset"]
+entities-spawncloset_ships = ["sc-extract-generated/entities-spawncloset_ships"]
+entities-spawncloset_ships_javelin = ["sc-extract-generated/entities-spawncloset_ships_javelin"]
+entities-spawnclosetmanager = ["sc-extract-generated/entities-spawnclosetmanager"]
+entities-spawnedactionarea = ["sc-extract-generated/entities-spawnedactionarea"]
+entities-spawnhelper = ["sc-extract-generated/entities-spawnhelper"]
+entities-starfield = ["sc-extract-generated/entities-starfield"]
+entities-streamingobjectcontainer = ["sc-extract-generated/entities-streamingobjectcontainer"]
+entities-sunlight = ["sc-extract-generated/entities-sunlight"]
+entities-table_booth_circularbar_direct_8_seat = ["sc-extract-generated/entities-table_booth_circularbar_direct_8_seat"]
+entities-table_booth_utilitarian_4_seat = ["sc-extract-generated/entities-table_booth_utilitarian_4_seat"]
+entities-tagpoint = ["sc-extract-generated/entities-tagpoint"]
+entities-test = ["sc-extract-generated/entities-test"]
+entities-tinymachine = ["sc-extract-generated/entities-tinymachine"]
+entities-trackview = ["sc-extract-generated/entities-trackview"]
+entities-trackviewuser = ["sc-extract-generated/entities-trackviewuser"]
 entities-ui = ["sc-extract-generated/entities-ui"]
+entities-unattendedvehiclemarker = ["sc-extract-generated/entities-unattendedvehiclemarker"]
+entities-uniqueplayercamera = ["sc-extract-generated/entities-uniqueplayercamera"]
+entities-usablegroup = ["sc-extract-generated/entities-usablegroup"]
+entities-usablegroupcoordinator = ["sc-extract-generated/entities-usablegroupcoordinator"]
+entities-vehicleobjectcontainer = ["sc-extract-generated/entities-vehicleobjectcontainer"]
 entities-vfx = ["sc-extract-generated/entities-vfx"]
+entities-vlk_adult_body = ["sc-extract-generated/entities-vlk_adult_body"]
+entities-vlk_apex_body = ["sc-extract-generated/entities-vlk_apex_body"]
+entities-vlk_apex_irradiated_body = ["sc-extract-generated/entities-vlk_apex_irradiated_body"]
+entities-vlk_juvenile_body = ["sc-extract-generated/entities-vlk_juvenile_body"]
+entities-watervolume = ["sc-extract-generated/entities-watervolume"]
+entities-worlddisplay = ["sc-extract-generated/entities-worlddisplay"]
+entities-yormandi_apex_body = ["sc-extract-generated/entities-yormandi_apex_body"]
 entitlementpolicies = ["sc-extract-generated/entitlementpolicies"]
+entityaudiocontrollerrtpcsubscriberlistdef = ["sc-extract-generated/entityaudiocontrollerrtpcsubscriberlistdef"]
+entityclassdefinition = ["sc-extract-generated/entityclassdefinition"]
 environments = ["sc-extract-generated/environments"]
 evagraph = ["sc-extract-generated/evagraph"]
 explosiveordnance = ["sc-extract-generated/explosiveordnance"]
 factions = ["sc-extract-generated/factions"]
+factions_legacy = ["sc-extract-generated/factions_legacy"]
 fidgetconfig = ["sc-extract-generated/fidgetconfig"]
 foley = ["sc-extract-generated/foley"]
-forcefeedback_forcefeedbackeffects = [
-    "sc-extract-generated/forcefeedback_forcefeedbackeffects",
-]
+forcefeedback_forcefeedbackeffects = ["sc-extract-generated/forcefeedback_forcefeedbackeffects"]
 formation = ["sc-extract-generated/formation"]
+fovaspectratiorangetables = ["sc-extract-generated/fovaspectratiorangetables"]
+franchises = ["sc-extract-generated/franchises"]
 friendmanager = ["sc-extract-generated/friendmanager"]
 fuelparams = ["sc-extract-generated/fuelparams"]
 gamemode = ["sc-extract-generated/gamemode"]
 gamemodule = ["sc-extract-generated/gamemodule"]
+genericmobiterminals = ["sc-extract-generated/genericmobiterminals"]
 globalarmarkerparams = ["sc-extract-generated/globalarmarkerparams"]
 globalcargoloadingparams = ["sc-extract-generated/globalcargoloadingparams"]
-globalcommsnotificationparams = [
-    "sc-extract-generated/globalcommsnotificationparams",
-]
+globalcommsnotificationparams = ["sc-extract-generated/globalcommsnotificationparams"]
 globalcuttableshapeparams = ["sc-extract-generated/globalcuttableshapeparams"]
 globalinteractionparams = ["sc-extract-generated/globalinteractionparams"]
 globalinventoryparams = ["sc-extract-generated/globalinventoryparams"]
 globalquantumdriveparams = ["sc-extract-generated/globalquantumdriveparams"]
 globalshopparams = ["sc-extract-generated/globalshopparams"]
 globaltutorialparams = ["sc-extract-generated/globaltutorialparams"]
+gpuparticleaudio = ["sc-extract-generated/gpuparticleaudio"]
 grips = ["sc-extract-generated/grips"]
 handholdgripdatabase = ["sc-extract-generated/handholdgripdatabase"]
 hardwaremouse = ["sc-extract-generated/hardwaremouse"]
@@ -482,17 +676,38 @@ interactionconditions = ["sc-extract-generated/interactionconditions"]
 intoxication = ["sc-extract-generated/intoxication"]
 inventorycontainers = ["sc-extract-generated/inventorycontainers"]
 item = ["sc-extract-generated/item"]
+itemporttagsdictionary = ["sc-extract-generated/itemporttagsdictionary"]
+itemresourcenetwork = ["sc-extract-generated/itemresourcenetwork"]
 journalentry = ["sc-extract-generated/journalentry"]
+journalentrytype = ["sc-extract-generated/journalentrytype"]
 jumppoints = ["sc-extract-generated/jumppoints"]
+kaboos_derelictships = ["sc-extract-generated/kaboos_derelictships"]
 landingpadsize = ["sc-extract-generated/landingpadsize"]
 lawsystem = ["sc-extract-generated/lawsystem"]
 leangraph = ["sc-extract-generated/leangraph"]
 level = ["sc-extract-generated/level"]
+lightamplification_aegs = ["sc-extract-generated/lightamplification_aegs"]
+lightamplification_anvl = ["sc-extract-generated/lightamplification_anvl"]
+lightamplification_argo = ["sc-extract-generated/lightamplification_argo"]
+lightamplification_banu = ["sc-extract-generated/lightamplification_banu"]
+lightamplification_cnou = ["sc-extract-generated/lightamplification_cnou"]
+lightamplification_crus = ["sc-extract-generated/lightamplification_crus"]
+lightamplification_drak = ["sc-extract-generated/lightamplification_drak"]
+lightamplification_espr = ["sc-extract-generated/lightamplification_espr"]
+lightamplification_gama = ["sc-extract-generated/lightamplification_gama"]
+lightamplification_grey = ["sc-extract-generated/lightamplification_grey"]
+lightamplification_krig = ["sc-extract-generated/lightamplification_krig"]
+lightamplification_misc = ["sc-extract-generated/lightamplification_misc"]
+lightamplification_orig = ["sc-extract-generated/lightamplification_orig"]
+lightamplification_rsi = ["sc-extract-generated/lightamplification_rsi"]
+lightamplification_vncl = ["sc-extract-generated/lightamplification_vncl"]
+lightamplification_xnaa = ["sc-extract-generated/lightamplification_xnaa"]
 loadoutkits = ["sc-extract-generated/loadoutkits"]
 longtermpersistence = ["sc-extract-generated/longtermpersistence"]
 lootgeneration = ["sc-extract-generated/lootgeneration"]
 megamap = ["sc-extract-generated/megamap"]
 mining = ["sc-extract-generated/mining"]
+miningaudioparams = ["sc-extract-generated/miningaudioparams"]
 missionbroker = ["sc-extract-generated/missionbroker"]
 missiondata = ["sc-extract-generated/missiondata"]
 missionfailureconditions = ["sc-extract-generated/missionfailureconditions"]
@@ -500,132 +715,114 @@ missiongiver = ["sc-extract-generated/missiongiver"]
 missionscenarios = ["sc-extract-generated/missionscenarios"]
 missiontype = ["sc-extract-generated/missiontype"]
 motionstatemachine = ["sc-extract-generated/motionstatemachine"]
-moveviewrestrictionpenalties = [
-    "sc-extract-generated/moveviewrestrictionpenalties",
-]
+moveviewrestrictionpenalties = ["sc-extract-generated/moveviewrestrictionpenalties"]
 musiclogic = ["sc-extract-generated/musiclogic"]
 personalinnerthoughtrules = ["sc-extract-generated/personalinnerthoughtrules"]
-planetdaynighttemperatureparams = [
-    "sc-extract-generated/planetdaynighttemperatureparams",
-]
+planetdaynighttemperatureparams = ["sc-extract-generated/planetdaynighttemperatureparams"]
+player = ["sc-extract-generated/player"]
+playeranimatedinteractiontemplates = ["sc-extract-generated/playeranimatedinteractiontemplates"]
+playerchoicemenuitems = ["sc-extract-generated/playerchoicemenuitems"]
+playerchoicemenutypes = ["sc-extract-generated/playerchoicemenutypes"]
+playerdockcontextcomponent = ["sc-extract-generated/playerdockcontextcomponent"]
+playergroupmanager = ["sc-extract-generated/playergroupmanager"]
+playernotificationsystem = ["sc-extract-generated/playernotificationsystem"]
+playerspeedthrottle = ["sc-extract-generated/playerspeedthrottle"]
+playertoplayercommscallglobalparams = ["sc-extract-generated/playertoplayercommscallglobalparams"]
+playertrade = ["sc-extract-generated/playertrade"]
 posturedatabase = ["sc-extract-generated/posturedatabase"]
 procbreathing = ["sc-extract-generated/procbreathing"]
 proceduralaimrigrecord = ["sc-extract-generated/proceduralaimrigrecord"]
 proceduralanimations = ["sc-extract-generated/proceduralanimations"]
 procedurallandingsetup = ["sc-extract-generated/procedurallandingsetup"]
 procedurallayout = ["sc-extract-generated/procedurallayout"]
+prop = ["sc-extract-generated/prop"]
 qteconfigs = ["sc-extract-generated/qteconfigs"]
 radarsystem = ["sc-extract-generated/radarsystem"]
 rastar = ["sc-extract-generated/rastar"]
-refinerynotificationconfiguration = [
-    "sc-extract-generated/refinerynotificationconfiguration",
-]
+refinerynotificationconfiguration = ["sc-extract-generated/refinerynotificationconfiguration"]
 refiningprocess = ["sc-extract-generated/refiningprocess"]
 rendererpresets = ["sc-extract-generated/rendererpresets"]
 rentalnotificationparams = ["sc-extract-generated/rentalnotificationparams"]
 reputation = ["sc-extract-generated/reputation"]
+reputationvaluesettings = ["sc-extract-generated/reputationvaluesettings"]
 resourcetypedatabase = ["sc-extract-generated/resourcetypedatabase"]
 roomsystem = ["sc-extract-generated/roomsystem"]
-scarryableikinteractionlist = [
-    "sc-extract-generated/scarryableikinteractionlist",
-]
+rsi_polaris_kaboos_exterior = ["sc-extract-generated/rsi_polaris_kaboos_exterior"]
+scandisplayinstanceparams = ["sc-extract-generated/scandisplayinstanceparams"]
+scarryableikinteractionlist = ["sc-extract-generated/scarryableikinteractionlist"]
 scitemcommscomponentsetup = ["sc-extract-generated/scitemcommscomponentsetup"]
 scitemdisplayscreenpreset = ["sc-extract-generated/scitemdisplayscreenpreset"]
 scitemmanufacturer = ["sc-extract-generated/scitemmanufacturer"]
 scuttableshapedefinition = ["sc-extract-generated/scuttableshapedefinition"]
 seatcdikconfigs = ["sc-extract-generated/seatcdikconfigs"]
 servicebeacon = ["sc-extract-generated/servicebeacon"]
-sgeometryviewdistanceratiocategories = [
-    "sc-extract-generated/sgeometryviewdistanceratiocategories",
-]
-sglobalchargedrainbeamparams = [
-    "sc-extract-generated/sglobalchargedrainbeamparams",
-]
+sgeometryviewdistanceratiocategories = ["sc-extract-generated/sgeometryviewdistanceratiocategories"]
+sglobalchargedrainbeamparams = ["sc-extract-generated/sglobalchargedrainbeamparams"]
 sglobalcrosshairparams = ["sc-extract-generated/sglobalcrosshairparams"]
 sglobalelectronparams = ["sc-extract-generated/sglobalelectronparams"]
 sglobalhealingbeamparams = ["sc-extract-generated/sglobalhealingbeamparams"]
 sglobalhitbehaviorparams = ["sc-extract-generated/sglobalhitbehaviorparams"]
-sglobalsalvagerepairbeamparams = [
-    "sc-extract-generated/sglobalsalvagerepairbeamparams",
-]
+sglobalsalvagerepairbeamparams = ["sc-extract-generated/sglobalsalvagerepairbeamparams"]
 sglobaltractorbeamparams = ["sc-extract-generated/sglobaltractorbeamparams"]
 shipinsurancerecord = ["sc-extract-generated/shipinsurancerecord"]
+sloadoutassortment = ["sc-extract-generated/sloadoutassortment"]
 specialeventdatabase = ["sc-extract-generated/specialeventdatabase"]
-squantumdriveeffecttagstemplate = [
-    "sc-extract-generated/squantumdriveeffecttagstemplate",
-]
-sreputationglobalcontextbbparams = [
-    "sc-extract-generated/sreputationglobalcontextbbparams",
-]
+squantumdriveeffecttagstemplate = ["sc-extract-generated/squantumdriveeffecttagstemplate"]
+sreputationglobalcontextbbparams = ["sc-extract-generated/sreputationglobalcontextbbparams"]
 ssolarsystem = ["sc-extract-generated/ssolarsystem"]
 starmap = ["sc-extract-generated/starmap"]
+starmapamenitytypes = ["sc-extract-generated/starmapamenitytypes"]
 tacticalquery = ["sc-extract-generated/tacticalquery"]
 tagdatabase = ["sc-extract-generated/tagdatabase"]
 targetselector = ["sc-extract-generated/targetselector"]
 tintpalettes = ["sc-extract-generated/tintpalettes"]
 trackview = ["sc-extract-generated/trackview"]
+transitsystem = ["sc-extract-generated/transitsystem"]
+transponder = ["sc-extract-generated/transponder"]
+transportsystem = ["sc-extract-generated/transportsystem"]
 traversalcostconfig = ["sc-extract-generated/traversalcostconfig"]
 turret = ["sc-extract-generated/turret"]
 ui-animatedmarkers = ["sc-extract-generated/ui-animatedmarkers"]
+ui-areamap = ["sc-extract-generated/ui-areamap"]
 ui-armarkerconfiguration = ["sc-extract-generated/ui-armarkerconfiguration"]
+ui-aspectratiototag_mfd = ["sc-extract-generated/ui-aspectratiototag_mfd"]
 ui-buildingblocks = ["sc-extract-generated/ui-buildingblocks"]
 ui-digitalsignage = ["sc-extract-generated/ui-digitalsignage"]
 ui-directrtt = ["sc-extract-generated/ui-directrtt"]
 ui-dockingslotvisibility = ["sc-extract-generated/ui-dockingslotvisibility"]
-ui-elementsounds_deprecated = [
-    "sc-extract-generated/ui-elementsounds_deprecated",
-]
-ui-flashobjectbindinggroups = [
-    "sc-extract-generated/ui-flashobjectbindinggroups",
-]
+ui-elementsounds_deprecated = ["sc-extract-generated/ui-elementsounds_deprecated"]
+ui-flashobjectbindinggroups = ["sc-extract-generated/ui-flashobjectbindinggroups"]
 ui-flighthudmessages = ["sc-extract-generated/ui-flighthudmessages"]
 ui-frontend = ["sc-extract-generated/ui-frontend"]
 ui-graphs = ["sc-extract-generated/ui-graphs"]
 ui-holovehicleconfig = ["sc-extract-generated/ui-holovehicleconfig"]
-ui-hudcolors_shipcolorpalettes = [
-    "sc-extract-generated/ui-hudcolors_shipcolorpalettes",
-]
+ui-hudcolors_shipcolorpalettes = ["sc-extract-generated/ui-hudcolors_shipcolorpalettes"]
 ui-innerthought = ["sc-extract-generated/ui-innerthought"]
+ui-innerthoughtentity = ["sc-extract-generated/ui-innerthoughtentity"]
+ui-innerthoughtentitydepth = ["sc-extract-generated/ui-innerthoughtentitydepth"]
 ui-itemkiosk = ["sc-extract-generated/ui-itemkiosk"]
 ui-itempreview_config = ["sc-extract-generated/ui-itempreview_config"]
 ui-itemtypedefinition = ["sc-extract-generated/ui-itemtypedefinition"]
 ui-localplayershoppingdata = ["sc-extract-generated/ui-localplayershoppingdata"]
+ui-map = ["sc-extract-generated/ui-map"]
 ui-marker_config = ["sc-extract-generated/ui-marker_config"]
-ui-markertrackingvolumeconfig = [
-    "sc-extract-generated/ui-markertrackingvolumeconfig",
-]
-ui-missilelockreticleconfig = [
-    "sc-extract-generated/ui-missilelockreticleconfig",
-]
+ui-markertrackingvolumeconfig = ["sc-extract-generated/ui-markertrackingvolumeconfig"]
+ui-missilelockreticleconfig = ["sc-extract-generated/ui-missilelockreticleconfig"]
 ui-mobiglas = ["sc-extract-generated/ui-mobiglas"]
-ui-objectdatabankentrymarkerconfig = [
-    "sc-extract-generated/ui-objectdatabankentrymarkerconfig",
-]
-ui-playerchoice_imconfig_playerchoiceim = [
-    "sc-extract-generated/ui-playerchoice_imconfig_playerchoiceim",
-]
-ui-playerchoice_library_playerchoicelibrary = [
-    "sc-extract-generated/ui-playerchoice_library_playerchoicelibrary",
-]
-ui-playerchoice_pitconfig_playerchoicepersonalthought = [
-    "sc-extract-generated/ui-playerchoice_pitconfig_playerchoicepersonalthought",
-]
-ui-playerchoice_signalconfig_interactorsignalconfig = [
-    "sc-extract-generated/ui-playerchoice_signalconfig_interactorsignalconfig",
-]
-ui-playerecggraph_config_playerecggraphconfig = [
-    "sc-extract-generated/ui-playerecggraph_config_playerecggraphconfig",
-]
+ui-objectdatabankentrymarkerconfig = ["sc-extract-generated/ui-objectdatabankentrymarkerconfig"]
+ui-playerchoice_imconfig_playerchoiceim = ["sc-extract-generated/ui-playerchoice_imconfig_playerchoiceim"]
+ui-playerchoice_library_playerchoicelibrary = ["sc-extract-generated/ui-playerchoice_library_playerchoicelibrary"]
+ui-playerchoice_pitconfig_playerchoicepersonalthought = ["sc-extract-generated/ui-playerchoice_pitconfig_playerchoicepersonalthought"]
+ui-playerchoice_signalconfig_interactorsignalconfig = ["sc-extract-generated/ui-playerchoice_signalconfig_interactorsignalconfig"]
+ui-playerecggraph_config_playerecggraphconfig = ["sc-extract-generated/ui-playerecggraph_config_playerecggraphconfig"]
 ui-pointofinterestdata = ["sc-extract-generated/ui-pointofinterestdata"]
 ui-popups = ["sc-extract-generated/ui-popups"]
 ui-radar3dpresets = ["sc-extract-generated/ui-radar3dpresets"]
-ui-radardisplay_config_radar = [
-    "sc-extract-generated/ui-radardisplay_config_radar",
-]
+ui-radardisplay_config_radar = ["sc-extract-generated/ui-radardisplay_config_radar"]
 ui-seatreticlearchetype = ["sc-extract-generated/ui-seatreticlearchetype"]
-ui-transformationinterpolatorrecords = [
-    "sc-extract-generated/ui-transformationinterpolatorrecords",
-]
+ui-simplespritesheet_holodisplaysprites = ["sc-extract-generated/ui-simplespritesheet_holodisplaysprites"]
+ui-simplespritesheet_innerthoughtsprites = ["sc-extract-generated/ui-simplespritesheet_innerthoughtsprites"]
+ui-transformationinterpolatorrecords = ["sc-extract-generated/ui-transformationinterpolatorrecords"]
 ui-uiconfig_starcitizen = ["sc-extract-generated/ui-uiconfig_starcitizen"]
 ui-uielements = ["sc-extract-generated/ui-uielements"]
 ui-uimodes = ["sc-extract-generated/ui-uimodes"]
@@ -633,9 +830,14 @@ ui-uistatedisplay = ["sc-extract-generated/ui-uistatedisplay"]
 ui-vehicleentrance = ["sc-extract-generated/ui-vehicleentrance"]
 ui-videocomms = ["sc-extract-generated/ui-videocomms"]
 ui-visor = ["sc-extract-generated/ui-visor"]
+ui-visorscreenconfig = ["sc-extract-generated/ui-visorscreenconfig"]
 ui-worlddisplay = ["sc-extract-generated/ui-worlddisplay"]
+unittest_unittesta = ["sc-extract-generated/unittest_unittesta"]
 unittest_unittestb = ["sc-extract-generated/unittest_unittestb"]
 vehicle = ["sc-extract-generated/vehicle"]
+vehiclecombat = ["sc-extract-generated/vehiclecombat"]
+vehiclesalvageglobalparams = ["sc-extract-generated/vehiclesalvageglobalparams"]
+vendingmachine_2 = ["sc-extract-generated/vendingmachine_2"]
 vfx = ["sc-extract-generated/vfx"]
 vibrations = ["sc-extract-generated/vibrations"]
 videocommschannels = ["sc-extract-generated/videocommschannels"]

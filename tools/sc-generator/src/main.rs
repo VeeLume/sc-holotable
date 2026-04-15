@@ -16,18 +16,22 @@
 //! - `--out-dir <path>`   — override the default `crates/sc-extract-generated/src/generated/`
 //! - `--check`            — parse everything but don't write files; for CI
 //!
+//! Analysis/diagnostic subcommands previously available (`--dump-paths`,
+//! `--dump-features`, `--check-polymorphism`, etc.) have been removed.
+//!
 //! See `docs/codegen.md` for the full design and `implementing/sc-generator.md`
 //! for implementation notes.
 
 use std::path::PathBuf;
 use std::process::ExitCode;
 
+mod closure;
 mod emit;
 mod features;
 mod naming;
 mod pipeline;
 
-use pipeline::{run, RunOptions};
+use pipeline::{run, run_dump_refs, RunOptions};
 
 fn main() -> ExitCode {
     tracing_subscriber::fmt()
@@ -46,6 +50,16 @@ fn main() -> ExitCode {
             return ExitCode::from(2);
         }
     };
+
+    if options.dump_refs {
+        return match run_dump_refs(&options) {
+            Ok(()) => ExitCode::SUCCESS,
+            Err(e) => {
+                tracing::error!("dump-refs failed: {e}");
+                ExitCode::FAILURE
+            }
+        };
+    }
 
     match run(&options) {
         Ok(summary) => {
@@ -69,8 +83,7 @@ fn parse_args() -> Result<RunOptions, String> {
     let mut p4k: Option<PathBuf> = None;
     let mut out_dir: Option<PathBuf> = None;
     let mut check_only = false;
-    let mut dump_paths = false;
-    let mut dump_features = false;
+    let mut dump_refs = false;
 
     while let Some(arg) = args.next() {
         match arg.as_str() {
@@ -83,8 +96,7 @@ fn parse_args() -> Result<RunOptions, String> {
                 out_dir = Some(PathBuf::from(v));
             }
             "--check" => check_only = true,
-            "--dump-paths" => dump_paths = true,
-            "--dump-features" => dump_features = true,
+            "--dump-refs" => dump_refs = true,
             "--help" | "-h" => {
                 print_usage();
                 std::process::exit(0);
@@ -100,8 +112,7 @@ fn parse_args() -> Result<RunOptions, String> {
         p4k,
         out_dir,
         check_only,
-        dump_paths,
-        dump_features,
+        dump_refs,
     })
 }
 
@@ -111,13 +122,12 @@ fn default_out_dir() -> PathBuf {
 }
 
 fn print_usage() {
-    eprintln!("Usage: sc-generator --p4k <path> [--out-dir <path>] [--check] [--dump-paths]");
+    eprintln!("Usage: sc-generator --p4k <path> [--out-dir <path>] [--check]");
     eprintln!();
     eprintln!("Arguments:");
     eprintln!("  --p4k <path>       Path to Data.p4k to generate from (required)");
     eprintln!("  --out-dir <path>   Where to write generated files");
     eprintln!("                     (default: crates/sc-extract-generated/src/generated)");
     eprintln!("  --check            Parse and generate in-memory but don't write files");
-    eprintln!("  --dump-paths       Dump record path prefix distribution and exit");
     eprintln!("  -h, --help         Show this message");
 }

@@ -7,7 +7,7 @@
 //
 // Any hand edits will be lost on the next run.
 
-#![allow(non_snake_case, dead_code, unused_imports)]
+#![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
 use serde::{Deserialize, Serialize};
 use super::super::*;
@@ -15,18 +15,6 @@ use super::super::*;
 /// Pool storage for the `roomsystem` feature.
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct RoomsystemPools {
-    #[serde(default)]
-    pub sentity_effect_system_attachment: Vec<Option<SEntityEffectSystem_Attachment>>,
-    #[serde(default)]
-    pub sentity_effect_system_property_modifier: Vec<Option<SEntityEffectSystem_PropertyModifier>>,
-    #[serde(default)]
-    pub sentity_effect_system_particle_category: Vec<Option<SEntityEffectSystem_ParticleCategory>>,
-    #[serde(default)]
-    pub sentity_effect_system_particle_tag_effect: Vec<Option<SEntityEffectSystem_ParticleTagEffect>>,
-    #[serde(default)]
-    pub sentity_effect_system_particle_trigger_effect: Vec<Option<SEntityEffectSystem_ParticleTriggerEffect>>,
-    #[serde(default)]
-    pub sentity_effect_system_particle_property_link: Vec<Option<SEntityEffectSystem_ParticlePropertyLink>>,
     #[serde(default)]
     pub fire_hazard_surface_properties: Vec<Option<FireHazardSurfaceProperties>>,
     #[serde(default)]
@@ -68,53 +56,11 @@ pub struct RoomsystemPools {
     #[serde(default)]
     pub lightning_target_mode: Vec<Option<LightningTargetMode>>,
     #[serde(default)]
-    pub lightning_strike_audio: Vec<Option<LightningStrikeAudio>>,
-    #[serde(default)]
-    pub gas_params: Vec<Option<GasParams>>,
-    #[serde(default)]
-    pub sgas_atmosphere_entry_params: Vec<Option<SGasAtmosphereEntryParams>>,
-    #[serde(default)]
-    pub satmospheric_composition_params: Vec<Option<SAtmosphericCompositionParams>>,
-    #[serde(default)]
-    pub atmospheric_composition_template: Vec<Option<AtmosphericCompositionTemplate>>,
-    #[serde(default)]
     pub apparent_temperature_params: Vec<Option<ApparentTemperatureParams>>,
     #[serde(default)]
     pub global_gas_params: Vec<Option<GlobalGasParams>>,
     #[serde(default)]
     pub global_room_state_params: Vec<Option<GlobalRoomStateParams>>,
-    #[serde(default)]
-    pub behavior_vehicle_effect_params: Vec<Option<Behavior_VehicleEffectParams>>,
-    #[serde(default)]
-    pub behavior_custom_vehicle_effects_preset: Vec<Option<Behavior_CustomVehicleEffectsPreset>>,
-    #[serde(default)]
-    pub asteroid_state_template_internal: Vec<Option<AsteroidStateTemplateInternal>>,
-    #[serde(default)]
-    pub asteroid_state_template: Vec<Option<AsteroidStateTemplate>>,
-    #[serde(default)]
-    pub asteroid_behavior: Vec<Option<AsteroidBehavior>>,
-    #[serde(default)]
-    pub asteroid_behavior_weather_params: Vec<Option<AsteroidBehavior_WeatherParams>>,
-    #[serde(default)]
-    pub atmosphere_state_template_internal: Vec<Option<AtmosphereStateTemplateInternal>>,
-    #[serde(default)]
-    pub atmosphere_state_template: Vec<Option<AtmosphereStateTemplate>>,
-    #[serde(default)]
-    pub atmosphere_state_pressure_template: Vec<Option<AtmosphereStatePressureTemplate>>,
-    #[serde(default)]
-    pub atmosphere_state_temperature_template: Vec<Option<AtmosphereStateTemperatureTemplate>>,
-    #[serde(default)]
-    pub atmosphere_state_humidity_template: Vec<Option<AtmosphereStateHumidityTemplate>>,
-    #[serde(default)]
-    pub aerodynamic_trail_calculation: Vec<Option<AerodynamicTrailCalculation>>,
-    #[serde(default)]
-    pub behavior_atmosphere_vehicle_effect_params: Vec<Option<Behavior_AtmosphereVehicleEffectParams>>,
-    #[serde(default)]
-    pub atmosphere_behavior: Vec<Option<AtmosphereBehavior>>,
-    #[serde(default)]
-    pub atmosphere_behavior_turbulence_params: Vec<Option<AtmosphereBehavior_TurbulenceParams>>,
-    #[serde(default)]
-    pub atmosphere_behavior_weather_params: Vec<Option<AtmosphereBehavior_WeatherParams>>,
     #[serde(default)]
     pub electrical_state_template_internal: Vec<Option<ElectricalStateTemplateInternal>>,
     #[serde(default)]
@@ -126,19 +72,13 @@ pub struct RoomsystemPools {
     #[serde(default)]
     pub electrical_behavior: Vec<Option<ElectricalBehavior>>,
     #[serde(default)]
-    pub radiation_state_property_params: Vec<Option<RadiationStatePropertyParams>>,
+    pub radiation_behavior_asteroid_design_curve_surface_radiation_params: Vec<Option<RadiationBehavior_AsteroidDesignCurveSurfaceRadiationParams>>,
     #[serde(default)]
-    pub radiation_state_template_internal: Vec<Option<RadiationStateTemplateInternal>>,
+    pub radiation_behavior_asteroid_inverse_square_surface_radiation_params: Vec<Option<RadiationBehavior_AsteroidInverseSquareSurfaceRadiationParams>>,
     #[serde(default)]
-    pub radiation_state_template: Vec<Option<RadiationStateTemplate>>,
+    pub weather_effects_atmosphere_property: Vec<Option<WeatherEffects_Atmosphere_Property>>,
     #[serde(default)]
-    pub radiation_behavior: Vec<Option<RadiationBehavior>>,
+    pub weather_effects_atmosphere_multi_property_value: Vec<Option<WeatherEffects_Atmosphere_MultiPropertyValue>>,
     #[serde(default)]
-    pub radiation_behavior_surface_radiation_params: Vec<Option<RadiationBehavior_SurfaceRadiationParams>>,
-    #[serde(default)]
-    pub weather_effects_space_loop_effect: Vec<Option<WeatherEffects_SpaceLoopEffect>>,
-    #[serde(default)]
-    pub weather_effects_asteroid: Vec<Option<WeatherEffects_Asteroid>>,
-    #[serde(default)]
-    pub weather_effects_atmosphere: Vec<Option<WeatherEffects_Atmosphere>>,
+    pub weather_effects_atmosphere_gas_cloud_optical_density: Vec<Option<WeatherEffects_Atmosphere_GasCloudOpticalDensity>>,
 }

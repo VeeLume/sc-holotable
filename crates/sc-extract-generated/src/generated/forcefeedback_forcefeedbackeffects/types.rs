@@ -15,7 +15,7 @@
 use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, Pooled};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -45,27 +45,21 @@ impl<'a> Extract<'a> for ForceFeedback {
             patterns: inst.get_array("Patterns")
                 .map(|arr| arr.filter_map(|v| match v {
                         Value::Class { struct_index, data } => Some(b.alloc_nested::<ForceFeedbackPattern>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r)
-                        | Value::StrongPointer(Some(r))
-                        | Value::WeakPointer(Some(r)) => Some(b.alloc_nested::<ForceFeedbackPattern>(b.db.instance(r.struct_index, r.instance_index), true)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<ForceFeedbackPattern>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
                     }).collect())
                 .unwrap_or_default(),
             envelopes: inst.get_array("Envelopes")
                 .map(|arr| arr.filter_map(|v| match v {
                         Value::Class { struct_index, data } => Some(b.alloc_nested::<ForceFeedbackEnvelope>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r)
-                        | Value::StrongPointer(Some(r))
-                        | Value::WeakPointer(Some(r)) => Some(b.alloc_nested::<ForceFeedbackEnvelope>(b.db.instance(r.struct_index, r.instance_index), true)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<ForceFeedbackEnvelope>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
                     }).collect())
                 .unwrap_or_default(),
             effects: inst.get_array("Effects")
                 .map(|arr| arr.filter_map(|v| match v {
                         Value::Class { struct_index, data } => Some(b.alloc_nested::<ForceFeedbackEffect>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r)
-                        | Value::StrongPointer(Some(r))
-                        | Value::WeakPointer(Some(r)) => Some(b.alloc_nested::<ForceFeedbackEffect>(b.db.instance(r.struct_index, r.instance_index), true)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<ForceFeedbackEffect>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
                     }).collect())
                 .unwrap_or_default(),
@@ -157,24 +151,15 @@ impl<'a> Extract<'a> for ForceFeedbackEffect {
             name: inst.get_str("name").map(String::from).unwrap_or_default(),
             time: inst.get_f32("time").unwrap_or_default(),
             motor_ab: match inst.get("MotorAB") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<ForceFeedbackMotor>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<ForceFeedbackMotor>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<ForceFeedbackMotor>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             motor_a: match inst.get("MotorA") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<ForceFeedbackMotor>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<ForceFeedbackMotor>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<ForceFeedbackMotor>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             motor_b: match inst.get("MotorB") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<ForceFeedbackMotor>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<ForceFeedbackMotor>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<ForceFeedbackMotor>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
         }

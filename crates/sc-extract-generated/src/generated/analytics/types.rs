@@ -15,43 +15,9 @@
 use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, Pooled};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
-
-/// DCB type: `SAnalyticsEvent`
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct SAnalyticsEvent {
-    /// `eventName` (String)
-    #[serde(default)]
-    pub event_name: String,
-    /// `includePlayerData` (Boolean)
-    #[serde(default)]
-    pub include_player_data: bool,
-    /// `includeLocationData` (Boolean)
-    #[serde(default)]
-    pub include_location_data: bool,
-    /// `thisEntityNameField` (String)
-    #[serde(default)]
-    pub this_entity_name_field: String,
-}
-
-impl Pooled for SAnalyticsEvent {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.analytics.sanalytics_event }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.analytics.sanalytics_event }
-}
-
-impl<'a> Extract<'a> for SAnalyticsEvent {
-    const TYPE_NAME: &'static str = "SAnalyticsEvent";
-    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
-            event_name: inst.get_str("eventName").map(String::from).unwrap_or_default(),
-            include_player_data: inst.get_bool("includePlayerData").unwrap_or_default(),
-            include_location_data: inst.get_bool("includeLocationData").unwrap_or_default(),
-            this_entity_name_field: inst.get_str("thisEntityNameField").map(String::from).unwrap_or_default(),
-        }
-    }
-}
 
 /// DCB type: `SAnalyticsEventDatabase`
 #[derive(Debug, Clone, Serialize, Deserialize)]

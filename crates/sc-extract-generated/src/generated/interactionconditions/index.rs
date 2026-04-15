@@ -7,7 +7,7 @@
 //
 // Any hand edits will be lost on the next run.
 
-#![allow(non_snake_case, dead_code, unused_imports)]
+#![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
 use std::collections::HashMap;
 use serde::{Deserialize, Serialize};
@@ -19,15 +19,15 @@ use super::super::*;
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct InteractionconditionsIndex {
     #[serde(default)]
-    pub interaction_condition_preset: HashMap<CigGuid, Handle<InteractionConditionPreset>>,
-    #[serde(default)]
     pub shop_interaction_data: HashMap<CigGuid, Handle<ShopInteractionData>>,
 }
 
 impl InteractionconditionsIndex {
+    #[allow(unused_mut)]
     pub fn len(&self) -> usize {
-        self.interaction_condition_preset.len()
-            + self.shop_interaction_data.len()
+        let mut total = 0usize;
+        total += self.shop_interaction_data.len();
+        total
     }
 
     pub fn is_empty(&self) -> bool { self.len() == 0 }

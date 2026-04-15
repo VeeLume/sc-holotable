@@ -7,7 +7,7 @@
 //
 // Any hand edits will be lost on the next run.
 
-#![allow(non_snake_case, dead_code, unused_imports)]
+#![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
 use serde::{Deserialize, Serialize};
 use super::super::*;
@@ -16,55 +16,45 @@ use super::super::*;
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct EntitiesScitemShipsPools {
     #[serde(default)]
+    pub item_modifier_timed_life: Vec<Option<ItemModifierTimedLife>>,
+    #[serde(default)]
+    pub item_mining_booster_params: Vec<Option<ItemMiningBoosterParams>>,
+    #[serde(default)]
+    pub smisfire_functionality_condition: Vec<Option<SMisfireFunctionalityCondition>>,
+    #[serde(default)]
+    pub hover_plane: Vec<Option<HoverPlane>>,
+    #[serde(default)]
+    pub suspension_springs: Vec<Option<SuspensionSprings>>,
+    #[serde(default)]
+    pub hover_height: Vec<Option<HoverHeight>>,
+    #[serde(default)]
+    pub hover_tilting: Vec<Option<HoverTilting>>,
+    #[serde(default)]
+    pub hover_collisions: Vec<Option<HoverCollisions>>,
+    #[serde(default)]
+    pub hover_handling: Vec<Option<HoverHandling>>,
+    #[serde(default)]
+    pub gravlev_params: Vec<Option<GravlevParams>>,
+    #[serde(default)]
     pub sifcsmodifier_number: Vec<Option<SIFCSModifierNumber>>,
     #[serde(default)]
     pub sifcsmodifier_vector: Vec<Option<SIFCSModifierVector>>,
     #[serde(default)]
     pub sifcsmodifiers_legacy: Vec<Option<SIFCSModifiersLegacy>>,
     #[serde(default)]
-    pub sjump_drive_flight_rotation_params: Vec<Option<SJumpDriveFlightRotationParams>>,
+    pub send_docking_enable_event: Vec<Option<SendDockingEnableEvent>>,
     #[serde(default)]
-    pub sjump_drive_flight_linear_params: Vec<Option<SJumpDriveFlightLinearParams>>,
+    pub self_destruct_state_modifier: Vec<Option<SelfDestructStateModifier>>,
     #[serde(default)]
-    pub sjump_drive_flight_steering_params: Vec<Option<SJumpDriveFlightSteeringParams>>,
+    pub item_resource_dynamic_amount_fuel_nozzle_fuel: Vec<Option<ItemResourceDynamicAmountFuelNozzleFuel>>,
     #[serde(default)]
-    pub sjump_drive_flight_turbulence_noise_params: Vec<Option<SJumpDriveFlightTurbulenceNoiseParams>>,
+    pub scitem_empparams: Vec<Option<SCItemEMPParams>>,
     #[serde(default)]
-    pub sjump_drive_flight_turbulence_params: Vec<Option<SJumpDriveFlightTurbulenceParams>>,
+    pub scitem_fuel_nozzle_params: Vec<Option<SCItemFuelNozzleParams>>,
     #[serde(default)]
-    pub jump_drive_flight_params: Vec<Option<JumpDriveFlightParams>>,
-    #[serde(default)]
-    pub jump_tunnel_forces_params: Vec<Option<JumpTunnelForcesParams>>,
-    #[serde(default)]
-    pub vehicle_landing_gear_spring: Vec<Option<VehicleLandingGearSpring>>,
-    #[serde(default)]
-    pub scseat_head_pos_adjust_setup: Vec<Option<SCSeatHeadPosAdjustSetup>>,
-    #[serde(default)]
-    pub smfdoperator_mode_config: Vec<Option<SMFDOperatorModeConfig>>,
-    #[serde(default)]
-    pub smfdview_exception: Vec<Option<SMFDViewException>>,
-    #[serde(default)]
-    pub smfdmaster_mode_view_exceptions: Vec<Option<SMFDMasterModeViewExceptions>>,
-    #[serde(default)]
-    pub smfdmode_config: Vec<Option<SMFDModeConfig>>,
-    #[serde(default)]
-    pub smanufacturer_mfdview: Vec<Option<SManufacturerMFDView>>,
-    #[serde(default)]
-    pub smfdview: Vec<Option<SMFDView>>,
-    #[serde(default)]
-    pub smaster_mode_mfdview_list: Vec<Option<SMasterModeMFDViewList>>,
-    #[serde(default)]
-    pub smfdview_list: Vec<Option<SMFDViewList>>,
+    pub scitem_space_mine_params: Vec<Option<SCItemSpaceMineParams>>,
     #[serde(default)]
     pub smfdparams_diagnostics: Vec<Option<SMFDParamsDiagnostics>>,
     #[serde(default)]
-    pub weapon_aimable_angles_def: Vec<Option<WeaponAimableAnglesDef>>,
-    #[serde(default)]
-    pub weapon_gimbal_mode_modifier_def: Vec<Option<WeaponGimbalModeModifierDef>>,
-    #[serde(default)]
-    pub vehicle_landing_gear: Vec<Option<VehicleLandingGear>>,
-    #[serde(default)]
-    pub vehicle_landing_gear_system: Vec<Option<VehicleLandingGearSystem>>,
-    #[serde(default)]
-    pub svehicle_afterburner_params: Vec<Option<SVehicleAfterburnerParams>>,
+    pub sdummy_launcher: Vec<Option<SDummyLauncher>>,
 }

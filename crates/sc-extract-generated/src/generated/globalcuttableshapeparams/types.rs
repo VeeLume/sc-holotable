@@ -15,7 +15,7 @@
 use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, Pooled};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -73,16 +73,10 @@ impl<'a> Extract<'a> for SGlobalCuttableShapeParams {
             heat_dissipation_per_second: inst.get_f32("heatDissipationPerSecond").unwrap_or_default(),
             particle_effect: match inst.get("particleEffect") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceParticle>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<GlobalResourceParticle>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             finished_effect: match inst.get("finishedEffect") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceParticle>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<GlobalResourceParticle>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             hit_radius_min: inst.get_f32("hitRadiusMin").unwrap_or_default(),
@@ -91,9 +85,6 @@ impl<'a> Extract<'a> for SGlobalCuttableShapeParams {
             impact_particle_life_time: inst.get_f32("impactParticleLifeTime").unwrap_or_default(),
             highlight_color: match inst.get("highlightColor") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<RGB>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<RGB>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             highlight_occluded_alpha: inst.get_f32("highlightOccludedAlpha").unwrap_or_default(),

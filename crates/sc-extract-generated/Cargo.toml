@@ -32,29 +32,134 @@ svarog-datacore = { workspace = true }
 [features]
 default = []
 full = [
+    "dormant",
+    "actor-actorblockhelper",
+    "actor-actorjumpfalllandatlsgeoparams",
+    "actor-actorjumpfalllandatlsparams",
+    "actor-actorjumpfalllanddefaultparams",
+    "actor-actorjumpfalllandplayerparams",
+    "actor-actorladderconfig",
+    "actor-actorladderconfig_v2",
     "actor-actorledgegrabbing",
+    "actor-actormeleecombat",
+    "actor-actormovementmodifiers_powersuit",
+    "actor-actormovementsets",
+    "actor-actors",
+    "actor-actorslidingparam",
+    "actor-actorspeedcameraeffect_slide",
+    "actor-actorstanceconfig",
+    "actor-actorstanceconfig_npc_human",
+    "actor-actorstanceconfig_npc_kopion",
+    "actor-actorstanceconfig_npc_quasigrazer",
+    "actor-actorstanceconfig_npc_vanduul",
+    "actor-actorstanceconfig_npc_vlk",
+    "actor-actorstanceconfig_npc_vlkadult",
+    "actor-actorstanceconfig_npc_vlkapex",
+    "actor-actorstanceconfig_npc_vlkjuvenile",
+    "actor-actorstanceconfig_npc_webhound",
+    "actor-actorstanceconfig_transport_powersuit",
+    "actor-actorstanceconfig_transport_powersuit_argo_atls",
+    "actor-actorstatevalidation",
     "actor-actortargetedparams",
     "actor-actorviewlimits",
     "actor-actorzerogtraversalparams",
     "actor-atls_geo_jumppackconfig",
+    "actor-creaturejumpfalllandflow",
     "actor-externalforceresponse",
     "actor-gforce",
     "actor-headtrackinglimits",
     "actor-inputdeflectiontime",
     "actor-locomotionpersonality",
     "actor-lookahead",
+    "actor-npcjumpfalllandflow",
     "actor-playeranimatedinteractionconfig",
+    "actor-playercarryconfig",
     "actor-playerdefaultactionsconfig",
+    "actor-playerjumpfallandflow",
+    "actor-playermovementmodifiers",
     "actor-quantumtravelcameraeffects",
     "actor-skeletonconfigs",
     "actor-stanceinfo",
     "actor-targettrackingautozoom",
+    "actor-transportjumpfallandflow",
+    "actor-valakkarcarryconfig",
+    "actorabilitycomponent",
+    "actorabilitycomponent-actorabilitycomponent_playerabilities",
+    "actorabilitycomponent-npcabilities",
+    "actorabilitycomponent-playerlimitations",
+    "actorabilitycomponent-transportabilities",
+    "actorduckingparams",
+    "actorduckingparams-maleduckingparams",
+    "actorenvironmentcomponent",
+    "actorenvironmentcomponent-actorenvironment",
+    "actorgforcecomponent",
+    "actorgforcecomponent-actorgforcecomponent_playergforce",
+    "actorgforcecomponent-npcgforce",
+    "actorgforcecomponent-playergforce_mm",
+    "actorhealthcomponent",
+    "actorhealthcomponent-bodymapping",
+    "actorhealthcomponent-healthconfig",
+    "actorhealthcomponent-healthtemplate_ai",
+    "actorhealthcomponent-healthtemplate_ai_juggernaut",
+    "actorhealthcomponent-healthtemplate_invulnerable",
+    "actorhealthcomponent-healthtemplate_kopion",
+    "actorhealthcomponent-healthtemplate_player",
+    "actorhealthcomponent-healthtemplate_powersuit",
+    "actorhealthcomponent-healthtemplate_powersuit_combat",
+    "actorhealthcomponent-healthtemplate_quasigrazer",
+    "actorhealthcomponent-healthtemplate_stunonly",
+    "actorhealthcomponent-healthtemplate_vanduul",
+    "actorhealthcomponent-healthtemplate_vlk",
+    "actorhealthcomponent-healthtemplate_vlk_irridiatated",
+    "actorhealthcomponent-healthtemplate_vlk_irridiatated_apex",
+    "actorhealthcomponent-healthtemplate_vlk_nonapex",
+    "actorhealthcomponent-healthtemplate_yormandi",
+    "actormovementsetsconfig",
+    "actormovementsetsconfig-actormovementsetconfig",
+    "actorproceduralrecoil",
+    "actorproceduralrecoil-actorproceduralrecoilconfig",
+    "actorproceduralrecoil-actorproceduralrecoilmodifiers",
+    "actorstaminacomponent",
+    "actorstaminacomponent-actorbreathinghelper",
+    "actorstaminacomponent-actorstaminacomponent_playerstamina",
+    "actorstatuscomponent",
+    "actorstatuscomponent-globalactorstatusparams",
+    "actorstatuscomponent-medicaltieritemconfig",
+    "actorstatuscomponent-playerstatus",
+    "actorstatuscomponent-playerstatus_aiboss",
+    "actorstatuscomponent-playerstatus_aibosssuper",
+    "actorstatuscomponent-playerstatusai",
+    "actorstatuscomponent-playerstatusai_captain",
+    "actorstatuscomponent-playerstatusai_elite",
+    "actorstatuscomponent-playerstatusai_juggernaut",
+    "actorstatuscomponent-playerstatusai_unconscious_rescuemission",
+    "actorstatuscomponent-playerstatusai_vanduul",
+    "actorstatuscomponent-playerstatusai_vlk_adult",
+    "actorstatuscomponent-playerstatusai_vlk_adult_irridatated",
+    "actorstatuscomponent-playerstatusai_vlk_juvi",
+    "actorstatuscomponent-playerstatusai_vlk_juvi_irridatated",
+    "actorstatuscomponent-playerstatusai_vlkapex",
+    "actorstatuscomponent-playerstatusai_vlkapex_irridatated",
+    "actorstatuscomponent-playerstatusai_vlkapex_stormbreaker",
+    "actorstatuscomponent-playerstatusai_yormandi",
+    "actorstatuscomponent-playerstatuscorpse",
+    "actorstatuscomponent-playerstatuscreature",
+    "actorstatuscomponent-playerstatusea",
+    "actorstatuscomponent-playerstatuspu",
+    "actorstatuscomponent-powersuitstatus",
+    "actorstatuscomponent-powersuitstatus_combat",
+    "actorstatuscomponent-transportstatus",
+    "actorviewlimitpresetdatabase",
+    "actorviewlimitpresetdatabase-viewlimitpresetdatabase",
     "ads",
     "aianimationdata",
+    "aifiredisciplinesettings",
     "aiglobalsettings",
     "aimotive",
     "aiprofile",
+    "aitargetablesettings",
     "aiwavecollection",
+    "ammobox",
     "ammoparams",
     "analytics",
     "announcer",
@@ -65,6 +170,8 @@ full = [
     "capacitorassignment",
     "cargomanifest",
     "character",
+    "characternamedata",
+    "characterserializationpresets",
     "chatchannelfilters",
     "chatcommandfastaccess",
     "chatemoterecord",
@@ -74,45 +181,467 @@ full = [
     "commodityconfiguration",
     "commoditytypedatabase",
     "commsnotifications",
+    "commsnotificationstages",
     "communicationatlconfig",
+    "communicationchannelname",
     "communicationconfig",
     "communicationname",
     "communicationsystem",
     "communicationvariableconfig",
     "consumabletypesdatabase",
     "contextualcommunicationconfig",
+    "contractawardconfig",
     "contracts",
     "conversation",
+    "conversationbank",
     "crafting",
+    "creatures",
     "crewmanifest",
+    "curves",
     "damage",
     "densityclasses",
+    "dev",
+    "devowners",
     "dialoguecontentbank",
+    "dialoguecontext",
+    "dialoguecontextbank",
     "dialoguerealm",
     "dynamiccameraeffects",
     "dynamiclightingrig",
+    "elevatorbase_teleportnode",
     "emotions",
+    "entities-aft",
+    "entities-aicoversurface",
+    "entities-aigroupentity",
+    "entities-ainavigationobstacle",
+    "entities-aipath",
+    "entities-analyticshadow",
+    "entities-animentity",
+    "entities-animentity_attachable",
+    "entities-animentity_attachable_espr_prowler_glass",
+    "entities-animentity_attachable_espr_prowler_glass_copilot",
+    "entities-animentity_attachable_espr_talon_glass",
+    "entities-animentity_character",
+    "entities-animentity_floatinghead_01",
+    "entities-animentity_floatinghead_charactercustomizer",
+    "entities-animentity_floatinghead_charactercustomizer_dnalib",
+    "entities-animentity_floatinghead_charactercustomizer_featurelib",
+    "entities-animentity_human",
+    "entities-animentity_human_female",
+    "entities-animentity_toggleable",
+    "entities-area",
+    "entities-asd",
+    "entities-attachableobjectcontainer",
+    "entities-attachableobjectcontainerspawner",
+    "entities-attackarea",
+    "entities-audio",
+    "entities-basebuilding",
+    "entities-baselocationtemplate",
+    "entities-booth_table_centered_seats",
+    "entities-breakablerock",
+    "entities-buildingblocksscreens",
+    "entities-cameralens",
+    "entities-camerarttview",
+    "entities-camerasource",
+    "entities-camerasourcefuelnozzle",
+    "entities-cameratarget",
+    "entities-canvasgeoment",
+    "entities-canvasgeoment_vars",
+    "entities-capturearea",
+    "entities-carryable_damage_sensitive_canister",
+    "entities-carryabletemplate",
+    "entities-charactercustomizer",
+    "entities-cinematiclabel",
+    "entities-cinematiclabelwithvehicle",
+    "entities-cinematictitling_base",
+    "entities-cinematictitling_standard",
+    "entities-cinematictrigger_sticky",
+    "entities-commententity_quickfade",
+    "entities-commodities",
+    "entities-contactblobentity",
+    "entities-corpsemarker",
+    "entities-cuttableshape",
+    "entities-debris_1_floor_a",
+    "entities-debris_1_floor_b",
+    "entities-debris_1_floor_c",
+    "entities-debris_1_floor_d",
+    "entities-debris_1_floor_e",
+    "entities-debris_1_floor_f",
+    "entities-decorations",
+    "entities-default",
+    "entities-defaultwithaudio",
+    "entities-defendarea",
+    "entities-destruction",
+    "entities-dev",
+    "entities-displayscreens",
+    "entities-ea",
+    "entities-editorcamera",
+    "entities-energysource",
+    "entities-entityclassdefinition_actionarea",
+    "entities-entityclassdefinition_cinematictrigger",
+    "entities-entityclassdefinition_colorgradient",
+    "entities-entityclassdefinition_commententity",
+    "entities-entityclassdefinition_explosion",
+    "entities-entityclassdefinition_hint",
+    "entities-entityclassdefinition_holographicvolume",
+    "entities-entityclassdefinition_missionentity",
+    "entities-entityclassdefinition_navpoint_general",
+    "entities-entityclassdefinition_pointofinterestprovider",
+    "entities-entityclassdefinition_proceduralpointofinterestproxy",
+    "entities-entityclassdefinition_racecheckpoint",
+    "entities-entityclassdefinition_rendertotextureview",
+    "entities-entityclassdefinition_rotationsimple",
+    "entities-entityclassdefinition_screen_9x16_1_a",
+    "entities-entityclassdefinition_scshop",
+    "entities-entityclassdefinition_shipselectorkiosk",
+    "entities-entityclassdefinition_shipselectorkiosk_levskiground",
+    "entities-entityclassdefinition_shipselectorkiosk_levskiships",
+    "entities-entityclassdefinition_shipselectorkiosk_v001",
+    "entities-entityclassdefinition_shipselectorkiosk_v002",
+    "entities-entityclassdefinition_shopkiosk",
+    "entities-entityclassdefinition_shoppingkiosk",
+    "entities-entityclassdefinition_spawnpoint",
+    "entities-entityclassdefinition_spawnprotectionbarrier",
+    "entities-entityclassdefinition_spectatorpoint",
+    "entities-entityclassdefinition_tilesocket",
+    "entities-entityealockedspawnlocation",
+    "entities-entityeaspawnlocation",
+    "entities-entityspawncameracontroller",
+    "entities-entityspawners",
+    "entities-environment",
+    "entities-environmentscreen",
+    "entities-fan_prisonbroken",
+    "entities-flair_radegast_whiskey_concierge",
+    "entities-fronthud_center",
+    "entities-fronthud_displaymanager",
+    "entities-fronthud_left",
+    "entities-fronthud_right",
+    "entities-fronthud_top",
+    "entities-gamerulessingleton",
+    "entities-gamevolumecomponent",
+    "entities-gascloud",
+    "entities-geomentity",
+    "entities-geomentity_areatrigger",
+    "entities-geomentity_dynamicobstacle",
+    "entities-geomentity_interactablelinked",
+    "entities-geomentity_nophysics",
+    "entities-geomentity_repairable",
+    "entities-geomentity_rttui",
+    "entities-geomentity_rttuiwithaudio",
+    "entities-geomentity_static",
+    "entities-geometryinstancer",
+    "entities-gotopointentity",
+    "entities-groundvehicles",
+    "entities-hackable",
+    "entities-handholdobject",
+    "entities-handholdobject_linkable",
     "entities-haulingentityclass",
+    "entities-hazardzones",
+    "entities-hearingperceptionarea",
+    "entities-helpers",
+    "entities-holofield",
+    "entities-ht_table_bar_1_a",
+    "entities-impactcrater",
+    "entities-inventoryplaceholder",
+    "entities-irradiatedhazardzone",
+    "entities-itemport3drepresentation",
+    "entities-jumppoints",
+    "entities-kegr_roomhelper",
+    "entities-kiosk_mercury_anniversary_slides_16x9",
+    "entities-ladder",
+    "entities-landinguientity",
+    "entities-ledgeobject",
+    "entities-ledgeobjectusable",
+    "entities-legacyitems",
+    "entities-lights",
+    "entities-loadingplatformmanager",
+    "entities-locationmanager",
+    "entities-locationtemplate",
+    "entities-lt_hab_bathroom_1_a",
+    "entities-maglaunch",
+    "entities-mastercontrollerentities",
+    "entities-mineable",
+    "entities-missionlocationmanager",
+    "entities-missionlocationtemplate",
+    "entities-missionobjectivemarker",
+    "entities-missionsystem",
+    "entities-monitoredzone",
+    "entities-navpoint_dynamic",
+    "entities-navpoint_dynamic_spawnedbarge",
+    "entities-navpoint_interdictedentity",
+    "entities-navpoint_subpoint0",
+    "entities-navpoint_subpoint1",
+    "entities-navpoint_subpoint2",
+    "entities-navpoint_subpoint3",
+    "entities-navpoint_subpoint4",
+    "entities-navpoint_subpoint5",
+    "entities-objectcontainerrotating",
+    "entities-objectcontainers",
+    "entities-oscillationsimple",
+    "entities-others",
+    "entities-parkingroute",
+    "entities-partymembermarker",
+    "entities-patrolgraph",
+    "entities-patrolgraphlink",
+    "entities-patrolpoint",
+    "entities-perceptionmodifierarea",
+    "entities-physicalizedjobboard",
+    "entities-physics",
+    "entities-planetkillvolume",
+    "entities-playerscoresmanager",
+    "entities-precachecamera",
+    "entities-projectilespawnerentity",
+    "entities-prop_digitalclock",
+    "entities-proximityassistmodifier",
+    "entities-quantumcolorshift",
+    "entities-quantumtrail",
+    "entities-racering",
+    "entities-radarscanning",
+    "entities-rastar",
+    "entities-refinery",
+    "entities-refuelatmospheres",
+    "entities-render",
+    "entities-rendertotextureareamaphelperview",
+    "entities-restricted_areas",
+    "entities-restrictedareaboundarymesh",
+    "entities-restrictedareavisibleboundarymesh",
+    "entities-roomsystem",
+    "entities-safeteleportpoint",
+    "entities-safeteleportpoint_npc",
+    "entities-salvagable",
+    "entities-scarmorymanager",
+    "entities-schedulearea",
+    "entities-scitem-access",
     "entities-scitem-actormovables",
+    "entities-scitem-aimodule_atc_grimhex",
+    "entities-scitem-aimodule_atc_levskiatc01",
+    "entities-scitem-aimodule_atc_lorvilleatc01",
+    "entities-scitem-aimodule_atc_newbabbage",
+    "entities-scitem-aimodule_atc_newbabbageatc01",
+    "entities-scitem-aimodule_atc_orisonatc01",
+    "entities-scitem-aimodule_atc_systematc01",
+    "entities-scitem-aimodule_cargo",
+    "entities-scitem-aimodule_collector",
+    "entities-scitem-aimodule_genatc02",
+    "entities-scitem-aimodule_pyro",
+    "entities-scitem-aimodule_silent_atc",
+    "entities-scitem-airlocks",
+    "entities-scitem-ammocrates",
+    "entities-scitem-arenacommander",
+    "entities-scitem-atc",
+    "entities-scitem-atc_datamanager_outpostplatinumbay",
+    "entities-scitem-atc_datamanager_port_lawful",
+    "entities-scitem-atc_datamanager_port_semilawful",
+    "entities-scitem-atc_datamanager_port_unlawful",
+    "entities-scitem-audiolog",
+    "entities-scitem-beer_can",
+    "entities-scitem-bottle_liquor",
+    "entities-scitem-cargo",
+    "entities-scitem-carryables",
+    "entities-scitem-characters",
+    "entities-scitem-chipsets",
+    "entities-scitem-commsreceiver",
+    "entities-scitem-commsspeaker",
+    "entities-scitem-consumables",
+    "entities-scitem-controlpanels",
+    "entities-scitem-counter_shop_2m_casaba_b",
+    "entities-scitem-counter_shop_2m_casaba_c",
+    "entities-scitem-counter_shop_2m_casaba_d",
+    "entities-scitem-decals",
+    "entities-scitem-default_lensdisplay",
+    "entities-scitem-default_lensdisplay_pu",
+    "entities-scitem-deliveryitemportmanager",
+    "entities-scitem-doors",
+    "entities-scitem-energy",
+    "entities-scitem-entityclassdefinition_aimodule_atc",
+    "entities-scitem-entityclassdefinition_atc_datamanager",
+    "entities-scitem-entityclassdefinition_atc_operatoraimodule",
+    "entities-scitem-entityclassdefinition_bar_mmhc_glass_coke_empty",
+    "entities-scitem-entityclassdefinition_glass_tumbler_1_a",
+    "entities-scitem-entityclassdefinition_glass_tumbler_2_a",
+    "entities-scitem-entityclassdefinition_janitormob",
+    "entities-scitem-entityclassdefinition_lightgroupitem",
+    "entities-scitem-entityclassdefinition_lightgrouppowereditem",
+    "entities-scitem-entityclassdefinition_morrowtour",
+    "entities-scitem-entityclassdefinition_satellite_power_plant_test",
+    "entities-scitem-entityclassdefinition_sequenceobjectitem",
+    "entities-scitem-entityclassdefinition_shelve_invisible_4x4",
+    "entities-scitem-entityclassdefinition_simplestool",
+    "entities-scitem-entityclassdefinition_simpletoilet",
+    "entities-scitem-entityclassdefinition_stool_template",
+    "entities-scitem-entityclassdefinition_tablet",
+    "entities-scitem-entityclassdefinition_tablet_small",
+    "entities-scitem-entityclassdefinition_test_gadget",
+    "entities-scitem-entityclassdefinition_test_mug",
+    "entities-scitem-entityclassdefinition_test_mug_carryable",
+    "entities-scitem-entityclassdefinition_test_shelf",
+    "entities-scitem-entityclassdefinition_test_shelf_missionblackboxdropoff",
+    "entities-scitem-entityclassdefinition_test_station_power_plant",
+    "entities-scitem-entityclassdefinition_testinteractionstatemachine",
+    "entities-scitem-environments",
+    "entities-scitem-externalinventory",
+    "entities-scitem-fauna",
+    "entities-scitem-flair",
+    "entities-scitem-fps_devices",
+    "entities-scitem-freightelevators",
+    "entities-scitem-gameplayinteractables",
+    "entities-scitem-geom_entity_template",
+    "entities-scitem-glass_alcohol",
+    "entities-scitem-handcuffs",
+    "entities-scitem-harvestables",
+    "entities-scitem-holoui",
+    "entities-scitem-human",
+    "entities-scitem-innerthought_dummies",
+    "entities-scitem-itembanks",
+    "entities-scitem-lerpmoveentity",
+    "entities-scitem-lifesupport",
+    "entities-scitem-locations",
+    "entities-scitem-lootables",
     "entities-scitem-mastermodeexclusionglobalparams",
+    "entities-scitem-mission_entities",
+    "entities-scitem-missionstorage",
+    "entities-scitem-movable_bridge",
+    "entities-scitem-movable_bridge_plank",
+    "entities-scitem-movable_plank_pallet_0250x0125x00125",
+    "entities-scitem-movable_plank_pallet_0350x0125x00125",
+    "entities-scitem-movable_plank_pallet_0450x0125x00125",
+    "entities-scitem-navigationlinks",
+    "entities-scitem-nonusables",
+    "entities-scitem-openableobject",
     "entities-scitem-operatormoderecords",
+    "entities-scitem-orbgn",
+    "entities-scitem-orcaobstacle",
+    "entities-scitem-placeholder",
+    "entities-scitem-prop",
+    "entities-scitem-prototypeentities",
+    "entities-scitem-remoteconnectionreceiver",
+    "entities-scitem-rotationsimple",
+    "entities-scitem-salvageablerepairable",
+    "entities-scitem-scitem_debris",
+    "entities-scitem-scitemdisplayscreen",
+    "entities-scitem-ship_weapon_ammo_racks",
     "entities-scitem-ships",
+    "entities-scitem-shopdisplays",
+    "entities-scitem-simpleanimators",
+    "entities-scitem-simpleopenableobject_ammo_box_generic",
+    "entities-scitem-simpleopenableobject_bathroom_shower",
+    "entities-scitem-simpleopenableobject_bathroom_sink",
+    "entities-scitem-simpleopenableobject_bathroom_storage",
+    "entities-scitem-simpleopenableobject_bathroom_toilet",
+    "entities-scitem-simpleopenableobject_cnou_mustang_cargobox_door",
+    "entities-scitem-simpleopenableobject_col_a_radial_kitchen_counter_set_a_cupboard_doors_a",
+    "entities-scitem-simpleopenableobject_col_a_radial_kitchen_counter_set_a_cupboard_drawers_a",
+    "entities-scitem-simpleopenableobject_col_a_radial_kitchen_counter_set_a_oven_a",
+    "entities-scitem-simpleopenableobject_col_a_radial_kitchen_counter_set_a_oven_a_lid_a",
+    "entities-scitem-simpleopenableobject_col_a_shutters_a",
+    "entities-scitem-simpleopenableobject_col_a_shutters_b",
+    "entities-scitem-simpleopenableobject_col_a_shutters_c",
+    "entities-scitem-simpleopenableobject_col_a_shutters_d",
+    "entities-scitem-simpleopenableobject_habmodule_foldingtable",
+    "entities-scitem-simpleopenableobject_habmodule_kitchendoor",
+    "entities-scitem-simpleopenableobject_habmodule_storagedoor",
+    "entities-scitem-simpleopenableobject_habmodule_storagetray",
+    "entities-scitem-simpleopenableobject_habmodule_toiletdoor",
+    "entities-scitem-simpleopenableobject_screenarticulated",
+    "entities-scitem-simpleopenableobject_template",
+    "entities-scitem-spawers",
+    "entities-scitem-spawning",
+    "entities-scitem-starmarine",
+    "entities-scitem-storage",
+    "entities-scitem-storagecage",
+    "entities-scitem-suit",
+    "entities-scitem-template",
+    "entities-scitem-template_cuttableinteractable",
+    "entities-scitem-template_cuttableinteractable_surfacerelay",
+    "entities-scitem-test_ruto_projector",
+    "entities-scitem-toggleableentities",
+    "entities-scitem-ui_environmentscreen_phoenix_attractanim",
+    "entities-scitem-ui_environmentscreen_phoenix_attractanim_small",
+    "entities-scitem-ui_environmentscreen_phoenix_elevatorpanel_bottom",
+    "entities-scitem-ui_environmentscreen_phoenix_elevatorpanel_top",
+    "entities-scitem-ui_environmentscreen_phoenix_interactionpanel",
+    "entities-scitem-ui_flash_screen",
     "entities-scitem-usables",
+    "entities-scitem-vehicles",
+    "entities-scitem-weaponmounts",
+    "entities-scitem-weapons",
+    "entities-screenattachment",
+    "entities-servicebeaconnavpoint",
+    "entities-shadowregionentity",
+    "entities-shipselectorkiosk_genatc02",
+    "entities-shipselectorkiosk_grimhex",
+    "entities-shipselectorkiosk_groundvehiclesonly",
+    "entities-shipselectorkiosk_hangar_hightech_1_a",
+    "entities-shipselectorkiosk_hangar_lowtech_1_a",
+    "entities-shipselectorkiosk_hangar_lowtech_1_b",
+    "entities-shipselectorkiosk_hangar_lowtech_2_a",
+    "entities-shipselectorkiosk_hangar_lowtech_2_b",
+    "entities-shipselectorkiosk_levski",
+    "entities-shipselectorkiosk_lorville",
+    "entities-shipselectorkiosk_lorvilleground",
+    "entities-shipselectorkiosk_newbab",
+    "entities-shipselectorkiosk_outpostground",
+    "entities-shipselectorkiosk_pyro",
+    "entities-shipselectorkiosk_shipsonly",
+    "entities-shipselectorkiosk_shipsonly_area18",
+    "entities-shipselectorkiosk_shipsonly_orison",
+    "entities-shipselectorkiosk_shipsonly_reststop",
+    "entities-shipselectorkiosk_test",
+    "entities-simpleobjectcontainer",
+    "entities-slotspawnpoint",
+    "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a",
+    "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a",
+    "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a_extractonly",
+    "entities-spaceships",
+    "entities-spawncloset",
+    "entities-spawncloset_ships",
+    "entities-spawncloset_ships_javelin",
+    "entities-spawnclosetmanager",
+    "entities-spawnedactionarea",
+    "entities-spawnhelper",
+    "entities-starfield",
+    "entities-streamingobjectcontainer",
+    "entities-sunlight",
+    "entities-table_booth_circularbar_direct_8_seat",
+    "entities-table_booth_utilitarian_4_seat",
+    "entities-tagpoint",
+    "entities-test",
+    "entities-tinymachine",
+    "entities-trackview",
+    "entities-trackviewuser",
     "entities-ui",
+    "entities-unattendedvehiclemarker",
+    "entities-uniqueplayercamera",
+    "entities-usablegroup",
+    "entities-usablegroupcoordinator",
+    "entities-vehicleobjectcontainer",
     "entities-vfx",
+    "entities-vlk_adult_body",
+    "entities-vlk_apex_body",
+    "entities-vlk_apex_irradiated_body",
+    "entities-vlk_juvenile_body",
+    "entities-watervolume",
+    "entities-worlddisplay",
+    "entities-yormandi_apex_body",
     "entitlementpolicies",
+    "entityaudiocontrollerrtpcsubscriberlistdef",
+    "entityclassdefinition",
     "environments",
     "evagraph",
     "explosiveordnance",
     "factions",
+    "factions_legacy",
     "fidgetconfig",
     "foley",
     "forcefeedback_forcefeedbackeffects",
     "formation",
+    "fovaspectratiorangetables",
+    "franchises",
     "friendmanager",
     "fuelparams",
     "gamemode",
     "gamemodule",
+    "genericmobiterminals",
     "globalarmarkerparams",
     "globalcargoloadingparams",
     "globalcommsnotificationparams",
@@ -122,6 +651,7 @@ full = [
     "globalquantumdriveparams",
     "globalshopparams",
     "globaltutorialparams",
+    "gpuparticleaudio",
     "grips",
     "handholdgripdatabase",
     "hardwaremouse",
@@ -137,17 +667,38 @@ full = [
     "intoxication",
     "inventorycontainers",
     "item",
+    "itemporttagsdictionary",
+    "itemresourcenetwork",
     "journalentry",
+    "journalentrytype",
     "jumppoints",
+    "kaboos_derelictships",
     "landingpadsize",
     "lawsystem",
     "leangraph",
     "level",
+    "lightamplification_aegs",
+    "lightamplification_anvl",
+    "lightamplification_argo",
+    "lightamplification_banu",
+    "lightamplification_cnou",
+    "lightamplification_crus",
+    "lightamplification_drak",
+    "lightamplification_espr",
+    "lightamplification_gama",
+    "lightamplification_grey",
+    "lightamplification_krig",
+    "lightamplification_misc",
+    "lightamplification_orig",
+    "lightamplification_rsi",
+    "lightamplification_vncl",
+    "lightamplification_xnaa",
     "loadoutkits",
     "longtermpersistence",
     "lootgeneration",
     "megamap",
     "mining",
+    "miningaudioparams",
     "missionbroker",
     "missiondata",
     "missionfailureconditions",
@@ -159,12 +710,23 @@ full = [
     "musiclogic",
     "personalinnerthoughtrules",
     "planetdaynighttemperatureparams",
+    "player",
+    "playeranimatedinteractiontemplates",
+    "playerchoicemenuitems",
+    "playerchoicemenutypes",
+    "playerdockcontextcomponent",
+    "playergroupmanager",
+    "playernotificationsystem",
+    "playerspeedthrottle",
+    "playertoplayercommscallglobalparams",
+    "playertrade",
     "posturedatabase",
     "procbreathing",
     "proceduralaimrigrecord",
     "proceduralanimations",
     "procedurallandingsetup",
     "procedurallayout",
+    "prop",
     "qteconfigs",
     "radarsystem",
     "rastar",
@@ -173,8 +735,11 @@ full = [
     "rendererpresets",
     "rentalnotificationparams",
     "reputation",
+    "reputationvaluesettings",
     "resourcetypedatabase",
     "roomsystem",
+    "rsi_polaris_kaboos_exterior",
+    "scandisplayinstanceparams",
     "scarryableikinteractionlist",
     "scitemcommscomponentsetup",
     "scitemdisplayscreenpreset",
@@ -191,20 +756,27 @@ full = [
     "sglobalsalvagerepairbeamparams",
     "sglobaltractorbeamparams",
     "shipinsurancerecord",
+    "sloadoutassortment",
     "specialeventdatabase",
     "squantumdriveeffecttagstemplate",
     "sreputationglobalcontextbbparams",
     "ssolarsystem",
     "starmap",
+    "starmapamenitytypes",
     "tacticalquery",
     "tagdatabase",
     "targetselector",
     "tintpalettes",
     "trackview",
+    "transitsystem",
+    "transponder",
+    "transportsystem",
     "traversalcostconfig",
     "turret",
     "ui-animatedmarkers",
+    "ui-areamap",
     "ui-armarkerconfiguration",
+    "ui-aspectratiototag_mfd",
     "ui-buildingblocks",
     "ui-digitalsignage",
     "ui-directrtt",
@@ -217,10 +789,13 @@ full = [
     "ui-holovehicleconfig",
     "ui-hudcolors_shipcolorpalettes",
     "ui-innerthought",
+    "ui-innerthoughtentity",
+    "ui-innerthoughtentitydepth",
     "ui-itemkiosk",
     "ui-itempreview_config",
     "ui-itemtypedefinition",
     "ui-localplayershoppingdata",
+    "ui-map",
     "ui-marker_config",
     "ui-markertrackingvolumeconfig",
     "ui-missilelockreticleconfig",
@@ -236,6 +811,8 @@ full = [
     "ui-radar3dpresets",
     "ui-radardisplay_config_radar",
     "ui-seatreticlearchetype",
+    "ui-simplespritesheet_holodisplaysprites",
+    "ui-simplespritesheet_innerthoughtsprites",
     "ui-transformationinterpolatorrecords",
     "ui-uiconfig_starcitizen",
     "ui-uielements",
@@ -244,9 +821,14 @@ full = [
     "ui-vehicleentrance",
     "ui-videocomms",
     "ui-visor",
+    "ui-visorscreenconfig",
     "ui-worlddisplay",
+    "unittest_unittesta",
     "unittest_unittestb",
     "vehicle",
+    "vehiclecombat",
+    "vehiclesalvageglobalparams",
+    "vendingmachine_2",
     "vfx",
     "vibrations",
     "videocommschannels",
@@ -260,36 +842,141 @@ full = [
     "weaponproceduralrecoil",
     "zerogtraversalgraph",
 ]
-actor = ["actor-actorledgegrabbing", "actor-actortargetedparams", "actor-actorviewlimits", "actor-actorzerogtraversalparams", "actor-atls_geo_jumppackconfig", "actor-externalforceresponse", "actor-gforce", "actor-headtrackinglimits", "actor-inputdeflectiontime", "actor-locomotionpersonality", "actor-lookahead", "actor-playeranimatedinteractionconfig", "actor-playerdefaultactionsconfig", "actor-quantumtravelcameraeffects", "actor-skeletonconfigs", "actor-stanceinfo", "actor-targettrackingautozoom"]
-entities = ["entities-haulingentityclass", "entities-scitem-actormovables", "entities-scitem-mastermodeexclusionglobalparams", "entities-scitem-operatormoderecords", "entities-scitem-ships", "entities-scitem-usables", "entities-ui", "entities-vfx"]
-entities-scitem = ["entities-scitem-actormovables", "entities-scitem-mastermodeexclusionglobalparams", "entities-scitem-operatormoderecords", "entities-scitem-ships", "entities-scitem-usables"]
-libs-foundry-records = ["actor-actorledgegrabbing", "actor-actortargetedparams", "actor-actorviewlimits", "actor-actorzerogtraversalparams", "actor-atls_geo_jumppackconfig", "actor-externalforceresponse", "actor-gforce", "actor-headtrackinglimits", "actor-inputdeflectiontime", "actor-locomotionpersonality", "actor-lookahead", "actor-playeranimatedinteractionconfig", "actor-playerdefaultactionsconfig", "actor-quantumtravelcameraeffects", "actor-skeletonconfigs", "actor-stanceinfo", "actor-targettrackingautozoom", "ads", "aianimationdata", "aiglobalsettings", "aimotive", "aiprofile", "aiwavecollection", "ammoparams", "analytics", "announcer", "areaservices", "audio", "awardservice", "cameras", "capacitorassignment", "cargomanifest", "character", "chatchannelfilters", "chatcommandfastaccess", "chatemoterecord", "chatfilteroptions", "chatmanager", "closecombat", "commodityconfiguration", "commoditytypedatabase", "commsnotifications", "communicationatlconfig", "communicationconfig", "communicationname", "communicationsystem", "communicationvariableconfig", "consumabletypesdatabase", "contextualcommunicationconfig", "contracts", "conversation", "crafting", "crewmanifest", "damage", "densityclasses", "dialoguecontentbank", "dialoguerealm", "dynamiccameraeffects", "dynamiclightingrig", "emotions", "entities-haulingentityclass", "entities-scitem-actormovables", "entities-scitem-mastermodeexclusionglobalparams", "entities-scitem-operatormoderecords", "entities-scitem-ships", "entities-scitem-usables", "entities-ui", "entities-vfx", "entitlementpolicies", "environments", "evagraph", "explosiveordnance", "factions", "fidgetconfig", "foley", "forcefeedback_forcefeedbackeffects", "formation", "friendmanager", "fuelparams", "gamemode", "gamemodule", "globalarmarkerparams", "globalcargoloadingparams", "globalcommsnotificationparams", "globalcuttableshapeparams", "globalinteractionparams", "globalinventoryparams", "globalquantumdriveparams", "globalshopparams", "globaltutorialparams", "grips", "handholdgripdatabase", "hardwaremouse", "harvestable", "hazardawarenessparams", "hints", "hudparams", "ifcs", "initialdamageoverrides", "inputpromptconfig", "instancedinterior", "interactionconditions", "intoxication", "inventorycontainers", "item", "journalentry", "jumppoints", "landingpadsize", "lawsystem", "leangraph", "level", "loadoutkits", "longtermpersistence", "lootgeneration", "megamap", "mining", "missionbroker", "missiondata", "missionfailureconditions", "missiongiver", "missionscenarios", "missiontype", "motionstatemachine", "moveviewrestrictionpenalties", "musiclogic", "personalinnerthoughtrules", "planetdaynighttemperatureparams", "posturedatabase", "procbreathing", "proceduralaimrigrecord", "proceduralanimations", "procedurallandingsetup", "procedurallayout", "qteconfigs", "radarsystem", "rastar", "refinerynotificationconfiguration", "refiningprocess", "rendererpresets", "rentalnotificationparams", "reputation", "resourcetypedatabase", "roomsystem", "scarryableikinteractionlist", "scitemcommscomponentsetup", "scitemdisplayscreenpreset", "scitemmanufacturer", "scuttableshapedefinition", "seatcdikconfigs", "servicebeacon", "sgeometryviewdistanceratiocategories", "sglobalchargedrainbeamparams", "sglobalcrosshairparams", "sglobalelectronparams", "sglobalhealingbeamparams", "sglobalhitbehaviorparams", "sglobalsalvagerepairbeamparams", "sglobaltractorbeamparams", "shipinsurancerecord", "specialeventdatabase", "squantumdriveeffecttagstemplate", "sreputationglobalcontextbbparams", "ssolarsystem", "starmap", "tacticalquery", "tagdatabase", "targetselector", "tintpalettes", "trackview", "traversalcostconfig", "turret", "ui-animatedmarkers", "ui-armarkerconfiguration", "ui-buildingblocks", "ui-digitalsignage", "ui-directrtt", "ui-dockingslotvisibility", "ui-elementsounds_deprecated", "ui-flashobjectbindinggroups", "ui-flighthudmessages", "ui-frontend", "ui-graphs", "ui-holovehicleconfig", "ui-hudcolors_shipcolorpalettes", "ui-innerthought", "ui-itemkiosk", "ui-itempreview_config", "ui-itemtypedefinition", "ui-localplayershoppingdata", "ui-marker_config", "ui-markertrackingvolumeconfig", "ui-missilelockreticleconfig", "ui-mobiglas", "ui-objectdatabankentrymarkerconfig", "ui-playerchoice_imconfig_playerchoiceim", "ui-playerchoice_library_playerchoicelibrary", "ui-playerchoice_pitconfig_playerchoicepersonalthought", "ui-playerchoice_signalconfig_interactorsignalconfig", "ui-playerecggraph_config_playerecggraphconfig", "ui-pointofinterestdata", "ui-popups", "ui-radar3dpresets", "ui-radardisplay_config_radar", "ui-seatreticlearchetype", "ui-transformationinterpolatorrecords", "ui-uiconfig_starcitizen", "ui-uielements", "ui-uimodes", "ui-uistatedisplay", "ui-vehicleentrance", "ui-videocomms", "ui-visor", "ui-worlddisplay", "unittest_unittestb", "vehicle", "vfx", "vibrations", "videocommschannels", "voicebundle", "voicechannelsettingsrecord", "voicesingle", "weaponarmodifiers", "weaponmisfiredef", "weaponproceduralanimation", "weaponproceduralclip", "weaponproceduralrecoil", "zerogtraversalgraph"]
-ui = ["ui-animatedmarkers", "ui-armarkerconfiguration", "ui-buildingblocks", "ui-digitalsignage", "ui-directrtt", "ui-dockingslotvisibility", "ui-elementsounds_deprecated", "ui-flashobjectbindinggroups", "ui-flighthudmessages", "ui-frontend", "ui-graphs", "ui-holovehicleconfig", "ui-hudcolors_shipcolorpalettes", "ui-innerthought", "ui-itemkiosk", "ui-itempreview_config", "ui-itemtypedefinition", "ui-localplayershoppingdata", "ui-marker_config", "ui-markertrackingvolumeconfig", "ui-missilelockreticleconfig", "ui-mobiglas", "ui-objectdatabankentrymarkerconfig", "ui-playerchoice_imconfig_playerchoiceim", "ui-playerchoice_library_playerchoicelibrary", "ui-playerchoice_pitconfig_playerchoicepersonalthought", "ui-playerchoice_signalconfig_interactorsignalconfig", "ui-playerecggraph_config_playerecggraphconfig", "ui-pointofinterestdata", "ui-popups", "ui-radar3dpresets", "ui-radardisplay_config_radar", "ui-seatreticlearchetype", "ui-transformationinterpolatorrecords", "ui-uiconfig_starcitizen", "ui-uielements", "ui-uimodes", "ui-uistatedisplay", "ui-vehicleentrance", "ui-videocomms", "ui-visor", "ui-worlddisplay"]
+dormant = ["full"]
+actor = ["actor-actorblockhelper", "actor-actorjumpfalllandatlsgeoparams", "actor-actorjumpfalllandatlsparams", "actor-actorjumpfalllanddefaultparams", "actor-actorjumpfalllandplayerparams", "actor-actorladderconfig", "actor-actorladderconfig_v2", "actor-actorledgegrabbing", "actor-actormeleecombat", "actor-actormovementmodifiers_powersuit", "actor-actormovementsets", "actor-actors", "actor-actorslidingparam", "actor-actorspeedcameraeffect_slide", "actor-actorstanceconfig", "actor-actorstanceconfig_npc_human", "actor-actorstanceconfig_npc_kopion", "actor-actorstanceconfig_npc_quasigrazer", "actor-actorstanceconfig_npc_vanduul", "actor-actorstanceconfig_npc_vlk", "actor-actorstanceconfig_npc_vlkadult", "actor-actorstanceconfig_npc_vlkapex", "actor-actorstanceconfig_npc_vlkjuvenile", "actor-actorstanceconfig_npc_webhound", "actor-actorstanceconfig_transport_powersuit", "actor-actorstanceconfig_transport_powersuit_argo_atls", "actor-actorstatevalidation", "actor-actortargetedparams", "actor-actorviewlimits", "actor-actorzerogtraversalparams", "actor-atls_geo_jumppackconfig", "actor-creaturejumpfalllandflow", "actor-externalforceresponse", "actor-gforce", "actor-headtrackinglimits", "actor-inputdeflectiontime", "actor-locomotionpersonality", "actor-lookahead", "actor-npcjumpfalllandflow", "actor-playeranimatedinteractionconfig", "actor-playercarryconfig", "actor-playerdefaultactionsconfig", "actor-playerjumpfallandflow", "actor-playermovementmodifiers", "actor-quantumtravelcameraeffects", "actor-skeletonconfigs", "actor-stanceinfo", "actor-targettrackingautozoom", "actor-transportjumpfallandflow", "actor-valakkarcarryconfig", "actorabilitycomponent-actorabilitycomponent_playerabilities", "actorabilitycomponent-npcabilities", "actorabilitycomponent-playerlimitations", "actorabilitycomponent-transportabilities", "actorduckingparams-maleduckingparams", "actorenvironmentcomponent-actorenvironment", "actorgforcecomponent-actorgforcecomponent_playergforce", "actorgforcecomponent-npcgforce", "actorgforcecomponent-playergforce_mm", "actorhealthcomponent-bodymapping", "actorhealthcomponent-healthconfig", "actorhealthcomponent-healthtemplate_ai", "actorhealthcomponent-healthtemplate_ai_juggernaut", "actorhealthcomponent-healthtemplate_invulnerable", "actorhealthcomponent-healthtemplate_kopion", "actorhealthcomponent-healthtemplate_player", "actorhealthcomponent-healthtemplate_powersuit", "actorhealthcomponent-healthtemplate_powersuit_combat", "actorhealthcomponent-healthtemplate_quasigrazer", "actorhealthcomponent-healthtemplate_stunonly", "actorhealthcomponent-healthtemplate_vanduul", "actorhealthcomponent-healthtemplate_vlk", "actorhealthcomponent-healthtemplate_vlk_irridiatated", "actorhealthcomponent-healthtemplate_vlk_irridiatated_apex", "actorhealthcomponent-healthtemplate_vlk_nonapex", "actorhealthcomponent-healthtemplate_yormandi", "actormovementsetsconfig-actormovementsetconfig", "actorproceduralrecoil-actorproceduralrecoilconfig", "actorproceduralrecoil-actorproceduralrecoilmodifiers", "actorstaminacomponent-actorbreathinghelper", "actorstaminacomponent-actorstaminacomponent_playerstamina", "actorstatuscomponent-globalactorstatusparams", "actorstatuscomponent-medicaltieritemconfig", "actorstatuscomponent-playerstatus", "actorstatuscomponent-playerstatus_aiboss", "actorstatuscomponent-playerstatus_aibosssuper", "actorstatuscomponent-playerstatusai", "actorstatuscomponent-playerstatusai_captain", "actorstatuscomponent-playerstatusai_elite", "actorstatuscomponent-playerstatusai_juggernaut", "actorstatuscomponent-playerstatusai_unconscious_rescuemission", "actorstatuscomponent-playerstatusai_vanduul", "actorstatuscomponent-playerstatusai_vlk_adult", "actorstatuscomponent-playerstatusai_vlk_adult_irridatated", "actorstatuscomponent-playerstatusai_vlk_juvi", "actorstatuscomponent-playerstatusai_vlk_juvi_irridatated", "actorstatuscomponent-playerstatusai_vlkapex", "actorstatuscomponent-playerstatusai_vlkapex_irridatated", "actorstatuscomponent-playerstatusai_vlkapex_stormbreaker", "actorstatuscomponent-playerstatusai_yormandi", "actorstatuscomponent-playerstatuscorpse", "actorstatuscomponent-playerstatuscreature", "actorstatuscomponent-playerstatusea", "actorstatuscomponent-playerstatuspu", "actorstatuscomponent-powersuitstatus", "actorstatuscomponent-powersuitstatus_combat", "actorstatuscomponent-transportstatus", "actorviewlimitpresetdatabase-viewlimitpresetdatabase"]
+entities = ["entities-aft", "entities-aicoversurface", "entities-aigroupentity", "entities-ainavigationobstacle", "entities-aipath", "entities-analyticshadow", "entities-animentity", "entities-animentity_attachable", "entities-animentity_attachable_espr_prowler_glass", "entities-animentity_attachable_espr_prowler_glass_copilot", "entities-animentity_attachable_espr_talon_glass", "entities-animentity_character", "entities-animentity_floatinghead_01", "entities-animentity_floatinghead_charactercustomizer", "entities-animentity_floatinghead_charactercustomizer_dnalib", "entities-animentity_floatinghead_charactercustomizer_featurelib", "entities-animentity_human", "entities-animentity_human_female", "entities-animentity_toggleable", "entities-area", "entities-asd", "entities-attachableobjectcontainer", "entities-attachableobjectcontainerspawner", "entities-attackarea", "entities-audio", "entities-basebuilding", "entities-baselocationtemplate", "entities-booth_table_centered_seats", "entities-breakablerock", "entities-buildingblocksscreens", "entities-cameralens", "entities-camerarttview", "entities-camerasource", "entities-camerasourcefuelnozzle", "entities-cameratarget", "entities-canvasgeoment", "entities-canvasgeoment_vars", "entities-capturearea", "entities-carryable_damage_sensitive_canister", "entities-carryabletemplate", "entities-charactercustomizer", "entities-cinematiclabel", "entities-cinematiclabelwithvehicle", "entities-cinematictitling_base", "entities-cinematictitling_standard", "entities-cinematictrigger_sticky", "entities-commententity_quickfade", "entities-commodities", "entities-contactblobentity", "entities-corpsemarker", "entities-cuttableshape", "entities-debris_1_floor_a", "entities-debris_1_floor_b", "entities-debris_1_floor_c", "entities-debris_1_floor_d", "entities-debris_1_floor_e", "entities-debris_1_floor_f", "entities-decorations", "entities-default", "entities-defaultwithaudio", "entities-defendarea", "entities-destruction", "entities-dev", "entities-displayscreens", "entities-ea", "entities-editorcamera", "entities-energysource", "entities-entityclassdefinition_actionarea", "entities-entityclassdefinition_cinematictrigger", "entities-entityclassdefinition_colorgradient", "entities-entityclassdefinition_commententity", "entities-entityclassdefinition_explosion", "entities-entityclassdefinition_hint", "entities-entityclassdefinition_holographicvolume", "entities-entityclassdefinition_missionentity", "entities-entityclassdefinition_navpoint_general", "entities-entityclassdefinition_pointofinterestprovider", "entities-entityclassdefinition_proceduralpointofinterestproxy", "entities-entityclassdefinition_racecheckpoint", "entities-entityclassdefinition_rendertotextureview", "entities-entityclassdefinition_rotationsimple", "entities-entityclassdefinition_screen_9x16_1_a", "entities-entityclassdefinition_scshop", "entities-entityclassdefinition_shipselectorkiosk", "entities-entityclassdefinition_shipselectorkiosk_levskiground", "entities-entityclassdefinition_shipselectorkiosk_levskiships", "entities-entityclassdefinition_shipselectorkiosk_v001", "entities-entityclassdefinition_shipselectorkiosk_v002", "entities-entityclassdefinition_shopkiosk", "entities-entityclassdefinition_shoppingkiosk", "entities-entityclassdefinition_spawnpoint", "entities-entityclassdefinition_spawnprotectionbarrier", "entities-entityclassdefinition_spectatorpoint", "entities-entityclassdefinition_tilesocket", "entities-entityealockedspawnlocation", "entities-entityeaspawnlocation", "entities-entityspawncameracontroller", "entities-entityspawners", "entities-environment", "entities-environmentscreen", "entities-fan_prisonbroken", "entities-flair_radegast_whiskey_concierge", "entities-fronthud_center", "entities-fronthud_displaymanager", "entities-fronthud_left", "entities-fronthud_right", "entities-fronthud_top", "entities-gamerulessingleton", "entities-gamevolumecomponent", "entities-gascloud", "entities-geomentity", "entities-geomentity_areatrigger", "entities-geomentity_dynamicobstacle", "entities-geomentity_interactablelinked", "entities-geomentity_nophysics", "entities-geomentity_repairable", "entities-geomentity_rttui", "entities-geomentity_rttuiwithaudio", "entities-geomentity_static", "entities-geometryinstancer", "entities-gotopointentity", "entities-groundvehicles", "entities-hackable", "entities-handholdobject", "entities-handholdobject_linkable", "entities-haulingentityclass", "entities-hazardzones", "entities-hearingperceptionarea", "entities-helpers", "entities-holofield", "entities-ht_table_bar_1_a", "entities-impactcrater", "entities-inventoryplaceholder", "entities-irradiatedhazardzone", "entities-itemport3drepresentation", "entities-jumppoints", "entities-kegr_roomhelper", "entities-kiosk_mercury_anniversary_slides_16x9", "entities-ladder", "entities-landinguientity", "entities-ledgeobject", "entities-ledgeobjectusable", "entities-legacyitems", "entities-lights", "entities-loadingplatformmanager", "entities-locationmanager", "entities-locationtemplate", "entities-lt_hab_bathroom_1_a", "entities-maglaunch", "entities-mastercontrollerentities", "entities-mineable", "entities-missionlocationmanager", "entities-missionlocationtemplate", "entities-missionobjectivemarker", "entities-missionsystem", "entities-monitoredzone", "entities-navpoint_dynamic", "entities-navpoint_dynamic_spawnedbarge", "entities-navpoint_interdictedentity", "entities-navpoint_subpoint0", "entities-navpoint_subpoint1", "entities-navpoint_subpoint2", "entities-navpoint_subpoint3", "entities-navpoint_subpoint4", "entities-navpoint_subpoint5", "entities-objectcontainerrotating", "entities-objectcontainers", "entities-oscillationsimple", "entities-others", "entities-parkingroute", "entities-partymembermarker", "entities-patrolgraph", "entities-patrolgraphlink", "entities-patrolpoint", "entities-perceptionmodifierarea", "entities-physicalizedjobboard", "entities-physics", "entities-planetkillvolume", "entities-playerscoresmanager", "entities-precachecamera", "entities-projectilespawnerentity", "entities-prop_digitalclock", "entities-proximityassistmodifier", "entities-quantumcolorshift", "entities-quantumtrail", "entities-racering", "entities-radarscanning", "entities-rastar", "entities-refinery", "entities-refuelatmospheres", "entities-render", "entities-rendertotextureareamaphelperview", "entities-restricted_areas", "entities-restrictedareaboundarymesh", "entities-restrictedareavisibleboundarymesh", "entities-roomsystem", "entities-safeteleportpoint", "entities-safeteleportpoint_npc", "entities-salvagable", "entities-scarmorymanager", "entities-schedulearea", "entities-scitem-access", "entities-scitem-actormovables", "entities-scitem-aimodule_atc_grimhex", "entities-scitem-aimodule_atc_levskiatc01", "entities-scitem-aimodule_atc_lorvilleatc01", "entities-scitem-aimodule_atc_newbabbage", "entities-scitem-aimodule_atc_newbabbageatc01", "entities-scitem-aimodule_atc_orisonatc01", "entities-scitem-aimodule_atc_systematc01", "entities-scitem-aimodule_cargo", "entities-scitem-aimodule_collector", "entities-scitem-aimodule_genatc02", "entities-scitem-aimodule_pyro", "entities-scitem-aimodule_silent_atc", "entities-scitem-airlocks", "entities-scitem-ammocrates", "entities-scitem-arenacommander", "entities-scitem-atc", "entities-scitem-atc_datamanager_outpostplatinumbay", "entities-scitem-atc_datamanager_port_lawful", "entities-scitem-atc_datamanager_port_semilawful", "entities-scitem-atc_datamanager_port_unlawful", "entities-scitem-audiolog", "entities-scitem-beer_can", "entities-scitem-bottle_liquor", "entities-scitem-cargo", "entities-scitem-carryables", "entities-scitem-characters", "entities-scitem-chipsets", "entities-scitem-commsreceiver", "entities-scitem-commsspeaker", "entities-scitem-consumables", "entities-scitem-controlpanels", "entities-scitem-counter_shop_2m_casaba_b", "entities-scitem-counter_shop_2m_casaba_c", "entities-scitem-counter_shop_2m_casaba_d", "entities-scitem-decals", "entities-scitem-default_lensdisplay", "entities-scitem-default_lensdisplay_pu", "entities-scitem-deliveryitemportmanager", "entities-scitem-doors", "entities-scitem-energy", "entities-scitem-entityclassdefinition_aimodule_atc", "entities-scitem-entityclassdefinition_atc_datamanager", "entities-scitem-entityclassdefinition_atc_operatoraimodule", "entities-scitem-entityclassdefinition_bar_mmhc_glass_coke_empty", "entities-scitem-entityclassdefinition_glass_tumbler_1_a", "entities-scitem-entityclassdefinition_glass_tumbler_2_a", "entities-scitem-entityclassdefinition_janitormob", "entities-scitem-entityclassdefinition_lightgroupitem", "entities-scitem-entityclassdefinition_lightgrouppowereditem", "entities-scitem-entityclassdefinition_morrowtour", "entities-scitem-entityclassdefinition_satellite_power_plant_test", "entities-scitem-entityclassdefinition_sequenceobjectitem", "entities-scitem-entityclassdefinition_shelve_invisible_4x4", "entities-scitem-entityclassdefinition_simplestool", "entities-scitem-entityclassdefinition_simpletoilet", "entities-scitem-entityclassdefinition_stool_template", "entities-scitem-entityclassdefinition_tablet", "entities-scitem-entityclassdefinition_tablet_small", "entities-scitem-entityclassdefinition_test_gadget", "entities-scitem-entityclassdefinition_test_mug", "entities-scitem-entityclassdefinition_test_mug_carryable", "entities-scitem-entityclassdefinition_test_shelf", "entities-scitem-entityclassdefinition_test_shelf_missionblackboxdropoff", "entities-scitem-entityclassdefinition_test_station_power_plant", "entities-scitem-entityclassdefinition_testinteractionstatemachine", "entities-scitem-environments", "entities-scitem-externalinventory", "entities-scitem-fauna", "entities-scitem-flair", "entities-scitem-fps_devices", "entities-scitem-freightelevators", "entities-scitem-gameplayinteractables", "entities-scitem-geom_entity_template", "entities-scitem-glass_alcohol", "entities-scitem-handcuffs", "entities-scitem-harvestables", "entities-scitem-holoui", "entities-scitem-human", "entities-scitem-innerthought_dummies", "entities-scitem-itembanks", "entities-scitem-lerpmoveentity", "entities-scitem-lifesupport", "entities-scitem-locations", "entities-scitem-lootables", "entities-scitem-mastermodeexclusionglobalparams", "entities-scitem-mission_entities", "entities-scitem-missionstorage", "entities-scitem-movable_bridge", "entities-scitem-movable_bridge_plank", "entities-scitem-movable_plank_pallet_0250x0125x00125", "entities-scitem-movable_plank_pallet_0350x0125x00125", "entities-scitem-movable_plank_pallet_0450x0125x00125", "entities-scitem-navigationlinks", "entities-scitem-nonusables", "entities-scitem-openableobject", "entities-scitem-operatormoderecords", "entities-scitem-orbgn", "entities-scitem-orcaobstacle", "entities-scitem-placeholder", "entities-scitem-prop", "entities-scitem-prototypeentities", "entities-scitem-remoteconnectionreceiver", "entities-scitem-rotationsimple", "entities-scitem-salvageablerepairable", "entities-scitem-scitem_debris", "entities-scitem-scitemdisplayscreen", "entities-scitem-ship_weapon_ammo_racks", "entities-scitem-ships", "entities-scitem-shopdisplays", "entities-scitem-simpleanimators", "entities-scitem-simpleopenableobject_ammo_box_generic", "entities-scitem-simpleopenableobject_bathroom_shower", "entities-scitem-simpleopenableobject_bathroom_sink", "entities-scitem-simpleopenableobject_bathroom_storage", "entities-scitem-simpleopenableobject_bathroom_toilet", "entities-scitem-simpleopenableobject_cnou_mustang_cargobox_door", "entities-scitem-simpleopenableobject_col_a_radial_kitchen_counter_set_a_cupboard_doors_a", "entities-scitem-simpleopenableobject_col_a_radial_kitchen_counter_set_a_cupboard_drawers_a", "entities-scitem-simpleopenableobject_col_a_radial_kitchen_counter_set_a_oven_a", "entities-scitem-simpleopenableobject_col_a_radial_kitchen_counter_set_a_oven_a_lid_a", "entities-scitem-simpleopenableobject_col_a_shutters_a", "entities-scitem-simpleopenableobject_col_a_shutters_b", "entities-scitem-simpleopenableobject_col_a_shutters_c", "entities-scitem-simpleopenableobject_col_a_shutters_d", "entities-scitem-simpleopenableobject_habmodule_foldingtable", "entities-scitem-simpleopenableobject_habmodule_kitchendoor", "entities-scitem-simpleopenableobject_habmodule_storagedoor", "entities-scitem-simpleopenableobject_habmodule_storagetray", "entities-scitem-simpleopenableobject_habmodule_toiletdoor", "entities-scitem-simpleopenableobject_screenarticulated", "entities-scitem-simpleopenableobject_template", "entities-scitem-spawers", "entities-scitem-spawning", "entities-scitem-starmarine", "entities-scitem-storage", "entities-scitem-storagecage", "entities-scitem-suit", "entities-scitem-template", "entities-scitem-template_cuttableinteractable", "entities-scitem-template_cuttableinteractable_surfacerelay", "entities-scitem-test_ruto_projector", "entities-scitem-toggleableentities", "entities-scitem-ui_environmentscreen_phoenix_attractanim", "entities-scitem-ui_environmentscreen_phoenix_attractanim_small", "entities-scitem-ui_environmentscreen_phoenix_elevatorpanel_bottom", "entities-scitem-ui_environmentscreen_phoenix_elevatorpanel_top", "entities-scitem-ui_environmentscreen_phoenix_interactionpanel", "entities-scitem-ui_flash_screen", "entities-scitem-usables", "entities-scitem-vehicles", "entities-scitem-weaponmounts", "entities-scitem-weapons", "entities-screenattachment", "entities-servicebeaconnavpoint", "entities-shadowregionentity", "entities-shipselectorkiosk_genatc02", "entities-shipselectorkiosk_grimhex", "entities-shipselectorkiosk_groundvehiclesonly", "entities-shipselectorkiosk_hangar_hightech_1_a", "entities-shipselectorkiosk_hangar_lowtech_1_a", "entities-shipselectorkiosk_hangar_lowtech_1_b", "entities-shipselectorkiosk_hangar_lowtech_2_a", "entities-shipselectorkiosk_hangar_lowtech_2_b", "entities-shipselectorkiosk_levski", "entities-shipselectorkiosk_lorville", "entities-shipselectorkiosk_lorvilleground", "entities-shipselectorkiosk_newbab", "entities-shipselectorkiosk_outpostground", "entities-shipselectorkiosk_pyro", "entities-shipselectorkiosk_shipsonly", "entities-shipselectorkiosk_shipsonly_area18", "entities-shipselectorkiosk_shipsonly_orison", "entities-shipselectorkiosk_shipsonly_reststop", "entities-shipselectorkiosk_test", "entities-simpleobjectcontainer", "entities-slotspawnpoint", "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a", "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a", "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a_extractonly", "entities-spaceships", "entities-spawncloset", "entities-spawncloset_ships", "entities-spawncloset_ships_javelin", "entities-spawnclosetmanager", "entities-spawnedactionarea", "entities-spawnhelper", "entities-starfield", "entities-streamingobjectcontainer", "entities-sunlight", "entities-table_booth_circularbar_direct_8_seat", "entities-table_booth_utilitarian_4_seat", "entities-tagpoint", "entities-test", "entities-tinymachine", "entities-trackview", "entities-trackviewuser", "entities-ui", "entities-unattendedvehiclemarker", "entities-uniqueplayercamera", "entities-usablegroup", "entities-usablegroupcoordinator", "entities-vehicleobjectcontainer", "entities-vfx", "entities-vlk_adult_body", "entities-vlk_apex_body", "entities-vlk_apex_irradiated_body", "entities-vlk_juvenile_body", "entities-watervolume", "entities-worlddisplay", "entities-yormandi_apex_body"]
+entities-scitem = ["entities-scitem-access", "entities-scitem-actormovables", "entities-scitem-aimodule_atc_grimhex", "entities-scitem-aimodule_atc_levskiatc01", "entities-scitem-aimodule_atc_lorvilleatc01", "entities-scitem-aimodule_atc_newbabbage", "entities-scitem-aimodule_atc_newbabbageatc01", "entities-scitem-aimodule_atc_orisonatc01", "entities-scitem-aimodule_atc_systematc01", "entities-scitem-aimodule_cargo", "entities-scitem-aimodule_collector", "entities-scitem-aimodule_genatc02", "entities-scitem-aimodule_pyro", "entities-scitem-aimodule_silent_atc", "entities-scitem-airlocks", "entities-scitem-ammocrates", "entities-scitem-arenacommander", "entities-scitem-atc", "entities-scitem-atc_datamanager_outpostplatinumbay", "entities-scitem-atc_datamanager_port_lawful", "entities-scitem-atc_datamanager_port_semilawful", "entities-scitem-atc_datamanager_port_unlawful", "entities-scitem-audiolog", "entities-scitem-beer_can", "entities-scitem-bottle_liquor", "entities-scitem-cargo", "entities-scitem-carryables", "entities-scitem-characters", "entities-scitem-chipsets", "entities-scitem-commsreceiver", "entities-scitem-commsspeaker", "entities-scitem-consumables", "entities-scitem-controlpanels", "entities-scitem-counter_shop_2m_casaba_b", "entities-scitem-counter_shop_2m_casaba_c", "entities-scitem-counter_shop_2m_casaba_d", "entities-scitem-decals", "entities-scitem-default_lensdisplay", "entities-scitem-default_lensdisplay_pu", "entities-scitem-deliveryitemportmanager", "entities-scitem-doors", "entities-scitem-energy", "entities-scitem-entityclassdefinition_aimodule_atc", "entities-scitem-entityclassdefinition_atc_datamanager", "entities-scitem-entityclassdefinition_atc_operatoraimodule", "entities-scitem-entityclassdefinition_bar_mmhc_glass_coke_empty", "entities-scitem-entityclassdefinition_glass_tumbler_1_a", "entities-scitem-entityclassdefinition_glass_tumbler_2_a", "entities-scitem-entityclassdefinition_janitormob", "entities-scitem-entityclassdefinition_lightgroupitem", "entities-scitem-entityclassdefinition_lightgrouppowereditem", "entities-scitem-entityclassdefinition_morrowtour", "entities-scitem-entityclassdefinition_satellite_power_plant_test", "entities-scitem-entityclassdefinition_sequenceobjectitem", "entities-scitem-entityclassdefinition_shelve_invisible_4x4", "entities-scitem-entityclassdefinition_simplestool", "entities-scitem-entityclassdefinition_simpletoilet", "entities-scitem-entityclassdefinition_stool_template", "entities-scitem-entityclassdefinition_tablet", "entities-scitem-entityclassdefinition_tablet_small", "entities-scitem-entityclassdefinition_test_gadget", "entities-scitem-entityclassdefinition_test_mug", "entities-scitem-entityclassdefinition_test_mug_carryable", "entities-scitem-entityclassdefinition_test_shelf", "entities-scitem-entityclassdefinition_test_shelf_missionblackboxdropoff", "entities-scitem-entityclassdefinition_test_station_power_plant", "entities-scitem-entityclassdefinition_testinteractionstatemachine", "entities-scitem-environments", "entities-scitem-externalinventory", "entities-scitem-fauna", "entities-scitem-flair", "entities-scitem-fps_devices", "entities-scitem-freightelevators", "entities-scitem-gameplayinteractables", "entities-scitem-geom_entity_template", "entities-scitem-glass_alcohol", "entities-scitem-handcuffs", "entities-scitem-harvestables", "entities-scitem-holoui", "entities-scitem-human", "entities-scitem-innerthought_dummies", "entities-scitem-itembanks", "entities-scitem-lerpmoveentity", "entities-scitem-lifesupport", "entities-scitem-locations", "entities-scitem-lootables", "entities-scitem-mastermodeexclusionglobalparams", "entities-scitem-mission_entities", "entities-scitem-missionstorage", "entities-scitem-movable_bridge", "entities-scitem-movable_bridge_plank", "entities-scitem-movable_plank_pallet_0250x0125x00125", "entities-scitem-movable_plank_pallet_0350x0125x00125", "entities-scitem-movable_plank_pallet_0450x0125x00125", "entities-scitem-navigationlinks", "entities-scitem-nonusables", "entities-scitem-openableobject", "entities-scitem-operatormoderecords", "entities-scitem-orbgn", "entities-scitem-orcaobstacle", "entities-scitem-placeholder", "entities-scitem-prop", "entities-scitem-prototypeentities", "entities-scitem-remoteconnectionreceiver", "entities-scitem-rotationsimple", "entities-scitem-salvageablerepairable", "entities-scitem-scitem_debris", "entities-scitem-scitemdisplayscreen", "entities-scitem-ship_weapon_ammo_racks", "entities-scitem-ships", "entities-scitem-shopdisplays", "entities-scitem-simpleanimators", "entities-scitem-simpleopenableobject_ammo_box_generic", "entities-scitem-simpleopenableobject_bathroom_shower", "entities-scitem-simpleopenableobject_bathroom_sink", "entities-scitem-simpleopenableobject_bathroom_storage", "entities-scitem-simpleopenableobject_bathroom_toilet", "entities-scitem-simpleopenableobject_cnou_mustang_cargobox_door", "entities-scitem-simpleopenableobject_col_a_radial_kitchen_counter_set_a_cupboard_doors_a", "entities-scitem-simpleopenableobject_col_a_radial_kitchen_counter_set_a_cupboard_drawers_a", "entities-scitem-simpleopenableobject_col_a_radial_kitchen_counter_set_a_oven_a", "entities-scitem-simpleopenableobject_col_a_radial_kitchen_counter_set_a_oven_a_lid_a", "entities-scitem-simpleopenableobject_col_a_shutters_a", "entities-scitem-simpleopenableobject_col_a_shutters_b", "entities-scitem-simpleopenableobject_col_a_shutters_c", "entities-scitem-simpleopenableobject_col_a_shutters_d", "entities-scitem-simpleopenableobject_habmodule_foldingtable", "entities-scitem-simpleopenableobject_habmodule_kitchendoor", "entities-scitem-simpleopenableobject_habmodule_storagedoor", "entities-scitem-simpleopenableobject_habmodule_storagetray", "entities-scitem-simpleopenableobject_habmodule_toiletdoor", "entities-scitem-simpleopenableobject_screenarticulated", "entities-scitem-simpleopenableobject_template", "entities-scitem-spawers", "entities-scitem-spawning", "entities-scitem-starmarine", "entities-scitem-storage", "entities-scitem-storagecage", "entities-scitem-suit", "entities-scitem-template", "entities-scitem-template_cuttableinteractable", "entities-scitem-template_cuttableinteractable_surfacerelay", "entities-scitem-test_ruto_projector", "entities-scitem-toggleableentities", "entities-scitem-ui_environmentscreen_phoenix_attractanim", "entities-scitem-ui_environmentscreen_phoenix_attractanim_small", "entities-scitem-ui_environmentscreen_phoenix_elevatorpanel_bottom", "entities-scitem-ui_environmentscreen_phoenix_elevatorpanel_top", "entities-scitem-ui_environmentscreen_phoenix_interactionpanel", "entities-scitem-ui_flash_screen", "entities-scitem-usables", "entities-scitem-vehicles", "entities-scitem-weaponmounts", "entities-scitem-weapons"]
+libs-foundry-records = ["actor-actorblockhelper", "actor-actorjumpfalllandatlsgeoparams", "actor-actorjumpfalllandatlsparams", "actor-actorjumpfalllanddefaultparams", "actor-actorjumpfalllandplayerparams", "actor-actorladderconfig", "actor-actorladderconfig_v2", "actor-actorledgegrabbing", "actor-actormeleecombat", "actor-actormovementmodifiers_powersuit", "actor-actormovementsets", "actor-actors", "actor-actorslidingparam", "actor-actorspeedcameraeffect_slide", "actor-actorstanceconfig", "actor-actorstanceconfig_npc_human", "actor-actorstanceconfig_npc_kopion", "actor-actorstanceconfig_npc_quasigrazer", "actor-actorstanceconfig_npc_vanduul", "actor-actorstanceconfig_npc_vlk", "actor-actorstanceconfig_npc_vlkadult", "actor-actorstanceconfig_npc_vlkapex", "actor-actorstanceconfig_npc_vlkjuvenile", "actor-actorstanceconfig_npc_webhound", "actor-actorstanceconfig_transport_powersuit", "actor-actorstanceconfig_transport_powersuit_argo_atls", "actor-actorstatevalidation", "actor-actortargetedparams", "actor-actorviewlimits", "actor-actorzerogtraversalparams", "actor-atls_geo_jumppackconfig", "actor-creaturejumpfalllandflow", "actor-externalforceresponse", "actor-gforce", "actor-headtrackinglimits", "actor-inputdeflectiontime", "actor-locomotionpersonality", "actor-lookahead", "actor-npcjumpfalllandflow", "actor-playeranimatedinteractionconfig", "actor-playercarryconfig", "actor-playerdefaultactionsconfig", "actor-playerjumpfallandflow", "actor-playermovementmodifiers", "actor-quantumtravelcameraeffects", "actor-skeletonconfigs", "actor-stanceinfo", "actor-targettrackingautozoom", "actor-transportjumpfallandflow", "actor-valakkarcarryconfig", "actorabilitycomponent", "actorabilitycomponent-actorabilitycomponent_playerabilities", "actorabilitycomponent-npcabilities", "actorabilitycomponent-playerlimitations", "actorabilitycomponent-transportabilities", "actorduckingparams", "actorduckingparams-maleduckingparams", "actorenvironmentcomponent", "actorenvironmentcomponent-actorenvironment", "actorgforcecomponent", "actorgforcecomponent-actorgforcecomponent_playergforce", "actorgforcecomponent-npcgforce", "actorgforcecomponent-playergforce_mm", "actorhealthcomponent", "actorhealthcomponent-bodymapping", "actorhealthcomponent-healthconfig", "actorhealthcomponent-healthtemplate_ai", "actorhealthcomponent-healthtemplate_ai_juggernaut", "actorhealthcomponent-healthtemplate_invulnerable", "actorhealthcomponent-healthtemplate_kopion", "actorhealthcomponent-healthtemplate_player", "actorhealthcomponent-healthtemplate_powersuit", "actorhealthcomponent-healthtemplate_powersuit_combat", "actorhealthcomponent-healthtemplate_quasigrazer", "actorhealthcomponent-healthtemplate_stunonly", "actorhealthcomponent-healthtemplate_vanduul", "actorhealthcomponent-healthtemplate_vlk", "actorhealthcomponent-healthtemplate_vlk_irridiatated", "actorhealthcomponent-healthtemplate_vlk_irridiatated_apex", "actorhealthcomponent-healthtemplate_vlk_nonapex", "actorhealthcomponent-healthtemplate_yormandi", "actormovementsetsconfig", "actormovementsetsconfig-actormovementsetconfig", "actorproceduralrecoil", "actorproceduralrecoil-actorproceduralrecoilconfig", "actorproceduralrecoil-actorproceduralrecoilmodifiers", "actorstaminacomponent", "actorstaminacomponent-actorbreathinghelper", "actorstaminacomponent-actorstaminacomponent_playerstamina", "actorstatuscomponent", "actorstatuscomponent-globalactorstatusparams", "actorstatuscomponent-medicaltieritemconfig", "actorstatuscomponent-playerstatus", "actorstatuscomponent-playerstatus_aiboss", "actorstatuscomponent-playerstatus_aibosssuper", "actorstatuscomponent-playerstatusai", "actorstatuscomponent-playerstatusai_captain", "actorstatuscomponent-playerstatusai_elite", "actorstatuscomponent-playerstatusai_juggernaut", "actorstatuscomponent-playerstatusai_unconscious_rescuemission", "actorstatuscomponent-playerstatusai_vanduul", "actorstatuscomponent-playerstatusai_vlk_adult", "actorstatuscomponent-playerstatusai_vlk_adult_irridatated", "actorstatuscomponent-playerstatusai_vlk_juvi", "actorstatuscomponent-playerstatusai_vlk_juvi_irridatated", "actorstatuscomponent-playerstatusai_vlkapex", "actorstatuscomponent-playerstatusai_vlkapex_irridatated", "actorstatuscomponent-playerstatusai_vlkapex_stormbreaker", "actorstatuscomponent-playerstatusai_yormandi", "actorstatuscomponent-playerstatuscorpse", "actorstatuscomponent-playerstatuscreature", "actorstatuscomponent-playerstatusea", "actorstatuscomponent-playerstatuspu", "actorstatuscomponent-powersuitstatus", "actorstatuscomponent-powersuitstatus_combat", "actorstatuscomponent-transportstatus", "actorviewlimitpresetdatabase", "actorviewlimitpresetdatabase-viewlimitpresetdatabase", "ads", "aianimationdata", "aifiredisciplinesettings", "aiglobalsettings", "aimotive", "aiprofile", "aitargetablesettings", "aiwavecollection", "ammobox", "ammoparams", "analytics", "announcer", "areaservices", "audio", "awardservice", "cameras", "capacitorassignment", "cargomanifest", "character", "characternamedata", "characterserializationpresets", "chatchannelfilters", "chatcommandfastaccess", "chatemoterecord", "chatfilteroptions", "chatmanager", "closecombat", "commodityconfiguration", "commoditytypedatabase", "commsnotifications", "commsnotificationstages", "communicationatlconfig", "communicationchannelname", "communicationconfig", "communicationname", "communicationsystem", "communicationvariableconfig", "consumabletypesdatabase", "contextualcommunicationconfig", "contractawardconfig", "contracts", "conversation", "conversationbank", "crafting", "creatures", "crewmanifest", "curves", "damage", "densityclasses", "dev", "devowners", "dialoguecontentbank", "dialoguecontext", "dialoguecontextbank", "dialoguerealm", "dynamiccameraeffects", "dynamiclightingrig", "elevatorbase_teleportnode", "emotions", "entities-aft", "entities-aicoversurface", "entities-aigroupentity", "entities-ainavigationobstacle", "entities-aipath", "entities-analyticshadow", "entities-animentity", "entities-animentity_attachable", "entities-animentity_attachable_espr_prowler_glass", "entities-animentity_attachable_espr_prowler_glass_copilot", "entities-animentity_attachable_espr_talon_glass", "entities-animentity_character", "entities-animentity_floatinghead_01", "entities-animentity_floatinghead_charactercustomizer", "entities-animentity_floatinghead_charactercustomizer_dnalib", "entities-animentity_floatinghead_charactercustomizer_featurelib", "entities-animentity_human", "entities-animentity_human_female", "entities-animentity_toggleable", "entities-area", "entities-asd", "entities-attachableobjectcontainer", "entities-attachableobjectcontainerspawner", "entities-attackarea", "entities-audio", "entities-basebuilding", "entities-baselocationtemplate", "entities-booth_table_centered_seats", "entities-breakablerock", "entities-buildingblocksscreens", "entities-cameralens", "entities-camerarttview", "entities-camerasource", "entities-camerasourcefuelnozzle", "entities-cameratarget", "entities-canvasgeoment", "entities-canvasgeoment_vars", "entities-capturearea", "entities-carryable_damage_sensitive_canister", "entities-carryabletemplate", "entities-charactercustomizer", "entities-cinematiclabel", "entities-cinematiclabelwithvehicle", "entities-cinematictitling_base", "entities-cinematictitling_standard", "entities-cinematictrigger_sticky", "entities-commententity_quickfade", "entities-commodities", "entities-contactblobentity", "entities-corpsemarker", "entities-cuttableshape", "entities-debris_1_floor_a", "entities-debris_1_floor_b", "entities-debris_1_floor_c", "entities-debris_1_floor_d", "entities-debris_1_floor_e", "entities-debris_1_floor_f", "entities-decorations", "entities-default", "entities-defaultwithaudio", "entities-defendarea", "entities-destruction", "entities-dev", "entities-displayscreens", "entities-ea", "entities-editorcamera", "entities-energysource", "entities-entityclassdefinition_actionarea", "entities-entityclassdefinition_cinematictrigger", "entities-entityclassdefinition_colorgradient", "entities-entityclassdefinition_commententity", "entities-entityclassdefinition_explosion", "entities-entityclassdefinition_hint", "entities-entityclassdefinition_holographicvolume", "entities-entityclassdefinition_missionentity", "entities-entityclassdefinition_navpoint_general", "entities-entityclassdefinition_pointofinterestprovider", "entities-entityclassdefinition_proceduralpointofinterestproxy", "entities-entityclassdefinition_racecheckpoint", "entities-entityclassdefinition_rendertotextureview", "entities-entityclassdefinition_rotationsimple", "entities-entityclassdefinition_screen_9x16_1_a", "entities-entityclassdefinition_scshop", "entities-entityclassdefinition_shipselectorkiosk", "entities-entityclassdefinition_shipselectorkiosk_levskiground", "entities-entityclassdefinition_shipselectorkiosk_levskiships", "entities-entityclassdefinition_shipselectorkiosk_v001", "entities-entityclassdefinition_shipselectorkiosk_v002", "entities-entityclassdefinition_shopkiosk", "entities-entityclassdefinition_shoppingkiosk", "entities-entityclassdefinition_spawnpoint", "entities-entityclassdefinition_spawnprotectionbarrier", "entities-entityclassdefinition_spectatorpoint", "entities-entityclassdefinition_tilesocket", "entities-entityealockedspawnlocation", "entities-entityeaspawnlocation", "entities-entityspawncameracontroller", "entities-entityspawners", "entities-environment", "entities-environmentscreen", "entities-fan_prisonbroken", "entities-flair_radegast_whiskey_concierge", "entities-fronthud_center", "entities-fronthud_displaymanager", "entities-fronthud_left", "entities-fronthud_right", "entities-fronthud_top", "entities-gamerulessingleton", "entities-gamevolumecomponent", "entities-gascloud", "entities-geomentity", "entities-geomentity_areatrigger", "entities-geomentity_dynamicobstacle", "entities-geomentity_interactablelinked", "entities-geomentity_nophysics", "entities-geomentity_repairable", "entities-geomentity_rttui", "entities-geomentity_rttuiwithaudio", "entities-geomentity_static", "entities-geometryinstancer", "entities-gotopointentity", "entities-groundvehicles", "entities-hackable", "entities-handholdobject", "entities-handholdobject_linkable", "entities-haulingentityclass", "entities-hazardzones", "entities-hearingperceptionarea", "entities-helpers", "entities-holofield", "entities-ht_table_bar_1_a", "entities-impactcrater", "entities-inventoryplaceholder", "entities-irradiatedhazardzone", "entities-itemport3drepresentation", "entities-jumppoints", "entities-kegr_roomhelper", "entities-kiosk_mercury_anniversary_slides_16x9", "entities-ladder", "entities-landinguientity", "entities-ledgeobject", "entities-ledgeobjectusable", "entities-legacyitems", "entities-lights", "entities-loadingplatformmanager", "entities-locationmanager", "entities-locationtemplate", "entities-lt_hab_bathroom_1_a", "entities-maglaunch", "entities-mastercontrollerentities", "entities-mineable", "entities-missionlocationmanager", "entities-missionlocationtemplate", "entities-missionobjectivemarker", "entities-missionsystem", "entities-monitoredzone", "entities-navpoint_dynamic", "entities-navpoint_dynamic_spawnedbarge", "entities-navpoint_interdictedentity", "entities-navpoint_subpoint0", "entities-navpoint_subpoint1", "entities-navpoint_subpoint2", "entities-navpoint_subpoint3", "entities-navpoint_subpoint4", "entities-navpoint_subpoint5", "entities-objectcontainerrotating", "entities-objectcontainers", "entities-oscillationsimple", "entities-others", "entities-parkingroute", "entities-partymembermarker", "entities-patrolgraph", "entities-patrolgraphlink", "entities-patrolpoint", "entities-perceptionmodifierarea", "entities-physicalizedjobboard", "entities-physics", "entities-planetkillvolume", "entities-playerscoresmanager", "entities-precachecamera", "entities-projectilespawnerentity", "entities-prop_digitalclock", "entities-proximityassistmodifier", "entities-quantumcolorshift", "entities-quantumtrail", "entities-racering", "entities-radarscanning", "entities-rastar", "entities-refinery", "entities-refuelatmospheres", "entities-render", "entities-rendertotextureareamaphelperview", "entities-restricted_areas", "entities-restrictedareaboundarymesh", "entities-restrictedareavisibleboundarymesh", "entities-roomsystem", "entities-safeteleportpoint", "entities-safeteleportpoint_npc", "entities-salvagable", "entities-scarmorymanager", "entities-schedulearea", "entities-scitem-access", "entities-scitem-actormovables", "entities-scitem-aimodule_atc_grimhex", "entities-scitem-aimodule_atc_levskiatc01", "entities-scitem-aimodule_atc_lorvilleatc01", "entities-scitem-aimodule_atc_newbabbage", "entities-scitem-aimodule_atc_newbabbageatc01", "entities-scitem-aimodule_atc_orisonatc01", "entities-scitem-aimodule_atc_systematc01", "entities-scitem-aimodule_cargo", "entities-scitem-aimodule_collector", "entities-scitem-aimodule_genatc02", "entities-scitem-aimodule_pyro", "entities-scitem-aimodule_silent_atc", "entities-scitem-airlocks", "entities-scitem-ammocrates", "entities-scitem-arenacommander", "entities-scitem-atc", "entities-scitem-atc_datamanager_outpostplatinumbay", "entities-scitem-atc_datamanager_port_lawful", "entities-scitem-atc_datamanager_port_semilawful", "entities-scitem-atc_datamanager_port_unlawful", "entities-scitem-audiolog", "entities-scitem-beer_can", "entities-scitem-bottle_liquor", "entities-scitem-cargo", "entities-scitem-carryables", "entities-scitem-characters", "entities-scitem-chipsets", "entities-scitem-commsreceiver", "entities-scitem-commsspeaker", "entities-scitem-consumables", "entities-scitem-controlpanels", "entities-scitem-counter_shop_2m_casaba_b", "entities-scitem-counter_shop_2m_casaba_c", "entities-scitem-counter_shop_2m_casaba_d", "entities-scitem-decals", "entities-scitem-default_lensdisplay", "entities-scitem-default_lensdisplay_pu", "entities-scitem-deliveryitemportmanager", "entities-scitem-doors", "entities-scitem-energy", "entities-scitem-entityclassdefinition_aimodule_atc", "entities-scitem-entityclassdefinition_atc_datamanager", "entities-scitem-entityclassdefinition_atc_operatoraimodule", "entities-scitem-entityclassdefinition_bar_mmhc_glass_coke_empty", "entities-scitem-entityclassdefinition_glass_tumbler_1_a", "entities-scitem-entityclassdefinition_glass_tumbler_2_a", "entities-scitem-entityclassdefinition_janitormob", "entities-scitem-entityclassdefinition_lightgroupitem", "entities-scitem-entityclassdefinition_lightgrouppowereditem", "entities-scitem-entityclassdefinition_morrowtour", "entities-scitem-entityclassdefinition_satellite_power_plant_test", "entities-scitem-entityclassdefinition_sequenceobjectitem", "entities-scitem-entityclassdefinition_shelve_invisible_4x4", "entities-scitem-entityclassdefinition_simplestool", "entities-scitem-entityclassdefinition_simpletoilet", "entities-scitem-entityclassdefinition_stool_template", "entities-scitem-entityclassdefinition_tablet", "entities-scitem-entityclassdefinition_tablet_small", "entities-scitem-entityclassdefinition_test_gadget", "entities-scitem-entityclassdefinition_test_mug", "entities-scitem-entityclassdefinition_test_mug_carryable", "entities-scitem-entityclassdefinition_test_shelf", "entities-scitem-entityclassdefinition_test_shelf_missionblackboxdropoff", "entities-scitem-entityclassdefinition_test_station_power_plant", "entities-scitem-entityclassdefinition_testinteractionstatemachine", "entities-scitem-environments", "entities-scitem-externalinventory", "entities-scitem-fauna", "entities-scitem-flair", "entities-scitem-fps_devices", "entities-scitem-freightelevators", "entities-scitem-gameplayinteractables", "entities-scitem-geom_entity_template", "entities-scitem-glass_alcohol", "entities-scitem-handcuffs", "entities-scitem-harvestables", "entities-scitem-holoui", "entities-scitem-human", "entities-scitem-innerthought_dummies", "entities-scitem-itembanks", "entities-scitem-lerpmoveentity", "entities-scitem-lifesupport", "entities-scitem-locations", "entities-scitem-lootables", "entities-scitem-mastermodeexclusionglobalparams", "entities-scitem-mission_entities", "entities-scitem-missionstorage", "entities-scitem-movable_bridge", "entities-scitem-movable_bridge_plank", "entities-scitem-movable_plank_pallet_0250x0125x00125", "entities-scitem-movable_plank_pallet_0350x0125x00125", "entities-scitem-movable_plank_pallet_0450x0125x00125", "entities-scitem-navigationlinks", "entities-scitem-nonusables", "entities-scitem-openableobject", "entities-scitem-operatormoderecords", "entities-scitem-orbgn", "entities-scitem-orcaobstacle", "entities-scitem-placeholder", "entities-scitem-prop", "entities-scitem-prototypeentities", "entities-scitem-remoteconnectionreceiver", "entities-scitem-rotationsimple", "entities-scitem-salvageablerepairable", "entities-scitem-scitem_debris", "entities-scitem-scitemdisplayscreen", "entities-scitem-ship_weapon_ammo_racks", "entities-scitem-ships", "entities-scitem-shopdisplays", "entities-scitem-simpleanimators", "entities-scitem-simpleopenableobject_ammo_box_generic", "entities-scitem-simpleopenableobject_bathroom_shower", "entities-scitem-simpleopenableobject_bathroom_sink", "entities-scitem-simpleopenableobject_bathroom_storage", "entities-scitem-simpleopenableobject_bathroom_toilet", "entities-scitem-simpleopenableobject_cnou_mustang_cargobox_door", "entities-scitem-simpleopenableobject_col_a_radial_kitchen_counter_set_a_cupboard_doors_a", "entities-scitem-simpleopenableobject_col_a_radial_kitchen_counter_set_a_cupboard_drawers_a", "entities-scitem-simpleopenableobject_col_a_radial_kitchen_counter_set_a_oven_a", "entities-scitem-simpleopenableobject_col_a_radial_kitchen_counter_set_a_oven_a_lid_a", "entities-scitem-simpleopenableobject_col_a_shutters_a", "entities-scitem-simpleopenableobject_col_a_shutters_b", "entities-scitem-simpleopenableobject_col_a_shutters_c", "entities-scitem-simpleopenableobject_col_a_shutters_d", "entities-scitem-simpleopenableobject_habmodule_foldingtable", "entities-scitem-simpleopenableobject_habmodule_kitchendoor", "entities-scitem-simpleopenableobject_habmodule_storagedoor", "entities-scitem-simpleopenableobject_habmodule_storagetray", "entities-scitem-simpleopenableobject_habmodule_toiletdoor", "entities-scitem-simpleopenableobject_screenarticulated", "entities-scitem-simpleopenableobject_template", "entities-scitem-spawers", "entities-scitem-spawning", "entities-scitem-starmarine", "entities-scitem-storage", "entities-scitem-storagecage", "entities-scitem-suit", "entities-scitem-template", "entities-scitem-template_cuttableinteractable", "entities-scitem-template_cuttableinteractable_surfacerelay", "entities-scitem-test_ruto_projector", "entities-scitem-toggleableentities", "entities-scitem-ui_environmentscreen_phoenix_attractanim", "entities-scitem-ui_environmentscreen_phoenix_attractanim_small", "entities-scitem-ui_environmentscreen_phoenix_elevatorpanel_bottom", "entities-scitem-ui_environmentscreen_phoenix_elevatorpanel_top", "entities-scitem-ui_environmentscreen_phoenix_interactionpanel", "entities-scitem-ui_flash_screen", "entities-scitem-usables", "entities-scitem-vehicles", "entities-scitem-weaponmounts", "entities-scitem-weapons", "entities-screenattachment", "entities-servicebeaconnavpoint", "entities-shadowregionentity", "entities-shipselectorkiosk_genatc02", "entities-shipselectorkiosk_grimhex", "entities-shipselectorkiosk_groundvehiclesonly", "entities-shipselectorkiosk_hangar_hightech_1_a", "entities-shipselectorkiosk_hangar_lowtech_1_a", "entities-shipselectorkiosk_hangar_lowtech_1_b", "entities-shipselectorkiosk_hangar_lowtech_2_a", "entities-shipselectorkiosk_hangar_lowtech_2_b", "entities-shipselectorkiosk_levski", "entities-shipselectorkiosk_lorville", "entities-shipselectorkiosk_lorvilleground", "entities-shipselectorkiosk_newbab", "entities-shipselectorkiosk_outpostground", "entities-shipselectorkiosk_pyro", "entities-shipselectorkiosk_shipsonly", "entities-shipselectorkiosk_shipsonly_area18", "entities-shipselectorkiosk_shipsonly_orison", "entities-shipselectorkiosk_shipsonly_reststop", "entities-shipselectorkiosk_test", "entities-simpleobjectcontainer", "entities-slotspawnpoint", "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a", "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a", "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a_extractonly", "entities-spaceships", "entities-spawncloset", "entities-spawncloset_ships", "entities-spawncloset_ships_javelin", "entities-spawnclosetmanager", "entities-spawnedactionarea", "entities-spawnhelper", "entities-starfield", "entities-streamingobjectcontainer", "entities-sunlight", "entities-table_booth_circularbar_direct_8_seat", "entities-table_booth_utilitarian_4_seat", "entities-tagpoint", "entities-test", "entities-tinymachine", "entities-trackview", "entities-trackviewuser", "entities-ui", "entities-unattendedvehiclemarker", "entities-uniqueplayercamera", "entities-usablegroup", "entities-usablegroupcoordinator", "entities-vehicleobjectcontainer", "entities-vfx", "entities-vlk_adult_body", "entities-vlk_apex_body", "entities-vlk_apex_irradiated_body", "entities-vlk_juvenile_body", "entities-watervolume", "entities-worlddisplay", "entities-yormandi_apex_body", "entitlementpolicies", "entityaudiocontrollerrtpcsubscriberlistdef", "entityclassdefinition", "environments", "evagraph", "explosiveordnance", "factions", "factions_legacy", "fidgetconfig", "foley", "forcefeedback_forcefeedbackeffects", "formation", "fovaspectratiorangetables", "franchises", "friendmanager", "fuelparams", "gamemode", "gamemodule", "genericmobiterminals", "globalarmarkerparams", "globalcargoloadingparams", "globalcommsnotificationparams", "globalcuttableshapeparams", "globalinteractionparams", "globalinventoryparams", "globalquantumdriveparams", "globalshopparams", "globaltutorialparams", "gpuparticleaudio", "grips", "handholdgripdatabase", "hardwaremouse", "harvestable", "hazardawarenessparams", "hints", "hudparams", "ifcs", "initialdamageoverrides", "inputpromptconfig", "instancedinterior", "interactionconditions", "intoxication", "inventorycontainers", "item", "itemporttagsdictionary", "itemresourcenetwork", "journalentry", "journalentrytype", "jumppoints", "kaboos_derelictships", "landingpadsize", "lawsystem", "leangraph", "level", "lightamplification_aegs", "lightamplification_anvl", "lightamplification_argo", "lightamplification_banu", "lightamplification_cnou", "lightamplification_crus", "lightamplification_drak", "lightamplification_espr", "lightamplification_gama", "lightamplification_grey", "lightamplification_krig", "lightamplification_misc", "lightamplification_orig", "lightamplification_rsi", "lightamplification_vncl", "lightamplification_xnaa", "loadoutkits", "longtermpersistence", "lootgeneration", "megamap", "mining", "miningaudioparams", "missionbroker", "missiondata", "missionfailureconditions", "missiongiver", "missionscenarios", "missiontype", "motionstatemachine", "moveviewrestrictionpenalties", "musiclogic", "personalinnerthoughtrules", "planetdaynighttemperatureparams", "player", "playeranimatedinteractiontemplates", "playerchoicemenuitems", "playerchoicemenutypes", "playerdockcontextcomponent", "playergroupmanager", "playernotificationsystem", "playerspeedthrottle", "playertoplayercommscallglobalparams", "playertrade", "posturedatabase", "procbreathing", "proceduralaimrigrecord", "proceduralanimations", "procedurallandingsetup", "procedurallayout", "prop", "qteconfigs", "radarsystem", "rastar", "refinerynotificationconfiguration", "refiningprocess", "rendererpresets", "rentalnotificationparams", "reputation", "reputationvaluesettings", "resourcetypedatabase", "roomsystem", "rsi_polaris_kaboos_exterior", "scandisplayinstanceparams", "scarryableikinteractionlist", "scitemcommscomponentsetup", "scitemdisplayscreenpreset", "scitemmanufacturer", "scuttableshapedefinition", "seatcdikconfigs", "servicebeacon", "sgeometryviewdistanceratiocategories", "sglobalchargedrainbeamparams", "sglobalcrosshairparams", "sglobalelectronparams", "sglobalhealingbeamparams", "sglobalhitbehaviorparams", "sglobalsalvagerepairbeamparams", "sglobaltractorbeamparams", "shipinsurancerecord", "sloadoutassortment", "specialeventdatabase", "squantumdriveeffecttagstemplate", "sreputationglobalcontextbbparams", "ssolarsystem", "starmap", "starmapamenitytypes", "tacticalquery", "tagdatabase", "targetselector", "tintpalettes", "trackview", "transitsystem", "transponder", "transportsystem", "traversalcostconfig", "turret", "ui-animatedmarkers", "ui-areamap", "ui-armarkerconfiguration", "ui-aspectratiototag_mfd", "ui-buildingblocks", "ui-digitalsignage", "ui-directrtt", "ui-dockingslotvisibility", "ui-elementsounds_deprecated", "ui-flashobjectbindinggroups", "ui-flighthudmessages", "ui-frontend", "ui-graphs", "ui-holovehicleconfig", "ui-hudcolors_shipcolorpalettes", "ui-innerthought", "ui-innerthoughtentity", "ui-innerthoughtentitydepth", "ui-itemkiosk", "ui-itempreview_config", "ui-itemtypedefinition", "ui-localplayershoppingdata", "ui-map", "ui-marker_config", "ui-markertrackingvolumeconfig", "ui-missilelockreticleconfig", "ui-mobiglas", "ui-objectdatabankentrymarkerconfig", "ui-playerchoice_imconfig_playerchoiceim", "ui-playerchoice_library_playerchoicelibrary", "ui-playerchoice_pitconfig_playerchoicepersonalthought", "ui-playerchoice_signalconfig_interactorsignalconfig", "ui-playerecggraph_config_playerecggraphconfig", "ui-pointofinterestdata", "ui-popups", "ui-radar3dpresets", "ui-radardisplay_config_radar", "ui-seatreticlearchetype", "ui-simplespritesheet_holodisplaysprites", "ui-simplespritesheet_innerthoughtsprites", "ui-transformationinterpolatorrecords", "ui-uiconfig_starcitizen", "ui-uielements", "ui-uimodes", "ui-uistatedisplay", "ui-vehicleentrance", "ui-videocomms", "ui-visor", "ui-visorscreenconfig", "ui-worlddisplay", "unittest_unittesta", "unittest_unittestb", "vehicle", "vehiclecombat", "vehiclesalvageglobalparams", "vendingmachine_2", "vfx", "vibrations", "videocommschannels", "voicebundle", "voicechannelsettingsrecord", "voicesingle", "weaponarmodifiers", "weaponmisfiredef", "weaponproceduralanimation", "weaponproceduralclip", "weaponproceduralrecoil", "zerogtraversalgraph"]
+ui = ["ui-animatedmarkers", "ui-areamap", "ui-armarkerconfiguration", "ui-aspectratiototag_mfd", "ui-buildingblocks", "ui-digitalsignage", "ui-directrtt", "ui-dockingslotvisibility", "ui-elementsounds_deprecated", "ui-flashobjectbindinggroups", "ui-flighthudmessages", "ui-frontend", "ui-graphs", "ui-holovehicleconfig", "ui-hudcolors_shipcolorpalettes", "ui-innerthought", "ui-innerthoughtentity", "ui-innerthoughtentitydepth", "ui-itemkiosk", "ui-itempreview_config", "ui-itemtypedefinition", "ui-localplayershoppingdata", "ui-map", "ui-marker_config", "ui-markertrackingvolumeconfig", "ui-missilelockreticleconfig", "ui-mobiglas", "ui-objectdatabankentrymarkerconfig", "ui-playerchoice_imconfig_playerchoiceim", "ui-playerchoice_library_playerchoicelibrary", "ui-playerchoice_pitconfig_playerchoicepersonalthought", "ui-playerchoice_signalconfig_interactorsignalconfig", "ui-playerecggraph_config_playerecggraphconfig", "ui-pointofinterestdata", "ui-popups", "ui-radar3dpresets", "ui-radardisplay_config_radar", "ui-seatreticlearchetype", "ui-simplespritesheet_holodisplaysprites", "ui-simplespritesheet_innerthoughtsprites", "ui-transformationinterpolatorrecords", "ui-uiconfig_starcitizen", "ui-uielements", "ui-uimodes", "ui-uistatedisplay", "ui-vehicleentrance", "ui-videocomms", "ui-visor", "ui-visorscreenconfig", "ui-worlddisplay"]
 
 # Auto-generated leaf features. Each gates a set of DCB types.
+actor-actorblockhelper = []
+actor-actorjumpfalllandatlsgeoparams = []
+actor-actorjumpfalllandatlsparams = []
+actor-actorjumpfalllanddefaultparams = []
+actor-actorjumpfalllandplayerparams = []
+actor-actorladderconfig = []
+actor-actorladderconfig_v2 = []
 actor-actorledgegrabbing = []
+actor-actormeleecombat = []
+actor-actormovementmodifiers_powersuit = []
+actor-actormovementsets = []
+actor-actors = []
+actor-actorslidingparam = []
+actor-actorspeedcameraeffect_slide = []
+actor-actorstanceconfig = []
+actor-actorstanceconfig_npc_human = []
+actor-actorstanceconfig_npc_kopion = []
+actor-actorstanceconfig_npc_quasigrazer = []
+actor-actorstanceconfig_npc_vanduul = []
+actor-actorstanceconfig_npc_vlk = []
+actor-actorstanceconfig_npc_vlkadult = []
+actor-actorstanceconfig_npc_vlkapex = []
+actor-actorstanceconfig_npc_vlkjuvenile = []
+actor-actorstanceconfig_npc_webhound = []
+actor-actorstanceconfig_transport_powersuit = []
+actor-actorstanceconfig_transport_powersuit_argo_atls = []
+actor-actorstatevalidation = []
 actor-actortargetedparams = []
 actor-actorviewlimits = []
 actor-actorzerogtraversalparams = []
 actor-atls_geo_jumppackconfig = []
+actor-creaturejumpfalllandflow = []
 actor-externalforceresponse = []
 actor-gforce = []
 actor-headtrackinglimits = []
 actor-inputdeflectiontime = []
 actor-locomotionpersonality = []
 actor-lookahead = []
+actor-npcjumpfalllandflow = []
 actor-playeranimatedinteractionconfig = []
+actor-playercarryconfig = []
 actor-playerdefaultactionsconfig = []
+actor-playerjumpfallandflow = []
+actor-playermovementmodifiers = []
 actor-quantumtravelcameraeffects = []
 actor-skeletonconfigs = []
 actor-stanceinfo = []
 actor-targettrackingautozoom = []
+actor-transportjumpfallandflow = []
+actor-valakkarcarryconfig = []
+actorabilitycomponent = []
+actorabilitycomponent-actorabilitycomponent_playerabilities = []
+actorabilitycomponent-npcabilities = []
+actorabilitycomponent-playerlimitations = []
+actorabilitycomponent-transportabilities = []
+actorduckingparams = []
+actorduckingparams-maleduckingparams = []
+actorenvironmentcomponent = []
+actorenvironmentcomponent-actorenvironment = []
+actorgforcecomponent = []
+actorgforcecomponent-actorgforcecomponent_playergforce = []
+actorgforcecomponent-npcgforce = []
+actorgforcecomponent-playergforce_mm = []
+actorhealthcomponent = []
+actorhealthcomponent-bodymapping = []
+actorhealthcomponent-healthconfig = []
+actorhealthcomponent-healthtemplate_ai = []
+actorhealthcomponent-healthtemplate_ai_juggernaut = []
+actorhealthcomponent-healthtemplate_invulnerable = []
+actorhealthcomponent-healthtemplate_kopion = []
+actorhealthcomponent-healthtemplate_player = []
+actorhealthcomponent-healthtemplate_powersuit = []
+actorhealthcomponent-healthtemplate_powersuit_combat = []
+actorhealthcomponent-healthtemplate_quasigrazer = []
+actorhealthcomponent-healthtemplate_stunonly = []
+actorhealthcomponent-healthtemplate_vanduul = []
+actorhealthcomponent-healthtemplate_vlk = []
+actorhealthcomponent-healthtemplate_vlk_irridiatated = []
+actorhealthcomponent-healthtemplate_vlk_irridiatated_apex = []
+actorhealthcomponent-healthtemplate_vlk_nonapex = []
+actorhealthcomponent-healthtemplate_yormandi = []
+actormovementsetsconfig = []
+actormovementsetsconfig-actormovementsetconfig = []
+actorproceduralrecoil = []
+actorproceduralrecoil-actorproceduralrecoilconfig = []
+actorproceduralrecoil-actorproceduralrecoilmodifiers = []
+actorstaminacomponent = []
+actorstaminacomponent-actorbreathinghelper = []
+actorstaminacomponent-actorstaminacomponent_playerstamina = []
+actorstatuscomponent = []
+actorstatuscomponent-globalactorstatusparams = []
+actorstatuscomponent-medicaltieritemconfig = []
+actorstatuscomponent-playerstatus = []
+actorstatuscomponent-playerstatus_aiboss = []
+actorstatuscomponent-playerstatus_aibosssuper = []
+actorstatuscomponent-playerstatusai = []
+actorstatuscomponent-playerstatusai_captain = []
+actorstatuscomponent-playerstatusai_elite = []
+actorstatuscomponent-playerstatusai_juggernaut = []
+actorstatuscomponent-playerstatusai_unconscious_rescuemission = []
+actorstatuscomponent-playerstatusai_vanduul = []
+actorstatuscomponent-playerstatusai_vlk_adult = []
+actorstatuscomponent-playerstatusai_vlk_adult_irridatated = []
+actorstatuscomponent-playerstatusai_vlk_juvi = []
+actorstatuscomponent-playerstatusai_vlk_juvi_irridatated = []
+actorstatuscomponent-playerstatusai_vlkapex = []
+actorstatuscomponent-playerstatusai_vlkapex_irridatated = []
+actorstatuscomponent-playerstatusai_vlkapex_stormbreaker = []
+actorstatuscomponent-playerstatusai_yormandi = []
+actorstatuscomponent-playerstatuscorpse = []
+actorstatuscomponent-playerstatuscreature = []
+actorstatuscomponent-playerstatusea = []
+actorstatuscomponent-playerstatuspu = []
+actorstatuscomponent-powersuitstatus = []
+actorstatuscomponent-powersuitstatus_combat = []
+actorstatuscomponent-transportstatus = []
+actorviewlimitpresetdatabase = []
+actorviewlimitpresetdatabase-viewlimitpresetdatabase = []
 ads = []
 aianimationdata = []
+aifiredisciplinesettings = []
 aiglobalsettings = []
 aimotive = []
 aiprofile = []
+aitargetablesettings = []
 aiwavecollection = []
+ammobox = []
 ammoparams = []
 analytics = []
 announcer = []
@@ -300,6 +987,8 @@ cameras = []
 capacitorassignment = []
 cargomanifest = []
 character = []
+characternamedata = []
+characterserializationpresets = []
 chatchannelfilters = []
 chatcommandfastaccess = []
 chatemoterecord = []
@@ -309,45 +998,467 @@ closecombat = []
 commodityconfiguration = []
 commoditytypedatabase = []
 commsnotifications = []
+commsnotificationstages = []
 communicationatlconfig = []
+communicationchannelname = []
 communicationconfig = []
 communicationname = []
 communicationsystem = []
 communicationvariableconfig = []
 consumabletypesdatabase = []
 contextualcommunicationconfig = []
+contractawardconfig = []
 contracts = []
 conversation = []
+conversationbank = []
 crafting = []
+creatures = []
 crewmanifest = []
+curves = []
 damage = []
 densityclasses = []
+dev = []
+devowners = []
 dialoguecontentbank = []
+dialoguecontext = []
+dialoguecontextbank = []
 dialoguerealm = []
 dynamiccameraeffects = []
 dynamiclightingrig = []
+elevatorbase_teleportnode = []
 emotions = []
+entities-aft = []
+entities-aicoversurface = []
+entities-aigroupentity = []
+entities-ainavigationobstacle = []
+entities-aipath = []
+entities-analyticshadow = []
+entities-animentity = []
+entities-animentity_attachable = []
+entities-animentity_attachable_espr_prowler_glass = []
+entities-animentity_attachable_espr_prowler_glass_copilot = []
+entities-animentity_attachable_espr_talon_glass = []
+entities-animentity_character = []
+entities-animentity_floatinghead_01 = []
+entities-animentity_floatinghead_charactercustomizer = []
+entities-animentity_floatinghead_charactercustomizer_dnalib = []
+entities-animentity_floatinghead_charactercustomizer_featurelib = []
+entities-animentity_human = []
+entities-animentity_human_female = []
+entities-animentity_toggleable = []
+entities-area = []
+entities-asd = []
+entities-attachableobjectcontainer = []
+entities-attachableobjectcontainerspawner = []
+entities-attackarea = []
+entities-audio = []
+entities-basebuilding = []
+entities-baselocationtemplate = []
+entities-booth_table_centered_seats = []
+entities-breakablerock = []
+entities-buildingblocksscreens = []
+entities-cameralens = []
+entities-camerarttview = []
+entities-camerasource = []
+entities-camerasourcefuelnozzle = []
+entities-cameratarget = []
+entities-canvasgeoment = []
+entities-canvasgeoment_vars = []
+entities-capturearea = []
+entities-carryable_damage_sensitive_canister = []
+entities-carryabletemplate = []
+entities-charactercustomizer = []
+entities-cinematiclabel = []
+entities-cinematiclabelwithvehicle = []
+entities-cinematictitling_base = []
+entities-cinematictitling_standard = []
+entities-cinematictrigger_sticky = []
+entities-commententity_quickfade = []
+entities-commodities = []
+entities-contactblobentity = []
+entities-corpsemarker = []
+entities-cuttableshape = []
+entities-debris_1_floor_a = []
+entities-debris_1_floor_b = []
+entities-debris_1_floor_c = []
+entities-debris_1_floor_d = []
+entities-debris_1_floor_e = []
+entities-debris_1_floor_f = []
+entities-decorations = []
+entities-default = []
+entities-defaultwithaudio = []
+entities-defendarea = []
+entities-destruction = []
+entities-dev = []
+entities-displayscreens = []
+entities-ea = []
+entities-editorcamera = []
+entities-energysource = []
+entities-entityclassdefinition_actionarea = []
+entities-entityclassdefinition_cinematictrigger = []
+entities-entityclassdefinition_colorgradient = []
+entities-entityclassdefinition_commententity = []
+entities-entityclassdefinition_explosion = []
+entities-entityclassdefinition_hint = []
+entities-entityclassdefinition_holographicvolume = []
+entities-entityclassdefinition_missionentity = []
+entities-entityclassdefinition_navpoint_general = []
+entities-entityclassdefinition_pointofinterestprovider = []
+entities-entityclassdefinition_proceduralpointofinterestproxy = []
+entities-entityclassdefinition_racecheckpoint = []
+entities-entityclassdefinition_rendertotextureview = []
+entities-entityclassdefinition_rotationsimple = []
+entities-entityclassdefinition_screen_9x16_1_a = []
+entities-entityclassdefinition_scshop = []
+entities-entityclassdefinition_shipselectorkiosk = []
+entities-entityclassdefinition_shipselectorkiosk_levskiground = []
+entities-entityclassdefinition_shipselectorkiosk_levskiships = []
+entities-entityclassdefinition_shipselectorkiosk_v001 = []
+entities-entityclassdefinition_shipselectorkiosk_v002 = []
+entities-entityclassdefinition_shopkiosk = []
+entities-entityclassdefinition_shoppingkiosk = []
+entities-entityclassdefinition_spawnpoint = []
+entities-entityclassdefinition_spawnprotectionbarrier = []
+entities-entityclassdefinition_spectatorpoint = []
+entities-entityclassdefinition_tilesocket = []
+entities-entityealockedspawnlocation = []
+entities-entityeaspawnlocation = []
+entities-entityspawncameracontroller = []
+entities-entityspawners = []
+entities-environment = []
+entities-environmentscreen = []
+entities-fan_prisonbroken = []
+entities-flair_radegast_whiskey_concierge = []
+entities-fronthud_center = []
+entities-fronthud_displaymanager = []
+entities-fronthud_left = []
+entities-fronthud_right = []
+entities-fronthud_top = []
+entities-gamerulessingleton = []
+entities-gamevolumecomponent = []
+entities-gascloud = []
+entities-geomentity = []
+entities-geomentity_areatrigger = []
+entities-geomentity_dynamicobstacle = []
+entities-geomentity_interactablelinked = []
+entities-geomentity_nophysics = []
+entities-geomentity_repairable = []
+entities-geomentity_rttui = []
+entities-geomentity_rttuiwithaudio = []
+entities-geomentity_static = []
+entities-geometryinstancer = []
+entities-gotopointentity = []
+entities-groundvehicles = []
+entities-hackable = []
+entities-handholdobject = []
+entities-handholdobject_linkable = []
 entities-haulingentityclass = []
+entities-hazardzones = []
+entities-hearingperceptionarea = []
+entities-helpers = []
+entities-holofield = []
+entities-ht_table_bar_1_a = []
+entities-impactcrater = []
+entities-inventoryplaceholder = []
+entities-irradiatedhazardzone = []
+entities-itemport3drepresentation = []
+entities-jumppoints = []
+entities-kegr_roomhelper = []
+entities-kiosk_mercury_anniversary_slides_16x9 = []
+entities-ladder = []
+entities-landinguientity = []
+entities-ledgeobject = []
+entities-ledgeobjectusable = []
+entities-legacyitems = []
+entities-lights = []
+entities-loadingplatformmanager = []
+entities-locationmanager = []
+entities-locationtemplate = []
+entities-lt_hab_bathroom_1_a = []
+entities-maglaunch = []
+entities-mastercontrollerentities = []
+entities-mineable = []
+entities-missionlocationmanager = []
+entities-missionlocationtemplate = []
+entities-missionobjectivemarker = []
+entities-missionsystem = []
+entities-monitoredzone = []
+entities-navpoint_dynamic = []
+entities-navpoint_dynamic_spawnedbarge = []
+entities-navpoint_interdictedentity = []
+entities-navpoint_subpoint0 = []
+entities-navpoint_subpoint1 = []
+entities-navpoint_subpoint2 = []
+entities-navpoint_subpoint3 = []
+entities-navpoint_subpoint4 = []
+entities-navpoint_subpoint5 = []
+entities-objectcontainerrotating = []
+entities-objectcontainers = []
+entities-oscillationsimple = []
+entities-others = []
+entities-parkingroute = []
+entities-partymembermarker = []
+entities-patrolgraph = []
+entities-patrolgraphlink = []
+entities-patrolpoint = []
+entities-perceptionmodifierarea = []
+entities-physicalizedjobboard = []
+entities-physics = []
+entities-planetkillvolume = []
+entities-playerscoresmanager = []
+entities-precachecamera = []
+entities-projectilespawnerentity = []
+entities-prop_digitalclock = []
+entities-proximityassistmodifier = []
+entities-quantumcolorshift = []
+entities-quantumtrail = []
+entities-racering = []
+entities-radarscanning = []
+entities-rastar = []
+entities-refinery = []
+entities-refuelatmospheres = []
+entities-render = []
+entities-rendertotextureareamaphelperview = []
+entities-restricted_areas = []
+entities-restrictedareaboundarymesh = []
+entities-restrictedareavisibleboundarymesh = []
+entities-roomsystem = []
+entities-safeteleportpoint = []
+entities-safeteleportpoint_npc = []
+entities-salvagable = []
+entities-scarmorymanager = []
+entities-schedulearea = []
+entities-scitem-access = []
 entities-scitem-actormovables = []
+entities-scitem-aimodule_atc_grimhex = []
+entities-scitem-aimodule_atc_levskiatc01 = []
+entities-scitem-aimodule_atc_lorvilleatc01 = []
+entities-scitem-aimodule_atc_newbabbage = []
+entities-scitem-aimodule_atc_newbabbageatc01 = []
+entities-scitem-aimodule_atc_orisonatc01 = []
+entities-scitem-aimodule_atc_systematc01 = []
+entities-scitem-aimodule_cargo = []
+entities-scitem-aimodule_collector = []
+entities-scitem-aimodule_genatc02 = []
+entities-scitem-aimodule_pyro = []
+entities-scitem-aimodule_silent_atc = []
+entities-scitem-airlocks = []
+entities-scitem-ammocrates = []
+entities-scitem-arenacommander = []
+entities-scitem-atc = []
+entities-scitem-atc_datamanager_outpostplatinumbay = []
+entities-scitem-atc_datamanager_port_lawful = []
+entities-scitem-atc_datamanager_port_semilawful = []
+entities-scitem-atc_datamanager_port_unlawful = []
+entities-scitem-audiolog = []
+entities-scitem-beer_can = []
+entities-scitem-bottle_liquor = []
+entities-scitem-cargo = []
+entities-scitem-carryables = []
+entities-scitem-characters = []
+entities-scitem-chipsets = []
+entities-scitem-commsreceiver = []
+entities-scitem-commsspeaker = []
+entities-scitem-consumables = []
+entities-scitem-controlpanels = []
+entities-scitem-counter_shop_2m_casaba_b = []
+entities-scitem-counter_shop_2m_casaba_c = []
+entities-scitem-counter_shop_2m_casaba_d = []
+entities-scitem-decals = []
+entities-scitem-default_lensdisplay = []
+entities-scitem-default_lensdisplay_pu = []
+entities-scitem-deliveryitemportmanager = []
+entities-scitem-doors = []
+entities-scitem-energy = []
+entities-scitem-entityclassdefinition_aimodule_atc = []
+entities-scitem-entityclassdefinition_atc_datamanager = []
+entities-scitem-entityclassdefinition_atc_operatoraimodule = []
+entities-scitem-entityclassdefinition_bar_mmhc_glass_coke_empty = []
+entities-scitem-entityclassdefinition_glass_tumbler_1_a = []
+entities-scitem-entityclassdefinition_glass_tumbler_2_a = []
+entities-scitem-entityclassdefinition_janitormob = []
+entities-scitem-entityclassdefinition_lightgroupitem = []
+entities-scitem-entityclassdefinition_lightgrouppowereditem = []
+entities-scitem-entityclassdefinition_morrowtour = []
+entities-scitem-entityclassdefinition_satellite_power_plant_test = []
+entities-scitem-entityclassdefinition_sequenceobjectitem = []
+entities-scitem-entityclassdefinition_shelve_invisible_4x4 = []
+entities-scitem-entityclassdefinition_simplestool = []
+entities-scitem-entityclassdefinition_simpletoilet = []
+entities-scitem-entityclassdefinition_stool_template = []
+entities-scitem-entityclassdefinition_tablet = []
+entities-scitem-entityclassdefinition_tablet_small = []
+entities-scitem-entityclassdefinition_test_gadget = []
+entities-scitem-entityclassdefinition_test_mug = []
+entities-scitem-entityclassdefinition_test_mug_carryable = []
+entities-scitem-entityclassdefinition_test_shelf = []
+entities-scitem-entityclassdefinition_test_shelf_missionblackboxdropoff = []
+entities-scitem-entityclassdefinition_test_station_power_plant = []
+entities-scitem-entityclassdefinition_testinteractionstatemachine = []
+entities-scitem-environments = []
+entities-scitem-externalinventory = []
+entities-scitem-fauna = []
+entities-scitem-flair = []
+entities-scitem-fps_devices = []
+entities-scitem-freightelevators = []
+entities-scitem-gameplayinteractables = []
+entities-scitem-geom_entity_template = []
+entities-scitem-glass_alcohol = []
+entities-scitem-handcuffs = []
+entities-scitem-harvestables = []
+entities-scitem-holoui = []
+entities-scitem-human = []
+entities-scitem-innerthought_dummies = []
+entities-scitem-itembanks = []
+entities-scitem-lerpmoveentity = []
+entities-scitem-lifesupport = []
+entities-scitem-locations = []
+entities-scitem-lootables = []
 entities-scitem-mastermodeexclusionglobalparams = []
+entities-scitem-mission_entities = []
+entities-scitem-missionstorage = []
+entities-scitem-movable_bridge = []
+entities-scitem-movable_bridge_plank = []
+entities-scitem-movable_plank_pallet_0250x0125x00125 = []
+entities-scitem-movable_plank_pallet_0350x0125x00125 = []
+entities-scitem-movable_plank_pallet_0450x0125x00125 = []
+entities-scitem-navigationlinks = []
+entities-scitem-nonusables = []
+entities-scitem-openableobject = []
 entities-scitem-operatormoderecords = []
+entities-scitem-orbgn = []
+entities-scitem-orcaobstacle = []
+entities-scitem-placeholder = []
+entities-scitem-prop = []
+entities-scitem-prototypeentities = []
+entities-scitem-remoteconnectionreceiver = []
+entities-scitem-rotationsimple = []
+entities-scitem-salvageablerepairable = []
+entities-scitem-scitem_debris = []
+entities-scitem-scitemdisplayscreen = []
+entities-scitem-ship_weapon_ammo_racks = []
 entities-scitem-ships = []
+entities-scitem-shopdisplays = []
+entities-scitem-simpleanimators = []
+entities-scitem-simpleopenableobject_ammo_box_generic = []
+entities-scitem-simpleopenableobject_bathroom_shower = []
+entities-scitem-simpleopenableobject_bathroom_sink = []
+entities-scitem-simpleopenableobject_bathroom_storage = []
+entities-scitem-simpleopenableobject_bathroom_toilet = []
+entities-scitem-simpleopenableobject_cnou_mustang_cargobox_door = []
+entities-scitem-simpleopenableobject_col_a_radial_kitchen_counter_set_a_cupboard_doors_a = []
+entities-scitem-simpleopenableobject_col_a_radial_kitchen_counter_set_a_cupboard_drawers_a = []
+entities-scitem-simpleopenableobject_col_a_radial_kitchen_counter_set_a_oven_a = []
+entities-scitem-simpleopenableobject_col_a_radial_kitchen_counter_set_a_oven_a_lid_a = []
+entities-scitem-simpleopenableobject_col_a_shutters_a = []
+entities-scitem-simpleopenableobject_col_a_shutters_b = []
+entities-scitem-simpleopenableobject_col_a_shutters_c = []
+entities-scitem-simpleopenableobject_col_a_shutters_d = []
+entities-scitem-simpleopenableobject_habmodule_foldingtable = []
+entities-scitem-simpleopenableobject_habmodule_kitchendoor = []
+entities-scitem-simpleopenableobject_habmodule_storagedoor = []
+entities-scitem-simpleopenableobject_habmodule_storagetray = []
+entities-scitem-simpleopenableobject_habmodule_toiletdoor = []
+entities-scitem-simpleopenableobject_screenarticulated = []
+entities-scitem-simpleopenableobject_template = []
+entities-scitem-spawers = []
+entities-scitem-spawning = []
+entities-scitem-starmarine = []
+entities-scitem-storage = []
+entities-scitem-storagecage = []
+entities-scitem-suit = []
+entities-scitem-template = []
+entities-scitem-template_cuttableinteractable = []
+entities-scitem-template_cuttableinteractable_surfacerelay = []
+entities-scitem-test_ruto_projector = []
+entities-scitem-toggleableentities = []
+entities-scitem-ui_environmentscreen_phoenix_attractanim = []
+entities-scitem-ui_environmentscreen_phoenix_attractanim_small = []
+entities-scitem-ui_environmentscreen_phoenix_elevatorpanel_bottom = []
+entities-scitem-ui_environmentscreen_phoenix_elevatorpanel_top = []
+entities-scitem-ui_environmentscreen_phoenix_interactionpanel = []
+entities-scitem-ui_flash_screen = []
 entities-scitem-usables = []
+entities-scitem-vehicles = []
+entities-scitem-weaponmounts = []
+entities-scitem-weapons = []
+entities-screenattachment = []
+entities-servicebeaconnavpoint = []
+entities-shadowregionentity = []
+entities-shipselectorkiosk_genatc02 = []
+entities-shipselectorkiosk_grimhex = []
+entities-shipselectorkiosk_groundvehiclesonly = []
+entities-shipselectorkiosk_hangar_hightech_1_a = []
+entities-shipselectorkiosk_hangar_lowtech_1_a = []
+entities-shipselectorkiosk_hangar_lowtech_1_b = []
+entities-shipselectorkiosk_hangar_lowtech_2_a = []
+entities-shipselectorkiosk_hangar_lowtech_2_b = []
+entities-shipselectorkiosk_levski = []
+entities-shipselectorkiosk_lorville = []
+entities-shipselectorkiosk_lorvilleground = []
+entities-shipselectorkiosk_newbab = []
+entities-shipselectorkiosk_outpostground = []
+entities-shipselectorkiosk_pyro = []
+entities-shipselectorkiosk_shipsonly = []
+entities-shipselectorkiosk_shipsonly_area18 = []
+entities-shipselectorkiosk_shipsonly_orison = []
+entities-shipselectorkiosk_shipsonly_reststop = []
+entities-shipselectorkiosk_test = []
+entities-simpleobjectcontainer = []
+entities-slotspawnpoint = []
+entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a = []
+entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a = []
+entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a_extractonly = []
+entities-spaceships = []
+entities-spawncloset = []
+entities-spawncloset_ships = []
+entities-spawncloset_ships_javelin = []
+entities-spawnclosetmanager = []
+entities-spawnedactionarea = []
+entities-spawnhelper = []
+entities-starfield = []
+entities-streamingobjectcontainer = []
+entities-sunlight = []
+entities-table_booth_circularbar_direct_8_seat = []
+entities-table_booth_utilitarian_4_seat = []
+entities-tagpoint = []
+entities-test = []
+entities-tinymachine = []
+entities-trackview = []
+entities-trackviewuser = []
 entities-ui = []
+entities-unattendedvehiclemarker = []
+entities-uniqueplayercamera = []
+entities-usablegroup = []
+entities-usablegroupcoordinator = []
+entities-vehicleobjectcontainer = []
 entities-vfx = []
+entities-vlk_adult_body = []
+entities-vlk_apex_body = []
+entities-vlk_apex_irradiated_body = []
+entities-vlk_juvenile_body = []
+entities-watervolume = []
+entities-worlddisplay = []
+entities-yormandi_apex_body = []
 entitlementpolicies = []
+entityaudiocontrollerrtpcsubscriberlistdef = []
+entityclassdefinition = []
 environments = []
 evagraph = []
 explosiveordnance = []
 factions = []
+factions_legacy = []
 fidgetconfig = []
 foley = []
 forcefeedback_forcefeedbackeffects = []
 formation = []
+fovaspectratiorangetables = []
+franchises = []
 friendmanager = []
 fuelparams = []
 gamemode = []
 gamemodule = []
+genericmobiterminals = []
 globalarmarkerparams = []
 globalcargoloadingparams = []
 globalcommsnotificationparams = []
@@ -357,6 +1468,7 @@ globalinventoryparams = []
 globalquantumdriveparams = []
 globalshopparams = []
 globaltutorialparams = []
+gpuparticleaudio = []
 grips = []
 handholdgripdatabase = []
 hardwaremouse = []
@@ -372,17 +1484,38 @@ interactionconditions = []
 intoxication = []
 inventorycontainers = []
 item = []
+itemporttagsdictionary = []
+itemresourcenetwork = []
 journalentry = []
+journalentrytype = []
 jumppoints = []
+kaboos_derelictships = []
 landingpadsize = []
 lawsystem = []
 leangraph = []
 level = []
+lightamplification_aegs = []
+lightamplification_anvl = []
+lightamplification_argo = []
+lightamplification_banu = []
+lightamplification_cnou = []
+lightamplification_crus = []
+lightamplification_drak = []
+lightamplification_espr = []
+lightamplification_gama = []
+lightamplification_grey = []
+lightamplification_krig = []
+lightamplification_misc = []
+lightamplification_orig = []
+lightamplification_rsi = []
+lightamplification_vncl = []
+lightamplification_xnaa = []
 loadoutkits = []
 longtermpersistence = []
 lootgeneration = []
 megamap = []
 mining = []
+miningaudioparams = []
 missionbroker = []
 missiondata = []
 missionfailureconditions = []
@@ -394,12 +1527,23 @@ moveviewrestrictionpenalties = []
 musiclogic = []
 personalinnerthoughtrules = []
 planetdaynighttemperatureparams = []
+player = []
+playeranimatedinteractiontemplates = []
+playerchoicemenuitems = []
+playerchoicemenutypes = []
+playerdockcontextcomponent = []
+playergroupmanager = []
+playernotificationsystem = []
+playerspeedthrottle = []
+playertoplayercommscallglobalparams = []
+playertrade = []
 posturedatabase = []
 procbreathing = []
 proceduralaimrigrecord = []
 proceduralanimations = []
 procedurallandingsetup = []
 procedurallayout = []
+prop = []
 qteconfigs = []
 radarsystem = []
 rastar = []
@@ -408,8 +1552,11 @@ refiningprocess = []
 rendererpresets = []
 rentalnotificationparams = []
 reputation = []
+reputationvaluesettings = []
 resourcetypedatabase = []
 roomsystem = []
+rsi_polaris_kaboos_exterior = []
+scandisplayinstanceparams = []
 scarryableikinteractionlist = []
 scitemcommscomponentsetup = []
 scitemdisplayscreenpreset = []
@@ -426,20 +1573,27 @@ sglobalhitbehaviorparams = []
 sglobalsalvagerepairbeamparams = []
 sglobaltractorbeamparams = []
 shipinsurancerecord = []
+sloadoutassortment = []
 specialeventdatabase = []
 squantumdriveeffecttagstemplate = []
 sreputationglobalcontextbbparams = []
 ssolarsystem = []
 starmap = []
+starmapamenitytypes = []
 tacticalquery = []
 tagdatabase = []
 targetselector = []
 tintpalettes = []
 trackview = []
+transitsystem = []
+transponder = []
+transportsystem = []
 traversalcostconfig = []
 turret = []
 ui-animatedmarkers = []
+ui-areamap = []
 ui-armarkerconfiguration = []
+ui-aspectratiototag_mfd = []
 ui-buildingblocks = []
 ui-digitalsignage = []
 ui-directrtt = []
@@ -452,10 +1606,13 @@ ui-graphs = []
 ui-holovehicleconfig = []
 ui-hudcolors_shipcolorpalettes = []
 ui-innerthought = []
+ui-innerthoughtentity = []
+ui-innerthoughtentitydepth = []
 ui-itemkiosk = []
 ui-itempreview_config = []
 ui-itemtypedefinition = []
 ui-localplayershoppingdata = []
+ui-map = []
 ui-marker_config = []
 ui-markertrackingvolumeconfig = []
 ui-missilelockreticleconfig = []
@@ -471,6 +1628,8 @@ ui-popups = []
 ui-radar3dpresets = []
 ui-radardisplay_config_radar = []
 ui-seatreticlearchetype = []
+ui-simplespritesheet_holodisplaysprites = []
+ui-simplespritesheet_innerthoughtsprites = []
 ui-transformationinterpolatorrecords = []
 ui-uiconfig_starcitizen = []
 ui-uielements = []
@@ -479,9 +1638,14 @@ ui-uistatedisplay = []
 ui-vehicleentrance = []
 ui-videocomms = []
 ui-visor = []
+ui-visorscreenconfig = []
 ui-worlddisplay = []
+unittest_unittesta = []
 unittest_unittestb = []
 vehicle = []
+vehiclecombat = []
+vehiclesalvageglobalparams = []
+vendingmachine_2 = []
 vfx = []
 vibrations = []
 videocommschannels = []

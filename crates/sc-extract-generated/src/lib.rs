@@ -38,10 +38,12 @@ mod builder;
 mod extract;
 pub mod generated;
 mod handle;
+mod locale_key;
 
 pub use builder::Builder;
 pub use extract::Extract;
 pub use handle::{Handle, Pooled};
+pub use locale_key::LocaleKey;
 
 // Flat re-exports of every generated type, so `sc_extract_generated::Foo`
 // works the same as `sc_extract_generated::generated::Foo`.

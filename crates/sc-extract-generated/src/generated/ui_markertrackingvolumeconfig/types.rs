@@ -15,67 +15,9 @@
 use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, Pooled};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
-
-/// DCB type: `MarkerTrackingViewModeParameters`
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct MarkerTrackingViewModeParameters {
-    /// `isFullScreen` (Boolean)
-    #[serde(default)]
-    pub is_full_screen: bool,
-    /// `rotateVertical` (Boolean)
-    #[serde(default)]
-    pub rotate_vertical: bool,
-    /// `rotateHorizontal` (Boolean)
-    #[serde(default)]
-    pub rotate_horizontal: bool,
-    /// `pan` (Boolean)
-    #[serde(default)]
-    pub pan: bool,
-    /// `zoom` (Boolean)
-    #[serde(default)]
-    pub zoom: bool,
-    /// `markerActions` (Class)
-    #[serde(default)]
-    pub marker_actions: Option<Handle<MarkerTrackingActionParameters>>,
-    /// `displaySettings` (Class)
-    #[serde(default)]
-    pub display_settings: Option<Handle<MarkerTrackingDisplayParameters>>,
-}
-
-impl Pooled for MarkerTrackingViewModeParameters {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_markertrackingvolumeconfig.marker_tracking_view_mode_parameters }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_markertrackingvolumeconfig.marker_tracking_view_mode_parameters }
-}
-
-impl<'a> Extract<'a> for MarkerTrackingViewModeParameters {
-    const TYPE_NAME: &'static str = "MarkerTrackingViewModeParameters";
-    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
-        Self {
-            is_full_screen: inst.get_bool("isFullScreen").unwrap_or_default(),
-            rotate_vertical: inst.get_bool("rotateVertical").unwrap_or_default(),
-            rotate_horizontal: inst.get_bool("rotateHorizontal").unwrap_or_default(),
-            pan: inst.get_bool("pan").unwrap_or_default(),
-            zoom: inst.get_bool("zoom").unwrap_or_default(),
-            marker_actions: match inst.get("markerActions") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<MarkerTrackingActionParameters>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<MarkerTrackingActionParameters>(b.db.instance(r.struct_index, r.instance_index), true)),
-                _ => None,
-            },
-            display_settings: match inst.get("displaySettings") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<MarkerTrackingDisplayParameters>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<MarkerTrackingDisplayParameters>(b.db.instance(r.struct_index, r.instance_index), true)),
-                _ => None,
-            },
-        }
-    }
-}
 
 /// DCB type: `MarkerTrackingCommonMapParameters`
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -132,103 +74,8 @@ impl<'a> Extract<'a> for MarkerTrackingCommonMapParameters {
             camera_blend_time_in_seconds: inst.get_f32("cameraBlendTimeInSeconds").unwrap_or_default(),
             label_params: match inst.get("labelParams") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<MarkerTrackingLabelParameters>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<MarkerTrackingLabelParameters>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
-        }
-    }
-}
-
-/// DCB type: `MarkerTrackingActionParameters`
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct MarkerTrackingActionParameters {
-    /// `leftClickAction` (EnumChoice)
-    #[serde(default)]
-    pub left_click_action: String,
-    /// `leftDoubleClickAction` (EnumChoice)
-    #[serde(default)]
-    pub left_double_click_action: String,
-}
-
-impl Pooled for MarkerTrackingActionParameters {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_markertrackingvolumeconfig.marker_tracking_action_parameters }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_markertrackingvolumeconfig.marker_tracking_action_parameters }
-}
-
-impl<'a> Extract<'a> for MarkerTrackingActionParameters {
-    const TYPE_NAME: &'static str = "MarkerTrackingActionParameters";
-    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
-            left_click_action: inst.get_str("leftClickAction").map(String::from).unwrap_or_default(),
-            left_double_click_action: inst.get_str("leftDoubleClickAction").map(String::from).unwrap_or_default(),
-        }
-    }
-}
-
-/// DCB type: `MarkerTrackingDisplayParameters`
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct MarkerTrackingDisplayParameters {
-    /// `showSmallIconOnly` (Boolean)
-    #[serde(default)]
-    pub show_small_icon_only: bool,
-    /// `showPanels` (Boolean)
-    #[serde(default)]
-    pub show_panels: bool,
-    /// `showEdgeMarkers` (Boolean)
-    #[serde(default)]
-    pub show_edge_markers: bool,
-    /// `enableDynamicRadar` (Boolean)
-    #[serde(default)]
-    pub enable_dynamic_radar: bool,
-    /// `planeAlignmentMode` (EnumChoice)
-    #[serde(default)]
-    pub plane_alignment_mode: String,
-    /// `minimumRadarRangeInMeters` (Single)
-    #[serde(default)]
-    pub minimum_radar_range_in_meters: f32,
-    /// `defaultRadarRangeInMeters` (Single)
-    #[serde(default)]
-    pub default_radar_range_in_meters: f32,
-    /// `radarPaddingInMeters` (Single)
-    #[serde(default)]
-    pub radar_padding_in_meters: f32,
-    /// `playerZoomOffset` (Single)
-    #[serde(default)]
-    pub player_zoom_offset: f32,
-    /// `iconOverrideThreshold` (Single)
-    #[serde(default)]
-    pub icon_override_threshold: f32,
-    /// `standardIconThreshold` (Single)
-    #[serde(default)]
-    pub standard_icon_threshold: f32,
-    /// `modelThreshold` (Single)
-    #[serde(default)]
-    pub model_threshold: f32,
-}
-
-impl Pooled for MarkerTrackingDisplayParameters {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_markertrackingvolumeconfig.marker_tracking_display_parameters }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_markertrackingvolumeconfig.marker_tracking_display_parameters }
-}
-
-impl<'a> Extract<'a> for MarkerTrackingDisplayParameters {
-    const TYPE_NAME: &'static str = "MarkerTrackingDisplayParameters";
-    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
-            show_small_icon_only: inst.get_bool("showSmallIconOnly").unwrap_or_default(),
-            show_panels: inst.get_bool("showPanels").unwrap_or_default(),
-            show_edge_markers: inst.get_bool("showEdgeMarkers").unwrap_or_default(),
-            enable_dynamic_radar: inst.get_bool("enableDynamicRadar").unwrap_or_default(),
-            plane_alignment_mode: inst.get_str("planeAlignmentMode").map(String::from).unwrap_or_default(),
-            minimum_radar_range_in_meters: inst.get_f32("minimumRadarRangeInMeters").unwrap_or_default(),
-            default_radar_range_in_meters: inst.get_f32("defaultRadarRangeInMeters").unwrap_or_default(),
-            radar_padding_in_meters: inst.get_f32("radarPaddingInMeters").unwrap_or_default(),
-            player_zoom_offset: inst.get_f32("playerZoomOffset").unwrap_or_default(),
-            icon_override_threshold: inst.get_f32("iconOverrideThreshold").unwrap_or_default(),
-            standard_icon_threshold: inst.get_f32("standardIconThreshold").unwrap_or_default(),
-            model_threshold: inst.get_f32("modelThreshold").unwrap_or_default(),
         }
     }
 }

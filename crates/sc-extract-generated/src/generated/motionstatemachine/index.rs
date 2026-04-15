@@ -7,7 +7,7 @@
 //
 // Any hand edits will be lost on the next run.
 
-#![allow(non_snake_case, dead_code, unused_imports)]
+#![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
 use std::collections::HashMap;
 use serde::{Deserialize, Serialize};
@@ -22,15 +22,15 @@ pub struct MotionstatemachineIndex {
     pub motion_graph: HashMap<CigGuid, Handle<MotionGraph>>,
     #[serde(default)]
     pub scprone_motion_graph_def: HashMap<CigGuid, Handle<SCProneMotionGraphDef>>,
-    #[serde(default)]
-    pub smannequin_action_def_record: HashMap<CigGuid, Handle<SMannequinActionDefRecord>>,
 }
 
 impl MotionstatemachineIndex {
+    #[allow(unused_mut)]
     pub fn len(&self) -> usize {
-        self.motion_graph.len()
-            + self.scprone_motion_graph_def.len()
-            + self.smannequin_action_def_record.len()
+        let mut total = 0usize;
+        total += self.motion_graph.len();
+        total += self.scprone_motion_graph_def.len();
+        total
     }
 
     pub fn is_empty(&self) -> bool { self.len() == 0 }

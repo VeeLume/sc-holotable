@@ -15,7 +15,7 @@
 use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, Pooled};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -80,9 +80,6 @@ impl<'a> Extract<'a> for ESPParams {
         Self {
             trigger_zone_ramp_in_curve: match inst.get("triggerZoneRampInCurve") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BezierCurve>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<BezierCurve>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             tracking_strength: inst.get_f32("trackingStrength").unwrap_or_default(),
@@ -167,9 +164,6 @@ impl<'a> Extract<'a> for SIFCSEspParams {
         Self {
             trigger_zone_ramp_in_curve: match inst.get("triggerZoneRampInCurve") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BezierCurve>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<BezierCurve>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             max_tracking_strength: inst.get_f32("maxTrackingStrength").unwrap_or_default(),
@@ -210,9 +204,6 @@ impl<'a> Extract<'a> for SIFCSEsp {
         Self {
             esp_per_type: match inst.get("espPerType") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SIFCSEspParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SIFCSEspParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
         }
@@ -294,9 +285,6 @@ impl<'a> Extract<'a> for SIFCSGameModeParams {
             cruise_mode_on_by_default: inst.get_bool("cruiseModeOnByDefault").unwrap_or_default(),
             physics_damping: match inst.get("physicsDamping") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SIFCSGameModePhysicsDamping>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SIFCSGameModePhysicsDamping>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             legacy_include_wind_in_aerodynamics: inst.get_bool("legacyIncludeWindInAerodynamics").unwrap_or_default(),

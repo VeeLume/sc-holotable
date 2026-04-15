@@ -7,7 +7,7 @@
 //
 // Any hand edits will be lost on the next run.
 
-#![allow(non_snake_case, dead_code, unused_imports)]
+#![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
 use std::collections::HashMap;
 use serde::{Deserialize, Serialize};
@@ -19,18 +19,15 @@ use super::super::*;
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct ResourcetypedatabaseIndex {
     #[serde(default)]
-    pub resource_type: HashMap<CigGuid, Handle<ResourceType>>,
-    #[serde(default)]
-    pub resource_type_group: HashMap<CigGuid, Handle<ResourceTypeGroup>>,
-    #[serde(default)]
     pub resource_type_database: HashMap<CigGuid, Handle<ResourceTypeDatabase>>,
 }
 
 impl ResourcetypedatabaseIndex {
+    #[allow(unused_mut)]
     pub fn len(&self) -> usize {
-        self.resource_type.len()
-            + self.resource_type_group.len()
-            + self.resource_type_database.len()
+        let mut total = 0usize;
+        total += self.resource_type_database.len();
+        total
     }
 
     pub fn is_empty(&self) -> bool { self.len() == 0 }

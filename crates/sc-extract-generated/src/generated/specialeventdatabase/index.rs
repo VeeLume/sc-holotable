@@ -7,7 +7,7 @@
 //
 // Any hand edits will be lost on the next run.
 
-#![allow(non_snake_case, dead_code, unused_imports)]
+#![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
 use std::collections::HashMap;
 use serde::{Deserialize, Serialize};
@@ -27,10 +27,13 @@ pub struct SpecialeventdatabaseIndex {
 }
 
 impl SpecialeventdatabaseIndex {
+    #[allow(unused_mut)]
     pub fn len(&self) -> usize {
-        self.special_event_manufacturer.len()
-            + self.special_event_day.len()
-            + self.special_event_database.len()
+        let mut total = 0usize;
+        total += self.special_event_manufacturer.len();
+        total += self.special_event_day.len();
+        total += self.special_event_database.len();
+        total
     }
 
     pub fn is_empty(&self) -> bool { self.len() == 0 }

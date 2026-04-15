@@ -15,7 +15,7 @@
 use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, Pooled};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -24,22 +24,22 @@ use super::super::*;
 pub struct ChatManagerDefaultChannelColor {
     /// `global` (EnumChoice)
     #[serde(default)]
-    pub global: String,
+    pub global: ChannelColor,
     /// `party` (EnumChoice)
     #[serde(default)]
-    pub party: String,
+    pub party: ChannelColor,
     /// `gameEntity` (EnumChoice)
     #[serde(default)]
-    pub game_entity: String,
+    pub game_entity: ChannelColor,
     /// `whisper` (EnumChoice)
     #[serde(default)]
-    pub whisper: String,
+    pub whisper: ChannelColor,
     /// `team` (EnumChoice)
     #[serde(default)]
-    pub team: String,
+    pub team: ChannelColor,
     /// `squad` (EnumChoice)
     #[serde(default)]
-    pub squad: String,
+    pub squad: ChannelColor,
 }
 
 impl Pooled for ChatManagerDefaultChannelColor {
@@ -51,12 +51,12 @@ impl<'a> Extract<'a> for ChatManagerDefaultChannelColor {
     const TYPE_NAME: &'static str = "ChatManagerDefaultChannelColor";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            global: inst.get_str("global").map(String::from).unwrap_or_default(),
-            party: inst.get_str("party").map(String::from).unwrap_or_default(),
-            game_entity: inst.get_str("gameEntity").map(String::from).unwrap_or_default(),
-            whisper: inst.get_str("whisper").map(String::from).unwrap_or_default(),
-            team: inst.get_str("team").map(String::from).unwrap_or_default(),
-            squad: inst.get_str("squad").map(String::from).unwrap_or_default(),
+            global: ChannelColor::from_dcb_str(inst.get_str("global").unwrap_or("")),
+            party: ChannelColor::from_dcb_str(inst.get_str("party").unwrap_or("")),
+            game_entity: ChannelColor::from_dcb_str(inst.get_str("gameEntity").unwrap_or("")),
+            whisper: ChannelColor::from_dcb_str(inst.get_str("whisper").unwrap_or("")),
+            team: ChannelColor::from_dcb_str(inst.get_str("team").unwrap_or("")),
+            squad: ChannelColor::from_dcb_str(inst.get_str("squad").unwrap_or("")),
         }
     }
 }
@@ -66,7 +66,7 @@ impl<'a> Extract<'a> for ChatManagerDefaultChannelColor {
 pub struct ChatManagerColor {
     /// `colorType` (EnumChoice)
     #[serde(default)]
-    pub color_type: String,
+    pub color_type: ChannelColor,
     /// `color` (Class)
     #[serde(default)]
     pub color: Option<Handle<SRGB8>>,
@@ -81,12 +81,9 @@ impl<'a> Extract<'a> for ChatManagerColor {
     const TYPE_NAME: &'static str = "ChatManagerColor";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            color_type: inst.get_str("colorType").map(String::from).unwrap_or_default(),
+            color_type: ChannelColor::from_dcb_str(inst.get_str("colorType").unwrap_or("")),
             color: match inst.get("color") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SRGB8>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SRGB8>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
         }
@@ -115,17 +112,12 @@ impl<'a> Extract<'a> for ChatManagerGlobalParams {
         Self {
             default_channel_color: match inst.get("defaultChannelColor") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<ChatManagerDefaultChannelColor>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<ChatManagerDefaultChannelColor>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             color_options: inst.get_array("colorOptions")
                 .map(|arr| arr.filter_map(|v| match v {
                         Value::Class { struct_index, data } => Some(b.alloc_nested::<ChatManagerColor>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r)
-                        | Value::StrongPointer(Some(r))
-                        | Value::WeakPointer(Some(r)) => Some(b.alloc_nested::<ChatManagerColor>(b.db.instance(r.struct_index, r.instance_index), true)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<ChatManagerColor>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
                     }).collect())
                 .unwrap_or_default(),

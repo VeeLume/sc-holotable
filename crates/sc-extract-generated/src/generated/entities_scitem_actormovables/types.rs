@@ -15,100 +15,355 @@
 use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, Pooled};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
-/// DCB type: `SMovableLimits`
+/// DCB type: `BuildModeKioskProviderComponentParams`
+/// Inherits from: `DataForgeComponentParams`
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct SMovableLimits {
-    /// `veloctiyForwardClamp` (Single)
-    #[serde(default)]
-    pub veloctiy_forward_clamp: f32,
-    /// `veloctiyBackwardClamp` (Single)
-    #[serde(default)]
-    pub veloctiy_backward_clamp: f32,
-    /// `veloctiySideClamp` (Single)
-    #[serde(default)]
-    pub veloctiy_side_clamp: f32,
-    /// `maxYawSpeed` (Single)
-    #[serde(default)]
-    pub max_yaw_speed: f32,
-    /// `maxLinearAcceleration` (Single)
-    #[serde(default)]
-    pub max_linear_acceleration: f32,
-    /// `maxAngularAcceleration` (Single)
-    #[serde(default)]
-    pub max_angular_acceleration: f32,
-    /// `linearAccelerationEasingPower` (Single)
-    #[serde(default)]
-    pub linear_acceleration_easing_power: f32,
-    /// `linearAccelerationEasingMinSpeed` (Single)
-    #[serde(default)]
-    pub linear_acceleration_easing_min_speed: f32,
-    /// `linearAccelerationEasingMaxSpeed` (Single)
-    #[serde(default)]
-    pub linear_acceleration_easing_max_speed: f32,
-    /// `angularAccelerationEasingPower` (Single)
-    #[serde(default)]
-    pub angular_acceleration_easing_power: f32,
-    /// `angularAccelerationEasingMinSpeed` (Single)
-    #[serde(default)]
-    pub angular_acceleration_easing_min_speed: f32,
-    /// `angularAccelerationEasingMaxSpeed` (Single)
-    #[serde(default)]
-    pub angular_acceleration_easing_max_speed: f32,
-    /// `rotLinModifier` (Single)
-    #[serde(default)]
-    pub rot_lin_modifier: f32,
-    /// `lateralDamping` (Single)
-    #[serde(default)]
-    pub lateral_damping: f32,
-    /// `yawDamping` (Single)
-    #[serde(default)]
-    pub yaw_damping: f32,
-    /// `leanMaxSlopeAngle` (Single)
-    #[serde(default)]
-    pub lean_max_slope_angle: f32,
-    /// `leanMultiplier` (Single)
-    #[serde(default)]
-    pub lean_multiplier: f32,
-    /// `allowSprint` (Boolean)
-    #[serde(default)]
-    pub allow_sprint: bool,
-    /// `velocitySprintClamp` (Single)
-    #[serde(default)]
-    pub velocity_sprint_clamp: f32,
+pub struct BuildModeKioskProviderComponentParams {
 }
 
-impl Pooled for SMovableLimits {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_actormovables.smovable_limits }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_actormovables.smovable_limits }
+impl Pooled for BuildModeKioskProviderComponentParams {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_actormovables.build_mode_kiosk_provider_component_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_actormovables.build_mode_kiosk_provider_component_params }
 }
 
-impl<'a> Extract<'a> for SMovableLimits {
-    const TYPE_NAME: &'static str = "SMovableLimits";
+impl<'a> Extract<'a> for BuildModeKioskProviderComponentParams {
+    const TYPE_NAME: &'static str = "BuildModeKioskProviderComponentParams";
+    fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {
+        }
+    }
+}
+
+/// DCB type: `InteractionConditionHoverPowerStageEqual`
+/// Inherits from: `InteractionConditionParams`
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct InteractionConditionHoverPowerStageEqual {
+    /// `conditionDisplay` (StrongPointer)
+    #[serde(default)]
+    pub condition_display: Option<Handle<ConditionDisplayParams>>,
+    /// `powerStage` (EnumChoice)
+    #[serde(default)]
+    pub power_stage: EHoverPowerStage,
+}
+
+impl Pooled for InteractionConditionHoverPowerStageEqual {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_actormovables.interaction_condition_hover_power_stage_equal }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_actormovables.interaction_condition_hover_power_stage_equal }
+}
+
+impl<'a> Extract<'a> for InteractionConditionHoverPowerStageEqual {
+    const TYPE_NAME: &'static str = "InteractionConditionHoverPowerStageEqual";
+    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
+        Self {
+            condition_display: match inst.get("conditionDisplay") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<ConditionDisplayParams>(b.db.instance(r.struct_index, r.instance_index), true)),
+                _ => None,
+            },
+            power_stage: EHoverPowerStage::from_dcb_str(inst.get_str("powerStage").unwrap_or("")),
+        }
+    }
+}
+
+/// DCB type: `StateModifierHoverPowerStage`
+/// Inherits from: `SStateModifier`
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct StateModifierHoverPowerStage {
+    /// `poweredOff` (WeakPointer)
+    #[serde(default)]
+    pub powered_off: Option<Handle<SInteractionState>>,
+    /// `poweringOff` (WeakPointer)
+    #[serde(default)]
+    pub powering_off: Option<Handle<SInteractionState>>,
+    /// `poweringOn` (WeakPointer)
+    #[serde(default)]
+    pub powering_on: Option<Handle<SInteractionState>>,
+    /// `poweredOn` (WeakPointer)
+    #[serde(default)]
+    pub powered_on: Option<Handle<SInteractionState>>,
+}
+
+impl Pooled for StateModifierHoverPowerStage {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_actormovables.state_modifier_hover_power_stage }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_actormovables.state_modifier_hover_power_stage }
+}
+
+impl<'a> Extract<'a> for StateModifierHoverPowerStage {
+    const TYPE_NAME: &'static str = "StateModifierHoverPowerStage";
+    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
+        Self {
+            powered_off: match inst.get("poweredOff") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SInteractionState>(b.db.instance(r.struct_index, r.instance_index), true)),
+                _ => None,
+            },
+            powering_off: match inst.get("poweringOff") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SInteractionState>(b.db.instance(r.struct_index, r.instance_index), true)),
+                _ => None,
+            },
+            powering_on: match inst.get("poweringOn") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SInteractionState>(b.db.instance(r.struct_index, r.instance_index), true)),
+                _ => None,
+            },
+            powered_on: match inst.get("poweredOn") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SInteractionState>(b.db.instance(r.struct_index, r.instance_index), true)),
+                _ => None,
+            },
+        }
+    }
+}
+
+/// DCB type: `SStateModifierMovableMover`
+/// Inherits from: `SStateModifier`
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct SStateModifierMovableMover {
+    /// `hasMoverState` (WeakPointer)
+    #[serde(default)]
+    pub has_mover_state: Option<Handle<SInteractionState>>,
+    /// `noMoverState` (WeakPointer)
+    #[serde(default)]
+    pub no_mover_state: Option<Handle<SInteractionState>>,
+}
+
+impl Pooled for SStateModifierMovableMover {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_actormovables.sstate_modifier_movable_mover }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_actormovables.sstate_modifier_movable_mover }
+}
+
+impl<'a> Extract<'a> for SStateModifierMovableMover {
+    const TYPE_NAME: &'static str = "SStateModifierMovableMover";
+    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
+        Self {
+            has_mover_state: match inst.get("hasMoverState") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SInteractionState>(b.db.instance(r.struct_index, r.instance_index), true)),
+                _ => None,
+            },
+            no_mover_state: match inst.get("noMoverState") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SInteractionState>(b.db.instance(r.struct_index, r.instance_index), true)),
+                _ => None,
+            },
+        }
+    }
+}
+
+/// DCB type: `SEntityHoverPhysicsPartialParams`
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct SEntityHoverPhysicsPartialParams {
+    /// `desiredHoverHeight` (Single)
+    #[serde(default)]
+    pub desired_hover_height: f32,
+    /// `desiredHoverMinHeight` (Single)
+    #[serde(default)]
+    pub desired_hover_min_height: f32,
+    /// `alignToSurface` (Single)
+    #[serde(default)]
+    pub align_to_surface: f32,
+    /// `alignToSurfaceMaxAngle` (Single)
+    #[serde(default)]
+    pub align_to_surface_max_angle: f32,
+    /// `alignToSurfaceEasingStartAngle` (Single)
+    #[serde(default)]
+    pub align_to_surface_easing_start_angle: f32,
+    /// `alignToSurfaceEasingEndAngle` (Single)
+    #[serde(default)]
+    pub align_to_surface_easing_end_angle: f32,
+    /// `maxGroundSearchDepth` (Single)
+    #[serde(default)]
+    pub max_ground_search_depth: f32,
+    /// `maxClimbHeight` (Single)
+    #[serde(default)]
+    pub max_climb_height: f32,
+    /// `desiredMaxFallSpeed` (Single)
+    #[serde(default)]
+    pub desired_max_fall_speed: f32,
+    /// `desiredFallSpeedEasingStartDepth` (Single)
+    #[serde(default)]
+    pub desired_fall_speed_easing_start_depth: f32,
+    /// `desiredFallSpeedEasingPower` (Single)
+    #[serde(default)]
+    pub desired_fall_speed_easing_power: f32,
+    /// `desiredMaxRaiseSpeed` (Single)
+    #[serde(default)]
+    pub desired_max_raise_speed: f32,
+    /// `desiredRaiseSpeedEasingStartHeight` (Single)
+    #[serde(default)]
+    pub desired_raise_speed_easing_start_height: f32,
+    /// `desiredRaiseSpeedEasingPower` (Single)
+    #[serde(default)]
+    pub desired_raise_speed_easing_power: f32,
+    /// `desiredMaxRotationalAdjustmentSpeed` (Single)
+    #[serde(default)]
+    pub desired_max_rotational_adjustment_speed: f32,
+    /// `desiredAngularSpeedEasingStartAngle` (Single)
+    #[serde(default)]
+    pub desired_angular_speed_easing_start_angle: f32,
+    /// `desiredAngularSpeedEasingPower` (Single)
+    #[serde(default)]
+    pub desired_angular_speed_easing_power: f32,
+    /// `lateralMoveStopMaxSpeed` (Single)
+    #[serde(default)]
+    pub lateral_move_stop_max_speed: f32,
+    /// `yawStopMaxSpeed` (Single)
+    #[serde(default)]
+    pub yaw_stop_max_speed: f32,
+}
+
+impl Pooled for SEntityHoverPhysicsPartialParams {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_actormovables.sentity_hover_physics_partial_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_actormovables.sentity_hover_physics_partial_params }
+}
+
+impl<'a> Extract<'a> for SEntityHoverPhysicsPartialParams {
+    const TYPE_NAME: &'static str = "SEntityHoverPhysicsPartialParams";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            veloctiy_forward_clamp: inst.get_f32("veloctiyForwardClamp").unwrap_or_default(),
-            veloctiy_backward_clamp: inst.get_f32("veloctiyBackwardClamp").unwrap_or_default(),
-            veloctiy_side_clamp: inst.get_f32("veloctiySideClamp").unwrap_or_default(),
-            max_yaw_speed: inst.get_f32("maxYawSpeed").unwrap_or_default(),
-            max_linear_acceleration: inst.get_f32("maxLinearAcceleration").unwrap_or_default(),
-            max_angular_acceleration: inst.get_f32("maxAngularAcceleration").unwrap_or_default(),
-            linear_acceleration_easing_power: inst.get_f32("linearAccelerationEasingPower").unwrap_or_default(),
-            linear_acceleration_easing_min_speed: inst.get_f32("linearAccelerationEasingMinSpeed").unwrap_or_default(),
-            linear_acceleration_easing_max_speed: inst.get_f32("linearAccelerationEasingMaxSpeed").unwrap_or_default(),
-            angular_acceleration_easing_power: inst.get_f32("angularAccelerationEasingPower").unwrap_or_default(),
-            angular_acceleration_easing_min_speed: inst.get_f32("angularAccelerationEasingMinSpeed").unwrap_or_default(),
-            angular_acceleration_easing_max_speed: inst.get_f32("angularAccelerationEasingMaxSpeed").unwrap_or_default(),
-            rot_lin_modifier: inst.get_f32("rotLinModifier").unwrap_or_default(),
-            lateral_damping: inst.get_f32("lateralDamping").unwrap_or_default(),
-            yaw_damping: inst.get_f32("yawDamping").unwrap_or_default(),
-            lean_max_slope_angle: inst.get_f32("leanMaxSlopeAngle").unwrap_or_default(),
-            lean_multiplier: inst.get_f32("leanMultiplier").unwrap_or_default(),
-            allow_sprint: inst.get_bool("allowSprint").unwrap_or_default(),
-            velocity_sprint_clamp: inst.get_f32("velocitySprintClamp").unwrap_or_default(),
+            desired_hover_height: inst.get_f32("desiredHoverHeight").unwrap_or_default(),
+            desired_hover_min_height: inst.get_f32("desiredHoverMinHeight").unwrap_or_default(),
+            align_to_surface: inst.get_f32("alignToSurface").unwrap_or_default(),
+            align_to_surface_max_angle: inst.get_f32("alignToSurfaceMaxAngle").unwrap_or_default(),
+            align_to_surface_easing_start_angle: inst.get_f32("alignToSurfaceEasingStartAngle").unwrap_or_default(),
+            align_to_surface_easing_end_angle: inst.get_f32("alignToSurfaceEasingEndAngle").unwrap_or_default(),
+            max_ground_search_depth: inst.get_f32("maxGroundSearchDepth").unwrap_or_default(),
+            max_climb_height: inst.get_f32("maxClimbHeight").unwrap_or_default(),
+            desired_max_fall_speed: inst.get_f32("desiredMaxFallSpeed").unwrap_or_default(),
+            desired_fall_speed_easing_start_depth: inst.get_f32("desiredFallSpeedEasingStartDepth").unwrap_or_default(),
+            desired_fall_speed_easing_power: inst.get_f32("desiredFallSpeedEasingPower").unwrap_or_default(),
+            desired_max_raise_speed: inst.get_f32("desiredMaxRaiseSpeed").unwrap_or_default(),
+            desired_raise_speed_easing_start_height: inst.get_f32("desiredRaiseSpeedEasingStartHeight").unwrap_or_default(),
+            desired_raise_speed_easing_power: inst.get_f32("desiredRaiseSpeedEasingPower").unwrap_or_default(),
+            desired_max_rotational_adjustment_speed: inst.get_f32("desiredMaxRotationalAdjustmentSpeed").unwrap_or_default(),
+            desired_angular_speed_easing_start_angle: inst.get_f32("desiredAngularSpeedEasingStartAngle").unwrap_or_default(),
+            desired_angular_speed_easing_power: inst.get_f32("desiredAngularSpeedEasingPower").unwrap_or_default(),
+            lateral_move_stop_max_speed: inst.get_f32("lateralMoveStopMaxSpeed").unwrap_or_default(),
+            yaw_stop_max_speed: inst.get_f32("yawStopMaxSpeed").unwrap_or_default(),
+        }
+    }
+}
+
+/// DCB type: `SEntityHoverPhysicsControllerParams`
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct SEntityHoverPhysicsControllerParams {
+    /// `interactionActivate` (WeakPointer)
+    #[serde(default)]
+    pub interaction_activate: Option<Handle<SSharedInteractionParams>>,
+    /// `interactionDeactivate` (WeakPointer)
+    #[serde(default)]
+    pub interaction_deactivate: Option<Handle<SSharedInteractionParams>>,
+    /// `activateHoverByDefault` (Boolean)
+    #[serde(default)]
+    pub activate_hover_by_default: bool,
+    /// `activateHoverOnGripAttached` (Boolean)
+    #[serde(default)]
+    pub activate_hover_on_grip_attached: bool,
+    /// `deactivateHoverOnGripDetached` (Boolean)
+    #[serde(default)]
+    pub deactivate_hover_on_grip_detached: bool,
+    /// `blendInDuration` (Single)
+    #[serde(default)]
+    pub blend_in_duration: f32,
+    /// `blendOutDuration` (Single)
+    #[serde(default)]
+    pub blend_out_duration: f32,
+    /// `powerOffDesiredHoverHeight` (Single)
+    #[serde(default)]
+    pub power_off_desired_hover_height: f32,
+    /// `maxHoverMass` (Single)
+    #[serde(default)]
+    pub max_hover_mass: f32,
+    /// `maxRotationalAdjustmentTorque` (Single)
+    #[serde(default)]
+    pub max_rotational_adjustment_torque: f32,
+    /// `basePlaneHalfWidth` (Single)
+    #[serde(default)]
+    pub base_plane_half_width: f32,
+    /// `basePlaneHalfLength` (Single)
+    #[serde(default)]
+    pub base_plane_half_length: f32,
+    /// `basePlaneOriginOffset` (Class)
+    #[serde(default)]
+    pub base_plane_origin_offset: Option<Handle<Vec3>>,
+    /// `hoverPhysicsIdle` (Class)
+    #[serde(default)]
+    pub hover_physics_idle: Option<Handle<SEntityHoverPhysicsPartialParams>>,
+    /// `hoverPhysicsGripAttached` (Class)
+    #[serde(default)]
+    pub hover_physics_grip_attached: Option<Handle<SEntityHoverPhysicsPartialParams>>,
+}
+
+impl Pooled for SEntityHoverPhysicsControllerParams {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_actormovables.sentity_hover_physics_controller_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_actormovables.sentity_hover_physics_controller_params }
+}
+
+impl<'a> Extract<'a> for SEntityHoverPhysicsControllerParams {
+    const TYPE_NAME: &'static str = "SEntityHoverPhysicsControllerParams";
+    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
+        Self {
+            interaction_activate: match inst.get("interactionActivate") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SSharedInteractionParams>(b.db.instance(r.struct_index, r.instance_index), true)),
+                _ => None,
+            },
+            interaction_deactivate: match inst.get("interactionDeactivate") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SSharedInteractionParams>(b.db.instance(r.struct_index, r.instance_index), true)),
+                _ => None,
+            },
+            activate_hover_by_default: inst.get_bool("activateHoverByDefault").unwrap_or_default(),
+            activate_hover_on_grip_attached: inst.get_bool("activateHoverOnGripAttached").unwrap_or_default(),
+            deactivate_hover_on_grip_detached: inst.get_bool("deactivateHoverOnGripDetached").unwrap_or_default(),
+            blend_in_duration: inst.get_f32("blendInDuration").unwrap_or_default(),
+            blend_out_duration: inst.get_f32("blendOutDuration").unwrap_or_default(),
+            power_off_desired_hover_height: inst.get_f32("powerOffDesiredHoverHeight").unwrap_or_default(),
+            max_hover_mass: inst.get_f32("maxHoverMass").unwrap_or_default(),
+            max_rotational_adjustment_torque: inst.get_f32("maxRotationalAdjustmentTorque").unwrap_or_default(),
+            base_plane_half_width: inst.get_f32("basePlaneHalfWidth").unwrap_or_default(),
+            base_plane_half_length: inst.get_f32("basePlaneHalfLength").unwrap_or_default(),
+            base_plane_origin_offset: match inst.get("basePlaneOriginOffset") {
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                _ => None,
+            },
+            hover_physics_idle: match inst.get("hoverPhysicsIdle") {
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SEntityHoverPhysicsPartialParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                _ => None,
+            },
+            hover_physics_grip_attached: match inst.get("hoverPhysicsGripAttached") {
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SEntityHoverPhysicsPartialParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                _ => None,
+            },
+        }
+    }
+}
+
+/// DCB type: `SEntityHoverPhysicsControllerComponentParams`
+/// Inherits from: `SEntityPhysicsControllerParams`
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct SEntityHoverPhysicsControllerComponentParams {
+    /// `PhysType` (StrongPointer)
+    #[serde(default)]
+    pub phys_type: Option<SEntityBasePhysicsControllerParamsPtr>,
+    /// `hover` (Class)
+    #[serde(default)]
+    pub hover: Option<Handle<SEntityHoverPhysicsControllerParams>>,
+}
+
+impl Pooled for SEntityHoverPhysicsControllerComponentParams {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_actormovables.sentity_hover_physics_controller_component_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_actormovables.sentity_hover_physics_controller_component_params }
+}
+
+impl<'a> Extract<'a> for SEntityHoverPhysicsControllerComponentParams {
+    const TYPE_NAME: &'static str = "SEntityHoverPhysicsControllerComponentParams";
+    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
+        Self {
+            phys_type: match inst.get("PhysType") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(SEntityBasePhysicsControllerParamsPtr::from_ref(b, r)),
+                _ => None,
+            },
+            hover: match inst.get("hover") {
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SEntityHoverPhysicsControllerParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                _ => None,
+            },
         }
     }
 }

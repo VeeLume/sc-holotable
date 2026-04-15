@@ -7,7 +7,7 @@
 //
 // Any hand edits will be lost on the next run.
 
-#![allow(non_snake_case, dead_code, unused_imports)]
+#![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
 use serde::{Deserialize, Serialize};
 use super::super::*;
@@ -16,21 +16,23 @@ use super::super::*;
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct UiInnerthoughtPools {
     #[serde(default)]
-    pub inner_thought_anim_base: Vec<Option<InnerThought_AnimBase>>,
+    pub inner_thought_cycle_anim_base: Vec<Option<InnerThought_CycleAnimBase>>,
     #[serde(default)]
-    pub inner_thought_anim: Vec<Option<InnerThought_Anim>>,
+    pub inner_thought_cycle_anim_rotate_x: Vec<Option<InnerThought_CycleAnimRotateX>>,
     #[serde(default)]
-    pub inner_thought_layout_base: Vec<Option<InnerThought_LayoutBase>>,
+    pub inner_thought_cycle_anim_rotate_y: Vec<Option<InnerThought_CycleAnimRotateY>>,
     #[serde(default)]
-    pub inner_thought_color_params: Vec<Option<InnerThought_ColorParams>>,
+    pub inner_thought_cycle_anim_rotate_z: Vec<Option<InnerThought_CycleAnimRotateZ>>,
     #[serde(default)]
-    pub inner_thought_layout_states: Vec<Option<InnerThought_LayoutStates>>,
+    pub inner_thought_layout_grid_set_thought: Vec<Option<InnerThought_LayoutGridSetThought>>,
     #[serde(default)]
-    pub inner_thought_params: Vec<Option<InnerThought_Params>>,
+    pub inner_thought_layout_grid_set: Vec<Option<InnerThought_LayoutGridSet>>,
     #[serde(default)]
-    pub inner_thought_conversation_system_config: Vec<Option<InnerThought_ConversationSystemConfig>>,
+    pub inner_thought_layout_grid: Vec<Option<InnerThought_LayoutGrid>>,
     #[serde(default)]
-    pub inner_thought_interaction_system_config: Vec<Option<InnerThought_InteractionSystemConfig>>,
+    pub inner_thought_layout_curve: Vec<Option<InnerThought_LayoutCurve>>,
+    #[serde(default)]
+    pub inner_thought_layout_pit: Vec<Option<InnerThought_LayoutPIT>>,
     #[serde(default)]
     pub inner_thought_legacy_use_system_config: Vec<Option<InnerThought_LegacyUseSystemConfig>>,
 }

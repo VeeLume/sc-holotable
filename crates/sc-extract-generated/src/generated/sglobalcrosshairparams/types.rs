@@ -15,7 +15,7 @@
 use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, Pooled};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -48,7 +48,7 @@ pub struct SGlobalCrosshairParams {
     pub kill_interrupts_previous_hit: bool,
     /// `hitmarkerPositionMethod` (EnumChoice)
     #[serde(default)]
-    pub hitmarker_position_method: String,
+    pub hitmarker_position_method: EHitmarkerPositionMethod,
     /// `crosshairInCombatTime` (Single)
     #[serde(default)]
     pub crosshair_in_combat_time: f32,
@@ -83,34 +83,22 @@ impl<'a> Extract<'a> for SGlobalCrosshairParams {
             hitmarker_time_for_hit: inst.get_f32("hitmarkerTimeForHit").unwrap_or_default(),
             hitmarker_time_for_kill: inst.get_f32("hitmarkerTimeForKill").unwrap_or_default(),
             kill_interrupts_previous_hit: inst.get_bool("killInterruptsPreviousHit").unwrap_or_default(),
-            hitmarker_position_method: inst.get_str("hitmarkerPositionMethod").map(String::from).unwrap_or_default(),
+            hitmarker_position_method: EHitmarkerPositionMethod::from_dcb_str(inst.get_str("hitmarkerPositionMethod").unwrap_or("")),
             crosshair_in_combat_time: inst.get_f32("crosshairInCombatTime").unwrap_or_default(),
             hit_marker_sound_head: match inst.get("hitMarkerSoundHead") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<GlobalResourceAudio>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             hit_marker_sound_body: match inst.get("hitMarkerSoundBody") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<GlobalResourceAudio>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             time_since_last_hitmarker_rtpc: match inst.get("timeSinceLastHitmarkerRTPC") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<AudioRtpc>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             kill_hitmarker_rtpc: match inst.get("killHitmarkerRTPC") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<AudioRtpc>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
         }

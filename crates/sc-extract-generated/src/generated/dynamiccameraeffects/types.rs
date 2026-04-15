@@ -15,167 +15,9 @@
 use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, Pooled};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
-
-/// DCB type: `DynamicCameraEffects`
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct DynamicCameraEffects {
-    /// `fov` (Single)
-    #[serde(default)]
-    pub fov: f32,
-    /// `forceFOV` (Boolean)
-    #[serde(default)]
-    pub force_fov: bool,
-    /// `applyFOVConversationScale` (Boolean)
-    #[serde(default)]
-    pub apply_fovconversation_scale: bool,
-    /// `fStop` (Single)
-    #[serde(default)]
-    pub f_stop: f32,
-    /// `focalDistance` (Single)
-    #[serde(default)]
-    pub focal_distance: f32,
-    /// `focalRange` (Single)
-    #[serde(default)]
-    pub focal_range: f32,
-    /// `focusRange` (Single)
-    #[serde(default)]
-    pub focus_range: f32,
-    /// `focusMin` (Single)
-    #[serde(default)]
-    pub focus_min: f32,
-    /// `focusMinScale` (Single)
-    #[serde(default)]
-    pub focus_min_scale: f32,
-    /// `blurAmount` (Single)
-    #[serde(default)]
-    pub blur_amount: f32,
-    /// `lerpToSpeed` (Single)
-    #[serde(default)]
-    pub lerp_to_speed: f32,
-    /// `lerpBackTime` (Single)
-    #[serde(default)]
-    pub lerp_back_time: f32,
-    /// `lerpBackTimeBreak` (Single)
-    #[serde(default)]
-    pub lerp_back_time_break: f32,
-    /// `transparencyPostEffectsExclusionRegion` (Single)
-    #[serde(default)]
-    pub transparency_post_effects_exclusion_region: f32,
-    /// `circleOfConfusion` (Single)
-    #[serde(default)]
-    pub circle_of_confusion: f32,
-    /// `focalRangePadding` (Single)
-    #[serde(default)]
-    pub focal_range_padding: f32,
-    /// `multipleTargetFStop` (Single)
-    #[serde(default)]
-    pub multiple_target_fstop: f32,
-    /// `manualExposure` (Boolean)
-    #[serde(default)]
-    pub manual_exposure: bool,
-    /// `targetExposureValue` (Single)
-    #[serde(default)]
-    pub target_exposure_value: f32,
-    /// `exposureCompensation` (Single)
-    #[serde(default)]
-    pub exposure_compensation: f32,
-    /// `outOfFocusMaxLuminance` (Single)
-    #[serde(default)]
-    pub out_of_focus_max_luminance: f32,
-    /// `applyRendererParams` (Boolean)
-    #[serde(default)]
-    pub apply_renderer_params: bool,
-    /// `rendererParams` (Class)
-    #[serde(default)]
-    pub renderer_params: Option<Handle<DynamicCameraEffectsRendererParams>>,
-}
-
-impl Pooled for DynamicCameraEffects {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.dynamiccameraeffects.dynamic_camera_effects }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.dynamiccameraeffects.dynamic_camera_effects }
-}
-
-impl<'a> Extract<'a> for DynamicCameraEffects {
-    const TYPE_NAME: &'static str = "DynamicCameraEffects";
-    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
-        Self {
-            fov: inst.get_f32("fov").unwrap_or_default(),
-            force_fov: inst.get_bool("forceFOV").unwrap_or_default(),
-            apply_fovconversation_scale: inst.get_bool("applyFOVConversationScale").unwrap_or_default(),
-            f_stop: inst.get_f32("fStop").unwrap_or_default(),
-            focal_distance: inst.get_f32("focalDistance").unwrap_or_default(),
-            focal_range: inst.get_f32("focalRange").unwrap_or_default(),
-            focus_range: inst.get_f32("focusRange").unwrap_or_default(),
-            focus_min: inst.get_f32("focusMin").unwrap_or_default(),
-            focus_min_scale: inst.get_f32("focusMinScale").unwrap_or_default(),
-            blur_amount: inst.get_f32("blurAmount").unwrap_or_default(),
-            lerp_to_speed: inst.get_f32("lerpToSpeed").unwrap_or_default(),
-            lerp_back_time: inst.get_f32("lerpBackTime").unwrap_or_default(),
-            lerp_back_time_break: inst.get_f32("lerpBackTimeBreak").unwrap_or_default(),
-            transparency_post_effects_exclusion_region: inst.get_f32("transparencyPostEffectsExclusionRegion").unwrap_or_default(),
-            circle_of_confusion: inst.get_f32("circleOfConfusion").unwrap_or_default(),
-            focal_range_padding: inst.get_f32("focalRangePadding").unwrap_or_default(),
-            multiple_target_fstop: inst.get_f32("multipleTargetFStop").unwrap_or_default(),
-            manual_exposure: inst.get_bool("manualExposure").unwrap_or_default(),
-            target_exposure_value: inst.get_f32("targetExposureValue").unwrap_or_default(),
-            exposure_compensation: inst.get_f32("exposureCompensation").unwrap_or_default(),
-            out_of_focus_max_luminance: inst.get_f32("outOfFocusMaxLuminance").unwrap_or_default(),
-            apply_renderer_params: inst.get_bool("applyRendererParams").unwrap_or_default(),
-            renderer_params: match inst.get("rendererParams") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<DynamicCameraEffectsRendererParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<DynamicCameraEffectsRendererParams>(b.db.instance(r.struct_index, r.instance_index), true)),
-                _ => None,
-            },
-        }
-    }
-}
-
-/// DCB type: `DynamicCameraEffectsRendererParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct DynamicCameraEffectsRendererParams {
-    /// `bloomIntensity` (Single)
-    #[serde(default)]
-    pub bloom_intensity: f32,
-    /// `chromaticAberration` (Single)
-    #[serde(default)]
-    pub chromatic_aberration: f32,
-    /// `filmGrainSize` (Single)
-    #[serde(default)]
-    pub film_grain_size: f32,
-    /// `filmGrainStrength` (Single)
-    #[serde(default)]
-    pub film_grain_strength: f32,
-    /// `shutterSpeed` (Single)
-    #[serde(default)]
-    pub shutter_speed: f32,
-    /// `vignetting` (Single)
-    #[serde(default)]
-    pub vignetting: f32,
-}
-
-impl Pooled for DynamicCameraEffectsRendererParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.dynamiccameraeffects.dynamic_camera_effects_renderer_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.dynamiccameraeffects.dynamic_camera_effects_renderer_params }
-}
-
-impl<'a> Extract<'a> for DynamicCameraEffectsRendererParams {
-    const TYPE_NAME: &'static str = "DynamicCameraEffectsRendererParams";
-    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
-            bloom_intensity: inst.get_f32("bloomIntensity").unwrap_or_default(),
-            chromatic_aberration: inst.get_f32("chromaticAberration").unwrap_or_default(),
-            film_grain_size: inst.get_f32("filmGrainSize").unwrap_or_default(),
-            film_grain_strength: inst.get_f32("filmGrainStrength").unwrap_or_default(),
-            shutter_speed: inst.get_f32("shutterSpeed").unwrap_or_default(),
-            vignetting: inst.get_f32("vignetting").unwrap_or_default(),
-        }
-    }
-}
 
 /// DCB type: `DynamicCameraEffectsList`
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -316,9 +158,7 @@ impl<'a> Extract<'a> for ConstantDOFWeights {
             position_weights: inst.get_array("positionWeights")
                 .map(|arr| arr.filter_map(|v| match v {
                         Value::Class { struct_index, data } => Some(b.alloc_nested::<ConstantDOFPosWeights>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r)
-                        | Value::StrongPointer(Some(r))
-                        | Value::WeakPointer(Some(r)) => Some(b.alloc_nested::<ConstantDOFPosWeights>(b.db.instance(r.struct_index, r.instance_index), true)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<ConstantDOFPosWeights>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
                     }).collect())
                 .unwrap_or_default(),
@@ -419,16 +259,10 @@ impl<'a> Extract<'a> for ConstantDOFGlobalData {
             circle_of_confusion: inst.get_f32("circleOfConfusion").unwrap_or_default(),
             grid_params: match inst.get("gridParams") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<ConstantDOFGrid>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<ConstantDOFGrid>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             weights: match inst.get("weights") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<ConstantDOFWeights>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<ConstantDOFWeights>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
         }

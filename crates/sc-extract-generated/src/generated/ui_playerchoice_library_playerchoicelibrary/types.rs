@@ -15,7 +15,7 @@
 use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, Pooled};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -24,7 +24,7 @@ use super::super::*;
 pub struct PlayerChoice_Option {
     /// `text` (Locale)
     #[serde(default)]
-    pub text: String,
+    pub text: LocaleKey,
     /// `id` (Int32)
     #[serde(default)]
     pub id: i32,
@@ -42,7 +42,7 @@ impl<'a> Extract<'a> for PlayerChoice_Option {
     const TYPE_NAME: &'static str = "PlayerChoice_Option";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            text: inst.get_str("text").map(String::from).unwrap_or_default(),
+            text: inst.get_str("text").map(LocaleKey::from).unwrap_or_default(),
             id: inst.get_i32("id").unwrap_or_default(),
             is_primary: inst.get_bool("isPrimary").unwrap_or_default(),
         }
@@ -73,9 +73,7 @@ impl<'a> Extract<'a> for PlayerChoice_OptionList {
             options: inst.get_array("options")
                 .map(|arr| arr.filter_map(|v| match v {
                         Value::Class { struct_index, data } => Some(b.alloc_nested::<PlayerChoice_Option>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r)
-                        | Value::StrongPointer(Some(r))
-                        | Value::WeakPointer(Some(r)) => Some(b.alloc_nested::<PlayerChoice_Option>(b.db.instance(r.struct_index, r.instance_index), true)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<PlayerChoice_Option>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
                     }).collect())
                 .unwrap_or_default(),
@@ -103,9 +101,7 @@ impl<'a> Extract<'a> for PlayerChoice_Library {
             option_lists: inst.get_array("optionLists")
                 .map(|arr| arr.filter_map(|v| match v {
                         Value::Class { struct_index, data } => Some(b.alloc_nested::<PlayerChoice_OptionList>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r)
-                        | Value::StrongPointer(Some(r))
-                        | Value::WeakPointer(Some(r)) => Some(b.alloc_nested::<PlayerChoice_OptionList>(b.db.instance(r.struct_index, r.instance_index), true)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<PlayerChoice_OptionList>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
                     }).collect())
                 .unwrap_or_default(),

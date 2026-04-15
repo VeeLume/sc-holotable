@@ -15,7 +15,7 @@
 use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, Pooled};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -47,23 +47,14 @@ impl<'a> Extract<'a> for ExplosiveOrdnancePingVFX {
         Self {
             ping_sphere_geometry: match inst.get("pingSphereGeometry") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceGeometry>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<GlobalResourceGeometry>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             ping_material: match inst.get("pingMaterial") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceMaterial>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<GlobalResourceMaterial>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             ping_color: match inst.get("pingColor") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<RGB>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<RGB>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             ping_brightness: inst.get_f32("pingBrightness").unwrap_or_default(),
@@ -96,23 +87,14 @@ impl<'a> Extract<'a> for ExplosiveOrdnancePingGlobalParams {
         Self {
             vfx_ghost_ping_params: match inst.get("vfxGhostPingParams") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<ExplosiveOrdnancePingVFX>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<ExplosiveOrdnancePingVFX>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             vfx_desired_ping_params: match inst.get("vfxDesiredPingParams") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<ExplosiveOrdnancePingVFX>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<ExplosiveOrdnancePingVFX>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             vfx_predicted_ping_params: match inst.get("vfxPredictedPingParams") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<ExplosiveOrdnancePingVFX>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<ExplosiveOrdnancePingVFX>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
         }

@@ -15,7 +15,7 @@
 use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, Pooled};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -196,151 +196,29 @@ impl<'a> Extract<'a> for MusicLogicConfig {
         Self {
             cinematic_config: match inst.get("cinematicConfig") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<CinematicConfig>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<CinematicConfig>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             ship_attack_detection_config: match inst.get("shipAttackDetectionConfig") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AttackDetectionConfig>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<AttackDetectionConfig>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             fps_attack_detection_config: match inst.get("fpsAttackDetectionConfig") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AttackDetectionConfig>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<AttackDetectionConfig>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             playlist_rngconfig: match inst.get("playlistRNGConfig") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<PlaylistRNGConfig>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<PlaylistRNGConfig>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             location_music_config: match inst.get("locationMusicConfig") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<LocationMusicConfig>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<LocationMusicConfig>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             enemy_awareness_config: match inst.get("enemyAwarenessConfig") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<EnemyAwarenessConfig>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<EnemyAwarenessConfig>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             trigger_parent_music_area_on_leave: inst.get_bool("triggerParentMusicAreaOnLeave").unwrap_or_default(),
-        }
-    }
-}
-
-/// DCB type: `MusicLogicParameter`
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct MusicLogicParameter {
-    /// `name` (String)
-    #[serde(default)]
-    pub name: String,
-    /// `min` (Single)
-    #[serde(default)]
-    pub min: f32,
-    /// `max` (Single)
-    #[serde(default)]
-    pub max: f32,
-    /// `defaultValue` (Single)
-    #[serde(default)]
-    pub default_value: f32,
-    /// `decayRate` (Single)
-    #[serde(default)]
-    pub decay_rate: f32,
-    /// `decayIsPercentage` (Boolean)
-    #[serde(default)]
-    pub decay_is_percentage: bool,
-    /// `scaleModifier` (Single)
-    #[serde(default)]
-    pub scale_modifier: f32,
-    /// `shiftModifier` (Single)
-    #[serde(default)]
-    pub shift_modifier: f32,
-    /// `inverted` (Boolean)
-    #[serde(default)]
-    pub inverted: bool,
-    /// `rtpc` (String)
-    #[serde(default)]
-    pub rtpc: String,
-    /// `rtpcIsGlobal` (Boolean)
-    #[serde(default)]
-    pub rtpc_is_global: bool,
-    /// `contributors` (Reference (array))
-    #[serde(default)]
-    pub contributors: Vec<CigGuid>,
-    /// `debugColour` (Class)
-    #[serde(default)]
-    pub debug_colour: Option<Handle<RGB>>,
-}
-
-impl Pooled for MusicLogicParameter {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.musiclogic.music_logic_parameter }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.musiclogic.music_logic_parameter }
-}
-
-impl<'a> Extract<'a> for MusicLogicParameter {
-    const TYPE_NAME: &'static str = "MusicLogicParameter";
-    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
-        Self {
-            name: inst.get_str("name").map(String::from).unwrap_or_default(),
-            min: inst.get_f32("min").unwrap_or_default(),
-            max: inst.get_f32("max").unwrap_or_default(),
-            default_value: inst.get_f32("defaultValue").unwrap_or_default(),
-            decay_rate: inst.get_f32("decayRate").unwrap_or_default(),
-            decay_is_percentage: inst.get_bool("decayIsPercentage").unwrap_or_default(),
-            scale_modifier: inst.get_f32("scaleModifier").unwrap_or_default(),
-            shift_modifier: inst.get_f32("shiftModifier").unwrap_or_default(),
-            inverted: inst.get_bool("inverted").unwrap_or_default(),
-            rtpc: inst.get_str("rtpc").map(String::from).unwrap_or_default(),
-            rtpc_is_global: inst.get_bool("rtpcIsGlobal").unwrap_or_default(),
-            contributors: inst.get_array("contributors")
-                .map(|arr| arr.filter_map(|v| if let Value::Reference(Some(r)) = v { Some(r.guid) } else { None }).collect())
-                .unwrap_or_default(),
-            debug_colour: match inst.get("debugColour") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<RGB>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<RGB>(b.db.instance(r.struct_index, r.instance_index), true)),
-                _ => None,
-            },
-        }
-    }
-}
-
-/// DCB type: `MusicLogicEvent`
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct MusicLogicEvent {
-    /// `name` (String)
-    #[serde(default)]
-    pub name: String,
-    /// `retriggerDelay` (Single)
-    #[serde(default)]
-    pub retrigger_delay: f32,
-}
-
-impl Pooled for MusicLogicEvent {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.musiclogic.music_logic_event }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.musiclogic.music_logic_event }
-}
-
-impl<'a> Extract<'a> for MusicLogicEvent {
-    const TYPE_NAME: &'static str = "MusicLogicEvent";
-    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
-            name: inst.get_str("name").map(String::from).unwrap_or_default(),
-            retrigger_delay: inst.get_f32("retriggerDelay").unwrap_or_default(),
         }
     }
 }
@@ -387,62 +265,6 @@ impl<'a> Extract<'a> for MusicLogicSwitchValue {
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
             switch_value: inst.get_str("switchValue").map(String::from).unwrap_or_default(),
-        }
-    }
-}
-
-/// DCB type: `MusicLogicNode`
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct MusicLogicNode {
-}
-
-impl Pooled for MusicLogicNode {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.musiclogic.music_logic_node }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.musiclogic.music_logic_node }
-}
-
-impl<'a> Extract<'a> for MusicLogicNode {
-    const TYPE_NAME: &'static str = "MusicLogicNode";
-    fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
-        }
-    }
-}
-
-/// DCB type: `MusicLogicSuite`
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct MusicLogicSuite {
-    /// `name` (String)
-    #[serde(default)]
-    pub name: String,
-    /// `musicLogicConfig` (Reference)
-    #[serde(default)]
-    pub music_logic_config: Option<CigGuid>,
-    /// `nodes` (StrongPointer (array))
-    #[serde(default)]
-    pub nodes: Vec<Handle<MusicLogicNode>>,
-}
-
-impl Pooled for MusicLogicSuite {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.musiclogic.music_logic_suite }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.musiclogic.music_logic_suite }
-}
-
-impl<'a> Extract<'a> for MusicLogicSuite {
-    const TYPE_NAME: &'static str = "MusicLogicSuite";
-    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
-        Self {
-            name: inst.get_str("name").map(String::from).unwrap_or_default(),
-            music_logic_config: inst.get("musicLogicConfig").and_then(|v| v.as_record_ref()).map(|r| r.guid),
-            nodes: inst.get_array("nodes")
-                .map(|arr| arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<MusicLogicNode>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r)
-                        | Value::StrongPointer(Some(r))
-                        | Value::WeakPointer(Some(r)) => Some(b.alloc_nested::<MusicLogicNode>(b.db.instance(r.struct_index, r.instance_index), true)),
-                        _ => None,
-                    }).collect())
-                .unwrap_or_default(),
         }
     }
 }

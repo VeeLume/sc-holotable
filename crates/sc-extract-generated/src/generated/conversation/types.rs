@@ -15,7 +15,7 @@
 use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, Pooled};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -91,9 +91,6 @@ impl<'a> Extract<'a> for StickyFilterMovementParams {
             nudge_fraction: inst.get_f32("nudgeFraction").unwrap_or_default(),
             offset: match inst.get("offset") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<Vec3>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             lock_offset_rotation: inst.get_bool("lockOffsetRotation").unwrap_or_default(),
@@ -187,16 +184,10 @@ impl<'a> Extract<'a> for StickyFilterAutocenterParams {
             time_recenter_at_max_angle_moving: inst.get_f32("timeRecenterAtMaxAngleMoving").unwrap_or_default(),
             eye_offset_at_min_distance: match inst.get("eyeOffsetAtMinDistance") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<Vec3>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             eye_offset_at_max_distance: match inst.get("eyeOffsetAtMaxDistance") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<Vec3>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
         }
@@ -234,23 +225,14 @@ impl<'a> Extract<'a> for ConversationStickyFilter {
         Self {
             movement_params: match inst.get("movementParams") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<StickyFilterMovementParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<StickyFilterMovementParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             rotation_params: match inst.get("rotationParams") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<StickyFilterRotationParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<StickyFilterRotationParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             auto_center_params: match inst.get("autoCenterParams") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<StickyFilterAutocenterParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<StickyFilterAutocenterParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             dynamic_camera_effects_params: inst.get("dynamicCameraEffectsParams").and_then(|v| v.as_record_ref()).map(|r| r.guid),
@@ -346,16 +328,10 @@ impl<'a> Extract<'a> for SConversationIconParams {
             distance_to_switch_to_text: inst.get_f32("distanceToSwitchToText").unwrap_or_default(),
             position_offset: match inst.get("positionOffset") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<Vec3>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             rotation_offset: match inst.get("rotationOffset") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<Vec3>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             icon_scale: inst.get_f32("iconScale").unwrap_or_default(),
@@ -386,9 +362,6 @@ impl<'a> Extract<'a> for SScenePlayerChoiceSettings {
         Self {
             icon_params: match inst.get("iconParams") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SConversationIconParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SConversationIconParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
         }

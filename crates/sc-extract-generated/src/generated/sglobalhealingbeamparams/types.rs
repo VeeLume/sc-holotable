@@ -15,7 +15,7 @@
 use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, Pooled};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -45,16 +45,10 @@ impl<'a> Extract<'a> for SHealingBeamBoneEntryParams {
             bone_name: inst.get_str("boneName").map(String::from).unwrap_or_default(),
             bone_offset: match inst.get("boneOffset") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<Vec3>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             card_offset: match inst.get("cardOffset") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<Vec3>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
         }
@@ -69,7 +63,7 @@ pub struct SHealingBeamBodyPartHighlightingParams {
     pub character_attachment_name: String,
     /// `zonesToShow` (EnumChoice (array))
     #[serde(default)]
-    pub zones_to_show: Vec<String>,
+    pub zones_to_show: Vec<EMeshChunks>,
 }
 
 impl Pooled for SHealingBeamBodyPartHighlightingParams {
@@ -83,7 +77,7 @@ impl<'a> Extract<'a> for SHealingBeamBodyPartHighlightingParams {
         Self {
             character_attachment_name: inst.get_str("characterAttachmentName").map(String::from).unwrap_or_default(),
             zones_to_show: inst.get_array("zonesToShow")
-                .map(|arr| arr.filter_map(|v| v.as_str().map(String::from)).collect())
+                .map(|arr| arr.filter_map(|v| v.as_str().map(EMeshChunks::from_dcb_str)).collect())
                 .unwrap_or_default(),
         }
     }
@@ -97,7 +91,7 @@ pub struct SHealingBeamBodyPartParams {
     pub body_part: Option<CigGuid>,
     /// `displayName` (Locale)
     #[serde(default)]
-    pub display_name: String,
+    pub display_name: LocaleKey,
     /// `boneEntry` (Class)
     #[serde(default)]
     pub bone_entry: Option<Handle<SHealingBeamBoneEntryParams>>,
@@ -116,19 +110,13 @@ impl<'a> Extract<'a> for SHealingBeamBodyPartParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             body_part: inst.get("bodyPart").and_then(|v| v.as_record_ref()).map(|r| r.guid),
-            display_name: inst.get_str("displayName").map(String::from).unwrap_or_default(),
+            display_name: inst.get_str("displayName").map(LocaleKey::from).unwrap_or_default(),
             bone_entry: match inst.get("boneEntry") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SHealingBeamBoneEntryParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SHealingBeamBoneEntryParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             highlight_params: match inst.get("highlightParams") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SHealingBeamBodyPartHighlightingParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SHealingBeamBodyPartHighlightingParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
         }
@@ -199,9 +187,7 @@ impl<'a> Extract<'a> for SGlobalHealingBeamParams {
             body_parts: inst.get_array("bodyParts")
                 .map(|arr| arr.filter_map(|v| match v {
                         Value::Class { struct_index, data } => Some(b.alloc_nested::<SHealingBeamBodyPartParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r)
-                        | Value::StrongPointer(Some(r))
-                        | Value::WeakPointer(Some(r)) => Some(b.alloc_nested::<SHealingBeamBodyPartParams>(b.db.instance(r.struct_index, r.instance_index), true)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<SHealingBeamBodyPartParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
                     }).collect())
                 .unwrap_or_default(),
@@ -211,37 +197,22 @@ impl<'a> Extract<'a> for SGlobalHealingBeamParams {
             card_closing_lerp_speed_scalar: inst.get_f32("cardClosingLerpSpeedScalar").unwrap_or_default(),
             target_mode_actor_card_bone_entry: match inst.get("targetModeActorCardBoneEntry") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SHealingBeamBoneEntryParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SHealingBeamBoneEntryParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             self_heal_mode_actor_card_bone_entry: match inst.get("selfHealModeActorCardBoneEntry") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SHealingBeamBoneEntryParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SHealingBeamBoneEntryParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             self_heal_mode_limb_card_bone_entry: match inst.get("selfHealModeLimbCardBoneEntry") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SHealingBeamBoneEntryParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SHealingBeamBoneEntryParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             transparent_material: match inst.get("transparentMaterial") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceMaterial>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<GlobalResourceMaterial>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             injury_highlight_colors: match inst.get("injuryHighlightColors") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<RGB>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<RGB>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             highlight_occluded_alpha: inst.get_f32("highlightOccludedAlpha").unwrap_or_default(),

@@ -7,7 +7,7 @@
 //
 // Any hand edits will be lost on the next run.
 
-#![allow(non_snake_case, dead_code, unused_imports)]
+#![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
 use std::collections::HashMap;
 use serde::{Deserialize, Serialize};
@@ -19,18 +19,18 @@ use super::super::*;
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct DialoguecontentbankIndex {
     #[serde(default)]
-    pub dialogue_external_source: HashMap<CigGuid, Handle<DialogueExternalSource>>,
-    #[serde(default)]
     pub dialogue_content: HashMap<CigGuid, Handle<DialogueContent>>,
     #[serde(default)]
     pub dialogue_content_bank: HashMap<CigGuid, Handle<DialogueContentBank>>,
 }
 
 impl DialoguecontentbankIndex {
+    #[allow(unused_mut)]
     pub fn len(&self) -> usize {
-        self.dialogue_external_source.len()
-            + self.dialogue_content.len()
-            + self.dialogue_content_bank.len()
+        let mut total = 0usize;
+        total += self.dialogue_content.len();
+        total += self.dialogue_content_bank.len();
+        total
     }
 
     pub fn is_empty(&self) -> bool { self.len() == 0 }

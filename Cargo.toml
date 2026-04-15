@@ -7,7 +7,6 @@ members = [
     "crates/sc-weapons",
     "crates/sc-contracts",
     "tools/sc-generator",
-    "tools/sc-snapshot",
 ]
 
 [workspace.package]
@@ -38,6 +37,18 @@ regex = "1"
 svarog-common = { git = "https://github.com/19h/Svarog.git", rev = "ce06ec67", features = ["serde"] }
 svarog-datacore = { git = "https://github.com/19h/Svarog.git", rev = "ce06ec67" }
 svarog-p4k = { git = "https://github.com/19h/Svarog.git", rev = "ce06ec67" }
+
+# Local svarog override. Points at a clean clone pinned to the same
+# commit as above, with a local patch on top of DataCoreReference::is_null
+# to treat `instance_index == -1` as a null sentinel. Without this,
+# svarog parses thousands of explicit-null scalar Reference fields as
+# `Some(garbage_guid)` — see the investigation in the `--dump-refs`
+# diagnostic inside `tools/sc-generator/src/pipeline.rs`. Remove this
+# override once the fix is upstreamed and the pinned rev is bumped.
+[patch."https://github.com/19h/Svarog.git"]
+svarog-common = { path = "E:/repros/Svarog/crates/svarog-common" }
+svarog-datacore = { path = "E:/repros/Svarog/crates/svarog-datacore" }
+svarog-p4k = { path = "E:/repros/Svarog/crates/svarog-p4k" }
 
 # ── Profiles ────────────────────────────────────────────────────────────────
 #

@@ -7,7 +7,7 @@
 //
 // Any hand edits will be lost on the next run.
 
-#![allow(non_snake_case, dead_code, unused_imports)]
+#![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
 use std::collections::HashMap;
 use serde::{Deserialize, Serialize};
@@ -25,9 +25,12 @@ pub struct TrackviewIndex {
 }
 
 impl TrackviewIndex {
+    #[allow(unused_mut)]
     pub fn len(&self) -> usize {
-        self.camera_transition_interpolation_curve_record.len()
-            + self.cinematic_flight_points_record.len()
+        let mut total = 0usize;
+        total += self.camera_transition_interpolation_curve_record.len();
+        total += self.cinematic_flight_points_record.len();
+        total
     }
 
     pub fn is_empty(&self) -> bool { self.len() == 0 }

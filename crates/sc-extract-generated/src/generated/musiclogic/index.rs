@@ -7,7 +7,7 @@
 //
 // Any hand edits will be lost on the next run.
 
-#![allow(non_snake_case, dead_code, unused_imports)]
+#![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
 use std::collections::HashMap;
 use serde::{Deserialize, Serialize};
@@ -21,25 +21,19 @@ pub struct MusiclogicIndex {
     #[serde(default)]
     pub music_logic_config: HashMap<CigGuid, Handle<MusicLogicConfig>>,
     #[serde(default)]
-    pub music_logic_parameter: HashMap<CigGuid, Handle<MusicLogicParameter>>,
-    #[serde(default)]
-    pub music_logic_event: HashMap<CigGuid, Handle<MusicLogicEvent>>,
-    #[serde(default)]
     pub music_logic_event_list: HashMap<CigGuid, Handle<MusicLogicEventList>>,
     #[serde(default)]
     pub music_logic_switch_value: HashMap<CigGuid, Handle<MusicLogicSwitchValue>>,
-    #[serde(default)]
-    pub music_logic_suite: HashMap<CigGuid, Handle<MusicLogicSuite>>,
 }
 
 impl MusiclogicIndex {
+    #[allow(unused_mut)]
     pub fn len(&self) -> usize {
-        self.music_logic_config.len()
-            + self.music_logic_parameter.len()
-            + self.music_logic_event.len()
-            + self.music_logic_event_list.len()
-            + self.music_logic_switch_value.len()
-            + self.music_logic_suite.len()
+        let mut total = 0usize;
+        total += self.music_logic_config.len();
+        total += self.music_logic_event_list.len();
+        total += self.music_logic_switch_value.len();
+        total
     }
 
     pub fn is_empty(&self) -> bool { self.len() == 0 }

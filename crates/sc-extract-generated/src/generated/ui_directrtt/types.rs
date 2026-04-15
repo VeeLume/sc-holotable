@@ -15,7 +15,7 @@
 use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, Pooled};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -44,23 +44,14 @@ impl<'a> Extract<'a> for DirectRTT_ChromaticAberrationParams {
         Self {
             red_channel_offset: match inst.get("RedChannelOffset") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec2>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<Vec2>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             green_channel_offset: match inst.get("GreenChannelOffset") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec2>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<Vec2>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             blue_channel_offset: match inst.get("BlueChannelOffset") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec2>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<Vec2>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
         }
@@ -107,16 +98,10 @@ impl<'a> Extract<'a> for DirectRTT_DropShadowParams {
             spread: inst.get_f32("Spread").unwrap_or_default(),
             offset: match inst.get("Offset") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec2>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<Vec2>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             color: match inst.get("Color") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SRGB8>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SRGB8>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             opacity_in_bright_scenes: inst.get_f32("OpacityInBrightScenes").unwrap_or_default(),
@@ -278,37 +263,22 @@ impl<'a> Extract<'a> for DirectRTT_AfterTonemappingParams {
             additive_blend_factor: inst.get_f32("AdditiveBlendFactor").unwrap_or_default(),
             chromatic_aberration_params: match inst.get("ChromaticAberrationParams") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<DirectRTT_ChromaticAberrationParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<DirectRTT_ChromaticAberrationParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             drop_shadow_params: match inst.get("DropShadowParams") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<DirectRTT_DropShadowParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<DirectRTT_DropShadowParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             bloom_params: match inst.get("BloomParams") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<DirectRTT_BloomParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<DirectRTT_BloomParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             pixel_grid_params: match inst.get("PixelGridParams") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<DirectRTT_PixelGridParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<DirectRTT_PixelGridParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             screen_interference_params: match inst.get("ScreenInterferenceParams") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<DirectRTT_InterferenceParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<DirectRTT_InterferenceParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
         }

@@ -15,7 +15,7 @@
 use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, Pooled};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -43,9 +43,7 @@ impl<'a> Extract<'a> for CommunicationChannelConfig {
             channels: inst.get_array("Channels")
                 .map(|arr| arr.filter_map(|v| match v {
                         Value::Class { struct_index, data } => Some(b.alloc_nested::<CommunicationChannel>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r)
-                        | Value::StrongPointer(Some(r))
-                        | Value::WeakPointer(Some(r)) => Some(b.alloc_nested::<CommunicationChannel>(b.db.instance(r.struct_index, r.instance_index), true)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<CommunicationChannel>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
                     }).collect())
                 .unwrap_or_default(),
@@ -70,7 +68,7 @@ pub struct CommunicationChannel {
     pub flush_silence: f32,
     /// `type` (EnumChoice)
     #[serde(default)]
-    pub r#type: String,
+    pub r#type: eCommunicationChannelType,
     /// `priority` (Int32)
     #[serde(default)]
     pub priority: i32,
@@ -107,31 +105,23 @@ impl<'a> Extract<'a> for CommunicationChannel {
             audio_event_for_external_sources: inst.get_str("audioEventForExternalSources").map(String::from).unwrap_or_default(),
             min_silence: inst.get_f32("minSilence").unwrap_or_default(),
             flush_silence: inst.get_f32("flushSilence").unwrap_or_default(),
-            r#type: inst.get_str("type").map(String::from).unwrap_or_default(),
+            r#type: eCommunicationChannelType::from_dcb_str(inst.get_str("type").unwrap_or("")),
             priority: inst.get_i32("priority").unwrap_or_default(),
             animation_priority_override: inst.get_i32("animationPriorityOverride").unwrap_or_default(),
             min_speaker_silence: inst.get_f32("minSpeakerSilence").unwrap_or_default(),
             ignore_speaker_silence: inst.get_bool("ignoreSpeakerSilence").unwrap_or_default(),
             subtitles: match inst.get("subtitles") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<CommunicationSubtitleSettings>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<CommunicationSubtitleSettings>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             audio_rtpc: match inst.get("audioRTPC") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<CommunicationAudioRTPC>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<CommunicationAudioRTPC>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<CommunicationAudioRTPC>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             sub_channels: inst.get_array("subChannels")
                 .map(|arr| arr.filter_map(|v| match v {
                         Value::Class { struct_index, data } => Some(b.alloc_nested::<CommunicationChannel>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r)
-                        | Value::StrongPointer(Some(r))
-                        | Value::WeakPointer(Some(r)) => Some(b.alloc_nested::<CommunicationChannel>(b.db.instance(r.struct_index, r.instance_index), true)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<CommunicationChannel>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
                     }).collect())
                 .unwrap_or_default(),
@@ -289,9 +279,7 @@ impl<'a> Extract<'a> for CommunicationAutoMannequinTagsConfig {
             locations_auto_tags: inst.get_array("locationsAutoTags")
                 .map(|arr| arr.filter_map(|v| match v {
                         Value::Class { struct_index, data } => Some(b.alloc_nested::<CommunicationLocationAutoTags>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r)
-                        | Value::StrongPointer(Some(r))
-                        | Value::WeakPointer(Some(r)) => Some(b.alloc_nested::<CommunicationLocationAutoTags>(b.db.instance(r.struct_index, r.instance_index), true)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<CommunicationLocationAutoTags>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
                     }).collect())
                 .unwrap_or_default(),

@@ -29,8 +29,11 @@
 
 use std::collections::{BTreeMap, HashMap, HashSet, VecDeque};
 
-use svarog_datacore::structs::DataCorePropertyDefinition;
+use svarog_common::CigGuid;
 use svarog_datacore::{DataCoreDatabase, DataType};
+
+use crate::closure::{walk_closure, GuidLookup};
+use crate::emit::PropertyCache;
 
 // ── Public types ──────────────────────────────────────────────────────────
 
@@ -48,9 +51,6 @@ pub struct FeatureRules {
 
     /// Maximum path depth to recurse. Safety limit.
     pub max_depth: usize,
-
-    /// Types needed by this many features or more are promoted to `core`.
-    pub core_promotion_threshold: usize,
 }
 
 impl Default for FeatureRules {
@@ -59,7 +59,6 @@ impl Default for FeatureRules {
             max_fields_per_feature: 500,
             min_fields_per_feature: 50,
             max_depth: 10,
-            core_promotion_threshold: 5,
         }
     }
 }
@@ -73,66 +72,66 @@ pub struct FeatureMap {
     /// All leaf feature names (these contain actual types).
     pub feature_names: Vec<String>,
 
-    /// Leaf feature name → path prefixes that seeded it.
-    pub feature_seeds: BTreeMap<String, Vec<String>>,
-
     /// Parent feature name → child feature names it enables.
     pub parent_features: BTreeMap<String, Vec<String>>,
-
-    /// Compile cost (total fields) per leaf feature.
-    pub feature_costs: BTreeMap<String, usize>,
-
-    /// Total compile cost across all types.
-    pub total_cost: usize,
 }
 
 /// A type's feature assignment.
 #[derive(Debug, Clone)]
 pub enum FeatureAssignment {
-    /// Always compiled — no cfg attribute needed.
+    /// Always compiled — no cfg attribute. Reserved for role-based
+    /// promotion (empty polymorphic bases) that have no natural home
+    /// in any feature closure but are referenced unconditionally from
+    /// poly enums.
     Core,
+    /// Schema-reachable but not observed in any record instance graph.
+    /// Lives in the `core` module file but only compiled when the
+    /// `dormant` Cargo feature is enabled. See `docs/feature-gating-v2.md`
+    /// Decision 5 for the rationale.
+    Dormant,
     /// Belongs to exactly one feature.
     Single(String),
-    /// Needed by multiple features (2-4).
+    /// Reachable from multiple features' data-driven closures. Lives in
+    /// the `core` module file gated by `#[cfg(any(feature = "…"))]`.
     Multi(Vec<String>),
-}
-
-impl FeatureAssignment {
-    /// Generate the cfg attribute string. `None` for Core.
-    pub fn cfg_attribute(&self) -> Option<String> {
-        match self {
-            Self::Core => None,
-            Self::Single(f) => Some(format!("#[cfg(feature = \"{f}\")]")),
-            Self::Multi(fs) => {
-                let parts: Vec<String> = fs.iter().map(|f| format!("feature = \"{f}\"")).collect();
-                Some(format!("#[cfg(any({}))]", parts.join(", ")))
-            }
-        }
-    }
 }
 
 // ── Main entry point ──────────────────────────────────────────────────────
 
 /// Classify all emitted struct types into features based on compile cost.
+///
+/// `guid_lookup` is a pre-built GUID → (struct_index, instance_index) map
+/// used by the data-driven closure walker to follow `Reference` edges.
+/// The same lookup is shared across every feature's walk, so build it once
+/// at the start of the generator run and pass it through.
+///
+/// `promoted` is the set of struct indices that should be emitted
+/// unconditionally in `core` regardless of closure membership — typically
+/// the empty polymorphic bases computed in Phase 4 of v2 (see
+/// `docs/feature-gating-v2.md` Decision 4). An empty set disables the
+/// promotion pathway.
 pub fn classify_features(
     db: &DataCoreDatabase,
     reachable_indices: &HashSet<usize>,
+    guid_lookup: &GuidLookup,
+    promoted: &HashSet<u32>,
     rules: &FeatureRules,
+    cache: &PropertyCache<'_>,
+    dangling: &mut HashSet<CigGuid>,
 ) -> FeatureMap {
     let n_structs = db.struct_definitions().len();
 
-    // Precompute field count (compile cost) for each struct.
+    // Precompute field count (compile cost) for each struct. Reads the
+    // shared inherited-property cache so no inheritance walks happen here.
     let field_counts: Vec<usize> = (0..n_structs)
         .map(|idx| {
             if reachable_indices.contains(&idx) {
-                collect_full_properties(db, idx as u32).len()
+                cache[idx].len()
             } else {
                 0
             }
         })
         .collect();
-
-    let total_cost: usize = field_counts.iter().sum();
 
     // Collect record → (path, struct_index) mapping.
     let mut records: Vec<(String, usize)> = Vec::new();
@@ -159,21 +158,27 @@ pub fn classify_features(
         root,
         4, // start depth (first level below root)
         rules,
+        cache,
         &mut leaf_groups,
         &mut parent_features,
     );
 
-    // Step 2: Compute type closures per feature and assign types.
+    // Step 2: Compute data-driven type closures per feature.
+    //
+    // Each closure is the set of struct indices *observed at runtime* when
+    // walking the record instance graph from this feature's seed records
+    // through Class / StrongPointer / WeakPointer / Reference edges. This
+    // reflects what the DCB actually stores, not what the schema declares
+    // as theoretically-possible subclasses — see `docs/feature-gating-v2.md`
+    // Decision 1 for the rationale.
     let mut feature_closures: BTreeMap<String, HashSet<usize>> = BTreeMap::new();
     for (feature_name, prefixes) in &leaf_groups {
-        // Seed types: unique struct indices under this feature's paths.
-        let seeds: HashSet<usize> = records
-            .iter()
-            .filter(|(path, _)| prefixes.iter().any(|p| path.starts_with(p.as_str())))
-            .map(|(_, idx)| *idx)
+        let observed_u32 = walk_closure(db, prefixes, guid_lookup, cache, dangling);
+        let closure: HashSet<usize> = observed_u32
+            .into_iter()
+            .map(|i| i as usize)
+            .filter(|i| reachable_indices.contains(i))
             .collect();
-
-        let closure = compute_type_closure(db, &seeds, reachable_indices);
         feature_closures.insert(feature_name.clone(), closure);
     }
 
@@ -189,40 +194,63 @@ pub fn classify_features(
     }
 
     let mut struct_feature: Vec<Option<FeatureAssignment>> = vec![None; n_structs];
+    // Assign every type with closure membership:
+    // - role-based promoted → Core (unconditional, no cfg)
+    // - observed in exactly one feature's data-driven closure → Single(f)
+    // - observed in ≥ 2 features' closures → Multi(list), gated via
+    //   `#[cfg(any(feature = "…"))]` at emit time
+    // - observed in zero closures → Dormant (schema-reachable but not
+    //   populated in real DCB data), gated on `#[cfg(feature = "dormant")]`
     for &struct_idx in reachable_indices {
-        let assignment = match struct_to_features.get(&struct_idx) {
-            None => FeatureAssignment::Core,
-            Some(fs) => {
-                let mut sorted = fs.clone();
-                sorted.sort();
-                sorted.dedup();
-                if sorted.len() >= rules.core_promotion_threshold {
-                    FeatureAssignment::Core
-                } else if sorted.len() == 1 {
-                    FeatureAssignment::Single(sorted.into_iter().next().unwrap())
-                } else {
-                    FeatureAssignment::Multi(sorted)
+        let assignment = if promoted.contains(&(struct_idx as u32)) {
+            FeatureAssignment::Core
+        } else {
+            match struct_to_features.get(&struct_idx) {
+                Some(fs) => {
+                    let mut sorted = fs.clone();
+                    sorted.sort();
+                    sorted.dedup();
+                    if sorted.len() == 1 {
+                        FeatureAssignment::Single(sorted.into_iter().next().unwrap())
+                    } else {
+                        FeatureAssignment::Multi(sorted)
+                    }
                 }
+                None => FeatureAssignment::Dormant,
             }
         };
         struct_feature[struct_idx] = Some(assignment);
     }
 
-    // Step 4: Prune features with 0 exclusive types.
-    let mut exclusive_count: HashMap<String, usize> = HashMap::new();
+    // Step 4: Prune features that nothing uses.
+    //
+    // A feature is "used" if **any** assignment names it — Single OR a
+    // member of a Multi list. The previous implementation only counted
+    // Single occurrences, which was fine when core-promotion ate every
+    // Multi assignment but is wrong now that we emit Multi as real cfg
+    // gates: a feature whose types are all Multi-assigned would have
+    // been dropped here and its types would be incorrectly promoted to
+    // unconditional Core at the bottom of this block.
+    let mut used_features: HashSet<String> = HashSet::new();
     for assignment in struct_feature.iter().flatten() {
-        if let FeatureAssignment::Single(f) = assignment {
-            *exclusive_count.entry(f.clone()).or_default() += 1;
+        match assignment {
+            FeatureAssignment::Single(f) => {
+                used_features.insert(f.clone());
+            }
+            FeatureAssignment::Multi(fs) => {
+                for f in fs {
+                    used_features.insert(f.clone());
+                }
+            }
+            FeatureAssignment::Core | FeatureAssignment::Dormant => {}
         }
     }
+    let non_empty = used_features;
 
-    let non_empty: HashSet<String> = exclusive_count
-        .iter()
-        .filter(|(_, count)| **count > 0)
-        .map(|(name, _)| name.clone())
-        .collect();
-
-    // Promote types from pruned features to core.
+    // Fix up orphaned single/multi assignments whose feature was pruned.
+    // Rare and should never fire once the data-driven closure is stable,
+    // but kept as a safety net: orphans become Dormant so they don't
+    // contribute to the default compile surface.
     for assignment in struct_feature.iter_mut().flatten() {
         let should_promote = match assignment {
             FeatureAssignment::Single(f) => !non_empty.contains(f),
@@ -230,59 +258,35 @@ pub fn classify_features(
                 fs.retain(|f| non_empty.contains(f));
                 fs.is_empty()
             }
-            FeatureAssignment::Core => false,
+            FeatureAssignment::Core | FeatureAssignment::Dormant => false,
         };
         if should_promote {
-            *assignment = FeatureAssignment::Core;
-        }
-    }
-
-    // Compute compile cost per leaf feature.
-    let mut feature_costs: BTreeMap<String, usize> = BTreeMap::new();
-    for (struct_idx, assignment) in struct_feature.iter().enumerate().filter_map(|(i, a)| a.as_ref().map(|a| (i, a))) {
-        let cost = field_counts[struct_idx];
-        match assignment {
-            FeatureAssignment::Single(f) => {
-                *feature_costs.entry(f.clone()).or_default() += cost;
-            }
-            FeatureAssignment::Core => {
-                *feature_costs.entry("core".to_string()).or_default() += cost;
-            }
-            FeatureAssignment::Multi(fs) => {
-                // Attribute cost to first feature (arbitrary but consistent).
-                if let Some(f) = fs.first() {
-                    *feature_costs.entry(f.clone()).or_default() += cost;
-                }
-            }
+            *assignment = FeatureAssignment::Dormant;
         }
     }
 
     // Final feature list (only non-empty leaves).
     let mut feature_names: Vec<String> = non_empty.into_iter().collect();
     feature_names.sort();
+    let feature_name_set: HashSet<&String> = feature_names.iter().collect();
 
     // Filter parent features to only reference existing children.
     let parent_features: BTreeMap<String, Vec<String>> = parent_features
         .into_iter()
         .map(|(parent, children)| {
-            let valid: Vec<String> = children.into_iter().filter(|c| feature_names.contains(c) || feature_costs.contains_key(c)).collect();
+            let valid: Vec<String> = children
+                .into_iter()
+                .filter(|c| feature_name_set.contains(c))
+                .collect();
             (parent, valid)
         })
         .filter(|(_, children)| children.len() > 1)
         .collect();
 
-    let feature_seeds: BTreeMap<String, Vec<String>> = leaf_groups
-        .into_iter()
-        .filter(|(name, _)| feature_names.contains(name))
-        .collect();
-
     FeatureMap {
         struct_feature,
         feature_names,
-        feature_seeds,
         parent_features,
-        feature_costs,
-        total_cost,
     }
 }
 
@@ -292,6 +296,7 @@ pub fn classify_features(
 ///
 /// Cost is computed from the **BFS type closure** (not just seed types)
 /// so the split decision reflects actual compile-time impact.
+#[allow(clippy::too_many_arguments)]
 fn walk_tree(
     records: &[(String, usize)],
     field_counts: &[usize],
@@ -300,6 +305,7 @@ fn walk_tree(
     parent_prefix: &str,
     depth: usize,
     rules: &FeatureRules,
+    cache: &PropertyCache<'_>,
     leaves: &mut BTreeMap<String, Vec<String>>,
     parents: &mut BTreeMap<String, Vec<String>>,
 ) {
@@ -316,8 +322,12 @@ fn walk_tree(
     let mut child_feature_names: Vec<String> = Vec::new();
 
     for (child_prefix, child_struct_indices) in &children {
-        // Compute compile cost from the full BFS closure, not just seeds.
-        let closure = compute_type_closure(db, child_struct_indices, reachable);
+        // Compute compile cost from the MONOMORPHIC (base) closure
+        // — no descendant expansion. Descendant-aware closures make
+        // every subtree look equally expensive and force splits all
+        // the way down to max_depth, which is why this path walks
+        // `compute_base_closure` instead of `compute_type_closure`.
+        let closure = compute_base_closure(db, child_struct_indices, reachable, cache);
         let cost: usize = closure.iter().map(|&idx| field_counts[idx]).sum();
 
         if cost > rules.max_fields_per_feature && depth < rules.max_depth {
@@ -325,7 +335,7 @@ fn walk_tree(
             let deeper = children_at_depth(records, child_prefix, depth + 1);
             if deeper.len() > 1 {
                 // Can split — recurse.
-                walk_tree(records, field_counts, db, reachable, child_prefix, depth + 1, rules, leaves, parents);
+                walk_tree(records, field_counts, db, reachable, child_prefix, depth + 1, rules, cache, leaves, parents);
                 let child_name = path_to_feature_name(child_prefix);
                 child_feature_names.push(child_name);
             } else {
@@ -410,8 +420,7 @@ fn path_to_feature_name(prefix: &str) -> String {
     let clean = stripped
         .replace(".xml", "")
         .replace('/', "-")
-        .replace('.', "_")
-        .replace(' ', "_")
+        .replace(['.', ' '], "_")
         .to_lowercase();
     // Remove any character that's not alphanumeric, `-`, or `_`.
     clean
@@ -423,10 +432,20 @@ fn path_to_feature_name(prefix: &str) -> String {
 // ── BFS type closure ──────────────────────────────────────────────────────
 
 /// BFS through struct fields to find all types transitively reachable.
-fn compute_type_closure(
+/// Compute the transitive closure of types referenced from `seeds` through
+/// declared Class / Pointer field targets only.
+///
+/// This is the "monomorphic" closure: it does NOT follow pointer
+/// descendants. Used by `walk_tree` to decide when to split a path node
+/// into child features. Using the monomorphic cost here keeps the split
+/// decisions grounded in the DCB's native field graph without letting
+/// polymorphic subclass fan-out inflate every subtree's cost to the
+/// point where everything splits to max depth.
+fn compute_base_closure(
     db: &DataCoreDatabase,
     seeds: &HashSet<usize>,
     reachable: &HashSet<usize>,
+    cache: &PropertyCache<'_>,
 ) -> HashSet<usize> {
     let mut closure: HashSet<usize> = HashSet::new();
     let mut queue: VecDeque<usize> = VecDeque::new();
@@ -438,11 +457,9 @@ fn compute_type_closure(
     }
 
     while let Some(struct_idx) = queue.pop_front() {
-        let props = collect_full_properties(db, struct_idx as u32);
-        for prop in &props {
-            let data_type = prop.get_data_type();
+        for prop in &cache[struct_idx] {
             if matches!(
-                data_type,
+                prop.get_data_type(),
                 Some(DataType::Class) | Some(DataType::StrongPointer) | Some(DataType::WeakPointer)
             ) {
                 let target = prop.struct_index as usize;
@@ -457,26 +474,4 @@ fn compute_type_closure(
     }
 
     closure
-}
-
-fn collect_full_properties(db: &DataCoreDatabase, struct_idx: u32) -> Vec<&DataCorePropertyDefinition> {
-    let mut out = Vec::new();
-    collect_props_recursive(db, struct_idx, &mut out);
-    out
-}
-
-fn collect_props_recursive<'a>(
-    db: &'a DataCoreDatabase,
-    struct_idx: u32,
-    out: &mut Vec<&'a DataCorePropertyDefinition>,
-) {
-    let Some(def) = db.struct_definitions().get(struct_idx as usize) else {
-        return;
-    };
-    if def.parent_type_index >= 0 {
-        collect_props_recursive(db, def.parent_type_index as u32, out);
-    }
-    for prop in db.get_struct_properties(struct_idx as usize) {
-        out.push(prop);
-    }
 }

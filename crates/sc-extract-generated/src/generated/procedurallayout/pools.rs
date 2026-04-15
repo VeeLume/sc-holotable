@@ -7,7 +7,7 @@
 //
 // Any hand edits will be lost on the next run.
 
-#![allow(non_snake_case, dead_code, unused_imports)]
+#![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
 use serde::{Deserialize, Serialize};
 use super::super::*;
@@ -20,7 +20,13 @@ pub struct ProcedurallayoutPools {
     #[serde(default)]
     pub faction_palette: Vec<Option<FactionPalette>>,
     #[serde(default)]
-    pub procedural_layout_node_base: Vec<Option<ProceduralLayoutNode_Base>>,
+    pub procedural_layout_node_start: Vec<Option<ProceduralLayoutNode_Start>>,
+    #[serde(default)]
+    pub procedural_layout_node_element_properties: Vec<Option<ProceduralLayoutNode_ElementProperties>>,
+    #[serde(default)]
+    pub procedural_layout_graph_node_element: Vec<Option<ProceduralLayoutGraphNode_Element>>,
+    #[serde(default)]
+    pub procedural_layout_graph_node_multi_element: Vec<Option<ProceduralLayoutGraphNode_MultiElement>>,
     #[serde(default)]
     pub procedural_layout_supplementary_element_tags_options: Vec<Option<ProceduralLayout_SupplementaryElementTagsOptions>>,
     #[serde(default)]

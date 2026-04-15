@@ -7,7 +7,7 @@
 //
 // Any hand edits will be lost on the next run.
 
-#![allow(non_snake_case, dead_code, unused_imports)]
+#![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
 use serde::{Deserialize, Serialize};
 use super::super::*;
@@ -16,5 +16,9 @@ use super::super::*;
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct EntitiesVfxPools {
     #[serde(default)]
+    pub daylight_particle_group_component_params: Vec<Option<DaylightParticleGroupComponentParams>>,
+    #[serde(default)]
     pub placed_surface_effects_emitter: Vec<Option<PlacedSurfaceEffects_Emitter>>,
+    #[serde(default)]
+    pub surface_raindrops_target_component_params: Vec<Option<SurfaceRaindropsTargetComponentParams>>,
 }

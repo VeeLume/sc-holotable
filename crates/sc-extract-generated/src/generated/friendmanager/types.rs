@@ -15,7 +15,7 @@
 use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, Pooled};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -44,23 +44,14 @@ impl<'a> Extract<'a> for FriendManagerNotificationsParams {
         Self {
             friend_added: match inst.get("friendAdded") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<PlayerNotificationBannerParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<PlayerNotificationBannerParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             friend_request_received: match inst.get("friendRequestReceived") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<PlayerNotificationBannerParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<PlayerNotificationBannerParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             friend_request_declined: match inst.get("friendRequestDeclined") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<PlayerNotificationBannerParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<PlayerNotificationBannerParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
         }
@@ -86,9 +77,6 @@ impl<'a> Extract<'a> for FriendManagerGlobalParams {
         Self {
             notifications_params: match inst.get("notificationsParams") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<FriendManagerNotificationsParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<FriendManagerNotificationsParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
         }

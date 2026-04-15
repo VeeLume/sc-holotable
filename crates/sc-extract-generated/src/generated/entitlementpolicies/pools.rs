@@ -7,7 +7,7 @@
 //
 // Any hand edits will be lost on the next run.
 
-#![allow(non_snake_case, dead_code, unused_imports)]
+#![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
 use serde::{Deserialize, Serialize};
 use super::super::*;
@@ -15,8 +15,6 @@ use super::super::*;
 /// Pool storage for the `entitlementpolicies` feature.
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct EntitlementpoliciesPools {
-    #[serde(default)]
-    pub default_entitlement_record: Vec<Option<DefaultEntitlementRecord>>,
     #[serde(default)]
     pub entitlement_item_type: Vec<Option<EntitlementItemType>>,
     #[serde(default)]
@@ -28,11 +26,13 @@ pub struct EntitlementpoliciesPools {
     #[serde(default)]
     pub item_recovery_configuration_params: Vec<Option<ItemRecoveryConfigurationParams>>,
     #[serde(default)]
-    pub item_recovery_set_condition_def: Vec<Option<ItemRecoverySetConditionDef>>,
-    #[serde(default)]
     pub item_recovery_notification_params: Vec<Option<ItemRecoveryNotificationParams>>,
     #[serde(default)]
     pub item_recovery_economy_params: Vec<Option<ItemRecoveryEconomyParams>>,
+    #[serde(default)]
+    pub item_recovery_condition_item_type: Vec<Option<ItemRecoveryCondition_ItemType>>,
+    #[serde(default)]
+    pub item_recovery_condition_entity_class: Vec<Option<ItemRecoveryCondition_EntityClass>>,
     #[serde(default)]
     pub debug_loadout_kit: Vec<Option<DebugLoadoutKit>>,
     #[serde(default)]

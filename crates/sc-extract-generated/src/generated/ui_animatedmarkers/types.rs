@@ -15,7 +15,7 @@
 use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, Pooled};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -48,18 +48,14 @@ impl<'a> Extract<'a> for AnimatedMarker_Marker {
             timelines: inst.get_array("timelines")
                 .map(|arr| arr.filter_map(|v| match v {
                         Value::Class { struct_index, data } => Some(b.alloc_nested::<AnimationGraph_Timeline>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r)
-                        | Value::StrongPointer(Some(r))
-                        | Value::WeakPointer(Some(r)) => Some(b.alloc_nested::<AnimationGraph_Timeline>(b.db.instance(r.struct_index, r.instance_index), true)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<AnimationGraph_Timeline>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
                     }).collect())
                 .unwrap_or_default(),
             timers: inst.get_array("timers")
                 .map(|arr| arr.filter_map(|v| match v {
                         Value::Class { struct_index, data } => Some(b.alloc_nested::<AnimationGraph_Timer>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r)
-                        | Value::StrongPointer(Some(r))
-                        | Value::WeakPointer(Some(r)) => Some(b.alloc_nested::<AnimationGraph_Timer>(b.db.instance(r.struct_index, r.instance_index), true)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<AnimationGraph_Timer>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
                     }).collect())
                 .unwrap_or_default(),
@@ -118,9 +114,6 @@ impl<'a> Extract<'a> for AnimatedMarker {
             addition_attachments: inst.get_u32("additionAttachments").unwrap_or_default(),
             markers: match inst.get("markers") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AnimatedMarker_Marker>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<AnimatedMarker_Marker>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
         }
@@ -147,7 +140,7 @@ pub struct CombatMarker {
     pub hit_animation_offset_size: f32,
     /// `easeType` (EnumChoice)
     #[serde(default)]
-    pub ease_type: String,
+    pub ease_type: InterpolationMode,
     /// `textOffset` (Single)
     #[serde(default)]
     pub text_offset: f32,
@@ -165,7 +158,7 @@ pub struct CombatMarker {
     pub intro_anim_roll_rotation_frequency: f32,
     /// `introAnimEaseType` (EnumChoice)
     #[serde(default)]
-    pub intro_anim_ease_type: String,
+    pub intro_anim_ease_type: InterpolationMode,
     /// `introStartingScale` (Single)
     #[serde(default)]
     pub intro_starting_scale: f32,
@@ -180,7 +173,7 @@ pub struct CombatMarker {
     pub transition_anim_length: f32,
     /// `transitionAnimEaseType` (EnumChoice)
     #[serde(default)]
-    pub transition_anim_ease_type: String,
+    pub transition_anim_ease_type: InterpolationMode,
     /// `rotationalAnimationClamp` (Single)
     #[serde(default)]
     pub rotational_animation_clamp: f32,
@@ -236,18 +229,18 @@ impl<'a> Extract<'a> for CombatMarker {
             inverse_scale_multiplier: inst.get_f32("inverseScaleMultiplier").unwrap_or_default(),
             hit_anim_total_time: inst.get_f32("hitAnimTotalTime").unwrap_or_default(),
             hit_animation_offset_size: inst.get_f32("hitAnimationOffsetSize").unwrap_or_default(),
-            ease_type: inst.get_str("easeType").map(String::from).unwrap_or_default(),
+            ease_type: InterpolationMode::from_dcb_str(inst.get_str("easeType").unwrap_or("")),
             text_offset: inst.get_f32("textOffset").unwrap_or_default(),
             intro_anim_time: inst.get_f32("introAnimTime").unwrap_or_default(),
             intro_anim_pitch_rotation_frequency: inst.get_f32("introAnimPitchRotationFrequency").unwrap_or_default(),
             intro_anim_yaw_rotation_frequency: inst.get_f32("introAnimYawRotationFrequency").unwrap_or_default(),
             intro_anim_roll_rotation_frequency: inst.get_f32("introAnimRollRotationFrequency").unwrap_or_default(),
-            intro_anim_ease_type: inst.get_str("introAnimEaseType").map(String::from).unwrap_or_default(),
+            intro_anim_ease_type: InterpolationMode::from_dcb_str(inst.get_str("introAnimEaseType").unwrap_or("")),
             intro_starting_scale: inst.get_f32("introStartingScale").unwrap_or_default(),
             intro_starting_offset_scale: inst.get_f32("introStartingOffsetScale").unwrap_or_default(),
             intro_anim_offset: inst.get_f32("introAnimOffset").unwrap_or_default(),
             transition_anim_length: inst.get_f32("transitionAnimLength").unwrap_or_default(),
-            transition_anim_ease_type: inst.get_str("transitionAnimEaseType").map(String::from).unwrap_or_default(),
+            transition_anim_ease_type: InterpolationMode::from_dcb_str(inst.get_str("transitionAnimEaseType").unwrap_or("")),
             rotational_animation_clamp: inst.get_f32("rotationalAnimationClamp").unwrap_or_default(),
             rotational_animation_integration_time: inst.get_f32("rotationalAnimationIntegrationTime").unwrap_or_default(),
             signal_lost_animation_time: inst.get_f32("signalLostAnimationTime").unwrap_or_default(),
@@ -256,18 +249,12 @@ impl<'a> Extract<'a> for CombatMarker {
             unfocused_marker_scale: inst.get_f32("unfocusedMarkerScale").unwrap_or_default(),
             hit_animation_color: match inst.get("hitAnimationColor") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<RGB>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<RGB>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             hit_animation_flicker_time: inst.get_f32("hitAnimationFlickerTime").unwrap_or_default(),
             hit_anim_offset_factor: inst.get_f32("hitAnimOffsetFactor").unwrap_or_default(),
             transition_scale_curve: match inst.get("transitionScaleCurve") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BezierCurve>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<BezierCurve>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             gained_focus_anim_total_time: inst.get_f32("gainedFocusAnimTotalTime").unwrap_or_default(),
@@ -288,10 +275,10 @@ pub struct AnimationGraph_KeyFrame {
     pub value: f32,
     /// `timeModifier` (EnumChoice)
     #[serde(default)]
-    pub time_modifier: String,
+    pub time_modifier: AnimationGraph_TimeModifier,
     /// `easeType` (EnumChoice)
     #[serde(default)]
-    pub ease_type: String,
+    pub ease_type: InterpolationMode,
 }
 
 impl Pooled for AnimationGraph_KeyFrame {
@@ -305,8 +292,8 @@ impl<'a> Extract<'a> for AnimationGraph_KeyFrame {
         Self {
             frame: inst.get_u32("frame").unwrap_or_default(),
             value: inst.get_f32("value").unwrap_or_default(),
-            time_modifier: inst.get_str("timeModifier").map(String::from).unwrap_or_default(),
-            ease_type: inst.get_str("easeType").map(String::from).unwrap_or_default(),
+            time_modifier: AnimationGraph_TimeModifier::from_dcb_str(inst.get_str("timeModifier").unwrap_or("")),
+            ease_type: InterpolationMode::from_dcb_str(inst.get_str("easeType").unwrap_or("")),
         }
     }
 }
@@ -319,7 +306,7 @@ pub struct AnimationGraph_Track {
     pub track_name: String,
     /// `type` (EnumChoice)
     #[serde(default)]
-    pub r#type: String,
+    pub r#type: AnimationGraph_TrackType,
     /// `keyFrames` (Class (array))
     #[serde(default)]
     pub key_frames: Vec<Handle<AnimationGraph_KeyFrame>>,
@@ -335,13 +322,11 @@ impl<'a> Extract<'a> for AnimationGraph_Track {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             track_name: inst.get_str("trackName").map(String::from).unwrap_or_default(),
-            r#type: inst.get_str("type").map(String::from).unwrap_or_default(),
+            r#type: AnimationGraph_TrackType::from_dcb_str(inst.get_str("type").unwrap_or("")),
             key_frames: inst.get_array("keyFrames")
                 .map(|arr| arr.filter_map(|v| match v {
                         Value::Class { struct_index, data } => Some(b.alloc_nested::<AnimationGraph_KeyFrame>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r)
-                        | Value::StrongPointer(Some(r))
-                        | Value::WeakPointer(Some(r)) => Some(b.alloc_nested::<AnimationGraph_KeyFrame>(b.db.instance(r.struct_index, r.instance_index), true)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<AnimationGraph_KeyFrame>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
                     }).collect())
                 .unwrap_or_default(),
@@ -411,9 +396,7 @@ impl<'a> Extract<'a> for AnimationGraph_Timeline {
             tracks: inst.get_array("tracks")
                 .map(|arr| arr.filter_map(|v| match v {
                         Value::Class { struct_index, data } => Some(b.alloc_nested::<AnimationGraph_Track>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r)
-                        | Value::StrongPointer(Some(r))
-                        | Value::WeakPointer(Some(r)) => Some(b.alloc_nested::<AnimationGraph_Track>(b.db.instance(r.struct_index, r.instance_index), true)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<AnimationGraph_Track>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
                     }).collect())
                 .unwrap_or_default(),

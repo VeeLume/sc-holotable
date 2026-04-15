@@ -15,7 +15,7 @@
 use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, Pooled};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -93,30 +93,18 @@ impl<'a> Extract<'a> for AITargetingFormulaSettings {
             recent_damage_decay_factor_per_second: inst.get_f32("recentDamageDecayFactorPerSecond").unwrap_or_default(),
             attacker_capacity_score: match inst.get("attackerCapacityScore") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AIFormulaScoreModifiers>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<AIFormulaScoreModifiers>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             distance_score: match inst.get("distanceScore") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AIFormulaScoreModifiers>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<AIFormulaScoreModifiers>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             self_defence_score: match inst.get("selfDefenceScore") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AIFormulaScoreModifiers>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<AIFormulaScoreModifiers>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             protection_score: match inst.get("protectionScore") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AIFormulaScoreModifiers>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<AIFormulaScoreModifiers>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
         }

@@ -15,7 +15,7 @@
 use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, Pooled};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -38,9 +38,6 @@ impl<'a> Extract<'a> for SQuantumCameraStateMappingDef {
         Self {
             strength_mapping: match inst.get("strengthMapping") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BezierCurve>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<BezierCurve>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
         }
@@ -67,7 +64,7 @@ pub struct SQuantumCameraStateEffectsDef {
     pub generic_modifiers: Option<Handle<CameraEffectsModifiers>>,
     /// `customMapping` (StrongPointer)
     #[serde(default)]
-    pub custom_mapping: Option<Handle<SQuantumCameraStateMappingDef>>,
+    pub custom_mapping: Option<SQuantumCameraStateMappingDefPtr>,
 }
 
 impl Pooled for SQuantumCameraStateEffectsDef {
@@ -85,16 +82,10 @@ impl<'a> Extract<'a> for SQuantumCameraStateEffectsDef {
             focus_distance: inst.get_f32("focusDistance").unwrap_or_default(),
             generic_modifiers: match inst.get("genericModifiers") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<CameraEffectsModifiers>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<CameraEffectsModifiers>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             custom_mapping: match inst.get("customMapping") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SQuantumCameraStateMappingDef>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SQuantumCameraStateMappingDef>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(SQuantumCameraStateMappingDefPtr::from_ref(b, r)),
                 _ => None,
             },
         }
@@ -122,10 +113,7 @@ impl<'a> Extract<'a> for SQuantumCameraEffectsDef {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             camera_by_state: match inst.get("cameraByState") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SQuantumCameraStateEffectsDef>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SQuantumCameraStateEffectsDef>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SQuantumCameraStateEffectsDef>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             smoothing_fallback: inst.get_f32("smoothingFallback").unwrap_or_default(),

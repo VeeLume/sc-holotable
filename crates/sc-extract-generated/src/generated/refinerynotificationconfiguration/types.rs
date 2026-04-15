@@ -15,7 +15,7 @@
 use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, Pooled};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -24,25 +24,25 @@ use super::super::*;
 pub struct RefineryNotificationConfiguration {
     /// `text` (Locale)
     #[serde(default)]
-    pub text: String,
+    pub text: LocaleKey,
     /// `textMultiple` (Locale)
     #[serde(default)]
-    pub text_multiple: String,
+    pub text_multiple: LocaleKey,
     /// `duration` (Single)
     #[serde(default)]
     pub duration: f32,
     /// `refineryServiceError` (Locale)
     #[serde(default)]
-    pub refinery_service_error: String,
+    pub refinery_service_error: LocaleKey,
     /// `refineryDeliveryFailed` (Locale)
     #[serde(default)]
-    pub refinery_delivery_failed: String,
+    pub refinery_delivery_failed: LocaleKey,
     /// `refineryJobCreationFailed` (Locale)
     #[serde(default)]
-    pub refinery_job_creation_failed: String,
+    pub refinery_job_creation_failed: LocaleKey,
     /// `refinerySetupError` (Locale)
     #[serde(default)]
-    pub refinery_setup_error: String,
+    pub refinery_setup_error: LocaleKey,
 }
 
 impl Pooled for RefineryNotificationConfiguration {
@@ -54,13 +54,13 @@ impl<'a> Extract<'a> for RefineryNotificationConfiguration {
     const TYPE_NAME: &'static str = "RefineryNotificationConfiguration";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            text: inst.get_str("text").map(String::from).unwrap_or_default(),
-            text_multiple: inst.get_str("textMultiple").map(String::from).unwrap_or_default(),
+            text: inst.get_str("text").map(LocaleKey::from).unwrap_or_default(),
+            text_multiple: inst.get_str("textMultiple").map(LocaleKey::from).unwrap_or_default(),
             duration: inst.get_f32("duration").unwrap_or_default(),
-            refinery_service_error: inst.get_str("refineryServiceError").map(String::from).unwrap_or_default(),
-            refinery_delivery_failed: inst.get_str("refineryDeliveryFailed").map(String::from).unwrap_or_default(),
-            refinery_job_creation_failed: inst.get_str("refineryJobCreationFailed").map(String::from).unwrap_or_default(),
-            refinery_setup_error: inst.get_str("refinerySetupError").map(String::from).unwrap_or_default(),
+            refinery_service_error: inst.get_str("refineryServiceError").map(LocaleKey::from).unwrap_or_default(),
+            refinery_delivery_failed: inst.get_str("refineryDeliveryFailed").map(LocaleKey::from).unwrap_or_default(),
+            refinery_job_creation_failed: inst.get_str("refineryJobCreationFailed").map(LocaleKey::from).unwrap_or_default(),
+            refinery_setup_error: inst.get_str("refinerySetupError").map(LocaleKey::from).unwrap_or_default(),
         }
     }
 }

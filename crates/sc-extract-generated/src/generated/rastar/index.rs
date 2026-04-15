@@ -7,7 +7,7 @@
 //
 // Any hand edits will be lost on the next run.
 
-#![allow(non_snake_case, dead_code, unused_imports)]
+#![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
 use std::collections::HashMap;
 use serde::{Deserialize, Serialize};
@@ -27,10 +27,13 @@ pub struct RastarIndex {
 }
 
 impl RastarIndex {
+    #[allow(unused_mut)]
     pub fn len(&self) -> usize {
-        self.hologram_params.len()
-            + self.ra_sta_rlibrary_element.len()
-            + self.ra_sta_rlibrary.len()
+        let mut total = 0usize;
+        total += self.hologram_params.len();
+        total += self.ra_sta_rlibrary_element.len();
+        total += self.ra_sta_rlibrary.len();
+        total
     }
 
     pub fn is_empty(&self) -> bool { self.len() == 0 }

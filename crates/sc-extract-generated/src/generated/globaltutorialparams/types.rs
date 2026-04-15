@@ -15,7 +15,7 @@
 use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, Pooled};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -24,7 +24,7 @@ use super::super::*;
 pub struct GlobalTutorialParams {
     /// `validStartingAreas` (Locale (array))
     #[serde(default)]
-    pub valid_starting_areas: Vec<String>,
+    pub valid_starting_areas: Vec<LocaleKey>,
 }
 
 impl Pooled for GlobalTutorialParams {
@@ -37,7 +37,7 @@ impl<'a> Extract<'a> for GlobalTutorialParams {
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
             valid_starting_areas: inst.get_array("validStartingAreas")
-                .map(|arr| arr.filter_map(|v| v.as_str().map(String::from)).collect())
+                .map(|arr| arr.filter_map(|v| v.as_str().map(LocaleKey::from)).collect())
                 .unwrap_or_default(),
         }
     }

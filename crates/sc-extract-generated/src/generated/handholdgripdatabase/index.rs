@@ -7,7 +7,7 @@
 //
 // Any hand edits will be lost on the next run.
 
-#![allow(non_snake_case, dead_code, unused_imports)]
+#![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
 use std::collections::HashMap;
 use serde::{Deserialize, Serialize};
@@ -19,15 +19,15 @@ use super::super::*;
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct HandholdgripdatabaseIndex {
     #[serde(default)]
-    pub handhold_grip_type: HashMap<CigGuid, Handle<HandholdGripType>>,
-    #[serde(default)]
     pub handhold_grip_database: HashMap<CigGuid, Handle<HandholdGripDatabase>>,
 }
 
 impl HandholdgripdatabaseIndex {
+    #[allow(unused_mut)]
     pub fn len(&self) -> usize {
-        self.handhold_grip_type.len()
-            + self.handhold_grip_database.len()
+        let mut total = 0usize;
+        total += self.handhold_grip_database.len();
+        total
     }
 
     pub fn is_empty(&self) -> bool { self.len() == 0 }

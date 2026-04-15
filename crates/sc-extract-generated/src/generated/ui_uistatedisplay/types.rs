@@ -15,7 +15,7 @@
 use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, Pooled};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -24,7 +24,7 @@ use super::super::*;
 pub struct UIStateDisplay_Threshold {
     /// `displayName` (Locale)
     #[serde(default)]
-    pub display_name: String,
+    pub display_name: LocaleKey,
     /// `timelineLabel` (String)
     #[serde(default)]
     pub timeline_label: String,
@@ -33,7 +33,7 @@ pub struct UIStateDisplay_Threshold {
     pub min_threshold_value: f32,
     /// `stateColor` (EnumChoice)
     #[serde(default)]
-    pub state_color: String,
+    pub state_color: HUDPalleteEntry,
 }
 
 impl Pooled for UIStateDisplay_Threshold {
@@ -45,10 +45,10 @@ impl<'a> Extract<'a> for UIStateDisplay_Threshold {
     const TYPE_NAME: &'static str = "UIStateDisplay_Threshold";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            display_name: inst.get_str("displayName").map(String::from).unwrap_or_default(),
+            display_name: inst.get_str("displayName").map(LocaleKey::from).unwrap_or_default(),
             timeline_label: inst.get_str("timelineLabel").map(String::from).unwrap_or_default(),
             min_threshold_value: inst.get_f32("minThresholdValue").unwrap_or_default(),
-            state_color: inst.get_str("stateColor").map(String::from).unwrap_or_default(),
+            state_color: HUDPalleteEntry::from_dcb_str(inst.get_str("stateColor").unwrap_or("")),
         }
     }
 }
@@ -73,9 +73,7 @@ impl<'a> Extract<'a> for UIStateDisplay {
             thresholds: inst.get_array("thresholds")
                 .map(|arr| arr.filter_map(|v| match v {
                         Value::Class { struct_index, data } => Some(b.alloc_nested::<UIStateDisplay_Threshold>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r)
-                        | Value::StrongPointer(Some(r))
-                        | Value::WeakPointer(Some(r)) => Some(b.alloc_nested::<UIStateDisplay_Threshold>(b.db.instance(r.struct_index, r.instance_index), true)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<UIStateDisplay_Threshold>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
                     }).collect())
                 .unwrap_or_default(),

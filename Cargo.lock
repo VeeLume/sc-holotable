@@ -715,17 +715,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "sc-snapshot"
-version = "0.0.0"
-dependencies = [
- "sc-extract",
- "sc-installs",
- "thiserror 2.0.18",
- "tracing",
- "tracing-subscriber",
-]
-
-[[package]]
 name = "sc-weapons"
 version = "0.0.0"
 
@@ -830,7 +819,6 @@ dependencies = [
 [[package]]
 name = "svarog-common"
 version = "0.1.0"
-source = "git+https://github.com/19h/Svarog.git?rev=ce06ec67#ce06ec67c63212634cfe4fc21535371c5cd8ee69"
 dependencies = [
  "byteorder",
  "crc32c",
@@ -843,7 +831,6 @@ dependencies = [
 [[package]]
 name = "svarog-datacore"
 version = "0.1.0"
-source = "git+https://github.com/19h/Svarog.git?rev=ce06ec67#ce06ec67c63212634cfe4fc21535371c5cd8ee69"
 dependencies = [
  "bumpalo",
  "byteorder",
@@ -862,7 +849,6 @@ dependencies = [
 [[package]]
 name = "svarog-p4k"
 version = "0.1.0"
-source = "git+https://github.com/19h/Svarog.git?rev=ce06ec67#ce06ec67c63212634cfe4fc21535371c5cd8ee69"
 dependencies = [
  "aes",
  "byteorder",

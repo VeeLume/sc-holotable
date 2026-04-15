@@ -15,49 +15,19 @@
 use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, Pooled};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
-
-/// DCB type: `DialogueExternalSource`
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct DialogueExternalSource {
-    /// `name` (String)
-    #[serde(default)]
-    pub name: String,
-    /// `filename` (String)
-    #[serde(default)]
-    pub filename: String,
-    /// `localized` (Boolean)
-    #[serde(default)]
-    pub localized: bool,
-}
-
-impl Pooled for DialogueExternalSource {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.dialoguecontentbank.dialogue_external_source }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.dialoguecontentbank.dialogue_external_source }
-}
-
-impl<'a> Extract<'a> for DialogueExternalSource {
-    const TYPE_NAME: &'static str = "DialogueExternalSource";
-    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
-            name: inst.get_str("name").map(String::from).unwrap_or_default(),
-            filename: inst.get_str("filename").map(String::from).unwrap_or_default(),
-            localized: inst.get_bool("localized").unwrap_or_default(),
-        }
-    }
-}
 
 /// DCB type: `DialogueContent`
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DialogueContent {
     /// `localizedSubtitleText` (Locale)
     #[serde(default)]
-    pub localized_subtitle_text: String,
+    pub localized_subtitle_text: LocaleKey,
     /// `unlocalizedSubtitleText` (Locale)
     #[serde(default)]
-    pub unlocalized_subtitle_text: String,
+    pub unlocalized_subtitle_text: LocaleKey,
     /// `subtitleShowDelay` (Single)
     #[serde(default)]
     pub subtitle_show_delay: f32,
@@ -81,8 +51,8 @@ impl<'a> Extract<'a> for DialogueContent {
     const TYPE_NAME: &'static str = "DialogueContent";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            localized_subtitle_text: inst.get_str("localizedSubtitleText").map(String::from).unwrap_or_default(),
-            unlocalized_subtitle_text: inst.get_str("unlocalizedSubtitleText").map(String::from).unwrap_or_default(),
+            localized_subtitle_text: inst.get_str("localizedSubtitleText").map(LocaleKey::from).unwrap_or_default(),
+            unlocalized_subtitle_text: inst.get_str("unlocalizedSubtitleText").map(LocaleKey::from).unwrap_or_default(),
             subtitle_show_delay: inst.get_f32("subtitleShowDelay").unwrap_or_default(),
             subtitle_display_duration_override: inst.get_f32("subtitleDisplayDurationOverride").unwrap_or_default(),
             temp_text: inst.get_str("tempText").map(String::from).unwrap_or_default(),

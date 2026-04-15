@@ -15,73 +15,9 @@
 use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, Pooled};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
-
-/// DCB type: `SSilhouetteParamsDef`
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct SSilhouetteParamsDef {
-    /// `Enable` (Boolean)
-    #[serde(default)]
-    pub enable: bool,
-    /// `ColourSource` (EnumChoice)
-    #[serde(default)]
-    pub colour_source: String,
-    /// `TintColour` (Class)
-    #[serde(default)]
-    pub tint_colour: Option<Handle<RGB>>,
-    /// `TintStrength` (Single)
-    #[serde(default)]
-    pub tint_strength: f32,
-    /// `Brightness` (Single)
-    #[serde(default)]
-    pub brightness: f32,
-    /// `EdgeWidth` (Single)
-    #[serde(default)]
-    pub edge_width: f32,
-    /// `EdgeIntensity` (Single)
-    #[serde(default)]
-    pub edge_intensity: f32,
-    /// `FillIntensity` (Single)
-    #[serde(default)]
-    pub fill_intensity: f32,
-    /// `BlurRadius` (Single)
-    #[serde(default)]
-    pub blur_radius: f32,
-    /// `EdgeGradient` (Single)
-    #[serde(default)]
-    pub edge_gradient: f32,
-}
-
-impl Pooled for SSilhouetteParamsDef {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_holovehicleconfig.ssilhouette_params_def }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_holovehicleconfig.ssilhouette_params_def }
-}
-
-impl<'a> Extract<'a> for SSilhouetteParamsDef {
-    const TYPE_NAME: &'static str = "SSilhouetteParamsDef";
-    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
-        Self {
-            enable: inst.get_bool("Enable").unwrap_or_default(),
-            colour_source: inst.get_str("ColourSource").map(String::from).unwrap_or_default(),
-            tint_colour: match inst.get("TintColour") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<RGB>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<RGB>(b.db.instance(r.struct_index, r.instance_index), true)),
-                _ => None,
-            },
-            tint_strength: inst.get_f32("TintStrength").unwrap_or_default(),
-            brightness: inst.get_f32("Brightness").unwrap_or_default(),
-            edge_width: inst.get_f32("EdgeWidth").unwrap_or_default(),
-            edge_intensity: inst.get_f32("EdgeIntensity").unwrap_or_default(),
-            fill_intensity: inst.get_f32("FillIntensity").unwrap_or_default(),
-            blur_radius: inst.get_f32("BlurRadius").unwrap_or_default(),
-            edge_gradient: inst.get_f32("EdgeGradient").unwrap_or_default(),
-        }
-    }
-}
 
 /// DCB type: `UIHoloVehicle_Config`
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -163,13 +99,13 @@ pub struct UIHoloVehicle_Config {
     pub camera_intro_distance_scaler: f32,
     /// `cameraIntroInterpolationMode` (EnumChoice)
     #[serde(default)]
-    pub camera_intro_interpolation_mode: String,
+    pub camera_intro_interpolation_mode: InterpolationMode,
     /// `cameraViewsTransitionTime` (Single)
     #[serde(default)]
     pub camera_views_transition_time: f32,
     /// `cameraViewTransitionMode` (EnumChoice)
     #[serde(default)]
-    pub camera_view_transition_mode: String,
+    pub camera_view_transition_mode: CameraViewTransitionMode,
     /// `vehicleMaterial` (String)
     #[serde(default)]
     pub vehicle_material: String,
@@ -196,7 +132,7 @@ pub struct UIHoloVehicle_Config {
     pub shield_hit_material: String,
     /// `itemTypeWhitelist` (EnumChoice (array))
     #[serde(default)]
-    pub item_type_whitelist: Vec<String>,
+    pub item_type_whitelist: Vec<EItemType>,
     /// `silhouetteParams` (Class)
     #[serde(default)]
     pub silhouette_params: Option<Handle<SSilhouetteParamsDef>>,
@@ -254,9 +190,9 @@ impl<'a> Extract<'a> for UIHoloVehicle_Config {
             target_camera_distance_scaler: inst.get_f32("targetCameraDistanceScaler").unwrap_or_default(),
             camera_intro_time: inst.get_f32("cameraIntroTime").unwrap_or_default(),
             camera_intro_distance_scaler: inst.get_f32("cameraIntroDistanceScaler").unwrap_or_default(),
-            camera_intro_interpolation_mode: inst.get_str("cameraIntroInterpolationMode").map(String::from).unwrap_or_default(),
+            camera_intro_interpolation_mode: InterpolationMode::from_dcb_str(inst.get_str("cameraIntroInterpolationMode").unwrap_or("")),
             camera_views_transition_time: inst.get_f32("cameraViewsTransitionTime").unwrap_or_default(),
-            camera_view_transition_mode: inst.get_str("cameraViewTransitionMode").map(String::from).unwrap_or_default(),
+            camera_view_transition_mode: CameraViewTransitionMode::from_dcb_str(inst.get_str("cameraViewTransitionMode").unwrap_or("")),
             vehicle_material: inst.get_str("vehicleMaterial").map(String::from).unwrap_or_default(),
             item_highlight_material: inst.get_str("itemHighlightMaterial").map(String::from).unwrap_or_default(),
             shield_material: inst.get_str("shieldMaterial").map(String::from).unwrap_or_default(),
@@ -266,13 +202,10 @@ impl<'a> Extract<'a> for UIHoloVehicle_Config {
             vehicle_hit_material: inst.get_str("vehicleHitMaterial").map(String::from).unwrap_or_default(),
             shield_hit_material: inst.get_str("shieldHitMaterial").map(String::from).unwrap_or_default(),
             item_type_whitelist: inst.get_array("itemTypeWhitelist")
-                .map(|arr| arr.filter_map(|v| v.as_str().map(String::from)).collect())
+                .map(|arr| arr.filter_map(|v| v.as_str().map(EItemType::from_dcb_str)).collect())
                 .unwrap_or_default(),
             silhouette_params: match inst.get("silhouetteParams") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SSilhouetteParamsDef>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SSilhouetteParamsDef>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             direction_arrow_geom_name: inst.get_str("directionArrowGeomName").map(String::from).unwrap_or_default(),

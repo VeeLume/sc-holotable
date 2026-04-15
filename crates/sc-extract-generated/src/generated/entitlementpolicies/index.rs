@@ -7,7 +7,7 @@
 //
 // Any hand edits will be lost on the next run.
 
-#![allow(non_snake_case, dead_code, unused_imports)]
+#![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
 use std::collections::HashMap;
 use serde::{Deserialize, Serialize};
@@ -18,8 +18,6 @@ use super::super::*;
 /// Record index for the `entitlementpolicies` feature.
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct EntitlementpoliciesIndex {
-    #[serde(default)]
-    pub default_entitlement_record: HashMap<CigGuid, Handle<DefaultEntitlementRecord>>,
     #[serde(default)]
     pub entitlement_account_item_global_params: HashMap<CigGuid, Handle<EntitlementAccountItemGlobalParams>>,
     #[serde(default)]
@@ -35,14 +33,16 @@ pub struct EntitlementpoliciesIndex {
 }
 
 impl EntitlementpoliciesIndex {
+    #[allow(unused_mut)]
     pub fn len(&self) -> usize {
-        self.default_entitlement_record.len()
-            + self.entitlement_account_item_global_params.len()
-            + self.entitlement_non_inventory_storable_item_global_params.len()
-            + self.corpse_interaction_params.len()
-            + self.item_recovery_configuration_params.len()
-            + self.web_customization_debug.len()
-            + self.web_customization_global_params.len()
+        let mut total = 0usize;
+        total += self.entitlement_account_item_global_params.len();
+        total += self.entitlement_non_inventory_storable_item_global_params.len();
+        total += self.corpse_interaction_params.len();
+        total += self.item_recovery_configuration_params.len();
+        total += self.web_customization_debug.len();
+        total += self.web_customization_global_params.len();
+        total
     }
 
     pub fn is_empty(&self) -> bool { self.len() == 0 }

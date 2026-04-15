@@ -15,7 +15,7 @@
 use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, Pooled};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -58,31 +58,19 @@ impl<'a> Extract<'a> for LoadoutDummyComponentParams {
             player_idle_anim: inst.get_str("playerIdleAnim").map(String::from).unwrap_or_default(),
             player_display_params: match inst.get("playerDisplayParams") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<UIWorldDisplay3DParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<UIWorldDisplay3DParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             vehicle_tag_point: inst.get_str("vehicleTagPoint").map(String::from).unwrap_or_default(),
             vehicle_bounding_box: match inst.get("vehicleBoundingBox") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<Vec3>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             vehicle_angle: match inst.get("vehicleAngle") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Ang3>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<Ang3>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             vehicle_display_params: match inst.get("vehicleDisplayParams") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<UIWorldDisplay3DParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<UIWorldDisplay3DParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
         }

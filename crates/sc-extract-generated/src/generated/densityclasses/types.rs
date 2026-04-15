@@ -15,61 +15,9 @@
 use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, Pooled};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
-
-/// DCB type: `SEntityDensityClass`
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct SEntityDensityClass {
-    /// `clusterDetectionRadius` (Single)
-    #[serde(default)]
-    pub cluster_detection_radius: f32,
-    /// `clusterUpperObjectCountDGS` (UInt32)
-    #[serde(default)]
-    pub cluster_upper_object_count_dgs: u32,
-    /// `clusterUpperObjectCountPersistence` (UInt32)
-    #[serde(default)]
-    pub cluster_upper_object_count_persistence: u32,
-    /// `clusterPersistenceTimeout` (Single)
-    #[serde(default)]
-    pub cluster_persistence_timeout: f32,
-    /// `entityMaxIdleLifeTime` (StrongPointer)
-    #[serde(default)]
-    pub entity_max_idle_life_time: Option<Handle<TimeValue_Base>>,
-    /// `resetLifetimeOnMove` (Boolean)
-    #[serde(default)]
-    pub reset_lifetime_on_move: bool,
-    /// `entityIdleBuryOnly` (Boolean)
-    #[serde(default)]
-    pub entity_idle_bury_only: bool,
-}
-
-impl Pooled for SEntityDensityClass {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.densityclasses.sentity_density_class }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.densityclasses.sentity_density_class }
-}
-
-impl<'a> Extract<'a> for SEntityDensityClass {
-    const TYPE_NAME: &'static str = "SEntityDensityClass";
-    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
-        Self {
-            cluster_detection_radius: inst.get_f32("clusterDetectionRadius").unwrap_or_default(),
-            cluster_upper_object_count_dgs: inst.get_u32("clusterUpperObjectCountDGS").unwrap_or_default(),
-            cluster_upper_object_count_persistence: inst.get_u32("clusterUpperObjectCountPersistence").unwrap_or_default(),
-            cluster_persistence_timeout: inst.get_f32("clusterPersistenceTimeout").unwrap_or_default(),
-            entity_max_idle_life_time: match inst.get("entityMaxIdleLifeTime") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<TimeValue_Base>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<TimeValue_Base>(b.db.instance(r.struct_index, r.instance_index), true)),
-                _ => None,
-            },
-            reset_lifetime_on_move: inst.get_bool("resetLifetimeOnMove").unwrap_or_default(),
-            entity_idle_bury_only: inst.get_bool("entityIdleBuryOnly").unwrap_or_default(),
-        }
-    }
-}
 
 /// DCB type: `SDensityClassLifetimeOverrideEntry`
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -79,7 +27,7 @@ pub struct SDensityClassLifetimeOverrideEntry {
     pub density_class: Option<CigGuid>,
     /// `lifetimeOverride` (StrongPointer)
     #[serde(default)]
-    pub lifetime_override: Option<Handle<TimeValue_Base>>,
+    pub lifetime_override: Option<TimeValue_BasePtr>,
 }
 
 impl Pooled for SDensityClassLifetimeOverrideEntry {
@@ -93,10 +41,7 @@ impl<'a> Extract<'a> for SDensityClassLifetimeOverrideEntry {
         Self {
             density_class: inst.get("densityClass").and_then(|v| v.as_record_ref()).map(|r| r.guid),
             lifetime_override: match inst.get("lifetimeOverride") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<TimeValue_Base>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<TimeValue_Base>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(TimeValue_BasePtr::from_ref(b, r)),
                 _ => None,
             },
         }
@@ -108,7 +53,7 @@ impl<'a> Extract<'a> for SDensityClassLifetimeOverrideEntry {
 pub struct SDefaultDensityClassLifetimeOverrides {
     /// `lifetimeOverride` (StrongPointer)
     #[serde(default)]
-    pub lifetime_override: Option<Handle<TimeValue_Base>>,
+    pub lifetime_override: Option<TimeValue_BasePtr>,
     /// `excludes` (Reference (array))
     #[serde(default)]
     pub excludes: Vec<CigGuid>,
@@ -124,10 +69,7 @@ impl<'a> Extract<'a> for SDefaultDensityClassLifetimeOverrides {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             lifetime_override: match inst.get("lifetimeOverride") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<TimeValue_Base>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<TimeValue_Base>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(TimeValue_BasePtr::from_ref(b, r)),
                 _ => None,
             },
             excludes: inst.get_array("excludes")
@@ -156,9 +98,6 @@ impl<'a> Extract<'a> for SEntityDensityClassOverridesRecord {
         Self {
             overrides: match inst.get("overrides") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SEntityDensityClassOverridesManual>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SEntityDensityClassOverridesManual>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
         }
@@ -187,39 +126,16 @@ impl<'a> Extract<'a> for SEntityDensityClassOverridesManual {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             defaults: match inst.get("defaults") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SDefaultDensityClassLifetimeOverrides>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SDefaultDensityClassLifetimeOverrides>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SDefaultDensityClassLifetimeOverrides>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             density_class_lifetime_overrides: inst.get_array("densityClassLifetimeOverrides")
                 .map(|arr| arr.filter_map(|v| match v {
                         Value::Class { struct_index, data } => Some(b.alloc_nested::<SDensityClassLifetimeOverrideEntry>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r)
-                        | Value::StrongPointer(Some(r))
-                        | Value::WeakPointer(Some(r)) => Some(b.alloc_nested::<SDensityClassLifetimeOverrideEntry>(b.db.instance(r.struct_index, r.instance_index), true)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<SDensityClassLifetimeOverrideEntry>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
                     }).collect())
                 .unwrap_or_default(),
-        }
-    }
-}
-
-/// DCB type: `TimeValue_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct TimeValue_Base {
-}
-
-impl Pooled for TimeValue_Base {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.densityclasses.time_value_base }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.densityclasses.time_value_base }
-}
-
-impl<'a> Extract<'a> for TimeValue_Base {
-    const TYPE_NAME: &'static str = "TimeValue_Base";
-    fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
         }
     }
 }

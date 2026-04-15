@@ -15,7 +15,7 @@
 use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, Pooled};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -24,16 +24,16 @@ use super::super::*;
 pub struct PopupDef {
     /// `title` (Locale)
     #[serde(default)]
-    pub title: String,
+    pub title: LocaleKey,
     /// `message1` (Locale)
     #[serde(default)]
-    pub message1: String,
+    pub message1: LocaleKey,
     /// `message2` (Locale)
     #[serde(default)]
-    pub message2: String,
+    pub message2: LocaleKey,
     /// `message3` (Locale)
     #[serde(default)]
-    pub message3: String,
+    pub message3: LocaleKey,
     /// `hasCancelButton` (Boolean)
     #[serde(default)]
     pub has_cancel_button: bool,
@@ -42,10 +42,10 @@ pub struct PopupDef {
     pub has_confirm_button: bool,
     /// `cancelOverrideString` (Locale)
     #[serde(default)]
-    pub cancel_override_string: String,
+    pub cancel_override_string: LocaleKey,
     /// `confirmOverrideString` (Locale)
     #[serde(default)]
-    pub confirm_override_string: String,
+    pub confirm_override_string: LocaleKey,
     /// `popupFrame` (String)
     #[serde(default)]
     pub popup_frame: String,
@@ -63,14 +63,14 @@ impl<'a> Extract<'a> for PopupDef {
     const TYPE_NAME: &'static str = "PopupDef";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            title: inst.get_str("title").map(String::from).unwrap_or_default(),
-            message1: inst.get_str("message1").map(String::from).unwrap_or_default(),
-            message2: inst.get_str("message2").map(String::from).unwrap_or_default(),
-            message3: inst.get_str("message3").map(String::from).unwrap_or_default(),
+            title: inst.get_str("title").map(LocaleKey::from).unwrap_or_default(),
+            message1: inst.get_str("message1").map(LocaleKey::from).unwrap_or_default(),
+            message2: inst.get_str("message2").map(LocaleKey::from).unwrap_or_default(),
+            message3: inst.get_str("message3").map(LocaleKey::from).unwrap_or_default(),
             has_cancel_button: inst.get_bool("hasCancelButton").unwrap_or_default(),
             has_confirm_button: inst.get_bool("hasConfirmButton").unwrap_or_default(),
-            cancel_override_string: inst.get_str("cancelOverrideString").map(String::from).unwrap_or_default(),
-            confirm_override_string: inst.get_str("confirmOverrideString").map(String::from).unwrap_or_default(),
+            cancel_override_string: inst.get_str("cancelOverrideString").map(LocaleKey::from).unwrap_or_default(),
+            confirm_override_string: inst.get_str("confirmOverrideString").map(LocaleKey::from).unwrap_or_default(),
             popup_frame: inst.get_str("popupFrame").map(String::from).unwrap_or_default(),
             popup_header_frame: inst.get_str("popupHeaderFrame").map(String::from).unwrap_or_default(),
         }

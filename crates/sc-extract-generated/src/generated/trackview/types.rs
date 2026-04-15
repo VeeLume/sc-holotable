@@ -15,37 +15,9 @@
 use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, Pooled};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
-
-/// DCB type: `Quat`
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct Quat {
-    /// `Rotation` (Class)
-    #[serde(default)]
-    pub rotation: Option<Handle<Ang3>>,
-}
-
-impl Pooled for Quat {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.trackview.quat }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.trackview.quat }
-}
-
-impl<'a> Extract<'a> for Quat {
-    const TYPE_NAME: &'static str = "Quat";
-    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
-        Self {
-            rotation: match inst.get("Rotation") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Ang3>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<Ang3>(b.db.instance(r.struct_index, r.instance_index), true)),
-                _ => None,
-            },
-        }
-    }
-}
 
 /// DCB type: `CameraTransitionInterpolationCurveRecord`
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -66,9 +38,6 @@ impl<'a> Extract<'a> for CameraTransitionInterpolationCurveRecord {
         Self {
             curve: match inst.get("curve") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BezierCurve>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<BezierCurve>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
         }
@@ -89,7 +58,7 @@ pub struct CinematicFlythroughPoint {
     pub duration: f32,
     /// `relativeTo` (EnumChoice)
     #[serde(default)]
-    pub relative_to: String,
+    pub relative_to: ECameraTransitionRelativeTo,
     /// `interpolationToPoint` (Reference)
     #[serde(default)]
     pub interpolation_to_point: Option<CigGuid>,
@@ -106,20 +75,14 @@ impl<'a> Extract<'a> for CinematicFlythroughPoint {
         Self {
             position: match inst.get("position") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<Vec3>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             rotation: match inst.get("rotation") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Quat>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<Quat>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             duration: inst.get_f32("duration").unwrap_or_default(),
-            relative_to: inst.get_str("relativeTo").map(String::from).unwrap_or_default(),
+            relative_to: ECameraTransitionRelativeTo::from_dcb_str(inst.get_str("relativeTo").unwrap_or("")),
             interpolation_to_point: inst.get("interpolationToPoint").and_then(|v| v.as_record_ref()).map(|r| r.guid),
         }
     }
@@ -145,9 +108,7 @@ impl<'a> Extract<'a> for CinematicFlightPointsRecord {
             flight_points: inst.get_array("flightPoints")
                 .map(|arr| arr.filter_map(|v| match v {
                         Value::Class { struct_index, data } => Some(b.alloc_nested::<CinematicFlythroughPoint>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r)
-                        | Value::StrongPointer(Some(r))
-                        | Value::WeakPointer(Some(r)) => Some(b.alloc_nested::<CinematicFlythroughPoint>(b.db.instance(r.struct_index, r.instance_index), true)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<CinematicFlythroughPoint>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
                     }).collect())
                 .unwrap_or_default(),

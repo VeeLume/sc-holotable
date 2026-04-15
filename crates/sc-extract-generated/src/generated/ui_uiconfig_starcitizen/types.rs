@@ -15,39 +15,9 @@
 use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, Pooled};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
-
-/// DCB type: `InnerThought_Config`
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct InnerThought_Config {
-    /// `tracking` (Single)
-    #[serde(default)]
-    pub tracking: f32,
-    /// `forceCase` (EnumChoice)
-    #[serde(default)]
-    pub force_case: String,
-    /// `geomFont` (Reference)
-    #[serde(default)]
-    pub geom_font: Option<CigGuid>,
-}
-
-impl Pooled for InnerThought_Config {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_uiconfig_starcitizen.inner_thought_config }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_uiconfig_starcitizen.inner_thought_config }
-}
-
-impl<'a> Extract<'a> for InnerThought_Config {
-    const TYPE_NAME: &'static str = "InnerThought_Config";
-    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
-            tracking: inst.get_f32("tracking").unwrap_or_default(),
-            force_case: inst.get_str("forceCase").map(String::from).unwrap_or_default(),
-            geom_font: inst.get("geomFont").and_then(|v| v.as_record_ref()).map(|r| r.guid),
-        }
-    }
-}
 
 /// DCB type: `UIConfig`
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -91,38 +61,23 @@ impl<'a> Extract<'a> for UIConfig {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             damage_colours: match inst.get("DamageColours") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Flash_Palette>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<Flash_Palette>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<Flash_Palette>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             color_states: match inst.get("ColorStates") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<UIStateColor>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<UIStateColor>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<UIStateColor>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             inner_thought: match inst.get("InnerThought") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<InnerThought_Config>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<InnerThought_Config>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<InnerThought_Config>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             fpsreticle_config: match inst.get("FPSReticleConfig") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<FPSReticle_Config>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<FPSReticle_Config>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<FPSReticle_Config>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             evareticle_config: match inst.get("EVAReticleConfig") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<EVAReticle_Config>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<EVAReticle_Config>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<EVAReticle_Config>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             player_choice_imconfig: inst.get("playerChoiceIMConfig").and_then(|v| v.as_record_ref()).map(|r| r.guid),
@@ -253,9 +208,7 @@ impl<'a> Extract<'a> for Flash_Palette {
             entries: inst.get_array("Entries")
                 .map(|arr| arr.filter_map(|v| match v {
                         Value::Class { struct_index, data } => Some(b.alloc_nested::<Flash_PaletteEntry>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r)
-                        | Value::StrongPointer(Some(r))
-                        | Value::WeakPointer(Some(r)) => Some(b.alloc_nested::<Flash_PaletteEntry>(b.db.instance(r.struct_index, r.instance_index), true)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<Flash_PaletteEntry>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
                     }).collect())
                 .unwrap_or_default(),
@@ -285,10 +238,7 @@ impl<'a> Extract<'a> for Flash_PaletteEntry {
         Self {
             name: inst.get_str("Name").map(String::from).unwrap_or_default(),
             flash_color: match inst.get("FlashColor") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SRGBA8>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SRGBA8>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SRGBA8>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
         }
@@ -315,9 +265,7 @@ impl<'a> Extract<'a> for UIStateColor {
             thresholds: inst.get_array("thresholds")
                 .map(|arr| arr.filter_map(|v| match v {
                         Value::Class { struct_index, data } => Some(b.alloc_nested::<UIStateColor_Threshold>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r)
-                        | Value::StrongPointer(Some(r))
-                        | Value::WeakPointer(Some(r)) => Some(b.alloc_nested::<UIStateColor_Threshold>(b.db.instance(r.struct_index, r.instance_index), true)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<UIStateColor_Threshold>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
                     }).collect())
                 .unwrap_or_default(),
@@ -333,7 +281,7 @@ pub struct UIStateColor_Threshold {
     pub min_threshold_value: f32,
     /// `stateColor` (EnumChoice)
     #[serde(default)]
-    pub state_color: String,
+    pub state_color: HUDPalleteEntry,
 }
 
 impl Pooled for UIStateColor_Threshold {
@@ -346,7 +294,7 @@ impl<'a> Extract<'a> for UIStateColor_Threshold {
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
             min_threshold_value: inst.get_f32("minThresholdValue").unwrap_or_default(),
-            state_color: inst.get_str("stateColor").map(String::from).unwrap_or_default(),
+            state_color: HUDPalleteEntry::from_dcb_str(inst.get_str("stateColor").unwrap_or("")),
         }
     }
 }

@@ -15,7 +15,7 @@
 use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, Pooled};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -24,13 +24,13 @@ use super::super::*;
 pub struct RefiningProcess {
     /// `refiningSpeed` (EnumChoice)
     #[serde(default)]
-    pub refining_speed: String,
+    pub refining_speed: RefiningSpeed,
     /// `refiningQuality` (EnumChoice)
     #[serde(default)]
-    pub refining_quality: String,
+    pub refining_quality: RefiningQuality,
     /// `processName` (Locale)
     #[serde(default)]
-    pub process_name: String,
+    pub process_name: LocaleKey,
 }
 
 impl Pooled for RefiningProcess {
@@ -42,9 +42,9 @@ impl<'a> Extract<'a> for RefiningProcess {
     const TYPE_NAME: &'static str = "RefiningProcess";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            refining_speed: inst.get_str("refiningSpeed").map(String::from).unwrap_or_default(),
-            refining_quality: inst.get_str("refiningQuality").map(String::from).unwrap_or_default(),
-            process_name: inst.get_str("processName").map(String::from).unwrap_or_default(),
+            refining_speed: RefiningSpeed::from_dcb_str(inst.get_str("refiningSpeed").unwrap_or("")),
+            refining_quality: RefiningQuality::from_dcb_str(inst.get_str("refiningQuality").unwrap_or("")),
+            process_name: inst.get_str("processName").map(LocaleKey::from).unwrap_or_default(),
         }
     }
 }

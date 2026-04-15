@@ -15,7 +15,7 @@
 use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, Pooled};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -39,9 +39,7 @@ impl<'a> Extract<'a> for ChatEmoteRecord {
             packs: inst.get_array("packs")
                 .map(|arr| arr.filter_map(|v| match v {
                         Value::Class { struct_index, data } => Some(b.alloc_nested::<ChatEmotePack>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r)
-                        | Value::StrongPointer(Some(r))
-                        | Value::WeakPointer(Some(r)) => Some(b.alloc_nested::<ChatEmotePack>(b.db.instance(r.struct_index, r.instance_index), true)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<ChatEmotePack>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
                     }).collect())
                 .unwrap_or_default(),
@@ -73,9 +71,7 @@ impl<'a> Extract<'a> for ChatEmotePack {
             emotes: inst.get_array("emotes")
                 .map(|arr| arr.filter_map(|v| match v {
                         Value::Class { struct_index, data } => Some(b.alloc_nested::<ChatEmoteData>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r)
-                        | Value::StrongPointer(Some(r))
-                        | Value::WeakPointer(Some(r)) => Some(b.alloc_nested::<ChatEmoteData>(b.db.instance(r.struct_index, r.instance_index), true)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<ChatEmoteData>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
                     }).collect())
                 .unwrap_or_default(),
@@ -88,10 +84,10 @@ impl<'a> Extract<'a> for ChatEmotePack {
 pub struct ChatEmoteData {
     /// `emoteType` (Locale)
     #[serde(default)]
-    pub emote_type: String,
+    pub emote_type: LocaleKey,
     /// `alternateEmoteTypes` (Locale (array))
     #[serde(default)]
-    pub alternate_emote_types: Vec<String>,
+    pub alternate_emote_types: Vec<LocaleKey>,
     /// `enabled` (Boolean)
     #[serde(default)]
     pub enabled: bool,
@@ -112,17 +108,14 @@ impl<'a> Extract<'a> for ChatEmoteData {
     const TYPE_NAME: &'static str = "ChatEmoteData";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            emote_type: inst.get_str("emoteType").map(String::from).unwrap_or_default(),
+            emote_type: inst.get_str("emoteType").map(LocaleKey::from).unwrap_or_default(),
             alternate_emote_types: inst.get_array("alternateEmoteTypes")
-                .map(|arr| arr.filter_map(|v| v.as_str().map(String::from)).collect())
+                .map(|arr| arr.filter_map(|v| v.as_str().map(LocaleKey::from)).collect())
                 .unwrap_or_default(),
             enabled: inst.get_bool("enabled").unwrap_or_default(),
             is_interruptable: inst.get_bool("isInterruptable").unwrap_or_default(),
             anim_data: match inst.get("animData") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<ChatEmoteAnimData>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<ChatEmoteAnimData>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
         }
@@ -140,10 +133,10 @@ pub struct ChatEmoteAnimData {
     pub tag_id: String,
     /// `textToDisplay` (Locale)
     #[serde(default)]
-    pub text_to_display: String,
+    pub text_to_display: LocaleKey,
     /// `type` (EnumChoice)
     #[serde(default)]
-    pub r#type: String,
+    pub r#type: EChatEmoteType,
 }
 
 impl Pooled for ChatEmoteAnimData {
@@ -157,8 +150,8 @@ impl<'a> Extract<'a> for ChatEmoteAnimData {
         Self {
             fragment_id: inst.get_str("fragmentID").map(String::from).unwrap_or_default(),
             tag_id: inst.get_str("tagID").map(String::from).unwrap_or_default(),
-            text_to_display: inst.get_str("textToDisplay").map(String::from).unwrap_or_default(),
-            r#type: inst.get_str("type").map(String::from).unwrap_or_default(),
+            text_to_display: inst.get_str("textToDisplay").map(LocaleKey::from).unwrap_or_default(),
+            r#type: EChatEmoteType::from_dcb_str(inst.get_str("type").unwrap_or("")),
         }
     }
 }

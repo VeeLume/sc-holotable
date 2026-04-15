@@ -15,24 +15,84 @@
 use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, Pooled};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
-/// DCB type: `LongTermPersistenceSubTypeListOption`
+/// DCB type: `LongTermPersistenceWhiteListSubTypeEntry`
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct LongTermPersistenceSubTypeListOption {
+pub struct LongTermPersistenceWhiteListSubTypeEntry {
+    /// `ItemSubType` (EnumChoice)
+    #[serde(default)]
+    pub item_sub_type: EItemSubType,
+    /// `NotRemove` (Boolean)
+    #[serde(default)]
+    pub not_remove: bool,
 }
 
-impl Pooled for LongTermPersistenceSubTypeListOption {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.longtermpersistence.long_term_persistence_sub_type_list_option }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.longtermpersistence.long_term_persistence_sub_type_list_option }
+impl Pooled for LongTermPersistenceWhiteListSubTypeEntry {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.longtermpersistence.long_term_persistence_white_list_sub_type_entry }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.longtermpersistence.long_term_persistence_white_list_sub_type_entry }
 }
 
-impl<'a> Extract<'a> for LongTermPersistenceSubTypeListOption {
-    const TYPE_NAME: &'static str = "LongTermPersistenceSubTypeListOption";
-    fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+impl<'a> Extract<'a> for LongTermPersistenceWhiteListSubTypeEntry {
+    const TYPE_NAME: &'static str = "LongTermPersistenceWhiteListSubTypeEntry";
+    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
+            item_sub_type: EItemSubType::from_dcb_str(inst.get_str("ItemSubType").unwrap_or("")),
+            not_remove: inst.get_bool("NotRemove").unwrap_or_default(),
+        }
+    }
+}
+
+/// DCB type: `LongTermPersistenceSubTypeAll`
+/// Inherits from: `LongTermPersistenceSubTypeListOption`
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct LongTermPersistenceSubTypeAll {
+    /// `NotRemove` (Boolean)
+    #[serde(default)]
+    pub not_remove: bool,
+}
+
+impl Pooled for LongTermPersistenceSubTypeAll {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.longtermpersistence.long_term_persistence_sub_type_all }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.longtermpersistence.long_term_persistence_sub_type_all }
+}
+
+impl<'a> Extract<'a> for LongTermPersistenceSubTypeAll {
+    const TYPE_NAME: &'static str = "LongTermPersistenceSubTypeAll";
+    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {
+            not_remove: inst.get_bool("NotRemove").unwrap_or_default(),
+        }
+    }
+}
+
+/// DCB type: `LongTermPersistenceSubTypeList`
+/// Inherits from: `LongTermPersistenceSubTypeListOption`
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct LongTermPersistenceSubTypeList {
+    /// `ItemSubTypeEntries` (Class (array))
+    #[serde(default)]
+    pub item_sub_type_entries: Vec<Handle<LongTermPersistenceWhiteListSubTypeEntry>>,
+}
+
+impl Pooled for LongTermPersistenceSubTypeList {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.longtermpersistence.long_term_persistence_sub_type_list }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.longtermpersistence.long_term_persistence_sub_type_list }
+}
+
+impl<'a> Extract<'a> for LongTermPersistenceSubTypeList {
+    const TYPE_NAME: &'static str = "LongTermPersistenceSubTypeList";
+    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
+        Self {
+            item_sub_type_entries: inst.get_array("ItemSubTypeEntries")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<LongTermPersistenceWhiteListSubTypeEntry>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<LongTermPersistenceWhiteListSubTypeEntry>(b.db.instance(r.struct_index, r.instance_index), true)),
+                        _ => None,
+                    }).collect())
+                .unwrap_or_default(),
         }
     }
 }
@@ -42,10 +102,10 @@ impl<'a> Extract<'a> for LongTermPersistenceSubTypeListOption {
 pub struct LongTermPersistenceWhiteListEntry {
     /// `ItemType` (EnumChoice)
     #[serde(default)]
-    pub item_type: String,
+    pub item_type: EItemType,
     /// `SubTypeListOption` (StrongPointer)
     #[serde(default)]
-    pub sub_type_list_option: Option<Handle<LongTermPersistenceSubTypeListOption>>,
+    pub sub_type_list_option: Option<LongTermPersistenceSubTypeListOptionPtr>,
 }
 
 impl Pooled for LongTermPersistenceWhiteListEntry {
@@ -57,12 +117,9 @@ impl<'a> Extract<'a> for LongTermPersistenceWhiteListEntry {
     const TYPE_NAME: &'static str = "LongTermPersistenceWhiteListEntry";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            item_type: inst.get_str("ItemType").map(String::from).unwrap_or_default(),
+            item_type: EItemType::from_dcb_str(inst.get_str("ItemType").unwrap_or("")),
             sub_type_list_option: match inst.get("SubTypeListOption") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<LongTermPersistenceSubTypeListOption>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<LongTermPersistenceSubTypeListOption>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(LongTermPersistenceSubTypeListOptionPtr::from_ref(b, r)),
                 _ => None,
             },
         }
@@ -89,9 +146,7 @@ impl<'a> Extract<'a> for LongTermPersistenceGlobalParams {
             long_term_persistence_white_list: inst.get_array("LongTermPersistenceWhiteList")
                 .map(|arr| arr.filter_map(|v| match v {
                         Value::Class { struct_index, data } => Some(b.alloc_nested::<LongTermPersistenceWhiteListEntry>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r)
-                        | Value::StrongPointer(Some(r))
-                        | Value::WeakPointer(Some(r)) => Some(b.alloc_nested::<LongTermPersistenceWhiteListEntry>(b.db.instance(r.struct_index, r.instance_index), true)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<LongTermPersistenceWhiteListEntry>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
                     }).collect())
                 .unwrap_or_default(),

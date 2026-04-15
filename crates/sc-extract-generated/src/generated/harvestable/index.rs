@@ -7,7 +7,7 @@
 //
 // Any hand edits will be lost on the next run.
 
-#![allow(non_snake_case, dead_code, unused_imports)]
+#![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
 use std::collections::HashMap;
 use serde::{Deserialize, Serialize};
@@ -19,11 +19,7 @@ use super::super::*;
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct HarvestableIndex {
     #[serde(default)]
-    pub sub_harvestable_config_record: HashMap<CigGuid, Handle<SubHarvestableConfigRecord>>,
-    #[serde(default)]
     pub sub_harvestable_multi_config_record: HashMap<CigGuid, Handle<SubHarvestableMultiConfigRecord>>,
-    #[serde(default)]
-    pub harvestable_preset: HashMap<CigGuid, Handle<HarvestablePreset>>,
     #[serde(default)]
     pub harvestable_setup: HashMap<CigGuid, Handle<HarvestableSetup>>,
     #[serde(default)]
@@ -33,13 +29,14 @@ pub struct HarvestableIndex {
 }
 
 impl HarvestableIndex {
+    #[allow(unused_mut)]
     pub fn len(&self) -> usize {
-        self.sub_harvestable_config_record.len()
-            + self.sub_harvestable_multi_config_record.len()
-            + self.harvestable_preset.len()
-            + self.harvestable_setup.len()
-            + self.harvestable_cluster_preset.len()
-            + self.harvestable_provider_preset.len()
+        let mut total = 0usize;
+        total += self.sub_harvestable_multi_config_record.len();
+        total += self.harvestable_setup.len();
+        total += self.harvestable_cluster_preset.len();
+        total += self.harvestable_provider_preset.len();
+        total
     }
 
     pub fn is_empty(&self) -> bool { self.len() == 0 }

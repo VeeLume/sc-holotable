@@ -15,144 +15,62 @@
 use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, Pooled};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
-/// DCB type: `LegacyCraftingRecipe_Base`
+/// DCB type: `LegacyCraftingOutput_ResourceAmount`
+/// Inherits from: `LegacyCraftingOutput_Base`
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct LegacyCraftingRecipe_Base {
-}
-
-impl Pooled for LegacyCraftingRecipe_Base {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.crafting.legacy_crafting_recipe_base }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.crafting.legacy_crafting_recipe_base }
-}
-
-impl<'a> Extract<'a> for LegacyCraftingRecipe_Base {
-    const TYPE_NAME: &'static str = "LegacyCraftingRecipe_Base";
-    fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
-        }
-    }
-}
-
-/// DCB type: `LegacyCraftingRecipeDef_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct LegacyCraftingRecipeDef_Base {
-}
-
-impl Pooled for LegacyCraftingRecipeDef_Base {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.crafting.legacy_crafting_recipe_def_base }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.crafting.legacy_crafting_recipe_def_base }
-}
-
-impl<'a> Extract<'a> for LegacyCraftingRecipeDef_Base {
-    const TYPE_NAME: &'static str = "LegacyCraftingRecipeDef_Base";
-    fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
-        }
-    }
-}
-
-/// DCB type: `LegacyCraftingRecipeDefRecord`
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct LegacyCraftingRecipeDefRecord {
-    /// `recipe` (StrongPointer)
+pub struct LegacyCraftingOutput_ResourceAmount {
+    /// `resource` (Reference)
     #[serde(default)]
-    pub recipe: Option<Handle<LegacyCraftingRecipe_Base>>,
+    pub resource: Option<CigGuid>,
+    /// `amount` (StrongPointer)
+    #[serde(default)]
+    pub amount: Option<SBaseCargoUnitPtr>,
 }
 
-impl Pooled for LegacyCraftingRecipeDefRecord {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.crafting.legacy_crafting_recipe_def_record }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.crafting.legacy_crafting_recipe_def_record }
+impl Pooled for LegacyCraftingOutput_ResourceAmount {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.crafting.legacy_crafting_output_resource_amount }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.crafting.legacy_crafting_output_resource_amount }
 }
 
-impl<'a> Extract<'a> for LegacyCraftingRecipeDefRecord {
-    const TYPE_NAME: &'static str = "LegacyCraftingRecipeDefRecord";
+impl<'a> Extract<'a> for LegacyCraftingOutput_ResourceAmount {
+    const TYPE_NAME: &'static str = "LegacyCraftingOutput_ResourceAmount";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            recipe: match inst.get("recipe") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<LegacyCraftingRecipe_Base>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<LegacyCraftingRecipe_Base>(b.db.instance(r.struct_index, r.instance_index), true)),
+            resource: inst.get("resource").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            amount: match inst.get("amount") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(SBaseCargoUnitPtr::from_ref(b, r)),
                 _ => None,
             },
         }
     }
 }
 
-/// DCB type: `LegacyCraftingRecipeListRecord`
+/// DCB type: `LegacyCraftingRecipeDef_Direct`
+/// Inherits from: `LegacyCraftingRecipeDef_Base`
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct LegacyCraftingRecipeListRecord {
-    /// `recipes` (StrongPointer (array))
+pub struct LegacyCraftingRecipeDef_Direct {
+    /// `recipe` (StrongPointer)
     #[serde(default)]
-    pub recipes: Vec<Handle<LegacyCraftingRecipeDef_Base>>,
+    pub recipe: Option<LegacyCraftingRecipe_BasePtr>,
 }
 
-impl Pooled for LegacyCraftingRecipeListRecord {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.crafting.legacy_crafting_recipe_list_record }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.crafting.legacy_crafting_recipe_list_record }
+impl Pooled for LegacyCraftingRecipeDef_Direct {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.crafting.legacy_crafting_recipe_def_direct }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.crafting.legacy_crafting_recipe_def_direct }
 }
 
-impl<'a> Extract<'a> for LegacyCraftingRecipeListRecord {
-    const TYPE_NAME: &'static str = "LegacyCraftingRecipeListRecord";
+impl<'a> Extract<'a> for LegacyCraftingRecipeDef_Direct {
+    const TYPE_NAME: &'static str = "LegacyCraftingRecipeDef_Direct";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            recipes: inst.get_array("recipes")
-                .map(|arr| arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<LegacyCraftingRecipeDef_Base>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r)
-                        | Value::StrongPointer(Some(r))
-                        | Value::WeakPointer(Some(r)) => Some(b.alloc_nested::<LegacyCraftingRecipeDef_Base>(b.db.instance(r.struct_index, r.instance_index), true)),
-                        _ => None,
-                    }).collect())
-                .unwrap_or_default(),
-        }
-    }
-}
-
-/// DCB type: `CraftingGameplayPropertyDef`
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct CraftingGameplayPropertyDef {
-    /// `propertyName` (Locale)
-    #[serde(default)]
-    pub property_name: String,
-    /// `unitFormat` (Locale)
-    #[serde(default)]
-    pub unit_format: String,
-}
-
-impl Pooled for CraftingGameplayPropertyDef {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.crafting.crafting_gameplay_property_def }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.crafting.crafting_gameplay_property_def }
-}
-
-impl<'a> Extract<'a> for CraftingGameplayPropertyDef {
-    const TYPE_NAME: &'static str = "CraftingGameplayPropertyDef";
-    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
-            property_name: inst.get_str("propertyName").map(String::from).unwrap_or_default(),
-            unit_format: inst.get_str("unitFormat").map(String::from).unwrap_or_default(),
-        }
-    }
-}
-
-/// DCB type: `BlueprintCategoryRecord`
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct BlueprintCategoryRecord {
-}
-
-impl Pooled for BlueprintCategoryRecord {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.crafting.blueprint_category_record }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.crafting.blueprint_category_record }
-}
-
-impl<'a> Extract<'a> for BlueprintCategoryRecord {
-    const TYPE_NAME: &'static str = "BlueprintCategoryRecord";
-    fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
+            recipe: match inst.get("recipe") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(LegacyCraftingRecipe_BasePtr::from_ref(b, r)),
+                _ => None,
+            },
         }
     }
 }
@@ -181,161 +99,83 @@ impl<'a> Extract<'a> for BlueprintCategoryDatabaseRecord {
     }
 }
 
-/// DCB type: `CraftingBlueprint_Base_NonRef`
-/// Inherits from: `CraftingBlueprint_Base`
+/// DCB type: `GenericCraftingProcess_Dismantle`
+/// Inherits from: `GenericCraftingProcess_Base_NonRef`
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct CraftingBlueprint_Base_NonRef {
-}
-
-impl Pooled for CraftingBlueprint_Base_NonRef {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.crafting.crafting_blueprint_base_non_ref }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.crafting.crafting_blueprint_base_non_ref }
-}
-
-impl<'a> Extract<'a> for CraftingBlueprint_Base_NonRef {
-    const TYPE_NAME: &'static str = "CraftingBlueprint_Base_NonRef";
-    fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
-        }
-    }
-}
-
-/// DCB type: `CraftingBlueprintRecord`
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct CraftingBlueprintRecord {
-    /// `blueprint` (StrongPointer)
+pub struct GenericCraftingProcess_Dismantle {
+    /// `efficiency` (Single)
     #[serde(default)]
-    pub blueprint: Option<Handle<CraftingBlueprint_Base_NonRef>>,
+    pub efficiency: f32,
+    /// `dismantleTime` (StrongPointer)
+    #[serde(default)]
+    pub dismantle_time: Option<TimeValue_BasePtr>,
 }
 
-impl Pooled for CraftingBlueprintRecord {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.crafting.crafting_blueprint_record }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.crafting.crafting_blueprint_record }
+impl Pooled for GenericCraftingProcess_Dismantle {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.crafting.generic_crafting_process_dismantle }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.crafting.generic_crafting_process_dismantle }
 }
 
-impl<'a> Extract<'a> for CraftingBlueprintRecord {
-    const TYPE_NAME: &'static str = "CraftingBlueprintRecord";
+impl<'a> Extract<'a> for GenericCraftingProcess_Dismantle {
+    const TYPE_NAME: &'static str = "GenericCraftingProcess_Dismantle";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            blueprint: match inst.get("blueprint") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<CraftingBlueprint_Base_NonRef>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<CraftingBlueprint_Base_NonRef>(b.db.instance(r.struct_index, r.instance_index), true)),
+            efficiency: inst.get_f32("efficiency").unwrap_or_default(),
+            dismantle_time: match inst.get("dismantleTime") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(TimeValue_BasePtr::from_ref(b, r)),
                 _ => None,
             },
         }
     }
 }
 
-/// DCB type: `DefaultBlueprintSelection_Base`
+/// DCB type: `GenericCraftingBlueprint`
+/// Inherits from: `CraftingBlueprint_Base_NonRef`
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct DefaultBlueprintSelection_Base {
-}
-
-impl Pooled for DefaultBlueprintSelection_Base {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.crafting.default_blueprint_selection_base }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.crafting.default_blueprint_selection_base }
-}
-
-impl<'a> Extract<'a> for DefaultBlueprintSelection_Base {
-    const TYPE_NAME: &'static str = "DefaultBlueprintSelection_Base";
-    fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
-        }
-    }
-}
-
-/// DCB type: `CraftingQualityDistribution_Base_NonRef`
-/// Inherits from: `CraftingQualityDistribution_Base`
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct CraftingQualityDistribution_Base_NonRef {
-}
-
-impl Pooled for CraftingQualityDistribution_Base_NonRef {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.crafting.crafting_quality_distribution_base_non_ref }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.crafting.crafting_quality_distribution_base_non_ref }
-}
-
-impl<'a> Extract<'a> for CraftingQualityDistribution_Base_NonRef {
-    const TYPE_NAME: &'static str = "CraftingQualityDistribution_Base_NonRef";
-    fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
-        }
-    }
-}
-
-/// DCB type: `CraftingQualityDistributionRecord`
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct CraftingQualityDistributionRecord {
-    /// `qualityDistribution` (StrongPointer)
+pub struct GenericCraftingBlueprint {
+    /// `processSpecificData` (StrongPointer)
     #[serde(default)]
-    pub quality_distribution: Option<Handle<CraftingQualityDistribution_Base_NonRef>>,
+    pub process_specific_data: Option<GenericCraftingProcess_BasePtr>,
 }
 
-impl Pooled for CraftingQualityDistributionRecord {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.crafting.crafting_quality_distribution_record }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.crafting.crafting_quality_distribution_record }
+impl Pooled for GenericCraftingBlueprint {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.crafting.generic_crafting_blueprint }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.crafting.generic_crafting_blueprint }
 }
 
-impl<'a> Extract<'a> for CraftingQualityDistributionRecord {
-    const TYPE_NAME: &'static str = "CraftingQualityDistributionRecord";
+impl<'a> Extract<'a> for GenericCraftingBlueprint {
+    const TYPE_NAME: &'static str = "GenericCraftingBlueprint";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            quality_distribution: match inst.get("qualityDistribution") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<CraftingQualityDistribution_Base_NonRef>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<CraftingQualityDistribution_Base_NonRef>(b.db.instance(r.struct_index, r.instance_index), true)),
+            process_specific_data: match inst.get("processSpecificData") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(GenericCraftingProcess_BasePtr::from_ref(b, r)),
                 _ => None,
             },
         }
     }
 }
 
-/// DCB type: `CraftingQualityLocationOverride_Base_NonRef`
-/// Inherits from: `CraftingQualityLocationOverride_Base`
+/// DCB type: `DefaultBlueprintSelection_Whitelist`
+/// Inherits from: `DefaultBlueprintSelection_Base_NonRef`
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct CraftingQualityLocationOverride_Base_NonRef {
-}
-
-impl Pooled for CraftingQualityLocationOverride_Base_NonRef {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.crafting.crafting_quality_location_override_base_non_ref }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.crafting.crafting_quality_location_override_base_non_ref }
-}
-
-impl<'a> Extract<'a> for CraftingQualityLocationOverride_Base_NonRef {
-    const TYPE_NAME: &'static str = "CraftingQualityLocationOverride_Base_NonRef";
-    fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
-        }
-    }
-}
-
-/// DCB type: `CraftingQualityLocationOverrideRecord`
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct CraftingQualityLocationOverrideRecord {
-    /// `locationOverride` (StrongPointer)
+pub struct DefaultBlueprintSelection_Whitelist {
+    /// `blueprintRecords` (Reference (array))
     #[serde(default)]
-    pub location_override: Option<Handle<CraftingQualityLocationOverride_Base_NonRef>>,
+    pub blueprint_records: Vec<CigGuid>,
 }
 
-impl Pooled for CraftingQualityLocationOverrideRecord {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.crafting.crafting_quality_location_override_record }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.crafting.crafting_quality_location_override_record }
+impl Pooled for DefaultBlueprintSelection_Whitelist {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.crafting.default_blueprint_selection_whitelist }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.crafting.default_blueprint_selection_whitelist }
 }
 
-impl<'a> Extract<'a> for CraftingQualityLocationOverrideRecord {
-    const TYPE_NAME: &'static str = "CraftingQualityLocationOverrideRecord";
-    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
+impl<'a> Extract<'a> for DefaultBlueprintSelection_Whitelist {
+    const TYPE_NAME: &'static str = "DefaultBlueprintSelection_Whitelist";
+    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            location_override: match inst.get("locationOverride") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<CraftingQualityLocationOverride_Base_NonRef>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<CraftingQualityLocationOverride_Base_NonRef>(b.db.instance(r.struct_index, r.instance_index), true)),
-                _ => None,
-            },
+            blueprint_records: inst.get_array("blueprintRecords")
+                .map(|arr| arr.filter_map(|v| if let Value::Reference(Some(r)) = v { Some(r.guid) } else { None }).collect())
+                .unwrap_or_default(),
         }
     }
 }
@@ -357,7 +197,7 @@ pub struct CraftingGlobalParams {
     pub dismantle_blacklist_entity_classes: Vec<CigGuid>,
     /// `defaultBlueprintSelection` (StrongPointer)
     #[serde(default)]
-    pub default_blueprint_selection: Option<Handle<DefaultBlueprintSelection_Base>>,
+    pub default_blueprint_selection: Option<DefaultBlueprintSelection_BasePtr>,
 }
 
 impl Pooled for CraftingGlobalParams {
@@ -378,68 +218,9 @@ impl<'a> Extract<'a> for CraftingGlobalParams {
                 .map(|arr| arr.filter_map(|v| if let Value::Reference(Some(r)) = v { Some(r.guid) } else { None }).collect())
                 .unwrap_or_default(),
             default_blueprint_selection: match inst.get("defaultBlueprintSelection") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<DefaultBlueprintSelection_Base>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<DefaultBlueprintSelection_Base>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(DefaultBlueprintSelection_BasePtr::from_ref(b, r)),
                 _ => None,
             },
-        }
-    }
-}
-
-/// DCB type: `BlueprintReward`
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct BlueprintReward {
-    /// `weight` (Single)
-    #[serde(default)]
-    pub weight: f32,
-    /// `blueprintRecord` (Reference)
-    #[serde(default)]
-    pub blueprint_record: Option<CigGuid>,
-}
-
-impl Pooled for BlueprintReward {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.crafting.blueprint_reward }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.crafting.blueprint_reward }
-}
-
-impl<'a> Extract<'a> for BlueprintReward {
-    const TYPE_NAME: &'static str = "BlueprintReward";
-    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
-            weight: inst.get_f32("weight").unwrap_or_default(),
-            blueprint_record: inst.get("blueprintRecord").and_then(|v| v.as_record_ref()).map(|r| r.guid),
-        }
-    }
-}
-
-/// DCB type: `BlueprintPoolRecord`
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct BlueprintPoolRecord {
-    /// `blueprintRewards` (Class (array))
-    #[serde(default)]
-    pub blueprint_rewards: Vec<Handle<BlueprintReward>>,
-}
-
-impl Pooled for BlueprintPoolRecord {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.crafting.blueprint_pool_record }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.crafting.blueprint_pool_record }
-}
-
-impl<'a> Extract<'a> for BlueprintPoolRecord {
-    const TYPE_NAME: &'static str = "BlueprintPoolRecord";
-    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
-        Self {
-            blueprint_rewards: inst.get_array("blueprintRewards")
-                .map(|arr| arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<BlueprintReward>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r)
-                        | Value::StrongPointer(Some(r))
-                        | Value::WeakPointer(Some(r)) => Some(b.alloc_nested::<BlueprintReward>(b.db.instance(r.struct_index, r.instance_index), true)),
-                        _ => None,
-                    }).collect())
-                .unwrap_or_default(),
         }
     }
 }

@@ -7,7 +7,7 @@
 //
 // Any hand edits will be lost on the next run.
 
-#![allow(non_snake_case, dead_code, unused_imports)]
+#![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
 use serde::{Deserialize, Serialize};
 use super::super::*;
@@ -16,7 +16,9 @@ use super::super::*;
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct CargomanifestPools {
     #[serde(default)]
-    pub base_cargo_fill_capacity_value: Vec<Option<BaseCargoFillCapacityValue>>,
+    pub cargo_fill_capacity_value_random: Vec<Option<CargoFillCapacityValue_Random>>,
     #[serde(default)]
-    pub cargo_manifest: Vec<Option<CargoManifest>>,
+    pub cargo_fill_capacity_value_custom: Vec<Option<CargoFillCapacityValue_Custom>>,
+    #[serde(default)]
+    pub cargo_resource_allocation: Vec<Option<CargoResourceAllocation>>,
 }

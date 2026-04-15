@@ -7,7 +7,7 @@
 //
 // Any hand edits will be lost on the next run.
 
-#![allow(non_snake_case, dead_code, unused_imports)]
+#![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
 use std::collections::HashMap;
 use serde::{Deserialize, Serialize};
@@ -23,8 +23,11 @@ pub struct UiRadardisplay_config_radarIndex {
 }
 
 impl UiRadardisplay_config_radarIndex {
+    #[allow(unused_mut)]
     pub fn len(&self) -> usize {
-        self.radar_display_config.len()
+        let mut total = 0usize;
+        total += self.radar_display_config.len();
+        total
     }
 
     pub fn is_empty(&self) -> bool { self.len() == 0 }

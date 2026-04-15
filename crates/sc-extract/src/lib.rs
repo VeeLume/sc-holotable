@@ -77,7 +77,7 @@ pub use display_names::{resolve_entity_display_name, DisplayNameCache};
 pub use error::{Error, Result};
 pub use filters::{is_playable_ship, is_playable_weapon};
 pub use graph::ReferenceGraph;
-pub use locale::{LocKey, LocaleMap};
+pub use locale::{LocaleKey, LocaleMap};
 pub use manufacturers::{Manufacturer, ManufacturerRegistry};
 pub use sc_extract_generated::{Builder, DataPools, Extract, RecordIndex, RecordStore};
 pub use snapshot::{ExtractSnapshot, SnapshotMeta};

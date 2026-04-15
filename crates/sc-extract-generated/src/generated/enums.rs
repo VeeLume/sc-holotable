@@ -24,6 +24,28 @@ pub enum ARDataType {
     Unrecognized(String),
 }
 
+impl ARDataType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Player" => Self::Player,
+            "ShopItem" => Self::ShopItem,
+            "PointOfInterest" => Self::PointOfInterest,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ARDataType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ARLabelMovementType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ARLabelMovementType {
@@ -35,6 +57,28 @@ pub enum ARLabelMovementType {
     Rotating,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ARLabelMovementType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Fixed" => Self::Fixed,
+            "FacingPlayer" => Self::FacingPlayer,
+            "Rotating" => Self::Rotating,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ARLabelMovementType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `AbilityAttemptResult`
@@ -50,6 +94,29 @@ pub enum AbilityAttemptResult {
     Fatigued,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl AbilityAttemptResult {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Activated" => Self::Activated,
+            "Deactivated" => Self::Deactivated,
+            "Failed" => Self::Failed,
+            "Fatigued" => Self::Fatigued,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for AbilityAttemptResult {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `AbilityType`
@@ -315,6 +382,153 @@ pub enum AbilityType {
     Unrecognized(String),
 }
 
+impl AbilityType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "BeingRestrained" => Self::BeingRestrained,
+            "BeingTakenDown" => Self::BeingTakenDown,
+            "BeingUnrestrained" => Self::BeingUnrestrained,
+            "ChangeMode" => Self::ChangeMode,
+            "Climb" => Self::Climb,
+            "Crouch" => Self::Crouch,
+            "Duck" => Self::Duck,
+            "Fire" => Self::Fire,
+            "UseConsumable" => Self::UseConsumable,
+            "EatAndDrink" => Self::EatAndDrink,
+            "EatAndDrink2H" => Self::EatAndDrink2H,
+            "HoldBreath" => Self::HoldBreath,
+            "Jump" => Self::Jump,
+            "Land" => Self::Land,
+            "LadderSprint" => Self::LadderSprint,
+            "LadderDodge" => Self::LadderDodge,
+            "Lean" => Self::Lean,
+            "Melee" => Self::Melee,
+            "MedicalMelee" => Self::MedicalMelee,
+            "Mirror" => Self::Mirror,
+            "MobiGlas" => Self::MobiGlas,
+            "Movement" => Self::Movement,
+            "Rotation" => Self::Rotation,
+            "PersonalInnerThought" => Self::PersonalInnerThought,
+            "Place" => Self::Place,
+            "Prone" => Self::Prone,
+            "ProneMove" => Self::ProneMove,
+            "ProneRoll" => Self::ProneRoll,
+            "Reload" => Self::Reload,
+            "AmmoRepool" => Self::AmmoRepool,
+            "Walk" => Self::Walk,
+            "Run" => Self::Run,
+            "Sprint" => Self::Sprint,
+            "Stand" => Self::Stand,
+            "Stow" => Self::Stow,
+            "Restrain" => Self::Restrain,
+            "PreTake" => Self::PreTake,
+            "Take" => Self::Take,
+            "TakeDown" => Self::TakeDown,
+            "ThrowOverhand" => Self::ThrowOverhand,
+            "ThrowUnderhand" => Self::ThrowUnderhand,
+            "UnarmedCombat" => Self::UnarmedCombat,
+            "Unstow" => Self::Unstow,
+            "Unrestrain" => Self::Unrestrain,
+            "Zoom" => Self::Zoom,
+            "HandSignal" => Self::HandSignal,
+            "Carry" => Self::Carry,
+            "Carry2H" => Self::Carry2H,
+            "Equip" => Self::Equip,
+            "SocialEmote" => Self::SocialEmote,
+            "Fall" => Self::Fall,
+            "Inspect" => Self::Inspect,
+            "InteractionMode" => Self::InteractionMode,
+            "BlockingInteractionMode" => Self::BlockingInteractionMode,
+            "TryOn" => Self::TryOn,
+            "SeatTransition" => Self::SeatTransition,
+            "DiscardItem" => Self::DiscardItem,
+            "TurnStep" => Self::TurnStep,
+            "Lookback" => Self::Lookback,
+            "ItemRaise" => Self::ItemRaise,
+            "HeadTrack" => Self::HeadTrack,
+            "FreeLook" => Self::FreeLook,
+            "MeleeBlock" => Self::MeleeBlock,
+            "LootingInteraction" => Self::LootingInteraction,
+            "UsableBeingDraggedOut" => Self::UsableBeingDraggedOut,
+            "UsableBeingDroppedIn" => Self::UsableBeingDroppedIn,
+            "UsableDragUserOut" => Self::UsableDragUserOut,
+            "UsableDropUserIn" => Self::UsableDropUserIn,
+            "UsableInteraction" => Self::UsableInteraction,
+            "MeleeHeavy" => Self::MeleeHeavy,
+            "StickyFilter" => Self::StickyFilter,
+            "Dodge" => Self::Dodge,
+            "ProtectFace" => Self::ProtectFace,
+            "SuitEquip" => Self::SuitEquip,
+            "EVA" => Self::EVA,
+            "BodyCarrying" => Self::BodyCarrying,
+            "BodyDragging" => Self::BodyDragging,
+            "TrackviewControlled" => Self::TrackviewControlled,
+            "Fidgets" => Self::Fidgets,
+            "DamageReactions" => Self::DamageReactions,
+            "EffortMoveSet" => Self::EffortMoveSet,
+            "WalkToPlace" => Self::WalkToPlace,
+            "Looting" => Self::Looting,
+            "OpenCloseContainer" => Self::OpenCloseContainer,
+            "UseConsumable2H" => Self::UseConsumable2H,
+            "VisorWipe" => Self::VisorWipe,
+            "CanUseMovable" => Self::CanUseMovable,
+            "ThrowReady" => Self::ThrowReady,
+            "PlaceReady" => Self::PlaceReady,
+            "PrimeItem" => Self::PrimeItem,
+            "Hack" => Self::Hack,
+            "UsingMovable" => Self::UsingMovable,
+            "ZeroGTraversal" => Self::ZeroGTraversal,
+            "ZeroGTraversalMovement" => Self::ZeroGTraversalMovement,
+            "ZeroGTraversalHandAttach" => Self::ZeroGTraversalHandAttach,
+            "WeaponMount" => Self::WeaponMount,
+            "Scanning" => Self::Scanning,
+            "TurnOverApply" => Self::TurnOverApply,
+            "SyncedRevival" => Self::SyncedRevival,
+            "Vault" => Self::Vault,
+            "VaultHigh" => Self::VaultHigh,
+            "Mantle" => Self::Mantle,
+            "MantleHigh" => Self::MantleHigh,
+            "DrunkStumble" => Self::DrunkStumble,
+            "SelfTarget" => Self::SelfTarget,
+            "ForceReactions" => Self::ForceReactions,
+            "SoftLockWeapons" => Self::SoftLockWeapons,
+            "AnyPlayerAnimatedInteraction" => Self::AnyPlayerAnimatedInteraction,
+            "LeftHandPlayerAnimatedInteraction" => Self::LeftHandPlayerAnimatedInteraction,
+            "RightHandPlayerAnimatedInteraction" => Self::RightHandPlayerAnimatedInteraction,
+            "FixOverheat" => Self::FixOverheat,
+            "OpenInventory" => Self::OpenInventory,
+            "Misfire" => Self::Misfire,
+            "SyncedMeleeAttack" => Self::SyncedMeleeAttack,
+            "SyncedMeleeDefend" => Self::SyncedMeleeDefend,
+            "Swim" => Self::Swim,
+            "WeaponLowering" => Self::WeaponLowering,
+            "Slide" => Self::Slide,
+            "SlideDrop" => Self::SlideDrop,
+            "Malfunctioning" => Self::Malfunctioning,
+            "StaticFiringModeDeploy" => Self::StaticFiringModeDeploy,
+            "StaticFiringModeIdle" => Self::StaticFiringModeIdle,
+            "StaticFiringModeRetract" => Self::StaticFiringModeRetract,
+            "AttachedWeaponDeploy" => Self::AttachedWeaponDeploy,
+            "AttachedWeaponIdle" => Self::AttachedWeaponIdle,
+            "AttachedWeaponRetract" => Self::AttachedWeaponRetract,
+            "EquipWearable" => Self::EquipWearable,
+            "VehicleWeaponFire" => Self::VehicleWeaponFire,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for AbilityType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `AccountBadge`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum AccountBadge {
@@ -334,6 +548,31 @@ pub enum AccountBadge {
     Unrecognized(String),
 }
 
+impl AccountBadge {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "RSI_BADGE_QA" => Self::RSI_BADGE_QA,
+            "RSI_BADGE_STAFF" => Self::RSI_BADGE_STAFF,
+            "RSI_BADGE_GM" => Self::RSI_BADGE_GM,
+            "RSI_BADGE_SUBSCRIBER" => Self::RSI_BADGE_SUBSCRIBER,
+            "RSI_BADGE_CONCIERGE" => Self::RSI_BADGE_CONCIERGE,
+            "RSI_BADGE_MMHC" => Self::RSI_BADGE_MMHC,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for AccountBadge {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ActivationMethod`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ActivationMethod {
@@ -343,6 +582,27 @@ pub enum ActivationMethod {
     ActivateOnDemand,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ActivationMethod {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "ActivateOnAttach" => Self::ActivateOnAttach,
+            "ActivateOnDemand" => Self::ActivateOnDemand,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ActivationMethod {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `ActivationMode`
@@ -366,6 +626,32 @@ pub enum ActivationMode {
     Unrecognized(String),
 }
 
+impl ActivationMode {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Default" => Self::Default,
+            "Press" => Self::Press,
+            "Tap" => Self::Tap,
+            "DoubleTap" => Self::DoubleTap,
+            "Hold" => Self::Hold,
+            "Release" => Self::Release,
+            "Movement" => Self::Movement,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ActivationMode {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ActiveRange`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ActiveRange {
@@ -375,6 +661,27 @@ pub enum ActiveRange {
     ExteriorRange,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ActiveRange {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "InteriorRange" => Self::InteriorRange,
+            "ExteriorRange" => Self::ExteriorRange,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ActiveRange {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `ActorBodyDirection`
@@ -392,6 +699,30 @@ pub enum ActorBodyDirection {
     Left,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ActorBodyDirection {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "Chest" => Self::Chest,
+            "Back" => Self::Back,
+            "Right" => Self::Right,
+            "Left" => Self::Left,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ActorBodyDirection {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `ActorBone`
@@ -439,6 +770,44 @@ pub enum ActorBone {
     Unrecognized(String),
 }
 
+impl ActorBone {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Hips" => Self::Hips,
+            "Spine" => Self::Spine,
+            "Spine2" => Self::Spine2,
+            "Spine3" => Self::Spine3,
+            "Neck" => Self::Neck,
+            "Head" => Self::Head,
+            "EyeRight" => Self::EyeRight,
+            "EyeLeft" => Self::EyeLeft,
+            "Weapon" => Self::Weapon,
+            "Weapon2" => Self::Weapon2,
+            "FootRight" => Self::FootRight,
+            "FootLeft" => Self::FootLeft,
+            "ArmRight" => Self::ArmRight,
+            "ArmLeft" => Self::ArmLeft,
+            "ForearmRight" => Self::ForearmRight,
+            "ForearmLeft" => Self::ForearmLeft,
+            "CalfRight" => Self::CalfRight,
+            "CalfLeft" => Self::CalfLeft,
+            "Camera" => Self::Camera,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ActorBone {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ActorFilter`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ActorFilter {
@@ -452,6 +821,28 @@ pub enum ActorFilter {
     Unrecognized(String),
 }
 
+impl ActorFilter {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "OnlyPlayer" => Self::OnlyPlayer,
+            "OnlyAI" => Self::OnlyAI,
+            "Both" => Self::Both,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ActorFilter {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ActorStatCooldownType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ActorStatCooldownType {
@@ -461,6 +852,27 @@ pub enum ActorStatCooldownType {
     Points,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ActorStatCooldownType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Time" => Self::Time,
+            "Points" => Self::Points,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ActorStatCooldownType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `ActorStatType`
@@ -528,6 +940,54 @@ pub enum ActorStatType {
     Unrecognized(String),
 }
 
+impl ActorStatType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Hunger" => Self::Hunger,
+            "Thirst" => Self::Thirst,
+            "BloodDrugLevel" => Self::BloodDrugLevel,
+            "OverdoseLevel" => Self::OverdoseLevel,
+            "BodyTemperature" => Self::BodyTemperature,
+            "SuitTemperature" => Self::SuitTemperature,
+            "Stun" => Self::Stun,
+            "Distortion" => Self::Distortion,
+            "Pressure" => Self::Pressure,
+            "GasSaturationO2" => Self::GasSaturationO2,
+            "DownedDamage" => Self::DownedDamage,
+            "HealthPool" => Self::HealthPool,
+            "HealthHead" => Self::HealthHead,
+            "HealthTorso" => Self::HealthTorso,
+            "HealthLeftArm" => Self::HealthLeftArm,
+            "HealthRightArm" => Self::HealthRightArm,
+            "HealthLeftLeg" => Self::HealthLeftLeg,
+            "HealthRightLeg" => Self::HealthRightLeg,
+            "WearHead" => Self::WearHead,
+            "WearTorso" => Self::WearTorso,
+            "WearLeftArm" => Self::WearLeftArm,
+            "WearRightArm" => Self::WearRightArm,
+            "WearLeftLeg" => Self::WearLeftLeg,
+            "WearRightLeg" => Self::WearRightLeg,
+            "BodyRadiation" => Self::BodyRadiation,
+            "SuitRadiation" => Self::SuitRadiation,
+            "GasSaturationCO2" => Self::GasSaturationCO2,
+            "GasSaturationCO" => Self::GasSaturationCO,
+            "Hygiene" => Self::Hygiene,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ActorStatType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ActorStateFilterByAimStanceState`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ActorStateFilterByAimStanceState {
@@ -555,6 +1015,35 @@ pub enum ActorStateFilterByAimStanceState {
     Unrecognized(String),
 }
 
+impl ActorStateFilterByAimStanceState {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Any" => Self::Any,
+            "Inactive" => Self::Inactive,
+            "Relaxed" => Self::Relaxed,
+            "Ready" => Self::Ready,
+            "Lowered" => Self::Lowered,
+            "ADS" => Self::ADS,
+            "Inspect" => Self::Inspect,
+            "MeleeBlock" => Self::MeleeBlock,
+            "ThrowReady" => Self::ThrowReady,
+            "SelfTarget" => Self::SelfTarget,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ActorStateFilterByAimStanceState {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ActorStateFilterByCharacterType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ActorStateFilterByCharacterType {
@@ -566,6 +1055,28 @@ pub enum ActorStateFilterByCharacterType {
     NonPlayersOnly,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ActorStateFilterByCharacterType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Any" => Self::Any,
+            "PlayersOnly" => Self::PlayersOnly,
+            "NonPlayersOnly" => Self::NonPlayersOnly,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ActorStateFilterByCharacterType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `ActorStateFilterByHeldItemType`
@@ -605,6 +1116,40 @@ pub enum ActorStateFilterByHeldItemType {
     Unrecognized(String),
 }
 
+impl ActorStateFilterByHeldItemType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Any" => Self::Any,
+            "Pistol" => Self::Pistol,
+            "Stocked" => Self::Stocked,
+            "Shouldered" => Self::Shouldered,
+            "MeleeMode" => Self::MeleeMode,
+            "mobiGlas" => Self::mobiGlas,
+            "CombatThrowable" => Self::CombatThrowable,
+            "Food" => Self::Food,
+            "Drink" => Self::Drink,
+            "MediPenHeal" => Self::MediPenHeal,
+            "Other" => Self::Other,
+            "Movable" => Self::Movable,
+            "TractorBeam" => Self::TractorBeam,
+            "MiningTool" => Self::MiningTool,
+            "None" => Self::None,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ActorStateFilterByHeldItemType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ActorStateFilterByLeanState`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ActorStateFilterByLeanState {
@@ -618,6 +1163,29 @@ pub enum ActorStateFilterByLeanState {
     None,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ActorStateFilterByLeanState {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Any" => Self::Any,
+            "Left" => Self::Left,
+            "Right" => Self::Right,
+            "None" => Self::None,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ActorStateFilterByLeanState {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `ActorStateFilterByLocomotionSet`
@@ -645,6 +1213,34 @@ pub enum ActorStateFilterByLocomotionSet {
     Unrecognized(String),
 }
 
+impl ActorStateFilterByLocomotionSet {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Any" => Self::Any,
+            "BodyCarry" => Self::BodyCarry,
+            "Drunk" => Self::Drunk,
+            "Standard" => Self::Standard,
+            "Effort" => Self::Effort,
+            "Hurt" => Self::Hurt,
+            "Stumble" => Self::Stumble,
+            "BodyDragging" => Self::BodyDragging,
+            "Movable" => Self::Movable,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ActorStateFilterByLocomotionSet {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ActorStateFilterByMotionSpeed`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ActorStateFilterByMotionSpeed {
@@ -664,6 +1260,32 @@ pub enum ActorStateFilterByMotionSpeed {
     Sprint,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ActorStateFilterByMotionSpeed {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Any" => Self::Any,
+            "Idle" => Self::Idle,
+            "Movement" => Self::Movement,
+            "Walk" => Self::Walk,
+            "Run" => Self::Run,
+            "WalkOrRun" => Self::WalkOrRun,
+            "Sprint" => Self::Sprint,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ActorStateFilterByMotionSpeed {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `ActorStateFilterByPoseState`
@@ -689,6 +1311,33 @@ pub enum ActorStateFilterByPoseState {
     Unrecognized(String),
 }
 
+impl ActorStateFilterByPoseState {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Any" => Self::Any,
+            "Inactive" => Self::Inactive,
+            "NoWeapon" => Self::NoWeapon,
+            "Weapon" => Self::Weapon,
+            "Carry" => Self::Carry,
+            "EnterCarry" => Self::EnterCarry,
+            "ExitCarry" => Self::ExitCarry,
+            "UnarmedCombat" => Self::UnarmedCombat,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ActorStateFilterByPoseState {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ActorStateFilterBySkeleton`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ActorStateFilterBySkeleton {
@@ -702,6 +1351,29 @@ pub enum ActorStateFilterBySkeleton {
     Vanduul,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ActorStateFilterBySkeleton {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Any" => Self::Any,
+            "HumanMale" => Self::HumanMale,
+            "HumanFemale" => Self::HumanFemale,
+            "Vanduul" => Self::Vanduul,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ActorStateFilterBySkeleton {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `ActorStateFilterByStanceState`
@@ -739,6 +1411,40 @@ pub enum ActorStateFilterByStanceState {
     Underground,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ActorStateFilterByStanceState {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Any" => Self::Any,
+            "Inactive" => Self::Inactive,
+            "Stand" => Self::Stand,
+            "Crouch" => Self::Crouch,
+            "Prone" => Self::Prone,
+            "ProneFront" => Self::ProneFront,
+            "ProneBack" => Self::ProneBack,
+            "ProneV2" => Self::ProneV2,
+            "CoverLow" => Self::CoverLow,
+            "CoverHigh" => Self::CoverHigh,
+            "Seated" => Self::Seated,
+            "StandSquashed" => Self::StandSquashed,
+            "Swim" => Self::Swim,
+            "ZeroGSurfaceTraversal" => Self::ZeroGSurfaceTraversal,
+            "Underground" => Self::Underground,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ActorStateFilterByStanceState {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `ActorStateFilterByState`
@@ -804,6 +1510,53 @@ pub enum ActorStateFilterByState {
     Unrecognized(String),
 }
 
+impl ActorStateFilterByState {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Any" => Self::Any,
+            "BodyCarried" => Self::BodyCarried,
+            "BodyDragged" => Self::BodyDragged,
+            "BodyDragging" => Self::BodyDragging,
+            "EVA" => Self::EVA,
+            "Jump" => Self::Jump,
+            "Fall" => Self::Fall,
+            "Land" => Self::Land,
+            "KnockDown" => Self::KnockDown,
+            "Fly" => Self::Fly,
+            "Ground" => Self::Ground,
+            "Ladder" => Self::Ladder,
+            "Interacting" => Self::Interacting,
+            "Ledge" => Self::Ledge,
+            "Restrain" => Self::Restrain,
+            "Unrestrain" => Self::Unrestrain,
+            "TakeDown" => Self::TakeDown,
+            "Usable" => Self::Usable,
+            "WeaponMount" => Self::WeaponMount,
+            "Scanning" => Self::Scanning,
+            "Linked" => Self::Linked,
+            "ZeroGTraversal" => Self::ZeroGTraversal,
+            "ZeroGLaunch" => Self::ZeroGLaunch,
+            "ZeroGHandholdTraversal" => Self::ZeroGHandholdTraversal,
+            "Swim" => Self::Swim,
+            "Reload" => Self::Reload,
+            "HolsterUnholster" => Self::HolsterUnholster,
+            "Dead" => Self::Dead,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ActorStateFilterByState {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ActorStateSelection_Stance`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ActorStateSelection_Stance {
@@ -831,6 +1584,36 @@ pub enum ActorStateSelection_Stance {
     ZeroGSurfaceTraversal,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ActorStateSelection_Stance {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Any" => Self::Any,
+            "Stand" => Self::Stand,
+            "Crouch" => Self::Crouch,
+            "Prone" => Self::Prone,
+            "ProneBack" => Self::ProneBack,
+            "CoverLow" => Self::CoverLow,
+            "CoverHigh" => Self::CoverHigh,
+            "Seated" => Self::Seated,
+            "StandSquashed" => Self::StandSquashed,
+            "Swim" => Self::Swim,
+            "ZeroGSurfaceTraversal" => Self::ZeroGSurfaceTraversal,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ActorStateSelection_Stance {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `ActorStatusType`
@@ -886,6 +1669,48 @@ pub enum ActorStatusType {
     Unrecognized(String),
 }
 
+impl ActorStatusType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Concussion" => Self::Concussion,
+            "Hypothermia" => Self::Hypothermia,
+            "Hyperthermia" => Self::Hyperthermia,
+            "Depressurization" => Self::Depressurization,
+            "PoorAtmosphereQuality" => Self::PoorAtmosphereQuality,
+            "LowHealth" => Self::LowHealth,
+            "Hurt" => Self::Hurt,
+            "Damaged" => Self::Damaged,
+            "Ruined" => Self::Ruined,
+            "Starved" => Self::Starved,
+            "Dehydrated" => Self::Dehydrated,
+            "Dying" => Self::Dying,
+            "MildlyIntoxicated" => Self::MildlyIntoxicated,
+            "Intoxicated" => Self::Intoxicated,
+            "Downed" => Self::Downed,
+            "Overdosed" => Self::Overdosed,
+            "Injury" => Self::Injury,
+            "MajorInjury" => Self::MajorInjury,
+            "DeadlyInjury" => Self::DeadlyInjury,
+            "RadiationSicknessMild" => Self::RadiationSicknessMild,
+            "RadiationSicknessModerate" => Self::RadiationSicknessModerate,
+            "RadiationSicknessSevere" => Self::RadiationSicknessSevere,
+            "DistortionInterference" => Self::DistortionInterference,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ActorStatusType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ActorStatusWidget`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ActorStatusWidget {
@@ -911,6 +1736,34 @@ pub enum ActorStatusWidget {
     Unrecognized(String),
 }
 
+impl ActorStatusWidget {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "HealthPool" => Self::HealthPool,
+            "Oxygen" => Self::Oxygen,
+            "BodyTemperature" => Self::BodyTemperature,
+            "ExternalTemperature" => Self::ExternalTemperature,
+            "InjuryDoll" => Self::InjuryDoll,
+            "HeartMonitor" => Self::HeartMonitor,
+            "Hunger" => Self::Hunger,
+            "Thirst" => Self::Thirst,
+            "BloodDrugLevel" => Self::BloodDrugLevel,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ActorStatusWidget {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `AgentStance`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum AgentStance {
@@ -926,6 +1779,30 @@ pub enum AgentStance {
     CoverHigh,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl AgentStance {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Stand" => Self::Stand,
+            "Crouch" => Self::Crouch,
+            "Prone" => Self::Prone,
+            "CoverLow" => Self::CoverLow,
+            "CoverHigh" => Self::CoverHigh,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for AgentStance {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `AmmoCategory`
@@ -957,6 +1834,36 @@ pub enum AmmoCategory {
     Unrecognized(String),
 }
 
+impl AmmoCategory {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "_5mm" => Self::_5mm,
+            "_7mm" => Self::_7mm,
+            "_10mm" => Self::_10mm,
+            "_50cal" => Self::_50cal,
+            "_50cal_pistol" => Self::_50cal_pistol,
+            "_12g" => Self::_12g,
+            "Electron" => Self::Electron,
+            "Coil" => Self::Coil,
+            "Plasma" => Self::Plasma,
+            "Laser" => Self::Laser,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for AmmoCategory {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `AmmoSpawnType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum AmmoSpawnType {
@@ -968,6 +1875,27 @@ pub enum AmmoSpawnType {
     Unrecognized(String),
 }
 
+impl AmmoSpawnType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "AllClients" => Self::AllClients,
+            "ServerReplicated" => Self::ServerReplicated,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for AmmoSpawnType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `AnimFootSyncMethod`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum AnimFootSyncMethod {
@@ -977,6 +1905,27 @@ pub enum AnimFootSyncMethod {
     Cyclic,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl AnimFootSyncMethod {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Pairs" => Self::Pairs,
+            "Cyclic" => Self::Cyclic,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for AnimFootSyncMethod {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `AnimatedMarker_State`
@@ -992,6 +1941,28 @@ pub enum AnimatedMarker_State {
     Unrecognized(String),
 }
 
+impl AnimatedMarker_State {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Locking" => Self::Locking,
+            "LockLost" => Self::LockLost,
+            "Locked" => Self::Locked,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for AnimatedMarker_State {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `AnimationGraph_TimeModifier`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum AnimationGraph_TimeModifier {
@@ -1003,6 +1974,28 @@ pub enum AnimationGraph_TimeModifier {
     Stagger,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl AnimationGraph_TimeModifier {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "Total" => Self::Total,
+            "Stagger" => Self::Stagger,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for AnimationGraph_TimeModifier {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `AnimationGraph_TrackType`
@@ -1022,6 +2015,30 @@ pub enum AnimationGraph_TrackType {
     Unrecognized(String),
 }
 
+impl AnimationGraph_TrackType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "RotateX" => Self::RotateX,
+            "RotateY" => Self::RotateY,
+            "RotateZ" => Self::RotateZ,
+            "Scale" => Self::Scale,
+            "Number" => Self::Number,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for AnimationGraph_TrackType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `AnimationScopeContextTypes`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum AnimationScopeContextTypes {
@@ -1033,6 +2050,28 @@ pub enum AnimationScopeContextTypes {
     ItemPort,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl AnimationScopeContextTypes {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Self" => Self::Self_,
+            "ObjectContainer" => Self::ObjectContainer,
+            "ItemPort" => Self::ItemPort,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for AnimationScopeContextTypes {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `AnimationVariableInterpolationType`
@@ -1050,6 +2089,29 @@ pub enum AnimationVariableInterpolationType {
     Unrecognized(String),
 }
 
+impl AnimationVariableInterpolationType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Linear" => Self::Linear,
+            "Acceleration" => Self::Acceleration,
+            "Deceleration" => Self::Deceleration,
+            "Snap" => Self::Snap,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for AnimationVariableInterpolationType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `AsteroidStatePropertyType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum AsteroidStatePropertyType {
@@ -1057,6 +2119,26 @@ pub enum AsteroidStatePropertyType {
     DebrisDensity,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl AsteroidStatePropertyType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "DebrisDensity" => Self::DebrisDensity,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for AsteroidStatePropertyType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `AtmosphereStatePropertyType`
@@ -1072,6 +2154,28 @@ pub enum AtmosphereStatePropertyType {
     Unrecognized(String),
 }
 
+impl AtmosphereStatePropertyType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Pressure" => Self::Pressure,
+            "Temperature" => Self::Temperature,
+            "Humidity" => Self::Humidity,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for AtmosphereStatePropertyType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `AtmosphereType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum AtmosphereType {
@@ -1081,6 +2185,27 @@ pub enum AtmosphereType {
     Dynamic,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl AtmosphereType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Static" => Self::Static,
+            "Dynamic" => Self::Dynamic,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for AtmosphereType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `AttachmentZoneType`
@@ -1094,6 +2219,28 @@ pub enum AttachmentZoneType {
     HostParent,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl AttachmentZoneType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Hosted" => Self::Hosted,
+            "Host" => Self::Host,
+            "HostParent" => Self::HostParent,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for AttachmentZoneType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `AttackType`
@@ -1133,6 +2280,40 @@ pub enum AttackType {
     Unrecognized(String),
 }
 
+impl AttackType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "LightRight" => Self::LightRight,
+            "LightLeft" => Self::LightLeft,
+            "HeavyRight" => Self::HeavyRight,
+            "HeavyLeft" => Self::HeavyLeft,
+            "SyringeStab" => Self::SyringeStab,
+            "AI_Light" => Self::AI_Light,
+            "AI_Heavy" => Self::AI_Heavy,
+            "AI_SwipeLeft" => Self::AI_SwipeLeft,
+            "AI_SwipeRight" => Self::AI_SwipeRight,
+            "AI_Stab" => Self::AI_Stab,
+            "AI_Leap" => Self::AI_Leap,
+            "AI_HammerDown" => Self::AI_HammerDown,
+            "AI_PushBack" => Self::AI_PushBack,
+            "AI_Shoot" => Self::AI_Shoot,
+            "AI_TestAttack" => Self::AI_TestAttack,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for AttackType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `BB_ActivationButtonAction`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum BB_ActivationButtonAction {
@@ -1144,6 +2325,28 @@ pub enum BB_ActivationButtonAction {
     DoubleClick,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl BB_ActivationButtonAction {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Up" => Self::Up,
+            "Down" => Self::Down,
+            "DoubleClick" => Self::DoubleClick,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for BB_ActivationButtonAction {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `BB_AnimationDirection`
@@ -1161,6 +2364,29 @@ pub enum BB_AnimationDirection {
     Unrecognized(String),
 }
 
+impl BB_AnimationDirection {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Forward" => Self::Forward,
+            "Reverse" => Self::Reverse,
+            "Alternate" => Self::Alternate,
+            "AlternateReverse" => Self::AlternateReverse,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for BB_AnimationDirection {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `BB_AnimationFillMode`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum BB_AnimationFillMode {
@@ -1176,6 +2402,29 @@ pub enum BB_AnimationFillMode {
     Unrecognized(String),
 }
 
+impl BB_AnimationFillMode {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "Forward" => Self::Forward,
+            "Backward" => Self::Backward,
+            "Both" => Self::Both,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for BB_AnimationFillMode {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `BB_AudioEvent`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum BB_AudioEvent {
@@ -1189,6 +2438,28 @@ pub enum BB_AudioEvent {
     Unrecognized(String),
 }
 
+impl BB_AudioEvent {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Change" => Self::Change,
+            "ChangeToTrue" => Self::ChangeToTrue,
+            "ChangeToFalse" => Self::ChangeToFalse,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for BB_AudioEvent {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `BB_AutoScalingMethod`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum BB_AutoScalingMethod {
@@ -1200,6 +2471,28 @@ pub enum BB_AutoScalingMethod {
     Contain,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl BB_AutoScalingMethod {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "Fill" => Self::Fill,
+            "Contain" => Self::Contain,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for BB_AutoScalingMethod {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `BB_Axis`
@@ -1217,6 +2510,29 @@ pub enum BB_Axis {
     Unrecognized(String),
 }
 
+impl BB_Axis {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "X" => Self::X,
+            "Y" => Self::Y,
+            "Both" => Self::Both,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for BB_Axis {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `BB_AxisDirection`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum BB_AxisDirection {
@@ -1228,6 +2544,27 @@ pub enum BB_AxisDirection {
     Unrecognized(String),
 }
 
+impl BB_AxisDirection {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Horizontal" => Self::Horizontal,
+            "Vertical" => Self::Vertical,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for BB_AxisDirection {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `BB_BackgroundType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum BB_BackgroundType {
@@ -1237,6 +2574,27 @@ pub enum BB_BackgroundType {
     Texture,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl BB_BackgroundType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "Texture" => Self::Texture,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for BB_BackgroundType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `BB_BindingsArithmeticType`
@@ -1262,6 +2620,33 @@ pub enum BB_BindingsArithmeticType {
     Unrecognized(String),
 }
 
+impl BB_BindingsArithmeticType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Add" => Self::Add,
+            "Sub" => Self::Sub,
+            "Mul" => Self::Mul,
+            "Div" => Self::Div,
+            "Min" => Self::Min,
+            "Max" => Self::Max,
+            "Mod" => Self::Mod,
+            "Pow" => Self::Pow,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for BB_BindingsArithmeticType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `BB_BindingsBuiltInVariableTypeInteger`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum BB_BindingsBuiltInVariableTypeInteger {
@@ -1271,6 +2656,27 @@ pub enum BB_BindingsBuiltInVariableTypeInteger {
     ListIndex,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl BB_BindingsBuiltInVariableTypeInteger {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "ServerTime" => Self::ServerTime,
+            "ListIndex" => Self::ListIndex,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for BB_BindingsBuiltInVariableTypeInteger {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `BB_BindingsBuiltInVariableTypeNumber`
@@ -1284,6 +2690,28 @@ pub enum BB_BindingsBuiltInVariableTypeNumber {
     AspectRatio,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl BB_BindingsBuiltInVariableTypeNumber {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "TimerSeconds" => Self::TimerSeconds,
+            "CameraDistance" => Self::CameraDistance,
+            "AspectRatio" => Self::AspectRatio,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for BB_BindingsBuiltInVariableTypeNumber {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `BB_BindingsCaseModifierType`
@@ -1303,6 +2731,30 @@ pub enum BB_BindingsCaseModifierType {
     Unrecognized(String),
 }
 
+impl BB_BindingsCaseModifierType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "Upper" => Self::Upper,
+            "Lower" => Self::Lower,
+            "Pascal" => Self::Pascal,
+            "Camel" => Self::Camel,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for BB_BindingsCaseModifierType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `BB_BindingsCurrencyType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum BB_BindingsCurrencyType {
@@ -1316,6 +2768,29 @@ pub enum BB_BindingsCurrencyType {
     CURRENCY_MER,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl BB_BindingsCurrencyType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "CURRENCY_UEC" => Self::CURRENCY_UEC,
+            "CURRENCY_REC" => Self::CURRENCY_REC,
+            "CURRENCY_AUEC" => Self::CURRENCY_AUEC,
+            "CURRENCY_MER" => Self::CURRENCY_MER,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for BB_BindingsCurrencyType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `BB_BindingsFunctionType`
@@ -1359,6 +2834,42 @@ pub enum BB_BindingsFunctionType {
     Unrecognized(String),
 }
 
+impl BB_BindingsFunctionType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Abs" => Self::Abs,
+            "Acos" => Self::Acos,
+            "Asin" => Self::Asin,
+            "Atan" => Self::Atan,
+            "Ceil" => Self::Ceil,
+            "Cos" => Self::Cos,
+            "Cubed" => Self::Cubed,
+            "Exp" => Self::Exp,
+            "Floor" => Self::Floor,
+            "Log" => Self::Log,
+            "ModInt" => Self::ModInt,
+            "ModFrac" => Self::ModFrac,
+            "Round" => Self::Round,
+            "Sin" => Self::Sin,
+            "Sqrt" => Self::Sqrt,
+            "Squared" => Self::Squared,
+            "Tan" => Self::Tan,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for BB_BindingsFunctionType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `BB_BindingsIntegerConstants`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum BB_BindingsIntegerConstants {
@@ -1366,6 +2877,26 @@ pub enum BB_BindingsIntegerConstants {
     InvalidIndex,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl BB_BindingsIntegerConstants {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "InvalidIndex" => Self::InvalidIndex,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for BB_BindingsIntegerConstants {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `BB_BindingsIntegerFunctionType`
@@ -1379,6 +2910,28 @@ pub enum BB_BindingsIntegerFunctionType {
     Cubed,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl BB_BindingsIntegerFunctionType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Abs" => Self::Abs,
+            "Squared" => Self::Squared,
+            "Cubed" => Self::Cubed,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for BB_BindingsIntegerFunctionType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `BB_BooleanField`
@@ -1558,6 +3111,110 @@ pub enum BB_BooleanField {
     Unrecognized(String),
 }
 
+impl BB_BooleanField {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "AffectsAutosize" => Self::AffectsAutosize,
+            "AffectsLayout" => Self::AffectsLayout,
+            "AutoFontSize" => Self::AutoFontSize,
+            "AutoScroll" => Self::AutoScroll,
+            "CenterDragProxyOnCursor" => Self::CenterDragProxyOnCursor,
+            "Chamfer" => Self::Chamfer,
+            "CustomPivot" => Self::CustomPivot,
+            "Disabled" => Self::Disabled,
+            "DoStroke" => Self::DoStroke,
+            "DoFill" => Self::DoFill,
+            "Editable" => Self::Editable,
+            "EditBoxSingleLine" => Self::EditBoxSingleLine,
+            "EditBoxAllowSpaces" => Self::EditBoxAllowSpaces,
+            "EditBoxBindingsAuthoritative" => Self::EditBoxBindingsAuthoritative,
+            "EditBoxConfirmDeselect" => Self::EditBoxConfirmDeselect,
+            "EditBoxHiddenText" => Self::EditBoxHiddenText,
+            "EnableColorOverlay" => Self::EnableColorOverlay,
+            "EnableNineSliceRect" => Self::EnableNineSliceRect,
+            "EnableDrawInGeneralPass" => Self::EnableDrawInGeneralPass,
+            "EnableBackground" => Self::EnableBackground,
+            "EnableTopLeftBorderChamfer" => Self::EnableTopLeftBorderChamfer,
+            "EnableTopRightBorderChamfer" => Self::EnableTopRightBorderChamfer,
+            "EnableBottomRightBorderChamfer" => Self::EnableBottomRightBorderChamfer,
+            "EnableBottomLeftBorderChamfer" => Self::EnableBottomLeftBorderChamfer,
+            "EnableMaxWidth" => Self::EnableMaxWidth,
+            "EnableMaxHeight" => Self::EnableMaxHeight,
+            "EnableMinWidth" => Self::EnableMinWidth,
+            "EnableMinHeight" => Self::EnableMinHeight,
+            "EnableSegmentedBarFill" => Self::EnableSegmentedBarFill,
+            "EnableSegmentedFill" => Self::EnableSegmentedFill,
+            "EnableSilhouette" => Self::EnableSilhouette,
+            "EntityAnimationNormalizeTime" => Self::EntityAnimationNormalizeTime,
+            "EntityAnimationWrapTime" => Self::EntityAnimationWrapTime,
+            "EntityHolographic" => Self::EntityHolographic,
+            "FadeXAxis" => Self::FadeXAxis,
+            "FadeYAxis" => Self::FadeYAxis,
+            "FadeZAxis" => Self::FadeZAxis,
+            "GhostPrimRearOffset" => Self::GhostPrimRearOffset,
+            "ImageFlipHorizontal" => Self::ImageFlipHorizontal,
+            "ImageFlipVertical" => Self::ImageFlipVertical,
+            "IncludeInGroundingEffects" => Self::IncludeInGroundingEffects,
+            "InheritDisabledState" => Self::InheritDisabledState,
+            "InheritDownState" => Self::InheritDownState,
+            "InheritHoverState" => Self::InheritHoverState,
+            "InheritRadialRotation" => Self::InheritRadialRotation,
+            "InheritRadialShapeWarp" => Self::InheritRadialShapeWarp,
+            "InheritSelectedState" => Self::InheritSelectedState,
+            "Instantiated" => Self::Instantiated,
+            "Interactable" => Self::Interactable,
+            "IsActive" => Self::IsActive,
+            "Flip" => Self::Flip,
+            "FillStroke" => Self::FillStroke,
+            "MaintainGapLength" => Self::MaintainGapLength,
+            "MouseTestRadialShape" => Self::MouseTestRadialShape,
+            "MoviePlaying" => Self::MoviePlaying,
+            "ParallelGaps" => Self::ParallelGaps,
+            "ParamInput0" => Self::ParamInput0,
+            "ParamInput1" => Self::ParamInput1,
+            "ParamInput2" => Self::ParamInput2,
+            "ParamInput3" => Self::ParamInput3,
+            "ParamInput4" => Self::ParamInput4,
+            "ParamInput5" => Self::ParamInput5,
+            "ParamInput6" => Self::ParamInput6,
+            "ParamInput7" => Self::ParamInput7,
+            "ParamInput8" => Self::ParamInput8,
+            "PivotProgressAngleWidget" => Self::PivotProgressAngleWidget,
+            "PivotStartAngleWidget" => Self::PivotStartAngleWidget,
+            "PrimitiveFlipHorizontal" => Self::PrimitiveFlipHorizontal,
+            "PrimitiveFlipVertical" => Self::PrimitiveFlipVertical,
+            "PrimitiveHasPerspective" => Self::PrimitiveHasPerspective,
+            "PrimitiveIsFacingCamera" => Self::PrimitiveIsFacingCamera,
+            "PrimitiveIsGrouped" => Self::PrimitiveIsGrouped,
+            "PropagateInteractionStates" => Self::PropagateInteractionStates,
+            "RenderAsHTML" => Self::RenderAsHTML,
+            "RenderShape" => Self::RenderShape,
+            "RotateProgressAngleWidget" => Self::RotateProgressAngleWidget,
+            "RotateStartAngleWidget" => Self::RotateStartAngleWidget,
+            "Selected" => Self::Selected,
+            "SvgFlipHorizontal" => Self::SvgFlipHorizontal,
+            "SvgFlipVertical" => Self::SvgFlipVertical,
+            "TextBold" => Self::TextBold,
+            "TextItalic" => Self::TextItalic,
+            "TextKerning" => Self::TextKerning,
+            "TextUnderline" => Self::TextUnderline,
+            "WordWrap" => Self::WordWrap,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for BB_BooleanField {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `BB_BooleanWriteMode`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum BB_BooleanWriteMode {
@@ -1569,6 +3226,28 @@ pub enum BB_BooleanWriteMode {
     Clear,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl BB_BooleanWriteMode {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Invert" => Self::Invert,
+            "Set" => Self::Set,
+            "Clear" => Self::Clear,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for BB_BooleanWriteMode {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `BB_CanvasCoordinateMethod`
@@ -1588,6 +3267,30 @@ pub enum BB_CanvasCoordinateMethod {
     Unrecognized(String),
 }
 
+impl BB_CanvasCoordinateMethod {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "useRaw" => Self::useRaw,
+            "aspectOverridesWidth" => Self::aspectOverridesWidth,
+            "aspectOverridesHeight" => Self::aspectOverridesHeight,
+            "auto" => Self::auto,
+            "longestSide" => Self::longestSide,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for BB_CanvasCoordinateMethod {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `BB_CanvasWidgetSizingMethod`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum BB_CanvasWidgetSizingMethod {
@@ -1597,6 +3300,27 @@ pub enum BB_CanvasWidgetSizingMethod {
     Scale,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl BB_CanvasWidgetSizingMethod {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Size" => Self::Size,
+            "Scale" => Self::Scale,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for BB_CanvasWidgetSizingMethod {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `BB_ColorField`
@@ -1660,6 +3384,52 @@ pub enum BB_ColorField {
     Unrecognized(String),
 }
 
+impl BB_ColorField {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "BackgroundColor" => Self::BackgroundColor,
+            "BackgroundColorTopLeft" => Self::BackgroundColorTopLeft,
+            "BackgroundColorTopRight" => Self::BackgroundColorTopRight,
+            "BackgroundColorBottomLeft" => Self::BackgroundColorBottomLeft,
+            "BackgroundColorBottomRight" => Self::BackgroundColorBottomRight,
+            "BorderColorLeft" => Self::BorderColorLeft,
+            "BorderColorRight" => Self::BorderColorRight,
+            "BorderColorTop" => Self::BorderColorTop,
+            "BorderColorBottom" => Self::BorderColorBottom,
+            "FillColor" => Self::FillColor,
+            "GlowColor" => Self::GlowColor,
+            "LightColor" => Self::LightColor,
+            "ParamInput0" => Self::ParamInput0,
+            "ParamInput1" => Self::ParamInput1,
+            "ParamInput2" => Self::ParamInput2,
+            "ParamInput3" => Self::ParamInput3,
+            "ParamInput4" => Self::ParamInput4,
+            "ParamInput5" => Self::ParamInput5,
+            "ParamInput6" => Self::ParamInput6,
+            "ParamInput7" => Self::ParamInput7,
+            "ParamInput8" => Self::ParamInput8,
+            "SegmentColor" => Self::SegmentColor,
+            "SilhouetteColor" => Self::SilhouetteColor,
+            "StripStartColor" => Self::StripStartColor,
+            "StripEndColor" => Self::StripEndColor,
+            "StrokeColor" => Self::StrokeColor,
+            "TintColor" => Self::TintColor,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for BB_ColorField {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `BB_ColorStyle`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum BB_ColorStyle {
@@ -1701,6 +3471,42 @@ pub enum BB_ColorStyle {
     Unrecognized(String),
 }
 
+impl BB_ColorStyle {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Base" => Self::Base,
+            "Positive" => Self::Positive,
+            "Moderate" => Self::Moderate,
+            "Critical" => Self::Critical,
+            "Accent1" => Self::Accent1,
+            "Accent2" => Self::Accent2,
+            "Bright" => Self::Bright,
+            "Selected" => Self::Selected,
+            "Disabled" => Self::Disabled,
+            "Background" => Self::Background,
+            "ContactNeutral" => Self::ContactNeutral,
+            "ContactParty" => Self::ContactParty,
+            "ContactPositiveRep" => Self::ContactPositiveRep,
+            "ContactNegativeRep" => Self::ContactNegativeRep,
+            "ContactAgressive" => Self::ContactAgressive,
+            "ContactUnknown" => Self::ContactUnknown,
+            "MissionObjectives" => Self::MissionObjectives,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for BB_ColorStyle {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `BB_ComparisonOperatorType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum BB_ComparisonOperatorType {
@@ -1718,6 +3524,31 @@ pub enum BB_ComparisonOperatorType {
     LessOrEqual,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl BB_ComparisonOperatorType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Equal" => Self::Equal,
+            "NotEqual" => Self::NotEqual,
+            "Greater" => Self::Greater,
+            "GreaterOrEqual" => Self::GreaterOrEqual,
+            "Less" => Self::Less,
+            "LessOrEqual" => Self::LessOrEqual,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for BB_ComparisonOperatorType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `BB_ComponentParameter`
@@ -1745,6 +3576,34 @@ pub enum BB_ComponentParameter {
     Unrecognized(String),
 }
 
+impl BB_ComponentParameter {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "ParamInput0" => Self::ParamInput0,
+            "ParamInput1" => Self::ParamInput1,
+            "ParamInput2" => Self::ParamInput2,
+            "ParamInput3" => Self::ParamInput3,
+            "ParamInput4" => Self::ParamInput4,
+            "ParamInput5" => Self::ParamInput5,
+            "ParamInput6" => Self::ParamInput6,
+            "ParamInput7" => Self::ParamInput7,
+            "ParamInput8" => Self::ParamInput8,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for BB_ComponentParameter {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `BB_ContentBoxPosition`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum BB_ContentBoxPosition {
@@ -1760,6 +3619,29 @@ pub enum BB_ContentBoxPosition {
     Unrecognized(String),
 }
 
+impl BB_ContentBoxPosition {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Top" => Self::Top,
+            "Right" => Self::Right,
+            "Bottom" => Self::Bottom,
+            "Left" => Self::Left,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for BB_ContentBoxPosition {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `BB_CullingLevel`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum BB_CullingLevel {
@@ -1771,6 +3653,28 @@ pub enum BB_CullingLevel {
     Node,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl BB_CullingLevel {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "Render" => Self::Render,
+            "Node" => Self::Node,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for BB_CullingLevel {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `BB_CurvatureAxis`
@@ -1786,6 +3690,28 @@ pub enum BB_CurvatureAxis {
     Unrecognized(String),
 }
 
+impl BB_CurvatureAxis {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "X" => Self::X,
+            "Y" => Self::Y,
+            "Z" => Self::Z,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for BB_CurvatureAxis {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `BB_DraggablePolicyType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum BB_DraggablePolicyType {
@@ -1795,6 +3721,27 @@ pub enum BB_DraggablePolicyType {
     DropTargetItem,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl BB_DraggablePolicyType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "DropTargetItem" => Self::DropTargetItem,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for BB_DraggablePolicyType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `BB_DropTargetPolicyType`
@@ -1808,6 +3755,27 @@ pub enum BB_DropTargetPolicyType {
     Unrecognized(String),
 }
 
+impl BB_DropTargetPolicyType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "DropTarget" => Self::DropTarget,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for BB_DropTargetPolicyType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `BB_DropdownAlignment`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum BB_DropdownAlignment {
@@ -1817,6 +3785,27 @@ pub enum BB_DropdownAlignment {
     Down,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl BB_DropdownAlignment {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Up" => Self::Up,
+            "Down" => Self::Down,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for BB_DropdownAlignment {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `BB_DustParticleMovementRestriction`
@@ -1832,6 +3821,28 @@ pub enum BB_DustParticleMovementRestriction {
     Unrecognized(String),
 }
 
+impl BB_DustParticleMovementRestriction {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "ZoomExclusive" => Self::ZoomExclusive,
+            "TranslationExclusive" => Self::TranslationExclusive,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for BB_DustParticleMovementRestriction {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `BB_FillStyle`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum BB_FillStyle {
@@ -1841,6 +3852,27 @@ pub enum BB_FillStyle {
     Ghost,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl BB_FillStyle {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Filled" => Self::Filled,
+            "Ghost" => Self::Ghost,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for BB_FillStyle {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `BB_FlexAxisJustification`
@@ -1864,6 +3896,32 @@ pub enum BB_FlexAxisJustification {
     Unrecognized(String),
 }
 
+impl BB_FlexAxisJustification {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Start" => Self::Start,
+            "End" => Self::End,
+            "Center" => Self::Center,
+            "SpaceBetween" => Self::SpaceBetween,
+            "SpaceAround" => Self::SpaceAround,
+            "SpaceEvenly" => Self::SpaceEvenly,
+            "Stretch" => Self::Stretch,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for BB_FlexAxisJustification {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `BB_FlexDirection`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum BB_FlexDirection {
@@ -1877,6 +3935,29 @@ pub enum BB_FlexDirection {
     ColumnReverse,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl BB_FlexDirection {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Row" => Self::Row,
+            "RowReverse" => Self::RowReverse,
+            "Column" => Self::Column,
+            "ColumnReverse" => Self::ColumnReverse,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for BB_FlexDirection {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `BB_FlexItemAlignment`
@@ -1894,6 +3975,29 @@ pub enum BB_FlexItemAlignment {
     Unrecognized(String),
 }
 
+impl BB_FlexItemAlignment {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Start" => Self::Start,
+            "End" => Self::End,
+            "Center" => Self::Center,
+            "Stretch" => Self::Stretch,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for BB_FlexItemAlignment {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `BB_FlexWrap`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum BB_FlexWrap {
@@ -1907,6 +4011,29 @@ pub enum BB_FlexWrap {
     NoWrapInfinite,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl BB_FlexWrap {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Wrap" => Self::Wrap,
+            "WrapReverse" => Self::WrapReverse,
+            "NoWrap" => Self::NoWrap,
+            "NoWrapInfinite" => Self::NoWrapInfinite,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for BB_FlexWrap {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `BB_FlipDirection`
@@ -1924,6 +4051,29 @@ pub enum BB_FlipDirection {
     Unrecognized(String),
 }
 
+impl BB_FlipDirection {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "Vertical" => Self::Vertical,
+            "Horizontal" => Self::Horizontal,
+            "Both" => Self::Both,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for BB_FlipDirection {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `BB_GrabBounds`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum BB_GrabBounds {
@@ -1937,6 +4087,28 @@ pub enum BB_GrabBounds {
     Unrecognized(String),
 }
 
+impl BB_GrabBounds {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Sphere" => Self::Sphere,
+            "Box" => Self::Box,
+            "Camera" => Self::Camera,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for BB_GrabBounds {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `BB_GrabRotationMode`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum BB_GrabRotationMode {
@@ -1948,6 +4120,27 @@ pub enum BB_GrabRotationMode {
     Unrecognized(String),
 }
 
+impl BB_GrabRotationMode {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Orbital" => Self::Orbital,
+            "Planar" => Self::Planar,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for BB_GrabRotationMode {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `BB_GridPackDirection`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum BB_GridPackDirection {
@@ -1957,6 +4150,27 @@ pub enum BB_GridPackDirection {
     Vertical,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl BB_GridPackDirection {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Horizontal" => Self::Horizontal,
+            "Vertical" => Self::Vertical,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for BB_GridPackDirection {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `BB_IconWidgetPreset`
@@ -2100,6 +4314,92 @@ pub enum BB_IconWidgetPreset {
     Unrecognized(String),
 }
 
+impl BB_IconWidgetPreset {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "_None" => Self::_None,
+            "ArrowHollowUp" => Self::ArrowHollowUp,
+            "ArrowHollowRight" => Self::ArrowHollowRight,
+            "ArrowHollowDown" => Self::ArrowHollowDown,
+            "ArrowHollowLeft" => Self::ArrowHollowLeft,
+            "ArrowHollowCurvedLeft" => Self::ArrowHollowCurvedLeft,
+            "ArrowHollowCurvedRight" => Self::ArrowHollowCurvedRight,
+            "ArrowHollowCurvedDoubleLeft" => Self::ArrowHollowCurvedDoubleLeft,
+            "ArrowHollowCurvedDoubleRight" => Self::ArrowHollowCurvedDoubleRight,
+            "ArrowHollowCurvedDownLeft" => Self::ArrowHollowCurvedDownLeft,
+            "ArrowHollowCurvedDownRight" => Self::ArrowHollowCurvedDownRight,
+            "ArrowUp" => Self::ArrowUp,
+            "ArrowRight" => Self::ArrowRight,
+            "ArrowDown" => Self::ArrowDown,
+            "ArrowLeft" => Self::ArrowLeft,
+            "ArrowUpLeft" => Self::ArrowUpLeft,
+            "ArrowUpRight" => Self::ArrowUpRight,
+            "ArrowDownRight" => Self::ArrowDownRight,
+            "ArrowDownLeft" => Self::ArrowDownLeft,
+            "ArrowHookLeft" => Self::ArrowHookLeft,
+            "ArrowHookRight" => Self::ArrowHookRight,
+            "ArrowDiamond" => Self::ArrowDiamond,
+            "ArrowSquare" => Self::ArrowSquare,
+            "ArrowExpandDownUp" => Self::ArrowExpandDownUp,
+            "ArrowExpandUpDown" => Self::ArrowExpandUpDown,
+            "ArrowCurvedLeft" => Self::ArrowCurvedLeft,
+            "ArrowCurvedRight" => Self::ArrowCurvedRight,
+            "ArrowCurvedDoubleLeft" => Self::ArrowCurvedDoubleLeft,
+            "ArrowCurvedDoubleRight" => Self::ArrowCurvedDoubleRight,
+            "ArrowCurvedDownLeft" => Self::ArrowCurvedDownLeft,
+            "ArrowCurvedDownRight" => Self::ArrowCurvedDownRight,
+            "ArrowFullCircleCCW" => Self::ArrowFullCircleCCW,
+            "ArrowFullCircleCW" => Self::ArrowFullCircleCW,
+            "ArrowHalfCircleCCW" => Self::ArrowHalfCircleCCW,
+            "ArrowHalfCircleCW" => Self::ArrowHalfCircleCW,
+            "ArrowHalfCircleExclamationCCW" => Self::ArrowHalfCircleExclamationCCW,
+            "ArrowHalfCircleExclamationCW" => Self::ArrowHalfCircleExclamationCW,
+            "ArrowCaratUp" => Self::ArrowCaratUp,
+            "ArrowCaratRight" => Self::ArrowCaratRight,
+            "ArrowCaratDown" => Self::ArrowCaratDown,
+            "ArrowCaratLeft" => Self::ArrowCaratLeft,
+            "ArrowCaratDoubleUp" => Self::ArrowCaratDoubleUp,
+            "ArrowCaratDoubleRight" => Self::ArrowCaratDoubleRight,
+            "ArrowCaratDoubleDown" => Self::ArrowCaratDoubleDown,
+            "ArrowCaratDoubleLeft" => Self::ArrowCaratDoubleLeft,
+            "ArrowEncasedUp" => Self::ArrowEncasedUp,
+            "ArrowEncasedRight" => Self::ArrowEncasedRight,
+            "ArrowEncasedDown" => Self::ArrowEncasedDown,
+            "ArrowEncasedLeft" => Self::ArrowEncasedLeft,
+            "ArrowEncasedUpLeft" => Self::ArrowEncasedUpLeft,
+            "ArrowEncasedUpRight" => Self::ArrowEncasedUpRight,
+            "ArrowEncasedDownRight" => Self::ArrowEncasedDownRight,
+            "ArrowEncasedDownLeft" => Self::ArrowEncasedDownLeft,
+            "ArrowEncasedHookLeft" => Self::ArrowEncasedHookLeft,
+            "ArrowEncasedHookRight" => Self::ArrowEncasedHookRight,
+            "ArrowEncasedCaratUp" => Self::ArrowEncasedCaratUp,
+            "ArrowEncasedCaratRight" => Self::ArrowEncasedCaratRight,
+            "ArrowEncasedCaratDown" => Self::ArrowEncasedCaratDown,
+            "ArrowEncasedCaratLeft" => Self::ArrowEncasedCaratLeft,
+            "ArrowEncasedCaratDoubleUp" => Self::ArrowEncasedCaratDoubleUp,
+            "ArrowEncasedCaratDoubleRight" => Self::ArrowEncasedCaratDoubleRight,
+            "ArrowEncasedCaratDoubleDown" => Self::ArrowEncasedCaratDoubleDown,
+            "ArrowEncasedCaratDoubleLeft" => Self::ArrowEncasedCaratDoubleLeft,
+            "GeneralCheckmark" => Self::GeneralCheckmark,
+            "GeneralCircleFilled" => Self::GeneralCircleFilled,
+            "GeneralX" => Self::GeneralX,
+            "GeneralInfo" => Self::GeneralInfo,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for BB_IconWidgetPreset {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `BB_ImageScalingMethod`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum BB_ImageScalingMethod {
@@ -2111,6 +4411,28 @@ pub enum BB_ImageScalingMethod {
     Cover,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl BB_ImageScalingMethod {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Fill" => Self::Fill,
+            "Contain" => Self::Contain,
+            "Cover" => Self::Cover,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for BB_ImageScalingMethod {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `BB_IntegerField`
@@ -2252,6 +4574,91 @@ pub enum BB_IntegerField {
     Unrecognized(String),
 }
 
+impl BB_IntegerField {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "AutoScrollBehavior" => Self::AutoScrollBehavior,
+            "BorderTopLeftRadiusBehavior" => Self::BorderTopLeftRadiusBehavior,
+            "BorderTopRightRadiusBehavior" => Self::BorderTopRightRadiusBehavior,
+            "BorderBottomRightRadiusBehavior" => Self::BorderBottomRightRadiusBehavior,
+            "BorderBottomLeftRadiusBehavior" => Self::BorderBottomLeftRadiusBehavior,
+            "CanvasWidgetSizingMethod" => Self::CanvasWidgetSizingMethod,
+            "CaretIndex" => Self::CaretIndex,
+            "CaseModifier" => Self::CaseModifier,
+            "CurvatureAxis" => Self::CurvatureAxis,
+            "DepthBehavior" => Self::DepthBehavior,
+            "DraggablePolicy" => Self::DraggablePolicy,
+            "DropTargetPolicy" => Self::DropTargetPolicy,
+            "DustParticleCount" => Self::DustParticleCount,
+            "DustParticleMovementRestriction" => Self::DustParticleMovementRestriction,
+            "EditBoxCharLimit" => Self::EditBoxCharLimit,
+            "EntityImageSource" => Self::EntityImageSource,
+            "FlexDirection" => Self::FlexDirection,
+            "FlexWrap" => Self::FlexWrap,
+            "FlexAxisJustification" => Self::FlexAxisJustification,
+            "FlexCrossAxisJustification" => Self::FlexCrossAxisJustification,
+            "FlexItemAlignment" => Self::FlexItemAlignment,
+            "FocusIndex" => Self::FocusIndex,
+            "GhostPrimCount" => Self::GhostPrimCount,
+            "GridPackDirection" => Self::GridPackDirection,
+            "HeightBehavior" => Self::HeightBehavior,
+            "HorizontalAlignment" => Self::HorizontalAlignment,
+            "ImageScalingBehavior" => Self::ImageScalingBehavior,
+            "LayoutDisplayOrder" => Self::LayoutDisplayOrder,
+            "LayoutPolicy" => Self::LayoutPolicy,
+            "MaxWidthBehavior" => Self::MaxWidthBehavior,
+            "MaxHeightBehavior" => Self::MaxHeightBehavior,
+            "MinWidthBehavior" => Self::MinWidthBehavior,
+            "MinHeightBehavior" => Self::MinHeightBehavior,
+            "MovieStartTimeMs" => Self::MovieStartTimeMs,
+            "ParamInput0" => Self::ParamInput0,
+            "ParamInput1" => Self::ParamInput1,
+            "ParamInput2" => Self::ParamInput2,
+            "ParamInput3" => Self::ParamInput3,
+            "ParamInput4" => Self::ParamInput4,
+            "ParamInput5" => Self::ParamInput5,
+            "ParamInput6" => Self::ParamInput6,
+            "ParamInput7" => Self::ParamInput7,
+            "ParamInput8" => Self::ParamInput8,
+            "RadialPolyResolution" => Self::RadialPolyResolution,
+            "RuntimeImageSource" => Self::RuntimeImageSource,
+            "ScrollBehavior" => Self::ScrollBehavior,
+            "ScrollDirection" => Self::ScrollDirection,
+            "ScrollEasingType" => Self::ScrollEasingType,
+            "ScrollPolicy" => Self::ScrollPolicy,
+            "SegmentProgressBehavior" => Self::SegmentProgressBehavior,
+            "SegmentEasing" => Self::SegmentEasing,
+            "Segments" => Self::Segments,
+            "SegmentSizeBehavior" => Self::SegmentSizeBehavior,
+            "SegmentSpacingBehavior" => Self::SegmentSpacingBehavior,
+            "Sides" => Self::Sides,
+            "SliderMode" => Self::SliderMode,
+            "SquashAxis" => Self::SquashAxis,
+            "StackDirection" => Self::StackDirection,
+            "StrokeCapStyle" => Self::StrokeCapStyle,
+            "StrokeJointStyle" => Self::StrokeJointStyle,
+            "StrokeAlignment" => Self::StrokeAlignment,
+            "SvgScalingBehavior" => Self::SvgScalingBehavior,
+            "TextureGroup" => Self::TextureGroup,
+            "TickBoxMode" => Self::TickBoxMode,
+            "VerticalAlignment" => Self::VerticalAlignment,
+            "WidthBehavior" => Self::WidthBehavior,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for BB_IntegerField {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `BB_JumpTerm`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum BB_JumpTerm {
@@ -2261,6 +4668,27 @@ pub enum BB_JumpTerm {
     End,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl BB_JumpTerm {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Start" => Self::Start,
+            "End" => Self::End,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for BB_JumpTerm {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `BB_LayoutPolicyType`
@@ -2276,6 +4704,28 @@ pub enum BB_LayoutPolicyType {
     Unrecognized(String),
 }
 
+impl BB_LayoutPolicyType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "Flex" => Self::Flex,
+            "GridPack" => Self::GridPack,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for BB_LayoutPolicyType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `BB_ListNavigationType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum BB_ListNavigationType {
@@ -2287,6 +4737,28 @@ pub enum BB_ListNavigationType {
     SecondaryTab,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl BB_ListNavigationType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "PrimaryTab" => Self::PrimaryTab,
+            "SecondaryTab" => Self::SecondaryTab,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for BB_ListNavigationType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `BB_LocalizedField`
@@ -2320,6 +4792,37 @@ pub enum BB_LocalizedField {
     Unrecognized(String),
 }
 
+impl BB_LocalizedField {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "ParamInput0" => Self::ParamInput0,
+            "ParamInput1" => Self::ParamInput1,
+            "ParamInput2" => Self::ParamInput2,
+            "ParamInput3" => Self::ParamInput3,
+            "ParamInput4" => Self::ParamInput4,
+            "ParamInput5" => Self::ParamInput5,
+            "ParamInput6" => Self::ParamInput6,
+            "ParamInput7" => Self::ParamInput7,
+            "ParamInput8" => Self::ParamInput8,
+            "EditBoxHelperString" => Self::EditBoxHelperString,
+            "Text" => Self::Text,
+            "TooltipText" => Self::TooltipText,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for BB_LocalizedField {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `BB_NavigationType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum BB_NavigationType {
@@ -2329,6 +4832,27 @@ pub enum BB_NavigationType {
     Close,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl BB_NavigationType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Back" => Self::Back,
+            "Close" => Self::Close,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for BB_NavigationType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `BB_NumberField`
@@ -2632,6 +5156,172 @@ pub enum BB_NumberField {
     Unrecognized(String),
 }
 
+impl BB_NumberField {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Alpha" => Self::Alpha,
+            "AnchorX" => Self::AnchorX,
+            "AnchorY" => Self::AnchorY,
+            "AnchorZ" => Self::AnchorZ,
+            "AutoScrollSpeed" => Self::AutoScrollSpeed,
+            "AutoScrollStartPause" => Self::AutoScrollStartPause,
+            "AutoScrollEndPause" => Self::AutoScrollEndPause,
+            "AutoScrollFadeSpeed" => Self::AutoScrollFadeSpeed,
+            "BorderTopWidth" => Self::BorderTopWidth,
+            "BorderRightWidth" => Self::BorderRightWidth,
+            "BorderBottomWidth" => Self::BorderBottomWidth,
+            "BorderLeftWidth" => Self::BorderLeftWidth,
+            "BorderTopLeftRadius" => Self::BorderTopLeftRadius,
+            "BorderTopRightRadius" => Self::BorderTopRightRadius,
+            "BorderBottomRightRadius" => Self::BorderBottomRightRadius,
+            "BorderBottomLeftRadius" => Self::BorderBottomLeftRadius,
+            "CharsPerSecond" => Self::CharsPerSecond,
+            "ConicSlantFactor" => Self::ConicSlantFactor,
+            "CornerRatio" => Self::CornerRatio,
+            "DissolveOpacity" => Self::DissolveOpacity,
+            "DustParticleDiameter" => Self::DustParticleDiameter,
+            "DustParticleOffsetX" => Self::DustParticleOffsetX,
+            "DustParticleOffsetY" => Self::DustParticleOffsetY,
+            "DustParticleOffsetZ" => Self::DustParticleOffsetZ,
+            "DustZoomFactor" => Self::DustZoomFactor,
+            "EntityContentOrientationX" => Self::EntityContentOrientationX,
+            "EntityContentOrientationY" => Self::EntityContentOrientationY,
+            "EntityContentOrientationZ" => Self::EntityContentOrientationZ,
+            "EntityContentScaleLimitMin" => Self::EntityContentScaleLimitMin,
+            "EntityContentScaleLimitMax" => Self::EntityContentScaleLimitMax,
+            "EntityDirt" => Self::EntityDirt,
+            "EntityWear" => Self::EntityWear,
+            "InterferenceAmount" => Self::InterferenceAmount,
+            "FillStrokeWidth" => Self::FillStrokeWidth,
+            "FlexColumnSpacing" => Self::FlexColumnSpacing,
+            "FlexRowSpacing" => Self::FlexRowSpacing,
+            "FlexGrowProportion" => Self::FlexGrowProportion,
+            "FlexShrinkProportion" => Self::FlexShrinkProportion,
+            "FontSize" => Self::FontSize,
+            "GapAngle" => Self::GapAngle,
+            "GeomEntityAnimationTime" => Self::GeomEntityAnimationTime,
+            "GhostPrimAlphaClamp" => Self::GhostPrimAlphaClamp,
+            "GhostPrimAlphaFactor" => Self::GhostPrimAlphaFactor,
+            "GhostPrimScaleFactor" => Self::GhostPrimScaleFactor,
+            "GlowAmount" => Self::GlowAmount,
+            "GridPackGutter" => Self::GridPackGutter,
+            "HitDetectionOffset" => Self::HitDetectionOffset,
+            "ImageColorPickerStepSizeX" => Self::ImageColorPickerStepSizeX,
+            "ImageColorPickerStepSizeY" => Self::ImageColorPickerStepSizeY,
+            "LayoutTransitionDelay" => Self::LayoutTransitionDelay,
+            "LayoutTransitionDuration" => Self::LayoutTransitionDuration,
+            "LetterSpacing" => Self::LetterSpacing,
+            "LightBulbRadius" => Self::LightBulbRadius,
+            "LightIntensity" => Self::LightIntensity,
+            "LightFrustumAngle" => Self::LightFrustumAngle,
+            "LightRadius" => Self::LightRadius,
+            "LinearSliderMinValue" => Self::LinearSliderMinValue,
+            "LinearSliderMaxValue" => Self::LinearSliderMaxValue,
+            "LineSpacing" => Self::LineSpacing,
+            "LocalCoordinateSpace" => Self::LocalCoordinateSpace,
+            "MarginTop" => Self::MarginTop,
+            "MarginRight" => Self::MarginRight,
+            "MarginBottom" => Self::MarginBottom,
+            "MarginLeft" => Self::MarginLeft,
+            "MarginFront" => Self::MarginFront,
+            "MarginBack" => Self::MarginBack,
+            "MaxMeterClamp" => Self::MaxMeterClamp,
+            "MaxProgressClamp" => Self::MaxProgressClamp,
+            "MaxSizeX" => Self::MaxSizeX,
+            "MaxSizeY" => Self::MaxSizeY,
+            "MinMeterClamp" => Self::MinMeterClamp,
+            "MinProgressClamp" => Self::MinProgressClamp,
+            "MinSizeX" => Self::MinSizeX,
+            "MinSizeY" => Self::MinSizeY,
+            "NineSliceTop" => Self::NineSliceTop,
+            "NineSliceRight" => Self::NineSliceRight,
+            "NineSliceBottom" => Self::NineSliceBottom,
+            "NineSliceLeft" => Self::NineSliceLeft,
+            "NineSliceScale" => Self::NineSliceScale,
+            "OrientationX" => Self::OrientationX,
+            "OrientationXOffset" => Self::OrientationXOffset,
+            "OrientationY" => Self::OrientationY,
+            "OrientationYOffset" => Self::OrientationYOffset,
+            "OrientationZ" => Self::OrientationZ,
+            "OrientationZOffset" => Self::OrientationZOffset,
+            "OverflowWidthFadeThreshold" => Self::OverflowWidthFadeThreshold,
+            "OverflowHeightFadeThreshold" => Self::OverflowHeightFadeThreshold,
+            "OverflowDepthFadeThreshold" => Self::OverflowDepthFadeThreshold,
+            "PaddingTop" => Self::PaddingTop,
+            "PaddingRight" => Self::PaddingRight,
+            "PaddingBottom" => Self::PaddingBottom,
+            "PaddingLeft" => Self::PaddingLeft,
+            "PaddingFront" => Self::PaddingFront,
+            "PaddingBack" => Self::PaddingBack,
+            "ParamInput0" => Self::ParamInput0,
+            "ParamInput1" => Self::ParamInput1,
+            "ParamInput2" => Self::ParamInput2,
+            "ParamInput3" => Self::ParamInput3,
+            "ParamInput4" => Self::ParamInput4,
+            "ParamInput5" => Self::ParamInput5,
+            "ParamInput6" => Self::ParamInput6,
+            "ParamInput7" => Self::ParamInput7,
+            "ParamInput8" => Self::ParamInput8,
+            "PivotX" => Self::PivotX,
+            "PivotY" => Self::PivotY,
+            "PivotZ" => Self::PivotZ,
+            "PosX" => Self::PosX,
+            "PosXOffset" => Self::PosXOffset,
+            "PosY" => Self::PosY,
+            "PosYOffset" => Self::PosYOffset,
+            "PosZ" => Self::PosZ,
+            "PosZOffset" => Self::PosZOffset,
+            "PrimitiveConstantScale" => Self::PrimitiveConstantScale,
+            "PrimitiveInterferenceEffect" => Self::PrimitiveInterferenceEffect,
+            "Progress" => Self::Progress,
+            "RadialTransformMultiplier" => Self::RadialTransformMultiplier,
+            "ScaleX" => Self::ScaleX,
+            "ScaleY" => Self::ScaleY,
+            "ScaleZ" => Self::ScaleZ,
+            "ScrollPixelIncrement" => Self::ScrollPixelIncrement,
+            "ScrollEasingTime" => Self::ScrollEasingTime,
+            "SegmentAngle" => Self::SegmentAngle,
+            "SegmentSize" => Self::SegmentSize,
+            "SegmentSpacingSize" => Self::SegmentSpacingSize,
+            "SegmentXOffset" => Self::SegmentXOffset,
+            "SilhouetteWidth" => Self::SilhouetteWidth,
+            "SizeX" => Self::SizeX,
+            "SizeY" => Self::SizeY,
+            "SizeZ" => Self::SizeZ,
+            "SliderStepSize" => Self::SliderStepSize,
+            "StackSpacing" => Self::StackSpacing,
+            "StartAngle" => Self::StartAngle,
+            "StartDelayTime" => Self::StartDelayTime,
+            "UStart" => Self::UStart,
+            "VStart" => Self::VStart,
+            "USize" => Self::USize,
+            "VSize" => Self::VSize,
+            "StepAngle" => Self::StepAngle,
+            "StepMidPoint" => Self::StepMidPoint,
+            "StripWidth" => Self::StripWidth,
+            "StrokeExtent" => Self::StrokeExtent,
+            "StrokeWidth" => Self::StrokeWidth,
+            "SvgContainPositionX" => Self::SvgContainPositionX,
+            "SvgContainPositionY" => Self::SvgContainPositionY,
+            "SvgPlayhead" => Self::SvgPlayhead,
+            "TintStrength" => Self::TintStrength,
+            "WindowCameraFOV" => Self::WindowCameraFOV,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for BB_NumberField {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `BB_OverflowBehavior`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum BB_OverflowBehavior {
@@ -2647,6 +5337,29 @@ pub enum BB_OverflowBehavior {
     Unrecognized(String),
 }
 
+impl BB_OverflowBehavior {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Visible" => Self::Visible,
+            "Fade" => Self::Fade,
+            "Clip" => Self::Clip,
+            "ClipFade" => Self::ClipFade,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for BB_OverflowBehavior {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `BB_ProgressMeterState`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum BB_ProgressMeterState {
@@ -2656,6 +5369,27 @@ pub enum BB_ProgressMeterState {
     Active,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl BB_ProgressMeterState {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Static" => Self::Static,
+            "Active" => Self::Active,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for BB_ProgressMeterState {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `BB_RendererType`
@@ -2677,6 +5411,31 @@ pub enum BB_RendererType {
     Unrecognized(String),
 }
 
+impl BB_RendererType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "Entity" => Self::Entity,
+            "Flash" => Self::Flash,
+            "Paint" => Self::Paint,
+            "Primitive" => Self::Primitive,
+            "ForceFlash" => Self::ForceFlash,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for BB_RendererType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `BB_RotationField`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum BB_RotationField {
@@ -2686,6 +5445,27 @@ pub enum BB_RotationField {
     OrientationOffset,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl BB_RotationField {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Orientation" => Self::Orientation,
+            "OrientationOffset" => Self::OrientationOffset,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for BB_RotationField {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `BB_SIPrefix`
@@ -2725,6 +5505,40 @@ pub enum BB_SIPrefix {
     Unrecognized(String),
 }
 
+impl BB_SIPrefix {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "INVALID" => Self::INVALID,
+            "Yocto" => Self::Yocto,
+            "Zepto" => Self::Zepto,
+            "Atto" => Self::Atto,
+            "Femto" => Self::Femto,
+            "Pico" => Self::Pico,
+            "Nano" => Self::Nano,
+            "Micro" => Self::Micro,
+            "Milli" => Self::Milli,
+            "Unit" => Self::Unit,
+            "Kilo" => Self::Kilo,
+            "Mega" => Self::Mega,
+            "Giga" => Self::Giga,
+            "AstronomicalUnit" => Self::AstronomicalUnit,
+            "LightYear" => Self::LightYear,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for BB_SIPrefix {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `BB_SIUnit`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum BB_SIUnit {
@@ -2754,6 +5568,36 @@ pub enum BB_SIUnit {
     Unrecognized(String),
 }
 
+impl BB_SIUnit {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "Acceleration" => Self::Acceleration,
+            "Area" => Self::Area,
+            "Distance" => Self::Distance,
+            "Force" => Self::Force,
+            "Percent" => Self::Percent,
+            "Power" => Self::Power,
+            "Speed" => Self::Speed,
+            "Temperature" => Self::Temperature,
+            "Volume" => Self::Volume,
+            "Weight" => Self::Weight,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for BB_SIUnit {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `BB_SVGScalingBehavior`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum BB_SVGScalingBehavior {
@@ -2771,6 +5615,30 @@ pub enum BB_SVGScalingBehavior {
     Unrecognized(String),
 }
 
+impl BB_SVGScalingBehavior {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Contain" => Self::Contain,
+            "Center" => Self::Center,
+            "StretchX" => Self::StretchX,
+            "StretchY" => Self::StretchY,
+            "StretchXY" => Self::StretchXY,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for BB_SVGScalingBehavior {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `BB_ScrollBehavior`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum BB_ScrollBehavior {
@@ -2782,6 +5650,27 @@ pub enum BB_ScrollBehavior {
     Unrecognized(String),
 }
 
+impl BB_ScrollBehavior {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Pixel" => Self::Pixel,
+            "Item" => Self::Item,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for BB_ScrollBehavior {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `BB_ScrollPolicyType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum BB_ScrollPolicyType {
@@ -2791,6 +5680,27 @@ pub enum BB_ScrollPolicyType {
     UnidirectionalScroller,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl BB_ScrollPolicyType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "UnidirectionalScroller" => Self::UnidirectionalScroller,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for BB_ScrollPolicyType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `BB_SegmentProgressBehavior`
@@ -2814,6 +5724,32 @@ pub enum BB_SegmentProgressBehavior {
     Unrecognized(String),
 }
 
+impl BB_SegmentProgressBehavior {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Clip" => Self::Clip,
+            "Alpha" => Self::Alpha,
+            "Visibility" => Self::Visibility,
+            "ThicknessIn" => Self::ThicknessIn,
+            "ThicknessInAlpha" => Self::ThicknessInAlpha,
+            "ThicknessOut" => Self::ThicknessOut,
+            "ThicknessOutAlpha" => Self::ThicknessOutAlpha,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for BB_SegmentProgressBehavior {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `BB_SeparatorStyle`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum BB_SeparatorStyle {
@@ -2825,6 +5761,28 @@ pub enum BB_SeparatorStyle {
     Tertiary,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl BB_SeparatorStyle {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Primary" => Self::Primary,
+            "Secondary" => Self::Secondary,
+            "Tertiary" => Self::Tertiary,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for BB_SeparatorStyle {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `BB_SizeBehavior`
@@ -2846,6 +5804,31 @@ pub enum BB_SizeBehavior {
     Unrecognized(String),
 }
 
+impl BB_SizeBehavior {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Fixed" => Self::Fixed,
+            "Percent" => Self::Percent,
+            "PercentOfX" => Self::PercentOfX,
+            "PercentOfY" => Self::PercentOfY,
+            "PercentOfZ" => Self::PercentOfZ,
+            "Auto" => Self::Auto,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for BB_SizeBehavior {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `BB_SliderMode`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum BB_SliderMode {
@@ -2861,6 +5844,29 @@ pub enum BB_SliderMode {
     Unrecognized(String),
 }
 
+impl BB_SliderMode {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "HorizontalBar" => Self::HorizontalBar,
+            "VerticalBar" => Self::VerticalBar,
+            "HorizontalMarker" => Self::HorizontalMarker,
+            "VerticalMarker" => Self::VerticalMarker,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for BB_SliderMode {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `BB_StackDirection`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum BB_StackDirection {
@@ -2872,6 +5878,28 @@ pub enum BB_StackDirection {
     Depth,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl BB_StackDirection {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Horizontal" => Self::Horizontal,
+            "Vertical" => Self::Vertical,
+            "Depth" => Self::Depth,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for BB_StackDirection {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `BB_StringField`
@@ -2995,6 +6023,82 @@ pub enum BB_StringField {
     Unrecognized(String),
 }
 
+impl BB_StringField {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "ActorEntityDNAString" => Self::ActorEntityDNAString,
+            "ActorEntityIdleName" => Self::ActorEntityIdleName,
+            "ActorEntityFacialName" => Self::ActorEntityFacialName,
+            "CanvasReferenceRecord" => Self::CanvasReferenceRecord,
+            "EditBoxConfirmTrigger" => Self::EditBoxConfirmTrigger,
+            "EditBoxVariablePath" => Self::EditBoxVariablePath,
+            "EntityGeometryTag" => Self::EntityGeometryTag,
+            "EntityLoadoutName0" => Self::EntityLoadoutName0,
+            "EntityLoadoutName1" => Self::EntityLoadoutName1,
+            "EntityLoadoutName2" => Self::EntityLoadoutName2,
+            "EntityLoadoutName3" => Self::EntityLoadoutName3,
+            "EntityMaterialPath" => Self::EntityMaterialPath,
+            "EntityTintPalettePath" => Self::EntityTintPalettePath,
+            "FontStyleRecord" => Self::FontStyleRecord,
+            "GeneralEntityClassName" => Self::GeneralEntityClassName,
+            "GeomEntityAnimationPath" => Self::GeomEntityAnimationPath,
+            "GeomEntityGeometryPath" => Self::GeomEntityGeometryPath,
+            "ImageColorPickerAnchorXURL0" => Self::ImageColorPickerAnchorXURL0,
+            "ImageColorPickerAnchorYURL0" => Self::ImageColorPickerAnchorYURL0,
+            "ImageColorPickerOutputColorURL0" => Self::ImageColorPickerOutputColorURL0,
+            "ImagePath" => Self::ImagePath,
+            "InteractionsOnLeftClickTriggerURL0" => Self::InteractionsOnLeftClickTriggerURL0,
+            "InteractionsOnLeftClickTriggerURL1" => Self::InteractionsOnLeftClickTriggerURL1,
+            "LightImagePath" => Self::LightImagePath,
+            "MovieListContainerURL" => Self::MovieListContainerURL,
+            "MovieListVariableURL" => Self::MovieListVariableURL,
+            "MoviePath" => Self::MoviePath,
+            "ParamInput0" => Self::ParamInput0,
+            "ParamInput1" => Self::ParamInput1,
+            "ParamInput2" => Self::ParamInput2,
+            "ParamInput3" => Self::ParamInput3,
+            "ParamInput4" => Self::ParamInput4,
+            "ParamInput5" => Self::ParamInput5,
+            "ParamInput6" => Self::ParamInput6,
+            "ParamInput7" => Self::ParamInput7,
+            "ParamInput8" => Self::ParamInput8,
+            "ParticleEffectName" => Self::ParticleEffectName,
+            "PrimaryStateTag" => Self::PrimaryStateTag,
+            "PrimitiveMaterialPath" => Self::PrimitiveMaterialPath,
+            "QuarternaryStateTag" => Self::QuarternaryStateTag,
+            "QuinaryStateTag" => Self::QuinaryStateTag,
+            "SecondaryStateTag" => Self::SecondaryStateTag,
+            "StripMaterialPath" => Self::StripMaterialPath,
+            "StyleReferenceRecord" => Self::StyleReferenceRecord,
+            "SenaryStateTag" => Self::SenaryStateTag,
+            "SvgPath" => Self::SvgPath,
+            "TertiaryStateTag" => Self::TertiaryStateTag,
+            "TextMaterial" => Self::TextMaterial,
+            "URLOptional" => Self::URLOptional,
+            "URLPostfix" => Self::URLPostfix,
+            "VariableInput0" => Self::VariableInput0,
+            "VariableInput1" => Self::VariableInput1,
+            "VariableInput2" => Self::VariableInput2,
+            "VariableInput3" => Self::VariableInput3,
+            "VariableInput4" => Self::VariableInput4,
+            "VehicleEntityClassName" => Self::VehicleEntityClassName,
+            "VehicleEntityLoadoutName" => Self::VehicleEntityLoadoutName,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for BB_StringField {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `BB_StrokeAlignment`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum BB_StrokeAlignment {
@@ -3006,6 +6110,28 @@ pub enum BB_StrokeAlignment {
     Outside,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl BB_StrokeAlignment {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Center" => Self::Center,
+            "Inside" => Self::Inside,
+            "Outside" => Self::Outside,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for BB_StrokeAlignment {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `BB_StrokeCapStyle`
@@ -3021,6 +6147,28 @@ pub enum BB_StrokeCapStyle {
     Unrecognized(String),
 }
 
+impl BB_StrokeCapStyle {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Round" => Self::Round,
+            "None" => Self::None,
+            "Square" => Self::Square,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for BB_StrokeCapStyle {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `BB_StrokeJointStyle`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum BB_StrokeJointStyle {
@@ -3032,6 +6180,28 @@ pub enum BB_StrokeJointStyle {
     Miter,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl BB_StrokeJointStyle {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Round" => Self::Round,
+            "Bevel" => Self::Bevel,
+            "Miter" => Self::Miter,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for BB_StrokeJointStyle {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `BB_StyleCountType`
@@ -3047,6 +6217,28 @@ pub enum BB_StyleCountType {
     Unrecognized(String),
 }
 
+impl BB_StyleCountType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Every" => Self::Every,
+            "First" => Self::First,
+            "Last" => Self::Last,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for BB_StyleCountType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `BB_TextAlignment`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum BB_TextAlignment {
@@ -3060,6 +6252,29 @@ pub enum BB_TextAlignment {
     Justify,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl BB_TextAlignment {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Left" => Self::Left,
+            "Center" => Self::Center,
+            "Right" => Self::Right,
+            "Justify" => Self::Justify,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for BB_TextAlignment {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `BB_TextFieldWidgetStylePreset`
@@ -3093,6 +6308,37 @@ pub enum BB_TextFieldWidgetStylePreset {
     Unrecognized(String),
 }
 
+impl BB_TextFieldWidgetStylePreset {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Title1" => Self::Title1,
+            "Title2" => Self::Title2,
+            "Title3" => Self::Title3,
+            "Title4" => Self::Title4,
+            "Title5" => Self::Title5,
+            "Heading1" => Self::Heading1,
+            "Heading2" => Self::Heading2,
+            "Heading3" => Self::Heading3,
+            "Heading4" => Self::Heading4,
+            "Heading5" => Self::Heading5,
+            "Heading6" => Self::Heading6,
+            "Body" => Self::Body,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for BB_TextFieldWidgetStylePreset {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `BB_TextureOrientation`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum BB_TextureOrientation {
@@ -3104,6 +6350,27 @@ pub enum BB_TextureOrientation {
     Unrecognized(String),
 }
 
+impl BB_TextureOrientation {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Landscape" => Self::Landscape,
+            "Portrait" => Self::Portrait,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for BB_TextureOrientation {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `BB_TransformField`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum BB_TransformField {
@@ -3113,6 +6380,27 @@ pub enum BB_TransformField {
     PositionOrientationOffset,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl BB_TransformField {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "PositionOrientation" => Self::PositionOrientation,
+            "PositionOrientationOffset" => Self::PositionOrientationOffset,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for BB_TransformField {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `BB_UnidirectionalAutoScrollBehavior`
@@ -3132,6 +6420,30 @@ pub enum BB_UnidirectionalAutoScrollBehavior {
     Unrecognized(String),
 }
 
+impl BB_UnidirectionalAutoScrollBehavior {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "LeftToRight_Always" => Self::LeftToRight_Always,
+            "LeftToRight_IfLong" => Self::LeftToRight_IfLong,
+            "RightToLeft_Always" => Self::RightToLeft_Always,
+            "RightToLeft_IfLong" => Self::RightToLeft_IfLong,
+            "Bounce" => Self::Bounce,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for BB_UnidirectionalAutoScrollBehavior {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `BB_UnidirectionalScrollDirection`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum BB_UnidirectionalScrollDirection {
@@ -3145,6 +6457,29 @@ pub enum BB_UnidirectionalScrollDirection {
     Depth,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl BB_UnidirectionalScrollDirection {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "DeriveFromLayout" => Self::DeriveFromLayout,
+            "Horizontal" => Self::Horizontal,
+            "Vertical" => Self::Vertical,
+            "Depth" => Self::Depth,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for BB_UnidirectionalScrollDirection {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `BB_VectorField`
@@ -3170,6 +6505,33 @@ pub enum BB_VectorField {
     Unrecognized(String),
 }
 
+impl BB_VectorField {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Position" => Self::Position,
+            "PositionOffset" => Self::PositionOffset,
+            "Orientation" => Self::Orientation,
+            "OrientationOffset" => Self::OrientationOffset,
+            "Scale" => Self::Scale,
+            "Size" => Self::Size,
+            "Pivot" => Self::Pivot,
+            "Anchor" => Self::Anchor,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for BB_VectorField {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `BB_VerticalTextAlignment`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum BB_VerticalTextAlignment {
@@ -3181,6 +6543,28 @@ pub enum BB_VerticalTextAlignment {
     Bottom,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl BB_VerticalTextAlignment {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Top" => Self::Top,
+            "Center" => Self::Center,
+            "Bottom" => Self::Bottom,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for BB_VerticalTextAlignment {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `BB_WidgetType`
@@ -3252,6 +6636,56 @@ pub enum BB_WidgetType {
     Unrecognized(String),
 }
 
+impl BB_WidgetType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "ActorEntity" => Self::ActorEntity,
+            "Base" => Self::Base,
+            "Canvas" => Self::Canvas,
+            "Card" => Self::Card,
+            "CardTexture" => Self::CardTexture,
+            "Circle" => Self::Circle,
+            "Clone" => Self::Clone,
+            "CustomShape" => Self::CustomShape,
+            "EditBox" => Self::EditBox,
+            "EnvironmentProbe" => Self::EnvironmentProbe,
+            "GeneralEntity" => Self::GeneralEntity,
+            "GeomEntity" => Self::GeomEntity,
+            "HoloVolume" => Self::HoloVolume,
+            "Image" => Self::Image,
+            "Light" => Self::Light,
+            "Line" => Self::Line,
+            "List" => Self::List,
+            "LineList" => Self::LineList,
+            "Movie" => Self::Movie,
+            "ParticleEffect" => Self::ParticleEffect,
+            "Polygon" => Self::Polygon,
+            "Polymorphic" => Self::Polymorphic,
+            "RuntimeImage" => Self::RuntimeImage,
+            "RuntimeVolume" => Self::RuntimeVolume,
+            "Slider" => Self::Slider,
+            "Slice" => Self::Slice,
+            "Strip" => Self::Strip,
+            "Text" => Self::Text,
+            "TickBox" => Self::TickBox,
+            "VehicleEntity" => Self::VehicleEntity,
+            "Window" => Self::Window,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for BB_WidgetType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `BettingFormat`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum BettingFormat {
@@ -3263,6 +6697,27 @@ pub enum BettingFormat {
     Unrecognized(String),
 }
 
+impl BettingFormat {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "TopPlayer" => Self::TopPlayer,
+            "TopTeam" => Self::TopTeam,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for BettingFormat {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `CIGAudioContextNamingStrategy`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum CIGAudioContextNamingStrategy {
@@ -3272,6 +6727,27 @@ pub enum CIGAudioContextNamingStrategy {
     EntityClassNameAndEntityName,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl CIGAudioContextNamingStrategy {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "DataCoreFilePathAndEntityClassName" => Self::DataCoreFilePathAndEntityClassName,
+            "EntityClassNameAndEntityName" => Self::EntityClassNameAndEntityName,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for CIGAudioContextNamingStrategy {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `CameraViewTransitionMode`
@@ -3289,6 +6765,29 @@ pub enum CameraViewTransitionMode {
     Unrecognized(String),
 }
 
+impl CameraViewTransitionMode {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "ExpSlerp" => Self::ExpSlerp,
+            "Nlerp" => Self::Nlerp,
+            "NlerpCubic" => Self::NlerpCubic,
+            "Slerp" => Self::Slerp,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for CameraViewTransitionMode {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `CanvasInstantiationMode`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum CanvasInstantiationMode {
@@ -3302,6 +6801,28 @@ pub enum CanvasInstantiationMode {
     Unrecognized(String),
 }
 
+impl CanvasInstantiationMode {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "RootDeferred" => Self::RootDeferred,
+            "CanvasDeferred" => Self::CanvasDeferred,
+            "Block" => Self::Block,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for CanvasInstantiationMode {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `CargoFaceStackingSupport`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum CargoFaceStackingSupport {
@@ -3313,6 +6834,28 @@ pub enum CargoFaceStackingSupport {
     StackNone,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl CargoFaceStackingSupport {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "StackAll" => Self::StackAll,
+            "StackSelf" => Self::StackSelf,
+            "StackNone" => Self::StackNone,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for CargoFaceStackingSupport {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `ChannelColor`
@@ -3356,6 +6899,42 @@ pub enum ChannelColor {
     Unrecognized(String),
 }
 
+impl ChannelColor {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Blue" => Self::Blue,
+            "White" => Self::White,
+            "Silver" => Self::Silver,
+            "Grey" => Self::Grey,
+            "Charcoal" => Self::Charcoal,
+            "Red" => Self::Red,
+            "Orange" => Self::Orange,
+            "Yellow" => Self::Yellow,
+            "Chartreuse" => Self::Chartreuse,
+            "Green" => Self::Green,
+            "Mint" => Self::Mint,
+            "Cyan" => Self::Cyan,
+            "Azure" => Self::Azure,
+            "Indigo" => Self::Indigo,
+            "Purple" => Self::Purple,
+            "Pink" => Self::Pink,
+            "Hotpink" => Self::Hotpink,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ChannelColor {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ClassMigrationValidationType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ClassMigrationValidationType {
@@ -3367,6 +6946,28 @@ pub enum ClassMigrationValidationType {
     DataCritical,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ClassMigrationValidationType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "DataAssert" => Self::DataAssert,
+            "DataCritical" => Self::DataCritical,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ClassMigrationValidationType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `CombatStyle`
@@ -3390,6 +6991,32 @@ pub enum CombatStyle {
     Unrecognized(String),
 }
 
+impl CombatStyle {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "NotSet" => Self::NotSet,
+            "Civilian" => Self::Civilian,
+            "Merc" => Self::Merc,
+            "SpecOps" => Self::SpecOps,
+            "Slaver" => Self::Slaver,
+            "OMC" => Self::OMC,
+            "Galson" => Self::Galson,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for CombatStyle {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ComparisonType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ComparisonType {
@@ -3403,6 +7030,28 @@ pub enum ComparisonType {
     Unrecognized(String),
 }
 
+impl ComparisonType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "HigherOrEqualTo" => Self::HigherOrEqualTo,
+            "LowerOrEqualTo" => Self::LowerOrEqualTo,
+            "Equals" => Self::Equals,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ComparisonType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ConditionResult`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ConditionResult {
@@ -3412,6 +7061,27 @@ pub enum ConditionResult {
     Fail,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ConditionResult {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Pass" => Self::Pass,
+            "Fail" => Self::Fail,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ConditionResult {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `ContractBoolParamType`
@@ -3449,6 +7119,39 @@ pub enum ContractBoolParamType {
     Unrecognized(String),
 }
 
+impl ContractBoolParamType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Illegal" => Self::Illegal,
+            "ShowLifeTimeInMobiGlas" => Self::ShowLifeTimeInMobiGlas,
+            "FailIfSentToPrison" => Self::FailIfSentToPrison,
+            "FailIfBecameCriminal" => Self::FailIfBecameCriminal,
+            "FailIfLeavePrison" => Self::FailIfLeavePrison,
+            "NotifyOnAvailable" => Self::NotifyOnAvailable,
+            "OnceOnly" => Self::OnceOnly,
+            "CanReacceptAfterAbandoning" => Self::CanReacceptAfterAbandoning,
+            "CanReacceptAfterFailing" => Self::CanReacceptAfterFailing,
+            "HasPersonalCooldown" => Self::HasPersonalCooldown,
+            "CanBeShared" => Self::CanBeShared,
+            "HasCompleteButton" => Self::HasCompleteButton,
+            "HideInMobiGlas" => Self::HideInMobiGlas,
+            "AcceptMissionSpawnedCargo" => Self::AcceptMissionSpawnedCargo,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ContractBoolParamType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ContractEndCommsReason`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ContractEndCommsReason {
@@ -3460,6 +7163,28 @@ pub enum ContractEndCommsReason {
     Abandon,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ContractEndCommsReason {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Complete" => Self::Complete,
+            "Fail" => Self::Fail,
+            "Abandon" => Self::Abandon,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ContractEndCommsReason {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `ContractIntParamType`
@@ -3481,6 +7206,31 @@ pub enum ContractIntParamType {
     Unrecognized(String),
 }
 
+impl ContractIntParamType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "MaxPlayersPerInstance" => Self::MaxPlayersPerInstance,
+            "AbandonedCooldownTime" => Self::AbandonedCooldownTime,
+            "AbandonedCooldownTimeVariation" => Self::AbandonedCooldownTimeVariation,
+            "PersonalCooldownTime" => Self::PersonalCooldownTime,
+            "PersonalCooldownTimeVariation" => Self::PersonalCooldownTimeVariation,
+            "TimeToComplete" => Self::TimeToComplete,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ContractIntParamType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ContractStringParamType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ContractStringParamType {
@@ -3498,6 +7248,30 @@ pub enum ContractStringParamType {
     Unrecognized(String),
 }
 
+impl ContractStringParamType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Title" => Self::Title,
+            "TitleHUD" => Self::TitleHUD,
+            "Description" => Self::Description,
+            "Contractor" => Self::Contractor,
+            "CommsChannelName" => Self::CommsChannelName,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ContractStringParamType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ControlHintConditionActorAttachmentType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ControlHintConditionActorAttachmentType {
@@ -3513,6 +7287,29 @@ pub enum ControlHintConditionActorAttachmentType {
     Unrecognized(String),
 }
 
+impl ControlHintConditionActorAttachmentType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Held" => Self::Held,
+            "Attached" => Self::Attached,
+            "Wearing" => Self::Wearing,
+            "PersonalInventory" => Self::PersonalInventory,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ControlHintConditionActorAttachmentType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ControlHintConditionActorCommsState`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ControlHintConditionActorCommsState {
@@ -3520,6 +7317,26 @@ pub enum ControlHintConditionActorCommsState {
     BeingCalled,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ControlHintConditionActorCommsState {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "BeingCalled" => Self::BeingCalled,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ControlHintConditionActorCommsState {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `ControlHintConditionActorEnvironment`
@@ -3545,6 +7362,34 @@ pub enum ControlHintConditionActorEnvironment {
     InMantleRange,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ControlHintConditionActorEnvironment {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Greenzone" => Self::Greenzone,
+            "UsingKiosk" => Self::UsingKiosk,
+            "NearInteractableObject" => Self::NearInteractableObject,
+            "NearMineableRock" => Self::NearMineableRock,
+            "NearDraggableBody" => Self::NearDraggableBody,
+            "InRestrainRange" => Self::InRestrainRange,
+            "InTakeDownRange" => Self::InTakeDownRange,
+            "InMeleeRange" => Self::InMeleeRange,
+            "InMantleRange" => Self::InMantleRange,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ControlHintConditionActorEnvironment {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `ControlHintConditionActorInteractionState`
@@ -3612,6 +7457,54 @@ pub enum ControlHintConditionActorInteractionState {
     Unrecognized(String),
 }
 
+impl ControlHintConditionActorInteractionState {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "InInteractModeNothingUnderCursor" => Self::InInteractModeNothingUnderCursor,
+            "InInteractModeInteractableUnderCursor" => Self::InInteractModeInteractableUnderCursor,
+            "InInteractModeScreenUnderCursor" => Self::InInteractModeScreenUnderCursor,
+            "QuickSelectWheelOpen" => Self::QuickSelectWheelOpen,
+            "PITMenuOpen" => Self::PITMenuOpen,
+            "PITMenuOpenMultiplePages" => Self::PITMenuOpenMultiplePages,
+            "InventoryOpen" => Self::InventoryOpen,
+            "InventoryOpenItemUnderCursor" => Self::InventoryOpenItemUnderCursor,
+            "InventoryOpenContextMenuOpen" => Self::InventoryOpenContextMenuOpen,
+            "LootingOpen" => Self::LootingOpen,
+            "UsableLinkedInteractive" => Self::UsableLinkedInteractive,
+            "PISWheelOpen" => Self::PISWheelOpen,
+            "PISWheelOpenMultiplePages" => Self::PISWheelOpenMultiplePages,
+            "SwapWheelOpen" => Self::SwapWheelOpen,
+            "SwapWheelOpenMultiplePages" => Self::SwapWheelOpenMultiplePages,
+            "PISWheelOpenCustomisablePrimarySecondary" => Self::PISWheelOpenCustomisablePrimarySecondary,
+            "PISWheelOpenContextMenuOpen" => Self::PISWheelOpenContextMenuOpen,
+            "QuickSelectWheelOpenSegmentHasContextMenu" => Self::QuickSelectWheelOpenSegmentHasContextMenu,
+            "QuickSelectWheelOpenHoverOverNavigationSegment" => Self::QuickSelectWheelOpenHoverOverNavigationSegment,
+            "QuickSelectWheelOpenMultiplePages" => Self::QuickSelectWheelOpenMultiplePages,
+            "InteractionPromptWithSingleOptionAvailable" => Self::InteractionPromptWithSingleOptionAvailable,
+            "InteractionPromptWithMultipleOptionsAvailable" => Self::InteractionPromptWithMultipleOptionsAvailable,
+            "InteractionPromptHasAvailableSecondaryAction" => Self::InteractionPromptHasAvailableSecondaryAction,
+            "InteractionPromptOverridesHintDescription" => Self::InteractionPromptOverridesHintDescription,
+            "OffscreenInteractionAvailable" => Self::OffscreenInteractionAvailable,
+            "HeldItemHasAvailablePrimaryAction" => Self::HeldItemHasAvailablePrimaryAction,
+            "HeldItemHasAvailableSecondaryAction" => Self::HeldItemHasAvailableSecondaryAction,
+            "InputAwaitingRebind" => Self::InputAwaitingRebind,
+            "UsingNonFocusedModeKiosk" => Self::UsingNonFocusedModeKiosk,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ControlHintConditionActorInteractionState {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ControlHintConditionActorLadderState`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ControlHintConditionActorLadderState {
@@ -3629,6 +7522,30 @@ pub enum ControlHintConditionActorLadderState {
     Unrecognized(String),
 }
 
+impl ControlHintConditionActorLadderState {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "WithinMidPointRange" => Self::WithinMidPointRange,
+            "WithinLaunchAngle" => Self::WithinLaunchAngle,
+            "IsLadderSlideable" => Self::IsLadderSlideable,
+            "CanDodgeRight" => Self::CanDodgeRight,
+            "CanDodgeLeft" => Self::CanDodgeLeft,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ControlHintConditionActorLadderState {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ControlHintConditionActorMissionOfferReceived`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ControlHintConditionActorMissionOfferReceived {
@@ -3636,6 +7553,26 @@ pub enum ControlHintConditionActorMissionOfferReceived {
     OfferReceived,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ControlHintConditionActorMissionOfferReceived {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "OfferReceived" => Self::OfferReceived,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ControlHintConditionActorMissionOfferReceived {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `ControlHintConditionActorSightZeroMode`
@@ -3653,6 +7590,29 @@ pub enum ControlHintConditionActorSightZeroMode {
     Unrecognized(String),
 }
 
+impl ControlHintConditionActorSightZeroMode {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Manual" => Self::Manual,
+            "Auto" => Self::Auto,
+            "AutoIsZeroed" => Self::AutoIsZeroed,
+            "None" => Self::None,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ControlHintConditionActorSightZeroMode {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ControlHintConditionActorSuitState`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ControlHintConditionActorSuitState {
@@ -3660,6 +7620,26 @@ pub enum ControlHintConditionActorSuitState {
     VisorDirty,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ControlHintConditionActorSuitState {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "VisorDirty" => Self::VisorDirty,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ControlHintConditionActorSuitState {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `ControlHintConditionActorToolState`
@@ -3681,6 +7661,32 @@ pub enum ControlHintConditionActorToolState {
     MediGunInUseOnTarget,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ControlHintConditionActorToolState {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "TractorBeamInUseOnObject" => Self::TractorBeamInUseOnObject,
+            "TractorBeamInDetachMode" => Self::TractorBeamInDetachMode,
+            "TractorBeamInCargoMode" => Self::TractorBeamInCargoMode,
+            "TractorBeamValidPlacementTarget" => Self::TractorBeamValidPlacementTarget,
+            "TractorBeamMovingToValidTarget" => Self::TractorBeamMovingToValidTarget,
+            "TractorBeamChargingThrow" => Self::TractorBeamChargingThrow,
+            "MediGunInUseOnTarget" => Self::MediGunInUseOnTarget,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ControlHintConditionActorToolState {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `ControlHintConditionActorWeaponState`
@@ -3708,6 +7714,34 @@ pub enum ControlHintConditionActorWeaponState {
     Unrecognized(String),
 }
 
+impl ControlHintConditionActorWeaponState {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Reloadable" => Self::Reloadable,
+            "AmmoFull" => Self::AmmoFull,
+            "AmmoEmpty" => Self::AmmoEmpty,
+            "ModifierAttachment" => Self::ModifierAttachment,
+            "AltFire" => Self::AltFire,
+            "HasModifierPortsAvailable" => Self::HasModifierPortsAvailable,
+            "HasAmmoAvailableInItemPortOrInventory" => Self::HasAmmoAvailableInItemPortOrInventory,
+            "ActivatableUnderbarrelAttachment" => Self::ActivatableUnderbarrelAttachment,
+            "Customizing" => Self::Customizing,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ControlHintConditionActorWeaponState {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ControlHintConditionActorZeroGEVAState`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ControlHintConditionActorZeroGEVAState {
@@ -3719,6 +7753,28 @@ pub enum ControlHintConditionActorZeroGEVAState {
     IsAttachedToGrip,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ControlHintConditionActorZeroGEVAState {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "CanAttachToSurface" => Self::CanAttachToSurface,
+            "CanAttachToGrip" => Self::CanAttachToGrip,
+            "IsAttachedToGrip" => Self::IsAttachedToGrip,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ControlHintConditionActorZeroGEVAState {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `ControlHintConditionMobiglasMapState`
@@ -3754,6 +7810,38 @@ pub enum ControlHintConditionMobiglasMapState {
     Unrecognized(String),
 }
 
+impl ControlHintConditionMobiglasMapState {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "InteriorMapActive" => Self::InteriorMapActive,
+            "InteriorMapAvailable" => Self::InteriorMapAvailable,
+            "InteriorMapRouteAvailable" => Self::InteriorMapRouteAvailable,
+            "InteriorMapRouteSet" => Self::InteriorMapRouteSet,
+            "InteriorMapCrossSectionViewActive" => Self::InteriorMapCrossSectionViewActive,
+            "InteriorMapHasMultipleZones" => Self::InteriorMapHasMultipleZones,
+            "InteriorMapHasMultipleSections" => Self::InteriorMapHasMultipleSections,
+            "StarMapActive" => Self::StarMapActive,
+            "StarMapInJumpTunnel" => Self::StarMapInJumpTunnel,
+            "StarMapRouteAvailable" => Self::StarMapRouteAvailable,
+            "StarMapRouteSet" => Self::StarMapRouteSet,
+            "GalacticMapActive" => Self::GalacticMapActive,
+            "GeneralMapStepBackAvailable" => Self::GeneralMapStepBackAvailable,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ControlHintConditionMobiglasMapState {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ControlHintConditionOptInEventState`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ControlHintConditionOptInEventState {
@@ -3763,6 +7851,27 @@ pub enum ControlHintConditionOptInEventState {
     OptInEventActive,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ControlHintConditionOptInEventState {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "OptInEventAvailable" => Self::OptInEventAvailable,
+            "OptInEventActive" => Self::OptInEventActive,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ControlHintConditionOptInEventState {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `ControlHintConditionRemoteTurret`
@@ -3784,6 +7893,31 @@ pub enum ControlHintConditionRemoteTurret {
     Unrecognized(String),
 }
 
+impl ControlHintConditionRemoteTurret {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "HasRemoteTurretAccess" => Self::HasRemoteTurretAccess,
+            "MultipleRemoteTurrets" => Self::MultipleRemoteTurrets,
+            "RemoteTurret1Available" => Self::RemoteTurret1Available,
+            "RemoteTurret2Available" => Self::RemoteTurret2Available,
+            "RemoteTurret3Available" => Self::RemoteTurret3Available,
+            "UsingRemoteTurret" => Self::UsingRemoteTurret,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ControlHintConditionRemoteTurret {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ControlHintConditionTransporterMotionSpeed`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ControlHintConditionTransporterMotionSpeed {
@@ -3797,6 +7931,28 @@ pub enum ControlHintConditionTransporterMotionSpeed {
     Unrecognized(String),
 }
 
+impl ControlHintConditionTransporterMotionSpeed {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Idle" => Self::Idle,
+            "Movement" => Self::Movement,
+            "Sprint" => Self::Sprint,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ControlHintConditionTransporterMotionSpeed {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ControlHintConditionTryOnState`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ControlHintConditionTryOnState {
@@ -3806,6 +7962,26 @@ pub enum ControlHintConditionTryOnState {
     Unrecognized(String),
 }
 
+impl ControlHintConditionTryOnState {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Active" => Self::Active,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ControlHintConditionTryOnState {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ControlHintConditionVehicleAutoLandState`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ControlHintConditionVehicleAutoLandState {
@@ -3813,6 +7989,26 @@ pub enum ControlHintConditionVehicleAutoLandState {
     Ready,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ControlHintConditionVehicleAutoLandState {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Ready" => Self::Ready,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ControlHintConditionVehicleAutoLandState {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `ControlHintConditionVehicleAutoSelectedContact`
@@ -3830,6 +8026,30 @@ pub enum ControlHintConditionVehicleAutoSelectedContact {
     Attacker,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ControlHintConditionVehicleAutoSelectedContact {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "All" => Self::All,
+            "Hostile" => Self::Hostile,
+            "Friendly" => Self::Friendly,
+            "Attacker" => Self::Attacker,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ControlHintConditionVehicleAutoSelectedContact {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `ControlHintConditionVehicleComponents`
@@ -3859,6 +8079,35 @@ pub enum ControlHintConditionVehicleComponents {
     Unrecognized(String),
 }
 
+impl ControlHintConditionVehicleComponents {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Missiles" => Self::Missiles,
+            "Guns" => Self::Guns,
+            "Radar" => Self::Radar,
+            "QuantumInterdictionSnare" => Self::QuantumInterdictionSnare,
+            "MiningLaser" => Self::MiningLaser,
+            "QuantumDrive" => Self::QuantumDrive,
+            "Bombs" => Self::Bombs,
+            "Gimbals" => Self::Gimbals,
+            "CurrentOrdnanceTypeEmpty" => Self::CurrentOrdnanceTypeEmpty,
+            "JumpThrusterPack" => Self::JumpThrusterPack,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ControlHintConditionVehicleComponents {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ControlHintConditionVehicleCounterMeasureState`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ControlHintConditionVehicleCounterMeasureState {
@@ -3874,6 +8123,29 @@ pub enum ControlHintConditionVehicleCounterMeasureState {
     Unrecognized(String),
 }
 
+impl ControlHintConditionVehicleCounterMeasureState {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "HasChaff" => Self::HasChaff,
+            "HasFlare" => Self::HasFlare,
+            "IncomingCounterWithChaff" => Self::IncomingCounterWithChaff,
+            "IncomingCounterWithFlare" => Self::IncomingCounterWithFlare,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ControlHintConditionVehicleCounterMeasureState {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ControlHintConditionVehicleDestroyedState`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ControlHintConditionVehicleDestroyedState {
@@ -3883,6 +8155,27 @@ pub enum ControlHintConditionVehicleDestroyedState {
     SoftDeath,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ControlHintConditionVehicleDestroyedState {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Alive" => Self::Alive,
+            "SoftDeath" => Self::SoftDeath,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ControlHintConditionVehicleDestroyedState {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `ControlHintConditionVehicleDocking`
@@ -3908,6 +8201,33 @@ pub enum ControlHintConditionVehicleDocking {
     Unrecognized(String),
 }
 
+impl ControlHintConditionVehicleDocking {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "NoDockingTube" => Self::NoDockingTube,
+            "Active" => Self::Active,
+            "CanAutoDock" => Self::CanAutoDock,
+            "AutoDocking" => Self::AutoDocking,
+            "NeedUndockRequest" => Self::NeedUndockRequest,
+            "NearDockingStation" => Self::NearDockingStation,
+            "NearDockingShip" => Self::NearDockingShip,
+            "DockingTargetValid" => Self::DockingTargetValid,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ControlHintConditionVehicleDocking {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ControlHintConditionVehicleEjectorSeat`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ControlHintConditionVehicleEjectorSeat {
@@ -3915,6 +8235,26 @@ pub enum ControlHintConditionVehicleEjectorSeat {
     EjectorSeat,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ControlHintConditionVehicleEjectorSeat {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "EjectorSeat" => Self::EjectorSeat,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ControlHintConditionVehicleEjectorSeat {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `ControlHintConditionVehicleEnvironment`
@@ -3938,6 +8278,32 @@ pub enum ControlHintConditionVehicleEnvironment {
     Unrecognized(String),
 }
 
+impl ControlHintConditionVehicleEnvironment {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "IncomingMissiles" => Self::IncomingMissiles,
+            "ContactOnRadar" => Self::ContactOnRadar,
+            "HostileOnRadar" => Self::HostileOnRadar,
+            "BlobOnRadar" => Self::BlobOnRadar,
+            "UnknownOnRadar" => Self::UnknownOnRadar,
+            "NearMineableRock" => Self::NearMineableRock,
+            "AttackerOnRadar" => Self::AttackerOnRadar,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ControlHintConditionVehicleEnvironment {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ControlHintConditionVehicleHealthState`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ControlHintConditionVehicleHealthState {
@@ -3953,6 +8319,30 @@ pub enum ControlHintConditionVehicleHealthState {
     Below50Percent,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ControlHintConditionVehicleHealthState {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Below10Percent" => Self::Below10Percent,
+            "Below20Percent" => Self::Below20Percent,
+            "Below30Percent" => Self::Below30Percent,
+            "Below40Percent" => Self::Below40Percent,
+            "Below50Percent" => Self::Below50Percent,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ControlHintConditionVehicleHealthState {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `ControlHintConditionVehicleJumpDriveState`
@@ -3976,6 +8366,32 @@ pub enum ControlHintConditionVehicleJumpDriveState {
     Unrecognized(String),
 }
 
+impl ControlHintConditionVehicleJumpDriveState {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "HasJumpDrive" => Self::HasJumpDrive,
+            "HasLinkedJumpPoint" => Self::HasLinkedJumpPoint,
+            "TunedToJumpPoint" => Self::TunedToJumpPoint,
+            "JumpPointClosed" => Self::JumpPointClosed,
+            "ShipInATCQueue" => Self::ShipInATCQueue,
+            "InJumpTunnel" => Self::InJumpTunnel,
+            "TakingDistortionDamage" => Self::TakingDistortionDamage,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ControlHintConditionVehicleJumpDriveState {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ControlHintConditionVehicleLandingArea`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ControlHintConditionVehicleLandingArea {
@@ -3995,6 +8411,31 @@ pub enum ControlHintConditionVehicleLandingArea {
     Unrecognized(String),
 }
 
+impl ControlHintConditionVehicleLandingArea {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "NoLandingArea" => Self::NoLandingArea,
+            "InsideNonReservedLandingArea" => Self::InsideNonReservedLandingArea,
+            "Reserved" => Self::Reserved,
+            "NeedTakeOffPermission" => Self::NeedTakeOffPermission,
+            "WaitingForTakeOff" => Self::WaitingForTakeOff,
+            "NearLandingArea" => Self::NearLandingArea,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ControlHintConditionVehicleLandingArea {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ControlHintConditionVehicleLandingGearState`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ControlHintConditionVehicleLandingGearState {
@@ -4004,6 +8445,27 @@ pub enum ControlHintConditionVehicleLandingGearState {
     Up,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ControlHintConditionVehicleLandingGearState {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Down" => Self::Down,
+            "Up" => Self::Up,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ControlHintConditionVehicleLandingGearState {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `ControlHintConditionVehicleLockedTarget`
@@ -4023,6 +8485,30 @@ pub enum ControlHintConditionVehicleLockedTarget {
     Unrecognized(String),
 }
 
+impl ControlHintConditionVehicleLockedTarget {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "All" => Self::All,
+            "Hostile" => Self::Hostile,
+            "Friendly" => Self::Friendly,
+            "Attacker" => Self::Attacker,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ControlHintConditionVehicleLockedTarget {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ControlHintConditionVehicleMainThrustersState`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ControlHintConditionVehicleMainThrustersState {
@@ -4036,6 +8522,28 @@ pub enum ControlHintConditionVehicleMainThrustersState {
     Unrecognized(String),
 }
 
+impl ControlHintConditionVehicleMainThrustersState {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Off" => Self::Off,
+            "On" => Self::On,
+            "Destroyed" => Self::Destroyed,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ControlHintConditionVehicleMainThrustersState {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ControlHintConditionVehicleMasterMode`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ControlHintConditionVehicleMasterMode {
@@ -4047,6 +8555,27 @@ pub enum ControlHintConditionVehicleMasterMode {
     Unrecognized(String),
 }
 
+impl ControlHintConditionVehicleMasterMode {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "SCM" => Self::SCM,
+            "NAV" => Self::NAV,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ControlHintConditionVehicleMasterMode {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ControlHintConditionVehicleMiningLaserMode`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ControlHintConditionVehicleMiningLaserMode {
@@ -4056,6 +8585,27 @@ pub enum ControlHintConditionVehicleMiningLaserMode {
     Extractor,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ControlHintConditionVehicleMiningLaserMode {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Fracture" => Self::Fracture,
+            "Extractor" => Self::Extractor,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ControlHintConditionVehicleMiningLaserMode {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `ControlHintConditionVehiclePinnedTarget`
@@ -4075,6 +8625,30 @@ pub enum ControlHintConditionVehiclePinnedTarget {
     Unrecognized(String),
 }
 
+impl ControlHintConditionVehiclePinnedTarget {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "All" => Self::All,
+            "Hostile" => Self::Hostile,
+            "Friendly" => Self::Friendly,
+            "Attacker" => Self::Attacker,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ControlHintConditionVehiclePinnedTarget {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ControlHintConditionVehicleQuantumTravelState`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ControlHintConditionVehicleQuantumTravelState {
@@ -4088,6 +8662,29 @@ pub enum ControlHintConditionVehicleQuantumTravelState {
     QT_PartyLeaderRouteSet,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ControlHintConditionVehicleQuantumTravelState {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "QT_RouteSet" => Self::QT_RouteSet,
+            "QT_ReadyToEngage" => Self::QT_ReadyToEngage,
+            "QT_CanTravel" => Self::QT_CanTravel,
+            "QT_PartyLeaderRouteSet" => Self::QT_PartyLeaderRouteSet,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ControlHintConditionVehicleQuantumTravelState {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `ControlHintConditionVehicleSalvage`
@@ -4109,6 +8706,31 @@ pub enum ControlHintConditionVehicleSalvage {
     Unrecognized(String),
 }
 
+impl ControlHintConditionVehicleSalvage {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "SupportsScraping" => Self::SupportsScraping,
+            "SupportsStructural" => Self::SupportsStructural,
+            "SupportsTractor" => Self::SupportsTractor,
+            "SupportsFocusHeads" => Self::SupportsFocusHeads,
+            "SupportsFocusStructural" => Self::SupportsFocusStructural,
+            "SupportsHeadsBeamSpacing" => Self::SupportsHeadsBeamSpacing,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ControlHintConditionVehicleSalvage {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ControlHintConditionVehicleScanWaveAvailability`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ControlHintConditionVehicleScanWaveAvailability {
@@ -4116,6 +8738,26 @@ pub enum ControlHintConditionVehicleScanWaveAvailability {
     Available,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ControlHintConditionVehicleScanWaveAvailability {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Available" => Self::Available,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ControlHintConditionVehicleScanWaveAvailability {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `ControlHintConditionVehicleSeatTypeState`
@@ -4127,6 +8769,27 @@ pub enum ControlHintConditionVehicleSeatTypeState {
     SeatToInterior,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ControlHintConditionVehicleSeatTypeState {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "SeatToExterior" => Self::SeatToExterior,
+            "SeatToInterior" => Self::SeatToInterior,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ControlHintConditionVehicleSeatTypeState {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `ControlHintConditionVehicleState`
@@ -4148,6 +8811,32 @@ pub enum ControlHintConditionVehicleState {
     BombTargetActive,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ControlHintConditionVehicleState {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Docked" => Self::Docked,
+            "Landed" => Self::Landed,
+            "Active" => Self::Active,
+            "Quantum" => Self::Quantum,
+            "Static" => Self::Static,
+            "VolatileCargoExplosionSoon" => Self::VolatileCargoExplosionSoon,
+            "BombTargetActive" => Self::BombTargetActive,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ControlHintConditionVehicleState {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `ControlHintConditionVehicleSystems`
@@ -4181,6 +8870,37 @@ pub enum ControlHintConditionVehicleSystems {
     Unrecognized(String),
 }
 
+impl ControlHintConditionVehicleSystems {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Power_On" => Self::Power_On,
+            "DecoupledMode_On" => Self::DecoupledMode_On,
+            "CruiseControl_On" => Self::CruiseControl_On,
+            "Missile_Locked" => Self::Missile_Locked,
+            "Afterburner_Active" => Self::Afterburner_Active,
+            "SpeedLimiter_On" => Self::SpeedLimiter_On,
+            "GForceSafety_On" => Self::GForceSafety_On,
+            "Rotation_Locked" => Self::Rotation_Locked,
+            "AtMaxSpeed" => Self::AtMaxSpeed,
+            "AtMaxCruiseSpeed" => Self::AtMaxCruiseSpeed,
+            "PlayerAcceleration_Active" => Self::PlayerAcceleration_Active,
+            "Shields_On" => Self::Shields_On,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ControlHintConditionVehicleSystems {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ControlHintConditionVehicleWeaponState`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ControlHintConditionVehicleWeaponState {
@@ -4190,6 +8910,27 @@ pub enum ControlHintConditionVehicleWeaponState {
     WeaponGroup2Set,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ControlHintConditionVehicleWeaponState {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "WeaponGroup1Set" => Self::WeaponGroup1Set,
+            "WeaponGroup2Set" => Self::WeaponGroup2Set,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ControlHintConditionVehicleWeaponState {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `ControlHintConditionVehicleWeaponSystems`
@@ -4205,6 +8946,28 @@ pub enum ControlHintConditionVehicleWeaponSystems {
     Unrecognized(String),
 }
 
+impl ControlHintConditionVehicleWeaponSystems {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "PrecisionTargetingEnabled" => Self::PrecisionTargetingEnabled,
+            "StaggeredFiringEnabled" => Self::StaggeredFiringEnabled,
+            "LagPipsEnabled" => Self::LagPipsEnabled,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ControlHintConditionVehicleWeaponSystems {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `CounterMeasureType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum CounterMeasureType {
@@ -4214,6 +8977,27 @@ pub enum CounterMeasureType {
     Chaff,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl CounterMeasureType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Flare" => Self::Flare,
+            "Chaff" => Self::Chaff,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for CounterMeasureType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `CoverBodyDirection`
@@ -4227,6 +9011,28 @@ pub enum CoverBodyDirection {
     Right,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl CoverBodyDirection {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "Left" => Self::Left,
+            "Right" => Self::Right,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for CoverBodyDirection {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `CtxGraph_ContextActionType`
@@ -4248,6 +9054,31 @@ pub enum CtxGraph_ContextActionType {
     Unrecognized(String),
 }
 
+impl CtxGraph_ContextActionType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Load" => Self::Load,
+            "Unload" => Self::Unload,
+            "Enter" => Self::Enter,
+            "Leave" => Self::Leave,
+            "Unfocus" => Self::Unfocus,
+            "Focus" => Self::Focus,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for CtxGraph_ContextActionType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `CurrencyType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum CurrencyType {
@@ -4263,6 +9094,30 @@ pub enum CurrencyType {
     MER,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl CurrencyType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "INVALID" => Self::INVALID,
+            "UEC" => Self::UEC,
+            "REC" => Self::REC,
+            "ALPHA" => Self::ALPHA,
+            "MER" => Self::MER,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for CurrencyType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `Cursor`
@@ -4302,6 +9157,40 @@ pub enum Cursor {
     Unrecognized(String),
 }
 
+impl Cursor {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Auto" => Self::Auto,
+            "Disabled" => Self::Disabled,
+            "DollyCamera" => Self::DollyCamera,
+            "Grabbable" => Self::Grabbable,
+            "GrabDisabled" => Self::GrabDisabled,
+            "Grabbed" => Self::Grabbed,
+            "InteractMode" => Self::InteractMode,
+            "InteractableZoom" => Self::InteractableZoom,
+            "Press" => Self::Press,
+            "SlideHorizontal" => Self::SlideHorizontal,
+            "SlideVertical" => Self::SlideVertical,
+            "Standard" => Self::Standard,
+            "TextEntry" => Self::TextEntry,
+            "Conversation" => Self::Conversation,
+            "Throw" => Self::Throw,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for Cursor {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `CurveEndPoint`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum CurveEndPoint {
@@ -4315,6 +9204,28 @@ pub enum CurveEndPoint {
     Unrecognized(String),
 }
 
+impl CurveEndPoint {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "MinOptimal" => Self::MinOptimal,
+            "MaxOptimal" => Self::MaxOptimal,
+            "MaxPower" => Self::MaxPower,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for CurveEndPoint {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `CurveStartPoint`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum CurveStartPoint {
@@ -4326,6 +9237,28 @@ pub enum CurveStartPoint {
     MaxOptimal,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl CurveStartPoint {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "MinPower" => Self::MinPower,
+            "MinOptimal" => Self::MinOptimal,
+            "MaxOptimal" => Self::MaxOptimal,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for CurveStartPoint {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `DamageToKillType`
@@ -4359,6 +9292,37 @@ pub enum DamageToKillType {
     Unrecognized(String),
 }
 
+impl DamageToKillType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "none" => Self::none,
+            "melee" => Self::melee,
+            "unarmedMelee" => Self::unarmedMelee,
+            "explosion" => Self::explosion,
+            "bullet" => Self::bullet,
+            "suffocate" => Self::suffocate,
+            "drown" => Self::drown,
+            "energyWeapon" => Self::energyWeapon,
+            "collision" => Self::collision,
+            "fallDamage" => Self::fallDamage,
+            "crash" => Self::crash,
+            "suicide" => Self::suicide,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for DamageToKillType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `DamageTypes`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum DamageTypes {
@@ -4378,6 +9342,31 @@ pub enum DamageTypes {
     Unrecognized(String),
 }
 
+impl DamageTypes {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Physical" => Self::Physical,
+            "Energy" => Self::Energy,
+            "Distortion" => Self::Distortion,
+            "Thermal" => Self::Thermal,
+            "Biochemical" => Self::Biochemical,
+            "Stun" => Self::Stun,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for DamageTypes {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `DateScheduleRepeat`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum DateScheduleRepeat {
@@ -4393,6 +9382,29 @@ pub enum DateScheduleRepeat {
     Unrecognized(String),
 }
 
+impl DateScheduleRepeat {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "OneOff" => Self::OneOff,
+            "RepeatDaily" => Self::RepeatDaily,
+            "RepeatMonthly" => Self::RepeatMonthly,
+            "RepeatYearly" => Self::RepeatYearly,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for DateScheduleRepeat {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `DaylightParticleGroupActivation`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum DaylightParticleGroupActivation {
@@ -4404,6 +9416,28 @@ pub enum DaylightParticleGroupActivation {
     ActiveDuringDay,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl DaylightParticleGroupActivation {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "AlwaysActive" => Self::AlwaysActive,
+            "ActiveDuringNight" => Self::ActiveDuringNight,
+            "ActiveDuringDay" => Self::ActiveDuringDay,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for DaylightParticleGroupActivation {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `DeathReason`
@@ -4425,6 +9459,31 @@ pub enum DeathReason {
     Unrecognized(String),
 }
 
+impl DeathReason {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "none" => Self::none,
+            "instantDeathFromHitDamage" => Self::instantDeathFromHitDamage,
+            "deathFromTemperature" => Self::deathFromTemperature,
+            "deathFromHungerOrThirst" => Self::deathFromHungerOrThirst,
+            "deathFromOverdose" => Self::deathFromOverdose,
+            "downedFromHitDamage" => Self::downedFromHitDamage,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for DeathReason {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `DeliveryObjectiveType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum DeliveryObjectiveType {
@@ -4442,6 +9501,30 @@ pub enum DeliveryObjectiveType {
     Unrecognized(String),
 }
 
+impl DeliveryObjectiveType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "Freight_Resource" => Self::Freight_Resource,
+            "Freight_Entity" => Self::Freight_Entity,
+            "ItemPort_Entity" => Self::ItemPort_Entity,
+            "Locker_Entity" => Self::Locker_Entity,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for DeliveryObjectiveType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `DeviceType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum DeviceType {
@@ -4455,6 +9538,29 @@ pub enum DeviceType {
     Joystick,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl DeviceType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Keyboard" => Self::Keyboard,
+            "Mouse" => Self::Mouse,
+            "Gamepad" => Self::Gamepad,
+            "Joystick" => Self::Joystick,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for DeviceType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `DirectForceTypeFilter`
@@ -4474,6 +9580,30 @@ pub enum DirectForceTypeFilter {
     Unrecognized(String),
 }
 
+impl DirectForceTypeFilter {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Any" => Self::Any,
+            "ActorBump" => Self::ActorBump,
+            "Melee" => Self::Melee,
+            "Physics" => Self::Physics,
+            "Projectile" => Self::Projectile,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for DirectForceTypeFilter {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `DirectRenderStage`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum DirectRenderStage {
@@ -4487,6 +9617,29 @@ pub enum DirectRenderStage {
     AfterPostProcessing,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl DirectRenderStage {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "BeforeToneMapping" => Self::BeforeToneMapping,
+            "AfterToneMapping" => Self::AfterToneMapping,
+            "AfterPostProcessing" => Self::AfterPostProcessing,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for DirectRenderStage {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `DisplayCategory`
@@ -4504,6 +9657,29 @@ pub enum DisplayCategory {
     Unrecognized(String),
 }
 
+impl DisplayCategory {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Critical" => Self::Critical,
+            "Warning" => Self::Warning,
+            "MinorWarning" => Self::MinorWarning,
+            "Normal" => Self::Normal,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for DisplayCategory {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `DisturbanceStyle`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum DisturbanceStyle {
@@ -4519,6 +9695,29 @@ pub enum DisturbanceStyle {
     Unrecognized(String),
 }
 
+impl DisturbanceStyle {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "CenteredNoise" => Self::CenteredNoise,
+            "Figure8" => Self::Figure8,
+            "Gaussian" => Self::Gaussian,
+            "Waterfall" => Self::Waterfall,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for DisturbanceStyle {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EAEntityInclusionMode`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EAEntityInclusionMode {
@@ -4530,6 +9729,27 @@ pub enum EAEntityInclusionMode {
     Unrecognized(String),
 }
 
+impl EAEntityInclusionMode {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "DoNotInclude" => Self::DoNotInclude,
+            "ReadyToInclude" => Self::ReadyToInclude,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EAEntityInclusionMode {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EAGameCompletionAwardType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EAGameCompletionAwardType {
@@ -4539,6 +9759,27 @@ pub enum EAGameCompletionAwardType {
     ScoreboardPlacement,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EAGameCompletionAwardType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "WinOrLoss" => Self::WinOrLoss,
+            "ScoreboardPlacement" => Self::ScoreboardPlacement,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EAGameCompletionAwardType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EAGunGameArmorLevels`
@@ -4554,6 +9795,28 @@ pub enum EAGunGameArmorLevels {
     Unrecognized(String),
 }
 
+impl EAGunGameArmorLevels {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Light" => Self::Light,
+            "Medium" => Self::Medium,
+            "Heavy" => Self::Heavy,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EAGunGameArmorLevels {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EAIAwarenessLevel`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EAIAwarenessLevel {
@@ -4567,6 +9830,29 @@ pub enum EAIAwarenessLevel {
     Combat,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EAIAwarenessLevel {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "Curious" => Self::Curious,
+            "Threatened" => Self::Threatened,
+            "Combat" => Self::Combat,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EAIAwarenessLevel {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EAIDisturbanceType`
@@ -4600,6 +9886,37 @@ pub enum EAIDisturbanceType {
     Unrecognized(String),
 }
 
+impl EAIDisturbanceType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "VisualHostile" => Self::VisualHostile,
+            "VisualDisguisedHostile" => Self::VisualDisguisedHostile,
+            "VisualBody" => Self::VisualBody,
+            "VisualDeath" => Self::VisualDeath,
+            "AudioCombat" => Self::AudioCombat,
+            "AudioHostile" => Self::AudioHostile,
+            "AudioDisruption" => Self::AudioDisruption,
+            "AudioDistraction" => Self::AudioDistraction,
+            "AreaDisruption" => Self::AreaDisruption,
+            "Damage" => Self::Damage,
+            "GroupInvestigation" => Self::GroupInvestigation,
+            "RadarScan" => Self::RadarScan,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EAIDisturbanceType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EAIMagazineRules`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EAIMagazineRules {
@@ -4613,6 +9930,28 @@ pub enum EAIMagazineRules {
     Unrecognized(String),
 }
 
+impl EAIMagazineRules {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "FollowGamerules" => Self::FollowGamerules,
+            "FiniteMagazines" => Self::FiniteMagazines,
+            "InfiniteMagazines" => Self::InfiniteMagazines,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EAIMagazineRules {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EAINavigationGeneration`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EAINavigationGeneration {
@@ -4624,6 +9963,28 @@ pub enum EAINavigationGeneration {
     IgnoreWalkability,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EAINavigationGeneration {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Included" => Self::Included,
+            "Excluded" => Self::Excluded,
+            "IgnoreWalkability" => Self::IgnoreWalkability,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EAINavigationGeneration {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EAIPerceptionAudioType`
@@ -4657,6 +10018,37 @@ pub enum EAIPerceptionAudioType {
     Unrecognized(String),
 }
 
+impl EAIPerceptionAudioType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "BulletHit" => Self::BulletHit,
+            "BulletWhiz" => Self::BulletWhiz,
+            "Weapon" => Self::Weapon,
+            "Movement" => Self::Movement,
+            "Explosion" => Self::Explosion,
+            "ThrownObject" => Self::ThrownObject,
+            "Grenade" => Self::Grenade,
+            "Vehicle" => Self::Vehicle,
+            "Ragdoll" => Self::Ragdoll,
+            "Takedown" => Self::Takedown,
+            "Disruption" => Self::Disruption,
+            "Custom" => Self::Custom,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EAIPerceptionAudioType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EAIPerceptionBehaviour`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EAIPerceptionBehaviour {
@@ -4674,6 +10066,30 @@ pub enum EAIPerceptionBehaviour {
     Unrecognized(String),
 }
 
+impl EAIPerceptionBehaviour {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "TurnHead" => Self::TurnHead,
+            "TurnBody" => Self::TurnBody,
+            "Investigate" => Self::Investigate,
+            "Combat" => Self::Combat,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EAIPerceptionBehaviour {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EAIPerceptionContext`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EAIPerceptionContext {
@@ -4683,6 +10099,27 @@ pub enum EAIPerceptionContext {
     OnSeat,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EAIPerceptionContext {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Default" => Self::Default,
+            "OnSeat" => Self::OnSeat,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EAIPerceptionContext {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EAIWeaponShootingMode`
@@ -4708,6 +10145,33 @@ pub enum EAIWeaponShootingMode {
     Unrecognized(String),
 }
 
+impl EAIWeaponShootingMode {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Single" => Self::Single,
+            "Burst" => Self::Burst,
+            "Rapid" => Self::Rapid,
+            "Charge" => Self::Charge,
+            "Melee" => Self::Melee,
+            "TractorBeam" => Self::TractorBeam,
+            "Repair" => Self::Repair,
+            "Beam" => Self::Beam,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EAIWeaponShootingMode {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EALoadoutSnapshotType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EALoadoutSnapshotType {
@@ -4719,6 +10183,28 @@ pub enum EALoadoutSnapshotType {
     EA_SLAVER,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EALoadoutSnapshotType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "EA_ELIMINATION" => Self::EA_ELIMINATION,
+            "EA_MARINE" => Self::EA_MARINE,
+            "EA_SLAVER" => Self::EA_SLAVER,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EALoadoutSnapshotType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EAMvpType`
@@ -4740,6 +10226,31 @@ pub enum EAMvpType {
     Unrecognized(String),
 }
 
+impl EAMvpType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "Score" => Self::Score,
+            "Kills" => Self::Kills,
+            "Assists" => Self::Assists,
+            "LeastDeaths" => Self::LeastDeaths,
+            "FastestLap" => Self::FastestLap,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EAMvpType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EAOptionType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EAOptionType {
@@ -4749,6 +10260,27 @@ pub enum EAOptionType {
     Map,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EAOptionType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "GameMode" => Self::GameMode,
+            "Map" => Self::Map,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EAOptionType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EAPickupAudioTrigger`
@@ -4770,6 +10302,31 @@ pub enum EAPickupAudioTrigger {
     Unrecognized(String),
 }
 
+impl EAPickupAudioTrigger {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "PickupAquiredByPlayer" => Self::PickupAquiredByPlayer,
+            "PickupAquiredByNLPC" => Self::PickupAquiredByNLPC,
+            "PickupAquireFailedByPlayer" => Self::PickupAquireFailedByPlayer,
+            "PickupAquireFailedByNLPC" => Self::PickupAquireFailedByNLPC,
+            "PickupSpawned" => Self::PickupSpawned,
+            "PickupExpired" => Self::PickupExpired,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EAPickupAudioTrigger {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EAPickupType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EAPickupType {
@@ -4789,6 +10346,31 @@ pub enum EAPickupType {
     Unrecognized(String),
 }
 
+impl EAPickupType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Ballistics" => Self::Ballistics,
+            "Missiles" => Self::Missiles,
+            "Fuel" => Self::Fuel,
+            "Repair" => Self::Repair,
+            "KillConfirmed" => Self::KillConfirmed,
+            "SpecialEvent" => Self::SpecialEvent,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EAPickupType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EASOPSpawnState`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EASOPSpawnState {
@@ -4802,6 +10384,28 @@ pub enum EASOPSpawnState {
     Unrecognized(String),
 }
 
+impl EASOPSpawnState {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "On" => Self::On,
+            "Off" => Self::Off,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EASOPSpawnState {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EASpawnScreenMode`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EASpawnScreenMode {
@@ -4813,6 +10417,28 @@ pub enum EASpawnScreenMode {
     AlwaysActive,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EASpawnScreenMode {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Disabled" => Self::Disabled,
+            "InitialSpawn" => Self::InitialSpawn,
+            "AlwaysActive" => Self::AlwaysActive,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EASpawnScreenMode {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EATransportOnTransitionFinished`
@@ -4834,6 +10460,31 @@ pub enum EATransportOnTransitionFinished {
     Unrecognized(String),
 }
 
+impl EATransportOnTransitionFinished {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "DoNothing" => Self::DoNothing,
+            "Explode" => Self::Explode,
+            "Land" => Self::Land,
+            "LoopNatural" => Self::LoopNatural,
+            "LoopTeleportToSpawner" => Self::LoopTeleportToSpawner,
+            "NextTransition" => Self::NextTransition,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EATransportOnTransitionFinished {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EATransportTransitionType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EATransportTransitionType {
@@ -4847,6 +10498,28 @@ pub enum EATransportTransitionType {
     Unrecognized(String),
 }
 
+impl EATransportTransitionType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Unknown" => Self::Unknown,
+            "FlySpline" => Self::FlySpline,
+            "QTravel" => Self::QTravel,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EATransportTransitionType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EAccumulatorType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EAccumulatorType {
@@ -4858,6 +10531,28 @@ pub enum EAccumulatorType {
     Wetness,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EAccumulatorType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Wear" => Self::Wear,
+            "Dirt" => Self::Dirt,
+            "Wetness" => Self::Wetness,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EAccumulatorType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EActorActionEntityCarryableState`
@@ -4893,6 +10588,38 @@ pub enum EActorActionEntityCarryableState {
     Unrecognized(String),
 }
 
+impl EActorActionEntityCarryableState {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Undefined" => Self::Undefined,
+            "Carryable_Settled" => Self::Carryable_Settled,
+            "Carryable_Carried" => Self::Carryable_Carried,
+            "Carryable_CarriedAndEquipped" => Self::Carryable_CarriedAndEquipped,
+            "Carryable_EquippedWorn" => Self::Carryable_EquippedWorn,
+            "Carryable_CarriedAndInspected" => Self::Carryable_CarriedAndInspected,
+            "Carryable_Dropped" => Self::Carryable_Dropped,
+            "Carryable_Stowed" => Self::Carryable_Stowed,
+            "Carryable_Offered" => Self::Carryable_Offered,
+            "Carryable_Stored" => Self::Carryable_Stored,
+            "Carryable_HangingOnOutfitHanger" => Self::Carryable_HangingOnOutfitHanger,
+            "Special_Gripped" => Self::Special_Gripped,
+            "Special_Mounted" => Self::Special_Mounted,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EActorActionEntityCarryableState {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EActorActionHandlerEventType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EActorActionHandlerEventType {
@@ -4900,6 +10627,26 @@ pub enum EActorActionHandlerEventType {
     Sleep,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EActorActionHandlerEventType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Sleep" => Self::Sleep,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EActorActionHandlerEventType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EActorGForceCameraEffectCategory`
@@ -4915,6 +10662,29 @@ pub enum EActorGForceCameraEffectCategory {
     Legacy,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EActorGForceCameraEffectCategory {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "IfcsDefault" => Self::IfcsDefault,
+            "IfcsBoost" => Self::IfcsBoost,
+            "JumpDrive" => Self::JumpDrive,
+            "Legacy" => Self::Legacy,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EActorGForceCameraEffectCategory {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EActorHostedArticulatedEntityProfile`
@@ -4934,6 +10704,30 @@ pub enum EActorHostedArticulatedEntityProfile {
     Unrecognized(String),
 }
 
+impl EActorHostedArticulatedEntityProfile {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "Default" => Self::Default,
+            "Disabled" => Self::Disabled,
+            "ActiveKinematic" => Self::ActiveKinematic,
+            "ActiveDynamic" => Self::ActiveDynamic,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EActorHostedArticulatedEntityProfile {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EActorLookAheadHeadRollType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EActorLookAheadHeadRollType {
@@ -4945,6 +10739,28 @@ pub enum EActorLookAheadHeadRollType {
     MgvHorizonAlignment,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EActorLookAheadHeadRollType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "VehicleHorizonAlignment" => Self::VehicleHorizonAlignment,
+            "VehicleVelocityRoll" => Self::VehicleVelocityRoll,
+            "MgvHorizonAlignment" => Self::MgvHorizonAlignment,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EActorLookAheadHeadRollType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EActorLookAheadTargetPointType`
@@ -5000,6 +10816,48 @@ pub enum EActorLookAheadTargetPointType {
     Unrecognized(String),
 }
 
+impl EActorLookAheadTargetPointType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "VehicleForward" => Self::VehicleForward,
+            "VehicleForwardHorizon" => Self::VehicleForwardHorizon,
+            "VehicleVelocityTranslation" => Self::VehicleVelocityTranslation,
+            "VehicleVelocityPitchYaw" => Self::VehicleVelocityPitchYaw,
+            "LockedTarget" => Self::LockedTarget,
+            "JumpPointSpline" => Self::JumpPointSpline,
+            "VJoy" => Self::VJoy,
+            "TurretForward" => Self::TurretForward,
+            "TurretLockedTarget" => Self::TurretLockedTarget,
+            "TurretVJoy" => Self::TurretVJoy,
+            "TurretPitchYaw" => Self::TurretPitchYaw,
+            "TurretPointerTarget" => Self::TurretPointerTarget,
+            "LockedTargetPadlock" => Self::LockedTargetPadlock,
+            "TurretLockedTargetPadlock" => Self::TurretLockedTargetPadlock,
+            "MgvForward" => Self::MgvForward,
+            "MgvPitchYaw" => Self::MgvPitchYaw,
+            "MgvVJoy" => Self::MgvVJoy,
+            "MgvVLockedTarget" => Self::MgvVLockedTarget,
+            "MgvLockedTargetPadlock" => Self::MgvLockedTargetPadlock,
+            "QuantumBoostTarget" => Self::QuantumBoostTarget,
+            "AdsPadlock" => Self::AdsPadlock,
+            "AdsCrosshair" => Self::AdsCrosshair,
+            "CustomPoint" => Self::CustomPoint,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EActorLookAheadTargetPointType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EActorPhysicalizationProfile`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EActorPhysicalizationProfile {
@@ -5025,6 +10883,34 @@ pub enum EActorPhysicalizationProfile {
     Unrecognized(String),
 }
 
+impl EActorPhysicalizationProfile {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "Default" => Self::Default,
+            "Default_PoseMatch" => Self::Default_PoseMatch,
+            "FloppyRagdoll" => Self::FloppyRagdoll,
+            "DrivenRagdoll" => Self::DrivenRagdoll,
+            "NewRagdoll" => Self::NewRagdoll,
+            "PassiveRagdoll" => Self::PassiveRagdoll,
+            "Linked" => Self::Linked,
+            "Flying" => Self::Flying,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EActorPhysicalizationProfile {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EActorStanceUpAlignMode`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EActorStanceUpAlignMode {
@@ -5036,6 +10922,28 @@ pub enum EActorStanceUpAlignMode {
     OnlyAlignToGravity,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EActorStanceUpAlignMode {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Auto" => Self::Auto,
+            "OnlyAlignToSurfaceNormal" => Self::OnlyAlignToSurfaceNormal,
+            "OnlyAlignToGravity" => Self::OnlyAlignToGravity,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EActorStanceUpAlignMode {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EActorStateFilterByAimingRestriction`
@@ -5051,6 +10959,28 @@ pub enum EActorStateFilterByAimingRestriction {
     Unrecognized(String),
 }
 
+impl EActorStateFilterByAimingRestriction {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Any" => Self::Any,
+            "Friendly" => Self::Friendly,
+            "Kiosk" => Self::Kiosk,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EActorStateFilterByAimingRestriction {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EActorStateFilterByBoolState`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EActorStateFilterByBoolState {
@@ -5064,6 +10994,28 @@ pub enum EActorStateFilterByBoolState {
     Unrecognized(String),
 }
 
+impl EActorStateFilterByBoolState {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Any" => Self::Any,
+            "True" => Self::True,
+            "False" => Self::False,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EActorStateFilterByBoolState {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EActorStateFilterByPlayerCamera`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EActorStateFilterByPlayerCamera {
@@ -5075,6 +11027,28 @@ pub enum EActorStateFilterByPlayerCamera {
     ThirdPerson,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EActorStateFilterByPlayerCamera {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Any" => Self::Any,
+            "FirstPerson" => Self::FirstPerson,
+            "ThirdPerson" => Self::ThirdPerson,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EActorStateFilterByPlayerCamera {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EActorType`
@@ -5098,6 +11072,32 @@ pub enum EActorType {
     Unrecognized(String),
 }
 
+impl EActorType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Regular" => Self::Regular,
+            "PlayerCorpse" => Self::PlayerCorpse,
+            "DebugGhost" => Self::DebugGhost,
+            "Transport" => Self::Transport,
+            "DeadBody" => Self::DeadBody,
+            "PlayerShadow" => Self::PlayerShadow,
+            "Creature" => Self::Creature,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EActorType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EAimFireDetectionMode`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EAimFireDetectionMode {
@@ -5109,6 +11109,28 @@ pub enum EAimFireDetectionMode {
     Both,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EAimFireDetectionMode {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Temperature" => Self::Temperature,
+            "Radius" => Self::Radius,
+            "Both" => Self::Both,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EAimFireDetectionMode {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EAimableAimType`
@@ -5124,6 +11146,28 @@ pub enum EAimableAimType {
     Unrecognized(String),
 }
 
+impl EAimableAimType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "PipAiming" => Self::PipAiming,
+            "TargetPainting" => Self::TargetPainting,
+            "TargetAuto" => Self::TargetAuto,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EAimableAimType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EAimableGimbalState`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EAimableGimbalState {
@@ -5133,6 +11177,27 @@ pub enum EAimableGimbalState {
     Unlocked,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EAimableGimbalState {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Fixed" => Self::Fixed,
+            "Unlocked" => Self::Unlocked,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EAimableGimbalState {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EAimableUser`
@@ -5154,6 +11219,31 @@ pub enum EAimableUser {
     Unrecognized(String),
 }
 
+impl EAimableUser {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Pilot" => Self::Pilot,
+            "MannedTurret" => Self::MannedTurret,
+            "RemoteTurret" => Self::RemoteTurret,
+            "Seat" => Self::Seat,
+            "GroundVehicleDriver" => Self::GroundVehicleDriver,
+            "BoatDriver" => Self::BoatDriver,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EAimableUser {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EAmmoContainerType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EAmmoContainerType {
@@ -5167,6 +11257,28 @@ pub enum EAmmoContainerType {
     Unrecognized(String),
 }
 
+impl EAmmoContainerType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Primary" => Self::Primary,
+            "Medical" => Self::Medical,
+            "Salvage" => Self::Salvage,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EAmmoContainerType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EAnnouncementPriority`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EAnnouncementPriority {
@@ -5178,6 +11290,28 @@ pub enum EAnnouncementPriority {
     PlayNow,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EAnnouncementPriority {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "SkipQueue" => Self::SkipQueue,
+            "PlayNow" => Self::PlayNow,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EAnnouncementPriority {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EAnnouncerGameTokenType`
@@ -5197,6 +11331,30 @@ pub enum EAnnouncerGameTokenType {
     Unrecognized(String),
 }
 
+impl EAnnouncerGameTokenType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "GameMode" => Self::GameMode,
+            "Team" => Self::Team,
+            "Level" => Self::Level,
+            "Phase" => Self::Phase,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EAnnouncerGameTokenType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EApplicationFormBodyTypes`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EApplicationFormBodyTypes {
@@ -5210,6 +11368,29 @@ pub enum EApplicationFormBodyTypes {
     PreferNotToSay,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EApplicationFormBodyTypes {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Male" => Self::Male,
+            "Female" => Self::Female,
+            "PreferToSelfDescribe" => Self::PreferToSelfDescribe,
+            "PreferNotToSay" => Self::PreferNotToSay,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EApplicationFormBodyTypes {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EAudioBreathEvents`
@@ -5231,6 +11412,32 @@ pub enum EAudioBreathEvents {
     BreathCustom,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EAudioBreathEvents {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "BreathIn" => Self::BreathIn,
+            "BreathOut" => Self::BreathOut,
+            "BreathingStarted" => Self::BreathingStarted,
+            "BreathingStopped" => Self::BreathingStopped,
+            "BreathHold" => Self::BreathHold,
+            "BreathRelease" => Self::BreathRelease,
+            "BreathCustom" => Self::BreathCustom,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EAudioBreathEvents {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EAudioBreathParams`
@@ -5288,6 +11495,49 @@ pub enum EAudioBreathParams {
     Unrecognized(String),
 }
 
+impl EAudioBreathParams {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "BreathDuration" => Self::BreathDuration,
+            "BreathVolume" => Self::BreathVolume,
+            "BreathAirSpeed" => Self::BreathAirSpeed,
+            "BloodOxygen" => Self::BloodOxygen,
+            "BlackOut" => Self::BlackOut,
+            "Health" => Self::Health,
+            "Stamina" => Self::Stamina,
+            "BreathOxygenLevel" => Self::BreathOxygenLevel,
+            "Exertion" => Self::Exertion,
+            "Recovery" => Self::Recovery,
+            "BodyTemperature" => Self::BodyTemperature,
+            "SuitTemperature" => Self::SuitTemperature,
+            "ApparentTemperature" => Self::ApparentTemperature,
+            "BreathHeldRatio" => Self::BreathHeldRatio,
+            "LungFullness" => Self::LungFullness,
+            "BreathInOut" => Self::BreathInOut,
+            "GForce" => Self::GForce,
+            "GForceStress" => Self::GForceStress,
+            "GForcePassout" => Self::GForcePassout,
+            "StyleActiveTime" => Self::StyleActiveTime,
+            "CustomParameter" => Self::CustomParameter,
+            "TorsoWear" => Self::TorsoWear,
+            "ArmsLock" => Self::ArmsLock,
+            "IsInEVA" => Self::IsInEVA,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EAudioBreathParams {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EAudioControllerEntityType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EAudioControllerEntityType {
@@ -5305,6 +11555,30 @@ pub enum EAudioControllerEntityType {
     Unrecognized(String),
 }
 
+impl EAudioControllerEntityType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "Actor" => Self::Actor,
+            "Vehicle" => Self::Vehicle,
+            "Communication" => Self::Communication,
+            "TransitCarriage" => Self::TransitCarriage,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EAudioControllerEntityType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EAudioEnvironmentFeedbackMovementType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EAudioEnvironmentFeedbackMovementType {
@@ -5318,6 +11592,29 @@ pub enum EAudioEnvironmentFeedbackMovementType {
     EnvironmentMovement_Magnitude,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EAudioEnvironmentFeedbackMovementType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "EnvironmentMovement_X" => Self::EnvironmentMovement_X,
+            "EnvironmentMovement_Y" => Self::EnvironmentMovement_Y,
+            "EnvironmentMovement_Z" => Self::EnvironmentMovement_Z,
+            "EnvironmentMovement_Magnitude" => Self::EnvironmentMovement_Magnitude,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EAudioEnvironmentFeedbackMovementType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EAudioGameContextType`
@@ -5341,6 +11638,33 @@ pub enum EAudioGameContextType {
     Cutscene,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EAudioGameContextType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Default" => Self::Default,
+            "ActorDefault" => Self::ActorDefault,
+            "ActorEVA" => Self::ActorEVA,
+            "VehicleDriver" => Self::VehicleDriver,
+            "VehicleCrew" => Self::VehicleCrew,
+            "RemoteTurret" => Self::RemoteTurret,
+            "Dead" => Self::Dead,
+            "Cutscene" => Self::Cutscene,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EAudioGameContextType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EAudioIFCSOutputData`
@@ -5522,6 +11846,111 @@ pub enum EAudioIFCSOutputData {
     Unrecognized(String),
 }
 
+impl EAudioIFCSOutputData {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "IFCS_Update_Mode" => Self::IFCS_Update_Mode,
+            "Ship_Aerodynamics_DragMagnitude" => Self::Ship_Aerodynamics_DragMagnitude,
+            "Ship_Aerodynamics_LiftMagnitude" => Self::Ship_Aerodynamics_LiftMagnitude,
+            "Ship_AfterburnerCommanded" => Self::Ship_AfterburnerCommanded,
+            "Ship_AfterburnerEnabled" => Self::Ship_AfterburnerEnabled,
+            "Ship_AfterburnerEnabledScaled" => Self::Ship_AfterburnerEnabledScaled,
+            "Ship_AfterburnerRampUpRatio" => Self::Ship_AfterburnerRampUpRatio,
+            "Ship_AfterburnerCapacityRatio" => Self::Ship_AfterburnerCapacityRatio,
+            "Ship_GSafe_Enabled" => Self::Ship_GSafe_Enabled,
+            "Ship_Coupled" => Self::Ship_Coupled,
+            "Ship_FuelRatio" => Self::Ship_FuelRatio,
+            "Ship_HoverMode" => Self::Ship_HoverMode,
+            "Ship_HoverModeAnimationPosition" => Self::Ship_HoverModeAnimationPosition,
+            "Ship_HoverDriftForwardBackward" => Self::Ship_HoverDriftForwardBackward,
+            "Ship_HoverDriftLeftRight" => Self::Ship_HoverDriftLeftRight,
+            "Ship_HoverDriftMagnitude" => Self::Ship_HoverDriftMagnitude,
+            "Ship_Planet_Altitude" => Self::Ship_Planet_Altitude,
+            "Ship_Planet_AtmosphericDensity" => Self::Ship_Planet_AtmosphericDensity,
+            "Ship_Planet_HeightAboveGround" => Self::Ship_Planet_HeightAboveGround,
+            "Ship_Atmospheric_Mach" => Self::Ship_Atmospheric_Mach,
+            "Ship_Atmospheric_StagnationTemperature" => Self::Ship_Atmospheric_StagnationTemperature,
+            "Ship_Atmospheric_StagnationTemperatureFlareStarted" => Self::Ship_Atmospheric_StagnationTemperatureFlareStarted,
+            "Ship_Atmospheric_StagnationTemperatureNormalized" => Self::Ship_Atmospheric_StagnationTemperatureNormalized,
+            "Ship_Atmospheric_Wind_Speed_Rotational_Non_Normalised" => Self::Ship_Atmospheric_Wind_Speed_Rotational_Non_Normalised,
+            "Ship_Atmospheric_Wind_Speed_Translational_Non_Normalised" => Self::Ship_Atmospheric_Wind_Speed_Translational_Non_Normalised,
+            "Ship_Translation_Speed" => Self::Ship_Translation_Speed,
+            "Ship_Translation_Speed_NonNormalized" => Self::Ship_Translation_Speed_NonNormalized,
+            "Ship_Translation_Acceleration_MaxAll" => Self::Ship_Translation_Acceleration_MaxAll,
+            "Ship_Translation_Acceleration_Forward" => Self::Ship_Translation_Acceleration_Forward,
+            "Ship_Translation_Acceleration_Backward" => Self::Ship_Translation_Acceleration_Backward,
+            "Ship_Translation_Acceleration_ForwardBackward" => Self::Ship_Translation_Acceleration_ForwardBackward,
+            "Ship_Translation_Acceleration_UpDown" => Self::Ship_Translation_Acceleration_UpDown,
+            "Ship_Translation_Acceleration_UpDownSigned" => Self::Ship_Translation_Acceleration_UpDownSigned,
+            "Ship_Translation_Acceleration_LeftRight" => Self::Ship_Translation_Acceleration_LeftRight,
+            "Ship_Translation_Acceleration_LeftRightSigned" => Self::Ship_Translation_Acceleration_LeftRightSigned,
+            "Ship_Translation_Acceleration_MaxLeftRightUpDown" => Self::Ship_Translation_Acceleration_MaxLeftRightUpDown,
+            "Ship_Translation_GSafe_Strength" => Self::Ship_Translation_GSafe_Strength,
+            "Ship_Translation_InCruiseRange" => Self::Ship_Translation_InCruiseRange,
+            "Ship_Rotation_Speed" => Self::Ship_Rotation_Speed,
+            "Ship_Rotation_Speed_NonNormalized" => Self::Ship_Rotation_Speed_NonNormalized,
+            "Ship_Rotation_Speed_Pitch" => Self::Ship_Rotation_Speed_Pitch,
+            "Ship_Rotation_Speed_Pitch_Signed" => Self::Ship_Rotation_Speed_Pitch_Signed,
+            "Ship_Rotation_Speed_Yaw" => Self::Ship_Rotation_Speed_Yaw,
+            "Ship_Rotation_Speed_Yaw_Signed" => Self::Ship_Rotation_Speed_Yaw_Signed,
+            "Ship_Rotation_Speed_Roll" => Self::Ship_Rotation_Speed_Roll,
+            "Ship_Rotation_Speed_Roll_Signed" => Self::Ship_Rotation_Speed_Roll_Signed,
+            "Ship_Rotation_Speed_MaxAll" => Self::Ship_Rotation_Speed_MaxAll,
+            "Ship_Rotation_Speed_MaxPitchYaw" => Self::Ship_Rotation_Speed_MaxPitchYaw,
+            "Ship_Rotation_InputDivergence" => Self::Ship_Rotation_InputDivergence,
+            "Ship_Rotation_InputDivergence_Pitch" => Self::Ship_Rotation_InputDivergence_Pitch,
+            "Ship_Rotation_InputDivergence_Yaw" => Self::Ship_Rotation_InputDivergence_Yaw,
+            "Ship_Rotation_InputDivergence_Roll" => Self::Ship_Rotation_InputDivergence_Roll,
+            "Ship_Rotation_InputDivergence_MaxAll" => Self::Ship_Rotation_InputDivergence_MaxAll,
+            "Ship_Rotation_InputDivergence_MaxPitchYaw" => Self::Ship_Rotation_InputDivergence_MaxPitchYaw,
+            "Gravlev_Compression_One" => Self::Gravlev_Compression_One,
+            "Gravlev_Compression_Two" => Self::Gravlev_Compression_Two,
+            "Gravlev_Compression_Three" => Self::Gravlev_Compression_Three,
+            "Gravlev_Compression_Four" => Self::Gravlev_Compression_Four,
+            "Gravlev_Compression_All" => Self::Gravlev_Compression_All,
+            "Gravlev_Compression_Average" => Self::Gravlev_Compression_Average,
+            "Gravlev_Compression_Max" => Self::Gravlev_Compression_Max,
+            "Gravlev_Compression_Normalized_One" => Self::Gravlev_Compression_Normalized_One,
+            "Gravlev_Compression_Normalized_Two" => Self::Gravlev_Compression_Normalized_Two,
+            "Gravlev_Compression_Normalized_Three" => Self::Gravlev_Compression_Normalized_Three,
+            "Gravlev_Compression_Normalized_Four" => Self::Gravlev_Compression_Normalized_Four,
+            "Gravlev_Compression_Normalized_All" => Self::Gravlev_Compression_Normalized_All,
+            "Gravlev_Compression_Normalized_Average" => Self::Gravlev_Compression_Normalized_Average,
+            "Gravlev_Compression_Normalized_Max" => Self::Gravlev_Compression_Normalized_Max,
+            "Gravlev_Enabled" => Self::Gravlev_Enabled,
+            "Ship_Linear_VelocityLengthNormalizedLS" => Self::Ship_Linear_VelocityLengthNormalizedLS,
+            "Ship_Linear_VelocityForwardBackwardNormalizedLS" => Self::Ship_Linear_VelocityForwardBackwardNormalizedLS,
+            "Ship_Linear_VelocityRightLeftNormalizedLS" => Self::Ship_Linear_VelocityRightLeftNormalizedLS,
+            "Ship_Linear_VelocityUpDownNormalizedLS" => Self::Ship_Linear_VelocityUpDownNormalizedLS,
+            "Ship_Linear_VelocityGoalLengthNormalizedLS" => Self::Ship_Linear_VelocityGoalLengthNormalizedLS,
+            "Ship_Angular_AccelerationLengthLS" => Self::Ship_Angular_AccelerationLengthLS,
+            "Ship_Linear_RealAccelerationLS" => Self::Ship_Linear_RealAccelerationLS,
+            "Ship_MaxSpeedNav" => Self::Ship_MaxSpeedNav,
+            "Ship_AtmosphericDensity" => Self::Ship_AtmosphericDensity,
+            "Ship_IsInControlSurfaceMode" => Self::Ship_IsInControlSurfaceMode,
+            "Ship_IsLanded" => Self::Ship_IsLanded,
+            "Ship_IsGearDown" => Self::Ship_IsGearDown,
+            "Ship_IsMainThrustersOn" => Self::Ship_IsMainThrustersOn,
+            "Ship_RawInputRotation" => Self::Ship_RawInputRotation,
+            "Ship_NavModeEnabled" => Self::Ship_NavModeEnabled,
+            "Ship_ThrusterDisconnectActive" => Self::Ship_ThrusterDisconnectActive,
+            "Ship_ThrusterControlSurfaceMix" => Self::Ship_ThrusterControlSurfaceMix,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EAudioIFCSOutputData {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EAudioTriggerType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EAudioTriggerType {
@@ -5545,6 +11974,33 @@ pub enum EAudioTriggerType {
     Unrecognized(String),
 }
 
+impl EAudioTriggerType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "WeaponFire" => Self::WeaponFire,
+            "EntityEffect" => Self::EntityEffect,
+            "Footsteps" => Self::Footsteps,
+            "Foley" => Self::Foley,
+            "ProceduralClip" => Self::ProceduralClip,
+            "Thruster" => Self::Thruster,
+            "Dialogue" => Self::Dialogue,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EAudioTriggerType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EAudioValueOutputCameraInputs`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EAudioValueOutputCameraInputs {
@@ -5562,6 +12018,30 @@ pub enum EAudioValueOutputCameraInputs {
     Unrecognized(String),
 }
 
+impl EAudioValueOutputCameraInputs {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "EAVOCI_None" => Self::EAVOCI_None,
+            "EAVOCI_Snapshot" => Self::EAVOCI_Snapshot,
+            "EAVOCI_Average" => Self::EAVOCI_Average,
+            "EAVOCI_AverageRooted" => Self::EAVOCI_AverageRooted,
+            "EAVOCI_Max" => Self::EAVOCI_Max,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EAudioValueOutputCameraInputs {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EAutoFillType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EAutoFillType {
@@ -5577,6 +12057,30 @@ pub enum EAutoFillType {
     SmartBalancing,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EAutoFillType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "Balance" => Self::Balance,
+            "TopToBottom" => Self::TopToBottom,
+            "BottomToTop" => Self::BottomToTop,
+            "SmartBalancing" => Self::SmartBalancing,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EAutoFillType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EAuxiliaryProxy`
@@ -5648,6 +12152,57 @@ pub enum EAuxiliaryProxy {
     Helper_10_Proxies,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EAuxiliaryProxy {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Head_Proxies" => Self::Head_Proxies,
+            "Neck_Proxies" => Self::Neck_Proxies,
+            "Spine_1_Proxies" => Self::Spine_1_Proxies,
+            "Spine_2_Proxies" => Self::Spine_2_Proxies,
+            "Spine_3_Proxies" => Self::Spine_3_Proxies,
+            "Hips_Proxies" => Self::Hips_Proxies,
+            "L_Shoulder_Proxie" => Self::L_Shoulder_Proxie,
+            "L_Arm_Proxies" => Self::L_Arm_Proxies,
+            "L_ForeArm_Proxies" => Self::L_ForeArm_Proxies,
+            "L_Hand_Proxies" => Self::L_Hand_Proxies,
+            "L_Thigh_Proxies" => Self::L_Thigh_Proxies,
+            "L_Knee_Proxies" => Self::L_Knee_Proxies,
+            "L_Foot_Proxies" => Self::L_Foot_Proxies,
+            "L_Toe_Proxies" => Self::L_Toe_Proxies,
+            "R_Shoulder_Proxie" => Self::R_Shoulder_Proxie,
+            "R_Arm_Proxies" => Self::R_Arm_Proxies,
+            "R_ForeArm_Proxies" => Self::R_ForeArm_Proxies,
+            "R_Hand_Proxies" => Self::R_Hand_Proxies,
+            "R_Thigh_Proxies" => Self::R_Thigh_Proxies,
+            "R_Knee_Proxies" => Self::R_Knee_Proxies,
+            "R_Foot_Proxies" => Self::R_Foot_Proxies,
+            "R_Toe_Proxies" => Self::R_Toe_Proxies,
+            "Helper_01_Proxies" => Self::Helper_01_Proxies,
+            "Helper_02_Proxies" => Self::Helper_02_Proxies,
+            "Helper_03_Proxies" => Self::Helper_03_Proxies,
+            "Helper_04_Proxies" => Self::Helper_04_Proxies,
+            "Helper_05_Proxies" => Self::Helper_05_Proxies,
+            "Helper_06_Proxies" => Self::Helper_06_Proxies,
+            "Helper_07_Proxies" => Self::Helper_07_Proxies,
+            "Helper_08_Proxies" => Self::Helper_08_Proxies,
+            "Helper_09_Proxies" => Self::Helper_09_Proxies,
+            "Helper_10_Proxies" => Self::Helper_10_Proxies,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EAuxiliaryProxy {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EAwardId`
@@ -5819,6 +12374,106 @@ pub enum EAwardId {
     Unrecognized(String),
 }
 
+impl EAwardId {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "VanduulSwarm_Win_Legacy" => Self::VanduulSwarm_Win_Legacy,
+            "VanduulSwarm_Win" => Self::VanduulSwarm_Win,
+            "PirateSwarm_Win" => Self::PirateSwarm_Win,
+            "PirateSwarm_Speedrun" => Self::PirateSwarm_Speedrun,
+            "PirateSwarm_SpecialCondition" => Self::PirateSwarm_SpecialCondition,
+            "Tank_Win" => Self::Tank_Win,
+            "GunGame_Win" => Self::GunGame_Win,
+            "ExperimentalMode_Played" => Self::ExperimentalMode_Played,
+            "Killed_Developer" => Self::Killed_Developer,
+            "PvE_Deathless" => Self::PvE_Deathless,
+            "Xmas_Win" => Self::Xmas_Win,
+            "LunarNewYear_Win" => Self::LunarNewYear_Win,
+            "Valentines_Win" => Self::Valentines_Win,
+            "Halloween_Win" => Self::Halloween_Win,
+            "Halloween_Win_Tier2" => Self::Halloween_Win_Tier2,
+            "Halloween_Win_Tier3" => Self::Halloween_Win_Tier3,
+            "SC_GameMasterEventItem" => Self::SC_GameMasterEventItem,
+            "SC_LootableEventItem" => Self::SC_LootableEventItem,
+            "StPatricks_Win" => Self::StPatricks_Win,
+            "WelcomeToPyro_Chapter_One" => Self::WelcomeToPyro_Chapter_One,
+            "WelcomeToPyro_Chapter_Two" => Self::WelcomeToPyro_Chapter_Two,
+            "WelcomeToPyro_Chapter_Two_VIG" => Self::WelcomeToPyro_Chapter_Two_VIG,
+            "WelcomeToPyro_Chapter_Two_CFP" => Self::WelcomeToPyro_Chapter_Two_CFP,
+            "WelcomeToPyro_Chapter_Two_HH" => Self::WelcomeToPyro_Chapter_Two_HH,
+            "WelcomeToPyro_Firesale" => Self::WelcomeToPyro_Firesale,
+            "WelcomeToPyro_MiningRush" => Self::WelcomeToPyro_MiningRush,
+            "WelcomeToPyro_SalvageRush" => Self::WelcomeToPyro_SalvageRush,
+            "WelcomeToPyro_FiresaleCombo" => Self::WelcomeToPyro_FiresaleCombo,
+            "Training_UEE" => Self::Training_UEE,
+            "HuntingThePolaris" => Self::HuntingThePolaris,
+            "SC_BDay11_Gold" => Self::SC_BDay11_Gold,
+            "SC_BDay11_Platinum" => Self::SC_BDay11_Platinum,
+            "RT_GG_HRST_T1" => Self::RT_GG_HRST_T1,
+            "RT_GG_CRUS_T1" => Self::RT_GG_CRUS_T1,
+            "RT_GG_ARCC_T1" => Self::RT_GG_ARCC_T1,
+            "RT_GG_MITE_T1" => Self::RT_GG_MITE_T1,
+            "RT_GG_HRST_T2" => Self::RT_GG_HRST_T2,
+            "RT_GG_CRUS_T2" => Self::RT_GG_CRUS_T2,
+            "RT_GG_ARCC_T2" => Self::RT_GG_ARCC_T2,
+            "RT_GG_MITE_T2" => Self::RT_GG_MITE_T2,
+            "RT_GG_HRST_T3" => Self::RT_GG_HRST_T3,
+            "RT_GG_CRUS_T3" => Self::RT_GG_CRUS_T3,
+            "RT_GG_ARCC_T3" => Self::RT_GG_ARCC_T3,
+            "RT_GG_MITE_T3" => Self::RT_GG_MITE_T3,
+            "RT_GG_HRST_T4" => Self::RT_GG_HRST_T4,
+            "RT_GG_CRUS_T4" => Self::RT_GG_CRUS_T4,
+            "RT_GG_ARCC_T4" => Self::RT_GG_ARCC_T4,
+            "RT_GG_MITE_T4" => Self::RT_GG_MITE_T4,
+            "RT_GG_HRST_T5" => Self::RT_GG_HRST_T5,
+            "RT_GG_CRUS_T5" => Self::RT_GG_CRUS_T5,
+            "RT_GG_ARCC_T5" => Self::RT_GG_ARCC_T5,
+            "RT_GG_MITE_T5" => Self::RT_GG_MITE_T5,
+            "RT_CVH_CFP_1" => Self::RT_CVH_CFP_1,
+            "RT_CVH_CFP_2" => Self::RT_CVH_CFP_2,
+            "RT_CVH_CFP_3" => Self::RT_CVH_CFP_3,
+            "RT_CVH_HH_1_Awarded" => Self::RT_CVH_HH_1_Awarded,
+            "RT_CVH_HH_2_Awarded" => Self::RT_CVH_HH_2_Awarded,
+            "RT_CVH_HH_3_Awarded" => Self::RT_CVH_HH_3_Awarded,
+            "RT_CVH_HH_1" => Self::RT_CVH_HH_1,
+            "RT_CVH_HH_2" => Self::RT_CVH_HH_2,
+            "RT_CVH_HH_3" => Self::RT_CVH_HH_3,
+            "RT_CVH_CFP_1_Awarded" => Self::RT_CVH_CFP_1_Awarded,
+            "RT_CVH_CFP_2_Awarded" => Self::RT_CVH_CFP_2_Awarded,
+            "RT_CVH_CFP_3_Awarded" => Self::RT_CVH_CFP_3_Awarded,
+            "R_PU_CA_OP_1" => Self::R_PU_CA_OP_1,
+            "R_PU_CA_OP_2" => Self::R_PU_CA_OP_2,
+            "R_PU_CA_OP_3" => Self::R_PU_CA_OP_3,
+            "R_PU_CA_OP_4" => Self::R_PU_CA_OP_4,
+            "R_PU_CA_TRANSPORT_1" => Self::R_PU_CA_TRANSPORT_1,
+            "R_PU_CA_TRANSPORT_2" => Self::R_PU_CA_TRANSPORT_2,
+            "R_PU_CA_TRANSPORT_3" => Self::R_PU_CA_TRANSPORT_3,
+            "R_PU_CA_TRANSPORT_4" => Self::R_PU_CA_TRANSPORT_4,
+            "R_PU_CA_DEFENSE_1" => Self::R_PU_CA_DEFENSE_1,
+            "R_PU_CA_DEFENSE_2" => Self::R_PU_CA_DEFENSE_2,
+            "R_PU_CA_DEFENSE_3" => Self::R_PU_CA_DEFENSE_3,
+            "R_PU_CA_DEFENSE_4" => Self::R_PU_CA_DEFENSE_4,
+            "R_PU_CA_COLLECTION_1" => Self::R_PU_CA_COLLECTION_1,
+            "R_PU_CA_COLLECTION_2" => Self::R_PU_CA_COLLECTION_2,
+            "R_PU_CA_COLLECTION_3" => Self::R_PU_CA_COLLECTION_3,
+            "R_PU_CA_COLLECTION_4" => Self::R_PU_CA_COLLECTION_4,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EAwardId {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EBuildModeSubMenu`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EBuildModeSubMenu {
@@ -5834,6 +12489,29 @@ pub enum EBuildModeSubMenu {
     Unrecognized(String),
 }
 
+impl EBuildModeSubMenu {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "LandClaim" => Self::LandClaim,
+            "NewStructure" => Self::NewStructure,
+            "ExistingStructure" => Self::ExistingStructure,
+            "ResourceManagement" => Self::ResourceManagement,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EBuildModeSubMenu {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EBuildingBlocksFlattenBehavior`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EBuildingBlocksFlattenBehavior {
@@ -5845,6 +12523,28 @@ pub enum EBuildingBlocksFlattenBehavior {
     FlattenAs2D,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EBuildingBlocksFlattenBehavior {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "FlattenAs3D" => Self::FlattenAs3D,
+            "FlattenAs2D" => Self::FlattenAs2D,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EBuildingBlocksFlattenBehavior {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `ECIGTestA`
@@ -5870,6 +12570,33 @@ pub enum ECIGTestA {
     Unrecognized(String),
 }
 
+impl ECIGTestA {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Item_A" => Self::Item_A,
+            "Item_B" => Self::Item_B,
+            "Item_C" => Self::Item_C,
+            "Item_D" => Self::Item_D,
+            "Item_E" => Self::Item_E,
+            "Item_F" => Self::Item_F,
+            "Item_G" => Self::Item_G,
+            "Item_H" => Self::Item_H,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ECIGTestA {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ECameraTransitionRelativeTo`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ECameraTransitionRelativeTo {
@@ -5879,6 +12606,27 @@ pub enum ECameraTransitionRelativeTo {
     End,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ECameraTransitionRelativeTo {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Start" => Self::Start,
+            "End" => Self::End,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ECameraTransitionRelativeTo {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `ECameraViewTypes`
@@ -5946,6 +12694,54 @@ pub enum ECameraViewTypes {
     Unrecognized(String),
 }
 
+impl ECameraViewTypes {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Simple3P" => Self::Simple3P,
+            "Static" => Self::Static,
+            "StaticFixedSpectator" => Self::StaticFixedSpectator,
+            "ThirdPersonBase" => Self::ThirdPersonBase,
+            "Orbit" => Self::Orbit,
+            "OrbitEntity" => Self::OrbitEntity,
+            "OrbitEntityCinematic" => Self::OrbitEntityCinematic,
+            "OrbitPassenger" => Self::OrbitPassenger,
+            "OrbitPlayer" => Self::OrbitPlayer,
+            "OrbitPoint" => Self::OrbitPoint,
+            "OrbitVehicle" => Self::OrbitVehicle,
+            "OrbitSCItemSeat" => Self::OrbitSCItemSeat,
+            "OrbitPassengerSCItemSeat" => Self::OrbitPassengerSCItemSeat,
+            "OrbitSpectatorFollow" => Self::OrbitSpectatorFollow,
+            "OrbitSpectatorFollowVehicle" => Self::OrbitSpectatorFollowVehicle,
+            "ChaseVehicle" => Self::ChaseVehicle,
+            "ChaseSCItemSeat" => Self::ChaseSCItemSeat,
+            "SeatCockpit" => Self::SeatCockpit,
+            "LookBehind" => Self::LookBehind,
+            "LookVehicleItem" => Self::LookVehicleItem,
+            "FreeCam" => Self::FreeCam,
+            "TimeCam" => Self::TimeCam,
+            "FPSDeathCam" => Self::FPSDeathCam,
+            "CinematicTwoShipsFrame" => Self::CinematicTwoShipsFrame,
+            "FirstPersonSpectator" => Self::FirstPersonSpectator,
+            "RemoteTurret" => Self::RemoteTurret,
+            "FirstPersonBase" => Self::FirstPersonBase,
+            "KillerDeathCam" => Self::KillerDeathCam,
+            "PlayerInventory" => Self::PlayerInventory,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ECameraViewTypes {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ECarryableDefaultInteractions`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ECarryableDefaultInteractions {
@@ -5975,6 +12771,36 @@ pub enum ECarryableDefaultInteractions {
     Unrecognized(String),
 }
 
+impl ECarryableDefaultInteractions {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Carry" => Self::Carry,
+            "Place" => Self::Place,
+            "Drop" => Self::Drop,
+            "EquipToItemport" => Self::EquipToItemport,
+            "Store" => Self::Store,
+            "HoldReady" => Self::HoldReady,
+            "EquipWearable" => Self::EquipWearable,
+            "Inspect" => Self::Inspect,
+            "Flip" => Self::Flip,
+            "SwapAttachments" => Self::SwapAttachments,
+            "AttachToHeldItem" => Self::AttachToHeldItem,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ECarryableDefaultInteractions {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ECarryableSequenceActions`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ECarryableSequenceActions {
@@ -5986,6 +12812,28 @@ pub enum ECarryableSequenceActions {
     BespokePlace,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ECarryableSequenceActions {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Undefined" => Self::Undefined,
+            "BespokeTake" => Self::BespokeTake,
+            "BespokePlace" => Self::BespokePlace,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ECarryableSequenceActions {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `ECarryableState`
@@ -6013,6 +12861,35 @@ pub enum ECarryableState {
     eCS_HangingOnOutfitHanger,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ECarryableState {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "eCS_Dropped" => Self::eCS_Dropped,
+            "eCS_Carried" => Self::eCS_Carried,
+            "eCS_Settled" => Self::eCS_Settled,
+            "eCS_CarriedAndEquipped" => Self::eCS_CarriedAndEquipped,
+            "eCS_Stowed" => Self::eCS_Stowed,
+            "eCS_Offered" => Self::eCS_Offered,
+            "eCS_CarriedAndInspected" => Self::eCS_CarriedAndInspected,
+            "eCS_EquippedWorn" => Self::eCS_EquippedWorn,
+            "eCS_Stored" => Self::eCS_Stored,
+            "eCS_HangingOnOutfitHanger" => Self::eCS_HangingOnOutfitHanger,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ECarryableState {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `ECharacterCustomizerDNARegion`
@@ -6050,6 +12927,39 @@ pub enum ECharacterCustomizerDNARegion {
     Unrecognized(String),
 }
 
+impl ECharacterCustomizerDNARegion {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "LeftBrow" => Self::LeftBrow,
+            "RightBrow" => Self::RightBrow,
+            "LeftEye" => Self::LeftEye,
+            "RightEye" => Self::RightEye,
+            "Nose" => Self::Nose,
+            "LeftEar" => Self::LeftEar,
+            "RightEar" => Self::RightEar,
+            "LeftCheek" => Self::LeftCheek,
+            "RightCheek" => Self::RightCheek,
+            "Mouth" => Self::Mouth,
+            "Jawline" => Self::Jawline,
+            "Crown" => Self::Crown,
+            "Neck" => Self::Neck,
+            "Invalid" => Self::Invalid,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ECharacterCustomizerDNARegion {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ECharacterCustomizerFeature`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ECharacterCustomizerFeature {
@@ -6079,6 +12989,36 @@ pub enum ECharacterCustomizerFeature {
     Unrecognized(String),
 }
 
+impl ECharacterCustomizerFeature {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Skin" => Self::Skin,
+            "Complexion" => Self::Complexion,
+            "Hair" => Self::Hair,
+            "FacialHair" => Self::FacialHair,
+            "Eyebrows" => Self::Eyebrows,
+            "HairDye" => Self::HairDye,
+            "Eyes" => Self::Eyes,
+            "Makeup" => Self::Makeup,
+            "Tattoos" => Self::Tattoos,
+            "BodySkin" => Self::BodySkin,
+            "Invalid" => Self::Invalid,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ECharacterCustomizerFeature {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ECharacterCustomizerItemSelectMode`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ECharacterCustomizerItemSelectMode {
@@ -6090,6 +13030,28 @@ pub enum ECharacterCustomizerItemSelectMode {
     Toggle,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ECharacterCustomizerItemSelectMode {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "HeadSelection" => Self::HeadSelection,
+            "BindingsValue" => Self::BindingsValue,
+            "Toggle" => Self::Toggle,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ECharacterCustomizerItemSelectMode {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `ECharacterCustomizerTextureSelectSlot`
@@ -6105,6 +13067,29 @@ pub enum ECharacterCustomizerTextureSelectSlot {
     TattooSlot1,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ECharacterCustomizerTextureSelectSlot {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "MakeupSlot1" => Self::MakeupSlot1,
+            "MakeupSlot2" => Self::MakeupSlot2,
+            "MakeupSlot3" => Self::MakeupSlot3,
+            "TattooSlot1" => Self::TattooSlot1,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ECharacterCustomizerTextureSelectSlot {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `ECharacterCustomizerTextureSlot`
@@ -6154,6 +13139,45 @@ pub enum ECharacterCustomizerTextureSlot {
     Unrecognized(String),
 }
 
+impl ECharacterCustomizerTextureSlot {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "SLOT1" => Self::SLOT1,
+            "SLOT2" => Self::SLOT2,
+            "SLOT3" => Self::SLOT3,
+            "SLOT4" => Self::SLOT4,
+            "SLOT5" => Self::SLOT5,
+            "SLOT6" => Self::SLOT6,
+            "SLOT7" => Self::SLOT7,
+            "SLOT8" => Self::SLOT8,
+            "SLOT9" => Self::SLOT9,
+            "SLOT10" => Self::SLOT10,
+            "SLOT11" => Self::SLOT11,
+            "SLOT12" => Self::SLOT12,
+            "SLOT13" => Self::SLOT13,
+            "SLOT14" => Self::SLOT14,
+            "SLOT15" => Self::SLOT15,
+            "SLOT16" => Self::SLOT16,
+            "SLOT17" => Self::SLOT17,
+            "SLOT18" => Self::SLOT18,
+            "SLOT19" => Self::SLOT19,
+            "SLOT_INVALID" => Self::SLOT_INVALID,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ECharacterCustomizerTextureSlot {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ECharacterGenerationArchetypeBuild`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ECharacterGenerationArchetypeBuild {
@@ -6167,6 +13191,29 @@ pub enum ECharacterGenerationArchetypeBuild {
     Muscular,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ECharacterGenerationArchetypeBuild {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Skinny" => Self::Skinny,
+            "Average" => Self::Average,
+            "Heavy" => Self::Heavy,
+            "Muscular" => Self::Muscular,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ECharacterGenerationArchetypeBuild {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `ECharacterGenerationArchetypeEthnicity`
@@ -6186,6 +13233,30 @@ pub enum ECharacterGenerationArchetypeEthnicity {
     Unrecognized(String),
 }
 
+impl ECharacterGenerationArchetypeEthnicity {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "African" => Self::African,
+            "Asian" => Self::Asian,
+            "Caucasian" => Self::Caucasian,
+            "Hispanic" => Self::Hispanic,
+            "Other" => Self::Other,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ECharacterGenerationArchetypeEthnicity {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EChargeDrainMode`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EChargeDrainMode {
@@ -6195,6 +13266,27 @@ pub enum EChargeDrainMode {
     Drain,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EChargeDrainMode {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Charge" => Self::Charge,
+            "Drain" => Self::Drain,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EChargeDrainMode {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EChatEmoteType`
@@ -6208,6 +13300,27 @@ pub enum EChatEmoteType {
     Unrecognized(String),
 }
 
+impl EChatEmoteType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Social" => Self::Social,
+            "CombatSignal" => Self::CombatSignal,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EChatEmoteType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ECommsNotificationTiming`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ECommsNotificationTiming {
@@ -6219,6 +13332,28 @@ pub enum ECommsNotificationTiming {
     CommsNotificationFirst,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ECommsNotificationTiming {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Simultaneous" => Self::Simultaneous,
+            "HUDNotificationFirst" => Self::HUDNotificationFirst,
+            "CommsNotificationFirst" => Self::CommsNotificationFirst,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ECommsNotificationTiming {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `ECommsRTTLocation`
@@ -6240,6 +13375,31 @@ pub enum ECommsRTTLocation {
     Unrecognized(String),
 }
 
+impl ECommsRTTLocation {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "Visor" => Self::Visor,
+            "Mobiglas" => Self::Mobiglas,
+            "VehicleMFD" => Self::VehicleMFD,
+            "Tannoy" => Self::Tannoy,
+            "Hologram" => Self::Hologram,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ECommsRTTLocation {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EComparisonMode`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EComparisonMode {
@@ -6257,6 +13417,30 @@ pub enum EComparisonMode {
     Unrecognized(String),
 }
 
+impl EComparisonMode {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Equal" => Self::Equal,
+            "Greater" => Self::Greater,
+            "Less" => Self::Less,
+            "GreaterOrEqual" => Self::GreaterOrEqual,
+            "LessOrEqual" => Self::LessOrEqual,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EComparisonMode {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EConsumableResourceType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EConsumableResourceType {
@@ -6266,6 +13450,27 @@ pub enum EConsumableResourceType {
     Fuel,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EConsumableResourceType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "Fuel" => Self::Fuel,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EConsumableResourceType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EContextMenuOptionType`
@@ -6293,6 +13498,34 @@ pub enum EContextMenuOptionType {
     Unrecognized(String),
 }
 
+impl EContextMenuOptionType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "AddFriend" => Self::AddFriend,
+            "Report" => Self::Report,
+            "Mute" => Self::Mute,
+            "Lobby_Invite" => Self::Lobby_Invite,
+            "Lobby_Leave" => Self::Lobby_Leave,
+            "Lobby_Kick" => Self::Lobby_Kick,
+            "Lobby_TransferLeader" => Self::Lobby_TransferLeader,
+            "Lobby_Promote" => Self::Lobby_Promote,
+            "Vote_Kick" => Self::Vote_Kick,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EContextMenuOptionType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EControlledSubstanceClass`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EControlledSubstanceClass {
@@ -6304,6 +13537,28 @@ pub enum EControlledSubstanceClass {
     ClassC,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EControlledSubstanceClass {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "ClassA" => Self::ClassA,
+            "ClassB" => Self::ClassB,
+            "ClassC" => Self::ClassC,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EControlledSubstanceClass {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EConversationHubLinkType`
@@ -6319,6 +13574,28 @@ pub enum EConversationHubLinkType {
     Unrecognized(String),
 }
 
+impl EConversationHubLinkType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "First" => Self::First,
+            "Random" => Self::Random,
+            "RandomCanRepeat" => Self::RandomCanRepeat,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EConversationHubLinkType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ECraftingCostResultCompositionOption`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ECraftingCostResultCompositionOption {
@@ -6328,6 +13605,27 @@ pub enum ECraftingCostResultCompositionOption {
     Exclude,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ECraftingCostResultCompositionOption {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Include" => Self::Include,
+            "Exclude" => Self::Exclude,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ECraftingCostResultCompositionOption {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `ECraftingMachineDoorState`
@@ -6343,6 +13641,29 @@ pub enum ECraftingMachineDoorState {
     Locked,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ECraftingMachineDoorState {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Opened" => Self::Opened,
+            "Closing" => Self::Closing,
+            "Closed" => Self::Closed,
+            "Locked" => Self::Locked,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ECraftingMachineDoorState {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `ECraftingProcessType`
@@ -6362,6 +13683,31 @@ pub enum ECraftingProcessType {
     Research,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ECraftingProcessType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Create" => Self::Create,
+            "Refine" => Self::Refine,
+            "Repair" => Self::Repair,
+            "Upgrade" => Self::Upgrade,
+            "Dismantle" => Self::Dismantle,
+            "Research" => Self::Research,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ECraftingProcessType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `ECustomSettingType`
@@ -6385,6 +13731,32 @@ pub enum ECustomSettingType {
     Unrecognized(String),
 }
 
+impl ECustomSettingType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "TimeLimit" => Self::TimeLimit,
+            "ScoreLimit" => Self::ScoreLimit,
+            "EnableMatchCycling" => Self::EnableMatchCycling,
+            "RandomizeMapOnMatchCycle" => Self::RandomizeMapOnMatchCycle,
+            "EnableTeamSwitching" => Self::EnableTeamSwitching,
+            "EnableTeamBalancing" => Self::EnableTeamBalancing,
+            "DisableAllPickups" => Self::DisableAllPickups,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ECustomSettingType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EDFMVictoryScoringType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EDFMVictoryScoringType {
@@ -6398,6 +13770,29 @@ pub enum EDFMVictoryScoringType {
     GunGameLevel,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EDFMVictoryScoringType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Kills" => Self::Kills,
+            "Score" => Self::Score,
+            "Deaths" => Self::Deaths,
+            "GunGameLevel" => Self::GunGameLevel,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EDFMVictoryScoringType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EDNAEditType`
@@ -6415,6 +13810,29 @@ pub enum EDNAEditType {
     Unrecognized(String),
 }
 
+impl EDNAEditType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "Blending" => Self::Blending,
+            "Sculpting" => Self::Sculpting,
+            "Preset" => Self::Preset,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EDNAEditType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EDecayType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EDecayType {
@@ -6422,6 +13840,26 @@ pub enum EDecayType {
     Sink,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EDecayType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Sink" => Self::Sink,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EDecayType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EDefaultActionsEntityType`
@@ -6437,6 +13875,28 @@ pub enum EDefaultActionsEntityType {
     Unrecognized(String),
 }
 
+impl EDefaultActionsEntityType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "MountedGun" => Self::MountedGun,
+            "ActorMovable" => Self::ActorMovable,
+            "DraggableBody" => Self::DraggableBody,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EDefaultActionsEntityType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EDefaultColliderBehaviour`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EDefaultColliderBehaviour {
@@ -6448,6 +13908,28 @@ pub enum EDefaultColliderBehaviour {
     Kinematic,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EDefaultColliderBehaviour {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Pushable" => Self::Pushable,
+            "NonPushale" => Self::NonPushale,
+            "Kinematic" => Self::Kinematic,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EDefaultColliderBehaviour {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EDefaultEntitlement`
@@ -6463,6 +13945,29 @@ pub enum EDefaultEntitlement {
     ArenaCommander,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EDefaultEntitlement {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Offline" => Self::Offline,
+            "AllModes" => Self::AllModes,
+            "StarMarine" => Self::StarMarine,
+            "ArenaCommander" => Self::ArenaCommander,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EDefaultEntitlement {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EDeformerType`
@@ -6496,6 +14001,37 @@ pub enum EDeformerType {
     Unrecognized(String),
 }
 
+impl EDeformerType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Standard" => Self::Standard,
+            "OriginalSkin" => Self::OriginalSkin,
+            "Protos" => Self::Protos,
+            "ProtosMisc" => Self::ProtosMisc,
+            "WD_Elastic" => Self::WD_Elastic,
+            "WD_BShapeExclusion" => Self::WD_BShapeExclusion,
+            "WD_NUScaling" => Self::WD_NUScaling,
+            "WD_ElasticNUScaling" => Self::WD_ElasticNUScaling,
+            "WD_ElasticDQSkinning" => Self::WD_ElasticDQSkinning,
+            "Cloth" => Self::Cloth,
+            "LinearSkinning" => Self::LinearSkinning,
+            "UNDEFINED" => Self::UNDEFINED,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EDeformerType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EDelayUnit`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EDelayUnit {
@@ -6505,6 +14041,27 @@ pub enum EDelayUnit {
     RPM,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EDelayUnit {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Seconds" => Self::Seconds,
+            "RPM" => Self::RPM,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EDelayUnit {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EDelinkMode`
@@ -6522,6 +14079,29 @@ pub enum EDelinkMode {
     Unrecognized(String),
 }
 
+impl EDelinkMode {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "NoDelink" => Self::NoDelink,
+            "Normal" => Self::Normal,
+            "Quick" => Self::Quick,
+            "Forced" => Self::Forced,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EDelinkMode {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EDeltaSignaturePriority`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EDeltaSignaturePriority {
@@ -6533,6 +14113,28 @@ pub enum EDeltaSignaturePriority {
     Primary,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EDeltaSignaturePriority {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "Auxiliary" => Self::Auxiliary,
+            "Primary" => Self::Primary,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EDeltaSignaturePriority {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EDifficultyModifierType`
@@ -6614,6 +14216,61 @@ pub enum EDifficultyModifierType {
     Unrecognized(String),
 }
 
+impl EDifficultyModifierType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "PlayerIncomingDamage" => Self::PlayerIncomingDamage,
+            "AIIncomingDamage" => Self::AIIncomingDamage,
+            "InjuryChance" => Self::InjuryChance,
+            "DownedDamageRate" => Self::DownedDamageRate,
+            "BuddyDownedDamageRate" => Self::BuddyDownedDamageRate,
+            "MedpenRestoration" => Self::MedpenRestoration,
+            "OxypenRestoration" => Self::OxypenRestoration,
+            "WingmanHelpTrigger" => Self::WingmanHelpTrigger,
+            "MissileUsageChance" => Self::MissileUsageChance,
+            "BurstFireTime" => Self::BurstFireTime,
+            "AIOnFootAccuracy" => Self::AIOnFootAccuracy,
+            "AIShipAccuracy" => Self::AIShipAccuracy,
+            "AIOnFootPerception" => Self::AIOnFootPerception,
+            "AIGrenadeTokenCooldown" => Self::AIGrenadeTokenCooldown,
+            "AIMercyTimer" => Self::AIMercyTimer,
+            "VehicleDamage_AI_HitBy_AI" => Self::VehicleDamage_AI_HitBy_AI,
+            "VehicleDamage_AI_HitBy_Player" => Self::VehicleDamage_AI_HitBy_Player,
+            "VehicleDamage_Player_HitBy_AI" => Self::VehicleDamage_Player_HitBy_AI,
+            "VehicleDamage_Player_HitBy_Player" => Self::VehicleDamage_Player_HitBy_Player,
+            "VehicleDamage_Uncontrolled_HitBy_AI" => Self::VehicleDamage_Uncontrolled_HitBy_AI,
+            "VehicleDamage_Uncontrolled_HitBy_Player" => Self::VehicleDamage_Uncontrolled_HitBy_Player,
+            "RequiredEatAndDrink" => Self::RequiredEatAndDrink,
+            "SlowerMagRelevellingEnabled" => Self::SlowerMagRelevellingEnabled,
+            "SlowerMagRelevellingSpeed" => Self::SlowerMagRelevellingSpeed,
+            "ReducedCheckpoints" => Self::ReducedCheckpoints,
+            "ScanningRestrictions" => Self::ScanningRestrictions,
+            "NoControlHints" => Self::NoControlHints,
+            "NoHardTutorials" => Self::NoHardTutorials,
+            "NoSoftTutorials" => Self::NoSoftTutorials,
+            "NoQTETutorials" => Self::NoQTETutorials,
+            "NoPlayerInnerThoughtHints" => Self::NoPlayerInnerThoughtHints,
+            "NoCrosshair" => Self::NoCrosshair,
+            "NoHitMarker" => Self::NoHitMarker,
+            "NoPlayerHitIndicator" => Self::NoPlayerHitIndicator,
+            "NoGrenadeMarker" => Self::NoGrenadeMarker,
+            "ManualShipWeaponRackStorage" => Self::ManualShipWeaponRackStorage,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EDifficultyModifierType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EDifficultyRange_GameKnowledge`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EDifficultyRange_GameKnowledge {
@@ -6635,6 +14292,33 @@ pub enum EDifficultyRange_GameKnowledge {
     No_content_like_this_yet_8,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EDifficultyRange_GameKnowledge {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Noob_gaming_or_tutorial_1" => Self::Noob_gaming_or_tutorial_1,
+            "FPS_mechanics_walk_shoot_mobiGlass_2" => Self::FPS_mechanics_walk_shoot_mobiGlass_2,
+            "Flight_mechanics_fly_dock_quantum_3" => Self::Flight_mechanics_fly_dock_quantum_3,
+            "Standard_understanding_FPS_flight_professions_4" => Self::Standard_understanding_FPS_flight_professions_4,
+            "Expert_understanding_FPS_flight_professions_5" => Self::Expert_understanding_FPS_flight_professions_5,
+            "Pro_understanding_of_optimal_tactics_6" => Self::Pro_understanding_of_optimal_tactics_6,
+            "Basically_a_Dev_7" => Self::Basically_a_Dev_7,
+            "No_content_like_this_yet_8" => Self::No_content_like_this_yet_8,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EDifficultyRange_GameKnowledge {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EDifficultyRange_MechanicalSkill`
@@ -6660,6 +14344,33 @@ pub enum EDifficultyRange_MechanicalSkill {
     Unrecognized(String),
 }
 
+impl EDifficultyRange_MechanicalSkill {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Hands_free_gaming_1" => Self::Hands_free_gaming_1,
+            "Zero_risk_of_action_2" => Self::Zero_risk_of_action_2,
+            "Easy_PvE_only_action_3" => Self::Easy_PvE_only_action_3,
+            "Normal_PvE_only_action_4" => Self::Normal_PvE_only_action_4,
+            "Hard_PvE_or_Easy_PvP_action_5" => Self::Hard_PvE_or_Easy_PvP_action_5,
+            "Multiplayer_PvE_or_Expert_PvP_action_6" => Self::Multiplayer_PvE_or_Expert_PvP_action_6,
+            "PvE_PvP_large_group_action_eg_warzone_7" => Self::PvE_PvP_large_group_action_eg_warzone_7,
+            "No_content_like_this_yet_8" => Self::No_content_like_this_yet_8,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EDifficultyRange_MechanicalSkill {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EDifficultyRange_MentalLoad`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EDifficultyRange_MentalLoad {
@@ -6681,6 +14392,33 @@ pub enum EDifficultyRange_MentalLoad {
     No_content_like_this_yet_8,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EDifficultyRange_MentalLoad {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "AFK_gaming_1" => Self::AFK_gaming_1,
+            "Requires_minimal_thought_2" => Self::Requires_minimal_thought_2,
+            "Routine_light_work_3" => Self::Routine_light_work_3,
+            "Moments_of_concentration_required_4" => Self::Moments_of_concentration_required_4,
+            "Like_spinning_10_plates_at_once_5" => Self::Like_spinning_10_plates_at_once_5,
+            "Extremely_hard_to_manage_alone_6" => Self::Extremely_hard_to_manage_alone_6,
+            "Insane_complexity_NOT_soloable_7" => Self::Insane_complexity_NOT_soloable_7,
+            "No_content_like_this_yet_8" => Self::No_content_like_this_yet_8,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EDifficultyRange_MentalLoad {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EDifficultyRange_RiskOfLoss`
@@ -6706,6 +14444,33 @@ pub enum EDifficultyRange_RiskOfLoss {
     Unrecognized(String),
 }
 
+impl EDifficultyRange_RiskOfLoss {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Safe_and_sound_zzzz_1" => Self::Safe_and_sound_zzzz_1,
+            "Barely_even_breaking_a_sweat_2" => Self::Barely_even_breaking_a_sweat_2,
+            "Minimal_danger_FPS_NOT_ship_action_3" => Self::Minimal_danger_FPS_NOT_ship_action_3,
+            "Ship_could_get_damaged_Could_lose_cargo_4" => Self::Ship_could_get_damaged_Could_lose_cargo_4,
+            "Player_might_die_Ship_could_explode_5" => Self::Player_might_die_Ship_could_explode_5,
+            "Player_likely_to_die_Ship_too_6" => Self::Player_likely_to_die_Ship_too_6,
+            "Without_help_Player_and_Ship_die_7" => Self::Without_help_Player_and_Ship_die_7,
+            "No_content_like_this_yet_8" => Self::No_content_like_this_yet_8,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EDifficultyRange_RiskOfLoss {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EDockingTubeAnimationStage`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EDockingTubeAnimationStage {
@@ -6717,6 +14482,28 @@ pub enum EDockingTubeAnimationStage {
     Docked,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EDockingTubeAnimationStage {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Inactive" => Self::Inactive,
+            "PreDocked" => Self::PreDocked,
+            "Docked" => Self::Docked,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EDockingTubeAnimationStage {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EDoorCollisionReactionDirection`
@@ -6740,6 +14527,32 @@ pub enum EDoorCollisionReactionDirection {
     Unrecognized(String),
 }
 
+impl EDoorCollisionReactionDirection {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "All" => Self::All,
+            "Up" => Self::Up,
+            "Down" => Self::Down,
+            "Left" => Self::Left,
+            "Right" => Self::Right,
+            "Front" => Self::Front,
+            "Back" => Self::Back,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EDoorCollisionReactionDirection {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EDoorDestructionBehavior`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EDoorDestructionBehavior {
@@ -6749,6 +14562,27 @@ pub enum EDoorDestructionBehavior {
     BreakDoor,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EDoorDestructionBehavior {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "UnlockDoor" => Self::UnlockDoor,
+            "BreakDoor" => Self::BreakDoor,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EDoorDestructionBehavior {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EDoorPortalLookupMode`
@@ -6764,6 +14598,28 @@ pub enum EDoorPortalLookupMode {
     Unrecognized(String),
 }
 
+impl EDoorPortalLookupMode {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Automatic" => Self::Automatic,
+            "AABB_Center" => Self::AABB_Center,
+            "Pivot" => Self::Pivot,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EDoorPortalLookupMode {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EDoorPoweredState`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EDoorPoweredState {
@@ -6773,6 +14629,27 @@ pub enum EDoorPoweredState {
     Unpowered,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EDoorPoweredState {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Powered" => Self::Powered,
+            "Unpowered" => Self::Unpowered,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EDoorPoweredState {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EDynamicRigLightType`
@@ -6786,6 +14663,28 @@ pub enum EDynamicRigLightType {
     Rim,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EDynamicRigLightType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Key" => Self::Key,
+            "Fill" => Self::Fill,
+            "Rim" => Self::Rim,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EDynamicRigLightType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EEAActionItemMessageType`
@@ -6829,6 +14728,42 @@ pub enum EEAActionItemMessageType {
     Unrecognized(String),
 }
 
+impl EEAActionItemMessageType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Default" => Self::Default,
+            "WaitingForPlayers" => Self::WaitingForPlayers,
+            "BalancingTeams" => Self::BalancingTeams,
+            "MatchStarting" => Self::MatchStarting,
+            "MatchEnding" => Self::MatchEnding,
+            "Contested" => Self::Contested,
+            "OutOfPosition" => Self::OutOfPosition,
+            "PressKeyToSkip" => Self::PressKeyToSkip,
+            "Retry" => Self::Retry,
+            "Respawning" => Self::Respawning,
+            "RespawnPrompt" => Self::RespawnPrompt,
+            "RespawnTimer" => Self::RespawnTimer,
+            "Award" => Self::Award,
+            "ReadyWaitingOnKeyPress" => Self::ReadyWaitingOnKeyPress,
+            "ReadyWaitingOnKeyPressForceReady" => Self::ReadyWaitingOnKeyPressForceReady,
+            "ReadyWaitingForOtherPlayers" => Self::ReadyWaitingForOtherPlayers,
+            "WaitingForPlayersWithDebugSkip" => Self::WaitingForPlayersWithDebugSkip,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EEAActionItemMessageType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EEACapturableEntityType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EEACapturableEntityType {
@@ -6840,6 +14775,28 @@ pub enum EEACapturableEntityType {
     LockedSpawn,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EEACapturableEntityType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Terminal" => Self::Terminal,
+            "Prop" => Self::Prop,
+            "LockedSpawn" => Self::LockedSpawn,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EEACapturableEntityType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EEACriticalMessageType`
@@ -6897,6 +14854,49 @@ pub enum EEACriticalMessageType {
     Unrecognized(String),
 }
 
+impl EEACriticalMessageType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Local_FirstBlood" => Self::Local_FirstBlood,
+            "Local_Ace" => Self::Local_Ace,
+            "Local_KillingSpree" => Self::Local_KillingSpree,
+            "Local_OnFinalKill" => Self::Local_OnFinalKill,
+            "Player_FirstBlood" => Self::Player_FirstBlood,
+            "Player_Ace" => Self::Player_Ace,
+            "Player_KillingSpree" => Self::Player_KillingSpree,
+            "Player_OnFinalKill" => Self::Player_OnFinalKill,
+            "EnemyTeam_OnFinalKill" => Self::EnemyTeam_OnFinalKill,
+            "FriendlyTeam_OnFinalKill" => Self::FriendlyTeam_OnFinalKill,
+            "Missile_Replenished" => Self::Missile_Replenished,
+            "Ammo_Replenished" => Self::Ammo_Replenished,
+            "Vehicle_Repaired" => Self::Vehicle_Repaired,
+            "Vehicle_Refueled" => Self::Vehicle_Refueled,
+            "Missile_Replenish_Failed" => Self::Missile_Replenish_Failed,
+            "Ammo_Replenish_Failed" => Self::Ammo_Replenish_Failed,
+            "Vehicle_Repair_Failed" => Self::Vehicle_Repair_Failed,
+            "Vehicle_Refuel_Failed" => Self::Vehicle_Refuel_Failed,
+            "CTRL_Captured" => Self::CTRL_Captured,
+            "CTRL_Lost" => Self::CTRL_Lost,
+            "CTRL_Neutralized" => Self::CTRL_Neutralized,
+            "CTRL_Phase_Notification" => Self::CTRL_Phase_Notification,
+            "Respawn_Replenished" => Self::Respawn_Replenished,
+            "INVALID" => Self::INVALID,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EEACriticalMessageType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EEAMessageTriggerFrequency`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EEAMessageTriggerFrequency {
@@ -6910,6 +14910,29 @@ pub enum EEAMessageTriggerFrequency {
     ActiveWhenInside,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EEAMessageTriggerFrequency {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Always" => Self::Always,
+            "OncePerLife" => Self::OncePerLife,
+            "OncePerRound" => Self::OncePerRound,
+            "ActiveWhenInside" => Self::ActiveWhenInside,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EEAMessageTriggerFrequency {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EEAObjectiveState`
@@ -6929,6 +14952,31 @@ pub enum EEAObjectiveState {
     Cooldown,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EEAObjectiveState {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Default" => Self::Default,
+            "Capturing" => Self::Capturing,
+            "MultipleCapturing" => Self::MultipleCapturing,
+            "Contesting" => Self::Contesting,
+            "ReturningToOwner" => Self::ReturningToOwner,
+            "Cooldown" => Self::Cooldown,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EEAObjectiveState {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EEAPlayableAreaOnExit`
@@ -6952,6 +15000,32 @@ pub enum EEAPlayableAreaOnExit {
     Unrecognized(String),
 }
 
+impl EEAPlayableAreaOnExit {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "Autopilot" => Self::Autopilot,
+            "DamagePerSecond" => Self::DamagePerSecond,
+            "Kill" => Self::Kill,
+            "Disable" => Self::Disable,
+            "Redout" => Self::Redout,
+            "SimulationGlitch" => Self::SimulationGlitch,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EEAPlayableAreaOnExit {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EEASpawnMulticrewType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EEASpawnMulticrewType {
@@ -6961,6 +15035,27 @@ pub enum EEASpawnMulticrewType {
     SquadOnly,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EEASpawnMulticrewType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Public" => Self::Public,
+            "SquadOnly" => Self::SquadOnly,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EEASpawnMulticrewType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EEASpecialEventPass`
@@ -7000,6 +15095,40 @@ pub enum EEASpecialEventPass {
     Unrecognized(String),
 }
 
+impl EEASpecialEventPass {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "EA_SpecialEvent_LunarNewYear" => Self::EA_SpecialEvent_LunarNewYear,
+            "EA_SpecialEvent_ValentinesDay" => Self::EA_SpecialEvent_ValentinesDay,
+            "EA_SpecialEvent_StPatricks" => Self::EA_SpecialEvent_StPatricks,
+            "EA_SpecialEvent_AprilFools" => Self::EA_SpecialEvent_AprilFools,
+            "EA_SpecialEvent_Invictus" => Self::EA_SpecialEvent_Invictus,
+            "EA_SpecialEvent_AlienWeek" => Self::EA_SpecialEvent_AlienWeek,
+            "EA_SpecialEvent_FoundationFestival" => Self::EA_SpecialEvent_FoundationFestival,
+            "EA_SpecialEvent_PirateWeek" => Self::EA_SpecialEvent_PirateWeek,
+            "EA_SpecialEvent_CitizenCon" => Self::EA_SpecialEvent_CitizenCon,
+            "EA_SpecialEvent_Halloween" => Self::EA_SpecialEvent_Halloween,
+            "EA_SpecialEvent_IAE" => Self::EA_SpecialEvent_IAE,
+            "EA_SpecialEvent_Xmas" => Self::EA_SpecialEvent_Xmas,
+            "EA_SpecialEvent_FightOrFlight" => Self::EA_SpecialEvent_FightOrFlight,
+            "EA_SpecialEvent_MurrayCup" => Self::EA_SpecialEvent_MurrayCup,
+            "EA_SpecialEvent_PlayerBirthday" => Self::EA_SpecialEvent_PlayerBirthday,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EEASpecialEventPass {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EEndCondition`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EEndCondition {
@@ -7013,6 +15142,29 @@ pub enum EEndCondition {
     AllUsed_WithSync,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EEndCondition {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "AllUsed" => Self::AllUsed,
+            "NumberOfUsablesToUse" => Self::NumberOfUsablesToUse,
+            "AllUsed_WithSync" => Self::AllUsed_WithSync,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EEndCondition {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EEnemyType`
@@ -7040,6 +15192,34 @@ pub enum EEnemyType {
     Unrecognized(String),
 }
 
+impl EEnemyType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "ET_Invalid" => Self::ET_Invalid,
+            "ET_Boss" => Self::ET_Boss,
+            "ET_Butterfly" => Self::ET_Butterfly,
+            "ET_Bee" => Self::ET_Bee,
+            "ET_Tonbo" => Self::ET_Tonbo,
+            "ET_Momiji" => Self::ET_Momiji,
+            "ET_Sasori" => Self::ET_Sasori,
+            "ET_Midori" => Self::ET_Midori,
+            "ET_Galboss" => Self::ET_Galboss,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EEnemyType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EEntityComponentCommsChannelJoinType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EEntityComponentCommsChannelJoinType {
@@ -7049,6 +15229,27 @@ pub enum EEntityComponentCommsChannelJoinType {
     Invite,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EEntityComponentCommsChannelJoinType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "AutoJoin" => Self::AutoJoin,
+            "Invite" => Self::Invite,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EEntityComponentCommsChannelJoinType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EEntityMarkerType`
@@ -7066,6 +15267,30 @@ pub enum EEntityMarkerType {
     GrenadeCrate,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EEntityMarkerType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "LandingZone" => Self::LandingZone,
+            "MedPen" => Self::MedPen,
+            "AmmoCrate" => Self::AmmoCrate,
+            "GrenadeCrate" => Self::GrenadeCrate,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EEntityMarkerType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EEntryFlagCondition`
@@ -7097,6 +15322,36 @@ pub enum EEntryFlagCondition {
     Unrecognized(String),
 }
 
+impl EEntryFlagCondition {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Tracked" => Self::Tracked,
+            "Locked" => Self::Locked,
+            "Pinned" => Self::Pinned,
+            "DetectedByActiveRadar" => Self::DetectedByActiveRadar,
+            "DetectedByDeltaSignature" => Self::DetectedByDeltaSignature,
+            "ExtendedContact" => Self::ExtendedContact,
+            "Tagged" => Self::Tagged,
+            "BoxoutActive" => Self::BoxoutActive,
+            "IsObjective" => Self::IsObjective,
+            "IsPartyMember" => Self::IsPartyMember,
+            "ShowInFPS" => Self::ShowInFPS,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EEntryFlagCondition {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EEventTriggerMask`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EEventTriggerMask {
@@ -7110,6 +15365,28 @@ pub enum EEventTriggerMask {
     Unrecognized(String),
 }
 
+impl EEventTriggerMask {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "AIAndPlayer" => Self::AIAndPlayer,
+            "OnlyAI" => Self::OnlyAI,
+            "OnlyPlayer" => Self::OnlyPlayer,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EEventTriggerMask {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EExcludeSpawnGender`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EExcludeSpawnGender {
@@ -7121,6 +15398,28 @@ pub enum EExcludeSpawnGender {
     None,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EExcludeSpawnGender {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Male" => Self::Male,
+            "Female" => Self::Female,
+            "None" => Self::None,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EExcludeSpawnGender {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EFaceType`
@@ -7138,6 +15437,29 @@ pub enum EFaceType {
     Unrecognized(String),
 }
 
+impl EFaceType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Bubble" => Self::Bubble,
+            "FrontBack" => Self::FrontBack,
+            "Quadrant" => Self::Quadrant,
+            "Box" => Self::Box,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EFaceType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EFiringRangePenaltyType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EFiringRangePenaltyType {
@@ -7149,6 +15471,28 @@ pub enum EFiringRangePenaltyType {
     HeadShot,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EFiringRangePenaltyType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "EnemyReachedPlayer" => Self::EnemyReachedPlayer,
+            "Friendlyfire" => Self::Friendlyfire,
+            "HeadShot" => Self::HeadShot,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EFiringRangePenaltyType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EFirstSelectMode`
@@ -7164,6 +15508,28 @@ pub enum EFirstSelectMode {
     Unrecognized(String),
 }
 
+impl EFirstSelectMode {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "Once" => Self::Once,
+            "Always" => Self::Always,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EFirstSelectMode {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EFitnessImprovementType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EFitnessImprovementType {
@@ -7173,6 +15539,27 @@ pub enum EFitnessImprovementType {
     BlackoutRedoutThreshold,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EFitnessImprovementType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Stamina" => Self::Stamina,
+            "BlackoutRedoutThreshold" => Self::BlackoutRedoutThreshold,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EFitnessImprovementType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EForceReactionLeanHumanSpineBoneName`
@@ -7198,6 +15585,33 @@ pub enum EForceReactionLeanHumanSpineBoneName {
     Unrecognized(String),
 }
 
+impl EForceReactionLeanHumanSpineBoneName {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Hips" => Self::Hips,
+            "Spine" => Self::Spine,
+            "Spine1" => Self::Spine1,
+            "Spine2" => Self::Spine2,
+            "Spine3" => Self::Spine3,
+            "Neck" => Self::Neck,
+            "Neck1" => Self::Neck1,
+            "Head" => Self::Head,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EForceReactionLeanHumanSpineBoneName {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EForceReactionLeanVanduulSpineBoneName`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EForceReactionLeanVanduulSpineBoneName {
@@ -7219,6 +15633,33 @@ pub enum EForceReactionLeanVanduulSpineBoneName {
     Head,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EForceReactionLeanVanduulSpineBoneName {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Hips" => Self::Hips,
+            "Spine" => Self::Spine,
+            "Spine1" => Self::Spine1,
+            "Spine2" => Self::Spine2,
+            "Spine3" => Self::Spine3,
+            "Neck" => Self::Neck,
+            "Neck1" => Self::Neck1,
+            "Head" => Self::Head,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EForceReactionLeanVanduulSpineBoneName {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EForceReactionLeanXianSpineBoneName`
@@ -7248,6 +15689,35 @@ pub enum EForceReactionLeanXianSpineBoneName {
     Unrecognized(String),
 }
 
+impl EForceReactionLeanXianSpineBoneName {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Hips" => Self::Hips,
+            "Spine1" => Self::Spine1,
+            "Spine2" => Self::Spine2,
+            "Spine3" => Self::Spine3,
+            "Spine4" => Self::Spine4,
+            "Neck1" => Self::Neck1,
+            "Neck2" => Self::Neck2,
+            "Neck3" => Self::Neck3,
+            "Neck4" => Self::Neck4,
+            "Head" => Self::Head,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EForceReactionLeanXianSpineBoneName {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EFortitudeImprovementType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EFortitudeImprovementType {
@@ -7267,6 +15737,31 @@ pub enum EFortitudeImprovementType {
     Unrecognized(String),
 }
 
+impl EFortitudeImprovementType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "HungerDecay" => Self::HungerDecay,
+            "ThirstDecay" => Self::ThirstDecay,
+            "DrugEffects" => Self::DrugEffects,
+            "Health" => Self::Health,
+            "InjuryChance" => Self::InjuryChance,
+            "StunDuration" => Self::StunDuration,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EFortitudeImprovementType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EFrontendGameModeButton`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EFrontendGameModeButton {
@@ -7276,6 +15771,27 @@ pub enum EFrontendGameModeButton {
     EA,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EFrontendGameModeButton {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "PU" => Self::PU,
+            "EA" => Self::EA,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EFrontendGameModeButton {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EGameCollisionClass`
@@ -7307,6 +15823,36 @@ pub enum EGameCollisionClass {
     Unrecognized(String),
 }
 
+impl EGameCollisionClass {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Actor_Capsule" => Self::Actor_Capsule,
+            "Actor_Body" => Self::Actor_Body,
+            "Actor_PlayerControlled" => Self::Actor_PlayerControlled,
+            "Actor_AIControlled" => Self::Actor_AIControlled,
+            "Vehicle" => Self::Vehicle,
+            "Vehicle_Interior" => Self::Vehicle_Interior,
+            "Ragdoll" => Self::Ragdoll,
+            "Projectile" => Self::Projectile,
+            "Missile" => Self::Missile,
+            "Holo_Volume" => Self::Holo_Volume,
+            "Spewgun_Projectile" => Self::Spewgun_Projectile,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EGameCollisionClass {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EGameDifficulty`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EGameDifficulty {
@@ -7324,6 +15870,31 @@ pub enum EGameDifficulty {
     VeryHard,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EGameDifficulty {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "VeryEasy" => Self::VeryEasy,
+            "Easy" => Self::Easy,
+            "Normal" => Self::Normal,
+            "Hard" => Self::Hard,
+            "VeryHard" => Self::VeryHard,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EGameDifficulty {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EGameModeFilters`
@@ -7357,6 +15928,38 @@ pub enum EGameModeFilters {
     MultiCrew,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EGameModeFilters {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Released" => Self::Released,
+            "Flight" => Self::Flight,
+            "GroundVehicles" => Self::GroundVehicles,
+            "FPS" => Self::FPS,
+            "COOP" => Self::COOP,
+            "PvP" => Self::PvP,
+            "PvE" => Self::PvE,
+            "Solo" => Self::Solo,
+            "Leaderboards" => Self::Leaderboards,
+            "Teams" => Self::Teams,
+            "Racing" => Self::Racing,
+            "Experimental" => Self::Experimental,
+            "MultiCrew" => Self::MultiCrew,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EGameModeFilters {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EGameModeId`
@@ -7430,6 +16033,57 @@ pub enum EGameModeId {
     Unrecognized(String),
 }
 
+impl EGameModeId {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "S42_Default" => Self::S42_Default,
+            "SC_Frontend" => Self::SC_Frontend,
+            "SC_Default" => Self::SC_Default,
+            "INVALID" => Self::INVALID,
+            "EA_BattleRoyale" => Self::EA_BattleRoyale,
+            "EA_FreeFlight" => Self::EA_FreeFlight,
+            "EA_PirateSwarm" => Self::EA_PirateSwarm,
+            "EA_SquadronBattle" => Self::EA_SquadronBattle,
+            "EA_VanduulSwarm" => Self::EA_VanduulSwarm,
+            "EA_ClassicRace" => Self::EA_ClassicRace,
+            "EA_Elimination" => Self::EA_Elimination,
+            "EA_TeamElimination" => Self::EA_TeamElimination,
+            "EA_Control" => Self::EA_Control,
+            "EA_TheatersOfWar" => Self::EA_TheatersOfWar,
+            "EA_IterativeTesting" => Self::EA_IterativeTesting,
+            "EA_Duel" => Self::EA_Duel,
+            "EA_FPSGunGame" => Self::EA_FPSGunGame,
+            "EA_Horde" => Self::EA_Horde,
+            "EA_VanduulInvasion" => Self::EA_VanduulInvasion,
+            "EA_ExperimentalMode_1" => Self::EA_ExperimentalMode_1,
+            "EA_ExperimentalMode_2" => Self::EA_ExperimentalMode_2,
+            "EA_ExperimentalMode_3" => Self::EA_ExperimentalMode_3,
+            "EA_ExperimentalMode_4" => Self::EA_ExperimentalMode_4,
+            "EA_ExperimentalMode_5" => Self::EA_ExperimentalMode_5,
+            "EA_ExperimentalMode_6" => Self::EA_ExperimentalMode_6,
+            "EA_ExperimentalMode_7" => Self::EA_ExperimentalMode_7,
+            "EA_ExperimentalMode_8" => Self::EA_ExperimentalMode_8,
+            "EA_ExperimentalMode_9" => Self::EA_ExperimentalMode_9,
+            "EA_ExperimentalMode_10" => Self::EA_ExperimentalMode_10,
+            "EA_ExperimentalMode_11" => Self::EA_ExperimentalMode_11,
+            "EA_ExperimentalMode_12" => Self::EA_ExperimentalMode_12,
+            "EA_GravRace" => Self::EA_GravRace,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EGameModeId {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EGameModePlayedId`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EGameModePlayedId {
@@ -7469,6 +16123,42 @@ pub enum EGameModePlayedId {
     EA_Played_RN_Duel,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EGameModePlayedId {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "EA_Played_GunGame" => Self::EA_Played_GunGame,
+            "EA_Played_TankRoyale" => Self::EA_Played_TankRoyale,
+            "EA_Played_TeamTank" => Self::EA_Played_TeamTank,
+            "EA_Played_SingleWeapon" => Self::EA_Played_SingleWeapon,
+            "EA_Played_MirrorMatch" => Self::EA_Played_MirrorMatch,
+            "EA_Played_MM_Vanduul" => Self::EA_Played_MM_Vanduul,
+            "EA_Played_MM_Dogfight" => Self::EA_Played_MM_Dogfight,
+            "EA_Played_MM_ClassicRace" => Self::EA_Played_MM_ClassicRace,
+            "EA_Played_KillConfirmedFPS" => Self::EA_Played_KillConfirmedFPS,
+            "EA_Played_KillConfirmedVehicle" => Self::EA_Played_KillConfirmedVehicle,
+            "EA_Played_Wingman" => Self::EA_Played_Wingman,
+            "EA_Played_TeamElimination" => Self::EA_Played_TeamElimination,
+            "EA_Played_GravRace" => Self::EA_Played_GravRace,
+            "EA_Played_GravRoyale" => Self::EA_Played_GravRoyale,
+            "EA_Played_RN_SquadronBattle" => Self::EA_Played_RN_SquadronBattle,
+            "EA_Played_RN_Duel" => Self::EA_Played_RN_Duel,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EGameModePlayedId {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EGameRulesEventType`
@@ -7632,6 +16322,102 @@ pub enum EGameRulesEventType {
     Unrecognized(String),
 }
 
+impl EGameRulesEventType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "PlayerKill" => Self::PlayerKill,
+            "PlayerKillAssist" => Self::PlayerKillAssist,
+            "PlayerKillAssistTeam1" => Self::PlayerKillAssistTeam1,
+            "PlayerKillAssistTeam2" => Self::PlayerKillAssistTeam2,
+            "PlayerBledOut" => Self::PlayerBledOut,
+            "PlayerTeamKill" => Self::PlayerTeamKill,
+            "Accident" => Self::Accident,
+            "Suicide" => Self::Suicide,
+            "Tagged_PlayerKillAssist" => Self::Tagged_PlayerKillAssist,
+            "PlayerBleeding" => Self::PlayerBleeding,
+            "DistortionDamage" => Self::DistortionDamage,
+            "DistortionDisabledShip" => Self::DistortionDisabledShip,
+            "DamageShip" => Self::DamageShip,
+            "DamageTeamShip" => Self::DamageTeamShip,
+            "DestroyedShip" => Self::DestroyedShip,
+            "DestroyedTeamShip" => Self::DestroyedTeamShip,
+            "DestroyedShipEjected" => Self::DestroyedShipEjected,
+            "PlayerKillEjected" => Self::PlayerKillEjected,
+            "CompletedLap" => Self::CompletedLap,
+            "Award_UnaidedKill" => Self::Award_UnaidedKill,
+            "Award_Untouchable" => Self::Award_Untouchable,
+            "Award_Ace" => Self::Award_Ace,
+            "Award_AceBonus" => Self::Award_AceBonus,
+            "Award_AceKill" => Self::Award_AceKill,
+            "Award_AceKillBonus" => Self::Award_AceKillBonus,
+            "Award_KillingSpree" => Self::Award_KillingSpree,
+            "Award_KillingSpreeBonus" => Self::Award_KillingSpreeBonus,
+            "Award_KillingSpreeKill" => Self::Award_KillingSpreeKill,
+            "Award_KillingSpreeKillBonus" => Self::Award_KillingSpreeKillBonus,
+            "Award_NemesisKill" => Self::Award_NemesisKill,
+            "Award_RedemptionKill" => Self::Award_RedemptionKill,
+            "Award_ResurgentKill" => Self::Award_ResurgentKill,
+            "Award_ResurgentKillBonus" => Self::Award_ResurgentKillBonus,
+            "Award_RevengeKill" => Self::Award_RevengeKill,
+            "Award_FirstBlood" => Self::Award_FirstBlood,
+            "Award_KillAssist" => Self::Award_KillAssist,
+            "Award_Savior" => Self::Award_Savior,
+            "Award_SquadronRevengeKill" => Self::Award_SquadronRevengeKill,
+            "Award_UnderdogKill" => Self::Award_UnderdogKill,
+            "Award_CrashRoberts" => Self::Award_CrashRoberts,
+            "Award_CheapShot" => Self::Award_CheapShot,
+            "Award_ForcedEject" => Self::Award_ForcedEject,
+            "Award_ForcedError" => Self::Award_ForcedError,
+            "Award_Goodnight" => Self::Award_Goodnight,
+            "Award_LightsOut" => Self::Award_LightsOut,
+            "Award_MartyrKill" => Self::Award_MartyrKill,
+            "Award_ControlTerminalCaptured" => Self::Award_ControlTerminalCaptured,
+            "Award_ControlTerminalDefended" => Self::Award_ControlTerminalDefended,
+            "Award_ControlTerminalCaptureAssist" => Self::Award_ControlTerminalCaptureAssist,
+            "Award_ControlTerminalHackerKilled" => Self::Award_ControlTerminalHackerKilled,
+            "Award_ControlTerminalDomination" => Self::Award_ControlTerminalDomination,
+            "Award_CaptureAreaCaptureBegin" => Self::Award_CaptureAreaCaptureBegin,
+            "Award_CaptureAreaCaptureComplete" => Self::Award_CaptureAreaCaptureComplete,
+            "Award_CaptureAreaContesting" => Self::Award_CaptureAreaContesting,
+            "Award_CaptureAreaCapturing" => Self::Award_CaptureAreaCapturing,
+            "Award_CaptureCloseCallKill" => Self::Award_CaptureCloseCallKill,
+            "Award_CaptureAreaNeutralized" => Self::Award_CaptureAreaNeutralized,
+            "Award_CaptureReversing" => Self::Award_CaptureReversing,
+            "Award_DefenderKill" => Self::Award_DefenderKill,
+            "Award_AttackerKill" => Self::Award_AttackerKill,
+            "Award_Hemorrhage" => Self::Award_Hemorrhage,
+            "Award_Headshot" => Self::Award_Headshot,
+            "Award_MeleeKill" => Self::Award_MeleeKill,
+            "Award_TakeDown" => Self::Award_TakeDown,
+            "DamageItem" => Self::DamageItem,
+            "DamageTeamItem" => Self::DamageTeamItem,
+            "Award_TerminalTick" => Self::Award_TerminalTick,
+            "Award_PhaseWon" => Self::Award_PhaseWon,
+            "Award_MatchVictory" => Self::Award_MatchVictory,
+            "Award_MatchDefeat" => Self::Award_MatchDefeat,
+            "Award_SecondPlace" => Self::Award_SecondPlace,
+            "Award_ThirdPlace" => Self::Award_ThirdPlace,
+            "Award_DestroyPhaseObjective" => Self::Award_DestroyPhaseObjective,
+            "Award_DamagePhaseObjective" => Self::Award_DamagePhaseObjective,
+            "Award_DamageSentToObjective" => Self::Award_DamageSentToObjective,
+            "Award_KillCollected" => Self::Award_KillCollected,
+            "Award_KillDenied" => Self::Award_KillDenied,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EGameRulesEventType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EGasCloudFadeVolumeType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EGasCloudFadeVolumeType {
@@ -7641,6 +16427,27 @@ pub enum EGasCloudFadeVolumeType {
     Cube,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EGasCloudFadeVolumeType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Sphere" => Self::Sphere,
+            "Cube" => Self::Cube,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EGasCloudFadeVolumeType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EGasCloudLightType`
@@ -7654,6 +16461,27 @@ pub enum EGasCloudLightType {
     Unrecognized(String),
 }
 
+impl EGasCloudLightType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Omni" => Self::Omni,
+            "Projector" => Self::Projector,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EGasCloudLightType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EGasCloudOverrideVolumeType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EGasCloudOverrideVolumeType {
@@ -7663,6 +16491,27 @@ pub enum EGasCloudOverrideVolumeType {
     Cube,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EGasCloudOverrideVolumeType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Sphere" => Self::Sphere,
+            "Cube" => Self::Cube,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EGasCloudOverrideVolumeType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EGeometrySlots`
@@ -7680,6 +16529,29 @@ pub enum EGeometrySlots {
     Unrecognized(String),
 }
 
+impl EGeometrySlots {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Main" => Self::Main,
+            "LegacyHelper" => Self::LegacyHelper,
+            "DebrisPieces" => Self::DebrisPieces,
+            "UNDEFINED" => Self::UNDEFINED,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EGeometrySlots {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EGeometryVisAreaMode`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EGeometryVisAreaMode {
@@ -7693,6 +16565,29 @@ pub enum EGeometryVisAreaMode {
     UNDEFINED,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EGeometryVisAreaMode {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "AABB_Center" => Self::AABB_Center,
+            "Pivot" => Self::Pivot,
+            "Ignore_VisAreas" => Self::Ignore_VisAreas,
+            "UNDEFINED" => Self::UNDEFINED,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EGeometryVisAreaMode {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EGimbalMode`
@@ -7744,6 +16639,46 @@ pub enum EGimbalMode {
     Unrecognized(String),
 }
 
+impl EGimbalMode {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "SeatFixed" => Self::SeatFixed,
+            "SeatFixedAds" => Self::SeatFixedAds,
+            "SeatFixedAssisted" => Self::SeatFixedAssisted,
+            "SeatManual" => Self::SeatManual,
+            "SeatManualAds" => Self::SeatManualAds,
+            "SeatManualAssisted" => Self::SeatManualAssisted,
+            "SeatAuto" => Self::SeatAuto,
+            "MannedTurretFixed" => Self::MannedTurretFixed,
+            "MannedTurretFixedAds" => Self::MannedTurretFixedAds,
+            "MannedTurretFixedAssisted" => Self::MannedTurretFixedAssisted,
+            "MannedTurretManual" => Self::MannedTurretManual,
+            "MannedTurretManualAds" => Self::MannedTurretManualAds,
+            "MannedTurretManualAssisted" => Self::MannedTurretManualAssisted,
+            "MannedTurretAuto" => Self::MannedTurretAuto,
+            "RemoteTurretFixed" => Self::RemoteTurretFixed,
+            "RemoteTurretFixedAds" => Self::RemoteTurretFixedAds,
+            "RemoteTurretFixedAssisted" => Self::RemoteTurretFixedAssisted,
+            "RemoteTurretManual" => Self::RemoteTurretManual,
+            "RemoteTurretManualAds" => Self::RemoteTurretManualAds,
+            "RemoteTurretManualAssisted" => Self::RemoteTurretManualAssisted,
+            "RemoteTurretAuto" => Self::RemoteTurretAuto,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EGimbalMode {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EGimbalOrder`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EGimbalOrder {
@@ -7753,6 +16688,27 @@ pub enum EGimbalOrder {
     PitchYaw,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EGimbalOrder {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "YawPitch" => Self::YawPitch,
+            "PitchYaw" => Self::PitchYaw,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EGimbalOrder {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EGravlevDataOutput`
@@ -7778,6 +16734,33 @@ pub enum EGravlevDataOutput {
     Unrecognized(String),
 }
 
+impl EGravlevDataOutput {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "SpringCompressionOne" => Self::SpringCompressionOne,
+            "SpringCompressionTwo" => Self::SpringCompressionTwo,
+            "SpringCompressionThree" => Self::SpringCompressionThree,
+            "SpringCompressionFour" => Self::SpringCompressionFour,
+            "SpringCompressionNormalizedOne" => Self::SpringCompressionNormalizedOne,
+            "SpringCompressionNormalizedTwo" => Self::SpringCompressionNormalizedTwo,
+            "SpringCompressionNormalizedThree" => Self::SpringCompressionNormalizedThree,
+            "SpringCompressionNormalizedFour" => Self::SpringCompressionNormalizedFour,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EGravlevDataOutput {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EGripUser`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EGripUser {
@@ -7789,6 +16772,28 @@ pub enum EGripUser {
     All,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EGripUser {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "AI" => Self::AI,
+            "Player" => Self::Player,
+            "All" => Self::All,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EGripUser {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EHUDNotificationType`
@@ -7810,6 +16815,31 @@ pub enum EHUDNotificationType {
     Unrecognized(String),
 }
 
+impl EHUDNotificationType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Default" => Self::Default,
+            "Group" => Self::Group,
+            "Party" => Self::Party,
+            "Beacon" => Self::Beacon,
+            "Tutorial" => Self::Tutorial,
+            "ProgressBar" => Self::ProgressBar,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EHUDNotificationType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EHackingCodeCommandParamType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EHackingCodeCommandParamType {
@@ -7823,6 +16853,29 @@ pub enum EHackingCodeCommandParamType {
     Coordinate,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EHackingCodeCommandParamType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Int" => Self::Int,
+            "Char" => Self::Char,
+            "Float" => Self::Float,
+            "Coordinate" => Self::Coordinate,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EHackingCodeCommandParamType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EHackingCodeCommandType`
@@ -7860,6 +16913,40 @@ pub enum EHackingCodeCommandType {
     Exit,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EHackingCodeCommandType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "Move" => Self::Move,
+            "Stop" => Self::Stop,
+            "Swap" => Self::Swap,
+            "Ping" => Self::Ping,
+            "Wrap" => Self::Wrap,
+            "Inject" => Self::Inject,
+            "Slowdown" => Self::Slowdown,
+            "CancelAbility" => Self::CancelAbility,
+            "Spawn" => Self::Spawn,
+            "RotatePreview" => Self::RotatePreview,
+            "Help" => Self::Help,
+            "Commands" => Self::Commands,
+            "AutoCorrect" => Self::AutoCorrect,
+            "Exit" => Self::Exit,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EHackingCodeCommandType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EHackingCodeEventType`
@@ -7905,6 +16992,44 @@ pub enum EHackingCodeEventType {
     HackSuccessful,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EHackingCodeEventType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "UnrecognizedCommand" => Self::UnrecognizedCommand,
+            "HackingInitiated" => Self::HackingInitiated,
+            "HackingStarted" => Self::HackingStarted,
+            "DefenderDetected" => Self::DefenderDetected,
+            "DefenderAlerted" => Self::DefenderAlerted,
+            "DefenderAlertOver" => Self::DefenderAlertOver,
+            "DefenderSpottedIntruder" => Self::DefenderSpottedIntruder,
+            "DefenderLostIntruder" => Self::DefenderLostIntruder,
+            "DefenderStartedSwap" => Self::DefenderStartedSwap,
+            "DefenderCompletedSwap" => Self::DefenderCompletedSwap,
+            "LinkPointActivated" => Self::LinkPointActivated,
+            "LinkPointDeactivated" => Self::LinkPointDeactivated,
+            "LinkPointLinked" => Self::LinkPointLinked,
+            "LinkPointUnlinked" => Self::LinkPointUnlinked,
+            "IntruderCaptured" => Self::IntruderCaptured,
+            "HackTimedOut" => Self::HackTimedOut,
+            "HackAborted" => Self::HackAborted,
+            "HackSuccessful" => Self::HackSuccessful,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EHackingCodeEventType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EHackingErrorType`
@@ -7964,6 +17089,50 @@ pub enum EHackingErrorType {
     Unrecognized(String),
 }
 
+impl EHackingErrorType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Ok" => Self::Ok,
+            "AbilityIsChargingUp" => Self::AbilityIsChargingUp,
+            "AbilityIsActive" => Self::AbilityIsActive,
+            "AbilityIsCoolingDown" => Self::AbilityIsCoolingDown,
+            "AbilityInjectNoOverlappedPoint" => Self::AbilityInjectNoOverlappedPoint,
+            "AbilityInjectPointAlreadyActive" => Self::AbilityInjectPointAlreadyActive,
+            "AbilityInjectPointAlreadyInactive" => Self::AbilityInjectPointAlreadyInactive,
+            "AbilitySwapSpareNodeUnavailable" => Self::AbilitySwapSpareNodeUnavailable,
+            "AbilitySwapTargetNodeCantBeSwapped" => Self::AbilitySwapTargetNodeCantBeSwapped,
+            "AbilitySwapTargetNodeIsUnrevealed" => Self::AbilitySwapTargetNodeIsUnrevealed,
+            "AbilityWrapTeleportWhileMoving" => Self::AbilityWrapTeleportWhileMoving,
+            "AbilityWrapAgentAlreadyTeleporting" => Self::AbilityWrapAgentAlreadyTeleporting,
+            "AbilityWrapDestinationNodeIsUnrevealed" => Self::AbilityWrapDestinationNodeIsUnrevealed,
+            "AbilityWrapNoTeleportationDirectionAvailable" => Self::AbilityWrapNoTeleportationDirectionAvailable,
+            "AbilityWrapInvalidDestination" => Self::AbilityWrapInvalidDestination,
+            "AbilityWrapAmbiguousDestination" => Self::AbilityWrapAmbiguousDestination,
+            "CodeInvalidCommandToken" => Self::CodeInvalidCommandToken,
+            "CodeTooManyArgs" => Self::CodeTooManyArgs,
+            "CodeTooLittleArgs" => Self::CodeTooLittleArgs,
+            "CodeInvalidArgType" => Self::CodeInvalidArgType,
+            "CodeInvalidArgFormat" => Self::CodeInvalidArgFormat,
+            "MovementCantMoveToUnrevealedNode" => Self::MovementCantMoveToUnrevealedNode,
+            "SpawnInappropriateGameState" => Self::SpawnInappropriateGameState,
+            "SpawnInvalidNodeSelected" => Self::SpawnInvalidNodeSelected,
+            "UnknownError" => Self::UnknownError,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EHackingErrorType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EHackingFlagOverrideType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EHackingFlagOverrideType {
@@ -7975,6 +17144,28 @@ pub enum EHackingFlagOverrideType {
     True,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EHackingFlagOverrideType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "UsePreset" => Self::UsePreset,
+            "False" => Self::False,
+            "True" => Self::True,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EHackingFlagOverrideType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EHackingParamsAbilityType`
@@ -7998,6 +17189,32 @@ pub enum EHackingParamsAbilityType {
     Unrecognized(String),
 }
 
+impl EHackingParamsAbilityType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Invalid" => Self::Invalid,
+            "NodeSwap" => Self::NodeSwap,
+            "Ping" => Self::Ping,
+            "Inject" => Self::Inject,
+            "Slowdown" => Self::Slowdown,
+            "WrapAround" => Self::WrapAround,
+            "Any" => Self::Any,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EHackingParamsAbilityType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EHandMode`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EHandMode {
@@ -8007,6 +17224,27 @@ pub enum EHandMode {
     RightHand,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EHandMode {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "LeftHand" => Self::LeftHand,
+            "RightHand" => Self::RightHand,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EHandMode {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EHandholdAttachOrientationSpace`
@@ -8024,6 +17262,29 @@ pub enum EHandholdAttachOrientationSpace {
     Unrecognized(String),
 }
 
+impl EHandholdAttachOrientationSpace {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "ActorSpace" => Self::ActorSpace,
+            "HandholdSpace" => Self::HandholdSpace,
+            "EntitySpace" => Self::EntitySpace,
+            "ZoneSpace" => Self::ZoneSpace,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EHandholdAttachOrientationSpace {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EHazardTagListBehavior`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EHazardTagListBehavior {
@@ -8033,6 +17294,27 @@ pub enum EHazardTagListBehavior {
     OneTagWillExempt,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EHazardTagListBehavior {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "OneTagIsRequired" => Self::OneTagIsRequired,
+            "OneTagWillExempt" => Self::OneTagWillExempt,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EHazardTagListBehavior {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EHeadWearHair`
@@ -8048,6 +17330,28 @@ pub enum EHeadWearHair {
     Unrecognized(String),
 }
 
+impl EHeadWearHair {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "any" => Self::any,
+            "snoopy_cap" => Self::snoopy_cap,
+            "hatHair" => Self::hatHair,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EHeadWearHair {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EHealingMode`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EHealingMode {
@@ -8059,6 +17363,27 @@ pub enum EHealingMode {
     Unrecognized(String),
 }
 
+impl EHealingMode {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Target" => Self::Target,
+            "Self" => Self::Self_,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EHealingMode {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EHealingValueType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EHealingValueType {
@@ -8068,6 +17393,27 @@ pub enum EHealingValueType {
     Buff,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EHealingValueType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Health" => Self::Health,
+            "Buff" => Self::Buff,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EHealingValueType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EHelmetState`
@@ -8085,6 +17431,30 @@ pub enum EHelmetState {
     Closing,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EHelmetState {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "NONE" => Self::NONE,
+            "Open" => Self::Open,
+            "Opening" => Self::Opening,
+            "Closed" => Self::Closed,
+            "Closing" => Self::Closing,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EHelmetState {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EHelmetStateMachine`
@@ -8108,6 +17478,33 @@ pub enum EHelmetStateMachine {
     Equip,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EHelmetStateMachine {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Default" => Self::Default,
+            "Visor" => Self::Visor,
+            "Strap" => Self::Strap,
+            "EVA" => Self::EVA,
+            "Targeting" => Self::Targeting,
+            "Lights" => Self::Lights,
+            "Opacity" => Self::Opacity,
+            "Equip" => Self::Equip,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EHelmetStateMachine {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EHitType`
@@ -8165,6 +17562,49 @@ pub enum EHitType {
     Unrecognized(String),
 }
 
+impl EHitType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Invalid" => Self::Invalid,
+            "Melee" => Self::Melee,
+            "Collision" => Self::Collision,
+            "Crash" => Self::Crash,
+            "Frag" => Self::Frag,
+            "Explosion" => Self::Explosion,
+            "TakeDown" => Self::TakeDown,
+            "Punish" => Self::Punish,
+            "Normal" => Self::Normal,
+            "Fire" => Self::Fire,
+            "Bullet" => Self::Bullet,
+            "VehicleDestruction" => Self::VehicleDestruction,
+            "EventDamage" => Self::EventDamage,
+            "BleedOut" => Self::BleedOut,
+            "ElectricArc" => Self::ElectricArc,
+            "Repair" => Self::Repair,
+            "Suffocate" => Self::Suffocate,
+            "Suicide" => Self::Suicide,
+            "SelfDestruct" => Self::SelfDestruct,
+            "BoundaryViolation" => Self::BoundaryViolation,
+            "Drown" => Self::Drown,
+            "DamageOverTime" => Self::DamageOverTime,
+            "Hazard" => Self::Hazard,
+            "Extraction" => Self::Extraction,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EHitType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EHitmarkerPositionMethod`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EHitmarkerPositionMethod {
@@ -8182,6 +17622,30 @@ pub enum EHitmarkerPositionMethod {
     Unrecognized(String),
 }
 
+impl EHitmarkerPositionMethod {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "ScreenCenter" => Self::ScreenCenter,
+            "CrosshairPosition" => Self::CrosshairPosition,
+            "CrosshairPositionSnapshot" => Self::CrosshairPositionSnapshot,
+            "HitpositionWorld" => Self::HitpositionWorld,
+            "HitpositionScreen" => Self::HitpositionScreen,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EHitmarkerPositionMethod {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EHoloFieldShape`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EHoloFieldShape {
@@ -8195,6 +17659,28 @@ pub enum EHoloFieldShape {
     Unrecognized(String),
 }
 
+impl EHoloFieldShape {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "HoloField_Mesh" => Self::HoloField_Mesh,
+            "HoloField_Sphere" => Self::HoloField_Sphere,
+            "HoloField_HardCodedSphere" => Self::HoloField_HardCodedSphere,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EHoloFieldShape {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EHolographicVolumeType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EHolographicVolumeType {
@@ -8204,6 +17690,27 @@ pub enum EHolographicVolumeType {
     Cube,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EHolographicVolumeType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Sphere" => Self::Sphere,
+            "Cube" => Self::Cube,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EHolographicVolumeType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EHoverPowerStage`
@@ -8219,6 +17726,29 @@ pub enum EHoverPowerStage {
     PoweredOn,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EHoverPowerStage {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "PoweredOff" => Self::PoweredOff,
+            "PoweringOff" => Self::PoweringOff,
+            "PoweringOn" => Self::PoweringOn,
+            "PoweredOn" => Self::PoweredOn,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EHoverPowerStage {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EIFCSFormationModeMessage`
@@ -8238,6 +17768,31 @@ pub enum EIFCSFormationModeMessage {
     Aborted,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EIFCSFormationModeMessage {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "LinkAvailable" => Self::LinkAvailable,
+            "MoveToHost" => Self::MoveToHost,
+            "ConsentToJoin" => Self::ConsentToJoin,
+            "Joined" => Self::Joined,
+            "CannotJoin" => Self::CannotJoin,
+            "Aborted" => Self::Aborted,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EIFCSFormationModeMessage {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EIFCSFormationState`
@@ -8261,6 +17816,32 @@ pub enum EIFCSFormationState {
     Unrecognized(String),
 }
 
+impl EIFCSFormationState {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Inactive" => Self::Inactive,
+            "Blocked" => Self::Blocked,
+            "Available_MoveToHost" => Self::Available_MoveToHost,
+            "Available_WaitForConsent" => Self::Available_WaitForConsent,
+            "Active_Transition" => Self::Active_Transition,
+            "Active_Settled" => Self::Active_Settled,
+            "Leaving" => Self::Leaving,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EIFCSFormationState {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EIFCSModifiableNumbers`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EIFCSModifiableNumbers {
@@ -8268,6 +17849,26 @@ pub enum EIFCSModifiableNumbers {
     TestNumber,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EIFCSModifiableNumbers {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "TestNumber" => Self::TestNumber,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EIFCSModifiableNumbers {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EIFCSModifiableNumbersLegacy`
@@ -8285,6 +17886,29 @@ pub enum EIFCSModifiableNumbersLegacy {
     Unrecognized(String),
 }
 
+impl EIFCSModifiableNumbersLegacy {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "SCMSpeed" => Self::SCMSpeed,
+            "BoostSpeedForward" => Self::BoostSpeedForward,
+            "BoostSpeedBackward" => Self::BoostSpeedBackward,
+            "MaxSpeed" => Self::MaxSpeed,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EIFCSModifiableNumbersLegacy {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EIFCSModifiableVectors`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EIFCSModifiableVectors {
@@ -8292,6 +17916,26 @@ pub enum EIFCSModifiableVectors {
     TestVector,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EIFCSModifiableVectors {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "TestVector" => Self::TestVector,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EIFCSModifiableVectors {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EIFCSModifiableVectorsLegacy`
@@ -8311,6 +17955,30 @@ pub enum EIFCSModifiableVectorsLegacy {
     Unrecognized(String),
 }
 
+impl EIFCSModifiableVectorsLegacy {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "MaxAngularVelocity" => Self::MaxAngularVelocity,
+            "PositiveLinearScale" => Self::PositiveLinearScale,
+            "NegativeLinearScale" => Self::NegativeLinearScale,
+            "PositiveAngularScale" => Self::PositiveAngularScale,
+            "NegativeAngularScale" => Self::NegativeAngularScale,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EIFCSModifiableVectorsLegacy {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EIFCSModifierType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EIFCSModifierType {
@@ -8322,6 +17990,28 @@ pub enum EIFCSModifierType {
     Override,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EIFCSModifierType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Additive" => Self::Additive,
+            "Scalar" => Self::Scalar,
+            "Override" => Self::Override,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EIFCSModifierType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EIfcsEspType`
@@ -8341,6 +18031,30 @@ pub enum EIfcsEspType {
     Unrecognized(String),
 }
 
+impl EIfcsEspType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Default" => Self::Default,
+            "DefaultAds" => Self::DefaultAds,
+            "Strong" => Self::Strong,
+            "StrongAds" => Self::StrongAds,
+            "Disabled" => Self::Disabled,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EIfcsEspType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EIfcsPhysicsDampingType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EIfcsPhysicsDampingType {
@@ -8356,6 +18070,29 @@ pub enum EIfcsPhysicsDampingType {
     Unrecognized(String),
 }
 
+impl EIfcsPhysicsDampingType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Destroyed" => Self::Destroyed,
+            "InQuantum" => Self::InQuantum,
+            "ThrustAvailable" => Self::ThrustAvailable,
+            "ThrustUnavailable" => Self::ThrustUnavailable,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EIfcsPhysicsDampingType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EImpoundingTrigger`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EImpoundingTrigger {
@@ -8367,6 +18104,28 @@ pub enum EImpoundingTrigger {
     TrespassImpound,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EImpoundingTrigger {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "IllegalParking" => Self::IllegalParking,
+            "PadRamming" => Self::PadRamming,
+            "TrespassImpound" => Self::TrespassImpound,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EImpoundingTrigger {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EInfractionTrigger`
@@ -8442,6 +18201,58 @@ pub enum EInfractionTrigger {
     Unrecognized(String),
 }
 
+impl EInfractionTrigger {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "KillActor" => Self::KillActor,
+            "ForcedIntoDowned" => Self::ForcedIntoDowned,
+            "DownedDirectDamage" => Self::DownedDirectDamage,
+            "Manslaughter" => Self::Manslaughter,
+            "DestroyVehicle" => Self::DestroyVehicle,
+            "DestroyEntity" => Self::DestroyEntity,
+            "IllegalParking" => Self::IllegalParking,
+            "Interdiction" => Self::Interdiction,
+            "FireWeapon" => Self::FireWeapon,
+            "RamVehicle" => Self::RamVehicle,
+            "RamActor" => Self::RamActor,
+            "PadRamming" => Self::PadRamming,
+            "AssaultActor" => Self::AssaultActor,
+            "AssaultLawEnforcement" => Self::AssaultLawEnforcement,
+            "DamageEntity" => Self::DamageEntity,
+            "GreenZonePropertyDamage" => Self::GreenZonePropertyDamage,
+            "KnockoutActor" => Self::KnockoutActor,
+            "MeleeActor" => Self::MeleeActor,
+            "Arrest" => Self::Arrest,
+            "PrisonEscape" => Self::PrisonEscape,
+            "PrisonSuicide" => Self::PrisonSuicide,
+            "KillPrisoner" => Self::KillPrisoner,
+            "Trespassing" => Self::Trespassing,
+            "State_Trespassing" => Self::State_Trespassing,
+            "State_Intruding" => Self::State_Intruding,
+            "State_WeaponDrawn" => Self::State_WeaponDrawn,
+            "State_HoldingIllegalItem" => Self::State_HoldingIllegalItem,
+            "State_IllegalVehicleTowing" => Self::State_IllegalVehicleTowing,
+            "LowBDL" => Self::LowBDL,
+            "HighBDL" => Self::HighBDL,
+            "HighBDLUnconscious" => Self::HighBDLUnconscious,
+            "RestrictedAreaTrespass" => Self::RestrictedAreaTrespass,
+            "RemoveItemFromCargoGrid" => Self::RemoveItemFromCargoGrid,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EInfractionTrigger {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EInputPromptBoundTo`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EInputPromptBoundTo {
@@ -8463,6 +18274,32 @@ pub enum EInputPromptBoundTo {
     Unrecognized(String),
 }
 
+impl EInputPromptBoundTo {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "ActorEyes" => Self::ActorEyes,
+            "EntityRoot" => Self::EntityRoot,
+            "TopBoundingBoxZSurface" => Self::TopBoundingBoxZSurface,
+            "NearestBoundingBoxSurface" => Self::NearestBoundingBoxSurface,
+            "NearestBoundingBoxIgnoreFurthestSurfaces" => Self::NearestBoundingBoxIgnoreFurthestSurfaces,
+            "InteractionPointFixedOffset" => Self::InteractionPointFixedOffset,
+            "Tmp_AngleConstraintForwardDirection" => Self::Tmp_AngleConstraintForwardDirection,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EInputPromptBoundTo {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EInputPromptMode`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EInputPromptMode {
@@ -8474,6 +18311,28 @@ pub enum EInputPromptMode {
     Hold,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EInputPromptMode {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "SingleClick" => Self::SingleClick,
+            "MultiClick" => Self::MultiClick,
+            "Hold" => Self::Hold,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EInputPromptMode {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EInputPromptPriority`
@@ -8491,6 +18350,29 @@ pub enum EInputPromptPriority {
     Unrecognized(String),
 }
 
+impl EInputPromptPriority {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "LowPriority" => Self::LowPriority,
+            "MediumPriority" => Self::MediumPriority,
+            "HighPriority" => Self::HighPriority,
+            "HighestPriority" => Self::HighestPriority,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EInputPromptPriority {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EInstanceType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EInstanceType {
@@ -8498,6 +18380,26 @@ pub enum EInstanceType {
     Entrance,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EInstanceType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Entrance" => Self::Entrance,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EInstanceType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EInteractionConditionTargetEntity`
@@ -8511,6 +18413,28 @@ pub enum EInteractionConditionTargetEntity {
     InteractableItemOwner,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EInteractionConditionTargetEntity {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Interactor" => Self::Interactor,
+            "Interactable" => Self::Interactable,
+            "InteractableItemOwner" => Self::InteractableItemOwner,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EInteractionConditionTargetEntity {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EInteractionTriggerType`
@@ -8530,6 +18454,30 @@ pub enum EInteractionTriggerType {
     Unrecognized(String),
 }
 
+impl EInteractionTriggerType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Self" => Self::Self_,
+            "Parent" => Self::Parent,
+            "Root" => Self::Root,
+            "Children" => Self::Children,
+            "FullHierarchy" => Self::FullHierarchy,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EInteractionTriggerType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EItemActionEventType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EItemActionEventType {
@@ -8539,6 +18487,27 @@ pub enum EItemActionEventType {
     PowerOff,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EItemActionEventType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "PowerOn" => Self::PowerOn,
+            "PowerOff" => Self::PowerOff,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EItemActionEventType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EItemClass`
@@ -8560,6 +18529,31 @@ pub enum EItemClass {
     Unrecognized(String),
 }
 
+impl EItemClass {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Civilian" => Self::Civilian,
+            "Competition" => Self::Competition,
+            "Industrial" => Self::Industrial,
+            "Military" => Self::Military,
+            "Stealth" => Self::Stealth,
+            "UNDEFINED" => Self::UNDEFINED,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EItemClass {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EItemFunctionalityCondition`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EItemFunctionalityCondition {
@@ -8567,6 +18561,26 @@ pub enum EItemFunctionalityCondition {
     Damage,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EItemFunctionalityCondition {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Damage" => Self::Damage,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EItemFunctionalityCondition {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EItemPortAttachImplType`
@@ -8590,6 +18604,32 @@ pub enum EItemPortAttachImplType {
     Unrecognized(String),
 }
 
+impl EItemPortAttachImplType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Bone" => Self::Bone,
+            "Skin" => Self::Skin,
+            "Face" => Self::Face,
+            "Entity" => Self::Entity,
+            "StatObj" => Self::StatObj,
+            "Noattach" => Self::Noattach,
+            "Logical" => Self::Logical,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EItemPortAttachImplType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EItemPortAttachRotationLimitAxis`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EItemPortAttachRotationLimitAxis {
@@ -8607,6 +18647,30 @@ pub enum EItemPortAttachRotationLimitAxis {
     Unrecognized(String),
 }
 
+impl EItemPortAttachRotationLimitAxis {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "XAxis" => Self::XAxis,
+            "YAxis" => Self::YAxis,
+            "ZAxis" => Self::ZAxis,
+            "XYZAxis" => Self::XYZAxis,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EItemPortAttachRotationLimitAxis {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EItemPortConnectionType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EItemPortConnectionType {
@@ -8620,6 +18684,28 @@ pub enum EItemPortConnectionType {
     Unrecognized(String),
 }
 
+impl EItemPortConnectionType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "NoConnection" => Self::NoConnection,
+            "DefaultConnection" => Self::DefaultConnection,
+            "ExteriorConnection" => Self::ExteriorConnection,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EItemPortConnectionType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EItemPortPhysicsGridBehavior`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EItemPortPhysicsGridBehavior {
@@ -8631,6 +18717,28 @@ pub enum EItemPortPhysicsGridBehavior {
     Both,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EItemPortPhysicsGridBehavior {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Interior" => Self::Interior,
+            "Exterior" => Self::Exterior,
+            "Both" => Self::Both,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EItemPortPhysicsGridBehavior {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EItemResourceNegativeStates`
@@ -8656,6 +18764,33 @@ pub enum EItemResourceNegativeStates {
     Unrecognized(String),
 }
 
+impl EItemResourceNegativeStates {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "eNone" => Self::eNone,
+            "eDamaged" => Self::eDamaged,
+            "eOverheating" => Self::eOverheating,
+            "eNoPower" => Self::eNoPower,
+            "eDistortion" => Self::eDistortion,
+            "eOverheatedShutDown" => Self::eOverheatedShutDown,
+            "eDestroyed" => Self::eDestroyed,
+            "eIgnited" => Self::eIgnited,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EItemResourceNegativeStates {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EItemShopAdjustmentMode`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EItemShopAdjustmentMode {
@@ -8669,6 +18804,29 @@ pub enum EItemShopAdjustmentMode {
     Scale,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EItemShopAdjustmentMode {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "NoAdjustment" => Self::NoAdjustment,
+            "Override" => Self::Override,
+            "Offset" => Self::Offset,
+            "Scale" => Self::Scale,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EItemShopAdjustmentMode {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EItemShopReference`
@@ -8688,6 +18846,31 @@ pub enum EItemShopReference {
     Pedestal,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EItemShopReference {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Item" => Self::Item,
+            "Rack" => Self::Rack,
+            "InteractionPoint" => Self::InteractionPoint,
+            "PlayerCamera" => Self::PlayerCamera,
+            "PlayerActor" => Self::PlayerActor,
+            "Pedestal" => Self::Pedestal,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EItemShopReference {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EItemStatType`
@@ -8753,6 +18936,54 @@ pub enum EItemStatType {
     UNDEFINED,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EItemStatType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Flight_IFCS_BoostSpeedBackward" => Self::Flight_IFCS_BoostSpeedBackward,
+            "Flight_IFCS_BoostSpeedForward" => Self::Flight_IFCS_BoostSpeedForward,
+            "Flight_IFCS_MaxSpeed" => Self::Flight_IFCS_MaxSpeed,
+            "Flight_IFCS_ScmSpeed" => Self::Flight_IFCS_ScmSpeed,
+            "Missile_ArmTime" => Self::Missile_ArmTime,
+            "Missile_LockRangeMax" => Self::Missile_LockRangeMax,
+            "Missile_LockRangeMin" => Self::Missile_LockRangeMin,
+            "Missile_LockTime" => Self::Missile_LockTime,
+            "Missile_TopSpeed" => Self::Missile_TopSpeed,
+            "Missile_TotalDamage" => Self::Missile_TotalDamage,
+            "QDrive_Acceleration_Boost" => Self::QDrive_Acceleration_Boost,
+            "QDrive_Acceleration_Linear" => Self::QDrive_Acceleration_Linear,
+            "QDrive_Counteraction_Boost" => Self::QDrive_Counteraction_Boost,
+            "QDrive_Counteraction_Linear" => Self::QDrive_Counteraction_Linear,
+            "QDrive_MaxSpeed_Boost" => Self::QDrive_MaxSpeed_Boost,
+            "QDrive_MaxSpeed_Linear" => Self::QDrive_MaxSpeed_Linear,
+            "Shield_ChargeToFull" => Self::Shield_ChargeToFull,
+            "Shield_DamagedRegenDelay" => Self::Shield_DamagedRegenDelay,
+            "Shield_Health" => Self::Shield_Health,
+            "Shield_Regen" => Self::Shield_Regen,
+            "Vehicle_Mass" => Self::Vehicle_Mass,
+            "Vehicle_SizeCount_Countermeasures" => Self::Vehicle_SizeCount_Countermeasures,
+            "Vehicle_SizeCount_Ordnance" => Self::Vehicle_SizeCount_Ordnance,
+            "Vehicle_SizeCount_Thrusters" => Self::Vehicle_SizeCount_Thrusters,
+            "Vehicle_SizeCount_Weapon" => Self::Vehicle_SizeCount_Weapon,
+            "Weapon_AmmoCapacity" => Self::Weapon_AmmoCapacity,
+            "Weapon_FireRate" => Self::Weapon_FireRate,
+            "Weapon_Velocity" => Self::Weapon_Velocity,
+            "UNDEFINED" => Self::UNDEFINED,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EItemStatType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EItemSubType`
@@ -9070,6 +19301,180 @@ pub enum EItemSubType {
     UNDEFINED,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EItemSubType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "ADSComputer" => Self::ADSComputer,
+            "AirlockPart" => Self::AirlockPart,
+            "Ammo_1000mm" => Self::Ammo_1000mm,
+            "Ammo_20mm" => Self::Ammo_20mm,
+            "Ammo_24mm" => Self::Ammo_24mm,
+            "Ammo_25mm" => Self::Ammo_25mm,
+            "Ammo_28mm" => Self::Ammo_28mm,
+            "Ammo_30mm" => Self::Ammo_30mm,
+            "Ammo_35mm" => Self::Ammo_35mm,
+            "Ammo_40mm" => Self::Ammo_40mm,
+            "Ammo_50mm" => Self::Ammo_50mm,
+            "Ammo_60mm" => Self::Ammo_60mm,
+            "Ammo_Rail_60mm" => Self::Ammo_Rail_60mm,
+            "Ammo_Rail_80mm" => Self::Ammo_Rail_80mm,
+            "AmmoBox_Ballistic_120rd_106mm_exp" => Self::AmmoBox_Ballistic_120rd_106mm_exp,
+            "Armor" => Self::Armor,
+            "Autopilot" => Self::Autopilot,
+            "Awesome" => Self::Awesome,
+            "BallTurret" => Self::BallTurret,
+            "Bar" => Self::Bar,
+            "Barrel" => Self::Barrel,
+            "BombRack" => Self::BombRack,
+            "Bottle" => Self::Bottle,
+            "BottomAttachment" => Self::BottomAttachment,
+            "BottomTurret" => Self::BottomTurret,
+            "Box" => Self::Box,
+            "Can" => Self::Can,
+            "CanardTurret" => Self::CanardTurret,
+            "Cargo" => Self::Cargo,
+            "Cockpit_Audio" => Self::Cockpit_Audio,
+            "Constellation" => Self::Constellation,
+            "Consumable" => Self::Consumable,
+            "CountermeasureLauncher" => Self::CountermeasureLauncher,
+            "CPU" => Self::CPU,
+            "Credit" => Self::Credit,
+            "Default" => Self::Default,
+            "delta" => Self::delta,
+            "DoorPart" => Self::DoorPart,
+            "External" => Self::External,
+            "EyeWare" => Self::EyeWare,
+            "Female" => Self::Female,
+            "Female_Kid" => Self::Female_Kid,
+            "FiringMechanism" => Self::FiringMechanism,
+            "FixedThruster" => Self::FixedThruster,
+            "Flair_Hanging" => Self::Flair_Hanging,
+            "Flair_Wall_Picture" => Self::Flair_Wall_Picture,
+            "Flair_Wall_Interaction" => Self::Flair_Wall_Interaction,
+            "Flair_Static" => Self::Flair_Static,
+            "Flair_Surface_Clutter" => Self::Flair_Surface_Clutter,
+            "Flair_Surface_DisplayCase" => Self::Flair_Surface_DisplayCase,
+            "Flair_Surface_HoloViewer" => Self::Flair_Surface_HoloViewer,
+            "Flair_Floor_WallAligned" => Self::Flair_Floor_WallAligned,
+            "Flashlight" => Self::Flashlight,
+            "FlexThruster" => Self::FlexThruster,
+            "Fluid" => Self::Fluid,
+            "Fuel" => Self::Fuel,
+            "Fuse" => Self::Fuse,
+            "Gadget" => Self::Gadget,
+            "ghostHornet" => Self::ghostHornet,
+            "Glass" => Self::Glass,
+            "Grapple" => Self::Grapple,
+            "Grenade" => Self::Grenade,
+            "GroundVehicleMissile" => Self::GroundVehicleMissile,
+            "GroundVehicleMissileRack" => Self::GroundVehicleMissileRack,
+            "Gun" => Self::Gun,
+            "GunTurret" => Self::GunTurret,
+            "Hacking" => Self::Hacking,
+            "Handheld" => Self::Handheld,
+            "Harvestable" => Self::Harvestable,
+            "Hat" => Self::Hat,
+            "Helmet" => Self::Helmet,
+            "Heavy" => Self::Heavy,
+            "Idris" => Self::Idris,
+            "Idris_Turret" => Self::Idris_Turret,
+            "Interior_Audio" => Self::Interior_Audio,
+            "Inventory_Container" => Self::Inventory_Container,
+            "IronSight" => Self::IronSight,
+            "JetPack" => Self::JetPack,
+            "JointThruster" => Self::JointThruster,
+            "JumpDrive" => Self::JumpDrive,
+            "Junk" => Self::Junk,
+            "Knife" => Self::Knife,
+            "Kopion" => Self::Kopion,
+            "LandingSystem" => Self::LandingSystem,
+            "Large" => Self::Large,
+            "legs" => Self::legs,
+            "Light" => Self::Light,
+            "LightArmor" => Self::LightArmor,
+            "ln" => Self::ln,
+            "LongRangeRadar" => Self::LongRangeRadar,
+            "Magazine" => Self::Magazine,
+            "Male" => Self::Male,
+            "Male_Kid" => Self::Male_Kid,
+            "MannedTurret" => Self::MannedTurret,
+            "Marok" => Self::Marok,
+            "Medical" => Self::Medical,
+            "Medium" => Self::Medium,
+            "MedPack" => Self::MedPack,
+            "MeleeMedium" => Self::MeleeMedium,
+            "MidRangeRadar" => Self::MidRangeRadar,
+            "Mineable" => Self::Mineable,
+            "Missile" => Self::Missile,
+            "MissileRack" => Self::MissileRack,
+            "MissileTurret" => Self::MissileTurret,
+            "Mission" => Self::Mission,
+            "Motherboard" => Self::Motherboard,
+            "NoseMounted" => Self::NoseMounted,
+            "Oxygen" => Self::Oxygen,
+            "OxygenCap" => Self::OxygenCap,
+            "PDCTurret" => Self::PDCTurret,
+            "Personal" => Self::Personal,
+            "Pilot" => Self::Pilot,
+            "Plant" => Self::Plant,
+            "Power" => Self::Power,
+            "PowerArray" => Self::PowerArray,
+            "Power_Idris" => Self::Power_Idris,
+            "Prop" => Self::Prop,
+            "QDrive" => Self::QDrive,
+            "QuantumFuel" => Self::QuantumFuel,
+            "QuasiGrazer" => Self::QuasiGrazer,
+            "Radar" => Self::Radar,
+            "Retaliator" => Self::Retaliator,
+            "Retro" => Self::Retro,
+            "Rocket" => Self::Rocket,
+            "Sachet" => Self::Sachet,
+            "SalvageModifier_TractorBeam" => Self::SalvageModifier_TractorBeam,
+            "Scanner" => Self::Scanner,
+            "ShortRangeRadar" => Self::ShortRangeRadar,
+            "SignatureReductor" => Self::SignatureReductor,
+            "SkinTest" => Self::SkinTest,
+            "Small" => Self::Small,
+            "SpaceMineRack" => Self::SpaceMineRack,
+            "Stormwal" => Self::Stormwal,
+            "superHornet" => Self::superHornet,
+            "SystemAccess" => Self::SystemAccess,
+            "TargetingComputer" => Self::TargetingComputer,
+            "ThrusterPack" => Self::ThrusterPack,
+            "Tin" => Self::Tin,
+            "TopTurret" => Self::TopTurret,
+            "Torpedo" => Self::Torpedo,
+            "Trophy" => Self::Trophy,
+            "Unmanned" => Self::Unmanned,
+            "Utility" => Self::Utility,
+            "Vanduul" => Self::Vanduul,
+            "Xian" => Self::Xian,
+            "Valakkar" => Self::Valakkar,
+            "VectorThruster" => Self::VectorThruster,
+            "Vehicle_Boat" => Self::Vehicle_Boat,
+            "Vehicle_GroundVehicle" => Self::Vehicle_GroundVehicle,
+            "Vehicle_PowerSuit" => Self::Vehicle_PowerSuit,
+            "Vehicle_Spaceship" => Self::Vehicle_Spaceship,
+            "Ventilation" => Self::Ventilation,
+            "Weapon" => Self::Weapon,
+            "WeaponControl" => Self::WeaponControl,
+            "UNDEFINED" => Self::UNDEFINED,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EItemSubType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EItemType`
@@ -9465,6 +19870,218 @@ pub enum EItemType {
     Unrecognized(String),
 }
 
+impl EItemType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "AIModule" => Self::AIModule,
+            "AirTrafficController" => Self::AirTrafficController,
+            "AmmoBox" => Self::AmmoBox,
+            "AmmoCrate" => Self::AmmoCrate,
+            "Armor" => Self::Armor,
+            "Audio" => Self::Audio,
+            "Avionics" => Self::Avionics,
+            "AttachedPart" => Self::AttachedPart,
+            "Battery" => Self::Battery,
+            "BoatController" => Self::BoatController,
+            "BodyArmor" => Self::BodyArmor,
+            "Bomb" => Self::Bomb,
+            "BombLauncher" => Self::BombLauncher,
+            "Bottle" => Self::Bottle,
+            "Button" => Self::Button,
+            "CapacitorAssignmentController" => Self::CapacitorAssignmentController,
+            "Cargo" => Self::Cargo,
+            "CargoGrid" => Self::CargoGrid,
+            "Char_Accessory_Eyes" => Self::Char_Accessory_Eyes,
+            "Char_Accessory_Head" => Self::Char_Accessory_Head,
+            "Char_Armor_Arms" => Self::Char_Armor_Arms,
+            "Char_Armor_Feet" => Self::Char_Armor_Feet,
+            "Char_Armor_Helmet" => Self::Char_Armor_Helmet,
+            "Char_Armor_Legs" => Self::Char_Armor_Legs,
+            "Char_Armor_Torso" => Self::Char_Armor_Torso,
+            "Char_Armor_Undersuit" => Self::Char_Armor_Undersuit,
+            "Char_Armor_Backpack" => Self::Char_Armor_Backpack,
+            "Char_Body" => Self::Char_Body,
+            "Char_Clothing_Feet" => Self::Char_Clothing_Feet,
+            "Char_Clothing_Hands" => Self::Char_Clothing_Hands,
+            "Char_Clothing_Hat" => Self::Char_Clothing_Hat,
+            "Char_Clothing_Mask" => Self::Char_Clothing_Mask,
+            "Char_Clothing_Jumpsuit" => Self::Char_Clothing_Jumpsuit,
+            "Char_Clothing_Legs" => Self::Char_Clothing_Legs,
+            "Char_Clothing_Torso_0" => Self::Char_Clothing_Torso_0,
+            "Char_Clothing_Torso_1" => Self::Char_Clothing_Torso_1,
+            "Char_Clothing_Torso_2" => Self::Char_Clothing_Torso_2,
+            "Char_Clothing_Undershirt" => Self::Char_Clothing_Undershirt,
+            "Char_Clothing_Backpack" => Self::Char_Clothing_Backpack,
+            "Char_Flair" => Self::Char_Flair,
+            "Char_Hair_Color" => Self::Char_Hair_Color,
+            "Char_Hair_Prop" => Self::Char_Hair_Prop,
+            "Char_Head" => Self::Char_Head,
+            "Char_Head_Beard" => Self::Char_Head_Beard,
+            "Char_Head_Eyebrow" => Self::Char_Head_Eyebrow,
+            "Char_Head_Eyelash" => Self::Char_Head_Eyelash,
+            "Char_Head_Eyes" => Self::Char_Head_Eyes,
+            "Char_Head_Hair" => Self::Char_Head_Hair,
+            "Char_Head_Stubble" => Self::Char_Head_Stubble,
+            "Char_Head_Piercings" => Self::Char_Head_Piercings,
+            "Char_Lens" => Self::Char_Lens,
+            "Char_Skin_Color" => Self::Char_Skin_Color,
+            "Cloth" => Self::Cloth,
+            "CommsController" => Self::CommsController,
+            "Container" => Self::Container,
+            "ControlPanel" => Self::ControlPanel,
+            "Cooler" => Self::Cooler,
+            "CoolerController" => Self::CoolerController,
+            "Crafter" => Self::Crafter,
+            "Creature_Body" => Self::Creature_Body,
+            "Creature_Hair" => Self::Creature_Hair,
+            "Creature_Harvest" => Self::Creature_Harvest,
+            "Currency" => Self::Currency,
+            "Debris" => Self::Debris,
+            "Decal" => Self::Decal,
+            "Display" => Self::Display,
+            "DockingAnimator" => Self::DockingAnimator,
+            "DockingCollar" => Self::DockingCollar,
+            "DockingController" => Self::DockingController,
+            "Door" => Self::Door,
+            "DoorController" => Self::DoorController,
+            "Drink" => Self::Drink,
+            "Elevator" => Self::Elevator,
+            "EMP" => Self::EMP,
+            "EnergyController" => Self::EnergyController,
+            "ExternalFuelTank" => Self::ExternalFuelTank,
+            "Flair_Cockpit" => Self::Flair_Cockpit,
+            "Flair_Floor" => Self::Flair_Floor,
+            "Flair_Surface" => Self::Flair_Surface,
+            "Flair_Wall" => Self::Flair_Wall,
+            "FlightController" => Self::FlightController,
+            "Food" => Self::Food,
+            "FPS_AttachmentBarrel" => Self::FPS_AttachmentBarrel,
+            "FPS_AttachmentBottom" => Self::FPS_AttachmentBottom,
+            "FPS_AttachmentOptics" => Self::FPS_AttachmentOptics,
+            "FPS_Consumable" => Self::FPS_Consumable,
+            "FPS_Cooler" => Self::FPS_Cooler,
+            "FPS_Deployable" => Self::FPS_Deployable,
+            "FPS_Magazine" => Self::FPS_Magazine,
+            "FPS_PowerGen" => Self::FPS_PowerGen,
+            "FPS_Radar" => Self::FPS_Radar,
+            "FPS_Scanner" => Self::FPS_Scanner,
+            "FPS_Throwable" => Self::FPS_Throwable,
+            "FPS_WeaponMelee" => Self::FPS_WeaponMelee,
+            "FPS_WeaponShouldered" => Self::FPS_WeaponShouldered,
+            "FPS_WeaponSidearm" => Self::FPS_WeaponSidearm,
+            "FPS_WeaponStocked" => Self::FPS_WeaponStocked,
+            "FPS_WeaponUtility" => Self::FPS_WeaponUtility,
+            "FuelController" => Self::FuelController,
+            "FuelIntake" => Self::FuelIntake,
+            "FuelNozzle" => Self::FuelNozzle,
+            "FuelTank" => Self::FuelTank,
+            "Gadget" => Self::Gadget,
+            "GravityGenerator" => Self::GravityGenerator,
+            "Grenade" => Self::Grenade,
+            "GroundVehicleMissileLauncher" => Self::GroundVehicleMissileLauncher,
+            "HangarExpansion" => Self::HangarExpansion,
+            "HangarStock" => Self::HangarStock,
+            "Interior" => Self::Interior,
+            "InventoryContainer" => Self::InventoryContainer,
+            "JumpDrive" => Self::JumpDrive,
+            "LandingSystem" => Self::LandingSystem,
+            "LandingGear" => Self::LandingGear,
+            "LifeSupportGenerator" => Self::LifeSupportGenerator,
+            "LifeSupportTank" => Self::LifeSupportTank,
+            "LifeSupportVent" => Self::LifeSupportVent,
+            "Light" => Self::Light,
+            "LightController" => Self::LightController,
+            "Lightgroup" => Self::Lightgroup,
+            "LiveSupport" => Self::LiveSupport,
+            "MaelstromPart" => Self::MaelstromPart,
+            "Magazine" => Self::Magazine,
+            "MainEngine" => Self::MainEngine,
+            "MainThruster" => Self::MainThruster,
+            "ManneuverThruster" => Self::ManneuverThruster,
+            "MiningController" => Self::MiningController,
+            "MiningModifier" => Self::MiningModifier,
+            "Misc" => Self::Misc,
+            "Missile" => Self::Missile,
+            "MissileController" => Self::MissileController,
+            "MissileLauncher" => Self::MissileLauncher,
+            "MobiGlas" => Self::MobiGlas,
+            "Module" => Self::Module,
+            "MultiLight" => Self::MultiLight,
+            "NOITEM_Player" => Self::NOITEM_Player,
+            "NOITEM_Vehicle" => Self::NOITEM_Vehicle,
+            "Paints" => Self::Paints,
+            "PersistentHab" => Self::PersistentHab,
+            "PersonalInnerThought" => Self::PersonalInnerThought,
+            "Ping" => Self::Ping,
+            "Player" => Self::Player,
+            "PowerPlant" => Self::PowerPlant,
+            "QuantumDrive" => Self::QuantumDrive,
+            "QuantumInterdictionGenerator" => Self::QuantumInterdictionGenerator,
+            "QuantumFuelTank" => Self::QuantumFuelTank,
+            "Radar" => Self::Radar,
+            "Relay" => Self::Relay,
+            "RemoteConnection" => Self::RemoteConnection,
+            "RemovableChip" => Self::RemovableChip,
+            "RemovableBlade" => Self::RemovableBlade,
+            "Room" => Self::Room,
+            "SalvageController" => Self::SalvageController,
+            "SalvageFieldEmitter" => Self::SalvageFieldEmitter,
+            "SalvageFieldSupporter" => Self::SalvageFieldSupporter,
+            "SalvageFillerStation" => Self::SalvageFillerStation,
+            "SalvageHead" => Self::SalvageHead,
+            "SalvageInternalStorage" => Self::SalvageInternalStorage,
+            "SalvageModifier" => Self::SalvageModifier,
+            "Scanner" => Self::Scanner,
+            "Seat" => Self::Seat,
+            "SeatAccess" => Self::SeatAccess,
+            "SeatDashboard" => Self::SeatDashboard,
+            "SelfDestruct" => Self::SelfDestruct,
+            "Sensor" => Self::Sensor,
+            "Shield" => Self::Shield,
+            "ShieldController" => Self::ShieldController,
+            "Ship" => Self::Ship,
+            "ShopDisplay" => Self::ShopDisplay,
+            "SpaceMine" => Self::SpaceMine,
+            "SpaceMineLauncher" => Self::SpaceMineLauncher,
+            "StatusScreen" => Self::StatusScreen,
+            "Suit" => Self::Suit,
+            "TargetSelector" => Self::TargetSelector,
+            "Thumbnail" => Self::Thumbnail,
+            "ToolArm" => Self::ToolArm,
+            "TowingBeam" => Self::TowingBeam,
+            "TractorBeam" => Self::TractorBeam,
+            "Transponder" => Self::Transponder,
+            "Turret" => Self::Turret,
+            "TurretBase" => Self::TurretBase,
+            "Usable" => Self::Usable,
+            "UtilityTurret" => Self::UtilityTurret,
+            "Visor" => Self::Visor,
+            "WeaponAttachment" => Self::WeaponAttachment,
+            "WeaponController" => Self::WeaponController,
+            "WeaponDefensive" => Self::WeaponDefensive,
+            "WeaponGun" => Self::WeaponGun,
+            "WeaponMining" => Self::WeaponMining,
+            "WeaponPersonal" => Self::WeaponPersonal,
+            "WeaponRegenPool" => Self::WeaponRegenPool,
+            "WheeledController" => Self::WheeledController,
+            "WeaponMount" => Self::WeaponMount,
+            "UNDEFINED" => Self::UNDEFINED,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EItemType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EKnockbackBodyPart`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EKnockbackBodyPart {
@@ -9486,6 +20103,32 @@ pub enum EKnockbackBodyPart {
     Unrecognized(String),
 }
 
+impl EKnockbackBodyPart {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Indirect" => Self::Indirect,
+            "Head" => Self::Head,
+            "Torso" => Self::Torso,
+            "LeftArm" => Self::LeftArm,
+            "RightArm" => Self::RightArm,
+            "LeftLeg" => Self::LeftLeg,
+            "RightLeg" => Self::RightLeg,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EKnockbackBodyPart {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EKnockbackHitType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EKnockbackHitType {
@@ -9501,6 +20144,29 @@ pub enum EKnockbackHitType {
     Unrecognized(String),
 }
 
+impl EKnockbackHitType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Physics" => Self::Physics,
+            "Projectile" => Self::Projectile,
+            "Melee" => Self::Melee,
+            "Explosion" => Self::Explosion,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EKnockbackHitType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ELandClaimType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ELandClaimType {
@@ -9512,6 +20178,28 @@ pub enum ELandClaimType {
     Beacon,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ELandClaimType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Default" => Self::Default,
+            "Prospecting" => Self::Prospecting,
+            "Beacon" => Self::Beacon,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ELandClaimType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `ELandingAreaCanBeUsedBy`
@@ -9529,6 +20217,29 @@ pub enum ELandingAreaCanBeUsedBy {
     Unrecognized(String),
 }
 
+impl ELandingAreaCanBeUsedBy {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "AI" => Self::AI,
+            "Player" => Self::Player,
+            "All" => Self::All,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ELandingAreaCanBeUsedBy {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ELawLicenseType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ELawLicenseType {
@@ -9544,6 +20255,30 @@ pub enum ELawLicenseType {
     ArrestLicense,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ELawLicenseType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "IllegalGoodsLicense_ClassA" => Self::IllegalGoodsLicense_ClassA,
+            "IllegalGoodsLicense_ClassB" => Self::IllegalGoodsLicense_ClassB,
+            "IllegalGoodsLicense_ClassC" => Self::IllegalGoodsLicense_ClassC,
+            "IllegalGoodsLicense_Prohibited" => Self::IllegalGoodsLicense_Prohibited,
+            "ArrestLicense" => Self::ArrestLicense,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ELawLicenseType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `ELensDisplayMode`
@@ -9577,6 +20312,37 @@ pub enum ELensDisplayMode {
     Unrecognized(String),
 }
 
+impl ELensDisplayMode {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "FPS" => Self::FPS,
+            "Kiosk" => Self::Kiosk,
+            "MobiGlas" => Self::MobiGlas,
+            "Multiplayer" => Self::Multiplayer,
+            "OverrideFPS" => Self::OverrideFPS,
+            "PIT" => Self::PIT,
+            "TrackView" => Self::TrackView,
+            "Tutorial" => Self::Tutorial,
+            "Vehicle" => Self::Vehicle,
+            "PauseMenu" => Self::PauseMenu,
+            "ADS" => Self::ADS,
+            "FiringRange" => Self::FiringRange,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ELensDisplayMode {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ELicenseType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ELicenseType {
@@ -9594,6 +20360,30 @@ pub enum ELicenseType {
     Unrecognized(String),
 }
 
+impl ELicenseType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Gold" => Self::Gold,
+            "Platinum" => Self::Platinum,
+            "GameMasterEventItem" => Self::GameMasterEventItem,
+            "LootableEventItem" => Self::LootableEventItem,
+            "UNDEFINED" => Self::UNDEFINED,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ELicenseType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ELightAffectsGI`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ELightAffectsGI {
@@ -9607,6 +20397,28 @@ pub enum ELightAffectsGI {
     Unrecognized(String),
 }
 
+impl ELightAffectsGI {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "On" => Self::On,
+            "Off" => Self::Off,
+            "InheritAffectsObjects" => Self::InheritAffectsObjects,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ELightAffectsGI {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ELightEnabledWithGI`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ELightEnabledWithGI {
@@ -9618,6 +20430,28 @@ pub enum ELightEnabledWithGI {
     WithoutGI,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ELightEnabledWithGI {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Always" => Self::Always,
+            "WithGI" => Self::WithGI,
+            "WithoutGI" => Self::WithoutGI,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ELightEnabledWithGI {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `ELightImportance`
@@ -9637,6 +20471,30 @@ pub enum ELightImportance {
     Unrecognized(String),
 }
 
+impl ELightImportance {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Decorative" => Self::Decorative,
+            "Standard" => Self::Standard,
+            "Secondary" => Self::Secondary,
+            "Key" => Self::Key,
+            "Cinematic" => Self::Cinematic,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ELightImportance {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ELightState`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ELightState {
@@ -9652,6 +20510,30 @@ pub enum ELightState {
     Cinematic,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ELightState {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Off" => Self::Off,
+            "Default" => Self::Default,
+            "Auxiliary" => Self::Auxiliary,
+            "Emergency" => Self::Emergency,
+            "Cinematic" => Self::Cinematic,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ELightState {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `ELightStateOverride`
@@ -9673,6 +20555,31 @@ pub enum ELightStateOverride {
     Unrecognized(String),
 }
 
+impl ELightStateOverride {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Off" => Self::Off,
+            "Default" => Self::Default,
+            "Auxiliary" => Self::Auxiliary,
+            "Emergency" => Self::Emergency,
+            "Cinematic" => Self::Cinematic,
+            "DisableOverride" => Self::DisableOverride,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ELightStateOverride {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ELightType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ELightType {
@@ -9690,6 +20597,30 @@ pub enum ELightType {
     Unrecognized(String),
 }
 
+impl ELightType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Omni" => Self::Omni,
+            "SoftOmni" => Self::SoftOmni,
+            "Projector" => Self::Projector,
+            "Planar" => Self::Planar,
+            "Ambient" => Self::Ambient,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ELightType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ELinkMode`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ELinkMode {
@@ -9699,6 +20630,27 @@ pub enum ELinkMode {
     FeetLink,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ELinkMode {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "NoLink" => Self::NoLink,
+            "FeetLink" => Self::FeetLink,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ELinkMode {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `ELoadingScreenType`
@@ -9714,6 +20666,29 @@ pub enum ELoadingScreenType {
     Frontend,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ELoadingScreenType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "StarCitizen" => Self::StarCitizen,
+            "ElectronicAccess" => Self::ElectronicAccess,
+            "Squadron42" => Self::Squadron42,
+            "Frontend" => Self::Frontend,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ELoadingScreenType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `ELoadoutGroup`
@@ -9811,6 +20786,69 @@ pub enum ELoadoutGroup {
     Unrecognized(String),
 }
 
+impl ELoadoutGroup {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Body" => Self::Body,
+            "SkinTone" => Self::SkinTone,
+            "Head" => Self::Head,
+            "Brows" => Self::Brows,
+            "Eyes" => Self::Eyes,
+            "Hair" => Self::Hair,
+            "HairColour" => Self::HairColour,
+            "FacialHair" => Self::FacialHair,
+            "FacialHairColour" => Self::FacialHairColour,
+            "FaceAttachments1" => Self::FaceAttachments1,
+            "FaceAttachments2" => Self::FaceAttachments2,
+            "Piercings1" => Self::Piercings1,
+            "Piercings2" => Self::Piercings2,
+            "Tattoos" => Self::Tattoos,
+            "TattooFace" => Self::TattooFace,
+            "TattooBody" => Self::TattooBody,
+            "Undersuit" => Self::Undersuit,
+            "Helmet" => Self::Helmet,
+            "Torso" => Self::Torso,
+            "Torso2" => Self::Torso2,
+            "Torso3" => Self::Torso3,
+            "TorsoAttachments" => Self::TorsoAttachments,
+            "Outfit" => Self::Outfit,
+            "Outfit2" => Self::Outfit2,
+            "Outfit3" => Self::Outfit3,
+            "Outfit4" => Self::Outfit4,
+            "Arm" => Self::Arm,
+            "Leg" => Self::Leg,
+            "Feet" => Self::Feet,
+            "PrimaryWeapon" => Self::PrimaryWeapon,
+            "PrimaryOptics" => Self::PrimaryOptics,
+            "UnderBarrelAttachment" => Self::UnderBarrelAttachment,
+            "BarrelAttachment" => Self::BarrelAttachment,
+            "PrimaryAttachments" => Self::PrimaryAttachments,
+            "SecondaryWeapon" => Self::SecondaryWeapon,
+            "SecondaryOptics" => Self::SecondaryOptics,
+            "SecondaryAttachments" => Self::SecondaryAttachments,
+            "MeleeWeapon" => Self::MeleeWeapon,
+            "Grenades" => Self::Grenades,
+            "MedicalSupplies" => Self::MedicalSupplies,
+            "Item" => Self::Item,
+            "Mobiglas" => Self::Mobiglas,
+            "Utility1" => Self::Utility1,
+            "Utility2" => Self::Utility2,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ELoadoutGroup {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ELocationTypeLevel`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ELocationTypeLevel {
@@ -9828,6 +20866,30 @@ pub enum ELocationTypeLevel {
     Unrecognized(String),
 }
 
+impl ELocationTypeLevel {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "SolarSystem" => Self::SolarSystem,
+            "Region" => Self::Region,
+            "LocalSystem" => Self::LocalSystem,
+            "PlanetOrMoon" => Self::PlanetOrMoon,
+            "POIOrCluster" => Self::POIOrCluster,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ELocationTypeLevel {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ELootFullnessMode`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ELootFullnessMode {
@@ -9837,6 +20899,27 @@ pub enum ELootFullnessMode {
     preventExceed,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ELootFullnessMode {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "stopAfterExceed" => Self::stopAfterExceed,
+            "preventExceed" => Self::preventExceed,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ELootFullnessMode {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `ELootPruningLevel`
@@ -9854,6 +20937,29 @@ pub enum ELootPruningLevel {
     Unrecognized(String),
 }
 
+impl ELootPruningLevel {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "none" => Self::none,
+            "containerSize" => Self::containerSize,
+            "fullnessTarget" => Self::fullnessTarget,
+            "dynamic" => Self::dynamic,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ELootPruningLevel {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ELootingDefaultInteractions`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ELootingDefaultInteractions {
@@ -9863,6 +20969,27 @@ pub enum ELootingDefaultInteractions {
     OpenLootingUI,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ELootingDefaultInteractions {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "OpenInventoryUI" => Self::OpenInventoryUI,
+            "OpenLootingUI" => Self::OpenLootingUI,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ELootingDefaultInteractions {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EMagLaunchState`
@@ -9878,6 +21005,29 @@ pub enum EMagLaunchState {
     LaunchComplete,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EMagLaunchState {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Off" => Self::Off,
+            "Lift" => Self::Lift,
+            "Launch" => Self::Launch,
+            "LaunchComplete" => Self::LaunchComplete,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EMagLaunchState {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EMagRecoveryState`
@@ -9903,6 +21053,34 @@ pub enum EMagRecoveryState {
     Done,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EMagRecoveryState {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Idle" => Self::Idle,
+            "Deploying" => Self::Deploying,
+            "WaitingForTrap" => Self::WaitingForTrap,
+            "MovingToHover" => Self::MovingToHover,
+            "MovingDown" => Self::MovingDown,
+            "Landed" => Self::Landed,
+            "LandingCompletedEngineOff" => Self::LandingCompletedEngineOff,
+            "Retracting" => Self::Retracting,
+            "Done" => Self::Done,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EMagRecoveryState {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EMapId`
@@ -10000,6 +21178,69 @@ pub enum EMapId {
     Unrecognized(String),
 }
 
+impl EMapId {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "INVALID" => Self::INVALID,
+            "EA_AstorsClearing" => Self::EA_AstorsClearing,
+            "EA_BloodshotRidge" => Self::EA_BloodshotRidge,
+            "EA_BrokenMoon" => Self::EA_BrokenMoon,
+            "EA_CaplanCircuit" => Self::EA_CaplanCircuit,
+            "EA_ClioIslands" => Self::EA_ClioIslands,
+            "EA_Crossroads" => Self::EA_Crossroads,
+            "EA_CryAstro_DC3412" => Self::EA_CryAstro_DC3412,
+            "EA_Daymar" => Self::EA_Daymar,
+            "EA_DaymarDunes" => Self::EA_DaymarDunes,
+            "EA_Demien" => Self::EA_Demien,
+            "EA_DemienComms" => Self::EA_DemienComms,
+            "EA_DogfightTest" => Self::EA_DogfightTest,
+            "EA_DunlowDerby" => Self::EA_DunlowDerby,
+            "EA_DyingStar" => Self::EA_DyingStar,
+            "EA_Echo11" => Self::EA_Echo11,
+            "EA_EuterpeIcebreaker" => Self::EA_EuterpeIcebreaker,
+            "EA_EZHab" => Self::EA_EZHab,
+            "EA_Gundo" => Self::EA_Gundo,
+            "EA_HurstonGroundArena" => Self::EA_HurstonGroundArena,
+            "EA_JerichoStation" => Self::EA_JerichoStation,
+            "EA_Kareah" => Self::EA_Kareah,
+            "EA_LorvilleOutskirts" => Self::EA_LorvilleOutskirts,
+            "EA_MagdaGroundArena" => Self::EA_MagdaGroundArena,
+            "EA_MakersPoint" => Self::EA_MakersPoint,
+            "EA_MicroTechRiver" => Self::EA_MicroTechRiver,
+            "EA_MinersLament" => Self::EA_MinersLament,
+            "EA_Ministry" => Self::EA_Ministry,
+            "EA_NHS_Arena" => Self::EA_NHS_Arena,
+            "EA_NHS_DeffordLink" => Self::EA_NHS_DeffordLink,
+            "EA_NHS_HalloranCircuit" => Self::EA_NHS_HalloranCircuit,
+            "EA_NHS_OldVanderval" => Self::EA_NHS_OldVanderval,
+            "EA_NHS_Rikkord" => Self::EA_NHS_Rikkord,
+            "EA_NHS_Wetlands" => Self::EA_NHS_Wetlands,
+            "EA_Pyro2" => Self::EA_Pyro2,
+            "EA_PyroJump" => Self::EA_PyroJump,
+            "EA_ScenarioTwo" => Self::EA_ScenarioTwo,
+            "EA_TheGoodDr" => Self::EA_TheGoodDr,
+            "EA_TheSkyScraper" => Self::EA_TheSkyScraper,
+            "EA_TheSnakePit" => Self::EA_TheSnakePit,
+            "EA_TheSnakePit_Reverse" => Self::EA_TheSnakePit_Reverse,
+            "EA_RayariStation" => Self::EA_RayariStation,
+            "EA_YadarValley" => Self::EA_YadarValley,
+            "EA_YelaGroundArena" => Self::EA_YelaGroundArena,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EMapId {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EMarkerProviders`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EMarkerProviders {
@@ -10021,6 +21262,32 @@ pub enum EMarkerProviders {
     Unrecognized(String),
 }
 
+impl EMarkerProviders {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Grenades" => Self::Grenades,
+            "Player" => Self::Player,
+            "UnattendedVehicle" => Self::UnattendedVehicle,
+            "VehicleEntrance" => Self::VehicleEntrance,
+            "ObjectDataBank" => Self::ObjectDataBank,
+            "NavigationWaypoints" => Self::NavigationWaypoints,
+            "LocationPins" => Self::LocationPins,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EMarkerProviders {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EMasterMode`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EMasterMode {
@@ -10036,6 +21303,29 @@ pub enum EMasterMode {
     Unrecognized(String),
 }
 
+impl EMasterMode {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Invalid" => Self::Invalid,
+            "Navigation" => Self::Navigation,
+            "SCM" => Self::SCM,
+            "Stealth" => Self::Stealth,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EMasterMode {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EMatchCycleType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EMatchCycleType {
@@ -10049,6 +21339,28 @@ pub enum EMatchCycleType {
     Unrecognized(String),
 }
 
+impl EMatchCycleType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "NewServer" => Self::NewServer,
+            "RestartLevel" => Self::RestartLevel,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EMatchCycleType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EMatchNetworkType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EMatchNetworkType {
@@ -10060,6 +21372,28 @@ pub enum EMatchNetworkType {
     Custom,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EMatchNetworkType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Offline" => Self::Offline,
+            "Online" => Self::Online,
+            "Custom" => Self::Custom,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EMatchNetworkType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EMeshChunks`
@@ -10187,6 +21521,84 @@ pub enum EMeshChunks {
     Unrecognized(String),
 }
 
+impl EMeshChunks {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "vneck_zone" => Self::vneck_zone,
+            "torso01_zone" => Self::torso01_zone,
+            "torso02_zone" => Self::torso02_zone,
+            "torso03_zone" => Self::torso03_zone,
+            "torso04_zone" => Self::torso04_zone,
+            "head_zone" => Self::head_zone,
+            "hips_zone" => Self::hips_zone,
+            "underwear_top_zone" => Self::underwear_top_zone,
+            "underwear_zone" => Self::underwear_zone,
+            "pants_acc_zone" => Self::pants_acc_zone,
+            "shirt_acc_zone" => Self::shirt_acc_zone,
+            "l_shoulder_zone" => Self::l_shoulder_zone,
+            "l_arm01_zone" => Self::l_arm01_zone,
+            "l_arm02_zone" => Self::l_arm02_zone,
+            "l_arm03_zone" => Self::l_arm03_zone,
+            "l_arm04_zone" => Self::l_arm04_zone,
+            "l_arm05_zone" => Self::l_arm05_zone,
+            "l_arm05_body_zone" => Self::l_arm05_body_zone,
+            "l_arm05_torso0_zone" => Self::l_arm05_torso0_zone,
+            "l_hand_zone" => Self::l_hand_zone,
+            "l_leg01_zone" => Self::l_leg01_zone,
+            "l_leg02_zone" => Self::l_leg02_zone,
+            "l_leg03_zone" => Self::l_leg03_zone,
+            "l_leg04_zone" => Self::l_leg04_zone,
+            "l_foot_zone" => Self::l_foot_zone,
+            "l_eye_zone" => Self::l_eye_zone,
+            "r_shoulder_zone" => Self::r_shoulder_zone,
+            "r_arm01_zone" => Self::r_arm01_zone,
+            "r_arm02_zone" => Self::r_arm02_zone,
+            "r_arm03_zone" => Self::r_arm03_zone,
+            "r_arm04_zone" => Self::r_arm04_zone,
+            "r_arm05_zone" => Self::r_arm05_zone,
+            "r_arm05_body_zone" => Self::r_arm05_body_zone,
+            "r_arm05_torso0_zone" => Self::r_arm05_torso0_zone,
+            "r_hand_zone" => Self::r_hand_zone,
+            "r_leg01_zone" => Self::r_leg01_zone,
+            "r_leg02_zone" => Self::r_leg02_zone,
+            "r_leg03_zone" => Self::r_leg03_zone,
+            "r_leg04_zone" => Self::r_leg04_zone,
+            "r_foot_zone" => Self::r_foot_zone,
+            "r_eye_zone" => Self::r_eye_zone,
+            "omega_core_zone" => Self::omega_core_zone,
+            "omega_arms_zone" => Self::omega_arms_zone,
+            "omega_legs_zone" => Self::omega_legs_zone,
+            "theta_head_zone" => Self::theta_head_zone,
+            "theta_core_zone" => Self::theta_core_zone,
+            "theta_arms_zone" => Self::theta_arms_zone,
+            "theta_legs_zone" => Self::theta_legs_zone,
+            "theta_l_arm_zone" => Self::theta_l_arm_zone,
+            "theta_r_arm_zone" => Self::theta_r_arm_zone,
+            "theta_l_leg_zone" => Self::theta_l_leg_zone,
+            "theta_r_leg_zone" => Self::theta_r_leg_zone,
+            "theta_body_chest_zone" => Self::theta_body_chest_zone,
+            "pcg_eyebrows" => Self::pcg_eyebrows,
+            "pcg_r_ear" => Self::pcg_r_ear,
+            "pcg_l_ear" => Self::pcg_l_ear,
+            "pcg_nose" => Self::pcg_nose,
+            "pcg_mouth" => Self::pcg_mouth,
+            "UNDEFINED" => Self::UNDEFINED,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EMeshChunks {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EMisfireType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EMisfireType {
@@ -10202,6 +21614,29 @@ pub enum EMisfireType {
     Unrecognized(String),
 }
 
+impl EMisfireType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "Minor" => Self::Minor,
+            "Major" => Self::Major,
+            "Critical" => Self::Critical,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EMisfireType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EMissionObjectiveCategory`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EMissionObjectiveCategory {
@@ -10211,6 +21646,27 @@ pub enum EMissionObjectiveCategory {
     Optional,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EMissionObjectiveCategory {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Primary" => Self::Primary,
+            "Optional" => Self::Optional,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EMissionObjectiveCategory {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EMissionPhaseStates`
@@ -10230,6 +21686,30 @@ pub enum EMissionPhaseStates {
     Unrecognized(String),
 }
 
+impl EMissionPhaseStates {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "NotStarted" => Self::NotStarted,
+            "Active" => Self::Active,
+            "Completed" => Self::Completed,
+            "Failed" => Self::Failed,
+            "Abandoned" => Self::Abandoned,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EMissionPhaseStates {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EMissionResult`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EMissionResult {
@@ -10247,6 +21727,30 @@ pub enum EMissionResult {
     Unrecognized(String),
 }
 
+impl EMissionResult {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Completed" => Self::Completed,
+            "InProgress" => Self::InProgress,
+            "Failed" => Self::Failed,
+            "Abandoned" => Self::Abandoned,
+            "Withdrawn" => Self::Withdrawn,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EMissionResult {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EMobiGlasAfterActionReportRank`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EMobiGlasAfterActionReportRank {
@@ -10262,6 +21766,29 @@ pub enum EMobiGlasAfterActionReportRank {
     Unrecognized(String),
 }
 
+impl EMobiGlasAfterActionReportRank {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Acceptable" => Self::Acceptable,
+            "Good" => Self::Good,
+            "Great" => Self::Great,
+            "Extraordinary" => Self::Extraordinary,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EMobiGlasAfterActionReportRank {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EMobiGlasPersonalStatusSkillsDisplayType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EMobiGlasPersonalStatusSkillsDisplayType {
@@ -10275,6 +21802,28 @@ pub enum EMobiGlasPersonalStatusSkillsDisplayType {
     Unrecognized(String),
 }
 
+impl EMobiGlasPersonalStatusSkillsDisplayType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "Attribute" => Self::Attribute,
+            "Technique" => Self::Technique,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EMobiGlasPersonalStatusSkillsDisplayType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EModifierSignatureType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EModifierSignatureType {
@@ -10284,6 +21833,27 @@ pub enum EModifierSignatureType {
     LossPercentage,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EModifierSignatureType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "GainPercentage" => Self::GainPercentage,
+            "LossPercentage" => Self::LossPercentage,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EModifierSignatureType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EModuleType`
@@ -10303,6 +21873,30 @@ pub enum EModuleType {
     Unrecognized(String),
 }
 
+impl EModuleType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "PersistentUniverse" => Self::PersistentUniverse,
+            "ElectronicAccess" => Self::ElectronicAccess,
+            "Squadron42" => Self::Squadron42,
+            "Frontend" => Self::Frontend,
+            "Undefined" => Self::Undefined,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EModuleType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EMolehillDecayType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EMolehillDecayType {
@@ -10316,6 +21910,29 @@ pub enum EMolehillDecayType {
     PopInOut,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EMolehillDecayType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "ShrinkOrInflate" => Self::ShrinkOrInflate,
+            "FlattenOrBuild" => Self::FlattenOrBuild,
+            "SinkOrRise" => Self::SinkOrRise,
+            "PopInOut" => Self::PopInOut,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EMolehillDecayType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EMotionProcessorLimiterType`
@@ -10339,6 +21956,32 @@ pub enum EMotionProcessorLimiterType {
     Unrecognized(String),
 }
 
+impl EMotionProcessorLimiterType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "NormalizedUniform" => Self::NormalizedUniform,
+            "NormalizedUniformWithMaxRadius" => Self::NormalizedUniformWithMaxRadius,
+            "NormalizedUniformLateral" => Self::NormalizedUniformLateral,
+            "Ellipsoid" => Self::Ellipsoid,
+            "PerAxis" => Self::PerAxis,
+            "PerAxisWithMaxRadius" => Self::PerAxisWithMaxRadius,
+            "PerAxisLateral" => Self::PerAxisLateral,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EMotionProcessorLimiterType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EMovementProcessor`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EMovementProcessor {
@@ -10354,6 +21997,29 @@ pub enum EMovementProcessor {
     Unrecognized(String),
 }
 
+impl EMovementProcessor {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "Basic" => Self::Basic,
+            "Locomotion" => Self::Locomotion,
+            "SubmergedCreature" => Self::SubmergedCreature,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EMovementProcessor {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EMyEnum`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EMyEnum {
@@ -10367,6 +22033,28 @@ pub enum EMyEnum {
     Unrecognized(String),
 }
 
+impl EMyEnum {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "First" => Self::First,
+            "Second" => Self::Second,
+            "Third" => Self::Third,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EMyEnum {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ENavPointType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ENavPointType {
@@ -10376,6 +22064,27 @@ pub enum ENavPointType {
     QTTracePoint,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ENavPointType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "General" => Self::General,
+            "QTTracePoint" => Self::QTTracePoint,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ENavPointType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `ENavigationAgentType`
@@ -10393,6 +22102,29 @@ pub enum ENavigationAgentType {
     Unrecognized(String),
 }
 
+impl ENavigationAgentType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "MediumSizedCharacters" => Self::MediumSizedCharacters,
+            "LargeSizedCharacters" => Self::LargeSizedCharacters,
+            "VehicleMedium" => Self::VehicleMedium,
+            "MediumSizedSpaceships" => Self::MediumSizedSpaceships,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ENavigationAgentType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ENavigationLinkLinkingType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ENavigationLinkLinkingType {
@@ -10406,6 +22138,29 @@ pub enum ENavigationLinkLinkingType {
     LinksFromExternalZone,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ENavigationLinkLinkingType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "LinksInsideSameZone" => Self::LinksInsideSameZone,
+            "LinksInsideSameExternalZone" => Self::LinksInsideSameExternalZone,
+            "LinksToExternalZone" => Self::LinksToExternalZone,
+            "LinksFromExternalZone" => Self::LinksFromExternalZone,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ENavigationLinkLinkingType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EObjectDataBankEntryTrackerType`
@@ -10457,6 +22212,46 @@ pub enum EObjectDataBankEntryTrackerType {
     Unrecognized(String),
 }
 
+impl EObjectDataBankEntryTrackerType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "LandingArea" => Self::LandingArea,
+            "FPSMineable" => Self::FPSMineable,
+            "Mineable" => Self::Mineable,
+            "Missile" => Self::Missile,
+            "Mission" => Self::Mission,
+            "NavPoint" => Self::NavPoint,
+            "PartyMember" => Self::PartyMember,
+            "QuantumTravel" => Self::QuantumTravel,
+            "RaceCheckpoint" => Self::RaceCheckpoint,
+            "Transponder" => Self::Transponder,
+            "Vehicle" => Self::Vehicle,
+            "Turret" => Self::Turret,
+            "Debris" => Self::Debris,
+            "Actor" => Self::Actor,
+            "Unknown" => Self::Unknown,
+            "BlobContact" => Self::BlobContact,
+            "InteractionPoint" => Self::InteractionPoint,
+            "Interactable" => Self::Interactable,
+            "Hint" => Self::Hint,
+            "Explosive" => Self::Explosive,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EObjectDataBankEntryTrackerType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EObjectiveInteractionType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EObjectiveInteractionType {
@@ -10472,6 +22267,29 @@ pub enum EObjectiveInteractionType {
     Unrecognized(String),
 }
 
+impl EObjectiveInteractionType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Defend" => Self::Defend,
+            "Capture" => Self::Capture,
+            "Damage" => Self::Damage,
+            "Overload" => Self::Overload,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EObjectiveInteractionType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EOperationsType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EOperationsType {
@@ -10483,6 +22301,28 @@ pub enum EOperationsType {
     Subtract,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EOperationsType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Add" => Self::Add,
+            "Multiply" => Self::Multiply,
+            "Subtract" => Self::Subtract,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EOperationsType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EOperatorMode`
@@ -10516,6 +22356,37 @@ pub enum EOperatorMode {
     Unrecognized(String),
 }
 
+impl EOperatorMode {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "Inactive" => Self::Inactive,
+            "Flight" => Self::Flight,
+            "Combat" => Self::Combat,
+            "Turret" => Self::Turret,
+            "Missile" => Self::Missile,
+            "Scanning" => Self::Scanning,
+            "Mining" => Self::Mining,
+            "QuantumNavigation" => Self::QuantumNavigation,
+            "Refuel" => Self::Refuel,
+            "AirTrafficController" => Self::AirTrafficController,
+            "Salvage" => Self::Salvage,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EOperatorMode {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EOrdnanceRelativeDetachType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EOrdnanceRelativeDetachType {
@@ -10527,6 +22398,28 @@ pub enum EOrdnanceRelativeDetachType {
     WeaponHost,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EOrdnanceRelativeDetachType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Ordnance" => Self::Ordnance,
+            "Weapon" => Self::Weapon,
+            "WeaponHost" => Self::WeaponHost,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EOrdnanceRelativeDetachType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EOutfitPieceType`
@@ -10544,6 +22437,30 @@ pub enum EOutfitPieceType {
     Undersuit,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EOutfitPieceType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Head" => Self::Head,
+            "Torso" => Self::Torso,
+            "Arms" => Self::Arms,
+            "Legs" => Self::Legs,
+            "Undersuit" => Self::Undersuit,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EOutfitPieceType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EParticleInputs`
@@ -10573,6 +22490,35 @@ pub enum EParticleInputs {
     Unrecognized(String),
 }
 
+impl EParticleInputs {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Count" => Self::Count,
+            "Size" => Self::Size,
+            "Speed" => Self::Speed,
+            "Time" => Self::Time,
+            "Pulse" => Self::Pulse,
+            "Strength" => Self::Strength,
+            "Scale" => Self::Scale,
+            "Diffuse" => Self::Diffuse,
+            "Radius" => Self::Radius,
+            "UNDEFINED" => Self::UNDEFINED,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EParticleInputs {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EParticleModifierSource`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EParticleModifierSource {
@@ -10594,6 +22540,33 @@ pub enum EParticleModifierSource {
     Wear,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EParticleModifierSource {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "Power" => Self::Power,
+            "Heat" => Self::Heat,
+            "BarrelAttachment" => Self::BarrelAttachment,
+            "MiningLaserThrottle" => Self::MiningLaserThrottle,
+            "WeaponState" => Self::WeaponState,
+            "SalvageRepair" => Self::SalvageRepair,
+            "Wear" => Self::Wear,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EParticleModifierSource {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EParticleProperties`
@@ -10629,6 +22602,38 @@ pub enum EParticleProperties {
     Unrecognized(String),
 }
 
+impl EParticleProperties {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "strength" => Self::strength,
+            "alpha" => Self::alpha,
+            "color" => Self::color,
+            "count" => Self::count,
+            "size" => Self::size,
+            "speed" => Self::speed,
+            "time" => Self::time,
+            "pulse" => Self::pulse,
+            "radius" => Self::radius,
+            "distribution" => Self::distribution,
+            "glowScale" => Self::glowScale,
+            "emissionSize" => Self::emissionSize,
+            "UNDEFINED" => Self::UNDEFINED,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EParticleProperties {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EPerceptionSenses`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EPerceptionSenses {
@@ -10640,6 +22645,28 @@ pub enum EPerceptionSenses {
     Radar,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EPerceptionSenses {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Vision" => Self::Vision,
+            "Hearing" => Self::Hearing,
+            "Radar" => Self::Radar,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EPerceptionSenses {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EPerceptionStatus`
@@ -10657,6 +22684,30 @@ pub enum EPerceptionStatus {
     Invalid,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EPerceptionStatus {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Dead" => Self::Dead,
+            "Downed" => Self::Downed,
+            "Unconscious" => Self::Unconscious,
+            "Conscious" => Self::Conscious,
+            "Invalid" => Self::Invalid,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EPerceptionStatus {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EPerceptionTypes`
@@ -10696,6 +22747,40 @@ pub enum EPerceptionTypes {
     Unrecognized(String),
 }
 
+impl EPerceptionTypes {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Explosive" => Self::Explosive,
+            "Agent" => Self::Agent,
+            "Player" => Self::Player,
+            "Interesting" => Self::Interesting,
+            "SearchSpots" => Self::SearchSpots,
+            "SabotageEquipment" => Self::SabotageEquipment,
+            "Vehicle" => Self::Vehicle,
+            "Spaceship" => Self::Spaceship,
+            "Missile" => Self::Missile,
+            "Torpedo" => Self::Torpedo,
+            "Bomb" => Self::Bomb,
+            "FiringRangeTarget" => Self::FiringRangeTarget,
+            "LargeObject" => Self::LargeObject,
+            "Turret" => Self::Turret,
+            "ExplosiveDestructible" => Self::ExplosiveDestructible,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EPerceptionTypes {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EPersistentDataPolicy`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EPersistentDataPolicy {
@@ -10707,6 +22792,28 @@ pub enum EPersistentDataPolicy {
     WriteFull,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EPersistentDataPolicy {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Disabled" => Self::Disabled,
+            "ReadOnly" => Self::ReadOnly,
+            "WriteFull" => Self::WriteFull,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EPersistentDataPolicy {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EPhysFlag`
@@ -10796,6 +22903,65 @@ pub enum EPhysFlag {
     Unrecognized(String),
 }
 
+impl EPhysFlag {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "none" => Self::none,
+            "geom_colltype_default" => Self::geom_colltype_default,
+            "geom_colltype_player" => Self::geom_colltype_player,
+            "geom_colltype_explosion" => Self::geom_colltype_explosion,
+            "geom_colltype_vehicle" => Self::geom_colltype_vehicle,
+            "geom_colltype_foliage" => Self::geom_colltype_foliage,
+            "geom_colltype_debris" => Self::geom_colltype_debris,
+            "geom_colltype_shield" => Self::geom_colltype_shield,
+            "geom_colltype_terrain_mesh" => Self::geom_colltype_terrain_mesh,
+            "geom_colltype_foliage_proxy" => Self::geom_colltype_foliage_proxy,
+            "geom_colltype_obstruct" => Self::geom_colltype_obstruct,
+            "geom_colltype_ray" => Self::geom_colltype_ray,
+            "geom_car_wheel" => Self::geom_car_wheel,
+            "geom_interior" => Self::geom_interior,
+            "geom_exterior" => Self::geom_exterior,
+            "geom_interior_grid_part" => Self::geom_interior_grid_part,
+            "geom_voxelization_proxy" => Self::geom_voxelization_proxy,
+            "geom_cluster_mesh" => Self::geom_cluster_mesh,
+            "geom_interaction" => Self::geom_interaction,
+            "geom_disabled" => Self::geom_disabled,
+            "geom_floats" => Self::geom_floats,
+            "geom_deprecated_21" => Self::geom_deprecated_21,
+            "geom_internal_deprecated_22" => Self::geom_internal_deprecated_22,
+            "geom_internal_23" => Self::geom_internal_23,
+            "geom_squashy" => Self::geom_squashy,
+            "geom_log_interactions" => Self::geom_log_interactions,
+            "geom_monitor_contacts" => Self::geom_monitor_contacts,
+            "geom_manually_breakable" => Self::geom_manually_breakable,
+            "geom_no_coll_response" => Self::geom_no_coll_response,
+            "geom_mat_substitutor" => Self::geom_mat_substitutor,
+            "geom_deprecated_30" => Self::geom_deprecated_30,
+            "geom_no_particle_impulse" => Self::geom_no_particle_impulse,
+            "geom_destroyed_on_break" => Self::geom_destroyed_on_break,
+            "geom_sdf_proxy" => Self::geom_sdf_proxy,
+            "geom_internal_34" => Self::geom_internal_34,
+            "geom_internal_deprecated_35" => Self::geom_internal_deprecated_35,
+            "geom_unpushable" => Self::geom_unpushable,
+            "geom_foot_coll" => Self::geom_foot_coll,
+            "geom_kinematic_part" => Self::geom_kinematic_part,
+            "geom_stairs_ramps" => Self::geom_stairs_ramps,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EPhysFlag {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EPipeClass`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EPipeClass {
@@ -10833,6 +22999,40 @@ pub enum EPipeClass {
     Unrecognized(String),
 }
 
+impl EPipeClass {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Power" => Self::Power,
+            "Heat" => Self::Heat,
+            "Avionics" => Self::Avionics,
+            "Fuel" => Self::Fuel,
+            "QuantumFuel" => Self::QuantumFuel,
+            "Oxygen" => Self::Oxygen,
+            "Shield" => Self::Shield,
+            "Decibel" => Self::Decibel,
+            "Charge" => Self::Charge,
+            "Health" => Self::Health,
+            "Input" => Self::Input,
+            "Output" => Self::Output,
+            "Atmosphere" => Self::Atmosphere,
+            "WeaponRegen" => Self::WeaponRegen,
+            "WeaponAmmoLoad" => Self::WeaponAmmoLoad,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EPipeClass {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EPipePriorityGroup`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EPipePriorityGroup {
@@ -10848,6 +23048,29 @@ pub enum EPipePriorityGroup {
     Unrecognized(String),
 }
 
+impl EPipePriorityGroup {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Weapon" => Self::Weapon,
+            "Shield" => Self::Shield,
+            "Thruster" => Self::Thruster,
+            "Other" => Self::Other,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EPipePriorityGroup {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EPlayerActionAnimType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EPlayerActionAnimType {
@@ -10859,6 +23082,28 @@ pub enum EPlayerActionAnimType {
     Continuous,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EPlayerActionAnimType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "NoAnim" => Self::NoAnim,
+            "OneShot" => Self::OneShot,
+            "Continuous" => Self::Continuous,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EPlayerActionAnimType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EPlayerAnimatedInteractionType`
@@ -10874,6 +23119,28 @@ pub enum EPlayerAnimatedInteractionType {
     Unrecognized(String),
 }
 
+impl EPlayerAnimatedInteractionType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Instantaneous" => Self::Instantaneous,
+            "Reactive" => Self::Reactive,
+            "Bluetooth" => Self::Bluetooth,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EPlayerAnimatedInteractionType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EPlayerAttachmentSlots`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EPlayerAttachmentSlots {
@@ -10885,6 +23152,28 @@ pub enum EPlayerAttachmentSlots {
     UnderBarrel,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EPlayerAttachmentSlots {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Barrel" => Self::Barrel,
+            "IronSight" => Self::IronSight,
+            "UnderBarrel" => Self::UnderBarrel,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EPlayerAttachmentSlots {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EPlayerGroupType`
@@ -10904,6 +23193,31 @@ pub enum EPlayerGroupType {
     GameEntity,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EPlayerGroupType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "System" => Self::System,
+            "Party" => Self::Party,
+            "Group" => Self::Group,
+            "Server" => Self::Server,
+            "DirectMessage" => Self::DirectMessage,
+            "GameEntity" => Self::GameEntity,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EPlayerGroupType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EPlayerItemSlots`
@@ -10961,6 +23275,49 @@ pub enum EPlayerItemSlots {
     Unrecognized(String),
 }
 
+impl EPlayerItemSlots {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "ArmorArms" => Self::ArmorArms,
+            "ArmorHelmet" => Self::ArmorHelmet,
+            "ArmorLegs" => Self::ArmorLegs,
+            "ArmorTorso" => Self::ArmorTorso,
+            "ArmorUndersuit" => Self::ArmorUndersuit,
+            "CharAccessoryEyes" => Self::CharAccessoryEyes,
+            "CharAccessoryHead" => Self::CharAccessoryHead,
+            "CharBody" => Self::CharBody,
+            "CharFlair" => Self::CharFlair,
+            "CharHead" => Self::CharHead,
+            "CharHeadBeard" => Self::CharHeadBeard,
+            "CharHeadEyebrow" => Self::CharHeadEyebrow,
+            "CharHeadEyelash" => Self::CharHeadEyelash,
+            "CharHeadEyes" => Self::CharHeadEyes,
+            "CharHeadHair" => Self::CharHeadHair,
+            "Grenade" => Self::Grenade,
+            "Medpen" => Self::Medpen,
+            "Radar" => Self::Radar,
+            "WeaponPrimary" => Self::WeaponPrimary,
+            "WeaponSecondary" => Self::WeaponSecondary,
+            "WeaponSidearm" => Self::WeaponSidearm,
+            "WeaponMelee" => Self::WeaponMelee,
+            "Utility" => Self::Utility,
+            "Visor" => Self::Visor,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EPlayerItemSlots {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EPlayerStateActions`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EPlayerStateActions {
@@ -11016,6 +23373,49 @@ pub enum EPlayerStateActions {
     Unrecognized(String),
 }
 
+impl EPlayerStateActions {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "Carry" => Self::Carry,
+            "Consume" => Self::Consume,
+            "Drop" => Self::Drop,
+            "Equip" => Self::Equip,
+            "FinishConsume" => Self::FinishConsume,
+            "FirstSelect" => Self::FirstSelect,
+            "Inspect" => Self::Inspect,
+            "Interact" => Self::Interact,
+            "OffHandStore" => Self::OffHandStore,
+            "OffHandStow" => Self::OffHandStow,
+            "OpenMobiGlas" => Self::OpenMobiGlas,
+            "Place" => Self::Place,
+            "PlaceReady" => Self::PlaceReady,
+            "Stow" => Self::Stow,
+            "Store" => Self::Store,
+            "SwapAttachments" => Self::SwapAttachments,
+            "ThrowReady" => Self::ThrowReady,
+            "ThrowV2" => Self::ThrowV2,
+            "Unequip" => Self::Unequip,
+            "UnprimeItem" => Self::UnprimeItem,
+            "Unstow" => Self::Unstow,
+            "VisorWipe" => Self::VisorWipe,
+            "SelfTarget" => Self::SelfTarget,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EPlayerStateActions {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EPoolFilterCombineMode`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EPoolFilterCombineMode {
@@ -11025,6 +23425,27 @@ pub enum EPoolFilterCombineMode {
     Additive,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EPoolFilterCombineMode {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Cumulative" => Self::Cumulative,
+            "Additive" => Self::Additive,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EPoolFilterCombineMode {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EPopupType`
@@ -11038,6 +23459,28 @@ pub enum EPopupType {
     ForceLaunch,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EPopupType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "GameModeDisclaimer" => Self::GameModeDisclaimer,
+            "Reconnect" => Self::Reconnect,
+            "ForceLaunch" => Self::ForceLaunch,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EPopupType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EPowerSourceState`
@@ -11055,6 +23498,29 @@ pub enum EPowerSourceState {
     Unrecognized(String),
 }
 
+impl EPowerSourceState {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "Online" => Self::Online,
+            "Offline" => Self::Offline,
+            "Inoperable" => Self::Inoperable,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EPowerSourceState {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EPreferredSpawnLocationType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EPreferredSpawnLocationType {
@@ -11064,6 +23530,27 @@ pub enum EPreferredSpawnLocationType {
     PreferredCriminalSpawn,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EPreferredSpawnLocationType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "CriminalRespawnWithoutArrest" => Self::CriminalRespawnWithoutArrest,
+            "PreferredCriminalSpawn" => Self::PreferredCriminalSpawn,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EPreferredSpawnLocationType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EPresetFStopValues`
@@ -11095,6 +23582,37 @@ pub enum EPresetFStopValues {
     FStop_Disabled,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EPresetFStopValues {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "FStop_0_1" => Self::FStop_0_1,
+            "FStop_0_5" => Self::FStop_0_5,
+            "FStop_1" => Self::FStop_1,
+            "FStop_2" => Self::FStop_2,
+            "FStop_3" => Self::FStop_3,
+            "FStop_4" => Self::FStop_4,
+            "FStop_5" => Self::FStop_5,
+            "FStop_6" => Self::FStop_6,
+            "FStop_8" => Self::FStop_8,
+            "FStop_14" => Self::FStop_14,
+            "FStop_22" => Self::FStop_22,
+            "FStop_Disabled" => Self::FStop_Disabled,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EPresetFStopValues {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EPresetLensSizes`
@@ -11134,6 +23652,40 @@ pub enum EPresetLensSizes {
     Unrecognized(String),
 }
 
+impl EPresetLensSizes {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "LensSize_8mm" => Self::LensSize_8mm,
+            "LensSize_9mm46" => Self::LensSize_9mm46,
+            "LensSize_12mm" => Self::LensSize_12mm,
+            "LensSize_14mm" => Self::LensSize_14mm,
+            "LensSize_16mm" => Self::LensSize_16mm,
+            "LensSize_18mm" => Self::LensSize_18mm,
+            "LensSize_21mm" => Self::LensSize_21mm,
+            "LensSize_25mm" => Self::LensSize_25mm,
+            "LensSize_27mm" => Self::LensSize_27mm,
+            "LensSize_32mm" => Self::LensSize_32mm,
+            "LensSize_35mm" => Self::LensSize_35mm,
+            "LensSize_40mm" => Self::LensSize_40mm,
+            "LensSize_50mm" => Self::LensSize_50mm,
+            "LensSize_65mm" => Self::LensSize_65mm,
+            "LensSize_75mm" => Self::LensSize_75mm,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EPresetLensSizes {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EProcLeanPoseType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EProcLeanPoseType {
@@ -11145,6 +23697,28 @@ pub enum EProcLeanPoseType {
     Crouching,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EProcLeanPoseType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Standing" => Self::Standing,
+            "Sitting" => Self::Sitting,
+            "Crouching" => Self::Crouching,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EProcLeanPoseType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EProjectedHudAlignmentType`
@@ -11162,6 +23736,29 @@ pub enum EProjectedHudAlignmentType {
     Unrecognized(String),
 }
 
+impl EProjectedHudAlignmentType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "NoRotation" => Self::NoRotation,
+            "AngledToPitchSource" => Self::AngledToPitchSource,
+            "AngledToView" => Self::AngledToView,
+            "AngledToYawLineOrigin" => Self::AngledToYawLineOrigin,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EProjectedHudAlignmentType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EProjectedHudPositionType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EProjectedHudPositionType {
@@ -11171,6 +23768,27 @@ pub enum EProjectedHudPositionType {
     OnYawLine,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EProjectedHudPositionType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "OnAngle" => Self::OnAngle,
+            "OnYawLine" => Self::OnYawLine,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EProjectedHudPositionType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EProjectedHudYawLineAnchorType`
@@ -11184,6 +23802,27 @@ pub enum EProjectedHudYawLineAnchorType {
     Unrecognized(String),
 }
 
+impl EProjectedHudYawLineAnchorType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "InForward" => Self::InForward,
+            "InWorld" => Self::InWorld,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EProjectedHudYawLineAnchorType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EProjectileType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EProjectileType {
@@ -11195,6 +23834,27 @@ pub enum EProjectileType {
     Unrecognized(String),
 }
 
+impl EProjectileType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Primary" => Self::Primary,
+            "Secondary" => Self::Secondary,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EProjectileType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EProjectionSelection1`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EProjectionSelection1 {
@@ -11204,6 +23864,27 @@ pub enum EProjectionSelection1 {
     PS1_ShortarcRotation,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EProjectionSelection1 {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "PS1_NoProjection" => Self::PS1_NoProjection,
+            "PS1_ShortarcRotation" => Self::PS1_ShortarcRotation,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EProjectionSelection1 {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EProjectionSelection2`
@@ -11219,6 +23900,28 @@ pub enum EProjectionSelection2 {
     Unrecognized(String),
 }
 
+impl EProjectionSelection2 {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "PS2_NoProjection" => Self::PS2_NoProjection,
+            "PS2_ShortarcRotation" => Self::PS2_ShortarcRotation,
+            "PS2_DirectedRotation" => Self::PS2_DirectedRotation,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EProjectionSelection2 {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EProjectionSelection3`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EProjectionSelection3 {
@@ -11228,6 +23931,27 @@ pub enum EProjectionSelection3 {
     PS3_ShortvecTranslation,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EProjectionSelection3 {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "PS3_NoProjection" => Self::PS3_NoProjection,
+            "PS3_ShortvecTranslation" => Self::PS3_ShortvecTranslation,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EProjectionSelection3 {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EProjectionSelection4`
@@ -11241,6 +23965,28 @@ pub enum EProjectionSelection4 {
     PS4_DirectedTranslation,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EProjectionSelection4 {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "PS4_NoProjection" => Self::PS4_NoProjection,
+            "PS4_ShortvecTranslation" => Self::PS4_ShortvecTranslation,
+            "PS4_DirectedTranslation" => Self::PS4_DirectedTranslation,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EProjectionSelection4 {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EQTEPriority`
@@ -11258,6 +24004,29 @@ pub enum EQTEPriority {
     Unrecognized(String),
 }
 
+impl EQTEPriority {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "QTELowPriority" => Self::QTELowPriority,
+            "QTEMediumPriority" => Self::QTEMediumPriority,
+            "QTEHighPriority" => Self::QTEHighPriority,
+            "QTEHighestPriority" => Self::QTEHighestPriority,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EQTEPriority {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EQTEPriorityGivewayBehaviour`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EQTEPriorityGivewayBehaviour {
@@ -11267,6 +24036,27 @@ pub enum EQTEPriorityGivewayBehaviour {
     Silent,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EQTEPriorityGivewayBehaviour {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Cancel" => Self::Cancel,
+            "Silent" => Self::Silent,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EQTEPriorityGivewayBehaviour {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EQedVisualGraphState`
@@ -11294,6 +24084,34 @@ pub enum EQedVisualGraphState {
     Unrecognized(String),
 }
 
+impl EQedVisualGraphState {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Idle" => Self::Idle,
+            "Charging" => Self::Charging,
+            "Discharging" => Self::Discharging,
+            "Ready" => Self::Ready,
+            "Active" => Self::Active,
+            "Tethering" => Self::Tethering,
+            "Cooldown" => Self::Cooldown,
+            "Jamming" => Self::Jamming,
+            "Off" => Self::Off,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EQedVisualGraphState {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EQedVisualGraphTrackedVariable`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EQedVisualGraphTrackedVariable {
@@ -11305,6 +24123,27 @@ pub enum EQedVisualGraphTrackedVariable {
     Unrecognized(String),
 }
 
+impl EQedVisualGraphTrackedVariable {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "ChargePercentage" => Self::ChargePercentage,
+            "CooldownPercentage" => Self::CooldownPercentage,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EQedVisualGraphTrackedVariable {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EQedVisualGraphTrackedVariableContext`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EQedVisualGraphTrackedVariableContext {
@@ -11314,6 +24153,27 @@ pub enum EQedVisualGraphTrackedVariableContext {
     TrackDescending,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EQedVisualGraphTrackedVariableContext {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "TrackAscending" => Self::TrackAscending,
+            "TrackDescending" => Self::TrackDescending,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EQedVisualGraphTrackedVariableContext {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EQuantumProcessFailure`
@@ -11353,6 +24213,40 @@ pub enum EQuantumProcessFailure {
     Unrecognized(String),
 }
 
+impl EQuantumProcessFailure {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "TargetTooClose" => Self::TargetTooClose,
+            "TargetTooFar" => Self::TargetTooFar,
+            "SolarObstruction" => Self::SolarObstruction,
+            "QuantumObstruction" => Self::QuantumObstruction,
+            "MovingBackwards" => Self::MovingBackwards,
+            "OutOfFuel" => Self::OutOfFuel,
+            "GroupNotReady" => Self::GroupNotReady,
+            "GroupHasObstruction" => Self::GroupHasObstruction,
+            "NavpointBlocked" => Self::NavpointBlocked,
+            "RotationNotAligned" => Self::RotationNotAligned,
+            "RotationUnstable" => Self::RotationUnstable,
+            "BlockedByEvent" => Self::BlockedByEvent,
+            "LandingGear" => Self::LandingGear,
+            "Unknown" => Self::Unknown,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EQuantumProcessFailure {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ERadarChargeLevels`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ERadarChargeLevels {
@@ -11362,6 +24256,27 @@ pub enum ERadarChargeLevels {
     FullCharge,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ERadarChargeLevels {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "LowCharge" => Self::LowCharge,
+            "FullCharge" => Self::FullCharge,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ERadarChargeLevels {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `ERadarContactBehaviourCategory`
@@ -11379,6 +24294,29 @@ pub enum ERadarContactBehaviourCategory {
     Unrecognized(String),
 }
 
+impl ERadarContactBehaviourCategory {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Vehicle" => Self::Vehicle,
+            "FPS" => Self::FPS,
+            "Both" => Self::Both,
+            "None" => Self::None,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ERadarContactBehaviourCategory {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ERadarContactHighlightLayer`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ERadarContactHighlightLayer {
@@ -11388,6 +24326,27 @@ pub enum ERadarContactHighlightLayer {
     Skeleton,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ERadarContactHighlightLayer {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Default" => Self::Default,
+            "Skeleton" => Self::Skeleton,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ERadarContactHighlightLayer {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `ERadarContactHighlightState`
@@ -11415,6 +24374,34 @@ pub enum ERadarContactHighlightState {
     Unrecognized(String),
 }
 
+impl ERadarContactHighlightState {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "TargetScanBlocked" => Self::TargetScanBlocked,
+            "TargetScannable" => Self::TargetScannable,
+            "TargetScanned" => Self::TargetScanned,
+            "TargetScanning" => Self::TargetScanning,
+            "PingDetected_Hostile" => Self::PingDetected_Hostile,
+            "PingDetected_Neutral" => Self::PingDetected_Neutral,
+            "PingDetected_Friendly" => Self::PingDetected_Friendly,
+            "PingDetected_Objective" => Self::PingDetected_Objective,
+            "PingDetected_Unknown" => Self::PingDetected_Unknown,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ERadarContactHighlightState {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ERadarContactState`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ERadarContactState {
@@ -11426,6 +24413,28 @@ pub enum ERadarContactState {
     Dead,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ERadarContactState {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Alive" => Self::Alive,
+            "Incapacitated" => Self::Incapacitated,
+            "Dead" => Self::Dead,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ERadarContactState {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `ERadarFocusLevels`
@@ -11451,6 +24460,33 @@ pub enum ERadarFocusLevels {
     Unrecognized(String),
 }
 
+impl ERadarFocusLevels {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Level1" => Self::Level1,
+            "Level2" => Self::Level2,
+            "Level3" => Self::Level3,
+            "Level4" => Self::Level4,
+            "Level5" => Self::Level5,
+            "Level6" => Self::Level6,
+            "Level7" => Self::Level7,
+            "Level8" => Self::Level8,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ERadarFocusLevels {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ERatingScoreCurveType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ERatingScoreCurveType {
@@ -11464,6 +24500,29 @@ pub enum ERatingScoreCurveType {
     TenThousand,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ERatingScoreCurveType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "TwoThousandFiveHundred" => Self::TwoThousandFiveHundred,
+            "FiveThousand" => Self::FiveThousand,
+            "SevenThousandFiveHundred" => Self::SevenThousandFiveHundred,
+            "TenThousand" => Self::TenThousand,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ERatingScoreCurveType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EReflexImprovementType`
@@ -11483,6 +24542,31 @@ pub enum EReflexImprovementType {
     ReloadSpeed,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EReflexImprovementType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "ADSSpeed" => Self::ADSSpeed,
+            "SoundGeneration" => Self::SoundGeneration,
+            "StanceTransition" => Self::StanceTransition,
+            "BackpackReloadSpeed" => Self::BackpackReloadSpeed,
+            "WeaponSwap" => Self::WeaponSwap,
+            "ReloadSpeed" => Self::ReloadSpeed,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EReflexImprovementType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `ERenderLayer`
@@ -11530,6 +24614,44 @@ pub enum ERenderLayer {
     Unrecognized(String),
 }
 
+impl ERenderLayer {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Default" => Self::Default,
+            "Wall" => Self::Wall,
+            "Floor" => Self::Floor,
+            "Bulkhead" => Self::Bulkhead,
+            "Skeleton" => Self::Skeleton,
+            "Exterior" => Self::Exterior,
+            "Hologram" => Self::Hologram,
+            "NonPlayable" => Self::NonPlayable,
+            "UIObject" => Self::UIObject,
+            "DoorUnlocked" => Self::DoorUnlocked,
+            "DoorLocked" => Self::DoorLocked,
+            "SurfaceWater" => Self::SurfaceWater,
+            "Nominal" => Self::Nominal,
+            "Moderate" => Self::Moderate,
+            "Critical" => Self::Critical,
+            "Disabled" => Self::Disabled,
+            "HangarFloor" => Self::HangarFloor,
+            "HangarWall" => Self::HangarWall,
+            "PlayerVehicle" => Self::PlayerVehicle,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ERenderLayer {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ERenderType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ERenderType {
@@ -11541,6 +24663,28 @@ pub enum ERenderType {
     DEFERRED,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ERenderType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "FORWARD" => Self::FORWARD,
+            "TILEDFORWARD" => Self::TILEDFORWARD,
+            "DEFERRED" => Self::DEFERRED,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ERenderType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EReputationChangeReason`
@@ -11566,6 +24710,33 @@ pub enum EReputationChangeReason {
     Unrecognized(String),
 }
 
+impl EReputationChangeReason {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "UNSPECIFIED" => Self::UNSPECIFIED,
+            "INITIALIZED" => Self::INITIALIZED,
+            "INCREASED" => Self::INCREASED,
+            "DECREASED" => Self::DECREASED,
+            "SET" => Self::SET,
+            "RESET" => Self::RESET,
+            "STATE" => Self::STATE,
+            "STANDING" => Self::STANDING,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EReputationChangeReason {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EReputationComparisonOperator`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EReputationComparisonOperator {
@@ -11583,6 +24754,30 @@ pub enum EReputationComparisonOperator {
     Unrecognized(String),
 }
 
+impl EReputationComparisonOperator {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "GreaterThan" => Self::GreaterThan,
+            "GreaterThanOrEqualTo" => Self::GreaterThanOrEqualTo,
+            "EqualTo" => Self::EqualTo,
+            "LessThanOrEqualTo" => Self::LessThanOrEqualTo,
+            "LessThan" => Self::LessThan,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EReputationComparisonOperator {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EReputationEntityType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EReputationEntityType {
@@ -11592,6 +24787,27 @@ pub enum EReputationEntityType {
     MissionGiver,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EReputationEntityType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Organization" => Self::Organization,
+            "MissionGiver" => Self::MissionGiver,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EReputationEntityType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EReputationSortOrderEntity`
@@ -11607,6 +24823,28 @@ pub enum EReputationSortOrderEntity {
     Unrecognized(String),
 }
 
+impl EReputationSortOrderEntity {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Alphabetical" => Self::Alphabetical,
+            "RecentActivity" => Self::RecentActivity,
+            "PrimaryProgress" => Self::PrimaryProgress,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EReputationSortOrderEntity {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EReputationSortOrderScope`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EReputationSortOrderScope {
@@ -11616,6 +24854,27 @@ pub enum EReputationSortOrderScope {
     ListOrder,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EReputationSortOrderScope {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Alphabetical" => Self::Alphabetical,
+            "ListOrder" => Self::ListOrder,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EReputationSortOrderScope {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EReputationStateValueModifier`
@@ -11633,6 +24892,29 @@ pub enum EReputationStateValueModifier {
     Unrecognized(String),
 }
 
+impl EReputationStateValueModifier {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Increment" => Self::Increment,
+            "Decrement" => Self::Decrement,
+            "Set" => Self::Set,
+            "SetEqualToState" => Self::SetEqualToState,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EReputationStateValueModifier {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EResourceContainerMutabilityLevel`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EResourceContainerMutabilityLevel {
@@ -11644,6 +24926,28 @@ pub enum EResourceContainerMutabilityLevel {
     ReadWrite,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EResourceContainerMutabilityLevel {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Static" => Self::Static,
+            "ReadOnly" => Self::ReadOnly,
+            "ReadWrite" => Self::ReadWrite,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EResourceContainerMutabilityLevel {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `ERespawnLocationType`
@@ -11665,6 +24969,32 @@ pub enum ERespawnLocationType {
     Other,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ERespawnLocationType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "Hospital" => Self::Hospital,
+            "Prison" => Self::Prison,
+            "PrisonExit" => Self::PrisonExit,
+            "CriminalLocation" => Self::CriminalLocation,
+            "CriminalHospital" => Self::CriminalHospital,
+            "Other" => Self::Other,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ERespawnLocationType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `ERuntimeImageSourceType`
@@ -11704,6 +25034,40 @@ pub enum ERuntimeImageSourceType {
     Unrecognized(String),
 }
 
+impl ERuntimeImageSourceType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "CommsCall" => Self::CommsCall,
+            "FuelCamera" => Self::FuelCamera,
+            "UserInterface" => Self::UserInterface,
+            "InteriorMap" => Self::InteriorMap,
+            "Slot_1" => Self::Slot_1,
+            "Slot_2" => Self::Slot_2,
+            "Slot_3" => Self::Slot_3,
+            "Slot_4" => Self::Slot_4,
+            "Slot_5" => Self::Slot_5,
+            "Slot_6" => Self::Slot_6,
+            "Slot_7" => Self::Slot_7,
+            "Slot_8" => Self::Slot_8,
+            "Slot_9" => Self::Slot_9,
+            "Slot_10" => Self::Slot_10,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ERuntimeImageSourceType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ES42StatsComparisonType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ES42StatsComparisonType {
@@ -11723,6 +25087,31 @@ pub enum ES42StatsComparisonType {
     Unrecognized(String),
 }
 
+impl ES42StatsComparisonType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Equal" => Self::Equal,
+            "NotEqual" => Self::NotEqual,
+            "Greater" => Self::Greater,
+            "Less" => Self::Less,
+            "GreaterOrEqual" => Self::GreaterOrEqual,
+            "LessOrEqual" => Self::LessOrEqual,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ES42StatsComparisonType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ES42StatsOperationType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ES42StatsOperationType {
@@ -11738,6 +25127,29 @@ pub enum ES42StatsOperationType {
     Unrecognized(String),
 }
 
+impl ES42StatsOperationType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Add" => Self::Add,
+            "Sub" => Self::Sub,
+            "Mul" => Self::Mul,
+            "Div" => Self::Div,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ES42StatsOperationType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ES42StatsPlayerState`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ES42StatsPlayerState {
@@ -11749,6 +25161,28 @@ pub enum ES42StatsPlayerState {
     InShip,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ES42StatsPlayerState {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Any" => Self::Any,
+            "OnFoot" => Self::OnFoot,
+            "InShip" => Self::InShip,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ES42StatsPlayerState {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `ES42StatsType`
@@ -11780,6 +25214,36 @@ pub enum ES42StatsType {
     Unrecognized(String),
 }
 
+impl ES42StatsType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "EnemyKills" => Self::EnemyKills,
+            "ShipKills" => Self::ShipKills,
+            "GroundKills" => Self::GroundKills,
+            "FriendlyFireHits" => Self::FriendlyFireHits,
+            "WeaponShots" => Self::WeaponShots,
+            "WeaponHits" => Self::WeaponHits,
+            "MissileShots" => Self::MissileShots,
+            "MissileHits" => Self::MissileHits,
+            "HeadShots" => Self::HeadShots,
+            "Consumable" => Self::Consumable,
+            "FriendlyFireMelee" => Self::FriendlyFireMelee,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ES42StatsType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ESCItemDisplayScreenLightType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ESCItemDisplayScreenLightType {
@@ -11795,6 +25259,30 @@ pub enum ESCItemDisplayScreenLightType {
     Planar,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ESCItemDisplayScreenLightType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "Omni" => Self::Omni,
+            "SoftOmni" => Self::SoftOmni,
+            "Projector" => Self::Projector,
+            "Planar" => Self::Planar,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ESCItemDisplayScreenLightType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `ESCItemDisplayScreenState`
@@ -11818,6 +25306,32 @@ pub enum ESCItemDisplayScreenState {
     Unrecognized(String),
 }
 
+impl ESCItemDisplayScreenState {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "NoSignal" => Self::NoSignal,
+            "NoPower" => Self::NoPower,
+            "Normal" => Self::Normal,
+            "Emergency" => Self::Emergency,
+            "Auxiliary" => Self::Auxiliary,
+            "CustomOverride" => Self::CustomOverride,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ESCItemDisplayScreenState {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ESCItemDisplayScreenUIModel`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ESCItemDisplayScreenUIModel {
@@ -11827,6 +25341,27 @@ pub enum ESCItemDisplayScreenUIModel {
     Consumer,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ESCItemDisplayScreenUIModel {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Provider" => Self::Provider,
+            "Consumer" => Self::Consumer,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ESCItemDisplayScreenUIModel {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `ESCItemElevatorPathNodeType`
@@ -11840,6 +25375,28 @@ pub enum ESCItemElevatorPathNodeType {
     Teleport,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ESCItemElevatorPathNodeType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Stop" => Self::Stop,
+            "WayPoint" => Self::WayPoint,
+            "Teleport" => Self::Teleport,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ESCItemElevatorPathNodeType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `ESCScreenType`
@@ -11869,6 +25426,35 @@ pub enum ESCScreenType {
     Unrecognized(String),
 }
 
+impl ESCScreenType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "MFD_16_9" => Self::MFD_16_9,
+            "MFD_4_3" => Self::MFD_4_3,
+            "Support_16_9" => Self::Support_16_9,
+            "Support_1_1" => Self::Support_1_1,
+            "Support_Bespoke_1" => Self::Support_Bespoke_1,
+            "Support_Bespoke_2" => Self::Support_Bespoke_2,
+            "HeadUpDisplay" => Self::HeadUpDisplay,
+            "Annunciator" => Self::Annunciator,
+            "Visor" => Self::Visor,
+            "Radar3DScreen" => Self::Radar3DScreen,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ESCScreenType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ESDFSetTypes`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ESDFSetTypes {
@@ -11876,6 +25462,26 @@ pub enum ESDFSetTypes {
     Shield,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ESDFSetTypes {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Shield" => Self::Shield,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ESDFSetTypes {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `ESalvageRepairMode`
@@ -11887,6 +25493,27 @@ pub enum ESalvageRepairMode {
     Repair,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ESalvageRepairMode {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Salvage" => Self::Salvage,
+            "Repair" => Self::Repair,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ESalvageRepairMode {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EScanCategory`
@@ -11906,6 +25533,30 @@ pub enum EScanCategory {
     Unrecognized(String),
 }
 
+impl EScanCategory {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Affiliation" => Self::Affiliation,
+            "General" => Self::General,
+            "Physical" => Self::Physical,
+            "Signatures" => Self::Signatures,
+            "ScanSystem" => Self::ScanSystem,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EScanCategory {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EScanDisplaySection`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EScanDisplaySection {
@@ -11919,6 +25570,29 @@ pub enum EScanDisplaySection {
     Interior,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EScanDisplaySection {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Boxout" => Self::Boxout,
+            "Overview" => Self::Overview,
+            "Exterior" => Self::Exterior,
+            "Interior" => Self::Interior,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EScanDisplaySection {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EScanDisplayVariable`
@@ -11936,6 +25610,29 @@ pub enum EScanDisplayVariable {
     Unrecognized(String),
 }
 
+impl EScanDisplayVariable {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Header" => Self::Header,
+            "Body" => Self::Body,
+            "Capacity" => Self::Capacity,
+            "Extension" => Self::Extension,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EScanDisplayVariable {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EScanDisplayVariableAuxiliaryType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EScanDisplayVariableAuxiliaryType {
@@ -11945,6 +25642,27 @@ pub enum EScanDisplayVariableAuxiliaryType {
     ShipRegNumber,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EScanDisplayVariableAuxiliaryType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "ShipRegNumber" => Self::ShipRegNumber,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EScanDisplayVariableAuxiliaryType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EScanInformation`
@@ -12098,6 +25816,97 @@ pub enum EScanInformation {
     Unrecognized(String),
 }
 
+impl EScanInformation {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "ActorStatus" => Self::ActorStatus,
+            "ArmorWeightRating" => Self::ArmorWeightRating,
+            "ArmorMixedWeight" => Self::ArmorMixedWeight,
+            "CargoAmount" => Self::CargoAmount,
+            "CargoAmountLoose" => Self::CargoAmountLoose,
+            "Classification" => Self::Classification,
+            "Commodity" => Self::Commodity,
+            "ContactType" => Self::ContactType,
+            "Callout1" => Self::Callout1,
+            "Callout2" => Self::Callout2,
+            "Callout3" => Self::Callout3,
+            "CauseOfDeath" => Self::CauseOfDeath,
+            "CommsChannelStatus" => Self::CommsChannelStatus,
+            "DeltaSignature" => Self::DeltaSignature,
+            "Description" => Self::Description,
+            "DisplaySection" => Self::DisplaySection,
+            "DoorLocked" => Self::DoorLocked,
+            "DoorOpen" => Self::DoorOpen,
+            "DriverOrganization" => Self::DriverOrganization,
+            "DriverName" => Self::DriverName,
+            "EntityId" => Self::EntityId,
+            "EntityClass" => Self::EntityClass,
+            "ID" => Self::ID,
+            "Instability" => Self::Instability,
+            "InventoryAmount" => Self::InventoryAmount,
+            "ItemType" => Self::ItemType,
+            "ItemStatus" => Self::ItemStatus,
+            "Jurisdiction" => Self::Jurisdiction,
+            "LastScanned" => Self::LastScanned,
+            "LegalOwnerEntityId" => Self::LegalOwnerEntityId,
+            "LegalOwnerFlagged" => Self::LegalOwnerFlagged,
+            "LegalOwnerName" => Self::LegalOwnerName,
+            "LegalOwnerOrganization" => Self::LegalOwnerOrganization,
+            "Hackable" => Self::Hackable,
+            "Health" => Self::Health,
+            "Mass" => Self::Mass,
+            "MasterMode" => Self::MasterMode,
+            "MineablePercentageTotal" => Self::MineablePercentageTotal,
+            "MineablePercentageValuables" => Self::MineablePercentageValuables,
+            "Model" => Self::Model,
+            "Name" => Self::Name,
+            "OptimalPowerWindowLow" => Self::OptimalPowerWindowLow,
+            "OptimalPowerWindowHigh" => Self::OptimalPowerWindowHigh,
+            "OtherTrauma1" => Self::OtherTrauma1,
+            "OtherTrauma2" => Self::OtherTrauma2,
+            "OtherTrauma3" => Self::OtherTrauma3,
+            "OtherTrauma4" => Self::OtherTrauma4,
+            "PassengerCount" => Self::PassengerCount,
+            "PowerAvailability" => Self::PowerAvailability,
+            "PowerSwitch" => Self::PowerSwitch,
+            "PowerTransferResistance" => Self::PowerTransferResistance,
+            "Priority" => Self::Priority,
+            "Resource" => Self::Resource,
+            "Role" => Self::Role,
+            "ScanFullyCompleted" => Self::ScanFullyCompleted,
+            "ScanProcedureBits" => Self::ScanProcedureBits,
+            "ScanTimeStamp" => Self::ScanTimeStamp,
+            "ScanToken" => Self::ScanToken,
+            "SelfDestructFlagged" => Self::SelfDestructFlagged,
+            "SignatureIR" => Self::SignatureIR,
+            "SignatureCS" => Self::SignatureCS,
+            "SignatureEM" => Self::SignatureEM,
+            "SignatureRS" => Self::SignatureRS,
+            "Species" => Self::Species,
+            "Stolen" => Self::Stolen,
+            "SubType" => Self::SubType,
+            "Type" => Self::Type,
+            "Value" => Self::Value,
+            "Volatility" => Self::Volatility,
+            "WantedLevel" => Self::WantedLevel,
+            "MissionId" => Self::MissionId,
+            "Quality" => Self::Quality,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EScanInformation {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EScanProcedure`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EScanProcedure {
@@ -12173,6 +25982,59 @@ pub enum EScanProcedure {
     Unrecognized(String),
 }
 
+impl EScanProcedure {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Armor" => Self::Armor,
+            "CargoCommodities" => Self::CargoCommodities,
+            "Classification" => Self::Classification,
+            "CommsTap" => Self::CommsTap,
+            "ContactType" => Self::ContactType,
+            "Custom" => Self::Custom,
+            "Cryopod" => Self::Cryopod,
+            "Death" => Self::Death,
+            "Description" => Self::Description,
+            "Door" => Self::Door,
+            "Driver" => Self::Driver,
+            "Emissions" => Self::Emissions,
+            "Faction" => Self::Faction,
+            "Instability" => Self::Instability,
+            "InventoryContents" => Self::InventoryContents,
+            "Jurisdiction" => Self::Jurisdiction,
+            "LegalOwner" => Self::LegalOwner,
+            "Hackable" => Self::Hackable,
+            "Health" => Self::Health,
+            "Mass" => Self::Mass,
+            "MineableCommodities" => Self::MineableCommodities,
+            "Name" => Self::Name,
+            "OptimalPowerWindow" => Self::OptimalPowerWindow,
+            "Passenger" => Self::Passenger,
+            "Power" => Self::Power,
+            "PowerTransferResistance" => Self::PowerTransferResistance,
+            "Species" => Self::Species,
+            "Stolen" => Self::Stolen,
+            "SubItems" => Self::SubItems,
+            "VehicleMasterMode" => Self::VehicleMasterMode,
+            "VehicleModel" => Self::VehicleModel,
+            "VehicleRole" => Self::VehicleRole,
+            "VehicleSelfDestruct" => Self::VehicleSelfDestruct,
+            "WantedLevel" => Self::WantedLevel,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EScanProcedure {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EScanSortType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EScanSortType {
@@ -12182,6 +26044,27 @@ pub enum EScanSortType {
     Greater,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EScanSortType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Less" => Self::Less,
+            "Greater" => Self::Greater,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EScanSortType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EScanTable`
@@ -12209,6 +26092,34 @@ pub enum EScanTable {
     Unrecognized(String),
 }
 
+impl EScanTable {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Self" => Self::Self_,
+            "CargoCommodities" => Self::CargoCommodities,
+            "Custom" => Self::Custom,
+            "MineableCommodities" => Self::MineableCommodities,
+            "Passengers" => Self::Passengers,
+            "SubItems" => Self::SubItems,
+            "InventoryContents" => Self::InventoryContents,
+            "CommsChannels" => Self::CommsChannels,
+            "Armor" => Self::Armor,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EScanTable {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EScanType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EScanType {
@@ -12226,6 +26137,30 @@ pub enum EScanType {
     Unrecognized(String),
 }
 
+impl EScanType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "AIAutoScan" => Self::AIAutoScan,
+            "FocalPointScan" => Self::FocalPointScan,
+            "PassiveScan" => Self::PassiveScan,
+            "PingBroadScan" => Self::PingBroadScan,
+            "PingFocusScan" => Self::PingFocusScan,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EScanType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EScopeType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EScopeType {
@@ -12239,6 +26174,28 @@ pub enum EScopeType {
     Unrecognized(String),
 }
 
+impl EScopeType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "Zoom" => Self::Zoom,
+            "Nightvision" => Self::Nightvision,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EScopeType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EScoreDisplayType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EScoreDisplayType {
@@ -12248,6 +26205,27 @@ pub enum EScoreDisplayType {
     Rounds,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EScoreDisplayType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Score" => Self::Score,
+            "Rounds" => Self::Rounds,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EScoreDisplayType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EScoreType`
@@ -12391,6 +26369,92 @@ pub enum EScoreType {
     Unrecognized(String),
 }
 
+impl EScoreType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Kill" => Self::Kill,
+            "TeamKill" => Self::TeamKill,
+            "KillAssist" => Self::KillAssist,
+            "KillAssistCrew" => Self::KillAssistCrew,
+            "ForcedError" => Self::ForcedError,
+            "ForcedEject" => Self::ForcedEject,
+            "CrashRoberts" => Self::CrashRoberts,
+            "PlayerBledOut" => Self::PlayerBledOut,
+            "DistortionDisabledShip" => Self::DistortionDisabledShip,
+            "ControlTerminalCaptured" => Self::ControlTerminalCaptured,
+            "ControlTerminalCaptureAssist" => Self::ControlTerminalCaptureAssist,
+            "CaptureAreaCaptureBegin" => Self::CaptureAreaCaptureBegin,
+            "CaptureAreaCaptureComplete" => Self::CaptureAreaCaptureComplete,
+            "CaptureAreaNeutralized" => Self::CaptureAreaNeutralized,
+            "Accident" => Self::Accident,
+            "Suicide" => Self::Suicide,
+            "VehicleDestruction" => Self::VehicleDestruction,
+            "TeamVehicleDestruction" => Self::TeamVehicleDestruction,
+            "DestroyPhaseObjective" => Self::DestroyPhaseObjective,
+            "DamagePhaseObjective" => Self::DamagePhaseObjective,
+            "DamageSentToObjective" => Self::DamageSentToObjective,
+            "MatchVictory" => Self::MatchVictory,
+            "MatchDefeat" => Self::MatchDefeat,
+            "SecondPlace" => Self::SecondPlace,
+            "ThirdPlace" => Self::ThirdPlace,
+            "KillCollected" => Self::KillCollected,
+            "KillDenied" => Self::KillDenied,
+            "Hemorrhage" => Self::Hemorrhage,
+            "PlayerBleeding" => Self::PlayerBleeding,
+            "DistortionDamage" => Self::DistortionDamage,
+            "VehicleDamage" => Self::VehicleDamage,
+            "TeamVehicleDamage" => Self::TeamVehicleDamage,
+            "Untouchable" => Self::Untouchable,
+            "Unaided" => Self::Unaided,
+            "Ace" => Self::Ace,
+            "AceBonus" => Self::AceBonus,
+            "AceKiller" => Self::AceKiller,
+            "KillingSpree" => Self::KillingSpree,
+            "KillingSpreeBonus" => Self::KillingSpreeBonus,
+            "KillingSpreeKiller" => Self::KillingSpreeKiller,
+            "NemesisKill" => Self::NemesisKill,
+            "Redemption" => Self::Redemption,
+            "Regurgence" => Self::Regurgence,
+            "Revenge" => Self::Revenge,
+            "FirstBlood" => Self::FirstBlood,
+            "SquadronRevengeKill" => Self::SquadronRevengeKill,
+            "Savior" => Self::Savior,
+            "UnderdogKill" => Self::UnderdogKill,
+            "CheapShot" => Self::CheapShot,
+            "GoodNight" => Self::GoodNight,
+            "LightsOut" => Self::LightsOut,
+            "ControlTerminalDefended" => Self::ControlTerminalDefended,
+            "ControlTerminalHackerKilled" => Self::ControlTerminalHackerKilled,
+            "ControlTerminalDomination" => Self::ControlTerminalDomination,
+            "CaptureAreaContesting" => Self::CaptureAreaContesting,
+            "CaptureAreaCapturing" => Self::CaptureAreaCapturing,
+            "CaptureCloseCallKill" => Self::CaptureCloseCallKill,
+            "CaptureReversing" => Self::CaptureReversing,
+            "DefenderKill" => Self::DefenderKill,
+            "AttackerKill" => Self::AttackerKill,
+            "MartyrKill" => Self::MartyrKill,
+            "Headshot" => Self::Headshot,
+            "MeleeKill" => Self::MeleeKill,
+            "TakeDown" => Self::TakeDown,
+            "VehiclePartDetached" => Self::VehiclePartDetached,
+            "CompletedLap" => Self::CompletedLap,
+            "INVALID" => Self::INVALID,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EScoreType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EScoreUIType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EScoreUIType {
@@ -12402,6 +26466,28 @@ pub enum EScoreUIType {
     Secondary,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EScoreUIType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "NONE" => Self::NONE,
+            "Primary" => Self::Primary,
+            "Secondary" => Self::Secondary,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EScoreUIType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EScoreboardType`
@@ -12429,6 +26515,34 @@ pub enum EScoreboardType {
     Unrecognized(String),
 }
 
+impl EScoreboardType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "TotalScore" => Self::TotalScore,
+            "ObjectivePoints" => Self::ObjectivePoints,
+            "Kills" => Self::Kills,
+            "Deaths" => Self::Deaths,
+            "Assists" => Self::Assists,
+            "CompletedLaps" => Self::CompletedLaps,
+            "FastestLapTime" => Self::FastestLapTime,
+            "RacePosition" => Self::RacePosition,
+            "GunGameLevel" => Self::GunGameLevel,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EScoreboardType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ESeatAccessConditionType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ESeatAccessConditionType {
@@ -12440,6 +26554,28 @@ pub enum ESeatAccessConditionType {
     Either,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ESeatAccessConditionType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "True" => Self::True,
+            "False" => Self::False,
+            "Either" => Self::Either,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ESeatAccessConditionType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `ESeatAccessEntranceDependencyType`
@@ -12457,6 +26593,29 @@ pub enum ESeatAccessEntranceDependencyType {
     Unrecognized(String),
 }
 
+impl ESeatAccessEntranceDependencyType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Never" => Self::Never,
+            "Exit" => Self::Exit,
+            "Enter" => Self::Enter,
+            "Always" => Self::Always,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ESeatAccessEntranceDependencyType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ESeatAccessPassageCondition`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ESeatAccessPassageCondition {
@@ -12468,6 +26627,28 @@ pub enum ESeatAccessPassageCondition {
     Either,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ESeatAccessPassageCondition {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "InteriorOnly" => Self::InteriorOnly,
+            "ExteriorOnly" => Self::ExteriorOnly,
+            "Either" => Self::Either,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ESeatAccessPassageCondition {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `ESeatViewType`
@@ -12501,6 +26682,37 @@ pub enum ESeatViewType {
     Unrecognized(String),
 }
 
+impl ESeatViewType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Background" => Self::Background,
+            "Comms" => Self::Comms,
+            "Cooler" => Self::Cooler,
+            "Energy" => Self::Energy,
+            "Flight" => Self::Flight,
+            "Missile" => Self::Missile,
+            "Quantum" => Self::Quantum,
+            "Shield" => Self::Shield,
+            "Target" => Self::Target,
+            "Weapon" => Self::Weapon,
+            "Wheeled" => Self::Wheeled,
+            "Scanner" => Self::Scanner,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ESeatViewType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ESecurityNetworkPermissionValue`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ESecurityNetworkPermissionValue {
@@ -12512,6 +26724,28 @@ pub enum ESecurityNetworkPermissionValue {
     No,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ESecurityNetworkPermissionValue {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Inherit" => Self::Inherit,
+            "Yes" => Self::Yes,
+            "No" => Self::No,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ESecurityNetworkPermissionValue {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `ESelectionBehaviour`
@@ -12533,6 +26767,31 @@ pub enum ESelectionBehaviour {
     Unrecognized(String),
 }
 
+impl ESelectionBehaviour {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "KeepAllSelected" => Self::KeepAllSelected,
+            "EquipAndUnselectAll" => Self::EquipAndUnselectAll,
+            "EquipAndKeepItemPortSelected" => Self::EquipAndKeepItemPortSelected,
+            "EquipAndKeepItemSelected" => Self::EquipAndKeepItemSelected,
+            "EquipAndKeepFirstSelection" => Self::EquipAndKeepFirstSelection,
+            "EquipAndKeepLastSelection" => Self::EquipAndKeepLastSelection,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ESelectionBehaviour {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ESequenceMode`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ESequenceMode {
@@ -12544,6 +26803,28 @@ pub enum ESequenceMode {
     Looping,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ESequenceMode {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Individually" => Self::Individually,
+            "Automatically" => Self::Automatically,
+            "Looping" => Self::Looping,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ESequenceMode {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EServiceBeaconType`
@@ -12567,6 +26848,32 @@ pub enum EServiceBeaconType {
     Unrecognized(String),
 }
 
+impl EServiceBeaconType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "PersonalTransport" => Self::PersonalTransport,
+            "CombatAssistance" => Self::CombatAssistance,
+            "Escort" => Self::Escort,
+            "Refuel" => Self::Refuel,
+            "Revive" => Self::Revive,
+            "Heal" => Self::Heal,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EServiceBeaconType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EShipComputerMode`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EShipComputerMode {
@@ -12576,6 +26883,27 @@ pub enum EShipComputerMode {
     Race,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EShipComputerMode {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Default" => Self::Default,
+            "Race" => Self::Race,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EShipComputerMode {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EShipState`
@@ -12589,6 +26917,28 @@ pub enum EShipState {
     Both,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EShipState {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Grounded" => Self::Grounded,
+            "Flying" => Self::Flying,
+            "Both" => Self::Both,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EShipState {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `ESignatureType`
@@ -12614,6 +26964,33 @@ pub enum ESignatureType {
     Unrecognized(String),
 }
 
+impl ESignatureType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Infrared" => Self::Infrared,
+            "Electromagnetic" => Self::Electromagnetic,
+            "CrossSection" => Self::CrossSection,
+            "Decibel" => Self::Decibel,
+            "Resource" => Self::Resource,
+            "Identity" => Self::Identity,
+            "CommsSignal" => Self::CommsSignal,
+            "Interactable" => Self::Interactable,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ESignatureType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ESilhouetteColourSource`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ESilhouetteColourSource {
@@ -12623,6 +27000,27 @@ pub enum ESilhouetteColourSource {
     PerObject,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ESilhouetteColourSource {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "HDRTarget" => Self::HDRTarget,
+            "PerObject" => Self::PerObject,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ESilhouetteColourSource {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `ESkillType`
@@ -12644,6 +27042,31 @@ pub enum ESkillType {
     Unrecognized(String),
 }
 
+impl ESkillType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Fitness" => Self::Fitness,
+            "Strength" => Self::Strength,
+            "Reflex" => Self::Reflex,
+            "Fortitude" => Self::Fortitude,
+            "VaultingTechnique" => Self::VaultingTechnique,
+            "TakedownTechnique" => Self::TakedownTechnique,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ESkillType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ESlottingMode`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ESlottingMode {
@@ -12655,6 +27078,28 @@ pub enum ESlottingMode {
     DisabledOnSlotting,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ESlottingMode {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "EnabledOnAndOffSlotting" => Self::EnabledOnAndOffSlotting,
+            "EnabledOnSlotting" => Self::EnabledOnSlotting,
+            "DisabledOnSlotting" => Self::DisabledOnSlotting,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ESlottingMode {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `ESoftbodySubstepMode`
@@ -12670,6 +27115,28 @@ pub enum ESoftbodySubstepMode {
     Unrecognized(String),
 }
 
+impl ESoftbodySubstepMode {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "FullSubstep" => Self::FullSubstep,
+            "FullSubstep_SingleCD" => Self::FullSubstep_SingleCD,
+            "Iteration" => Self::Iteration,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ESoftbodySubstepMode {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ESoftbodyVisualBindingMode`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ESoftbodyVisualBindingMode {
@@ -12681,6 +27148,28 @@ pub enum ESoftbodyVisualBindingMode {
     Spline,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ESoftbodyVisualBindingMode {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Planar" => Self::Planar,
+            "Volumetric" => Self::Volumetric,
+            "Spline" => Self::Spline,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ESoftbodyVisualBindingMode {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `ESoundInputs`
@@ -12698,6 +27187,29 @@ pub enum ESoundInputs {
     Unrecognized(String),
 }
 
+impl ESoundInputs {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "FloatParam" => Self::FloatParam,
+            "Enable" => Self::Enable,
+            "Disable" => Self::Disable,
+            "UNDEFINED" => Self::UNDEFINED,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ESoundInputs {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ESpecialEffectsType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ESpecialEffectsType {
@@ -12709,6 +27221,28 @@ pub enum ESpecialEffectsType {
     ReloadEmpty,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ESpecialEffectsType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "ReloadFull" => Self::ReloadFull,
+            "ReloadCheck" => Self::ReloadCheck,
+            "ReloadEmpty" => Self::ReloadEmpty,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ESpecialEffectsType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `ESpectatorMode`
@@ -12728,6 +27262,30 @@ pub enum ESpectatorMode {
     Unrecognized(String),
 }
 
+impl ESpectatorMode {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "SM_Fixed" => Self::SM_Fixed,
+            "SM_Free" => Self::SM_Free,
+            "SM_Cinematic" => Self::SM_Cinematic,
+            "SM_Follow" => Self::SM_Follow,
+            "SM_FirstPerson" => Self::SM_FirstPerson,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ESpectatorMode {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ESpinActivationMode`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ESpinActivationMode {
@@ -12737,6 +27295,27 @@ pub enum ESpinActivationMode {
     Procclip,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ESpinActivationMode {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Fire" => Self::Fire,
+            "Procclip" => Self::Procclip,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ESpinActivationMode {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EStarGalaPaths`
@@ -12796,6 +27375,50 @@ pub enum EStarGalaPaths {
     Unrecognized(String),
 }
 
+impl EStarGalaPaths {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "formationPath1" => Self::formationPath1,
+            "formationPath2" => Self::formationPath2,
+            "formationPath3" => Self::formationPath3,
+            "formationPath4" => Self::formationPath4,
+            "challengeStage1" => Self::challengeStage1,
+            "challengeStage2" => Self::challengeStage2,
+            "challengeStage3" => Self::challengeStage3,
+            "challengeStage4" => Self::challengeStage4,
+            "challengeStage5" => Self::challengeStage5,
+            "challengeStage6" => Self::challengeStage6,
+            "challengeStage7" => Self::challengeStage7,
+            "challengeStage8" => Self::challengeStage8,
+            "challengeStage9_1" => Self::challengeStage9_1,
+            "challengeStage9_2" => Self::challengeStage9_2,
+            "challengeStage10_1" => Self::challengeStage10_1,
+            "challengeStage10_2" => Self::challengeStage10_2,
+            "challengeStage11" => Self::challengeStage11,
+            "challengeStage12" => Self::challengeStage12,
+            "challengeStage13_1" => Self::challengeStage13_1,
+            "challengeStage13_2" => Self::challengeStage13_2,
+            "challengeStage13_3" => Self::challengeStage13_3,
+            "challengeStage13_4" => Self::challengeStage13_4,
+            "challengeStage14" => Self::challengeStage14,
+            "challengeStage15" => Self::challengeStage15,
+            "challengeStage16" => Self::challengeStage16,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EStarGalaPaths {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EStatCompareMode`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EStatCompareMode {
@@ -12809,6 +27432,28 @@ pub enum EStatCompareMode {
     Unrecognized(String),
 }
 
+impl EStatCompareMode {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "MoreIsBetter" => Self::MoreIsBetter,
+            "LessIsBetter" => Self::LessIsBetter,
+            "Neutral" => Self::Neutral,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EStatCompareMode {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EStatType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EStatType {
@@ -12820,6 +27465,28 @@ pub enum EStatType {
     Size,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EStatType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "OnFoot" => Self::OnFoot,
+            "Seated" => Self::Seated,
+            "Size" => Self::Size,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EStatType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EStrengthImprovementType`
@@ -12847,6 +27514,34 @@ pub enum EStrengthImprovementType {
     Unrecognized(String),
 }
 
+impl EStrengthImprovementType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "CarryWheight" => Self::CarryWheight,
+            "WeightImpact" => Self::WeightImpact,
+            "MeleeDamage" => Self::MeleeDamage,
+            "TrolleyHandling" => Self::TrolleyHandling,
+            "ThrowingForce" => Self::ThrowingForce,
+            "ForcedReactionsResistance" => Self::ForcedReactionsResistance,
+            "BodyCarryPickUpSpeedScale" => Self::BodyCarryPickUpSpeedScale,
+            "BodyCarryDropSpeedScale" => Self::BodyCarryDropSpeedScale,
+            "BodyStowingSpeedScale" => Self::BodyStowingSpeedScale,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EStrengthImprovementType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ESuggestedFOVMode`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ESuggestedFOVMode {
@@ -12860,6 +27555,29 @@ pub enum ESuggestedFOVMode {
     SuggestedFOVMode_ApplyIfLower,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ESuggestedFOVMode {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "SuggestedFOVMode_None" => Self::SuggestedFOVMode_None,
+            "SuggestedFOVMode_ForceAlways" => Self::SuggestedFOVMode_ForceAlways,
+            "SuggestedFOVMode_ApplyIfBigger" => Self::SuggestedFOVMode_ApplyIfBigger,
+            "SuggestedFOVMode_ApplyIfLower" => Self::SuggestedFOVMode_ApplyIfLower,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ESuggestedFOVMode {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `ESunShadowMode`
@@ -12883,6 +27601,32 @@ pub enum ESunShadowMode {
     Unrecognized(String),
 }
 
+impl ESunShadowMode {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Upto_20m" => Self::Upto_20m,
+            "Upto_100m" => Self::Upto_100m,
+            "Upto_400m" => Self::Upto_400m,
+            "Upto_2000m" => Self::Upto_2000m,
+            "Upto_2000m_AND_Heightmap" => Self::Upto_2000m_AND_Heightmap,
+            "Heightmap_Only" => Self::Heightmap_Only,
+            "UNDEFINED" => Self::UNDEFINED,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ESunShadowMode {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ETakedownTechniqueImprovementType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ETakedownTechniqueImprovementType {
@@ -12892,6 +27636,27 @@ pub enum ETakedownTechniqueImprovementType {
     SoundGenerated,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ETakedownTechniqueImprovementType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Speed" => Self::Speed,
+            "SoundGenerated" => Self::SoundGenerated,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ETakedownTechniqueImprovementType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `ETattooMirrorMode`
@@ -12907,6 +27672,29 @@ pub enum ETattooMirrorMode {
     Right,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ETattooMirrorMode {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "Both" => Self::Both,
+            "Left" => Self::Left,
+            "Right" => Self::Right,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ETattooMirrorMode {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EThrowMode`
@@ -12930,6 +27718,32 @@ pub enum EThrowMode {
     Unrecognized(String),
 }
 
+impl EThrowMode {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Undefined" => Self::Undefined,
+            "OverhandThrow" => Self::OverhandThrow,
+            "UnderhandThrow" => Self::UnderhandThrow,
+            "TwoHandedThrow" => Self::TwoHandedThrow,
+            "Drop" => Self::Drop,
+            "Place" => Self::Place,
+            "InteractionMode" => Self::InteractionMode,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EThrowMode {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EThrowPerceptionSound`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EThrowPerceptionSound {
@@ -12939,6 +27753,27 @@ pub enum EThrowPerceptionSound {
     LargeSound,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EThrowPerceptionSound {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "SmallSound" => Self::SmallSound,
+            "LargeSound" => Self::LargeSound,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EThrowPerceptionSound {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EThrusterAnimDriver`
@@ -12956,6 +27791,30 @@ pub enum EThrusterAnimDriver {
     Nutcracker,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EThrusterAnimDriver {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "ThrustWithAfterburner" => Self::ThrustWithAfterburner,
+            "Thrust" => Self::Thrust,
+            "Velocity" => Self::Velocity,
+            "ForwardOnlyVelocity" => Self::ForwardOnlyVelocity,
+            "Nutcracker" => Self::Nutcracker,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EThrusterAnimDriver {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EThrusterFlag`
@@ -12989,6 +27848,37 @@ pub enum EThrusterFlag {
     Unrecognized(String),
 }
 
+impl EThrusterFlag {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "StrafeForward" => Self::StrafeForward,
+            "StrafeBack" => Self::StrafeBack,
+            "StrafeLeft" => Self::StrafeLeft,
+            "StrafeRight" => Self::StrafeRight,
+            "StrafeUp" => Self::StrafeUp,
+            "StrafeDown" => Self::StrafeDown,
+            "YawLeft" => Self::YawLeft,
+            "YawRight" => Self::YawRight,
+            "PitchUp" => Self::PitchUp,
+            "PitchDown" => Self::PitchDown,
+            "RollLeft" => Self::RollLeft,
+            "RollRight" => Self::RollRight,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EThrusterFlag {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EThrusterOutputData`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EThrusterOutputData {
@@ -13020,6 +27910,37 @@ pub enum EThrusterOutputData {
     Unrecognized(String),
 }
 
+impl EThrusterOutputData {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "FireStrength" => Self::FireStrength,
+            "FireStrengthSmoothed" => Self::FireStrengthSmoothed,
+            "AfterburnerEnabled" => Self::AfterburnerEnabled,
+            "LastFuelRequested" => Self::LastFuelRequested,
+            "LastFuelReceived" => Self::LastFuelReceived,
+            "HealthRatio" => Self::HealthRatio,
+            "MisfireThrustRatio" => Self::MisfireThrustRatio,
+            "MisfireState" => Self::MisfireState,
+            "TemperatureRatio" => Self::TemperatureRatio,
+            "IsOverheating" => Self::IsOverheating,
+            "IsOverheated" => Self::IsOverheated,
+            "PowerRatio" => Self::PowerRatio,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EThrusterOutputData {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EThrusterType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EThrusterType {
@@ -13033,6 +27954,28 @@ pub enum EThrusterType {
     Unrecognized(String),
 }
 
+impl EThrusterType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Maneuver" => Self::Maneuver,
+            "Main" => Self::Main,
+            "Retro" => Self::Retro,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EThrusterType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ETriggerDefaultActions`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ETriggerDefaultActions {
@@ -13042,6 +27985,27 @@ pub enum ETriggerDefaultActions {
     pc_item_secondary,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ETriggerDefaultActions {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "pc_item_primary" => Self::pc_item_primary,
+            "pc_item_secondary" => Self::pc_item_secondary,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ETriggerDefaultActions {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `ETurbulentPassEA`
@@ -13111,6 +28075,55 @@ pub enum ETurbulentPassEA {
     Unrecognized(String),
 }
 
+impl ETurbulentPassEA {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "EA_BattleRoyale" => Self::EA_BattleRoyale,
+            "EA_FreeFlight" => Self::EA_FreeFlight,
+            "EA_PirateSwarm" => Self::EA_PirateSwarm,
+            "EA_SquadronBattle" => Self::EA_SquadronBattle,
+            "EA_VanduulSwarm" => Self::EA_VanduulSwarm,
+            "EA_ClassicRace" => Self::EA_ClassicRace,
+            "EA_Elimination" => Self::EA_Elimination,
+            "EA_TeamElimination" => Self::EA_TeamElimination,
+            "EA_Control" => Self::EA_Control,
+            "EA_TheatersOfWar" => Self::EA_TheatersOfWar,
+            "EA_IterativeTesting" => Self::EA_IterativeTesting,
+            "EA_Duel" => Self::EA_Duel,
+            "EA_FPSGunGame" => Self::EA_FPSGunGame,
+            "EA_Horde" => Self::EA_Horde,
+            "EA_VanduulInvasion" => Self::EA_VanduulInvasion,
+            "EA_ExperimentalMode_1" => Self::EA_ExperimentalMode_1,
+            "EA_ExperimentalMode_2" => Self::EA_ExperimentalMode_2,
+            "EA_ExperimentalMode_3" => Self::EA_ExperimentalMode_3,
+            "EA_ExperimentalMode_4" => Self::EA_ExperimentalMode_4,
+            "EA_ExperimentalMode_5" => Self::EA_ExperimentalMode_5,
+            "EA_ExperimentalMode_6" => Self::EA_ExperimentalMode_6,
+            "EA_ExperimentalMode_7" => Self::EA_ExperimentalMode_7,
+            "EA_ExperimentalMode_8" => Self::EA_ExperimentalMode_8,
+            "EA_ExperimentalMode_9" => Self::EA_ExperimentalMode_9,
+            "EA_ExperimentalMode_10" => Self::EA_ExperimentalMode_10,
+            "EA_ExperimentalMode_11" => Self::EA_ExperimentalMode_11,
+            "EA_ExperimentalMode_12" => Self::EA_ExperimentalMode_12,
+            "EA_GravRace" => Self::EA_GravRace,
+            "Subscriber" => Self::Subscriber,
+            "EA_SpecialEvent" => Self::EA_SpecialEvent,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ETurbulentPassEA {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ETurretGunSafetyType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ETurretGunSafetyType {
@@ -13124,6 +28137,28 @@ pub enum ETurretGunSafetyType {
     Unrecognized(String),
 }
 
+impl ETurretGunSafetyType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Off" => Self::Off,
+            "PlayerOnly" => Self::PlayerOnly,
+            "All" => Self::All,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ETurretGunSafetyType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ETurretRotationStyle`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ETurretRotationStyle {
@@ -13133,6 +28168,27 @@ pub enum ETurretRotationStyle {
     MultiAxis,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ETurretRotationStyle {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "SingleAxis" => Self::SingleAxis,
+            "MultiAxis" => Self::MultiAxis,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ETurretRotationStyle {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EUsableEntrySelectionType`
@@ -13150,6 +28206,29 @@ pub enum EUsableEntrySelectionType {
     Unrecognized(String),
 }
 
+impl EUsableEntrySelectionType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "FirstFound" => Self::FirstFound,
+            "Closest" => Self::Closest,
+            "Farthest" => Self::Farthest,
+            "Random" => Self::Random,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EUsableEntrySelectionType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EUsableSelectionMethod`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EUsableSelectionMethod {
@@ -13161,6 +28240,28 @@ pub enum EUsableSelectionMethod {
     Closest,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EUsableSelectionMethod {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Priority" => Self::Priority,
+            "Random" => Self::Random,
+            "Closest" => Self::Closest,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EUsableSelectionMethod {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EUsableStance`
@@ -13182,6 +28283,31 @@ pub enum EUsableStance {
     Unrecognized(String),
 }
 
+impl EUsableStance {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Stand" => Self::Stand,
+            "Crouch" => Self::Crouch,
+            "Seated" => Self::Seated,
+            "Prone" => Self::Prone,
+            "ProneBack" => Self::ProneBack,
+            "Unset" => Self::Unset,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EUsableStance {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EUseSlotReenablePoint`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EUseSlotReenablePoint {
@@ -13193,6 +28319,28 @@ pub enum EUseSlotReenablePoint {
     UsableDelink,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EUseSlotReenablePoint {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "UseChannelCompletion" => Self::UseChannelCompletion,
+            "ExitAnimStart" => Self::ExitAnimStart,
+            "UsableDelink" => Self::UsableDelink,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EUseSlotReenablePoint {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EVAStateType`
@@ -13212,6 +28360,30 @@ pub enum EVAStateType {
     Unrecognized(String),
 }
 
+impl EVAStateType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "StandIdle" => Self::StandIdle,
+            "IronmanRelaxed" => Self::IronmanRelaxed,
+            "IronmanTurn" => Self::IronmanTurn,
+            "IronmanMove" => Self::IronmanMove,
+            "StandMove" => Self::StandMove,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EVAStateType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EVaultingTechniqueImprovementType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EVaultingTechniqueImprovementType {
@@ -13219,6 +28391,26 @@ pub enum EVaultingTechniqueImprovementType {
     Speed,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EVaultingTechniqueImprovementType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Speed" => Self::Speed,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EVaultingTechniqueImprovementType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EVehicleDamageModifier`
@@ -13240,6 +28432,31 @@ pub enum EVehicleDamageModifier {
     Unrecognized(String),
 }
 
+impl EVehicleDamageModifier {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "AI_HitBy_AI" => Self::AI_HitBy_AI,
+            "AI_HitBy_Player" => Self::AI_HitBy_Player,
+            "Player_HitBy_AI" => Self::Player_HitBy_AI,
+            "Player_HitBy_Player" => Self::Player_HitBy_Player,
+            "Uncontrolled_HitBy_AI" => Self::Uncontrolled_HitBy_AI,
+            "Uncontrolled_HitBy_Player" => Self::Uncontrolled_HitBy_Player,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EVehicleDamageModifier {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EVehicleElevatorBehavior`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EVehicleElevatorBehavior {
@@ -13251,6 +28468,28 @@ pub enum EVehicleElevatorBehavior {
     Attach,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EVehicleElevatorBehavior {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "DisableNetSync" => Self::DisableNetSync,
+            "Attach" => Self::Attach,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EVehicleElevatorBehavior {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EVehicleMovementClass`
@@ -13272,6 +28511,31 @@ pub enum EVehicleMovementClass {
     Unrecognized(String),
 }
 
+impl EVehicleMovementClass {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "ArcadeWheeled" => Self::ArcadeWheeled,
+            "Dummy" => Self::Dummy,
+            "Spaceship" => Self::Spaceship,
+            "TrackWheeled" => Self::TrackWheeled,
+            "Boat" => Self::Boat,
+            "PhysicalWheeled" => Self::PhysicalWheeled,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EVehicleMovementClass {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EVibrationAudioCalculationType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EVibrationAudioCalculationType {
@@ -13281,6 +28545,27 @@ pub enum EVibrationAudioCalculationType {
     MaxOfAll,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EVibrationAudioCalculationType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Additive" => Self::Additive,
+            "MaxOfAll" => Self::MaxOfAll,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EVibrationAudioCalculationType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EVibrationSource`
@@ -13332,6 +28617,46 @@ pub enum EVibrationSource {
     Unrecognized(String),
 }
 
+impl EVibrationSource {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Collision" => Self::Collision,
+            "Damage" => Self::Damage,
+            "Explosion" => Self::Explosion,
+            "IFCSMasterModeDrag" => Self::IFCSMasterModeDrag,
+            "Thruster" => Self::Thruster,
+            "ThrusterAfterburner" => Self::ThrusterAfterburner,
+            "ThrustersAcceleration" => Self::ThrustersAcceleration,
+            "AerodynamicsAcceleration" => Self::AerodynamicsAcceleration,
+            "ExternalAcceleration" => Self::ExternalAcceleration,
+            "Wheels" => Self::Wheels,
+            "WeaponFire" => Self::WeaponFire,
+            "WindArea" => Self::WindArea,
+            "Distortion" => Self::Distortion,
+            "MagLaunch_Charge" => Self::MagLaunch_Charge,
+            "MagLaunch_Catapult" => Self::MagLaunch_Catapult,
+            "Quantum" => Self::Quantum,
+            "ElectricalCharge" => Self::ElectricalCharge,
+            "ProjectileImpact" => Self::ProjectileImpact,
+            "JumpDrive" => Self::JumpDrive,
+            "JumpPoint" => Self::JumpPoint,
+            "JumpTunnel" => Self::JumpTunnel,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EVibrationSource {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EVibrationVehiclePlayerRole`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EVibrationVehiclePlayerRole {
@@ -13345,6 +28670,29 @@ pub enum EVibrationVehiclePlayerRole {
     Passenger,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EVibrationVehiclePlayerRole {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "Driver" => Self::Driver,
+            "Crew" => Self::Crew,
+            "Passenger" => Self::Passenger,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EVibrationVehiclePlayerRole {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EViewType`
@@ -13376,6 +28724,36 @@ pub enum EViewType {
     Unrecognized(String),
 }
 
+impl EViewType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "eView_Off" => Self::eView_Off,
+            "eView_SelfStatus" => Self::eView_SelfStatus,
+            "eView_TargetStatus" => Self::eView_TargetStatus,
+            "eView_Communications" => Self::eView_Communications,
+            "eView_Configuration" => Self::eView_Configuration,
+            "eView_IFCS" => Self::eView_IFCS,
+            "eView_Diagnostics" => Self::eView_Diagnostics,
+            "eView_ResourceNetwork" => Self::eView_ResourceNetwork,
+            "eView_Scanning" => Self::eView_Scanning,
+            "eView_Weapons" => Self::eView_Weapons,
+            "eView_Shields" => Self::eView_Shields,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EViewType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EVoteLocType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EVoteLocType {
@@ -13395,6 +28773,31 @@ pub enum EVoteLocType {
     Unrecognized(String),
 }
 
+impl EVoteLocType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Passed" => Self::Passed,
+            "Failed" => Self::Failed,
+            "Yes" => Self::Yes,
+            "No" => Self::No,
+            "StartedBy" => Self::StartedBy,
+            "ActionPrompts" => Self::ActionPrompts,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EVoteLocType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EWantedLevelComparison`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EWantedLevelComparison {
@@ -13408,6 +28811,29 @@ pub enum EWantedLevelComparison {
     EqualOrGreater,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EWantedLevelComparison {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Ignore" => Self::Ignore,
+            "Equal" => Self::Equal,
+            "EqualOrLess" => Self::EqualOrLess,
+            "EqualOrGreater" => Self::EqualOrGreater,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EWantedLevelComparison {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EWave`
@@ -13425,6 +28851,30 @@ pub enum EWave {
     EWave_5,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EWave {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "EWave_1" => Self::EWave_1,
+            "EWave_2" => Self::EWave_2,
+            "EWave_3" => Self::EWave_3,
+            "EWave_4" => Self::EWave_4,
+            "EWave_5" => Self::EWave_5,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EWave {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EWeaponDisplayStat`
@@ -13450,6 +28900,33 @@ pub enum EWeaponDisplayStat {
     Unrecognized(String),
 }
 
+impl EWeaponDisplayStat {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Damage" => Self::Damage,
+            "Handling" => Self::Handling,
+            "Range" => Self::Range,
+            "Weight" => Self::Weight,
+            "Velocity" => Self::Velocity,
+            "FireRate" => Self::FireRate,
+            "AmmoCapacity" => Self::AmmoCapacity,
+            "Modes" => Self::Modes,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EWeaponDisplayStat {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EWeaponGroup`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EWeaponGroup {
@@ -13463,6 +28940,29 @@ pub enum EWeaponGroup {
     UNDEFINED,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EWeaponGroup {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Gun1" => Self::Gun1,
+            "Gun2" => Self::Gun2,
+            "Missiles" => Self::Missiles,
+            "UNDEFINED" => Self::UNDEFINED,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EWeaponGroup {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EWeaponProjectileType`
@@ -13506,6 +29006,42 @@ pub enum EWeaponProjectileType {
     Unrecognized(String),
 }
 
+impl EWeaponProjectileType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Ballistic" => Self::Ballistic,
+            "Flak" => Self::Flak,
+            "Incendiary" => Self::Incendiary,
+            "Explosive" => Self::Explosive,
+            "Disarray" => Self::Disarray,
+            "MassDriver" => Self::MassDriver,
+            "Laser" => Self::Laser,
+            "Neutron" => Self::Neutron,
+            "Plasma" => Self::Plasma,
+            "Electron" => Self::Electron,
+            "Tachyon" => Self::Tachyon,
+            "Beam" => Self::Beam,
+            "Distortion" => Self::Distortion,
+            "Mining" => Self::Mining,
+            "Tractor" => Self::Tractor,
+            "Towing" => Self::Towing,
+            "UNDEFINED" => Self::UNDEFINED,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EWeaponProjectileType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EWeaponRangeCategory`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EWeaponRangeCategory {
@@ -13517,6 +29053,28 @@ pub enum EWeaponRangeCategory {
     Long,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EWeaponRangeCategory {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Short" => Self::Short,
+            "Medium" => Self::Medium,
+            "Long" => Self::Long,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EWeaponRangeCategory {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EWeaponRole`
@@ -13538,6 +29096,31 @@ pub enum EWeaponRole {
     Unrecognized(String),
 }
 
+impl EWeaponRole {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Sniper" => Self::Sniper,
+            "AntiMaterial" => Self::AntiMaterial,
+            "Default" => Self::Default,
+            "AntiAir" => Self::AntiAir,
+            "CloseQuarter" => Self::CloseQuarter,
+            "UNDEFINED" => Self::UNDEFINED,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EWeaponRole {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EWeaponToggleMode`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EWeaponToggleMode {
@@ -13549,6 +29132,28 @@ pub enum EWeaponToggleMode {
     UsePlayerOptions,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EWeaponToggleMode {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "IsNotToggle" => Self::IsNotToggle,
+            "IsToggle" => Self::IsToggle,
+            "UsePlayerOptions" => Self::UsePlayerOptions,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EWeaponToggleMode {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EWeaponType`
@@ -13568,6 +29173,31 @@ pub enum EWeaponType {
     UNDEFINED,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl EWeaponType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Gatling" => Self::Gatling,
+            "Repeater" => Self::Repeater,
+            "GrenadeLauncher" => Self::GrenadeLauncher,
+            "Cannon" => Self::Cannon,
+            "Artillery" => Self::Artillery,
+            "UNDEFINED" => Self::UNDEFINED,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EWeaponType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EWeekday`
@@ -13591,6 +29221,32 @@ pub enum EWeekday {
     Unrecognized(String),
 }
 
+impl EWeekday {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Sunday" => Self::Sunday,
+            "Monday" => Self::Monday,
+            "Tuesday" => Self::Tuesday,
+            "Wednesday" => Self::Wednesday,
+            "Thursday" => Self::Thursday,
+            "Friday" => Self::Friday,
+            "Saturday" => Self::Saturday,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EWeekday {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ElectricalCalculationPropertyType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ElectricalCalculationPropertyType {
@@ -13602,6 +29258,27 @@ pub enum ElectricalCalculationPropertyType {
     Unrecognized(String),
 }
 
+impl ElectricalCalculationPropertyType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Distance" => Self::Distance,
+            "ElectricalCharge" => Self::ElectricalCharge,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ElectricalCalculationPropertyType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ElectricalStatePropertyType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ElectricalStatePropertyType {
@@ -13609,6 +29286,26 @@ pub enum ElectricalStatePropertyType {
     Charge,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ElectricalStatePropertyType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Charge" => Self::Charge,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ElectricalStatePropertyType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `EngineeringState`
@@ -13626,6 +29323,29 @@ pub enum EngineeringState {
     Unrecognized(String),
 }
 
+impl EngineeringState {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Baseline" => Self::Baseline,
+            "Warning" => Self::Warning,
+            "Critical" => Self::Critical,
+            "Disabled" => Self::Disabled,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EngineeringState {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `EulerAngles`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EulerAngles {
@@ -13639,6 +29359,28 @@ pub enum EulerAngles {
     Unrecognized(String),
 }
 
+impl EulerAngles {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Pitch" => Self::Pitch,
+            "Roll" => Self::Roll,
+            "Yaw" => Self::Yaw,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for EulerAngles {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ExpirationActivationType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ExpirationActivationType {
@@ -13650,6 +29392,27 @@ pub enum ExpirationActivationType {
     Unrecognized(String),
 }
 
+impl ExpirationActivationType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "AtCreation" => Self::AtCreation,
+            "OnInteraction" => Self::OnInteraction,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ExpirationActivationType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ExplosionZone`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ExplosionZone {
@@ -13659,6 +29422,27 @@ pub enum ExplosionZone {
     Adam,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ExplosionZone {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "AdamHosted" => Self::AdamHosted,
+            "Adam" => Self::Adam,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ExplosionZone {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `FactionType`
@@ -13674,6 +29458,29 @@ pub enum FactionType {
     Unlawful,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl FactionType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "LawEnforcement" => Self::LawEnforcement,
+            "PrivateSecurity" => Self::PrivateSecurity,
+            "Lawful" => Self::Lawful,
+            "Unlawful" => Self::Unlawful,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for FactionType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `FireBehavior`
@@ -13721,6 +29528,44 @@ pub enum FireBehavior {
     Unrecognized(String),
 }
 
+impl FireBehavior {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "VoxelDamage" => Self::VoxelDamage,
+            "Radiation" => Self::Radiation,
+            "Convection" => Self::Convection,
+            "Equalization" => Self::Equalization,
+            "DamageIgnition" => Self::DamageIgnition,
+            "FlashIgnition" => Self::FlashIgnition,
+            "OxygenStrength" => Self::OxygenStrength,
+            "OxygenConsumption" => Self::OxygenConsumption,
+            "LowOxygenExtinguish" => Self::LowOxygenExtinguish,
+            "FuelConsumption" => Self::FuelConsumption,
+            "RequiresFuel" => Self::RequiresFuel,
+            "SmokeProduction" => Self::SmokeProduction,
+            "FogGeneration" => Self::FogGeneration,
+            "DamageToHealth" => Self::DamageToHealth,
+            "AmbientTemperature" => Self::AmbientTemperature,
+            "AutoRepairing" => Self::AutoRepairing,
+            "Repairing" => Self::Repairing,
+            "Extinguishing" => Self::Extinguishing,
+            "RoomConnectors" => Self::RoomConnectors,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for FireBehavior {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `FireEnabledMode`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum FireEnabledMode {
@@ -13738,6 +29583,30 @@ pub enum FireEnabledMode {
     Unrecognized(String),
 }
 
+impl FireEnabledMode {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Enabled" => Self::Enabled,
+            "Disabled" => Self::Disabled,
+            "EnabledOnVehicles" => Self::EnabledOnVehicles,
+            "EnabledOnTag" => Self::EnabledOnTag,
+            "EnabledOnAllVehicles" => Self::EnabledOnAllVehicles,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for FireEnabledMode {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `FireFilterMode`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum FireFilterMode {
@@ -13749,6 +29618,27 @@ pub enum FireFilterMode {
     Unrecognized(String),
 }
 
+impl FireFilterMode {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Include" => Self::Include,
+            "Exclude" => Self::Exclude,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for FireFilterMode {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `FireHazardFogNoiseTextures`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum FireHazardFogNoiseTextures {
@@ -13758,6 +29648,27 @@ pub enum FireHazardFogNoiseTextures {
     Noise1,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl FireHazardFogNoiseTextures {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Noise0" => Self::Noise0,
+            "Noise1" => Self::Noise1,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for FireHazardFogNoiseTextures {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `FireHazardMaterials`
@@ -13775,6 +29686,29 @@ pub enum FireHazardMaterials {
     Unrecognized(String),
 }
 
+impl FireHazardMaterials {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Baseline" => Self::Baseline,
+            "MaxSpecular" => Self::MaxSpecular,
+            "MaxGloss" => Self::MaxGloss,
+            "MaxSpecularAndGloss" => Self::MaxSpecularAndGloss,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for FireHazardMaterials {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `FireHazardSurfaceDirections`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum FireHazardSurfaceDirections {
@@ -13786,6 +29720,28 @@ pub enum FireHazardSurfaceDirections {
     Ceilings,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl FireHazardSurfaceDirections {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Floors" => Self::Floors,
+            "Walls" => Self::Walls,
+            "Ceilings" => Self::Ceilings,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for FireHazardSurfaceDirections {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `FlashValueUpdateMode`
@@ -13803,6 +29759,30 @@ pub enum FlashValueUpdateMode {
     AttachScreen,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl FlashValueUpdateMode {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "Offset" => Self::Offset,
+            "Overwrite" => Self::Overwrite,
+            "AttachContent" => Self::AttachContent,
+            "AttachScreen" => Self::AttachScreen,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for FlashValueUpdateMode {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `FlightHUDMessageType`
@@ -13884,6 +29864,61 @@ pub enum FlightHUDMessageType {
     Unrecognized(String),
 }
 
+impl FlightHUDMessageType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "DefaultEmptyMessageDoesNotDisplay" => Self::DefaultEmptyMessageDoesNotDisplay,
+            "VehicleEjectWarning" => Self::VehicleEjectWarning,
+            "ShieldCritical" => Self::ShieldCritical,
+            "ShieldDown" => Self::ShieldDown,
+            "ShieldRecharge" => Self::ShieldRecharge,
+            "ProximityWarning" => Self::ProximityWarning,
+            "FuelEmptyWarning" => Self::FuelEmptyWarning,
+            "FuelLevel10Warning" => Self::FuelLevel10Warning,
+            "FuelLevel25Warning" => Self::FuelLevel25Warning,
+            "FuelLevel50Warning" => Self::FuelLevel50Warning,
+            "FuelLevel75Warning" => Self::FuelLevel75Warning,
+            "LowPowerWeaponsWarning" => Self::LowPowerWeaponsWarning,
+            "LowPowerShieldsWarning" => Self::LowPowerShieldsWarning,
+            "LowPowerThrustersWarning" => Self::LowPowerThrustersWarning,
+            "LowPowerGenericWarning" => Self::LowPowerGenericWarning,
+            "OverheatingWeaponsWarning" => Self::OverheatingWeaponsWarning,
+            "OverheatingShieldsWarning" => Self::OverheatingShieldsWarning,
+            "OverheatingThrustersWarning" => Self::OverheatingThrustersWarning,
+            "OverheatingGenericWarning" => Self::OverheatingGenericWarning,
+            "OverheatedWeaponsWarning" => Self::OverheatedWeaponsWarning,
+            "OverheatedShieldsWarning" => Self::OverheatedShieldsWarning,
+            "OverheatedThrustersWarning" => Self::OverheatedThrustersWarning,
+            "OverheatedGenericWarning" => Self::OverheatedGenericWarning,
+            "QuantumDriveInterdictionAlert" => Self::QuantumDriveInterdictionAlert,
+            "IncomingEMPDetected" => Self::IncomingEMPDetected,
+            "GreenZoneWarning" => Self::GreenZoneWarning,
+            "SelfDestructWarning" => Self::SelfDestructWarning,
+            "Repairing" => Self::Repairing,
+            "RepairFinished" => Self::RepairFinished,
+            "RequestAlignment" => Self::RequestAlignment,
+            "ObstructingLandingArea" => Self::ObstructingLandingArea,
+            "EMPOffline" => Self::EMPOffline,
+            "PingWarningMessage" => Self::PingWarningMessage,
+            "ScannedWarningMessage" => Self::ScannedWarningMessage,
+            "PortsUnlocked" => Self::PortsUnlocked,
+            "CatastrophicFailureWarning" => Self::CatastrophicFailureWarning,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for FlightHUDMessageType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ForceKnockdownDirection`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ForceKnockdownDirection {
@@ -13899,6 +29934,30 @@ pub enum ForceKnockdownDirection {
     Right,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ForceKnockdownDirection {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "Forward" => Self::Forward,
+            "Backward" => Self::Backward,
+            "Left" => Self::Left,
+            "Right" => Self::Right,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ForceKnockdownDirection {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `ForceReactionFilterType`
@@ -13922,6 +29981,32 @@ pub enum ForceReactionFilterType {
     Unrecognized(String),
 }
 
+impl ForceReactionFilterType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Standing" => Self::Standing,
+            "Crouching" => Self::Crouching,
+            "Prone" => Self::Prone,
+            "JumpFallLand" => Self::JumpFallLand,
+            "Usable" => Self::Usable,
+            "EVA" => Self::EVA,
+            "Dead" => Self::Dead,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ForceReactionFilterType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `FriendlyFireType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum FriendlyFireType {
@@ -13935,6 +30020,28 @@ pub enum FriendlyFireType {
     Unrecognized(String),
 }
 
+impl FriendlyFireType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "Self" => Self::Self_,
+            "Team" => Self::Team,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for FriendlyFireType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `FuelTypes`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum FuelTypes {
@@ -13946,6 +30053,28 @@ pub enum FuelTypes {
     HydrogenFuel,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl FuelTypes {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "INVALID" => Self::INVALID,
+            "QuantumFuel" => Self::QuantumFuel,
+            "HydrogenFuel" => Self::HydrogenFuel,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for FuelTypes {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `GRID_TYPE`
@@ -13967,6 +30096,31 @@ pub enum GRID_TYPE {
     Unrecognized(String),
 }
 
+impl GRID_TYPE {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Global" => Self::Global,
+            "Planetary" => Self::Planetary,
+            "Small" => Self::Small,
+            "Medium" => Self::Medium,
+            "Large" => Self::Large,
+            "SolarSystem" => Self::SolarSystem,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for GRID_TYPE {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `GameplayTrigger_SelectionMode`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum GameplayTrigger_SelectionMode {
@@ -13980,6 +30134,28 @@ pub enum GameplayTrigger_SelectionMode {
     Unrecognized(String),
 }
 
+impl GameplayTrigger_SelectionMode {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "All" => Self::All,
+            "Any" => Self::Any,
+            "None" => Self::None,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for GameplayTrigger_SelectionMode {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `GameplayTrigger_Toggle`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum GameplayTrigger_Toggle {
@@ -13989,6 +30165,27 @@ pub enum GameplayTrigger_Toggle {
     Disable,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl GameplayTrigger_Toggle {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Enable" => Self::Enable,
+            "Disable" => Self::Disable,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for GameplayTrigger_Toggle {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `GenderType`
@@ -14002,6 +30199,28 @@ pub enum GenderType {
     Female,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl GenderType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "NotSet" => Self::NotSet,
+            "Male" => Self::Male,
+            "Female" => Self::Female,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for GenderType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `GeomForm`
@@ -14019,6 +30238,29 @@ pub enum GeomForm {
     Unrecognized(String),
 }
 
+impl GeomForm {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Vertices" => Self::Vertices,
+            "Edges" => Self::Edges,
+            "Surface" => Self::Surface,
+            "Volume" => Self::Volume,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for GeomForm {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `GeomType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum GeomType {
@@ -14032,6 +30274,29 @@ pub enum GeomType {
     Render,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl GeomType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "BoundingBox" => Self::BoundingBox,
+            "Physics" => Self::Physics,
+            "Render" => Self::Render,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for GeomType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `HUDPalleteEntry`
@@ -14059,6 +30324,34 @@ pub enum HUDPalleteEntry {
     Unrecognized(String),
 }
 
+impl HUDPalleteEntry {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Moderate" => Self::Moderate,
+            "Positive" => Self::Positive,
+            "Neutral" => Self::Neutral,
+            "Hostile" => Self::Hostile,
+            "Critical" => Self::Critical,
+            "Unknown" => Self::Unknown,
+            "Highlight" => Self::Highlight,
+            "Friendly" => Self::Friendly,
+            "SubItemTarget" => Self::SubItemTarget,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for HUDPalleteEntry {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `HandholdType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum HandholdType {
@@ -14072,6 +30365,28 @@ pub enum HandholdType {
     Unrecognized(String),
 }
 
+impl HandholdType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Fixed" => Self::Fixed,
+            "Cylinder" => Self::Cylinder,
+            "Corner" => Self::Corner,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for HandholdType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `HarvestableOverrideAreaType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum HarvestableOverrideAreaType {
@@ -14081,6 +30396,27 @@ pub enum HarvestableOverrideAreaType {
     ManualEntityLink,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl HarvestableOverrideAreaType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "AutoRegisterWithZoneHost" => Self::AutoRegisterWithZoneHost,
+            "ManualEntityLink" => Self::ManualEntityLink,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for HarvestableOverrideAreaType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `HintEventType`
@@ -14712,6 +31048,336 @@ pub enum HintEventType {
     Unrecognized(String),
 }
 
+impl HintEventType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "ActorStatusBuffApplied" => Self::ActorStatusBuffApplied,
+            "ActorStatusClothingChanged" => Self::ActorStatusClothingChanged,
+            "ActorStatusDeadlyInjuryStarted" => Self::ActorStatusDeadlyInjuryStarted,
+            "ActorStatusDigestionAbsorptionEmpty" => Self::ActorStatusDigestionAbsorptionEmpty,
+            "ActorStatusDownedEnter" => Self::ActorStatusDownedEnter,
+            "ActorStatusEffectArmsLockCannotClimbLadder" => Self::ActorStatusEffectArmsLockCannotClimbLadder,
+            "ActorStatusEffectArmsLockCannotMantle" => Self::ActorStatusEffectArmsLockCannotMantle,
+            "ActorStatusEffectArmsLockCannotSteerShip" => Self::ActorStatusEffectArmsLockCannotSteerShip,
+            "ActorStatusEffectArmsLockCannotRestrain" => Self::ActorStatusEffectArmsLockCannotRestrain,
+            "ActorStatusEffectArmsLockCannotTakeDown" => Self::ActorStatusEffectArmsLockCannotTakeDown,
+            "ActorStatusEffectArmsLockCannotUseMountedGun" => Self::ActorStatusEffectArmsLockCannotUseMountedGun,
+            "ActorStatusEffectArmsLockCannotUseTrolley" => Self::ActorStatusEffectArmsLockCannotUseTrolley,
+            "ActorStatusEffectArmsLockDropItem" => Self::ActorStatusEffectArmsLockDropItem,
+            "ActorStatusEffectArmsLockLowerWeapon" => Self::ActorStatusEffectArmsLockLowerWeapon,
+            "ActorStatusEffectArmsLockStart" => Self::ActorStatusEffectArmsLockStart,
+            "ActorStatusEffectBleedStart" => Self::ActorStatusEffectBleedStart,
+            "ActorStatusEffectProneLockStart" => Self::ActorStatusEffectProneLockStart,
+            "ActorStatusFoodDrinkItemHeld" => Self::ActorStatusFoodDrinkItemHeld,
+            "ActorStatusFoodDrinkItemInInventory" => Self::ActorStatusFoodDrinkItemInInventory,
+            "ActorStatusHospitalEnter" => Self::ActorStatusHospitalEnter,
+            "ActorStatusHospitalRoomReserved" => Self::ActorStatusHospitalRoomReserved,
+            "ActorStatusHungerThirstDamageStarted" => Self::ActorStatusHungerThirstDamageStarted,
+            "ActorStatusHungerThirstDeath" => Self::ActorStatusHungerThirstDeath,
+            "ActorStatusHungerThirstFull" => Self::ActorStatusHungerThirstFull,
+            "ActorStatusHungerThirstStatusStarted" => Self::ActorStatusHungerThirstStatusStarted,
+            "ActorStatusHyperthermiaDamageStarted" => Self::ActorStatusHyperthermiaDamageStarted,
+            "ActorStatusHyperthermiaStarted" => Self::ActorStatusHyperthermiaStarted,
+            "ActorStatusHypothermiaDamageStarted" => Self::ActorStatusHypothermiaDamageStarted,
+            "ActorStatusHypothermiaStarted" => Self::ActorStatusHypothermiaStarted,
+            "ActorStatusInjuryStarted" => Self::ActorStatusInjuryStarted,
+            "ActorStatusIntoxicatedEnter" => Self::ActorStatusIntoxicatedEnter,
+            "ActorStatusMajorInjuryStarted" => Self::ActorStatusMajorInjuryStarted,
+            "ActorStatusMedBedEnter" => Self::ActorStatusMedBedEnter,
+            "ActorStatusOverdoseDamageStarted" => Self::ActorStatusOverdoseDamageStarted,
+            "ActorStatusOverdoseDeath" => Self::ActorStatusOverdoseDeath,
+            "ActorStatusOverdoseEnter" => Self::ActorStatusOverdoseEnter,
+            "ActorStatusPITMenuDrugs" => Self::ActorStatusPITMenuDrugs,
+            "ActorStatusRespawnMedBed" => Self::ActorStatusRespawnMedBed,
+            "ActorStatusRespawnLocationSet" => Self::ActorStatusRespawnLocationSet,
+            "ActorStatusRespawnCriminal" => Self::ActorStatusRespawnCriminal,
+            "ActorStatusRespawnPrison" => Self::ActorStatusRespawnPrison,
+            "ActorStatusTemperatureAboveMaxResistance" => Self::ActorStatusTemperatureAboveMaxResistance,
+            "ActorStatusTemperatureBelowMinResistance" => Self::ActorStatusTemperatureBelowMinResistance,
+            "ActorStatusTemperatureDeath" => Self::ActorStatusTemperatureDeath,
+            "ActorStatusWearingHelmetConsume" => Self::ActorStatusWearingHelmetConsume,
+            "ActorStatusWearingNoUndersuitConsume" => Self::ActorStatusWearingNoUndersuitConsume,
+            "ActorStatusWeatherLocomotionEntered" => Self::ActorStatusWeatherLocomotionEntered,
+            "AlignShipForCargoTransfer" => Self::AlignShipForCargoTransfer,
+            "ASOPShipSpawned" => Self::ASOPShipSpawned,
+            "BodyCarry_Start" => Self::BodyCarry_Start,
+            "BodyDrag_Start" => Self::BodyDrag_Start,
+            "CargoTransferInterruptions" => Self::CargoTransferInterruptions,
+            "ChatOpened" => Self::ChatOpened,
+            "CollectCargoFromLoadingArea" => Self::CollectCargoFromLoadingArea,
+            "ConsumableFirstMiningConsumableBought" => Self::ConsumableFirstMiningConsumableBought,
+            "ConsumableFirstMiningWithConsumablesEquipped" => Self::ConsumableFirstMiningWithConsumablesEquipped,
+            "ConsumableMiningConsumableExpired" => Self::ConsumableMiningConsumableExpired,
+            "ConsumableMiningConsumableExpiredNoCharges" => Self::ConsumableMiningConsumableExpiredNoCharges,
+            "ConsumableMiningConsumableUsed" => Self::ConsumableMiningConsumableUsed,
+            "ContactsOpened" => Self::ContactsOpened,
+            "CustomizeACLoadoutMenuEntered" => Self::CustomizeACLoadoutMenuEntered,
+            "CustomizeSMLoadoutMenuEntered" => Self::CustomizeSMLoadoutMenuEntered,
+            "DeliverCargoToLoadingArea" => Self::DeliverCargoToLoadingArea,
+            "FPSMiningAttachmentPurchased" => Self::FPSMiningAttachmentPurchased,
+            "FPSMiningFinishedRockScan" => Self::FPSMiningFinishedRockScan,
+            "FPSMiningRockFracturedBad" => Self::FPSMiningRockFracturedBad,
+            "FPSMiningRockFracturedGood" => Self::FPSMiningRockFracturedGood,
+            "FPSMiningRockNearby" => Self::FPSMiningRockNearby,
+            "FPSMiningRockPowerDangerLevel" => Self::FPSMiningRockPowerDangerLevel,
+            "FPSMiningRockPowerOptimalLevel" => Self::FPSMiningRockPowerOptimalLevel,
+            "FPSMiningRockTargetedNotADS" => Self::FPSMiningRockTargetedNotADS,
+            "FPSMiningShotEnvironment" => Self::FPSMiningShotEnvironment,
+            "FPSMiningShotRockADS" => Self::FPSMiningShotRockADS,
+            "FPSMiningWeaponSelected" => Self::FPSMiningWeaponSelected,
+            "GreenZoneEntered" => Self::GreenZoneEntered,
+            "GreenZoneExited" => Self::GreenZoneExited,
+            "HailCargoServicesForLoading" => Self::HailCargoServicesForLoading,
+            "HarvestableInHandBackpackNotFull" => Self::HarvestableInHandBackpackNotFull,
+            "HarvestableNotInHand" => Self::HarvestableNotInHand,
+            "HarvestablePlayerLooksAtHarvestableBackpackNotFull" => Self::HarvestablePlayerLooksAtHarvestableBackpackNotFull,
+            "HarvestablePlayerLooksAtHarvestableNoBackpack" => Self::HarvestablePlayerLooksAtHarvestableNoBackpack,
+            "HintAreaEntered" => Self::HintAreaEntered,
+            "HintAreaExited" => Self::HintAreaExited,
+            "HullC_CargoRequiresSpindlesExtended" => Self::HullC_CargoRequiresSpindlesExtended,
+            "InGameStateBegin" => Self::InGameStateBegin,
+            "InteractionModeEntered" => Self::InteractionModeEntered,
+            "InteractionModeExited" => Self::InteractionModeExited,
+            "InteractionConditionGeneric" => Self::InteractionConditionGeneric,
+            "InteractionConditionSpecific" => Self::InteractionConditionSpecific,
+            "KnockdownStarted" => Self::KnockdownStarted,
+            "LegallyLandedShipStarted" => Self::LegallyLandedShipStarted,
+            "LogoutEntered" => Self::LogoutEntered,
+            "LogoutEnteredNonOwned" => Self::LogoutEnteredNonOwned,
+            "LogoutEnteredNoPlayersAround" => Self::LogoutEnteredNoPlayersAround,
+            "LogoutEnteredPlayersAround" => Self::LogoutEnteredPlayersAround,
+            "LogoutEnteredPlayersInShip" => Self::LogoutEnteredPlayersInShip,
+            "LogoutRespawnFailed" => Self::LogoutRespawnFailed,
+            "LogoutEnteredShipInShip" => Self::LogoutEnteredShipInShip,
+            "LogoutEnteredNonPersistent" => Self::LogoutEnteredNonPersistent,
+            "MedBeamEquippedMedgun" => Self::MedBeamEquippedMedgun,
+            "MedBeamEquippedMultiTool" => Self::MedBeamEquippedMultiTool,
+            "MedBeamSelfHealPrompt" => Self::MedBeamSelfHealPrompt,
+            "MedBeamSelfHealDescription" => Self::MedBeamSelfHealDescription,
+            "MedBeamValidTargetAcquired" => Self::MedBeamValidTargetAcquired,
+            "MedBeamValidTargetAcquiredIsHurt" => Self::MedBeamValidTargetAcquiredIsHurt,
+            "MedBeamBDLTooHighMedgun" => Self::MedBeamBDLTooHighMedgun,
+            "MedBeamBDLTooHighMultiTool" => Self::MedBeamBDLTooHighMultiTool,
+            "MedBeamMedgunToggleAdvancedMode" => Self::MedBeamMedgunToggleAdvancedMode,
+            "MedBeamMedgunOnAdvancedModeActivated" => Self::MedBeamMedgunOnAdvancedModeActivated,
+            "MedBeamMedgunAdvancedModeButtons" => Self::MedBeamMedgunAdvancedModeButtons,
+            "MedBeamMedgunAdvancedModeSafeBDLBypass" => Self::MedBeamMedgunAdvancedModeSafeBDLBypass,
+            "MedBeamMedgunAdvancedModeCriticalBDLBypass" => Self::MedBeamMedgunAdvancedModeCriticalBDLBypass,
+            "MedBedClearAllRespawns" => Self::MedBedClearAllRespawns,
+            "MedBedEraseDNA" => Self::MedBedEraseDNA,
+            "MedBedRespawnNotAvailable" => Self::MedBedRespawnNotAvailable,
+            "MedBedRespawnOutOfRange" => Self::MedBedRespawnOutOfRange,
+            "MedBedUploadDNA" => Self::MedBedUploadDNA,
+            "MedpenStabBlockedInGreenZone" => Self::MedpenStabBlockedInGreenZone,
+            "MeleeEquip" => Self::MeleeEquip,
+            "MeleeLightAttacks" => Self::MeleeLightAttacks,
+            "MeleeHooks" => Self::MeleeHooks,
+            "MeleeHaymaker" => Self::MeleeHaymaker,
+            "MeleeUppercut" => Self::MeleeUppercut,
+            "MeleeCombinationAttacks" => Self::MeleeCombinationAttacks,
+            "MeleeBlocking" => Self::MeleeBlocking,
+            "MeleeDodging" => Self::MeleeDodging,
+            "MeleeStun" => Self::MeleeStun,
+            "MeleeKnifeEquip" => Self::MeleeKnifeEquip,
+            "MeleeKnifeLight" => Self::MeleeKnifeLight,
+            "MeleeKnifeHeavy" => Self::MeleeKnifeHeavy,
+            "MeleeTakedownGun" => Self::MeleeTakedownGun,
+            "MeleeTakedownFists" => Self::MeleeTakedownFists,
+            "MeleeTakedownWeapon" => Self::MeleeTakedownWeapon,
+            "MeleeTakedownStop" => Self::MeleeTakedownStop,
+            "MFDFocusEntered" => Self::MFDFocusEntered,
+            "MFDFocusExited" => Self::MFDFocusExited,
+            "MiningExtractableRockTargeted" => Self::MiningExtractableRockTargeted,
+            "MiningFracturableRockTargeted" => Self::MiningFracturableRockTargeted,
+            "MiningModeSwitch" => Self::MiningModeSwitch,
+            "MiningNoProgress" => Self::MiningNoProgress,
+            "MiningRadarBlobFound" => Self::MiningRadarBlobFound,
+            "MiningRockExtracted" => Self::MiningRockExtracted,
+            "MiningRockFractured" => Self::MiningRockFractured,
+            "MiningRockInPassiveRadar" => Self::MiningRockInPassiveRadar,
+            "MiningRockPowerDangerLevel" => Self::MiningRockPowerDangerLevel,
+            "MiningRockPowerOptimalLevel" => Self::MiningRockPowerOptimalLevel,
+            "MiningShipCargoFull" => Self::MiningShipCargoFull,
+            "MiningShipCargoHalfFull" => Self::MiningShipCargoHalfFull,
+            "MiningShipIsFlightReady" => Self::MiningShipIsFlightReady,
+            "MiningShipLowMoonOrbit" => Self::MiningShipLowMoonOrbit,
+            "MobiGlasOpened" => Self::MobiGlasOpened,
+            "MobiGlasClosed" => Self::MobiGlasClosed,
+            "MobiGlasJournalOpened" => Self::MobiGlasJournalOpened,
+            "MobiGlasMissionManagerOpened" => Self::MobiGlasMissionManagerOpened,
+            "MonitoredZoneEntered" => Self::MonitoredZoneEntered,
+            "MonitoredZoneExited" => Self::MonitoredZoneExited,
+            "OxygenDroppedTo50pcHasCapsules" => Self::OxygenDroppedTo50pcHasCapsules,
+            "OxygenDroppedTo50pcNoCapsules" => Self::OxygenDroppedTo50pcNoCapsules,
+            "OxygenDroppedTo25pcHasCapsules" => Self::OxygenDroppedTo25pcHasCapsules,
+            "OxygenDroppedTo25pcNoCapsules" => Self::OxygenDroppedTo25pcNoCapsules,
+            "OxygenRefilled" => Self::OxygenRefilled,
+            "PersonalInnerThoughtClosed" => Self::PersonalInnerThoughtClosed,
+            "PersonalInnerThoughtOpened" => Self::PersonalInnerThoughtOpened,
+            "PersonalInnerThoughtQuickSelectionMode" => Self::PersonalInnerThoughtQuickSelectionMode,
+            "PersonalInnerThoughtQuickSelectionWeaponsOpened" => Self::PersonalInnerThoughtQuickSelectionWeaponsOpened,
+            "PersonalInnerThoughtQuickSelectionModeOpened" => Self::PersonalInnerThoughtQuickSelectionModeOpened,
+            "PersonalInnerThoughtGreyedOutActions" => Self::PersonalInnerThoughtGreyedOutActions,
+            "PersonalInnerThoughtAddToFavorites" => Self::PersonalInnerThoughtAddToFavorites,
+            "PersonalInnerThoughtTriedToCustomizeDefaultActions" => Self::PersonalInnerThoughtTriedToCustomizeDefaultActions,
+            "PersonalInnerThoughtCancelRebind" => Self::PersonalInnerThoughtCancelRebind,
+            "PersonalInventoryBackpackFull" => Self::PersonalInventoryBackpackFull,
+            "PersonalInventoryHarvestableLootedIntoBackpack" => Self::PersonalInventoryHarvestableLootedIntoBackpack,
+            "PersonalInventoryItemStowed" => Self::PersonalInventoryItemStowed,
+            "PersonalInventoryShardLootedIntoBackpack" => Self::PersonalInventoryShardLootedIntoBackpack,
+            "PersonalInventoryHarvestableDirectlyStowedIntoBackpack" => Self::PersonalInventoryHarvestableDirectlyStowedIntoBackpack,
+            "PersonalInventoryUndersuitClothingIncompatible" => Self::PersonalInventoryUndersuitClothingIncompatible,
+            "PersonalInventoryOpen" => Self::PersonalInventoryOpen,
+            "PersonalInventoryHomeItemAdded" => Self::PersonalInventoryHomeItemAdded,
+            "PersonalInventoryItemPurchased" => Self::PersonalInventoryItemPurchased,
+            "PersonalInventoryContainerSizeLimits" => Self::PersonalInventoryContainerSizeLimits,
+            "PersonalInventoryContainerFull" => Self::PersonalInventoryContainerFull,
+            "PersonalInventoryVehicleEnter" => Self::PersonalInventoryVehicleEnter,
+            "PersonalInventoryOpenInVehicle" => Self::PersonalInventoryOpenInVehicle,
+            "PersonalInventoryVehicleStorageUsed" => Self::PersonalInventoryVehicleStorageUsed,
+            "PersonalInventoryVehicleDestroyed" => Self::PersonalInventoryVehicleDestroyed,
+            "PersonalInventoryOpenWithNoAvailableContainer" => Self::PersonalInventoryOpenWithNoAvailableContainer,
+            "PersonalInventoryInvalidClothingArmorEquip" => Self::PersonalInventoryInvalidClothingArmorEquip,
+            "PersonalInventoryOutOfRange" => Self::PersonalInventoryOutOfRange,
+            "PickupCollected" => Self::PickupCollected,
+            "PlayerCombatHealed" => Self::PlayerCombatHealed,
+            "PlayerEnteredEVA" => Self::PlayerEnteredEVA,
+            "PlayerGotAKill" => Self::PlayerGotAKill,
+            "PlayerLowHealth" => Self::PlayerLowHealth,
+            "PlayerPickupItem" => Self::PlayerPickupItem,
+            "PlayerStowItem" => Self::PlayerStowItem,
+            "PlayerThrewItem" => Self::PlayerThrewItem,
+            "PlayerWasKilled" => Self::PlayerWasKilled,
+            "PlayerWasKilledByGrenade" => Self::PlayerWasKilledByGrenade,
+            "PrivateMatchMenuEntered" => Self::PrivateMatchMenuEntered,
+            "RepairBeam_AmmoEmpty" => Self::RepairBeam_AmmoEmpty,
+            "RepairBeam_HullOverview" => Self::RepairBeam_HullOverview,
+            "RepairBeam_Repairing" => Self::RepairBeam_Repairing,
+            "RepairBeam_VehicleTargetAquired" => Self::RepairBeam_VehicleTargetAquired,
+            "RestrictedAreaTunnelActivatedLanding" => Self::RestrictedAreaTunnelActivatedLanding,
+            "RestrictedAreaTunnelActivatedTakeoff" => Self::RestrictedAreaTunnelActivatedTakeoff,
+            "RestrictedAreaTunnelEdge" => Self::RestrictedAreaTunnelEdge,
+            "RestrictedAreaTunnelNearby" => Self::RestrictedAreaTunnelNearby,
+            "SalvageBeam_AmmoFull" => Self::SalvageBeam_AmmoFull,
+            "SalvageBeam_HullOverview" => Self::SalvageBeam_HullOverview,
+            "SalvageBeam_MaterialDepleeted" => Self::SalvageBeam_MaterialDepleeted,
+            "SalvageBeam_Salvaging" => Self::SalvageBeam_Salvaging,
+            "SalvageBeam_VehicleTargetAquired" => Self::SalvageBeam_VehicleTargetAquired,
+            "SalvageRepairBeam_Shields" => Self::SalvageRepairBeam_Shields,
+            "SalvageRepairBeam_SwitchFireMode" => Self::SalvageRepairBeam_SwitchFireMode,
+            "ScanModeEntered" => Self::ScanModeEntered,
+            "ScanModeExited" => Self::ScanModeExited,
+            "ShipAfterburnerOn" => Self::ShipAfterburnerOn,
+            "ShipBoostOn" => Self::ShipBoostOn,
+            "ShipCollision" => Self::ShipCollision,
+            "ShipCritPartHealthDroppedTo25pc" => Self::ShipCritPartHealthDroppedTo25pc,
+            "ShipOverallHealthDroppedTo75pc" => Self::ShipOverallHealthDroppedTo75pc,
+            "ShipAnyPartAndItemDamaged" => Self::ShipAnyPartAndItemDamaged,
+            "ShipDecoupledOn" => Self::ShipDecoupledOn,
+            "ShipGSafeToggle" => Self::ShipGSafeToggle,
+            "ShipHitByGun" => Self::ShipHitByGun,
+            "ShipHitByMissile" => Self::ShipHitByMissile,
+            "ShipIsFlightReady" => Self::ShipIsFlightReady,
+            "ShipEnteringLandingArea" => Self::ShipEnteringLandingArea,
+            "ShipLandingGearRaised" => Self::ShipLandingGearRaised,
+            "ShipLandingGearLowered" => Self::ShipLandingGearLowered,
+            "ShipPitchedOrYawedOnce" => Self::ShipPitchedOrYawedOnce,
+            "ShipHydrogenFuelDroppedTo25pc" => Self::ShipHydrogenFuelDroppedTo25pc,
+            "ShipHydrogenFuelDroppedTo75pc" => Self::ShipHydrogenFuelDroppedTo75pc,
+            "ShipHydrogenFuelRefilled" => Self::ShipHydrogenFuelRefilled,
+            "ShipQuantumFuelDroppedTo25pc" => Self::ShipQuantumFuelDroppedTo25pc,
+            "ShipQuantumFuelDroppedTo75pc" => Self::ShipQuantumFuelDroppedTo75pc,
+            "ShipQuantumFuelRefilled" => Self::ShipQuantumFuelRefilled,
+            "ShipQuantumTravelObstructed" => Self::ShipQuantumTravelObstructed,
+            "ShipQuantumDriveSpoolingStarted" => Self::ShipQuantumDriveSpoolingStarted,
+            "ShipQuantumDriveSpoolingOff" => Self::ShipQuantumDriveSpoolingOff,
+            "ShipQuantumDriveTriedSpoolingInCooldown" => Self::ShipQuantumDriveTriedSpoolingInCooldown,
+            "ShipQuantumCalibrationStarted" => Self::ShipQuantumCalibrationStarted,
+            "ShipQuantumCalibrationCompletedButNotSpooled" => Self::ShipQuantumCalibrationCompletedButNotSpooled,
+            "ShipQuantumCalibrationStalled" => Self::ShipQuantumCalibrationStalled,
+            "ShipQuantumNoCalibrationButSpooled" => Self::ShipQuantumNoCalibrationButSpooled,
+            "ShipQuantumCalibratedSpooledAlone" => Self::ShipQuantumCalibratedSpooledAlone,
+            "ShipQuantumCalibratedSpooledInGroup" => Self::ShipQuantumCalibratedSpooledInGroup,
+            "ShipSeatEntered" => Self::ShipSeatEntered,
+            "ShipShieldsDown" => Self::ShipShieldsDown,
+            "ShipZoneEntered" => Self::ShipZoneEntered,
+            "ShipTakenOff" => Self::ShipTakenOff,
+            "ShipThrottledUpOnce" => Self::ShipThrottledUpOnce,
+            "ShipStartedPreRampUp" => Self::ShipStartedPreRampUp,
+            "ShipStartedQuantumTravel" => Self::ShipStartedQuantumTravel,
+            "ShipEndedQuantumTravel" => Self::ShipEndedQuantumTravel,
+            "ShipEndedPostRampDown" => Self::ShipEndedPostRampDown,
+            "ShipAbortedQuantumTravel" => Self::ShipAbortedQuantumTravel,
+            "ShipWeaponGroup2Fired" => Self::ShipWeaponGroup2Fired,
+            "ShipWeaponsFired" => Self::ShipWeaponsFired,
+            "ShipMissilesDroppedTo25pc" => Self::ShipMissilesDroppedTo25pc,
+            "ShipMissilesRefilled" => Self::ShipMissilesRefilled,
+            "ShipBulletsDroppedTo25pc" => Self::ShipBulletsDroppedTo25pc,
+            "ShipBulletsRefilled" => Self::ShipBulletsRefilled,
+            "ShoppingTryOnInspectEnter" => Self::ShoppingTryOnInspectEnter,
+            "ShoppingTryOnInspectExit" => Self::ShoppingTryOnInspectExit,
+            "SignatureSystemPingAngleChanged" => Self::SignatureSystemPingAngleChanged,
+            "SignatureSystemPingTriggered" => Self::SignatureSystemPingTriggered,
+            "SignatureSystemScanAbandonned" => Self::SignatureSystemScanAbandonned,
+            "SignatureSystemScanCompleted" => Self::SignatureSystemScanCompleted,
+            "SignatureSystemScanModeEntered" => Self::SignatureSystemScanModeEntered,
+            "SignatureSystemScanModeExited" => Self::SignatureSystemScanModeExited,
+            "SignatureSystemScanStarted" => Self::SignatureSystemScanStarted,
+            "SignatureSystemScanZoomChanged" => Self::SignatureSystemScanZoomChanged,
+            "SpawnPointEnter" => Self::SpawnPointEnter,
+            "SpawnPointExit" => Self::SpawnPointExit,
+            "StaminaDroppedTo90pc" => Self::StaminaDroppedTo90pc,
+            "StaminaDroppedTo25pc" => Self::StaminaDroppedTo25pc,
+            "StartGame" => Self::StartGame,
+            "TrackviewButtonPressedAllowSwitch" => Self::TrackviewButtonPressedAllowSwitch,
+            "TrackviewButtonPressedDontAllowSwitch" => Self::TrackviewButtonPressedDontAllowSwitch,
+            "TrackviewCameraSwitchTimeOut" => Self::TrackviewCameraSwitchTimeOut,
+            "TrackviewCameraSwitchedTo1P" => Self::TrackviewCameraSwitchedTo1P,
+            "TractorBeamPlayerEquipped" => Self::TractorBeamPlayerEquipped,
+            "TractorBeamTetheredToTarget" => Self::TractorBeamTetheredToTarget,
+            "TractorBeamDistControlUsed" => Self::TractorBeamDistControlUsed,
+            "TractorBeamTetherBrokenDistance" => Self::TractorBeamTetherBrokenDistance,
+            "TractorBeamTargetedTooHeavyObject" => Self::TractorBeamTargetedTooHeavyObject,
+            "TractorBeamTargetedTooLargeObject" => Self::TractorBeamTargetedTooLargeObject,
+            "TractorBeamEnteredZeroG" => Self::TractorBeamEnteredZeroG,
+            "TractorBeamLineOfSightBroken" => Self::TractorBeamLineOfSightBroken,
+            "TractorBeamTetherBrokenFastMovement" => Self::TractorBeamTetherBrokenFastMovement,
+            "UnboundKeyShown" => Self::UnboundKeyShown,
+            "UsableEntered" => Self::UsableEntered,
+            "UsableExited" => Self::UsableExited,
+            "VolatileCargoCollected" => Self::VolatileCargoCollected,
+            "VolatileCargoCollectedFirstTime" => Self::VolatileCargoCollectedFirstTime,
+            "VolatileCargoCritical" => Self::VolatileCargoCritical,
+            "VolatileCargoExplodedNoDeath" => Self::VolatileCargoExplodedNoDeath,
+            "VolatileCargoJettisoned" => Self::VolatileCargoJettisoned,
+            "VolatileCargoLightOnCritical" => Self::VolatileCargoLightOnCritical,
+            "VolatileCargoLightOnWarning" => Self::VolatileCargoLightOnWarning,
+            "WantedLevelIncreased" => Self::WantedLevelIncreased,
+            "WeaponADSActivateNightvision" => Self::WeaponADSActivateNightvision,
+            "WeaponADSActivateZoom" => Self::WeaponADSActivateZoom,
+            "WeaponADSUsed" => Self::WeaponADSUsed,
+            "WeaponADSZoomedOut" => Self::WeaponADSZoomedOut,
+            "WeaponZeroingEnteredADSManual" => Self::WeaponZeroingEnteredADSManual,
+            "WeaponZeroingEnteredADSAuto" => Self::WeaponZeroingEnteredADSAuto,
+            "WeaponZeroingAutoSet" => Self::WeaponZeroingAutoSet,
+            "EVENTSCOUNT" => Self::EVENTSCOUNT,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for HintEventType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `HitReactionPart`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum HitReactionPart {
@@ -14729,6 +31395,30 @@ pub enum HitReactionPart {
     Unrecognized(String),
 }
 
+impl HitReactionPart {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Head" => Self::Head,
+            "Torso" => Self::Torso,
+            "Crotch" => Self::Crotch,
+            "LegLeft" => Self::LegLeft,
+            "LegRight" => Self::LegRight,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for HitReactionPart {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `HitReactionRegion`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum HitReactionRegion {
@@ -14740,6 +31430,28 @@ pub enum HitReactionRegion {
     LowerBody,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl HitReactionRegion {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Head" => Self::Head,
+            "UpperBody" => Self::UpperBody,
+            "LowerBody" => Self::LowerBody,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for HitReactionRegion {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `HospitalizationReason`
@@ -14763,6 +31475,32 @@ pub enum HospitalizationReason {
     Unrecognized(String),
 }
 
+impl HospitalizationReason {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "none" => Self::none,
+            "selfCheckin" => Self::selfCheckin,
+            "died" => Self::died,
+            "injuredAndBroughtToHangar" => Self::injuredAndBroughtToHangar,
+            "incapacitatedAndBroughtToHangar" => Self::incapacitatedAndBroughtToHangar,
+            "incapacitatedInLandingZone" => Self::incapacitatedInLandingZone,
+            "incapacitatedAndBroughtToHospital" => Self::incapacitatedAndBroughtToHospital,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for HospitalizationReason {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `Hostility`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum Hostility {
@@ -14774,6 +31512,28 @@ pub enum Hostility {
     Friendly,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl Hostility {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Hostile" => Self::Hostile,
+            "Neutral" => Self::Neutral,
+            "Friendly" => Self::Friendly,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for Hostility {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `IconShowCondition`
@@ -14797,6 +31557,32 @@ pub enum IconShowCondition {
     Unrecognized(String),
 }
 
+impl IconShowCondition {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "DefaultShowNever" => Self::DefaultShowNever,
+            "ShowAlways" => Self::ShowAlways,
+            "IsFPSRadar" => Self::IsFPSRadar,
+            "ContainsMatchingAmmo" => Self::ContainsMatchingAmmo,
+            "ContainsFPSDevice" => Self::ContainsFPSDevice,
+            "ContainsFPSConsumable" => Self::ContainsFPSConsumable,
+            "IsDeadOrIncapacitatedActor" => Self::IsDeadOrIncapacitatedActor,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for IconShowCondition {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `InnerThoughtDisplayType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum InnerThoughtDisplayType {
@@ -14808,6 +31594,28 @@ pub enum InnerThoughtDisplayType {
     ForeignOnly,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl InnerThoughtDisplayType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Show" => Self::Show,
+            "Hide" => Self::Hide,
+            "ForeignOnly" => Self::ForeignOnly,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for InnerThoughtDisplayType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `InnerThoughtJustification`
@@ -14823,6 +31631,28 @@ pub enum InnerThoughtJustification {
     Unrecognized(String),
 }
 
+impl InnerThoughtJustification {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Left" => Self::Left,
+            "Middle" => Self::Middle,
+            "Right" => Self::Right,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for InnerThoughtJustification {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `InnerThoughtOrientation`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum InnerThoughtOrientation {
@@ -14832,6 +31662,27 @@ pub enum InnerThoughtOrientation {
     FixedRotation,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl InnerThoughtOrientation {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "RotateToPlayer" => Self::RotateToPlayer,
+            "FixedRotation" => Self::FixedRotation,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for InnerThoughtOrientation {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `InnerThought_ForceCase`
@@ -14845,6 +31696,28 @@ pub enum InnerThought_ForceCase {
     Lower,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl InnerThought_ForceCase {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "Upper" => Self::Upper,
+            "Lower" => Self::Lower,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for InnerThought_ForceCase {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `InputDeviceType`
@@ -14870,6 +31743,33 @@ pub enum InputDeviceType {
     Unrecognized(String),
 }
 
+impl InputDeviceType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Keyboard" => Self::Keyboard,
+            "Mouse" => Self::Mouse,
+            "Joystick" => Self::Joystick,
+            "Gamepad" => Self::Gamepad,
+            "Headmounted" => Self::Headmounted,
+            "Count" => Self::Count,
+            "AllInputs" => Self::AllInputs,
+            "Unknown" => Self::Unknown,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for InputDeviceType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `InstancedInteriorSizeEnum`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum InstancedInteriorSizeEnum {
@@ -14885,6 +31785,29 @@ pub enum InstancedInteriorSizeEnum {
     Unrecognized(String),
 }
 
+impl InstancedInteriorSizeEnum {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Small" => Self::Small,
+            "Medium" => Self::Medium,
+            "Large" => Self::Large,
+            "XLarge" => Self::XLarge,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for InstancedInteriorSizeEnum {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `InteractionBindingsMethod`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum InteractionBindingsMethod {
@@ -14896,6 +31819,28 @@ pub enum InteractionBindingsMethod {
     States,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl InteractionBindingsMethod {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "Name" => Self::Name,
+            "States" => Self::States,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for InteractionBindingsMethod {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `InteractionGenericCursor`
@@ -14917,6 +31862,31 @@ pub enum InteractionGenericCursor {
     Unrecognized(String),
 }
 
+impl InteractionGenericCursor {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "SingleAction" => Self::SingleAction,
+            "MultiAction" => Self::MultiAction,
+            "Button" => Self::Button,
+            "Grab" => Self::Grab,
+            "Conversation" => Self::Conversation,
+            "Invalid" => Self::Invalid,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for InteractionGenericCursor {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `InteractionModifier`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum InteractionModifier {
@@ -14932,6 +31902,30 @@ pub enum InteractionModifier {
     EVA,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl InteractionModifier {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "DefaultStanding" => Self::DefaultStanding,
+            "Crouch" => Self::Crouch,
+            "Prone" => Self::Prone,
+            "Linked" => Self::Linked,
+            "EVA" => Self::EVA,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for InteractionModifier {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `InteractionPromptBoundTo`
@@ -14955,6 +31949,32 @@ pub enum InteractionPromptBoundTo {
     Unrecognized(String),
 }
 
+impl InteractionPromptBoundTo {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "ActorEyes" => Self::ActorEyes,
+            "EntityRoot" => Self::EntityRoot,
+            "TopBoundingBoxZSurface" => Self::TopBoundingBoxZSurface,
+            "NearestBoundingBoxSurface" => Self::NearestBoundingBoxSurface,
+            "NearestBoundingBoxIgnoreFurthestSurfaces" => Self::NearestBoundingBoxIgnoreFurthestSurfaces,
+            "InteractionPointFixedOffset" => Self::InteractionPointFixedOffset,
+            "Tmp_AngleConstraintForwardDirection" => Self::Tmp_AngleConstraintForwardDirection,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for InteractionPromptBoundTo {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `InteractionPromptStyle`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum InteractionPromptStyle {
@@ -14976,6 +31996,32 @@ pub enum InteractionPromptStyle {
     Unrecognized(String),
 }
 
+impl InteractionPromptStyle {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Prompt" => Self::Prompt,
+            "Text" => Self::Text,
+            "Highlight" => Self::Highlight,
+            "PromptAndText" => Self::PromptAndText,
+            "PromptAndHighlight" => Self::PromptAndHighlight,
+            "TextAndHighlight" => Self::TextAndHighlight,
+            "PromptAndTextAndHighlight" => Self::PromptAndTextAndHighlight,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for InteractionPromptStyle {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `InteractiveVariableLoopType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum InteractiveVariableLoopType {
@@ -14985,6 +32031,27 @@ pub enum InteractiveVariableLoopType {
     Loop,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl InteractiveVariableLoopType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "NoLoop" => Self::NoLoop,
+            "Loop" => Self::Loop,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for InteractiveVariableLoopType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `InterpolationMode`
@@ -15014,6 +32081,35 @@ pub enum InterpolationMode {
     Unrecognized(String),
 }
 
+impl InterpolationMode {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Linear" => Self::Linear,
+            "EaseInQuad" => Self::EaseInQuad,
+            "EaseOutQuad" => Self::EaseOutQuad,
+            "EaseInOutQuad" => Self::EaseInOutQuad,
+            "EaseInCubic" => Self::EaseInCubic,
+            "EaseOutCubic" => Self::EaseOutCubic,
+            "EaseInOutCubic" => Self::EaseInOutCubic,
+            "EaseInExpo" => Self::EaseInExpo,
+            "EaseOutExpo" => Self::EaseOutExpo,
+            "EaseInOutExpo" => Self::EaseInOutExpo,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for InterpolationMode {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ItemExpiryState`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ItemExpiryState {
@@ -15025,6 +32121,28 @@ pub enum ItemExpiryState {
     Expired,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ItemExpiryState {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Idle" => Self::Idle,
+            "Expiring" => Self::Expiring,
+            "Expired" => Self::Expired,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ItemExpiryState {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `ItemJumpDriveState`
@@ -15052,6 +32170,34 @@ pub enum ItemJumpDriveState {
     Unrecognized(String),
 }
 
+impl ItemJumpDriveState {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Idle" => Self::Idle,
+            "EntryChecks" => Self::EntryChecks,
+            "Tuning" => Self::Tuning,
+            "RequestingJump" => Self::RequestingJump,
+            "WaitingForOpen" => Self::WaitingForOpen,
+            "Entering" => Self::Entering,
+            "Transiting" => Self::Transiting,
+            "Exiting" => Self::Exiting,
+            "Failing" => Self::Failing,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ItemJumpDriveState {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ItemKioskMode`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ItemKioskMode {
@@ -15069,6 +32215,30 @@ pub enum ItemKioskMode {
     Unrecognized(String),
 }
 
+impl ItemKioskMode {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Commodity" => Self::Commodity,
+            "Reference" => Self::Reference,
+            "Vehicle" => Self::Vehicle,
+            "Player" => Self::Player,
+            "Refinery" => Self::Refinery,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ItemKioskMode {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ItemResourceDeltaType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ItemResourceDeltaType {
@@ -15084,6 +32254,30 @@ pub enum ItemResourceDeltaType {
     NetworkReflection,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ItemResourceDeltaType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Consumption" => Self::Consumption,
+            "Generation" => Self::Generation,
+            "Storage" => Self::Storage,
+            "Conversion" => Self::Conversion,
+            "NetworkReflection" => Self::NetworkReflection,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ItemResourceDeltaType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `ItemResourceTypes`
@@ -15109,6 +32303,33 @@ pub enum ItemResourceTypes {
     Unrecognized(String),
 }
 
+impl ItemResourceTypes {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Vent" => Self::Vent,
+            "LifeSupport" => Self::LifeSupport,
+            "Light" => Self::Light,
+            "HeatSource" => Self::HeatSource,
+            "Cooler" => Self::Cooler,
+            "Relay" => Self::Relay,
+            "Misc" => Self::Misc,
+            "All" => Self::All,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ItemResourceTypes {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `JumpVariant`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum JumpVariant {
@@ -15126,6 +32347,31 @@ pub enum JumpVariant {
     LadderDisembark,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl JumpVariant {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Default" => Self::Default,
+            "Vault" => Self::Vault,
+            "ZeroG" => Self::ZeroG,
+            "KnockdownForward" => Self::KnockdownForward,
+            "KnockdownBackward" => Self::KnockdownBackward,
+            "LadderDisembark" => Self::LadderDisembark,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for JumpVariant {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `KeypadKeys`
@@ -15155,6 +32401,35 @@ pub enum KeypadKeys {
     Unrecognized(String),
 }
 
+impl KeypadKeys {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Key0" => Self::Key0,
+            "Key1" => Self::Key1,
+            "Key2" => Self::Key2,
+            "Key3" => Self::Key3,
+            "Key4" => Self::Key4,
+            "Key5" => Self::Key5,
+            "Key6" => Self::Key6,
+            "Key7" => Self::Key7,
+            "Key8" => Self::Key8,
+            "Key9" => Self::Key9,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for KeypadKeys {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `KioskShopType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum KioskShopType {
@@ -15166,6 +32441,28 @@ pub enum KioskShopType {
     Refinery,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl KioskShopType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Commodity" => Self::Commodity,
+            "ShipItem" => Self::ShipItem,
+            "Refinery" => Self::Refinery,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for KioskShopType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `LadderAnimationClimbSpeed`
@@ -15181,6 +32478,28 @@ pub enum LadderAnimationClimbSpeed {
     Unrecognized(String),
 }
 
+impl LadderAnimationClimbSpeed {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Walk" => Self::Walk,
+            "Run" => Self::Run,
+            "Sprint" => Self::Sprint,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for LadderAnimationClimbSpeed {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `LandingCondition`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum LandingCondition {
@@ -15190,6 +32509,27 @@ pub enum LandingCondition {
     ADSTriggered,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl LandingCondition {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "ADSTriggered" => Self::ADSTriggered,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for LandingCondition {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `LandingExitStance`
@@ -15207,6 +32547,29 @@ pub enum LandingExitStance {
     Unrecognized(String),
 }
 
+impl LandingExitStance {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Stand" => Self::Stand,
+            "Crouch" => Self::Crouch,
+            "Prone" => Self::Prone,
+            "ProneBack" => Self::ProneBack,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for LandingExitStance {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `LandingStrength`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum LandingStrength {
@@ -15220,6 +32583,29 @@ pub enum LandingStrength {
     Impact,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl LandingStrength {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Light" => Self::Light,
+            "Medium" => Self::Medium,
+            "Heavy" => Self::Heavy,
+            "Impact" => Self::Impact,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for LandingStrength {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `LeanStateType`
@@ -15247,6 +32633,34 @@ pub enum LeanStateType {
     Unrecognized(String),
 }
 
+impl LeanStateType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Idle" => Self::Idle,
+            "LeanLeft" => Self::LeanLeft,
+            "LeanRight" => Self::LeanRight,
+            "LeftToIdle" => Self::LeftToIdle,
+            "IdleToLeft" => Self::IdleToLeft,
+            "IdleToRight" => Self::IdleToRight,
+            "RightToIdle" => Self::RightToIdle,
+            "LeftToRight" => Self::LeftToRight,
+            "RightToLeft" => Self::RightToLeft,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for LeanStateType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `LedgeType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum LedgeType {
@@ -15258,6 +32672,28 @@ pub enum LedgeType {
     Vault,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl LedgeType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Any" => Self::Any,
+            "Mantle" => Self::Mantle,
+            "Vault" => Self::Vault,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for LedgeType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `LegacyCraftingPortMode`
@@ -15273,6 +32709,28 @@ pub enum LegacyCraftingPortMode {
     Unrecognized(String),
 }
 
+impl LegacyCraftingPortMode {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Both" => Self::Both,
+            "Input" => Self::Input,
+            "Output" => Self::Output,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for LegacyCraftingPortMode {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `LevelStreamingMode`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum LevelStreamingMode {
@@ -15284,6 +32742,28 @@ pub enum LevelStreamingMode {
     ForTesting,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl LevelStreamingMode {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Never" => Self::Never,
+            "Always" => Self::Always,
+            "ForTesting" => Self::ForTesting,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for LevelStreamingMode {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `LightProperties`
@@ -15301,6 +32781,29 @@ pub enum LightProperties {
     Unrecognized(String),
 }
 
+impl LightProperties {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Radius" => Self::Radius,
+            "DiffuseColor" => Self::DiffuseColor,
+            "Intensity" => Self::Intensity,
+            "UNDEFINED" => Self::UNDEFINED,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for LightProperties {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `LightningStrengthPropertyType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum LightningStrengthPropertyType {
@@ -15310,6 +32813,27 @@ pub enum LightningStrengthPropertyType {
     ElectricalCharge,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl LightningStrengthPropertyType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Distance" => Self::Distance,
+            "ElectricalCharge" => Self::ElectricalCharge,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for LightningStrengthPropertyType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `LinkedStatReverseSignFlag`
@@ -15327,6 +32851,29 @@ pub enum LinkedStatReverseSignFlag {
     Unrecognized(String),
 }
 
+impl LinkedStatReverseSignFlag {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "AlwaysPositive" => Self::AlwaysPositive,
+            "AlwaysNegative" => Self::AlwaysNegative,
+            "ReverseSign" => Self::ReverseSign,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for LinkedStatReverseSignFlag {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `LocalizationAvailability`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum LocalizationAvailability {
@@ -15338,6 +32885,28 @@ pub enum LocalizationAvailability {
     Removed,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl LocalizationAvailability {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Available" => Self::Available,
+            "PendingRemoval" => Self::PendingRemoval,
+            "Removed" => Self::Removed,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for LocalizationAvailability {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `LocalizationLabel`
@@ -15355,6 +32924,30 @@ pub enum LocalizationLabel {
     PU_NotPublic,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl LocalizationLabel {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "PU" => Self::PU,
+            "S42" => Self::S42,
+            "Common" => Self::Common,
+            "PU_NotPublic" => Self::PU_NotPublic,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for LocalizationLabel {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `LocalizationLanguage`
@@ -15388,6 +32981,38 @@ pub enum LocalizationLanguage {
     es419,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl LocalizationLanguage {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "enUS" => Self::enUS,
+            "zhHans" => Self::zhHans,
+            "zhHant" => Self::zhHant,
+            "frFR" => Self::frFR,
+            "deDE" => Self::deDE,
+            "itIT" => Self::itIT,
+            "jaJP" => Self::jaJP,
+            "koKR" => Self::koKR,
+            "plPL" => Self::plPL,
+            "ptBR" => Self::ptBR,
+            "esES" => Self::esES,
+            "es419" => Self::es419,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for LocalizationLanguage {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `LocalizationStatus`
@@ -15427,6 +33052,40 @@ pub enum LocalizationStatus {
     Unrecognized(String),
 }
 
+impl LocalizationStatus {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "WorkInProgress" => Self::WorkInProgress,
+            "ReadyForText" => Self::ReadyForText,
+            "TextApproved" => Self::TextApproved,
+            "Transcribed" => Self::Transcribed,
+            "LocalizationPreRequested" => Self::LocalizationPreRequested,
+            "LocalizationRequested" => Self::LocalizationRequested,
+            "LocalizationRequestRejected" => Self::LocalizationRequestRejected,
+            "LocalizationInProgress" => Self::LocalizationInProgress,
+            "LocalizationNeedsReview" => Self::LocalizationNeedsReview,
+            "LocalizationPassedReview" => Self::LocalizationPassedReview,
+            "LocalizationFailedReview" => Self::LocalizationFailedReview,
+            "DoNotLocalize" => Self::DoNotLocalize,
+            "LocalizationSourceUpdated" => Self::LocalizationSourceUpdated,
+            "LocalizationQAChecked" => Self::LocalizationQAChecked,
+            "LocalizationFinalTranslation" => Self::LocalizationFinalTranslation,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for LocalizationStatus {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `LocalizationUse`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum LocalizationUse {
@@ -15438,6 +33097,28 @@ pub enum LocalizationUse {
     DialogueAnimation,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl LocalizationUse {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "General" => Self::General,
+            "Dialogue" => Self::Dialogue,
+            "DialogueAnimation" => Self::DialogueAnimation,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for LocalizationUse {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `MapDisplayFrameType`
@@ -15459,6 +33140,31 @@ pub enum MapDisplayFrameType {
     Unrecognized(String),
 }
 
+impl MapDisplayFrameType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Rectangle2D" => Self::Rectangle2D,
+            "Rectangle2DRTT" => Self::Rectangle2DRTT,
+            "Ellipse2D" => Self::Ellipse2D,
+            "Ellipse2DRTT" => Self::Ellipse2DRTT,
+            "Sphere3D" => Self::Sphere3D,
+            "None" => Self::None,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for MapDisplayFrameType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `MapMarkerTrackingPlaneAlignmentMode`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum MapMarkerTrackingPlaneAlignmentMode {
@@ -15468,6 +33174,27 @@ pub enum MapMarkerTrackingPlaneAlignmentMode {
     Player,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl MapMarkerTrackingPlaneAlignmentMode {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "GalacticPlane" => Self::GalacticPlane,
+            "Player" => Self::Player,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for MapMarkerTrackingPlaneAlignmentMode {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `MapRadarMode`
@@ -15483,6 +33210,28 @@ pub enum MapRadarMode {
     Unrecognized(String),
 }
 
+impl MapRadarMode {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "FullScreen" => Self::FullScreen,
+            "Landing" => Self::Landing,
+            "Small" => Self::Small,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for MapRadarMode {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `MarkerClippingVolumeType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum MarkerClippingVolumeType {
@@ -15496,6 +33245,29 @@ pub enum MarkerClippingVolumeType {
     Camera,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl MarkerClippingVolumeType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Sphere" => Self::Sphere,
+            "Cuboid" => Self::Cuboid,
+            "Frustum" => Self::Frustum,
+            "Camera" => Self::Camera,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for MarkerClippingVolumeType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `MarkerTrackingActions`
@@ -15517,6 +33289,32 @@ pub enum MarkerTrackingActions {
     QuantumTravel,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl MarkerTrackingActions {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "SelectMarker" => Self::SelectMarker,
+            "FocusMarker" => Self::FocusMarker,
+            "LockTarget" => Self::LockTarget,
+            "PinTarget" => Self::PinTarget,
+            "HailContact" => Self::HailContact,
+            "QuantumTravel" => Self::QuantumTravel,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for MarkerTrackingActions {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `Marker_ARCullingCategory`
@@ -15552,6 +33350,38 @@ pub enum Marker_ARCullingCategory {
     Unrecognized(String),
 }
 
+impl Marker_ARCullingCategory {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Unassigned" => Self::Unassigned,
+            "Special_Hostile" => Self::Special_Hostile,
+            "UnattendedVehicle" => Self::UnattendedVehicle,
+            "Vehicle" => Self::Vehicle,
+            "Vehicle_Ground" => Self::Vehicle_Ground,
+            "Actor" => Self::Actor,
+            "Turret" => Self::Turret,
+            "Navpoint" => Self::Navpoint,
+            "Mineable" => Self::Mineable,
+            "Creature" => Self::Creature,
+            "Placeholder1" => Self::Placeholder1,
+            "Placeholder2" => Self::Placeholder2,
+            "Placeholder3" => Self::Placeholder3,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for Marker_ARCullingCategory {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `Marker_DisplayMode`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum Marker_DisplayMode {
@@ -15561,6 +33391,27 @@ pub enum Marker_DisplayMode {
     VehicleSeat,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl Marker_DisplayMode {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "FPS" => Self::FPS,
+            "VehicleSeat" => Self::VehicleSeat,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for Marker_DisplayMode {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `Marker_MapBoxoutSectionType`
@@ -15574,6 +33425,28 @@ pub enum Marker_MapBoxoutSectionType {
     Jurisdiction,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl Marker_MapBoxoutSectionType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Amenities" => Self::Amenities,
+            "Galactapedia" => Self::Galactapedia,
+            "Jurisdiction" => Self::Jurisdiction,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for Marker_MapBoxoutSectionType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `Marker_MapDisplayMode`
@@ -15593,6 +33466,30 @@ pub enum Marker_MapDisplayMode {
     Unrecognized(String),
 }
 
+impl Marker_MapDisplayMode {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "DefaultRadar" => Self::DefaultRadar,
+            "DefaultStarmap" => Self::DefaultStarmap,
+            "JumpTunnelRadar" => Self::JumpTunnelRadar,
+            "JumpTunnelStarmap" => Self::JumpTunnelStarmap,
+            "None" => Self::None,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for Marker_MapDisplayMode {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `Marker_MapLabelDisplayType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum Marker_MapLabelDisplayType {
@@ -15606,6 +33503,29 @@ pub enum Marker_MapLabelDisplayType {
     OnSelected,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl Marker_MapLabelDisplayType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Always" => Self::Always,
+            "OnInteracted" => Self::OnInteracted,
+            "OnParentSurface" => Self::OnParentSurface,
+            "OnSelected" => Self::OnSelected,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for Marker_MapLabelDisplayType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `Marker_StackPositionAlignment`
@@ -15623,6 +33543,30 @@ pub enum Marker_StackPositionAlignment {
     TopAndBottom,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl Marker_StackPositionAlignment {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Origin" => Self::Origin,
+            "Top" => Self::Top,
+            "Center" => Self::Center,
+            "Bottom" => Self::Bottom,
+            "TopAndBottom" => Self::TopAndBottom,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for Marker_StackPositionAlignment {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `MaterialProperties`
@@ -15648,6 +33592,33 @@ pub enum MaterialProperties {
     Unrecognized(String),
 }
 
+impl MaterialProperties {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Glow" => Self::Glow,
+            "Wear" => Self::Wear,
+            "Dirt" => Self::Dirt,
+            "Damage" => Self::Damage,
+            "Interference" => Self::Interference,
+            "Dissolve" => Self::Dissolve,
+            "Wetness" => Self::Wetness,
+            "UNDEFINED" => Self::UNDEFINED,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for MaterialProperties {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `MedBedTier`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum MedBedTier {
@@ -15659,6 +33630,28 @@ pub enum MedBedTier {
     Ambulance,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl MedBedTier {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Hospital" => Self::Hospital,
+            "Clinic" => Self::Clinic,
+            "Ambulance" => Self::Ambulance,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for MedBedTier {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `MeleeAttackClass`
@@ -15674,6 +33667,28 @@ pub enum MeleeAttackClass {
     Unrecognized(String),
 }
 
+impl MeleeAttackClass {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Basic" => Self::Basic,
+            "Synced" => Self::Synced,
+            "Any" => Self::Any,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for MeleeAttackClass {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `MeleeTargetType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum MeleeTargetType {
@@ -15685,6 +33700,28 @@ pub enum MeleeTargetType {
     Aerial,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl MeleeTargetType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Any" => Self::Any,
+            "Ground" => Self::Ground,
+            "Aerial" => Self::Aerial,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for MeleeTargetType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `MessageState`
@@ -15700,6 +33737,28 @@ pub enum MessageState {
     Unrecognized(String),
 }
 
+impl MessageState {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Normal" => Self::Normal,
+            "Moderate" => Self::Moderate,
+            "Critical" => Self::Critical,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for MessageState {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `MinimumInfluenceFactorOperation`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum MinimumInfluenceFactorOperation {
@@ -15709,6 +33768,27 @@ pub enum MinimumInfluenceFactorOperation {
     TimesGreater,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl MinimumInfluenceFactorOperation {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "GreaterThan" => Self::GreaterThan,
+            "TimesGreater" => Self::TimesGreater,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for MinimumInfluenceFactorOperation {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `MissionLocationTagType`
@@ -15722,6 +33802,28 @@ pub enum MissionLocationTagType {
     Consumes,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl MissionLocationTagType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "General" => Self::General,
+            "Produces" => Self::Produces,
+            "Consumes" => Self::Consumes,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for MissionLocationTagType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `Month`
@@ -15755,6 +33857,37 @@ pub enum Month {
     Unrecognized(String),
 }
 
+impl Month {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "January" => Self::January,
+            "February" => Self::February,
+            "March" => Self::March,
+            "April" => Self::April,
+            "May" => Self::May,
+            "June" => Self::June,
+            "July" => Self::July,
+            "August" => Self::August,
+            "September" => Self::September,
+            "October" => Self::October,
+            "November" => Self::November,
+            "December" => Self::December,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for Month {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `MotionControlType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum MotionControlType {
@@ -15764,6 +33897,27 @@ pub enum MotionControlType {
     Entity,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl MotionControlType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Animation" => Self::Animation,
+            "Entity" => Self::Entity,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for MotionControlType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `MotionStateType`
@@ -15791,6 +33945,34 @@ pub enum MotionStateType {
     Unrecognized(String),
 }
 
+impl MotionStateType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Idle" => Self::Idle,
+            "Move" => Self::Move,
+            "IdleToMove" => Self::IdleToMove,
+            "MoveToIdle" => Self::MoveToIdle,
+            "Step" => Self::Step,
+            "Turn" => Self::Turn,
+            "Juke" => Self::Juke,
+            "InAirIdle" => Self::InAirIdle,
+            "InAirMove" => Self::InAirMove,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for MotionStateType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `MovementSet`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum MovementSet {
@@ -15812,6 +33994,33 @@ pub enum MovementSet {
     Stumble,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl MovementSet {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Inactive" => Self::Inactive,
+            "BodyCarry" => Self::BodyCarry,
+            "Drunk" => Self::Drunk,
+            "Effort" => Self::Effort,
+            "Hurt" => Self::Hurt,
+            "Movable" => Self::Movable,
+            "Standard" => Self::Standard,
+            "Stumble" => Self::Stumble,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for MovementSet {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `MovementSetCondition`
@@ -15839,6 +34048,34 @@ pub enum MovementSetCondition {
     Unrecognized(String),
 }
 
+impl MovementSetCondition {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "StateMovable" => Self::StateMovable,
+            "StateBodyCarry" => Self::StateBodyCarry,
+            "StateBodyDragging" => Self::StateBodyDragging,
+            "StateSubmerged" => Self::StateSubmerged,
+            "ForceBrace" => Self::ForceBrace,
+            "ForceLean" => Self::ForceLean,
+            "ForceStumble" => Self::ForceStumble,
+            "StatusHurt" => Self::StatusHurt,
+            "StatusDrunk" => Self::StatusDrunk,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for MovementSetCondition {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `MovementSpeed`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum MovementSpeed {
@@ -15856,6 +34093,31 @@ pub enum MovementSpeed {
     Sprint,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl MovementSpeed {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "WalkSlow" => Self::WalkSlow,
+            "WalkMid" => Self::WalkMid,
+            "WalkFast" => Self::WalkFast,
+            "RunSlow" => Self::RunSlow,
+            "RunFast" => Self::RunFast,
+            "Sprint" => Self::Sprint,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for MovementSpeed {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `NaturalMotionSpeed`
@@ -15885,6 +34147,35 @@ pub enum NaturalMotionSpeed {
     Unrecognized(String),
 }
 
+impl NaturalMotionSpeed {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "WalkSlow" => Self::WalkSlow,
+            "WalkMid" => Self::WalkMid,
+            "WalkFast" => Self::WalkFast,
+            "RunSlow" => Self::RunSlow,
+            "RunFast" => Self::RunFast,
+            "Sprint" => Self::Sprint,
+            "GreenZoneWalk" => Self::GreenZoneWalk,
+            "GreenZoneSprint" => Self::GreenZoneSprint,
+            "AimDownSight" => Self::AimDownSight,
+            "Conversation" => Self::Conversation,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for NaturalMotionSpeed {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `NavPointIconEnum`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum NavPointIconEnum {
@@ -15906,6 +34197,32 @@ pub enum NavPointIconEnum {
     Unrecognized(String),
 }
 
+impl NavPointIconEnum {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Default" => Self::Default,
+            "Star" => Self::Star,
+            "Planet" => Self::Planet,
+            "Moon" => Self::Moon,
+            "Station" => Self::Station,
+            "Outpost" => Self::Outpost,
+            "LandingZone" => Self::LandingZone,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for NavPointIconEnum {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ParticleAttachToZone`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ParticleAttachToZone {
@@ -15915,6 +34232,27 @@ pub enum ParticleAttachToZone {
     AboveParent,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ParticleAttachToZone {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Parent" => Self::Parent,
+            "AboveParent" => Self::AboveParent,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ParticleAttachToZone {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `ParticleCPUVisAreaCullingMode`
@@ -15930,6 +34268,28 @@ pub enum ParticleCPUVisAreaCullingMode {
     Unrecognized(String),
 }
 
+impl ParticleCPUVisAreaCullingMode {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "Local" => Self::Local,
+            "Dynamic" => Self::Dynamic,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ParticleCPUVisAreaCullingMode {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ParticleGPUVisAreaCullingMode`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ParticleGPUVisAreaCullingMode {
@@ -15943,6 +34303,29 @@ pub enum ParticleGPUVisAreaCullingMode {
     PerPixel,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ParticleGPUVisAreaCullingMode {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Default" => Self::Default,
+            "None" => Self::None,
+            "PerParticle" => Self::PerParticle,
+            "PerPixel" => Self::PerPixel,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ParticleGPUVisAreaCullingMode {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `ParticleTesselationOverride`
@@ -15964,6 +34347,31 @@ pub enum ParticleTesselationOverride {
     Unrecognized(String),
 }
 
+impl ParticleTesselationOverride {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Default" => Self::Default,
+            "Off" => Self::Off,
+            "Low" => Self::Low,
+            "Medium" => Self::Medium,
+            "High" => Self::High,
+            "Ultra" => Self::Ultra,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ParticleTesselationOverride {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `PersistentItemGameModeFlag`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum PersistentItemGameModeFlag {
@@ -15983,6 +34391,31 @@ pub enum PersistentItemGameModeFlag {
     Unrecognized(String),
 }
 
+impl PersistentItemGameModeFlag {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Any" => Self::Any,
+            "StarMarine" => Self::StarMarine,
+            "ArenaCommander" => Self::ArenaCommander,
+            "PersistentUniverse" => Self::PersistentUniverse,
+            "SubscriberExclusive" => Self::SubscriberExclusive,
+            "Prison" => Self::Prison,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for PersistentItemGameModeFlag {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `PersonalThoughtCameraEffets`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum PersonalThoughtCameraEffets {
@@ -16000,6 +34433,31 @@ pub enum PersonalThoughtCameraEffets {
     InventoryV4,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl PersonalThoughtCameraEffets {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "InnerThoughts" => Self::InnerThoughts,
+            "Inventory" => Self::Inventory,
+            "ExternalInventory" => Self::ExternalInventory,
+            "Looting" => Self::Looting,
+            "InventoryV4" => Self::InventoryV4,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for PersonalThoughtCameraEffets {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `PersonalThoughtContext`
@@ -16023,6 +34481,32 @@ pub enum PersonalThoughtContext {
     Unrecognized(String),
 }
 
+impl PersonalThoughtContext {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "EVA" => Self::EVA,
+            "Flight" => Self::Flight,
+            "GroundVehicle" => Self::GroundVehicle,
+            "OnFoot" => Self::OnFoot,
+            "Seated" => Self::Seated,
+            "Turret" => Self::Turret,
+            "Usable" => Self::Usable,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for PersonalThoughtContext {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `PickableCollision`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum PickableCollision {
@@ -16038,6 +34522,29 @@ pub enum PickableCollision {
     Unrecognized(String),
 }
 
+impl PickableCollision {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "Transparent" => Self::Transparent,
+            "Cutout" => Self::Cutout,
+            "Opaque" => Self::Opaque,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for PickableCollision {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `PlanetAreaFitting`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum PlanetAreaFitting {
@@ -16047,6 +34554,27 @@ pub enum PlanetAreaFitting {
     Tight,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl PlanetAreaFitting {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Loose" => Self::Loose,
+            "Tight" => Self::Tight,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for PlanetAreaFitting {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `PlanetAreaType`
@@ -16062,6 +34590,29 @@ pub enum PlanetAreaType {
     ExcludeFaunaOnly,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl PlanetAreaType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Hole" => Self::Hole,
+            "ExcludeLarge" => Self::ExcludeLarge,
+            "ExcludeAll" => Self::ExcludeAll,
+            "ExcludeFaunaOnly" => Self::ExcludeFaunaOnly,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for PlanetAreaType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `PostEffectParams`
@@ -16233,6 +34784,106 @@ pub enum PostEffectParams {
     Unrecognized(String),
 }
 
+impl PostEffectParams {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Global_DirectionalBlur_Vec" => Self::Global_DirectionalBlur_Vec,
+            "Blink_EyeClosure" => Self::Blink_EyeClosure,
+            "ColorGrading_Brightness" => Self::ColorGrading_Brightness,
+            "ColorGrading_Contrast" => Self::ColorGrading_Contrast,
+            "ColorGrading_Saturation" => Self::ColorGrading_Saturation,
+            "Dof_Active" => Self::Dof_Active,
+            "Dof_FocusDistance" => Self::Dof_FocusDistance,
+            "Dof_FocusRange" => Self::Dof_FocusRange,
+            "Dof_FocusMin" => Self::Dof_FocusMin,
+            "Dof_FocusMax" => Self::Dof_FocusMax,
+            "Dof_MaxCoC" => Self::Dof_MaxCoC,
+            "Dof_BlurAmount" => Self::Dof_BlurAmount,
+            "Dof_User_Active" => Self::Dof_User_Active,
+            "Dof_User_FocusDistance" => Self::Dof_User_FocusDistance,
+            "Dof_User_FocusRange" => Self::Dof_User_FocusRange,
+            "Dof_User_BlurAmount" => Self::Dof_User_BlurAmount,
+            "Dof_FocusMinZ" => Self::Dof_FocusMinZ,
+            "Dof_FocusMinZScale" => Self::Dof_FocusMinZScale,
+            "FilterChromaShift_User_Amount" => Self::FilterChromaShift_User_Amount,
+            "FilterArtifacts_ChromaShift" => Self::FilterArtifacts_ChromaShift,
+            "FilterGrain_Amount" => Self::FilterGrain_Amount,
+            "FilterArtifacts_Grain" => Self::FilterArtifacts_Grain,
+            "FilterArtifacts_GrainTile" => Self::FilterArtifacts_GrainTile,
+            "FilterBlurring_Amount" => Self::FilterBlurring_Amount,
+            "FilterRadialBlurring_Amount" => Self::FilterRadialBlurring_Amount,
+            "FilterRadialBlurring_ScreenPosX" => Self::FilterRadialBlurring_ScreenPosX,
+            "FilterRadialBlurring_ScreenPosY" => Self::FilterRadialBlurring_ScreenPosY,
+            "FilterRadialBlurring_Radius" => Self::FilterRadialBlurring_Radius,
+            "FlashBang_StartTime" => Self::FlashBang_StartTime,
+            "FlashBang_DifractionAmount" => Self::FlashBang_DifractionAmount,
+            "FlashBang_Time" => Self::FlashBang_Time,
+            "FlashBang_BlindAmount" => Self::FlashBang_BlindAmount,
+            "GForce_BlackoutValue" => Self::GForce_BlackoutValue,
+            "GForce_RedoutValue" => Self::GForce_RedoutValue,
+            "GForce_LatStressValue" => Self::GForce_LatStressValue,
+            "GForce_BlackoutRecovery" => Self::GForce_BlackoutRecovery,
+            "GForce_LatStressRecovery" => Self::GForce_LatStressRecovery,
+            "GForce_PulseAmplitude" => Self::GForce_PulseAmplitude,
+            "GForce_PulseMaskAmplitude" => Self::GForce_PulseMaskAmplitude,
+            "GForce_PulsePeriod" => Self::GForce_PulsePeriod,
+            "GForce_PulseDuration" => Self::GForce_PulseDuration,
+            "GForce_TunnelRadiusGrey" => Self::GForce_TunnelRadiusGrey,
+            "GForce_TunnelRadiusBlack" => Self::GForce_TunnelRadiusBlack,
+            "GForce_TunnelStrengthGrey" => Self::GForce_TunnelStrengthGrey,
+            "GForce_TunnelStrengthBlack" => Self::GForce_TunnelStrengthBlack,
+            "GForce_SaturationGrey" => Self::GForce_SaturationGrey,
+            "GForce_SaturationBlack" => Self::GForce_SaturationBlack,
+            "HudSilhouettes_Active" => Self::HudSilhouettes_Active,
+            "HudSilhouettes_Amount" => Self::HudSilhouettes_Amount,
+            "HudSilhouettes_FillStr" => Self::HudSilhouettes_FillStr,
+            "HudSilhouettes_EdgeWidth" => Self::HudSilhouettes_EdgeWidth,
+            "HudSilhouettes_BlurRadius" => Self::HudSilhouettes_BlurRadius,
+            "HudSilhouettes_Type" => Self::HudSilhouettes_Type,
+            "OcularMigraine_StrengthValue" => Self::OcularMigraine_StrengthValue,
+            "OcularMigraine_BlindspotSize" => Self::OcularMigraine_BlindspotSize,
+            "OcularMigraine_SpectralOpacity" => Self::OcularMigraine_SpectralOpacity,
+            "OcularMigraine_BlindspotOpacity" => Self::OcularMigraine_BlindspotOpacity,
+            "BloodVision_StrengthValue" => Self::BloodVision_StrengthValue,
+            "BloodVision_BloodAuraStrength" => Self::BloodVision_BloodAuraStrength,
+            "BloodVision_AngularVelocityScaleX" => Self::BloodVision_AngularVelocityScaleX,
+            "BloodVision_AngularVelocityScaleY" => Self::BloodVision_AngularVelocityScaleY,
+            "SunShafts_Active" => Self::SunShafts_Active,
+            "SunShafts_RaysAmount" => Self::SunShafts_RaysAmount,
+            "SunShafts_RaysAttenuation" => Self::SunShafts_RaysAttenuation,
+            "SunShafts_RaysCustomColor" => Self::SunShafts_RaysCustomColor,
+            "tex_VisualArtifacts_Mask" => Self::tex_VisualArtifacts_Mask,
+            "clr_VisualArtifacts_ColotTint" => Self::clr_VisualArtifacts_ColotTint,
+            "VisualArtifacts_Vsync" => Self::VisualArtifacts_Vsync,
+            "VisualArtifacts_VsyncFreq" => Self::VisualArtifacts_VsyncFreq,
+            "VisualArtifacts_Interlacing" => Self::VisualArtifacts_Interlacing,
+            "VisualArtifacts_InterlacingTile" => Self::VisualArtifacts_InterlacingTile,
+            "VisualArtifacts_InterlacingRot" => Self::VisualArtifacts_InterlacingRot,
+            "VisualArtifacts_Noise" => Self::VisualArtifacts_Noise,
+            "VisualArtifacts_SyncWaveFreq" => Self::VisualArtifacts_SyncWaveFreq,
+            "VisualArtifacts_SyncWavePhase" => Self::VisualArtifacts_SyncWavePhase,
+            "VisualArtifacts_SyncWaveAmplitude" => Self::VisualArtifacts_SyncWaveAmplitude,
+            "WaterDroplets_Amount" => Self::WaterDroplets_Amount,
+            "ImageGhosting_Amount" => Self::ImageGhosting_Amount,
+            "Letterboxing_WidthAspectRatio" => Self::Letterboxing_WidthAspectRatio,
+            "Letterboxing_HeightAspectRatio" => Self::Letterboxing_HeightAspectRatio,
+            "Letterboxing_Progress" => Self::Letterboxing_Progress,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for PostEffectParams {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `PostureType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum PostureType {
@@ -16248,6 +34899,30 @@ pub enum PostureType {
     Throw,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl PostureType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Invalid" => Self::Invalid,
+            "Peek" => Self::Peek,
+            "Aim" => Self::Aim,
+            "BlindFire" => Self::BlindFire,
+            "Throw" => Self::Throw,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for PostureType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `ProceduralAnimationBoneName`
@@ -16305,6 +34980,49 @@ pub enum ProceduralAnimationBoneName {
     Unrecognized(String),
 }
 
+impl ProceduralAnimationBoneName {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Hips" => Self::Hips,
+            "Spine" => Self::Spine,
+            "Spine1" => Self::Spine1,
+            "Spine2" => Self::Spine2,
+            "Spine3" => Self::Spine3,
+            "Neck" => Self::Neck,
+            "Neck1" => Self::Neck1,
+            "Head" => Self::Head,
+            "HelmetCam" => Self::HelmetCam,
+            "Head_LowPass" => Self::Head_LowPass,
+            "LeftShoulder" => Self::LeftShoulder,
+            "RightShoulder" => Self::RightShoulder,
+            "LeftArm" => Self::LeftArm,
+            "RightArm" => Self::RightArm,
+            "LeftForeArm" => Self::LeftForeArm,
+            "RightForeArm" => Self::RightForeArm,
+            "LeftHand" => Self::LeftHand,
+            "RightHand" => Self::RightHand,
+            "LeftFoot" => Self::LeftFoot,
+            "RightFoot" => Self::RightFoot,
+            "LeftLeg" => Self::LeftLeg,
+            "RightLeg" => Self::RightLeg,
+            "LeftUpLeg" => Self::LeftUpLeg,
+            "RightUpLeg" => Self::RightUpLeg,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ProceduralAnimationBoneName {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ProceduralAnimationBoneOperation`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ProceduralAnimationBoneOperation {
@@ -16314,6 +35032,27 @@ pub enum ProceduralAnimationBoneOperation {
     Rotation,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ProceduralAnimationBoneOperation {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Offset" => Self::Offset,
+            "Rotation" => Self::Rotation,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ProceduralAnimationBoneOperation {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `ProceduralAnimationBoneSpace`
@@ -16327,6 +35066,28 @@ pub enum ProceduralAnimationBoneSpace {
     TPose,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ProceduralAnimationBoneSpace {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "ParentBone" => Self::ParentBone,
+            "Character" => Self::Character,
+            "TPose" => Self::TPose,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ProceduralAnimationBoneSpace {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `ProceduralLandingStrengthFilter`
@@ -16346,6 +35107,30 @@ pub enum ProceduralLandingStrengthFilter {
     Unrecognized(String),
 }
 
+impl ProceduralLandingStrengthFilter {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Light" => Self::Light,
+            "Medium" => Self::Medium,
+            "Heavy" => Self::Heavy,
+            "Impact" => Self::Impact,
+            "Any" => Self::Any,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ProceduralLandingStrengthFilter {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ProceduralLayout_TagFilteringMode`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ProceduralLayout_TagFilteringMode {
@@ -16357,6 +35142,27 @@ pub enum ProceduralLayout_TagFilteringMode {
     Unrecognized(String),
 }
 
+impl ProceduralLayout_TagFilteringMode {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Inclusion" => Self::Inclusion,
+            "Exclusion" => Self::Exclusion,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ProceduralLayout_TagFilteringMode {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ProceduralLayout_VerticalDirection`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ProceduralLayout_VerticalDirection {
@@ -16366,6 +35172,27 @@ pub enum ProceduralLayout_VerticalDirection {
     Upwards,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ProceduralLayout_VerticalDirection {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Downwards" => Self::Downwards,
+            "Upwards" => Self::Upwards,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ProceduralLayout_VerticalDirection {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `ProceduralPOILookAtType`
@@ -16381,6 +35208,28 @@ pub enum ProceduralPOILookAtType {
     Unrecognized(String),
 }
 
+impl ProceduralPOILookAtType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Origin" => Self::Origin,
+            "EntityBB" => Self::EntityBB,
+            "CustomBBs" => Self::CustomBBs,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ProceduralPOILookAtType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `PurchasableVehicleUsageType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum PurchasableVehicleUsageType {
@@ -16392,6 +35241,27 @@ pub enum PurchasableVehicleUsageType {
     Unrecognized(String),
 }
 
+impl PurchasableVehicleUsageType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Purchase" => Self::Purchase,
+            "Rent" => Self::Rent,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for PurchasableVehicleUsageType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `QDriveSplineRotationBehavior`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum QDriveSplineRotationBehavior {
@@ -16401,6 +35271,27 @@ pub enum QDriveSplineRotationBehavior {
     Rollback,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl QDriveSplineRotationBehavior {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "NoRollback" => Self::NoRollback,
+            "Rollback" => Self::Rollback,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for QDriveSplineRotationBehavior {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `QuantumDriveState`
@@ -16432,6 +35323,36 @@ pub enum QuantumDriveState {
     Unrecognized(String),
 }
 
+impl QuantumDriveState {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Off" => Self::Off,
+            "Idle" => Self::Idle,
+            "Aligning" => Self::Aligning,
+            "Pre_Ramp_Up" => Self::Pre_Ramp_Up,
+            "Ramp_Up" => Self::Ramp_Up,
+            "Flight_In_Progress" => Self::Flight_In_Progress,
+            "Ramp_Down" => Self::Ramp_Down,
+            "Post_Ramp_Down" => Self::Post_Ramp_Down,
+            "End_Travel" => Self::End_Travel,
+            "Abort" => Self::Abort,
+            "Cooldown" => Self::Cooldown,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for QuantumDriveState {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `QuantumState`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum QuantumState {
@@ -16459,6 +35380,35 @@ pub enum QuantumState {
     Unrecognized(String),
 }
 
+impl QuantumState {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Off" => Self::Off,
+            "WaitingForInputDelay" => Self::WaitingForInputDelay,
+            "TargetLocking" => Self::TargetLocking,
+            "Charging" => Self::Charging,
+            "BoostingSlow" => Self::BoostingSlow,
+            "Travelling" => Self::Travelling,
+            "CancelingTravel" => Self::CancelingTravel,
+            "CancelingBoost" => Self::CancelingBoost,
+            "Cooldown" => Self::Cooldown,
+            "Done" => Self::Done,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for QuantumState {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `RadarPriorityComparison`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum RadarPriorityComparison {
@@ -16474,6 +35424,30 @@ pub enum RadarPriorityComparison {
     GreaterThan,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl RadarPriorityComparison {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "LessThan" => Self::LessThan,
+            "LessThanEqual" => Self::LessThanEqual,
+            "Equals" => Self::Equals,
+            "GreaterThanEqual" => Self::GreaterThanEqual,
+            "GreaterThan" => Self::GreaterThan,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for RadarPriorityComparison {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `RadiationStatePropertyType`
@@ -16493,6 +35467,30 @@ pub enum RadiationStatePropertyType {
     Unrecognized(String),
 }
 
+impl RadiationStatePropertyType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Distortion" => Self::Distortion,
+            "IR" => Self::IR,
+            "EM" => Self::EM,
+            "CS" => Self::CS,
+            "RadiationHazard" => Self::RadiationHazard,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for RadiationStatePropertyType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ReactionType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ReactionType {
@@ -16508,6 +35506,29 @@ pub enum ReactionType {
     Unrecognized(String),
 }
 
+impl ReactionType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Hostile" => Self::Hostile,
+            "Neutral" => Self::Neutral,
+            "Friendly" => Self::Friendly,
+            "Unknown" => Self::Unknown,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ReactionType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `RefiningQuality`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum RefiningQuality {
@@ -16521,6 +35542,28 @@ pub enum RefiningQuality {
     Unrecognized(String),
 }
 
+impl RefiningQuality {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Normal" => Self::Normal,
+            "Careful" => Self::Careful,
+            "Wasteful" => Self::Wasteful,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for RefiningQuality {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `RefiningSpeed`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum RefiningSpeed {
@@ -16532,6 +35575,28 @@ pub enum RefiningSpeed {
     Fast,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl RefiningSpeed {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Normal" => Self::Normal,
+            "Slow" => Self::Slow,
+            "Fast" => Self::Fast,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for RefiningSpeed {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `RelativeDirection`
@@ -16553,6 +35618,31 @@ pub enum RelativeDirection {
     Unrecognized(String),
 }
 
+impl RelativeDirection {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Up" => Self::Up,
+            "Down" => Self::Down,
+            "Front" => Self::Front,
+            "Back" => Self::Back,
+            "Right" => Self::Right,
+            "Left" => Self::Left,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for RelativeDirection {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `RenderToTextureTarget`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum RenderToTextureTarget {
@@ -16564,6 +35654,28 @@ pub enum RenderToTextureTarget {
     Secondary,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl RenderToTextureTarget {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "All" => Self::All,
+            "Primary" => Self::Primary,
+            "Secondary" => Self::Secondary,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for RenderToTextureTarget {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `ResourceNetworkAcessParameter`
@@ -16587,6 +35699,33 @@ pub enum ResourceNetworkAcessParameter {
     Preference,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ResourceNetworkAcessParameter {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Pressure" => Self::Pressure,
+            "Temperature" => Self::Temperature,
+            "CarbonDioxide" => Self::CarbonDioxide,
+            "Oxygen" => Self::Oxygen,
+            "Consumption" => Self::Consumption,
+            "Generation" => Self::Generation,
+            "FuncionalityRatio" => Self::FuncionalityRatio,
+            "Preference" => Self::Preference,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ResourceNetworkAcessParameter {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `ResourceNetworkResource`
@@ -16616,6 +35755,35 @@ pub enum ResourceNetworkResource {
     Unrecognized(String),
 }
 
+impl ResourceNetworkResource {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Power" => Self::Power,
+            "Fuel" => Self::Fuel,
+            "Coolant" => Self::Coolant,
+            "Shield" => Self::Shield,
+            "Gravity" => Self::Gravity,
+            "QuantumFuel" => Self::QuantumFuel,
+            "CPU" => Self::CPU,
+            "Gas" => Self::Gas,
+            "Filter" => Self::Filter,
+            "LifeSupport" => Self::LifeSupport,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ResourceNetworkResource {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `RestraintStyle`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum RestraintStyle {
@@ -16625,6 +35793,27 @@ pub enum RestraintStyle {
     CuffArmOnly,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl RestraintStyle {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "CuffArmLeg" => Self::CuffArmLeg,
+            "CuffArmOnly" => Self::CuffArmOnly,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for RestraintStyle {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `RestrictedAreaDirectionalMessage`
@@ -16646,6 +35835,31 @@ pub enum RestrictedAreaDirectionalMessage {
     Unrecognized(String),
 }
 
+impl RestrictedAreaDirectionalMessage {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Left" => Self::Left,
+            "Right" => Self::Right,
+            "Above" => Self::Above,
+            "Below" => Self::Below,
+            "Ahead" => Self::Ahead,
+            "Behind" => Self::Behind,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for RestrictedAreaDirectionalMessage {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `RestrictedAreaState`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum RestrictedAreaState {
@@ -16657,6 +35871,28 @@ pub enum RestrictedAreaState {
     Despawn,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl RestrictedAreaState {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Allow" => Self::Allow,
+            "Disallow" => Self::Disallow,
+            "Despawn" => Self::Despawn,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for RestrictedAreaState {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `RoomConnectorOrientationMode`
@@ -16674,6 +35910,29 @@ pub enum RoomConnectorOrientationMode {
     Unrecognized(String),
 }
 
+impl RoomConnectorOrientationMode {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "AutoDetectWidest" => Self::AutoDetectWidest,
+            "ForwardBackward" => Self::ForwardBackward,
+            "UpDown" => Self::UpDown,
+            "RightLeft" => Self::RightLeft,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for RoomConnectorOrientationMode {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `RoomStateModifyType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum RoomStateModifyType {
@@ -16685,6 +35944,28 @@ pub enum RoomStateModifyType {
     Additive,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl RoomStateModifyType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Inherit" => Self::Inherit,
+            "Override" => Self::Override,
+            "Additive" => Self::Additive,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for RoomStateModifyType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `RoomStatePropertyType`
@@ -16714,6 +35995,35 @@ pub enum RoomStatePropertyType {
     Unrecognized(String),
 }
 
+impl RoomStatePropertyType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "DebrisDensity" => Self::DebrisDensity,
+            "Pressure" => Self::Pressure,
+            "Temperature" => Self::Temperature,
+            "Humidity" => Self::Humidity,
+            "Charge" => Self::Charge,
+            "Distortion" => Self::Distortion,
+            "IR" => Self::IR,
+            "EM" => Self::EM,
+            "CS" => Self::CS,
+            "RadiationHazard" => Self::RadiationHazard,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for RoomStatePropertyType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `RoomType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum RoomType {
@@ -16733,6 +36043,31 @@ pub enum RoomType {
     Unrecognized(String),
 }
 
+impl RoomType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Area" => Self::Area,
+            "Planet" => Self::Planet,
+            "GasCloud" => Self::GasCloud,
+            "AsteroidField" => Self::AsteroidField,
+            "Helmet" => Self::Helmet,
+            "NavPoint" => Self::NavPoint,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for RoomType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `RttOutputType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum RttOutputType {
@@ -16744,6 +36079,27 @@ pub enum RttOutputType {
     Unrecognized(String),
 }
 
+impl RttOutputType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Default" => Self::Default,
+            "SurfaceWater" => Self::SurfaceWater,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for RttOutputType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `SCSeatActorAttachmentType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum SCSeatActorAttachmentType {
@@ -16753,6 +36109,27 @@ pub enum SCSeatActorAttachmentType {
     Seat,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl SCSeatActorAttachmentType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Host" => Self::Host,
+            "Seat" => Self::Seat,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for SCSeatActorAttachmentType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `SeatSkipStates`
@@ -16770,6 +36147,29 @@ pub enum SeatSkipStates {
     Unrecognized(String),
 }
 
+impl SeatSkipStates {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "SkipDeploy" => Self::SkipDeploy,
+            "SkipRetract" => Self::SkipRetract,
+            "SkipBoth" => Self::SkipBoth,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for SeatSkipStates {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `SeatTypes`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum SeatTypes {
@@ -16781,6 +36181,28 @@ pub enum SeatTypes {
     DUAL_STICK,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl SeatTypes {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "HOTAS_R_L" => Self::HOTAS_R_L,
+            "HOTAS_C_L" => Self::HOTAS_C_L,
+            "DUAL_STICK" => Self::DUAL_STICK,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for SeatTypes {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `ShadowQuality`
@@ -16798,6 +36220,29 @@ pub enum ShadowQuality {
     Unrecognized(String),
 }
 
+impl ShadowQuality {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Full" => Self::Full,
+            "Half" => Self::Half,
+            "Quarter" => Self::Quarter,
+            "OneEighth" => Self::OneEighth,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ShadowQuality {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ShockwaveType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ShockwaveType {
@@ -16807,6 +36252,27 @@ pub enum ShockwaveType {
     Sphere,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ShockwaveType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Cylinder" => Self::Cylinder,
+            "Sphere" => Self::Sphere,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ShockwaveType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `ShopInventoryType`
@@ -16822,6 +36288,28 @@ pub enum ShopInventoryType {
     Unrecognized(String),
 }
 
+impl ShopInventoryType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "INVALID" => Self::INVALID,
+            "ITEM" => Self::ITEM,
+            "COMMODITY" => Self::COMMODITY,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ShopInventoryType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `ShoppingKioskVariant`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ShoppingKioskVariant {
@@ -16831,6 +36319,27 @@ pub enum ShoppingKioskVariant {
     MED,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl ShoppingKioskVariant {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "LOW" => Self::LOW,
+            "MED" => Self::MED,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ShoppingKioskVariant {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `SinglePlayerOrMultiplayer`
@@ -16846,6 +36355,28 @@ pub enum SinglePlayerOrMultiplayer {
     Unrecognized(String),
 }
 
+impl SinglePlayerOrMultiplayer {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Both" => Self::Both,
+            "SinglePlayerOnly" => Self::SinglePlayerOnly,
+            "MultiplayerOnly" => Self::MultiplayerOnly,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for SinglePlayerOrMultiplayer {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `SkeletonAnimationTaskTransitionType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum SkeletonAnimationTaskTransitionType {
@@ -16855,6 +36386,27 @@ pub enum SkeletonAnimationTaskTransitionType {
     Cubic,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl SkeletonAnimationTaskTransitionType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Linear" => Self::Linear,
+            "Cubic" => Self::Cubic,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for SkeletonAnimationTaskTransitionType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `SpawnWithMode`
@@ -16868,6 +36420,27 @@ pub enum SpawnWithMode {
     Unrecognized(String),
 }
 
+impl SpawnWithMode {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "MostSimilar" => Self::MostSimilar,
+            "Random" => Self::Random,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for SpawnWithMode {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `SpeedThrottleActiveMode`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum SpeedThrottleActiveMode {
@@ -16877,6 +36450,27 @@ pub enum SpeedThrottleActiveMode {
     NoWeapon,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl SpeedThrottleActiveMode {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Always" => Self::Always,
+            "NoWeapon" => Self::NoWeapon,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for SpeedThrottleActiveMode {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `SpeedThrottleNoWeaponSpeedCategory`
@@ -16894,6 +36488,30 @@ pub enum SpeedThrottleNoWeaponSpeedCategory {
     FastRun,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl SpeedThrottleNoWeaponSpeedCategory {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "SlowWalk" => Self::SlowWalk,
+            "MidWalk" => Self::MidWalk,
+            "FastWalk" => Self::FastWalk,
+            "SlowRun" => Self::SlowRun,
+            "FastRun" => Self::FastRun,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for SpeedThrottleNoWeaponSpeedCategory {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `SpeedThrottleWithWeaponSpeedCategory`
@@ -16915,6 +36533,32 @@ pub enum SpeedThrottleWithWeaponSpeedCategory {
     AimDownSight,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl SpeedThrottleWithWeaponSpeedCategory {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "SameAsNoWeapon" => Self::SameAsNoWeapon,
+            "SlowWalk" => Self::SlowWalk,
+            "MidWalk" => Self::MidWalk,
+            "FastWalk" => Self::FastWalk,
+            "SlowRun" => Self::SlowRun,
+            "FastRun" => Self::FastRun,
+            "AimDownSight" => Self::AimDownSight,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for SpeedThrottleWithWeaponSpeedCategory {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `StaminaActionCategory`
@@ -16970,6 +36614,48 @@ pub enum StaminaActionCategory {
     Unrecognized(String),
 }
 
+impl StaminaActionCategory {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "MeleeJab" => Self::MeleeJab,
+            "MeleeHook" => Self::MeleeHook,
+            "MeleeOverhand" => Self::MeleeOverhand,
+            "MeleeArmed" => Self::MeleeArmed,
+            "MeleeUpperCut" => Self::MeleeUpperCut,
+            "MeleeBolo" => Self::MeleeBolo,
+            "MeleeHaymaker" => Self::MeleeHaymaker,
+            "BladeSlash" => Self::BladeSlash,
+            "BladeStab" => Self::BladeStab,
+            "BladeLightOver" => Self::BladeLightOver,
+            "BladeLightUnder" => Self::BladeLightUnder,
+            "BladeHeavyOver" => Self::BladeHeavyOver,
+            "BladeHeavyUnder" => Self::BladeHeavyUnder,
+            "LanceSwipeLeft" => Self::LanceSwipeLeft,
+            "LanceSwipeRight" => Self::LanceSwipeRight,
+            "LanceStab" => Self::LanceStab,
+            "LanceLeap" => Self::LanceLeap,
+            "LanceHammerDown" => Self::LanceHammerDown,
+            "LancePushBack" => Self::LancePushBack,
+            "LanceShoot" => Self::LanceShoot,
+            "TestAttack" => Self::TestAttack,
+            "Blocking" => Self::Blocking,
+            "SyringeStab" => Self::SyringeStab,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for StaminaActionCategory {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `StarmapBoolOverride`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum StarmapBoolOverride {
@@ -16981,6 +36667,28 @@ pub enum StarmapBoolOverride {
     NoOverride,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl StarmapBoolOverride {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "False" => Self::False,
+            "True" => Self::True,
+            "NoOverride" => Self::NoOverride,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for StarmapBoolOverride {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `StatBuffType`
@@ -17092,6 +36800,76 @@ pub enum StatBuffType {
     Unrecognized(String),
 }
 
+impl StatBuffType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Hypertrophic" => Self::Hypertrophic,
+            "Atrophic" => Self::Atrophic,
+            "Fatiguing" => Self::Fatiguing,
+            "Energizing" => Self::Energizing,
+            "CognitiveBoost" => Self::CognitiveBoost,
+            "CognitiveImpair" => Self::CognitiveImpair,
+            "HypoMetabolic" => Self::HypoMetabolic,
+            "HyperMetabolic" => Self::HyperMetabolic,
+            "Hydrating" => Self::Hydrating,
+            "Dehydrating" => Self::Dehydrating,
+            "Healing" => Self::Healing,
+            "Toxic" => Self::Toxic,
+            "ImmuneBoost" => Self::ImmuneBoost,
+            "ImmuneSuppress" => Self::ImmuneSuppress,
+            "WeaponChargeMoveSpeed" => Self::WeaponChargeMoveSpeed,
+            "GForcePassOut" => Self::GForcePassOut,
+            "OverdoseRevival" => Self::OverdoseRevival,
+            "OverdoseRevivalBDLDecay" => Self::OverdoseRevivalBDLDecay,
+            "ReviveDamageMultiplier" => Self::ReviveDamageMultiplier,
+            "DownedDamageMultiplier" => Self::DownedDamageMultiplier,
+            "DrugDurationMultiplier" => Self::DrugDurationMultiplier,
+            "HealthPoolMask" => Self::HealthPoolMask,
+            "HurtLocomotionMask" => Self::HurtLocomotionMask,
+            "StunRecoveryMask" => Self::StunRecoveryMask,
+            "ImpactResistanceKnockdownMask" => Self::ImpactResistanceKnockdownMask,
+            "ImpactResistanceStaggerMask" => Self::ImpactResistanceStaggerMask,
+            "ImpactResistanceTwitchMask" => Self::ImpactResistanceTwitchMask,
+            "ImpactResistanceFlinchMask" => Self::ImpactResistanceFlinchMask,
+            "StaminaRegenMask" => Self::StaminaRegenMask,
+            "StaminaPoolMask" => Self::StaminaPoolMask,
+            "WheezingAudioMask" => Self::WheezingAudioMask,
+            "CoughBloodMask" => Self::CoughBloodMask,
+            "MoveSpeedMask" => Self::MoveSpeedMask,
+            "TraversalLockMask" => Self::TraversalLockMask,
+            "TraversalLockProneMask" => Self::TraversalLockProneMask,
+            "PainGruntMask" => Self::PainGruntMask,
+            "ArmsLockMask" => Self::ArmsLockMask,
+            "WeaponSwayMask" => Self::WeaponSwayMask,
+            "ADSEnterMask" => Self::ADSEnterMask,
+            "BloodVisionMask" => Self::BloodVisionMask,
+            "MuffledAudioInjuryMask" => Self::MuffledAudioInjuryMask,
+            "BlurredVisionMask" => Self::BlurredVisionMask,
+            "DrunkLocomotionMask" => Self::DrunkLocomotionMask,
+            "DrunkManoeuvringMask" => Self::DrunkManoeuvringMask,
+            "DoubleVisionMask" => Self::DoubleVisionMask,
+            "OrificeBloodMask" => Self::OrificeBloodMask,
+            "FlashEffect" => Self::FlashEffect,
+            "Slam" => Self::Slam,
+            "RadiationAntidote" => Self::RadiationAntidote,
+            "ThrowForceMask" => Self::ThrowForceMask,
+            "MeleeForceMask" => Self::MeleeForceMask,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for StatBuffType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `StateTypeNetworkAuthority`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum StateTypeNetworkAuthority {
@@ -17101,6 +36879,27 @@ pub enum StateTypeNetworkAuthority {
     Local,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl StateTypeNetworkAuthority {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Server" => Self::Server,
+            "Local" => Self::Local,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for StateTypeNetworkAuthority {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `StatusEffectType`
@@ -17246,6 +37045,93 @@ pub enum StatusEffectType {
     Unrecognized(String),
 }
 
+impl StatusEffectType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "ADSEnter" => Self::ADSEnter,
+            "ArmsLock" => Self::ArmsLock,
+            "Bleed" => Self::Bleed,
+            "BloodDrugLevelDecay" => Self::BloodDrugLevelDecay,
+            "BloodVision" => Self::BloodVision,
+            "BlurredVision" => Self::BlurredVision,
+            "BodyRadiationDecay" => Self::BodyRadiationDecay,
+            "CoughBlood" => Self::CoughBlood,
+            "Dead" => Self::Dead,
+            "DehydrationDamage" => Self::DehydrationDamage,
+            "DepressurizationDamage" => Self::DepressurizationDamage,
+            "DrugDuration" => Self::DrugDuration,
+            "DrunkLocomotion" => Self::DrunkLocomotion,
+            "DrunkManoeuvring" => Self::DrunkManoeuvring,
+            "DoubleVision" => Self::DoubleVision,
+            "DownedDamageDecay" => Self::DownedDamageDecay,
+            "EarRinging" => Self::EarRinging,
+            "ExternalDamageMultiplier" => Self::ExternalDamageMultiplier,
+            "FlashEffect" => Self::FlashEffect,
+            "HeadacheAudio" => Self::HeadacheAudio,
+            "HealthPool" => Self::HealthPool,
+            "HealthBoost" => Self::HealthBoost,
+            "HungerDecay" => Self::HungerDecay,
+            "HurtLocomotion" => Self::HurtLocomotion,
+            "HurtProne" => Self::HurtProne,
+            "HygieneDecay" => Self::HygieneDecay,
+            "HypothermiaDamage" => Self::HypothermiaDamage,
+            "HyperthermiaDamage" => Self::HyperthermiaDamage,
+            "ImpactResistanceKnockdown" => Self::ImpactResistanceKnockdown,
+            "ImpactResistanceStagger" => Self::ImpactResistanceStagger,
+            "ImpactResistanceTwitch" => Self::ImpactResistanceTwitch,
+            "ImpactResistanceFlinch" => Self::ImpactResistanceFlinch,
+            "LightSensitivity" => Self::LightSensitivity,
+            "MacularDegeneration" => Self::MacularDegeneration,
+            "MalfunctionDistortion" => Self::MalfunctionDistortion,
+            "MeleeDamage" => Self::MeleeDamage,
+            "MeleeForce" => Self::MeleeForce,
+            "MoveSpeed" => Self::MoveSpeed,
+            "MuffledAudio" => Self::MuffledAudio,
+            "Blink" => Self::Blink,
+            "OcularMigraine" => Self::OcularMigraine,
+            "OrificeBlood" => Self::OrificeBlood,
+            "OverdoseDamage" => Self::OverdoseDamage,
+            "PainGrunt" => Self::PainGrunt,
+            "PassOutDowned" => Self::PassOutDowned,
+            "PassOutUnconscious" => Self::PassOutUnconscious,
+            "PassOutGForce" => Self::PassOutGForce,
+            "RadiationDamageLow" => Self::RadiationDamageLow,
+            "RadiationDamageHigh" => Self::RadiationDamageHigh,
+            "Recoil" => Self::Recoil,
+            "Shivering" => Self::Shivering,
+            "StaminaCost" => Self::StaminaCost,
+            "StaminaPool" => Self::StaminaPool,
+            "StaminaRegen" => Self::StaminaRegen,
+            "StarvationDamage" => Self::StarvationDamage,
+            "StatusDamageCap" => Self::StatusDamageCap,
+            "StatusDamageMultiplier" => Self::StatusDamageMultiplier,
+            "StomachGroanAudio" => Self::StomachGroanAudio,
+            "StunDecay" => Self::StunDecay,
+            "Suffocation" => Self::Suffocation,
+            "SuffocationDamage" => Self::SuffocationDamage,
+            "TempAudioLoss" => Self::TempAudioLoss,
+            "ThirstDecay" => Self::ThirstDecay,
+            "ThrowForce" => Self::ThrowForce,
+            "TraversalLock" => Self::TraversalLock,
+            "TraversalLockProne" => Self::TraversalLockProne,
+            "Wheezing" => Self::Wheezing,
+            "WeaponSway" => Self::WeaponSway,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for StatusEffectType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `StatusEffectValueType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum StatusEffectValueType {
@@ -17261,6 +37147,30 @@ pub enum StatusEffectValueType {
     DiminishingReturns,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl StatusEffectValueType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Additive" => Self::Additive,
+            "Multiplier" => Self::Multiplier,
+            "MaxValue" => Self::MaxValue,
+            "MinValue" => Self::MinValue,
+            "DiminishingReturns" => Self::DiminishingReturns,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for StatusEffectValueType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `StatusHeadBleedingLocation`
@@ -17286,6 +37196,33 @@ pub enum StatusHeadBleedingLocation {
     Unrecognized(String),
 }
 
+impl StatusHeadBleedingLocation {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "LeftEye" => Self::LeftEye,
+            "LeftNostril" => Self::LeftNostril,
+            "LeftMouth" => Self::LeftMouth,
+            "LeftEar" => Self::LeftEar,
+            "RightEye" => Self::RightEye,
+            "RightNostril" => Self::RightNostril,
+            "RightMouth" => Self::RightMouth,
+            "RightEar" => Self::RightEar,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for StatusHeadBleedingLocation {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `StatusProbabilityCheckType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum StatusProbabilityCheckType {
@@ -17297,6 +37234,28 @@ pub enum StatusProbabilityCheckType {
     StatValueDecrease,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl StatusProbabilityCheckType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Always" => Self::Always,
+            "StatValueIncrease" => Self::StatValueIncrease,
+            "StatValueDecrease" => Self::StatValueDecrease,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for StatusProbabilityCheckType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `SubItemScanItemStatus`
@@ -17314,6 +37273,29 @@ pub enum SubItemScanItemStatus {
     Unrecognized(String),
 }
 
+impl SubItemScanItemStatus {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Default" => Self::Default,
+            "PowerOn" => Self::PowerOn,
+            "PowerOff" => Self::PowerOff,
+            "Destroyed" => Self::Destroyed,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for SubItemScanItemStatus {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `SurfaceRaindropEmitterType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum SurfaceRaindropEmitterType {
@@ -17323,6 +37305,27 @@ pub enum SurfaceRaindropEmitterType {
     Snow,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl SurfaceRaindropEmitterType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Rain" => Self::Rain,
+            "Snow" => Self::Snow,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for SurfaceRaindropEmitterType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `SyncedMeleeAttackResult`
@@ -17338,6 +37341,28 @@ pub enum SyncedMeleeAttackResult {
     Unrecognized(String),
 }
 
+impl SyncedMeleeAttackResult {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Hit" => Self::Hit,
+            "Countered" => Self::Countered,
+            "Dodged" => Self::Dodged,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for SyncedMeleeAttackResult {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `TacticalQuerySystemType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum TacticalQuerySystemType {
@@ -17347,6 +37372,27 @@ pub enum TacticalQuerySystemType {
     TacticalTargetQuery,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl TacticalQuerySystemType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "TacticalPointQuery" => Self::TacticalPointQuery,
+            "TacticalTargetQuery" => Self::TacticalTargetQuery,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for TacticalQuerySystemType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `TakeDownQuadrant`
@@ -17364,6 +37410,29 @@ pub enum TakeDownQuadrant {
     Unrecognized(String),
 }
 
+impl TakeDownQuadrant {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "AllQuadrants" => Self::AllQuadrants,
+            "BackOnly" => Self::BackOnly,
+            "FrontOnly" => Self::FrontOnly,
+            "NotPossible" => Self::NotPossible,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for TakeDownQuadrant {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `TakeDownStance`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum TakeDownStance {
@@ -17379,6 +37448,29 @@ pub enum TakeDownStance {
     Unrecognized(String),
 }
 
+impl TakeDownStance {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "AnyStance" => Self::AnyStance,
+            "StandOnly" => Self::StandOnly,
+            "ProneOnly" => Self::ProneOnly,
+            "NotPossible" => Self::NotPossible,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for TakeDownStance {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `TestType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum TestType {
@@ -17392,6 +37484,28 @@ pub enum TestType {
     Unrecognized(String),
 }
 
+impl TestType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "PhysicsImpact_Ocean" => Self::PhysicsImpact_Ocean,
+            "PhysicsImpact_WaterVolume" => Self::PhysicsImpact_WaterVolume,
+            "MFXHit" => Self::MFXHit,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for TestType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `TransportDestinationOrderingMethod`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum TransportDestinationOrderingMethod {
@@ -17401,6 +37515,27 @@ pub enum TransportDestinationOrderingMethod {
     Priority,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl TransportDestinationOrderingMethod {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Height" => Self::Height,
+            "Priority" => Self::Priority,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for TransportDestinationOrderingMethod {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `UI3DDisplayInputType`
@@ -17416,6 +37551,28 @@ pub enum UI3DDisplayInputType {
     Unrecognized(String),
 }
 
+impl UI3DDisplayInputType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Pan" => Self::Pan,
+            "Rotate" => Self::Rotate,
+            "Zoom" => Self::Zoom,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for UI3DDisplayInputType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `UIBlockingMode`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum UIBlockingMode {
@@ -17423,6 +37580,26 @@ pub enum UIBlockingMode {
     ScanMode,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl UIBlockingMode {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "ScanMode" => Self::ScanMode,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for UIBlockingMode {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `UIDisplayActivationTypes`
@@ -17438,6 +37615,28 @@ pub enum UIDisplayActivationTypes {
     Unrecognized(String),
 }
 
+impl UIDisplayActivationTypes {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Manual" => Self::Manual,
+            "AlwaysOn" => Self::AlwaysOn,
+            "OnWhenUsed" => Self::OnWhenUsed,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for UIDisplayActivationTypes {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `UIDisplayEnvironmentAlignment`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum UIDisplayEnvironmentAlignment {
@@ -17451,6 +37650,28 @@ pub enum UIDisplayEnvironmentAlignment {
     Unrecognized(String),
 }
 
+impl UIDisplayEnvironmentAlignment {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "GalacticPlane" => Self::GalacticPlane,
+            "World" => Self::World,
+            "Owner" => Self::Owner,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for UIDisplayEnvironmentAlignment {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `UIElementAlignMode`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum UIElementAlignMode {
@@ -17460,6 +37681,27 @@ pub enum UIElementAlignMode {
     fullscreen,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl UIElementAlignMode {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "dynamic" => Self::dynamic,
+            "fullscreen" => Self::fullscreen,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for UIElementAlignMode {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `UIGraph_BackBehavior`
@@ -17481,6 +37723,31 @@ pub enum UIGraph_BackBehavior {
     Unrecognized(String),
 }
 
+impl UIGraph_BackBehavior {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Unsuported" => Self::Unsuported,
+            "NoAction" => Self::NoAction,
+            "LastDoNothing" => Self::LastDoNothing,
+            "LastRequestContextEnd" => Self::LastRequestContextEnd,
+            "LastRequestClose" => Self::LastRequestClose,
+            "LastCustomCallback" => Self::LastCustomCallback,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for UIGraph_BackBehavior {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `UIGraph_BlockingMessagePopUpProvider`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum UIGraph_BlockingMessagePopUpProvider {
@@ -17490,6 +37757,27 @@ pub enum UIGraph_BlockingMessagePopUpProvider {
     ElectronicAccess,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl UIGraph_BlockingMessagePopUpProvider {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "GlobalGame" => Self::GlobalGame,
+            "ElectronicAccess" => Self::ElectronicAccess,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for UIGraph_BlockingMessagePopUpProvider {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `UIGraph_SimpleComponentType`
@@ -17559,6 +37847,55 @@ pub enum UIGraph_SimpleComponentType {
     Unrecognized(String),
 }
 
+impl UIGraph_SimpleComponentType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "ElectronicAccessFullscreen" => Self::ElectronicAccessFullscreen,
+            "Hints" => Self::Hints,
+            "PlayerInteraction" => Self::PlayerInteraction,
+            "PlayerLens" => Self::PlayerLens,
+            "ChatWidget" => Self::ChatWidget,
+            "FpsCombat" => Self::FpsCombat,
+            "ACLoadoutContextSwitch" => Self::ACLoadoutContextSwitch,
+            "EALoadoutWarningPopUp" => Self::EALoadoutWarningPopUp,
+            "EAShipDetailsKickNoticePopUp" => Self::EAShipDetailsKickNoticePopUp,
+            "EAShipDetailsKickWarningPopUp" => Self::EAShipDetailsKickWarningPopUp,
+            "EALeaderboards" => Self::EALeaderboards,
+            "GGULoadingScreen" => Self::GGULoadingScreen,
+            "GGUNotificationScreen" => Self::GGUNotificationScreen,
+            "FrontendViewTransition" => Self::FrontendViewTransition,
+            "mobiGlasLauncherDock" => Self::mobiGlasLauncherDock,
+            "mobiGlasHomeDock" => Self::mobiGlasHomeDock,
+            "mobiGlasBeacon" => Self::mobiGlasBeacon,
+            "mobiGlasRouteInfo" => Self::mobiGlasRouteInfo,
+            "ShopApp" => Self::ShopApp,
+            "ShopDock" => Self::ShopDock,
+            "Popup" => Self::Popup,
+            "ContactsCommsApp" => Self::ContactsCommsApp,
+            "BackClick" => Self::BackClick,
+            "ShipList" => Self::ShipList,
+            "PortCategories" => Self::PortCategories,
+            "ItemKioskDock" => Self::ItemKioskDock,
+            "VehicleQuery" => Self::VehicleQuery,
+            "ShipSelectOrRental" => Self::ShipSelectOrRental,
+            "ShopKiosk" => Self::ShopKiosk,
+            "AreaMapContextComponent" => Self::AreaMapContextComponent,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for UIGraph_SimpleComponentType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `UIWorldDisplayFollowRotationMode`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum UIWorldDisplayFollowRotationMode {
@@ -17574,6 +37911,29 @@ pub enum UIWorldDisplayFollowRotationMode {
     Unrecognized(String),
 }
 
+impl UIWorldDisplayFollowRotationMode {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Default" => Self::Default,
+            "None" => Self::None,
+            "Owner" => Self::Owner,
+            "User" => Self::User,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for UIWorldDisplayFollowRotationMode {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `UIWorldDisplayPathTypes`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum UIWorldDisplayPathTypes {
@@ -17585,6 +37945,28 @@ pub enum UIWorldDisplayPathTypes {
     Destination,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl UIWorldDisplayPathTypes {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Highlighted" => Self::Highlighted,
+            "Selected" => Self::Selected,
+            "Destination" => Self::Destination,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for UIWorldDisplayPathTypes {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `UIWorldDisplayPlaneAlignment`
@@ -17600,6 +37982,28 @@ pub enum UIWorldDisplayPlaneAlignment {
     Unrecognized(String),
 }
 
+impl UIWorldDisplayPlaneAlignment {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Default" => Self::Default,
+            "GalacticPlane" => Self::GalacticPlane,
+            "Owner" => Self::Owner,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for UIWorldDisplayPlaneAlignment {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `UIWorldDisplayUseInputMode`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum UIWorldDisplayUseInputMode {
@@ -17611,6 +38015,28 @@ pub enum UIWorldDisplayUseInputMode {
     NoInput,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl UIWorldDisplayUseInputMode {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Default" => Self::Default,
+            "UseInput" => Self::UseInput,
+            "NoInput" => Self::NoInput,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for UIWorldDisplayUseInputMode {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `VectorBases`
@@ -17626,6 +38052,28 @@ pub enum VectorBases {
     Unrecognized(String),
 }
 
+impl VectorBases {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Right" => Self::Right,
+            "Forward" => Self::Forward,
+            "Up" => Self::Up,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for VectorBases {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `WeaponPoseType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum WeaponPoseType {
@@ -17637,6 +38085,28 @@ pub enum WeaponPoseType {
     LeftHand,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl WeaponPoseType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "RightHand" => Self::RightHand,
+            "Zoom" => Self::Zoom,
+            "LeftHand" => Self::LeftHand,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for WeaponPoseType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `WingmanTargetTypes`
@@ -17652,6 +38122,28 @@ pub enum WingmanTargetTypes {
     Unrecognized(String),
 }
 
+impl WingmanTargetTypes {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "Player" => Self::Player,
+            "Target" => Self::Target,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for WingmanTargetTypes {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `WorldDisplayObjectFacingMode`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum WorldDisplayObjectFacingMode {
@@ -17665,6 +38157,29 @@ pub enum WorldDisplayObjectFacingMode {
     AwayFromParent,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl WorldDisplayObjectFacingMode {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Default" => Self::Default,
+            "World" => Self::World,
+            "Camera" => Self::Camera,
+            "AwayFromParent" => Self::AwayFromParent,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for WorldDisplayObjectFacingMode {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `ZeroGTraversalAction`
@@ -17696,6 +38211,36 @@ pub enum ZeroGTraversalAction {
     Unrecognized(String),
 }
 
+impl ZeroGTraversalAction {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "Attach" => Self::Attach,
+            "Detach" => Self::Detach,
+            "Idle" => Self::Idle,
+            "MoveForward" => Self::MoveForward,
+            "LedgeTraversal" => Self::LedgeTraversal,
+            "IdleToTurn" => Self::IdleToTurn,
+            "KneeDrop" => Self::KneeDrop,
+            "LaunchTurn" => Self::LaunchTurn,
+            "Launch" => Self::Launch,
+            "Sprint" => Self::Sprint,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for ZeroGTraversalAction {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `eCommunicationChannelType`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum eCommunicationChannelType {
@@ -17709,6 +38254,28 @@ pub enum eCommunicationChannelType {
     Unrecognized(String),
 }
 
+impl eCommunicationChannelType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Global" => Self::Global,
+            "Group" => Self::Group,
+            "Personal" => Self::Personal,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for eCommunicationChannelType {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
+}
+
 /// DCB enum: `eCommunicationChoiceMethod`
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum eCommunicationChoiceMethod {
@@ -17720,6 +38287,28 @@ pub enum eCommunicationChoiceMethod {
     RandomSequence,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl eCommunicationChoiceMethod {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Random" => Self::Random,
+            "Sequence" => Self::Sequence,
+            "RandomSequence" => Self::RandomSequence,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for eCommunicationChoiceMethod {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `eCommunicationCriteriaOperant`
@@ -17739,6 +38328,31 @@ pub enum eCommunicationCriteriaOperant {
     GreaterThanOrEquals,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl eCommunicationCriteriaOperant {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "None" => Self::None,
+            "Equals" => Self::Equals,
+            "LessThan" => Self::LessThan,
+            "LessThanOrEquals" => Self::LessThanOrEquals,
+            "GreaterThan" => Self::GreaterThan,
+            "GreaterThanOrEquals" => Self::GreaterThanOrEquals,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for eCommunicationCriteriaOperant {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `eContextualCommunicationConcept`
@@ -17782,6 +38396,43 @@ pub enum eContextualCommunicationConcept {
     OnResponseFinished,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl eContextualCommunicationConcept {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Custom" => Self::Custom,
+            "OnIdleChatter" => Self::OnIdleChatter,
+            "OnHit" => Self::OnHit,
+            "OnVehicleHit" => Self::OnVehicleHit,
+            "OnFriendlyDied" => Self::OnFriendlyDied,
+            "OnFriendlyKilledEnemy" => Self::OnFriendlyKilledEnemy,
+            "OnTargetKilled" => Self::OnTargetKilled,
+            "OnVehiclePartDestroyed" => Self::OnVehiclePartDestroyed,
+            "OnRespawn" => Self::OnRespawn,
+            "OnKilled" => Self::OnKilled,
+            "OnVehicleEnemySpotted" => Self::OnVehicleEnemySpotted,
+            "OnVehicleEnemyMissileLockingOn" => Self::OnVehicleEnemyMissileLockingOn,
+            "OnVehicleEnemyMissileLockedOn" => Self::OnVehicleEnemyMissileLockedOn,
+            "OnVehicleEnemyMissileLockLost" => Self::OnVehicleEnemyMissileLockLost,
+            "OnVehicleEnemyMissileLaunched" => Self::OnVehicleEnemyMissileLaunched,
+            "OnVehicleMissileLockingOn" => Self::OnVehicleMissileLockingOn,
+            "OnVehicleMissileLaunched" => Self::OnVehicleMissileLaunched,
+            "OnResponseFinished" => Self::OnResponseFinished,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for eContextualCommunicationConcept {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 
 /// DCB enum: `eContextualCommunicationCriteria`
@@ -17883,5 +38534,71 @@ pub enum eContextualCommunicationCriteria {
     Target_IsFriendly,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
+}
+
+impl eContextualCommunicationCriteria {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Custom" => Self::Custom,
+            "Who" => Self::Who,
+            "LevelName" => Self::LevelName,
+            "LastResponse" => Self::LastResponse,
+            "LastDialog" => Self::LastDialog,
+            "Vehicle" => Self::Vehicle,
+            "VehicleHealth" => Self::VehicleHealth,
+            "VehicleShield" => Self::VehicleShield,
+            "VehicleSpeed" => Self::VehicleSpeed,
+            "VehicleHitTime" => Self::VehicleHitTime,
+            "VehicleHitShield" => Self::VehicleHitShield,
+            "VehicleHitDamage" => Self::VehicleHitDamage,
+            "VehicleStartFireTime" => Self::VehicleStartFireTime,
+            "VehicleStopFireTime" => Self::VehicleStopFireTime,
+            "VehicleFiringWeapons" => Self::VehicleFiringWeapons,
+            "Attacker_Vehicle" => Self::Attacker_Vehicle,
+            "Attacker_VehicleHealth" => Self::Attacker_VehicleHealth,
+            "Attacker_VehicleShield" => Self::Attacker_VehicleShield,
+            "Attacker_VehicleSpeed" => Self::Attacker_VehicleSpeed,
+            "Attacker_VehicleFiringWeapons" => Self::Attacker_VehicleFiringWeapons,
+            "Target_Vehicle" => Self::Target_Vehicle,
+            "Target_VehicleHealth" => Self::Target_VehicleHealth,
+            "Target_VehicleShield" => Self::Target_VehicleShield,
+            "Target_VehicleSpeed" => Self::Target_VehicleSpeed,
+            "Target_VehicleFiringWeapons" => Self::Target_VehicleFiringWeapons,
+            "ActorHealth" => Self::ActorHealth,
+            "IsDriving" => Self::IsDriving,
+            "IsOnFoot" => Self::IsOnFoot,
+            "IsEjecting" => Self::IsEjecting,
+            "IsEjected" => Self::IsEjected,
+            "IsDead" => Self::IsDead,
+            "Attacker_Who" => Self::Attacker_Who,
+            "Attacker_ActorHealth" => Self::Attacker_ActorHealth,
+            "Attacker_IsDriving" => Self::Attacker_IsDriving,
+            "Attacker_IsOnFoot" => Self::Attacker_IsOnFoot,
+            "Attacker_IsEjecting" => Self::Attacker_IsEjecting,
+            "Attacker_IsEjected" => Self::Attacker_IsEjected,
+            "Attacker_IsDead" => Self::Attacker_IsDead,
+            "Attacker_IsFriendly" => Self::Attacker_IsFriendly,
+            "Target_Who" => Self::Target_Who,
+            "Target_ActorHealth" => Self::Target_ActorHealth,
+            "Target_IsDriving" => Self::Target_IsDriving,
+            "Target_IsOnFoot" => Self::Target_IsOnFoot,
+            "Target_IsEjecting" => Self::Target_IsEjecting,
+            "Target_IsEjected" => Self::Target_IsEjected,
+            "Target_IsDead" => Self::Target_IsDead,
+            "Target_IsFriendly" => Self::Target_IsFriendly,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+impl Default for eContextualCommunicationCriteria {
+    fn default() -> Self {
+        Self::Unrecognized(String::new())
+    }
 }
 

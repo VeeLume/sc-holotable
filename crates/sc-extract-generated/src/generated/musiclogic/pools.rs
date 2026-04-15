@@ -7,7 +7,7 @@
 //
 // Any hand edits will be lost on the next run.
 
-#![allow(non_snake_case, dead_code, unused_imports)]
+#![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
 use serde::{Deserialize, Serialize};
 use super::super::*;
@@ -28,15 +28,7 @@ pub struct MusiclogicPools {
     #[serde(default)]
     pub music_logic_config: Vec<Option<MusicLogicConfig>>,
     #[serde(default)]
-    pub music_logic_parameter: Vec<Option<MusicLogicParameter>>,
-    #[serde(default)]
-    pub music_logic_event: Vec<Option<MusicLogicEvent>>,
-    #[serde(default)]
     pub music_logic_event_list: Vec<Option<MusicLogicEventList>>,
     #[serde(default)]
     pub music_logic_switch_value: Vec<Option<MusicLogicSwitchValue>>,
-    #[serde(default)]
-    pub music_logic_node: Vec<Option<MusicLogicNode>>,
-    #[serde(default)]
-    pub music_logic_suite: Vec<Option<MusicLogicSuite>>,
 }

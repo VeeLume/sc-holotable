@@ -15,7 +15,7 @@
 use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, Pooled};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -24,7 +24,7 @@ use super::super::*;
 pub struct RadarPlate_Config {
     /// `Color` (EnumChoice)
     #[serde(default)]
-    pub color: String,
+    pub color: HUDPalleteEntry,
     /// `Rotation` (Single)
     #[serde(default)]
     pub rotation: f32,
@@ -111,54 +111,36 @@ impl<'a> Extract<'a> for RadarPlate_Config {
     const TYPE_NAME: &'static str = "RadarPlate_Config";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            color: inst.get_str("Color").map(String::from).unwrap_or_default(),
+            color: HUDPalleteEntry::from_dcb_str(inst.get_str("Color").unwrap_or("")),
             rotation: inst.get_f32("Rotation").unwrap_or_default(),
             segments: inst.get_i32("Segments").unwrap_or_default(),
             main_plate_sprite: match inst.get("MainPlateSprite") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SimpleSpriteSlot>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SimpleSpriteSlot>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             main_plate_inner_rings: inst.get_i32("MainPlateInnerRings").unwrap_or_default(),
             inner_ring_thickness: inst.get_f32("InnerRingThickness").unwrap_or_default(),
             inner_ring_uv_start: match inst.get("InnerRingUV_Start") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec2>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<Vec2>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             inner_ring_uv_size: match inst.get("InnerRingUV_Size") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec2>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<Vec2>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             center_icon_scale: inst.get_f32("CenterIconScale").unwrap_or_default(),
             center_icon_sprite: match inst.get("CenterIconSprite") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SimpleSpriteSlot>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SimpleSpriteSlot>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             top_ring_elevation: inst.get_f32("TopRingElevation").unwrap_or_default(),
             top_ring_thickness: inst.get_f32("TopRingThickness").unwrap_or_default(),
             top_ring_uv_start: match inst.get("TopRingUV_Start") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec2>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<Vec2>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             top_ring_uv_size: match inst.get("TopRingUV_Size") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec2>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<Vec2>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             bottom_aring_elevation: inst.get_f32("BottomARingElevation").unwrap_or_default(),
@@ -167,16 +149,10 @@ impl<'a> Extract<'a> for RadarPlate_Config {
             bottom_aring_thickness: inst.get_f32("BottomARingThickness").unwrap_or_default(),
             bottom_aring_uv_start: match inst.get("BottomARingUV_Start") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec2>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<Vec2>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             bottom_aring_uv_size: match inst.get("BottomARingUV_Size") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec2>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<Vec2>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             bottom_bring_elevation: inst.get_f32("BottomBRingElevation").unwrap_or_default(),
@@ -185,16 +161,10 @@ impl<'a> Extract<'a> for RadarPlate_Config {
             bottom_bring_thickness: inst.get_f32("BottomBRingThickness").unwrap_or_default(),
             bottom_bring_uv_start: match inst.get("BottomBRingUV_Start") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec2>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<Vec2>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             bottom_bring_uv_size: match inst.get("BottomBRingUV_Size") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec2>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<Vec2>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
         }
@@ -289,7 +259,7 @@ pub struct RadarDisplay_Config {
     pub active_ping_uv_size: Option<Handle<Vec2>>,
     /// `ActivePingColor` (EnumChoice)
     #[serde(default)]
-    pub active_ping_color: String,
+    pub active_ping_color: HUDPalleteEntry,
     /// `radarEntryEffects` (Class)
     #[serde(default)]
     pub radar_entry_effects: Option<Handle<RadarDisplayEntryEffects_Config>>,
@@ -311,108 +281,63 @@ impl<'a> Extract<'a> for RadarDisplay_Config {
             quad_size: inst.get_f32("QuadSize").unwrap_or_default(),
             local_entity: match inst.get("LocalEntity") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SimpleSpriteSlot>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SimpleSpriteSlot>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             line: match inst.get("Line") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SimpleSpriteSlot>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SimpleSpriteSlot>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             number: match inst.get("Number") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SimpleSpriteSlot>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SimpleSpriteSlot>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             missile: match inst.get("Missile") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SimpleSpriteSlot>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SimpleSpriteSlot>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             core: match inst.get("Core") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SimpleSpriteSlot>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SimpleSpriteSlot>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             beacon: match inst.get("Beacon") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SimpleSpriteSlot>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SimpleSpriteSlot>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             blob: match inst.get("Blob") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SimpleSpriteSlot>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SimpleSpriteSlot>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             arrow_up: match inst.get("ArrowUp") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SimpleSpriteSlot>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SimpleSpriteSlot>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             arrow_down: match inst.get("ArrowDown") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SimpleSpriteSlot>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SimpleSpriteSlot>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             focused_arrow_up: match inst.get("FocusedArrowUp") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SimpleSpriteSlot>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SimpleSpriteSlot>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             focused_arrow_down: match inst.get("FocusedArrowDown") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SimpleSpriteSlot>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SimpleSpriteSlot>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             active_ping_uv_start: match inst.get("ActivePingUV_Start") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec2>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<Vec2>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             active_ping_uv_size: match inst.get("ActivePingUV_Size") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec2>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<Vec2>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
-            active_ping_color: inst.get_str("ActivePingColor").map(String::from).unwrap_or_default(),
+            active_ping_color: HUDPalleteEntry::from_dcb_str(inst.get_str("ActivePingColor").unwrap_or("")),
             radar_entry_effects: match inst.get("radarEntryEffects") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<RadarDisplayEntryEffects_Config>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<RadarDisplayEntryEffects_Config>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             radar_plate_settings: match inst.get("radarPlateSettings") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<RadarPlate_Config>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<RadarPlate_Config>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
         }

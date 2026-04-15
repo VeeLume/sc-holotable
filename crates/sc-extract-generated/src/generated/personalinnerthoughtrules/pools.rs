@@ -7,7 +7,7 @@
 //
 // Any hand edits will be lost on the next run.
 
-#![allow(non_snake_case, dead_code, unused_imports)]
+#![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
 use serde::{Deserialize, Serialize};
 use super::super::*;
@@ -16,5 +16,5 @@ use super::super::*;
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct PersonalinnerthoughtrulesPools {
     #[serde(default)]
-    pub personal_inner_thought_action_rule_preset: Vec<Option<PersonalInnerThoughtActionRulePreset>>,
+    pub action_rule_not_allowed_in_context: Vec<Option<ActionRuleNotAllowedInContext>>,
 }

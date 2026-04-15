@@ -7,7 +7,7 @@
 //
 // Any hand edits will be lost on the next run.
 
-#![allow(non_snake_case, dead_code, unused_imports)]
+#![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
 use std::collections::HashMap;
 use serde::{Deserialize, Serialize};
@@ -19,18 +19,15 @@ use super::super::*;
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct EntitiesScitemUsablesIndex {
     #[serde(default)]
-    pub usable_archetype: HashMap<CigGuid, Handle<UsableArchetype>>,
-    #[serde(default)]
-    pub use_channel_archetype: HashMap<CigGuid, Handle<UseChannelArchetype>>,
-    #[serde(default)]
     pub usable_archetypes: HashMap<CigGuid, Handle<UsableArchetypes>>,
 }
 
 impl EntitiesScitemUsablesIndex {
+    #[allow(unused_mut)]
     pub fn len(&self) -> usize {
-        self.usable_archetype.len()
-            + self.use_channel_archetype.len()
-            + self.usable_archetypes.len()
+        let mut total = 0usize;
+        total += self.usable_archetypes.len();
+        total
     }
 
     pub fn is_empty(&self) -> bool { self.len() == 0 }

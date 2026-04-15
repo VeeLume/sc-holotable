@@ -7,7 +7,7 @@
 //
 // Any hand edits will be lost on the next run.
 
-#![allow(non_snake_case, dead_code, unused_imports)]
+#![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
 use serde::{Deserialize, Serialize};
 use super::super::*;
@@ -15,8 +15,6 @@ use super::super::*;
 /// Pool storage for the `ui-uiconfig_starcitizen` feature.
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct UiUiconfig_starcitizenPools {
-    #[serde(default)]
-    pub inner_thought_config: Vec<Option<InnerThought_Config>>,
     #[serde(default)]
     pub uiconfig: Vec<Option<UIConfig>>,
     #[serde(default)]

@@ -7,7 +7,7 @@
 //
 // Any hand edits will be lost on the next run.
 
-#![allow(non_snake_case, dead_code, unused_imports)]
+#![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
 use serde::{Deserialize, Serialize};
 use super::super::*;
@@ -16,9 +16,11 @@ use super::super::*;
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct JournalentryPools {
     #[serde(default)]
-    pub base_journal_entry: Vec<Option<BaseJournalEntry>>,
+    pub journal_entry_audio_log: Vec<Option<JournalEntryAudioLog>>,
     #[serde(default)]
-    pub journal_entry: Vec<Option<JournalEntry>>,
+    pub journal_entry_dialogue_log: Vec<Option<JournalEntryDialogueLog>>,
+    #[serde(default)]
+    pub journal_entry_video: Vec<Option<JournalEntryVideo>>,
     #[serde(default)]
     pub sreputation_standing_journal_entry_params: Vec<Option<SReputationStandingJournalEntryParams>>,
     #[serde(default)]

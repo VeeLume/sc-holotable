@@ -15,31 +15,9 @@
 use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, Pooled};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
-
-/// DCB type: `SViewDistanceRatioParams`
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct SViewDistanceRatioParams {
-    /// `viewDistRatio` (Int32)
-    #[serde(default)]
-    pub view_dist_ratio: i32,
-}
-
-impl Pooled for SViewDistanceRatioParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.sgeometryviewdistanceratiocategories.sview_distance_ratio_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.sgeometryviewdistanceratiocategories.sview_distance_ratio_params }
-}
-
-impl<'a> Extract<'a> for SViewDistanceRatioParams {
-    const TYPE_NAME: &'static str = "SViewDistanceRatioParams";
-    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
-            view_dist_ratio: inst.get_i32("viewDistRatio").unwrap_or_default(),
-        }
-    }
-}
 
 /// DCB type: `SGeometryViewDistanceRatioCategories`
 #[derive(Debug, Clone, Serialize, Deserialize)]

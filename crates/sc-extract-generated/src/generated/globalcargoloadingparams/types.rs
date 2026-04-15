@@ -15,7 +15,7 @@
 use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, Pooled};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -169,86 +169,50 @@ impl<'a> Extract<'a> for GlobalCargoLoadingParams {
             auto_loading_base_unloading_time: inst.get_f32("autoLoadingBaseUnloadingTime").unwrap_or_default(),
             auto_loading_box_size_loading_time: match inst.get("autoLoadingBoxSizeLoadingTime") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SAutoLoadingBoxSizeLoadingTime>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SAutoLoadingBoxSizeLoadingTime>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             auto_loading_box_size_unloading_time: match inst.get("autoLoadingBoxSizeUnloadingTime") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SAutoLoadingBoxSizeLoadingTime>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SAutoLoadingBoxSizeLoadingTime>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             warning_cargo_removal_notification: match inst.get("warningCargoRemovalNotification") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<CargoLoadingNotificationParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<CargoLoadingNotificationParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             notify_cargo_removal_notification: match inst.get("notifyCargoRemovalNotification") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<CargoLoadingNotificationParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<CargoLoadingNotificationParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             reminder_retrieve_cargo_from_loading_area_notification: match inst.get("reminderRetrieveCargoFromLoadingAreaNotification") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<CargoLoadingNotificationParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<CargoLoadingNotificationParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             notify_cargo_transferred_notification: match inst.get("notifyCargoTransferredNotification") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<CargoLoadingNotificationParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<CargoLoadingNotificationParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             notify_cargo_transfer_interrupted_obstruction_notification: match inst.get("notifyCargoTransferInterruptedObstructionNotification") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<CargoLoadingNotificationParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<CargoLoadingNotificationParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             notify_cargo_transfer_interrupted_ship_moving_notification: match inst.get("notifyCargoTransferInterruptedShipMovingNotification") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<CargoLoadingNotificationParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<CargoLoadingNotificationParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             notify_cargo_transfer_interrupted_generic_notification: match inst.get("notifyCargoTransferInterruptedGenericNotification") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<CargoLoadingNotificationParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<CargoLoadingNotificationParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             initial_movement_hint_time_buffer_notification: match inst.get("initialMovementHintTimeBufferNotification") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<CargoLoadingNotificationParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<CargoLoadingNotificationParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             notify_loading_area_revoked_timeout_notification: match inst.get("notifyLoadingAreaRevokedTimeoutNotification") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<CargoLoadingNotificationParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<CargoLoadingNotificationParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             notify_loading_area_revoked_generic_notification: match inst.get("notifyLoadingAreaRevokedGenericNotification") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<CargoLoadingNotificationParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<CargoLoadingNotificationParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
         }
@@ -260,7 +224,7 @@ impl<'a> Extract<'a> for GlobalCargoLoadingParams {
 pub struct CargoLoadingNotificationParams {
     /// `message` (Locale)
     #[serde(default)]
-    pub message: String,
+    pub message: LocaleKey,
     /// `screenTimer` (Single)
     #[serde(default)]
     pub screen_timer: f32,
@@ -284,7 +248,7 @@ impl<'a> Extract<'a> for CargoLoadingNotificationParams {
     const TYPE_NAME: &'static str = "CargoLoadingNotificationParams";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            message: inst.get_str("message").map(String::from).unwrap_or_default(),
+            message: inst.get_str("message").map(LocaleKey::from).unwrap_or_default(),
             screen_timer: inst.get_f32("screenTimer").unwrap_or_default(),
             hurry_screen_timer: inst.get_f32("hurryScreenTimer").unwrap_or_default(),
             disabled: inst.get_bool("disabled").unwrap_or_default(),

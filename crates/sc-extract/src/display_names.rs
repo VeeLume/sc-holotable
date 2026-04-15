@@ -23,7 +23,7 @@ use std::collections::HashMap;
 
 use serde::{Deserialize, Serialize};
 
-use crate::locale::LocaleMap;
+use crate::locale::{LocaleKey, LocaleMap};
 use crate::svarog_datacore::{DataCoreDatabase, Instance, Value};
 use crate::Guid;
 
@@ -120,16 +120,20 @@ pub fn resolve_entity_display_name(
             continue;
         }
 
-        // Walk component → AttachDef → Localization → Name
+        // Walk component → AttachDef → Localization → Name. The Name
+        // field is a DCB `Locale` — wrap it in a typed [`LocKey`] so the
+        // rest of this function treats it as a localization reference,
+        // not an arbitrary string.
         let attach_def = component.get_instance("AttachDef")?;
-        let localization = attach_def.get_instance("Localization")?;
-        let name_key_raw = localization.get_str("Name").unwrap_or("");
-        if name_key_raw.is_empty() {
+        let localization: Instance<'_> = attach_def.get_instance("Localization")?;
+        let name_key = LocaleKey::new(localization.get_str("Name").unwrap_or(""));
+        if name_key.stripped().is_empty() {
             continue;
         }
 
-        // Resolve through the locale map — strip '@' prefix if present.
-        if let Some(resolved) = locale.resolve(name_key_raw) {
+        // `LocaleMap::resolve` accepts `&LocKey` via `AsRef<str>` and
+        // handles the leading `@` prefix internally.
+        if let Some(resolved) = locale.resolve(&name_key) {
             return Some(resolved.to_string());
         }
     }

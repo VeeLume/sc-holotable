@@ -7,7 +7,7 @@
 //
 // Any hand edits will be lost on the next run.
 
-#![allow(non_snake_case, dead_code, unused_imports)]
+#![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
 use std::collections::HashMap;
 use serde::{Deserialize, Serialize};
@@ -19,15 +19,15 @@ use super::super::*;
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct AnalyticsIndex {
     #[serde(default)]
-    pub sanalytics_event: HashMap<CigGuid, Handle<SAnalyticsEvent>>,
-    #[serde(default)]
     pub sanalytics_event_database: HashMap<CigGuid, Handle<SAnalyticsEventDatabase>>,
 }
 
 impl AnalyticsIndex {
+    #[allow(unused_mut)]
     pub fn len(&self) -> usize {
-        self.sanalytics_event.len()
-            + self.sanalytics_event_database.len()
+        let mut total = 0usize;
+        total += self.sanalytics_event_database.len();
+        total
     }
 
     pub fn is_empty(&self) -> bool { self.len() == 0 }

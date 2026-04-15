@@ -15,7 +15,7 @@
 use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, Pooled};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -30,10 +30,10 @@ pub struct AwardService_Award {
     pub trigger_id: String,
     /// `displayTitle` (Locale)
     #[serde(default)]
-    pub display_title: String,
+    pub display_title: LocaleKey,
     /// `displayMessage` (Locale)
     #[serde(default)]
-    pub display_message: String,
+    pub display_message: LocaleKey,
     /// `badgeId` (UInt32)
     #[serde(default)]
     pub badge_id: u32,
@@ -56,8 +56,8 @@ impl<'a> Extract<'a> for AwardService_Award {
         Self {
             enabled: inst.get_bool("enabled").unwrap_or_default(),
             trigger_id: inst.get_str("triggerId").map(String::from).unwrap_or_default(),
-            display_title: inst.get_str("displayTitle").map(String::from).unwrap_or_default(),
-            display_message: inst.get_str("displayMessage").map(String::from).unwrap_or_default(),
+            display_title: inst.get_str("displayTitle").map(LocaleKey::from).unwrap_or_default(),
+            display_message: inst.get_str("displayMessage").map(LocaleKey::from).unwrap_or_default(),
             badge_id: inst.get_u32("badgeId").unwrap_or_default(),
             prerequisite_badge_ids: inst.get_array("prerequisiteBadgeIds")
                 .map(|arr| arr.filter_map(|v| v.as_u32()).collect())
@@ -89,16 +89,10 @@ impl<'a> Extract<'a> for AwardService_Config {
         Self {
             awards: match inst.get("Awards") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AwardService_Award>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<AwardService_Award>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             played: match inst.get("Played") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AwardService_Award>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<AwardService_Award>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
         }

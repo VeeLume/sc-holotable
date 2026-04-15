@@ -15,7 +15,7 @@
 use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, Pooled};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -41,16 +41,10 @@ impl<'a> Extract<'a> for ARMarkerPlayerOffsetParams {
         Self {
             offset: match inst.get("offset") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<Vec3>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             offset_proportion_per_meter: match inst.get("offsetProportionPerMeter") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<Vec3>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
         }
@@ -76,9 +70,6 @@ impl<'a> Extract<'a> for ARMarkerGlobalParams {
         Self {
             armarker_player_offset: match inst.get("ARMarkerPlayerOffset") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<ARMarkerPlayerOffsetParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<ARMarkerPlayerOffsetParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
         }

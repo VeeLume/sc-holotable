@@ -7,7 +7,7 @@
 //
 // Any hand edits will be lost on the next run.
 
-#![allow(non_snake_case, dead_code, unused_imports)]
+#![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
 use serde::{Deserialize, Serialize};
 use super::super::*;
@@ -58,17 +58,21 @@ pub struct VfxPools {
     #[serde(default)]
     pub screen_effects_param: Vec<Option<ScreenEffects_Param>>,
     #[serde(default)]
-    pub screen_effects_param_value: Vec<Option<ScreenEffects_ParamValue>>,
-    #[serde(default)]
     pub screen_effects_param_strength_behavior: Vec<Option<ScreenEffects_ParamStrengthBehavior>>,
+    #[serde(default)]
+    pub screen_effects_pattern_linear: Vec<Option<ScreenEffects_Pattern_Linear>>,
+    #[serde(default)]
+    pub screen_effects_param_value_float: Vec<Option<ScreenEffects_ParamValue_Float>>,
+    #[serde(default)]
+    pub screen_effects_param_strength_behavior_range_enable: Vec<Option<ScreenEffects_ParamStrengthBehavior_RangeEnable>>,
+    #[serde(default)]
+    pub screen_effects_param_strength_behavior_range_fade: Vec<Option<ScreenEffects_ParamStrengthBehavior_RangeFade>>,
     #[serde(default)]
     pub screen_effects_debug: Vec<Option<ScreenEffects_Debug>>,
     #[serde(default)]
     pub screen_effects_debug_effect: Vec<Option<ScreenEffects_DebugEffect>>,
     #[serde(default)]
     pub screen_effects_debug_param: Vec<Option<ScreenEffects_DebugParam>>,
-    #[serde(default)]
-    pub shield_type_params: Vec<Option<ShieldTypeParams>>,
     #[serde(default)]
     pub video_comms_shader_params: Vec<Option<VideoCommsShaderParams>>,
     #[serde(default)]

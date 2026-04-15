@@ -7,7 +7,7 @@
 //
 // Any hand edits will be lost on the next run.
 
-#![allow(non_snake_case, dead_code, unused_imports)]
+#![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
 use std::collections::HashMap;
 use serde::{Deserialize, Serialize};
@@ -25,9 +25,12 @@ pub struct ActorInputdeflectiontimeIndex {
 }
 
 impl ActorInputdeflectiontimeIndex {
+    #[allow(unused_mut)]
     pub fn len(&self) -> usize {
-        self.ifcs_input_deflection_time_params.len()
-            + self.turret_input_deflection_time_params.len()
+        let mut total = 0usize;
+        total += self.ifcs_input_deflection_time_params.len();
+        total += self.turret_input_deflection_time_params.len();
+        total
     }
 
     pub fn is_empty(&self) -> bool { self.len() == 0 }

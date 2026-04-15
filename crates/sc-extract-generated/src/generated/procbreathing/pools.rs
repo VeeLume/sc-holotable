@@ -7,7 +7,7 @@
 //
 // Any hand edits will be lost on the next run.
 
-#![allow(non_snake_case, dead_code, unused_imports)]
+#![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
 use serde::{Deserialize, Serialize};
 use super::super::*;
@@ -16,17 +16,5 @@ use super::super::*;
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct ProcbreathingPools {
     #[serde(default)]
-    pub proc_breathing_curve: Vec<Option<ProcBreathingCurve>>,
-    #[serde(default)]
     pub proc_breathing_curve_database: Vec<Option<ProcBreathingCurveDatabase>>,
-    #[serde(default)]
-    pub proc_breathing_graph: Vec<Option<ProcBreathingGraph>>,
-    #[serde(default)]
-    pub proc_breathing_graph_entry: Vec<Option<ProcBreathingGraphEntry>>,
-    #[serde(default)]
-    pub proc_breathing_exertion: Vec<Option<ProcBreathingExertion>>,
-    #[serde(default)]
-    pub proc_breathing_hold_breath_noise: Vec<Option<ProcBreathingHoldBreathNoise>>,
-    #[serde(default)]
-    pub proc_breathing_setup: Vec<Option<ProcBreathingSetup>>,
 }

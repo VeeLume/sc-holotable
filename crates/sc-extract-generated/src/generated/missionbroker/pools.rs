@@ -7,7 +7,7 @@
 //
 // Any hand edits will be lost on the next run.
 
-#![allow(non_snake_case, dead_code, unused_imports)]
+#![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
 use serde::{Deserialize, Serialize};
 use super::super::*;
@@ -16,33 +16,17 @@ use super::super::*;
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct MissionbrokerPools {
     #[serde(default)]
-    pub date: Vec<Option<Date>>,
+    pub mission_modifier_law_license: Vec<Option<MissionModifier_LawLicense>>,
     #[serde(default)]
-    pub time: Vec<Option<Time>>,
+    pub mission_modifier_faction_hostility: Vec<Option<MissionModifier_FactionHostility>>,
     #[serde(default)]
-    pub date_time: Vec<Option<DateTime>>,
+    pub mission_modifier_hostile_mission: Vec<Option<MissionModifier_HostileMission>>,
     #[serde(default)]
-    pub date_time_schedule: Vec<Option<DateTimeSchedule>>,
+    pub mission_modifier_ignore_mission_player_criminality: Vec<Option<MissionModifier_IgnoreMissionPlayerCriminality>>,
     #[serde(default)]
-    pub reputation_prerequisite_range: Vec<Option<ReputationPrerequisiteRange>>,
+    pub sreputation_mission_requirement_expression_and: Vec<Option<SReputationMissionRequirementExpression_And>>,
     #[serde(default)]
-    pub reputation_prerequisites: Vec<Option<ReputationPrerequisites>>,
+    pub sreputation_mission_requirement_expression_left_parenthesis: Vec<Option<SReputationMissionRequirementExpression_LeftParenthesis>>,
     #[serde(default)]
-    pub mission_deadline: Vec<Option<MissionDeadline>>,
-    #[serde(default)]
-    pub mission_reward: Vec<Option<MissionReward>>,
-    #[serde(default)]
-    pub min_required_missions: Vec<Option<MinRequiredMissions>>,
-    #[serde(default)]
-    pub mission_broker_entry: Vec<Option<MissionBrokerEntry>>,
-    #[serde(default)]
-    pub mission_complete_perk_base_def: Vec<Option<MissionCompletePerkBaseDef>>,
-    #[serde(default)]
-    pub sreputation_amount_params: Vec<Option<SReputationAmountParams>>,
-    #[serde(default)]
-    pub sreputation_amount_list_params: Vec<Option<SReputationAmountListParams>>,
-    #[serde(default)]
-    pub sreputation_mission_requirement_expression_element: Vec<Option<SReputationMissionRequirementExpressionElement>>,
-    #[serde(default)]
-    pub sreputation_mission_requirements_params: Vec<Option<SReputationMissionRequirementsParams>>,
+    pub sreputation_mission_requirement_expression_right_parenthesis: Vec<Option<SReputationMissionRequirementExpression_RightParenthesis>>,
 }

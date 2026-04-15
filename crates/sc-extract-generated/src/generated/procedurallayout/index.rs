@@ -7,7 +7,7 @@
 //
 // Any hand edits will be lost on the next run.
 
-#![allow(non_snake_case, dead_code, unused_imports)]
+#![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
 use std::collections::HashMap;
 use serde::{Deserialize, Serialize};
@@ -27,10 +27,13 @@ pub struct ProcedurallayoutIndex {
 }
 
 impl ProcedurallayoutIndex {
+    #[allow(unused_mut)]
     pub fn len(&self) -> usize {
-        self.faction_palettes.len()
-            + self.faction_palette.len()
-            + self.procedural_layout_graph.len()
+        let mut total = 0usize;
+        total += self.faction_palettes.len();
+        total += self.faction_palette.len();
+        total += self.procedural_layout_graph.len();
+        total
     }
 
     pub fn is_empty(&self) -> bool { self.len() == 0 }

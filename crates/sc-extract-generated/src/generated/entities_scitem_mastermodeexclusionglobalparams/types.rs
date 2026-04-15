@@ -15,7 +15,7 @@
 use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, Pooled};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -24,10 +24,10 @@ use super::super::*;
 pub struct MasterModeExclusion {
     /// `itemType` (EnumChoice)
     #[serde(default)]
-    pub item_type: String,
+    pub item_type: EItemType,
     /// `masterModeExclusions` (EnumChoice (array))
     #[serde(default)]
-    pub master_mode_exclusions: Vec<String>,
+    pub master_mode_exclusions: Vec<EMasterMode>,
 }
 
 impl Pooled for MasterModeExclusion {
@@ -39,9 +39,9 @@ impl<'a> Extract<'a> for MasterModeExclusion {
     const TYPE_NAME: &'static str = "MasterModeExclusion";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            item_type: inst.get_str("itemType").map(String::from).unwrap_or_default(),
+            item_type: EItemType::from_dcb_str(inst.get_str("itemType").unwrap_or("")),
             master_mode_exclusions: inst.get_array("masterModeExclusions")
-                .map(|arr| arr.filter_map(|v| v.as_str().map(String::from)).collect())
+                .map(|arr| arr.filter_map(|v| v.as_str().map(EMasterMode::from_dcb_str)).collect())
                 .unwrap_or_default(),
         }
     }
@@ -67,9 +67,7 @@ impl<'a> Extract<'a> for MasterModeExclusionGlobalParams {
             exclusions: inst.get_array("exclusions")
                 .map(|arr| arr.filter_map(|v| match v {
                         Value::Class { struct_index, data } => Some(b.alloc_nested::<MasterModeExclusion>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r)
-                        | Value::StrongPointer(Some(r))
-                        | Value::WeakPointer(Some(r)) => Some(b.alloc_nested::<MasterModeExclusion>(b.db.instance(r.struct_index, r.instance_index), true)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<MasterModeExclusion>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
                     }).collect())
                 .unwrap_or_default(),

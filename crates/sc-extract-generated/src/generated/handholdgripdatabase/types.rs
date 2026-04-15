@@ -15,35 +15,9 @@
 use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, Pooled};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
-
-/// DCB type: `HandholdGripType`
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct HandholdGripType {
-    /// `mannequinTag` (String)
-    #[serde(default)]
-    pub mannequin_tag: String,
-    /// `handholdType` (EnumChoice)
-    #[serde(default)]
-    pub handhold_type: String,
-}
-
-impl Pooled for HandholdGripType {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.handholdgripdatabase.handhold_grip_type }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.handholdgripdatabase.handhold_grip_type }
-}
-
-impl<'a> Extract<'a> for HandholdGripType {
-    const TYPE_NAME: &'static str = "HandholdGripType";
-    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
-            mannequin_tag: inst.get_str("mannequinTag").map(String::from).unwrap_or_default(),
-            handhold_type: inst.get_str("handholdType").map(String::from).unwrap_or_default(),
-        }
-    }
-}
 
 /// DCB type: `HandholdGripDatabase`
 #[derive(Debug, Clone, Serialize, Deserialize)]

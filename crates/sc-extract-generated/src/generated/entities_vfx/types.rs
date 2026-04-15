@@ -15,9 +15,32 @@
 use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, Pooled};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
+
+/// DCB type: `DaylightParticleGroupComponentParams`
+/// Inherits from: `DataForgeComponentParams`
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct DaylightParticleGroupComponentParams {
+    /// `activationBehavior` (EnumChoice)
+    #[serde(default)]
+    pub activation_behavior: DaylightParticleGroupActivation,
+}
+
+impl Pooled for DaylightParticleGroupComponentParams {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_vfx.daylight_particle_group_component_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_vfx.daylight_particle_group_component_params }
+}
+
+impl<'a> Extract<'a> for DaylightParticleGroupComponentParams {
+    const TYPE_NAME: &'static str = "DaylightParticleGroupComponentParams";
+    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {
+            activation_behavior: DaylightParticleGroupActivation::from_dcb_str(inst.get_str("activationBehavior").unwrap_or("")),
+        }
+    }
+}
 
 /// DCB type: `PlacedSurfaceEffects_Emitter`
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -55,20 +78,33 @@ impl<'a> Extract<'a> for PlacedSurfaceEffects_Emitter {
             tag: inst.get("tag").and_then(|v| v.as_record_ref()).map(|r| r.guid),
             particle_effect: match inst.get("particleEffect") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceParticle>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<GlobalResourceParticle>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             emitter_position: match inst.get("emitterPosition") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<Vec3>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             linked_to_sdf: inst.get_bool("linkedToSdf").unwrap_or_default(),
             fade_out_duration: inst.get_f32("fadeOutDuration").unwrap_or_default(),
+        }
+    }
+}
+
+/// DCB type: `SurfaceRaindropsTargetComponentParams`
+/// Inherits from: `DataForgeComponentParams`
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct SurfaceRaindropsTargetComponentParams {
+}
+
+impl Pooled for SurfaceRaindropsTargetComponentParams {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_vfx.surface_raindrops_target_component_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_vfx.surface_raindrops_target_component_params }
+}
+
+impl<'a> Extract<'a> for SurfaceRaindropsTargetComponentParams {
+    const TYPE_NAME: &'static str = "SurfaceRaindropsTargetComponentParams";
+    fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {
         }
     }
 }

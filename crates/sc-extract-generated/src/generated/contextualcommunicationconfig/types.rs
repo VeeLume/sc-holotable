@@ -15,7 +15,7 @@
 use serde::{Deserialize, Serialize};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, Pooled};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -65,9 +65,7 @@ impl<'a> Extract<'a> for ContextualCommunicationConfig {
             response_entries: inst.get_array("responseEntries")
                 .map(|arr| arr.filter_map(|v| match v {
                         Value::Class { struct_index, data } => Some(b.alloc_nested::<ContextualCommunicationResponse>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r)
-                        | Value::StrongPointer(Some(r))
-                        | Value::WeakPointer(Some(r)) => Some(b.alloc_nested::<ContextualCommunicationResponse>(b.db.instance(r.struct_index, r.instance_index), true)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<ContextualCommunicationResponse>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
                     }).collect())
                 .unwrap_or_default(),
@@ -83,7 +81,7 @@ pub struct ContextualCommunicationResponse {
     pub name: String,
     /// `concept` (EnumChoice)
     #[serde(default)]
-    pub concept: String,
+    pub concept: eContextualCommunicationConcept,
     /// `customConcept` (String)
     #[serde(default)]
     pub custom_concept: String,
@@ -98,7 +96,7 @@ pub struct ContextualCommunicationResponse {
     pub response: Option<Handle<CommunicationRequest>>,
     /// `memoryVariables` (StrongPointer (array))
     #[serde(default)]
-    pub memory_variables: Vec<Handle<CommunicationVariableBase>>,
+    pub memory_variables: Vec<CommunicationVariableBasePtr>,
 }
 
 impl Pooled for ContextualCommunicationResponse {
@@ -111,31 +109,23 @@ impl<'a> Extract<'a> for ContextualCommunicationResponse {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             name: inst.get_str("name").map(String::from).unwrap_or_default(),
-            concept: inst.get_str("concept").map(String::from).unwrap_or_default(),
+            concept: eContextualCommunicationConcept::from_dcb_str(inst.get_str("concept").unwrap_or("")),
             custom_concept: inst.get_str("customConcept").map(String::from).unwrap_or_default(),
             refire_delay: inst.get_f32("refireDelay").unwrap_or_default(),
             rules: inst.get_array("rules")
                 .map(|arr| arr.filter_map(|v| match v {
                         Value::Class { struct_index, data } => Some(b.alloc_nested::<ContextualCommunicationCondition>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r)
-                        | Value::StrongPointer(Some(r))
-                        | Value::WeakPointer(Some(r)) => Some(b.alloc_nested::<ContextualCommunicationCondition>(b.db.instance(r.struct_index, r.instance_index), true)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<ContextualCommunicationCondition>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
                     }).collect())
                 .unwrap_or_default(),
             response: match inst.get("response") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<CommunicationRequest>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                Some(Value::ClassRef(r))
-                | Some(Value::StrongPointer(Some(r)))
-                | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<CommunicationRequest>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             memory_variables: inst.get_array("memoryVariables")
                 .map(|arr| arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<CommunicationVariableBase>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r)
-                        | Value::StrongPointer(Some(r))
-                        | Value::WeakPointer(Some(r)) => Some(b.alloc_nested::<CommunicationVariableBase>(b.db.instance(r.struct_index, r.instance_index), true)),
+                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => Some(CommunicationVariableBasePtr::from_ref(b, r)),
                         _ => None,
                     }).collect())
                 .unwrap_or_default(),
@@ -174,7 +164,7 @@ impl<'a> Extract<'a> for CommunicationRequest {
 pub struct ContextualCommunicationCondition {
     /// `criteriaType` (EnumChoice)
     #[serde(default)]
-    pub criteria_type: String,
+    pub criteria_type: eContextualCommunicationCriteria,
     /// `customCriteria` (String)
     #[serde(default)]
     pub custom_criteria: String,
@@ -186,7 +176,7 @@ pub struct ContextualCommunicationCondition {
     pub string_value: String,
     /// `operation` (EnumChoice)
     #[serde(default)]
-    pub operation: String,
+    pub operation: eCommunicationCriteriaOperant,
 }
 
 impl Pooled for ContextualCommunicationCondition {
@@ -198,11 +188,11 @@ impl<'a> Extract<'a> for ContextualCommunicationCondition {
     const TYPE_NAME: &'static str = "ContextualCommunicationCondition";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            criteria_type: inst.get_str("criteriaType").map(String::from).unwrap_or_default(),
+            criteria_type: eContextualCommunicationCriteria::from_dcb_str(inst.get_str("criteriaType").unwrap_or("")),
             custom_criteria: inst.get_str("customCriteria").map(String::from).unwrap_or_default(),
             number_value: inst.get_f32("numberValue").unwrap_or_default(),
             string_value: inst.get_str("stringValue").map(String::from).unwrap_or_default(),
-            operation: inst.get_str("operation").map(String::from).unwrap_or_default(),
+            operation: eCommunicationCriteriaOperant::from_dcb_str(inst.get_str("operation").unwrap_or("")),
         }
     }
 }

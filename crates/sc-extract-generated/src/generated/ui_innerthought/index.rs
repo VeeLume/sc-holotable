@@ -7,7 +7,7 @@
 //
 // Any hand edits will be lost on the next run.
 
-#![allow(non_snake_case, dead_code, unused_imports)]
+#![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
 use std::collections::HashMap;
 use serde::{Deserialize, Serialize};
@@ -19,27 +19,15 @@ use super::super::*;
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct UiInnerthoughtIndex {
     #[serde(default)]
-    pub inner_thought_anim: HashMap<CigGuid, Handle<InnerThought_Anim>>,
-    #[serde(default)]
-    pub inner_thought_color_params: HashMap<CigGuid, Handle<InnerThought_ColorParams>>,
-    #[serde(default)]
-    pub inner_thought_params: HashMap<CigGuid, Handle<InnerThought_Params>>,
-    #[serde(default)]
-    pub inner_thought_conversation_system_config: HashMap<CigGuid, Handle<InnerThought_ConversationSystemConfig>>,
-    #[serde(default)]
-    pub inner_thought_interaction_system_config: HashMap<CigGuid, Handle<InnerThought_InteractionSystemConfig>>,
-    #[serde(default)]
     pub inner_thought_legacy_use_system_config: HashMap<CigGuid, Handle<InnerThought_LegacyUseSystemConfig>>,
 }
 
 impl UiInnerthoughtIndex {
+    #[allow(unused_mut)]
     pub fn len(&self) -> usize {
-        self.inner_thought_anim.len()
-            + self.inner_thought_color_params.len()
-            + self.inner_thought_params.len()
-            + self.inner_thought_conversation_system_config.len()
-            + self.inner_thought_interaction_system_config.len()
-            + self.inner_thought_legacy_use_system_config.len()
+        let mut total = 0usize;
+        total += self.inner_thought_legacy_use_system_config.len();
+        total
     }
 
     pub fn is_empty(&self) -> bool { self.len() == 0 }

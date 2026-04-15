@@ -7,7 +7,7 @@
 //
 // Any hand edits will be lost on the next run.
 
-#![allow(non_snake_case, dead_code, unused_imports)]
+#![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
 use serde::{Deserialize, Serialize};
 use super::super::*;
@@ -18,7 +18,7 @@ pub struct JumppointsPools {
     #[serde(default)]
     pub sjump_tunnel_visual_params: Vec<Option<SJumpTunnelVisualParams>>,
     #[serde(default)]
-    pub smisfire_effect: Vec<Option<SMisfireEffect>>,
+    pub sspread_misfire_effect: Vec<Option<SSpreadMisfireEffect>>,
     #[serde(default)]
     pub global_jump_point_tuning_params: Vec<Option<GlobalJumpPointTuningParams>>,
     #[serde(default)]
@@ -31,8 +31,6 @@ pub struct JumppointsPools {
     pub jump_drive_uicone_params: Vec<Option<JumpDriveUIConeParams>>,
     #[serde(default)]
     pub global_jump_point_params: Vec<Option<GlobalJumpPointParams>>,
-    #[serde(default)]
-    pub sjump_point_push_area_params: Vec<Option<SJumpPointPushAreaParams>>,
     #[serde(default)]
     pub sjump_tunnel_section_probability_params: Vec<Option<SJumpTunnelSectionProbabilityParams>>,
     #[serde(default)]
