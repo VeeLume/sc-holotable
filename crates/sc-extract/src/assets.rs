@@ -1,52 +1,88 @@
-//! Generic non-DCB file access inside a `Data.p4k` archive.
+//! Generic non-DCB file access, backed by either a live P4K archive or
+//! a hand-assembled byte map captured from a snapshot.
 //!
-//! [`AssetSource`] is a thin wrapper over [`svarog_p4k::P4kArchive`] that
-//! exposes read-only, on-demand access to arbitrary files in the archive.
-//! It is deliberately *orthogonal* to the serializable
-//! [`crate::DatacoreSnapshot`] / [`crate::AssetData`] types: those hold
-//! fully-owned, portable data, while an `AssetSource` holds a live mmap
-//! handle and is not serialisable.
+//! [`AssetSource`] exposes read-only, on-demand access to arbitrary
+//! files keyed by their in-archive path. It is deliberately *orthogonal*
+//! to the runtime [`crate::Datacore`] / [`crate::AssetData`] types: those
+//! hold cooked runtime state, while an `AssetSource` is the raw byte feed
+//! that the parse pipeline consumes.
 //!
-//! Consumers that only need files (e.g. `defaultBindings.xml`) can
-//! construct an `AssetSource` directly without ever parsing the DCB.
-//! Consumers that need the datacore feed the same `AssetSource` into
-//! [`crate::Datacore::parse`].
+//! # Backing stores
+//!
+//! An `AssetSource` is either **live** (wrapping a `svarog_p4k::P4kArchive`
+//! mmap'd off disk) or **memory** (wrapping a `BTreeMap<String, Vec<u8>>`
+//! captured from a snapshot file). The public API dispatches on the inner
+//! variant transparently: `find_and_read`, `read`, and `try_read` all
+//! behave identically from the caller's perspective.
+//!
+//! This is what lets [`crate::Datacore::parse`] and
+//! [`crate::AssetData::extract`] consume either a live install or a
+//! captured snapshot through the exact same code path — the substitution
+//! is entirely internal to `AssetSource`.
 //!
 //! # Cost model
 //!
-//! Opening an `AssetSource` is cheap — svarog-p4k memory-maps the archive
-//! and parses only the central directory. Reads are eager: each `read` call
-//! returns a fully-decompressed `Vec<u8>`. Holding the handle open for many
-//! scattered reads is the intended usage pattern.
+//! Opening a **live** source is cheap — svarog-p4k memory-maps the archive
+//! and parses only the central directory. Reads are eager: each `read`
+//! call returns a fully-decompressed `Vec<u8>`. Holding the handle open
+//! for many scattered reads is the intended usage pattern.
+//!
+//! Opening a **memory** source is a move of the pre-decompressed byte map.
+//! Reads just clone the relevant `Vec<u8>` out of the map (which already
+//! holds its contents in plain bytes). No decompression cost per read.
 
+use std::collections::BTreeMap;
 use std::path::{Path, PathBuf};
 
 use svarog_p4k::{P4kArchive, P4kEntryRef};
 
 use crate::error::{Error, Result};
 
-/// Live handle to a `Data.p4k` archive for generic file access.
+/// Read-only byte feed, backed by either a live `.p4k` archive or a
+/// snapshot's captured file map.
 ///
-/// Not serialisable. Construct with [`AssetSource::open`] or
-/// [`AssetSource::from_install`].
+/// Construct with [`AssetSource::open`] / [`AssetSource::from_install`]
+/// for the live case, or [`AssetSource::from_snapshot`] for a memory-
+/// backed source rehydrated from an [`crate::ExtractSnapshot`].
 pub struct AssetSource {
-    archive: P4kArchive,
-    source_path: PathBuf,
+    inner: AssetSourceInner,
+}
+
+/// Internal backing store for an [`AssetSource`].
+///
+/// Kept private so we can rearrange the representation (e.g. add a
+/// lazy-zstd variant) without touching callers.
+enum AssetSourceInner {
+    /// Live `.p4k` mmap handle.
+    Live {
+        archive: P4kArchive,
+        source_path: PathBuf,
+    },
+    /// Pre-captured, fully-decompressed byte map keyed by in-archive path.
+    /// Used by the snapshot-hydration path.
+    Memory {
+        files: BTreeMap<String, Vec<u8>>,
+        /// Diagnostic label (no semantic meaning). Typically something
+        /// like `"snapshot://game_version=4.7"`.
+        label: String,
+    },
 }
 
 impl AssetSource {
     /// Open a `Data.p4k` archive for asset access.
     ///
-    /// This parses the central directory but does not read any file bytes.
-    /// Subsequent reads are on demand.
+    /// Parses the central directory but does not read any file bytes —
+    /// subsequent reads are on demand.
     pub fn open(p4k_path: &Path) -> Result<Self> {
         let archive = P4kArchive::open(p4k_path).map_err(|source| Error::P4kOpen {
             path: p4k_path.to_path_buf(),
             source,
         })?;
         Ok(Self {
-            archive,
-            source_path: p4k_path.to_path_buf(),
+            inner: AssetSourceInner::Live {
+                archive,
+                source_path: p4k_path.to_path_buf(),
+            },
         })
     }
 
@@ -61,22 +97,61 @@ impl AssetSource {
         Self::open(&install.data_p4k())
     }
 
-    /// Filesystem path of the underlying archive. Useful for error messages
-    /// and diagnostics; consumers should not need to re-open it.
-    pub fn source_path(&self) -> &Path {
-        &self.source_path
+    /// Rehydrate an asset source from a captured byte map.
+    ///
+    /// This is the load-side counterpart to
+    /// [`crate::ExtractSnapshot::capture`]: consumers who loaded a snapshot
+    /// feed its `files` map into this constructor to build an `AssetSource`
+    /// that serves the same bytes the original live archive would have.
+    ///
+    /// The memory backing transparently supports all of the reading methods
+    /// ([`read`](Self::read), [`try_read`](Self::try_read),
+    /// [`find_and_read`](Self::find_and_read)), with the contract that the
+    /// set of retrievable paths is exactly what the snapshot captured —
+    /// anything not present in the map returns [`Error::FileNotInP4k`]
+    /// / `Ok(None)`.
+    ///
+    /// The `label` is a diagnostic-only string (shown in `Debug` output
+    /// and tracing). Pass something identifying, e.g. the snapshot's
+    /// game version or file path.
+    pub fn from_snapshot(files: BTreeMap<String, Vec<u8>>, label: impl Into<String>) -> Self {
+        Self {
+            inner: AssetSourceInner::Memory {
+                files,
+                label: label.into(),
+            },
+        }
     }
 
-    /// Low-level access to the underlying `P4kArchive` for callers that need
-    /// to drive iteration or reads themselves.
-    pub fn archive(&self) -> &P4kArchive {
-        &self.archive
+    /// Filesystem path of the underlying archive, or `None` for a
+    /// snapshot-backed source (which has no on-disk P4K).
+    pub fn source_path(&self) -> Option<&Path> {
+        match &self.inner {
+            AssetSourceInner::Live { source_path, .. } => Some(source_path),
+            AssetSourceInner::Memory { .. } => None,
+        }
+    }
+
+    /// Low-level access to the underlying `P4kArchive`, or `None` for a
+    /// snapshot-backed source.
+    ///
+    /// Returns `None` for memory-backed sources because there is no real
+    /// archive to drive iteration against. Callers that need to enumerate
+    /// entries should use [`find_and_read`](Self::find_and_read) or
+    /// [`try_read`](Self::try_read), which dispatch correctly over both
+    /// backing stores.
+    pub fn archive(&self) -> Option<&P4kArchive> {
+        match &self.inner {
+            AssetSourceInner::Live { archive, .. } => Some(archive),
+            AssetSourceInner::Memory { .. } => None,
+        }
     }
 
     /// Read a file from the archive by its full in-archive path.
     ///
-    /// Matching is case-insensitive and delegates to `P4kArchive::find`.
-    /// Returns [`Error::FileNotInP4k`] if no entry matches.
+    /// Matching is case-insensitive. Returns [`Error::FileNotInP4k`] if
+    /// no entry matches in the live case, or if the path is not present
+    /// in the captured byte map for a snapshot-backed source.
     pub fn read(&self, path: &str) -> Result<Vec<u8>> {
         match self.try_read(path)? {
             Some(bytes) => Ok(bytes),
@@ -87,16 +162,39 @@ impl AssetSource {
     /// Same as [`read`](Self::read) but returns `Ok(None)` for a miss
     /// instead of [`Error::FileNotInP4k`]. Useful when presence is optional.
     pub fn try_read(&self, path: &str) -> Result<Option<Vec<u8>>> {
-        let Some(entry) = self.archive.find(path) else {
-            return Ok(None);
-        };
-        let bytes = self.archive.read(&entry)?;
-        Ok(Some(bytes))
+        match &self.inner {
+            AssetSourceInner::Live { archive, .. } => {
+                let Some(entry) = archive.find(path) else {
+                    return Ok(None);
+                };
+                let bytes = archive.read(&entry)?;
+                Ok(Some(bytes))
+            }
+            AssetSourceInner::Memory { files, .. } => {
+                // Match `P4kArchive::find`'s case-insensitive semantics so
+                // callers that hard-code a path like `"Data/Game2.dcb"` get
+                // the same behavior against either backing store.
+                let needle = path.to_ascii_lowercase();
+                for (k, v) in files.iter() {
+                    if k.to_ascii_lowercase() == needle {
+                        return Ok(Some(v.clone()));
+                    }
+                }
+                Ok(None)
+            }
+        }
     }
 
-    /// Find the first entry matching a predicate and read its bytes. The
-    /// first returned `(path, bytes)` pair is from the earliest entry in
-    /// archive order whose name satisfies `predicate`.
+    /// Find the first entry matching a predicate and read its bytes.
+    ///
+    /// For a live source, the first returned `(path, bytes)` pair comes
+    /// from the earliest entry in archive order whose name satisfies
+    /// `predicate`. For a snapshot-backed source, iteration is in
+    /// `BTreeMap` key order (sorted by in-archive path); this is
+    /// deterministic but may differ from original archive order. In
+    /// practice this only matters when multiple entries could match the
+    /// same predicate (e.g. duplicated `game2.dcb`), which doesn't occur
+    /// for the well-known paths we capture.
     ///
     /// Useful when you know a suffix or filename but not the full path —
     /// e.g. "find anything ending in `game2.dcb`".
@@ -104,29 +202,58 @@ impl AssetSource {
     where
         F: Fn(&str) -> bool,
     {
-        let Some(entry) = self.archive.iter().find(|e| predicate(e.name)) else {
-            return Ok(None);
-        };
-        let name = entry.name.to_string();
-        let bytes = self.archive.read(&entry)?;
-        Ok(Some((name, bytes)))
+        match &self.inner {
+            AssetSourceInner::Live { archive, .. } => {
+                let Some(entry) = archive.iter().find(|e| predicate(e.name)) else {
+                    return Ok(None);
+                };
+                let name = entry.name.to_string();
+                let bytes = archive.read(&entry)?;
+                Ok(Some((name, bytes)))
+            }
+            AssetSourceInner::Memory { files, .. } => {
+                for (path, bytes) in files.iter() {
+                    if predicate(path.as_str()) {
+                        return Ok(Some((path.clone(), bytes.clone())));
+                    }
+                }
+                Ok(None)
+            }
+        }
     }
 
     /// Iterate over entries whose path satisfies a predicate.
     ///
-    /// Returned references borrow from the archive and are cheap to hold;
-    /// read their bytes with [`read_entry`](Self::read_entry).
-    pub fn find<'a, F>(&'a self, predicate: F) -> impl Iterator<Item = P4kEntryRef<'a>> + 'a
+    /// Live-only: returns an empty iterator for a snapshot-backed source,
+    /// because `P4kEntryRef` is borrowed from a live `P4kArchive`. For
+    /// snapshot-backed sources, use [`find_and_read`](Self::find_and_read)
+    /// or [`try_read`](Self::try_read) instead.
+    pub fn find<'a, F>(&'a self, predicate: F) -> Box<dyn Iterator<Item = P4kEntryRef<'a>> + 'a>
     where
         F: Fn(&str) -> bool + 'a,
     {
-        self.archive.iter().filter(move |e| predicate(e.name))
+        match &self.inner {
+            AssetSourceInner::Live { archive, .. } => {
+                Box::new(archive.iter().filter(move |e| predicate(e.name)))
+            }
+            AssetSourceInner::Memory { .. } => Box::new(std::iter::empty()),
+        }
     }
 
     /// Read the bytes for an entry reference previously obtained from
-    /// [`find`](Self::find) or [`archive`](Self::archive).
+    /// [`find`](Self::find).
+    ///
+    /// Only works on live sources (the only place `P4kEntryRef` can come
+    /// from). Returns [`Error::FileNotInP4k`] with a diagnostic name if
+    /// called against a memory-backed source — this is effectively
+    /// unreachable unless a caller constructs a `P4kEntryRef` by hand.
     pub fn read_entry(&self, entry: &P4kEntryRef<'_>) -> Result<Vec<u8>> {
-        Ok(self.archive.read(entry)?)
+        match &self.inner {
+            AssetSourceInner::Live { archive, .. } => Ok(archive.read(entry)?),
+            AssetSourceInner::Memory { .. } => {
+                Err(Error::FileNotInP4k("<read_entry on snapshot-backed source>".into()))
+            }
+        }
     }
 
     // ── Typed helpers for well-known files ───────────────────────────────
@@ -161,9 +288,22 @@ impl AssetSource {
 
 impl std::fmt::Debug for AssetSource {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        f.debug_struct("AssetSource")
-            .field("source_path", &self.source_path)
-            .field("entries", &self.archive.entry_count())
-            .finish()
+        match &self.inner {
+            AssetSourceInner::Live {
+                archive,
+                source_path,
+            } => f
+                .debug_struct("AssetSource")
+                .field("backing", &"live")
+                .field("source_path", source_path)
+                .field("entries", &archive.entry_count())
+                .finish(),
+            AssetSourceInner::Memory { files, label } => f
+                .debug_struct("AssetSource")
+                .field("backing", &"memory")
+                .field("label", label)
+                .field("entries", &files.len())
+                .finish(),
+        }
     }
 }

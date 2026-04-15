@@ -1,18 +1,18 @@
-//! Runtime [`Datacore`] session and serializable [`DatacoreSnapshot`].
+//! Runtime [`Datacore`] session and its cooked [`DatacoreSnapshot`].
 //!
-//! This module splits the old `ExtractedData` god-struct into two pieces:
+//! This module splits the parse-run state into two pieces:
 //!
-//! - [`DatacoreSnapshot`] — fully owned, serde-friendly bundle of every
-//!   DCB-derived value produced in one parse pass (records, graph, tag tree,
-//!   manufacturers, display names). No live handles, portable on disk.
+//! - [`DatacoreSnapshot`] — fully owned runtime bundle of every DCB-derived
+//!   value produced in one parse pass (records, graph, tag tree,
+//!   manufacturers, display names). Not serialized — persistence happens
+//!   through [`crate::ExtractSnapshot`], which archives the raw DCB bytes
+//!   and re-parses on load.
 //! - [`Datacore`] — live session that **owns** a [`DataCoreDatabase`] so
 //!   consumers can keep running raw svarog queries after high-level parsing.
 //!   Holds a [`DatacoreSnapshot`] for the cooked data.
 //!
 //! Constructed via [`Datacore::parse`]. See [`crate::asset_data::AssetData`]
 //! for the asset-sourced companion (currently just the locale map).
-
-use serde::{Deserialize, Serialize};
 
 use crate::asset_data::AssetData;
 use crate::assets::AssetSource;
@@ -22,37 +22,37 @@ use crate::error::{Error, Result};
 use crate::generated::{Builder, RecordStore};
 use crate::graph::ReferenceGraph;
 use crate::manufacturers::ManufacturerRegistry;
-use crate::tags::TagTree;
 use crate::svarog_datacore::DataCoreDatabase;
+use crate::tags::TagTree;
 
-/// Serializable snapshot of every DCB-derived value from one parse pass.
+/// Cooked bundle of every DCB-derived value from one parse pass.
 ///
-/// Produced by [`Datacore::into_snapshot`] / [`Datacore::snapshot`] and
-/// embedded in [`crate::ExtractSnapshot`] for on-disk persistence.
-#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+/// Produced by [`Datacore::parse`] and held inside a live [`Datacore`]
+/// session. Access through [`Datacore::snapshot`] (borrow) or
+/// [`Datacore::into_snapshot`] (move).
+///
+/// Not serialized. Snapshot persistence happens at the
+/// [`crate::ExtractSnapshot`] layer, which archives the raw DCB bytes and
+/// re-parses on load — see `docs/sc-extract.md` for why.
+#[derive(Debug, Clone, Default)]
 #[non_exhaustive]
 pub struct DatacoreSnapshot {
     /// Every top-level DCB record, split by concrete Rust type.
-    #[serde(default)]
     pub records: RecordStore,
 
     /// Cross-record reference graph (forward + reverse edges). Empty if
     /// [`DatacoreConfig::build_graph`] was false at parse time.
-    #[serde(default)]
     pub graph: ReferenceGraph,
 
     /// Hierarchical tag tree.
-    #[serde(default)]
     pub tag_tree: TagTree,
 
     /// Manufacturer lookup by GUID and ticker code.
-    #[serde(default)]
     pub manufacturers: ManufacturerRegistry,
 
     /// Pre-computed localized entity display names. Populated only when
     /// [`DatacoreConfig::build_display_names`] is true *and* the
     /// accompanying [`AssetData`] had a non-empty locale.
-    #[serde(default)]
     pub display_names: DisplayNameCache,
 }
 
@@ -67,11 +67,11 @@ impl DatacoreSnapshot {
 /// cooked [`DatacoreSnapshot`].
 ///
 /// The database is kept alive so consumers can run raw svarog queries
-/// (via [`Datacore::db`]) after high-level parsing — a capability the old
-/// `parse_inner` flow dropped on the floor.
+/// (via [`Datacore::db`]) after high-level parsing.
 ///
-/// Not serializable. To persist, call [`Datacore::into_snapshot`] and embed
-/// the result in an [`crate::ExtractSnapshot`].
+/// Not persisted directly. Snapshot files archive the raw DCB bytes
+/// (via [`crate::ExtractSnapshot::capture`]) and re-materialize a live
+/// [`Datacore`] on load (via [`crate::ExtractSnapshot::hydrate`]).
 pub struct Datacore {
     db: DataCoreDatabase,
     snapshot: DatacoreSnapshot,
@@ -160,8 +160,7 @@ impl Datacore {
     }
 
     /// Consume the session and return only the snapshot. Drops the live
-    /// [`DataCoreDatabase`]; use this right before embedding in an
-    /// [`crate::ExtractSnapshot`] for save.
+    /// [`DataCoreDatabase`].
     pub fn into_snapshot(self) -> DatacoreSnapshot {
         self.snapshot
     }

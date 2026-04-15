@@ -1,8 +1,29 @@
 # Feature Gating v2 — Data-Driven Scoping + Polymorphism
 
-> **Status**: Draft design, iterating. Captures the considerations and
-> decisions from the design session on 2026-04-14. Not yet implemented.
-> Supersedes the post-polymorphism parts of `docs/feature-gating.md`.
+> **Status**: **Implemented** as of commit `bc9f899` (2026-04-15).
+> Captures the considerations and decisions from the design session on
+> 2026-04-14, and supersedes `docs/feature-gating.md` (v1 kept for the
+> compile-time-problem framing but the architecture there is obsolete).
+>
+> The shipped implementation differs from this draft in one place:
+> dormant types live in their **own physical `generated/dormant/` module**
+> (whole-module `#[cfg(feature = "dormant")]`), rather than being mixed
+> into `core/types.rs` with per-type cfgs as originally described in
+> Decision 5. This keeps the core-module grep clean and lets the whole
+> dormant module drop out of parsing with a single cfg decision. The
+> observable behaviour (default → no dormant; `--features dormant` → all
+> dormant types + their references via the `full` forward) is unchanged.
+>
+> Similarly, the multi-feature types live in their own physical
+> `generated/multi_feature/` module — always compiled, each type carrying
+> its own `#[cfg(any(...))]`. `multi-feature` is a module name, not a
+> Cargo feature; only `core`, `dormant`, `full`, and the 245 leaf
+> features appear in the manifest.
+>
+> Diagnostic flags (`--check-polymorphism`, `--analyze-poly-bases`,
+> `--measure-dormancy`, `--feature-closure`, `--measure-cfg-spread`) were
+> removed from the shipped generator once the design was locked in.
+> Reintroduce them on a branch if future measurement is needed.
 
 ## Context
 

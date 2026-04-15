@@ -36,10 +36,15 @@
 //! [`Datacore`] owns the live [`DataCoreDatabase`], so raw svarog queries
 //! remain available via [`Datacore::db`] after high-level parsing.
 //!
-//! Persist a parse run with [`ExtractSnapshot`]: embed the output of
-//! [`Datacore::into_snapshot`] and/or an [`AssetData`] under descriptive
-//! [`SnapshotMeta`], then call [`ExtractSnapshot::save`]. Load back with
-//! [`ExtractSnapshot::load`] — no live P4K handle required.
+//! Persist a parse run with [`ExtractSnapshot`]: call
+//! [`ExtractSnapshot::capture`] against a live [`AssetSource`] to archive
+//! the raw `game2.dcb` + `global.ini` bytes under descriptive
+//! [`SnapshotMeta`], then [`ExtractSnapshot::save`] to write the zstd-
+//! compressed file. Load back with [`ExtractSnapshot::load`] (cheap, no
+//! DCB parse) and [`ExtractSnapshot::hydrate`] (~15–25s re-parse) to
+//! rebuild a live [`Datacore`] + [`AssetData`]. Historical snapshots are
+//! forward/backward compatible across generator regenerations for the
+//! same DCB, because the parse-time binding is deferred to load time.
 //!
 //! # svarog re-exports
 //!
@@ -80,7 +85,7 @@ pub use graph::ReferenceGraph;
 pub use locale::{LocaleKey, LocaleMap};
 pub use manufacturers::{Manufacturer, ManufacturerRegistry};
 pub use sc_extract_generated::{Builder, DataPools, Extract, RecordIndex, RecordStore};
-pub use snapshot::{ExtractSnapshot, SnapshotMeta};
+pub use snapshot::{ExtractSnapshot, SnapshotCaptureConfig, SnapshotMeta};
 pub use tags::{TagNode, TagTree};
 
 // ── svarog re-exports ──────────────────────────────────────────────────────

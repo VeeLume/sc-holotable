@@ -1,17 +1,15 @@
-//! Serializable asset-sourced data — currently just the parsed locale map.
+//! Cooked asset-sourced data — currently just the parsed locale map.
 //!
 //! [`AssetData`] is the asset-side counterpart to [`crate::DatacoreSnapshot`]:
 //! it bundles everything that comes from non-DCB files inside the P4K into
-//! one owned, serde-friendly struct. Today that's just a [`LocaleMap`]
-//! parsed from `global.ini`, but the shape is designed so future cached
-//! asset-derived values (keybindings, vehicle XML summaries, etc.) can be
-//! added without changing the surrounding API.
+//! one owned, runtime-only struct. Today that's just a [`LocaleMap`] parsed
+//! from `global.ini`, but the shape is designed so future cached asset-
+//! derived values (keybindings, vehicle XML summaries, etc.) can be added
+//! without changing the surrounding API.
 //!
-//! Built by [`AssetData::extract`] from a live [`AssetSource`]. The live
-//! archive handle is kept separate so callers who only need locale can
-//! snapshot this struct and drop the archive.
-
-use serde::{Deserialize, Serialize};
+//! Built by [`AssetData::extract`] from a live [`AssetSource`]. Not
+//! serialized — snapshot persistence archives the raw bytes and re-parses
+//! at [`crate::ExtractSnapshot::hydrate`] time, see `docs/sc-extract.md`.
 
 use crate::assets::AssetSource;
 use crate::error::Result;
@@ -45,13 +43,12 @@ impl Default for AssetConfig {
     }
 }
 
-/// Owned, serializable bundle of asset-sourced values.
-#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+/// Owned runtime bundle of asset-sourced values.
+#[derive(Debug, Clone, Default)]
 #[non_exhaustive]
 pub struct AssetData {
     /// Parsed `global.ini` localization table. Empty if
     /// [`AssetConfig::build_locale`] was false or the file was missing.
-    #[serde(default)]
     pub locale: LocaleMap,
 }
 

@@ -24,7 +24,8 @@ use std::path::PathBuf;
 use std::time::Instant;
 
 use sc_extract::{
-    AssetConfig, AssetData, AssetSource, DatacoreConfig, ExtractSnapshot, SnapshotMeta,
+    AssetConfig, AssetData, AssetSource, DatacoreConfig, ExtractSnapshot, SnapshotCaptureConfig,
+    SnapshotMeta,
 };
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -116,38 +117,63 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("  db.records_by_type(\"EntityClassDefinition\") : {entity_count}");
 
     // ── Snapshot round-trip ───────────────────────────────────────────────
+    //
+    // The v5 snapshot format archives raw DCB + locale bytes and
+    // re-parses on load. This section times the three phases separately
+    // so we can see where the cost lives:
+    //
+    //   capture  : read the source bytes from the live archive (fast)
+    //   save     : msgpack + zstd + atomic file write (fast)
+    //   load     : read file + zstd decode + msgpack decode (fast)
+    //   hydrate  : svarog DCB parse + pool build + index build (~15-25s)
     println!();
     println!("Snapshot round-trip");
     println!("-------------------");
-    let dc_snapshot = datacore.into_snapshot();
-    let expected_records = dc_snapshot.records.len();
+    let expected_records = datacore.snapshot().records.len();
 
-    let snapshot = ExtractSnapshot {
-        meta,
-        asset_data: Some(asset_data),
-        datacore: Some(dc_snapshot),
-    };
+    let mut capture_config = SnapshotCaptureConfig::standard();
+    if skip_assets {
+        // Pattern 4 path — produce a datacore-only snapshot so hydrate
+        // doesn't complain when there's no global.ini to capture.
+        capture_config.archive_locale = false;
+    }
+
+    let t1 = Instant::now();
+    let snapshot = ExtractSnapshot::capture(&assets, meta.clone(), &capture_config)?;
+    let capture_secs = t1.elapsed().as_secs_f64();
+    println!("  captured files : {}", snapshot.files.len());
+    println!("  capture time   : {capture_secs:.2}s");
 
     let snapshot_path = std::env::temp_dir().join("sc_extract_smoke.snap");
-    let t1 = Instant::now();
+    let t2 = Instant::now();
     snapshot.save(&snapshot_path)?;
-    let save_secs = t1.elapsed().as_secs_f64();
+    let save_secs = t2.elapsed().as_secs_f64();
     let size = std::fs::metadata(&snapshot_path)?.len();
     println!("  snapshot file  : {}", snapshot_path.display());
     println!("  size on disk   : {:.2} MB", size as f64 / 1_000_000.0);
     println!("  save time      : {save_secs:.2}s");
 
-    let t2 = Instant::now();
+    let t3 = Instant::now();
     let loaded = ExtractSnapshot::load(&snapshot_path)?;
-    let load_secs = t2.elapsed().as_secs_f64();
-    println!("  load time      : {load_secs:.2}s");
-    let loaded_records = loaded
-        .datacore
-        .as_ref()
-        .map(|d| d.records.len())
-        .unwrap_or(0);
-    println!("  loaded records : {loaded_records}");
-    assert_eq!(loaded_records, expected_records);
+    let load_secs = t3.elapsed().as_secs_f64();
+    println!("  load time      : {load_secs:.2}s  (bytes only)");
+
+    let hydrate_asset_config = if skip_assets {
+        AssetConfig::minimal()
+    } else {
+        AssetConfig::standard()
+    };
+    let t4 = Instant::now();
+    let (hydrated_assets, hydrated_dc) = loaded.hydrate(&hydrate_asset_config, &dc_config)?;
+    let hydrate_secs = t4.elapsed().as_secs_f64();
+    let hydrated_records = hydrated_dc.snapshot().records.len();
+    println!("  hydrate time   : {hydrate_secs:.2}s  (svarog + builder + indices)");
+    println!("  hydrated records : {hydrated_records}");
+    println!(
+        "  hydrated locale  : {} entries",
+        hydrated_assets.locale.len()
+    );
+    assert_eq!(hydrated_records, expected_records);
 
     // ── Asset access smoke check ──────────────────────────────────────────
     println!();

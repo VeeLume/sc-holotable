@@ -95,4 +95,12 @@ pub enum Error {
     /// A loaded snapshot was written by an incompatible schema version.
     #[error("snapshot schema version mismatch: file has {found}, this build expects {expected}")]
     SnapshotVersionMismatch { expected: u32, found: u32 },
+
+    /// A snapshot's captured-files map did not contain `game2.dcb` bytes,
+    /// so [`crate::ExtractSnapshot::hydrate`] cannot rebuild the datacore.
+    /// This happens when the snapshot was captured with
+    /// `SnapshotCaptureConfig::archive_dcb = false` or was hand-constructed
+    /// with the DCB omitted.
+    #[error("snapshot does not contain game2.dcb bytes; cannot hydrate datacore")]
+    SnapshotMissingDcb,
 }

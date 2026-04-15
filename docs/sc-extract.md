@@ -29,15 +29,15 @@ It is the only non-`sc-installs` crate in the workspace that has svarog as a dep
 - svarog re-exports and ergonomic aliases
 - Generated DataCore type catalog (produced by `tools/sc-generator`, see `docs/codegen.md`)
 - The `Extract` + `Pooled` traits and the `Builder` (flat-pool materialiser) emitted by the generator
-- `ReferenceGraph` (built once during parse, serialized in snapshot)
+- `ReferenceGraph` (built once during parse, rebuilt on snapshot hydrate)
 - Tag tree navigation (hand-written on top of generated `Tag` records)
 - Manufacturer registry (hand-written lookup on top of generated `SCItemManufacturer`)
 - `LocaleMap` — `global.ini` parse + serialize (UTF-16 LE with BOM)
 - **Vehicle XML** (CryXmlB) parsing — *deferred; spec only.* The non-DCB ship data source; see the Vehicle XML section below.
 - Entity display-name resolver (pre-computed during parse, cached in snapshot)
 - Playable-content filters (`is_playable_weapon`, `is_playable_ship`)
-- Staged result types: [`AssetSource`] (live P4K handle), [`AssetData`] + [`Datacore`] (runtime session owning `DataCoreDatabase`), [`DatacoreSnapshot`] + [`ExtractSnapshot`] (serializable)
-- Three staged entry points: [`AssetSource::from_install`], [`AssetData::extract`], [`Datacore::parse`], plus [`ExtractSnapshot::save`] / [`ExtractSnapshot::load`]
+- Staged result types: [`AssetSource`] (live P4K handle or memory-backed byte map), [`AssetData`] + [`Datacore`] + [`DatacoreSnapshot`] (runtime session owning `DataCoreDatabase`), [`ExtractSnapshot`] (on-disk byte bundle wrapping raw captured DCB + asset bytes)
+- Three staged entry points: [`AssetSource::from_install`], [`AssetData::extract`], [`Datacore::parse`], plus the snapshot quartet [`ExtractSnapshot::capture`] / `save` / `load` / `hydrate`
 
 **What `sc-extract` does *not* own:**
 
@@ -86,8 +86,7 @@ The `sc_extract::generated::*` module contains every DataCore struct and enum as
 
 Key facts for consumers:
 
-- All types derive `Serialize`, `Deserialize`, `Debug`, `Clone`. `Default` is *not* derived (reachability pruning + flat-pool handles don't need it, and skipping the derive cuts compile time).
-- Optional fields use `#[serde(default)]` so older snapshots still deserialize cleanly when new fields are added.
+- All types derive `Serialize`, `Deserialize`, `Debug`, `Clone`. `Default` is *not* derived (reachability pruning + flat-pool handles don't need it, and skipping the derive cuts compile time). **Note (v5 snapshot rework):** nothing in the workspace currently instantiates serde against these generated types — the `ExtractSnapshot` persistence path archives raw DCB bytes and re-parses on load, so the derives are latent trait impls with zero codegen cost. They're kept on the struct definitions as an optional future tool (e.g. JSON debug dumps), not because anything persists through them.
 - Abstract base types (types in the DCB with multiple concrete subclasses) become polymorphic enums: `SWeaponActionParamsVariant { SWeaponActionFireRapidParams(...), SWeaponActionFireSingleParams(...), SWeaponActionSequenceParams(...), Unrecognized(String) }`.
 - Inheritance is **flattened** — parent-struct fields are inlined into the child struct rather than being kept as a `_parent: ParentType` field. See the rationale in `docs/codegen.md`.
 - Field names are `snake_case` versions of DataCore field names. Rust keyword collisions use raw identifiers (`r#type`, `r#ref`) or trailing-underscore (`Self_`).
@@ -118,7 +117,7 @@ Consumers almost never see `Extract` or `Builder` directly — they use the resu
 
 ## The reference graph
 
-The `ReferenceGraph` captures every cross-record reference found in the DCB during parsing. Built once, stored in the snapshot, queried at runtime for both forward and reverse lookups. This is the crate's answer to sc-langpatch's "find all contracts that reference this tag" patterns — it replaces linear scans with O(1) lookups.
+The `ReferenceGraph` captures every cross-record reference found in the DCB during parsing. Built once per session, queried at runtime for both forward and reverse lookups. This is the crate's answer to sc-langpatch's "find all contracts that reference this tag" patterns — it replaces linear scans with O(1) lookups. (Prior to the v5 snapshot rework the graph was also serialized into snapshot files; it's now rebuilt at hydrate time alongside the rest of the cooked state, since hydrate re-runs the full `Datacore::parse` pipeline.)
 
 ```rust
 pub struct ReferenceGraph {
@@ -171,7 +170,7 @@ impl ReferenceGraph {
 
 **Memory budget:** 200k records × ~5 outgoing edges each ≈ 1M edges. Each edge: `16B (from) + 16B (to) + 4B (field_path interned id) + 1B (kind) = ~40B`. Total ≈ 40MB in memory. Acceptable for a desktop app. The `field_path` strings are interned to avoid duplicating common paths like `"Components"` across thousands of edges.
 
-**The graph is built exactly once**, during [`Datacore::parse`] when [`DatacoreConfig::build_graph`] is true. It is serialized as part of the [`DatacoreSnapshot`]. Apps that [`ExtractSnapshot::load`] get the fully-built graph; they never rebuild it.
+**The graph is built exactly once per session**, during [`Datacore::parse`] when [`DatacoreConfig::build_graph`] is true. Apps that load a snapshot get a fresh graph via [`ExtractSnapshot::hydrate`] — hydrate re-runs the full parse pipeline against the captured DCB bytes, so every cooked index (graph, tags, manufacturers, display names) is rebuilt deterministically.
 
 > Note: `ReferenceGraph` was simplified as part of the flat-pool refactor — edges are now `Guid → Vec<Guid>` instead of carrying a `field_path` or `kind`. The `Edge { from, to, field_path, kind }` shape shown in the next block is the earlier design, preserved here for historical context. The live code only exposes `outgoing(guid) -> &[Guid]` and `incoming(guid) -> &[Guid]`.
 
@@ -257,7 +256,7 @@ impl TagTree {
 }
 ```
 
-The tree is built during parse by walking `TagDatabase` records (which contain nested `Tag` records via `children` arrays) and indexed by both GUID and name. Serialized in the snapshot.
+The tree is built during parse by walking `TagDatabase` records (which contain nested `Tag` records via `children` arrays) and indexed by both GUID and name. Rebuilt on snapshot hydrate.
 
 ## Manufacturer registry
 
@@ -276,7 +275,7 @@ impl ManufacturerRegistry {
 }
 ```
 
-Built during parse by scanning all records of type `SCItemManufacturer`. Stored in the snapshot.
+Built during parse by scanning all records of type `SCItemManufacturer`. Rebuilt on snapshot hydrate.
 
 ## LocaleMap
 
@@ -339,7 +338,7 @@ pub fn extract_locale(p4k_path: &Path, lang: Language) -> Result<LocaleMap>;
 
 ## Vehicle XML (CryXmlB files)
 
-> **Status: not implemented (phase 2b deliberately deferred).** This section is forward-looking spec. When vehicle XML parsing lands, it will plug in alongside the current asset/datacore split — likely as a third serializable bundle (e.g. `VehicleXmlStore`) that lives either inside [`AssetData`] or as its own field on [`ExtractSnapshot`]. A real working implementation exists in the sibling `sc-damage-calculator` crate at `src/extract/hull.rs` (~490 lines) and will be ported when the first consumer needs it.
+> **Status: not implemented (phase 2b deliberately deferred).** This section is forward-looking spec. When vehicle XML parsing lands, it plugs in naturally alongside the DCB/locale split at two layers: (a) runtime — a hand-written parser produces cooked typed structs, held in a `VehicleXmlStore` inside [`AssetData`] or adjacent; (b) archival — the raw vehicle XML bytes get captured into the existing `ExtractSnapshot::files` map via a flipped `SnapshotCaptureConfig::archive_vehicle_xmls` flag, and re-parsed on hydrate. No format version bump is needed because the byte-bundle shape generalizes trivially. A real working implementation exists in the sibling `sc-damage-calculator` crate at `src/extract/hull.rs` (~490 lines) and will be ported when the first consumer needs it.
 
 The DCB doesn't contain everything. Ships specifically have two fundamentally different data sources: the DCB holds the ship **entity** (`VehicleComponentParams`, default loadout references), while the **vehicle XML** holds the hull structure, hardpoint definitions with gimbal limits, pipe topology, and flight performance. A complete ship model requires merging both sources.
 
@@ -533,7 +532,7 @@ This is the single most common operation across consumers (bulkhead UI, sc-langp
 
 ```rust
 /// Pre-computed display names for every EntityClassDefinition that has one.
-/// Stored as part of `DatacoreSnapshot`, computed during `Datacore::parse`
+/// Held inside the live `DatacoreSnapshot`, computed during `Datacore::parse`
 /// when `DatacoreConfig::build_display_names` is true and the accompanying
 /// `AssetData` had a non-empty locale.
 pub struct DisplayNameCache {
@@ -567,30 +566,35 @@ The exact rules live in bulkhead's `docs/damage-system.md` and migrate here as t
 
 ## Result types
 
-The crate splits data into three orthogonal layers along the **data-source** axis (assets vs. datacore) and the **lifetime** axis (live handles vs. owned serializable data):
+The crate splits data into three orthogonal layers along the **data-source** axis (assets vs. datacore) and the **lifetime** axis (live handles vs. owned runtime data vs. on-disk byte bundles):
 
 | Type | Layer | Kind | Source |
 |---|---|---|---|
-| [`AssetSource`] | runtime | live P4K handle | file |
-| [`AssetData`] | serializable | locale + future asset caches | asset files (e.g. `global.ini`) |
+| [`AssetSource`] | runtime | live P4K handle *or* memory-backed byte map | file / snapshot |
+| [`AssetData`] | runtime | locale + future asset caches | asset files (e.g. `global.ini`) |
 | [`Datacore`] | runtime | owned `DataCoreDatabase` + inner [`DatacoreSnapshot`] | DCB |
-| [`DatacoreSnapshot`] | serializable | records, graph, tags, manufacturers, display names | DCB |
-| [`ExtractSnapshot`] | serializable (on-disk) | `{ meta, asset_data?, datacore? }` bundle | — |
+| [`DatacoreSnapshot`] | runtime | records, graph, tags, manufacturers, display names | DCB |
+| [`ExtractSnapshot`] | serializable (on-disk) | `{ meta, files: BTreeMap<String, Vec<u8>> }` byte bundle | captured from `AssetSource` |
 | [`SnapshotMeta`] | serializable | schema version + game version + build id + timestamp | install manifest |
 
 ```rust
-/// Live handle to a `Data.p4k` archive. Not serializable.
-pub struct AssetSource { /* archive + source_path */ }
+/// Read-only byte feed, backed by either a live `.p4k` mmap or a
+/// captured byte map from a snapshot. The same reading API dispatches
+/// over either — `Datacore::parse` and `AssetData::extract` don't care
+/// which source produced the bytes they consume.
+pub struct AssetSource { /* Live(P4kArchive) | Memory(BTreeMap<String, Vec<u8>>) */ }
 
-/// Owned, serializable bundle of asset-sourced values. Currently just the
-/// locale; designed to grow.
-#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+/// Owned runtime bundle of asset-sourced values. Currently just the locale;
+/// designed to grow. Not serialized.
+#[derive(Debug, Clone, Default)]
 pub struct AssetData {
     pub locale: LocaleMap,
 }
 
-/// Owned, serializable bundle of every DCB-derived value from one parse.
-#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+/// Cooked runtime bundle of every DCB-derived value from one parse pass.
+/// Not serialized — persistence happens at the ExtractSnapshot layer by
+/// archiving raw DCB bytes and re-parsing on load.
+#[derive(Debug, Clone, Default)]
 pub struct DatacoreSnapshot {
     pub records: RecordStore,
     pub graph: ReferenceGraph,
@@ -600,8 +604,7 @@ pub struct DatacoreSnapshot {
 }
 
 /// Live datacore session: owns the parsed `DataCoreDatabase` (so raw svarog
-/// queries stay available) plus the cooked `DatacoreSnapshot`. Not
-/// serializable — call `into_snapshot` to drop the db and get the serde half.
+/// queries stay available) plus the cooked `DatacoreSnapshot`.
 pub struct Datacore { /* db + snapshot */ }
 
 impl Datacore {
@@ -611,12 +614,12 @@ impl Datacore {
     pub fn records(&self) -> &RecordStore;
 }
 
-/// On-disk single-file snapshot format.
+/// On-disk single-file snapshot format (v5). Archives raw captured bytes,
+/// not cooked typed pools — see "Snapshot format" below for the rationale.
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct ExtractSnapshot {
     pub meta: SnapshotMeta,
-    pub asset_data: Option<AssetData>,
-    pub datacore: Option<DatacoreSnapshot>,
+    pub files: BTreeMap<String, Vec<u8>>,  // keyed by in-archive path
 }
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
@@ -628,25 +631,23 @@ pub struct SnapshotMeta {
 }
 ```
 
-Each half of the pair (`AssetData` / `DatacoreSnapshot`) is `Option<_>` in `ExtractSnapshot` so the same file format covers all four consumer patterns: assets only, datacore only, both, or neither.
-
-Everything that was in the pre-rework `ExtractedData` god-struct is now reachable through these types. The `generator_version` / `p4k_sha256` / `game_branch` fields mentioned in an earlier draft were never implemented — provenance lives in `meta` only.
+The runtime types (`AssetData`, `DatacoreSnapshot`, `Datacore`) hold cooked data for the duration of a session; they are not directly persisted. The only serde-bound type on the hot persistence path is `ExtractSnapshot` itself, which holds primitive bytes — this is a deliberate choice to avoid cascading `Serialize`/`Deserialize` monomorphization across the ~6,000 generated types in `sc-extract-generated`. See "Snapshot format" and `docs/benchmarks.md` for the compile-time story.
 
 ## Parsing model: eager by design
 
-[`Datacore::parse`] performs a **single, complete, eager pass** over the DataCore. Every record is seeded into the [`Builder`]'s worklist, every `Extract::extract` is called, every field is materialized into a slot handle inside `DataPools`. By the time `Datacore::parse` returns, the caller has a fully-typed [`DatacoreSnapshot`] — but [`Datacore`] *also keeps the `DataCoreDatabase` alive* so raw svarog queries remain available through [`Datacore::db`]. (Consumers who want to drop the db call [`Datacore::into_snapshot`] to get just the serde half.)
+[`Datacore::parse`] performs a **single, complete, eager pass** over the DataCore. Every record is seeded into the [`Builder`]'s worklist, every `Extract::extract` is called, every field is materialized into a slot handle inside `DataPools`. By the time `Datacore::parse` returns, the caller has a fully-typed [`DatacoreSnapshot`] — and [`Datacore`] *also keeps the `DataCoreDatabase` alive* so raw svarog queries remain available through [`Datacore::db`].
 
-The [`DatacoreSnapshot`] itself holds no references into the DCB bytes and survives the database being dropped. This is what lets snapshots round-trip through [`ExtractSnapshot::save`] / [`ExtractSnapshot::load`] with no P4K involvement at load time.
+The [`DatacoreSnapshot`] itself holds no references into the DCB bytes and survives the database being dropped. Consumers query against it for the rest of the session and drop it when done.
 
 ### Why eager
 
-Three reasons, in order of importance:
+Two reasons, in order of importance:
 
-1. **The snapshot model requires it.** [`ExtractSnapshot::load`] reads a serialized `DatacoreSnapshot` from disk with no access to the original DCB. If parsing were lazy, the deferred references would have nothing to defer *to* at load time — the DCB isn't around. Snapshots would have to embed the full DCB bytes to make lazy loading survive a reload, which defeats the entire point of having a compact cached snapshot.
+1. **The cross-cutting services have to walk everything anyway.** `ReferenceGraph` needs a full pass to discover every edge. `TagTree` needs a full pass to find every tag. `DisplayNameCache` needs a full pass to resolve every entity's display name. `ManufacturerRegistry` needs a full pass. If you're walking the DCB to build these indices, you might as well materialize the records while you're there — the marginal cost per record is small.
 
-2. **The cross-cutting services have to walk everything anyway.** `ReferenceGraph` needs a full pass to discover every edge. `TagTree` needs a full pass to find every tag. `DisplayNameCache` needs a full pass to resolve every entity's display name. `ManufacturerRegistry` needs a full pass. If you're walking the DCB to build these indices, you might as well materialize the records while you're there — the marginal cost per record is small.
+2. **Memory is affordable.** A full eager `DatacoreSnapshot` fits comfortably in the memory budget of a modern desktop app. The one workspace consumer with tight memory constraints (streamdeck-starcitizen) doesn't use `sc-extract` at all — it only depends on `sc-installs`.
 
-3. **Memory is affordable.** A full eager `ExtractedData` fits comfortably in the memory budget of a modern desktop app. The one workspace consumer with tight memory constraints (streamdeck-starcitizen) doesn't use `sc-extract` at all — it only depends on `sc-installs`.
+(An earlier revision of this section listed "the snapshot model requires it" as the primary reason — that rationale evaporated in the v5 format change. Snapshots now archive raw DCB bytes and re-parse on load, so the cooked `DatacoreSnapshot` no longer needs to survive serialization. Eager parsing is still the right call, but the justification is now about query-time ergonomics, not serde compatibility.)
 
 ### Memory budget (estimate)
 
@@ -667,20 +668,21 @@ For comparison: the raw DCB (`Game2.dcb`) inside `Data.p4k` is ~500 MB. Our extr
 
 ### Lazy was considered and rejected
 
-An earlier sketch considered materializing records on demand via `FromInstance` against a borrowed `&'db DataCoreDatabase`. Four reasons it was rejected:
+An earlier sketch considered materializing records on demand via `FromInstance` against a borrowed `&'db DataCoreDatabase`. Three reasons it was rejected:
 
-- **Snapshots break.** There's no serializable form of "a lazy reference into a DCB that no longer exists". Snapshots would need to embed the full 500 MB DCB to survive a reload. The msgpack + zstd pipeline assumes self-contained data.
 - **Indices are eager anyway.** The graph, tag tree, display names, and manufacturers all need a full pass to build. Laziness only saves on the `RecordStore`, which is ~50% of total memory. Partial optimization for significant complexity.
 - **Lifetime complexity propagates.** `Datacore<'db>` would poison every consumer signature down the stack. Every function that takes `Datacore` would need a lifetime parameter. Unworkable at the scale of three consumer apps.
 - **Query-time cost.** Lazy materialization reparses bytes on every access. Death by a thousand cuts for consumers that touch many records — which all of them do.
 
-The parse-time cost of eager loading (tens of seconds, once per game patch) amortizes across every subsequent [`ExtractSnapshot::load`] (sub-second). That's the right trade.
+The parse-time cost of eager loading (15–25 s on a cold run) is paid once per session — consumers that want to skip it across sessions use a snapshot, which captures the DCB bytes and re-drives eager parse on load.
 
-> **Note:** The *owned* `DataCoreDatabase` inside [`Datacore`] is a different beast from a *borrowed* `&'db DataCoreDatabase` lifetime parameter. The owned version keeps the db alive as an escape hatch for raw svarog queries without propagating lifetimes into every consumer signature. Calling [`Datacore::into_snapshot`] drops it cleanly.
+> **Note:** The *owned* `DataCoreDatabase` inside [`Datacore`] is a different beast from a *borrowed* `&'db DataCoreDatabase` lifetime parameter. The owned version keeps the db alive as an escape hatch for raw svarog queries without propagating lifetimes into every consumer signature.
 
-### `ExtractSnapshot::load` is strictly deserialization
+### `ExtractSnapshot::load` vs. `hydrate`
 
-[`ExtractSnapshot::load`] reads the file, zstd-decompresses it, and `rmp_deserialize`s the bytes into an `ExtractSnapshot`. It never touches a `Data.p4k`, never opens a DCB, never calls `Extract`. The path from snapshot bytes to a working `DatacoreSnapshot` / `AssetData` has zero DCB involvement.
+[`ExtractSnapshot::load`] is the *cheap* step: read the file, zstd-decompress it, and `rmp_deserialize` the envelope into an `ExtractSnapshot`. The result is just metadata plus the captured byte map; no DCB parse has happened yet. This matters for consumers that enumerate many historical snapshots (e.g. bulkhead's patch-diff UI) — they can inspect `meta.game_version` on every file without paying per-snapshot parse cost.
+
+[`ExtractSnapshot::hydrate`] is the *expensive* step: build an in-memory [`AssetSource`] from the captured bytes, run [`AssetData::extract`] and [`Datacore::parse`] against it, and return the live runtime types. This is where the 15–25 s parse cost lives; consumers call it lazily on the one snapshot they actually want to query.
 
 ### Runtime filters via `DatacoreConfig`
 
@@ -741,13 +743,34 @@ impl Datacore {
 }
 
 impl ExtractSnapshot {
-    /// Serialize to the on-disk format (msgpack + zstd). Atomic write.
+    /// Read the raw bytes of well-known files out of a live `AssetSource`
+    /// and bundle them as a snapshot. `config` controls which categories
+    /// of files get archived (DCB, locale, future vehicle XMLs).
+    pub fn capture(
+        assets: &AssetSource,
+        meta: SnapshotMeta,
+        config: &SnapshotCaptureConfig,
+    ) -> Result<Self>;
+
+    /// Serialize to the on-disk format (msgpack envelope + zstd). Atomic
+    /// write via `<path>.tmp` and rename.
     pub fn save(&self, path: &Path) -> Result<()>;
 
-    /// Read from disk, zstd-decompress, msgpack-decode. No P4K needed.
-    /// Returns `Err(Error::SnapshotVersionMismatch)` if the schema_version
+    /// Read from disk, zstd-decompress, msgpack-decode the envelope.
+    /// Cheap: does NOT re-parse the DCB. Returns
+    /// `Err(Error::SnapshotVersionMismatch)` if the schema_version
     /// doesn't match this build.
     pub fn load(path: &Path) -> Result<Self>;
+
+    /// Re-parse the captured DCB + locale bytes into a live
+    /// `Datacore` + `AssetData`. ~15–25s of work; consumers should call
+    /// this lazily on the one snapshot they want to query, not eagerly
+    /// for every historical snapshot in a listing.
+    pub fn hydrate(
+        &self,
+        asset_config: &AssetConfig,
+        dc_config: &DatacoreConfig,
+    ) -> Result<(AssetData, Datacore)>;
 }
 ```
 
@@ -766,7 +789,7 @@ let assets = AssetSource::from_install(&install)?;
 let asset_data = AssetData::extract(&assets, &AssetConfig::standard())?;
 let datacore = Datacore::parse(&assets, &asset_data, &DatacoreConfig::standard())?;
 
-// High-level access via the snapshot:
+// High-level access via the cooked snapshot:
 let snap = datacore.snapshot();
 for record in snap.records.iter() { /* ... */ }
 
@@ -774,12 +797,13 @@ for record in snap.records.iter() { /* ... */ }
 let db = datacore.db();
 let entities = db.records_by_type("EntityClassDefinition");
 
-// Persist for next cold-start:
-let on_disk = ExtractSnapshot {
-    meta: sc_extract::snapshot_meta_from_install(&install),
-    asset_data: Some(asset_data),
-    datacore: Some(datacore.into_snapshot()),
-};
+// Persist for next cold-start: capture the raw bytes from the live
+// archive and write the envelope to disk.
+let on_disk = ExtractSnapshot::capture(
+    &assets,
+    sc_extract::snapshot_meta_from_install(&install),
+    &SnapshotCaptureConfig::standard(),
+)?;
 on_disk.save(path)?;
 
 // 4. install + datacore only (rare — locale lives in AssetData)
@@ -787,31 +811,79 @@ let assets = AssetSource::from_install(&install)?;
 let datacore = Datacore::parse(&assets, &AssetData::default(), &DatacoreConfig::standard())?;
 // display_names is empty because no locale was built.
 
-// Load back from disk with no live P4K handle:
+// Load back from disk with no live P4K handle. `load` only deserializes
+// the envelope — it does NOT re-parse the DCB.
 let loaded = ExtractSnapshot::load(path)?;
-if let Some(dc) = &loaded.datacore { /* walk records */ }
+println!("archived snapshot from {}", loaded.meta.game_version);
+
+// When you actually want to query the data, call `hydrate`. This is
+// where the 15–25s parse cost lives — reserve it for the one snapshot
+// you're actually diffing or querying, not every file in a listing.
+let (loaded_assets, loaded_datacore) = loaded.hydrate(
+    &AssetConfig::standard(),
+    &DatacoreConfig::standard(),
+)?;
+for record in loaded_datacore.snapshot().records.iter() { /* ... */ }
 ```
 
-**Snapshots are self-contained.** `ExtractSnapshot::load` produces fully-populated `AssetData` / `DatacoreSnapshot` without touching the original `Data.p4k`. The runtime [`Datacore`] session — which owns the live `DataCoreDatabase` — is the *only* thing that requires a P4K, and it can't be round-tripped through a file.
+**Snapshots are self-contained.** An archived `.snap` file carries the raw `game2.dcb` and `global.ini` bytes inside its envelope, so `load` + `hydrate` produces fully-populated runtime types against the current generated schema, regardless of which game version the snapshot came from. Historical snapshots across many SC patches can all be loaded into the same consumer binary because the parse-time schema binding is deferred to hydrate time.
 
 ## Snapshot format
 
-On-disk: a single file — conventionally `<name>.snap` or `.msgpack.zst`, but sc-extract doesn't enforce a suffix.
+On-disk: a single file — conventionally `<name>.snap`, but sc-extract doesn't enforce a suffix.
 
-- **msgpack** (`rmp-serde`, `to_vec_named`) for the data layer. Serde-native, compact, schema-evolvable via `#[serde(default)]`. Named fields survive field-order reshuffles.
-- **zstd** (level 3) for compression. Applied at the file boundary: write = `rmp_serialize → zstd_encode → atomic write via .tmp`; read = `std::fs::read → zstd_decode → rmp_deserialize`.
-- Expected size: 5–30 MB depending on game patch. Fits comfortably in git if committed as a fixture for testing.
+- **Envelope** (`msgpack` via `rmp-serde::to_vec_named`) holds `ExtractSnapshot { meta, files: BTreeMap<String, Vec<u8>> }`. The envelope's type graph is entirely primitive (`u32`, `String`, `Vec<u8>`, `BTreeMap`), so its serde monomorphization cost is trivial — unlike earlier revisions, which serialized the cooked generated types and hit catastrophic compile-time regressions. See `docs/benchmarks.md`.
+- **Zstd** (level 3) wraps the whole envelope. Applied at the file boundary: write = `rmp_serialize → zstd_encode → atomic write via .tmp`; read = `std::fs::read → zstd_decode → rmp_deserialize`.
+- **Payload**: the captured `files` map contains the raw bytes of well-known files copied out of the source archive at capture time. A standard snapshot holds `game2.dcb` (~300 MB uncompressed, ~60 MB zstd'd) plus `english/global.ini` (~2 MB uncompressed, ~500 KB zstd'd). Expected on-disk size: ~60–80 MB per SC patch.
 
-`ExtractSnapshot::SCHEMA_VERSION` is currently **4**. History:
+### The capture / load / hydrate split
 
-- **v4** (2026-04-13) — rework: `ExtractSnapshot { meta, asset_data, datacore }` replaces the old `ExtractedData` god-struct. `SnapshotMeta` holds provenance. Not backward compatible with v3.
+Three discrete phases, intentionally decoupled so consumers only pay for what they need:
+
+| Phase | What it does | Cost |
+|---|---|---|
+| `capture` | Reads raw bytes from a live `AssetSource` and builds the `files` map. Runs at extract time; the caller chooses which categories to include via `SnapshotCaptureConfig`. | ~1 s |
+| `save` | msgpack encode + zstd compress + atomic write. | ~2 s |
+| `load` | Read file + zstd decode + msgpack decode. **Does not parse the DCB.** Consumers can inspect `meta` on every snapshot in a listing without paying per-snapshot parse cost. | <1 s |
+| `hydrate` | Build an in-memory `AssetSource` from the captured bytes, run `AssetData::extract` + `Datacore::parse`. This is where the actual parse cost lives. | ~15–25 s |
+
+### Why bytes and not cooked types?
+
+Earlier revisions serialized [`DatacoreSnapshot`] directly via `rmp_serde::to_vec_named(&snapshot)`. Functionally correct, but the call site transitively monomorphized `<T as Serialize>::serialize::<RmpSerializer>` for every generated type reachable from `DataPools` — about 1,756 instantiations for a narrow feature like `ammoparams`, ~6,000 for `--features full`. sc-extract's LLVM IR hit 4+ million lines and full cold builds hit **3h 26m** with a 25 GB RAM peak.
+
+Switching to a byte-bundle shape collapses the type graph of `ExtractSnapshot` to `{u32, String, Vec<u8>, BTreeMap}`. Total LLVM IR in sc-extract drops to ~400 k lines, full cold builds to ~25–40 m, peak RAM to ~6 GB. Neither the `Serialize` nor `Deserialize` derives on `RecordStore` / `DataPools` / `RecordIndex` are ever instantiated anywhere in the workspace — they become latent trait impls with zero codegen cost.
+
+This isn't just a compile-time win. It also **fixes historical-snapshot compatibility**: because the parse-time schema binding is deferred to hydrate time, an archived 4.7 snapshot parses correctly against any future set of generated types. Field renames, struct reshuffles, and type additions across game patches all resolve naturally via svarog's field-by-name resolution at parse time, with no migration code. This is what enables bulkhead's "compare weapon stats across archived SC patches" use case.
+
+### Capture config
+
+```rust
+pub struct SnapshotCaptureConfig {
+    pub archive_dcb: bool,           // default true, required for hydrate
+    pub archive_locale: bool,        // default true
+    pub archive_vehicle_xmls: bool,  // default false, placeholder for phase 2b
+}
+```
+
+Adding a new file category is a non-breaking change: the format is a generic `BTreeMap<String, Vec<u8>>`, so new categories just add entries under new in-archive paths. No `SCHEMA_VERSION` bump required.
+
+### Version history
+
+`ExtractSnapshot::SCHEMA_VERSION` is currently **5**. History:
+
+- **v5** (2026-04-15) — byte-bundle rework: `ExtractSnapshot { meta, files: BTreeMap<String, Vec<u8>> }`. Captured raw bytes replace the cooked `DatacoreSnapshot` + `AssetData` projection; hydration re-parses on load. Primary motivation: break the rmp_serde monomorphization cliff in sc-extract's build. Secondary benefit: historical-snapshot compatibility becomes automatic. Not backward compatible with v4.
+- **v4** (2026-04-13) — rework: `ExtractSnapshot { meta, asset_data, datacore }` replaces the old `ExtractedData` god-struct. `SnapshotMeta` holds provenance.
 - **v3** — `ReferenceGraph` simplified to `Guid → Vec<Guid>`; the `Edge { from, to, field_path, kind }` shape was dropped.
 - **v2** — flat-pool refactor: `RecordStore` holds `DataPools` + `RecordIndex` instead of nested `Option<Box<T>>` trees.
 
-Schema evolution rules:
+### Schema evolution rules
 
-1. Compatible change (new optional field, new enum variant): `#[serde(default)]` + no version bump.
-2. Incompatible change: bump `SCHEMA_VERSION`. Old files fail fast with `Error::SnapshotVersionMismatch`.
+With the v5 format, schema evolution operates at two levels:
+
+1. **Envelope evolution** — adding new fields to `ExtractSnapshot` or `SnapshotMeta`. Use `#[serde(default)]` on new optional fields; no `SCHEMA_VERSION` bump. Adding new categories to `SnapshotCaptureConfig` is similarly non-breaking — the `files` map just gains entries under new keys.
+2. **Payload evolution** — adding new fields to generated DCB record types. Handled entirely at hydrate time by svarog's field-by-name resolution. Old snapshots loaded against new generated types populate only the fields that exist in both versions; new fields default to their `Default` impl. No migration code, no version bump. This is what enables cross-patch historical comparison.
+
+Incompatible envelope changes (e.g. renaming the `files` field) still require a `SCHEMA_VERSION` bump; old files fail fast with `Error::SnapshotVersionMismatch`.
 
 ## Logging
 
@@ -838,13 +910,13 @@ Every DataCore struct and enum is generated into `sc-extract/src/generated/`, no
 
 The generator produces `impl Extract<'a>` + `impl Pooled` for every reachable struct. The traits live in `sc-extract-generated` (the workspace-internal crate) and are re-exported from `sc-extract` for consumers who need to implement them on hand-written types. Domain crates don't normally interact with these directly — they work with already-materialized values via the typed pools in `DatacoreSnapshot::records`.
 
-### Graph built during parse, stored in snapshot
+### Graph built during parse, rebuilt on hydrate
 
-Apps never rebuild the reference graph on load. Cold-start cost matters, and a 40 MB graph de/serializes in well under a second via msgpack + zstd. Forcing every app to rebuild the graph from raw records would add 5–10 seconds to every startup.
+The reference graph is built exactly once per live session. Cross-session persistence happens at the snapshot layer: `capture` archives the raw DCB bytes, and `hydrate` re-runs `Datacore::parse` against them, reconstructing the graph alongside every other cooked index. An earlier revision serialized the cooked graph directly into snapshot files — the v5 byte-bundle format dropped that in favor of re-parsing, which is ~15–25 s but sidesteps the rmp_serde monomorphization cost on ~6 k generated types.
 
-### Display names computed during parse, cached in snapshot
+### Display names computed during parse, rebuilt on hydrate
 
-Same reasoning. Walking `Components → SAttachableComponentParams → AttachDef → Localization → Name → locale lookup` for 50,000 entities is expensive. Compute it once, store the results.
+Same reasoning. Walking `Components → SAttachableComponentParams → AttachDef → Localization → Name → locale lookup` for 50,000 entities is expensive. Compute it once per live session; snapshots re-drive the computation through hydrate.
 
 ### Tag tree structure preserved, not flattened
 
