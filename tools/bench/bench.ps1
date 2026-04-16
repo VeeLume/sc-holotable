@@ -148,6 +148,10 @@ $ErrorActionPreference = 'Stop'
 # Script-level abort flag set by the 'a' key handler.
 $script:Aborted = $false
 
+# Ensure auto-archive of previous results happens only once per run,
+# not on every incremental Persist-Results call.
+$script:ArchiveDone = $false
+
 # ── Test controls mode ─────────────────────────────────────────────────
 
 if ($TestControls) {
@@ -883,9 +887,10 @@ function Update-BenchmarkDoc {
         return
     }
 
-    # Auto-archive previous results before overwriting.
-    if (-not $NoAutoArchive) {
+    # Auto-archive previous results before overwriting (once per run).
+    if (-not $NoAutoArchive -and -not $script:ArchiveDone) {
         Archive-PreviousResults -Path $Path
+        $script:ArchiveDone = $true
     }
 
     $resultsBlock = Build-ResultsMarkdown -R $R
