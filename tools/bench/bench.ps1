@@ -174,10 +174,10 @@ if ($TestControls) {
             if ($key.KeyChar -eq 's') {
                 Write-Host "  detected: skip" -ForegroundColor Green
             } elseif ($key.KeyChar -eq 'a') {
-                Write-Host "  detected: abort — exiting" -ForegroundColor Yellow
+                Write-Host "  detected: abort -- exiting" -ForegroundColor Yellow
                 exit 0
             } else {
-                Write-Host ("  [key '{0}' ignored — press 's' or 'a']" -f $key.KeyChar) -ForegroundColor DarkGray
+                Write-Host ("  [key '{0}' ignored -- press 's' or 'a']" -f $key.KeyChar) -ForegroundColor DarkGray
             }
         }
         Start-Sleep -Milliseconds 500
@@ -244,7 +244,7 @@ if ($RaProcesses.Count -gt 0) {
         Write-Host "         $($RaProcesses.Count) process(es) active. Proceeding because -IgnoreRa was set." -ForegroundColor Yellow
     } else {
         Write-Host ""
-        Write-Host "ERROR: rust-analyzer is running — measurements would be contaminated." -ForegroundColor Red
+        Write-Host "ERROR: rust-analyzer is running -- measurements would be contaminated." -ForegroundColor Red
         Write-Host "       Choose one:" -ForegroundColor Red
         Write-Host "         (a) Pause it in VSCode: Ctrl+Shift+P -> 'rust-analyzer: Stop server'" -ForegroundColor Red
         Write-Host "             and re-run the script." -ForegroundColor Red
@@ -374,21 +374,13 @@ function Invoke-CargoTimedWithMemory {
     $proc = New-Object System.Diagnostics.Process
     $proc.StartInfo = $psi
 
-    $outputLines = [System.Collections.Generic.List[string]]::new()
-    $errorLines = [System.Collections.Generic.List[string]]::new()
-
+    # For captured/quiet output, drain stdout and stderr into temp files
+    # to avoid deadlocks and PS 5.1 scope issues with async event handlers.
+    $stdoutFile = $null
+    $stderrFile = $null
     if ($CaptureOutput -or $Quiet) {
-        # Register async handlers to avoid deadlocks on large output.
-        $outHandler = {
-            param($sender, $e)
-            if ($e.Data -ne $null) { $outputLines.Add($e.Data) }
-        }
-        $errHandler = {
-            param($sender, $e)
-            if ($e.Data -ne $null) { $errorLines.Add($e.Data) }
-        }
-        $proc.add_OutputDataReceived($outHandler)
-        $proc.add_ErrorDataReceived($errHandler)
+        $stdoutFile = [System.IO.Path]::GetTempFileName()
+        $stderrFile = [System.IO.Path]::GetTempFileName()
     }
 
     $sw = [System.Diagnostics.Stopwatch]::StartNew()
@@ -396,14 +388,20 @@ function Invoke-CargoTimedWithMemory {
     # Close stdin so cargo doesn't try to read from it.
     $proc.StandardInput.Close()
 
+    # For captured output, drain the streams asynchronously into files
+    # using .NET tasks so we don't deadlock.
+    $stdoutTask = $null
+    $stderrTask = $null
     if ($CaptureOutput -or $Quiet) {
-        $proc.BeginOutputReadLine()
-        $proc.BeginErrorReadLine()
+        $stdoutStream = [System.IO.File]::Create($stdoutFile)
+        $stderrStream = [System.IO.File]::Create($stderrFile)
+        $stdoutTask = $proc.StandardOutput.BaseStream.CopyToAsync($stdoutStream)
+        $stderrTask = $proc.StandardError.BaseStream.CopyToAsync($stderrStream)
     }
 
     # Polling loop: memory sampling + interactive controls.
     while (-not $proc.HasExited) {
-        # Memory sampling — sum WorkingSet64 across all toolchain procs.
+        # Memory sampling -- sum WorkingSet64 across all toolchain procs.
         $total = [long]0
         foreach ($n in $ToolchainProcessNames) {
             try {
@@ -422,7 +420,7 @@ function Invoke-CargoTimedWithMemory {
                 while ([Console]::KeyAvailable) {
                     $key = [Console]::ReadKey($true)
                     if ($key.KeyChar -eq 's') {
-                        Write-Host "  [skip requested — killing cargo]" -ForegroundColor Yellow
+                        Write-Host "  [skip requested -- killing cargo]" -ForegroundColor Yellow
                         try {
                             $proc.Kill($true)
                         } catch {
@@ -431,7 +429,7 @@ function Invoke-CargoTimedWithMemory {
                         $status = 'Skipped'
                         break
                     } elseif ($key.KeyChar -eq 'a') {
-                        Write-Host "  [abort requested — killing cargo]" -ForegroundColor Yellow
+                        Write-Host "  [abort requested -- killing cargo]" -ForegroundColor Yellow
                         try {
                             $proc.Kill($true)
                         } catch {
@@ -457,21 +455,35 @@ function Invoke-CargoTimedWithMemory {
     }
     $exitCode = if ($proc.HasExited) { $proc.ExitCode } else { -1 }
 
+    # Wait for stream drains to finish and read results.
+    $output = ''
     if ($CaptureOutput -or $Quiet) {
-        # Give async handlers a moment to flush.
-        try { $proc.WaitForExit() } catch {}
+        try {
+            if ($stdoutTask) { $stdoutTask.Wait(10000) }
+            if ($stderrTask) { $stderrTask.Wait(10000) }
+        } catch {}
+        try { $stdoutStream.Dispose() } catch {}
+        try { $stderrStream.Dispose() } catch {}
+
+        $stdoutContent = if (Test-Path $stdoutFile) { Get-Content -Raw -Path $stdoutFile -ErrorAction SilentlyContinue } else { '' }
+        $stderrContent = if (Test-Path $stderrFile) { Get-Content -Raw -Path $stderrFile -ErrorAction SilentlyContinue } else { '' }
+
+        if ($stdoutFile) { Remove-Item -Path $stdoutFile -ErrorAction SilentlyContinue }
+        if ($stderrFile) { Remove-Item -Path $stderrFile -ErrorAction SilentlyContinue }
+
+        $output = if ($stdoutContent) { $stdoutContent } else { '' }
+
+        if ($Quiet -and -not $CaptureOutput) {
+            # Show only Finished / error lines.
+            ($stdoutContent + "`n" + $stderrContent) -split "`r?`n" |
+                Where-Object { $_ -match 'Finished|error\[|^error:' } |
+                ForEach-Object { Write-Host $_ }
+        }
     }
 
     $proc.Dispose()
 
     $peakMb = [math]::Round($peakBytes / 1MB, 0)
-
-    $output = ($outputLines -join "`n")
-    if ($Quiet -and -not $CaptureOutput) {
-        # Show only Finished / error lines.
-        $outputLines | Where-Object { $_ -match 'Finished|error\[|^error:' } | ForEach-Object { Write-Host $_ }
-        $errorLines | Where-Object { $_ -match 'Finished|error\[|^error:' } | ForEach-Object { Write-Host $_ }
-    }
 
     return @{
         ExitCode       = $exitCode
@@ -676,7 +688,7 @@ function Build-ResultsMarkdown {
     $raNote = if ($R.Environment.RaKilled) {
         'killed by script (-KillRa)'
     } elseif ($R.Environment.RaWasRunning) {
-        '**was running** (-IgnoreRa — noisy)'
+        '**was running** (-IgnoreRa -noisy)'
     } else {
         'not running'
     }
@@ -740,7 +752,7 @@ function Build-ResultsMarkdown {
         $withGraph = $R.Runtime | Where-Object { $_.WithGraph }
 
         if ($standard.Count -gt 0) {
-            [void]$sb.AppendLine('### Runtime `sc-bench` — standard')
+            [void]$sb.AppendLine('### Runtime `sc-bench` -standard')
             [void]$sb.AppendLine()
             if ($multiProfile) {
                 [void]$sb.AppendLine('| Profile | Features | Records | Locale | Display names | Parse | Snapshot | Save | Load | Peak RAM |')
@@ -752,10 +764,10 @@ function Build-ResultsMarkdown {
             foreach ($row in $standard) {
                 if ($row.Status -and $row.Status -ne 'Completed') {
                     if ($multiProfile) {
-                        [void]$sb.AppendLine(('| `{0}` | `{1}` | — | — | — | — _({2})_ | — | — | — | {3} |' -f `
+                        [void]$sb.AppendLine(('| `{0}` | `{1}` | -| -| -| -_({2})_ | -| -| -| {3} |' -f `
                             $row.Profile, $row.FeatureSet, $row.Status.ToLower(), (Format-Mb $row.PeakMemoryMb)))
                     } else {
-                        [void]$sb.AppendLine(('| `{0}` | — | — | — | — _({1})_ | — | — | — | {2} |' -f `
+                        [void]$sb.AppendLine(('| `{0}` | -| -| -| -_({1})_ | -| -| -| {2} |' -f `
                             $row.FeatureSet, $row.Status.ToLower(), (Format-Mb $row.PeakMemoryMb)))
                     }
                 } else {
@@ -778,7 +790,7 @@ function Build-ResultsMarkdown {
         }
 
         if ($withGraph.Count -gt 0) {
-            [void]$sb.AppendLine('### Runtime `sc-bench` — with reference graph')
+            [void]$sb.AppendLine('### Runtime `sc-bench` -with reference graph')
             [void]$sb.AppendLine()
             if ($multiProfile) {
                 [void]$sb.AppendLine('| Profile | Features | Records | Graph edges | Parse | Snapshot | Save | Load | Peak RAM |')
@@ -790,10 +802,10 @@ function Build-ResultsMarkdown {
             foreach ($row in $withGraph) {
                 if ($row.Status -and $row.Status -ne 'Completed') {
                     if ($multiProfile) {
-                        [void]$sb.AppendLine(('| `{0}` | `{1}` | — | — | — _({2})_ | — | — | — | {3} |' -f `
+                        [void]$sb.AppendLine(('| `{0}` | `{1}` | -| -| -_({2})_ | -| -| -| {3} |' -f `
                             $row.Profile, $row.FeatureSet, $row.Status.ToLower(), (Format-Mb $row.PeakMemoryMb)))
                     } else {
-                        [void]$sb.AppendLine(('| `{0}` | — | — | — _({1})_ | — | — | — | {2} |' -f `
+                        [void]$sb.AppendLine(('| `{0}` | -| -| -_({1})_ | -| -| -| {2} |' -f `
                             $row.FeatureSet, $row.Status.ToLower(), (Format-Mb $row.PeakMemoryMb)))
                     }
                 } else {
@@ -844,7 +856,7 @@ function Archive-PreviousResults {
     $oldTimestamp = $tsMatch.Groups[1].Value.Trim()
 
     # Strip the BENCH markers and the "## Latest results" heading from the
-    # old block — we're inserting it as a history subsection, not as the
+    # old block -we're inserting it as a history subsection, not as the
     # latest results.
     $archiveBody = $oldBlock `
         -replace '<!-- BENCH:RESULTS-START -->', '' `
