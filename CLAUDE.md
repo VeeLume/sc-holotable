@@ -97,7 +97,16 @@ Two recent refinements make the generated code more type-safe than a 1:1 schema 
 - **`DataType::EnumChoice` fields** emit as the corresponding generated Rust enum (resolved through `prop.struct_index`, dual-used as the enum index for choice fields). Every enum gets a `from_dcb_str` associated function. Unknown values (including variants added in a game patch the generator didn't see) fall through to `Unrecognized(String)` for forward compat.
 - **Polymorphic pointer fields** emit a poly enum (`generated/poly_enums.rs`) with a variant per observed subclass plus an `Unknown { struct_index: u32, instance_index: u32 }` fallback. The `Unknown` payload is the raw-layer escape hatch — a consumer can walk the instance directly via `datacore.db().instance(struct_index, instance_index)`.
 
-Profiles are currently **near cargo defaults** (no per-package overrides). Previous workspace overrides were driven by serde-derive monomorphization costs that no longer exist after derive-drop (commit `06e0d2e`); the profile config was reset and is being iterated on via `docs/benchmarks.md` §iteration-log. `.cargo/config.toml` still carries one Windows-specific setting: `link-args=/STACK:8388608` bumps compiled binaries' main-thread stack from the Windows 1 MB default to 8 MB (matching Linux/macOS). Needed by `parse_real_p4k --features full` — without it the extract dispatch overflows on Windows. No-op on other platforms. See [.cargo/config.toml](.cargo/config.toml) for rationale.
+Two release profiles, tuned via per-dimension sweeps on 2026-04-16 (see `docs/benchmarks.md` for the full sweep data):
+
+| Profile | LTO | panic | gen opt | Use case |
+|---|---|---|---|---|
+| `release` | thin | unwind | 1 | Day-to-day builds. ~1m 44s cold compile, ~28s parse. Good compromise. |
+| `release-max` | fat | abort | 1 | Shipped binaries / CI snapshots. ~2m 18s compile, ~26s parse. No backtraces. |
+
+`sc-extract-generated` gets `opt-level = 1` in both profiles because fat LTO does the real optimization at link time, making the per-crate opt level on generated code irrelevant to runtime while `opt=1` saves ~9% compile time vs `opt=3`.
+
+`.cargo/config.toml` carries one Windows-specific setting: `link-args=/STACK:8388608` bumps compiled binaries' main-thread stack from the Windows 1 MB default to 8 MB (matching Linux/macOS). Needed by `parse_real_p4k --features full` — without it the extract dispatch overflows on Windows. No-op on other platforms. See [.cargo/config.toml](.cargo/config.toml) for rationale.
 
 **Rule of thumb**: never depend on `sc-extract-generated` directly from another workspace crate — go through `sc-extract`. That's the stable public boundary.
 

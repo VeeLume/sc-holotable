@@ -53,83 +53,25 @@ svarog-p4k = { path = "E:/repros/Svarog/crates/svarog-p4k" }
 
 # ── Profiles ────────────────────────────────────────────────────────────────
 #
-# Baseline release profile. Sweep profiles below inherit from this and
-# override one dimension at a time. Run sweeps with:
+# Tuned via per-dimension sweeps on 2026-04-16 using tools/bench/bench.ps1.
+# See docs/benchmarks.md for the full sweep data.
 #
-#   .\tools\bench\bench.ps1 -Mode all -Profiles release,bench-lto-thin,bench-lto-local \
-#       -Features entities-scitem-ships -KillRa
+# release       Good compile/runtime compromise. Thin LTO saves ~40%
+#               compile time vs fat for only ~6% runtime regression.
+#               Keeps panic=unwind for backtraces.
 #
-# After the sweep, update [profile.release] to the winning combination
-# and delete the bench-* profiles.
+# release-max   Runtime-optimized. Fat LTO + panic=abort squeezes out
+#               the last few percent of runtime at 2x compile cost and
+#               no backtraces. Use for final shipped binaries or CI
+#               snapshot builds where parse speed matters.
 
 [profile.release]
-lto = "fat"
-# codegen-units = 16 is the cargo release default — left implicit.
+lto = "thin"
 
 [profile.release.package.sc-extract-generated]
 opt-level = 1
 
-# ── LTO sweep ──────────────────────────────────────────────────────────────
-# Baseline is fat (in [profile.release] above).
-
-[profile.bench-lto-thin]
+[profile.release-max]
 inherits = "release"
-lto = "thin"
-
-[profile.bench-lto-local]
-inherits = "release"
-lto = false                    # local-thin per CGU, no cross-crate LTO
-
-# ── Codegen-units sweep ────────────────────────────────────────────────────
-# Baseline is 16 (release default). More CGUs = more parallelism but
-# less inlining; fewer = better optimized but serial.
-
-[profile.bench-cgu-1]
-inherits = "release"
-codegen-units = 1
-
-[profile.bench-cgu-8]
-inherits = "release"
-codegen-units = 8
-
-[profile.bench-cgu-128]
-inherits = "release"
-codegen-units = 128
-
-[profile.bench-cgu-256]
-inherits = "release"
-codegen-units = 256
-
-# ── Opt-level sweep (sc-extract-generated only) ───────────────────────────
-# Baseline is opt=1 (in release). Global opt=3 stays fixed — hand-written
-# code (graph BFS, tag tree, locale parse) regresses badly at opt<3.
-
-[profile.bench-opt-0]
-inherits = "release"
-[profile.bench-opt-0.package.sc-extract-generated]
-opt-level = 0
-
-[profile.bench-opt-3]
-inherits = "release"
-[profile.bench-opt-3.package.sc-extract-generated]
-opt-level = 3
-
-# ── Strip sweep ────────────────────────────────────────────────────────────
-# Baseline is no strip. Stripping debuginfo or symbols speeds up the
-# link phase and shrinks the binary but loses backtrace info.
-
-[profile.bench-strip-debug]
-inherits = "release"
-strip = "debuginfo"
-
-[profile.bench-strip-symbols]
-inherits = "release"
-strip = "symbols"
-
-# ── Panic sweep ────────────────────────────────────────────────────────────
-# Baseline is unwind. Abort removes unwinding tables and enables more
-# aggressive optimization but loses panic backtraces.
-
-[profile.bench-panic-abort]
-inherits = "release"
+lto = "fat"
 panic = "abort"
