@@ -145,6 +145,12 @@ $ErrorActionPreference = 'Stop'
 # "1,879 MB" / "1.84 GB", not "1.879 MB" / "1,84 GB" on de-DE hosts.
 [System.Threading.Thread]::CurrentThread.CurrentCulture = 'en-US'
 
+# When called from bash or cmd, comma-separated values arrive as a
+# single string (e.g. "release,bench-thin") instead of a PS array.
+# Split them so the loops work correctly.
+$Profiles = $Profiles | ForEach-Object { $_ -split ',' } | Where-Object { $_ -ne '' }
+$Features = $Features | ForEach-Object { $_ -split ',' } | Where-Object { $_ -ne '' }
+
 # Script-level abort flag set by the 'a' key handler.
 $script:Aborted = $false
 
