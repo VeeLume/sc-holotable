@@ -48,6 +48,7 @@ sc-holotable/
 │   └── sc-weapons/                📦 stub only (lib.rs docs, no code)
 └── tools/
     ├── sc-generator/              ✅ implemented — offline DCB schema → Rust codegen
+    ├── sc-bench/                  ✅ runtime benchmark binary — exercises full sc-extract API
     └── bench/                     PowerShell benchmark script + README — writes to docs/benchmarks.md
 ```
 
@@ -183,6 +184,12 @@ cargo run -p sc-extract --release --features ammoparams --example parse_real_p4k
 
 # Smoke test — full (all types, slow compile)
 cargo run -p sc-extract --release --features full --example parse_real_p4k
+
+# Benchmark binary — comprehensive API exercise (human-readable output)
+cargo run -p sc-bench --release --features full -- --human
+
+# Benchmark binary — JSON output (for bench script consumption)
+cargo run -p sc-bench --release --features full
 
 # Full release
 cargo build -p sc-extract --release

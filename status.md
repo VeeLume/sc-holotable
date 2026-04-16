@@ -7,13 +7,6 @@
 
 **Test harness has a methodology bug that was patched but not yet verified end-to-end.** Before resuming the compile-time iteration cycle, the [`tools/bench/bench.ps1`](tools/bench/bench.ps1) `Invoke-ColdBuild` change needs validation. The script now runs `cargo build -p sc-extract --release --example parse_real_p4k` instead of the old lib-only command, so the cold-build measurement actually includes the fat LTO link pass (which only fires when linking a final binary, not when producing an rlib). Until this is verified working and a fresh baseline is captured, **do not draw conclusions from any compile-time numbers in [`docs/benchmarks.md`](docs/benchmarks.md) before 2026-04-16 01:28** — they were measured against the lib-only build and underreport real binary build cost by 2-3× (observed: ships lib=50s vs binary=2m 37s under fat LTO + cu=256). Runtime numbers are unaffected throughout.
 
-**To resume:**
-
-1. Run `.\tools\bench\bench.ps1 -Mode all -Features entities-scitem-ships,full -KillRa` against the current `Cargo.toml` (fat LTO + `sc-extract-generated.opt-level = 1` + `release.codegen-units = 256`). Confirm that the build numbers reported by the script now match the binary builds reported by the cargo trace inside the runtime step (i.e. the gap is gone).
-2. Establish a clean post-fix baseline by reverting per-package overrides one at a time and re-running, so the LTO + opt-level + cgu sweeps have a comparable starting point under the corrected methodology.
-3. Re-run the load-bearing decisions with valid numbers: thin vs fat LTO at the binary link is the most likely conclusion to flip, since fat's LTO link is exactly the thing the old measurement was hiding.
-4. Continue the iteration log in [`docs/benchmarks.md`](docs/benchmarks.md) §iteration-log from the marked methodology-change line.
-
 The state in `Cargo.toml` and `.cargo/config.toml` at session end is the partial iteration result, **not a validated answer**. It's a defensible starting point but should be rebaselined under the new harness before any further commits change the profile.
 
 ## Last worked on

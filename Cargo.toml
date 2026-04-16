@@ -7,6 +7,7 @@ members = [
     "crates/sc-weapons",
     "crates/sc-contracts",
     "tools/sc-generator",
+    "tools/sc-bench",
 ]
 
 [workspace.package]

@@ -1,0 +1,24 @@
+[package]
+name = "sc-bench"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+
+[[bin]]
+name = "sc-bench"
+path = "src/main.rs"
+
+[dependencies]
+sc-installs = { workspace = true }
+sc-extract = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+tracing = { workspace = true }
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+[features]
+default = []
+ammoparams = ["sc-extract/ammoparams"]
+entities-scitem-ships = ["sc-extract/entities-scitem-ships"]
+full = ["sc-extract/full"]
+dormant = ["sc-extract/dormant"]
