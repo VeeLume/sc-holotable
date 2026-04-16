@@ -1004,7 +1004,7 @@ if ($doChained -and -not $script:Aborted) {
             if ($buildResult.Status -ne 'Completed') { continue }
 
             # Only run runtime for the feature sets in $RuntimeFeatureSets.
-            $isRuntimeFeature = ($RuntimeFeatureSets | Where-Object { $_.Name -eq $fs.Name }).Count -gt 0
+            $isRuntimeFeature = @($RuntimeFeatureSets | Where-Object { $_.Name -eq $fs.Name }).Count -gt 0
             if (-not $isRuntimeFeature) { continue }
 
             # Runtime standard (reuses the binary just built).
