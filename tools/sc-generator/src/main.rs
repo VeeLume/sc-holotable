@@ -19,8 +19,7 @@
 //! Analysis/diagnostic subcommands previously available (`--dump-paths`,
 //! `--dump-features`, `--check-polymorphism`, etc.) have been removed.
 //!
-//! See `docs/codegen.md` for the full design and `implementing/sc-generator.md`
-//! for implementation notes.
+//! See `docs/codegen.md` for the full design.
 
 use std::path::PathBuf;
 use std::process::ExitCode;

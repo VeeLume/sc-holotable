@@ -2,7 +2,7 @@
 
 > Status: **implemented and in use as of 2026-04-13.** Phases 2a + 2c + 2d are landed (hand-written half). Phase 2b (vehicle XML) is deliberately deferred — the design is still captured in the "Vehicle XML" section below as forward-looking spec.
 >
-> The API was reworked on 2026-04-13 to split runtime state from serializable data. See the "Entry points" and "Result types" sections for the current shape. Older implementation notes in `implementing/sc-extract-2a.md` and `implementing/sc-extract-2c.md` describe the pre-rework state and are kept for historical context.
+> The API was reworked on 2026-04-13 to split runtime state from serializable data. See the "Entry points" and "Result types" sections for the current shape. Implementation notes for Phase 2c modules (graph, tags, manufacturers, display names, filters) are in `implementing/sc-extract-2c.md`.
 
 ## Purpose
 
@@ -111,7 +111,7 @@ pub trait Extract<'a>: Sized + Pooled {
 }
 ```
 
-The `Builder` owns a `&'a DataCoreDatabase`, a `DataPools`, a `RecordIndex`, and a worklist. Its `consume_database().finish()` pipeline seeds the worklist from `db.all_records()`, drains it iteratively, and returns a [`RecordStore`] ready for typed access. See `implementing/sc-generator.md` for the worklist details and why the old recursive `FromInstance` hit a stack overflow.
+The `Builder` owns a `&'a DataCoreDatabase`, a `DataPools`, a `RecordIndex`, and a worklist. Its `consume_database().finish()` pipeline seeds the worklist from `db.all_records()`, drains it iteratively, and returns a [`RecordStore`] ready for typed access. See `docs/codegen.md` for the flat-pool design and why the old recursive `FromInstance` hit a stack overflow.
 
 Consumers almost never see `Extract` or `Builder` directly — they use the resulting [`RecordStore`] via [`Datacore`].
 
@@ -178,7 +178,7 @@ impl ReferenceGraph {
 
 The snapshot holds every extracted record as a fully-materialized typed value, indexed for typed and untyped access. **All records are parsed eagerly during [`Datacore::parse`]; the store never holds lazy views, raw bytes, or references back into the DCB.** See the "Parsing model" section below for the full rationale.
 
-> The shape below is the original per-type-HashMap sketch. The live implementation uses a **flat-pool** `RecordStore` built on top of the generic `Handle<T>(u32)` type — see `implementing/sc-generator.md` for the actual layout. The ergonomic accessor story (typed `entity_class()` / `manufacturer()` helpers) is not yet exposed; consumers walk the pools directly today.
+> The shape below is the original per-type-HashMap sketch. The live implementation uses a **flat-pool** `RecordStore` built on top of the generic `Handle<T>(u32)` type — see `docs/codegen.md` for the actual layout. The ergonomic accessor story (typed `entity_class()` / `manufacturer()` helpers) is not yet exposed; consumers walk the pools directly today.
 
 The exact internal shape is a generated detail (see `docs/codegen.md`) — consumers see the following API:
 
@@ -279,60 +279,46 @@ Built during parse by scanning all records of type `SCItemManufacturer`. Rebuilt
 
 ## LocaleMap
 
-Parses and round-trips `global.ini` — the UTF-16 LE (with BOM) localization file shipped inside `Data.p4k` at `Data/Localization/<lang>/global.ini`.
+Parses and round-trips `global.ini` — the localization file shipped inside `Data.p4k` at `Data/Localization/<lang>/global.ini`.
 
 ```rust
-pub struct LocaleMap {
-    entries: HashMap<String, String>,
-    language: Language,
-}
+pub struct LocaleMap { /* HashMap<String, String> */ }
 
 impl LocaleMap {
-    /// Parse from UTF-16 LE bytes (handles BOM).
-    pub fn parse(bytes: &[u8], language: Language) -> Result<Self>;
+    /// Parse from UTF-16 LE bytes (the format inside Data.p4k). Strips BOM if present.
+    pub fn parse(bytes: &[u8]) -> Result<Self>;
 
-    /// Serialize back to UTF-16 LE bytes with BOM.
-    /// Used by `sc-langpatch` to produce its patched override file.
+    /// Parse from UTF-8 with BOM bytes (the format sc-langpatch writes as override files).
+    pub fn parse_utf8_bom(bytes: &[u8]) -> Result<Self>;
+
+    /// Parse from a file on disk (auto-detects encoding).
+    pub fn parse_file(path: &Path) -> Result<Self>;
+
+    /// Serialize to UTF-8 with BOM. Keys sorted alphabetically, \r\n line endings.
+    /// Star Citizen accepts both UTF-8 and UTF-16 LE for override files.
     pub fn serialize(&self) -> Vec<u8>;
 
-    pub fn get(&self, key: &str) -> Option<&str>;
+    pub fn get(&self, key: impl AsRef<str>) -> Option<&str>;
 
     /// Resolve a localization key that may have an `@` prefix.
-    /// `"@item_NameGATS_Ballistic_S4"` and `"item_NameGATS_Ballistic_S4"`
-    /// both look up the same entry.
-    pub fn resolve(&self, loc_key: &str) -> Option<&str>;
+    /// Both `"@item_NameGATS_Ballistic_S4"` and `"item_NameGATS_Ballistic_S4"`
+    /// look up the same entry.
+    pub fn resolve(&self, loc_key: impl AsRef<str>) -> Option<&str>;
 
-    pub fn set(&mut self, key: String, value: String);
+    pub fn contains_key(&self, key: impl AsRef<str>) -> bool;
+    pub fn set(&mut self, key: String, value: String) -> Option<String>;
     pub fn remove(&mut self, key: &str) -> Option<String>;
-
-    pub fn language(&self) -> Language;
+    pub fn len(&self) -> usize;
+    pub fn is_empty(&self) -> bool;
     pub fn iter(&self) -> impl Iterator<Item = (&str, &str)> + '_;
 }
-
-pub enum Language {
-    English,
-    German,
-    French,
-    Spanish,
-    Italian,
-    ChineseSimplified,
-    Japanese,
-    Korean,
-    Polish,
-    Russian,
-    // expand as SC adds more
-}
-
-impl Language {
-    pub fn folder_name(self) -> &'static str;  // "english", "german", ...
-}
-
-/// Convenience extractor that pulls a locale from `Data.p4k` in one call.
-/// Chains svarog P4K reading + LocaleMap::parse. For consumers that already
-/// have bytes from another source (e.g. a patched override file), use
-/// `LocaleMap::parse` directly.
-pub fn extract_locale(p4k_path: &Path, lang: Language) -> Result<LocaleMap>;
 ```
+
+**`LocaleKey`** — a newtype over `String` for `DataType::Locale` fields. Lives in `sc-extract-generated` (to avoid a dep cycle), re-exported from `sc-extract`. Has `as_str()` (raw key with any `@` prefix) and `stripped()` (without `@`). All `LocaleMap` lookup methods accept `impl AsRef<str>` so `&LocaleKey` passes natively.
+
+**Parse behavior:** lines beginning with `#` or `;` are comments (skipped). Blank lines skipped. Any other non-blank line must contain `=` — missing `=` is `Error::LocaleMalformedLine`. `split_once('=')` — only the first `=` is the separator.
+
+**Serialization format:** `serialize()` produces **UTF-8 with BOM**, not UTF-16 LE. Star Citizen accepts both encodings for override files. UTF-8 is easier to inspect, diff, and matches what sc-langpatch already writes.
 
 **Scope boundary:** `sc-extract` deals in bytes and types. It does **not** write patched `global.ini` files to the install's override path — that is `sc-langpatch`'s concern, using a path helper from `sc-installs` and the serializer from `LocaleMap`. This preserves the rule that `sc-extract` has no dependency on `sc-installs`.
 
@@ -950,7 +936,7 @@ Explicit list, so the layering stays sharp:
 
 Captured here for audit trail; the rationale is baked into the relevant sections above.
 
-- **`RecordStore` uses flat pools with generic `Handle<T>`**, not per-type HashMaps. The earlier sketch (per-type `HashMap<Guid, T>` with generated `RecordStore::entity_class()` accessors) hit rustc / linker scaling problems at ~20k generated items; moving to a single generic `Handle<T>(u32)` + blanket `impl<T: Pooled> Index<Handle<T>> for DataPools` kept compile cost linear. See `implementing/sc-generator.md` for the full story.
+- **`RecordStore` uses flat pools with generic `Handle<T>`**, not per-type HashMaps. The earlier sketch (per-type `HashMap<Guid, T>` with generated `RecordStore::entity_class()` accessors) hit rustc / linker scaling problems at ~20k generated items; moving to a single generic `Handle<T>(u32)` + blanket `impl<T: Pooled> Index<Handle<T>> for DataPools` kept compile cost linear. See `docs/codegen.md` for the full design.
 - **Parsing is eager.** [`Datacore::parse`] materializes every record in a single iterative pass. Lazy loading was considered and rejected — see the "Parsing model" section. The `DataCoreDatabase` is kept alive inside the returned `Datacore` (owned, not borrowed) as a raw-query escape hatch; call [`Datacore::into_snapshot`] to drop it.
 - **Playable-content filters are centralized** in `sc-extract`, not in each domain crate. Avoids drift between consumers that disagree about what counts as "playable".
 - **`ReferenceGraph::incoming_of_type` takes `&RecordStore` as a parameter** rather than denormalizing `type_name` into the graph. Keeps the graph compact at the cost of a per-query hashmap lookup.

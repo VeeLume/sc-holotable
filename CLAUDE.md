@@ -29,16 +29,13 @@ sc-holotable/
 │   ├── sc-installs.md             install discovery crate spec
 │   ├── sc-extract.md              foundational extraction crate spec
 │   ├── codegen.md                 sc-generator design
-│   ├── feature-gating.md          feature-gating v1 (superseded)
 │   ├── feature-gating-v2.md       feature-gating v2 — data-driven scoping + poly (implemented)
 │   ├── benchmarks.md              canonical benchmark numbers — re-run via tools/bench/bench.ps1
 │   ├── sc-ammo.md                 ammo crate spec (not implemented yet)
 │   └── sc-weapons.md              weapons crate spec (not implemented yet)
-├── implementing/                  phase-by-phase implementation notes
-│   ├── sc-installs.md
-│   ├── sc-extract-2a.md           sc-extract phase 2a (foundation)
-│   ├── sc-extract-2c.md           sc-extract phase 2c (graph/tags/manufacturers/etc.)
-│   └── sc-generator.md
+├── implementing/                  non-obvious implementation context (not code restated in prose)
+│   ├── sc-installs.md             port lineage + consumer switch-over plan
+│   └── sc-extract-2c.md           open caveats (tag/manufacturer field names, locale path)
 ├── crates/
 │   ├── sc-installs/               ✅ implemented, 51 tests passing
 │   ├── sc-extract/                ✅ phase 2a + 2c + 2d done; API reworked 2026-04-13 (staged entry points)
@@ -263,9 +260,9 @@ See `status.md` for the always-current version. Brief snapshot:
 ## Where to read more
 
 - **Design history and rationale**: `docs/*.md` — the specs. Read `sc-extract.md` and `codegen.md` first; they cover the most ground.
-- **Implementation details and gotchas**: `implementing/*.md` — phase notes. Read `sc-generator.md` for the compile-time story and the generator architecture.
+- **Implementation caveats**: `implementing/*.md` — non-obvious context (port lineage, open field-name assumptions, design constraints).
 - **Current work state**: `status.md`.
-- **Reference for the DCB binary format**: `docs/datacore.md`.
+- **Reference for the DCB binary format**: `D:\Obsidian\Star Citizen\Game Files\Datacore.md` (Obsidian vault — canonical). `docs/datacore.md` redirects there.
 
 ## Reference to other repos
 

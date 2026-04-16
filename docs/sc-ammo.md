@@ -277,7 +277,7 @@ fn get_ammo_for_weapon(snap: &DatacoreSnapshot, ammo_ref: Guid) -> Option<Ammo> 
 }
 ```
 
-`AmmoParams` is a top-level record type in the DCB and lives in the flat pools on `RecordStore`. See `docs/codegen.md` and `implementing/sc-generator.md` for how the generator exposes per-type handles.
+`AmmoParams` is a top-level record type in the DCB and lives in the flat pools on `RecordStore`. See `docs/codegen.md` for how the generator exposes per-type handles.
 
 ## Design decisions
 

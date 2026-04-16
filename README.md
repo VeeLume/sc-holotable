@@ -28,14 +28,13 @@ Early stub. Scaffolded structure and crate-level docs only — no logic yet. Thi
              \             /
               \           /
                sc-extract  ──►  svarog (re-exported as escape hatch)
-
+                /
        sc-installs  (standalone — no domain deps, no svarog)
 ```
 
 Rules the layering enforces:
 
 - **`sc-installs` is completely standalone.** Consumers that only need install discovery don't pay for svarog. `streamdeck-starcitizen` relies on this.
-- **`sc-extract` takes paths from its caller.** It does *not* depend on `sc-installs`. This keeps the layering acyclic and lets extraction be tested with synthetic fixtures.
 - **Domain crates go through `sc-extract`, never directly through svarog.** Cross-reference resolution is centralized. When a weapon references an ammo record, or a contract references a reward table, `sc-extract` handles the chase once.
 - **svarog is re-exported from `sc-extract` as an escape hatch, not the preferred interface.** Apps should prefer `sc-extract`'s own helpers when they exist, and only reach for raw svarog when the abstraction doesn't cover their case yet. That "yet" is load-bearing — reaching for raw svarog repeatedly for the same thing is a signal to lift the helper into `sc-extract`.
 - **`sc-extract` deals in bytes and types, not filesystem side effects.** It reads `Data.p4k` and parses/serializes localization content, but it does not write patched files to the install override path — that is the consumer's call (sc-langpatch, in practice), using a path helper from `sc-installs`. This keeps `sc-extract` free of any `sc-installs` dependency and preserves the acyclic layering.

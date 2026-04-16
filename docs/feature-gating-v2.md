@@ -640,167 +640,36 @@ generator flag for this would be a straightforward extension of
 
 **Deferred**: only relevant if we decide to enable promotion.
 
-## Implementation Plan
+## Implementation
 
-Rough sequence. Each step is a single generator commit and the output
-should still compile after each.
+**Completed** as of commit `bc9f899` (2026-04-15). All six phases
+(data-driven closure, observed/dormant partition, cfg generation,
+role-based promotion, `Unknown` variant reshape, verification) landed
+in a single generator commit. See `docs/codegen.md` for the current
+generator architecture.
 
-### Phase 1: Wire data-driven closure into the classifier
+The diagnostic flags used during the design session (`--check-polymorphism`,
+`--analyze-poly-bases`, `--measure-dormancy`, `--feature-closure`,
+`--measure-cfg-spread`) were removed from the shipped generator CLI.
+Reintroduce them on a temporary branch if future measurement is needed.
 
-1. **Add a data-driven closure function** in `features.rs` that takes
-   a feature's seed records + a `GUID → InstanceRef` lookup and walks
-   the instance graph following Class/Pointer/Reference, returning
-   the set of observed struct indices. This is the same walker as
-   `dormancy::walk_closure` but callable from the classifier's
-   context. Extract the walker into a shared location.
+## Outcome
 
-2. **Replace `compute_type_closure` call sites** in `classify_features`
-   with the data-driven walker. The classifier continues to use
-   `compute_base_closure` for path-split cost decisions (unchanged) but
-   uses the data-driven closure for assignment.
+Measured results after implementation (SC 4.7 branch):
 
-3. **Verify the classifier still produces sensible feature assignments**
-   against the current DCB. The set of leaf features should stay around
-   ~800, and the distribution of types per feature should look like the
-   `--measure-cfg-spread` output.
+| Metric | Pre-poly baseline | v2 actual |
+|---|---:|---:|
+| Emitted types (default) | 1,935 | 5,425 (core + multi_feature + leaf) |
+| Emitted types (`--features dormant`) | — | 6,234 |
+| `core/` types | 214 | 336 (empty poly bases promoted) |
+| `multi_feature/` types | — | 3,789 |
+| `dormant/` types | — | 809 |
+| Leaf feature dirs | 227 | 245 |
+| Cold `cargo check --features full` | 1m 41s | 4m 15s |
+| Polymorphism correctness | no | **yes** |
 
-### Phase 2: Partition types into observed + dormant for cfg purposes
-
-The generator writes **every reachable type** to the output source
-files — same set as before. What this phase changes is the cfg
-attribute each type carries, which controls whether rustc compiles
-it when a consumer builds the crate.
-
-4. **Partition the emitted type set into observed + dormant.** The
-   observed set is what the data-driven walk reached. The dormant set
-   is `schema_reachable - observed` — types defined in the schema but
-   never stored in real DCB data. Expected sizes: ~4,865 observed,
-   ~1,369 dormant.
-
-5. **Observed types get the normal cfg union** derived from per-feature
-   closures (details in Phase 3 below).
-
-6. **Dormant types get a single `#[cfg(feature = "dormant")]` attribute**
-   on every emission site (struct def, `Pooled` impl, `Extract` impl,
-   pool field in `CorePools`, record sub-index field, extractor fn,
-   `seed_database` dispatch entry, any sub-index module gate). Same
-   layout as observed types, just a different cfg. Dormant types can
-   live in the same generated files as observed types — no separate
-   `generated/dormant/` directory needed.
-
-7. **Declare the `dormant` Cargo feature** in the generated
-   `Cargo.toml`: `dormant = ["full"]`. This forwards to `full` so every
-   non-dormant reference target is in scope when `dormant` is enabled.
-
-8. **Verify references resolve at compile time**: a dormant type `T`
-   may reference observed types (covered by the `full` forward), other
-   dormant types (covered by the `dormant` gate), or primitives (no
-   gate). The `cargo check --features dormant` step in Phase 6 catches
-   any dangling references.
-
-### Phase 3: Data-driven feature cfg generation
-
-9. **Compute per-type cfg unions from per-feature closures**, not from
-   schema-static descendant expansion. `compute_feature_cfg_map` reads
-   the inverted `type → feature set` map directly.
-
-10. **Thread cfg union through every emission site**:
-    - `emit_struct`: struct def, `Pooled` impl, `Extract` impl.
-    - `emit_feature_pools`: pool field in `CorePools`.
-    - `emit_feature_index`: record sub-index field.
-    - `emit_record_store`: extractor fn, `seed_database` dispatch entry.
-    - `emit_feature_mod`: sub-index module declaration.
-    - Top-level `mod.rs`: sub-index module `pub mod` gate.
-
-11. **For each record type, ensure extractor cfg matches struct cfg**
-    (Decision 2). The extractor function, dispatch entry, and record-store
-    field share the same union cfg.
-
-### Phase 4: Role-based promotion
-
-12. **Add an explicit promotion set** computed in `classify_features`:
-    all poly bases with `attribute_count == 0`. This set is compiled
-    unconditionally regardless of closure membership.
-
-13. **Emit the promoted set into `core/types.rs`** without cfg attributes.
-    Their `Pooled` impls and `Extract` impls are also unconditional.
-    Their pool fields in `CorePools` are unconditional.
-
-14. **Ensure the promoted-base types are in scope for every feature**:
-    since `core/types.rs` is always compiled, and `use super::super::*;`
-    is already the import pattern, this should work automatically.
-
-### Phase 5: `Unknown` variant reshape
-
-15. **Change the `Unknown` variant emission** in `emit_poly_enum` from
-    `Unknown(u32)` to `Unknown { struct_index: u32, instance_index: u32 }`.
-
-16. **Update the `from_ref` dispatch** to pass both halves of the
-    `InstanceRef` into the `Unknown` variant constructor.
-
-17. **Document the raw-layer escape hatch** in `sc-extract-generated`'s
-    crate docs with a usage example.
-
-### Phase 6: Verification
-
-18. **`cargo check -p sc-generator`** — generator compiles.
-19. **Run generator against real `Data.p4k`** — completes in under 30 s,
-    logs closure sizes and dormant-set size.
-20. **`cargo check -p sc-extract`** (core only) — should compile cleanly,
-    target <60 s cold.
-21. **`cargo check -p sc-extract --features full`** — should compile cleanly,
-    target <3 min cold.
-22. **`cargo check -p sc-extract --features dormant`** — should compile
-    cleanly, target <4 min cold. Validates that the dormant set plus all
-    its transitive dependencies compile under the `full` forward.
-23. **`cargo test -p sc-extract`** — 90 baseline tests still pass.
-24. **Smoke test**: `cargo run -p sc-extract --example parse_real_p4k`.
-    Parse time should land in the 15–20 s range.
-25. **Re-run `--check-polymorphism`** — headline numbers should match
-    the baseline (inline Class 100% monomorphic, pointer percentages
-    unchanged).
-26. **Spot-check**: grep generated output for `AlignmentSlotBasePtr`
-    variants, `AIBossPhase` cfg attributes, and `ConsumableParams` cfg
-    width. Verify they look sensible. Also verify at least one dormant
-    type has `#[cfg(feature = "dormant")]` and is absent from the
-    default compile.
-
-## Tooling
-
-During the design session, the following diagnostic flags were built into
-`sc-generator` and are preserved for future use:
-
-| Flag | What it measures |
-|---|---|
-| `--check-polymorphism` | Runtime vs declared struct_index at every pointer site. Outputs monomorphic vs polymorphic counts per data-type. |
-| `--analyze-poly-bases` | For every polymorphic base: own fields, full fields (with inheritance), closure field count (follow declared targets), descendant count. Plus distribution histograms and top-N breakdowns. |
-| `--measure-dormancy` | Walks every record's instance graph and reports schema-reachable types vs actually-observed types. Shows dormant per-base breakdown. |
-| `--feature-closure <prefix>` | For the records under a given path prefix, compute the data-driven closure (including Reference-following) and report the observed type count vs global emission. |
-| `--measure-cfg-spread` | Runs per-feature closures for every leaf feature, inverts into type → feature-set map, reports the width distribution (= cfg list size) per type. Also computes distinct-set analysis and per-leaf forwarding-list sizes. |
-
-These are kept as the permanent measurement toolkit for future generator
-iterations. Re-running them against a new DCB is the first step in any
-generator-related work.
-
-## Expected Outcome Summary
-
-Under this design, starting from the current generator baseline:
-
-| Metric | Baseline (pre-poly) | Schema-polymorphism (broken) | **v2 (proposed)** |
-|---|---:|---:|---:|
-| Emitted types (default) | 1,935 | 6,234 | ~4,865 |
-| Emitted types (`--features dormant`) | — | — | ~6,234 |
-| Dormant types emitted by default | 0 | 1,369 | **0** |
-| `core/types.rs` size (default) | ~1 MB | 208 MB | **~30–40 MB** |
-| Cfg text overhead | ~0 | ~15 MB+ | ~15 MB |
-| Cold `cargo check` core-only | 26 s | 12 min (failing) | ~30–60 s |
-| Cold `cargo check --features full` | 1m 41s | (fails) | ~2–3 min |
-| Cold `cargo check --features dormant` | — | — | ~3–4 min |
-| Parse time | 17 s | (unchanged) | 15–20 s |
-| Polymorphism correctness | no | yes but broken compile | **yes, compiles** |
-
-The headline: polymorphism correctness is achieved and compile time is
-tolerable, at the cost of moderate rustc cfg parsing overhead that can
-be further optimized via the deferred mitigations if needed. Consumers
-who need the full schema (CI validation, forward-compat) get it via
-`--features dormant` without forcing the cost on normal consumers.
+Cold check is higher than projected (~2-3 min) because the polymorphism
+support pulls in more types than expected. The derive-drop optimization
+(commit `06e0d2e`, post-v2) brought cold full check from 4m 15s down to
+~37s, making v2's absolute cost acceptable. See `docs/benchmarks.md` for
+current numbers.
