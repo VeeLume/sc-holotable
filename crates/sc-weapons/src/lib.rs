@@ -1,28 +1,88 @@
-//! Canonical weapon and damage model for Star Citizen.
+//! Canonical weapon data model for Star Citizen.
 //!
-//! Every consumer that cares about weapons — regardless of whether they need
-//! two fields or two hundred — reads them through this crate. There is one
-//! shared weapon type; consumers pick the fields they care about from it.
+//! Wraps generated `EntityClassDefinition` records from [`sc_extract`] into
+//! ergonomic, owned structs with all weapon data materialized at construction
+//! time. No `&DataPools` needed after construction — every accessor is a
+//! plain field read.
 //!
-//! # Driving consumer
+//! # Quick start
 //!
-//! `bulkhead` is the forcing function for correctness. Its damage simulator
-//! needs complete, accurate weapon data (projectile ballistics, falloff,
-//! heat curves, ammo references, ...), so this crate is designed around its
-//! needs first. `sc-langpatch` consumes a much smaller subset (display
-//! names, class / size / grade for localization enrichment) and simply reads
-//! fewer fields off the same canonical type.
+//! ```rust,ignore
+//! use sc_weapons::iter_ship_weapons;
 //!
-//! This inversion matters: the crate is driven by the *most demanding*
-//! consumer, not the easiest one. Consumers that need less adapt downward;
-//! they do not get their own narrower type.
+//! let datacore: sc_extract::Datacore = /* ... */;
+//! for weapon in iter_ship_weapons(&datacore) {
+//!     println!("{}: S{} {:?}", weapon.record_name, weapon.size, weapon.primary_fire_action);
+//! }
+//! ```
 //!
-//! # Correctness note
+//! # Scope
 //!
-//! `sc-langpatch`'s current in-app weapon parser is incomplete and partially
-//! incorrect. Switching it to `sc-weapons` is the path to fixing it.
-//!
-//! **Do not** port sc-langpatch's current assumptions into this crate
-//! without verifying them against real DCB data first. See the "go slow"
-//! principle in the workspace README: it is better to model nothing than to
-//! bake a wrong assumption into a type that three apps depend on.
+//! v1 is **data accessors only**. Sustained DPS calculations, fire-mode
+//! switching, and FPS sustain models are deferred to v2 — see
+//! `docs/sc-weapons.md` for the full deferred list.
+
+mod classify;
+mod damage;
+mod error;
+mod fire_action;
+mod fps;
+mod ship;
+mod sustain;
+
+pub use classify::WeaponCategory;
+pub use damage::DamageSummary;
+pub use error::WeaponError;
+pub use fire_action::FireActionKind;
+pub use fps::FpsWeapon;
+pub use ship::ShipWeapon;
+pub use sustain::{EnergyModel, HeatModel, SustainKind};
+
+use sc_extract::{Datacore, Guid};
+
+use std::collections::HashMap;
+
+/// Iterate over all ship weapons in the datacore.
+///
+/// Walks every `EntityClassDefinition` record, attempts to construct a
+/// [`ShipWeapon`], and yields those that succeed. Records that aren't ship
+/// weapons (FPS, CMLs, mining, creatures) are silently skipped.
+pub fn iter_ship_weapons(datacore: &Datacore) -> impl Iterator<Item = ShipWeapon> + '_ {
+    let snap = datacore.snapshot();
+    let db = datacore.db();
+    let pools = &snap.records.pools;
+    let ecd_map = &snap.records.records.multi_feature.entity_class_definition;
+    let ammo_map = &snap.records.records.multi_feature.ammo_params;
+
+    // Pre-build GUID → record name map
+    let record_names: HashMap<Guid, &str> = db
+        .records()
+        .iter()
+        .filter_map(|r| Some((r.id, db.record_name(r)?)))
+        .collect();
+
+    ecd_map.iter().filter_map(move |(&guid, &handle)| {
+        ShipWeapon::try_new(handle, guid, pools, ecd_map, ammo_map, &record_names)
+    })
+}
+
+/// Iterate over all FPS weapons in the datacore.
+///
+/// Same pattern as [`iter_ship_weapons`] but yields [`FpsWeapon`] instead.
+pub fn iter_fps_weapons(datacore: &Datacore) -> impl Iterator<Item = FpsWeapon> + '_ {
+    let snap = datacore.snapshot();
+    let db = datacore.db();
+    let pools = &snap.records.pools;
+    let ecd_map = &snap.records.records.multi_feature.entity_class_definition;
+    let ammo_map = &snap.records.records.multi_feature.ammo_params;
+
+    let record_names: HashMap<Guid, &str> = db
+        .records()
+        .iter()
+        .filter_map(|r| Some((r.id, db.record_name(r)?)))
+        .collect();
+
+    ecd_map.iter().filter_map(move |(&guid, &handle)| {
+        FpsWeapon::try_new(handle, guid, pools, ecd_map, ammo_map, &record_names)
+    })
+}

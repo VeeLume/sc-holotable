@@ -5,4 +5,11 @@ edition.workspace = true
 rust-version.workspace = true
 
 [dependencies]
-# sc-extract = { workspace = true }  # TODO: wire up once sc-extract has real helpers.
+sc-extract = { workspace = true, features = ["entities-scitem-weapons", "ammoparams"] }
+svarog-common = { workspace = true }
+thiserror = { workspace = true }
+tracing = { workspace = true }
+
+[dev-dependencies]
+sc-installs = { workspace = true }
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }

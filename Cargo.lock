@@ -728,6 +728,14 @@ dependencies = [
 [[package]]
 name = "sc-weapons"
 version = "0.0.0"
+dependencies = [
+ "sc-extract",
+ "sc-installs",
+ "svarog-common",
+ "thiserror 2.0.18",
+ "tracing",
+ "tracing-subscriber",
+]
 
 [[package]]
 name = "semver"
