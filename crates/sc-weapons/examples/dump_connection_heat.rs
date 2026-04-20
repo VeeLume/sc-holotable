@@ -23,15 +23,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let ecd_map = &snap.records.records.multi_feature.entity_class_definition;
 
     let targets = [
-        // Rapid (heat on fire action — control): GATS gatling, Revenant
-        "GATS_BallisticGatling_S1",
-        "APAR_BallisticGatling_S4",
-        // Sequence (heat unknown): Deadbolt, Tarantula, Shredder
-        "ESPR_BallisticCannon_S3",           // Deadbolt III
-        "GATS_BallisticCannon_S3",           // Tarantula GT-870 Mark 3 (likely)
-        "BEHR_BallisticRepeater_S3",         // SW16BR3 Shredder
-        // Single with hps=0 (scattergun):
-        "APAR_BallisticScatterGun_S3",       // Predator
+        // Charged — hunting for the missing cycle time on Singe
+        "BANU_TachyonCannon_S1",
+        "BANU_TachyonCannon_S3",
     ];
 
     for target in &targets {
@@ -79,6 +73,19 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             }
             Some(SWeaponActionParamsPtr::SWeaponActionSequenceParams(_)) => {
                 println!("  fire_action: Sequence (no heat_per_shot on this variant)");
+            }
+            Some(SWeaponActionParamsPtr::SWeaponActionFireChargedParams(h)) => {
+                if let Some(c) = h.get(pools) {
+                    println!("  fire_action: Charged");
+                    println!("    charge_time         = {}", c.charge_time);
+                    println!("    overcharge_time     = {}", c.overcharge_time);
+                    println!("    overcharged_time    = {}", c.overcharged_time);
+                    println!("    cooldown_time       = {}", c.cooldown_time);
+                    println!("    auto_fire           = {}", c.fire_automatically_on_full_charge);
+                    println!("    full_only           = {}", c.fire_only_on_full_charge);
+                    println!("    interpolate_charge  = {}", c.interpolate_charge_bonus);
+                    println!("    charge_automatically= {}", c.charge_automatically);
+                }
             }
             Some(other) => {
                 println!("  fire_action: {:?}", std::mem::discriminant(other));

@@ -169,11 +169,17 @@ fn print_ship_weapon(w: &ShipWeapon, snap: &sc_extract::DatacoreSnapshot) {
                 e.max_ammo_load, e.max_regen_per_sec, e.regeneration_cooldown,
                 e.regeneration_cost_per_bullet, e.requested_regen_per_sec, e.requested_ammo_load
             );
-            if let Some(n) = e.burst_shot_count() {
-                println!("    burst_shots={n:.2}");
-            }
-            if let Some(r) = e.sustained_rpm() {
-                println!("    sustained_rpm={r:.1}");
+            // Cycle analysis (needs burst_rpm from primary fire action)
+            let burst_rpm = w.fire_actions.first().and_then(|a| a.effective_rpm());
+            if let Some(rpm) = burst_rpm {
+                if let Some(b) = e.burst_seconds(rpm) {
+                    println!("    burst_seconds={b:.2} refill_seconds={:.2} cycle_seconds={:.2}",
+                        e.refill_seconds().unwrap_or(0.0),
+                        e.cycle_seconds(rpm).unwrap_or(0.0));
+                }
+                if let Some(f) = e.asymptotic_dps_fraction(rpm) {
+                    println!("    asymptotic_dps_fraction={:.1}%", f * 100.0);
+                }
             }
         }
         SustainKind::None => {

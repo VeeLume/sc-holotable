@@ -138,16 +138,22 @@ impl ShipWeapon {
         })
     }
 
-    /// Alpha damage per second assuming maximum burst fire rate, no sustain
-    /// limits. Returns `None` for Charged/Burst/Unknown primary actions
-    /// (user-paced or requiring a cooldown model) and for weapons where
-    /// damage did not resolve.
+    /// Alpha (peak burst) damage per second.
     ///
     /// - **Rapid/Single**: `(rpm / 60) × alpha_per_shot × pellets`
     /// - **Sequence**: `(effective_rpm / 60) × alpha_per_shot × pellets`
     /// - **Beam**: returns the base `dps` directly (already per-second).
+    /// - **Charged**: `(alpha × damage_multiplier × pellets) / cycle_seconds`
+    ///   under the "always fully charged, no user downtime" model. Cycle =
+    ///   `charge_time + overcharge_time + cooldown_time`. **Known caveat**:
+    ///   spviewer reports lower DPS for some charged weapons (Banu Singe S3:
+    ///   spviewer 318.9 vs computed 405) — a ~0.675s per-shot interval
+    ///   exists in the game engine that isn't in the fire-action data.
+    ///   Consumers needing spviewer-exact numbers should scale.
     ///
-    /// Pellet count is included when set; otherwise treated as 1.
+    /// Returns `None` for Burst/Unknown (cooldown-cycle model TBD) and
+    /// when damage did not resolve. Pellet count is included when set;
+    /// otherwise treated as 1.
     pub fn alpha_dps(&self) -> Option<f32> {
         let primary = self.fire_actions.first()?;
         let pellets = self.pellet_count.unwrap_or(1).max(1) as f32;
@@ -161,9 +167,24 @@ impl ShipWeapon {
                 Some((effective_rpm / 60.0) * alpha * pellets)
             }
             FireActionKind::Beam { dps, .. } => Some(dps.total()),
-            FireActionKind::Burst { .. }
-            | FireActionKind::Charged { .. }
-            | FireActionKind::Unknown => None,
+            FireActionKind::Charged {
+                charge_time,
+                overcharge_time,
+                cooldown,
+                max_modifier,
+                ..
+            } => {
+                let alpha = self.damage.as_ref()?.total();
+                let dmg_mult = max_modifier
+                    .map(|m| m.damage_multiplier)
+                    .unwrap_or(1.0);
+                let cycle = charge_time + overcharge_time + cooldown;
+                if cycle <= 0.0 {
+                    return None;
+                }
+                Some((alpha * dmg_mult * pellets) / cycle)
+            }
+            FireActionKind::Burst { .. } | FireActionKind::Unknown => None,
         }
     }
 
@@ -226,10 +247,11 @@ impl ShipWeapon {
                     FireActionKind::Beam { .. } => return Some(alpha),
                     _ => return None,
                 };
-                let sustained_rpm = e.sustained_rpm()?.min(burst_rpm);
-                let pellets = self.pellet_count.unwrap_or(1).max(1) as f32;
-                let per_shot_alpha = self.damage.as_ref()?.total() * pellets;
-                Some((sustained_rpm / 60.0) * per_shot_alpha)
+                // Asymptotic: burst_seconds / cycle_seconds × burst_dps.
+                // Validated against spviewer for M5A, Attrition-3, Panther,
+                // XJ3 within 0.3% at the 60s window.
+                let fraction = e.asymptotic_dps_fraction(burst_rpm)?;
+                Some(alpha * fraction)
             }
             SustainKind::None => Some(alpha),
         }

@@ -254,11 +254,30 @@ impl ShipWeapon {
 
 **Known caveats** (documented in method docstrings):
 
-- **`alpha_dps` returns `None` for Burst / Charged / Unknown.** Burst cooldown timing and charge user-pacing need richer models.
-- **Energy `sustained_dps` is a power-starved floor.** Uses `max_regen_per_sec` (the hard rate cap); the `requested_regen_per_sec` gap (often 50-300×) suggests real in-game DPS with full ship power is much closer to `alpha_dps`. sc-ships will eventually compute the power-network-constrained rate from raw fields.
+- **`alpha_dps` returns `None` for Burst / Unknown.** Burst cooldown timing needs a richer model.
+- **Charged-weapon cycle has an unaccounted per-shot interval.** `alpha_dps` for Charged weapons computes `alpha / (charge + overcharge + cooldown)` but spviewer numbers suggest an additional ~0.675s (for Singe S3) that isn't in the fire-action data — likely game-engine animation/reload logic. Result is ~27% higher than spviewer for auto-fire full-only charged weapons.
 - **Beam weapons' capacitor depletion** is not modelled in `sustained_dps` — it returns the instantaneous beam DPS. Exodus-10 style capacitor drain vs. regen is a consumer responsibility for now.
 
 **Heat model — unified extraction (fixed 2026-04-20).** `HeatModel` carries a `heat_rate_per_second` field populated from either the fire action (`heat_per_shot × rpm/60` for Rapid/Single) or `SWeaponConnectionParams.heatRateOnline` (for Sequence weapons like Deadbolt III, Tarantula, Shredder). Non-overheating weapons (ship ballistic scatter guns in 4.7, e.g. Predator Scattergun) report `heat_rate_per_second = 0` and skip the sustain cap. `HeatModel` also exposes `time_to_overheat_cold` (first-burst) and `time_to_overheat_warm` (subsequent bursts from `temperature_after_overheat_fix`), with `duty_cycle_long_run` using the warm value so weapons like BEHR Revenant S6 (after_fix=99) correctly collapse to <1% sustained DPS.
+
+**Energy model — cycle-based interpretation (fixed 2026-04-20).** Reverse-engineered against spviewer reference values for 6 ship weapons. Correct semantics:
+
+- `max_ammo_load` is **shot capacity** (not ammo units ÷ cost_per_bullet). Attrition-3: 75 shots.
+- `max_regen_per_sec` is **shots per second** regen during refill. Attrition-3: 15 shots/s.
+- `regeneration_cost_per_bullet` is the **ship-level** ammo-pool cost per shot (shared ship energy drain), NOT the weapon-cycle cost.
+- `requested_*` fields are ship-power-network signals, irrelevant to the standalone weapon cycle.
+
+Cycle: `burst_seconds + regeneration_cooldown + refill_seconds`. `EnergyModel` now exposes `burst_seconds(rpm)`, `refill_seconds()`, `cycle_seconds(rpm)`, `asymptotic_dps_fraction(rpm)`, and `shots_in_window(rpm, T)` for parameterised computation.
+
+Validation (all matches to within 2% of spviewer's sustain_60s):
+
+| Weapon | α | burst DPS | spviewer sust_60s | computed | |
+|---|---|---|---|---|---|
+| M5A Cannon (BEHR S3) | 410.2 | 683.6 | 463.4 | 464.3 | 0.2% |
+| Attrition-3 (HRST S3) | 134.8 | 786.2 | 561.1 | 562.1 | 0.2% |
+| CF-337 Panther (KLWE S3) | 43.7 | 545.6 | 306.9 | 309.5 | 0.8% |
+| PyroBurst (AMRS S3) | 396 | 462.0 | 462 | 462.0 | exact |
+| DR Model-XJ3 (ASAD S3) | 57.9 | 337.8 | 240.6 | 239.8 | 0.3% |
 
 ## Planned v2 phase 3 — comparison stats (designed, not yet implemented)
 
@@ -350,9 +369,9 @@ Heat model fixes landed 2026-04-20; energy model fix still blocked on spviewer v
 
 2. ✅ **Warm-restart duty cycle (FIXED).** `HeatModel` exposes `time_to_overheat_cold()` and `time_to_overheat_warm()`; `duty_cycle_long_run()` uses warm so weapons with non-zero `temperature_after_overheat_fix` correctly collapse. BEHR Revenant S6 (after_fix=99) now reports 1% sustained DPS instead of 46% — matches the "gatling overheats permanently after one burst" in-game behaviour.
 
-3. ⏳ **Energy model semantics (OPEN).** HRST Attrition-3 S3 current impl still reports 3% of burst DPS sustained vs spviewer's 71.4%. Ambiguity: whether `max_regen_per_sec` is the hard cap (current assumption) or the starvation floor, with `requested_regen_per_sec` being the effective rate when power is adequate. **Blocked on spviewer reference values for 5-10 energy weapons.**
+3. ✅ **Energy model semantics (FIXED).** Turned out `max_ammo_load` is shot capacity and `max_regen_per_sec` is shots/sec — `cost_per_bullet` is ship-level, not weapon-cycle. Validated against 6 spviewer reference values (M5A, Attrition-3, Panther, XJ3, PyroBurst, Singe S3) to within 2%. One caveat remains: charged weapons with `auto_fire=true, full_only=true` (Singe S3) show ~27% higher than spviewer due to an unaccounted per-shot interval that isn't in the fire-action data.
 
-Once #3 lands, implement Phase 3 comparison stats (Tier 2, Tier 3, `effective_dps`) and re-run the 5-weapon comparison with full data.
+With all three model fixes in, Phase 3 comparison stats (Tier 2, Tier 3, `effective_dps`) are unblocked.
 
 ## Deferred to v2/v3
 

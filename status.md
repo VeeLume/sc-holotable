@@ -9,7 +9,9 @@ The low-level layer (`sc-installs` + `sc-extract` + `sc-extract-generated` + `sc
 
 ## Last worked on
 
-**sc-weapons heat model fixes (2026-04-20)** -- unified `HeatModel::heat_rate_per_second` pulled from fire_action (Rapid/Single) or `SWeaponConnectionParams.heatRateOnline` (Sequence). Added `time_to_overheat_cold`/`time_to_overheat_warm`/`duty_cycle_long_run`. 5 target weapons now report honest sustain: Deadbolt III 55%, Tarantula Mk 3 45%, Shredder 71%, Revenant ANVL S3 78%, Predator no-overheat. BEHR Revenant S6 (after_fix=99) correctly collapses to 1% sustain. 18 unit tests passing. **Still blocked on energy model (HRST 3% vs spviewer 71%).**
+**sc-weapons energy model fixed (2026-04-20)** -- reverse-engineered against 6 spviewer reference values. Corrected interpretation: `max_ammo_load` = shot capacity, `max_regen_per_sec` = shots/sec, `cost_per_bullet` = ship-level cost (irrelevant to weapon cycle). `EnergyModel` now exposes `burst_seconds(rpm)`/`refill_seconds()`/`cycle_seconds(rpm)`/`asymptotic_dps_fraction(rpm)`/`shots_in_window(rpm, T)`. Matches spviewer sustain_60s within 2% for M5A, Attrition-3, Panther, XJ3, PyroBurst. Singe S3 (charged weapon) off by ~27% due to unaccounted per-shot interval in game engine. Added 5 spviewer-pinned unit tests. All 3 Phase 2 model fixes done; Phase 3 unblocked.
+
+**sc-weapons heat model fixes (2026-04-20)** -- unified `HeatModel::heat_rate_per_second` pulled from fire_action (Rapid/Single) or `SWeaponConnectionParams.heatRateOnline` (Sequence). Added `time_to_overheat_cold`/`time_to_overheat_warm`/`duty_cycle_long_run`. 5 target weapons now report honest sustain: Deadbolt III 55%, Tarantula Mk 3 45%, Shredder 71%, Revenant ANVL S3 78%, Predator no-overheat. BEHR Revenant S6 (after_fix=99) correctly collapses to 1% sustain.
 
 **sc-weapons v2 phase 3 designed (2026-04-20)** -- three-tier comparison-stats spec committed to `docs/sc-weapons.md`. Tier 1 directly-comparable (already exposed), Tier 2 burst stats (rpm-coupled), Tier 3 normalised (cross-rpm). Single-scalar composite `effective_dps(LoadoutContext { window_seconds, power_per_slot })` for default sort -- no defaults baked in, caller (UI slider, sc-ships) supplies runtime values. Implementation blocked on energy model fix.
 
@@ -52,7 +54,7 @@ See `docs/benchmarks.md` for sweep findings and current numbers.
 | `sc-weapons` | v1 + v2 phases 1 + 2 shipped. Materialized accessors, multi-mode fire actions, charge modifiers, derived sustain numbers. 7 unit tests. |
 | `sc-contracts` | Stub only. |
 
-**Total: 153 tests + 4 doctests, all passing.**
+**Total: 157 tests + 4 doctests, all passing.**
 
 ## Open issues
 
@@ -62,9 +64,9 @@ See `docs/benchmarks.md` for sweep findings and current numbers.
 
 ## What's next
 
-1. **Energy model semantics (blocked on spviewer validation).** HRST Attrition-3 S3 reports 3% sustained vs spviewer's 71.4%. Need spviewer reference values for 5-10 energy weapons (alpha + burst DPS + sustained DPS) to reverse-engineer the real formula — specifically whether `max_regen_per_sec` is the hard cap or starvation floor with `requested_regen_per_sec` being effective.
-2. **Implement Phase 3 comparison stats** (Tier 2, Tier 3, `effective_dps`) once #1 lands, then re-run the 5-weapon comparison with full data.
-3. **FPS sustain models** -- Volt heat-ramp, Kastak charged, K&W heat. Weapon attachment sub-ports.
+1. **Implement Phase 3 comparison stats** (Tier 2 `burst_seconds`/`volley_damage`/`cycle_seconds`, Tier 3 `dps_retention_pct(T)`/`firing_time_pct`/`long_run_dps_pct`/`thermal_efficiency`/`power_efficiency`, and `effective_dps(LoadoutContext)` composite). Phase 2 model fixes are all done.
+2. **FPS sustain models** -- Volt heat-ramp, Kastak charged, K&W heat. Weapon attachment sub-ports.
+3. **Charged-weapon per-shot interval** -- Singe S3 shows my `alpha_dps` is 27% higher than spviewer due to an unaccounted ~0.675s cycle component. Needs game-engine investigation or spviewer source inspection.
 4. **Validate `TagTree` / `ManufacturerRegistry` field names** against real DCB records with typed field access.
 5. **Upstream the `is_null` fix** to Svarog, bump pinned rev, drop `[patch]` override.
 

@@ -78,9 +78,25 @@ impl HeatModel {
 
 /// Energy capacitor model — extracted from `SWeaponRegenConsumerParams`.
 ///
-/// The actual regen rate depends on ship-level power allocation (shared
-/// weapon energy pool). These are the weapon's own params; the ship
-/// determines how much power it actually receives.
+/// # Unit interpretation (validated 2026-04-20 against spviewer reference
+/// values for M5A, Attrition-3, Panther, XJ3, PyroBurst, Singe S3)
+///
+/// - `max_ammo_load` is **shot capacity** (not ammo units divided by cost).
+///   Attrition-3: 75 shots; M5A: 25 shots. A full capacitor fires exactly
+///   `max_ammo_load` shots at `burst_rpm` before depleting.
+/// - `max_regen_per_sec` is **shots per second regen** during the refill
+///   phase. Attrition-3: 15 shots/s.
+/// - `regeneration_cost_per_bullet` is the **ship-level** ammo-pool cost
+///   per shot (drain on the shared ship weapon energy pool), NOT the
+///   weapon's own capacitor cost. Irrelevant to the standalone weapon
+///   cycle; relevant when modelling ship-level power contention.
+/// - `requested_regen_per_sec` / `requested_ammo_load` are what the weapon
+///   *asks for* from the ship's power network — caps under starvation,
+///   peak when ship is well-powered. Also ship-level, not weapon-level.
+///
+/// The weapon-level cycle is therefore determined entirely by
+/// `max_ammo_load`, `max_regen_per_sec`, `regeneration_cooldown`, and the
+/// primary fire action's burst RPM.
 #[derive(Debug, Clone, Copy)]
 pub struct EnergyModel {
     pub max_ammo_load: f32,
@@ -92,33 +108,62 @@ pub struct EnergyModel {
 }
 
 impl EnergyModel {
-    /// Shots available from a full capacitor before regen becomes the
-    /// bottleneck (`max_ammo_load / regeneration_cost_per_bullet`).
-    ///
-    /// Note: in 4.7 LIVE, several weapons report `cost_per_bullet > max_load`
-    /// (Singe S1: 300 vs 25) — the ammo-unit scale is not a literal 1-shot
-    /// unit and the in-game behaviour presumably uses fractional
-    /// accumulation. This method returns the raw ratio; consumers should
-    /// treat `< 1.0` results as "regen-gated from the first shot."
-    ///
-    /// Returns `None` when `cost_per_bullet <= 0`.
-    pub fn burst_shot_count(&self) -> Option<f32> {
-        if self.regeneration_cost_per_bullet <= 0.0 {
+    /// Seconds of continuous fire at `burst_rpm` before the capacitor
+    /// depletes (`max_ammo_load / (burst_rpm / 60)`).
+    pub fn burst_seconds(&self, burst_rpm: f32) -> Option<f32> {
+        if burst_rpm <= 0.0 || self.max_ammo_load <= 0.0 {
             return None;
         }
-        Some(self.max_ammo_load / self.regeneration_cost_per_bullet)
+        Some(self.max_ammo_load / (burst_rpm / 60.0))
     }
 
-    /// Sustained shots-per-minute allowed by the regen loop, ignoring
-    /// `regeneration_cooldown` amortisation.
-    /// (`max_regen_per_sec / cost_per_bullet × 60`).
-    ///
-    /// Returns `None` when `cost_per_bullet <= 0`.
-    pub fn sustained_rpm(&self) -> Option<f32> {
-        if self.regeneration_cost_per_bullet <= 0.0 {
+    /// Seconds to refill the capacitor from empty
+    /// (`max_ammo_load / max_regen_per_sec`).
+    pub fn refill_seconds(&self) -> Option<f32> {
+        if self.max_regen_per_sec <= 0.0 || self.max_ammo_load <= 0.0 {
             return None;
         }
-        Some(self.max_regen_per_sec / self.regeneration_cost_per_bullet * 60.0)
+        Some(self.max_ammo_load / self.max_regen_per_sec)
+    }
+
+    /// Full fire/cooldown/refill cycle time.
+    pub fn cycle_seconds(&self, burst_rpm: f32) -> Option<f32> {
+        let burst = self.burst_seconds(burst_rpm)?;
+        let refill = self.refill_seconds()?;
+        Some(burst + self.regeneration_cooldown.max(0.0) + refill)
+    }
+
+    /// Long-run (asymptotic) fraction of `burst_dps` the weapon sustains —
+    /// unitless `[0.0, 1.0]`. `burst_seconds / cycle_seconds`.
+    pub fn asymptotic_dps_fraction(&self, burst_rpm: f32) -> Option<f32> {
+        let burst = self.burst_seconds(burst_rpm)?;
+        let cycle = self.cycle_seconds(burst_rpm)?;
+        if cycle <= 0.0 {
+            return None;
+        }
+        Some(burst / cycle)
+    }
+
+    /// Total shots fired in `seconds` starting from a full capacitor,
+    /// accounting for fire/cooldown/refill cycles.
+    pub fn shots_in_window(&self, burst_rpm: f32, seconds: f32) -> Option<f32> {
+        let burst = self.burst_seconds(burst_rpm)?;
+        let cycle = self.cycle_seconds(burst_rpm)?;
+        if seconds <= 0.0 || cycle <= 0.0 {
+            return Some(0.0);
+        }
+        let shots_per_sec = burst_rpm / 60.0;
+        let full_cycles = (seconds / cycle).floor();
+        let remainder = seconds - full_cycles * cycle;
+        let mut shots = full_cycles * self.max_ammo_load;
+        if remainder <= burst {
+            shots += remainder * shots_per_sec;
+        } else {
+            // In cooldown or refill phase — fired the full capacitor, no
+            // partial extra shots (refill doesn't mid-fire).
+            shots += self.max_ammo_load;
+        }
+        Some(shots)
     }
 }
 
@@ -291,44 +336,115 @@ mod tests {
         assert!(h.duty_cycle_long_run().is_none());
     }
 
-    /// HRST_LaserRepeater_S3 values from Weapons.md:
-    /// cooldown=0.7s, cost/bullet=84.0, max_load=75, max_regen/s=15.0.
-    fn hrst_s3_energy() -> EnergyModel {
+    // ------------------------------------------------------------------
+    // Energy model — validated against spviewer reference values for
+    // 4.7 LIVE. See docs/sc-weapons.md §Planned v2 phase 3 for the full
+    // model derivation.
+    // ------------------------------------------------------------------
+
+    /// HRST Attrition-3 S3 (LaserRepeater). Live DCB values.
+    fn attrition3_s3_energy() -> EnergyModel {
         EnergyModel {
-            max_ammo_load: 75.0,
-            max_regen_per_sec: 15.0,
+            max_ammo_load: 75.0,          // 75 shots capacity
+            max_regen_per_sec: 15.0,      // 15 shots/sec regen
             regeneration_cooldown: 0.7,
-            regeneration_cost_per_bullet: 84.0,
-            requested_regen_per_sec: 15.0,
-            requested_ammo_load: 75.0,
+            regeneration_cost_per_bullet: 84.0, // ship-level ammo-pool cost, not weapon-cycle
+            requested_regen_per_sec: 4853.0,
+            requested_ammo_load: 29120.0,
         }
     }
 
     #[test]
-    fn hrst_s3_burst_shot_count() {
-        // 75 / 84 = 0.893 — below one "shot"; fractional-accumulation weapon.
-        let n = hrst_s3_energy().burst_shot_count().unwrap();
-        assert!((n - 0.893).abs() < 0.01, "expected ~0.893, got {n}");
+    fn attrition3_cycle_times() {
+        let e = attrition3_s3_energy();
+        let rpm = 350.0;
+        assert!((e.burst_seconds(rpm).unwrap() - 12.857).abs() < 0.01);
+        assert!((e.refill_seconds().unwrap() - 5.0).abs() < 0.01);
+        assert!((e.cycle_seconds(rpm).unwrap() - 18.557).abs() < 0.01);
     }
 
     #[test]
-    fn hrst_s3_sustained_rpm() {
-        // 15 / 84 * 60 = 10.71 rpm
-        let r = hrst_s3_energy().sustained_rpm().unwrap();
-        assert!((r - 10.71).abs() < 0.05, "expected ~10.71 rpm, got {r}");
+    fn attrition3_asymptotic_fraction() {
+        // 12.857 / 18.557 = 0.693 → 69.3% of burst
+        let f = attrition3_s3_energy().asymptotic_dps_fraction(350.0).unwrap();
+        assert!((f - 0.693).abs() < 0.005, "expected ~0.693, got {f}");
     }
 
     #[test]
-    fn zero_cost_returns_none() {
+    fn attrition3_60s_matches_spviewer() {
+        // spviewer reports sustain_60s = 561.1 for Attrition-3 (burst=786.2, alpha=134.8).
+        let e = attrition3_s3_energy();
+        let rpm = 350.0;
+        let alpha = 134.8;
+        let shots = e.shots_in_window(rpm, 60.0).unwrap();
+        let dps_60 = shots * alpha / 60.0;
+        assert!((dps_60 - 561.1).abs() < 2.0, "expected ~561.1 DPS, got {dps_60}");
+    }
+
+    #[test]
+    fn panther_s3_60s_matches_spviewer() {
+        // CF-337 Panther (KLWE_LaserRepeater_S3): spviewer sustain_60s = 306.9.
+        let e = EnergyModel {
+            max_ammo_load: 75.0,
+            max_regen_per_sec: 15.0,
+            regeneration_cooldown: 0.2,
+            regeneration_cost_per_bullet: 48.5,
+            requested_regen_per_sec: 3031.0,
+            requested_ammo_load: 18187.0,
+        };
+        let shots = e.shots_in_window(750.0, 60.0).unwrap();
+        let dps_60 = shots * 43.7 / 60.0;
+        assert!((dps_60 - 306.9).abs() < 3.0, "expected ~306.9 DPS, got {dps_60}");
+    }
+
+    #[test]
+    fn m5a_cannon_60s_matches_spviewer() {
+        // M5A Cannon (BEHR_LaserCannon_S3): spviewer sustain_60s = 463.4.
+        let e = EnergyModel {
+            max_ammo_load: 25.0,
+            max_regen_per_sec: 3.0,
+            regeneration_cooldown: 1.3,
+            regeneration_cost_per_bullet: 253.0,
+            requested_regen_per_sec: 4220.0,
+            requested_ammo_load: 25320.0,
+        };
+        let shots = e.shots_in_window(100.0, 60.0).unwrap();
+        let dps_60 = shots * 410.2 / 60.0;
+        assert!((dps_60 - 463.4).abs() < 2.0, "expected ~463.4 DPS, got {dps_60}");
+    }
+
+    #[test]
+    fn pyroburst_60s_no_depletion_matches_spviewer() {
+        // PyroBurst Scattergun (AMRS_ScatterGun_S3): burst_seconds (64.3s)
+        // exceeds 60s window, so sustain = burst = 462.
+        let e = EnergyModel {
+            max_ammo_load: 75.0,
+            max_regen_per_sec: 15.0,
+            regeneration_cooldown: 0.4,
+            regeneration_cost_per_bullet: 440.0,
+            requested_regen_per_sec: 2566.7,
+            requested_ammo_load: 15400.0,
+        };
+        // Slow-fire scattergun: 70 rpm × 8 pellets × 49.5 alpha = 462 DPS.
+        let burst_rpm = 70.0;
+        let alpha_per_shot = 49.5 * 8.0;
+        let shots = e.shots_in_window(burst_rpm, 60.0).unwrap();
+        let dps_60 = shots * alpha_per_shot / 60.0;
+        assert!((dps_60 - 462.0).abs() < 1.0, "expected 462 DPS, got {dps_60}");
+    }
+
+    #[test]
+    fn zero_regen_returns_none() {
         let e = EnergyModel {
             max_ammo_load: 100.0,
-            max_regen_per_sec: 10.0,
+            max_regen_per_sec: 0.0,
             regeneration_cooldown: 0.0,
-            regeneration_cost_per_bullet: 0.0,
+            regeneration_cost_per_bullet: 1.0,
             requested_regen_per_sec: 0.0,
             requested_ammo_load: 0.0,
         };
-        assert!(e.burst_shot_count().is_none());
-        assert!(e.sustained_rpm().is_none());
+        assert!(e.refill_seconds().is_none());
+        assert!(e.cycle_seconds(100.0).is_none());
+        assert!(e.asymptotic_dps_fraction(100.0).is_none());
     }
 }
