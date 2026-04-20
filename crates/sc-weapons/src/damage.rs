@@ -74,16 +74,14 @@ fn resolve_ammo_params<'a>(
     ecd_map: &HashMap<Guid, Handle<EntityClassDefinition>>,
     ammo_map: &HashMap<Guid, Handle<AmmoParams>>,
 ) -> Option<&'a AmmoParams> {
-    // Path 2: two-hop via ammo_container_record → intermediate entity
-    if let Some(ref_guid) = weapon_params.ammo_container_record {
-        // The ref never points directly at AmmoParams — always at an entity
-        if let Some(&container_h) = ecd_map.get(&ref_guid) {
-            if let Some(container_ecd) = container_h.get(pools) {
-                if let Some(ammo) = find_ammo_via_container(container_ecd, pools, ammo_map) {
-                    return Some(ammo);
-                }
-            }
-        }
+    // Path 2: two-hop via ammo_container_record → intermediate entity.
+    // The ref never points directly at AmmoParams — always at an entity.
+    if let Some(ref_guid) = weapon_params.ammo_container_record
+        && let Some(&container_h) = ecd_map.get(&ref_guid)
+        && let Some(container_ecd) = container_h.get(pools)
+        && let Some(ammo) = find_ammo_via_container(container_ecd, pools, ammo_map)
+    {
+        return Some(ammo);
     }
 
     // Path 1: local SAmmoContainerComponentParams on the weapon entity itself
@@ -108,30 +106,24 @@ fn extract_damage(ammo: &AmmoParams, pools: &DataPools) -> DamageSummary {
         return summary;
     };
 
-    match proj_ptr {
-        ProjectileParamsPtr::BulletProjectileParams(h) => {
-            if let Some(bullet) = h.get(pools) {
-                // Direct damage
-                if let Some(DamageBasePtr::DamageInfo(dh)) = &bullet.damage {
-                    if let Some(d) = dh.get(pools) {
-                        summary.add_damage_info(d);
-                    }
-                }
-                // Explosion damage
-                if let Some(det) = bullet.detonation_params.and_then(|h| h.get(pools)) {
-                    if let Some(expl) = det.explosion_params.and_then(|h| h.get(pools)) {
-                        if let Some(DamageBasePtr::DamageInfo(dh)) = &expl.damage {
-                            if let Some(d) = dh.get(pools) {
-                                summary.add_damage_info(d);
-                            }
-                        }
-                    }
-                }
-            }
+    // TachyonProjectileParams, CounterMeasureProjectileParams, etc. are
+    // not handled in v1 — damage stays at zero.
+    if let ProjectileParamsPtr::BulletProjectileParams(h) = proj_ptr
+        && let Some(bullet) = h.get(pools)
+    {
+        // Direct damage
+        if let Some(DamageBasePtr::DamageInfo(dh)) = &bullet.damage
+            && let Some(d) = dh.get(pools)
+        {
+            summary.add_damage_info(d);
         }
-        _ => {
-            // TachyonProjectileParams, CounterMeasureProjectileParams, etc.
-            // Not handled in v1 — damage stays at zero.
+        // Explosion damage
+        if let Some(det) = bullet.detonation_params.and_then(|h| h.get(pools))
+            && let Some(expl) = det.explosion_params.and_then(|h| h.get(pools))
+            && let Some(DamageBasePtr::DamageInfo(dh)) = &expl.damage
+            && let Some(d) = dh.get(pools)
+        {
+            summary.add_damage_info(d);
         }
     }
 
@@ -146,46 +138,37 @@ pub(crate) fn find_component<'a, T: 'static>(
     use std::any::TypeId;
 
     for comp in &ecd.components {
-        if TypeId::of::<T>() == TypeId::of::<SCItemWeaponComponentParams>() {
-            if let DataForgeComponentParamsPtr::SCItemWeaponComponentParams(h) = comp {
-                let r = h.get(pools)?;
-                // SAFETY: TypeId match guarantees T == SCItemWeaponComponentParams
-                return Some(unsafe {
-                    &*(r as *const SCItemWeaponComponentParams as *const T)
-                });
-            }
+        // SAFETY for each branch: the TypeId equality guarantees T is the
+        // concrete component type, so the pointer cast is sound.
+        if TypeId::of::<T>() == TypeId::of::<SCItemWeaponComponentParams>()
+            && let DataForgeComponentParamsPtr::SCItemWeaponComponentParams(h) = comp
+        {
+            let r = h.get(pools)?;
+            return Some(unsafe { &*(r as *const SCItemWeaponComponentParams as *const T) });
         }
-        if TypeId::of::<T>() == TypeId::of::<SAttachableComponentParams>() {
-            if let DataForgeComponentParamsPtr::SAttachableComponentParams(h) = comp {
-                let r = h.get(pools)?;
-                return Some(unsafe {
-                    &*(r as *const SAttachableComponentParams as *const T)
-                });
-            }
+        if TypeId::of::<T>() == TypeId::of::<SAttachableComponentParams>()
+            && let DataForgeComponentParamsPtr::SAttachableComponentParams(h) = comp
+        {
+            let r = h.get(pools)?;
+            return Some(unsafe { &*(r as *const SAttachableComponentParams as *const T) });
         }
-        if TypeId::of::<T>() == TypeId::of::<SAmmoContainerComponentParams>() {
-            if let DataForgeComponentParamsPtr::SAmmoContainerComponentParams(h) = comp {
-                let r = h.get(pools)?;
-                return Some(unsafe {
-                    &*(r as *const SAmmoContainerComponentParams as *const T)
-                });
-            }
+        if TypeId::of::<T>() == TypeId::of::<SAmmoContainerComponentParams>()
+            && let DataForgeComponentParamsPtr::SAmmoContainerComponentParams(h) = comp
+        {
+            let r = h.get(pools)?;
+            return Some(unsafe { &*(r as *const SAmmoContainerComponentParams as *const T) });
         }
-        if TypeId::of::<T>() == TypeId::of::<SHealthComponentParams>() {
-            if let DataForgeComponentParamsPtr::SHealthComponentParams(h) = comp {
-                let r = h.get(pools)?;
-                return Some(unsafe {
-                    &*(r as *const SHealthComponentParams as *const T)
-                });
-            }
+        if TypeId::of::<T>() == TypeId::of::<SHealthComponentParams>()
+            && let DataForgeComponentParamsPtr::SHealthComponentParams(h) = comp
+        {
+            let r = h.get(pools)?;
+            return Some(unsafe { &*(r as *const SHealthComponentParams as *const T) });
         }
-        if TypeId::of::<T>() == TypeId::of::<ItemResourceComponentParams>() {
-            if let DataForgeComponentParamsPtr::ItemResourceComponentParams(h) = comp {
-                let r = h.get(pools)?;
-                return Some(unsafe {
-                    &*(r as *const ItemResourceComponentParams as *const T)
-                });
-            }
+        if TypeId::of::<T>() == TypeId::of::<ItemResourceComponentParams>()
+            && let DataForgeComponentParamsPtr::ItemResourceComponentParams(h) = comp
+        {
+            let r = h.get(pools)?;
+            return Some(unsafe { &*(r as *const ItemResourceComponentParams as *const T) });
         }
     }
     None

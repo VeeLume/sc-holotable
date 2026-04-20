@@ -28,10 +28,11 @@ pub struct ShipWeapon {
     pub item_sub_type: EItemSubType,
     /// Manufacturer GUID — look up via `ManufacturerRegistry::get`.
     pub manufacturer_guid: Option<Guid>,
-    /// Primary fire action (from `fireActions[0]`).
-    pub primary_fire_action: FireActionKind,
-    /// Total number of fire actions (>1 means fire mode switching).
-    pub fire_action_count: usize,
+    /// All fire actions in declaration order. `fire_actions[0]` is the
+    /// primary mode; later entries are alternate modes. Ship weapons in
+    /// 4.7 are uniformly single-mode, but the field is plural for symmetry
+    /// with [`crate::FpsWeapon`] (where multi-mode is common).
+    pub fire_actions: Vec<FireActionKind>,
     /// Sustain model: Heat, Energy, or None.
     pub sustain: SustainKind,
     /// Per-shot damage (direct + explosion, all 6 types). `None` if ammo
@@ -83,12 +84,12 @@ impl ShipWeapon {
             return None;
         }
 
-        // Fire action
-        let primary_fire_action = wp
+        // Fire actions — extract every declared mode in order.
+        let fire_actions: Vec<FireActionKind> = wp
             .fire_actions
-            .first()
+            .iter()
             .map(|a| fire_action::extract_fire_action(a, pools))
-            .unwrap_or(FireActionKind::Unknown);
+            .collect();
 
         // Sustain
         let sustain = sustain::extract_sustain(wp, pools);
@@ -124,8 +125,7 @@ impl ShipWeapon {
             item_type: item_def.r#type.clone(),
             item_sub_type: item_def.sub_type.clone(),
             manufacturer_guid: item_def.manufacturer,
-            primary_fire_action,
-            fire_action_count: wp.fire_actions.len(),
+            fire_actions,
             sustain,
             damage: ammo.as_ref().map(|a| a.damage),
             ammo_speed: ammo.as_ref().map(|a| a.speed),
@@ -136,6 +136,120 @@ impl ShipWeapon {
             health,
             entity_handle: handle,
         })
+    }
+
+    /// Alpha damage per second assuming maximum burst fire rate, no sustain
+    /// limits. Returns `None` for Charged/Burst/Unknown primary actions
+    /// (user-paced or requiring a cooldown model) and for weapons where
+    /// damage did not resolve.
+    ///
+    /// - **Rapid/Single**: `(rpm / 60) × alpha_per_shot × pellets`
+    /// - **Sequence**: `(effective_rpm / 60) × alpha_per_shot × pellets`
+    /// - **Beam**: returns the base `dps` directly (already per-second).
+    ///
+    /// Pellet count is included when set; otherwise treated as 1.
+    pub fn alpha_dps(&self) -> Option<f32> {
+        let primary = self.fire_actions.first()?;
+        let pellets = self.pellet_count.unwrap_or(1).max(1) as f32;
+        match primary {
+            FireActionKind::Rapid { fire_rate, .. } | FireActionKind::Single { fire_rate, .. } => {
+                let alpha = self.damage.as_ref()?.total();
+                Some((*fire_rate as f32 / 60.0) * alpha * pellets)
+            }
+            FireActionKind::Sequence { effective_rpm, .. } => {
+                let alpha = self.damage.as_ref()?.total();
+                Some((effective_rpm / 60.0) * alpha * pellets)
+            }
+            FireActionKind::Beam { dps, .. } => Some(dps.total()),
+            FireActionKind::Burst { .. }
+            | FireActionKind::Charged { .. }
+            | FireActionKind::Unknown => None,
+        }
+    }
+
+    /// Seconds of continuous primary-mode fire before the weapon overheats
+    /// from a cold start. Only defined for heat-sustain weapons whose
+    /// primary action is Rapid or Single (Sequence weapons carry no
+    /// fire-action `heat_per_shot`; see `docs/Weapons.md`).
+    pub fn time_to_overheat(&self) -> Option<f32> {
+        let SustainKind::Heat(ref heat) = self.sustain else {
+            return None;
+        };
+        let primary = self.fire_actions.first()?;
+        let (heat_per_shot, rpm) = match primary {
+            FireActionKind::Rapid { heat_per_shot, fire_rate, .. }
+            | FireActionKind::Single { heat_per_shot, fire_rate, .. } => {
+                (*heat_per_shot, *fire_rate as f32)
+            }
+            _ => return None,
+        };
+        heat.time_to_overheat(heat_per_shot, rpm)
+    }
+
+    /// Seconds of forced lockout after an overheat event. Direct read of
+    /// `HeatModel::overheat_fix_time`. `None` for non-heat weapons.
+    pub fn overheat_lockout_time(&self) -> Option<f32> {
+        match &self.sustain {
+            SustainKind::Heat(h) => Some(h.overheat_fix_time),
+            _ => None,
+        }
+    }
+
+    /// Long-run sustained damage per second, scaling `alpha_dps` by the
+    /// relevant sustain bottleneck:
+    ///
+    /// - **Heat**: `alpha_dps × duty_cycle` where
+    ///   `duty_cycle = time_to_overheat / (time_to_overheat + overheat_fix_time)`.
+    ///   Heat numbers are intrinsic and independent of ship state.
+    /// - **Energy**: `alpha_per_shot × min(burst_rpm, max_regen_per_sec × 60 / cost_per_bullet)`.
+    ///   **Power-starved floor** — uses `max_regen_per_sec` (the hard rate
+    ///   cap) which under-reports effective in-game DPS when the ship's
+    ///   power network fully supplies `requested_regen_per_sec`. Consumers
+    ///   modelling a specific loadout should compute their own sustained
+    ///   rate from the raw `EnergyModel` fields and the ship's allocated
+    ///   power. Ignores `regeneration_cooldown` amortisation.
+    /// - **None** (RPODs): `alpha_dps` (brief single-burst fire).
+    ///
+    /// Returns `None` when `alpha_dps` is undefined (Charged/Burst/Unknown)
+    /// or when the sustain model lacks required inputs.
+    pub fn sustained_dps(&self) -> Option<f32> {
+        let alpha = self.alpha_dps()?;
+        match &self.sustain {
+            SustainKind::Heat(h) => {
+                let primary = self.fire_actions.first()?;
+                let (hps, rpm) = match primary {
+                    FireActionKind::Rapid { heat_per_shot, fire_rate, .. }
+                    | FireActionKind::Single { heat_per_shot, fire_rate, .. } => {
+                        (*heat_per_shot, *fire_rate as f32)
+                    }
+                    // Sequence + Beam: no fire-action heat_per_shot available;
+                    // assume the weapon can sustain indefinitely (conservative).
+                    _ => return Some(alpha),
+                };
+                match h.duty_cycle(hps, rpm) {
+                    Some(dc) => Some(alpha * dc),
+                    // heat_per_shot == 0 → weapon generates no heat → sustained
+                    None => Some(alpha),
+                }
+            }
+            SustainKind::Energy(e) => {
+                let primary = self.fire_actions.first()?;
+                let burst_rpm = match primary {
+                    FireActionKind::Rapid { fire_rate, .. }
+                    | FireActionKind::Single { fire_rate, .. } => *fire_rate as f32,
+                    FireActionKind::Sequence { effective_rpm, .. } => *effective_rpm,
+                    // Beam: alpha is already DPS; energy regen caps duration
+                    // but not instantaneous rate.
+                    FireActionKind::Beam { .. } => return Some(alpha),
+                    _ => return None,
+                };
+                let sustained_rpm = e.sustained_rpm()?.min(burst_rpm);
+                let pellets = self.pellet_count.unwrap_or(1).max(1) as f32;
+                let per_shot_alpha = self.damage.as_ref()?.total() * pellets;
+                Some((sustained_rpm / 60.0) * per_shot_alpha)
+            }
+            SustainKind::None => Some(alpha),
+        }
     }
 }
 

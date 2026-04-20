@@ -51,16 +51,15 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             weapons.len()
         );
         for w in &weapons {
-            if let Some(f) = filter {
-                if !w.record_name.contains(f)
-                    && !snap
-                        .display_names
-                        .get(&w.guid)
-                        .unwrap_or("")
-                        .contains(f)
-                {
-                    continue;
-                }
+            if let Some(f) = filter
+                && !w.record_name.contains(f)
+                && !snap
+                    .display_names
+                    .get(&w.guid)
+                    .unwrap_or("")
+                    .contains(f)
+            {
+                continue;
             }
             print_fps_weapon(w, snap);
         }
@@ -74,16 +73,15 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             weapons.len()
         );
         for w in &weapons {
-            if let Some(f) = filter {
-                if !w.record_name.contains(f)
-                    && !snap
-                        .display_names
-                        .get(&w.guid)
-                        .unwrap_or("")
-                        .contains(f)
-                {
-                    continue;
-                }
+            if let Some(f) = filter
+                && !w.record_name.contains(f)
+                && !snap
+                    .display_names
+                    .get(&w.guid)
+                    .unwrap_or("")
+                    .contains(f)
+            {
+                continue;
             }
             print_ship_weapon(w, snap);
         }
@@ -114,15 +112,7 @@ fn print_ship_weapon(w: &ShipWeapon, snap: &sc_extract::DatacoreSnapshot) {
         "  Type:         {:?} / {:?}",
         w.item_type, w.item_sub_type
     );
-    println!(
-        "  Fire actions: {} (primary: {})",
-        w.fire_action_count,
-        format_fire_action(&w.primary_fire_action)
-    );
-
-    if let Some(rpm) = w.primary_fire_action.effective_rpm() {
-        println!("  RPM:          {rpm:.0}");
-    }
+    print_fire_actions(&w.fire_actions);
 
     // Damage
     if let Some(ref d) = w.damage {
@@ -162,26 +152,14 @@ fn print_ship_weapon(w: &ShipWeapon, snap: &sc_extract::DatacoreSnapshot) {
     // Sustain
     match &w.sustain {
         SustainKind::Heat(h) => {
-            let hps = match &w.primary_fire_action {
-                FireActionKind::Rapid { heat_per_shot, .. } => Some(*heat_per_shot),
-                FireActionKind::Single { heat_per_shot, .. } => Some(*heat_per_shot),
-                _ => None,
-            };
             println!("  Sustain:      HEAT");
             println!(
                 "    overheat={:.0} cool/s={:.1} fix={:.1}s after_fix={:.0} cool_delay={:.1}s",
                 h.overheat_temperature, h.cooling_per_second, h.overheat_fix_time,
                 h.temperature_after_overheat_fix, h.time_till_cooling_starts
             );
-            if let Some(hps) = hps {
-                println!("    heat_per_shot={hps:.4}");
-                if hps > 0.0 {
-                    let rounds = (h.overheat_temperature / hps).floor();
-                    if let Some(rpm) = w.primary_fire_action.effective_rpm() {
-                        let time = rounds / (rpm / 60.0);
-                        println!("    max_rounds_to_overheat={rounds:.0}, time={time:.2}s");
-                    }
-                }
+            if let Some(t) = w.time_to_overheat() {
+                println!("    time_to_overheat={t:.2}s");
             }
         }
         SustainKind::Energy(e) => {
@@ -191,10 +169,23 @@ fn print_ship_weapon(w: &ShipWeapon, snap: &sc_extract::DatacoreSnapshot) {
                 e.max_ammo_load, e.max_regen_per_sec, e.regeneration_cooldown,
                 e.regeneration_cost_per_bullet, e.requested_regen_per_sec, e.requested_ammo_load
             );
+            if let Some(n) = e.burst_shot_count() {
+                println!("    burst_shots={n:.2}");
+            }
+            if let Some(r) = e.sustained_rpm() {
+                println!("    sustained_rpm={r:.1}");
+            }
         }
         SustainKind::None => {
             println!("  Sustain:      none");
         }
+    }
+
+    // Derived DPS
+    if let Some(alpha) = w.alpha_dps() {
+        let sustained = w.sustained_dps().unwrap_or(alpha);
+        println!("  Alpha DPS:    {alpha:.1}");
+        println!("  Sust. DPS:    {sustained:.1} ({:.0}% of alpha)", 100.0 * sustained / alpha.max(f32::EPSILON));
     }
 
     if let Some(pd) = w.power_draw {
@@ -219,15 +210,7 @@ fn print_fps_weapon(w: &FpsWeapon, snap: &sc_extract::DatacoreSnapshot) {
     println!("  Manufacturer: {mfg}");
     println!("  Size/Grade:   S{} G{}", w.size, w.grade);
     println!("  Type:         {:?} / {:?}", w.item_type, w.item_sub_type);
-    println!(
-        "  Fire actions: {} (primary: {})",
-        w.fire_action_count,
-        format_fire_action(&w.primary_fire_action)
-    );
-
-    if let Some(rpm) = w.primary_fire_action.effective_rpm() {
-        println!("  RPM:          {rpm:.0}");
-    }
+    print_fire_actions(&w.fire_actions);
 
     if let Some(ref d) = w.damage {
         let parts: Vec<String> = [
@@ -265,6 +248,20 @@ fn print_fps_weapon(w: &FpsWeapon, snap: &sc_extract::DatacoreSnapshot) {
     println!();
 }
 
+fn print_fire_actions(actions: &[FireActionKind]) {
+    println!("  Fire actions: {}", actions.len());
+    for (i, fa) in actions.iter().enumerate() {
+        let label = if i == 0 { "primary" } else { "alt" };
+        println!("    [{i}] {label}: {}", format_fire_action(fa));
+        if let Some(rpm) = fa.effective_rpm() {
+            println!("        rpm={rpm:.0}");
+        }
+        if let FireActionKind::Charged { max_modifier: Some(m), .. } = fa {
+            println!("        charge_mod: {}", format_charge_modifier(m));
+        }
+    }
+}
+
 fn format_fire_action(fa: &FireActionKind) -> String {
     match fa {
         FireActionKind::Rapid { fire_rate, heat_per_shot, spin_up, spin_down } => {
@@ -291,5 +288,38 @@ fn format_fire_action(fa: &FireActionKind) -> String {
             format!("Beam(dps={:.0}, range={full_range:.0}-{zero_range:.0}m, hps={heat_per_sec:.0})", dps.total())
         }
         FireActionKind::Unknown => "Unknown".into(),
+    }
+}
+
+fn format_charge_modifier(m: &ChargeModifier) -> String {
+    let mut parts: Vec<String> = Vec::new();
+    if (m.damage_multiplier - 1.0).abs() > f32::EPSILON {
+        parts.push(format!("dmg×{:.2}", m.damage_multiplier));
+    }
+    if (m.projectile_speed_multiplier - 1.0).abs() > f32::EPSILON {
+        parts.push(format!("speed×{:.2}", m.projectile_speed_multiplier));
+    }
+    if (m.fire_rate_multiplier - 1.0).abs() > f32::EPSILON {
+        parts.push(format!("rpm×{:.2}", m.fire_rate_multiplier));
+    }
+    if (m.charge_time_multiplier - 1.0).abs() > f32::EPSILON {
+        parts.push(format!("charge×{:.2}", m.charge_time_multiplier));
+    }
+    if (m.heat_generation_multiplier - 1.0).abs() > f32::EPSILON {
+        parts.push(format!("heat×{:.2}", m.heat_generation_multiplier));
+    }
+    if (m.ammo_cost_multiplier - 1.0).abs() > f32::EPSILON {
+        parts.push(format!("ammo×{:.2}", m.ammo_cost_multiplier));
+    }
+    if m.pellets > 0 {
+        parts.push(format!("pellets={}", m.pellets));
+    }
+    if m.burst_shots > 0 {
+        parts.push(format!("burst={}", m.burst_shots));
+    }
+    if parts.is_empty() {
+        "(no overrides)".into()
+    } else {
+        parts.join(", ")
     }
 }

@@ -33,7 +33,7 @@ mod sustain;
 pub use classify::WeaponCategory;
 pub use damage::DamageSummary;
 pub use error::WeaponError;
-pub use fire_action::FireActionKind;
+pub use fire_action::{ChargeModifier, FireActionKind};
 pub use fps::FpsWeapon;
 pub use ship::ShipWeapon;
 pub use sustain::{EnergyModel, HeatModel, SustainKind};

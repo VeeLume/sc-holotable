@@ -40,6 +40,9 @@ pub enum FireActionKind {
         cooldown: f32,
         auto_fire: bool,
         full_only: bool,
+        /// Modifiers applied at full charge (damage/speed/pellet/etc.).
+        /// `None` if `maxChargeModifier` is unset.
+        max_modifier: Option<ChargeModifier>,
     },
     /// Continuous beam (ship beams, mining lasers).
     Beam {
@@ -51,6 +54,26 @@ pub enum FireActionKind {
     /// Fire action type not relevant to combat (HealingBeam, Parallel, etc.)
     /// or a variant the generator doesn't know about.
     Unknown,
+}
+
+/// Per-shot scalar modifiers applied at full charge.
+///
+/// Extracted from `SWeaponActionFireChargedParams.maxChargeModifier`
+/// (a `SWeaponStats` instance). Multipliers are unitless factors over the
+/// base ammo / fire-action stats; absolute fields (`pellets`, `burst_shots`)
+/// override their counterparts when non-zero.
+#[derive(Debug, Clone, Copy)]
+pub struct ChargeModifier {
+    pub damage_multiplier: f32,
+    pub projectile_speed_multiplier: f32,
+    pub fire_rate_multiplier: f32,
+    pub charge_time_multiplier: f32,
+    pub heat_generation_multiplier: f32,
+    pub ammo_cost_multiplier: f32,
+    /// Absolute pellet override (0 = no override; use base pellet count).
+    pub pellets: i32,
+    /// Absolute burst-shot override (0 = no override).
+    pub burst_shots: i32,
 }
 
 impl FireActionKind {
@@ -119,12 +142,26 @@ pub(crate) fn extract_fire_action(
             let Some(c) = h.get(pools) else {
                 return FireActionKind::Unknown;
             };
+            let max_modifier = c
+                .max_charge_modifier
+                .and_then(|h| h.get(pools))
+                .map(|s| ChargeModifier {
+                    damage_multiplier: s.damage_multiplier,
+                    projectile_speed_multiplier: s.projectile_speed_multiplier,
+                    fire_rate_multiplier: s.fire_rate_multiplier,
+                    charge_time_multiplier: s.charge_time_multiplier,
+                    heat_generation_multiplier: s.heat_generation_multiplier,
+                    ammo_cost_multiplier: s.ammo_cost_multiplier,
+                    pellets: s.pellets,
+                    burst_shots: s.burst_shots,
+                });
             FireActionKind::Charged {
                 charge_time: c.charge_time,
                 overcharge_time: c.overcharge_time,
                 cooldown: c.cooldown_time,
                 auto_fire: c.fire_automatically_on_full_charge,
                 full_only: c.fire_only_on_full_charge,
+                max_modifier,
             }
         }
 

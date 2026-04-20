@@ -28,10 +28,11 @@ pub struct FpsWeapon {
     pub item_sub_type: EItemSubType,
     /// Manufacturer GUID.
     pub manufacturer_guid: Option<Guid>,
-    /// Primary fire action.
-    pub primary_fire_action: FireActionKind,
-    /// Total fire action count (>1 = fire mode switching).
-    pub fire_action_count: usize,
+    /// All fire actions in declaration order. `fire_actions[0]` is the
+    /// primary mode; later entries are alternate modes (Karna burst→charge,
+    /// Kastak burst→burst, beam-rifle wrappers, etc.). 97 of 331 FPS
+    /// weapons in 4.7 expose >1 mode.
+    pub fire_actions: Vec<FireActionKind>,
     /// Magazine size from `SAmmoContainerComponentParams.maxAmmoCount`.
     pub magazine_size: Option<i32>,
     /// Per-shot damage. `None` if ammo could not be resolved.
@@ -68,11 +69,11 @@ impl FpsWeapon {
             return None;
         }
 
-        let primary_fire_action = wp
+        let fire_actions: Vec<FireActionKind> = wp
             .fire_actions
-            .first()
+            .iter()
             .map(|a| fire_action::extract_fire_action(a, pools))
-            .unwrap_or(FireActionKind::Unknown);
+            .collect();
 
         let ammo = damage::resolve_ammo(ecd, wp, pools, ecd_map, ammo_map);
         let pellet_count = damage::extract_pellet_count(wp, pools);
@@ -92,8 +93,7 @@ impl FpsWeapon {
             item_type: item_def.r#type.clone(),
             item_sub_type: item_def.sub_type.clone(),
             manufacturer_guid: item_def.manufacturer,
-            primary_fire_action,
-            fire_action_count: wp.fire_actions.len(),
+            fire_actions,
             magazine_size,
             damage: ammo.as_ref().map(|a| a.damage),
             ammo_speed: ammo.as_ref().map(|a| a.speed),
