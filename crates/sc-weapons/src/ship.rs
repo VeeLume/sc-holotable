@@ -168,22 +168,15 @@ impl ShipWeapon {
     }
 
     /// Seconds of continuous primary-mode fire before the weapon overheats
-    /// from a cold start. Only defined for heat-sustain weapons whose
-    /// primary action is Rapid or Single (Sequence weapons carry no
-    /// fire-action `heat_per_shot`; see `docs/Weapons.md`).
+    /// **from a cold start**. Covers Rapid/Single (heat from fire action)
+    /// and Sequence (heat from `SWeaponConnectionParams.heatRateOnline`).
+    /// `None` for non-heat weapons and non-overheating weapons (scatter
+    /// guns with `heat_rate_per_second = 0`).
     pub fn time_to_overheat(&self) -> Option<f32> {
-        let SustainKind::Heat(ref heat) = self.sustain else {
-            return None;
-        };
-        let primary = self.fire_actions.first()?;
-        let (heat_per_shot, rpm) = match primary {
-            FireActionKind::Rapid { heat_per_shot, fire_rate, .. }
-            | FireActionKind::Single { heat_per_shot, fire_rate, .. } => {
-                (*heat_per_shot, *fire_rate as f32)
-            }
-            _ => return None,
-        };
-        heat.time_to_overheat(heat_per_shot, rpm)
+        match &self.sustain {
+            SustainKind::Heat(h) => h.time_to_overheat_cold(),
+            _ => None,
+        }
     }
 
     /// Seconds of forced lockout after an overheat event. Direct read of
@@ -198,9 +191,10 @@ impl ShipWeapon {
     /// Long-run sustained damage per second, scaling `alpha_dps` by the
     /// relevant sustain bottleneck:
     ///
-    /// - **Heat**: `alpha_dps × duty_cycle` where
-    ///   `duty_cycle = time_to_overheat / (time_to_overheat + overheat_fix_time)`.
-    ///   Heat numbers are intrinsic and independent of ship state.
+    /// - **Heat**: `alpha_dps × duty_cycle_long_run` which uses warm-
+    ///   restart `time_to_overheat` (weapons with high
+    ///   `temperature_after_overheat_fix` converge to much lower sustained
+    ///   rates than their first-burst cold cycle suggests).
     /// - **Energy**: `alpha_per_shot × min(burst_rpm, max_regen_per_sec × 60 / cost_per_bullet)`.
     ///   **Power-starved floor** — uses `max_regen_per_sec` (the hard rate
     ///   cap) which under-reports effective in-game DPS when the ship's
@@ -210,28 +204,17 @@ impl ShipWeapon {
     ///   power. Ignores `regeneration_cooldown` amortisation.
     /// - **None** (RPODs): `alpha_dps` (brief single-burst fire).
     ///
-    /// Returns `None` when `alpha_dps` is undefined (Charged/Burst/Unknown)
-    /// or when the sustain model lacks required inputs.
+    /// Returns `None` when `alpha_dps` is undefined (Charged/Burst/Unknown).
+    /// Non-overheating heat weapons (scatter guns) fall through to
+    /// `alpha_dps` since they have no sustain cap.
     pub fn sustained_dps(&self) -> Option<f32> {
         let alpha = self.alpha_dps()?;
         match &self.sustain {
-            SustainKind::Heat(h) => {
-                let primary = self.fire_actions.first()?;
-                let (hps, rpm) = match primary {
-                    FireActionKind::Rapid { heat_per_shot, fire_rate, .. }
-                    | FireActionKind::Single { heat_per_shot, fire_rate, .. } => {
-                        (*heat_per_shot, *fire_rate as f32)
-                    }
-                    // Sequence + Beam: no fire-action heat_per_shot available;
-                    // assume the weapon can sustain indefinitely (conservative).
-                    _ => return Some(alpha),
-                };
-                match h.duty_cycle(hps, rpm) {
-                    Some(dc) => Some(alpha * dc),
-                    // heat_per_shot == 0 → weapon generates no heat → sustained
-                    None => Some(alpha),
-                }
-            }
+            SustainKind::Heat(h) => match h.duty_cycle_long_run() {
+                Some(dc) => Some(alpha * dc),
+                // heat_rate_per_second == 0 → weapon generates no heat → sustained
+                None => Some(alpha),
+            },
             SustainKind::Energy(e) => {
                 let primary = self.fire_actions.first()?;
                 let burst_rpm = match primary {

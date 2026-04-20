@@ -9,7 +9,9 @@ The low-level layer (`sc-installs` + `sc-extract` + `sc-extract-generated` + `sc
 
 ## Last worked on
 
-**sc-weapons v2 phase 3 designed (2026-04-20)** -- three-tier comparison-stats spec committed to `docs/sc-weapons.md`. Tier 1 directly-comparable (already exposed), Tier 2 burst stats (rpm-coupled), Tier 3 normalised (cross-rpm). Single-scalar composite `effective_dps(LoadoutContext { window_seconds, power_per_slot })` for default sort -- no defaults baked in, caller (UI slider, sc-ships) supplies runtime values. Implementation blocked on three Phase 2 model fixes (see "What's next").
+**sc-weapons heat model fixes (2026-04-20)** -- unified `HeatModel::heat_rate_per_second` pulled from fire_action (Rapid/Single) or `SWeaponConnectionParams.heatRateOnline` (Sequence). Added `time_to_overheat_cold`/`time_to_overheat_warm`/`duty_cycle_long_run`. 5 target weapons now report honest sustain: Deadbolt III 55%, Tarantula Mk 3 45%, Shredder 71%, Revenant ANVL S3 78%, Predator no-overheat. BEHR Revenant S6 (after_fix=99) correctly collapses to 1% sustain. 18 unit tests passing. **Still blocked on energy model (HRST 3% vs spviewer 71%).**
+
+**sc-weapons v2 phase 3 designed (2026-04-20)** -- three-tier comparison-stats spec committed to `docs/sc-weapons.md`. Tier 1 directly-comparable (already exposed), Tier 2 burst stats (rpm-coupled), Tier 3 normalised (cross-rpm). Single-scalar composite `effective_dps(LoadoutContext { window_seconds, power_per_slot })` for default sort -- no defaults baked in, caller (UI slider, sc-ships) supplies runtime values. Implementation blocked on energy model fix.
 
 **sc-weapons v2 phase 2 (2026-04-20)** -- derived sustain numbers: `HeatModel::time_to_overheat/duty_cycle`, `EnergyModel::burst_shot_count/sustained_rpm`, `ShipWeapon::alpha_dps/time_to_overheat/overheat_lockout_time/sustained_dps`. Unit tests pin GATS S1 (11.72s to overheat, 84% duty) and HRST S3 (0.89 burst shots, 10.7 sustained rpm) against `Weapons.md` reference values. Energy sustained_dps is a power-starved floor — `requested_regen_per_sec` gap flagged for sc-ships to resolve. 171/183 ship weapons produce DPS numbers (12 Charged/Burst/Unknown abstain).
 
@@ -50,7 +52,7 @@ See `docs/benchmarks.md` for sweep findings and current numbers.
 | `sc-weapons` | v1 + v2 phases 1 + 2 shipped. Materialized accessors, multi-mode fire actions, charge modifiers, derived sustain numbers. 7 unit tests. |
 | `sc-contracts` | Stub only. |
 
-**Total: 152 tests + 4 doctests, all passing.**
+**Total: 153 tests + 4 doctests, all passing.**
 
 ## Open issues
 
@@ -60,18 +62,11 @@ See `docs/benchmarks.md` for sweep findings and current numbers.
 
 ## What's next
 
-**Phase 2 model fixes (prerequisite for Phase 3 comparison stats -- see `docs/sc-weapons.md` §Planned v2 phase 3):**
-
-1. **Sequence / scattergun heat extraction.** Current model only reads `heat_per_shot` from Rapid/Single fire actions; Sequence weapons (Deadbolt III, Tarantula, Shredder) and Single-with-hps=0 scatterguns (Predator) carry heat on `SWeaponStats` attached to connection params. All show 100% sustain today which is wrong. Extend `sustain.rs::extract_sustain` to pull heat from `SWeaponStats`.
-2. **Warm-restart duty cycle.** `HeatModel::duty_cycle` uses cold-start `time_to_overheat` for every cycle; weapons with `temperature_after_overheat_fix > 0` (BEHR Revenant S6: after_fix=99) have drastically shorter warm bursts. Add `time_to_overheat_warm()` and use it for asymptotic calcs.
-3. **Energy model semantics.** HRST Attrition-3 S3 reports 3% sustained vs spviewer's 71.4%. Resolve whether `max_regen_per_sec` is the hard cap or the starvation floor; reverse-engineer against 5-10 spviewer reference values.
-
-**Then:**
-
-4. **Implement Phase 3 comparison stats** (Tier 2, Tier 3, `effective_dps`) and re-run the 5-weapon comparison (Deadbolt III, Tarantula Mk 3, Revenant Gatling, Shredder, Predator Scattergun) with real data.
-5. **FPS sustain models** -- Volt heat-ramp, Kastak charged, K&W heat. Weapon attachment sub-ports.
-6. **Validate `TagTree` / `ManufacturerRegistry` field names** against real DCB records with typed field access.
-7. **Upstream the `is_null` fix** to Svarog, bump pinned rev, drop `[patch]` override.
+1. **Energy model semantics (blocked on spviewer validation).** HRST Attrition-3 S3 reports 3% sustained vs spviewer's 71.4%. Need spviewer reference values for 5-10 energy weapons (alpha + burst DPS + sustained DPS) to reverse-engineer the real formula — specifically whether `max_regen_per_sec` is the hard cap or starvation floor with `requested_regen_per_sec` being effective.
+2. **Implement Phase 3 comparison stats** (Tier 2, Tier 3, `effective_dps`) once #1 lands, then re-run the 5-weapon comparison with full data.
+3. **FPS sustain models** -- Volt heat-ramp, Kastak charged, K&W heat. Weapon attachment sub-ports.
+4. **Validate `TagTree` / `ManufacturerRegistry` field names** against real DCB records with typed field access.
+5. **Upstream the `is_null` fix** to Svarog, bump pinned rev, drop `[patch]` override.
 
 ## Numbers
 

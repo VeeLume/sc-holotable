@@ -257,7 +257,8 @@ impl ShipWeapon {
 - **`alpha_dps` returns `None` for Burst / Charged / Unknown.** Burst cooldown timing and charge user-pacing need richer models.
 - **Energy `sustained_dps` is a power-starved floor.** Uses `max_regen_per_sec` (the hard rate cap); the `requested_regen_per_sec` gap (often 50-300×) suggests real in-game DPS with full ship power is much closer to `alpha_dps`. sc-ships will eventually compute the power-network-constrained rate from raw fields.
 - **Beam weapons' capacitor depletion** is not modelled in `sustained_dps` — it returns the instantaneous beam DPS. Exodus-10 style capacitor drain vs. regen is a consumer responsibility for now.
-- **Sequence + Heat** assumes the weapon never overheats (fire-action `heat_per_shot` isn't on Sequence variants — heat may come from `SWeaponStats` on the connection params; not yet modelled).
+
+**Heat model — unified extraction (fixed 2026-04-20).** `HeatModel` carries a `heat_rate_per_second` field populated from either the fire action (`heat_per_shot × rpm/60` for Rapid/Single) or `SWeaponConnectionParams.heatRateOnline` (for Sequence weapons like Deadbolt III, Tarantula, Shredder). Non-overheating weapons (ship ballistic scatter guns in 4.7, e.g. Predator Scattergun) report `heat_rate_per_second = 0` and skip the sustain cap. `HeatModel` also exposes `time_to_overheat_cold` (first-burst) and `time_to_overheat_warm` (subsequent bursts from `temperature_after_overheat_fix`), with `duty_cycle_long_run` using the warm value so weapons like BEHR Revenant S6 (after_fix=99) correctly collapse to <1% sustained DPS.
 
 ## Planned v2 phase 3 — comparison stats (designed, not yet implemented)
 
@@ -341,17 +342,17 @@ effective_dps  = burst_dps × power_factor × sustain_factor
 
 `effective_dps` is the single scalar for the default sort. Tiebreaking / display columns in a UI: `volley_damage`, `burst_seconds`, `dps_retention_pct(window_seconds)`.
 
-### Model fixes that must land first
+### Model fixes — status
 
-The Phase 3 stats are only honest once these three bugs in Phase 2's code are resolved:
+Heat model fixes landed 2026-04-20; energy model fix still blocked on spviewer validation data.
 
-1. **Sequence / scattergun heat extraction.** Current `HeatModel::time_to_overheat` only reads `heat_per_shot` from Rapid/Single fire actions. For Sequence weapons (Deadbolt III, Tarantula, Shredder, etc.) and Single-with-hps=0 scatterguns (Predator), heat-per-shot lives on `SWeaponStats` attached to `connectionParams` (likely the `noPower` / `heatStats` slot per `D:/Obsidian/Star Citizen/Mechanics/Weapons.md` §Power state modifiers). Fix: extend `sustain.rs::extract_sustain` to carry a `heat_per_shot` field on `HeatModel` populated from `SWeaponStats` when the fire action doesn't carry it.
+1. ✅ **Sequence / scattergun heat extraction (FIXED).** Turned out the heat source for Sequence weapons is `SWeaponConnectionParams.heatRateOnline`, not `SWeaponStats` as Obsidian speculated. `HeatModel` now carries a unified `heat_rate_per_second` populated from either the fire action (Rapid/Single) or `heatRateOnline` (Sequence). Non-overheating scatter guns (Predator) have both paths at 0 and correctly skip the sustain cap. Verified against the 5 target weapons: Deadbolt III 3.77s/55%, Tarantula Mk 3 2.86s/45%, Shredder 4.17s/71%, Revenant (ANVL S3) 11.5s/78%, Predator no-overheat/100%.
 
-2. **Warm-restart duty cycle.** `HeatModel::duty_cycle` currently uses cold-start `time_to_overheat` for every cycle. Weapons with `temperature_after_overheat_fix > 0` (e.g. BEHR Revenant S6 Gatling with `after_fix=99`) have drastically shorter *warm* bursts than cold. Fix: add `time_to_overheat_warm()` using `(overheat_temperature - temperature_after_overheat_fix) / heat_rate`, and use the warm value in `duty_cycle` / `long_run_dps_pct` (asymptotic) while keeping cold for the first burst in `dps_retention_pct`.
+2. ✅ **Warm-restart duty cycle (FIXED).** `HeatModel` exposes `time_to_overheat_cold()` and `time_to_overheat_warm()`; `duty_cycle_long_run()` uses warm so weapons with non-zero `temperature_after_overheat_fix` correctly collapse. BEHR Revenant S6 (after_fix=99) now reports 1% sustained DPS instead of 46% — matches the "gatling overheats permanently after one burst" in-game behaviour.
 
-3. **Energy model semantics.** HRST Attrition-3 S3 current impl reports 3% of burst DPS sustained vs spviewer's 71.4%. Ambiguity: whether `max_regen_per_sec` is the hard cap (current assumption) or the starvation floor, with `requested_regen_per_sec` being the effective rate when power is adequate. Needs reverse-engineering against spviewer values for 5-10 energy weapons to pin the real formula.
+3. ⏳ **Energy model semantics (OPEN).** HRST Attrition-3 S3 current impl still reports 3% of burst DPS sustained vs spviewer's 71.4%. Ambiguity: whether `max_regen_per_sec` is the hard cap (current assumption) or the starvation floor, with `requested_regen_per_sec` being the effective rate when power is adequate. **Blocked on spviewer reference values for 5-10 energy weapons.**
 
-Once these land, re-run the 5-weapon comparison (Deadbolt III, Tarantula GT-870 Mk 3, Revenant Gatling, Shredder, Predator Scattergun) with real sustain numbers and validate the `effective_dps` rankings against intuition.
+Once #3 lands, implement Phase 3 comparison stats (Tier 2, Tier 3, `effective_dps`) and re-run the 5-weapon comparison with full data.
 
 ## Deferred to v2/v3
 
