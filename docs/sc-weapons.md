@@ -1,6 +1,6 @@
 # `sc-weapons` — design specification
 
-> Status: **v1 shipped, v2 phases 1 + 2 shipped.** Multi-mode fire actions, charge modifiers, ballistic heat-cycle sustained DPS, energy regen-gated sustained DPS, time-to-overheat. Based on data exploration against 4.7 LIVE, verified against spviewer. See `D:\Obsidian\Star Citizen\Mechanics\Weapons.md` for the full exploration findings.
+> Status: **v1 + v2 phases 1-3 shipped.** Multi-mode fire actions, charge modifiers, unified heat/energy sustain model, three-tier comparison stats (burst / normalised / composite `effective_dps`). Based on data exploration against 4.7 LIVE, verified against spviewer reference values. See `D:\Obsidian\Star Citizen\Mechanics\Weapons.md` for the full exploration findings.
 
 ## Purpose
 
@@ -279,9 +279,7 @@ Validation (all matches to within 2% of spviewer's sustain_60s):
 | PyroBurst (AMRS S3) | 396 | 462.0 | 462 | 462.0 | exact |
 | DR Model-XJ3 (ASAD S3) | 57.9 | 337.8 | 240.6 | 239.8 | 0.3% |
 
-## Planned v2 phase 3 — comparison stats (designed, not yet implemented)
-
-Designed during the 2026-04-20 design session. Blocked on the model fixes listed below — numbers from the current code are wrong for Sequence/scattergun/energy weapons, so we write the spec, fix the data, then implement.
+## v2 phase 3 — comparison stats (shipped 2026-04-20)
 
 ### Tier 1 — directly comparable (no rate/time dependency)
 
@@ -361,9 +359,23 @@ effective_dps  = burst_dps × power_factor × sustain_factor
 
 `effective_dps` is the single scalar for the default sort. Tiebreaking / display columns in a UI: `volley_damage`, `burst_seconds`, `dps_retention_pct(window_seconds)`.
 
+### Sample Anvil Arrow S3-slot ranking (window=30s, 1 pip/slot)
+
+```
+[S3 eff= 840.0] burst= 840.0 sust= 840.0 ret@30s=100.0%  Predator Scattergun
+[S3 eff= 829.8] burst=1054.0 sust= 825.1 ret@30s= 78.7%  Revenant Gatling (ANVL)
+[S3 eff= 636.1] burst= 786.2 sust= 543.9 ret@30s= 80.9%  Attrition-3 Repeater
+[S3 eff= 479.2] burst= 675.0 sust= 476.2 ret@30s= 71.0%  Shredder Repeater
+[S3 eff= 447.3] burst= 759.0 sust= 417.9 ret@30s= 58.9%  Deadbolt III Cannon
+[S3 eff= 356.5] burst= 683.6 sust= 415.8 ret@30s= 67.8%  M5A Cannon
+[S3 eff= 327.4] burst= 545.6 sust= 291.0 ret@30s= 60.0%  CF-337 Panther Repeater
+[S3 eff= 216.9] burst= 455.4 sust= 205.3 ret@30s= 47.6%  Tarantula GT-870 Mk 3
+[S3 eff= 202.5] burst= 405.0 sust= 405.0 ret@30s=100.0%  Singe Cannon S3 (throttled 50% by power_draw=2.0 vs 1.0 budget)
+```
+
 ### Model fixes — status
 
-Heat model fixes landed 2026-04-20; energy model fix still blocked on spviewer validation data.
+All three Phase 2 model fixes landed 2026-04-20, unblocking Phase 3:
 
 1. ✅ **Sequence / scattergun heat extraction (FIXED).** Turned out the heat source for Sequence weapons is `SWeaponConnectionParams.heatRateOnline`, not `SWeaponStats` as Obsidian speculated. `HeatModel` now carries a unified `heat_rate_per_second` populated from either the fire action (Rapid/Single) or `heatRateOnline` (Sequence). Non-overheating scatter guns (Predator) have both paths at 0 and correctly skip the sustain cap. Verified against the 5 target weapons: Deadbolt III 3.77s/55%, Tarantula Mk 3 2.86s/45%, Shredder 4.17s/71%, Revenant (ANVL S3) 11.5s/78%, Predator no-overheat/100%.
 
@@ -371,7 +383,7 @@ Heat model fixes landed 2026-04-20; energy model fix still blocked on spviewer v
 
 3. ✅ **Energy model semantics (FIXED).** Turned out `max_ammo_load` is shot capacity and `max_regen_per_sec` is shots/sec — `cost_per_bullet` is ship-level, not weapon-cycle. Validated against 6 spviewer reference values (M5A, Attrition-3, Panther, XJ3, PyroBurst, Singe S3) to within 2%. One caveat remains: charged weapons with `auto_fire=true, full_only=true` (Singe S3) show ~27% higher than spviewer due to an unaccounted per-shot interval that isn't in the fire-action data.
 
-With all three model fixes in, Phase 3 comparison stats (Tier 2, Tier 3, `effective_dps`) are unblocked.
+Phase 3 shipped on top of these fixes — see method listing above.
 
 ## Deferred to v2/v3
 

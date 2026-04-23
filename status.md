@@ -9,7 +9,9 @@ The low-level layer (`sc-installs` + `sc-extract` + `sc-extract-generated` + `sc
 
 ## Last worked on
 
-**sc-weapons energy model fixed (2026-04-20)** -- reverse-engineered against 6 spviewer reference values. Corrected interpretation: `max_ammo_load` = shot capacity, `max_regen_per_sec` = shots/sec, `cost_per_bullet` = ship-level cost (irrelevant to weapon cycle). `EnergyModel` now exposes `burst_seconds(rpm)`/`refill_seconds()`/`cycle_seconds(rpm)`/`asymptotic_dps_fraction(rpm)`/`shots_in_window(rpm, T)`. Matches spviewer sustain_60s within 2% for M5A, Attrition-3, Panther, XJ3, PyroBurst. Singe S3 (charged weapon) off by ~27% due to unaccounted per-shot interval in game engine. Added 5 spviewer-pinned unit tests. All 3 Phase 2 model fixes done; Phase 3 unblocked.
+**sc-weapons v2 phase 3 shipped (2026-04-20)** -- comparison stats implemented. Renamed `alpha_dps` -> `burst_dps`. Tier 2 adds `burst_rpm`/`burst_seconds`/`volley_damage`/`recovery_seconds`/`cycle_seconds`. Tier 3 adds `dps_retention_pct(T)`/`firing_time_pct`/`long_run_dps_pct`/`thermal_efficiency`/`power_efficiency`. Single composite `effective_dps(LoadoutContext { window_seconds, power_per_slot })` for default sort. `HeatModel::fire_time_in_window(T)` and `EnergyModel::shots_in_window(rpm, T)` are the core primitives. weapon_stats example now supports `--window`/`--power`/`--sort` for ranked views. 24 tests passing. Anvil Arrow S3-slot default sort (window=30s, power=1): Predator > Revenant > Attrition-3 > Shredder > Deadbolt > M5A > Panther > Tarantula > Singe.
+
+**sc-weapons energy model fixed (2026-04-20)** -- reverse-engineered against 6 spviewer reference values. Corrected interpretation: `max_ammo_load` = shot capacity, `max_regen_per_sec` = shots/sec, `cost_per_bullet` = ship-level cost (irrelevant to weapon cycle). Matches spviewer sustain_60s within 2% for M5A, Attrition-3, Panther, XJ3, PyroBurst. Singe S3 (charged weapon) off by ~27% due to unaccounted per-shot interval in game engine.
 
 **sc-weapons heat model fixes (2026-04-20)** -- unified `HeatModel::heat_rate_per_second` pulled from fire_action (Rapid/Single) or `SWeaponConnectionParams.heatRateOnline` (Sequence). Added `time_to_overheat_cold`/`time_to_overheat_warm`/`duty_cycle_long_run`. 5 target weapons now report honest sustain: Deadbolt III 55%, Tarantula Mk 3 45%, Shredder 71%, Revenant ANVL S3 78%, Predator no-overheat. BEHR Revenant S6 (after_fix=99) correctly collapses to 1% sustain.
 
@@ -51,10 +53,10 @@ See `docs/benchmarks.md` for sweep findings and current numbers.
 | `sc-generator` | Complete. Codegen + feature classification + Cargo.toml generation. |
 | `sc-bench` | Complete. Runtime benchmark binary. |
 | `sc-ammo` | Spec only (`docs/sc-ammo.md`), no crate. |
-| `sc-weapons` | v1 + v2 phases 1 + 2 shipped. Materialized accessors, multi-mode fire actions, charge modifiers, derived sustain numbers. 7 unit tests. |
+| `sc-weapons` | v1 + v2 phases 1-3 shipped. Materialized accessors, multi-mode fire actions, charge modifiers, unified heat/energy model, Tier 2/3 comparison stats, `effective_dps` composite. 24 unit tests. |
 | `sc-contracts` | Stub only. |
 
-**Total: 157 tests + 4 doctests, all passing.**
+**Total: 159 tests + 4 doctests, all passing.**
 
 ## Open issues
 
@@ -64,9 +66,9 @@ See `docs/benchmarks.md` for sweep findings and current numbers.
 
 ## What's next
 
-1. **Implement Phase 3 comparison stats** (Tier 2 `burst_seconds`/`volley_damage`/`cycle_seconds`, Tier 3 `dps_retention_pct(T)`/`firing_time_pct`/`long_run_dps_pct`/`thermal_efficiency`/`power_efficiency`, and `effective_dps(LoadoutContext)` composite). Phase 2 model fixes are all done.
-2. **FPS sustain models** -- Volt heat-ramp, Kastak charged, K&W heat. Weapon attachment sub-ports.
-3. **Charged-weapon per-shot interval** -- Singe S3 shows my `alpha_dps` is 27% higher than spviewer due to an unaccounted ~0.675s cycle component. Needs game-engine investigation or spviewer source inspection.
+1. **FPS sustain models** -- Volt heat-ramp, Kastak charged, K&W heat. Weapon attachment sub-ports.
+2. **Charged-weapon per-shot interval** -- Singe S3 shows my `burst_dps` is 27% higher than spviewer due to an unaccounted ~0.675s cycle component. Needs game-engine investigation or spviewer source inspection.
+3. **Burst-fire sustained DPS model** -- `SWeaponActionFireBurstParams.cooldown_time` needs a burst-cycle model to produce honest rate. Currently returns `None`.
 4. **Validate `TagTree` / `ManufacturerRegistry` field names** against real DCB records with typed field access.
 5. **Upstream the `is_null` fix** to Svarog, bump pinned rev, drop `[patch]` override.
 

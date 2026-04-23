@@ -4,6 +4,11 @@
 //! cargo run -p sc-weapons --release --example weapon_stats
 //! cargo run -p sc-weapons --release --example weapon_stats -- --fps
 //! cargo run -p sc-weapons --release --example weapon_stats -- --filter "Bulldog"
+//!
+//! # Phase 3 comparison stats with engagement window (seconds) and
+//! # power allocation (units/slot). Sorts ship weapons by effective_dps.
+//! cargo run -p sc-weapons --release --example weapon_stats -- \
+//!     --window 30 --power 1.0 --sort
 //! ```
 
 use std::time::Instant;
@@ -21,12 +26,17 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let args: Vec<String> = std::env::args().skip(1).collect();
     let show_fps = args.iter().any(|a| a == "--fps");
-    let filter: Option<&str> = args.iter().find(|a| a.starts_with("--filter")).and_then(|_| {
-        args.iter()
-            .skip_while(|a| !a.starts_with("--filter"))
-            .nth(1)
-            .map(|s| s.as_str())
-    });
+    let sort_by_effective = args.iter().any(|a| a == "--sort");
+    let filter: Option<&str> = arg_value(&args, "--filter");
+    let window: f32 = arg_value(&args, "--window")
+        .and_then(|s| s.parse().ok())
+        .unwrap_or(30.0);
+    let power: Option<f32> = arg_value(&args, "--power").and_then(|s| s.parse().ok());
+
+    let ctx = LoadoutContext {
+        window_seconds: window,
+        power_per_slot: power,
+    };
 
     let t0 = Instant::now();
     let install = sc_installs::discover_primary()?;
@@ -43,6 +53,14 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let parse_secs = t0.elapsed().as_secs_f64();
 
     let snap = datacore.snapshot();
+
+    println!(
+        "\nLoadoutContext: window={}s, power_per_slot={}",
+        ctx.window_seconds,
+        ctx.power_per_slot
+            .map(|p| format!("{p}"))
+            .unwrap_or_else(|| "unconstrained".into())
+    );
 
     if show_fps {
         let weapons: Vec<FpsWeapon> = iter_fps_weapons(&datacore).collect();
@@ -67,7 +85,14 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             println!("\nTotal: {} FPS weapons", weapons.len());
         }
     } else {
-        let weapons: Vec<ShipWeapon> = iter_ship_weapons(&datacore).collect();
+        let mut weapons: Vec<ShipWeapon> = iter_ship_weapons(&datacore).collect();
+        if sort_by_effective {
+            weapons.sort_by(|a, b| {
+                let ea = a.effective_dps(&ctx).unwrap_or(0.0);
+                let eb = b.effective_dps(&ctx).unwrap_or(0.0);
+                eb.partial_cmp(&ea).unwrap_or(std::cmp::Ordering::Equal)
+            });
+        }
         println!(
             "\nShip weapons: {} (parsed in {parse_secs:.1}s)\n",
             weapons.len()
@@ -83,7 +108,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             {
                 continue;
             }
-            print_ship_weapon(w, snap);
+            if sort_by_effective {
+                print_ship_weapon_summary(w, snap, &ctx);
+            } else {
+                print_ship_weapon(w, snap, &ctx);
+            }
         }
         if filter.is_none() {
             println!("\nTotal: {} ship weapons", weapons.len());
@@ -93,7 +122,30 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 
-fn print_ship_weapon(w: &ShipWeapon, snap: &sc_extract::DatacoreSnapshot) {
+fn arg_value<'a>(args: &'a [String], flag: &str) -> Option<&'a str> {
+    args.iter()
+        .position(|a| a == flag)
+        .and_then(|i| args.get(i + 1))
+        .map(|s| s.as_str())
+}
+
+/// One-line summary used by the `--sort` ranked view.
+fn print_ship_weapon_summary(w: &ShipWeapon, snap: &sc_extract::DatacoreSnapshot, ctx: &LoadoutContext) {
+    let display = snap.display_names.get(&w.guid).unwrap_or("");
+    let eff = w.effective_dps(ctx).unwrap_or(0.0);
+    let burst = w.burst_dps().unwrap_or(0.0);
+    let sust = w.sustained_dps().unwrap_or(0.0);
+    let retention = w.dps_retention_pct(ctx.window_seconds).unwrap_or(0.0);
+    println!(
+        "  [S{} eff={eff:8.1}] burst={burst:7.1}  sust={sust:7.1}  ret@{:.0}s={retention:5.1}%  {} ({})",
+        w.size,
+        ctx.window_seconds,
+        display,
+        w.record_name,
+    );
+}
+
+fn print_ship_weapon(w: &ShipWeapon, snap: &sc_extract::DatacoreSnapshot, ctx: &LoadoutContext) {
     let display = snap.display_names.get(&w.guid).unwrap_or("");
     let mfg = w
         .manufacturer_guid
@@ -187,11 +239,40 @@ fn print_ship_weapon(w: &ShipWeapon, snap: &sc_extract::DatacoreSnapshot) {
         }
     }
 
-    // Derived DPS
-    if let Some(alpha) = w.alpha_dps() {
-        let sustained = w.sustained_dps().unwrap_or(alpha);
-        println!("  Alpha DPS:    {alpha:.1}");
-        println!("  Sust. DPS:    {sustained:.1} ({:.0}% of alpha)", 100.0 * sustained / alpha.max(f32::EPSILON));
+    // Tier 2 — burst stats
+    if let Some(burst) = w.burst_dps() {
+        println!("  Burst DPS:    {burst:.1}");
+        if let Some(bs) = w.burst_seconds() {
+            println!("  Burst s:      {bs:.2}");
+        }
+        if let Some(vd) = w.volley_damage() {
+            println!("  Volley dmg:   {vd:.0}");
+        }
+        if let Some(rs) = w.recovery_seconds() {
+            println!("  Recovery s:   {rs:.2}");
+        }
+        if let Some(cs) = w.cycle_seconds() {
+            println!("  Cycle s:      {cs:.2}");
+        }
+
+        // Tier 3 — normalised
+        let sustained = w.sustained_dps().unwrap_or(burst);
+        println!("  Sust. DPS:    {sustained:.1} ({:.0}% of burst)", 100.0 * sustained / burst.max(f32::EPSILON));
+        if let Some(ret) = w.dps_retention_pct(ctx.window_seconds) {
+            println!("  Retention@{:.0}s: {ret:.1}%", ctx.window_seconds);
+        }
+        if let Some(ft) = w.firing_time_pct() {
+            println!("  Firing time:  {ft:.1}% (long-run)");
+        }
+        if let Some(te) = w.thermal_efficiency() {
+            println!("  Therm eff:    {te:.2} dmg/heat");
+        }
+        if let Some(pe) = w.power_efficiency() {
+            println!("  Power eff:    {pe:.1} burst_dps/power");
+        }
+        if let Some(eff) = w.effective_dps(ctx) {
+            println!("  Effective:    {eff:.1} DPS (score at window={}s)", ctx.window_seconds);
+        }
     }
 
     if let Some(pd) = w.power_draw {

@@ -74,6 +74,43 @@ impl HeatModel {
         }
         Some(t_fire / (t_fire + t_lockout))
     }
+
+    /// Total seconds of firing within a `window_seconds`-long engagement
+    /// starting from a cold weapon. Accounts for cold-start burst, first
+    /// lockout, and subsequent warm cycles. Weapons that never overheat
+    /// (`heat_rate_per_second == 0`) return the full window.
+    ///
+    /// Cold-start model: `[0, t_cold]` fire, `[t_cold, t_cold + t_lockout]`
+    /// lockout, then repeating `[t_warm fire, t_lockout lock]` cycles.
+    pub fn fire_time_in_window(&self, window_seconds: f32) -> f32 {
+        if window_seconds <= 0.0 {
+            return 0.0;
+        }
+        let Some(t_cold) = self.time_to_overheat_cold() else {
+            return window_seconds;
+        };
+        let t_lockout = self.overheat_fix_time.max(0.0);
+        let Some(t_warm) = self.time_to_overheat_warm() else {
+            return window_seconds.min(t_cold);
+        };
+
+        if window_seconds <= t_cold {
+            return window_seconds;
+        }
+        let after_cold = window_seconds - t_cold;
+        if after_cold <= t_lockout {
+            return t_cold;
+        }
+        let after_first_lockout = after_cold - t_lockout;
+        let warm_cycle = t_warm + t_lockout;
+        if warm_cycle <= 0.0 {
+            return t_cold;
+        }
+        let full_cycles = (after_first_lockout / warm_cycle).floor();
+        let remainder = after_first_lockout - full_cycles * warm_cycle;
+        let warm_fire = full_cycles * t_warm + remainder.min(t_warm);
+        t_cold + warm_fire
+    }
 }
 
 /// Energy capacitor model — extracted from `SWeaponRegenConsumerParams`.
@@ -318,6 +355,35 @@ mod tests {
         // Long-run duty is dominated by lockout: 0.028 / (0.028 + 3.3) = 0.84%.
         let duty = h.duty_cycle_long_run().unwrap();
         assert!(duty < 0.01, "expected <1% sustained duty, got {duty}");
+    }
+
+    #[test]
+    fn gats_s1_fire_time_in_window() {
+        let h = gats_s1_heat();
+        // Cold-start phase — fires for the full T
+        assert!((h.fire_time_in_window(5.0) - 5.0).abs() < 0.01);
+        assert!((h.fire_time_in_window(11.72) - 11.72).abs() < 0.01);
+        // Within first lockout — fire_time stays at t_cold
+        assert!((h.fire_time_in_window(13.0) - 11.72).abs() < 0.01);
+        assert!((h.fire_time_in_window(13.92) - 11.72).abs() < 0.01);
+        // Second burst starts at 13.92, fires 11.72s warm → 25.64 at overheat
+        assert!((h.fire_time_in_window(25.64) - 23.44).abs() < 0.05);
+        // T=60 → expected 51.2s fire → retention = 85.3%
+        let fire_60 = h.fire_time_in_window(60.0);
+        assert!((fire_60 - 51.2).abs() < 0.1, "expected ~51.2s, got {fire_60}");
+    }
+
+    #[test]
+    fn non_overheating_weapon_fires_whole_window() {
+        let h = HeatModel {
+            overheat_temperature: 100.0,
+            cooling_per_second: 20.0,
+            overheat_fix_time: 2.0,
+            temperature_after_overheat_fix: 0.0,
+            time_till_cooling_starts: 0.5,
+            heat_rate_per_second: 0.0, // scatter gun
+        };
+        assert!((h.fire_time_in_window(60.0) - 60.0).abs() < 0.01);
     }
 
     #[test]
