@@ -8,7 +8,7 @@
 use std::collections::HashMap;
 
 use sc_extract::generated::*;
-use sc_extract::{AssetConfig, AssetData, AssetSource, DataPools, DatacoreConfig, Guid};
+use sc_extract::{AssetConfig, AssetData, AssetSource, DatacoreConfig, Guid};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     tracing_subscriber::fmt().with_env_filter("info").init();
@@ -135,47 +135,44 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 .unwrap_or_default();
 
             for delta in &state.deltas {
-                match delta {
-                    ItemResourceDeltaBasePtr::ItemResourceDeltaConsumption(h) => {
-                        let Some(cons) = h.get(pools) else { continue };
-                        let Some(amount) = cons.consumption.and_then(|h| h.get(pools)) else {
-                            continue;
-                        };
+                if let ItemResourceDeltaBasePtr::ItemResourceDeltaConsumption(h) = delta {
+                    let Some(cons) = h.get(pools) else { continue };
+                    let Some(amount) = cons.consumption.and_then(|h| h.get(pools)) else {
+                        continue;
+                    };
 
-                        let resource = format!("{:?}", amount.resource);
-                        let amount_val = amount
-                            .resource_amount_per_second
-                            .as_ref()
-                            .map(|u| {
-                                match u {
-                                    SBaseResourceUnitPtr::SStandardResourceUnit(h) => h
-                                        .get(pools)
-                                        .map(|v| v.standard_resource_units)
-                                        .unwrap_or(0.0),
-                                    SBaseResourceUnitPtr::SPowerSegmentResourceUnit(h) => {
-                                        h.get(pools).map(|v| v.units as f32).unwrap_or(0.0)
-                                    }
-                                    _ => -1.0, // unknown unit type
+                    let resource = format!("{:?}", amount.resource);
+                    let amount_val = amount
+                        .resource_amount_per_second
+                        .as_ref()
+                        .map(|u| {
+                            match u {
+                                SBaseResourceUnitPtr::SStandardResourceUnit(h) => h
+                                    .get(pools)
+                                    .map(|v| v.standard_resource_units)
+                                    .unwrap_or(0.0),
+                                SBaseResourceUnitPtr::SPowerSegmentResourceUnit(h) => {
+                                    h.get(pools).map(|v| v.units as f32).unwrap_or(0.0)
                                 }
-                            })
-                            .unwrap_or(0.0);
+                                _ => -1.0, // unknown unit type
+                            }
+                        })
+                        .unwrap_or(0.0);
 
-                        println!(
-                            "{}\t{}\t{}\t{}\t{}\t{}\t{:.3}\t{:.2}\t{}\t{}\t{}",
-                            name,
-                            display,
-                            size,
-                            sustain,
-                            state.name,
-                            resource,
-                            amount_val,
-                            cons.minimum_consumption_fraction,
-                            pwr_str.0,
-                            pwr_str.1,
-                            pwr_str.2
-                        );
-                    }
-                    _ => {}
+                    println!(
+                        "{}\t{}\t{}\t{}\t{}\t{}\t{:.3}\t{:.2}\t{}\t{}\t{}",
+                        name,
+                        display,
+                        size,
+                        sustain,
+                        state.name,
+                        resource,
+                        amount_val,
+                        cons.minimum_consumption_fraction,
+                        pwr_str.0,
+                        pwr_str.1,
+                        pwr_str.2
+                    );
                 }
             }
         }

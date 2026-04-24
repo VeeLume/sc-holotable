@@ -8,7 +8,7 @@
 use std::collections::HashMap;
 
 use sc_extract::generated::*;
-use sc_extract::{AssetConfig, AssetData, AssetSource, DataPools, DatacoreConfig, Guid};
+use sc_extract::{AssetConfig, AssetData, AssetSource, DatacoreConfig, Guid};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     tracing_subscriber::fmt().with_env_filter("info").init();
@@ -64,21 +64,18 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             println!("  [{}] {}", i, type_name);
 
             // For specific types, print details
-            match comp {
-                DataForgeComponentParamsPtr::SCItemWeaponComponentParams(h) => {
-                    if let Some(wp) = h.get(pools) {
-                        let conn = wp.connection_params.and_then(|h| h.get(pools));
-                        println!(
-                            "       powerActiveCooldown: {}",
-                            conn.map(|c| c.power_active_cooldown).unwrap_or(0.0)
-                        );
-                        println!(
-                            "       heatRateOnline: {}",
-                            conn.map(|c| c.heat_rate_online).unwrap_or(0.0)
-                        );
-                    }
+            if let DataForgeComponentParamsPtr::SCItemWeaponComponentParams(h) = comp {
+                if let Some(wp) = h.get(pools) {
+                    let conn = wp.connection_params.and_then(|h| h.get(pools));
+                    println!(
+                        "       powerActiveCooldown: {}",
+                        conn.map(|c| c.power_active_cooldown).unwrap_or(0.0)
+                    );
+                    println!(
+                        "       heatRateOnline: {}",
+                        conn.map(|c| c.heat_rate_online).unwrap_or(0.0)
+                    );
                 }
-                _ => {}
             }
         }
         println!();
@@ -90,15 +87,13 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut count = 0;
     for record in db.records_by_type("EntityClassDefinition") {
         let name = record.name().unwrap_or("");
-        if name.contains("BEHR_LaserCannon")
+        if (name.contains("BEHR_LaserCannon")
             || name.contains("GATS_BallisticGatling")
-            || name.contains("KLWE_LaserRepeater")
-        {
-            if count < 3 {
+            || name.contains("KLWE_LaserRepeater"))
+            && count < 3 {
                 println!("Found record: '{}'", name);
                 count += 1;
             }
-        }
     }
     for record in db.records_by_type("EntityClassDefinition") {
         let name = record.name().unwrap_or("");

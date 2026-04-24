@@ -75,7 +75,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                         }
                     }
                     SLauncherBasePtr::SMissileLauncher(h) => {
-                        if let Some(ml) = h.get(pools) {
+                        if let Some(_ml) = h.get(pools) {
                             println!("  SMissileLauncher (unexpected)");
                         }
                     }
@@ -87,13 +87,13 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         }
 
         // Also resolve the ammo and check detonation details
-        if let Some(ammo_guid) = wp.ammo_container_record {
-            if let Some(&container_h) = ecd_map.get(&ammo_guid) {
-                if let Some(container_ecd) = container_h.get(pools) {
-                    if let Some(ac) = find_ammo_container(container_ecd, pools) {
-                        if let Some(ammo_guid2) = ac.ammo_params_record {
-                            if let Some(&ammo_h) = ammo_map.get(&ammo_guid2) {
-                                if let Some(ammo) = ammo_h.get(pools) {
+        if let Some(ammo_guid) = wp.ammo_container_record
+            && let Some(&container_h) = ecd_map.get(&ammo_guid)
+                && let Some(container_ecd) = container_h.get(pools)
+                    && let Some(ac) = find_ammo_container(container_ecd, pools)
+                        && let Some(ammo_guid2) = ac.ammo_params_record
+                            && let Some(&ammo_h) = ammo_map.get(&ammo_guid2)
+                                && let Some(ammo) = ammo_h.get(pools) {
                                     println!("\n  AmmoParams detail:");
                                     println!("    noBulletHits: {}", ammo.no_bullet_hits);
                                     println!("    quietRemoval: {}", ammo.quiet_removal);
@@ -102,8 +102,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
                                     if let Some(ProjectileParamsPtr::BulletProjectileParams(h)) =
                                         &ammo.projectile_params
-                                    {
-                                        if let Some(bullet) = h.get(pools) {
+                                        && let Some(bullet) = h.get(pools) {
                                             println!(
                                                 "    keepAliveOnZeroDamage: {}",
                                                 bullet.keep_alive_on_zero_damage
@@ -153,14 +152,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                                                 );
                                             }
                                         }
-                                    }
                                 }
-                            }
-                        }
-                    }
-                }
-            }
-        }
         break;
     }
 
@@ -176,11 +168,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         };
         let name = record_names.get(&guid).copied().unwrap_or("?");
 
-        if let Some(ProjectileParamsPtr::BulletProjectileParams(h)) = &ammo.projectile_params {
-            if let Some(bullet) = h.get(pools) {
-                if let Some(det) = bullet.detonation_params.and_then(|h| h.get(pools)) {
-                    if let Some(expl) = det.explosion_params.and_then(|h| h.get(pools)) {
-                        if expl.pressure != 0.0 {
+        if let Some(ProjectileParamsPtr::BulletProjectileParams(h)) = &ammo.projectile_params
+            && let Some(bullet) = h.get(pools)
+                && let Some(det) = bullet.detonation_params.and_then(|h| h.get(pools))
+                    && let Some(expl) = det.explosion_params.and_then(|h| h.get(pools))
+                        && expl.pressure != 0.0 {
                             let (ep, ee, ed) = if let Some(ref dp) = expl.damage {
                                 match dp {
                                     DamageBasePtr::DamageInfo(dh) => dh
@@ -208,10 +200,6 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                                 ed,
                             ));
                         }
-                    }
-                }
-            }
-        }
     }
 
     entries.sort_by(|a, b| b.1.partial_cmp(&a.1).unwrap());
@@ -255,8 +243,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 _ => None,
             };
 
-            if let Some(SLauncherBasePtr::SProjectileLauncher(h)) = launcher {
-                if let Some(pl) = h.get(pools) {
+            if let Some(SLauncherBasePtr::SProjectileLauncher(h)) = launcher
+                && let Some(pl) = h.get(pools) {
                     let (sp_min, sp_max) = pl
                         .spread_params
                         .and_then(|h| h.get(pools))
@@ -278,7 +266,6 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                         pl.projectile_type
                     );
                 }
-            }
         }
     }
 

@@ -178,8 +178,10 @@ pub struct DurationRange {
 
 /// How a reward amount is delivered.
 #[derive(Debug, Clone, Copy, PartialEq)]
+#[derive(Default)]
 pub enum RewardAmount {
     /// No reward of this kind.
+    #[default]
     None,
     /// Engine computes the amount at runtime (most UEC rewards).
     /// `has_marker: bool` indicates whether we saw a
@@ -190,11 +192,6 @@ pub enum RewardAmount {
     Fixed(i32),
 }
 
-impl Default for RewardAmount {
-    fn default() -> Self {
-        Self::None
-    }
-}
 
 /// One scrip / typed-currency reward.
 #[derive(Debug, Clone)]
@@ -946,9 +943,9 @@ fn build_expansion(
     }
 }
 
-/// Extract the unique Locality GUIDs from a prerequisite list (handler
-/// + contract + sub-contract chain), keeping only those the registry
-/// resolved. First-seen-wins deduplication preserves prereq order.
+/// Extract the unique Locality GUIDs from a prerequisite list (the
+/// handler / contract / sub-contract chain), keeping only those the
+/// registry resolved. First-seen-wins deduplication preserves prereq order.
 fn collect_mission_span(prereqs: &[PrereqView], localities: &LocalityRegistry) -> Vec<Guid> {
     let mut seen: HashSet<Guid> = HashSet::new();
     let mut out: Vec<Guid> = Vec::new();

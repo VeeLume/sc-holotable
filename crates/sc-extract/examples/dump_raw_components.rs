@@ -25,15 +25,13 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             continue;
         }
         let name = db.record_name(record).unwrap_or("");
-        if name.contains("LaserCannon_S7")
+        if (name.contains("LaserCannon_S7")
             || name.contains("BallisticGatling_S1")
-            || name.contains("LaserRepeater_S1")
-        {
-            if found < 5 {
+            || name.contains("LaserRepeater_S1"))
+            && found < 5 {
                 println!("Record name format: '{}'", name);
                 found += 1;
             }
-        }
     }
 
     for record in db.records() {

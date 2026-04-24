@@ -178,11 +178,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                             let ammo_name = record_names.get(&ammo_guid).copied().unwrap_or("?");
                             println!("    -> resolves to: {}", ammo_name);
 
-                            if let Some(&ammo_h) = ammo_map.get(&ammo_guid) {
-                                if let Some(ammo) = ammo_h.get(pools) {
+                            if let Some(&ammo_h) = ammo_map.get(&ammo_guid)
+                                && let Some(ammo) = ammo_h.get(pools) {
                                     dump_ammo(ammo, pools, &record_names, ammo_map);
                                 }
-                            }
                         }
                     }
 
@@ -204,8 +203,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 fn dump_ammo(
     ammo: &AmmoParams,
     pools: &DataPools,
-    names: &HashMap<Guid, &str>,
-    ammo_map: &HashMap<Guid, Handle<AmmoParams>>,
+    _names: &HashMap<Guid, &str>,
+    _ammo_map: &HashMap<Guid, Handle<AmmoParams>>,
 ) {
     println!("\n  --- AmmoParams ---");
     println!("  speed: {}", ammo.speed);
@@ -263,7 +262,7 @@ fn dump_ammo(
                     }
                 }
             }
-            other => {
+            _other => {
                 println!("  projectileParams: other variant");
             }
         }
@@ -301,7 +300,7 @@ fn print_damage(label: &str, ptr: &DamageBasePtr, pools: &DataPools) {
             }
         }
         DamageBasePtr::DamageParams(h) => {
-            if let Some(d) = h.get(pools) {
+            if let Some(_d) = h.get(pools) {
                 println!("{}: DamageParams (has damage_info handle)", label);
                 // DamageParams wraps DamageInfo — check its structure
             }

@@ -8,7 +8,7 @@
 use std::collections::HashMap;
 
 use sc_extract::generated::*;
-use sc_extract::{AssetConfig, AssetData, AssetSource, DataPools, DatacoreConfig, Guid};
+use sc_extract::{AssetConfig, AssetData, AssetSource, DatacoreConfig, Guid};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     tracing_subscriber::fmt().with_env_filter("info").init();
@@ -193,7 +193,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             );
 
             // Check modifier sub-structs
-            if let Some(regen) = s.regen_modifier.and_then(|h| h.get(pools)) {
+            if let Some(_regen) = s.regen_modifier.and_then(|h| h.get(pools)) {
                 check_field(
                     &mut field_has_nondefault,
                     &base,
@@ -202,7 +202,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                     0.0,
                 );
             }
-            if let Some(spread) = s.spread_modifier.and_then(|h| h.get(pools)) {
+            if let Some(_spread) = s.spread_modifier.and_then(|h| h.get(pools)) {
                 check_field(
                     &mut field_has_nondefault,
                     &base,
@@ -211,7 +211,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                     0.0,
                 );
             }
-            if let Some(aim) = s.aim_modifier.and_then(|h| h.get(pools)) {
+            if let Some(_aim) = s.aim_modifier.and_then(|h| h.get(pools)) {
                 check_field(
                     &mut field_has_nondefault,
                     &base,
@@ -220,7 +220,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                     0.0,
                 );
             }
-            if let Some(recoil) = s.recoil_modifier.and_then(|h| h.get(pools)) {
+            if let Some(_recoil) = s.recoil_modifier.and_then(|h| h.get(pools)) {
                 check_field(
                     &mut field_has_nondefault,
                     &base,

@@ -8,7 +8,7 @@
 use std::collections::HashMap;
 
 use sc_extract::generated::*;
-use sc_extract::{AssetConfig, AssetData, AssetSource, DataPools, DatacoreConfig, Guid};
+use sc_extract::{AssetConfig, AssetData, AssetSource, DatacoreConfig, Guid};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     tracing_subscriber::fmt().with_env_filter("info").init();
@@ -116,12 +116,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         let ref_name = record_names.get(&ref_guid).copied().unwrap_or("?");
 
         // === Try direct AmmoParams ===
-        if let Some(&ammo_h) = ammo_map.get(&ref_guid) {
-            if ammo_h.get(pools).is_some() {
+        if let Some(&ammo_h) = ammo_map.get(&ref_guid)
+            && ammo_h.get(pools).is_some() {
                 direct_ammo += 1;
                 continue;
             }
-        }
 
         // === Try two-hop: ref → EntityClassDefinition → SAmmoContainerComponentParams → AmmoParams ===
         if let Some(&container_h) = ecd_map.get(&ref_guid) {

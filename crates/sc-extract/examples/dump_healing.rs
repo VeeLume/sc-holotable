@@ -8,7 +8,7 @@
 use std::collections::HashMap;
 
 use sc_extract::generated::*;
-use sc_extract::{AssetConfig, AssetData, AssetSource, DataPools, DatacoreConfig, Guid};
+use sc_extract::{AssetConfig, AssetData, AssetSource, DatacoreConfig, Guid};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     tracing_subscriber::fmt().with_env_filter("info").init();
@@ -51,8 +51,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         // Collect all HealingBeam actions
         let mut has_healing = false;
         for action in &wp.fire_actions {
-            if let SWeaponActionParamsPtr::SWeaponActionFireHealingBeamParams(h) = action {
-                if let Some(hb) = h.get(pools) {
+            if let SWeaponActionParamsPtr::SWeaponActionFireHealingBeamParams(h) = action
+                && let Some(hb) = h.get(pools) {
                     if !has_healing {
                         println!("{} ({})", name, display);
                         println!("  fireActions: {}", wp.fire_actions.len());
@@ -70,7 +70,6 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                     println!("    medicalAmmoType: {:?}", hb.medical_ammo_type);
                     println!("    wearPerSec: {}", hb.wear_per_sec);
                 }
-            }
         }
 
         // Also show non-healing actions on the same weapon

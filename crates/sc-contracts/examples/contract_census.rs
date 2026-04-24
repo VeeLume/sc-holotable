@@ -251,7 +251,7 @@ fn print_currency_catalog(c: &Census, catalog: &RewardCurrencyCatalog) {
         })
         .collect();
     rows.sort_by(|a, b| b.1.cmp(&a.1));
-    println!("  {:>6}  {:<30}  {}", "count", "display", "record");
+    println!("  {:>6}  {:<30}  record", "count", "display");
     for (info, count) in &rows {
         let display = if info.display_name.is_empty() {
             "<none>"
@@ -792,13 +792,12 @@ fn walk_rewards(
             R::ContractResult_BadgeAward(_) => c.bump_reward("BadgeAward"),
             R::ContractResult_Item(ih) => {
                 c.bump_reward("Item");
-                if let Some(item) = ih.get(pools) {
-                    if let Some(ec) = item.entity_class {
+                if let Some(item) = ih.get(pools)
+                    && let Some(ec) = item.entity_class {
                         let entry = c.item_entity_class.entry(ec).or_insert((0, 0));
                         entry.0 += 1;
                         entry.1 += item.amount as i64;
                     }
-                }
             }
             R::ContractResult_CompletionBounty(_) => c.bump_reward("CompletionBounty"),
             R::ContractResult_ItemsWeighting(_) => c.bump_reward("ItemsWeighting"),
@@ -952,8 +951,8 @@ fn print_entity_class_top_n(c: &Census, db: &DataCoreDatabase, top_n: usize) {
         .collect();
     items.sort_by(|a, b| b.1.cmp(&a.1));
     println!(
-        "  {:<38} {:>6} {:>14} {}",
-        "entity_class guid", "count", "sum amount", "record name"
+        "  {:<38} {:>6} {:>14} record name",
+        "entity_class guid", "count", "sum amount"
     );
     for (g, n, sum) in items.iter().take(top_n) {
         let name = db

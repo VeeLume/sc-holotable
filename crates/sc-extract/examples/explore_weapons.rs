@@ -145,9 +145,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     }
 
     // Sort by record name for stable output
-    ship_weapons.sort_by(|a, b| a.name.cmp(&b.name));
-    fps_weapons.sort_by(|a, b| a.name.cmp(&b.name));
-    other_weapons.sort_by(|a, b| a.name.cmp(&b.name));
+    ship_weapons.sort_by(|a, b| a.name.cmp(b.name));
+    fps_weapons.sort_by(|a, b| a.name.cmp(b.name));
+    other_weapons.sort_by(|a, b| a.name.cmp(b.name));
 
     println!("  without SCItemWeaponComponentParams: {no_weapon_component}");
     println!(

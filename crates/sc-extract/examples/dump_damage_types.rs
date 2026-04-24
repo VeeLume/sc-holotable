@@ -109,22 +109,17 @@ fn extract_all_damage(ammo: &AmmoParams, pools: &DataPools) -> (DmgSet, DmgSet) 
     let mut explosion = DmgSet::default();
 
     if let Some(proj_ptr) = &ammo.projectile_params {
-        match proj_ptr {
-            ProjectileParamsPtr::BulletProjectileParams(h) => {
-                if let Some(bullet) = h.get(pools) {
-                    if let Some(dmg_ptr) = &bullet.damage {
-                        direct = read_damage(dmg_ptr, pools);
-                    }
-                    if let Some(det) = bullet.detonation_params.and_then(|h| h.get(pools)) {
-                        if let Some(expl) = det.explosion_params.and_then(|h| h.get(pools)) {
-                            if let Some(dmg_ptr) = &expl.damage {
-                                explosion = read_damage(dmg_ptr, pools);
-                            }
-                        }
-                    }
+        if let ProjectileParamsPtr::BulletProjectileParams(h) = proj_ptr {
+            if let Some(bullet) = h.get(pools) {
+                if let Some(dmg_ptr) = &bullet.damage {
+                    direct = read_damage(dmg_ptr, pools);
                 }
+                if let Some(det) = bullet.detonation_params.and_then(|h| h.get(pools))
+                    && let Some(expl) = det.explosion_params.and_then(|h| h.get(pools))
+                        && let Some(dmg_ptr) = &expl.damage {
+                            explosion = read_damage(dmg_ptr, pools);
+                        }
             }
-            _ => {}
         }
     }
 

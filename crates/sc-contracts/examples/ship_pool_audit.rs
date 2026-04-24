@@ -434,7 +434,7 @@ fn find_handler_contract_params(
         .flatten()
     {
         if h.debug_name == handler_debug {
-            return h.contract_params.clone();
+            return h.contract_params;
         }
     }
     for h in pools
@@ -444,7 +444,7 @@ fn find_handler_contract_params(
         .flatten()
     {
         if h.debug_name == handler_debug {
-            return h.contract_params.clone();
+            return h.contract_params;
         }
     }
     for h in pools
@@ -454,7 +454,7 @@ fn find_handler_contract_params(
         .flatten()
     {
         if h.debug_name == handler_debug {
-            return h.contract_params.clone();
+            return h.contract_params;
         }
     }
     for h in pools
@@ -464,7 +464,7 @@ fn find_handler_contract_params(
         .flatten()
     {
         if h.debug_name == handler_debug {
-            return h.contract_params.clone();
+            return h.contract_params;
         }
     }
     for h in pools
@@ -474,7 +474,7 @@ fn find_handler_contract_params(
         .flatten()
     {
         if h.debug_name == handler_debug {
-            return h.contract_params.clone();
+            return h.contract_params;
         }
     }
     None
@@ -698,8 +698,8 @@ fn dump_tag_hierarchy(datacore: &Datacore) {
 
     for (guid, name, size) in root_sizes.iter().take(20) {
         println!("  {size:>6}  {name}");
-        if ["AI", "Missions", "Ship"].contains(&name.as_str()) {
-            if let Some(root_tag) = by_guid.get(guid) {
+        if ["AI", "Missions", "Ship"].contains(&name.as_str())
+            && let Some(root_tag) = by_guid.get(guid) {
                 let mut child_names: Vec<(String, usize)> = root_tag
                     .children
                     .iter()
@@ -718,7 +718,6 @@ fn dump_tag_hierarchy(datacore: &Datacore) {
                     println!("           ▸ {c:>5}  {n}");
                 }
             }
-        }
     }
     println!();
 }
@@ -810,8 +809,8 @@ fn explain_contract(options: &[Option_<'_>], pools: &DataPools, datacore: &Datac
         }
 
         // Show the first three entities carrying the most-selective tag.
-        if let Some((tag_name, count, guid)) = rows.first() {
-            if let Some(list) = full_carriers.get(guid) {
+        if let Some((tag_name, count, guid)) = rows.first()
+            && let Some(list) = full_carriers.get(guid) {
                 let examples: Vec<String> = list
                     .iter()
                     .take(5)
@@ -826,7 +825,6 @@ fn explain_contract(options: &[Option_<'_>], pools: &DataPools, datacore: &Datac
                     examples.join(", ")
                 );
             }
-        }
     }
     println!();
 }
@@ -1204,13 +1202,12 @@ fn walk_subcontract<'p>(
     let title = {
         let mut t = String::new();
         for h in &sub.string_param_overrides {
-            if let Some(param) = h.get(pools) {
-                if matches!(param.param, ContractStringParamType::Title) && !param.value.is_empty()
+            if let Some(param) = h.get(pools)
+                && matches!(param.param, ContractStringParamType::Title) && !param.value.is_empty()
                 {
                     t = param.value.stripped().to_string();
                     break;
                 }
-            }
         }
         if t.is_empty() {
             parent.contract_title.clone()
@@ -1290,11 +1287,10 @@ fn title_from_overrides(pools: &DataPools, h: Option<&Handle<ContractParamOverri
         return String::new();
     };
     for p in &po.string_param_overrides {
-        if let Some(param) = p.get(pools) {
-            if matches!(param.param, ContractStringParamType::Title) && !param.value.is_empty() {
+        if let Some(param) = p.get(pools)
+            && matches!(param.param, ContractStringParamType::Title) && !param.value.is_empty() {
                 return param.value.stripped().to_string();
             }
-        }
     }
     String::new()
 }

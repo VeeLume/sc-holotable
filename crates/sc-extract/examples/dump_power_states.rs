@@ -8,7 +8,7 @@
 use std::collections::HashMap;
 
 use sc_extract::generated::*;
-use sc_extract::{AssetConfig, AssetData, AssetSource, DataPools, DatacoreConfig, Guid};
+use sc_extract::{AssetConfig, AssetData, AssetSource, DatacoreConfig, Guid};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     tracing_subscriber::fmt().with_env_filter("info").init();
@@ -303,11 +303,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         let vals = &ship_by_size[s];
         let min = vals.iter().cloned().fold(f32::INFINITY, f32::min);
         let max = vals.iter().cloned().fold(f32::NEG_INFINITY, f32::max);
-        if *h == min || *h == max {
-            if min != max {
+        if (*h == min || *h == max)
+            && min != max {
                 println!("  {} ({}) S{}: {:.0}", name, display, s, h);
             }
-        }
     }
 
     Ok(())

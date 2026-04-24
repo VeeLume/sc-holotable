@@ -163,7 +163,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             .unwrap_or_default();
 
         println!(
-            "{}\t{}\t{}\t{}\t{}\t{:.2}\t{:.2}\t{:.2}\t{:.2}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{:.1}\t{:.1}\t{:.1}\t{:.0}\t{:.1}\t{}",
+            "{}\t{}\t{}\t{}\t{}\t{:.2}\t{:.2}\t{:.2}\t{:.2}\t{}\t{}\t{}\t{}\t{}\t\t{}\t{:.1}\t{:.1}\t{:.1}\t{:.0}\t{:.1}\t{}",
             name,
             display,
             size,
@@ -178,7 +178,6 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             charged.fire_only_on_full_charge,
             charged.interpolate_charge_bonus,
             inner_desc,
-            "",
             mod_desc,
             p,
             e,
@@ -229,26 +228,22 @@ fn resolve_ammo<'a>(
     ammo_map: &HashMap<Guid, Handle<AmmoParams>>,
 ) -> Option<&'a AmmoParams> {
     if let Some(guid) = wp.ammo_container_record {
-        if let Some(&h) = ammo_map.get(&guid) {
-            if let Some(a) = h.get(pools) {
+        if let Some(&h) = ammo_map.get(&guid)
+            && let Some(a) = h.get(pools) {
                 return Some(a);
             }
-        }
-        if let Some(&ch) = ecd_map.get(&guid) {
-            if let Some(ce) = ch.get(pools) {
+        if let Some(&ch) = ecd_map.get(&guid)
+            && let Some(ce) = ch.get(pools) {
                 let ac = ce.components.iter().find_map(|c| match c {
                     DataForgeComponentParamsPtr::SAmmoContainerComponentParams(h) => h.get(pools),
                     _ => None,
                 });
-                if let Some(ac) = ac {
-                    if let Some(g2) = ac.ammo_params_record {
-                        if let Some(&h2) = ammo_map.get(&g2) {
+                if let Some(ac) = ac
+                    && let Some(g2) = ac.ammo_params_record
+                        && let Some(&h2) = ammo_map.get(&g2) {
                             return h2.get(pools);
                         }
-                    }
-                }
             }
-        }
     }
     let ac = ecd.components.iter().find_map(|c| match c {
         DataForgeComponentParamsPtr::SAmmoContainerComponentParams(h) => h.get(pools),
@@ -262,27 +257,22 @@ fn extract_damage(ammo: &AmmoParams, pools: &DataPools) -> (f32, f32, f32) {
     let mut p = 0.0f32;
     let mut e = 0.0f32;
     let mut d = 0.0f32;
-    if let Some(ProjectileParamsPtr::BulletProjectileParams(h)) = &ammo.projectile_params {
-        if let Some(b) = h.get(pools) {
-            if let Some(DamageBasePtr::DamageInfo(dh)) = &b.damage {
-                if let Some(di) = dh.get(pools) {
+    if let Some(ProjectileParamsPtr::BulletProjectileParams(h)) = &ammo.projectile_params
+        && let Some(b) = h.get(pools) {
+            if let Some(DamageBasePtr::DamageInfo(dh)) = &b.damage
+                && let Some(di) = dh.get(pools) {
                     p += di.damage_physical;
                     e += di.damage_energy;
                     d += di.damage_distortion;
                 }
-            }
-            if let Some(det) = b.detonation_params.and_then(|h| h.get(pools)) {
-                if let Some(expl) = det.explosion_params.and_then(|h| h.get(pools)) {
-                    if let Some(DamageBasePtr::DamageInfo(dh)) = &expl.damage {
-                        if let Some(di) = dh.get(pools) {
+            if let Some(det) = b.detonation_params.and_then(|h| h.get(pools))
+                && let Some(expl) = det.explosion_params.and_then(|h| h.get(pools))
+                    && let Some(DamageBasePtr::DamageInfo(dh)) = &expl.damage
+                        && let Some(di) = dh.get(pools) {
                             p += di.damage_physical;
                             e += di.damage_energy;
                             d += di.damage_distortion;
                         }
-                    }
-                }
-            }
         }
-    }
     (p, e, d)
 }
