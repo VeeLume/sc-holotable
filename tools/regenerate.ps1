@@ -34,7 +34,14 @@ param(
     [switch]$AllowDirty,
 
     # Skip the commit step entirely. Leaves all changes staged for manual review.
-    [switch]$NoCommit
+    [switch]$NoCommit,
+
+    # Allow regenerating against a P4K whose version is equal to or lower
+    # than the most recent 'datacore/*' tag. Off by default: the DataCore
+    # build number is monotonic in practice, so a lower version normally
+    # means the user has the wrong channel installed or sc-installs picked
+    # the wrong install.
+    [switch]$AllowDowngrade
 )
 
 $ErrorActionPreference = 'Stop'
@@ -77,9 +84,9 @@ if ($P4k) { $generatorArgs += @('--p4k', $P4k) }
 # Capture stdout line-by-line so we can fish out the identity line while
 # still streaming cargo output to the console.
 $identityLine = $null
-$generatorProcess = & cargo @generatorArgs 2>&1 | ForEach-Object {
+& cargo @generatorArgs 2>&1 | ForEach-Object {
     $line = $_.ToString()
-    if ($line -match '^sc-generator:\s+sc_version=(\S+)\s+channel=(\S+)\s+p4k=(.+)$') {
+    if ($line -match '^sc-generator:\s+launcher_version=') {
         $identityLine = $line
     }
     $line
@@ -87,15 +94,72 @@ $generatorProcess = & cargo @generatorArgs 2>&1 | ForEach-Object {
 if ($LASTEXITCODE -ne 0) { Die "sc-generator failed" }
 
 if (-not $identityLine) {
-    Die "sc-generator ran but did not emit an identity line (sc_version=...). Cannot determine version for commit/tag."
+    Die "sc-generator ran but did not emit an identity line. Cannot determine version for commit/tag."
 }
-$null = $identityLine -match '^sc-generator:\s+sc_version=(\S+)\s+channel=(\S+)\s+p4k=(.+)$'
-$scVersion = $Matches[1]
-$scChannel = $Matches[2]
-$scP4k = $Matches[3]
-Write-Host "  sc_version: $scVersion"
-Write-Host "  channel:    $scChannel"
-Write-Host "  p4k:        $scP4k"
+
+# Parse the identity line's key=value fields. Keys are well-known and
+# order-stable; values are whitespace-free except for 'p4k' which is last
+# and can contain spaces.
+function Get-IdentityField([string]$line, [string]$key) {
+    $pattern = "\s$key=(.+?)(?:\s+\w+=|$)"
+    if ($line -match $pattern) { return $Matches[1].Trim() }
+    return $null
+}
+$launcherVersion = Get-IdentityField $identityLine 'launcher_version'
+$scVersion       = Get-IdentityField $identityLine 'version'
+$scChannel       = Get-IdentityField $identityLine 'channel'
+$scBranch        = Get-IdentityField $identityLine 'branch'
+$changelistStr   = Get-IdentityField $identityLine 'changelist'
+$scP4k           = Get-IdentityField $identityLine 'p4k'
+
+if (-not $launcherVersion -or -not $changelistStr) {
+    Die "Identity line missing required fields. Got: $identityLine"
+}
+
+# Changelist is the perforce build number, monotonic in practice.
+# A dash means legacy manifest with no changelist field.
+$changelist = 0
+if ($changelistStr -ne '-') {
+    if (-not [int]::TryParse($changelistStr, [ref]$changelist)) {
+        Die "Changelist '$changelistStr' is not an integer."
+    }
+}
+
+Write-Host "  launcher_version: $launcherVersion"
+Write-Host "  version:          $scVersion"
+Write-Host "  channel:          $scChannel"
+Write-Host "  branch:           $scBranch"
+Write-Host "  changelist:       $changelistStr"
+Write-Host "  p4k:              $scP4k"
+
+# Downgrade guard: compare against the most recent 'datacore/*' tag's
+# changelist. The tag format is 'datacore/<marketing>-<channel>.<changelist>',
+# so we extract the trailing integer.
+if ($changelist -gt 0) {
+    $tagPattern = 'refs/tags/datacore/*'
+    $existingTags = git for-each-ref --format='%(refname:short)' $tagPattern 2>$null
+    if ($LASTEXITCODE -ne 0) { $existingTags = @() }
+    $maxChangelist = 0
+    $maxTag = $null
+    foreach ($t in $existingTags) {
+        if ($t -match '\.(\d+)$') {
+            $cl = [int]$Matches[1]
+            if ($cl -gt $maxChangelist) {
+                $maxChangelist = $cl
+                $maxTag = $t
+            }
+        }
+    }
+    if ($maxChangelist -gt 0 -and $changelist -lt $maxChangelist) {
+        if (-not $AllowDowngrade) {
+            Die "Downgrade detected: new changelist $changelist is lower than most recent tag '$maxTag' (changelist $maxChangelist). Pass -AllowDowngrade to override — but verify you're not generating from the wrong install first."
+        }
+        Write-Host "  WARNING: downgrading from $maxChangelist to $changelist (-AllowDowngrade was set)" -ForegroundColor Yellow
+    }
+    if ($maxChangelist -gt 0 -and $changelist -eq $maxChangelist) {
+        Write-Host "  Note: changelist matches most recent tag '$maxTag'. Proceeding (fmt/clippy drift still possible)." -ForegroundColor Yellow
+    }
+}
 
 # --- 3. cargo fmt ------------------------------------------------------------
 
@@ -147,7 +211,7 @@ if (-not $diffCached) {
     exit 0
 }
 
-$commitMsg = "Regenerate DataCore bindings (SC $scVersion)"
+$commitMsg = "Regenerate DataCore bindings (SC $launcherVersion)"
 git commit -m $commitMsg
 if ($LASTEXITCODE -ne 0) { Die "git commit failed" }
 Write-Host "Committed: $commitMsg"
@@ -167,8 +231,8 @@ Step "Push branch '$currentBranch'"
 git push origin $currentBranch
 if ($LASTEXITCODE -ne 0) { Die "git push failed" }
 
-$tagName = "datacore/$scVersion"
-$tagMessage = "DataCore bindings regenerated from SC $scVersion ($scChannel)"
+$tagName = "datacore/$launcherVersion"
+$tagMessage = "DataCore bindings regenerated from SC $launcherVersion (branch $scBranch, changelist $changelistStr)"
 Step "Create tag '$tagName'"
 git tag -a $tagName -m $tagMessage
 if ($LASTEXITCODE -ne 0) { Die "git tag failed" }

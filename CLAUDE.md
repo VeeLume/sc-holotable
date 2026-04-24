@@ -163,7 +163,7 @@ VSCode tasks: `sc: regenerate bindings` (no publish) and `sc: regenerate and pub
 The script:
 
 1. Refuses to start with a dirty working tree (pass `-AllowDirty` to override).
-2. Runs `sc-generator`, which auto-discovers the LIVE `Data.p4k` via `sc-installs` and emits a machine-parseable identity line (`sc-generator: sc_version=... channel=... p4k=...`). The script captures the version for the commit message and tag name.
+2. Runs `sc-generator`, which auto-discovers the LIVE `Data.p4k` via `sc-installs` and emits a machine-parseable identity line (`sc-generator: launcher_version=4.7.2-live.11674325 version=... channel=... branch=... changelist=... p4k=...`). The script captures `launcher_version` for the commit message + tag name (`datacore/4.7.2-live.11674325`), and `changelist` — the monotonic perforce build number — for the downgrade guard. The guard compares the new changelist against the highest `datacore/*` tag already in the repo and aborts if it would go backwards (override with `-AllowDowngrade`). Hotfixes increment the changelist while leaving the marketing version alone, so the guard still catches a stale install picked up by discovery.
 3. `cargo fmt --all`.
 4. `cargo clippy --fix --allow-dirty --allow-staged -p sc-extract-generated --all-features -- -D warnings`, then `cargo fmt --all` again to smooth any style drift. Scoped to `sc-extract-generated` because that crate is the generator's output — lints in hand-written example code are out of scope for a regen commit.
 5. `git add -A` + one commit: `Regenerate DataCore bindings (SC <version>)`. Bails out cleanly if the generator produced an identical tree.

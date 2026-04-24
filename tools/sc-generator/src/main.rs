@@ -24,10 +24,17 @@
 //! On start, the generator prints a machine-parseable line:
 //!
 //! ```text
-//! sc-generator: sc_version=<full version> channel=<LIVE/PTU/...> p4k=<path>
+//! sc-generator: launcher_version=<marketing-version>-<channel>.<changelist> \
+//!               version=<manifest.version> channel=<LIVE/PTU/...> \
+//!               branch=<manifest.branch> changelist=<RequestedP4ChangeNum> \
+//!               p4k=<path>
 //! ```
 //!
-//! Scripts can parse this to record version metadata (e.g. for git tags).
+//! `launcher_version` mirrors the string the RSI Launcher shows in its UI
+//! (e.g. `4.7.2-live.11674325`). The trailing `changelist` is the monotonic
+//! perforce build number and is the ideal stable identifier for tags and
+//! downgrade guards. When the manifest lacks a changelist (legacy v1 format),
+//! `launcher_version` falls back to the plain `version` string.
 //!
 //! Analysis/diagnostic subcommands previously available (`--dump-paths`,
 //! `--dump-features`, `--check-polymorphism`, etc.) have been removed.
@@ -139,11 +146,40 @@ fn autodiscover_p4k() -> Result<PathBuf, String> {
     let install = sc_installs::discover_primary()
         .map_err(|e| format!("auto-discovery failed: {e}. Pass --p4k <path> explicitly."))?;
     let p4k = install.data_p4k();
+
+    // Branch is usually "sc-alpha-4.7.2"; the launcher-visible marketing
+    // version strips the "sc-*-" prefix. Fall back to the branch verbatim
+    // if the prefix shape changes.
+    let branch = install.manifest.branch.as_str();
+    let marketing_version = branch
+        .splitn(3, '-')
+        .nth(2)
+        .filter(|s| !s.is_empty())
+        .unwrap_or(branch);
+
+    let channel_lower = install.channel.to_string().to_ascii_lowercase();
+    let changelist = install.manifest.changelist.as_deref().unwrap_or("");
+
+    // Launcher-format string: "<marketing>-<channel>.<changelist>", e.g.
+    // "4.7.2-live.11674325". This is the monotonic identifier suitable
+    // for tags and downgrade comparisons. When the manifest predates the
+    // changelist field, fall back to the plain version string.
+    let launcher_version = if changelist.is_empty() {
+        install.manifest.version.clone()
+    } else {
+        format!("{marketing_version}-{channel_lower}.{changelist}")
+    };
+
     // Machine-parseable: one line, stable key=value, no tracing envelope.
+    // Order is intentional: launcher_version first so scripts that only
+    // need that one can stop parsing after it.
     println!(
-        "sc-generator: sc_version={} channel={} p4k={}",
+        "sc-generator: launcher_version={} version={} channel={} branch={} changelist={} p4k={}",
+        launcher_version,
         install.manifest.version,
         install.channel,
+        branch,
+        if changelist.is_empty() { "-" } else { changelist },
         p4k.display(),
     );
     Ok(p4k)
