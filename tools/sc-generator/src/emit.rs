@@ -926,6 +926,40 @@ pub fn emit_record_store(
         }
         out.push('\n');
 
+        // Every DCB record-type name for which the generator emitted a
+        // binding, regardless of feature gating. Used below to distinguish
+        // feature-gated-away types (expected for narrow consumers, skipped
+        // silently) from truly-unknown types (real generator staleness,
+        // which panics in debug). Release builds skip unknown records
+        // silently by design, so the list is only read under
+        // `cfg(debug_assertions)` — gate the const itself too so release
+        // builds don't carry ~6k string literals they never reference.
+        // Sorted + deduped so the runtime lookup is a binary search.
+        out.push_str("        #[cfg(debug_assertions)]\n");
+        out.push_str("        const KNOWN_RECORD_TYPE_NAMES: &[&str] = &[\n");
+        let mut known_names: Vec<&str> = entries
+            .iter()
+            .filter_map(|(idx, _, _, _, _)| db.struct_name(*idx as usize))
+            .collect();
+        known_names.sort_unstable();
+        known_names.dedup();
+        for name in &known_names {
+            let _ = writeln!(out, "            {:?},", name);
+        }
+        out.push_str("        ];\n\n");
+
+        // `binary_search` only gives correct answers on a strictly-sorted
+        // slice. The generator sorts + dedups before emitting, but a
+        // regression there (or a manual edit to the generated file) would
+        // silently turn the staleness check into a false-pass. Guard with
+        // a debug-only invariant check.
+        out.push_str("        #[cfg(debug_assertions)]\n");
+        out.push_str("        debug_assert!(\n");
+        out.push_str("            KNOWN_RECORD_TYPE_NAMES.windows(2).all(|w| w[0] < w[1]),\n");
+        out.push_str("            \"sc-extract-generated: KNOWN_RECORD_TYPE_NAMES must be strictly sorted \\\n");
+        out.push_str("             and deduplicated for binary_search to be correct — regenerate bindings.\",\n");
+        out.push_str("        );\n\n");
+
         out.push_str("        #[cfg(debug_assertions)]\n");
         out.push_str("        let mut unknown_record_types: std::collections::HashSet<u32> = std::collections::HashSet::new();\n\n");
 
@@ -940,7 +974,16 @@ pub fn emit_record_store(
         out.push_str("                f(self, guid, inst);\n");
         out.push_str("            } else {\n");
         out.push_str("                #[cfg(debug_assertions)]\n");
-        out.push_str("                { unknown_record_types.insert(struct_idx); }\n");
+        out.push_str("                {\n");
+        out.push_str(
+            "                    let name = self.db.struct_name(i).unwrap_or(\"<unnamed>\");\n",
+        );
+        out.push_str(
+            "                    if KNOWN_RECORD_TYPE_NAMES.binary_search(&name).is_err() {\n",
+        );
+        out.push_str("                        unknown_record_types.insert(struct_idx);\n");
+        out.push_str("                    }\n");
+        out.push_str("                }\n");
         out.push_str("            }\n");
         out.push_str("        }\n\n");
 
@@ -957,10 +1000,13 @@ pub fn emit_record_store(
         out.push_str(
             "                \"sc-extract-generated: runtime DCB contains {} record type(s) \\\n",
         );
-        out.push_str("                 the generator doesn't know about — generated bindings are stale. \\\n");
         out.push_str(
-            "                 Regenerate with `cargo run -p sc-generator -- --p4k <path>`.\\n\\\n",
+            "                 with no generated binding in any feature — generated bindings \\\n",
         );
+        out.push_str("                 are stale relative to this DCB. Regenerate with \\\n");
+        out.push_str("                 `cargo run -p sc-generator -- --p4k <path>`.\\n\\\n");
+        out.push_str("                 (Feature-gated-away record types are skipped silently; this list \\\n");
+        out.push_str("                 contains only types the generator has never seen.)\\n\\\n");
         out.push_str("                 Unknown types: {:?}\",\n");
         out.push_str("                names.len(),\n");
         out.push_str("                names,\n");
