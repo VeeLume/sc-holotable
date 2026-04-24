@@ -9,10 +9,10 @@
 
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
-use super::super::*;
-use crate::Handle;
 use std::collections::HashMap;
 use svarog_common::CigGuid;
+use crate::Handle;
+use super::super::*;
 
 /// Record index for the `ui-radardisplay_config_radar` feature.
 #[derive(Default)]
@@ -28,7 +28,5 @@ impl UiRadardisplay_config_radarIndex {
         total
     }
 
-    pub fn is_empty(&self) -> bool {
-        self.len() == 0
-    }
+    pub fn is_empty(&self) -> bool { self.len() == 0 }
 }

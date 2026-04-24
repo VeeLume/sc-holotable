@@ -9,10 +9,10 @@
 
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
-use super::super::*;
-use crate::Handle;
 use std::collections::HashMap;
 use svarog_common::CigGuid;
+use crate::Handle;
+use super::super::*;
 
 /// Record index for the `unittest_unittestb` feature.
 #[derive(Default)]
@@ -28,7 +28,5 @@ impl Unittest_unittestbIndex {
         total
     }
 
-    pub fn is_empty(&self) -> bool {
-        self.len() == 0
-    }
+    pub fn is_empty(&self) -> bool { self.len() == 0 }
 }

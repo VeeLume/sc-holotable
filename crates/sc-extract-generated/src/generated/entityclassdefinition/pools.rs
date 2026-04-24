@@ -15,6 +15,5 @@ use super::super::*;
 #[derive(Default)]
 pub struct EntityclassdefinitionPools {
     pub planet_effect_test_params: Vec<Option<PlanetEffectTestParams>>,
-    pub instanced_interior_manager_component_params:
-        Vec<Option<InstancedInteriorManagerComponentParams>>,
+    pub instanced_interior_manager_component_params: Vec<Option<InstancedInteriorManagerComponentParams>>,
 }

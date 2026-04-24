@@ -15,6 +15,5 @@ use super::super::*;
 #[derive(Default)]
 pub struct EntitiesScitemDefault_lensdisplay_puPools {
     pub schat_channel_black_list: Vec<Option<SChatChannelBlackList>>,
-    pub entity_component_rtt_aspect_boxout_params:
-        Vec<Option<EntityComponentRttAspectBoxoutParams>>,
+    pub entity_component_rtt_aspect_boxout_params: Vec<Option<EntityComponentRttAspectBoxoutParams>>,
 }

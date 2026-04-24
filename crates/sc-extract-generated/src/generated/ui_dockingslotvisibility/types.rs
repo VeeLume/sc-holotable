@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -25,24 +25,15 @@ pub struct DockingSlotVisibilityTagSet {
 }
 
 impl Pooled for DockingSlotVisibilityTagSet {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .ui_dockingslotvisibility
-            .docking_slot_visibility_tag_set
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .ui_dockingslotvisibility
-            .docking_slot_visibility_tag_set
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_dockingslotvisibility.docking_slot_visibility_tag_set }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_dockingslotvisibility.docking_slot_visibility_tag_set }
 }
 
 impl<'a> Extract<'a> for DockingSlotVisibilityTagSet {
     const TYPE_NAME: &'static str = "DockingSlotVisibilityTagSet";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            tags: inst
-                .get_array("tags")
+            tags: inst.get_array("tags")
                 .map(|arr| arr.filter_map(|v| v.as_str().map(String::from)).collect())
                 .unwrap_or_default(),
         }
@@ -58,43 +49,23 @@ pub struct DockingSlotVisibilityRule {
 }
 
 impl Pooled for DockingSlotVisibilityRule {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.ui_dockingslotvisibility.docking_slot_visibility_rule
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.ui_dockingslotvisibility.docking_slot_visibility_rule
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_dockingslotvisibility.docking_slot_visibility_rule }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_dockingslotvisibility.docking_slot_visibility_rule }
 }
 
 impl<'a> Extract<'a> for DockingSlotVisibilityRule {
     const TYPE_NAME: &'static str = "DockingSlotVisibilityRule";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            modes: inst
-                .get_array("modes")
-                .map(|arr| {
-                    arr.filter_map(|v| v.as_str().map(UIBlockingMode::from_dcb_str))
-                        .collect()
-                })
+            modes: inst.get_array("modes")
+                .map(|arr| arr.filter_map(|v| v.as_str().map(UIBlockingMode::from_dcb_str)).collect())
                 .unwrap_or_default(),
-            tag_sets: inst
-                .get_array("tagSets")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<DockingSlotVisibilityTagSet>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => Some(b.alloc_nested::<DockingSlotVisibilityTagSet>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
+            tag_sets: inst.get_array("tagSets")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<DockingSlotVisibilityTagSet>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<DockingSlotVisibilityTagSet>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
         }
     }
@@ -107,37 +78,22 @@ pub struct DockingSlotVisibility {
 }
 
 impl Pooled for DockingSlotVisibility {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.ui_dockingslotvisibility.docking_slot_visibility
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.ui_dockingslotvisibility.docking_slot_visibility
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_dockingslotvisibility.docking_slot_visibility }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_dockingslotvisibility.docking_slot_visibility }
 }
 
 impl<'a> Extract<'a> for DockingSlotVisibility {
     const TYPE_NAME: &'static str = "DockingSlotVisibility";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            rules: inst
-                .get_array("rules")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<DockingSlotVisibilityRule>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => Some(b.alloc_nested::<DockingSlotVisibilityRule>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
+            rules: inst.get_array("rules")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<DockingSlotVisibilityRule>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<DockingSlotVisibilityRule>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
         }
     }
 }
+

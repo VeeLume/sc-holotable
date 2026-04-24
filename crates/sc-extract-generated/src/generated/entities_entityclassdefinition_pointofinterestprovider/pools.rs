@@ -14,6 +14,5 @@ use super::super::*;
 /// Pool storage for the `entities-entityclassdefinition_pointofinterestprovider` feature.
 #[derive(Default)]
 pub struct EntitiesEntityclassdefinition_pointofinterestproviderPools {
-    pub entity_component_point_of_interest_provider:
-        Vec<Option<EntityComponentPointOfInterestProvider>>,
+    pub entity_component_point_of_interest_provider: Vec<Option<EntityComponentPointOfInterestProvider>>,
 }

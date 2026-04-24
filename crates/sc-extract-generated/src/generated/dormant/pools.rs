@@ -14,22 +14,16 @@ use super::super::*;
 /// Pool storage for the `dormant` feature.
 #[derive(Default)]
 pub struct DormantPools {
-    pub activity_behavior_request_condition_timed:
-        Vec<Option<ActivityBehaviorRequestCondition_Timed>>,
+    pub activity_behavior_request_condition_timed: Vec<Option<ActivityBehaviorRequestCondition_Timed>>,
     pub activity_behavior_request_animate: Vec<Option<ActivityBehaviorRequest_Animate>>,
     pub condition_boss: Vec<Option<Condition_Boss>>,
-    pub condition_boss_hpamount_lost_this_boss_phase:
-        Vec<Option<Condition_Boss_HPAmountLostThisBossPhase>>,
-    pub condition_boss_hpproportion_lost_this_boss_phase:
-        Vec<Option<Condition_Boss_HPProportionLostThisBossPhase>>,
+    pub condition_boss_hpamount_lost_this_boss_phase: Vec<Option<Condition_Boss_HPAmountLostThisBossPhase>>,
+    pub condition_boss_hpproportion_lost_this_boss_phase: Vec<Option<Condition_Boss_HPProportionLostThisBossPhase>>,
     pub large_observable_extender: Vec<Option<LargeObservableExtender>>,
-    pub fixed_sized_circle_traversal_cost_shape_config:
-        Vec<Option<FixedSizedCircleTraversalCostShapeConfig>>,
+    pub fixed_sized_circle_traversal_cost_shape_config: Vec<Option<FixedSizedCircleTraversalCostShapeConfig>>,
     pub aidirect_control_component_params: Vec<Option<AIDirectControlComponentParams>>,
-    pub subsumption_conversation_component_params:
-        Vec<Option<SubsumptionConversationComponentParams>>,
-    pub subsumption_conversation_link_component_params:
-        Vec<Option<SubsumptionConversationLinkComponentParams>>,
+    pub subsumption_conversation_component_params: Vec<Option<SubsumptionConversationComponentParams>>,
+    pub subsumption_conversation_link_component_params: Vec<Option<SubsumptionConversationLinkComponentParams>>,
     pub condition_distance_to_target: Vec<Option<Condition_DistanceToTarget>>,
     pub condition_or: Vec<Option<Condition_Or>>,
     pub condition_target_is_ship: Vec<Option<Condition_TargetIsShip>>,
@@ -48,75 +42,48 @@ pub struct DormantPools {
     pub linked_stat_pass_excess_above_threshold: Vec<Option<LinkedStatPassExcessAboveThreshold>>,
     pub linked_stat_rule_pass_always_positive: Vec<Option<LinkedStatRulePassAlwaysPositive>>,
     pub linked_stat_rule_pass_above_threshold: Vec<Option<LinkedStatRulePassAboveThreshold>>,
-    pub linked_stat_rule_has_crossed_above_threshold:
-        Vec<Option<LinkedStatRuleHasCrossedAboveThreshold>>,
+    pub linked_stat_rule_has_crossed_above_threshold: Vec<Option<LinkedStatRuleHasCrossedAboveThreshold>>,
     pub linked_stat_rule_pass_below_threshold: Vec<Option<LinkedStatRulePassBelowThreshold>>,
-    pub linked_stat_rule_pass_crossing_below_threshold:
-        Vec<Option<LinkedStatRulePassCrossingBelowThreshold>>,
+    pub linked_stat_rule_pass_crossing_below_threshold: Vec<Option<LinkedStatRulePassCrossingBelowThreshold>>,
     pub animation_scalar_variable: Vec<Option<AnimationScalarVariable>>,
     pub animation_variable_link: Vec<Option<AnimationVariableLink>>,
     pub animation_combine_variable: Vec<Option<AnimationCombineVariable>>,
     pub sasteroid_field_component_params: Vec<Option<SAsteroidFieldComponentParams>>,
-    pub base_building_validation_point_component_params:
-        Vec<Option<BaseBuildingValidationPointComponentParams>>,
+    pub base_building_validation_point_component_params: Vec<Option<BaseBuildingValidationPointComponentParams>>,
     pub player_base_params: Vec<Option<PlayerBaseParams>>,
     pub base_building_structure_params: Vec<Option<BaseBuildingStructureParams>>,
-    pub bindings_operations_integer_string_font_style_pair:
-        Vec<Option<BindingsOperations_IntegerStringFontStylePair>>,
+    pub bindings_operations_integer_string_font_style_pair: Vec<Option<BindingsOperations_IntegerStringFontStylePair>>,
     pub building_blocks_string_localized_pair: Vec<Option<BuildingBlocks_StringLocalizedPair>>,
     pub building_blocks_bindings_field_base: Vec<Option<BuildingBlocks_BindingsFieldBase>>,
     pub building_blocks_bindings_operation_base: Vec<Option<BuildingBlocks_BindingsOperationBase>>,
-    pub building_blocks_bindings_boolean_from_string_switch:
-        Vec<Option<BuildingBlocks_BindingsBooleanFromStringSwitch>>,
+    pub building_blocks_bindings_boolean_from_string_switch: Vec<Option<BuildingBlocks_BindingsBooleanFromStringSwitch>>,
     pub bindings_operations_dialogue_event: Vec<Option<BindingsOperations_DialogueEvent>>,
     pub building_blocks_boolean_integer_pair: Vec<Option<BuildingBlocks_BooleanIntegerPair>>,
-    pub building_blocks_integer_from_boolean_condition_def:
-        Vec<Option<BuildingBlocks_IntegerFromBooleanConditionDef>>,
-    pub building_blocks_integer_from_boolean_condition_sum_def:
-        Vec<Option<BuildingBlocks_IntegerFromBooleanConditionSumDef>>,
-    pub bindings_operations_string_from_string_canvas:
-        Vec<Option<BindingsOperations_StringFromStringCanvas>>,
-    pub bindings_operations_string_from_integer_switch_font_style:
-        Vec<Option<BindingsOperations_StringFromIntegerSwitchFontStyle>>,
-    pub building_blocks_bindings_localization_from_string_switch:
-        Vec<Option<BuildingBlocks_BindingsLocalizationFromStringSwitch>>,
-    pub building_blocks_bindings_localized_random_from_integer:
-        Vec<Option<BuildingBlocks_BindingsLocalizedRandomFromInteger>>,
-    pub building_blocks_bindings_transform_invert:
-        Vec<Option<BuildingBlocks_BindingsTransformInvert>>,
+    pub building_blocks_integer_from_boolean_condition_def: Vec<Option<BuildingBlocks_IntegerFromBooleanConditionDef>>,
+    pub building_blocks_integer_from_boolean_condition_sum_def: Vec<Option<BuildingBlocks_IntegerFromBooleanConditionSumDef>>,
+    pub bindings_operations_string_from_string_canvas: Vec<Option<BindingsOperations_StringFromStringCanvas>>,
+    pub bindings_operations_string_from_integer_switch_font_style: Vec<Option<BindingsOperations_StringFromIntegerSwitchFontStyle>>,
+    pub building_blocks_bindings_localization_from_string_switch: Vec<Option<BuildingBlocks_BindingsLocalizationFromStringSwitch>>,
+    pub building_blocks_bindings_localized_random_from_integer: Vec<Option<BuildingBlocks_BindingsLocalizedRandomFromInteger>>,
+    pub building_blocks_bindings_transform_invert: Vec<Option<BuildingBlocks_BindingsTransformInvert>>,
     pub boids_cylindrical_limiter_rule: Vec<Option<BoidsCylindricalLimiterRule>>,
     pub boids_area_limiter_rule: Vec<Option<BoidsAreaLimiterRule>>,
-    pub building_blocks_preview_screen_world_origin:
-        Vec<Option<BuildingBlocks_PreviewScreenWorldOrigin>>,
+    pub building_blocks_preview_screen_world_origin: Vec<Option<BuildingBlocks_PreviewScreenWorldOrigin>>,
     pub building_blocks_preview_scene_card: Vec<Option<BuildingBlocks_PreviewSceneCard>>,
-    pub building_blocks_field_modifier_enumerated_type_min_height_behavior:
-        Vec<Option<BuildingBlocks_FieldModifierEnumeratedTypeMinHeightBehavior>>,
-    pub building_blocks_field_modifier_enumerated_type_drop_target_policy:
-        Vec<Option<BuildingBlocks_FieldModifierEnumeratedTypeDropTargetPolicy>>,
-    pub building_blocks_field_modifier_enumerated_type_draggable_policy:
-        Vec<Option<BuildingBlocks_FieldModifierEnumeratedTypeDraggablePolicy>>,
-    pub building_blocks_field_modifier_enumerated_type_grid_pack_direction:
-        Vec<Option<BuildingBlocks_FieldModifierEnumeratedTypeGridPackDirection>>,
-    pub building_blocks_field_modifier_enumerated_type_unidirectional_scroll_direction:
-        Vec<Option<BuildingBlocks_FieldModifierEnumeratedTypeUnidirectionalScrollDirection>>,
-    pub building_blocks_field_modifier_enumerated_type_unidirectional_auto_scroll_behavior:
-        Vec<Option<BuildingBlocks_FieldModifierEnumeratedTypeUnidirectionalAutoScrollBehavior>>,
-    pub building_blocks_field_modifier_enumerated_type_scroll_easing_type:
-        Vec<Option<BuildingBlocks_FieldModifierEnumeratedTypeScrollEasingType>>,
-    pub building_blocks_field_modifier_enumerated_type_stroke_joint_style:
-        Vec<Option<BuildingBlocks_FieldModifierEnumeratedTypeStrokeJointStyle>>,
-    pub building_blocks_field_modifier_enumerated_type_segment_easing:
-        Vec<Option<BuildingBlocks_FieldModifierEnumeratedTypeSegmentEasing>>,
-    pub building_blocks_field_modifier_enumerated_type_slider_mode:
-        Vec<Option<BuildingBlocks_FieldModifierEnumeratedTypeSliderMode>>,
-    pub building_blocks_field_modifier_enumerated_type_tick_box_mode:
-        Vec<Option<BuildingBlocks_FieldModifierEnumeratedTypeTickBoxMode>>,
-    pub building_blocks_field_modifier_enumerated_type_canvas_widget_sizing_method:
-        Vec<Option<BuildingBlocks_FieldModifierEnumeratedTypeCanvasWidgetSizingMethod>>,
-    pub building_blocks_field_modifier_enumerated_type_dust_particle_movement_restriction:
-        Vec<Option<BuildingBlocks_FieldModifierEnumeratedTypeDustParticleMovementRestriction>>,
-    pub building_blocks_field_modifier_enumerated_type_progress_meter_state:
-        Vec<Option<BuildingBlocks_FieldModifierEnumeratedTypeProgressMeterState>>,
+    pub building_blocks_field_modifier_enumerated_type_min_height_behavior: Vec<Option<BuildingBlocks_FieldModifierEnumeratedTypeMinHeightBehavior>>,
+    pub building_blocks_field_modifier_enumerated_type_drop_target_policy: Vec<Option<BuildingBlocks_FieldModifierEnumeratedTypeDropTargetPolicy>>,
+    pub building_blocks_field_modifier_enumerated_type_draggable_policy: Vec<Option<BuildingBlocks_FieldModifierEnumeratedTypeDraggablePolicy>>,
+    pub building_blocks_field_modifier_enumerated_type_grid_pack_direction: Vec<Option<BuildingBlocks_FieldModifierEnumeratedTypeGridPackDirection>>,
+    pub building_blocks_field_modifier_enumerated_type_unidirectional_scroll_direction: Vec<Option<BuildingBlocks_FieldModifierEnumeratedTypeUnidirectionalScrollDirection>>,
+    pub building_blocks_field_modifier_enumerated_type_unidirectional_auto_scroll_behavior: Vec<Option<BuildingBlocks_FieldModifierEnumeratedTypeUnidirectionalAutoScrollBehavior>>,
+    pub building_blocks_field_modifier_enumerated_type_scroll_easing_type: Vec<Option<BuildingBlocks_FieldModifierEnumeratedTypeScrollEasingType>>,
+    pub building_blocks_field_modifier_enumerated_type_stroke_joint_style: Vec<Option<BuildingBlocks_FieldModifierEnumeratedTypeStrokeJointStyle>>,
+    pub building_blocks_field_modifier_enumerated_type_segment_easing: Vec<Option<BuildingBlocks_FieldModifierEnumeratedTypeSegmentEasing>>,
+    pub building_blocks_field_modifier_enumerated_type_slider_mode: Vec<Option<BuildingBlocks_FieldModifierEnumeratedTypeSliderMode>>,
+    pub building_blocks_field_modifier_enumerated_type_tick_box_mode: Vec<Option<BuildingBlocks_FieldModifierEnumeratedTypeTickBoxMode>>,
+    pub building_blocks_field_modifier_enumerated_type_canvas_widget_sizing_method: Vec<Option<BuildingBlocks_FieldModifierEnumeratedTypeCanvasWidgetSizingMethod>>,
+    pub building_blocks_field_modifier_enumerated_type_dust_particle_movement_restriction: Vec<Option<BuildingBlocks_FieldModifierEnumeratedTypeDustParticleMovementRestriction>>,
+    pub building_blocks_field_modifier_enumerated_type_progress_meter_state: Vec<Option<BuildingBlocks_FieldModifierEnumeratedTypeProgressMeterState>>,
     pub building_blocks_widget_line_list: Vec<Option<BuildingBlocks_WidgetLineList>>,
     pub building_blocks_shape_widget: Vec<Option<BuildingBlocks_ShapeWidget>>,
     pub building_blocks_entity_widget_base: Vec<Option<BuildingBlocks_EntityWidgetBase>>,
@@ -126,10 +93,8 @@ pub struct DormantPools {
     pub building_blocks_texture_base: Vec<Option<BuildingBlocks_TextureBase>>,
     pub building_blocks_trigger_modify_number: Vec<Option<BuildingBlocks_TriggerModifyNumber>>,
     pub building_blocks_trigger_hyper_link: Vec<Option<BuildingBlocks_TriggerHyperLink>>,
-    pub building_blocks_number_text_format_modifier:
-        Vec<Option<BuildingBlocks_NumberTextFormatModifier>>,
-    pub building_blocks_static_variable_integer_constant:
-        Vec<Option<BuildingBlocks_StaticVariableIntegerConstant>>,
+    pub building_blocks_number_text_format_modifier: Vec<Option<BuildingBlocks_NumberTextFormatModifier>>,
+    pub building_blocks_static_variable_integer_constant: Vec<Option<BuildingBlocks_StaticVariableIntegerConstant>>,
     pub camera_simple3_pconfig: Vec<Option<CameraSimple3PConfig>>,
     pub camera_third_person_base_config: Vec<Option<CameraThirdPersonBaseConfig>>,
     pub camera_orbit_config: Vec<Option<CameraOrbitConfig>>,
@@ -159,8 +124,7 @@ pub struct DormantPools {
     pub armoury_terminal_params: Vec<Option<ArmouryTerminalParams>>,
     pub legacy_crafting_recipe_list_direct: Vec<Option<LegacyCraftingRecipeList_Direct>>,
     pub ground_vehicle_audio_component_params: Vec<Option<GroundVehicleAudioComponentParams>>,
-    pub sentity_object_character_component_params:
-        Vec<Option<SEntityObjectCharacterComponentParams>>,
+    pub sentity_object_character_component_params: Vec<Option<SEntityObjectCharacterComponentParams>>,
     pub ssubstitution_proxy_params: Vec<Option<SSubstitutionProxyParams>>,
     pub sentity_node_proxy_params: Vec<Option<SEntityNodeProxyParams>>,
     pub sclip_volume_proxy_params: Vec<Option<SClipVolumeProxyParams>>,
@@ -197,48 +161,38 @@ pub struct DormantPools {
     pub particle_effect_random_tinting_params: Vec<Option<ParticleEffectRandomTintingParams>>,
     pub placed_surface_effects_component_params: Vec<Option<PlacedSurfaceEffectsComponentParams>>,
     pub placed_surface_effects_emitter_entry: Vec<Option<PlacedSurfaceEffects_EmitterEntry>>,
-    pub procedural_planet_audio_algorithm_average_position:
-        Vec<Option<ProceduralPlanetAudioAlgorithmAveragePosition>>,
+    pub procedural_planet_audio_algorithm_average_position: Vec<Option<ProceduralPlanetAudioAlgorithmAveragePosition>>,
     pub procedural_planet_audio_algorithm_count: Vec<Option<ProceduralPlanetAudioAlgorithmCount>>,
     pub projectile_test_params: Vec<Option<ProjectileTestParams>>,
     pub movement_recording_params: Vec<Option<MovementRecordingParams>>,
     pub scontrolled_entity_group_condition: Vec<Option<SControlledEntityGroupCondition>>,
     pub scontrolled_entity_rope_attachment_pair: Vec<Option<SControlledEntityRopeAttachmentPair>>,
     pub scontrolled_entity_rope_attachment_pairs: Vec<Option<SControlledEntityRopeAttachmentPairs>>,
-    pub scontrolled_entity_static_transform_params:
-        Vec<Option<SControlledEntityStaticTransformParams>>,
+    pub scontrolled_entity_static_transform_params: Vec<Option<SControlledEntityStaticTransformParams>>,
     pub scontrolled_entity_auto_crane_curve: Vec<Option<SControlledEntityAutoCraneCurve>>,
     pub scontrolled_entity_auto_crane_data: Vec<Option<SControlledEntityAutoCraneData>>,
-    pub scontrolled_entity_dynamic_transform_params:
-        Vec<Option<SControlledEntityDynamicTransformParams>>,
+    pub scontrolled_entity_dynamic_transform_params: Vec<Option<SControlledEntityDynamicTransformParams>>,
     pub scontrolled_entity_transform_params: Vec<Option<SControlledEntityTransformParams>>,
     pub scontrolled_entity_ifcsparams: Vec<Option<SControlledEntityIFCSParams>>,
     pub scontrolled_entity_params: Vec<Option<SControlledEntityParams>>,
     pub sauto_crane_params: Vec<Option<SAutoCraneParams>>,
     pub scontrolled_entity_camera_params: Vec<Option<SControlledEntityCameraParams>>,
-    pub soverride_controlled_entity_camera_params:
-        Vec<Option<SOverrideControlledEntityCameraParams>>,
-    pub sremote_rigid_entity_controlled_entities_params:
-        Vec<Option<SRemoteRigidEntityControlledEntitiesParams>>,
-    pub sremote_rigid_entity_controller_controlled_group_params:
-        Vec<Option<SRemoteRigidEntityControllerControlledGroupParams>>,
-    pub sremote_rigid_entity_controller_one_handed_params:
-        Vec<Option<SRemoteRigidEntityControllerOneHandedParams>>,
+    pub soverride_controlled_entity_camera_params: Vec<Option<SOverrideControlledEntityCameraParams>>,
+    pub sremote_rigid_entity_controlled_entities_params: Vec<Option<SRemoteRigidEntityControlledEntitiesParams>>,
+    pub sremote_rigid_entity_controller_controlled_group_params: Vec<Option<SRemoteRigidEntityControllerControlledGroupParams>>,
+    pub sremote_rigid_entity_controller_one_handed_params: Vec<Option<SRemoteRigidEntityControllerOneHandedParams>>,
     pub sremote_rigid_entity_controller_params: Vec<Option<SRemoteRigidEntityControllerParams>>,
     pub ssimpod_component_params: Vec<Option<SSimpodComponentParams>>,
     pub entity_component_spawn_closet_params: Vec<Option<EntityComponentSpawnClosetParams>>,
     pub entity_component_spawn_closet_npcparams: Vec<Option<EntityComponentSpawnClosetNPCParams>>,
-    pub entity_component_spawn_closet_transit_manager_params:
-        Vec<Option<EntityComponentSpawnClosetTransitManagerParams>>,
+    pub entity_component_spawn_closet_transit_manager_params: Vec<Option<EntityComponentSpawnClosetTransitManagerParams>>,
     pub tile_manager_params: Vec<Option<TileManagerParams>>,
     pub vending_machine_item_params: Vec<Option<VendingMachineItemParams>>,
     pub scitem_control_condition_tag: Vec<Option<SCItemControlCondition_Tag>>,
-    pub scitem_control_condition_allowed_by_remote_turret_view:
-        Vec<Option<SCItemControlCondition_AllowedByRemoteTurretView>>,
+    pub scitem_control_condition_allowed_by_remote_turret_view: Vec<Option<SCItemControlCondition_AllowedByRemoteTurretView>>,
     pub scitem_control_condition_and: Vec<Option<SCItemControlCondition_And>>,
     pub scitem_conditional_priority: Vec<Option<SCItemConditionalPriority>>,
-    pub scitem_conditional_controllable_group_params:
-        Vec<Option<SCItemConditionalControllableGroupParams>>,
+    pub scitem_conditional_controllable_group_params: Vec<Option<SCItemConditionalControllableGroupParams>>,
     pub scsticky_filter_component_params: Vec<Option<SCStickyFilterComponentParams>>,
     pub conversation_node_base_next: Vec<Option<ConversationNode_BaseNext>>,
     pub conversation_node_variable_game_token: Vec<Option<ConversationNode_VariableGameToken>>,
@@ -250,16 +204,11 @@ pub struct DormantPools {
     pub crafting_cost_record_ref: Vec<Option<CraftingCost_RecordRef>>,
     pub crafting_cost_ref: Vec<Option<CraftingCost_Ref>>,
     pub crafting_option_effect_time: Vec<Option<CraftingOptionEffect_Time>>,
-    pub crafting_gameplay_property_modifier_value_range_base_non_ref:
-        Vec<Option<CraftingGameplayPropertyModifierValueRange_Base_NonRef>>,
-    pub crafting_gameplay_property_modifier_base_non_ref:
-        Vec<Option<CraftingGameplayPropertyModifier_Base_NonRef>>,
-    pub crafting_gameplay_property_modifier_record_ref:
-        Vec<Option<CraftingGameplayPropertyModifier_RecordRef>>,
-    pub crafting_gameplay_property_modifiers_base_non_ref:
-        Vec<Option<CraftingGameplayPropertyModifiers_Base_NonRef>>,
-    pub crafting_gameplay_property_modifiers_record_ref:
-        Vec<Option<CraftingGameplayPropertyModifiers_RecordRef>>,
+    pub crafting_gameplay_property_modifier_value_range_base_non_ref: Vec<Option<CraftingGameplayPropertyModifierValueRange_Base_NonRef>>,
+    pub crafting_gameplay_property_modifier_base_non_ref: Vec<Option<CraftingGameplayPropertyModifier_Base_NonRef>>,
+    pub crafting_gameplay_property_modifier_record_ref: Vec<Option<CraftingGameplayPropertyModifier_RecordRef>>,
+    pub crafting_gameplay_property_modifiers_base_non_ref: Vec<Option<CraftingGameplayPropertyModifiers_Base_NonRef>>,
+    pub crafting_gameplay_property_modifiers_record_ref: Vec<Option<CraftingGameplayPropertyModifiers_RecordRef>>,
     pub crafting_result_item: Vec<Option<CraftingResult_Item>>,
     pub crafting_result_resource: Vec<Option<CraftingResult_Resource>>,
     pub crafting_recipe_costs_record_ref: Vec<Option<CraftingRecipeCosts_RecordRef>>,
@@ -267,18 +216,15 @@ pub struct DormantPools {
     pub crafting_recipe_results_base_non_ref: Vec<Option<CraftingRecipeResults_Base_NonRef>>,
     pub crafting_recipe_results_record_ref: Vec<Option<CraftingRecipeResults_RecordRef>>,
     pub crafting_recipe_results_ref: Vec<Option<CraftingRecipeResults_Ref>>,
-    pub crafting_process_specific_recipe_data_base_non_ref:
-        Vec<Option<CraftingProcessSpecificRecipeData_Base_NonRef>>,
-    pub crafting_process_specific_recipe_data_refining:
-        Vec<Option<CraftingProcessSpecificRecipeData_Refining>>,
+    pub crafting_process_specific_recipe_data_base_non_ref: Vec<Option<CraftingProcessSpecificRecipeData_Base_NonRef>>,
+    pub crafting_process_specific_recipe_data_refining: Vec<Option<CraftingProcessSpecificRecipeData_Refining>>,
     pub crafting_recipe_record_ref: Vec<Option<CraftingRecipe_RecordRef>>,
     pub crafting_recipe_ref: Vec<Option<CraftingRecipe_Ref>>,
     pub crafting_research_unlock_base_non_ref: Vec<Option<CraftingResearchUnlock_Base_NonRef>>,
     pub crafting_research_unlock: Vec<Option<CraftingResearchUnlock>>,
     pub crafting_research_base_non_ref: Vec<Option<CraftingResearch_Base_NonRef>>,
     pub crafting_blueprint_tier_base_non_ref: Vec<Option<CraftingBlueprintTier_Base_NonRef>>,
-    pub blueprint_category_availability_base_non_ref:
-        Vec<Option<BlueprintCategoryAvailability_Base_NonRef>>,
+    pub blueprint_category_availability_base_non_ref: Vec<Option<BlueprintCategoryAvailability_Base_NonRef>>,
     pub blueprint_category_availability_ref: Vec<Option<BlueprintCategoryAvailability_Ref>>,
     pub crafting_process_base_non_ref: Vec<Option<CraftingProcess_Base_NonRef>>,
     pub crafting_process_refining: Vec<Option<CraftingProcess_Refining>>,
@@ -286,31 +232,22 @@ pub struct DormantPools {
     pub crafting_process_upgrade: Vec<Option<CraftingProcess_Upgrade>>,
     pub crafting_process_dismantle: Vec<Option<CraftingProcess_Dismantle>>,
     pub generic_crafting_process_base_non_ref: Vec<Option<GenericCraftingProcess_Base_NonRef>>,
-    pub default_blueprint_selection_base_non_ref:
-        Vec<Option<DefaultBlueprintSelection_Base_NonRef>>,
+    pub default_blueprint_selection_base_non_ref: Vec<Option<DefaultBlueprintSelection_Base_NonRef>>,
     pub crafted_item_component_params: Vec<Option<CraftedItemComponentParams>>,
     pub crafting_quality_distribution_uniform: Vec<Option<CraftingQualityDistributionUniform>>,
-    pub camera_component_override_controller_spawn_notifier_component_params:
-        Vec<Option<CameraComponentOverrideControllerSpawnNotifierComponentParams>>,
+    pub camera_component_override_controller_spawn_notifier_component_params: Vec<Option<CameraComponentOverrideControllerSpawnNotifierComponentParams>>,
     pub game_token_container_params: Vec<Option<GameTokenContainerParams>>,
     pub audio_group_component_params: Vec<Option<AudioGroupComponentParams>>,
     pub entity_component_network_params: Vec<Option<EntityComponentNetworkParams>>,
     pub random_float: Vec<Option<RandomFloat>>,
     pub explosion_by_record_params: Vec<Option<ExplosionByRecordParams>>,
-    pub default_actions_entity_entry_condition_not:
-        Vec<Option<DefaultActionsEntityEntryCondition_NOT>>,
-    pub default_actions_entity_entry_condition_can_actor_be_looted:
-        Vec<Option<DefaultActionsEntityEntryCondition_CanActorBeLooted>>,
-    pub default_actions_entity_state_can_actor_be_looted:
-        Vec<Option<DefaultActionsEntityState_CanActorBeLooted>>,
-    pub default_actions_entity_state_entity_is_attached_to_other_actor:
-        Vec<Option<DefaultActionsEntityState_EntityIsAttachedToOtherActor>>,
-    pub default_actions_entity_state_entity_is_attached_to_lootable_actor:
-        Vec<Option<DefaultActionsEntityState_EntityIsAttachedToLootableActor>>,
-    pub default_actions_entity_state_entity_is_attached_to_draggable_body:
-        Vec<Option<DefaultActionsEntityState_EntityIsAttachedToDraggableBody>>,
-    pub default_actions_entity_state_in_restrain_range:
-        Vec<Option<DefaultActionsEntityState_InRestrainRange>>,
+    pub default_actions_entity_entry_condition_not: Vec<Option<DefaultActionsEntityEntryCondition_NOT>>,
+    pub default_actions_entity_entry_condition_can_actor_be_looted: Vec<Option<DefaultActionsEntityEntryCondition_CanActorBeLooted>>,
+    pub default_actions_entity_state_can_actor_be_looted: Vec<Option<DefaultActionsEntityState_CanActorBeLooted>>,
+    pub default_actions_entity_state_entity_is_attached_to_other_actor: Vec<Option<DefaultActionsEntityState_EntityIsAttachedToOtherActor>>,
+    pub default_actions_entity_state_entity_is_attached_to_lootable_actor: Vec<Option<DefaultActionsEntityState_EntityIsAttachedToLootableActor>>,
+    pub default_actions_entity_state_entity_is_attached_to_draggable_body: Vec<Option<DefaultActionsEntityState_EntityIsAttachedToDraggableBody>>,
+    pub default_actions_entity_state_in_restrain_range: Vec<Option<DefaultActionsEntityState_InRestrainRange>>,
     pub dialogue_context_embedded_entry: Vec<Option<DialogueContextEmbeddedEntry>>,
     pub dialogue_context_reference_entry: Vec<Option<DialogueContextReferenceEntry>>,
     pub dialogue_bundle_entry: Vec<Option<DialogueBundleEntry>>,
@@ -327,24 +264,19 @@ pub struct DormantPools {
     pub sattachment_implementation_bone: Vec<Option<SAttachmentImplementationBone>>,
     pub quantum_grid_component_params: Vec<Option<QuantumGridComponentParams>>,
     pub sbase_object_container_component_params: Vec<Option<SBaseObjectContainerComponentParams>>,
-    pub sstreaming_object_container_component_params:
-        Vec<Option<SStreamingObjectContainerComponentParams>>,
+    pub sstreaming_object_container_component_params: Vec<Option<SStreamingObjectContainerComponentParams>>,
     pub shake_component_params: Vec<Option<ShakeComponentParams>>,
     pub skyline_component_params: Vec<Option<SkylineComponentParams>>,
     pub area_base_component_params: Vec<Option<AreaBaseComponentParams>>,
-    pub mission_beacon_provider_entity_component_params:
-        Vec<Option<MissionBeaconProviderEntityComponentParams>>,
-    pub inventory_provider_entity_component_params:
-        Vec<Option<InventoryProviderEntityComponentParams>>,
+    pub mission_beacon_provider_entity_component_params: Vec<Option<MissionBeaconProviderEntityComponentParams>>,
+    pub inventory_provider_entity_component_params: Vec<Option<InventoryProviderEntityComponentParams>>,
     pub bindings_subsumption_broadcast_event: Vec<Option<Bindings_SubsumptionBroadcastEvent>>,
     pub uibindings_subsumption_component_params: Vec<Option<UIBindingsSubsumptionComponentParams>>,
     pub string_user_variable_set_value_task: Vec<Option<StringUserVariableSetValueTask>>,
-    pub record_ref_user_variable_type_canvas_record:
-        Vec<Option<RecordRefUserVariableTypeCanvasRecord>>,
+    pub record_ref_user_variable_type_canvas_record: Vec<Option<RecordRefUserVariableTypeCanvasRecord>>,
     pub dummy_test_arrays_component_params: Vec<Option<DummyTestArraysComponentParams>>,
     pub fo_ipconfiguration_provider_params: Vec<Option<FoIPConfigurationProviderParams>>,
-    pub ss42_subsumption_mission_component_params:
-        Vec<Option<SS42SubsumptionMissionComponentParams>>,
+    pub ss42_subsumption_mission_component_params: Vec<Option<SS42SubsumptionMissionComponentParams>>,
     pub srender_to_texture_view_base_params: Vec<Option<SRenderToTextureViewBaseParams>>,
     pub character_customizer_controller_params: Vec<Option<CharacterCustomizerControllerParams>>,
     pub sentity_component_vehicle_seater_params: Vec<Option<SEntityComponentVehicleSeaterParams>>,
@@ -365,52 +297,39 @@ pub struct DormantPools {
     pub sloadout_requirement_not: Vec<Option<SLoadoutRequirementNOT>>,
     pub sdirt_accumulator_params: Vec<Option<SDirtAccumulatorParams>>,
     pub swetness_accumulator_params: Vec<Option<SWetnessAccumulatorParams>>,
-    pub ssequencer_move_to_animate_entity_drag_task_params:
-        Vec<Option<SSequencerMoveToAnimateEntityDragTaskParams>>,
-    pub ssequencer_bespoke_entity_drag_task_params:
-        Vec<Option<SSequencerBespokeEntityDragTaskParams>>,
+    pub ssequencer_move_to_animate_entity_drag_task_params: Vec<Option<SSequencerMoveToAnimateEntityDragTaskParams>>,
+    pub ssequencer_bespoke_entity_drag_task_params: Vec<Option<SSequencerBespokeEntityDragTaskParams>>,
     pub eatransport_qtravel_transition_params: Vec<Option<EATransportQTravelTransitionParams>>,
     pub eatransport_spline_transition_params: Vec<Option<EATransportSplineTransitionParams>>,
     pub sthruster_misfire_params: Vec<Option<SThrusterMisfireParams>>,
     pub spower_plant_misfire_params: Vec<Option<SPowerPlantMisfireParams>>,
     pub scooler_misfire_params: Vec<Option<SCoolerMisfireParams>>,
     pub sshield_generator_misfire_params: Vec<Option<SShieldGeneratorMisfireParams>>,
-    pub shacking_threat_level_condition_ability_started:
-        Vec<Option<SHackingThreatLevelConditionAbilityStarted>>,
-    pub shacking_threat_level_condition_link_point_activated:
-        Vec<Option<SHackingThreatLevelConditionLinkPointActivated>>,
-    pub shacking_threat_level_condition_node_swapped:
-        Vec<Option<SHackingThreatLevelConditionNodeSwapped>>,
+    pub shacking_threat_level_condition_ability_started: Vec<Option<SHackingThreatLevelConditionAbilityStarted>>,
+    pub shacking_threat_level_condition_link_point_activated: Vec<Option<SHackingThreatLevelConditionLinkPointActivated>>,
+    pub shacking_threat_level_condition_node_swapped: Vec<Option<SHackingThreatLevelConditionNodeSwapped>>,
     pub shacking_threat_level_condition_time: Vec<Option<SHackingThreatLevelConditionTime>>,
     pub sentities_group_component_params: Vec<Option<SEntitiesGroupComponentParams>>,
     pub sentity_component_nav_point_params: Vec<Option<SEntityComponentNavPointParams>>,
     pub smission_location_object_metadata_params: Vec<Option<SMissionLocationObjectMetadataParams>>,
     pub strack_view_outfit_external_swap_data: Vec<Option<STrackViewOutfitExternalSwapData>>,
-    pub sentity_component_proximity_mirror_params:
-        Vec<Option<SEntityComponentProximityMirrorParams>>,
+    pub sentity_component_proximity_mirror_params: Vec<Option<SEntityComponentProximityMirrorParams>>,
     pub ssequencer_def_interaction_task_params: Vec<Option<SSequencerDefInteractionTaskParams>>,
     pub spawner_prerequisite_and: Vec<Option<SpawnerPrerequisite_AND>>,
     pub spawner_prerequisite_not: Vec<Option<SpawnerPrerequisite_NOT>>,
     pub sspawner_spawned_entity_params: Vec<Option<SSpawner_SpawnedEntityParams>>,
     pub sstreaming_dependency_component_params: Vec<Option<SStreamingDependencyComponentParams>>,
-    pub striggerable_devices_behavior_actor_status_params:
-        Vec<Option<STriggerableDevicesBehaviorActorStatusParams>>,
-    pub striggerable_devices_behavior_detach_params:
-        Vec<Option<STriggerableDevicesBehaviorDetachParams>>,
-    pub striggerable_devices_behavior_unprime_params:
-        Vec<Option<STriggerableDevicesBehaviorUnprimeParams>>,
-    pub striggerable_devices_behavior_radar_jammer_params:
-        Vec<Option<STriggerableDevicesBehaviorRadarJammerParams>>,
-    pub striggerable_devices_trigger_all_any_params:
-        Vec<Option<STriggerableDevicesTriggerAllAnyParams>>,
-    pub striggerable_devices_trigger_gravity_params:
-        Vec<Option<STriggerableDevicesTriggerGravityParams>>,
+    pub striggerable_devices_behavior_actor_status_params: Vec<Option<STriggerableDevicesBehaviorActorStatusParams>>,
+    pub striggerable_devices_behavior_detach_params: Vec<Option<STriggerableDevicesBehaviorDetachParams>>,
+    pub striggerable_devices_behavior_unprime_params: Vec<Option<STriggerableDevicesBehaviorUnprimeParams>>,
+    pub striggerable_devices_behavior_radar_jammer_params: Vec<Option<STriggerableDevicesBehaviorRadarJammerParams>>,
+    pub striggerable_devices_trigger_all_any_params: Vec<Option<STriggerableDevicesTriggerAllAnyParams>>,
+    pub striggerable_devices_trigger_gravity_params: Vec<Option<STriggerableDevicesTriggerGravityParams>>,
     pub sentity_component_effects_test: Vec<Option<SEntityComponentEffects_Test>>,
     pub entity_component_effects_test_tag: Vec<Option<EntityComponentEffects_Test_Tag>>,
     pub entity_component_effects_test_trigger: Vec<Option<EntityComponentEffects_Test_Trigger>>,
     pub entity_component_effects_test_link: Vec<Option<EntityComponentEffects_Test_Link>>,
-    pub entity_component_effects_test_color_link:
-        Vec<Option<EntityComponentEffects_Test_ColorLink>>,
+    pub entity_component_effects_test_color_link: Vec<Option<EntityComponentEffects_Test_ColorLink>>,
     pub send_landing_gear_obstructed_event: Vec<Option<SendLandingGearObstructedEvent>>,
     pub send_attempt_wireless_link_event: Vec<Option<SendAttemptWirelessLinkEvent>>,
     pub set_power_source_state_event: Vec<Option<SetPowerSourceStateEvent>>,
@@ -420,8 +339,7 @@ pub struct DormantPools {
     pub extinguish_type_sphere: Vec<Option<ExtinguishType_Sphere>>,
     pub fire_repairer_type_raycast: Vec<Option<FireRepairerType_Raycast>>,
     pub sapplication_form_music_params: Vec<Option<SApplicationFormMusicParams>>,
-    pub flight_academy_application_form_component_params:
-        Vec<Option<FlightAcademyApplicationFormComponentParams>>,
+    pub flight_academy_application_form_component_params: Vec<Option<FlightAcademyApplicationFormComponentParams>>,
     pub sapplication_form_head_homeworld: Vec<Option<SApplicationFormHeadHomeworld>>,
     pub sapplication_form_relation_params: Vec<Option<SApplicationFormRelationParams>>,
     pub sapplication_form_body_type_option: Vec<Option<SApplicationFormBodyTypeOption>>,
@@ -433,8 +351,7 @@ pub struct DormantPools {
     pub frontend_controller_provider_sq42_params: Vec<Option<FrontendControllerProviderSQ42Params>>,
     pub scommon_damage_handling: Vec<Option<SCommonDamageHandling>>,
     pub sispectator_base: Vec<Option<SISpectatorBase>>,
-    pub snon_authoritative_client_stats_recording:
-        Vec<Option<SNonAuthoritativeClientStatsRecording>>,
+    pub snon_authoritative_client_stats_recording: Vec<Option<SNonAuthoritativeClientStatsRecording>>,
     pub eaphase_base_component_def: Vec<Option<EAPhaseBaseComponentDef>>,
     pub ss42_player_stats: Vec<Option<SS42PlayerStats>>,
     pub ssimpod_stats: Vec<Option<SSimpodStats>>,
@@ -461,45 +378,30 @@ pub struct DormantPools {
     pub sinitial_damage_specifier_fixed: Vec<Option<SInitialDamageSpecifierFixed>>,
     pub hint_marker_params: Vec<Option<HintMarkerParams>>,
     pub hit_behavior_damage_over_time: Vec<Option<HitBehaviorDamageOverTime>>,
-    pub shospital_emergency_screen_state_modifier:
-        Vec<Option<SHospitalEmergencyScreenStateModifier>>,
+    pub shospital_emergency_screen_state_modifier: Vec<Option<SHospitalEmergencyScreenStateModifier>>,
     pub inner_thought_layout_choice_base: Vec<Option<InnerThought_LayoutChoiceBase>>,
     pub sentity_link_highlight_node: Vec<Option<SEntityLinkHighlightNode>>,
     pub sinteraction_link_highlight_node: Vec<Option<SInteractionLinkHighlightNode>>,
     pub sinteractable_menu_set_title: Vec<Option<SInteractableMenuSetTitle>>,
-    pub sinteraction_point_modifier_apply_actor_offset_by_gravity:
-        Vec<Option<SInteractionPointModifierApplyActorOffsetByGravity>>,
-    pub sinteraction_point_modifier_replace_by_bone_transform:
-        Vec<Option<SInteractionPointModifierReplaceByBoneTransform>>,
+    pub sinteraction_point_modifier_apply_actor_offset_by_gravity: Vec<Option<SInteractionPointModifierApplyActorOffsetByGravity>>,
+    pub sinteraction_point_modifier_replace_by_bone_transform: Vec<Option<SInteractionPointModifierReplaceByBoneTransform>>,
     pub interaction_condition_item_power: Vec<Option<InteractionConditionItemPower>>,
-    pub interaction_condition_actor_inventory_container_entity_has_tag:
-        Vec<Option<InteractionConditionActorInventoryContainerEntityHasTag>>,
-    pub interaction_condition_security_clearance_token:
-        Vec<Option<InteractionConditionSecurityClearanceToken>>,
-    pub interaction_condition_actor_sealed_helmet:
-        Vec<Option<InteractionConditionActorSealedHelmet>>,
-    pub interaction_condition_can_attach_item_on_hanger:
-        Vec<Option<InteractionConditionCanAttachItemOnHanger>>,
-    pub interaction_condition_has_item_type_attached:
-        Vec<Option<InteractionConditionHasItemTypeAttached>>,
-    pub interaction_condition_limit_nearby_carryables:
-        Vec<Option<InteractionConditionLimitNearbyCarryables>>,
-    pub interaction_condition_dragged_actor_has_prohibited_items:
-        Vec<Option<InteractionConditionDraggedActorHasProhibitedItems>>,
-    pub interaction_condition_has_supporting_itemport:
-        Vec<Option<InteractionConditionHasSupportingItemport>>,
+    pub interaction_condition_actor_inventory_container_entity_has_tag: Vec<Option<InteractionConditionActorInventoryContainerEntityHasTag>>,
+    pub interaction_condition_security_clearance_token: Vec<Option<InteractionConditionSecurityClearanceToken>>,
+    pub interaction_condition_actor_sealed_helmet: Vec<Option<InteractionConditionActorSealedHelmet>>,
+    pub interaction_condition_can_attach_item_on_hanger: Vec<Option<InteractionConditionCanAttachItemOnHanger>>,
+    pub interaction_condition_has_item_type_attached: Vec<Option<InteractionConditionHasItemTypeAttached>>,
+    pub interaction_condition_limit_nearby_carryables: Vec<Option<InteractionConditionLimitNearbyCarryables>>,
+    pub interaction_condition_dragged_actor_has_prohibited_items: Vec<Option<InteractionConditionDraggedActorHasProhibitedItems>>,
+    pub interaction_condition_has_supporting_itemport: Vec<Option<InteractionConditionHasSupportingItemport>>,
     pub interaction_condition_swap_only: Vec<Option<InteractionConditionSwapOnly>>,
-    pub sinteraction_condition_player_vehicle_not_in_armistice_zone:
-        Vec<Option<SInteractionConditionPlayerVehicleNotInArmisticeZone>>,
+    pub sinteraction_condition_player_vehicle_not_in_armistice_zone: Vec<Option<SInteractionConditionPlayerVehicleNotInArmisticeZone>>,
     pub sinteraction_condition_movable_mover: Vec<Option<SInteractionConditionMovableMover>>,
-    pub interaction_condition_hacking_controller_enabled:
-        Vec<Option<InteractionConditionHackingControllerEnabled>>,
-    pub interaction_condition_is_interaction_shown_as_prompt:
-        Vec<Option<InteractionConditionIsInteractionShownAsPrompt>>,
+    pub interaction_condition_hacking_controller_enabled: Vec<Option<InteractionConditionHackingControllerEnabled>>,
+    pub interaction_condition_is_interaction_shown_as_prompt: Vec<Option<InteractionConditionIsInteractionShownAsPrompt>>,
     pub interaction_condition_held_item_has_tag: Vec<Option<InteractionConditionHeldItemHasTag>>,
     pub interaction_condition_skill_level: Vec<Option<InteractionConditionSkillLevel>>,
-    pub interaction_condition_stamina_requirement:
-        Vec<Option<InteractionConditionStaminaRequirement>>,
+    pub interaction_condition_stamina_requirement: Vec<Option<InteractionConditionStaminaRequirement>>,
     pub srange_state_modifier: Vec<Option<SRangeStateModifier>>,
     pub spower_source_state_modifier: Vec<Option<SPowerSourceStateModifier>>,
     pub sprison_sentence_state_modifier: Vec<Option<SPrisonSentenceStateModifier>>,
@@ -510,20 +412,16 @@ pub struct DormantPools {
     pub state_type_state_token_requirements: Vec<Option<StateTypeStateTokenRequirements>>,
     pub security_access_token_state_modifier: Vec<Option<SecurityAccessTokenStateModifier>>,
     pub collectible_state_modifier: Vec<Option<CollectibleStateModifier>>,
-    pub inventory_container_grid_cell_size_meters:
-        Vec<Option<InventoryContainerGridCellSizeMeters>>,
+    pub inventory_container_grid_cell_size_meters: Vec<Option<InventoryContainerGridCellSizeMeters>>,
     pub vehicle_item: Vec<Option<VehicleItem>>,
     pub timer_expiration_params: Vec<Option<TimerExpirationParams>>,
     pub date_expiration_params: Vec<Option<DateExpirationParams>>,
     pub scitem_expiry_component_params: Vec<Option<SCItemExpiryComponentParams>>,
     pub sitem_port_rule_hide_interactions_def: Vec<Option<SItemPortRule_HideInteractionsDef>>,
     pub ssimulation_params_pendulum: Vec<Option<SSimulationParamsPendulum>>,
-    pub ssimulation_params_translational_projection:
-        Vec<Option<SSimulationParamsTranslationalProjection>>,
-    pub sitem_port_def_attachment_implementation_face:
-        Vec<Option<SItemPortDefAttachmentImplementationFace>>,
-    pub sitem_port_def_attachment_implementation_logical:
-        Vec<Option<SItemPortDefAttachmentImplementationLogical>>,
+    pub ssimulation_params_translational_projection: Vec<Option<SSimulationParamsTranslationalProjection>>,
+    pub sitem_port_def_attachment_implementation_face: Vec<Option<SItemPortDefAttachmentImplementationFace>>,
+    pub sitem_port_def_attachment_implementation_logical: Vec<Option<SItemPortDefAttachmentImplementationLogical>>,
     pub item_port_host_component_params: Vec<Option<ItemPortHostComponentParams>>,
     pub item_resource_conversion_pair: Vec<Option<ItemResourceConversionPair>>,
     pub item_resource_delta_inject: Vec<Option<ItemResourceDeltaInject>>,
@@ -531,26 +429,18 @@ pub struct DormantPools {
     pub functionality_modifier_linear: Vec<Option<FunctionalityModifierLinear>>,
     pub functionality_modifier_curve: Vec<Option<FunctionalityModifierCurve>>,
     pub item_resource_dynamic_amount_example: Vec<Option<ItemResourceDynamicAmountExample>>,
-    pub item_resource_dynamic_amount_functionality_ratio:
-        Vec<Option<ItemResourceDynamicAmountFunctionalityRatio>>,
+    pub item_resource_dynamic_amount_functionality_ratio: Vec<Option<ItemResourceDynamicAmountFunctionalityRatio>>,
     pub item_resource_dynamic_amount_weapon_ammo: Vec<Option<ItemResourceDynamicAmountWeaponAmmo>>,
-    pub item_resource_dynamic_amount_weapon_regen:
-        Vec<Option<ItemResourceDynamicAmountWeaponRegen>>,
+    pub item_resource_dynamic_amount_weapon_regen: Vec<Option<ItemResourceDynamicAmountWeaponRegen>>,
     pub item_resource_conversion_modifier_scrub: Vec<Option<ItemResourceConversionModifierScrub>>,
-    pub item_resource_dynamic_composition_example:
-        Vec<Option<ItemResourceDynamicCompositionExample>>,
-    pub item_resource_control_parameter_rnparameter:
-        Vec<Option<ItemResourceControlParameterRNParameter>>,
-    pub item_resource_control_rnparameter_external_port:
-        Vec<Option<ItemResourceControlRNParameterExternalPort>>,
+    pub item_resource_dynamic_composition_example: Vec<Option<ItemResourceDynamicCompositionExample>>,
+    pub item_resource_control_parameter_rnparameter: Vec<Option<ItemResourceControlParameterRNParameter>>,
+    pub item_resource_control_rnparameter_external_port: Vec<Option<ItemResourceControlRNParameterExternalPort>>,
     pub item_resource_control_output_state: Vec<Option<ItemResourceControlOutputState>>,
-    pub item_resource_control_output_control_block:
-        Vec<Option<ItemResourceControlOutputControlBlock>>,
-    pub item_resource_control_output_change_interaction_state:
-        Vec<Option<ItemResourceControlOutputChangeInteractionState>>,
+    pub item_resource_control_output_control_block: Vec<Option<ItemResourceControlOutputControlBlock>>,
+    pub item_resource_control_output_change_interaction_state: Vec<Option<ItemResourceControlOutputChangeInteractionState>>,
     pub item_resource_control_condition_limit: Vec<Option<ItemResourceControlConditionLimit>>,
-    pub item_resource_control_condition_limit_parameter:
-        Vec<Option<ItemResourceControlConditionLimitParameter>>,
+    pub item_resource_control_condition_limit_parameter: Vec<Option<ItemResourceControlConditionLimitParameter>>,
     pub item_resource_control_condition_gravity: Vec<Option<ItemResourceControlConditionGravity>>,
     pub item_resource_control_condition_throttle: Vec<Option<ItemResourceControlConditionThrottle>>,
     pub journal_entry_mission_progress_text: Vec<Option<JournalEntryMissionProgressText>>,
@@ -561,34 +451,23 @@ pub struct DormantPools {
     pub interference_params_continuous: Vec<Option<InterferenceParams_Continuous>>,
     pub lightning_target_mode_entity: Vec<Option<LightningTargetMode_Entity>>,
     pub lightning_shape_ellipsoid: Vec<Option<LightningShape_Ellipsoid>>,
-    pub usable_channel_input_action_trigger_sequence:
-        Vec<Option<UsableChannelInputAction_TriggerSequence>>,
-    pub usable_channel_input_action_consume_with_usable:
-        Vec<Option<UsableChannelInputAction_ConsumeWithUsable>>,
+    pub usable_channel_input_action_trigger_sequence: Vec<Option<UsableChannelInputAction_TriggerSequence>>,
+    pub usable_channel_input_action_consume_with_usable: Vec<Option<UsableChannelInputAction_ConsumeWithUsable>>,
     pub usable_channel_input_action_exercise: Vec<Option<UsableChannelInputAction_Exercise>>,
     pub skill_requirement: Vec<Option<SkillRequirement>>,
     pub skill_gain: Vec<Option<SkillGain>>,
-    pub interactive_variable_animate_to_default_float_params:
-        Vec<Option<InteractiveVariable_AnimateToDefaultFloatParams>>,
-    pub interactive_variable_snap_to_default_float_params:
-        Vec<Option<InteractiveVariable_SnapToDefaultFloatParams>>,
+    pub interactive_variable_animate_to_default_float_params: Vec<Option<InteractiveVariable_AnimateToDefaultFloatParams>>,
+    pub interactive_variable_snap_to_default_float_params: Vec<Option<InteractiveVariable_SnapToDefaultFloatParams>>,
     pub loadout_response_params: Vec<Option<LoadoutResponseParams>>,
     pub entity_component_control_hints_params: Vec<Option<EntityComponentControlHintsParams>>,
-    pub control_hints_usable_linked_interactive_action:
-        Vec<Option<ControlHints_UsableLinkedInteractiveAction>>,
-    pub control_hint_condition_actor_ability_available:
-        Vec<Option<ControlHintCondition_ActorAbilityAvailable>>,
-    pub control_hint_condition_actor_ladder_state:
-        Vec<Option<ControlHintCondition_ActorLadderState>>,
-    pub control_hint_condition_actor_zero_gevastate:
-        Vec<Option<ControlHintCondition_ActorZeroGEVAState>>,
+    pub control_hints_usable_linked_interactive_action: Vec<Option<ControlHints_UsableLinkedInteractiveAction>>,
+    pub control_hint_condition_actor_ability_available: Vec<Option<ControlHintCondition_ActorAbilityAvailable>>,
+    pub control_hint_condition_actor_ladder_state: Vec<Option<ControlHintCondition_ActorLadderState>>,
+    pub control_hint_condition_actor_zero_gevastate: Vec<Option<ControlHintCondition_ActorZeroGEVAState>>,
     pub control_hint_condition_actor_tags: Vec<Option<ControlHintCondition_ActorTags>>,
-    pub control_hint_condition_vehicle_scan_wave_availability:
-        Vec<Option<ControlHintCondition_VehicleScanWaveAvailability>>,
-    pub control_hint_condition_vehicle_formation_mode:
-        Vec<Option<ControlHintCondition_VehicleFormationMode>>,
-    pub control_hint_condition_opt_in_event_state:
-        Vec<Option<ControlHintCondition_OptInEventState>>,
+    pub control_hint_condition_vehicle_scan_wave_availability: Vec<Option<ControlHintCondition_VehicleScanWaveAvailability>>,
+    pub control_hint_condition_vehicle_formation_mode: Vec<Option<ControlHintCondition_VehicleFormationMode>>,
+    pub control_hint_condition_opt_in_event_state: Vec<Option<ControlHintCondition_OptInEventState>>,
     pub control_hint_condition_hint_trigger: Vec<Option<ControlHintCondition_HintTrigger>>,
     pub control_hint_condition_any_hint_trigger: Vec<Option<ControlHintCondition_AnyHintTrigger>>,
     pub entity_class_list_no_ref: Vec<Option<EntityClassList_NoRef>>,
@@ -599,21 +478,17 @@ pub struct DormantPools {
     pub spawn_with_v3_selector_no_ref: Vec<Option<SpawnWithV3Selector_NoRef>>,
     pub spawn_with_v3_selector_entity_classes: Vec<Option<SpawnWithV3Selector_EntityClasses>>,
     pub loot_table_optional_data_v3_no_ref: Vec<Option<LootTableOptionalDataV3_NoRef>>,
-    pub loot_v3_secondary_choice_entry_selector_no_ref:
-        Vec<Option<LootV3SecondaryChoiceEntrySelector_NoRef>>,
+    pub loot_v3_secondary_choice_entry_selector_no_ref: Vec<Option<LootV3SecondaryChoiceEntrySelector_NoRef>>,
     pub quantity_range_no_ref: Vec<Option<QuantityRange_NoRef>>,
     pub maelstrom_destroy_event: Vec<Option<MaelstromDestroyEvent>>,
-    pub maelstrom_interaction_state_machine_event:
-        Vec<Option<MaelstromInteractionStateMachineEvent>>,
+    pub maelstrom_interaction_state_machine_event: Vec<Option<MaelstromInteractionStateMachineEvent>>,
     pub smag_recovery_motion_params: Vec<Option<SMagRecoveryMotionParams>>,
     pub smag_recovery_params: Vec<Option<SMagRecoveryParams>>,
     pub map_display_params_radar_map_single_mode: Vec<Option<MapDisplayParamsRadarMapSingleMode>>,
     pub map_display_params_radar_map_multi_mode: Vec<Option<MapDisplayParamsRadarMapMultiMode>>,
     pub map_display_radar_mode: Vec<Option<MapDisplayRadarMode>>,
-    pub map_display_start_mode_fixed_override_params:
-        Vec<Option<MapDisplayStartModeFixedOverrideParams>>,
-    pub map_display_start_mode_landing_override_params:
-        Vec<Option<MapDisplayStartModeLandingOverrideParams>>,
+    pub map_display_start_mode_fixed_override_params: Vec<Option<MapDisplayStartModeFixedOverrideParams>>,
+    pub map_display_start_mode_landing_override_params: Vec<Option<MapDisplayStartModeLandingOverrideParams>>,
     pub marker_ability_scan: Vec<Option<Marker_AbilityScan>>,
     pub visibility_condition_def_and: Vec<Option<VisibilityConditionDef_AND>>,
     pub synced_attack_category_params: Vec<Option<SyncedAttackCategoryParams>>,
@@ -624,8 +499,7 @@ pub struct DormantPools {
     pub item_award_tag: Vec<Option<ItemAwardTag>>,
     pub contract_class_global_event: Vec<Option<ContractClass_GlobalEvent>>,
     pub hauling_order_content_resource_base: Vec<Option<HaulingOrderContent_ResourceBase>>,
-    pub hauling_order_content_resource_unlimited_drop_off:
-        Vec<Option<HaulingOrderContent_ResourceUnlimitedDropOff>>,
+    pub hauling_order_content_resource_unlimited_drop_off: Vec<Option<HaulingOrderContent_ResourceUnlimitedDropOff>>,
     pub hauling_order_property_base: Vec<Option<HaulingOrder_PropertyBase>>,
     pub hauling_order_property_drop_off: Vec<Option<HaulingOrder_PropertyDropOff>>,
     pub hauling_order_resource_base: Vec<Option<HaulingOrder_ResourceBase>>,
@@ -649,20 +523,17 @@ pub struct DormantPools {
     pub mobiglas_display_counter: Vec<Option<MobiglasDisplayCounter>>,
     pub mission_modifier_shop_item_perks_def: Vec<Option<MissionModifier_ShopItemPerksDef>>,
     pub smission_staging_area_component_params: Vec<Option<SMissionStagingAreaComponentParams>>,
-    pub spawning_manager_notifier_component_params:
-        Vec<Option<SpawningManagerNotifierComponentParams>>,
+    pub spawning_manager_notifier_component_params: Vec<Option<SpawningManagerNotifierComponentParams>>,
     pub environmental_mission_component_params: Vec<Option<EnvironmentalMissionComponentParams>>,
     pub mission_data_component_params: Vec<Option<MissionDataComponentParams>>,
     pub delivery_locker_item_component_params: Vec<Option<DeliveryLockerItemComponentParams>>,
-    pub delivery_item_port_pickup_component_params:
-        Vec<Option<DeliveryItemPortPickupComponentParams>>,
+    pub delivery_item_port_pickup_component_params: Vec<Option<DeliveryItemPortPickupComponentParams>>,
     pub hauling_mission_helper_component_params: Vec<Option<HaulingMissionHelperComponentParams>>,
     pub mission_init_param_activity: Vec<Option<MissionInitParamActivity>>,
     pub sardata_generic_component_params: Vec<Option<SARDataGenericComponentParams>>,
     pub ss42_galactapedia_source_data_params: Vec<Option<SS42GalactapediaSourceDataParams>>,
     pub smobi_glas_launcher_app: Vec<Option<SMobiGlasLauncherApp>>,
-    pub entity_component_mobiglas_launcher_provider_params:
-        Vec<Option<EntityComponentMobiglasLauncherProviderParams>>,
+    pub entity_component_mobiglas_launcher_provider_params: Vec<Option<EntityComponentMobiglasLauncherProviderParams>>,
     pub parent_music_logic_node: Vec<Option<ParentMusicLogicNode>>,
     pub music_logic_condition: Vec<Option<MusicLogicCondition>>,
     pub comms_notification_stage_light: Vec<Option<CommsNotificationStageLight>>,
@@ -690,34 +561,24 @@ pub struct DormantPools {
     pub sentity_sphere_grid_property: Vec<Option<SEntitySphereGridProperty>>,
     pub sentity_box_grid_property: Vec<Option<SEntityBoxGridProperty>>,
     pub sentity_object_container_grid_property: Vec<Option<SEntityObjectContainerGridProperty>>,
-    pub sentity_space_ship_physics_controller_params:
-        Vec<Option<SEntitySpaceShipPhysicsControllerParams>>,
-    pub sentity_soft_deprecated_physics_controller_params:
-        Vec<Option<SEntitySoftDeprecatedPhysicsControllerParams>>,
+    pub sentity_space_ship_physics_controller_params: Vec<Option<SEntitySpaceShipPhysicsControllerParams>>,
+    pub sentity_soft_deprecated_physics_controller_params: Vec<Option<SEntitySoftDeprecatedPhysicsControllerParams>>,
     pub sentity_sphere_physics_grid_params: Vec<Option<SEntitySpherePhysicsGridParams>>,
     pub sentity_box_physics_grid_params: Vec<Option<SEntityBoxPhysicsGridParams>>,
     pub sentity_voxel_physics_grid_params: Vec<Option<SEntityVoxelPhysicsGridParams>>,
     pub sentity_cgfphysics_grid_params: Vec<Option<SEntityCGFPhysicsGridParams>>,
     pub sentity_vis_area_physics_grid_params: Vec<Option<SEntityVisAreaPhysicsGridParams>>,
     pub sactor_default_death_behaviour: Vec<Option<SActorDefaultDeathBehaviour>>,
-    pub planet_day_night_temperature_template_ref:
-        Vec<Option<PlanetDayNightTemperatureTemplateRef>>,
+    pub planet_day_night_temperature_template_ref: Vec<Option<PlanetDayNightTemperatureTemplateRef>>,
     pub procedural_layout_graph_node_base: Vec<Option<ProceduralLayoutGraphNode_Base>>,
-    pub procedural_layout_node_alternate_element_properties:
-        Vec<Option<ProceduralLayoutNode_AlternateElementProperties>>,
-    pub procedural_layout_graph_node_alternate_element:
-        Vec<Option<ProceduralLayoutGraphNode_AlternateElement>>,
-    pub procedural_layout_graph_node_corridor_element:
-        Vec<Option<ProceduralLayoutGraphNode_CorridorElement>>,
-    pub procedural_layout_node_alternate_sub_graph_properties:
-        Vec<Option<ProceduralLayoutNode_AlternateSubGraphProperties>>,
-    pub procedural_layout_graph_node_alternate_sub_graph:
-        Vec<Option<ProceduralLayoutGraphNode_AlternateSubGraph>>,
-    pub procedural_layout_graph_node_vertical_element:
-        Vec<Option<ProceduralLayoutGraphNode_VerticalElement>>,
+    pub procedural_layout_node_alternate_element_properties: Vec<Option<ProceduralLayoutNode_AlternateElementProperties>>,
+    pub procedural_layout_graph_node_alternate_element: Vec<Option<ProceduralLayoutGraphNode_AlternateElement>>,
+    pub procedural_layout_graph_node_corridor_element: Vec<Option<ProceduralLayoutGraphNode_CorridorElement>>,
+    pub procedural_layout_node_alternate_sub_graph_properties: Vec<Option<ProceduralLayoutNode_AlternateSubGraphProperties>>,
+    pub procedural_layout_graph_node_alternate_sub_graph: Vec<Option<ProceduralLayoutGraphNode_AlternateSubGraph>>,
+    pub procedural_layout_graph_node_vertical_element: Vec<Option<ProceduralLayoutGraphNode_VerticalElement>>,
     pub quantum_drive_effect_params: Vec<Option<QuantumDriveEffectParams>>,
-    pub behavior_custom_quantum_drive_effects_preset:
-        Vec<Option<Behavior_CustomQuantumDriveEffectsPreset>>,
+    pub behavior_custom_quantum_drive_effects_preset: Vec<Option<Behavior_CustomQuantumDriveEffectsPreset>>,
     pub squantum_boost_audio_params: Vec<Option<SQuantumBoostAudioParams>>,
     pub squantum_rotation_params: Vec<Option<SQuantumRotationParams>>,
     pub squantum_rotation_kick_params: Vec<Option<SQuantumRotationKickParams>>,
@@ -731,14 +592,11 @@ pub struct DormantPools {
     pub squantum_hud_messages: Vec<Option<SQuantumHudMessages>>,
     pub scitem_quantum_drive_params_new: Vec<Option<SCItemQuantumDriveParams_NEW>>,
     pub squantum_resource_network_params: Vec<Option<SQuantumResourceNetworkParams>>,
-    pub sentity_component_orbital_nav_point_params:
-        Vec<Option<SEntityComponentOrbitalNavPointParams>>,
+    pub sentity_component_orbital_nav_point_params: Vec<Option<SEntityComponentOrbitalNavPointParams>>,
     pub squantum_camera_state_effects_time_def: Vec<Option<SQuantumCameraStateEffectsTimeDef>>,
     pub contact_highlight_material_params: Vec<Option<ContactHighlightMaterialParams>>,
-    pub scitem_radar_sensitivity_modifier_type_contacts:
-        Vec<Option<SCItemRadarSensitivityModifierTypeContacts>>,
-    pub scitem_radar_sensitivity_modifier_type_signature_category:
-        Vec<Option<SCItemRadarSensitivityModifierTypeSignatureCategory>>,
+    pub scitem_radar_sensitivity_modifier_type_contacts: Vec<Option<SCItemRadarSensitivityModifierTypeContacts>>,
+    pub scitem_radar_sensitivity_modifier_type_signature_category: Vec<Option<SCItemRadarSensitivityModifierTypeSignatureCategory>>,
     pub scan_custom_value_array: Vec<Option<ScanCustomValueArray>>,
     pub scan_data_entry_params: Vec<Option<ScanDataEntryParams>>,
     pub scan_display_armor_variable_params: Vec<Option<ScanDisplayArmorVariableParams>>,
@@ -747,23 +605,19 @@ pub struct DormantPools {
     pub classification_scan_procedure_params: Vec<Option<ClassificationScanProcedureParams>>,
     pub cryopod_scan_procedure_params: Vec<Option<CryopodScanProcedureParams>>,
     pub jurisdiction_scan_procedure_params: Vec<Option<JurisdictionScanProcedureParams>>,
-    pub vehicle_self_destruct_scan_procedure_params:
-        Vec<Option<VehicleSelfDestructScanProcedureParams>>,
+    pub vehicle_self_destruct_scan_procedure_params: Vec<Option<VehicleSelfDestructScanProcedureParams>>,
     pub sbbdynamic_property_int: Vec<Option<SBBDynamicPropertyInt>>,
     pub sbbdynamic_property_float: Vec<Option<SBBDynamicPropertyFloat>>,
     pub sreputation_state_modifier_decrement: Vec<Option<SReputationStateModifierDecrement>>,
-    pub sreputation_mission_requirement_expression_or:
-        Vec<Option<SReputationMissionRequirementExpression_Or>>,
-    pub sreputation_mission_requirement_expression_not:
-        Vec<Option<SReputationMissionRequirementExpression_Not>>,
+    pub sreputation_mission_requirement_expression_or: Vec<Option<SReputationMissionRequirementExpression_Or>>,
+    pub sreputation_mission_requirement_expression_not: Vec<Option<SReputationMissionRequirementExpression_Not>>,
     pub kilograms_per_cubic_meter: Vec<Option<KilogramsPerCubicMeter>>,
     pub resource_type_molar_mass: Vec<Option<ResourceTypeMolarMass>>,
     pub scitem_restraint_params: Vec<Option<SCItemRestraintParams>>,
     pub volume_shape_box: Vec<Option<VolumeShape_Box>>,
     pub volume_shape_ellipsoid: Vec<Option<VolumeShape_Ellipsoid>>,
     pub satmospheric_composition_inherit_planet: Vec<Option<SAtmosphericCompositionInheritPlanet>>,
-    pub aerodynamic_trail_calculation_gas_cloud_optical_density_range:
-        Vec<Option<AerodynamicTrailCalculationGasCloudOpticalDensityRange>>,
+    pub aerodynamic_trail_calculation_gas_cloud_optical_density_range: Vec<Option<AerodynamicTrailCalculationGasCloudOpticalDensityRange>>,
     pub electrical_room_extension: Vec<Option<ElectricalRoomExtension>>,
     pub electrical_state: Vec<Option<ElectricalState>>,
     pub electrical_state_ref: Vec<Option<ElectricalStateRef>>,
@@ -775,24 +629,19 @@ pub struct DormantPools {
     pub sattachable_tag_check: Vec<Option<SAttachableTagCheck>>,
     pub gameplay_trigger_target_type_self: Vec<Option<GameplayTrigger_TargetType_Self>>,
     pub gameplay_trigger_target_type_root: Vec<Option<GameplayTrigger_TargetType_Root>>,
-    pub gameplay_trigger_target_type_item_port_name:
-        Vec<Option<GameplayTrigger_TargetType_ItemPortName>>,
+    pub gameplay_trigger_target_type_item_port_name: Vec<Option<GameplayTrigger_TargetType_ItemPortName>>,
     pub gameplay_trigger_target_type_filtered: Vec<Option<GameplayTrigger_TargetType_Filtered>>,
-    pub gameplay_trigger_filter_type_entity_class:
-        Vec<Option<GameplayTrigger_FilterType_EntityClass>>,
+    pub gameplay_trigger_filter_type_entity_class: Vec<Option<GameplayTrigger_FilterType_EntityClass>>,
     pub gameplay_trigger_filter_type_entity_tag: Vec<Option<GameplayTrigger_FilterType_EntityTag>>,
     pub gameplay_trigger_filter_type_item_type: Vec<Option<GameplayTrigger_FilterType_ItemType>>,
-    pub gameplay_trigger_executor_activate_interaction_by_tag:
-        Vec<Option<GameplayTrigger_Executor_ActivateInteraction_ByTag>>,
-    pub gameplay_trigger_executor_set_interaction_state_by_tag:
-        Vec<Option<GameplayTrigger_Executor_SetInteractionState_ByTag>>,
+    pub gameplay_trigger_executor_activate_interaction_by_tag: Vec<Option<GameplayTrigger_Executor_ActivateInteraction_ByTag>>,
+    pub gameplay_trigger_executor_set_interaction_state_by_tag: Vec<Option<GameplayTrigger_Executor_SetInteractionState_ByTag>>,
     pub area_target_state_change: Vec<Option<AreaTargetStateChange>>,
     pub gameplay_trigger_condition_nand: Vec<Option<GameplayTriggerConditionNAND>>,
     pub gameplay_trigger_condition_nor: Vec<Option<GameplayTriggerConditionNOR>>,
     pub gameplay_trigger_condition_xor: Vec<Option<GameplayTriggerConditionXOR>>,
     pub gameplay_trigger_condition_xnor: Vec<Option<GameplayTriggerConditionXNOR>>,
-    pub gameplay_trigger_condition_check_state_other:
-        Vec<Option<GameplayTriggerConditionCheckStateOther>>,
+    pub gameplay_trigger_condition_check_state_other: Vec<Option<GameplayTriggerConditionCheckStateOther>>,
     pub gameplay_trigger_condition_target_entity: Vec<Option<GameplayTriggerConditionTargetEntity>>,
     pub user_variable_check_bool_equal: Vec<Option<UserVariableCheckBoolEqual>>,
     pub user_variable_check_int_greater: Vec<Option<UserVariableCheckIntGreater>>,
@@ -808,12 +657,9 @@ pub struct DormantPools {
     pub invulnerability_state: Vec<Option<InvulnerabilityState>>,
     pub sself_hint_activator: Vec<Option<SSelfHintActivator>>,
     pub sinteractor_hint_activator: Vec<Option<SInteractorHintActivator>>,
-    pub sactivate_item_expiration_gameplay_trigger:
-        Vec<Option<SActivateItemExpirationGameplayTrigger>>,
-    pub gameplay_trigger_physics_set_parameter_kinematic_state:
-        Vec<Option<GameplayTrigger_Physics_SetParameter_KinematicState>>,
-    pub sset_screen_shake_area_enabled_state_gameplay_trigger:
-        Vec<Option<SSetScreenShakeAreaEnabledStateGameplayTrigger>>,
+    pub sactivate_item_expiration_gameplay_trigger: Vec<Option<SActivateItemExpirationGameplayTrigger>>,
+    pub gameplay_trigger_physics_set_parameter_kinematic_state: Vec<Option<GameplayTrigger_Physics_SetParameter_KinematicState>>,
+    pub sset_screen_shake_area_enabled_state_gameplay_trigger: Vec<Option<SSetScreenShakeAreaEnabledStateGameplayTrigger>>,
     pub triggered_warning: Vec<Option<TriggeredWarning>>,
     pub triggered_warning_clear: Vec<Option<TriggeredWarningClear>>,
     pub suser_variable_set_string_value: Vec<Option<SUserVariableSetStringValue>>,
@@ -826,8 +672,7 @@ pub struct DormantPools {
     pub user_variable_divide_float_value: Vec<Option<UserVariableDivideFloatValue>>,
     pub svending_machine_spawn_gameplay_trigger: Vec<Option<SVendingMachineSpawnGameplayTrigger>>,
     pub stransfer_credit_gameplay_trigger: Vec<Option<STransferCreditGameplayTrigger>>,
-    pub gameplay_trigger_interpolation_type_user_variable_float:
-        Vec<Option<GameplayTrigger_InterpolationType_UserVariableFloat>>,
+    pub gameplay_trigger_interpolation_type_user_variable_float: Vec<Option<GameplayTrigger_InterpolationType_UserVariableFloat>>,
     pub sclegacy_weapon_component_params: Vec<Option<SCLegacyWeaponComponentParams>>,
     pub scitem_boat_controller_params: Vec<Option<SCItemBoatControllerParams>>,
     pub scitem_foley_params: Vec<Option<SCItemFoleyParams>>,
@@ -857,20 +702,16 @@ pub struct DormantPools {
     pub shelmet_state_animation_params: Vec<Option<SHelmetStateAnimationParams>>,
     pub shelmet_state_fade_params: Vec<Option<SHelmetStateFadeParams>>,
     pub shelmet_state_lights_params: Vec<Option<SHelmetStateLightsParams>>,
-    pub scitem_weapon_regen_pool_component_params:
-        Vec<Option<SCItemWeaponRegenPoolComponentParams>>,
+    pub scitem_weapon_regen_pool_component_params: Vec<Option<SCItemWeaponRegenPoolComponentParams>>,
     pub weapon_aiaiming_method_high_low_arc: Vec<Option<WeaponAIAimingMethodHighLowArc>>,
-    pub weapon_aiaiming_method_preferred_height_arc:
-        Vec<Option<WeaponAIAimingMethodPreferredHeightArc>>,
+    pub weapon_aiaiming_method_preferred_height_arc: Vec<Option<WeaponAIAimingMethodPreferredHeightArc>>,
     pub sthrowable_launcher: Vec<Option<SThrowableLauncher>>,
     pub sweapon_condition_any: Vec<Option<SWeaponConditionAny>>,
     pub sweapon_condition_not: Vec<Option<SWeaponConditionNot>>,
-    pub sweapon_condition_has_attachment_with_tags:
-        Vec<Option<SWeaponConditionHasAttachmentWithTags>>,
+    pub sweapon_condition_has_attachment_with_tags: Vec<Option<SWeaponConditionHasAttachmentWithTags>>,
     pub sweapon_action_mark_grapple_params: Vec<Option<SWeaponActionMarkGrappleParams>>,
     pub sweapon_action_toggle_params: Vec<Option<SWeaponActionToggleParams>>,
-    pub sweapon_action_highlight_cuttables_params:
-        Vec<Option<SWeaponActionHighlightCuttablesParams>>,
+    pub sweapon_action_highlight_cuttables_params: Vec<Option<SWeaponActionHighlightCuttablesParams>>,
     pub sweapon_action_melee_params: Vec<Option<SWeaponActionMeleeParams>>,
     pub sweapon_action_grapple_params: Vec<Option<SWeaponActionGrappleParams>>,
     pub iweapon_component_params: Vec<Option<IWeaponComponentParams>>,
@@ -879,14 +720,12 @@ pub struct DormantPools {
     pub personal_thought_category: Vec<Option<PersonalThoughtCategory>>,
     pub personal_thought_player_item: Vec<Option<PersonalThoughtPlayerItem>>,
     pub quick_access_wheel_auto_operator_mode_def: Vec<Option<QuickAccessWheelAutoOperatorModeDef>>,
-    pub quick_access_wheel_auto_wingman_commands_def:
-        Vec<Option<QuickAccessWheelAutoWingmanCommandsDef>>,
+    pub quick_access_wheel_auto_wingman_commands_def: Vec<Option<QuickAccessWheelAutoWingmanCommandsDef>>,
     pub smodifier_signatures_entry: Vec<Option<SModifierSignaturesEntry>>,
     pub sscsignature_emission_modifier: Vec<Option<SSCSignatureEmissionModifier>>,
     pub sscsignature_system_audio_multiplier: Vec<Option<SSCSignatureSystemAudioMultiplier>>,
     pub sscsignature_system_audio_offset: Vec<Option<SSCSignatureSystemAudioOffset>>,
-    pub sscsignature_system_audio_trigger_tag_rule:
-        Vec<Option<SSCSignatureSystemAudioTriggerTagRule>>,
+    pub sscsignature_system_audio_trigger_tag_rule: Vec<Option<SSCSignatureSystemAudioTriggerTagRule>>,
     pub sscsignature_system_audio_trigger_rule: Vec<Option<SSCSignatureSystemAudioTriggerRule>>,
     pub scannable_component_params: Vec<Option<ScannableComponentParams>>,
     pub completion_type_delivered_scu: Vec<Option<CompletionType_DeliveredSCU>>,
@@ -899,27 +738,17 @@ pub struct DormantPools {
     pub security_clearance_token_data_and: Vec<Option<SecurityClearanceTokenData_AND>>,
     pub security_clearance_token_data_or: Vec<Option<SecurityClearanceTokenData_OR>>,
     pub security_clearance_token_data_not: Vec<Option<SecurityClearanceTokenData_NOT>>,
-    pub security_clearance_token_data_other_token:
-        Vec<Option<SecurityClearanceTokenData_OtherToken>>,
-    pub security_clearance_token_data_unarmed_def:
-        Vec<Option<SecurityClearanceTokenData_UnarmedDef>>,
-    pub security_clearance_outfit_requirement_tag_requirement_def:
-        Vec<Option<SecurityClearance_OutfitRequirement_TagRequirementDef>>,
-    pub security_clearance_outfit_requirement_required_piece_def:
-        Vec<Option<SecurityClearance_OutfitRequirement_RequiredPieceDef>>,
-    pub security_clearance_outfit_requirement_or_def:
-        Vec<Option<SecurityClearance_OutfitRequirement_OrDef>>,
-    pub security_clearance_outfit_requirement_and_def:
-        Vec<Option<SecurityClearance_OutfitRequirement_AndDef>>,
-    pub security_clearance_outfit_requirement_not_def:
-        Vec<Option<SecurityClearance_OutfitRequirement_NotDef>>,
-    pub security_clearance_token_data_outfit_requirement_def:
-        Vec<Option<SecurityClearanceTokenData_OutfitRequirementDef>>,
-    pub security_clearance_token_data_weapon_drawn:
-        Vec<Option<SecurityClearanceTokenData_WeaponDrawn>>,
+    pub security_clearance_token_data_other_token: Vec<Option<SecurityClearanceTokenData_OtherToken>>,
+    pub security_clearance_token_data_unarmed_def: Vec<Option<SecurityClearanceTokenData_UnarmedDef>>,
+    pub security_clearance_outfit_requirement_tag_requirement_def: Vec<Option<SecurityClearance_OutfitRequirement_TagRequirementDef>>,
+    pub security_clearance_outfit_requirement_required_piece_def: Vec<Option<SecurityClearance_OutfitRequirement_RequiredPieceDef>>,
+    pub security_clearance_outfit_requirement_or_def: Vec<Option<SecurityClearance_OutfitRequirement_OrDef>>,
+    pub security_clearance_outfit_requirement_and_def: Vec<Option<SecurityClearance_OutfitRequirement_AndDef>>,
+    pub security_clearance_outfit_requirement_not_def: Vec<Option<SecurityClearance_OutfitRequirement_NotDef>>,
+    pub security_clearance_token_data_outfit_requirement_def: Vec<Option<SecurityClearanceTokenData_OutfitRequirementDef>>,
+    pub security_clearance_token_data_weapon_drawn: Vec<Option<SecurityClearanceTokenData_WeaponDrawn>>,
     pub security_login_input: Vec<Option<SecurityLoginInput>>,
-    pub security_token_notification_record_reference:
-        Vec<Option<SecurityTokenNotificationRecordReference>>,
+    pub security_token_notification_record_reference: Vec<Option<SecurityTokenNotificationRecordReference>>,
     pub security_network_variable_value_int: Vec<Option<SecurityNetworkVariableValue_Int>>,
     pub tqsinput_string_value: Vec<Option<TQSInputStringValue>>,
     pub tqsweight_input_int_value: Vec<Option<TQSWeightInputIntValue>>,
@@ -954,20 +783,15 @@ pub struct DormantPools {
     pub uigraph_inventory_component: Vec<Option<UIGraph_InventoryComponent>>,
     pub unit_test_override_defaults_class_a: Vec<Option<UnitTest_OverrideDefaultsClassA>>,
     pub unit_test_override_defaults_class_b: Vec<Option<UnitTest_OverrideDefaultsClassB>>,
-    pub alignment_slot_area_helper_component_params:
-        Vec<Option<AlignmentSlotAreaHelperComponentParams>>,
+    pub alignment_slot_area_helper_component_params: Vec<Option<AlignmentSlotAreaHelperComponentParams>>,
     pub sscooch_overrides: Vec<Option<SScoochOverrides>>,
     pub sscooch_override: Vec<Option<SScoochOverride>>,
     pub usable_slotting_reference_loadout_entry: Vec<Option<UsableSlottingReferenceLoadoutEntry>>,
-    pub ssequencer_usable_enable_use_channel_task:
-        Vec<Option<SSequencerUsableEnableUseChannelTask>>,
-    pub ssequencer_usable_disable_use_channel_task:
-        Vec<Option<SSequencerUsableDisableUseChannelTask>>,
+    pub ssequencer_usable_enable_use_channel_task: Vec<Option<SSequencerUsableEnableUseChannelTask>>,
+    pub ssequencer_usable_disable_use_channel_task: Vec<Option<SSequencerUsableDisableUseChannelTask>>,
     pub ssequencer_usable_send_event_to_user_task: Vec<Option<SSequencerUsableSendEventToUserTask>>,
-    pub entity_component_rtt_aspect_focus_vehicle_params:
-        Vec<Option<EntityComponentRttAspectFocusVehicleParams>>,
-    pub entity_component_rtt_aspect_own_vehicle_params:
-        Vec<Option<EntityComponentRttAspectOwnVehicleParams>>,
+    pub entity_component_rtt_aspect_focus_vehicle_params: Vec<Option<EntityComponentRttAspectFocusVehicleParams>>,
+    pub entity_component_rtt_aspect_own_vehicle_params: Vec<Option<EntityComponentRttAspectOwnVehicleParams>>,
     pub vehicle_editor_terminal_params: Vec<Option<VehicleEditorTerminalParams>>,
     pub vehicle_editor_manager_params: Vec<Option<VehicleEditorManagerParams>>,
     pub distress_comms_signal_component_params: Vec<Option<DistressCommsSignalComponentParams>>,
@@ -978,14 +802,11 @@ pub struct DormantPools {
     pub planet_spawned_entity_params: Vec<Option<PlanetSpawnedEntityParams>>,
     pub crater_modifier_component_params: Vec<Option<CraterModifierComponentParams>>,
     pub mobi_glas_personal_message_ship_chat: Vec<Option<MobiGlasPersonalMessage_ShipChat>>,
-    pub mobi_glas_personal_message_ship_chat_schedule_entry:
-        Vec<Option<MobiGlasPersonalMessage_ShipChatScheduleEntry>>,
-    pub mobi_glas_personal_message_ship_chat_schedule:
-        Vec<Option<MobiGlasPersonalMessage_ShipChatSchedule>>,
+    pub mobi_glas_personal_message_ship_chat_schedule_entry: Vec<Option<MobiGlasPersonalMessage_ShipChatScheduleEntry>>,
+    pub mobi_glas_personal_message_ship_chat_schedule: Vec<Option<MobiGlasPersonalMessage_ShipChatSchedule>>,
     pub mobi_glas_personal_message_message: Vec<Option<MobiGlasPersonalMessage_Message>>,
     pub mobi_glas_mission_briefing: Vec<Option<MobiGlasMissionBriefing>>,
-    pub mobi_glas_after_action_report_generation_rules:
-        Vec<Option<MobiGlasAfterActionReportGenerationRules>>,
+    pub mobi_glas_after_action_report_generation_rules: Vec<Option<MobiGlasAfterActionReportGenerationRules>>,
     pub after_action_report_reputation_impact: Vec<Option<AfterActionReportReputationImpact>>,
     pub mobi_glas_after_action_report_rank_rules: Vec<Option<MobiGlasAfterActionReportRankRules>>,
     pub mobi_glas_mission_manager_summary_update: Vec<Option<MobiGlasMissionManagerSummaryUpdate>>,

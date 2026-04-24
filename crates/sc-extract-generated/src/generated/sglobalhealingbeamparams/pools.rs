@@ -15,8 +15,7 @@ use super::super::*;
 #[derive(Default)]
 pub struct SglobalhealingbeamparamsPools {
     pub shealing_beam_bone_entry_params: Vec<Option<SHealingBeamBoneEntryParams>>,
-    pub shealing_beam_body_part_highlighting_params:
-        Vec<Option<SHealingBeamBodyPartHighlightingParams>>,
+    pub shealing_beam_body_part_highlighting_params: Vec<Option<SHealingBeamBodyPartHighlightingParams>>,
     pub shealing_beam_body_part_params: Vec<Option<SHealingBeamBodyPartParams>>,
     pub sglobal_healing_beam_params: Vec<Option<SGlobalHealingBeamParams>>,
 }

@@ -9,16 +9,15 @@
 
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
-use super::super::*;
-use crate::Handle;
 use std::collections::HashMap;
 use svarog_common::CigGuid;
+use crate::Handle;
+use super::super::*;
 
 /// Record index for the `ui-directrtt` feature.
 #[derive(Default)]
 pub struct UiDirectrttIndex {
-    pub direct_rtt_after_tonemapping_params:
-        HashMap<CigGuid, Handle<DirectRTT_AfterTonemappingParams>>,
+    pub direct_rtt_after_tonemapping_params: HashMap<CigGuid, Handle<DirectRTT_AfterTonemappingParams>>,
 }
 
 impl UiDirectrttIndex {
@@ -29,7 +28,5 @@ impl UiDirectrttIndex {
         total
     }
 
-    pub fn is_empty(&self) -> bool {
-        self.len() == 0
-    }
+    pub fn is_empty(&self) -> bool { self.len() == 0 }
 }

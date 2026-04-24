@@ -23,8 +23,7 @@ pub struct JumppointsPools {
     pub jump_drive_uicone_params: Vec<Option<JumpDriveUIConeParams>>,
     pub global_jump_point_params: Vec<Option<GlobalJumpPointParams>>,
     pub sjump_tunnel_section_probability_params: Vec<Option<SJumpTunnelSectionProbabilityParams>>,
-    pub sjump_tunnel_section_control_point_generation_params:
-        Vec<Option<SJumpTunnelSectionControlPointGenerationParams>>,
+    pub sjump_tunnel_section_control_point_generation_params: Vec<Option<SJumpTunnelSectionControlPointGenerationParams>>,
     pub sjump_tunnel_obstacle_generation_params: Vec<Option<SJumpTunnelObstacleGenerationParams>>,
     pub sjump_tunnel_elliptical_params: Vec<Option<SJumpTunnelEllipticalParams>>,
     pub sjump_tunnel_section_generation_params: Vec<Option<SJumpTunnelSectionGenerationParams>>,

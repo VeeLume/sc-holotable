@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -32,29 +32,19 @@ pub struct ColorGradientComponentParams {
 }
 
 impl Pooled for ColorGradientComponentParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_entityclassdefinition_colorgradient
-            .color_gradient_component_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_entityclassdefinition_colorgradient
-            .color_gradient_component_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_entityclassdefinition_colorgradient.color_gradient_component_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_entityclassdefinition_colorgradient.color_gradient_component_params }
 }
 
 impl<'a> Extract<'a> for ColorGradientComponentParams {
     const TYPE_NAME: &'static str = "ColorGradientComponentParams";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            texture_path: inst
-                .get_str("texturePath")
-                .map(String::from)
-                .unwrap_or_default(),
+            texture_path: inst.get_str("texturePath").map(String::from).unwrap_or_default(),
             fade_in_time: inst.get_f32("fadeInTime").unwrap_or_default(),
             priority: inst.get_i32("priority").unwrap_or_default(),
             radius: inst.get_f32("radius").unwrap_or_default(),
         }
     }
 }
+

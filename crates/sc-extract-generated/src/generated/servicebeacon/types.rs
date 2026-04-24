@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -38,16 +38,8 @@ pub struct ContractGeneratorHandler_ServiceBeacon {
 }
 
 impl Pooled for ContractGeneratorHandler_ServiceBeacon {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .servicebeacon
-            .contract_generator_handler_service_beacon
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .servicebeacon
-            .contract_generator_handler_service_beacon
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.servicebeacon.contract_generator_handler_service_beacon }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.servicebeacon.contract_generator_handler_service_beacon }
 }
 
 impl<'a> Extract<'a> for ContractGeneratorHandler_ServiceBeacon {
@@ -56,57 +48,24 @@ impl<'a> Extract<'a> for ContractGeneratorHandler_ServiceBeacon {
         Self {
             not_for_release: inst.get_bool("notForRelease").unwrap_or_default(),
             work_in_progress: inst.get_bool("workInProgress").unwrap_or_default(),
-            debug_name: inst
-                .get_str("debugName")
-                .map(String::from)
-                .unwrap_or_default(),
-            required_active_scenarios: inst
-                .get_array("required_active_scenarios")
-                .map(|arr| {
-                    arr.filter_map(|v| {
-                        if let Value::Reference(Some(r)) = v {
-                            Some(r.guid)
-                        } else {
-                            None
-                        }
-                    })
-                    .collect()
-                })
+            debug_name: inst.get_str("debugName").map(String::from).unwrap_or_default(),
+            required_active_scenarios: inst.get_array("required_active_scenarios")
+                .map(|arr| arr.filter_map(|v| if let Value::Reference(Some(r)) = v { Some(r.guid) } else { None }).collect())
                 .unwrap_or_default(),
             default_availability: match inst.get("defaultAvailability") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<ContractAvailability>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<ContractAvailability>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             contract_params: match inst.get("contractParams") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<ContractParamOverrides>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<ContractParamOverrides>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            service_beacon_contracts: inst
-                .get_array("serviceBeaconContracts")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<Contract>(
-                            Instance::from_inline_data(b.db, struct_index, data),
-                            false,
-                        )),
-                        Value::ClassRef(r) => Some(b.alloc_nested::<Contract>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
+            service_beacon_contracts: inst.get_array("serviceBeaconContracts")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<Contract>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<Contract>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
         }
     }
@@ -120,12 +79,8 @@ pub struct ContractClass_ServiceBeacon {
 }
 
 impl Pooled for ContractClass_ServiceBeacon {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.servicebeacon.contract_class_service_beacon
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.servicebeacon.contract_class_service_beacon
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.servicebeacon.contract_class_service_beacon }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.servicebeacon.contract_class_service_beacon }
 }
 
 impl<'a> Extract<'a> for ContractClass_ServiceBeacon {
@@ -133,9 +88,7 @@ impl<'a> Extract<'a> for ContractClass_ServiceBeacon {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             params: match inst.get("params") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(ServiceBeaconBaseTemplateParamsPtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(ServiceBeaconBaseTemplateParamsPtr::from_ref(b, r)),
                 _ => None,
             },
         }
@@ -144,21 +97,19 @@ impl<'a> Extract<'a> for ContractClass_ServiceBeacon {
 
 /// DCB type: `MissionPropertyValue_StarMapLocation`
 /// Inherits from: `BaseMissionPropertyValue`
-pub struct MissionPropertyValue_StarMapLocation {}
+pub struct MissionPropertyValue_StarMapLocation {
+}
 
 impl Pooled for MissionPropertyValue_StarMapLocation {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.servicebeacon.mission_property_value_star_map_location
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.servicebeacon.mission_property_value_star_map_location
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.servicebeacon.mission_property_value_star_map_location }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.servicebeacon.mission_property_value_star_map_location }
 }
 
 impl<'a> Extract<'a> for MissionPropertyValue_StarMapLocation {
     const TYPE_NAME: &'static str = "MissionPropertyValue_StarMapLocation";
     fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {}
+        Self {
+        }
     }
 }
 
@@ -171,35 +122,18 @@ pub struct BeaconsContracts {
 }
 
 impl Pooled for BeaconsContracts {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.servicebeacon.beacons_contracts
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.servicebeacon.beacons_contracts
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.servicebeacon.beacons_contracts }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.servicebeacon.beacons_contracts }
 }
 
 impl<'a> Extract<'a> for BeaconsContracts {
     const TYPE_NAME: &'static str = "BeaconsContracts";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            service_beacons: inst
-                .get_array("serviceBeacons")
-                .map(|arr| {
-                    arr.filter_map(|v| {
-                        if let Value::Reference(Some(r)) = v {
-                            Some(r.guid)
-                        } else {
-                            None
-                        }
-                    })
-                    .collect()
-                })
+            service_beacons: inst.get_array("serviceBeacons")
+                .map(|arr| arr.filter_map(|v| if let Value::Reference(Some(r)) = v { Some(r.guid) } else { None }).collect())
                 .unwrap_or_default(),
-            service_beacon_contract_generator: inst
-                .get("serviceBeaconContractGenerator")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
+            service_beacon_contract_generator: inst.get("serviceBeaconContractGenerator").and_then(|v| v.as_record_ref()).map(|r| r.guid),
         }
     }
 }
@@ -229,55 +163,30 @@ pub struct ServiceBeaconBaseTemplateParams {
 }
 
 impl Pooled for ServiceBeaconBaseTemplateParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.servicebeacon.service_beacon_base_template_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.servicebeacon.service_beacon_base_template_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.servicebeacon.service_beacon_base_template_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.servicebeacon.service_beacon_base_template_params }
 }
 
 impl<'a> Extract<'a> for ServiceBeaconBaseTemplateParams {
     const TYPE_NAME: &'static str = "ServiceBeaconBaseTemplateParams";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            objective_title: inst
-                .get_str("objectiveTitle")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
-            objective_description: inst
-                .get_str("objectiveDescription")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
+            objective_title: inst.get_str("objectiveTitle").map(LocaleKey::from).unwrap_or_default(),
+            objective_description: inst.get_str("objectiveDescription").map(LocaleKey::from).unwrap_or_default(),
             can_be_created_in_mobiglas: inst.get_bool("canBeCreatedInMobiglas").unwrap_or_default(),
-            service_beacon_type: EServiceBeaconType::from_dcb_str(
-                inst.get_str("serviceBeaconType").unwrap_or(""),
-            ),
-            service_beacon_name: inst
-                .get_str("serviceBeaconName")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
+            service_beacon_type: EServiceBeaconType::from_dcb_str(inst.get_str("serviceBeaconType").unwrap_or("")),
+            service_beacon_name: inst.get_str("serviceBeaconName").map(LocaleKey::from).unwrap_or_default(),
             beacon_tax_percentage: inst.get_i32("beaconTaxPercentage").unwrap_or_default(),
             beacon_max_payment_amount: inst.get_i32("beaconMaxPaymentAmount").unwrap_or_default(),
             npc_requester_name_def: match inst.get("npcRequesterNameDef") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<MissionPropertyValue_AIName>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<MissionPropertyValue_AIName>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             npc_creator_params: match inst.get("npcCreatorParams") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(SServiceBeaconCreatorParamsBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(SServiceBeaconCreatorParamsBasePtr::from_ref(b, r)),
                 _ => None,
             },
-            beacon_module_declaration: inst
-                .get("beaconModuleDeclaration")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
+            beacon_module_declaration: inst.get("beaconModuleDeclaration").and_then(|v| v.as_record_ref()).map(|r| r.guid),
         }
     }
 }
@@ -316,71 +225,34 @@ pub struct PersonalTransportBeaconParams {
 }
 
 impl Pooled for PersonalTransportBeaconParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.servicebeacon.personal_transport_beacon_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.servicebeacon.personal_transport_beacon_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.servicebeacon.personal_transport_beacon_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.servicebeacon.personal_transport_beacon_params }
 }
 
 impl<'a> Extract<'a> for PersonalTransportBeaconParams {
     const TYPE_NAME: &'static str = "PersonalTransportBeaconParams";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            objective_title: inst
-                .get_str("objectiveTitle")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
-            objective_description: inst
-                .get_str("objectiveDescription")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
+            objective_title: inst.get_str("objectiveTitle").map(LocaleKey::from).unwrap_or_default(),
+            objective_description: inst.get_str("objectiveDescription").map(LocaleKey::from).unwrap_or_default(),
             can_be_created_in_mobiglas: inst.get_bool("canBeCreatedInMobiglas").unwrap_or_default(),
-            service_beacon_type: EServiceBeaconType::from_dcb_str(
-                inst.get_str("serviceBeaconType").unwrap_or(""),
-            ),
-            service_beacon_name: inst
-                .get_str("serviceBeaconName")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
+            service_beacon_type: EServiceBeaconType::from_dcb_str(inst.get_str("serviceBeaconType").unwrap_or("")),
+            service_beacon_name: inst.get_str("serviceBeaconName").map(LocaleKey::from).unwrap_or_default(),
             beacon_tax_percentage: inst.get_i32("beaconTaxPercentage").unwrap_or_default(),
             beacon_max_payment_amount: inst.get_i32("beaconMaxPaymentAmount").unwrap_or_default(),
             npc_requester_name_def: match inst.get("npcRequesterNameDef") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<MissionPropertyValue_AIName>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<MissionPropertyValue_AIName>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             npc_creator_params: match inst.get("npcCreatorParams") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(SServiceBeaconCreatorParamsBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(SServiceBeaconCreatorParamsBasePtr::from_ref(b, r)),
                 _ => None,
             },
-            beacon_module_declaration: inst
-                .get("beaconModuleDeclaration")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            pick_up_objective_title: inst
-                .get_str("pickUpObjectiveTitle")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
-            pick_up_objective_description: inst
-                .get_str("pickUpObjectiveDescription")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
-            delivery_objective_title: inst
-                .get_str("deliveryObjectiveTitle")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
-            delivery_objective_description: inst
-                .get_str("deliveryObjectiveDescription")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
+            beacon_module_declaration: inst.get("beaconModuleDeclaration").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            pick_up_objective_title: inst.get_str("pickUpObjectiveTitle").map(LocaleKey::from).unwrap_or_default(),
+            pick_up_objective_description: inst.get_str("pickUpObjectiveDescription").map(LocaleKey::from).unwrap_or_default(),
+            delivery_objective_title: inst.get_str("deliveryObjectiveTitle").map(LocaleKey::from).unwrap_or_default(),
+            delivery_objective_description: inst.get_str("deliveryObjectiveDescription").map(LocaleKey::from).unwrap_or_default(),
         }
     }
 }
@@ -392,22 +264,15 @@ pub struct SServiceBeaconNotificationOverride {
 }
 
 impl Pooled for SServiceBeaconNotificationOverride {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.servicebeacon.sservice_beacon_notification_override
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.servicebeacon.sservice_beacon_notification_override
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.servicebeacon.sservice_beacon_notification_override }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.servicebeacon.sservice_beacon_notification_override }
 }
 
 impl<'a> Extract<'a> for SServiceBeaconNotificationOverride {
     const TYPE_NAME: &'static str = "SServiceBeaconNotificationOverride";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            message: inst
-                .get_str("message")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
+            message: inst.get_str("message").map(LocaleKey::from).unwrap_or_default(),
         }
     }
 }
@@ -420,22 +285,15 @@ pub struct SServiceBeaconCreatorParams {
 }
 
 impl Pooled for SServiceBeaconCreatorParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.servicebeacon.sservice_beacon_creator_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.servicebeacon.sservice_beacon_creator_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.servicebeacon.sservice_beacon_creator_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.servicebeacon.sservice_beacon_creator_params }
 }
 
 impl<'a> Extract<'a> for SServiceBeaconCreatorParams {
     const TYPE_NAME: &'static str = "SServiceBeaconCreatorParams";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            mission_entry: inst
-                .get("missionEntry")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
+            mission_entry: inst.get("missionEntry").and_then(|v| v.as_record_ref()).map(|r| r.guid),
         }
     }
 }
@@ -451,12 +309,8 @@ pub struct SServiceBeaconDifficultyEntry {
 }
 
 impl Pooled for SServiceBeaconDifficultyEntry {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.servicebeacon.sservice_beacon_difficulty_entry
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.servicebeacon.sservice_beacon_difficulty_entry
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.servicebeacon.sservice_beacon_difficulty_entry }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.servicebeacon.sservice_beacon_difficulty_entry }
 }
 
 impl<'a> Extract<'a> for SServiceBeaconDifficultyEntry {
@@ -464,19 +318,9 @@ impl<'a> Extract<'a> for SServiceBeaconDifficultyEntry {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             difficulty: inst.get_i32("difficulty").unwrap_or_default(),
-            mission_entry: inst
-                .get("missionEntry")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            beacon_detected_notification_override: match inst
-                .get("beaconDetectedNotificationOverride")
-            {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<SServiceBeaconNotificationOverride>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+            mission_entry: inst.get("missionEntry").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            beacon_detected_notification_override: match inst.get("beaconDetectedNotificationOverride") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SServiceBeaconNotificationOverride>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
         }
@@ -491,42 +335,20 @@ pub struct SServiceBeaconCreatorParamsWithDifficulty {
 }
 
 impl Pooled for SServiceBeaconCreatorParamsWithDifficulty {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .servicebeacon
-            .sservice_beacon_creator_params_with_difficulty
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .servicebeacon
-            .sservice_beacon_creator_params_with_difficulty
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.servicebeacon.sservice_beacon_creator_params_with_difficulty }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.servicebeacon.sservice_beacon_creator_params_with_difficulty }
 }
 
 impl<'a> Extract<'a> for SServiceBeaconCreatorParamsWithDifficulty {
     const TYPE_NAME: &'static str = "SServiceBeaconCreatorParamsWithDifficulty";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            mission_entries_by_difficulty: inst
-                .get_array("missionEntriesByDifficulty")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<SServiceBeaconDifficultyEntry>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => {
-                            Some(b.alloc_nested::<SServiceBeaconDifficultyEntry>(
-                                b.db.instance(r.struct_index, r.instance_index),
-                                true,
-                            ))
-                        }
+            mission_entries_by_difficulty: inst.get_array("missionEntriesByDifficulty")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<SServiceBeaconDifficultyEntry>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<SServiceBeaconDifficultyEntry>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
         }
     }
@@ -551,49 +373,28 @@ pub struct ServiceBeaconBaseParams {
 }
 
 impl Pooled for ServiceBeaconBaseParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.servicebeacon.service_beacon_base_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.servicebeacon.service_beacon_base_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.servicebeacon.service_beacon_base_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.servicebeacon.service_beacon_base_params }
 }
 
 impl<'a> Extract<'a> for ServiceBeaconBaseParams {
     const TYPE_NAME: &'static str = "ServiceBeaconBaseParams";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            service_beacon_type: EServiceBeaconType::from_dcb_str(
-                inst.get_str("serviceBeaconType").unwrap_or(""),
-            ),
-            service_beacon_name: inst
-                .get_str("serviceBeaconName")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
+            service_beacon_type: EServiceBeaconType::from_dcb_str(inst.get_str("serviceBeaconType").unwrap_or("")),
+            service_beacon_name: inst.get_str("serviceBeaconName").map(LocaleKey::from).unwrap_or_default(),
             beacon_tax_percentage: inst.get_i32("beaconTaxPercentage").unwrap_or_default(),
             beacon_max_payment_amount: inst.get_i32("beaconMaxPaymentAmount").unwrap_or_default(),
             npc_requester_name_def: match inst.get("npcRequesterNameDef") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<MissionPropertyValue_AIName>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<MissionPropertyValue_AIName>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             player_creator_params: match inst.get("playerCreatorParams") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<SServiceBeaconCreatorParams>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SServiceBeaconCreatorParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             npc_creator_params: match inst.get("npcCreatorParams") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(SServiceBeaconCreatorParamsBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(SServiceBeaconCreatorParamsBasePtr::from_ref(b, r)),
                 _ => None,
             },
         }
@@ -628,67 +429,34 @@ pub struct PersonalTransportParams {
 }
 
 impl Pooled for PersonalTransportParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.servicebeacon.personal_transport_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.servicebeacon.personal_transport_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.servicebeacon.personal_transport_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.servicebeacon.personal_transport_params }
 }
 
 impl<'a> Extract<'a> for PersonalTransportParams {
     const TYPE_NAME: &'static str = "PersonalTransportParams";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            service_beacon_type: EServiceBeaconType::from_dcb_str(
-                inst.get_str("serviceBeaconType").unwrap_or(""),
-            ),
-            service_beacon_name: inst
-                .get_str("serviceBeaconName")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
+            service_beacon_type: EServiceBeaconType::from_dcb_str(inst.get_str("serviceBeaconType").unwrap_or("")),
+            service_beacon_name: inst.get_str("serviceBeaconName").map(LocaleKey::from).unwrap_or_default(),
             beacon_tax_percentage: inst.get_i32("beaconTaxPercentage").unwrap_or_default(),
             beacon_max_payment_amount: inst.get_i32("beaconMaxPaymentAmount").unwrap_or_default(),
             npc_requester_name_def: match inst.get("npcRequesterNameDef") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<MissionPropertyValue_AIName>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<MissionPropertyValue_AIName>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             player_creator_params: match inst.get("playerCreatorParams") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<SServiceBeaconCreatorParams>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SServiceBeaconCreatorParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             npc_creator_params: match inst.get("npcCreatorParams") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(SServiceBeaconCreatorParamsBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(SServiceBeaconCreatorParamsBasePtr::from_ref(b, r)),
                 _ => None,
             },
-            pick_up_objective_title: inst
-                .get_str("pickUpObjectiveTitle")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
-            pick_up_objective_description: inst
-                .get_str("pickUpObjectiveDescription")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
-            delivery_objective_title: inst
-                .get_str("deliveryObjectiveTitle")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
-            delivery_objective_description: inst
-                .get_str("deliveryObjectiveDescription")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
+            pick_up_objective_title: inst.get_str("pickUpObjectiveTitle").map(LocaleKey::from).unwrap_or_default(),
+            pick_up_objective_description: inst.get_str("pickUpObjectiveDescription").map(LocaleKey::from).unwrap_or_default(),
+            delivery_objective_title: inst.get_str("deliveryObjectiveTitle").map(LocaleKey::from).unwrap_or_default(),
+            delivery_objective_description: inst.get_str("deliveryObjectiveDescription").map(LocaleKey::from).unwrap_or_default(),
         }
     }
 }
@@ -717,59 +485,32 @@ pub struct EscortParams {
 }
 
 impl Pooled for EscortParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.servicebeacon.escort_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.servicebeacon.escort_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.servicebeacon.escort_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.servicebeacon.escort_params }
 }
 
 impl<'a> Extract<'a> for EscortParams {
     const TYPE_NAME: &'static str = "EscortParams";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            service_beacon_type: EServiceBeaconType::from_dcb_str(
-                inst.get_str("serviceBeaconType").unwrap_or(""),
-            ),
-            service_beacon_name: inst
-                .get_str("serviceBeaconName")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
+            service_beacon_type: EServiceBeaconType::from_dcb_str(inst.get_str("serviceBeaconType").unwrap_or("")),
+            service_beacon_name: inst.get_str("serviceBeaconName").map(LocaleKey::from).unwrap_or_default(),
             beacon_tax_percentage: inst.get_i32("beaconTaxPercentage").unwrap_or_default(),
             beacon_max_payment_amount: inst.get_i32("beaconMaxPaymentAmount").unwrap_or_default(),
             npc_requester_name_def: match inst.get("npcRequesterNameDef") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<MissionPropertyValue_AIName>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<MissionPropertyValue_AIName>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             player_creator_params: match inst.get("playerCreatorParams") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<SServiceBeaconCreatorParams>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SServiceBeaconCreatorParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             npc_creator_params: match inst.get("npcCreatorParams") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(SServiceBeaconCreatorParamsBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(SServiceBeaconCreatorParamsBasePtr::from_ref(b, r)),
                 _ => None,
             },
-            objective_title: inst
-                .get_str("objectiveTitle")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
-            objective_description: inst
-                .get_str("objectiveDescription")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
+            objective_title: inst.get_str("objectiveTitle").map(LocaleKey::from).unwrap_or_default(),
+            objective_description: inst.get_str("objectiveDescription").map(LocaleKey::from).unwrap_or_default(),
         }
     }
 }
@@ -798,59 +539,32 @@ pub struct RefuelParams {
 }
 
 impl Pooled for RefuelParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.servicebeacon.refuel_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.servicebeacon.refuel_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.servicebeacon.refuel_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.servicebeacon.refuel_params }
 }
 
 impl<'a> Extract<'a> for RefuelParams {
     const TYPE_NAME: &'static str = "RefuelParams";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            service_beacon_type: EServiceBeaconType::from_dcb_str(
-                inst.get_str("serviceBeaconType").unwrap_or(""),
-            ),
-            service_beacon_name: inst
-                .get_str("serviceBeaconName")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
+            service_beacon_type: EServiceBeaconType::from_dcb_str(inst.get_str("serviceBeaconType").unwrap_or("")),
+            service_beacon_name: inst.get_str("serviceBeaconName").map(LocaleKey::from).unwrap_or_default(),
             beacon_tax_percentage: inst.get_i32("beaconTaxPercentage").unwrap_or_default(),
             beacon_max_payment_amount: inst.get_i32("beaconMaxPaymentAmount").unwrap_or_default(),
             npc_requester_name_def: match inst.get("npcRequesterNameDef") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<MissionPropertyValue_AIName>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<MissionPropertyValue_AIName>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             player_creator_params: match inst.get("playerCreatorParams") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<SServiceBeaconCreatorParams>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SServiceBeaconCreatorParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             npc_creator_params: match inst.get("npcCreatorParams") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(SServiceBeaconCreatorParamsBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(SServiceBeaconCreatorParamsBasePtr::from_ref(b, r)),
                 _ => None,
             },
-            objective_title: inst
-                .get_str("objectiveTitle")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
-            objective_description: inst
-                .get_str("objectiveDescription")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
+            objective_title: inst.get_str("objectiveTitle").map(LocaleKey::from).unwrap_or_default(),
+            objective_description: inst.get_str("objectiveDescription").map(LocaleKey::from).unwrap_or_default(),
         }
     }
 }
@@ -879,59 +593,32 @@ pub struct CombatAssistanceParams {
 }
 
 impl Pooled for CombatAssistanceParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.servicebeacon.combat_assistance_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.servicebeacon.combat_assistance_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.servicebeacon.combat_assistance_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.servicebeacon.combat_assistance_params }
 }
 
 impl<'a> Extract<'a> for CombatAssistanceParams {
     const TYPE_NAME: &'static str = "CombatAssistanceParams";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            service_beacon_type: EServiceBeaconType::from_dcb_str(
-                inst.get_str("serviceBeaconType").unwrap_or(""),
-            ),
-            service_beacon_name: inst
-                .get_str("serviceBeaconName")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
+            service_beacon_type: EServiceBeaconType::from_dcb_str(inst.get_str("serviceBeaconType").unwrap_or("")),
+            service_beacon_name: inst.get_str("serviceBeaconName").map(LocaleKey::from).unwrap_or_default(),
             beacon_tax_percentage: inst.get_i32("beaconTaxPercentage").unwrap_or_default(),
             beacon_max_payment_amount: inst.get_i32("beaconMaxPaymentAmount").unwrap_or_default(),
             npc_requester_name_def: match inst.get("npcRequesterNameDef") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<MissionPropertyValue_AIName>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<MissionPropertyValue_AIName>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             player_creator_params: match inst.get("playerCreatorParams") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<SServiceBeaconCreatorParams>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SServiceBeaconCreatorParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             npc_creator_params: match inst.get("npcCreatorParams") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(SServiceBeaconCreatorParamsBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(SServiceBeaconCreatorParamsBasePtr::from_ref(b, r)),
                 _ => None,
             },
-            objective_title: inst
-                .get_str("objectiveTitle")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
-            objective_description: inst
-                .get_str("objectiveDescription")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
+            objective_title: inst.get_str("objectiveTitle").map(LocaleKey::from).unwrap_or_default(),
+            objective_description: inst.get_str("objectiveDescription").map(LocaleKey::from).unwrap_or_default(),
         }
     }
 }
@@ -960,59 +647,32 @@ pub struct ReviveParams {
 }
 
 impl Pooled for ReviveParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.servicebeacon.revive_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.servicebeacon.revive_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.servicebeacon.revive_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.servicebeacon.revive_params }
 }
 
 impl<'a> Extract<'a> for ReviveParams {
     const TYPE_NAME: &'static str = "ReviveParams";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            service_beacon_type: EServiceBeaconType::from_dcb_str(
-                inst.get_str("serviceBeaconType").unwrap_or(""),
-            ),
-            service_beacon_name: inst
-                .get_str("serviceBeaconName")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
+            service_beacon_type: EServiceBeaconType::from_dcb_str(inst.get_str("serviceBeaconType").unwrap_or("")),
+            service_beacon_name: inst.get_str("serviceBeaconName").map(LocaleKey::from).unwrap_or_default(),
             beacon_tax_percentage: inst.get_i32("beaconTaxPercentage").unwrap_or_default(),
             beacon_max_payment_amount: inst.get_i32("beaconMaxPaymentAmount").unwrap_or_default(),
             npc_requester_name_def: match inst.get("npcRequesterNameDef") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<MissionPropertyValue_AIName>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<MissionPropertyValue_AIName>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             player_creator_params: match inst.get("playerCreatorParams") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<SServiceBeaconCreatorParams>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SServiceBeaconCreatorParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             npc_creator_params: match inst.get("npcCreatorParams") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(SServiceBeaconCreatorParamsBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(SServiceBeaconCreatorParamsBasePtr::from_ref(b, r)),
                 _ => None,
             },
-            objective_title: inst
-                .get_str("objectiveTitle")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
-            objective_description: inst
-                .get_str("objectiveDescription")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
+            objective_title: inst.get_str("objectiveTitle").map(LocaleKey::from).unwrap_or_default(),
+            objective_description: inst.get_str("objectiveDescription").map(LocaleKey::from).unwrap_or_default(),
         }
     }
 }
@@ -1041,59 +701,32 @@ pub struct HealParams {
 }
 
 impl Pooled for HealParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.servicebeacon.heal_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.servicebeacon.heal_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.servicebeacon.heal_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.servicebeacon.heal_params }
 }
 
 impl<'a> Extract<'a> for HealParams {
     const TYPE_NAME: &'static str = "HealParams";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            service_beacon_type: EServiceBeaconType::from_dcb_str(
-                inst.get_str("serviceBeaconType").unwrap_or(""),
-            ),
-            service_beacon_name: inst
-                .get_str("serviceBeaconName")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
+            service_beacon_type: EServiceBeaconType::from_dcb_str(inst.get_str("serviceBeaconType").unwrap_or("")),
+            service_beacon_name: inst.get_str("serviceBeaconName").map(LocaleKey::from).unwrap_or_default(),
             beacon_tax_percentage: inst.get_i32("beaconTaxPercentage").unwrap_or_default(),
             beacon_max_payment_amount: inst.get_i32("beaconMaxPaymentAmount").unwrap_or_default(),
             npc_requester_name_def: match inst.get("npcRequesterNameDef") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<MissionPropertyValue_AIName>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<MissionPropertyValue_AIName>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             player_creator_params: match inst.get("playerCreatorParams") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<SServiceBeaconCreatorParams>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SServiceBeaconCreatorParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             npc_creator_params: match inst.get("npcCreatorParams") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(SServiceBeaconCreatorParamsBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(SServiceBeaconCreatorParamsBasePtr::from_ref(b, r)),
                 _ => None,
             },
-            objective_title: inst
-                .get_str("objectiveTitle")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
-            objective_description: inst
-                .get_str("objectiveDescription")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
+            objective_title: inst.get_str("objectiveTitle").map(LocaleKey::from).unwrap_or_default(),
+            objective_description: inst.get_str("objectiveDescription").map(LocaleKey::from).unwrap_or_default(),
         }
     }
 }
@@ -1105,12 +738,8 @@ pub struct ServiceBeaconParams {
 }
 
 impl Pooled for ServiceBeaconParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.servicebeacon.service_beacon_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.servicebeacon.service_beacon_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.servicebeacon.service_beacon_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.servicebeacon.service_beacon_params }
 }
 
 impl<'a> Extract<'a> for ServiceBeaconParams {
@@ -1118,9 +747,7 @@ impl<'a> Extract<'a> for ServiceBeaconParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             params: match inst.get("params") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(ServiceBeaconBaseParamsPtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(ServiceBeaconBaseParamsPtr::from_ref(b, r)),
                 _ => None,
             },
         }
@@ -1142,29 +769,19 @@ pub struct ServiceBeaconNotificationParams {
 }
 
 impl Pooled for ServiceBeaconNotificationParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.servicebeacon.service_beacon_notification_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.servicebeacon.service_beacon_notification_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.servicebeacon.service_beacon_notification_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.servicebeacon.service_beacon_notification_params }
 }
 
 impl<'a> Extract<'a> for ServiceBeaconNotificationParams {
     const TYPE_NAME: &'static str = "ServiceBeaconNotificationParams";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            message: inst
-                .get_str("message")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
+            message: inst.get_str("message").map(LocaleKey::from).unwrap_or_default(),
             screen_timer: inst.get_f32("screenTimer").unwrap_or_default(),
             hurry_screen_timer: inst.get_f32("hurryScreenTimer").unwrap_or_default(),
             blocking: inst.get_bool("blocking").unwrap_or_default(),
-            dock_notification_params_override: inst
-                .get("dockNotificationParamsOverride")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
+            dock_notification_params_override: inst.get("dockNotificationParamsOverride").and_then(|v| v.as_record_ref()).map(|r| r.guid),
         }
     }
 }
@@ -1246,239 +863,90 @@ pub struct ServiceBeaconGlobalParams {
 }
 
 impl Pooled for ServiceBeaconGlobalParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.servicebeacon.service_beacon_global_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.servicebeacon.service_beacon_global_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.servicebeacon.service_beacon_global_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.servicebeacon.service_beacon_global_params }
 }
 
 impl<'a> Extract<'a> for ServiceBeaconGlobalParams {
     const TYPE_NAME: &'static str = "ServiceBeaconGlobalParams";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            quantum_travel_point_class: inst
-                .get("quantumTravelPointClass")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            mission_type_record: inst
-                .get("missionTypeRecord")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            personal_transport_detected_notification: match inst
-                .get("personalTransportDetectedNotification")
-            {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<ServiceBeaconNotificationParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+            quantum_travel_point_class: inst.get("quantumTravelPointClass").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            mission_type_record: inst.get("missionTypeRecord").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            personal_transport_detected_notification: match inst.get("personalTransportDetectedNotification") {
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<ServiceBeaconNotificationParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            combat_assistance_detected_notification: match inst
-                .get("combatAssistanceDetectedNotification")
-            {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<ServiceBeaconNotificationParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+            combat_assistance_detected_notification: match inst.get("combatAssistanceDetectedNotification") {
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<ServiceBeaconNotificationParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             escort_detected_notification: match inst.get("escortDetectedNotification") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<ServiceBeaconNotificationParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<ServiceBeaconNotificationParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             refuel_detected_notification: match inst.get("refuelDetectedNotification") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<ServiceBeaconNotificationParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<ServiceBeaconNotificationParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             revive_detected_notification: match inst.get("reviveDetectedNotification") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<ServiceBeaconNotificationParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<ServiceBeaconNotificationParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             heal_detected_notification: match inst.get("healDetectedNotification") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<ServiceBeaconNotificationParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<ServiceBeaconNotificationParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             contract_accepted_notification: match inst.get("contractAcceptedNotification") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<ServiceBeaconNotificationParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<ServiceBeaconNotificationParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             contract_cancelled_notification: match inst.get("contractCancelledNotification") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<ServiceBeaconNotificationParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<ServiceBeaconNotificationParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            contract_no_longer_available_notification: match inst
-                .get("contractNoLongerAvailableNotification")
-            {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<ServiceBeaconNotificationParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+            contract_no_longer_available_notification: match inst.get("contractNoLongerAvailableNotification") {
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<ServiceBeaconNotificationParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            contract_completed_initiator_notification: match inst
-                .get("contractCompletedInitiatorNotification")
-            {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<ServiceBeaconNotificationParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+            contract_completed_initiator_notification: match inst.get("contractCompletedInitiatorNotification") {
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<ServiceBeaconNotificationParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            contract_completed_provider_notification: match inst
-                .get("contractCompletedProviderNotification")
-            {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<ServiceBeaconNotificationParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+            contract_completed_provider_notification: match inst.get("contractCompletedProviderNotification") {
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<ServiceBeaconNotificationParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             provider_within_range_notification: match inst.get("providerWithinRangeNotification") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<ServiceBeaconNotificationParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<ServiceBeaconNotificationParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            spoofed_contract_offered_notification: match inst
-                .get("spoofedContractOfferedNotification")
-            {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<ServiceBeaconNotificationParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+            spoofed_contract_offered_notification: match inst.get("spoofedContractOfferedNotification") {
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<ServiceBeaconNotificationParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            contract_provider_name: inst
-                .get_str("contractProviderName")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
-            vehicle_location_chosen_for_personal_transport: inst
-                .get_str("vehicleLocationChosenForPersonalTransport")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
-            provider_name_token: inst
-                .get_str("providerNameToken")
-                .map(String::from)
-                .unwrap_or_default(),
-            initiator_name_token: inst
-                .get_str("initiatorNameToken")
-                .map(String::from)
-                .unwrap_or_default(),
-            selected_destination_token: inst
-                .get_str("selectedDestinationToken")
-                .map(String::from)
-                .unwrap_or_default(),
-            contract_type_token: inst
-                .get_str("contractTypeToken")
-                .map(String::from)
-                .unwrap_or_default(),
-            distance_to_initiator_token: inst
-                .get_str("distanceToInitiatorToken")
-                .map(String::from)
-                .unwrap_or_default(),
-            initiator_location_token: inst
-                .get_str("initiatorLocationToken")
-                .map(String::from)
-                .unwrap_or_default(),
-            payment_amount_token: inst
-                .get_str("paymentAmountToken")
-                .map(String::from)
-                .unwrap_or_default(),
-            open_space_location_name: inst
-                .get_str("openSpaceLocationName")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
-            all_reputations_label: inst
-                .get_str("allReputationsLabel")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
-            one_star_reputation_label: inst
-                .get_str("oneStarReputationLabel")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
-            two_star_reputation_label: inst
-                .get_str("twoStarReputationLabel")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
-            three_star_reputation_label: inst
-                .get_str("threeStarReputationLabel")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
-            four_star_reputation_label: inst
-                .get_str("fourStarReputationLabel")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
-            five_star_reputation_label: inst
-                .get_str("fiveStarReputationLabel")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
-            invalid_type_error_message: inst
-                .get_str("invalidTypeErrorMessage")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
-            invalid_reputation_error_message: inst
-                .get_str("invalidReputationErrorMessage")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
-            price_is_zero_error_message: inst
-                .get_str("priceIsZeroErrorMessage")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
-            insufficient_funds_error_message: inst
-                .get_str("insufficientFundsErrorMessage")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
-            invalid_location_selected_error_message: inst
-                .get_str("invalidLocationSelectedErrorMessage")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
+            contract_provider_name: inst.get_str("contractProviderName").map(LocaleKey::from).unwrap_or_default(),
+            vehicle_location_chosen_for_personal_transport: inst.get_str("vehicleLocationChosenForPersonalTransport").map(LocaleKey::from).unwrap_or_default(),
+            provider_name_token: inst.get_str("providerNameToken").map(String::from).unwrap_or_default(),
+            initiator_name_token: inst.get_str("initiatorNameToken").map(String::from).unwrap_or_default(),
+            selected_destination_token: inst.get_str("selectedDestinationToken").map(String::from).unwrap_or_default(),
+            contract_type_token: inst.get_str("contractTypeToken").map(String::from).unwrap_or_default(),
+            distance_to_initiator_token: inst.get_str("distanceToInitiatorToken").map(String::from).unwrap_or_default(),
+            initiator_location_token: inst.get_str("initiatorLocationToken").map(String::from).unwrap_or_default(),
+            payment_amount_token: inst.get_str("paymentAmountToken").map(String::from).unwrap_or_default(),
+            open_space_location_name: inst.get_str("openSpaceLocationName").map(LocaleKey::from).unwrap_or_default(),
+            all_reputations_label: inst.get_str("allReputationsLabel").map(LocaleKey::from).unwrap_or_default(),
+            one_star_reputation_label: inst.get_str("oneStarReputationLabel").map(LocaleKey::from).unwrap_or_default(),
+            two_star_reputation_label: inst.get_str("twoStarReputationLabel").map(LocaleKey::from).unwrap_or_default(),
+            three_star_reputation_label: inst.get_str("threeStarReputationLabel").map(LocaleKey::from).unwrap_or_default(),
+            four_star_reputation_label: inst.get_str("fourStarReputationLabel").map(LocaleKey::from).unwrap_or_default(),
+            five_star_reputation_label: inst.get_str("fiveStarReputationLabel").map(LocaleKey::from).unwrap_or_default(),
+            invalid_type_error_message: inst.get_str("invalidTypeErrorMessage").map(LocaleKey::from).unwrap_or_default(),
+            invalid_reputation_error_message: inst.get_str("invalidReputationErrorMessage").map(LocaleKey::from).unwrap_or_default(),
+            price_is_zero_error_message: inst.get_str("priceIsZeroErrorMessage").map(LocaleKey::from).unwrap_or_default(),
+            insufficient_funds_error_message: inst.get_str("insufficientFundsErrorMessage").map(LocaleKey::from).unwrap_or_default(),
+            invalid_location_selected_error_message: inst.get_str("invalidLocationSelectedErrorMessage").map(LocaleKey::from).unwrap_or_default(),
         }
     }
 }
+

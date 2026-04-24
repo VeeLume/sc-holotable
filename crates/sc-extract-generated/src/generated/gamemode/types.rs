@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -25,12 +25,8 @@ pub struct SEAPlayerLoadoutSnapshotEntry {
 }
 
 impl Pooled for SEAPlayerLoadoutSnapshotEntry {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.gamemode.seaplayer_loadout_snapshot_entry
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.gamemode.seaplayer_loadout_snapshot_entry
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.gamemode.seaplayer_loadout_snapshot_entry }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.gamemode.seaplayer_loadout_snapshot_entry }
 }
 
 impl<'a> Extract<'a> for SEAPlayerLoadoutSnapshotEntry {
@@ -38,9 +34,7 @@ impl<'a> Extract<'a> for SEAPlayerLoadoutSnapshotEntry {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             loadout: match inst.get("loadout") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(SItemPortLoadoutBaseParamsPtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(SItemPortLoadoutBaseParamsPtr::from_ref(b, r)),
                 _ => None,
             },
         }
@@ -54,12 +48,8 @@ pub struct SEAPlayerLoadoutSnapshots {
 }
 
 impl Pooled for SEAPlayerLoadoutSnapshots {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.gamemode.seaplayer_loadout_snapshots
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.gamemode.seaplayer_loadout_snapshots
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.gamemode.seaplayer_loadout_snapshots }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.gamemode.seaplayer_loadout_snapshots }
 }
 
 impl<'a> Extract<'a> for SEAPlayerLoadoutSnapshots {
@@ -67,12 +57,7 @@ impl<'a> Extract<'a> for SEAPlayerLoadoutSnapshots {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             entries: match inst.get("entries") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<SEAPlayerLoadoutSnapshotEntry>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SEAPlayerLoadoutSnapshotEntry>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
@@ -86,12 +71,8 @@ pub struct EntityDefaultLoadoutParams {
 }
 
 impl Pooled for EntityDefaultLoadoutParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.gamemode.entity_default_loadout_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.gamemode.entity_default_loadout_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.gamemode.entity_default_loadout_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.gamemode.entity_default_loadout_params }
 }
 
 impl<'a> Extract<'a> for EntityDefaultLoadoutParams {
@@ -99,9 +80,7 @@ impl<'a> Extract<'a> for EntityDefaultLoadoutParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             loadout: match inst.get("loadout") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(SItemPortLoadoutBaseParamsPtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(SItemPortLoadoutBaseParamsPtr::from_ref(b, r)),
                 _ => None,
             },
         }
@@ -119,12 +98,8 @@ pub struct PlayerShipRespawnShipInfo {
 }
 
 impl Pooled for PlayerShipRespawnShipInfo {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.gamemode.player_ship_respawn_ship_info
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.gamemode.player_ship_respawn_ship_info
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.gamemode.player_ship_respawn_ship_info }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.gamemode.player_ship_respawn_ship_info }
 }
 
 impl<'a> Extract<'a> for PlayerShipRespawnShipInfo {
@@ -145,37 +120,22 @@ pub struct PlayerShipRespawn {
 }
 
 impl Pooled for PlayerShipRespawn {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.gamemode.player_ship_respawn
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.gamemode.player_ship_respawn
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.gamemode.player_ship_respawn }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.gamemode.player_ship_respawn }
 }
 
 impl<'a> Extract<'a> for PlayerShipRespawn {
     const TYPE_NAME: &'static str = "PlayerShipRespawn";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            ships: inst
-                .get_array("Ships")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<PlayerShipRespawnShipInfo>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => Some(b.alloc_nested::<PlayerShipRespawnShipInfo>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
+            ships: inst.get_array("Ships")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<PlayerShipRespawnShipInfo>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<PlayerShipRespawnShipInfo>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
         }
     }
 }
+

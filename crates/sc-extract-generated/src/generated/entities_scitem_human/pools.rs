@@ -15,8 +15,7 @@ use super::super::*;
 #[derive(Default)]
 pub struct EntitiesScitemHumanPools {
     pub commodity_crate_component_params: Vec<Option<CommodityCrateComponentParams>>,
-    pub mining_shop_provider_entity_component_params:
-        Vec<Option<MiningShopProviderEntityComponentParams>>,
+    pub mining_shop_provider_entity_component_params: Vec<Option<MiningShopProviderEntityComponentParams>>,
     pub sdespawn_rule_on_fall_below: Vec<Option<SDespawnRule_OnFallBelow>>,
     pub delivery_locker_component_params: Vec<Option<DeliveryLockerComponentParams>>,
     pub class_entity_filter: Vec<Option<ClassEntityFilter>>,

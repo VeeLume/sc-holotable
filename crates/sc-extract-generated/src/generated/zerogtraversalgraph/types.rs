@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -37,12 +37,8 @@ pub struct ZeroGTraversalConnection {
 }
 
 impl Pooled for ZeroGTraversalConnection {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.zerogtraversalgraph.zero_gtraversal_connection
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.zerogtraversalgraph.zero_gtraversal_connection
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.zerogtraversalgraph.zero_gtraversal_connection }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.zerogtraversalgraph.zero_gtraversal_connection }
 }
 
 impl<'a> Extract<'a> for ZeroGTraversalConnection {
@@ -51,20 +47,12 @@ impl<'a> Extract<'a> for ZeroGTraversalConnection {
         Self {
             wait_untill_finished: inst.get_bool("waitUntillFinished").unwrap_or_default(),
             delay_seconds: inst.get_f32("delaySeconds").unwrap_or_default(),
-            wait_for_event: inst
-                .get_str("waitForEvent")
-                .map(String::from)
-                .unwrap_or_default(),
+            wait_for_event: inst.get_str("waitForEvent").map(String::from).unwrap_or_default(),
             reset_view_on_transition: inst.get_bool("resetViewOnTransition").unwrap_or_default(),
             play_exit_animation: inst.get_bool("playExitAnimation").unwrap_or_default(),
             allow_exit_yield: inst.get_bool("allowExitYield").unwrap_or_default(),
             next_state: match inst.get("nextState") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<ZeroGTraversalState>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<ZeroGTraversalState>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
         }
@@ -90,12 +78,8 @@ pub struct ZeroGTraversalState {
 }
 
 impl Pooled for ZeroGTraversalState {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.zerogtraversalgraph.zero_gtraversal_state
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.zerogtraversalgraph.zero_gtraversal_state
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.zerogtraversalgraph.zero_gtraversal_state }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.zerogtraversalgraph.zero_gtraversal_state }
 }
 
 impl<'a> Extract<'a> for ZeroGTraversalState {
@@ -103,35 +87,17 @@ impl<'a> Extract<'a> for ZeroGTraversalState {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             r#type: ZeroGTraversalAction::from_dcb_str(inst.get_str("type").unwrap_or("")),
-            mannequin_tags: inst
-                .get_str("mannequinTags")
-                .map(String::from)
-                .unwrap_or_default(),
-            mannequin_fragment: inst
-                .get_str("mannequinFragment")
-                .map(String::from)
-                .unwrap_or_default(),
+            mannequin_tags: inst.get_str("mannequinTags").map(String::from).unwrap_or_default(),
+            mannequin_fragment: inst.get_str("mannequinFragment").map(String::from).unwrap_or_default(),
             play_enter_animation: inst.get_bool("playEnterAnimation").unwrap_or_default(),
             can_turn_in_state: inst.get_bool("canTurnInState").unwrap_or_default(),
             use_anim_motion_control: inst.get_bool("useAnimMotionControl").unwrap_or_default(),
-            connections: inst
-                .get_array("connections")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<ZeroGTraversalConnection>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => Some(b.alloc_nested::<ZeroGTraversalConnection>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
+            connections: inst.get_array("connections")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<ZeroGTraversalConnection>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<ZeroGTraversalConnection>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
         }
     }
@@ -144,37 +110,22 @@ pub struct ZeroGTraversalGraph {
 }
 
 impl Pooled for ZeroGTraversalGraph {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.zerogtraversalgraph.zero_gtraversal_graph
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.zerogtraversalgraph.zero_gtraversal_graph
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.zerogtraversalgraph.zero_gtraversal_graph }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.zerogtraversalgraph.zero_gtraversal_graph }
 }
 
 impl<'a> Extract<'a> for ZeroGTraversalGraph {
     const TYPE_NAME: &'static str = "ZeroGTraversalGraph";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            traversal_states: inst
-                .get_array("traversalStates")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<ZeroGTraversalState>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => Some(b.alloc_nested::<ZeroGTraversalState>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
+            traversal_states: inst.get_array("traversalStates")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<ZeroGTraversalState>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<ZeroGTraversalState>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
         }
     }
 }
+

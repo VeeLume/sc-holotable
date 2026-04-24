@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -43,12 +43,8 @@ pub struct QTERequestConfig {
 }
 
 impl Pooled for QTERequestConfig {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.qteconfigs.qterequest_config
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.qteconfigs.qterequest_config
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.qteconfigs.qterequest_config }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.qteconfigs.qterequest_config }
 }
 
 impl<'a> Extract<'a> for QTERequestConfig {
@@ -57,28 +53,18 @@ impl<'a> Extract<'a> for QTERequestConfig {
         Self {
             block_actions: inst.get_bool("blockActions").unwrap_or_default(),
             action_name: match inst.get("actionName") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<InputAction>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<InputAction>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             total_press_num: inst.get_i32("totalPressNum").unwrap_or_default(),
             max_qtetime: inst.get_f32("maxQTETime").unwrap_or_default(),
             decay_grace_period: inst.get_f32("decayGracePeriod").unwrap_or_default(),
             decay_per_second: inst.get_f32("decayPerSecond").unwrap_or_default(),
-            giveway_behaviour: EQTEPriorityGivewayBehaviour::from_dcb_str(
-                inst.get_str("givewayBehaviour").unwrap_or(""),
-            ),
-            owner_name: inst
-                .get_str("ownerName")
-                .map(String::from)
-                .unwrap_or_default(),
+            giveway_behaviour: EQTEPriorityGivewayBehaviour::from_dcb_str(inst.get_str("givewayBehaviour").unwrap_or("")),
+            owner_name: inst.get_str("ownerName").map(String::from).unwrap_or_default(),
             qtepriority: EQTEPriority::from_dcb_str(inst.get_str("QTEPriority").unwrap_or("")),
-            input_prompt_config: inst
-                .get("inputPromptConfig")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
+            input_prompt_config: inst.get("inputPromptConfig").and_then(|v| v.as_record_ref()).map(|r| r.guid),
         }
     }
 }
+

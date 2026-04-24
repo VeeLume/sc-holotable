@@ -19,8 +19,7 @@ pub struct SglobalsalvagerepairbeamparamsPools {
     pub sitem_type_filter: Vec<Option<SItemTypeFilter>>,
     pub ssalvage_repair_highlight_params: Vec<Option<SSalvageRepairHighlightParams>>,
     pub ssalvage_repair_card_params: Vec<Option<SSalvageRepairCardParams>>,
-    pub ssalvage_repair_item_type_localization_pair:
-        Vec<Option<SSalvageRepairItemTypeLocalizationPair>>,
+    pub ssalvage_repair_item_type_localization_pair: Vec<Option<SSalvageRepairItemTypeLocalizationPair>>,
     pub ssalvage_repair_localization_params: Vec<Option<SSalvageRepairLocalizationParams>>,
     pub ssalvage_repair_material_params: Vec<Option<SSalvageRepairMaterialParams>>,
     pub ssalvage_repair_audio_params: Vec<Option<SSalvageRepairAudioParams>>,

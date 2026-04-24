@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -44,43 +44,27 @@ pub struct SEffectInputParamsParticle {
 }
 
 impl Pooled for SEffectInputParamsParticle {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_scitem_doors.seffect_input_params_particle
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_scitem_doors.seffect_input_params_particle
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_doors.seffect_input_params_particle }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_doors.seffect_input_params_particle }
 }
 
 impl<'a> Extract<'a> for SEffectInputParamsParticle {
     const TYPE_NAME: &'static str = "SEffectInputParamsParticle";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            var_name: inst
-                .get_str("VarName")
-                .map(String::from)
-                .unwrap_or_default(),
-            param_name: inst
-                .get_str("ParamName")
-                .map(String::from)
-                .unwrap_or_default(),
+            var_name: inst.get_str("VarName").map(String::from).unwrap_or_default(),
+            param_name: inst.get_str("ParamName").map(String::from).unwrap_or_default(),
             min_range: inst.get_f32("MinRange").unwrap_or_default(),
             max_range: inst.get_f32("MaxRange").unwrap_or_default(),
             multiplier: inst.get_f32("Multiplier").unwrap_or_default(),
             lerp_time: inst.get_f32("LerpTime").unwrap_or_default(),
             vec_goal: match inst.get("VecGoal") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             default_value: inst.get_f32("DefaultValue").unwrap_or_default(),
             axis: match inst.get("Axis") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             r#type: EParticleInputs::from_dcb_str(inst.get_str("Type").unwrap_or("")),
@@ -122,12 +106,8 @@ pub struct SEffectParamParticle {
 }
 
 impl Pooled for SEffectParamParticle {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_scitem_doors.seffect_param_particle
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_scitem_doors.seffect_param_particle
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_doors.seffect_param_particle }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_doors.seffect_param_particle }
 }
 
 impl<'a> Extract<'a> for SEffectParamParticle {
@@ -138,10 +118,7 @@ impl<'a> Extract<'a> for SEffectParamParticle {
             tag: inst.get_str("tag").map(String::from).unwrap_or_default(),
             helper: inst.get_str("Helper").map(String::from).unwrap_or_default(),
             offset: match inst.get("Offset") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<QuatT>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<QuatT>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             is_looped: inst.get_bool("IsLooped").unwrap_or_default(),
@@ -153,30 +130,15 @@ impl<'a> Extract<'a> for SEffectParamParticle {
             context_flags: inst.get_u32("ContextFlags").unwrap_or_default(),
             multi_position: inst.get_bool("MultiPosition").unwrap_or_default(),
             axis: match inst.get("Axis") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            input_variables: inst
-                .get_array("InputVariables")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<SEffectInputParamsParticle>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => Some(b.alloc_nested::<SEffectInputParamsParticle>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
+            input_variables: inst.get_array("InputVariables")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<SEffectInputParamsParticle>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<SEffectInputParamsParticle>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
         }
     }
@@ -194,49 +156,25 @@ pub struct SEffectParamsNodeParticle {
 }
 
 impl Pooled for SEffectParamsNodeParticle {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_scitem_doors.seffect_params_node_particle
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_scitem_doors.seffect_params_node_particle
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_doors.seffect_params_node_particle }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_doors.seffect_params_node_particle }
 }
 
 impl<'a> Extract<'a> for SEffectParamsNodeParticle {
     const TYPE_NAME: &'static str = "SEffectParamsNodeParticle";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            geom_tags: inst
-                .get_str("GeomTags")
-                .map(String::from)
-                .unwrap_or_default(),
+            geom_tags: inst.get_str("GeomTags").map(String::from).unwrap_or_default(),
             particle_params: match inst.get("ParticleParams") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<SEffectParamParticle>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SEffectParamParticle>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            sub_nodes: inst
-                .get_array("SubNodes")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<SEffectParamsNodeParticle>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => Some(b.alloc_nested::<SEffectParamsNodeParticle>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
+            sub_nodes: inst.get_array("SubNodes")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<SEffectParamsNodeParticle>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<SEffectParamsNodeParticle>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
         }
     }
@@ -244,21 +182,19 @@ impl<'a> Extract<'a> for SEffectParamsNodeParticle {
 
 /// DCB type: `GeomEntityGroupParams`
 /// Inherits from: `DataForgeComponentParams`
-pub struct GeomEntityGroupParams {}
+pub struct GeomEntityGroupParams {
+}
 
 impl Pooled for GeomEntityGroupParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_scitem_doors.geom_entity_group_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_scitem_doors.geom_entity_group_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_doors.geom_entity_group_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_doors.geom_entity_group_params }
 }
 
 impl<'a> Extract<'a> for GeomEntityGroupParams {
     const TYPE_NAME: &'static str = "GeomEntityGroupParams";
     fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {}
+        Self {
+        }
     }
 }
 
@@ -270,46 +206,34 @@ pub struct SetDoorPowerStateEvent {
 }
 
 impl Pooled for SetDoorPowerStateEvent {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_scitem_doors.set_door_power_state_event
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_scitem_doors.set_door_power_state_event
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_doors.set_door_power_state_event }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_doors.set_door_power_state_event }
 }
 
 impl<'a> Extract<'a> for SetDoorPowerStateEvent {
     const TYPE_NAME: &'static str = "SetDoorPowerStateEvent";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            new_door_power_state: EDoorPoweredState::from_dcb_str(
-                inst.get_str("newDoorPowerState").unwrap_or(""),
-            ),
+            new_door_power_state: EDoorPoweredState::from_dcb_str(inst.get_str("newDoorPowerState").unwrap_or("")),
         }
     }
 }
 
 /// DCB type: `SEntityTraversingNodeTypeZoneHostEntity`
 /// Inherits from: `SEntityTraversingNodeTypeParams`
-pub struct SEntityTraversingNodeTypeZoneHostEntity {}
+pub struct SEntityTraversingNodeTypeZoneHostEntity {
+}
 
 impl Pooled for SEntityTraversingNodeTypeZoneHostEntity {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_scitem_doors
-            .sentity_traversing_node_type_zone_host_entity
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_scitem_doors
-            .sentity_traversing_node_type_zone_host_entity
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_doors.sentity_traversing_node_type_zone_host_entity }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_doors.sentity_traversing_node_type_zone_host_entity }
 }
 
 impl<'a> Extract<'a> for SEntityTraversingNodeTypeZoneHostEntity {
     const TYPE_NAME: &'static str = "SEntityTraversingNodeTypeZoneHostEntity";
     fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {}
+        Self {
+        }
     }
 }
 
@@ -333,56 +257,25 @@ pub struct SHydraulicPumpableComponentParams {
 }
 
 impl Pooled for SHydraulicPumpableComponentParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_scitem_doors
-            .shydraulic_pumpable_component_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_scitem_doors
-            .shydraulic_pumpable_component_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_doors.shydraulic_pumpable_component_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_doors.shydraulic_pumpable_component_params }
 }
 
 impl<'a> Extract<'a> for SHydraulicPumpableComponentParams {
     const TYPE_NAME: &'static str = "SHydraulicPumpableComponentParams";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            pump_percentage_per_second_per_lever: inst
-                .get_f32("PumpPercentagePerSecondPerLever")
-                .unwrap_or_default(),
-            decay_percentage_per_second: inst
-                .get_f32("DecayPercentagePerSecond")
-                .unwrap_or_default(),
-            enabled_interaction_when_fully_charged: match inst
-                .get("EnabledInteractionWhenFullyCharged")
-            {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<SSharedInteractionParams>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+            pump_percentage_per_second_per_lever: inst.get_f32("PumpPercentagePerSecondPerLever").unwrap_or_default(),
+            decay_percentage_per_second: inst.get_f32("DecayPercentagePerSecond").unwrap_or_default(),
+            enabled_interaction_when_fully_charged: match inst.get("EnabledInteractionWhenFullyCharged") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SSharedInteractionParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
-            start_charging_effect_tag: inst
-                .get("StartChargingEffectTag")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            start_decaying_effect_tag: inst
-                .get("StartDecayingEffectTag")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            finish_charging_effect_tag: inst
-                .get("FinishChargingEffectTag")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
+            start_charging_effect_tag: inst.get("StartChargingEffectTag").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            start_decaying_effect_tag: inst.get("StartDecayingEffectTag").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            finish_charging_effect_tag: inst.get("FinishChargingEffectTag").and_then(|v| v.as_record_ref()).map(|r| r.guid),
             current_charge_rtpc: match inst.get("CurrentChargeRTPC") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
@@ -399,16 +292,8 @@ pub struct SInstancedInteriorGatewayParams {
 }
 
 impl Pooled for SInstancedInteriorGatewayParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_scitem_doors
-            .sinstanced_interior_gateway_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_scitem_doors
-            .sinstanced_interior_gateway_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_doors.sinstanced_interior_gateway_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_doors.sinstanced_interior_gateway_params }
 }
 
 impl<'a> Extract<'a> for SInstancedInteriorGatewayParams {
@@ -416,10 +301,7 @@ impl<'a> Extract<'a> for SInstancedInteriorGatewayParams {
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
             gateway_size: inst.get_i32("gatewaySize").unwrap_or_default(),
-            instance: inst
-                .get("instance")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
+            instance: inst.get("instance").and_then(|v| v.as_record_ref()).map(|r| r.guid),
         }
     }
 }
@@ -432,16 +314,8 @@ pub struct InteractionConditionEligibleForPrisonRelease {
 }
 
 impl Pooled for InteractionConditionEligibleForPrisonRelease {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_scitem_doors
-            .interaction_condition_eligible_for_prison_release
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_scitem_doors
-            .interaction_condition_eligible_for_prison_release
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_doors.interaction_condition_eligible_for_prison_release }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_doors.interaction_condition_eligible_for_prison_release }
 }
 
 impl<'a> Extract<'a> for InteractionConditionEligibleForPrisonRelease {
@@ -449,12 +323,7 @@ impl<'a> Extract<'a> for InteractionConditionEligibleForPrisonRelease {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             condition_display: match inst.get("conditionDisplay") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<ConditionDisplayParams>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<ConditionDisplayParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
         }
@@ -469,16 +338,8 @@ pub struct InteractionConditionAccessReservedRoom {
 }
 
 impl Pooled for InteractionConditionAccessReservedRoom {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_scitem_doors
-            .interaction_condition_access_reserved_room
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_scitem_doors
-            .interaction_condition_access_reserved_room
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_doors.interaction_condition_access_reserved_room }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_doors.interaction_condition_access_reserved_room }
 }
 
 impl<'a> Extract<'a> for InteractionConditionAccessReservedRoom {
@@ -486,12 +347,7 @@ impl<'a> Extract<'a> for InteractionConditionAccessReservedRoom {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             condition_display: match inst.get("conditionDisplay") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<ConditionDisplayParams>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<ConditionDisplayParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
         }
@@ -508,16 +364,8 @@ pub struct InteractionConditionPlayerInFront {
 }
 
 impl Pooled for InteractionConditionPlayerInFront {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_scitem_doors
-            .interaction_condition_player_in_front
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_scitem_doors
-            .interaction_condition_player_in_front
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_doors.interaction_condition_player_in_front }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_doors.interaction_condition_player_in_front }
 }
 
 impl<'a> Extract<'a> for InteractionConditionPlayerInFront {
@@ -525,19 +373,11 @@ impl<'a> Extract<'a> for InteractionConditionPlayerInFront {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             condition_display: match inst.get("conditionDisplay") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<ConditionDisplayParams>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<ConditionDisplayParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             front_direction: match inst.get("frontDirection") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
@@ -552,16 +392,8 @@ pub struct SetDoorAutoCloseGameplayTrigger {
 }
 
 impl Pooled for SetDoorAutoCloseGameplayTrigger {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_scitem_doors
-            .set_door_auto_close_gameplay_trigger
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_scitem_doors
-            .set_door_auto_close_gameplay_trigger
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_doors.set_door_auto_close_gameplay_trigger }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_doors.set_door_auto_close_gameplay_trigger }
 }
 
 impl<'a> Extract<'a> for SetDoorAutoCloseGameplayTrigger {
@@ -582,34 +414,17 @@ pub struct LoadoutCheckGroup {
 }
 
 impl Pooled for LoadoutCheckGroup {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_scitem_doors.loadout_check_group
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_scitem_doors.loadout_check_group
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_doors.loadout_check_group }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_doors.loadout_check_group }
 }
 
 impl<'a> Extract<'a> for LoadoutCheckGroup {
     const TYPE_NAME: &'static str = "LoadoutCheckGroup";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            debug_name: inst
-                .get_str("debugName")
-                .map(String::from)
-                .unwrap_or_default(),
-            required_entities: inst
-                .get_array("requiredEntities")
-                .map(|arr| {
-                    arr.filter_map(|v| {
-                        if let Value::Reference(Some(r)) = v {
-                            Some(r.guid)
-                        } else {
-                            None
-                        }
-                    })
-                    .collect()
-                })
+            debug_name: inst.get_str("debugName").map(String::from).unwrap_or_default(),
+            required_entities: inst.get_array("requiredEntities")
+                .map(|arr| arr.filter_map(|v| if let Value::Reference(Some(r)) = v { Some(r.guid) } else { None }).collect())
                 .unwrap_or_default(),
         }
     }
@@ -623,36 +438,20 @@ pub struct LoadoutEntityCheck {
 }
 
 impl Pooled for LoadoutEntityCheck {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_scitem_doors.loadout_entity_check
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_scitem_doors.loadout_entity_check
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_doors.loadout_entity_check }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_doors.loadout_entity_check }
 }
 
 impl<'a> Extract<'a> for LoadoutEntityCheck {
     const TYPE_NAME: &'static str = "LoadoutEntityCheck";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            entity_group: inst
-                .get_array("entityGroup")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<LoadoutCheckGroup>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => Some(b.alloc_nested::<LoadoutCheckGroup>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
+            entity_group: inst.get_array("entityGroup")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<LoadoutCheckGroup>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<LoadoutCheckGroup>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
         }
     }
@@ -670,16 +469,8 @@ pub struct CheckEntitiesOnActorsLoadoutWithinAreaGameplayTrigger {
 }
 
 impl Pooled for CheckEntitiesOnActorsLoadoutWithinAreaGameplayTrigger {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_scitem_doors
-            .check_entities_on_actors_loadout_within_area_gameplay_trigger
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_scitem_doors
-            .check_entities_on_actors_loadout_within_area_gameplay_trigger
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_doors.check_entities_on_actors_loadout_within_area_gameplay_trigger }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_doors.check_entities_on_actors_loadout_within_area_gameplay_trigger }
 }
 
 impl<'a> Extract<'a> for CheckEntitiesOnActorsLoadoutWithinAreaGameplayTrigger {
@@ -687,27 +478,15 @@ impl<'a> Extract<'a> for CheckEntitiesOnActorsLoadoutWithinAreaGameplayTrigger {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             check_type: match inst.get("checkType") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(LoadoutCheckTypePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(LoadoutCheckTypePtr::from_ref(b, r)),
                 _ => None,
             },
             success_state: match inst.get("successState") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<SInteractionState>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SInteractionState>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             fail_state: match inst.get("failState") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<SInteractionState>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SInteractionState>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
         }
@@ -724,16 +503,8 @@ pub struct SCItemProximitySensorBoxParams {
 }
 
 impl Pooled for SCItemProximitySensorBoxParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_scitem_doors
-            .scitem_proximity_sensor_box_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_scitem_doors
-            .scitem_proximity_sensor_box_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_doors.scitem_proximity_sensor_box_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_doors.scitem_proximity_sensor_box_params }
 }
 
 impl<'a> Extract<'a> for SCItemProximitySensorBoxParams {
@@ -741,17 +512,11 @@ impl<'a> Extract<'a> for SCItemProximitySensorBoxParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             extent: match inst.get("Extent") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             offset: match inst.get("Offset") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
@@ -776,42 +541,22 @@ pub struct SCItemDoorCodeProceduralParams {
 }
 
 impl Pooled for SCItemDoorCodeProceduralParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_scitem_doors
-            .scitem_door_code_procedural_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_scitem_doors
-            .scitem_door_code_procedural_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_doors.scitem_door_code_procedural_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_doors.scitem_door_code_procedural_params }
 }
 
 impl<'a> Extract<'a> for SCItemDoorCodeProceduralParams {
     const TYPE_NAME: &'static str = "SCItemDoorCodeProceduralParams";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            default_animation_duration_scale: inst
-                .get_f32("DefaultAnimationDurationScale")
-                .unwrap_or_default(),
-            secondary_animation_duration_scale: inst
-                .get_f32("SecondaryAnimationDurationScale")
-                .unwrap_or_default(),
+            default_animation_duration_scale: inst.get_f32("DefaultAnimationDurationScale").unwrap_or_default(),
+            secondary_animation_duration_scale: inst.get_f32("SecondaryAnimationDurationScale").unwrap_or_default(),
             user_animation_params: match inst.get("userAnimationParams") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<SCItemDoorUserAnimationParams>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SCItemDoorUserAnimationParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             opened_offset: match inst.get("OpenedOffset") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             open_close_time: inst.get_f32("OpenCloseTime").unwrap_or_default(),
@@ -828,25 +573,15 @@ pub struct SDoorCollisionReactionToggleParams {
 }
 
 impl Pooled for SDoorCollisionReactionToggleParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_scitem_doors
-            .sdoor_collision_reaction_toggle_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_scitem_doors
-            .sdoor_collision_reaction_toggle_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_doors.sdoor_collision_reaction_toggle_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_doors.sdoor_collision_reaction_toggle_params }
 }
 
 impl<'a> Extract<'a> for SDoorCollisionReactionToggleParams {
     const TYPE_NAME: &'static str = "SDoorCollisionReactionToggleParams";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            collision_reaction_direction: EDoorCollisionReactionDirection::from_dcb_str(
-                inst.get_str("CollisionReactionDirection").unwrap_or(""),
-            ),
+            collision_reaction_direction: EDoorCollisionReactionDirection::from_dcb_str(inst.get_str("CollisionReactionDirection").unwrap_or("")),
         }
     }
 }
@@ -859,25 +594,15 @@ pub struct SDoorCollisionReactionOpenParams {
 }
 
 impl Pooled for SDoorCollisionReactionOpenParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_scitem_doors
-            .sdoor_collision_reaction_open_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_scitem_doors
-            .sdoor_collision_reaction_open_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_doors.sdoor_collision_reaction_open_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_doors.sdoor_collision_reaction_open_params }
 }
 
 impl<'a> Extract<'a> for SDoorCollisionReactionOpenParams {
     const TYPE_NAME: &'static str = "SDoorCollisionReactionOpenParams";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            collision_reaction_direction: EDoorCollisionReactionDirection::from_dcb_str(
-                inst.get_str("CollisionReactionDirection").unwrap_or(""),
-            ),
+            collision_reaction_direction: EDoorCollisionReactionDirection::from_dcb_str(inst.get_str("CollisionReactionDirection").unwrap_or("")),
         }
     }
 }
@@ -896,12 +621,8 @@ pub struct SCItemDoorHazardLightsParams {
 }
 
 impl Pooled for SCItemDoorHazardLightsParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_scitem_doors.scitem_door_hazard_lights_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_scitem_doors.scitem_door_hazard_lights_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_doors.scitem_door_hazard_lights_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_doors.scitem_door_hazard_lights_params }
 }
 
 impl<'a> Extract<'a> for SCItemDoorHazardLightsParams {
@@ -909,24 +630,13 @@ impl<'a> Extract<'a> for SCItemDoorHazardLightsParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             probe_offset: match inst.get("ProbeOffset") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            no_hazard_effect_group: inst
-                .get_str("NoHazardEffectGroup")
-                .map(String::from)
-                .unwrap_or_default(),
-            minor_hazard_effect_group: inst
-                .get_str("MinorHazardEffectGroup")
-                .map(String::from)
-                .unwrap_or_default(),
-            major_hazard_effect_group: inst
-                .get_str("MajorHazardEffectGroup")
-                .map(String::from)
-                .unwrap_or_default(),
+            no_hazard_effect_group: inst.get_str("NoHazardEffectGroup").map(String::from).unwrap_or_default(),
+            minor_hazard_effect_group: inst.get_str("MinorHazardEffectGroup").map(String::from).unwrap_or_default(),
+            major_hazard_effect_group: inst.get_str("MajorHazardEffectGroup").map(String::from).unwrap_or_default(),
         }
     }
 }
+

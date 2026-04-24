@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -26,34 +26,16 @@ pub struct BlueprintCategoryAvailability_Whitelist {
 }
 
 impl Pooled for BlueprintCategoryAvailability_Whitelist {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_basebuilding
-            .blueprint_category_availability_whitelist
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_basebuilding
-            .blueprint_category_availability_whitelist
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_basebuilding.blueprint_category_availability_whitelist }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_basebuilding.blueprint_category_availability_whitelist }
 }
 
 impl<'a> Extract<'a> for BlueprintCategoryAvailability_Whitelist {
     const TYPE_NAME: &'static str = "BlueprintCategoryAvailability_Whitelist";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            categories: inst
-                .get_array("categories")
-                .map(|arr| {
-                    arr.filter_map(|v| {
-                        if let Value::Reference(Some(r)) = v {
-                            Some(r.guid)
-                        } else {
-                            None
-                        }
-                    })
-                    .collect()
-                })
+            categories: inst.get_array("categories")
+                .map(|arr| arr.filter_map(|v| if let Value::Reference(Some(r)) = v { Some(r.guid) } else { None }).collect())
                 .unwrap_or_default(),
         }
     }
@@ -67,21 +49,15 @@ pub struct CrafterDoorStateEvent {
 }
 
 impl Pooled for CrafterDoorStateEvent {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_basebuilding.crafter_door_state_event
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_basebuilding.crafter_door_state_event
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_basebuilding.crafter_door_state_event }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_basebuilding.crafter_door_state_event }
 }
 
 impl<'a> Extract<'a> for CrafterDoorStateEvent {
     const TYPE_NAME: &'static str = "CrafterDoorStateEvent";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            door_state: ECraftingMachineDoorState::from_dcb_str(
-                inst.get_str("doorState").unwrap_or(""),
-            ),
+            door_state: ECraftingMachineDoorState::from_dcb_str(inst.get_str("doorState").unwrap_or("")),
         }
     }
 }
@@ -101,26 +77,17 @@ pub struct CraftingQueueCoreParams {
 }
 
 impl Pooled for CraftingQueueCoreParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_basebuilding.crafting_queue_core_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_basebuilding.crafting_queue_core_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_basebuilding.crafting_queue_core_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_basebuilding.crafting_queue_core_params }
 }
 
 impl<'a> Extract<'a> for CraftingQueueCoreParams {
     const TYPE_NAME: &'static str = "CraftingQueueCoreParams";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            debug_name: inst
-                .get_str("debugName")
-                .map(String::from)
-                .unwrap_or_default(),
+            debug_name: inst.get_str("debugName").map(String::from).unwrap_or_default(),
             blueprint_category_availability: match inst.get("blueprintCategoryAvailability") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BlueprintCategoryAvailability_BasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BlueprintCategoryAvailability_BasePtr::from_ref(b, r)),
                 _ => None,
             },
             process_type_availability: inst.get_bool("processTypeAvailability").unwrap_or_default(),
@@ -139,12 +106,8 @@ pub struct CrafterInteractionParams {
 }
 
 impl Pooled for CrafterInteractionParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_basebuilding.crafter_interaction_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_basebuilding.crafter_interaction_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_basebuilding.crafter_interaction_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_basebuilding.crafter_interaction_params }
 }
 
 impl<'a> Extract<'a> for CrafterInteractionParams {
@@ -152,21 +115,11 @@ impl<'a> Extract<'a> for CrafterInteractionParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             open_door_interaction: match inst.get("openDoorInteraction") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<SSharedInteractionParams>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SSharedInteractionParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             close_door_interaction: match inst.get("closeDoorInteraction") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<SSharedInteractionParams>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SSharedInteractionParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
         }
@@ -185,45 +138,24 @@ pub struct CrafterComponentParams {
 }
 
 impl Pooled for CrafterComponentParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_basebuilding.crafter_component_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_basebuilding.crafter_component_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_basebuilding.crafter_component_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_basebuilding.crafter_component_params }
 }
 
 impl<'a> Extract<'a> for CrafterComponentParams {
     const TYPE_NAME: &'static str = "CrafterComponentParams";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            queues: inst
-                .get_array("queues")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<CraftingQueueCoreParams>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => Some(b.alloc_nested::<CraftingQueueCoreParams>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
+            queues: inst.get_array("queues")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<CraftingQueueCoreParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<CraftingQueueCoreParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
             max_jobs_in_history: inst.get_i32("maxJobsInHistory").unwrap_or_default(),
             interaction_params: match inst.get("interactionParams") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<CrafterInteractionParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<CrafterInteractionParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
@@ -243,30 +175,18 @@ pub struct CrafterPagedUIListParams {
 }
 
 impl Pooled for CrafterPagedUIListParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_basebuilding.crafter_paged_uilist_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_basebuilding.crafter_paged_uilist_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_basebuilding.crafter_paged_uilist_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_basebuilding.crafter_paged_uilist_params }
 }
 
 impl<'a> Extract<'a> for CrafterPagedUIListParams {
     const TYPE_NAME: &'static str = "CrafterPagedUIListParams";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            num_paged_elements_horizontally: inst
-                .get_f32("numPagedElementsHorizontally")
-                .unwrap_or_default(),
-            num_paged_elements_vertically: inst
-                .get_f32("numPagedElementsVertically")
-                .unwrap_or_default(),
-            category_header_vertical_size_as_fraction_of_element: inst
-                .get_f32("categoryHeaderVerticalSizeAsFractionOfElement")
-                .unwrap_or_default(),
-            sub_category_header_vertical_size_as_fraction_of_element: inst
-                .get_f32("subCategoryHeaderVerticalSizeAsFractionOfElement")
-                .unwrap_or_default(),
+            num_paged_elements_horizontally: inst.get_f32("numPagedElementsHorizontally").unwrap_or_default(),
+            num_paged_elements_vertically: inst.get_f32("numPagedElementsVertically").unwrap_or_default(),
+            category_header_vertical_size_as_fraction_of_element: inst.get_f32("categoryHeaderVerticalSizeAsFractionOfElement").unwrap_or_default(),
+            sub_category_header_vertical_size_as_fraction_of_element: inst.get_f32("subCategoryHeaderVerticalSizeAsFractionOfElement").unwrap_or_default(),
         }
     }
 }
@@ -281,16 +201,8 @@ pub struct CrafterUIProviderComponentParams {
 }
 
 impl Pooled for CrafterUIProviderComponentParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_basebuilding
-            .crafter_uiprovider_component_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_basebuilding
-            .crafter_uiprovider_component_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_basebuilding.crafter_uiprovider_component_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_basebuilding.crafter_uiprovider_component_params }
 }
 
 impl<'a> Extract<'a> for CrafterUIProviderComponentParams {
@@ -298,21 +210,11 @@ impl<'a> Extract<'a> for CrafterUIProviderComponentParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             blueprint_paged_list_params: match inst.get("blueprintPagedListParams") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<CrafterPagedUIListParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<CrafterPagedUIListParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             materials_paged_list_params: match inst.get("materialsPagedListParams") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<CrafterPagedUIListParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<CrafterPagedUIListParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
@@ -363,12 +265,8 @@ pub struct EntityComponentHeatConnection {
 }
 
 impl Pooled for EntityComponentHeatConnection {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_basebuilding.entity_component_heat_connection
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_basebuilding.entity_component_heat_connection
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_basebuilding.entity_component_heat_connection }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_basebuilding.entity_component_heat_connection }
 }
 
 impl<'a> Extract<'a> for EntityComponentHeatConnection {
@@ -378,12 +276,8 @@ impl<'a> Extract<'a> for EntityComponentHeatConnection {
             temperature_to_ir: inst.get_f32("TemperatureToIR").unwrap_or_default(),
             start_irtemperature: inst.get_f32("StartIRTemperature").unwrap_or_default(),
             overpower_heat: inst.get_f32("OverpowerHeat").unwrap_or_default(),
-            overclock_threshold_min_heat: inst
-                .get_f32("OverclockThresholdMinHeat")
-                .unwrap_or_default(),
-            overclock_threshold_max_heat: inst
-                .get_f32("OverclockThresholdMaxHeat")
-                .unwrap_or_default(),
+            overclock_threshold_min_heat: inst.get_f32("OverclockThresholdMinHeat").unwrap_or_default(),
+            overclock_threshold_max_heat: inst.get_f32("OverclockThresholdMaxHeat").unwrap_or_default(),
             thermal_energy_base: inst.get_f32("ThermalEnergyBase").unwrap_or_default(),
             thermal_energy_draw: inst.get_f32("ThermalEnergyDraw").unwrap_or_default(),
             thermal_conductivity: inst.get_f32("ThermalConductivity").unwrap_or_default(),
@@ -415,12 +309,8 @@ pub struct SMisfireBandParams {
 }
 
 impl Pooled for SMisfireBandParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_basebuilding.smisfire_band_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_basebuilding.smisfire_band_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_basebuilding.smisfire_band_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_basebuilding.smisfire_band_params }
 }
 
 impl<'a> Extract<'a> for SMisfireBandParams {
@@ -448,12 +338,8 @@ pub struct SMisfireSeverityFactors {
 }
 
 impl Pooled for SMisfireSeverityFactors {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_basebuilding.smisfire_severity_factors
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_basebuilding.smisfire_severity_factors
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_basebuilding.smisfire_severity_factors }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_basebuilding.smisfire_severity_factors }
 }
 
 impl<'a> Extract<'a> for SMisfireSeverityFactors {
@@ -485,12 +371,8 @@ pub struct SMisfireGenerationParams {
 }
 
 impl Pooled for SMisfireGenerationParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_basebuilding.smisfire_generation_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_basebuilding.smisfire_generation_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_basebuilding.smisfire_generation_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_basebuilding.smisfire_generation_params }
 }
 
 impl<'a> Extract<'a> for SMisfireGenerationParams {
@@ -500,39 +382,19 @@ impl<'a> Extract<'a> for SMisfireGenerationParams {
             max_window_length: inst.get_f32("maxWindowLength").unwrap_or_default(),
             min_window_length: inst.get_f32("minWindowLength").unwrap_or_default(),
             severity_factors: match inst.get("severityFactors") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<SMisfireSeverityFactors>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SMisfireSeverityFactors>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             minor_band: match inst.get("minorBand") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<SMisfireBandParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SMisfireBandParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             major_band: match inst.get("majorBand") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<SMisfireBandParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SMisfireBandParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             critical_band: match inst.get("criticalBand") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<SMisfireBandParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SMisfireBandParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
@@ -554,29 +416,20 @@ pub struct SMisfireEventParams {
 }
 
 impl Pooled for SMisfireEventParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_basebuilding.smisfire_event_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_basebuilding.smisfire_event_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_basebuilding.smisfire_event_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_basebuilding.smisfire_event_params }
 }
 
 impl<'a> Extract<'a> for SMisfireEventParams {
     const TYPE_NAME: &'static str = "SMisfireEventParams";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            warning_loc_id: inst
-                .get_str("warningLocId")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
+            warning_loc_id: inst.get_str("warningLocId").map(LocaleKey::from).unwrap_or_default(),
             duration: inst.get_f32("duration").unwrap_or_default(),
             age_ratio_inflicted: inst.get_f32("ageRatioInflicted").unwrap_or_default(),
             health_ratio_inflicted: inst.get_f32("healthRatioInflicted").unwrap_or_default(),
             item_params: match inst.get("ItemParams") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(SItemMisfireParamsPtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(SItemMisfireParamsPtr::from_ref(b, r)),
                 _ => None,
             },
         }
@@ -594,74 +447,34 @@ pub struct SMisfireEvents {
 }
 
 impl Pooled for SMisfireEvents {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_basebuilding.smisfire_events
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_basebuilding.smisfire_events
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_basebuilding.smisfire_events }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_basebuilding.smisfire_events }
 }
 
 impl<'a> Extract<'a> for SMisfireEvents {
     const TYPE_NAME: &'static str = "SMisfireEvents";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            minor_misfires: inst
-                .get_array("MinorMisfires")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<SMisfireEventParams>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => Some(b.alloc_nested::<SMisfireEventParams>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
+            minor_misfires: inst.get_array("MinorMisfires")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<SMisfireEventParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<SMisfireEventParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
-            major_misfires: inst
-                .get_array("MajorMisfires")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<SMisfireEventParams>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => Some(b.alloc_nested::<SMisfireEventParams>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
+            major_misfires: inst.get_array("MajorMisfires")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<SMisfireEventParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<SMisfireEventParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
-            critical_misfires: inst
-                .get_array("CriticalMisfires")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<SMisfireEventParams>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => Some(b.alloc_nested::<SMisfireEventParams>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
+            critical_misfires: inst.get_array("CriticalMisfires")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<SMisfireEventParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<SMisfireEventParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
         }
     }
@@ -709,16 +522,8 @@ pub struct EntityComponentPowerConnection {
 }
 
 impl Pooled for EntityComponentPowerConnection {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_basebuilding
-            .entity_component_power_connection
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_basebuilding
-            .entity_component_power_connection
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_basebuilding.entity_component_power_connection }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_basebuilding.entity_component_power_connection }
 }
 
 impl<'a> Extract<'a> for EntityComponentPowerConnection {
@@ -729,9 +534,7 @@ impl<'a> Extract<'a> for EntityComponentPowerConnection {
             power_draw: inst.get_f32("PowerDraw").unwrap_or_default(),
             time_to_reach_draw_request: inst.get_f32("TimeToReachDrawRequest").unwrap_or_default(),
             safeguard_priority: inst.get_i32("SafeguardPriority").unwrap_or_default(),
-            displayed_in_powered_item_list: inst
-                .get_bool("DisplayedInPoweredItemList")
-                .unwrap_or_default(),
+            displayed_in_powered_item_list: inst.get_bool("DisplayedInPoweredItemList").unwrap_or_default(),
             is_throttleable: inst.get_bool("IsThrottleable").unwrap_or_default(),
             is_overclockable: inst.get_bool("IsOverclockable").unwrap_or_default(),
             overclock_threshold_min: inst.get_f32("OverclockThresholdMin").unwrap_or_default(),
@@ -742,26 +545,13 @@ impl<'a> Extract<'a> for EntityComponentPowerConnection {
             decay_rate_of_em: inst.get_f32("DecayRateOfEM").unwrap_or_default(),
             warning_delay_time: inst.get_f32("WarningDelayTime").unwrap_or_default(),
             warning_display_time: inst.get_f32("WarningDisplayTime").unwrap_or_default(),
-            misfire_item_type_loc_id: inst
-                .get_str("MisfireItemTypeLocID")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
+            misfire_item_type_loc_id: inst.get_str("MisfireItemTypeLocID").map(LocaleKey::from).unwrap_or_default(),
             misfire_generation_params: match inst.get("MisfireGenerationParams") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<SMisfireGenerationParams>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SMisfireGenerationParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             misfire_events: match inst.get("MisfireEvents") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<SMisfireEvents>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SMisfireEvents>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
@@ -782,12 +572,8 @@ pub struct CrafterStateModifier {
 }
 
 impl Pooled for CrafterStateModifier {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_basebuilding.crafter_state_modifier
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_basebuilding.crafter_state_modifier
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_basebuilding.crafter_state_modifier }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_basebuilding.crafter_state_modifier }
 }
 
 impl<'a> Extract<'a> for CrafterStateModifier {
@@ -795,41 +581,22 @@ impl<'a> Extract<'a> for CrafterStateModifier {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             locked_state: match inst.get("lockedState") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<SInteractionState>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SInteractionState>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             unlocked_state: match inst.get("unlockedState") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<SInteractionState>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SInteractionState>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             start_progress_state: match inst.get("startProgressState") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<SInteractionState>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SInteractionState>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             finish_progress_state: match inst.get("finishProgressState") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<SInteractionState>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SInteractionState>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
         }
     }
 }
+

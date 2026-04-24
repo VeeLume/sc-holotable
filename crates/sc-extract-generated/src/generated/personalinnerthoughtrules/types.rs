@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -28,16 +28,8 @@ pub struct ActionRuleNotAllowedInContext {
 }
 
 impl Pooled for ActionRuleNotAllowedInContext {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .personalinnerthoughtrules
-            .action_rule_not_allowed_in_context
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .personalinnerthoughtrules
-            .action_rule_not_allowed_in_context
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.personalinnerthoughtrules.action_rule_not_allowed_in_context }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.personalinnerthoughtrules.action_rule_not_allowed_in_context }
 }
 
 impl<'a> Extract<'a> for ActionRuleNotAllowedInContext {
@@ -45,15 +37,11 @@ impl<'a> Extract<'a> for ActionRuleNotAllowedInContext {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             rule_display: match inst.get("ruleDisplay") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<ActionRuleDisplayParams>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<ActionRuleDisplayParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             context: PersonalThoughtContext::from_dcb_str(inst.get_str("context").unwrap_or("")),
         }
     }
 }
+

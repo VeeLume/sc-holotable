@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -51,74 +51,28 @@ pub struct DynamicCameraEffectsList {
 }
 
 impl Pooled for DynamicCameraEffectsList {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.dynamiccameraeffects.dynamic_camera_effects_list
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.dynamiccameraeffects.dynamic_camera_effects_list
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.dynamiccameraeffects.dynamic_camera_effects_list }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.dynamiccameraeffects.dynamic_camera_effects_list }
 }
 
 impl<'a> Extract<'a> for DynamicCameraEffectsList {
     const TYPE_NAME: &'static str = "DynamicCameraEffectsList";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            conversation: inst
-                .get("conversation")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            interaction_mode_focus: inst
-                .get("interactionModeFocus")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            mobiglas: inst
-                .get("mobiglas")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            personal_inner_thought: inst
-                .get("personalInnerThought")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            external_inventory: inst
-                .get("externalInventory")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            personal_inventory: inst
-                .get("personalInventory")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            loot_inventory: inst
-                .get("lootInventory")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            on_foot: inst
-                .get("onFoot")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            vehicle_seat: inst
-                .get("vehicleSeat")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            hacking: inst
-                .get("hacking")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            inspect_mode: inst
-                .get("inspectMode")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            prototype_mobi_glas: inst
-                .get("prototypeMobiGlas")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            simpod: inst
-                .get("simpod")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            jump_travel: inst
-                .get("jumpTravel")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
+            conversation: inst.get("conversation").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            interaction_mode_focus: inst.get("interactionModeFocus").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            mobiglas: inst.get("mobiglas").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            personal_inner_thought: inst.get("personalInnerThought").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            external_inventory: inst.get("externalInventory").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            personal_inventory: inst.get("personalInventory").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            loot_inventory: inst.get("lootInventory").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            on_foot: inst.get("onFoot").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            vehicle_seat: inst.get("vehicleSeat").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            hacking: inst.get("hacking").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            inspect_mode: inst.get("inspectMode").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            prototype_mobi_glas: inst.get("prototypeMobiGlas").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            simpod: inst.get("simpod").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            jump_travel: inst.get("jumpTravel").and_then(|v| v.as_record_ref()).map(|r| r.guid),
         }
     }
 }
@@ -132,12 +86,8 @@ pub struct ConstantDOFPosWeights {
 }
 
 impl Pooled for ConstantDOFPosWeights {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.dynamiccameraeffects.constant_dofpos_weights
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.dynamiccameraeffects.constant_dofpos_weights
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.dynamiccameraeffects.constant_dofpos_weights }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.dynamiccameraeffects.constant_dofpos_weights }
 }
 
 impl<'a> Extract<'a> for ConstantDOFPosWeights {
@@ -169,12 +119,8 @@ pub struct ConstantDOFWeights {
 }
 
 impl Pooled for ConstantDOFWeights {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.dynamiccameraeffects.constant_dofweights
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.dynamiccameraeffects.constant_dofweights
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.dynamiccameraeffects.constant_dofweights }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.dynamiccameraeffects.constant_dofweights }
 }
 
 impl<'a> Extract<'a> for ConstantDOFWeights {
@@ -182,24 +128,12 @@ impl<'a> Extract<'a> for ConstantDOFWeights {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             max_position_weight: inst.get_f32("maxPositionWeight").unwrap_or_default(),
-            position_weights: inst
-                .get_array("positionWeights")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<ConstantDOFPosWeights>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => Some(b.alloc_nested::<ConstantDOFPosWeights>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
+            position_weights: inst.get_array("positionWeights")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<ConstantDOFPosWeights>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<ConstantDOFPosWeights>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
             npc: inst.get_f32("NPC").unwrap_or_default(),
             local_player: inst.get_f32("localPlayer").unwrap_or_default(),
@@ -223,12 +157,8 @@ pub struct ConstantDOFGrid {
 }
 
 impl Pooled for ConstantDOFGrid {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.dynamiccameraeffects.constant_dofgrid
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.dynamiccameraeffects.constant_dofgrid
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.dynamiccameraeffects.constant_dofgrid }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.dynamiccameraeffects.constant_dofgrid }
 }
 
 impl<'a> Extract<'a> for ConstantDOFGrid {
@@ -268,48 +198,31 @@ pub struct ConstantDOFGlobalData {
 }
 
 impl Pooled for ConstantDOFGlobalData {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.dynamiccameraeffects.constant_dofglobal_data
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.dynamiccameraeffects.constant_dofglobal_data
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.dynamiccameraeffects.constant_dofglobal_data }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.dynamiccameraeffects.constant_dofglobal_data }
 }
 
 impl<'a> Extract<'a> for ConstantDOFGlobalData {
     const TYPE_NAME: &'static str = "ConstantDOFGlobalData";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            movement_threshold_to_ignore_player: inst
-                .get_f32("movementThresholdToIgnorePlayer")
-                .unwrap_or_default(),
+            movement_threshold_to_ignore_player: inst.get_f32("movementThresholdToIgnorePlayer").unwrap_or_default(),
             distance_to_ignore_player: inst.get_f32("distanceToIgnorePlayer").unwrap_or_default(),
-            rotation_threshold_to_disable: inst
-                .get_f32("rotationThresholdToDisable")
-                .unwrap_or_default(),
+            rotation_threshold_to_disable: inst.get_f32("rotationThresholdToDisable").unwrap_or_default(),
             pierceability: inst.get_i32("pierceability").unwrap_or_default(),
             non_entity_distance_scale: inst.get_f32("nonEntityDistanceScale").unwrap_or_default(),
             lodbias_on_target: inst.get_i32("LODBiasOnTarget").unwrap_or_default(),
             max_range_scale: inst.get_f32("maxRangeScale").unwrap_or_default(),
             circle_of_confusion: inst.get_f32("circleOfConfusion").unwrap_or_default(),
             grid_params: match inst.get("gridParams") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<ConstantDOFGrid>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<ConstantDOFGrid>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             weights: match inst.get("weights") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<ConstantDOFWeights>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<ConstantDOFWeights>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
     }
 }
+

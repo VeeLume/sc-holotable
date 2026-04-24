@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -43,12 +43,8 @@ pub struct CommodityDamageConfiguration {
 }
 
 impl Pooled for CommodityDamageConfiguration {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.commodityconfiguration.commodity_damage_configuration
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.commodityconfiguration.commodity_damage_configuration
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.commodityconfiguration.commodity_damage_configuration }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.commodityconfiguration.commodity_damage_configuration }
 }
 
 impl<'a> Extract<'a> for CommodityDamageConfiguration {
@@ -58,31 +54,20 @@ impl<'a> Extract<'a> for CommodityDamageConfiguration {
             minimum_speed: inst.get_f32("minimumSpeed").unwrap_or_default(),
             speed_squared_to_damage: inst.get_f32("speedSquaredToDamage").unwrap_or_default(),
             default_explosion_params: match inst.get("defaultExplosionParams") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<ExplosionParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<ExplosionParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             volatile_power_rtpc: match inst.get("volatilePowerRtpc") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             volatility_radius_factor: inst.get_f32("volatilityRadiusFactor").unwrap_or_default(),
             volatility_damage_factor: inst.get_f32("volatilityDamageFactor").unwrap_or_default(),
             volatility_force_factor: inst.get_f32("volatilityForceFactor").unwrap_or_default(),
-            volatility_commodity_damage_factor: inst
-                .get_f32("volatilityCommodityDamageFactor")
-                .unwrap_or_default(),
-            volatility_particle_strength_factor: inst
-                .get_f32("volatilityParticleStrengthFactor")
-                .unwrap_or_default(),
+            volatility_commodity_damage_factor: inst.get_f32("volatilityCommodityDamageFactor").unwrap_or_default(),
+            volatility_particle_strength_factor: inst.get_f32("volatilityParticleStrengthFactor").unwrap_or_default(),
             grace_period: inst.get_f32("gracePeriod").unwrap_or_default(),
         }
     }
 }
+

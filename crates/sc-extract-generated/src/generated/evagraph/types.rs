@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -31,12 +31,8 @@ pub struct EVAConnection {
 }
 
 impl Pooled for EVAConnection {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.evagraph.evaconnection
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.evagraph.evaconnection
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.evagraph.evaconnection }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.evagraph.evaconnection }
 }
 
 impl<'a> Extract<'a> for EVAConnection {
@@ -45,17 +41,9 @@ impl<'a> Extract<'a> for EVAConnection {
         Self {
             wait_untill_finished: inst.get_bool("waitUntillFinished").unwrap_or_default(),
             delay_seconds: inst.get_f32("delaySeconds").unwrap_or_default(),
-            wait_for_event: inst
-                .get_str("waitForEvent")
-                .map(String::from)
-                .unwrap_or_default(),
+            wait_for_event: inst.get_str("waitForEvent").map(String::from).unwrap_or_default(),
             next_state: match inst.get("nextState") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<EVAState>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<EVAState>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
         }
@@ -75,12 +63,8 @@ pub struct EVAState {
 }
 
 impl Pooled for EVAState {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.evagraph.evastate
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.evagraph.evastate
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.evagraph.evastate }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.evagraph.evastate }
 }
 
 impl<'a> Extract<'a> for EVAState {
@@ -88,32 +72,14 @@ impl<'a> Extract<'a> for EVAState {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             r#type: EVAStateType::from_dcb_str(inst.get_str("type").unwrap_or("")),
-            mannequin_tags: inst
-                .get_str("mannequinTags")
-                .map(String::from)
-                .unwrap_or_default(),
-            mannequin_fragment: inst
-                .get_str("mannequinFragment")
-                .map(String::from)
-                .unwrap_or_default(),
-            connections: inst
-                .get_array("connections")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<EVAConnection>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => Some(b.alloc_nested::<EVAConnection>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
+            mannequin_tags: inst.get_str("mannequinTags").map(String::from).unwrap_or_default(),
+            mannequin_fragment: inst.get_str("mannequinFragment").map(String::from).unwrap_or_default(),
+            connections: inst.get_array("connections")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<EVAConnection>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<EVAConnection>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
         }
     }
@@ -126,35 +92,22 @@ pub struct EVAGraph {
 }
 
 impl Pooled for EVAGraph {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.evagraph.evagraph
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.evagraph.evagraph
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.evagraph.evagraph }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.evagraph.evagraph }
 }
 
 impl<'a> Extract<'a> for EVAGraph {
     const TYPE_NAME: &'static str = "EVAGraph";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            evastates: inst
-                .get_array("EVAStates")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<EVAState>(
-                            Instance::from_inline_data(b.db, struct_index, data),
-                            false,
-                        )),
-                        Value::ClassRef(r) => Some(b.alloc_nested::<EVAState>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
+            evastates: inst.get_array("EVAStates")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<EVAState>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<EVAState>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
         }
     }
 }
+

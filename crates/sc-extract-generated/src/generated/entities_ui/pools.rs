@@ -23,17 +23,13 @@ pub struct EntitiesUiPools {
     pub social_tab: Vec<Option<SocialTab>>,
     pub eaexperimental_mode_reset_time_params: Vec<Option<EAExperimentalModeResetTimeParams>>,
     pub easpecial_event_information_params: Vec<Option<EASpecialEventInformationParams>>,
-    pub sentity_component_frontend_eauiprovider_params:
-        Vec<Option<SEntityComponentFrontendEAUIProviderParams>>,
-    pub entity_component_frontend_puuiprovider_params:
-        Vec<Option<EntityComponentFrontendPUUIProviderParams>>,
+    pub sentity_component_frontend_eauiprovider_params: Vec<Option<SEntityComponentFrontendEAUIProviderParams>>,
+    pub entity_component_frontend_puuiprovider_params: Vec<Option<EntityComponentFrontendPUUIProviderParams>>,
     pub sfrontend_game_mode_button: Vec<Option<SFrontendGameModeButton>>,
     pub frontend_override_params: Vec<Option<FrontendOverrideParams>>,
-    pub entity_component_frontend_uiprovider_params:
-        Vec<Option<EntityComponentFrontendUIProviderParams>>,
+    pub entity_component_frontend_uiprovider_params: Vec<Option<EntityComponentFrontendUIProviderParams>>,
     pub frontend_controller_provider_params: Vec<Option<FrontendControllerProviderParams>>,
-    pub sentity_component_rtt_live_camera_preview_params:
-        Vec<Option<SEntityComponentRttLiveCameraPreviewParams>>,
+    pub sentity_component_rtt_live_camera_preview_params: Vec<Option<SEntityComponentRttLiveCameraPreviewParams>>,
     pub uiinterior_map_section_params: Vec<Option<UIInteriorMapSectionParams>>,
     pub uiinterior_map_label_params: Vec<Option<UIInteriorMapLabelParams>>,
     pub television_screen_params: Vec<Option<TelevisionScreenParams>>,

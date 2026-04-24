@@ -17,12 +17,8 @@ pub struct MissionbrokerPools {
     pub mission_modifier_law_license: Vec<Option<MissionModifier_LawLicense>>,
     pub mission_modifier_faction_hostility: Vec<Option<MissionModifier_FactionHostility>>,
     pub mission_modifier_hostile_mission: Vec<Option<MissionModifier_HostileMission>>,
-    pub mission_modifier_ignore_mission_player_criminality:
-        Vec<Option<MissionModifier_IgnoreMissionPlayerCriminality>>,
-    pub sreputation_mission_requirement_expression_and:
-        Vec<Option<SReputationMissionRequirementExpression_And>>,
-    pub sreputation_mission_requirement_expression_left_parenthesis:
-        Vec<Option<SReputationMissionRequirementExpression_LeftParenthesis>>,
-    pub sreputation_mission_requirement_expression_right_parenthesis:
-        Vec<Option<SReputationMissionRequirementExpression_RightParenthesis>>,
+    pub mission_modifier_ignore_mission_player_criminality: Vec<Option<MissionModifier_IgnoreMissionPlayerCriminality>>,
+    pub sreputation_mission_requirement_expression_and: Vec<Option<SReputationMissionRequirementExpression_And>>,
+    pub sreputation_mission_requirement_expression_left_parenthesis: Vec<Option<SReputationMissionRequirementExpression_LeftParenthesis>>,
+    pub sreputation_mission_requirement_expression_right_parenthesis: Vec<Option<SReputationMissionRequirementExpression_RightParenthesis>>,
 }

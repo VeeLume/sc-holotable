@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -34,42 +34,19 @@ pub struct SAudioGroupControllerComponentParams {
 }
 
 impl Pooled for SAudioGroupControllerComponentParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_audio
-            .saudio_group_controller_component_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_audio
-            .saudio_group_controller_component_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_audio.saudio_group_controller_component_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_audio.saudio_group_controller_component_params }
 }
 
 impl<'a> Extract<'a> for SAudioGroupControllerComponentParams {
     const TYPE_NAME: &'static str = "SAudioGroupControllerComponentParams";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            power_level_rtpc: inst
-                .get_str("powerLevelRtpc")
-                .map(String::from)
-                .unwrap_or_default(),
-            power_on_default_switch_state: inst
-                .get_str("powerOnDefaultSwitchState")
-                .map(String::from)
-                .unwrap_or_default(),
-            power_on_auxiliary_switch_state: inst
-                .get_str("powerOnAuxiliarySwitchState")
-                .map(String::from)
-                .unwrap_or_default(),
-            power_on_emergency_switch_state: inst
-                .get_str("powerOnEmergencySwitchState")
-                .map(String::from)
-                .unwrap_or_default(),
-            power_off_switch_state: inst
-                .get_str("powerOffSwitchState")
-                .map(String::from)
-                .unwrap_or_default(),
+            power_level_rtpc: inst.get_str("powerLevelRtpc").map(String::from).unwrap_or_default(),
+            power_on_default_switch_state: inst.get_str("powerOnDefaultSwitchState").map(String::from).unwrap_or_default(),
+            power_on_auxiliary_switch_state: inst.get_str("powerOnAuxiliarySwitchState").map(String::from).unwrap_or_default(),
+            power_on_emergency_switch_state: inst.get_str("powerOnEmergencySwitchState").map(String::from).unwrap_or_default(),
+            power_off_switch_state: inst.get_str("powerOffSwitchState").map(String::from).unwrap_or_default(),
         }
     }
 }
@@ -114,12 +91,8 @@ pub struct AudioAreaAmbienceComponentParams {
 }
 
 impl Pooled for AudioAreaAmbienceComponentParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_audio.audio_area_ambience_component_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_audio.audio_area_ambience_component_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_audio.audio_area_ambience_component_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_audio.audio_area_ambience_component_params }
 }
 
 impl<'a> Extract<'a> for AudioAreaAmbienceComponentParams {
@@ -128,50 +101,22 @@ impl<'a> Extract<'a> for AudioAreaAmbienceComponentParams {
         Self {
             is_enabled: inst.get_bool("isEnabled").unwrap_or_default(),
             audio_play_trigger: match inst.get("audioPlayTrigger") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<GlobalResourceAudio>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             audio_stop_trigger: match inst.get("audioStopTrigger") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<GlobalResourceAudio>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             area_fade_rtpc: match inst.get("areaFadeRTPC") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            audio_environment: inst
-                .get_str("audioEnvironment")
-                .map(String::from)
-                .unwrap_or_default(),
-            audio_switch: inst
-                .get_str("audioSwitch")
-                .map(String::from)
-                .unwrap_or_default(),
-            audio_switch_state_inside: inst
-                .get_str("audioSwitchStateInside")
-                .map(String::from)
-                .unwrap_or_default(),
-            audio_switch_state_near: inst
-                .get_str("audioSwitchStateNear")
-                .map(String::from)
-                .unwrap_or_default(),
-            audio_switch_state_far: inst
-                .get_str("audioSwitchStateFar")
-                .map(String::from)
-                .unwrap_or_default(),
+            audio_environment: inst.get_str("audioEnvironment").map(String::from).unwrap_or_default(),
+            audio_switch: inst.get_str("audioSwitch").map(String::from).unwrap_or_default(),
+            audio_switch_state_inside: inst.get_str("audioSwitchStateInside").map(String::from).unwrap_or_default(),
+            audio_switch_state_near: inst.get_str("audioSwitchStateNear").map(String::from).unwrap_or_default(),
+            audio_switch_state_far: inst.get_str("audioSwitchStateFar").map(String::from).unwrap_or_default(),
             fade_distance: inst.get_f32("fadeDistance").unwrap_or_default(),
             environment_fade_distance: inst.get_f32("environmentFadeDistance").unwrap_or_default(),
             audio_signature: inst.get_f32("audioSignature").unwrap_or_default(),
@@ -250,12 +195,8 @@ pub struct AudioTriggerSpotParams {
 }
 
 impl Pooled for AudioTriggerSpotParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_audio.audio_trigger_spot_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_audio.audio_trigger_spot_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_audio.audio_trigger_spot_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_audio.audio_trigger_spot_params }
 }
 
 impl<'a> Extract<'a> for AudioTriggerSpotParams {
@@ -264,26 +205,14 @@ impl<'a> Extract<'a> for AudioTriggerSpotParams {
         Self {
             enabled: inst.get_bool("enabled").unwrap_or_default(),
             audio_trigger_play_trigger_name: match inst.get("audioTriggerPlayTriggerName") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<GlobalResourceAudio>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             audio_trigger_stop_trigger_name: match inst.get("audioTriggerStopTriggerName") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<GlobalResourceAudio>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            attenuation_scaling_factor: inst
-                .get_f32("attenuationScalingFactor")
-                .unwrap_or_default(),
+            attenuation_scaling_factor: inst.get_f32("attenuationScalingFactor").unwrap_or_default(),
             volume: inst.get_f32("volume").unwrap_or_default(),
             pitch: inst.get_f32("pitch").unwrap_or_default(),
             low_pass_filter: inst.get_f32("lowPassFilter").unwrap_or_default(),
@@ -299,26 +228,17 @@ impl<'a> Extract<'a> for AudioTriggerSpotParams {
             play_on_y: inst.get_bool("playOnY").unwrap_or_default(),
             play_on_z: inst.get_bool("playOnZ").unwrap_or_default(),
             audio_rtpcuser_rtpc1_name: match inst.get("audioRTPCUserRtpc1Name") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             user_rtpc1_value: inst.get_f32("userRtpc1Value").unwrap_or_default(),
             audio_rtpcuser_rtpc2_name: match inst.get("audioRTPCUserRtpc2Name") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             user_rtpc2_value: inst.get_f32("userRtpc2Value").unwrap_or_default(),
             audio_rtpcuser_rtpc3_name: match inst.get("audioRTPCUserRtpc3Name") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             user_rtpc3_value: inst.get_f32("userRtpc3Value").unwrap_or_default(),
@@ -326,19 +246,11 @@ impl<'a> Extract<'a> for AudioTriggerSpotParams {
             voice_count: inst.get_i32("voiceCount").unwrap_or_default(),
             multi_position_type: inst.get_i32("multiPositionType").unwrap_or_default(),
             audio_rtpcarea_fade_rtpc: match inst.get("audioRTPCAreaFadeRtpc") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            enable_propagation_and_soundsim: inst
-                .get_bool("enablePropagationAndSoundsim")
-                .unwrap_or_default(),
-            comms_channel: inst
-                .get("commsChannel")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
+            enable_propagation_and_soundsim: inst.get_bool("enablePropagationAndSoundsim").unwrap_or_default(),
+            comms_channel: inst.get("commsChannel").and_then(|v| v.as_record_ref()).map(|r| r.guid),
         }
     }
 }
@@ -353,51 +265,23 @@ pub struct EntityAudioControllerRtpcSubscriberParams {
 }
 
 impl Pooled for EntityAudioControllerRtpcSubscriberParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_audio
-            .entity_audio_controller_rtpc_subscriber_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_audio
-            .entity_audio_controller_rtpc_subscriber_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_audio.entity_audio_controller_rtpc_subscriber_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_audio.entity_audio_controller_rtpc_subscriber_params }
 }
 
 impl<'a> Extract<'a> for EntityAudioControllerRtpcSubscriberParams {
     const TYPE_NAME: &'static str = "EntityAudioControllerRtpcSubscriberParams";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            rtpcs: inst
-                .get_array("rtpcs")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<AudioRtpc>(
-                            Instance::from_inline_data(b.db, struct_index, data),
-                            false,
-                        )),
-                        Value::ClassRef(r) => Some(b.alloc_nested::<AudioRtpc>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
+            rtpcs: inst.get_array("rtpcs")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<AudioRtpc>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
-            rtpc_lists: inst
-                .get_array("rtpcLists")
-                .map(|arr| {
-                    arr.filter_map(|v| {
-                        if let Value::Reference(Some(r)) = v {
-                            Some(r.guid)
-                        } else {
-                            None
-                        }
-                    })
-                    .collect()
-                })
+            rtpc_lists: inst.get_array("rtpcLists")
+                .map(|arr| arr.filter_map(|v| if let Value::Reference(Some(r)) = v { Some(r.guid) } else { None }).collect())
                 .unwrap_or_default(),
         }
     }
@@ -411,26 +295,15 @@ pub struct EntityComponentAudioEnvironmentFeedbackPointParams {
 }
 
 impl Pooled for EntityComponentAudioEnvironmentFeedbackPointParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_audio
-            .entity_component_audio_environment_feedback_point_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_audio
-            .entity_component_audio_environment_feedback_point_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_audio.entity_component_audio_environment_feedback_point_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_audio.entity_component_audio_environment_feedback_point_params }
 }
 
 impl<'a> Extract<'a> for EntityComponentAudioEnvironmentFeedbackPointParams {
     const TYPE_NAME: &'static str = "EntityComponentAudioEnvironmentFeedbackPointParams";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            feedback_point_def: inst
-                .get("feedbackPointDef")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
+            feedback_point_def: inst.get("feedbackPointDef").and_then(|v| v.as_record_ref()).map(|r| r.guid),
         }
     }
 }
@@ -457,16 +330,8 @@ pub struct EntityComponentVehicleAudioPointParams {
 }
 
 impl Pooled for EntityComponentVehicleAudioPointParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_audio
-            .entity_component_vehicle_audio_point_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_audio
-            .entity_component_vehicle_audio_point_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_audio.entity_component_vehicle_audio_point_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_audio.entity_component_vehicle_audio_point_params }
 }
 
 impl<'a> Extract<'a> for EntityComponentVehicleAudioPointParams {
@@ -474,88 +339,38 @@ impl<'a> Extract<'a> for EntityComponentVehicleAudioPointParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             loop_start: match inst.get("loopStart") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<GlobalResourceAudio>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             loop_stop: match inst.get("loopStop") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<GlobalResourceAudio>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             sound_sim_on_oneshot: match inst.get("soundSimOnOneshot") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<GlobalResourceAudio>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             sound_sim_off_oneshot: match inst.get("soundSimOffOneshot") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<GlobalResourceAudio>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             ship_audio_on_oneshot: match inst.get("shipAudioOnOneshot") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<GlobalResourceAudio>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             ship_audio_off_oneshot: match inst.get("shipAudioOffOneshot") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<GlobalResourceAudio>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            rtpcs: inst
-                .get_array("rtpcs")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<AudioRtpc>(
-                            Instance::from_inline_data(b.db, struct_index, data),
-                            false,
-                        )),
-                        Value::ClassRef(r) => Some(b.alloc_nested::<AudioRtpc>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
+            rtpcs: inst.get_array("rtpcs")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<AudioRtpc>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
-            rtpc_lists: inst
-                .get_array("rtpcLists")
-                .map(|arr| {
-                    arr.filter_map(|v| {
-                        if let Value::Reference(Some(r)) = v {
-                            Some(r.guid)
-                        } else {
-                            None
-                        }
-                    })
-                    .collect()
-                })
+            rtpc_lists: inst.get_array("rtpcLists")
+                .map(|arr| arr.filter_map(|v| if let Value::Reference(Some(r)) = v { Some(r.guid) } else { None }).collect())
                 .unwrap_or_default(),
         }
     }
@@ -595,12 +410,8 @@ pub struct MusicAreaComponentParams {
 }
 
 impl Pooled for MusicAreaComponentParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_audio.music_area_component_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_audio.music_area_component_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_audio.music_area_component_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_audio.music_area_component_params }
 }
 
 impl<'a> Extract<'a> for MusicAreaComponentParams {
@@ -608,58 +419,28 @@ impl<'a> Extract<'a> for MusicAreaComponentParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             on_enter_wwise_event: match inst.get("onEnterWwiseEvent") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<GlobalResourceAudio>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             on_leave_wwise_event: match inst.get("onLeaveWwiseEvent") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<GlobalResourceAudio>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            on_enter_cue_switch: inst
-                .get("onEnterCueSwitch")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
+            on_enter_cue_switch: inst.get("onEnterCueSwitch").and_then(|v| v.as_record_ref()).map(|r| r.guid),
             radius: inst.get_f32("radius").unwrap_or_default(),
             max_retrigger_count: inst.get_i32("maxRetriggerCount").unwrap_or_default(),
             retrigger_delay_secs: inst.get_f32("retriggerDelaySecs").unwrap_or_default(),
-            retrigger_delay_only_on_enter: inst
-                .get_bool("retriggerDelayOnlyOnEnter")
-                .unwrap_or_default(),
+            retrigger_delay_only_on_enter: inst.get_bool("retriggerDelayOnlyOnEnter").unwrap_or_default(),
             stop_music_on_exit: inst.get_bool("stopMusicOnExit").unwrap_or_default(),
             bounds: match inst.get("bounds") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            on_enter_secondary_switch: inst
-                .get("onEnterSecondarySwitch")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            on_leave_secondary_switch: inst
-                .get("onLeaveSecondarySwitch")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            dist_to_centre_parameter: inst
-                .get("distToCentreParameter")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
+            on_enter_secondary_switch: inst.get("onEnterSecondarySwitch").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            on_leave_secondary_switch: inst.get("onLeaveSecondarySwitch").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            dist_to_centre_parameter: inst.get("distToCentreParameter").and_then(|v| v.as_record_ref()).map(|r| r.guid),
             dist_to_centre_rtpc: match inst.get("distToCentreRtpc") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             use_area_component: inst.get_bool("useAreaComponent").unwrap_or_default(),
@@ -683,12 +464,8 @@ pub struct AudioSplineParams {
 }
 
 impl Pooled for AudioSplineParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_audio.audio_spline_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_audio.audio_spline_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_audio.audio_spline_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_audio.audio_spline_params }
 }
 
 impl<'a> Extract<'a> for AudioSplineParams {
@@ -699,16 +476,10 @@ impl<'a> Extract<'a> for AudioSplineParams {
             move_towards_listener: inst.get_bool("moveTowardsListener").unwrap_or_default(),
             traversal_duration: inst.get_f32("traversalDuration").unwrap_or_default(),
             audio_rtpcdistance_travelled: match inst.get("audioRTPCDistanceTravelled") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            activation_tag: inst
-                .get("activationTag")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
+            activation_tag: inst.get("activationTag").and_then(|v| v.as_record_ref()).map(|r| r.guid),
         }
     }
 }
@@ -721,26 +492,16 @@ pub struct EntityComponentVibrationAudioPointParams {
 }
 
 impl Pooled for EntityComponentVibrationAudioPointParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_audio
-            .entity_component_vibration_audio_point_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_audio
-            .entity_component_vibration_audio_point_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_audio.entity_component_vibration_audio_point_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_audio.entity_component_vibration_audio_point_params }
 }
 
 impl<'a> Extract<'a> for EntityComponentVibrationAudioPointParams {
     const TYPE_NAME: &'static str = "EntityComponentVibrationAudioPointParams";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            point_definition: inst
-                .get("pointDefinition")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
+            point_definition: inst.get("pointDefinition").and_then(|v| v.as_record_ref()).map(|r| r.guid),
         }
     }
 }
+

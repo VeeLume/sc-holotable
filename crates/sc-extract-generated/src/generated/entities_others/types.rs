@@ -12,33 +12,27 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
 /// DCB type: `NavSplineAnchorPointComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-pub struct NavSplineAnchorPointComponentParams {}
+pub struct NavSplineAnchorPointComponentParams {
+}
 
 impl Pooled for NavSplineAnchorPointComponentParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_others
-            .nav_spline_anchor_point_component_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_others
-            .nav_spline_anchor_point_component_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_others.nav_spline_anchor_point_component_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_others.nav_spline_anchor_point_component_params }
 }
 
 impl<'a> Extract<'a> for NavSplineAnchorPointComponentParams {
     const TYPE_NAME: &'static str = "NavSplineAnchorPointComponentParams";
     fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {}
+        Self {
+        }
     }
 }
 
@@ -50,12 +44,8 @@ pub struct GroupEntityParams {
 }
 
 impl Pooled for GroupEntityParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_others.group_entity_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_others.group_entity_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_others.group_entity_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_others.group_entity_params }
 }
 
 impl<'a> Extract<'a> for GroupEntityParams {
@@ -77,12 +67,8 @@ pub struct LoudspeakerComponentParams {
 }
 
 impl Pooled for LoudspeakerComponentParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_others.loudspeaker_component_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_others.loudspeaker_component_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_others.loudspeaker_component_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_others.loudspeaker_component_params }
 }
 
 impl<'a> Extract<'a> for LoudspeakerComponentParams {
@@ -105,12 +91,8 @@ pub struct RestrictedAreaSplineParams {
 }
 
 impl Pooled for RestrictedAreaSplineParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_others.restricted_area_spline_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_others.restricted_area_spline_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_others.restricted_area_spline_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_others.restricted_area_spline_params }
 }
 
 impl<'a> Extract<'a> for RestrictedAreaSplineParams {
@@ -118,10 +100,7 @@ impl<'a> Extract<'a> for RestrictedAreaSplineParams {
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
             capture_radius: inst.get_f32("captureRadius").unwrap_or_default(),
-            autopilot_message: inst
-                .get_str("autopilotMessage")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
+            autopilot_message: inst.get_str("autopilotMessage").map(LocaleKey::from).unwrap_or_default(),
         }
     }
 }
@@ -148,12 +127,8 @@ pub struct LandingSplineVisualParams {
 }
 
 impl Pooled for LandingSplineVisualParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_others.landing_spline_visual_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_others.landing_spline_visual_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_others.landing_spline_visual_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_others.landing_spline_visual_params }
 }
 
 impl<'a> Extract<'a> for LandingSplineVisualParams {
@@ -162,10 +137,7 @@ impl<'a> Extract<'a> for LandingSplineVisualParams {
         Self {
             distance_between_nodes: inst.get_f32("distanceBetweenNodes").unwrap_or_default(),
             border_dimensions: match inst.get("borderDimensions") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec2>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec2>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             distance_minimum: inst.get_f32("distanceMinimum").unwrap_or_default(),
@@ -189,16 +161,8 @@ pub struct EntityComponentWaterDisturbance_NoiseParams {
 }
 
 impl Pooled for EntityComponentWaterDisturbance_NoiseParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_others
-            .entity_component_water_disturbance_noise_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_others
-            .entity_component_water_disturbance_noise_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_others.entity_component_water_disturbance_noise_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_others.entity_component_water_disturbance_noise_params }
 }
 
 impl<'a> Extract<'a> for EntityComponentWaterDisturbance_NoiseParams {
@@ -208,10 +172,7 @@ impl<'a> Extract<'a> for EntityComponentWaterDisturbance_NoiseParams {
             lacunarity: inst.get_f32("lacunarity").unwrap_or_default(),
             persistence: inst.get_f32("persistence").unwrap_or_default(),
             amplitude: match inst.get("amplitude") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec2>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec2>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
@@ -240,16 +201,8 @@ pub struct EntityComponentWaterDisturbanceParams {
 }
 
 impl Pooled for EntityComponentWaterDisturbanceParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_others
-            .entity_component_water_disturbance_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_others
-            .entity_component_water_disturbance_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_others.entity_component_water_disturbance_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_others.entity_component_water_disturbance_params }
 }
 
 impl<'a> Extract<'a> for EntityComponentWaterDisturbanceParams {
@@ -258,10 +211,7 @@ impl<'a> Extract<'a> for EntityComponentWaterDisturbanceParams {
         Self {
             style: DisturbanceStyle::from_dcb_str(inst.get_str("style").unwrap_or("")),
             distribution_area: match inst.get("distributionArea") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec2>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec2>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             hit_size: inst.get_f32("hitSize").unwrap_or_default(),
@@ -269,19 +219,11 @@ impl<'a> Extract<'a> for EntityComponentWaterDisturbanceParams {
             pressure: inst.get_f32("pressure").unwrap_or_default(),
             foam_amount: inst.get_f32("foamAmount").unwrap_or_default(),
             frequency: match inst.get("frequency") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec2>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec2>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             noise_params: match inst.get("noiseParams") {
-                Some(Value::Class { struct_index, data }) => Some(
-                    b.alloc_nested::<EntityComponentWaterDisturbance_NoiseParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ),
-                ),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<EntityComponentWaterDisturbance_NoiseParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
@@ -300,16 +242,8 @@ pub struct EntityComponentWaterImpactTestParams {
 }
 
 impl Pooled for EntityComponentWaterImpactTestParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_others
-            .entity_component_water_impact_test_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_others
-            .entity_component_water_impact_test_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_others.entity_component_water_impact_test_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_others.entity_component_water_impact_test_params }
 }
 
 impl<'a> Extract<'a> for EntityComponentWaterImpactTestParams {
@@ -318,10 +252,7 @@ impl<'a> Extract<'a> for EntityComponentWaterImpactTestParams {
         Self {
             r#type: TestType::from_dcb_str(inst.get_str("type").unwrap_or("")),
             distribution_area: match inst.get("distributionArea") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec2>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec2>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             radius: inst.get_f32("radius").unwrap_or_default(),
@@ -331,20 +262,19 @@ impl<'a> Extract<'a> for EntityComponentWaterImpactTestParams {
 
 /// DCB type: `TransitNavSplineDataParams`
 /// Inherits from: `DataForgeComponentParams`
-pub struct TransitNavSplineDataParams {}
+pub struct TransitNavSplineDataParams {
+}
 
 impl Pooled for TransitNavSplineDataParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_others.transit_nav_spline_data_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_others.transit_nav_spline_data_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_others.transit_nav_spline_data_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_others.transit_nav_spline_data_params }
 }
 
 impl<'a> Extract<'a> for TransitNavSplineDataParams {
     const TYPE_NAME: &'static str = "TransitNavSplineDataParams";
     fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {}
+        Self {
+        }
     }
 }
+

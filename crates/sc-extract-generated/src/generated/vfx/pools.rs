@@ -38,10 +38,8 @@ pub struct VfxPools {
     pub screen_effects_param_strength_behavior: Vec<Option<ScreenEffects_ParamStrengthBehavior>>,
     pub screen_effects_pattern_linear: Vec<Option<ScreenEffects_Pattern_Linear>>,
     pub screen_effects_param_value_float: Vec<Option<ScreenEffects_ParamValue_Float>>,
-    pub screen_effects_param_strength_behavior_range_enable:
-        Vec<Option<ScreenEffects_ParamStrengthBehavior_RangeEnable>>,
-    pub screen_effects_param_strength_behavior_range_fade:
-        Vec<Option<ScreenEffects_ParamStrengthBehavior_RangeFade>>,
+    pub screen_effects_param_strength_behavior_range_enable: Vec<Option<ScreenEffects_ParamStrengthBehavior_RangeEnable>>,
+    pub screen_effects_param_strength_behavior_range_fade: Vec<Option<ScreenEffects_ParamStrengthBehavior_RangeFade>>,
     pub screen_effects_debug: Vec<Option<ScreenEffects_Debug>>,
     pub screen_effects_debug_effect: Vec<Option<ScreenEffects_DebugEffect>>,
     pub screen_effects_debug_param: Vec<Option<ScreenEffects_DebugParam>>,

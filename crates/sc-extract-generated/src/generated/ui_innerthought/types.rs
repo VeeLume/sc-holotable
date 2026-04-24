@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -29,12 +29,8 @@ pub struct InnerThought_CycleAnimBase {
 }
 
 impl Pooled for InnerThought_CycleAnimBase {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.ui_innerthought.inner_thought_cycle_anim_base
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.ui_innerthought.inner_thought_cycle_anim_base
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_innerthought.inner_thought_cycle_anim_base }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_innerthought.inner_thought_cycle_anim_base }
 }
 
 impl<'a> Extract<'a> for InnerThought_CycleAnimBase {
@@ -60,12 +56,8 @@ pub struct InnerThought_CycleAnimRotateX {
 }
 
 impl Pooled for InnerThought_CycleAnimRotateX {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.ui_innerthought.inner_thought_cycle_anim_rotate_x
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.ui_innerthought.inner_thought_cycle_anim_rotate_x
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_innerthought.inner_thought_cycle_anim_rotate_x }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_innerthought.inner_thought_cycle_anim_rotate_x }
 }
 
 impl<'a> Extract<'a> for InnerThought_CycleAnimRotateX {
@@ -91,12 +83,8 @@ pub struct InnerThought_CycleAnimRotateY {
 }
 
 impl Pooled for InnerThought_CycleAnimRotateY {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.ui_innerthought.inner_thought_cycle_anim_rotate_y
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.ui_innerthought.inner_thought_cycle_anim_rotate_y
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_innerthought.inner_thought_cycle_anim_rotate_y }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_innerthought.inner_thought_cycle_anim_rotate_y }
 }
 
 impl<'a> Extract<'a> for InnerThought_CycleAnimRotateY {
@@ -122,12 +110,8 @@ pub struct InnerThought_CycleAnimRotateZ {
 }
 
 impl Pooled for InnerThought_CycleAnimRotateZ {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.ui_innerthought.inner_thought_cycle_anim_rotate_z
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.ui_innerthought.inner_thought_cycle_anim_rotate_z
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_innerthought.inner_thought_cycle_anim_rotate_z }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_innerthought.inner_thought_cycle_anim_rotate_z }
 }
 
 impl<'a> Extract<'a> for InnerThought_CycleAnimRotateZ {
@@ -152,33 +136,21 @@ pub struct InnerThought_LayoutGridSetThought {
 }
 
 impl Pooled for InnerThought_LayoutGridSetThought {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.ui_innerthought.inner_thought_layout_grid_set_thought
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.ui_innerthought.inner_thought_layout_grid_set_thought
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_innerthought.inner_thought_layout_grid_set_thought }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_innerthought.inner_thought_layout_grid_set_thought }
 }
 
 impl<'a> Extract<'a> for InnerThought_LayoutGridSetThought {
     const TYPE_NAME: &'static str = "InnerThought_LayoutGridSetThought";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            justification: InnerThoughtJustification::from_dcb_str(
-                inst.get_str("justification").unwrap_or(""),
-            ),
+            justification: InnerThoughtJustification::from_dcb_str(inst.get_str("justification").unwrap_or("")),
             offset: match inst.get("offset") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             angle: match inst.get("angle") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Quat>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Quat>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
@@ -192,38 +164,20 @@ pub struct InnerThought_LayoutGridSet {
 }
 
 impl Pooled for InnerThought_LayoutGridSet {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.ui_innerthought.inner_thought_layout_grid_set
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.ui_innerthought.inner_thought_layout_grid_set
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_innerthought.inner_thought_layout_grid_set }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_innerthought.inner_thought_layout_grid_set }
 }
 
 impl<'a> Extract<'a> for InnerThought_LayoutGridSet {
     const TYPE_NAME: &'static str = "InnerThought_LayoutGridSet";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            thoughts: inst
-                .get_array("thoughts")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<InnerThought_LayoutGridSetThought>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => {
-                            Some(b.alloc_nested::<InnerThought_LayoutGridSetThought>(
-                                b.db.instance(r.struct_index, r.instance_index),
-                                true,
-                            ))
-                        }
+            thoughts: inst.get_array("thoughts")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<InnerThought_LayoutGridSetThought>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<InnerThought_LayoutGridSetThought>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
         }
     }
@@ -251,88 +205,42 @@ pub struct InnerThought_LayoutGrid {
 }
 
 impl Pooled for InnerThought_LayoutGrid {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.ui_innerthought.inner_thought_layout_grid
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.ui_innerthought.inner_thought_layout_grid
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_innerthought.inner_thought_layout_grid }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_innerthought.inner_thought_layout_grid }
 }
 
 impl<'a> Extract<'a> for InnerThought_LayoutGrid {
     const TYPE_NAME: &'static str = "InnerThought_LayoutGrid";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            selected_color: inst
-                .get("selectedColor")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            unselected_color: inst
-                .get("unselectedColor")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            secondary_color: inst
-                .get("secondaryColor")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
+            selected_color: inst.get("selectedColor").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            unselected_color: inst.get("unselectedColor").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            secondary_color: inst.get("secondaryColor").and_then(|v| v.as_record_ref()).map(|r| r.guid),
             selected_offset: match inst.get("selectedOffset") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             unselected_offset: match inst.get("unselectedOffset") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             secondary_offset: match inst.get("secondaryOffset") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            primary_sets: inst
-                .get_array("primarySets")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<InnerThought_LayoutGridSet>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => Some(b.alloc_nested::<InnerThought_LayoutGridSet>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
+            primary_sets: inst.get_array("primarySets")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<InnerThought_LayoutGridSet>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<InnerThought_LayoutGridSet>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
-            secondary_sets: inst
-                .get_array("secondarySets")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<InnerThought_LayoutGridSet>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => Some(b.alloc_nested::<InnerThought_LayoutGridSet>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
+            secondary_sets: inst.get_array("secondarySets")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<InnerThought_LayoutGridSet>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<InnerThought_LayoutGridSet>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
         }
     }
@@ -368,80 +276,44 @@ pub struct InnerThought_LayoutCurve {
 }
 
 impl Pooled for InnerThought_LayoutCurve {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.ui_innerthought.inner_thought_layout_curve
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.ui_innerthought.inner_thought_layout_curve
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_innerthought.inner_thought_layout_curve }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_innerthought.inner_thought_layout_curve }
 }
 
 impl<'a> Extract<'a> for InnerThought_LayoutCurve {
     const TYPE_NAME: &'static str = "InnerThought_LayoutCurve";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            shuffle_selected_to_bottom: inst
-                .get_bool("shuffleSelectedToBottom")
-                .unwrap_or_default(),
+            shuffle_selected_to_bottom: inst.get_bool("shuffleSelectedToBottom").unwrap_or_default(),
             radius: inst.get_f32("radius").unwrap_or_default(),
             angle: inst.get_f32("angle").unwrap_or_default(),
             radius_orientation: match inst.get("radiusOrientation") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Quat>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Quat>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            cycles: inst
-                .get_array("cycles")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => {
-                            Some(InnerThought_CycleAnimBasePtr::from_ref(b, r))
-                        }
+            cycles: inst.get_array("cycles")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => Some(InnerThought_CycleAnimBasePtr::from_ref(b, r)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
-            selected_color: inst
-                .get("selectedColor")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            unselected_color_start: inst
-                .get("unselectedColorStart")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            unselected_color_end: inst
-                .get("unselectedColorEnd")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
+            selected_color: inst.get("selectedColor").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            unselected_color_start: inst.get("unselectedColorStart").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            unselected_color_end: inst.get("unselectedColorEnd").and_then(|v| v.as_record_ref()).map(|r| r.guid),
             selected_offset: match inst.get("selectedOffset") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             unselected_offset: match inst.get("unselectedOffset") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             selected_rotation: match inst.get("selectedRotation") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Deg3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Deg3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             unselected_rotation: match inst.get("unselectedRotation") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Deg3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Deg3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
@@ -460,30 +332,17 @@ pub struct InnerThought_LayoutPIT {
 }
 
 impl Pooled for InnerThought_LayoutPIT {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.ui_innerthought.inner_thought_layout_pit
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.ui_innerthought.inner_thought_layout_pit
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_innerthought.inner_thought_layout_pit }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_innerthought.inner_thought_layout_pit }
 }
 
 impl<'a> Extract<'a> for InnerThought_LayoutPIT {
     const TYPE_NAME: &'static str = "InnerThought_LayoutPIT";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            selected_color: inst
-                .get("selectedColor")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            unselected_color: inst
-                .get("unselectedColor")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            inactive_color: inst
-                .get("inactiveColor")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
+            selected_color: inst.get("selectedColor").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            unselected_color: inst.get("unselectedColor").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            inactive_color: inst.get("inactiveColor").and_then(|v| v.as_record_ref()).map(|r| r.guid),
         }
     }
 }
@@ -505,12 +364,8 @@ pub struct InnerThought_LegacyUseSystemConfig {
 }
 
 impl Pooled for InnerThought_LegacyUseSystemConfig {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.ui_innerthought.inner_thought_legacy_use_system_config
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.ui_innerthought.inner_thought_legacy_use_system_config
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_innerthought.inner_thought_legacy_use_system_config }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_innerthought.inner_thought_legacy_use_system_config }
 }
 
 impl<'a> Extract<'a> for InnerThought_LegacyUseSystemConfig {
@@ -522,10 +377,8 @@ impl<'a> Extract<'a> for InnerThought_LegacyUseSystemConfig {
             max_distance: inst.get_f32("maxDistance").unwrap_or_default(),
             rotation_rate: inst.get_f32("rotationRate").unwrap_or_default(),
             translation_rate: inst.get_f32("translationRate").unwrap_or_default(),
-            inner_thought: inst
-                .get("innerThought")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
+            inner_thought: inst.get("innerThought").and_then(|v| v.as_record_ref()).map(|r| r.guid),
         }
     }
 }
+

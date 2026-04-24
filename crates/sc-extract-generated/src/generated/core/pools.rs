@@ -24,8 +24,7 @@ pub struct CorePools {
     pub navigation_trigger_adapter: Vec<Option<NavigationTriggerAdapter>>,
     pub inavigation_cost_volume_extender: Vec<Option<INavigationCostVolumeExtender>>,
     pub action_area_extension_type: Vec<Option<ActionAreaExtensionType>>,
-    pub sactor_force_reaction_procedural_lean_pose_list:
-        Vec<Option<SActorForceReactionProceduralLeanPoseList>>,
+    pub sactor_force_reaction_procedural_lean_pose_list: Vec<Option<SActorForceReactionProceduralLeanPoseList>>,
     pub imannequin_action_def: Vec<Option<IMannequinActionDef>>,
     pub sactor_stance_dimensions_extra_def: Vec<Option<SActorStanceDimensionsExtraDef>>,
     pub status_effect_value: Vec<Option<StatusEffectValue>>,
@@ -54,26 +53,21 @@ pub struct CorePools {
     pub building_blocks_layout_policy_item_base: Vec<Option<BuildingBlocks_LayoutPolicyItemBase>>,
     pub building_blocks_scroll_policy_base: Vec<Option<BuildingBlocks_ScrollPolicyBase>>,
     pub building_blocks_field_modifier_base: Vec<Option<BuildingBlocks_FieldModifierBase>>,
-    pub building_blocks_field_modifier_enumerated_type_base:
-        Vec<Option<BuildingBlocks_FieldModifierEnumeratedTypeBase>>,
+    pub building_blocks_field_modifier_enumerated_type_base: Vec<Option<BuildingBlocks_FieldModifierEnumeratedTypeBase>>,
     pub building_blocks_renderer_policy_base: Vec<Option<BuildingBlocks_RendererPolicyBase>>,
-    pub building_blocks_field_modifier_record_ref_type_base:
-        Vec<Option<BuildingBlocks_FieldModifierRecordRefTypeBase>>,
+    pub building_blocks_field_modifier_record_ref_type_base: Vec<Option<BuildingBlocks_FieldModifierRecordRefTypeBase>>,
     pub building_blocks_timing_function_base: Vec<Option<BuildingBlocks_TimingFunctionBase>>,
     pub building_blocks_timeline_type_base: Vec<Option<BuildingBlocks_TimelineTypeBase>>,
     pub building_blocks_transformer_base: Vec<Option<BuildingBlocks_TransformerBase>>,
     pub building_blocks_slicer_base: Vec<Option<BuildingBlocks_SlicerBase>>,
     pub building_blocks_trigger_base: Vec<Option<BuildingBlocks_TriggerBase>>,
-    pub building_blocks_text_format_modifier_base:
-        Vec<Option<BuildingBlocks_TextFormatModifierBase>>,
-    pub building_blocks_style_selector_condition_base:
-        Vec<Option<BuildingBlocks_StyleSelectorConditionBase>>,
+    pub building_blocks_text_format_modifier_base: Vec<Option<BuildingBlocks_TextFormatModifierBase>>,
+    pub building_blocks_style_selector_condition_base: Vec<Option<BuildingBlocks_StyleSelectorConditionBase>>,
     pub building_blocks_color_base: Vec<Option<BuildingBlocks_ColorBase>>,
     pub building_blocks_container_mode_base: Vec<Option<BuildingBlocks_ContainerModeBase>>,
     pub base_cargo_fill_capacity_value: Vec<Option<BaseCargoFillCapacityValue>>,
     pub scustomzier_color_def_base: Vec<Option<SCustomzierColorDefBase>>,
-    pub scharacter_customizer_randomization_params:
-        Vec<Option<SCharacterCustomizerRandomizationParams>>,
+    pub scharacter_customizer_randomization_params: Vec<Option<SCharacterCustomizerRandomizationParams>>,
     pub scharacter_validation_params: Vec<Option<SCharacterValidationParams>>,
     pub temperature_damage_control: Vec<Option<TemperatureDamageControl>>,
     pub legacy_crafting_cost_base: Vec<Option<LegacyCraftingCost_Base>>,
@@ -107,18 +101,14 @@ pub struct CorePools {
     pub conversation_node_base: Vec<Option<ConversationNode_Base>>,
     pub crafting_cost_context_base: Vec<Option<CraftingCostContext_Base>>,
     pub crafting_optional_effect_base: Vec<Option<CraftingOptionalEffect_Base>>,
-    pub crafting_gameplay_property_modifier_value_range_base:
-        Vec<Option<CraftingGameplayPropertyModifierValueRange_Base>>,
-    pub crafting_gameplay_property_modifier_base:
-        Vec<Option<CraftingGameplayPropertyModifier_Base>>,
-    pub crafting_gameplay_property_modifiers_base:
-        Vec<Option<CraftingGameplayPropertyModifiers_Base>>,
+    pub crafting_gameplay_property_modifier_value_range_base: Vec<Option<CraftingGameplayPropertyModifierValueRange_Base>>,
+    pub crafting_gameplay_property_modifier_base: Vec<Option<CraftingGameplayPropertyModifier_Base>>,
+    pub crafting_gameplay_property_modifiers_base: Vec<Option<CraftingGameplayPropertyModifiers_Base>>,
     pub crafting_result_base: Vec<Option<CraftingResult_Base>>,
     pub crafting_recipe_costs_base: Vec<Option<CraftingRecipeCosts_Base>>,
     pub crafting_recipe_costs_base_non_ref: Vec<Option<CraftingRecipeCosts_Base_NonRef>>,
     pub crafting_recipe_results_base: Vec<Option<CraftingRecipeResults_Base>>,
-    pub crafting_process_specific_recipe_data_base:
-        Vec<Option<CraftingProcessSpecificRecipeData_Base>>,
+    pub crafting_process_specific_recipe_data_base: Vec<Option<CraftingProcessSpecificRecipeData_Base>>,
     pub crafting_recipe_base: Vec<Option<CraftingRecipe_Base>>,
     pub crafting_recipe_base_non_ref: Vec<Option<CraftingRecipe_Base_NonRef>>,
     pub crafting_research_unlock_base: Vec<Option<CraftingResearchUnlock_Base>>,
@@ -130,11 +120,9 @@ pub struct CorePools {
     pub crafting_blueprint_base_non_ref: Vec<Option<CraftingBlueprint_Base_NonRef>>,
     pub default_blueprint_selection_base: Vec<Option<DefaultBlueprintSelection_Base>>,
     pub crafting_quality_distribution_base: Vec<Option<CraftingQualityDistribution_Base>>,
-    pub crafting_quality_distribution_base_non_ref:
-        Vec<Option<CraftingQualityDistribution_Base_NonRef>>,
+    pub crafting_quality_distribution_base_non_ref: Vec<Option<CraftingQualityDistribution_Base_NonRef>>,
     pub crafting_quality_location_override_base: Vec<Option<CraftingQualityLocationOverride_Base>>,
-    pub crafting_quality_location_override_base_non_ref:
-        Vec<Option<CraftingQualityLocationOverride_Base_NonRef>>,
+    pub crafting_quality_location_override_base_non_ref: Vec<Option<CraftingQualityLocationOverride_Base_NonRef>>,
     pub custom_float: Vec<Option<CustomFloat>>,
     pub damage_base: Vec<Option<DamageBase>>,
     pub damage_resistance_base: Vec<Option<DamageResistanceBase>>,
@@ -202,8 +190,7 @@ pub struct CorePools {
     pub sivoting_module: Vec<Option<SIVotingModule>>,
     pub sgeometry_model_tag_base: Vec<Option<SGeometryModelTagBase>>,
     pub sinitial_damage_specifier_base: Vec<Option<SInitialDamageSpecifierBase>>,
-    pub entity_component_health_sbase_sequencer_task:
-        Vec<Option<EntityComponentHealth_SBaseSequencerTask>>,
+    pub entity_component_health_sbase_sequencer_task: Vec<Option<EntityComponentHealth_SBaseSequencerTask>>,
     pub hit_behavior_base: Vec<Option<HitBehaviorBase>>,
     pub inner_thought_layout_base: Vec<Option<InnerThought_LayoutBase>>,
     pub shighlight_behavior_node_params: Vec<Option<SHighlightBehaviorNodeParams>>,
@@ -218,8 +205,7 @@ pub struct CorePools {
     pub base_expiration_type_params: Vec<Option<BaseExpirationTypeParams>>,
     pub sitem_port_rule_def: Vec<Option<SItemPortRuleDef>>,
     pub sitem_port_def_extension_base: Vec<Option<SItemPortDefExtensionBase>>,
-    pub sitem_port_def_attachment_implementation_base:
-        Vec<Option<SItemPortDefAttachmentImplementationBase>>,
+    pub sitem_port_def_attachment_implementation_base: Vec<Option<SItemPortDefAttachmentImplementationBase>>,
     pub placement_validator: Vec<Option<PlacementValidator>>,
     pub item_resource_dynamic_amount_base: Vec<Option<ItemResourceDynamicAmountBase>>,
     pub item_resource_conversion_modifier_base: Vec<Option<ItemResourceConversionModifierBase>>,
@@ -235,8 +221,7 @@ pub struct CorePools {
     pub ilight_aiextender: Vec<Option<ILightAIExtender>>,
     pub control_hint_condition: Vec<Option<ControlHintCondition>>,
     pub control_hint_always_display_condition: Vec<Option<ControlHintAlwaysDisplayCondition>>,
-    pub long_term_persistence_sub_type_list_option:
-        Vec<Option<LongTermPersistenceSubTypeListOption>>,
+    pub long_term_persistence_sub_type_list_option: Vec<Option<LongTermPersistenceSubTypeListOption>>,
     pub entry_optional_data_base: Vec<Option<EntryOptionalData_Base>>,
     pub entity_class_list_base: Vec<Option<EntityClassList_Base>>,
     pub pool_filter_base: Vec<Option<PoolFilter_Base>>,
@@ -248,10 +233,8 @@ pub struct CorePools {
     pub archetype_optional_data_v3_base: Vec<Option<ArchetypeOptionalDataV3_Base>>,
     pub spawn_with_v3_selector_base: Vec<Option<SpawnWithV3Selector_Base>>,
     pub loot_table_optional_data_v3_base: Vec<Option<LootTableOptionalDataV3_Base>>,
-    pub loot_v3_secondary_choices_record_ref_base:
-        Vec<Option<LootV3SecondaryChoicesRecordRef_Base>>,
-    pub loot_v3_secondary_choice_entry_selector_base:
-        Vec<Option<LootV3SecondaryChoiceEntrySelector_Base>>,
+    pub loot_v3_secondary_choices_record_ref_base: Vec<Option<LootV3SecondaryChoicesRecordRef_Base>>,
+    pub loot_v3_secondary_choice_entry_selector_base: Vec<Option<LootV3SecondaryChoiceEntrySelector_Base>>,
     pub quantity_range_base: Vec<Option<QuantityRange_Base>>,
     pub map_display_start_mode_base_params: Vec<Option<MapDisplayStartModeBaseParams>>,
     pub marker_show_rule: Vec<Option<Marker_ShowRule>>,
@@ -291,8 +274,7 @@ pub struct CorePools {
     pub scan_display_condition_base_params: Vec<Option<ScanDisplayConditionBaseParams>>,
     pub sbbdynamic_property_base: Vec<Option<SBBDynamicPropertyBase>>,
     pub sreputation_state_modifier_base: Vec<Option<SReputationStateModifierBase>>,
-    pub sreputation_mission_requirement_expression_element:
-        Vec<Option<SReputationMissionRequirementExpressionElement>>,
+    pub sreputation_mission_requirement_expression_element: Vec<Option<SReputationMissionRequirementExpressionElement>>,
     pub base_density_unit: Vec<Option<BaseDensityUnit>>,
     pub resource_type_density_type: Vec<Option<ResourceTypeDensityType>>,
     pub room_extension: Vec<Option<RoomExtension>>,
@@ -310,10 +292,8 @@ pub struct CorePools {
     pub scheck_type: Vec<Option<SCheckType>>,
     pub gameplay_trigger_target_type_base: Vec<Option<GameplayTrigger_TargetType_Base>>,
     pub gameplay_trigger_filter_type_base: Vec<Option<GameplayTrigger_FilterType_Base>>,
-    pub gameplay_trigger_executor_activate_interaction_base:
-        Vec<Option<GameplayTrigger_Executor_ActivateInteraction_Base>>,
-    pub gameplay_trigger_executor_set_interaction_state_base:
-        Vec<Option<GameplayTrigger_Executor_SetInteractionState_Base>>,
+    pub gameplay_trigger_executor_activate_interaction_base: Vec<Option<GameplayTrigger_Executor_ActivateInteraction_Base>>,
+    pub gameplay_trigger_executor_set_interaction_state_base: Vec<Option<GameplayTrigger_Executor_SetInteractionState_Base>>,
     pub gt_communication_message: Vec<Option<GT_CommunicationMessage>>,
     pub gt_communication_target: Vec<Option<GT_CommunicationTarget>>,
     pub entity_filter: Vec<Option<EntityFilter>>,
@@ -324,8 +304,7 @@ pub struct CorePools {
     pub triggered_health: Vec<Option<TriggeredHealth>>,
     pub smod_health: Vec<Option<SModHealth>>,
     pub vulnerability_state: Vec<Option<VulnerabilityState>>,
-    pub gameplay_trigger_physics_set_parameter_base:
-        Vec<Option<GameplayTrigger_Physics_SetParameter_Base>>,
+    pub gameplay_trigger_physics_set_parameter_base: Vec<Option<GameplayTrigger_Physics_SetParameter_Base>>,
     pub suser_variable_operation_type: Vec<Option<SUserVariableOperationType>>,
     pub gameplay_trigger_interpolation_type: Vec<Option<GameplayTrigger_InterpolationType>>,
     pub clothing_type: Vec<Option<ClothingType>>,
@@ -352,8 +331,7 @@ pub struct CorePools {
     pub sscsignature_system_audio_sub_rule: Vec<Option<SSCSignatureSystemAudioSubRule>>,
     pub completion_type_base: Vec<Option<CompletionTypeBase>>,
     pub screen_effects_param_value: Vec<Option<ScreenEffects_ParamValue>>,
-    pub security_clearance_outfit_requirement_def:
-        Vec<Option<SecurityClearance_OutfitRequirementDef>>,
+    pub security_clearance_outfit_requirement_def: Vec<Option<SecurityClearance_OutfitRequirementDef>>,
     pub security_manual_input: Vec<Option<SecurityManualInput>>,
     pub security_notifications: Vec<Option<SecurityNotifications>>,
     pub security_network_variable_value_base: Vec<Option<SecurityNetworkVariableValue_Base>>,

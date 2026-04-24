@@ -15,6 +15,5 @@ use super::super::*;
 #[derive(Default)]
 pub struct EntitiesEntityspawnersPools {
     pub sspawn_only_on_request: Vec<Option<SSpawnOnlyOnRequest>>,
-    pub ssequencer_spawn_in_useable_spawner_task_params:
-        Vec<Option<SSequencerSpawnInUseableSpawnerTaskParams>>,
+    pub ssequencer_spawn_in_useable_spawner_task_params: Vec<Option<SSequencerSpawnInUseableSpawnerTaskParams>>,
 }

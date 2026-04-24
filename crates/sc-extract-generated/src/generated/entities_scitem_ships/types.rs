@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -26,12 +26,8 @@ pub struct ItemModifierTimedLife {
 }
 
 impl Pooled for ItemModifierTimedLife {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_scitem_ships.item_modifier_timed_life
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_scitem_ships.item_modifier_timed_life
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_ships.item_modifier_timed_life }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_ships.item_modifier_timed_life }
 }
 
 impl<'a> Extract<'a> for ItemModifierTimedLife {
@@ -57,12 +53,8 @@ pub struct ItemMiningBoosterParams {
 }
 
 impl Pooled for ItemMiningBoosterParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_scitem_ships.item_mining_booster_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_scitem_ships.item_mining_booster_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_ships.item_mining_booster_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_ships.item_mining_booster_params }
 }
 
 impl<'a> Extract<'a> for ItemMiningBoosterParams {
@@ -70,9 +62,7 @@ impl<'a> Extract<'a> for ItemMiningBoosterParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             modifier_lifetime: match inst.get("modifierLifetime") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(ItemModifierLifetimePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(ItemModifierLifetimePtr::from_ref(b, r)),
                 _ => None,
             },
             power_level_change: inst.get_f32("powerLevelChange").unwrap_or_default(),
@@ -96,12 +86,8 @@ pub struct SMisfireFunctionalityCondition {
 }
 
 impl Pooled for SMisfireFunctionalityCondition {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_scitem_ships.smisfire_functionality_condition
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_scitem_ships.smisfire_functionality_condition
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_ships.smisfire_functionality_condition }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_ships.smisfire_functionality_condition }
 }
 
 impl<'a> Extract<'a> for SMisfireFunctionalityCondition {
@@ -111,17 +97,11 @@ impl<'a> Extract<'a> for SMisfireFunctionalityCondition {
             functionality_min: inst.get_f32("functionalityMin").unwrap_or_default(),
             min_time_for_trigger: inst.get_f32("minTimeForTrigger").unwrap_or_default(),
             mean_time_for_condition: inst.get_f32("meanTimeForCondition").unwrap_or_default(),
-            misfire_array: inst
-                .get_array("misfireArray")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => {
-                            Some(SMisfireEffectPtr::from_ref(b, r))
-                        }
+            misfire_array: inst.get_array("misfireArray")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => Some(SMisfireEffectPtr::from_ref(b, r)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
         }
     }
@@ -138,12 +118,8 @@ pub struct HoverPlane {
 }
 
 impl Pooled for HoverPlane {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_scitem_ships.hover_plane
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_scitem_ships.hover_plane
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_ships.hover_plane }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_ships.hover_plane }
 }
 
 impl<'a> Extract<'a> for HoverPlane {
@@ -153,10 +129,7 @@ impl<'a> Extract<'a> for HoverPlane {
             width: inst.get_f32("width").unwrap_or_default(),
             length: inst.get_f32("length").unwrap_or_default(),
             offset: match inst.get("offset") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
@@ -182,12 +155,8 @@ pub struct SuspensionSprings {
 }
 
 impl Pooled for SuspensionSprings {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_scitem_ships.suspension_springs
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_scitem_ships.suspension_springs
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_ships.suspension_springs }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_ships.suspension_springs }
 }
 
 impl<'a> Extract<'a> for SuspensionSprings {
@@ -201,10 +170,7 @@ impl<'a> Extract<'a> for SuspensionSprings {
             force_blend_out_rate: inst.get_f32("forceBlendOutRate").unwrap_or_default(),
             bump_stop: inst.get_f32("bumpStop").unwrap_or_default(),
             compression_force_curve: match inst.get("compressionForceCurve") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BezierCurve>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BezierCurve>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
@@ -228,12 +194,8 @@ pub struct HoverHeight {
 }
 
 impl Pooled for HoverHeight {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_scitem_ships.hover_height
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_scitem_ships.hover_height
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_ships.hover_height }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_ships.hover_height }
 }
 
 impl<'a> Extract<'a> for HoverHeight {
@@ -242,23 +204,13 @@ impl<'a> Extract<'a> for HoverHeight {
         Self {
             desired_hover_height: inst.get_f32("desiredHoverHeight").unwrap_or_default(),
             hover_height_offset_range: match inst.get("hoverHeightOffsetRange") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            hover_height_offset_acceleration: inst
-                .get_f32("hoverHeightOffsetAcceleration")
-                .unwrap_or_default(),
-            hover_height_offset_max_speed: inst
-                .get_f32("hoverHeightOffsetMaxSpeed")
-                .unwrap_or_default(),
+            hover_height_offset_acceleration: inst.get_f32("hoverHeightOffsetAcceleration").unwrap_or_default(),
+            hover_height_offset_max_speed: inst.get_f32("hoverHeightOffsetMaxSpeed").unwrap_or_default(),
             speed_range_for_extra_height: match inst.get("speedRangeForExtraHeight") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             max_extra_hover_height: inst.get_f32("maxExtraHoverHeight").unwrap_or_default(),
@@ -279,12 +231,8 @@ pub struct HoverTilting {
 }
 
 impl Pooled for HoverTilting {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_scitem_ships.hover_tilting
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_scitem_ships.hover_tilting
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_ships.hover_tilting }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_ships.hover_tilting }
 }
 
 impl<'a> Extract<'a> for HoverTilting {
@@ -295,10 +243,7 @@ impl<'a> Extract<'a> for HoverTilting {
             forward_back_tilt_factor: inst.get_f32("forwardBackTiltFactor").unwrap_or_default(),
             turn_bank_factor: inst.get_f32("turnBankFactor").unwrap_or_default(),
             bank_per_speed_curve: match inst.get("bankPerSpeedCurve") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BezierCurve>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BezierCurve>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
@@ -316,12 +261,8 @@ pub struct HoverCollisions {
 }
 
 impl Pooled for HoverCollisions {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_scitem_ships.hover_collisions
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_scitem_ships.hover_collisions
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_ships.hover_collisions }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_ships.hover_collisions }
 }
 
 impl<'a> Extract<'a> for HoverCollisions {
@@ -356,12 +297,8 @@ pub struct HoverHandling {
 }
 
 impl Pooled for HoverHandling {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_scitem_ships.hover_handling
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_scitem_ships.hover_handling
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_ships.hover_handling }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_ships.hover_handling }
 }
 
 impl<'a> Extract<'a> for HoverHandling {
@@ -375,17 +312,11 @@ impl<'a> Extract<'a> for HoverHandling {
             anti_fall_multiplier: inst.get_f32("antiFallMultiplier").unwrap_or_default(),
             lateral_strafe_multiplier: inst.get_f32("lateralStrafeMultiplier").unwrap_or_default(),
             max_speed_multiplier_by_height: match inst.get("maxSpeedMultiplierByHeight") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BezierCurve>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BezierCurve>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             turn_friction_multiplier_by_height: match inst.get("turnFrictionMultiplierByHeight") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BezierCurve>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BezierCurve>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
@@ -414,12 +345,8 @@ pub struct GravlevParams {
 }
 
 impl Pooled for GravlevParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_scitem_ships.gravlev_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_scitem_ships.gravlev_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_ships.gravlev_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_ships.gravlev_params }
 }
 
 impl<'a> Extract<'a> for GravlevParams {
@@ -427,63 +354,35 @@ impl<'a> Extract<'a> for GravlevParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             hover_plane: match inst.get("hoverPlane") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<HoverPlane>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<HoverPlane>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             springs: match inst.get("springs") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<SuspensionSprings>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SuspensionSprings>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             height: match inst.get("height") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<HoverHeight>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<HoverHeight>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             tilting: match inst.get("tilting") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<HoverTilting>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<HoverTilting>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             collisions: match inst.get("collisions") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<HoverCollisions>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<HoverCollisions>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             handling: match inst.get("handling") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<HoverHandling>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<HoverHandling>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             hover_height_rtpc: match inst.get("hoverHeightRtpc") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             hover_height_differential_rtpc: match inst.get("hoverHeightDifferentialRtpc") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
@@ -499,12 +398,8 @@ pub struct SIFCSModifierNumber {
 }
 
 impl Pooled for SIFCSModifierNumber {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_scitem_ships.sifcsmodifier_number
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_scitem_ships.sifcsmodifier_number
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_ships.sifcsmodifier_number }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_ships.sifcsmodifier_number }
 }
 
 impl<'a> Extract<'a> for SIFCSModifierNumber {
@@ -526,12 +421,8 @@ pub struct SIFCSModifierVector {
 }
 
 impl Pooled for SIFCSModifierVector {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_scitem_ships.sifcsmodifier_vector
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_scitem_ships.sifcsmodifier_vector
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_ships.sifcsmodifier_vector }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_ships.sifcsmodifier_vector }
 }
 
 impl<'a> Extract<'a> for SIFCSModifierVector {
@@ -539,10 +430,7 @@ impl<'a> Extract<'a> for SIFCSModifierVector {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             value: match inst.get("value") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             r#type: EIFCSModifierType::from_dcb_str(inst.get_str("type").unwrap_or("")),
@@ -559,12 +447,8 @@ pub struct SIFCSModifiersLegacy {
 }
 
 impl Pooled for SIFCSModifiersLegacy {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_scitem_ships.sifcsmodifiers_legacy
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_scitem_ships.sifcsmodifiers_legacy
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_ships.sifcsmodifiers_legacy }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_ships.sifcsmodifiers_legacy }
 }
 
 impl<'a> Extract<'a> for SIFCSModifiersLegacy {
@@ -572,21 +456,11 @@ impl<'a> Extract<'a> for SIFCSModifiersLegacy {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             numbers: match inst.get("numbers") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<SIFCSModifierNumber>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SIFCSModifierNumber>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             vectors: match inst.get("vectors") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<SIFCSModifierVector>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SIFCSModifierVector>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
@@ -601,12 +475,8 @@ pub struct SendDockingEnableEvent {
 }
 
 impl Pooled for SendDockingEnableEvent {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_scitem_ships.send_docking_enable_event
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_scitem_ships.send_docking_enable_event
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_ships.send_docking_enable_event }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_ships.send_docking_enable_event }
 }
 
 impl<'a> Extract<'a> for SendDockingEnableEvent {
@@ -634,12 +504,8 @@ pub struct SelfDestructStateModifier {
 }
 
 impl Pooled for SelfDestructStateModifier {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_scitem_ships.self_destruct_state_modifier
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_scitem_ships.self_destruct_state_modifier
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_ships.self_destruct_state_modifier }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_ships.self_destruct_state_modifier }
 }
 
 impl<'a> Extract<'a> for SelfDestructStateModifier {
@@ -647,45 +513,23 @@ impl<'a> Extract<'a> for SelfDestructStateModifier {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             context: match inst.get("context") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(AttachableStateModifierContextBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(AttachableStateModifierContextBasePtr::from_ref(b, r)),
                 _ => None,
             },
             offline_state: match inst.get("offlineState") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<SInteractionState>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SInteractionState>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             primed_state: match inst.get("primedState") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<SInteractionState>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SInteractionState>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             idle_state: match inst.get("idleState") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<SInteractionState>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SInteractionState>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             detonated_state: match inst.get("detonatedState") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<SInteractionState>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SInteractionState>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
         }
@@ -694,25 +538,19 @@ impl<'a> Extract<'a> for SelfDestructStateModifier {
 
 /// DCB type: `ItemResourceDynamicAmountFuelNozzleFuel`
 /// Inherits from: `ItemResourceDynamicAmountBase`
-pub struct ItemResourceDynamicAmountFuelNozzleFuel {}
+pub struct ItemResourceDynamicAmountFuelNozzleFuel {
+}
 
 impl Pooled for ItemResourceDynamicAmountFuelNozzleFuel {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_scitem_ships
-            .item_resource_dynamic_amount_fuel_nozzle_fuel
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_scitem_ships
-            .item_resource_dynamic_amount_fuel_nozzle_fuel
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_ships.item_resource_dynamic_amount_fuel_nozzle_fuel }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_ships.item_resource_dynamic_amount_fuel_nozzle_fuel }
 }
 
 impl<'a> Extract<'a> for ItemResourceDynamicAmountFuelNozzleFuel {
     const TYPE_NAME: &'static str = "ItemResourceDynamicAmountFuelNozzleFuel";
     fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {}
+        Self {
+        }
     }
 }
 
@@ -768,12 +606,8 @@ pub struct SCItemEMPParams {
 }
 
 impl Pooled for SCItemEMPParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_scitem_ships.scitem_empparams
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_scitem_ships.scitem_empparams
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_ships.scitem_empparams }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_ships.scitem_empparams }
 }
 
 impl<'a> Extract<'a> for SCItemEMPParams {
@@ -790,89 +624,35 @@ impl<'a> Extract<'a> for SCItemEMPParams {
             unleash_time: inst.get_f32("unleashTime").unwrap_or_default(),
             cooldown_time: inst.get_f32("cooldownTime").unwrap_or_default(),
             charging_particle: match inst.get("ChargingParticle") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<GlobalResourceParticle>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceParticle>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             charged_particle: match inst.get("ChargedParticle") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<GlobalResourceParticle>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceParticle>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            charging_tag: inst
-                .get("ChargingTag")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            charged_tag: inst
-                .get("ChargedTag")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            start_charging_trigger: inst
-                .get("StartChargingTrigger")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            stop_charging_trigger: inst
-                .get("StopChargingTrigger")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            start_charged_trigger: inst
-                .get("StartChargedTrigger")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            stop_charged_trigger: inst
-                .get("StopChargedTrigger")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            start_unleash_trigger: inst
-                .get("StartUnleashTrigger")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            stop_unleash_trigger: inst
-                .get("StopUnleashTrigger")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
+            charging_tag: inst.get("ChargingTag").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            charged_tag: inst.get("ChargedTag").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            start_charging_trigger: inst.get("StartChargingTrigger").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            stop_charging_trigger: inst.get("StopChargingTrigger").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            start_charged_trigger: inst.get("StartChargedTrigger").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            stop_charged_trigger: inst.get("StopChargedTrigger").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            start_unleash_trigger: inst.get("StartUnleashTrigger").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            stop_unleash_trigger: inst.get("StopUnleashTrigger").and_then(|v| v.as_record_ref()).map(|r| r.guid),
             idle_state: match inst.get("idleState") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<ItemResourceState>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<ItemResourceState>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             charging_state: match inst.get("chargingState") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<ItemResourceState>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<ItemResourceState>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             charged_state: match inst.get("chargedState") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<ItemResourceState>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<ItemResourceState>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             releasing_state: match inst.get("releasingState") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<ItemResourceState>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<ItemResourceState>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
         }
@@ -915,12 +695,8 @@ pub struct SCItemFuelNozzleParams {
 }
 
 impl Pooled for SCItemFuelNozzleParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_scitem_ships.scitem_fuel_nozzle_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_scitem_ships.scitem_fuel_nozzle_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_ships.scitem_fuel_nozzle_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_ships.scitem_fuel_nozzle_params }
 }
 
 impl<'a> Extract<'a> for SCItemFuelNozzleParams {
@@ -928,9 +704,7 @@ impl<'a> Extract<'a> for SCItemFuelNozzleParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             fuel_max_flow_multiplier: inst.get_f32("fuelMaxFlowMultiplier").unwrap_or_default(),
-            fuel_tank_capacity_multiplier: inst
-                .get_f32("fuelTankCapacityMultiplier")
-                .unwrap_or_default(),
+            fuel_tank_capacity_multiplier: inst.get_f32("fuelTankCapacityMultiplier").unwrap_or_default(),
             fuel_safe_speed: inst.get_f32("fuelSafeSpeed").unwrap_or_default(),
             fuel_safe_speed_rn: inst.get_f32("fuelSafeSpeedRN").unwrap_or_default(),
             fuel_damage_multiplier: inst.get_f32("fuelDamageMultiplier").unwrap_or_default(),
@@ -940,54 +714,26 @@ impl<'a> Extract<'a> for SCItemFuelNozzleParams {
             flow_speed_modifier: inst.get_f32("flowSpeedModifier").unwrap_or_default(),
             fuel_pod_multiplier: inst.get_f32("fuelPodMultiplier").unwrap_or_default(),
             fuel_flow_loop_start_audio_trigger: match inst.get("fuelFlowLoopStartAudioTrigger") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<GlobalResourceAudio>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             fuel_flow_loop_stop_audio_trigger: match inst.get("fuelFlowLoopStopAudioTrigger") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<GlobalResourceAudio>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            fuel_flow_rate_audio_rtpcs: inst
-                .get_array("fuelFlowRateAudioRtpcs")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<AudioRtpc>(
-                            Instance::from_inline_data(b.db, struct_index, data),
-                            false,
-                        )),
-                        Value::ClassRef(r) => Some(b.alloc_nested::<AudioRtpc>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
+            fuel_flow_rate_audio_rtpcs: inst.get_array("fuelFlowRateAudioRtpcs")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<AudioRtpc>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
             fuel_spill_audio_rtpc: match inst.get("fuelSpillAudioRtpc") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             state_to_power_off: match inst.get("stateToPowerOff") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<SInteractionState>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SInteractionState>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
         }
@@ -1026,12 +772,8 @@ pub struct SCItemSpaceMineParams {
 }
 
 impl Pooled for SCItemSpaceMineParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_scitem_ships.scitem_space_mine_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_scitem_ships.scitem_space_mine_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_ships.scitem_space_mine_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_ships.scitem_space_mine_params }
 }
 
 impl<'a> Extract<'a> for SCItemSpaceMineParams {
@@ -1039,12 +781,7 @@ impl<'a> Extract<'a> for SCItemSpaceMineParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             audio_params: match inst.get("audioParams") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<SOrdnanceAudioParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SOrdnanceAudioParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             requires_launcher: inst.get_bool("requiresLauncher").unwrap_or_default(),
@@ -1057,30 +794,15 @@ impl<'a> Extract<'a> for SCItemSpaceMineParams {
             explosion_safety_distance: inst.get_f32("explosionSafetyDistance").unwrap_or_default(),
             projectile_proximity: inst.get_f32("projectileProximity").unwrap_or_default(),
             explosion_params: match inst.get("explosionParams") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<ExplosionParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<ExplosionParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             cluster_params: match inst.get("clusterParams") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<SOrdnanceClusterParams>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SOrdnanceClusterParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             emissions_params: match inst.get("emissionsParams") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<SOrdnanceEmissionsParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SOrdnanceEmissionsParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
@@ -1102,12 +824,8 @@ pub struct SMFDParamsDiagnostics {
 }
 
 impl Pooled for SMFDParamsDiagnostics {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_scitem_ships.smfdparams_diagnostics
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_scitem_ships.smfdparams_diagnostics
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_ships.smfdparams_diagnostics }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_ships.smfdparams_diagnostics }
 }
 
 impl<'a> Extract<'a> for SMFDParamsDiagnostics {
@@ -1116,68 +834,40 @@ impl<'a> Extract<'a> for SMFDParamsDiagnostics {
         Self {
             health_threshold_damaged: inst.get_f32("healthThresholdDamaged").unwrap_or_default(),
             health_threshold_critical: inst.get_f32("healthThresholdCritical").unwrap_or_default(),
-            excluded_item_types: inst
-                .get_array("excludedItemTypes")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<SItemPortDefTypes>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => Some(b.alloc_nested::<SItemPortDefTypes>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
+            excluded_item_types: inst.get_array("excludedItemTypes")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<SItemPortDefTypes>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<SItemPortDefTypes>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
-            included_item_types: inst
-                .get_array("includedItemTypes")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<SItemPortDefTypes>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => Some(b.alloc_nested::<SItemPortDefTypes>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
+            included_item_types: inst.get_array("includedItemTypes")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<SItemPortDefTypes>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<SItemPortDefTypes>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
-            type_icons: inst
-                .get_str("typeIcons")
-                .map(String::from)
-                .unwrap_or_default(),
+            type_icons: inst.get_str("typeIcons").map(String::from).unwrap_or_default(),
         }
     }
 }
 
 /// DCB type: `SDummyLauncher`
 /// Inherits from: `SLauncherBase`
-pub struct SDummyLauncher {}
+pub struct SDummyLauncher {
+}
 
 impl Pooled for SDummyLauncher {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_scitem_ships.sdummy_launcher
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_scitem_ships.sdummy_launcher
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_ships.sdummy_launcher }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_ships.sdummy_launcher }
 }
 
 impl<'a> Extract<'a> for SDummyLauncher {
     const TYPE_NAME: &'static str = "SDummyLauncher";
     fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {}
+        Self {
+        }
     }
 }
+

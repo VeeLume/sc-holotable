@@ -14,8 +14,6 @@ use super::super::*;
 /// Pool storage for the `character` feature.
 #[derive(Default)]
 pub struct CharacterPools {
-    pub default_player_loadout_entitlement_params:
-        Vec<Option<DefaultPlayerLoadoutEntitlementParams>>,
-    pub default_player_loadout_entitlement_record:
-        Vec<Option<DefaultPlayerLoadoutEntitlementRecord>>,
+    pub default_player_loadout_entitlement_params: Vec<Option<DefaultPlayerLoadoutEntitlementParams>>,
+    pub default_player_loadout_entitlement_record: Vec<Option<DefaultPlayerLoadoutEntitlementRecord>>,
 }

@@ -14,6 +14,5 @@ use super::super::*;
 /// Pool storage for the `ui-graphs` feature.
 #[derive(Default)]
 pub struct UiGraphsPools {
-    pub uigraph_blocking_message_pop_up_component:
-        Vec<Option<UIGraph_BlockingMessagePopUpComponent>>,
+    pub uigraph_blocking_message_pop_up_component: Vec<Option<UIGraph_BlockingMessagePopUpComponent>>,
 }

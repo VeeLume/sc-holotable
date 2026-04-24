@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -53,12 +53,8 @@ pub struct ESPParams {
 }
 
 impl Pooled for ESPParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.ifcs.espparams
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.ifcs.espparams
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ifcs.espparams }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ifcs.espparams }
 }
 
 impl<'a> Extract<'a> for ESPParams {
@@ -66,10 +62,7 @@ impl<'a> Extract<'a> for ESPParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             trigger_zone_ramp_in_curve: match inst.get("triggerZoneRampInCurve") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BezierCurve>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BezierCurve>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             tracking_strength: inst.get_f32("trackingStrength").unwrap_or_default(),
@@ -79,17 +72,13 @@ impl<'a> Extract<'a> for ESPParams {
             inner_zone_ratio: inst.get_f32("innerZoneRatio").unwrap_or_default(),
             ads_zone_min_size_deg: inst.get_f32("adsZoneMinSizeDeg").unwrap_or_default(),
             input_disengage_curve: inst.get_f32("inputDisengageCurve").unwrap_or_default(),
-            direction_similarity_smooth_speed: inst
-                .get_f32("directionSimilaritySmoothSpeed")
-                .unwrap_or_default(),
+            direction_similarity_smooth_speed: inst.get_f32("directionSimilaritySmoothSpeed").unwrap_or_default(),
             assist_relax_speed: inst.get_f32("assistRelaxSpeed").unwrap_or_default(),
             alignment_angle_curve: inst.get_f32("alignmentAngleCurve").unwrap_or_default(),
             dampening_min: inst.get_f32("dampeningMin").unwrap_or_default(),
             dampening_max: inst.get_f32("dampeningMax").unwrap_or_default(),
             allow_pulling: inst.get_bool("allowPulling").unwrap_or_default(),
-            allow_with_relative_mouse_modes: inst
-                .get_bool("allowWithRelativeMouseModes")
-                .unwrap_or_default(),
+            allow_with_relative_mouse_modes: inst.get_bool("allowWithRelativeMouseModes").unwrap_or_default(),
         }
     }
 }
@@ -131,12 +120,8 @@ pub struct SIFCSEspParams {
 }
 
 impl Pooled for SIFCSEspParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.ifcs.sifcsesp_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.ifcs.sifcsesp_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ifcs.sifcsesp_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ifcs.sifcsesp_params }
 }
 
 impl<'a> Extract<'a> for SIFCSEspParams {
@@ -144,10 +129,7 @@ impl<'a> Extract<'a> for SIFCSEspParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             trigger_zone_ramp_in_curve: match inst.get("triggerZoneRampInCurve") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BezierCurve>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BezierCurve>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             max_tracking_strength: inst.get_f32("maxTrackingStrength").unwrap_or_default(),
@@ -164,9 +146,7 @@ impl<'a> Extract<'a> for SIFCSEspParams {
             input_relax_speed: inst.get_f32("inputRelaxSpeed").unwrap_or_default(),
             allow_pulling: inst.get_bool("allowPulling").unwrap_or_default(),
             smoothing_time: inst.get_f32("smoothingTime").unwrap_or_default(),
-            smoothing_time_decrease_multiplier: inst
-                .get_f32("smoothingTimeDecreaseMultiplier")
-                .unwrap_or_default(),
+            smoothing_time_decrease_multiplier: inst.get_f32("smoothingTimeDecreaseMultiplier").unwrap_or_default(),
         }
     }
 }
@@ -178,12 +158,8 @@ pub struct SIFCSEsp {
 }
 
 impl Pooled for SIFCSEsp {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.ifcs.sifcsesp
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.ifcs.sifcsesp
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ifcs.sifcsesp }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ifcs.sifcsesp }
 }
 
 impl<'a> Extract<'a> for SIFCSEsp {
@@ -191,12 +167,7 @@ impl<'a> Extract<'a> for SIFCSEsp {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             esp_per_type: match inst.get("espPerType") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<SIFCSEspParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SIFCSEspParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
@@ -212,12 +183,8 @@ pub struct SIFCSGameModePhysicsDamping {
 }
 
 impl Pooled for SIFCSGameModePhysicsDamping {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.ifcs.sifcsgame_mode_physics_damping
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.ifcs.sifcsgame_mode_physics_damping
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ifcs.sifcsgame_mode_physics_damping }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ifcs.sifcsgame_mode_physics_damping }
 }
 
 impl<'a> Extract<'a> for SIFCSGameModePhysicsDamping {
@@ -253,12 +220,8 @@ pub struct SIFCSGameModeParams {
 }
 
 impl Pooled for SIFCSGameModeParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.ifcs.sifcsgame_mode_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.ifcs.sifcsgame_mode_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ifcs.sifcsgame_mode_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ifcs.sifcsgame_mode_params }
 }
 
 impl<'a> Extract<'a> for SIFCSGameModeParams {
@@ -266,32 +229,18 @@ impl<'a> Extract<'a> for SIFCSGameModeParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             enable_new_model: inst.get_bool("enableNewModel").unwrap_or_default(),
-            enforce_legacy_esp_for_new_model: inst
-                .get_bool("enforceLegacyEspForNewModel")
-                .unwrap_or_default(),
-            enable_decoupled_gliding_default: inst
-                .get_bool("enableDecoupledGlidingDefault")
-                .unwrap_or_default(),
-            enable_decoupled_gliding_core_off: inst
-                .get_bool("enableDecoupledGlidingCoreOff")
-                .unwrap_or_default(),
+            enforce_legacy_esp_for_new_model: inst.get_bool("enforceLegacyEspForNewModel").unwrap_or_default(),
+            enable_decoupled_gliding_default: inst.get_bool("enableDecoupledGlidingDefault").unwrap_or_default(),
+            enable_decoupled_gliding_core_off: inst.get_bool("enableDecoupledGlidingCoreOff").unwrap_or_default(),
             allow_disabling_ifcscore: inst.get_bool("allowDisablingIFCSCore").unwrap_or_default(),
             cruise_mode_on_by_default: inst.get_bool("cruiseModeOnByDefault").unwrap_or_default(),
             physics_damping: match inst.get("physicsDamping") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<SIFCSGameModePhysicsDamping>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SIFCSGameModePhysicsDamping>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            legacy_include_wind_in_aerodynamics: inst
-                .get_bool("legacyIncludeWindInAerodynamics")
-                .unwrap_or_default(),
-            legacy_max_accepted_wind_speed: inst
-                .get_f32("legacyMaxAcceptedWindSpeed")
-                .unwrap_or_default(),
+            legacy_include_wind_in_aerodynamics: inst.get_bool("legacyIncludeWindInAerodynamics").unwrap_or_default(),
+            legacy_max_accepted_wind_speed: inst.get_f32("legacyMaxAcceptedWindSpeed").unwrap_or_default(),
         }
     }
 }
+

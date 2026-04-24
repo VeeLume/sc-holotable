@@ -9,16 +9,15 @@
 
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
-use super::super::*;
-use crate::Handle;
 use std::collections::HashMap;
 use svarog_common::CigGuid;
+use crate::Handle;
+use super::super::*;
 
 /// Record index for the `refinerynotificationconfiguration` feature.
 #[derive(Default)]
 pub struct RefinerynotificationconfigurationIndex {
-    pub refinery_notification_configuration:
-        HashMap<CigGuid, Handle<RefineryNotificationConfiguration>>,
+    pub refinery_notification_configuration: HashMap<CigGuid, Handle<RefineryNotificationConfiguration>>,
 }
 
 impl RefinerynotificationconfigurationIndex {
@@ -29,7 +28,5 @@ impl RefinerynotificationconfigurationIndex {
         total
     }
 
-    pub fn is_empty(&self) -> bool {
-        self.len() == 0
-    }
+    pub fn is_empty(&self) -> bool { self.len() == 0 }
 }

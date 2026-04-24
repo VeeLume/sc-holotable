@@ -15,10 +15,8 @@ use super::super::*;
 #[derive(Default)]
 pub struct ContractsPools {
     pub mission_location_validation_entity_tags: Vec<Option<MissionLocationValidation_EntityTags>>,
-    pub contract_generator_handler_linear_series:
-        Vec<Option<ContractGeneratorHandler_LinearSeries>>,
-    pub contract_generator_handler_tutorial_series_def:
-        Vec<Option<ContractGeneratorHandler_TutorialSeriesDef>>,
+    pub contract_generator_handler_linear_series: Vec<Option<ContractGeneratorHandler_LinearSeries>>,
+    pub contract_generator_handler_tutorial_series_def: Vec<Option<ContractGeneratorHandler_TutorialSeriesDef>>,
     pub contract_generator_handler_list: Vec<Option<ContractGeneratorHandler_List>>,
     pub contract_generator_handler_legacy: Vec<Option<ContractGeneratorHandler_Legacy>>,
     pub contract_legacy: Vec<Option<ContractLegacy>>,
@@ -30,8 +28,7 @@ pub struct ContractsPools {
     pub contract_prerequisite_location_property: Vec<Option<ContractPrerequisite_LocationProperty>>,
     pub contract_prerequisite_crime_stat: Vec<Option<ContractPrerequisite_CrimeStat>>,
     pub contract_prerequisite_reputation: Vec<Option<ContractPrerequisite_Reputation>>,
-    pub contract_prerequisite_completed_contract_tags:
-        Vec<Option<ContractPrerequisite_CompletedContractTags>>,
+    pub contract_prerequisite_completed_contract_tags: Vec<Option<ContractPrerequisite_CompletedContractTags>>,
     pub contract_result_reward: Vec<Option<ContractResult_Reward>>,
     pub contract_result_legacy_reputation: Vec<Option<ContractResult_LegacyReputation>>,
     pub contract_result_calculated_reputation: Vec<Option<ContractResult_CalculatedReputation>>,
@@ -58,8 +55,7 @@ pub struct ContractsPools {
     pub hauling_order_content_entity_class: Vec<Option<HaulingOrderContent_EntityClass>>,
     pub hauling_order_content_mission_item: Vec<Option<HaulingOrderContent_MissionItem>>,
     pub hauling_order_property: Vec<Option<HaulingOrder_Property>>,
-    pub hauling_order_resource_unlimited_drop_off:
-        Vec<Option<HaulingOrder_ResourceUnlimitedDropOff>>,
+    pub hauling_order_resource_unlimited_drop_off: Vec<Option<HaulingOrder_ResourceUnlimitedDropOff>>,
     pub hauling_order_entity_classes: Vec<Option<HaulingOrder_EntityClasses>>,
     pub hauling_order_entity_class: Vec<Option<HaulingOrder_EntityClass>>,
     pub hauling_order_mission_item: Vec<Option<HaulingOrder_MissionItem>>,
@@ -70,16 +66,14 @@ pub struct ContractsPools {
     pub mission_flow_condition_on_mission_start: Vec<Option<MissionFlowCondition_OnMissionStart>>,
     pub mission_flow_condition_or: Vec<Option<MissionFlowCondition_OR>>,
     pub mission_random_phase_entry: Vec<Option<MissionRandomPhaseEntry>>,
-    pub mission_flow_action_pick_random_mission_phase:
-        Vec<Option<MissionFlowAction_PickRandomMissionPhase>>,
+    pub mission_flow_action_pick_random_mission_phase: Vec<Option<MissionFlowAction_PickRandomMissionPhase>>,
     pub mission_property_value_locations: Vec<Option<MissionPropertyValue_Locations>>,
     pub mission_property_value_hauling_orders: Vec<Option<MissionPropertyValue_HaulingOrders>>,
     pub mission_module_hierarchy_sub_mission: Vec<Option<MissionModuleHierarchySubMission>>,
     pub mission_module_hierarchy: Vec<Option<MissionModuleHierarchy>>,
     pub objective_handler_local: Vec<Option<ObjectiveHandler_Local>>,
     pub objective_handler_near_location: Vec<Option<ObjectiveHandler_NearLocation>>,
-    pub contract_generator_handler_pvpbounty_def:
-        Vec<Option<ContractGeneratorHandler_PVPBountyDef>>,
+    pub contract_generator_handler_pvpbounty_def: Vec<Option<ContractGeneratorHandler_PVPBountyDef>>,
     pub spvpbounty_contract_generators: Vec<Option<SPVPBountyContractGenerators>>,
     pub global_mission_settings: Vec<Option<GlobalMissionSettings>>,
 }

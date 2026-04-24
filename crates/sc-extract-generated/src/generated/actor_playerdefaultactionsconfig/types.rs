@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -26,26 +26,15 @@ pub struct DefaultAction_InteractionDef {
 }
 
 impl Pooled for DefaultAction_InteractionDef {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .actor_playerdefaultactionsconfig
-            .default_action_interaction_def
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .actor_playerdefaultactionsconfig
-            .default_action_interaction_def
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.actor_playerdefaultactionsconfig.default_action_interaction_def }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.actor_playerdefaultactionsconfig.default_action_interaction_def }
 }
 
 impl<'a> Extract<'a> for DefaultAction_InteractionDef {
     const TYPE_NAME: &'static str = "DefaultAction_InteractionDef";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            interaction_name: inst
-                .get_str("interactionName")
-                .map(String::from)
-                .unwrap_or_default(),
+            interaction_name: inst.get_str("interactionName").map(String::from).unwrap_or_default(),
         }
     }
 }
@@ -58,25 +47,15 @@ pub struct DefaultAction_CarryableInteractionDef {
 }
 
 impl Pooled for DefaultAction_CarryableInteractionDef {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .actor_playerdefaultactionsconfig
-            .default_action_carryable_interaction_def
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .actor_playerdefaultactionsconfig
-            .default_action_carryable_interaction_def
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.actor_playerdefaultactionsconfig.default_action_carryable_interaction_def }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.actor_playerdefaultactionsconfig.default_action_carryable_interaction_def }
 }
 
 impl<'a> Extract<'a> for DefaultAction_CarryableInteractionDef {
     const TYPE_NAME: &'static str = "DefaultAction_CarryableInteractionDef";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            carryable_interaction: ECarryableDefaultInteractions::from_dcb_str(
-                inst.get_str("carryableInteraction").unwrap_or(""),
-            ),
+            carryable_interaction: ECarryableDefaultInteractions::from_dcb_str(inst.get_str("carryableInteraction").unwrap_or("")),
         }
     }
 }
@@ -89,25 +68,15 @@ pub struct DefaultAction_LootingInteractionDef {
 }
 
 impl Pooled for DefaultAction_LootingInteractionDef {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .actor_playerdefaultactionsconfig
-            .default_action_looting_interaction_def
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .actor_playerdefaultactionsconfig
-            .default_action_looting_interaction_def
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.actor_playerdefaultactionsconfig.default_action_looting_interaction_def }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.actor_playerdefaultactionsconfig.default_action_looting_interaction_def }
 }
 
 impl<'a> Extract<'a> for DefaultAction_LootingInteractionDef {
     const TYPE_NAME: &'static str = "DefaultAction_LootingInteractionDef";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            looting_interaction: ELootingDefaultInteractions::from_dcb_str(
-                inst.get_str("lootingInteraction").unwrap_or(""),
-            ),
+            looting_interaction: ELootingDefaultInteractions::from_dcb_str(inst.get_str("lootingInteraction").unwrap_or("")),
         }
     }
 }
@@ -122,16 +91,8 @@ pub struct DefaultAction_ActionDef {
 }
 
 impl Pooled for DefaultAction_ActionDef {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .actor_playerdefaultactionsconfig
-            .default_action_action_def
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .actor_playerdefaultactionsconfig
-            .default_action_action_def
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.actor_playerdefaultactionsconfig.default_action_action_def }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.actor_playerdefaultactionsconfig.default_action_action_def }
 }
 
 impl<'a> Extract<'a> for DefaultAction_ActionDef {
@@ -139,10 +100,7 @@ impl<'a> Extract<'a> for DefaultAction_ActionDef {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             name: match inst.get("name") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<InputAction>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<InputAction>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             trigger: inst.get_bool("trigger").unwrap_or_default(),
@@ -159,38 +117,22 @@ pub struct DefaultActionsParams {
 }
 
 impl Pooled for DefaultActionsParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .actor_playerdefaultactionsconfig
-            .default_actions_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .actor_playerdefaultactionsconfig
-            .default_actions_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.actor_playerdefaultactionsconfig.default_actions_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.actor_playerdefaultactionsconfig.default_actions_params }
 }
 
 impl<'a> Extract<'a> for DefaultActionsParams {
     const TYPE_NAME: &'static str = "DefaultActionsParams";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            states: inst
-                .get_array("states")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => {
-                            Some(DefaultActionsEntityStatePtr::from_ref(b, r))
-                        }
+            states: inst.get_array("states")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => Some(DefaultActionsEntityStatePtr::from_ref(b, r)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
             default_actions: match inst.get("defaultActions") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(DefaultActionDefPtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(DefaultActionDefPtr::from_ref(b, r)),
                 _ => None,
             },
         }
@@ -204,36 +146,20 @@ pub struct DefaultActions {
 }
 
 impl Pooled for DefaultActions {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.actor_playerdefaultactionsconfig.default_actions
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.actor_playerdefaultactionsconfig.default_actions
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.actor_playerdefaultactionsconfig.default_actions }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.actor_playerdefaultactionsconfig.default_actions }
 }
 
 impl<'a> Extract<'a> for DefaultActions {
     const TYPE_NAME: &'static str = "DefaultActions";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            default_actions_per_state: inst
-                .get_array("defaultActionsPerState")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<DefaultActionsParams>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => Some(b.alloc_nested::<DefaultActionsParams>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
+            default_actions_per_state: inst.get_array("defaultActionsPerState")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<DefaultActionsParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<DefaultActionsParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
         }
     }
@@ -248,16 +174,8 @@ pub struct DefaultActionDescriptionOverride {
 }
 
 impl Pooled for DefaultActionDescriptionOverride {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .actor_playerdefaultactionsconfig
-            .default_action_description_override
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .actor_playerdefaultactionsconfig
-            .default_action_description_override
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.actor_playerdefaultactionsconfig.default_action_description_override }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.actor_playerdefaultactionsconfig.default_action_description_override }
 }
 
 impl<'a> Extract<'a> for DefaultActionDescriptionOverride {
@@ -265,10 +183,7 @@ impl<'a> Extract<'a> for DefaultActionDescriptionOverride {
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
             action: inst.get_str("action").map(String::from).unwrap_or_default(),
-            actions_description: inst
-                .get_str("actionsDescription")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
+            actions_description: inst.get_str("actionsDescription").map(LocaleKey::from).unwrap_or_default(),
         }
     }
 }
@@ -284,41 +199,23 @@ pub struct DefaultActionsEntry {
 }
 
 impl Pooled for DefaultActionsEntry {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.actor_playerdefaultactionsconfig.default_actions_entry
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.actor_playerdefaultactionsconfig.default_actions_entry
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.actor_playerdefaultactionsconfig.default_actions_entry }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.actor_playerdefaultactionsconfig.default_actions_entry }
 }
 
 impl<'a> Extract<'a> for DefaultActionsEntry {
     const TYPE_NAME: &'static str = "DefaultActionsEntry";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            description: inst
-                .get_str("description")
-                .map(String::from)
-                .unwrap_or_default(),
-            conditions: inst
-                .get_array("conditions")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => {
-                            Some(DefaultActionsEntityEntryConditionPtr::from_ref(b, r))
-                        }
+            description: inst.get_str("description").map(String::from).unwrap_or_default(),
+            conditions: inst.get_array("conditions")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => Some(DefaultActionsEntityEntryConditionPtr::from_ref(b, r)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
             default_actions: match inst.get("defaultActions") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<DefaultActions>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<DefaultActions>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
@@ -336,16 +233,8 @@ pub struct ActorDefaultActionsConfig {
 }
 
 impl Pooled for ActorDefaultActionsConfig {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .actor_playerdefaultactionsconfig
-            .actor_default_actions_config
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .actor_playerdefaultactionsconfig
-            .actor_default_actions_config
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.actor_playerdefaultactionsconfig.actor_default_actions_config }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.actor_playerdefaultactionsconfig.actor_default_actions_config }
 }
 
 impl<'a> Extract<'a> for ActorDefaultActionsConfig {
@@ -353,45 +242,19 @@ impl<'a> Extract<'a> for ActorDefaultActionsConfig {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             version_id: inst.get_i32("versionID").unwrap_or_default(),
-            default_actions_list: inst
-                .get_array("defaultActionsList")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<DefaultActionsEntry>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => Some(b.alloc_nested::<DefaultActionsEntry>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
+            default_actions_list: inst.get_array("defaultActionsList")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<DefaultActionsEntry>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<DefaultActionsEntry>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
-            default_actions_descriptions: inst
-                .get_array("defaultActionsDescriptions")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<DefaultActionDescriptionOverride>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => {
-                            Some(b.alloc_nested::<DefaultActionDescriptionOverride>(
-                                b.db.instance(r.struct_index, r.instance_index),
-                                true,
-                            ))
-                        }
+            default_actions_descriptions: inst.get_array("defaultActionsDescriptions")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<DefaultActionDescriptionOverride>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<DefaultActionDescriptionOverride>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
         }
     }
@@ -405,33 +268,19 @@ pub struct DefaultActionsEntityEntryCondition_AND {
 }
 
 impl Pooled for DefaultActionsEntityEntryCondition_AND {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .actor_playerdefaultactionsconfig
-            .default_actions_entity_entry_condition_and
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .actor_playerdefaultactionsconfig
-            .default_actions_entity_entry_condition_and
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.actor_playerdefaultactionsconfig.default_actions_entity_entry_condition_and }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.actor_playerdefaultactionsconfig.default_actions_entity_entry_condition_and }
 }
 
 impl<'a> Extract<'a> for DefaultActionsEntityEntryCondition_AND {
     const TYPE_NAME: &'static str = "DefaultActionsEntityEntryCondition_AND";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            conditions: inst
-                .get_array("conditions")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => {
-                            Some(DefaultActionsEntityEntryConditionPtr::from_ref(b, r))
-                        }
+            conditions: inst.get_array("conditions")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => Some(DefaultActionsEntityEntryConditionPtr::from_ref(b, r)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
         }
     }
@@ -445,33 +294,19 @@ pub struct DefaultActionsEntityEntryCondition_OR {
 }
 
 impl Pooled for DefaultActionsEntityEntryCondition_OR {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .actor_playerdefaultactionsconfig
-            .default_actions_entity_entry_condition_or
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .actor_playerdefaultactionsconfig
-            .default_actions_entity_entry_condition_or
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.actor_playerdefaultactionsconfig.default_actions_entity_entry_condition_or }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.actor_playerdefaultactionsconfig.default_actions_entity_entry_condition_or }
 }
 
 impl<'a> Extract<'a> for DefaultActionsEntityEntryCondition_OR {
     const TYPE_NAME: &'static str = "DefaultActionsEntityEntryCondition_OR";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            conditions: inst
-                .get_array("conditions")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => {
-                            Some(DefaultActionsEntityEntryConditionPtr::from_ref(b, r))
-                        }
+            conditions: inst.get_array("conditions")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => Some(DefaultActionsEntityEntryConditionPtr::from_ref(b, r)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
         }
     }
@@ -487,16 +322,8 @@ pub struct DefaultActionsEntityEntryCondition_AttachableItems {
 }
 
 impl Pooled for DefaultActionsEntityEntryCondition_AttachableItems {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .actor_playerdefaultactionsconfig
-            .default_actions_entity_entry_condition_attachable_items
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .actor_playerdefaultactionsconfig
-            .default_actions_entity_entry_condition_attachable_items
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.actor_playerdefaultactionsconfig.default_actions_entity_entry_condition_attachable_items }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.actor_playerdefaultactionsconfig.default_actions_entity_entry_condition_attachable_items }
 }
 
 impl<'a> Extract<'a> for DefaultActionsEntityEntryCondition_AttachableItems {
@@ -517,16 +344,8 @@ pub struct DefaultActionsEntityEntryCondition_EntityTypes {
 }
 
 impl Pooled for DefaultActionsEntityEntryCondition_EntityTypes {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .actor_playerdefaultactionsconfig
-            .default_actions_entity_entry_condition_entity_types
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .actor_playerdefaultactionsconfig
-            .default_actions_entity_entry_condition_entity_types
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.actor_playerdefaultactionsconfig.default_actions_entity_entry_condition_entity_types }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.actor_playerdefaultactionsconfig.default_actions_entity_entry_condition_entity_types }
 }
 
 impl<'a> Extract<'a> for DefaultActionsEntityEntryCondition_EntityTypes {
@@ -546,16 +365,8 @@ pub struct DefaultActionsEntityEntryCondition_Customisable {
 }
 
 impl Pooled for DefaultActionsEntityEntryCondition_Customisable {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .actor_playerdefaultactionsconfig
-            .default_actions_entity_entry_condition_customisable
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .actor_playerdefaultactionsconfig
-            .default_actions_entity_entry_condition_customisable
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.actor_playerdefaultactionsconfig.default_actions_entity_entry_condition_customisable }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.actor_playerdefaultactionsconfig.default_actions_entity_entry_condition_customisable }
 }
 
 impl<'a> Extract<'a> for DefaultActionsEntityEntryCondition_Customisable {
@@ -575,16 +386,8 @@ pub struct DefaultActionsEntityEntryCondition_Primed {
 }
 
 impl Pooled for DefaultActionsEntityEntryCondition_Primed {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .actor_playerdefaultactionsconfig
-            .default_actions_entity_entry_condition_primed
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .actor_playerdefaultactionsconfig
-            .default_actions_entity_entry_condition_primed
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.actor_playerdefaultactionsconfig.default_actions_entity_entry_condition_primed }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.actor_playerdefaultactionsconfig.default_actions_entity_entry_condition_primed }
 }
 
 impl<'a> Extract<'a> for DefaultActionsEntityEntryCondition_Primed {
@@ -606,16 +409,8 @@ pub struct DefaultActionsEntityEntryCondition_Tags {
 }
 
 impl Pooled for DefaultActionsEntityEntryCondition_Tags {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .actor_playerdefaultactionsconfig
-            .default_actions_entity_entry_condition_tags
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .actor_playerdefaultactionsconfig
-            .default_actions_entity_entry_condition_tags
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.actor_playerdefaultactionsconfig.default_actions_entity_entry_condition_tags }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.actor_playerdefaultactionsconfig.default_actions_entity_entry_condition_tags }
 }
 
 impl<'a> Extract<'a> for DefaultActionsEntityEntryCondition_Tags {
@@ -624,10 +419,7 @@ impl<'a> Extract<'a> for DefaultActionsEntityEntryCondition_Tags {
         Self {
             has_tags: inst.get_bool("hasTags").unwrap_or_default(),
             tags: match inst.get("tags") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<TagList>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<TagList>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
@@ -644,33 +436,20 @@ pub struct DefaultActionsEntityEntryConditionDef_InventoryContainerCapacity {
 }
 
 impl Pooled for DefaultActionsEntityEntryConditionDef_InventoryContainerCapacity {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .actor_playerdefaultactionsconfig
-            .default_actions_entity_entry_condition_def_inventory_container_capacity
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .actor_playerdefaultactionsconfig
-            .default_actions_entity_entry_condition_def_inventory_container_capacity
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.actor_playerdefaultactionsconfig.default_actions_entity_entry_condition_def_inventory_container_capacity }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.actor_playerdefaultactionsconfig.default_actions_entity_entry_condition_def_inventory_container_capacity }
 }
 
 impl<'a> Extract<'a> for DefaultActionsEntityEntryConditionDef_InventoryContainerCapacity {
-    const TYPE_NAME: &'static str =
-        "DefaultActionsEntityEntryConditionDef_InventoryContainerCapacity";
+    const TYPE_NAME: &'static str = "DefaultActionsEntityEntryConditionDef_InventoryContainerCapacity";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             min_capacity: match inst.get("minCapacity") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(SBaseCargoUnitPtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(SBaseCargoUnitPtr::from_ref(b, r)),
                 _ => None,
             },
             max_capacity: match inst.get("maxCapacity") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(SBaseCargoUnitPtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(SBaseCargoUnitPtr::from_ref(b, r)),
                 _ => None,
             },
         }
@@ -685,33 +464,19 @@ pub struct DefaultActionsEntityState_AND {
 }
 
 impl Pooled for DefaultActionsEntityState_AND {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .actor_playerdefaultactionsconfig
-            .default_actions_entity_state_and
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .actor_playerdefaultactionsconfig
-            .default_actions_entity_state_and
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.actor_playerdefaultactionsconfig.default_actions_entity_state_and }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.actor_playerdefaultactionsconfig.default_actions_entity_state_and }
 }
 
 impl<'a> Extract<'a> for DefaultActionsEntityState_AND {
     const TYPE_NAME: &'static str = "DefaultActionsEntityState_AND";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            states: inst
-                .get_array("states")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => {
-                            Some(DefaultActionsEntityStatePtr::from_ref(b, r))
-                        }
+            states: inst.get_array("states")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => Some(DefaultActionsEntityStatePtr::from_ref(b, r)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
         }
     }
@@ -725,33 +490,19 @@ pub struct DefaultActionsEntityState_OR {
 }
 
 impl Pooled for DefaultActionsEntityState_OR {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .actor_playerdefaultactionsconfig
-            .default_actions_entity_state_or
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .actor_playerdefaultactionsconfig
-            .default_actions_entity_state_or
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.actor_playerdefaultactionsconfig.default_actions_entity_state_or }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.actor_playerdefaultactionsconfig.default_actions_entity_state_or }
 }
 
 impl<'a> Extract<'a> for DefaultActionsEntityState_OR {
     const TYPE_NAME: &'static str = "DefaultActionsEntityState_OR";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            states: inst
-                .get_array("states")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => {
-                            Some(DefaultActionsEntityStatePtr::from_ref(b, r))
-                        }
+            states: inst.get_array("states")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => Some(DefaultActionsEntityStatePtr::from_ref(b, r)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
         }
     }
@@ -765,16 +516,8 @@ pub struct DefaultActionsEntityState_NOT {
 }
 
 impl Pooled for DefaultActionsEntityState_NOT {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .actor_playerdefaultactionsconfig
-            .default_actions_entity_state_not
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .actor_playerdefaultactionsconfig
-            .default_actions_entity_state_not
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.actor_playerdefaultactionsconfig.default_actions_entity_state_not }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.actor_playerdefaultactionsconfig.default_actions_entity_state_not }
 }
 
 impl<'a> Extract<'a> for DefaultActionsEntityState_NOT {
@@ -782,9 +525,7 @@ impl<'a> Extract<'a> for DefaultActionsEntityState_NOT {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             state: match inst.get("state") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(DefaultActionsEntityStatePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(DefaultActionsEntityStatePtr::from_ref(b, r)),
                 _ => None,
             },
         }
@@ -799,25 +540,15 @@ pub struct DefaultActionsEntityState_CarryableState {
 }
 
 impl Pooled for DefaultActionsEntityState_CarryableState {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .actor_playerdefaultactionsconfig
-            .default_actions_entity_state_carryable_state
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .actor_playerdefaultactionsconfig
-            .default_actions_entity_state_carryable_state
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.actor_playerdefaultactionsconfig.default_actions_entity_state_carryable_state }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.actor_playerdefaultactionsconfig.default_actions_entity_state_carryable_state }
 }
 
 impl<'a> Extract<'a> for DefaultActionsEntityState_CarryableState {
     const TYPE_NAME: &'static str = "DefaultActionsEntityState_CarryableState";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            state: EActorActionEntityCarryableState::from_dcb_str(
-                inst.get_str("state").unwrap_or(""),
-            ),
+            state: EActorActionEntityCarryableState::from_dcb_str(inst.get_str("state").unwrap_or("")),
         }
     }
 }
@@ -830,98 +561,70 @@ pub struct DefaultActionsEntityState_InteractionStateMachineStateTag {
 }
 
 impl Pooled for DefaultActionsEntityState_InteractionStateMachineStateTag {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .actor_playerdefaultactionsconfig
-            .default_actions_entity_state_interaction_state_machine_state_tag
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .actor_playerdefaultactionsconfig
-            .default_actions_entity_state_interaction_state_machine_state_tag
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.actor_playerdefaultactionsconfig.default_actions_entity_state_interaction_state_machine_state_tag }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.actor_playerdefaultactionsconfig.default_actions_entity_state_interaction_state_machine_state_tag }
 }
 
 impl<'a> Extract<'a> for DefaultActionsEntityState_InteractionStateMachineStateTag {
     const TYPE_NAME: &'static str = "DefaultActionsEntityState_InteractionStateMachineStateTag";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            interaction_state_machine_state_tag: inst
-                .get("interactionStateMachineStateTag")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
+            interaction_state_machine_state_tag: inst.get("interactionStateMachineStateTag").and_then(|v| v.as_record_ref()).map(|r| r.guid),
         }
     }
 }
 
 /// DCB type: `DefaultActionsEntityState_InTakedownRange`
 /// Inherits from: `DefaultActionsEntityState`
-pub struct DefaultActionsEntityState_InTakedownRange {}
+pub struct DefaultActionsEntityState_InTakedownRange {
+}
 
 impl Pooled for DefaultActionsEntityState_InTakedownRange {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .actor_playerdefaultactionsconfig
-            .default_actions_entity_state_in_takedown_range
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .actor_playerdefaultactionsconfig
-            .default_actions_entity_state_in_takedown_range
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.actor_playerdefaultactionsconfig.default_actions_entity_state_in_takedown_range }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.actor_playerdefaultactionsconfig.default_actions_entity_state_in_takedown_range }
 }
 
 impl<'a> Extract<'a> for DefaultActionsEntityState_InTakedownRange {
     const TYPE_NAME: &'static str = "DefaultActionsEntityState_InTakedownRange";
     fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {}
+        Self {
+        }
     }
 }
 
 /// DCB type: `DefaultActionsEntityState_CanAttachToHeldWeapon`
 /// Inherits from: `DefaultActionsEntityState`
-pub struct DefaultActionsEntityState_CanAttachToHeldWeapon {}
+pub struct DefaultActionsEntityState_CanAttachToHeldWeapon {
+}
 
 impl Pooled for DefaultActionsEntityState_CanAttachToHeldWeapon {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .actor_playerdefaultactionsconfig
-            .default_actions_entity_state_can_attach_to_held_weapon
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .actor_playerdefaultactionsconfig
-            .default_actions_entity_state_can_attach_to_held_weapon
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.actor_playerdefaultactionsconfig.default_actions_entity_state_can_attach_to_held_weapon }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.actor_playerdefaultactionsconfig.default_actions_entity_state_can_attach_to_held_weapon }
 }
 
 impl<'a> Extract<'a> for DefaultActionsEntityState_CanAttachToHeldWeapon {
     const TYPE_NAME: &'static str = "DefaultActionsEntityState_CanAttachToHeldWeapon";
     fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {}
+        Self {
+        }
     }
 }
 
 /// DCB type: `DefaultActionsEntityState_HasAvailableCommsTap`
 /// Inherits from: `DefaultActionsEntityState`
-pub struct DefaultActionsEntityState_HasAvailableCommsTap {}
+pub struct DefaultActionsEntityState_HasAvailableCommsTap {
+}
 
 impl Pooled for DefaultActionsEntityState_HasAvailableCommsTap {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .actor_playerdefaultactionsconfig
-            .default_actions_entity_state_has_available_comms_tap
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .actor_playerdefaultactionsconfig
-            .default_actions_entity_state_has_available_comms_tap
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.actor_playerdefaultactionsconfig.default_actions_entity_state_has_available_comms_tap }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.actor_playerdefaultactionsconfig.default_actions_entity_state_has_available_comms_tap }
 }
 
 impl<'a> Extract<'a> for DefaultActionsEntityState_HasAvailableCommsTap {
     const TYPE_NAME: &'static str = "DefaultActionsEntityState_HasAvailableCommsTap";
     fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {}
+        Self {
+        }
     }
 }
+

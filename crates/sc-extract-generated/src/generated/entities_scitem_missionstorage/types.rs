@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -26,16 +26,8 @@ pub struct SDespawnRule_OnPartsDetached {
 }
 
 impl Pooled for SDespawnRule_OnPartsDetached {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_scitem_missionstorage
-            .sdespawn_rule_on_parts_detached
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_scitem_missionstorage
-            .sdespawn_rule_on_parts_detached
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_missionstorage.sdespawn_rule_on_parts_detached }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_missionstorage.sdespawn_rule_on_parts_detached }
 }
 
 impl<'a> Extract<'a> for SDespawnRule_OnPartsDetached {
@@ -55,16 +47,8 @@ pub struct InteractionConditionDeliveryMissionItem {
 }
 
 impl Pooled for InteractionConditionDeliveryMissionItem {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_scitem_missionstorage
-            .interaction_condition_delivery_mission_item
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_scitem_missionstorage
-            .interaction_condition_delivery_mission_item
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_missionstorage.interaction_condition_delivery_mission_item }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_missionstorage.interaction_condition_delivery_mission_item }
 }
 
 impl<'a> Extract<'a> for InteractionConditionDeliveryMissionItem {
@@ -72,12 +56,7 @@ impl<'a> Extract<'a> for InteractionConditionDeliveryMissionItem {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             condition_display: match inst.get("conditionDisplay") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<ConditionDisplayParams>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<ConditionDisplayParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
         }
@@ -86,24 +65,19 @@ impl<'a> Extract<'a> for InteractionConditionDeliveryMissionItem {
 
 /// DCB type: `DeliveryItemPortComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-pub struct DeliveryItemPortComponentParams {}
+pub struct DeliveryItemPortComponentParams {
+}
 
 impl Pooled for DeliveryItemPortComponentParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_scitem_missionstorage
-            .delivery_item_port_component_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_scitem_missionstorage
-            .delivery_item_port_component_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_missionstorage.delivery_item_port_component_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_missionstorage.delivery_item_port_component_params }
 }
 
 impl<'a> Extract<'a> for DeliveryItemPortComponentParams {
     const TYPE_NAME: &'static str = "DeliveryItemPortComponentParams";
     fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {}
+        Self {
+        }
     }
 }
+

@@ -9,10 +9,9 @@
 
 //! Feature module: `entities-entityspawncameracontroller`
 
-mod pools;
-#[allow(unused_imports)]
 mod types;
+mod pools;
 
-pub use pools::*;
 #[allow(unused_imports)]
 pub use types::*;
+pub use pools::*;

@@ -14,8 +14,7 @@ use super::super::*;
 /// Pool storage for the `entities-basebuilding` feature.
 #[derive(Default)]
 pub struct EntitiesBasebuildingPools {
-    pub blueprint_category_availability_whitelist:
-        Vec<Option<BlueprintCategoryAvailability_Whitelist>>,
+    pub blueprint_category_availability_whitelist: Vec<Option<BlueprintCategoryAvailability_Whitelist>>,
     pub crafter_door_state_event: Vec<Option<CrafterDoorStateEvent>>,
     pub crafting_queue_core_params: Vec<Option<CraftingQueueCoreParams>>,
     pub crafter_interaction_params: Vec<Option<CrafterInteractionParams>>,

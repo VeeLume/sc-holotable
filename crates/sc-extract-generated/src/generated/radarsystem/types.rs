@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -29,12 +29,8 @@ pub struct RadarSystemGlobalParams {
 }
 
 impl Pooled for RadarSystemGlobalParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.radarsystem.radar_system_global_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.radarsystem.radar_system_global_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.radarsystem.radar_system_global_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.radarsystem.radar_system_global_params }
 }
 
 impl<'a> Extract<'a> for RadarSystemGlobalParams {
@@ -43,21 +39,11 @@ impl<'a> Extract<'a> for RadarSystemGlobalParams {
         Self {
             params_version: inst.get_u32("paramsVersion").unwrap_or_default(),
             signature_system_params: match inst.get("signatureSystemParams") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<SignatureSystemGlobalParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SignatureSystemGlobalParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             contact_state_params: match inst.get("contactStateParams") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<ContactStateGlobalParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<ContactStateGlobalParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
@@ -73,26 +59,16 @@ pub struct MasterModeSwitchDeltaSignatureTypes {
 }
 
 impl Pooled for MasterModeSwitchDeltaSignatureTypes {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.radarsystem.master_mode_switch_delta_signature_types
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.radarsystem.master_mode_switch_delta_signature_types
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.radarsystem.master_mode_switch_delta_signature_types }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.radarsystem.master_mode_switch_delta_signature_types }
 }
 
 impl<'a> Extract<'a> for MasterModeSwitchDeltaSignatureTypes {
     const TYPE_NAME: &'static str = "MasterModeSwitchDeltaSignatureTypes";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            scm_to_nav: inst
-                .get("scmToNav")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            nav_to_scm: inst
-                .get("navToScm")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
+            scm_to_nav: inst.get("scmToNav").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            nav_to_scm: inst.get("navToScm").and_then(|v| v.as_record_ref()).map(|r| r.guid),
         }
     }
 }
@@ -120,12 +96,8 @@ pub struct SignatureSystemGlobalParams {
 }
 
 impl Pooled for SignatureSystemGlobalParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.radarsystem.signature_system_global_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.radarsystem.signature_system_global_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.radarsystem.signature_system_global_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.radarsystem.signature_system_global_params }
 }
 
 impl<'a> Extract<'a> for SignatureSystemGlobalParams {
@@ -134,58 +106,28 @@ impl<'a> Extract<'a> for SignatureSystemGlobalParams {
         Self {
             global_dbfactor: inst.get_f32("globalDBFactor").unwrap_or_default(),
             global_ambient_irfactor: inst.get_f32("globalAmbientIRFactor").unwrap_or_default(),
-            d_bsignature_peak_hold_time: inst
-                .get_f32("dBSignaturePeakHoldTime")
-                .unwrap_or_default(),
+            d_bsignature_peak_hold_time: inst.get_f32("dBSignaturePeakHoldTime").unwrap_or_default(),
             signature_uiparams: match inst.get("signatureUIParams") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<SignatureUIGlobalParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SignatureUIGlobalParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             actor_multiplier_params: match inst.get("actorMultiplierParams") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<ActorSignatureMultiplierGlobalParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<ActorSignatureMultiplierGlobalParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             cross_section_params: match inst.get("crossSectionParams") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<CrossSectionGlobalParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<CrossSectionGlobalParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             signature_type_params: match inst.get("signatureTypeParams") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<SignatureTypeGlobalParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SignatureTypeGlobalParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             master_mode_delta_signature_type: match inst.get("masterModeDeltaSignatureType") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<MasterModeSwitchDeltaSignatureTypes>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<MasterModeSwitchDeltaSignatureTypes>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            scan_wave_triggered_delta_signature_type: inst
-                .get("scanWaveTriggeredDeltaSignatureType")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
+            scan_wave_triggered_delta_signature_type: inst.get("scanWaveTriggeredDeltaSignatureType").and_then(|v| v.as_record_ref()).map(|r| r.guid),
         }
     }
 }
@@ -197,22 +139,15 @@ pub struct ContactStateGlobalParams {
 }
 
 impl Pooled for ContactStateGlobalParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.radarsystem.contact_state_global_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.radarsystem.contact_state_global_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.radarsystem.contact_state_global_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.radarsystem.contact_state_global_params }
 }
 
 impl<'a> Extract<'a> for ContactStateGlobalParams {
     const TYPE_NAME: &'static str = "ContactStateGlobalParams";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            contact_state_icons: inst
-                .get_str("contactStateIcons")
-                .map(String::from)
-                .unwrap_or_default(),
+            contact_state_icons: inst.get_str("contactStateIcons").map(String::from).unwrap_or_default(),
         }
     }
 }
@@ -232,12 +167,8 @@ pub struct SignatureUIGlobalParams {
 }
 
 impl Pooled for SignatureUIGlobalParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.radarsystem.signature_uiglobal_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.radarsystem.signature_uiglobal_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.radarsystem.signature_uiglobal_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.radarsystem.signature_uiglobal_params }
 }
 
 impl<'a> Extract<'a> for SignatureUIGlobalParams {
@@ -266,21 +197,15 @@ pub struct ActorSignatureMultiplierGlobalParams {
 }
 
 impl Pooled for ActorSignatureMultiplierGlobalParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.radarsystem.actor_signature_multiplier_global_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.radarsystem.actor_signature_multiplier_global_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.radarsystem.actor_signature_multiplier_global_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.radarsystem.actor_signature_multiplier_global_params }
 }
 
 impl<'a> Extract<'a> for ActorSignatureMultiplierGlobalParams {
     const TYPE_NAME: &'static str = "ActorSignatureMultiplierGlobalParams";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            body_temperature_to_irmultiplier: inst
-                .get_f32("bodyTemperatureToIRMultiplier")
-                .unwrap_or_default(),
+            body_temperature_to_irmultiplier: inst.get_f32("bodyTemperatureToIRMultiplier").unwrap_or_default(),
             stamina_to_irmultiplier: inst.get_f32("staminaToIRMultiplier").unwrap_or_default(),
             stamina_to_irdecay_delay: inst.get_f32("staminaToIRDecayDelay").unwrap_or_default(),
             stamina_to_irdecay_rate: inst.get_f32("staminaToIRDecayRate").unwrap_or_default(),
@@ -299,12 +224,8 @@ pub struct CrossSectionGlobalParams {
 }
 
 impl Pooled for CrossSectionGlobalParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.radarsystem.cross_section_global_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.radarsystem.cross_section_global_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.radarsystem.cross_section_global_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.radarsystem.cross_section_global_params }
 }
 
 impl<'a> Extract<'a> for CrossSectionGlobalParams {
@@ -312,10 +233,7 @@ impl<'a> Extract<'a> for CrossSectionGlobalParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             global_csfactor: match inst.get("globalCSFactor") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             max_distance: inst.get_f32("maxDistance").unwrap_or_default(),
@@ -341,26 +259,17 @@ pub struct SignatureTypeGlobalParams {
 }
 
 impl Pooled for SignatureTypeGlobalParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.radarsystem.signature_type_global_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.radarsystem.signature_type_global_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.radarsystem.signature_type_global_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.radarsystem.signature_type_global_params }
 }
 
 impl<'a> Extract<'a> for SignatureTypeGlobalParams {
     const TYPE_NAME: &'static str = "SignatureTypeGlobalParams";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            display_name: inst
-                .get_str("displayName")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
+            display_name: inst.get_str("displayName").map(LocaleKey::from).unwrap_or_default(),
             allow_dampening: inst.get_bool("allowDampening").unwrap_or_default(),
-            allow_generate_unknown_contacts: inst
-                .get_bool("allowGenerateUnknownContacts")
-                .unwrap_or_default(),
+            allow_generate_unknown_contacts: inst.get_bool("allowGenerateUnknownContacts").unwrap_or_default(),
             allow_visible_contacts: inst.get_bool("allowVisibleContacts").unwrap_or_default(),
             allow_generate_blobs: inst.get_bool("allowGenerateBlobs").unwrap_or_default(),
             nearby_ambient_multiplier: inst.get_f32("nearbyAmbientMultiplier").unwrap_or_default(),
@@ -375,30 +284,16 @@ pub struct ScanInformationTable {
 }
 
 impl Pooled for ScanInformationTable {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.radarsystem.scan_information_table
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.radarsystem.scan_information_table
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.radarsystem.scan_information_table }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.radarsystem.scan_information_table }
 }
 
 impl<'a> Extract<'a> for ScanInformationTable {
     const TYPE_NAME: &'static str = "ScanInformationTable";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            defs: inst
-                .get_array("defs")
-                .map(|arr| {
-                    arr.filter_map(|v| {
-                        if let Value::Reference(Some(r)) = v {
-                            Some(r.guid)
-                        } else {
-                            None
-                        }
-                    })
-                    .collect()
-                })
+            defs: inst.get_array("defs")
+                .map(|arr| arr.filter_map(|v| if let Value::Reference(Some(r)) = v { Some(r.guid) } else { None }).collect())
                 .unwrap_or_default(),
         }
     }
@@ -420,12 +315,8 @@ pub struct ScanDisplayConditionCompareParams {
 }
 
 impl Pooled for ScanDisplayConditionCompareParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.radarsystem.scan_display_condition_compare_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.radarsystem.scan_display_condition_compare_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.radarsystem.scan_display_condition_compare_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.radarsystem.scan_display_condition_compare_params }
 }
 
 impl<'a> Extract<'a> for ScanDisplayConditionCompareParams {
@@ -433,17 +324,10 @@ impl<'a> Extract<'a> for ScanDisplayConditionCompareParams {
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
             scan_category: EScanCategory::from_dcb_str(inst.get_str("scanCategory").unwrap_or("")),
-            scan_information: EScanInformation::from_dcb_str(
-                inst.get_str("scanInformation").unwrap_or(""),
-            ),
+            scan_information: EScanInformation::from_dcb_str(inst.get_str("scanInformation").unwrap_or("")),
             threshold_value: inst.get_f32("thresholdValue").unwrap_or_default(),
-            comparison: RadarPriorityComparison::from_dcb_str(
-                inst.get_str("comparison").unwrap_or(""),
-            ),
-            display_value: inst
-                .get_str("displayValue")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
+            comparison: RadarPriorityComparison::from_dcb_str(inst.get_str("comparison").unwrap_or("")),
+            display_value: inst.get_str("displayValue").map(LocaleKey::from).unwrap_or_default(),
         }
     }
 }
@@ -472,12 +356,8 @@ pub struct ScanDisplayConditionVariableParams {
 }
 
 impl Pooled for ScanDisplayConditionVariableParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.radarsystem.scan_display_condition_variable_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.radarsystem.scan_display_condition_variable_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.radarsystem.scan_display_condition_variable_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.radarsystem.scan_display_condition_variable_params }
 }
 
 impl<'a> Extract<'a> for ScanDisplayConditionVariableParams {
@@ -489,30 +369,17 @@ impl<'a> Extract<'a> for ScanDisplayConditionVariableParams {
             display_in_brackets: inst.get_bool("displayInBrackets").unwrap_or_default(),
             suffix_array_index: inst.get_bool("suffixArrayIndex").unwrap_or_default(),
             suffix_semi_colon: inst.get_bool("suffixSemiColon").unwrap_or_default(),
-            auxiliary_flag: EScanDisplayVariableAuxiliaryType::from_dcb_str(
-                inst.get_str("auxiliaryFlag").unwrap_or(""),
-            ),
+            auxiliary_flag: EScanDisplayVariableAuxiliaryType::from_dcb_str(inst.get_str("auxiliaryFlag").unwrap_or("")),
             fallback: match inst.get("fallback") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(ScanDisplayVariableParamsPtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(ScanDisplayVariableParamsPtr::from_ref(b, r)),
                 _ => None,
             },
-            default_value: inst
-                .get_str("defaultValue")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
-            condition_values: inst
-                .get_array("conditionValues")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => {
-                            Some(ScanDisplayConditionBaseParamsPtr::from_ref(b, r))
-                        }
+            default_value: inst.get_str("defaultValue").map(LocaleKey::from).unwrap_or_default(),
+            condition_values: inst.get_array("conditionValues")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => Some(ScanDisplayConditionBaseParamsPtr::from_ref(b, r)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
         }
     }
@@ -527,34 +394,17 @@ pub struct RadarSignatureCategoryDefinition {
 }
 
 impl Pooled for RadarSignatureCategoryDefinition {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.radarsystem.radar_signature_category_definition
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.radarsystem.radar_signature_category_definition
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.radarsystem.radar_signature_category_definition }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.radarsystem.radar_signature_category_definition }
 }
 
 impl<'a> Extract<'a> for RadarSignatureCategoryDefinition {
     const TYPE_NAME: &'static str = "RadarSignatureCategoryDefinition";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            default: inst
-                .get("default")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            types: inst
-                .get_array("types")
-                .map(|arr| {
-                    arr.filter_map(|v| {
-                        if let Value::Reference(Some(r)) = v {
-                            Some(r.guid)
-                        } else {
-                            None
-                        }
-                    })
-                    .collect()
-                })
+            default: inst.get("default").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            types: inst.get_array("types")
+                .map(|arr| arr.filter_map(|v| if let Value::Reference(Some(r)) = v { Some(r.guid) } else { None }).collect())
                 .unwrap_or_default(),
         }
     }
@@ -569,12 +419,8 @@ pub struct RadarSignatureCategoryEntry {
 }
 
 impl Pooled for RadarSignatureCategoryEntry {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.radarsystem.radar_signature_category_entry
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.radarsystem.radar_signature_category_entry
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.radarsystem.radar_signature_category_entry }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.radarsystem.radar_signature_category_entry }
 }
 
 impl<'a> Extract<'a> for RadarSignatureCategoryEntry {
@@ -582,10 +428,7 @@ impl<'a> Extract<'a> for RadarSignatureCategoryEntry {
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
             name: inst.get_str("name").map(String::from).unwrap_or_default(),
-            display_name: inst
-                .get_str("displayName")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
+            display_name: inst.get_str("displayName").map(LocaleKey::from).unwrap_or_default(),
         }
     }
 }
@@ -601,38 +444,18 @@ pub struct RadarContactTypeDefinition {
 }
 
 impl Pooled for RadarContactTypeDefinition {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.radarsystem.radar_contact_type_definition
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.radarsystem.radar_contact_type_definition
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.radarsystem.radar_contact_type_definition }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.radarsystem.radar_contact_type_definition }
 }
 
 impl<'a> Extract<'a> for RadarContactTypeDefinition {
     const TYPE_NAME: &'static str = "RadarContactTypeDefinition";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            unknown_type: inst
-                .get("unknownType")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            default_audio_type: inst
-                .get("defaultAudioType")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            types: inst
-                .get_array("types")
-                .map(|arr| {
-                    arr.filter_map(|v| {
-                        if let Value::Reference(Some(r)) = v {
-                            Some(r.guid)
-                        } else {
-                            None
-                        }
-                    })
-                    .collect()
-                })
+            unknown_type: inst.get("unknownType").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            default_audio_type: inst.get("defaultAudioType").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            types: inst.get_array("types")
+                .map(|arr| arr.filter_map(|v| if let Value::Reference(Some(r)) = v { Some(r.guid) } else { None }).collect())
                 .unwrap_or_default(),
         }
     }
@@ -645,30 +468,16 @@ pub struct RadarContactGroupDefinition {
 }
 
 impl Pooled for RadarContactGroupDefinition {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.radarsystem.radar_contact_group_definition
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.radarsystem.radar_contact_group_definition
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.radarsystem.radar_contact_group_definition }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.radarsystem.radar_contact_group_definition }
 }
 
 impl<'a> Extract<'a> for RadarContactGroupDefinition {
     const TYPE_NAME: &'static str = "RadarContactGroupDefinition";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            groups: inst
-                .get_array("groups")
-                .map(|arr| {
-                    arr.filter_map(|v| {
-                        if let Value::Reference(Some(r)) = v {
-                            Some(r.guid)
-                        } else {
-                            None
-                        }
-                    })
-                    .collect()
-                })
+            groups: inst.get_array("groups")
+                .map(|arr| arr.filter_map(|v| if let Value::Reference(Some(r)) = v { Some(r.guid) } else { None }).collect())
                 .unwrap_or_default(),
         }
     }
@@ -681,31 +490,18 @@ pub struct RadarDeltaSignatureDefinition {
 }
 
 impl Pooled for RadarDeltaSignatureDefinition {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.radarsystem.radar_delta_signature_definition
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.radarsystem.radar_delta_signature_definition
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.radarsystem.radar_delta_signature_definition }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.radarsystem.radar_delta_signature_definition }
 }
 
 impl<'a> Extract<'a> for RadarDeltaSignatureDefinition {
     const TYPE_NAME: &'static str = "RadarDeltaSignatureDefinition";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            types: inst
-                .get_array("types")
-                .map(|arr| {
-                    arr.filter_map(|v| {
-                        if let Value::Reference(Some(r)) = v {
-                            Some(r.guid)
-                        } else {
-                            None
-                        }
-                    })
-                    .collect()
-                })
+            types: inst.get_array("types")
+                .map(|arr| arr.filter_map(|v| if let Value::Reference(Some(r)) = v { Some(r.guid) } else { None }).collect())
                 .unwrap_or_default(),
         }
     }
 }
+

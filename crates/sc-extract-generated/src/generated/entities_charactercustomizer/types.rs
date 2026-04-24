@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -94,16 +94,8 @@ pub struct EntityComponentCharacterCustomizerParams {
 }
 
 impl Pooled for EntityComponentCharacterCustomizerParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_charactercustomizer
-            .entity_component_character_customizer_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_charactercustomizer
-            .entity_component_character_customizer_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_charactercustomizer.entity_component_character_customizer_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_charactercustomizer.entity_component_character_customizer_params }
 }
 
 impl<'a> Extract<'a> for EntityComponentCharacterCustomizerParams {
@@ -111,292 +103,118 @@ impl<'a> Extract<'a> for EntityComponentCharacterCustomizerParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             camera_rig_root: match inst.get("cameraRigRoot") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<EntityReferenceDef>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<EntityReferenceDef>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             player_highlighting_params: match inst.get("playerHighlightingParams") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<SFaceHighlightingParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SFaceHighlightingParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            current_edit_face_highlighting_params: match inst
-                .get("currentEditFaceHighlightingParams")
-            {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<SFaceHighlightingParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+            current_edit_face_highlighting_params: match inst.get("currentEditFaceHighlightingParams") {
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SFaceHighlightingParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             head_library_tag_point: match inst.get("headLibraryTagPoint") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<EntityReferenceDef>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<EntityReferenceDef>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             camera_parent: match inst.get("cameraParent") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<EntityReferenceDef>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<EntityReferenceDef>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             zoom_nav_spline: match inst.get("zoomNavSpline") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<EntityReferenceDef>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<EntityReferenceDef>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            library_deselect_delay_time: inst
-                .get_f32("libraryDeselectDelayTime")
-                .unwrap_or_default(),
+            library_deselect_delay_time: inst.get_f32("libraryDeselectDelayTime").unwrap_or_default(),
             library_head_count: inst.get_i32("libraryHeadCount").unwrap_or_default(),
             customizer_dnaregions: match inst.get("customizerDNARegions") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<SCharacterCustomizerDNARegionParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SCharacterCustomizerDNARegionParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            body_types: inst
-                .get_array("bodyTypes")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<SCharacterCustomizerBodyTypeParams>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => {
-                            Some(b.alloc_nested::<SCharacterCustomizerBodyTypeParams>(
-                                b.db.instance(r.struct_index, r.instance_index),
-                                true,
-                            ))
-                        }
+            body_types: inst.get_array("bodyTypes")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<SCharacterCustomizerBodyTypeParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<SCharacterCustomizerBodyTypeParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
-            blank_skin_variant: inst
-                .get("blankSkinVariant")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
+            blank_skin_variant: inst.get("blankSkinVariant").and_then(|v| v.as_record_ref()).map(|r| r.guid),
             control_params: match inst.get("controlParams") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<SCharacterCustomizerControlParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SCharacterCustomizerControlParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             material_editing_params: match inst.get("materialEditingParams") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<SCharacterCustomizerMaterialEditParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SCharacterCustomizerMaterialEditParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            head_library_roll_on_triggers: inst
-                .get_bool("headLibraryRollOnTriggers")
-                .unwrap_or_default(),
-            dna_blending_pools: inst
-                .get_array("dnaBlendingPools")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<SCharacterCustomizerDNAHeadPool>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => {
-                            Some(b.alloc_nested::<SCharacterCustomizerDNAHeadPool>(
-                                b.db.instance(r.struct_index, r.instance_index),
-                                true,
-                            ))
-                        }
+            head_library_roll_on_triggers: inst.get_bool("headLibraryRollOnTriggers").unwrap_or_default(),
+            dna_blending_pools: inst.get_array("dnaBlendingPools")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<SCharacterCustomizerDNAHeadPool>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<SCharacterCustomizerDNAHeadPool>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
-            use_blending_pools_for_face_sculpting: inst
-                .get_bool("useBlendingPoolsForFaceSculpting")
-                .unwrap_or_default(),
-            face_sculpting_pools: inst
-                .get_array("faceSculptingPools")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<SCharacterCustomizerDNAHeadPool>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => {
-                            Some(b.alloc_nested::<SCharacterCustomizerDNAHeadPool>(
-                                b.db.instance(r.struct_index, r.instance_index),
-                                true,
-                            ))
-                        }
+            use_blending_pools_for_face_sculpting: inst.get_bool("useBlendingPoolsForFaceSculpting").unwrap_or_default(),
+            face_sculpting_pools: inst.get_array("faceSculptingPools")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<SCharacterCustomizerDNAHeadPool>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<SCharacterCustomizerDNAHeadPool>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
             feature_library_params: match inst.get("featureLibraryParams") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<SCharacterCustomizerHeadLibraryParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SCharacterCustomizerHeadLibraryParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             dna_head_library_params: match inst.get("dnaHeadLibraryParams") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<SCharacterCustomizerHeadLibraryParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SCharacterCustomizerHeadLibraryParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             dna_clipping_volume_params: match inst.get("dnaClippingVolumeParams") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<SCharacterCustomizerClippingVolumeParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SCharacterCustomizerClippingVolumeParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            voice_options: inst
-                .get_array("voiceOptions")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<SCharacterCustomizerVoiceParams>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => {
-                            Some(b.alloc_nested::<SCharacterCustomizerVoiceParams>(
-                                b.db.instance(r.struct_index, r.instance_index),
-                                true,
-                            ))
-                        }
+            voice_options: inst.get_array("voiceOptions")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<SCharacterCustomizerVoiceParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<SCharacterCustomizerVoiceParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
-            allowed_classes: inst
-                .get("allowedClasses")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            feature_item_tags: inst
-                .get_array("featureItemTags")
+            allowed_classes: inst.get("allowedClasses").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            feature_item_tags: inst.get_array("featureItemTags")
                 .map(|arr| arr.filter_map(|v| v.as_str().map(String::from)).collect())
                 .unwrap_or_default(),
             serialize_to_network: inst.get_bool("serializeToNetwork").unwrap_or_default(),
             serialization_timeout: inst.get_f32("serializationTimeout").unwrap_or_default(),
-            loadout_replacements: inst
-                .get_array("loadoutReplacements")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(
-                            b.alloc_nested::<SCharacterCustomizerLoadoutItemReplacementMapping>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ),
-                        ),
-                        Value::ClassRef(r) => Some(
-                            b.alloc_nested::<SCharacterCustomizerLoadoutItemReplacementMapping>(
-                                b.db.instance(r.struct_index, r.instance_index),
-                                true,
-                            ),
-                        ),
+            loadout_replacements: inst.get_array("loadoutReplacements")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<SCharacterCustomizerLoadoutItemReplacementMapping>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<SCharacterCustomizerLoadoutItemReplacementMapping>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
             update_player_entity: inst.get_bool("updatePlayerEntity").unwrap_or_default(),
             clear_all_player_loadout: inst.get_bool("clearAllPlayerLoadout").unwrap_or_default(),
             camera_entity: match inst.get("cameraEntity") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<EntityReferenceDef>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<EntityReferenceDef>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            dialogue_data: inst
-                .get("dialogueData")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            flow_steps: inst
-                .get_array("flowSteps")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<SCharacterCustomizerStep>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => Some(b.alloc_nested::<SCharacterCustomizerStep>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
+            dialogue_data: inst.get("dialogueData").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            flow_steps: inst.get_array("flowSteps")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<SCharacterCustomizerStep>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<SCharacterCustomizerStep>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
-            customizable_materials: inst
-                .get_array("customizableMaterials")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => {
-                            Some(b.alloc_nested::<SCustomizableMaterialParams>(
-                                b.db.instance(r.struct_index, r.instance_index),
-                                true,
-                            ))
-                        }
+            customizable_materials: inst.get_array("customizableMaterials")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => Some(b.alloc_nested::<SCustomizableMaterialParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
             hide_player: inst.get_bool("hidePlayer").unwrap_or_default(),
             shutdown_time: inst.get_f32("shutdownTime").unwrap_or_default(),
@@ -416,16 +234,8 @@ pub struct SCharacterCustomizerLoadoutItemReplacementMapping {
 }
 
 impl Pooled for SCharacterCustomizerLoadoutItemReplacementMapping {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_charactercustomizer
-            .scharacter_customizer_loadout_item_replacement_mapping
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_charactercustomizer
-            .scharacter_customizer_loadout_item_replacement_mapping
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_charactercustomizer.scharacter_customizer_loadout_item_replacement_mapping }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_charactercustomizer.scharacter_customizer_loadout_item_replacement_mapping }
 }
 
 impl<'a> Extract<'a> for SCharacterCustomizerLoadoutItemReplacementMapping {
@@ -433,14 +243,8 @@ impl<'a> Extract<'a> for SCharacterCustomizerLoadoutItemReplacementMapping {
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
             network_only: inst.get_bool("networkOnly").unwrap_or_default(),
-            old_item_guid: inst
-                .get_str("oldItemGUID")
-                .map(String::from)
-                .unwrap_or_default(),
-            new_item: inst
-                .get("newItem")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
+            old_item_guid: inst.get_str("oldItemGUID").map(String::from).unwrap_or_default(),
+            new_item: inst.get("newItem").and_then(|v| v.as_record_ref()).map(|r| r.guid),
         }
     }
 }
@@ -468,16 +272,8 @@ pub struct SCharacterCustomizerHeadLibraryParams {
 }
 
 impl Pooled for SCharacterCustomizerHeadLibraryParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_charactercustomizer
-            .scharacter_customizer_head_library_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_charactercustomizer
-            .scharacter_customizer_head_library_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_charactercustomizer.scharacter_customizer_head_library_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_charactercustomizer.scharacter_customizer_head_library_params }
 }
 
 impl<'a> Extract<'a> for SCharacterCustomizerHeadLibraryParams {
@@ -485,48 +281,23 @@ impl<'a> Extract<'a> for SCharacterCustomizerHeadLibraryParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             library_root: match inst.get("libraryRoot") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<EntityReferenceDef>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<EntityReferenceDef>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             columns: inst.get_i32("columns").unwrap_or_default(),
             column_spacing: inst.get_f32("columnSpacing").unwrap_or_default(),
             row_spacing: inst.get_f32("rowSpacing").unwrap_or_default(),
-            library_scrolling_increment: inst
-                .get_f32("libraryScrollingIncrement")
-                .unwrap_or_default(),
+            library_scrolling_increment: inst.get_f32("libraryScrollingIncrement").unwrap_or_default(),
             rows_on_screen: inst.get_i32("rowsOnScreen").unwrap_or_default(),
-            source_head_class: inst
-                .get("sourceHeadClass")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            additional_entities: inst
-                .get_array("additionalEntities")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<EntityReferenceDef>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => Some(b.alloc_nested::<EntityReferenceDef>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
+            source_head_class: inst.get("sourceHeadClass").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            additional_entities: inst.get_array("additionalEntities")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<EntityReferenceDef>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<EntityReferenceDef>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
-            default_protos_head_class: inst
-                .get("defaultProtosHeadClass")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
+            default_protos_head_class: inst.get("defaultProtosHeadClass").and_then(|v| v.as_record_ref()).map(|r| r.guid),
         }
     }
 }
@@ -540,30 +311,16 @@ pub struct SCharacterCustomizerBlemishMapParams {
 }
 
 impl Pooled for SCharacterCustomizerBlemishMapParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_charactercustomizer
-            .scharacter_customizer_blemish_map_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_charactercustomizer
-            .scharacter_customizer_blemish_map_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_charactercustomizer.scharacter_customizer_blemish_map_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_charactercustomizer.scharacter_customizer_blemish_map_params }
 }
 
 impl<'a> Extract<'a> for SCharacterCustomizerBlemishMapParams {
     const TYPE_NAME: &'static str = "SCharacterCustomizerBlemishMapParams";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            blemish_mask: inst
-                .get_str("blemishMask")
-                .map(String::from)
-                .unwrap_or_default(),
-            blemish_id_mask: inst
-                .get_str("blemishIdMask")
-                .map(String::from)
-                .unwrap_or_default(),
+            blemish_mask: inst.get_str("blemishMask").map(String::from).unwrap_or_default(),
+            blemish_id_mask: inst.get_str("blemishIdMask").map(String::from).unwrap_or_default(),
         }
     }
 }
@@ -576,12 +333,8 @@ pub struct SCustomzierColorSRGBA8 {
 }
 
 impl Pooled for SCustomzierColorSRGBA8 {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_charactercustomizer.scustomzier_color_srgba8
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_charactercustomizer.scustomzier_color_srgba8
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_charactercustomizer.scustomzier_color_srgba8 }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_charactercustomizer.scustomzier_color_srgba8 }
 }
 
 impl<'a> Extract<'a> for SCustomzierColorSRGBA8 {
@@ -589,10 +342,7 @@ impl<'a> Extract<'a> for SCustomzierColorSRGBA8 {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             color: match inst.get("color") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SRGBA8>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SRGBA8>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
@@ -610,16 +360,8 @@ pub struct SCharacterCustomizerDefaultShaderParam {
 }
 
 impl Pooled for SCharacterCustomizerDefaultShaderParam {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_charactercustomizer
-            .scharacter_customizer_default_shader_param
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_charactercustomizer
-            .scharacter_customizer_default_shader_param
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_charactercustomizer.scharacter_customizer_default_shader_param }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_charactercustomizer.scharacter_customizer_default_shader_param }
 }
 
 impl<'a> Extract<'a> for SCharacterCustomizerDefaultShaderParam {
@@ -627,15 +369,11 @@ impl<'a> Extract<'a> for SCharacterCustomizerDefaultShaderParam {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             param: match inst.get("param") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(SCharacterCustomizerShaderParamBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(SCharacterCustomizerShaderParamBasePtr::from_ref(b, r)),
                 _ => None,
             },
             color_value: match inst.get("colorValue") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(SCustomzierColorDefBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(SCustomzierColorDefBasePtr::from_ref(b, r)),
                 _ => None,
             },
             float_value: inst.get_f32("floatValue").unwrap_or_default(),
@@ -654,16 +392,8 @@ pub struct SCharacterCustomizerClampedValueParams {
 }
 
 impl Pooled for SCharacterCustomizerClampedValueParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_charactercustomizer
-            .scharacter_customizer_clamped_value_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_charactercustomizer
-            .scharacter_customizer_clamped_value_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_charactercustomizer.scharacter_customizer_clamped_value_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_charactercustomizer.scharacter_customizer_clamped_value_params }
 }
 
 impl<'a> Extract<'a> for SCharacterCustomizerClampedValueParams {
@@ -696,26 +426,15 @@ pub struct SCharacterCustomizerTextureParams {
 }
 
 impl Pooled for SCharacterCustomizerTextureParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_charactercustomizer
-            .scharacter_customizer_texture_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_charactercustomizer
-            .scharacter_customizer_texture_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_charactercustomizer.scharacter_customizer_texture_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_charactercustomizer.scharacter_customizer_texture_params }
 }
 
 impl<'a> Extract<'a> for SCharacterCustomizerTextureParams {
     const TYPE_NAME: &'static str = "SCharacterCustomizerTextureParams";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            texture_path: inst
-                .get_str("texturePath")
-                .map(String::from)
-                .unwrap_or_default(),
+            texture_path: inst.get_str("texturePath").map(String::from).unwrap_or_default(),
             num_tiles_u: inst.get_i32("numTilesU").unwrap_or_default(),
             num_tiles_v: inst.get_i32("numTilesV").unwrap_or_default(),
             offset_u: inst.get_i32("offsetU").unwrap_or_default(),
@@ -735,45 +454,25 @@ pub struct SCharacterCustomizerTextureList {
 }
 
 impl Pooled for SCharacterCustomizerTextureList {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_charactercustomizer
-            .scharacter_customizer_texture_list
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_charactercustomizer
-            .scharacter_customizer_texture_list
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_charactercustomizer.scharacter_customizer_texture_list }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_charactercustomizer.scharacter_customizer_texture_list }
 }
 
 impl<'a> Extract<'a> for SCharacterCustomizerTextureList {
     const TYPE_NAME: &'static str = "SCharacterCustomizerTextureList";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            textures: inst
-                .get_array("textures")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => {
-                            Some(SCharacterCustomizerTextureParamsPtr::from_ref(b, r))
-                        }
+            textures: inst.get_array("textures")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => Some(SCharacterCustomizerTextureParamsPtr::from_ref(b, r)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
-            dev_only_textures: inst
-                .get_array("devOnlyTextures")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => {
-                            Some(SCharacterCustomizerTextureParamsPtr::from_ref(b, r))
-                        }
+            dev_only_textures: inst.get_array("devOnlyTextures")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => Some(SCharacterCustomizerTextureParamsPtr::from_ref(b, r)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
         }
     }
@@ -801,52 +500,27 @@ pub struct SCharacterCustomizerMakeupParams {
 }
 
 impl Pooled for SCharacterCustomizerMakeupParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_charactercustomizer
-            .scharacter_customizer_makeup_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_charactercustomizer
-            .scharacter_customizer_makeup_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_charactercustomizer.scharacter_customizer_makeup_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_charactercustomizer.scharacter_customizer_makeup_params }
 }
 
 impl<'a> Extract<'a> for SCharacterCustomizerMakeupParams {
     const TYPE_NAME: &'static str = "SCharacterCustomizerMakeupParams";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            texture_path: inst
-                .get_str("texturePath")
-                .map(String::from)
-                .unwrap_or_default(),
+            texture_path: inst.get_str("texturePath").map(String::from).unwrap_or_default(),
             num_tiles_u: inst.get_i32("numTilesU").unwrap_or_default(),
             num_tiles_v: inst.get_i32("numTilesV").unwrap_or_default(),
             offset_u: inst.get_i32("offsetU").unwrap_or_default(),
             offset_v: inst.get_i32("offsetV").unwrap_or_default(),
             supports_hue_rotation: inst.get_bool("supportsHueRotation").unwrap_or_default(),
             mirror_mode: ETattooMirrorMode::from_dcb_str(inst.get_str("mirrorMode").unwrap_or("")),
-            default_shader_params: inst
-                .get_array("defaultShaderParams")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<SCharacterCustomizerDefaultShaderParam>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => {
-                            Some(b.alloc_nested::<SCharacterCustomizerDefaultShaderParam>(
-                                b.db.instance(r.struct_index, r.instance_index),
-                                true,
-                            ))
-                        }
+            default_shader_params: inst.get_array("defaultShaderParams")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<SCharacterCustomizerDefaultShaderParam>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<SCharacterCustomizerDefaultShaderParam>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
         }
     }
@@ -861,29 +535,16 @@ pub struct SCharacterCustomizerExtraTextureParams {
 }
 
 impl Pooled for SCharacterCustomizerExtraTextureParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_charactercustomizer
-            .scharacter_customizer_extra_texture_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_charactercustomizer
-            .scharacter_customizer_extra_texture_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_charactercustomizer.scharacter_customizer_extra_texture_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_charactercustomizer.scharacter_customizer_extra_texture_params }
 }
 
 impl<'a> Extract<'a> for SCharacterCustomizerExtraTextureParams {
     const TYPE_NAME: &'static str = "SCharacterCustomizerExtraTextureParams";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            texture_path: inst
-                .get_str("texturePath")
-                .map(String::from)
-                .unwrap_or_default(),
-            texture_slot: ECharacterCustomizerTextureSlot::from_dcb_str(
-                inst.get_str("textureSlot").unwrap_or(""),
-            ),
+            texture_path: inst.get_str("texturePath").map(String::from).unwrap_or_default(),
+            texture_slot: ECharacterCustomizerTextureSlot::from_dcb_str(inst.get_str("textureSlot").unwrap_or("")),
         }
     }
 }
@@ -910,52 +571,27 @@ pub struct SCharacterCustomizerMultiTextureParams {
 }
 
 impl Pooled for SCharacterCustomizerMultiTextureParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_charactercustomizer
-            .scharacter_customizer_multi_texture_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_charactercustomizer
-            .scharacter_customizer_multi_texture_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_charactercustomizer.scharacter_customizer_multi_texture_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_charactercustomizer.scharacter_customizer_multi_texture_params }
 }
 
 impl<'a> Extract<'a> for SCharacterCustomizerMultiTextureParams {
     const TYPE_NAME: &'static str = "SCharacterCustomizerMultiTextureParams";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            texture_path: inst
-                .get_str("texturePath")
-                .map(String::from)
-                .unwrap_or_default(),
+            texture_path: inst.get_str("texturePath").map(String::from).unwrap_or_default(),
             num_tiles_u: inst.get_i32("numTilesU").unwrap_or_default(),
             num_tiles_v: inst.get_i32("numTilesV").unwrap_or_default(),
             offset_u: inst.get_i32("offsetU").unwrap_or_default(),
             offset_v: inst.get_i32("offsetV").unwrap_or_default(),
             supports_hue_rotation: inst.get_bool("supportsHueRotation").unwrap_or_default(),
             mirror_mode: ETattooMirrorMode::from_dcb_str(inst.get_str("mirrorMode").unwrap_or("")),
-            additional_textures: inst
-                .get_array("additionalTextures")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<SCharacterCustomizerExtraTextureParams>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => {
-                            Some(b.alloc_nested::<SCharacterCustomizerExtraTextureParams>(
-                                b.db.instance(r.struct_index, r.instance_index),
-                                true,
-                            ))
-                        }
+            additional_textures: inst.get_array("additionalTextures")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<SCharacterCustomizerExtraTextureParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<SCharacterCustomizerExtraTextureParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
         }
     }
@@ -970,30 +606,16 @@ pub struct SCharacterCustomizerBaseMaterialSet {
 }
 
 impl Pooled for SCharacterCustomizerBaseMaterialSet {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_charactercustomizer
-            .scharacter_customizer_base_material_set
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_charactercustomizer
-            .scharacter_customizer_base_material_set
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_charactercustomizer.scharacter_customizer_base_material_set }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_charactercustomizer.scharacter_customizer_base_material_set }
 }
 
 impl<'a> Extract<'a> for SCharacterCustomizerBaseMaterialSet {
     const TYPE_NAME: &'static str = "SCharacterCustomizerBaseMaterialSet";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            head_skin_base_material: inst
-                .get_str("headSkinBaseMaterial")
-                .map(String::from)
-                .unwrap_or_default(),
-            body_skin_base_material: inst
-                .get_str("bodySkinBaseMaterial")
-                .map(String::from)
-                .unwrap_or_default(),
+            head_skin_base_material: inst.get_str("headSkinBaseMaterial").map(String::from).unwrap_or_default(),
+            body_skin_base_material: inst.get_str("bodySkinBaseMaterial").map(String::from).unwrap_or_default(),
         }
     }
 }
@@ -1011,52 +633,25 @@ pub struct SCharacterCustomizerSkinBaseMaterialList {
 }
 
 impl Pooled for SCharacterCustomizerSkinBaseMaterialList {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_charactercustomizer
-            .scharacter_customizer_skin_base_material_list
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_charactercustomizer
-            .scharacter_customizer_skin_base_material_list
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_charactercustomizer.scharacter_customizer_skin_base_material_list }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_charactercustomizer.scharacter_customizer_skin_base_material_list }
 }
 
 impl<'a> Extract<'a> for SCharacterCustomizerSkinBaseMaterialList {
     const TYPE_NAME: &'static str = "SCharacterCustomizerSkinBaseMaterialList";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            debug_name: inst
-                .get_str("debugName")
-                .map(String::from)
-                .unwrap_or_default(),
+            debug_name: inst.get_str("debugName").map(String::from).unwrap_or_default(),
             model_tag: match inst.get("modelTag") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(SGeometryModelTagBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(SGeometryModelTagBasePtr::from_ref(b, r)),
                 _ => None,
             },
-            skin_base_materials: inst
-                .get_array("skinBaseMaterials")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<SCharacterCustomizerBaseMaterialSet>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => {
-                            Some(b.alloc_nested::<SCharacterCustomizerBaseMaterialSet>(
-                                b.db.instance(r.struct_index, r.instance_index),
-                                true,
-                            ))
-                        }
+            skin_base_materials: inst.get_array("skinBaseMaterials")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<SCharacterCustomizerBaseMaterialSet>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<SCharacterCustomizerBaseMaterialSet>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
             dev_only: inst.get_bool("devOnly").unwrap_or_default(),
         }
@@ -1076,85 +671,35 @@ pub struct SCharacterCustomizerMaterialEditParams {
 }
 
 impl Pooled for SCharacterCustomizerMaterialEditParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_charactercustomizer
-            .scharacter_customizer_material_edit_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_charactercustomizer
-            .scharacter_customizer_material_edit_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_charactercustomizer.scharacter_customizer_material_edit_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_charactercustomizer.scharacter_customizer_material_edit_params }
 }
 
 impl<'a> Extract<'a> for SCharacterCustomizerMaterialEditParams {
     const TYPE_NAME: &'static str = "SCharacterCustomizerMaterialEditParams";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            blemish_maps: inst
-                .get_array("blemishMaps")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<SCharacterCustomizerBlemishMapParams>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => {
-                            Some(b.alloc_nested::<SCharacterCustomizerBlemishMapParams>(
-                                b.db.instance(r.struct_index, r.instance_index),
-                                true,
-                            ))
-                        }
+            blemish_maps: inst.get_array("blemishMaps")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<SCharacterCustomizerBlemishMapParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<SCharacterCustomizerBlemishMapParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
-            base_skin_materials: inst
-                .get_array("baseSkinMaterials")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<SCharacterCustomizerSkinBaseMaterialList>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => {
-                            Some(b.alloc_nested::<SCharacterCustomizerSkinBaseMaterialList>(
-                                b.db.instance(r.struct_index, r.instance_index),
-                                true,
-                            ))
-                        }
+            base_skin_materials: inst.get_array("baseSkinMaterials")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<SCharacterCustomizerSkinBaseMaterialList>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<SCharacterCustomizerSkinBaseMaterialList>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
             hair_dye_shift_min_fade_out: inst.get_f32("hairDyeShiftMinFadeOut").unwrap_or_default(),
-            hair_lengths: inst
-                .get_array("hairLengths")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<SCharacterCustomizerHairLengthEntry>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => {
-                            Some(b.alloc_nested::<SCharacterCustomizerHairLengthEntry>(
-                                b.db.instance(r.struct_index, r.instance_index),
-                                true,
-                            ))
-                        }
+            hair_lengths: inst.get_array("hairLengths")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<SCharacterCustomizerHairLengthEntry>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<SCharacterCustomizerHairLengthEntry>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
         }
     }
@@ -1173,12 +718,8 @@ pub struct SFaceHighlightingParams {
 }
 
 impl Pooled for SFaceHighlightingParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_charactercustomizer.sface_highlighting_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_charactercustomizer.sface_highlighting_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_charactercustomizer.sface_highlighting_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_charactercustomizer.sface_highlighting_params }
 }
 
 impl<'a> Extract<'a> for SFaceHighlightingParams {
@@ -1189,10 +730,7 @@ impl<'a> Extract<'a> for SFaceHighlightingParams {
             pulse_speed: inst.get_f32("pulseSpeed").unwrap_or_default(),
             highlight_symmetrical: inst.get_bool("highlightSymmetrical").unwrap_or_default(),
             wire_frame_colour: match inst.get("wireFrameColour") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SRGBA8>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SRGBA8>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
@@ -1212,41 +750,21 @@ pub struct SCharacterCustomizerVertexParams {
 }
 
 impl Pooled for SCharacterCustomizerVertexParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_charactercustomizer
-            .scharacter_customizer_vertex_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_charactercustomizer
-            .scharacter_customizer_vertex_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_charactercustomizer.scharacter_customizer_vertex_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_charactercustomizer.scharacter_customizer_vertex_params }
 }
 
 impl<'a> Extract<'a> for SCharacterCustomizerVertexParams {
     const TYPE_NAME: &'static str = "SCharacterCustomizerVertexParams";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            debug_name: inst
-                .get_str("debugName")
-                .map(String::from)
-                .unwrap_or_default(),
+            debug_name: inst.get_str("debugName").map(String::from).unwrap_or_default(),
             vertex_id: inst.get_i32("vertexId").unwrap_or_default(),
-            ignore_list: inst
-                .get_array("ignoreList")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => {
-                            Some(b.alloc_nested::<SCharacterCustomizerVertexParams>(
-                                b.db.instance(r.struct_index, r.instance_index),
-                                true,
-                            ))
-                        }
+            ignore_list: inst.get_array("ignoreList")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => Some(b.alloc_nested::<SCharacterCustomizerVertexParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
             shaping_tolerance: inst.get_f32("shapingTolerance").unwrap_or_default(),
         }
@@ -1271,54 +789,24 @@ pub struct SCharacterCustomizerDNARegionParams {
 }
 
 impl Pooled for SCharacterCustomizerDNARegionParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_charactercustomizer
-            .scharacter_customizer_dnaregion_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_charactercustomizer
-            .scharacter_customizer_dnaregion_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_charactercustomizer.scharacter_customizer_dnaregion_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_charactercustomizer.scharacter_customizer_dnaregion_params }
 }
 
 impl<'a> Extract<'a> for SCharacterCustomizerDNARegionParams {
     const TYPE_NAME: &'static str = "SCharacterCustomizerDNARegionParams";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            display_name: inst
-                .get_str("displayName")
-                .map(String::from)
-                .unwrap_or_default(),
-            display_name_loc_id: inst
-                .get_str("displayNameLocId")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
+            display_name: inst.get_str("displayName").map(String::from).unwrap_or_default(),
+            display_name_loc_id: inst.get_str("displayNameLocId").map(LocaleKey::from).unwrap_or_default(),
             visible: inst.get_bool("visible").unwrap_or_default(),
-            symmetry_region: ECharacterCustomizerDNARegion::from_dcb_str(
-                inst.get_str("symmetryRegion").unwrap_or(""),
-            ),
-            shaping_vertices: inst
-                .get_array("shapingVertices")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<SCharacterCustomizerVertexParams>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => {
-                            Some(b.alloc_nested::<SCharacterCustomizerVertexParams>(
-                                b.db.instance(r.struct_index, r.instance_index),
-                                true,
-                            ))
-                        }
+            symmetry_region: ECharacterCustomizerDNARegion::from_dcb_str(inst.get_str("symmetryRegion").unwrap_or("")),
+            shaping_vertices: inst.get_array("shapingVertices")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<SCharacterCustomizerVertexParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<SCharacterCustomizerVertexParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
             shaping_uiweight: inst.get_f32("shapingUIWeight").unwrap_or_default(),
         }
@@ -1346,82 +834,38 @@ pub struct SCharacterCustomizerBodyTypeParams {
 }
 
 impl Pooled for SCharacterCustomizerBodyTypeParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_charactercustomizer
-            .scharacter_customizer_body_type_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_charactercustomizer
-            .scharacter_customizer_body_type_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_charactercustomizer.scharacter_customizer_body_type_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_charactercustomizer.scharacter_customizer_body_type_params }
 }
 
 impl<'a> Extract<'a> for SCharacterCustomizerBodyTypeParams {
     const TYPE_NAME: &'static str = "SCharacterCustomizerBodyTypeParams";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            display_name: inst
-                .get_str("displayName")
-                .map(String::from)
-                .unwrap_or_default(),
-            display_name_loc_id: inst
-                .get_str("displayNameLocId")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
-            body_type_dummy_class: inst
-                .get("bodyTypeDummyClass")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
+            display_name: inst.get_str("displayName").map(String::from).unwrap_or_default(),
+            display_name_loc_id: inst.get_str("displayNameLocId").map(LocaleKey::from).unwrap_or_default(),
+            body_type_dummy_class: inst.get("bodyTypeDummyClass").and_then(|v| v.as_record_ref()).map(|r| r.guid),
             body_type_tag_point: match inst.get("bodyTypeTagPoint") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<EntityReferenceDef>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<EntityReferenceDef>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             override_model_tag: match inst.get("overrideModelTag") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(SGeometryModelTagBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(SGeometryModelTagBasePtr::from_ref(b, r)),
                 _ => None,
             },
             body_type_offset: match inst.get("bodyTypeOffset") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            randomization_override_params: inst
-                .get_array("randomizationOverrideParams")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(
-                            b.alloc_nested::<SCharacterCustomizerRandomizationOverrideParams>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ),
-                        ),
-                        Value::ClassRef(r) => Some(
-                            b.alloc_nested::<SCharacterCustomizerRandomizationOverrideParams>(
-                                b.db.instance(r.struct_index, r.instance_index),
-                                true,
-                            ),
-                        ),
+            randomization_override_params: inst.get_array("randomizationOverrideParams")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<SCharacterCustomizerRandomizationOverrideParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<SCharacterCustomizerRandomizationOverrideParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
             camera_rig_offset: match inst.get("cameraRigOffset") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
@@ -1437,16 +881,8 @@ pub struct SCharacterCustomizerRandomizationOverrideParams {
 }
 
 impl Pooled for SCharacterCustomizerRandomizationOverrideParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_charactercustomizer
-            .scharacter_customizer_randomization_override_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_charactercustomizer
-            .scharacter_customizer_randomization_override_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_charactercustomizer.scharacter_customizer_randomization_override_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_charactercustomizer.scharacter_customizer_randomization_override_params }
 }
 
 impl<'a> Extract<'a> for SCharacterCustomizerRandomizationOverrideParams {
@@ -1454,15 +890,11 @@ impl<'a> Extract<'a> for SCharacterCustomizerRandomizationOverrideParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             feature: match inst.get("feature") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(SCharacterCustomizerFeatureBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(SCharacterCustomizerFeatureBasePtr::from_ref(b, r)),
                 _ => None,
             },
             randomization_params: match inst.get("randomizationParams") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(SCharacterCustomizerRandomizationParamsPtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(SCharacterCustomizerRandomizationParamsPtr::from_ref(b, r)),
                 _ => None,
             },
         }
@@ -1518,16 +950,8 @@ pub struct SCharacterCustomizerControlParams {
 }
 
 impl Pooled for SCharacterCustomizerControlParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_charactercustomizer
-            .scharacter_customizer_control_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_charactercustomizer
-            .scharacter_customizer_control_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_charactercustomizer.scharacter_customizer_control_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_charactercustomizer.scharacter_customizer_control_params }
 }
 
 impl<'a> Extract<'a> for SCharacterCustomizerControlParams {
@@ -1538,10 +962,7 @@ impl<'a> Extract<'a> for SCharacterCustomizerControlParams {
             rotation_rate: inst.get_f32("rotationRate").unwrap_or_default(),
             max_rotation_speed: inst.get_f32("maxRotationSpeed").unwrap_or_default(),
             tilt_clamp: match inst.get("tiltClamp") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec2>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec2>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             enable_tilt: inst.get_bool("enableTilt").unwrap_or_default(),
@@ -1549,25 +970,17 @@ impl<'a> Extract<'a> for SCharacterCustomizerControlParams {
             dna_keyboard_edit_rate: inst.get_f32("dnaKeyboardEditRate").unwrap_or_default(),
             rotation_lerp_time: inst.get_f32("rotationLerpTime").unwrap_or_default(),
             library_head_bbox_scale: inst.get_f32("libraryHeadBBoxScale").unwrap_or_default(),
-            whole_head_region_bbox_scale: inst
-                .get_f32("wholeHeadRegionBBoxScale")
-                .unwrap_or_default(),
+            whole_head_region_bbox_scale: inst.get_f32("wholeHeadRegionBBoxScale").unwrap_or_default(),
             library_scroll_speed: inst.get_f32("libraryScrollSpeed").unwrap_or_default(),
             library_scroll_timeout: inst.get_f32("libraryScrollTimeout").unwrap_or_default(),
             dna_key_control_speed: inst.get_f32("dnaKeyControlSpeed").unwrap_or_default(),
-            body_type_selection_lerp_time: inst
-                .get_f32("bodyTypeSelectionLerpTime")
-                .unwrap_or_default(),
-            face_sculpting_control_point_uiscale_factor: inst
-                .get_f32("faceSculptingControlPointUIScaleFactor")
-                .unwrap_or_default(),
+            body_type_selection_lerp_time: inst.get_f32("bodyTypeSelectionLerpTime").unwrap_or_default(),
+            face_sculpting_control_point_uiscale_factor: inst.get_f32("faceSculptingControlPointUIScaleFactor").unwrap_or_default(),
             enforce_symmetry: inst.get_bool("enforceSymmetry").unwrap_or_default(),
             use_all_dnavertices: inst.get_bool("useAllDNAVertices").unwrap_or_default(),
             facesculpting_uiradius: inst.get_f32("facesculptingUIRadius").unwrap_or_default(),
             step_change_delay_time: inst.get_f32("stepChangeDelayTime").unwrap_or_default(),
-            face_sculpting_occlusion_offset: inst
-                .get_f32("faceSculptingOcclusionOffset")
-                .unwrap_or_default(),
+            face_sculpting_occlusion_offset: inst.get_f32("faceSculptingOcclusionOffset").unwrap_or_default(),
             rotate_camera: inst.get_bool("rotateCamera").unwrap_or_default(),
             step_transition_time: inst.get_f32("stepTransitionTime").unwrap_or_default(),
         }
@@ -1587,16 +1000,8 @@ pub struct SCharacterCustomizerDNAHeadPool {
 }
 
 impl Pooled for SCharacterCustomizerDNAHeadPool {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_charactercustomizer
-            .scharacter_customizer_dnahead_pool
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_charactercustomizer
-            .scharacter_customizer_dnahead_pool
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_charactercustomizer.scharacter_customizer_dnahead_pool }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_charactercustomizer.scharacter_customizer_dnahead_pool }
 }
 
 impl<'a> Extract<'a> for SCharacterCustomizerDNAHeadPool {
@@ -1604,36 +1009,19 @@ impl<'a> Extract<'a> for SCharacterCustomizerDNAHeadPool {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             tag: match inst.get("tag") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(SGeometryModelTagBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(SGeometryModelTagBasePtr::from_ref(b, r)),
                 _ => None,
             },
-            default_material_paths: inst
-                .get_array("defaultMaterialPaths")
+            default_material_paths: inst.get_array("defaultMaterialPaths")
                 .map(|arr| arr.filter_map(|v| v.as_str().map(String::from)).collect())
                 .unwrap_or_default(),
             exclusion_pool: inst.get_bool("exclusionPool").unwrap_or_default(),
-            heads: inst
-                .get_array("heads")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<SCharacterCustomizerDNAHeadParams>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => {
-                            Some(b.alloc_nested::<SCharacterCustomizerDNAHeadParams>(
-                                b.db.instance(r.struct_index, r.instance_index),
-                                true,
-                            ))
-                        }
+            heads: inst.get_array("heads")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<SCharacterCustomizerDNAHeadParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<SCharacterCustomizerDNAHeadParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
         }
     }
@@ -1650,44 +1038,22 @@ pub struct SCustomizerDefaultItem {
 }
 
 impl Pooled for SCustomizerDefaultItem {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_charactercustomizer.scustomizer_default_item
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_charactercustomizer.scustomizer_default_item
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_charactercustomizer.scustomizer_default_item }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_charactercustomizer.scustomizer_default_item }
 }
 
 impl<'a> Extract<'a> for SCustomizerDefaultItem {
     const TYPE_NAME: &'static str = "SCustomizerDefaultItem";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            itemport_name: inst
-                .get_str("itemportName")
-                .map(String::from)
-                .unwrap_or_default(),
-            class: inst
-                .get("class")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            children: inst
-                .get_array("children")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<SCustomizerDefaultItem>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => Some(b.alloc_nested::<SCustomizerDefaultItem>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
+            itemport_name: inst.get_str("itemportName").map(String::from).unwrap_or_default(),
+            class: inst.get("class").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            children: inst.get_array("children")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<SCustomizerDefaultItem>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<SCustomizerDefaultItem>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
         }
     }
@@ -1706,16 +1072,8 @@ pub struct SCharacterCustomizerDNAHeadParams {
 }
 
 impl Pooled for SCharacterCustomizerDNAHeadParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_charactercustomizer
-            .scharacter_customizer_dnahead_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_charactercustomizer
-            .scharacter_customizer_dnahead_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_charactercustomizer.scharacter_customizer_dnahead_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_charactercustomizer.scharacter_customizer_dnahead_params }
 }
 
 impl<'a> Extract<'a> for SCharacterCustomizerDNAHeadParams {
@@ -1723,34 +1081,16 @@ impl<'a> Extract<'a> for SCharacterCustomizerDNAHeadParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             head_id: inst.get_i32("headId").unwrap_or_default(),
-            custom_material: inst
-                .get_str("customMaterial")
-                .map(String::from)
-                .unwrap_or_default(),
-            default_loadout_items: inst
-                .get_array("defaultLoadoutItems")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<SCustomizerDefaultItem>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => Some(b.alloc_nested::<SCustomizerDefaultItem>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
+            custom_material: inst.get_str("customMaterial").map(String::from).unwrap_or_default(),
+            default_loadout_items: inst.get_array("defaultLoadoutItems")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<SCustomizerDefaultItem>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<SCustomizerDefaultItem>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
             iris_color: match inst.get("irisColor") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<RGB>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<RGB>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
@@ -1768,16 +1108,8 @@ pub struct SCharacterCustomizerClippingVolumeParams {
 }
 
 impl Pooled for SCharacterCustomizerClippingVolumeParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_charactercustomizer
-            .scharacter_customizer_clipping_volume_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_charactercustomizer
-            .scharacter_customizer_clipping_volume_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_charactercustomizer.scharacter_customizer_clipping_volume_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_charactercustomizer.scharacter_customizer_clipping_volume_params }
 }
 
 impl<'a> Extract<'a> for SCharacterCustomizerClippingVolumeParams {
@@ -1785,12 +1117,7 @@ impl<'a> Extract<'a> for SCharacterCustomizerClippingVolumeParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             area: match inst.get("area") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<EntityReferenceDef>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<EntityReferenceDef>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             transition_time: inst.get_f32("transitionTime").unwrap_or_default(),
@@ -1808,44 +1135,21 @@ pub struct SCharacterCustomizerVoiceParams {
 }
 
 impl Pooled for SCharacterCustomizerVoiceParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_charactercustomizer
-            .scharacter_customizer_voice_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_charactercustomizer
-            .scharacter_customizer_voice_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_charactercustomizer.scharacter_customizer_voice_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_charactercustomizer.scharacter_customizer_voice_params }
 }
 
 impl<'a> Extract<'a> for SCharacterCustomizerVoiceParams {
     const TYPE_NAME: &'static str = "SCharacterCustomizerVoiceParams";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            debug_name: inst
-                .get_str("debugName")
-                .map(String::from)
-                .unwrap_or_default(),
-            model_voice_tag_pairs: inst
-                .get_array("modelVoiceTagPairs")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<SModelVoiceTagPair>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => Some(b.alloc_nested::<SModelVoiceTagPair>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
+            debug_name: inst.get_str("debugName").map(String::from).unwrap_or_default(),
+            model_voice_tag_pairs: inst.get_array("modelVoiceTagPairs")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<SModelVoiceTagPair>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<SModelVoiceTagPair>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
         }
     }
@@ -1865,16 +1169,8 @@ pub struct SCharacterCustomizerComplexionRandomizationParams {
 }
 
 impl Pooled for SCharacterCustomizerComplexionRandomizationParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_charactercustomizer
-            .scharacter_customizer_complexion_randomization_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_charactercustomizer
-            .scharacter_customizer_complexion_randomization_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_charactercustomizer.scharacter_customizer_complexion_randomization_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_charactercustomizer.scharacter_customizer_complexion_randomization_params }
 }
 
 impl<'a> Extract<'a> for SCharacterCustomizerComplexionRandomizationParams {
@@ -1882,31 +1178,19 @@ impl<'a> Extract<'a> for SCharacterCustomizerComplexionRandomizationParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             freckles_opacity_limits: match inst.get("frecklesOpacityLimits") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec2>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec2>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             freckles_amount_limits: match inst.get("frecklesAmountLimits") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec2>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec2>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             sunspots_opacity_limits: match inst.get("sunspotsOpacityLimits") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec2>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec2>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             sunspots_amount_limits: match inst.get("sunspotsAmountLimits") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec2>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec2>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
@@ -1921,16 +1205,8 @@ pub struct SCharacterCustomizerItemRandomizationParams {
 }
 
 impl Pooled for SCharacterCustomizerItemRandomizationParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_charactercustomizer
-            .scharacter_customizer_item_randomization_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_charactercustomizer
-            .scharacter_customizer_item_randomization_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_charactercustomizer.scharacter_customizer_item_randomization_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_charactercustomizer.scharacter_customizer_item_randomization_params }
 }
 
 impl<'a> Extract<'a> for SCharacterCustomizerItemRandomizationParams {
@@ -1954,16 +1230,8 @@ pub struct SCharacterCustomizerHairRandomizationParams {
 }
 
 impl Pooled for SCharacterCustomizerHairRandomizationParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_charactercustomizer
-            .scharacter_customizer_hair_randomization_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_charactercustomizer
-            .scharacter_customizer_hair_randomization_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_charactercustomizer.scharacter_customizer_hair_randomization_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_charactercustomizer.scharacter_customizer_hair_randomization_params }
 }
 
 impl<'a> Extract<'a> for SCharacterCustomizerHairRandomizationParams {
@@ -1972,17 +1240,11 @@ impl<'a> Extract<'a> for SCharacterCustomizerHairRandomizationParams {
         Self {
             no_item_probability: inst.get_f32("noItemProbability").unwrap_or_default(),
             melanin_limits: match inst.get("melaninLimits") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec2>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec2>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             redness_limits: match inst.get("rednessLimits") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec2>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec2>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
@@ -1999,16 +1261,8 @@ pub struct SCharacterCustomizerMakeupSlotRandomizationParams {
 }
 
 impl Pooled for SCharacterCustomizerMakeupSlotRandomizationParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_charactercustomizer
-            .scharacter_customizer_makeup_slot_randomization_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_charactercustomizer
-            .scharacter_customizer_makeup_slot_randomization_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_charactercustomizer.scharacter_customizer_makeup_slot_randomization_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_charactercustomizer.scharacter_customizer_makeup_slot_randomization_params }
 }
 
 impl<'a> Extract<'a> for SCharacterCustomizerMakeupSlotRandomizationParams {
@@ -2017,12 +1271,7 @@ impl<'a> Extract<'a> for SCharacterCustomizerMakeupSlotRandomizationParams {
         Self {
             no_makeup_probability: inst.get_f32("noMakeupProbability").unwrap_or_default(),
             makeup_slot: match inst.get("makeupSlot") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<SCharacterCustomizerMakeupSlot>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SCharacterCustomizerMakeupSlot>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
         }
@@ -2041,16 +1290,8 @@ pub struct SCharacterCustomizerTattooRandomizationParams {
 }
 
 impl Pooled for SCharacterCustomizerTattooRandomizationParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_charactercustomizer
-            .scharacter_customizer_tattoo_randomization_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_charactercustomizer
-            .scharacter_customizer_tattoo_randomization_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_charactercustomizer.scharacter_customizer_tattoo_randomization_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_charactercustomizer.scharacter_customizer_tattoo_randomization_params }
 }
 
 impl<'a> Extract<'a> for SCharacterCustomizerTattooRandomizationParams {
@@ -2059,16 +1300,11 @@ impl<'a> Extract<'a> for SCharacterCustomizerTattooRandomizationParams {
         Self {
             no_tattoo_probability: inst.get_f32("noTattooProbability").unwrap_or_default(),
             tattoo_age_limits: match inst.get("tattooAgeLimits") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec2>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec2>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             tattoo_feature_params: match inst.get("tattooFeatureParams") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(SCharacterCustomizerFeatureTextureSelectPtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(SCharacterCustomizerFeatureTextureSelectPtr::from_ref(b, r)),
                 _ => None,
             },
         }
@@ -2084,16 +1320,8 @@ pub struct SCharacterCustomizerRandomColorDef {
 }
 
 impl Pooled for SCharacterCustomizerRandomColorDef {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_charactercustomizer
-            .scharacter_customizer_random_color_def
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_charactercustomizer
-            .scharacter_customizer_random_color_def
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_charactercustomizer.scharacter_customizer_random_color_def }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_charactercustomizer.scharacter_customizer_random_color_def }
 }
 
 impl<'a> Extract<'a> for SCharacterCustomizerRandomColorDef {
@@ -2102,10 +1330,7 @@ impl<'a> Extract<'a> for SCharacterCustomizerRandomColorDef {
         Self {
             probability: inst.get_f32("probability").unwrap_or_default(),
             color: match inst.get("color") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<RGB>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<RGB>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
@@ -2120,42 +1345,20 @@ pub struct SCharacterCustomizerEyeRandomizationParams {
 }
 
 impl Pooled for SCharacterCustomizerEyeRandomizationParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_charactercustomizer
-            .scharacter_customizer_eye_randomization_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_charactercustomizer
-            .scharacter_customizer_eye_randomization_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_charactercustomizer.scharacter_customizer_eye_randomization_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_charactercustomizer.scharacter_customizer_eye_randomization_params }
 }
 
 impl<'a> Extract<'a> for SCharacterCustomizerEyeRandomizationParams {
     const TYPE_NAME: &'static str = "SCharacterCustomizerEyeRandomizationParams";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            iris_colors: inst
-                .get_array("irisColors")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<SCharacterCustomizerRandomColorDef>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => {
-                            Some(b.alloc_nested::<SCharacterCustomizerRandomColorDef>(
-                                b.db.instance(r.struct_index, r.instance_index),
-                                true,
-                            ))
-                        }
+            iris_colors: inst.get_array("irisColors")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<SCharacterCustomizerRandomColorDef>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<SCharacterCustomizerRandomColorDef>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
         }
     }
@@ -2170,16 +1373,8 @@ pub struct SCharacterCustomizerHairLengthOverride {
 }
 
 impl Pooled for SCharacterCustomizerHairLengthOverride {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_charactercustomizer
-            .scharacter_customizer_hair_length_override
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_charactercustomizer
-            .scharacter_customizer_hair_length_override
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_charactercustomizer.scharacter_customizer_hair_length_override }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_charactercustomizer.scharacter_customizer_hair_length_override }
 }
 
 impl<'a> Extract<'a> for SCharacterCustomizerHairLengthOverride {
@@ -2187,9 +1382,7 @@ impl<'a> Extract<'a> for SCharacterCustomizerHairLengthOverride {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             model_tag: match inst.get("modelTag") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(SGeometryModelTagBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(SGeometryModelTagBasePtr::from_ref(b, r)),
                 _ => None,
             },
             hair_length: inst.get_f32("hairLength").unwrap_or_default(),
@@ -2208,47 +1401,22 @@ pub struct SCharacterCustomizerHairLengthEntry {
 }
 
 impl Pooled for SCharacterCustomizerHairLengthEntry {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_charactercustomizer
-            .scharacter_customizer_hair_length_entry
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_charactercustomizer
-            .scharacter_customizer_hair_length_entry
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_charactercustomizer.scharacter_customizer_hair_length_entry }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_charactercustomizer.scharacter_customizer_hair_length_entry }
 }
 
 impl<'a> Extract<'a> for SCharacterCustomizerHairLengthEntry {
     const TYPE_NAME: &'static str = "SCharacterCustomizerHairLengthEntry";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            hair_class: inst
-                .get("hairClass")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
+            hair_class: inst.get("hairClass").and_then(|v| v.as_record_ref()).map(|r| r.guid),
             hair_length: inst.get_f32("hairLength").unwrap_or_default(),
-            hair_length_overrides: inst
-                .get_array("hairLengthOverrides")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<SCharacterCustomizerHairLengthOverride>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => {
-                            Some(b.alloc_nested::<SCharacterCustomizerHairLengthOverride>(
-                                b.db.instance(r.struct_index, r.instance_index),
-                                true,
-                            ))
-                        }
+            hair_length_overrides: inst.get_array("hairLengthOverrides")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<SCharacterCustomizerHairLengthOverride>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<SCharacterCustomizerHairLengthOverride>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
         }
     }
@@ -2264,16 +1432,8 @@ pub struct SCharacterSkinValidationParams {
 }
 
 impl Pooled for SCharacterSkinValidationParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_charactercustomizer
-            .scharacter_skin_validation_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_charactercustomizer
-            .scharacter_skin_validation_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_charactercustomizer.scharacter_skin_validation_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_charactercustomizer.scharacter_skin_validation_params }
 }
 
 impl<'a> Extract<'a> for SCharacterSkinValidationParams {
@@ -2305,58 +1465,29 @@ pub struct SCustomizableMaterialParams {
 }
 
 impl Pooled for SCustomizableMaterialParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_charactercustomizer
-            .scustomizable_material_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_charactercustomizer
-            .scustomizable_material_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_charactercustomizer.scustomizable_material_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_charactercustomizer.scustomizable_material_params }
 }
 
 impl<'a> Extract<'a> for SCustomizableMaterialParams {
     const TYPE_NAME: &'static str = "SCustomizableMaterialParams";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            debug_name: inst
-                .get_str("debugName")
-                .map(String::from)
-                .unwrap_or_default(),
-            attachment_name: inst
-                .get_str("attachmentName")
-                .map(String::from)
-                .unwrap_or_default(),
+            debug_name: inst.get_str("debugName").map(String::from).unwrap_or_default(),
+            attachment_name: inst.get_str("attachmentName").map(String::from).unwrap_or_default(),
             item_type: EItemType::from_dcb_str(inst.get_str("itemType").unwrap_or("")),
-            submaterials_to_edit: inst
-                .get_array("submaterialsToEdit")
+            submaterials_to_edit: inst.get_array("submaterialsToEdit")
                 .map(|arr| arr.filter_map(|v| v.as_i32()).collect())
                 .unwrap_or_default(),
-            linked_materials: inst
-                .get_array("linkedMaterials")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => {
-                            Some(b.alloc_nested::<SCustomizableMaterialParams>(
-                                b.db.instance(r.struct_index, r.instance_index),
-                                true,
-                            ))
-                        }
+            linked_materials: inst.get_array("linkedMaterials")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => Some(b.alloc_nested::<SCustomizableMaterialParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
-            additional_flags: inst
-                .get_str("additionalFlags")
-                .map(String::from)
-                .unwrap_or_default(),
+            additional_flags: inst.get_str("additionalFlags").map(String::from).unwrap_or_default(),
             validation_params: match inst.get("validationParams") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(SCharacterValidationParamsPtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(SCharacterValidationParamsPtr::from_ref(b, r)),
                 _ => None,
             },
         }
@@ -2384,52 +1515,27 @@ pub struct SCharacterCustomizerStep {
 }
 
 impl Pooled for SCharacterCustomizerStep {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_charactercustomizer
-            .scharacter_customizer_step
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_charactercustomizer
-            .scharacter_customizer_step
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_charactercustomizer.scharacter_customizer_step }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_charactercustomizer.scharacter_customizer_step }
 }
 
 impl<'a> Extract<'a> for SCharacterCustomizerStep {
     const TYPE_NAME: &'static str = "SCharacterCustomizerStep";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            debug_name: inst
-                .get_str("debugName")
-                .map(String::from)
-                .unwrap_or_default(),
-            display_name_loc_id: inst
-                .get_str("displayNameLocId")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
-            features: inst
-                .get_array("features")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => {
-                            Some(SCharacterCustomizerFeatureBasePtr::from_ref(b, r))
-                        }
+            debug_name: inst.get_str("debugName").map(String::from).unwrap_or_default(),
+            display_name_loc_id: inst.get_str("displayNameLocId").map(LocaleKey::from).unwrap_or_default(),
+            features: inst.get_array("features")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => Some(SCharacterCustomizerFeatureBasePtr::from_ref(b, r)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
             is_visible: inst.get_bool("isVisible").unwrap_or_default(),
             ui_visible: inst.get_bool("uiVisible").unwrap_or_default(),
-            icon_path: inst
-                .get_str("iconPath")
-                .map(String::from)
-                .unwrap_or_default(),
+            icon_path: inst.get_str("iconPath").map(String::from).unwrap_or_default(),
             player_dummy_visible: inst.get_bool("playerDummyVisible").unwrap_or_default(),
-            allow_flowgraph_transition: inst
-                .get_bool("allowFlowgraphTransition")
-                .unwrap_or_default(),
+            allow_flowgraph_transition: inst.get_bool("allowFlowgraphTransition").unwrap_or_default(),
         }
     }
 }
@@ -2467,85 +1573,44 @@ pub struct SCharacterCustomizerFeatureBase {
 }
 
 impl Pooled for SCharacterCustomizerFeatureBase {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_charactercustomizer
-            .scharacter_customizer_feature_base
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_charactercustomizer
-            .scharacter_customizer_feature_base
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_charactercustomizer.scharacter_customizer_feature_base }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_charactercustomizer.scharacter_customizer_feature_base }
 }
 
 impl<'a> Extract<'a> for SCharacterCustomizerFeatureBase {
     const TYPE_NAME: &'static str = "SCharacterCustomizerFeatureBase";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            debug_name: inst
-                .get_str("debugName")
-                .map(String::from)
-                .unwrap_or_default(),
-            display_name_loc_id: inst
-                .get_str("displayNameLocId")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
-            id_string: inst
-                .get_str("idString")
-                .map(String::from)
-                .unwrap_or_default(),
-            sub_features: inst
-                .get_array("subFeatures")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => {
-                            Some(SCharacterCustomizerFeatureBasePtr::from_ref(b, r))
-                        }
+            debug_name: inst.get_str("debugName").map(String::from).unwrap_or_default(),
+            display_name_loc_id: inst.get_str("displayNameLocId").map(LocaleKey::from).unwrap_or_default(),
+            id_string: inst.get_str("idString").map(String::from).unwrap_or_default(),
+            sub_features: inst.get_array("subFeatures")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => Some(SCharacterCustomizerFeatureBasePtr::from_ref(b, r)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
-            icon_path: inst
-                .get_str("iconPath")
-                .map(String::from)
-                .unwrap_or_default(),
+            icon_path: inst.get_str("iconPath").map(String::from).unwrap_or_default(),
             randomization_params: match inst.get("randomizationParams") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(SCharacterCustomizerRandomizationParamsPtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(SCharacterCustomizerRandomizationParamsPtr::from_ref(b, r)),
                 _ => None,
             },
             validation_params: match inst.get("validationParams") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(SCharacterValidationParamsPtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(SCharacterValidationParamsPtr::from_ref(b, r)),
                 _ => None,
             },
-            feature_type: ECharacterCustomizerFeature::from_dcb_str(
-                inst.get_str("featureType").unwrap_or(""),
-            ),
+            feature_type: ECharacterCustomizerFeature::from_dcb_str(inst.get_str("featureType").unwrap_or("")),
             material_params: match inst.get("materialParams") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<SCustomizableMaterialParams>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SCustomizableMaterialParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             precache_skin_materials: inst.get_bool("precacheSkinMaterials").unwrap_or_default(),
-            supports_sub_feature_selection: inst
-                .get_bool("supportsSubFeatureSelection")
-                .unwrap_or_default(),
+            supports_sub_feature_selection: inst.get_bool("supportsSubFeatureSelection").unwrap_or_default(),
             dev_mode_only: inst.get_bool("devModeOnly").unwrap_or_default(),
-            itemports_to_hide: inst
-                .get_array("itemportsToHide")
+            itemports_to_hide: inst.get_array("itemportsToHide")
                 .map(|arr| arr.filter_map(|v| v.as_str().map(String::from)).collect())
                 .unwrap_or_default(),
-            library_itemports_to_hide: inst
-                .get_array("libraryItemportsToHide")
+            library_itemports_to_hide: inst.get_array("libraryItemportsToHide")
                 .map(|arr| arr.filter_map(|v| v.as_str().map(String::from)).collect())
                 .unwrap_or_default(),
         }
@@ -2588,85 +1653,44 @@ pub struct SCharacterCustomizerFeatureDNA {
 }
 
 impl Pooled for SCharacterCustomizerFeatureDNA {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_charactercustomizer
-            .scharacter_customizer_feature_dna
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_charactercustomizer
-            .scharacter_customizer_feature_dna
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_charactercustomizer.scharacter_customizer_feature_dna }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_charactercustomizer.scharacter_customizer_feature_dna }
 }
 
 impl<'a> Extract<'a> for SCharacterCustomizerFeatureDNA {
     const TYPE_NAME: &'static str = "SCharacterCustomizerFeatureDNA";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            debug_name: inst
-                .get_str("debugName")
-                .map(String::from)
-                .unwrap_or_default(),
-            display_name_loc_id: inst
-                .get_str("displayNameLocId")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
-            id_string: inst
-                .get_str("idString")
-                .map(String::from)
-                .unwrap_or_default(),
-            sub_features: inst
-                .get_array("subFeatures")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => {
-                            Some(SCharacterCustomizerFeatureBasePtr::from_ref(b, r))
-                        }
+            debug_name: inst.get_str("debugName").map(String::from).unwrap_or_default(),
+            display_name_loc_id: inst.get_str("displayNameLocId").map(LocaleKey::from).unwrap_or_default(),
+            id_string: inst.get_str("idString").map(String::from).unwrap_or_default(),
+            sub_features: inst.get_array("subFeatures")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => Some(SCharacterCustomizerFeatureBasePtr::from_ref(b, r)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
-            icon_path: inst
-                .get_str("iconPath")
-                .map(String::from)
-                .unwrap_or_default(),
+            icon_path: inst.get_str("iconPath").map(String::from).unwrap_or_default(),
             randomization_params: match inst.get("randomizationParams") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(SCharacterCustomizerRandomizationParamsPtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(SCharacterCustomizerRandomizationParamsPtr::from_ref(b, r)),
                 _ => None,
             },
             validation_params: match inst.get("validationParams") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(SCharacterValidationParamsPtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(SCharacterValidationParamsPtr::from_ref(b, r)),
                 _ => None,
             },
-            feature_type: ECharacterCustomizerFeature::from_dcb_str(
-                inst.get_str("featureType").unwrap_or(""),
-            ),
+            feature_type: ECharacterCustomizerFeature::from_dcb_str(inst.get_str("featureType").unwrap_or("")),
             material_params: match inst.get("materialParams") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<SCustomizableMaterialParams>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SCustomizableMaterialParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             precache_skin_materials: inst.get_bool("precacheSkinMaterials").unwrap_or_default(),
-            supports_sub_feature_selection: inst
-                .get_bool("supportsSubFeatureSelection")
-                .unwrap_or_default(),
+            supports_sub_feature_selection: inst.get_bool("supportsSubFeatureSelection").unwrap_or_default(),
             dev_mode_only: inst.get_bool("devModeOnly").unwrap_or_default(),
-            itemports_to_hide: inst
-                .get_array("itemportsToHide")
+            itemports_to_hide: inst.get_array("itemportsToHide")
                 .map(|arr| arr.filter_map(|v| v.as_str().map(String::from)).collect())
                 .unwrap_or_default(),
-            library_itemports_to_hide: inst
-                .get_array("libraryItemportsToHide")
+            library_itemports_to_hide: inst.get_array("libraryItemportsToHide")
                 .map(|arr| arr.filter_map(|v| v.as_str().map(String::from)).collect())
                 .unwrap_or_default(),
             edit_type: EDNAEditType::from_dcb_str(inst.get_str("editType").unwrap_or("")),
@@ -2708,8 +1732,7 @@ pub struct SCharacterCustomizerFeatureItemEquip {
     /// `clippingVolumeParams` (Class)
     pub clipping_volume_params: Option<Handle<SCharacterCustomizerClippingVolumeParams>>,
     /// `advancedModeClippingVolumeParams` (Class)
-    pub advanced_mode_clipping_volume_params:
-        Option<Handle<SCharacterCustomizerClippingVolumeParams>>,
+    pub advanced_mode_clipping_volume_params: Option<Handle<SCharacterCustomizerClippingVolumeParams>>,
     /// `addEmptyEntry` (Boolean)
     pub add_empty_entry: bool,
     /// `featureLibOffset` (Class)
@@ -2735,142 +1758,71 @@ pub struct SCharacterCustomizerFeatureItemEquip {
 }
 
 impl Pooled for SCharacterCustomizerFeatureItemEquip {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_charactercustomizer
-            .scharacter_customizer_feature_item_equip
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_charactercustomizer
-            .scharacter_customizer_feature_item_equip
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_charactercustomizer.scharacter_customizer_feature_item_equip }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_charactercustomizer.scharacter_customizer_feature_item_equip }
 }
 
 impl<'a> Extract<'a> for SCharacterCustomizerFeatureItemEquip {
     const TYPE_NAME: &'static str = "SCharacterCustomizerFeatureItemEquip";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            debug_name: inst
-                .get_str("debugName")
-                .map(String::from)
-                .unwrap_or_default(),
-            display_name_loc_id: inst
-                .get_str("displayNameLocId")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
-            id_string: inst
-                .get_str("idString")
-                .map(String::from)
-                .unwrap_or_default(),
-            sub_features: inst
-                .get_array("subFeatures")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => {
-                            Some(SCharacterCustomizerFeatureBasePtr::from_ref(b, r))
-                        }
+            debug_name: inst.get_str("debugName").map(String::from).unwrap_or_default(),
+            display_name_loc_id: inst.get_str("displayNameLocId").map(LocaleKey::from).unwrap_or_default(),
+            id_string: inst.get_str("idString").map(String::from).unwrap_or_default(),
+            sub_features: inst.get_array("subFeatures")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => Some(SCharacterCustomizerFeatureBasePtr::from_ref(b, r)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
-            icon_path: inst
-                .get_str("iconPath")
-                .map(String::from)
-                .unwrap_or_default(),
+            icon_path: inst.get_str("iconPath").map(String::from).unwrap_or_default(),
             randomization_params: match inst.get("randomizationParams") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(SCharacterCustomizerRandomizationParamsPtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(SCharacterCustomizerRandomizationParamsPtr::from_ref(b, r)),
                 _ => None,
             },
             validation_params: match inst.get("validationParams") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(SCharacterValidationParamsPtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(SCharacterValidationParamsPtr::from_ref(b, r)),
                 _ => None,
             },
-            feature_type: ECharacterCustomizerFeature::from_dcb_str(
-                inst.get_str("featureType").unwrap_or(""),
-            ),
+            feature_type: ECharacterCustomizerFeature::from_dcb_str(inst.get_str("featureType").unwrap_or("")),
             material_params: match inst.get("materialParams") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<SCustomizableMaterialParams>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SCustomizableMaterialParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             precache_skin_materials: inst.get_bool("precacheSkinMaterials").unwrap_or_default(),
-            supports_sub_feature_selection: inst
-                .get_bool("supportsSubFeatureSelection")
-                .unwrap_or_default(),
+            supports_sub_feature_selection: inst.get_bool("supportsSubFeatureSelection").unwrap_or_default(),
             dev_mode_only: inst.get_bool("devModeOnly").unwrap_or_default(),
-            itemports_to_hide: inst
-                .get_array("itemportsToHide")
+            itemports_to_hide: inst.get_array("itemportsToHide")
                 .map(|arr| arr.filter_map(|v| v.as_str().map(String::from)).collect())
                 .unwrap_or_default(),
-            library_itemports_to_hide: inst
-                .get_array("libraryItemportsToHide")
+            library_itemports_to_hide: inst.get_array("libraryItemportsToHide")
                 .map(|arr| arr.filter_map(|v| v.as_str().map(String::from)).collect())
                 .unwrap_or_default(),
             clipping_volume_params: match inst.get("clippingVolumeParams") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<SCharacterCustomizerClippingVolumeParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SCharacterCustomizerClippingVolumeParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            advanced_mode_clipping_volume_params: match inst.get("advancedModeClippingVolumeParams")
-            {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<SCharacterCustomizerClippingVolumeParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+            advanced_mode_clipping_volume_params: match inst.get("advancedModeClippingVolumeParams") {
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SCharacterCustomizerClippingVolumeParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             add_empty_entry: inst.get_bool("addEmptyEntry").unwrap_or_default(),
             feature_lib_offset: match inst.get("featureLibOffset") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             advanced_mode_lib_offset: match inst.get("advancedModeLibOffset") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             feature_lib_rows_on_screen: inst.get_i32("featureLibRowsOnScreen").unwrap_or_default(),
-            advanced_mode_rows_on_screen: inst
-                .get_i32("advancedModeRowsOnScreen")
-                .unwrap_or_default(),
-            item_select_mode: ECharacterCustomizerItemSelectMode::from_dcb_str(
-                inst.get_str("itemSelectMode").unwrap_or(""),
-            ),
+            advanced_mode_rows_on_screen: inst.get_i32("advancedModeRowsOnScreen").unwrap_or_default(),
+            item_select_mode: ECharacterCustomizerItemSelectMode::from_dcb_str(inst.get_str("itemSelectMode").unwrap_or("")),
             item_type: EItemType::from_dcb_str(inst.get_str("itemType").unwrap_or("")),
-            required_port_tag: inst
-                .get_str("requiredPortTag")
-                .map(String::from)
-                .unwrap_or_default(),
-            required_tags: inst
-                .get_str("requiredTags")
-                .map(String::from)
-                .unwrap_or_default(),
-            show_on_parent_feature_head_library: inst
-                .get_bool("showOnParentFeatureHeadLibrary")
-                .unwrap_or_default(),
-            linked_item_port_names: inst
-                .get_array("linkedItemPortNames")
+            required_port_tag: inst.get_str("requiredPortTag").map(String::from).unwrap_or_default(),
+            required_tags: inst.get_str("requiredTags").map(String::from).unwrap_or_default(),
+            show_on_parent_feature_head_library: inst.get_bool("showOnParentFeatureHeadLibrary").unwrap_or_default(),
+            linked_item_port_names: inst.get_array("linkedItemPortNames")
                 .map(|arr| arr.filter_map(|v| v.as_str().map(String::from)).collect())
                 .unwrap_or_default(),
         }
@@ -2911,8 +1863,7 @@ pub struct SCharacterCustomizerFeatureTextureSelect {
     /// `clippingVolumeParams` (Class)
     pub clipping_volume_params: Option<Handle<SCharacterCustomizerClippingVolumeParams>>,
     /// `advancedModeClippingVolumeParams` (Class)
-    pub advanced_mode_clipping_volume_params:
-        Option<Handle<SCharacterCustomizerClippingVolumeParams>>,
+    pub advanced_mode_clipping_volume_params: Option<Handle<SCharacterCustomizerClippingVolumeParams>>,
     /// `addEmptyEntry` (Boolean)
     pub add_empty_entry: bool,
     /// `featureLibOffset` (Class)
@@ -2936,145 +1887,73 @@ pub struct SCharacterCustomizerFeatureTextureSelect {
 }
 
 impl Pooled for SCharacterCustomizerFeatureTextureSelect {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_charactercustomizer
-            .scharacter_customizer_feature_texture_select
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_charactercustomizer
-            .scharacter_customizer_feature_texture_select
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_charactercustomizer.scharacter_customizer_feature_texture_select }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_charactercustomizer.scharacter_customizer_feature_texture_select }
 }
 
 impl<'a> Extract<'a> for SCharacterCustomizerFeatureTextureSelect {
     const TYPE_NAME: &'static str = "SCharacterCustomizerFeatureTextureSelect";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            debug_name: inst
-                .get_str("debugName")
-                .map(String::from)
-                .unwrap_or_default(),
-            display_name_loc_id: inst
-                .get_str("displayNameLocId")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
-            id_string: inst
-                .get_str("idString")
-                .map(String::from)
-                .unwrap_or_default(),
-            sub_features: inst
-                .get_array("subFeatures")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => {
-                            Some(SCharacterCustomizerFeatureBasePtr::from_ref(b, r))
-                        }
+            debug_name: inst.get_str("debugName").map(String::from).unwrap_or_default(),
+            display_name_loc_id: inst.get_str("displayNameLocId").map(LocaleKey::from).unwrap_or_default(),
+            id_string: inst.get_str("idString").map(String::from).unwrap_or_default(),
+            sub_features: inst.get_array("subFeatures")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => Some(SCharacterCustomizerFeatureBasePtr::from_ref(b, r)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
-            icon_path: inst
-                .get_str("iconPath")
-                .map(String::from)
-                .unwrap_or_default(),
+            icon_path: inst.get_str("iconPath").map(String::from).unwrap_or_default(),
             randomization_params: match inst.get("randomizationParams") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(SCharacterCustomizerRandomizationParamsPtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(SCharacterCustomizerRandomizationParamsPtr::from_ref(b, r)),
                 _ => None,
             },
             validation_params: match inst.get("validationParams") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(SCharacterValidationParamsPtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(SCharacterValidationParamsPtr::from_ref(b, r)),
                 _ => None,
             },
-            feature_type: ECharacterCustomizerFeature::from_dcb_str(
-                inst.get_str("featureType").unwrap_or(""),
-            ),
+            feature_type: ECharacterCustomizerFeature::from_dcb_str(inst.get_str("featureType").unwrap_or("")),
             material_params: match inst.get("materialParams") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<SCustomizableMaterialParams>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SCustomizableMaterialParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             precache_skin_materials: inst.get_bool("precacheSkinMaterials").unwrap_or_default(),
-            supports_sub_feature_selection: inst
-                .get_bool("supportsSubFeatureSelection")
-                .unwrap_or_default(),
+            supports_sub_feature_selection: inst.get_bool("supportsSubFeatureSelection").unwrap_or_default(),
             dev_mode_only: inst.get_bool("devModeOnly").unwrap_or_default(),
-            itemports_to_hide: inst
-                .get_array("itemportsToHide")
+            itemports_to_hide: inst.get_array("itemportsToHide")
                 .map(|arr| arr.filter_map(|v| v.as_str().map(String::from)).collect())
                 .unwrap_or_default(),
-            library_itemports_to_hide: inst
-                .get_array("libraryItemportsToHide")
+            library_itemports_to_hide: inst.get_array("libraryItemportsToHide")
                 .map(|arr| arr.filter_map(|v| v.as_str().map(String::from)).collect())
                 .unwrap_or_default(),
             clipping_volume_params: match inst.get("clippingVolumeParams") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<SCharacterCustomizerClippingVolumeParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SCharacterCustomizerClippingVolumeParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            advanced_mode_clipping_volume_params: match inst.get("advancedModeClippingVolumeParams")
-            {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<SCharacterCustomizerClippingVolumeParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+            advanced_mode_clipping_volume_params: match inst.get("advancedModeClippingVolumeParams") {
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SCharacterCustomizerClippingVolumeParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             add_empty_entry: inst.get_bool("addEmptyEntry").unwrap_or_default(),
             feature_lib_offset: match inst.get("featureLibOffset") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             advanced_mode_lib_offset: match inst.get("advancedModeLibOffset") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             feature_lib_rows_on_screen: inst.get_i32("featureLibRowsOnScreen").unwrap_or_default(),
-            advanced_mode_rows_on_screen: inst
-                .get_i32("advancedModeRowsOnScreen")
-                .unwrap_or_default(),
-            item_select_mode: ECharacterCustomizerItemSelectMode::from_dcb_str(
-                inst.get_str("itemSelectMode").unwrap_or(""),
-            ),
-            slot: ECharacterCustomizerTextureSelectSlot::from_dcb_str(
-                inst.get_str("slot").unwrap_or(""),
-            ),
-            texture_slot: ECharacterCustomizerTextureSlot::from_dcb_str(
-                inst.get_str("textureSlot").unwrap_or(""),
-            ),
-            sub_materials_to_edit: inst
-                .get_array("subMaterialsToEdit")
+            advanced_mode_rows_on_screen: inst.get_i32("advancedModeRowsOnScreen").unwrap_or_default(),
+            item_select_mode: ECharacterCustomizerItemSelectMode::from_dcb_str(inst.get_str("itemSelectMode").unwrap_or("")),
+            slot: ECharacterCustomizerTextureSelectSlot::from_dcb_str(inst.get_str("slot").unwrap_or("")),
+            texture_slot: ECharacterCustomizerTextureSlot::from_dcb_str(inst.get_str("textureSlot").unwrap_or("")),
+            sub_materials_to_edit: inst.get_array("subMaterialsToEdit")
                 .map(|arr| arr.filter_map(|v| v.as_i32()).collect())
                 .unwrap_or_default(),
             textures: match inst.get("textures") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<SCharacterCustomizerTextureList>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SCharacterCustomizerTextureList>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
@@ -3100,16 +1979,8 @@ pub struct SCharacterCustomizerShaderParamBase {
 }
 
 impl Pooled for SCharacterCustomizerShaderParamBase {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_charactercustomizer
-            .scharacter_customizer_shader_param_base
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_charactercustomizer
-            .scharacter_customizer_shader_param_base
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_charactercustomizer.scharacter_customizer_shader_param_base }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_charactercustomizer.scharacter_customizer_shader_param_base }
 }
 
 impl<'a> Extract<'a> for SCharacterCustomizerShaderParamBase {
@@ -3117,25 +1988,12 @@ impl<'a> Extract<'a> for SCharacterCustomizerShaderParamBase {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             material_params: match inst.get("materialParams") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<SCustomizableMaterialParams>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SCustomizableMaterialParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
-            apply_to_current_feature_material: inst
-                .get_bool("applyToCurrentFeatureMaterial")
-                .unwrap_or_default(),
-            shader_param_name: inst
-                .get_str("shaderParamName")
-                .map(String::from)
-                .unwrap_or_default(),
-            bindings_url: inst
-                .get_str("bindingsURL")
-                .map(String::from)
-                .unwrap_or_default(),
+            apply_to_current_feature_material: inst.get_bool("applyToCurrentFeatureMaterial").unwrap_or_default(),
+            shader_param_name: inst.get_str("shaderParamName").map(String::from).unwrap_or_default(),
+            bindings_url: inst.get_str("bindingsURL").map(String::from).unwrap_or_default(),
             set_from_current_bindings: inst.get_bool("setFromCurrentBindings").unwrap_or_default(),
             requires_advanced_mode: inst.get_bool("requiresAdvancedMode").unwrap_or_default(),
             can_be_edited: inst.get_bool("canBeEdited").unwrap_or_default(),
@@ -3167,16 +2025,8 @@ pub struct SCharacterCustomizerShaderParamFloat {
 }
 
 impl Pooled for SCharacterCustomizerShaderParamFloat {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_charactercustomizer
-            .scharacter_customizer_shader_param_float
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_charactercustomizer
-            .scharacter_customizer_shader_param_float
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_charactercustomizer.scharacter_customizer_shader_param_float }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_charactercustomizer.scharacter_customizer_shader_param_float }
 }
 
 impl<'a> Extract<'a> for SCharacterCustomizerShaderParamFloat {
@@ -3184,25 +2034,12 @@ impl<'a> Extract<'a> for SCharacterCustomizerShaderParamFloat {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             material_params: match inst.get("materialParams") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<SCustomizableMaterialParams>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SCustomizableMaterialParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
-            apply_to_current_feature_material: inst
-                .get_bool("applyToCurrentFeatureMaterial")
-                .unwrap_or_default(),
-            shader_param_name: inst
-                .get_str("shaderParamName")
-                .map(String::from)
-                .unwrap_or_default(),
-            bindings_url: inst
-                .get_str("bindingsURL")
-                .map(String::from)
-                .unwrap_or_default(),
+            apply_to_current_feature_material: inst.get_bool("applyToCurrentFeatureMaterial").unwrap_or_default(),
+            shader_param_name: inst.get_str("shaderParamName").map(String::from).unwrap_or_default(),
+            bindings_url: inst.get_str("bindingsURL").map(String::from).unwrap_or_default(),
             set_from_current_bindings: inst.get_bool("setFromCurrentBindings").unwrap_or_default(),
             requires_advanced_mode: inst.get_bool("requiresAdvancedMode").unwrap_or_default(),
             can_be_edited: inst.get_bool("canBeEdited").unwrap_or_default(),
@@ -3236,16 +2073,8 @@ pub struct SCharacterCustomizerShaderParamColor {
 }
 
 impl Pooled for SCharacterCustomizerShaderParamColor {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_charactercustomizer
-            .scharacter_customizer_shader_param_color
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_charactercustomizer
-            .scharacter_customizer_shader_param_color
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_charactercustomizer.scharacter_customizer_shader_param_color }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_charactercustomizer.scharacter_customizer_shader_param_color }
 }
 
 impl<'a> Extract<'a> for SCharacterCustomizerShaderParamColor {
@@ -3253,31 +2082,16 @@ impl<'a> Extract<'a> for SCharacterCustomizerShaderParamColor {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             material_params: match inst.get("materialParams") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<SCustomizableMaterialParams>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SCustomizableMaterialParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
-            apply_to_current_feature_material: inst
-                .get_bool("applyToCurrentFeatureMaterial")
-                .unwrap_or_default(),
-            shader_param_name: inst
-                .get_str("shaderParamName")
-                .map(String::from)
-                .unwrap_or_default(),
-            bindings_url: inst
-                .get_str("bindingsURL")
-                .map(String::from)
-                .unwrap_or_default(),
+            apply_to_current_feature_material: inst.get_bool("applyToCurrentFeatureMaterial").unwrap_or_default(),
+            shader_param_name: inst.get_str("shaderParamName").map(String::from).unwrap_or_default(),
+            bindings_url: inst.get_str("bindingsURL").map(String::from).unwrap_or_default(),
             set_from_current_bindings: inst.get_bool("setFromCurrentBindings").unwrap_or_default(),
             requires_advanced_mode: inst.get_bool("requiresAdvancedMode").unwrap_or_default(),
             can_be_edited: inst.get_bool("canBeEdited").unwrap_or_default(),
-            use_constant_saturation_color_picker: inst
-                .get_bool("useConstantSaturationColorPicker")
-                .unwrap_or_default(),
+            use_constant_saturation_color_picker: inst.get_bool("useConstantSaturationColorPicker").unwrap_or_default(),
             shader_to_uimultiplier: inst.get_f32("shaderToUImultiplier").unwrap_or_default(),
         }
     }
@@ -3292,16 +2106,8 @@ pub struct SCharacterCustomizerShaderParamCopy {
 }
 
 impl Pooled for SCharacterCustomizerShaderParamCopy {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_charactercustomizer
-            .scharacter_customizer_shader_param_copy
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_charactercustomizer
-            .scharacter_customizer_shader_param_copy
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_charactercustomizer.scharacter_customizer_shader_param_copy }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_charactercustomizer.scharacter_customizer_shader_param_copy }
 }
 
 impl<'a> Extract<'a> for SCharacterCustomizerShaderParamCopy {
@@ -3309,22 +2115,14 @@ impl<'a> Extract<'a> for SCharacterCustomizerShaderParamCopy {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             source_param: match inst.get("sourceParam") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(SCharacterCustomizerShaderParamBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(SCharacterCustomizerShaderParamBasePtr::from_ref(b, r)),
                 _ => None,
             },
-            target_params: inst
-                .get_array("targetParams")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => {
-                            Some(SCharacterCustomizerShaderParamBasePtr::from_ref(b, r))
-                        }
+            target_params: inst.get_array("targetParams")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => Some(SCharacterCustomizerShaderParamBasePtr::from_ref(b, r)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
         }
     }
@@ -3370,123 +2168,61 @@ pub struct SCharacterCustomizerFeatureShaderEdit {
 }
 
 impl Pooled for SCharacterCustomizerFeatureShaderEdit {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_charactercustomizer
-            .scharacter_customizer_feature_shader_edit
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_charactercustomizer
-            .scharacter_customizer_feature_shader_edit
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_charactercustomizer.scharacter_customizer_feature_shader_edit }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_charactercustomizer.scharacter_customizer_feature_shader_edit }
 }
 
 impl<'a> Extract<'a> for SCharacterCustomizerFeatureShaderEdit {
     const TYPE_NAME: &'static str = "SCharacterCustomizerFeatureShaderEdit";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            debug_name: inst
-                .get_str("debugName")
-                .map(String::from)
-                .unwrap_or_default(),
-            display_name_loc_id: inst
-                .get_str("displayNameLocId")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
-            id_string: inst
-                .get_str("idString")
-                .map(String::from)
-                .unwrap_or_default(),
-            sub_features: inst
-                .get_array("subFeatures")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => {
-                            Some(SCharacterCustomizerFeatureBasePtr::from_ref(b, r))
-                        }
+            debug_name: inst.get_str("debugName").map(String::from).unwrap_or_default(),
+            display_name_loc_id: inst.get_str("displayNameLocId").map(LocaleKey::from).unwrap_or_default(),
+            id_string: inst.get_str("idString").map(String::from).unwrap_or_default(),
+            sub_features: inst.get_array("subFeatures")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => Some(SCharacterCustomizerFeatureBasePtr::from_ref(b, r)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
-            icon_path: inst
-                .get_str("iconPath")
-                .map(String::from)
-                .unwrap_or_default(),
+            icon_path: inst.get_str("iconPath").map(String::from).unwrap_or_default(),
             randomization_params: match inst.get("randomizationParams") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(SCharacterCustomizerRandomizationParamsPtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(SCharacterCustomizerRandomizationParamsPtr::from_ref(b, r)),
                 _ => None,
             },
             validation_params: match inst.get("validationParams") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(SCharacterValidationParamsPtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(SCharacterValidationParamsPtr::from_ref(b, r)),
                 _ => None,
             },
-            feature_type: ECharacterCustomizerFeature::from_dcb_str(
-                inst.get_str("featureType").unwrap_or(""),
-            ),
+            feature_type: ECharacterCustomizerFeature::from_dcb_str(inst.get_str("featureType").unwrap_or("")),
             material_params: match inst.get("materialParams") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<SCustomizableMaterialParams>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SCustomizableMaterialParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             precache_skin_materials: inst.get_bool("precacheSkinMaterials").unwrap_or_default(),
-            supports_sub_feature_selection: inst
-                .get_bool("supportsSubFeatureSelection")
-                .unwrap_or_default(),
+            supports_sub_feature_selection: inst.get_bool("supportsSubFeatureSelection").unwrap_or_default(),
             dev_mode_only: inst.get_bool("devModeOnly").unwrap_or_default(),
-            itemports_to_hide: inst
-                .get_array("itemportsToHide")
+            itemports_to_hide: inst.get_array("itemportsToHide")
                 .map(|arr| arr.filter_map(|v| v.as_str().map(String::from)).collect())
                 .unwrap_or_default(),
-            library_itemports_to_hide: inst
-                .get_array("libraryItemportsToHide")
+            library_itemports_to_hide: inst.get_array("libraryItemportsToHide")
                 .map(|arr| arr.filter_map(|v| v.as_str().map(String::from)).collect())
                 .unwrap_or_default(),
-            sub_materials_to_edit: inst
-                .get_array("subMaterialsToEdit")
+            sub_materials_to_edit: inst.get_array("subMaterialsToEdit")
                 .map(|arr| arr.filter_map(|v| v.as_i32()).collect())
                 .unwrap_or_default(),
-            shader_params: inst
-                .get_array("shaderParams")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => {
-                            Some(SCharacterCustomizerShaderParamBasePtr::from_ref(b, r))
-                        }
+            shader_params: inst.get_array("shaderParams")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => Some(SCharacterCustomizerShaderParamBasePtr::from_ref(b, r)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
-            shader_param_copy_bindings: inst
-                .get_array("shaderParamCopyBindings")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<SCharacterCustomizerShaderParamCopy>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => {
-                            Some(b.alloc_nested::<SCharacterCustomizerShaderParamCopy>(
-                                b.db.instance(r.struct_index, r.instance_index),
-                                true,
-                            ))
-                        }
+            shader_param_copy_bindings: inst.get_array("shaderParamCopyBindings")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<SCharacterCustomizerShaderParamCopy>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<SCharacterCustomizerShaderParamCopy>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
         }
     }
@@ -3526,85 +2262,44 @@ pub struct SCharacterCustomizerFeatureBodyTypeSelect {
 }
 
 impl Pooled for SCharacterCustomizerFeatureBodyTypeSelect {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_charactercustomizer
-            .scharacter_customizer_feature_body_type_select
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_charactercustomizer
-            .scharacter_customizer_feature_body_type_select
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_charactercustomizer.scharacter_customizer_feature_body_type_select }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_charactercustomizer.scharacter_customizer_feature_body_type_select }
 }
 
 impl<'a> Extract<'a> for SCharacterCustomizerFeatureBodyTypeSelect {
     const TYPE_NAME: &'static str = "SCharacterCustomizerFeatureBodyTypeSelect";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            debug_name: inst
-                .get_str("debugName")
-                .map(String::from)
-                .unwrap_or_default(),
-            display_name_loc_id: inst
-                .get_str("displayNameLocId")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
-            id_string: inst
-                .get_str("idString")
-                .map(String::from)
-                .unwrap_or_default(),
-            sub_features: inst
-                .get_array("subFeatures")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => {
-                            Some(SCharacterCustomizerFeatureBasePtr::from_ref(b, r))
-                        }
+            debug_name: inst.get_str("debugName").map(String::from).unwrap_or_default(),
+            display_name_loc_id: inst.get_str("displayNameLocId").map(LocaleKey::from).unwrap_or_default(),
+            id_string: inst.get_str("idString").map(String::from).unwrap_or_default(),
+            sub_features: inst.get_array("subFeatures")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => Some(SCharacterCustomizerFeatureBasePtr::from_ref(b, r)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
-            icon_path: inst
-                .get_str("iconPath")
-                .map(String::from)
-                .unwrap_or_default(),
+            icon_path: inst.get_str("iconPath").map(String::from).unwrap_or_default(),
             randomization_params: match inst.get("randomizationParams") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(SCharacterCustomizerRandomizationParamsPtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(SCharacterCustomizerRandomizationParamsPtr::from_ref(b, r)),
                 _ => None,
             },
             validation_params: match inst.get("validationParams") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(SCharacterValidationParamsPtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(SCharacterValidationParamsPtr::from_ref(b, r)),
                 _ => None,
             },
-            feature_type: ECharacterCustomizerFeature::from_dcb_str(
-                inst.get_str("featureType").unwrap_or(""),
-            ),
+            feature_type: ECharacterCustomizerFeature::from_dcb_str(inst.get_str("featureType").unwrap_or("")),
             material_params: match inst.get("materialParams") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<SCustomizableMaterialParams>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SCustomizableMaterialParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             precache_skin_materials: inst.get_bool("precacheSkinMaterials").unwrap_or_default(),
-            supports_sub_feature_selection: inst
-                .get_bool("supportsSubFeatureSelection")
-                .unwrap_or_default(),
+            supports_sub_feature_selection: inst.get_bool("supportsSubFeatureSelection").unwrap_or_default(),
             dev_mode_only: inst.get_bool("devModeOnly").unwrap_or_default(),
-            itemports_to_hide: inst
-                .get_array("itemportsToHide")
+            itemports_to_hide: inst.get_array("itemportsToHide")
                 .map(|arr| arr.filter_map(|v| v.as_str().map(String::from)).collect())
                 .unwrap_or_default(),
-            library_itemports_to_hide: inst
-                .get_array("libraryItemportsToHide")
+            library_itemports_to_hide: inst.get_array("libraryItemportsToHide")
                 .map(|arr| arr.filter_map(|v| v.as_str().map(String::from)).collect())
                 .unwrap_or_default(),
         }
@@ -3645,8 +2340,7 @@ pub struct SCharacterCustomizerMakeupSlot {
     /// `clippingVolumeParams` (Class)
     pub clipping_volume_params: Option<Handle<SCharacterCustomizerClippingVolumeParams>>,
     /// `advancedModeClippingVolumeParams` (Class)
-    pub advanced_mode_clipping_volume_params:
-        Option<Handle<SCharacterCustomizerClippingVolumeParams>>,
+    pub advanced_mode_clipping_volume_params: Option<Handle<SCharacterCustomizerClippingVolumeParams>>,
     /// `addEmptyEntry` (Boolean)
     pub add_empty_entry: bool,
     /// `featureLibOffset` (Class)
@@ -3678,172 +2372,85 @@ pub struct SCharacterCustomizerMakeupSlot {
 }
 
 impl Pooled for SCharacterCustomizerMakeupSlot {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_charactercustomizer
-            .scharacter_customizer_makeup_slot
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_charactercustomizer
-            .scharacter_customizer_makeup_slot
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_charactercustomizer.scharacter_customizer_makeup_slot }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_charactercustomizer.scharacter_customizer_makeup_slot }
 }
 
 impl<'a> Extract<'a> for SCharacterCustomizerMakeupSlot {
     const TYPE_NAME: &'static str = "SCharacterCustomizerMakeupSlot";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            debug_name: inst
-                .get_str("debugName")
-                .map(String::from)
-                .unwrap_or_default(),
-            display_name_loc_id: inst
-                .get_str("displayNameLocId")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
-            id_string: inst
-                .get_str("idString")
-                .map(String::from)
-                .unwrap_or_default(),
-            sub_features: inst
-                .get_array("subFeatures")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => {
-                            Some(SCharacterCustomizerFeatureBasePtr::from_ref(b, r))
-                        }
+            debug_name: inst.get_str("debugName").map(String::from).unwrap_or_default(),
+            display_name_loc_id: inst.get_str("displayNameLocId").map(LocaleKey::from).unwrap_or_default(),
+            id_string: inst.get_str("idString").map(String::from).unwrap_or_default(),
+            sub_features: inst.get_array("subFeatures")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => Some(SCharacterCustomizerFeatureBasePtr::from_ref(b, r)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
-            icon_path: inst
-                .get_str("iconPath")
-                .map(String::from)
-                .unwrap_or_default(),
+            icon_path: inst.get_str("iconPath").map(String::from).unwrap_or_default(),
             randomization_params: match inst.get("randomizationParams") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(SCharacterCustomizerRandomizationParamsPtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(SCharacterCustomizerRandomizationParamsPtr::from_ref(b, r)),
                 _ => None,
             },
             validation_params: match inst.get("validationParams") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(SCharacterValidationParamsPtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(SCharacterValidationParamsPtr::from_ref(b, r)),
                 _ => None,
             },
-            feature_type: ECharacterCustomizerFeature::from_dcb_str(
-                inst.get_str("featureType").unwrap_or(""),
-            ),
+            feature_type: ECharacterCustomizerFeature::from_dcb_str(inst.get_str("featureType").unwrap_or("")),
             material_params: match inst.get("materialParams") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<SCustomizableMaterialParams>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SCustomizableMaterialParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             precache_skin_materials: inst.get_bool("precacheSkinMaterials").unwrap_or_default(),
-            supports_sub_feature_selection: inst
-                .get_bool("supportsSubFeatureSelection")
-                .unwrap_or_default(),
+            supports_sub_feature_selection: inst.get_bool("supportsSubFeatureSelection").unwrap_or_default(),
             dev_mode_only: inst.get_bool("devModeOnly").unwrap_or_default(),
-            itemports_to_hide: inst
-                .get_array("itemportsToHide")
+            itemports_to_hide: inst.get_array("itemportsToHide")
                 .map(|arr| arr.filter_map(|v| v.as_str().map(String::from)).collect())
                 .unwrap_or_default(),
-            library_itemports_to_hide: inst
-                .get_array("libraryItemportsToHide")
+            library_itemports_to_hide: inst.get_array("libraryItemportsToHide")
                 .map(|arr| arr.filter_map(|v| v.as_str().map(String::from)).collect())
                 .unwrap_or_default(),
             clipping_volume_params: match inst.get("clippingVolumeParams") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<SCharacterCustomizerClippingVolumeParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SCharacterCustomizerClippingVolumeParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            advanced_mode_clipping_volume_params: match inst.get("advancedModeClippingVolumeParams")
-            {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<SCharacterCustomizerClippingVolumeParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+            advanced_mode_clipping_volume_params: match inst.get("advancedModeClippingVolumeParams") {
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SCharacterCustomizerClippingVolumeParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             add_empty_entry: inst.get_bool("addEmptyEntry").unwrap_or_default(),
             feature_lib_offset: match inst.get("featureLibOffset") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             advanced_mode_lib_offset: match inst.get("advancedModeLibOffset") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             feature_lib_rows_on_screen: inst.get_i32("featureLibRowsOnScreen").unwrap_or_default(),
-            advanced_mode_rows_on_screen: inst
-                .get_i32("advancedModeRowsOnScreen")
-                .unwrap_or_default(),
-            item_select_mode: ECharacterCustomizerItemSelectMode::from_dcb_str(
-                inst.get_str("itemSelectMode").unwrap_or(""),
-            ),
-            slot: ECharacterCustomizerTextureSelectSlot::from_dcb_str(
-                inst.get_str("slot").unwrap_or(""),
-            ),
-            texture_slot: ECharacterCustomizerTextureSlot::from_dcb_str(
-                inst.get_str("textureSlot").unwrap_or(""),
-            ),
-            sub_materials_to_edit: inst
-                .get_array("subMaterialsToEdit")
+            advanced_mode_rows_on_screen: inst.get_i32("advancedModeRowsOnScreen").unwrap_or_default(),
+            item_select_mode: ECharacterCustomizerItemSelectMode::from_dcb_str(inst.get_str("itemSelectMode").unwrap_or("")),
+            slot: ECharacterCustomizerTextureSelectSlot::from_dcb_str(inst.get_str("slot").unwrap_or("")),
+            texture_slot: ECharacterCustomizerTextureSlot::from_dcb_str(inst.get_str("textureSlot").unwrap_or("")),
+            sub_materials_to_edit: inst.get_array("subMaterialsToEdit")
                 .map(|arr| arr.filter_map(|v| v.as_i32()).collect())
                 .unwrap_or_default(),
             textures: match inst.get("textures") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<SCharacterCustomizerTextureList>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SCharacterCustomizerTextureList>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             smooth_limits: match inst.get("smoothLimits") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<SCharacterCustomizerClampedValueParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SCharacterCustomizerClampedValueParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             metal_limits: match inst.get("metalLimits") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<SCharacterCustomizerClampedValueParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SCharacterCustomizerClampedValueParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             opacity_limits: match inst.get("opacityLimits") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<SCharacterCustomizerClampedValueParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SCharacterCustomizerClampedValueParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             basic_mode_channel: inst.get_i32("basicModeChannel").unwrap_or_default(),
@@ -3860,26 +2467,17 @@ pub struct SModelVoiceTagPair {
 }
 
 impl Pooled for SModelVoiceTagPair {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_charactercustomizer.smodel_voice_tag_pair
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_charactercustomizer.smodel_voice_tag_pair
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_charactercustomizer.smodel_voice_tag_pair }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_charactercustomizer.smodel_voice_tag_pair }
 }
 
 impl<'a> Extract<'a> for SModelVoiceTagPair {
     const TYPE_NAME: &'static str = "SModelVoiceTagPair";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            model_tag: inst
-                .get("modelTag")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            voice_tag: inst
-                .get("voiceTag")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
+            model_tag: inst.get("modelTag").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            voice_tag: inst.get("voiceTag").and_then(|v| v.as_record_ref()).map(|r| r.guid),
         }
     }
 }
+

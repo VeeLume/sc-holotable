@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -28,12 +28,8 @@ pub struct PlanetEffectTestParams {
 }
 
 impl Pooled for PlanetEffectTestParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entityclassdefinition.planet_effect_test_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entityclassdefinition.planet_effect_test_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entityclassdefinition.planet_effect_test_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entityclassdefinition.planet_effect_test_params }
 }
 
 impl<'a> Extract<'a> for PlanetEffectTestParams {
@@ -41,18 +37,10 @@ impl<'a> Extract<'a> for PlanetEffectTestParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             planet_effect: match inst.get("planetEffect") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<GlobalResourceParticle>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceParticle>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            surface_type: inst
-                .get_str("surfaceType")
-                .map(String::from)
-                .unwrap_or_default(),
+            surface_type: inst.get_str("surfaceType").map(String::from).unwrap_or_default(),
         }
     }
 }
@@ -67,16 +55,8 @@ pub struct InstancedInteriorManagerComponentParams {
 }
 
 impl Pooled for InstancedInteriorManagerComponentParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entityclassdefinition
-            .instanced_interior_manager_component_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entityclassdefinition
-            .instanced_interior_manager_component_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entityclassdefinition.instanced_interior_manager_component_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entityclassdefinition.instanced_interior_manager_component_params }
 }
 
 impl<'a> Extract<'a> for InstancedInteriorManagerComponentParams {
@@ -85,12 +65,10 @@ impl<'a> Extract<'a> for InstancedInteriorManagerComponentParams {
         Self {
             door_timeout_seconds: inst.get_f32("doorTimeoutSeconds").unwrap_or_default(),
             transport_tags_filter: match inst.get("transportTagsFilter") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<TagsDNFTerm>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<TagsDNFTerm>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
     }
 }
+

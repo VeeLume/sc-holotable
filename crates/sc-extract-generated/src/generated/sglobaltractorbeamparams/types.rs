@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -37,16 +37,8 @@ pub struct STractorBeamHoloVisualParams {
 }
 
 impl Pooled for STractorBeamHoloVisualParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .sglobaltractorbeamparams
-            .stractor_beam_holo_visual_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .sglobaltractorbeamparams
-            .stractor_beam_holo_visual_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.sglobaltractorbeamparams.stractor_beam_holo_visual_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.sglobaltractorbeamparams.stractor_beam_holo_visual_params }
 }
 
 impl<'a> Extract<'a> for STractorBeamHoloVisualParams {
@@ -55,41 +47,24 @@ impl<'a> Extract<'a> for STractorBeamHoloVisualParams {
         Self {
             min_alignment_valid_holo: inst.get_f32("minAlignmentValidHolo").unwrap_or_default(),
             valid_holo_color: match inst.get("validHoloColor") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<RGB>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<RGB>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             warning_holo_color: match inst.get("warningHoloColor") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<RGB>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<RGB>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             invalid_holo_color: match inst.get("invalidHoloColor") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<RGB>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<RGB>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             cargo_holo_preview_color: match inst.get("cargoHoloPreviewColor") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<RGBA>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<RGBA>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             holo_opacity: inst.get_f32("holoOpacity").unwrap_or_default(),
             holo_material: match inst.get("holoMaterial") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<GlobalResourceMaterial>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceMaterial>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
@@ -107,16 +82,8 @@ pub struct STractorBeamOutlineVisualParams {
 }
 
 impl Pooled for STractorBeamOutlineVisualParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .sglobaltractorbeamparams
-            .stractor_beam_outline_visual_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .sglobaltractorbeamparams
-            .stractor_beam_outline_visual_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.sglobaltractorbeamparams.stractor_beam_outline_visual_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.sglobaltractorbeamparams.stractor_beam_outline_visual_params }
 }
 
 impl<'a> Extract<'a> for STractorBeamOutlineVisualParams {
@@ -151,12 +118,8 @@ pub struct SGlobalTractorBeamParams {
 }
 
 impl Pooled for SGlobalTractorBeamParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.sglobaltractorbeamparams.sglobal_tractor_beam_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.sglobaltractorbeamparams.sglobal_tractor_beam_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.sglobaltractorbeamparams.sglobal_tractor_beam_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.sglobaltractorbeamparams.sglobal_tractor_beam_params }
 }
 
 impl<'a> Extract<'a> for SGlobalTractorBeamParams {
@@ -164,46 +127,20 @@ impl<'a> Extract<'a> for SGlobalTractorBeamParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             holo_visual_params: match inst.get("holoVisualParams") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<STractorBeamHoloVisualParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<STractorBeamHoloVisualParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             outline_visual_params: match inst.get("outlineVisualParams") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<STractorBeamOutlineVisualParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<STractorBeamOutlineVisualParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            being_tractor_beamed_tag: inst
-                .get("beingTractorBeamedTag")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            contracted_tag: inst
-                .get("contractedTag")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            show_lifetime_tag: inst
-                .get("showLifetimeTag")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            ignore_entity_tag: inst
-                .get("ignoreEntityTag")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            mag_locked_tag: inst
-                .get("magLockedTag")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            check_parent_for_ignore_tag: inst
-                .get_bool("checkParentForIgnoreTag")
-                .unwrap_or_default(),
+            being_tractor_beamed_tag: inst.get("beingTractorBeamedTag").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            contracted_tag: inst.get("contractedTag").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            show_lifetime_tag: inst.get("showLifetimeTag").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            ignore_entity_tag: inst.get("ignoreEntityTag").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            mag_locked_tag: inst.get("magLockedTag").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            check_parent_for_ignore_tag: inst.get_bool("checkParentForIgnoreTag").unwrap_or_default(),
         }
     }
 }
+

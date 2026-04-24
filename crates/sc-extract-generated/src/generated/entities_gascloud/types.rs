@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -31,12 +31,8 @@ pub struct GasCloudLightNoiseParams {
 }
 
 impl Pooled for GasCloudLightNoiseParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_gascloud.gas_cloud_light_noise_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_gascloud.gas_cloud_light_noise_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_gascloud.gas_cloud_light_noise_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_gascloud.gas_cloud_light_noise_params }
 }
 
 impl<'a> Extract<'a> for GasCloudLightNoiseParams {
@@ -62,12 +58,8 @@ pub struct GasCloudLightShadowParams {
 }
 
 impl Pooled for GasCloudLightShadowParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_gascloud.gas_cloud_light_shadow_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_gascloud.gas_cloud_light_shadow_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_gascloud.gas_cloud_light_shadow_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_gascloud.gas_cloud_light_shadow_params }
 }
 
 impl<'a> Extract<'a> for GasCloudLightShadowParams {
@@ -94,12 +86,8 @@ pub struct GasCloudLightFadeParams {
 }
 
 impl Pooled for GasCloudLightFadeParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_gascloud.gas_cloud_light_fade_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_gascloud.gas_cloud_light_fade_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_gascloud.gas_cloud_light_fade_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_gascloud.gas_cloud_light_fade_params }
 }
 
 impl<'a> Extract<'a> for GasCloudLightFadeParams {
@@ -123,12 +111,8 @@ pub struct GasCloudLightAudioParams {
 }
 
 impl Pooled for GasCloudLightAudioParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_gascloud.gas_cloud_light_audio_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_gascloud.gas_cloud_light_audio_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_gascloud.gas_cloud_light_audio_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_gascloud.gas_cloud_light_audio_params }
 }
 
 impl<'a> Extract<'a> for GasCloudLightAudioParams {
@@ -136,19 +120,11 @@ impl<'a> Extract<'a> for GasCloudLightAudioParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             gas_cloud_loop: match inst.get("gasCloudLoop") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<GlobalResourceAudio>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             gas_cloud_norm_intensity_rtpc: match inst.get("gasCloudNormIntensityRtpc") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
@@ -189,12 +165,8 @@ pub struct GasCloudLightParams {
 }
 
 impl Pooled for GasCloudLightParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_gascloud.gas_cloud_light_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_gascloud.gas_cloud_light_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_gascloud.gas_cloud_light_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_gascloud.gas_cloud_light_params }
 }
 
 impl<'a> Extract<'a> for GasCloudLightParams {
@@ -204,10 +176,7 @@ impl<'a> Extract<'a> for GasCloudLightParams {
             active: inst.get_bool("active").unwrap_or_default(),
             light_type: EGasCloudLightType::from_dcb_str(inst.get_str("lightType").unwrap_or("")),
             color: match inst.get("color") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<RGB>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<RGB>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             intensity: inst.get_f32("intensity").unwrap_or_default(),
@@ -217,48 +186,23 @@ impl<'a> Extract<'a> for GasCloudLightParams {
             affects_objects: inst.get_bool("affectsObjects").unwrap_or_default(),
             specular: inst.get_bool("specular").unwrap_or_default(),
             projector_params: match inst.get("projectorParams") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<LightProjectorParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<LightProjectorParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             shadow: match inst.get("shadow") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<GasCloudLightShadowParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GasCloudLightShadowParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             fade: match inst.get("fade") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<GasCloudLightFadeParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GasCloudLightFadeParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             noise: match inst.get("noise") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<GasCloudLightNoiseParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GasCloudLightNoiseParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             audio: match inst.get("audio") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<GasCloudLightAudioParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GasCloudLightAudioParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
@@ -274,16 +218,8 @@ pub struct GasCloudOverrideSphereVolumeParams {
 }
 
 impl Pooled for GasCloudOverrideSphereVolumeParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_gascloud
-            .gas_cloud_override_sphere_volume_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_gascloud
-            .gas_cloud_override_sphere_volume_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_gascloud.gas_cloud_override_sphere_volume_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_gascloud.gas_cloud_override_sphere_volume_params }
 }
 
 impl<'a> Extract<'a> for GasCloudOverrideSphereVolumeParams {
@@ -313,16 +249,8 @@ pub struct GasCloudOverrideCubeVolumeParams {
 }
 
 impl Pooled for GasCloudOverrideCubeVolumeParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_gascloud
-            .gas_cloud_override_cube_volume_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_gascloud
-            .gas_cloud_override_cube_volume_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_gascloud.gas_cloud_override_cube_volume_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_gascloud.gas_cloud_override_cube_volume_params }
 }
 
 impl<'a> Extract<'a> for GasCloudOverrideCubeVolumeParams {
@@ -365,54 +293,32 @@ pub struct GasCloudOverrideVolumeParams {
 }
 
 impl Pooled for GasCloudOverrideVolumeParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_gascloud.gas_cloud_override_volume_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_gascloud.gas_cloud_override_volume_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_gascloud.gas_cloud_override_volume_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_gascloud.gas_cloud_override_volume_params }
 }
 
 impl<'a> Extract<'a> for GasCloudOverrideVolumeParams {
     const TYPE_NAME: &'static str = "GasCloudOverrideVolumeParams";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            volume_type: EGasCloudOverrideVolumeType::from_dcb_str(
-                inst.get_str("volumeType").unwrap_or(""),
-            ),
+            volume_type: EGasCloudOverrideVolumeType::from_dcb_str(inst.get_str("volumeType").unwrap_or("")),
             sphere_volume: match inst.get("sphereVolume") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<GasCloudOverrideSphereVolumeParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GasCloudOverrideSphereVolumeParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             cube_volume: match inst.get("cubeVolume") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<GasCloudOverrideCubeVolumeParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GasCloudOverrideCubeVolumeParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             override_albedo: inst.get_bool("overrideAlbedo").unwrap_or_default(),
             override_light_leak: inst.get_bool("overrideLightLeak").unwrap_or_default(),
             override_density: inst.get_bool("overrideDensity").unwrap_or_default(),
             albedo: match inst.get("albedo") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<RGB>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<RGB>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             light_leak_color: match inst.get("lightLeakColor") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<RGB>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<RGB>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             light_leak_scale: inst.get_f32("lightLeakScale").unwrap_or_default(),
@@ -432,26 +338,17 @@ pub struct EntityLinkTargetingParams {
 }
 
 impl Pooled for EntityLinkTargetingParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_gascloud.entity_link_targeting_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_gascloud.entity_link_targeting_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_gascloud.entity_link_targeting_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_gascloud.entity_link_targeting_params }
 }
 
 impl<'a> Extract<'a> for EntityLinkTargetingParams {
     const TYPE_NAME: &'static str = "EntityLinkTargetingParams";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            use_as_surface_target_ellipsoid: inst
-                .get_bool("useAsSurfaceTargetEllipsoid")
-                .unwrap_or_default(),
+            use_as_surface_target_ellipsoid: inst.get_bool("useAsSurfaceTargetEllipsoid").unwrap_or_default(),
             surface_target_ellipsoid_scale: match inst.get("surfaceTargetEllipsoidScale") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             default_to_area: inst.get_bool("defaultToArea").unwrap_or_default(),
@@ -514,12 +411,8 @@ pub struct LightningRegionLightningParams {
 }
 
 impl Pooled for LightningRegionLightningParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_gascloud.lightning_region_lightning_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_gascloud.lightning_region_lightning_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_gascloud.lightning_region_lightning_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_gascloud.lightning_region_lightning_params }
 }
 
 impl<'a> Extract<'a> for LightningRegionLightningParams {
@@ -527,12 +420,7 @@ impl<'a> Extract<'a> for LightningRegionLightningParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             lightning_effect: match inst.get("lightningEffect") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<GlobalResourceParticle>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceParticle>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             targeting_seed: inst.get_u32("targetingSeed").unwrap_or_default(),
@@ -540,21 +428,12 @@ impl<'a> Extract<'a> for LightningRegionLightningParams {
             strength: inst.get_f32("strength").unwrap_or_default(),
             strike_area: inst.get_bool("strikeArea").unwrap_or_default(),
             strike_links: match inst.get("strikeLinks") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<EntityLinkTargetingParams>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<EntityLinkTargetingParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             strike_surfaces: inst.get_bool("strikeSurfaces").unwrap_or_default(),
-            conductive_surface_spawn_probability: inst
-                .get_f32("conductiveSurfaceSpawnProbability")
-                .unwrap_or_default(),
-            internal_strike_probability: inst
-                .get_f32("internalStrikeProbability")
-                .unwrap_or_default(),
+            conductive_surface_spawn_probability: inst.get_f32("conductiveSurfaceSpawnProbability").unwrap_or_default(),
+            internal_strike_probability: inst.get_f32("internalStrikeProbability").unwrap_or_default(),
             minimum_interval: inst.get_f32("minimumInterval").unwrap_or_default(),
             maximum_interval: inst.get_f32("maximumInterval").unwrap_or_default(),
             spawn_radius: inst.get_f32("spawnRadius").unwrap_or_default(),
@@ -566,33 +445,18 @@ impl<'a> Extract<'a> for LightningRegionLightningParams {
             cascade_radius: inst.get_f32("cascadeRadius").unwrap_or_default(),
             cascade_build_up_scale: inst.get_f32("cascadeBuildUpScale").unwrap_or_default(),
             cascade_minimum_interval: inst.get_f32("cascadeMinimumInterval").unwrap_or_default(),
-            cascade_trigger_minimum_interval: inst
-                .get_f32("cascadeTriggerMinimumInterval")
-                .unwrap_or_default(),
+            cascade_trigger_minimum_interval: inst.get_f32("cascadeTriggerMinimumInterval").unwrap_or_default(),
             local_scale: match inst.get("localScale") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             scale_multiplier: inst.get_f32("scaleMultiplier").unwrap_or_default(),
             audio_emitter_trigger: match inst.get("audioEmitterTrigger") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<GlobalResourceAudio>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             audio_target_trigger: match inst.get("audioTargetTrigger") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<GlobalResourceAudio>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
@@ -606,12 +470,8 @@ pub struct InterferenceParams {
 }
 
 impl Pooled for InterferenceParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_gascloud.interference_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_gascloud.interference_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_gascloud.interference_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_gascloud.interference_params }
 }
 
 impl<'a> Extract<'a> for InterferenceParams {
@@ -635,12 +495,8 @@ pub struct LightningRegionParams {
 }
 
 impl Pooled for LightningRegionParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_gascloud.lightning_region_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_gascloud.lightning_region_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_gascloud.lightning_region_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_gascloud.lightning_region_params }
 }
 
 impl<'a> Extract<'a> for LightningRegionParams {
@@ -649,20 +505,14 @@ impl<'a> Extract<'a> for LightningRegionParams {
         Self {
             active: inst.get_bool("active").unwrap_or_default(),
             lightning: match inst.get("lightning") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<LightningRegionLightningParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<LightningRegionLightningParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             interference: match inst.get("interference") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(InterferenceParamsPtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(InterferenceParamsPtr::from_ref(b, r)),
                 _ => None,
             },
         }
     }
 }
+

@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -25,30 +25,16 @@ pub struct FactionPalettes {
 }
 
 impl Pooled for FactionPalettes {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.procedurallayout.faction_palettes
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.procedurallayout.faction_palettes
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.procedurallayout.faction_palettes }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.procedurallayout.faction_palettes }
 }
 
 impl<'a> Extract<'a> for FactionPalettes {
     const TYPE_NAME: &'static str = "FactionPalettes";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            palettes: inst
-                .get_array("Palettes")
-                .map(|arr| {
-                    arr.filter_map(|v| {
-                        if let Value::Reference(Some(r)) = v {
-                            Some(r.guid)
-                        } else {
-                            None
-                        }
-                    })
-                    .collect()
-                })
+            palettes: inst.get_array("Palettes")
+                .map(|arr| arr.filter_map(|v| if let Value::Reference(Some(r)) = v { Some(r.guid) } else { None }).collect())
                 .unwrap_or_default(),
         }
     }
@@ -85,12 +71,8 @@ pub struct FactionPalette {
 }
 
 impl Pooled for FactionPalette {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.procedurallayout.faction_palette
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.procedurallayout.faction_palette
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.procedurallayout.faction_palette }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.procedurallayout.faction_palette }
 }
 
 impl<'a> Extract<'a> for FactionPalette {
@@ -100,86 +82,47 @@ impl<'a> Extract<'a> for FactionPalette {
             name: inst.get_str("name").map(String::from).unwrap_or_default(),
             tinting_active: inst.get_bool("tintingActive").unwrap_or_default(),
             exterior_material_override: match inst.get("ExteriorMaterialOverride") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<GlobalResourceMaterial>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceMaterial>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             interior_material_override: match inst.get("InteriorMaterialOverride") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<GlobalResourceMaterial>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceMaterial>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             branding_material_override: match inst.get("BrandingMaterialOverride") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<GlobalResourceMaterial>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceMaterial>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             exterior_primary_color: match inst.get("ExteriorPrimaryColor") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SRGB8>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SRGB8>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             exterior_secondary_color: match inst.get("ExteriorSecondaryColor") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SRGB8>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SRGB8>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             exterior_tertiary_color: match inst.get("ExteriorTertiaryColor") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SRGB8>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SRGB8>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             exterior_graphics_color: match inst.get("ExteriorGraphicsColor") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SRGB8>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SRGB8>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             interior_primary_color: match inst.get("InteriorPrimaryColor") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SRGB8>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SRGB8>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             interior_secondary_color: match inst.get("InteriorSecondaryColor") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SRGB8>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SRGB8>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             interior_tertiary_color: match inst.get("InteriorTertiaryColor") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SRGB8>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SRGB8>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             interior_graphics_color: match inst.get("InteriorGraphicsColor") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SRGB8>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SRGB8>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
@@ -194,12 +137,8 @@ pub struct ProceduralLayoutNode_Start {
 }
 
 impl Pooled for ProceduralLayoutNode_Start {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.procedurallayout.procedural_layout_node_start
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.procedurallayout.procedural_layout_node_start
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.procedurallayout.procedural_layout_node_start }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.procedurallayout.procedural_layout_node_start }
 }
 
 impl<'a> Extract<'a> for ProceduralLayoutNode_Start {
@@ -207,9 +146,7 @@ impl<'a> Extract<'a> for ProceduralLayoutNode_Start {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             next: match inst.get("next") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(ProceduralLayoutNode_BasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(ProceduralLayoutNode_BasePtr::from_ref(b, r)),
                 _ => None,
             },
         }
@@ -225,47 +162,19 @@ pub struct ProceduralLayoutNode_ElementProperties {
 }
 
 impl Pooled for ProceduralLayoutNode_ElementProperties {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .procedurallayout
-            .procedural_layout_node_element_properties
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .procedurallayout
-            .procedural_layout_node_element_properties
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.procedurallayout.procedural_layout_node_element_properties }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.procedurallayout.procedural_layout_node_element_properties }
 }
 
 impl<'a> Extract<'a> for ProceduralLayoutNode_ElementProperties {
     const TYPE_NAME: &'static str = "ProceduralLayoutNode_ElementProperties";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            element_tags: inst
-                .get_array("ElementTags")
-                .map(|arr| {
-                    arr.filter_map(|v| {
-                        if let Value::Reference(Some(r)) = v {
-                            Some(r.guid)
-                        } else {
-                            None
-                        }
-                    })
-                    .collect()
-                })
+            element_tags: inst.get_array("ElementTags")
+                .map(|arr| arr.filter_map(|v| if let Value::Reference(Some(r)) = v { Some(r.guid) } else { None }).collect())
                 .unwrap_or_default(),
-            element_themes: inst
-                .get_array("ElementThemes")
-                .map(|arr| {
-                    arr.filter_map(|v| {
-                        if let Value::Reference(Some(r)) = v {
-                            Some(r.guid)
-                        } else {
-                            None
-                        }
-                    })
-                    .collect()
-                })
+            element_themes: inst.get_array("ElementThemes")
+                .map(|arr| arr.filter_map(|v| if let Value::Reference(Some(r)) = v { Some(r.guid) } else { None }).collect())
                 .unwrap_or_default(),
         }
     }
@@ -297,12 +206,8 @@ pub struct ProceduralLayoutGraphNode_Element {
 }
 
 impl Pooled for ProceduralLayoutGraphNode_Element {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.procedurallayout.procedural_layout_graph_node_element
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.procedurallayout.procedural_layout_graph_node_element
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.procedurallayout.procedural_layout_graph_node_element }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.procedurallayout.procedural_layout_graph_node_element }
 }
 
 impl<'a> Extract<'a> for ProceduralLayoutGraphNode_Element {
@@ -311,53 +216,26 @@ impl<'a> Extract<'a> for ProceduralLayoutGraphNode_Element {
         Self {
             min_distance: inst.get_i32("MinDistance").unwrap_or_default(),
             max_distance: inst.get_i32("MaxDistance").unwrap_or_default(),
-            specific_routing_elements_tags: inst
-                .get_array("SpecificRoutingElementsTags")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<TagList>(
-                            Instance::from_inline_data(b.db, struct_index, data),
-                            false,
-                        )),
-                        Value::ClassRef(r) => Some(b.alloc_nested::<TagList>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
+            specific_routing_elements_tags: inst.get_array("SpecificRoutingElementsTags")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<TagList>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<TagList>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
             chance_of_door: inst.get_f32("ChanceOfDoor").unwrap_or_default(),
             chance_of_generation: inst.get_f32("ChanceOfGeneration").unwrap_or_default(),
             mandatory: inst.get_bool("Mandatory").unwrap_or_default(),
-            layer_suffix: inst
-                .get_str("LayerSuffix")
-                .map(String::from)
-                .unwrap_or_default(),
-            tint_palette_path: inst
-                .get_str("TintPalettePath")
-                .map(String::from)
-                .unwrap_or_default(),
-            output_links: inst
-                .get_array("outputLinks")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => {
-                            Some(ProceduralLayoutNode_BasePtr::from_ref(b, r))
-                        }
+            layer_suffix: inst.get_str("LayerSuffix").map(String::from).unwrap_or_default(),
+            tint_palette_path: inst.get_str("TintPalettePath").map(String::from).unwrap_or_default(),
+            output_links: inst.get_array("outputLinks")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => Some(ProceduralLayoutNode_BasePtr::from_ref(b, r)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
             element_properties: match inst.get("ElementProperties") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<ProceduralLayoutNode_ElementProperties>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<ProceduralLayoutNode_ElementProperties>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
@@ -396,16 +274,8 @@ pub struct ProceduralLayoutGraphNode_MultiElement {
 }
 
 impl Pooled for ProceduralLayoutGraphNode_MultiElement {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .procedurallayout
-            .procedural_layout_graph_node_multi_element
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .procedurallayout
-            .procedural_layout_graph_node_multi_element
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.procedurallayout.procedural_layout_graph_node_multi_element }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.procedurallayout.procedural_layout_graph_node_multi_element }
 }
 
 impl<'a> Extract<'a> for ProceduralLayoutGraphNode_MultiElement {
@@ -414,53 +284,26 @@ impl<'a> Extract<'a> for ProceduralLayoutGraphNode_MultiElement {
         Self {
             min_distance: inst.get_i32("MinDistance").unwrap_or_default(),
             max_distance: inst.get_i32("MaxDistance").unwrap_or_default(),
-            specific_routing_elements_tags: inst
-                .get_array("SpecificRoutingElementsTags")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<TagList>(
-                            Instance::from_inline_data(b.db, struct_index, data),
-                            false,
-                        )),
-                        Value::ClassRef(r) => Some(b.alloc_nested::<TagList>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
+            specific_routing_elements_tags: inst.get_array("SpecificRoutingElementsTags")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<TagList>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<TagList>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
             chance_of_door: inst.get_f32("ChanceOfDoor").unwrap_or_default(),
             chance_of_generation: inst.get_f32("ChanceOfGeneration").unwrap_or_default(),
             mandatory: inst.get_bool("Mandatory").unwrap_or_default(),
-            layer_suffix: inst
-                .get_str("LayerSuffix")
-                .map(String::from)
-                .unwrap_or_default(),
-            tint_palette_path: inst
-                .get_str("TintPalettePath")
-                .map(String::from)
-                .unwrap_or_default(),
-            output_links: inst
-                .get_array("outputLinks")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => {
-                            Some(ProceduralLayoutNode_BasePtr::from_ref(b, r))
-                        }
+            layer_suffix: inst.get_str("LayerSuffix").map(String::from).unwrap_or_default(),
+            tint_palette_path: inst.get_str("TintPalettePath").map(String::from).unwrap_or_default(),
+            output_links: inst.get_array("outputLinks")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => Some(ProceduralLayoutNode_BasePtr::from_ref(b, r)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
             element_properties: match inst.get("ElementProperties") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<ProceduralLayoutNode_ElementProperties>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<ProceduralLayoutNode_ElementProperties>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             min_elements_to_generate: inst.get_i32("MinElementsToGenerate").unwrap_or_default(),
@@ -479,34 +322,16 @@ pub struct ProceduralLayout_SupplementaryElementTagsOptions {
 }
 
 impl Pooled for ProceduralLayout_SupplementaryElementTagsOptions {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .procedurallayout
-            .procedural_layout_supplementary_element_tags_options
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .procedurallayout
-            .procedural_layout_supplementary_element_tags_options
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.procedurallayout.procedural_layout_supplementary_element_tags_options }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.procedurallayout.procedural_layout_supplementary_element_tags_options }
 }
 
 impl<'a> Extract<'a> for ProceduralLayout_SupplementaryElementTagsOptions {
     const TYPE_NAME: &'static str = "ProceduralLayout_SupplementaryElementTagsOptions";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            supplementary_element_tags: inst
-                .get_array("SupplementaryElementTags")
-                .map(|arr| {
-                    arr.filter_map(|v| {
-                        if let Value::Reference(Some(r)) = v {
-                            Some(r.guid)
-                        } else {
-                            None
-                        }
-                    })
-                    .collect()
-                })
+            supplementary_element_tags: inst.get_array("SupplementaryElementTags")
+                .map(|arr| arr.filter_map(|v| if let Value::Reference(Some(r)) = v { Some(r.guid) } else { None }).collect())
                 .unwrap_or_default(),
             max_elements_to_generate: inst.get_i32("MaxElementsToGenerate").unwrap_or_default(),
         }
@@ -520,63 +345,32 @@ pub struct ProceduralLayout_TagFilter {
     /// `TagFilteringMode` (EnumChoice)
     pub tag_filtering_mode: ProceduralLayout_TagFilteringMode,
     /// `SupplementaryElementTagsList` (Class (array))
-    pub supplementary_element_tags_list:
-        Vec<Handle<ProceduralLayout_SupplementaryElementTagsOptions>>,
+    pub supplementary_element_tags_list: Vec<Handle<ProceduralLayout_SupplementaryElementTagsOptions>>,
 }
 
 impl Pooled for ProceduralLayout_TagFilter {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.procedurallayout.procedural_layout_tag_filter
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.procedurallayout.procedural_layout_tag_filter
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.procedurallayout.procedural_layout_tag_filter }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.procedurallayout.procedural_layout_tag_filter }
 }
 
 impl<'a> Extract<'a> for ProceduralLayout_TagFilter {
     const TYPE_NAME: &'static str = "ProceduralLayout_TagFilter";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            graph_node_tags_to_filter: inst
-                .get_array("GraphNodeTagsToFilter")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<TagList>(
-                            Instance::from_inline_data(b.db, struct_index, data),
-                            false,
-                        )),
-                        Value::ClassRef(r) => Some(b.alloc_nested::<TagList>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
+            graph_node_tags_to_filter: inst.get_array("GraphNodeTagsToFilter")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<TagList>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<TagList>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
-            tag_filtering_mode: ProceduralLayout_TagFilteringMode::from_dcb_str(
-                inst.get_str("TagFilteringMode").unwrap_or(""),
-            ),
-            supplementary_element_tags_list: inst
-                .get_array("SupplementaryElementTagsList")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(
-                            b.alloc_nested::<ProceduralLayout_SupplementaryElementTagsOptions>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ),
-                        ),
-                        Value::ClassRef(r) => Some(
-                            b.alloc_nested::<ProceduralLayout_SupplementaryElementTagsOptions>(
-                                b.db.instance(r.struct_index, r.instance_index),
-                                true,
-                            ),
-                        ),
+            tag_filtering_mode: ProceduralLayout_TagFilteringMode::from_dcb_str(inst.get_str("TagFilteringMode").unwrap_or("")),
+            supplementary_element_tags_list: inst.get_array("SupplementaryElementTagsList")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<ProceduralLayout_SupplementaryElementTagsOptions>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<ProceduralLayout_SupplementaryElementTagsOptions>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
         }
     }
@@ -609,110 +403,59 @@ pub struct ProceduralLayoutGraph {
 }
 
 impl Pooled for ProceduralLayoutGraph {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.procedurallayout.procedural_layout_graph
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.procedurallayout.procedural_layout_graph
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.procedurallayout.procedural_layout_graph }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.procedurallayout.procedural_layout_graph }
 }
 
 impl<'a> Extract<'a> for ProceduralLayoutGraph {
     const TYPE_NAME: &'static str = "ProceduralLayoutGraph";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            elements_libraries: inst
-                .get_array("ElementsLibraries")
+            elements_libraries: inst.get_array("ElementsLibraries")
                 .map(|arr| arr.filter_map(|v| v.as_str().map(String::from)).collect())
                 .unwrap_or_default(),
-            routing_elements_libraries: inst
-                .get_array("RoutingElementsLibraries")
+            routing_elements_libraries: inst.get_array("RoutingElementsLibraries")
                 .map(|arr| arr.filter_map(|v| v.as_str().map(String::from)).collect())
                 .unwrap_or_default(),
-            connectors_libraries: inst
-                .get_array("ConnectorsLibraries")
+            connectors_libraries: inst.get_array("ConnectorsLibraries")
                 .map(|arr| arr.filter_map(|v| v.as_str().map(String::from)).collect())
                 .unwrap_or_default(),
-            caps_libraries: inst
-                .get_array("CapsLibraries")
+            caps_libraries: inst.get_array("CapsLibraries")
                 .map(|arr| arr.filter_map(|v| v.as_str().map(String::from)).collect())
                 .unwrap_or_default(),
-            secondary_elements_libraries: inst
-                .get_array("SecondaryElementsLibraries")
+            secondary_elements_libraries: inst.get_array("SecondaryElementsLibraries")
                 .map(|arr| arr.filter_map(|v| v.as_str().map(String::from)).collect())
                 .unwrap_or_default(),
-            default_routing_elements_tags: inst
-                .get_array("DefaultRoutingElementsTags")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<TagList>(
-                            Instance::from_inline_data(b.db, struct_index, data),
-                            false,
-                        )),
-                        Value::ClassRef(r) => Some(b.alloc_nested::<TagList>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
+            default_routing_elements_tags: inst.get_array("DefaultRoutingElementsTags")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<TagList>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<TagList>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
-            global_tag_filtering: inst
-                .get_array("GlobalTagFiltering")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<ProceduralLayout_TagFilter>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => Some(b.alloc_nested::<ProceduralLayout_TagFilter>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
+            global_tag_filtering: inst.get_array("GlobalTagFiltering")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<ProceduralLayout_TagFilter>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<ProceduralLayout_TagFilter>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
-            global_add_on_elements_tags: inst
-                .get_array("GlobalAddOnElementsTags")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<TagList>(
-                            Instance::from_inline_data(b.db, struct_index, data),
-                            false,
-                        )),
-                        Value::ClassRef(r) => Some(b.alloc_nested::<TagList>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
+            global_add_on_elements_tags: inst.get_array("GlobalAddOnElementsTags")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<TagList>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<TagList>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
-            global_add_on_elements_generation_chance: inst
-                .get_f32("GlobalAddOnElementsGenerationChance")
-                .unwrap_or_default(),
-            tint_palette_path: inst
-                .get_str("TintPalettePath")
-                .map(String::from)
-                .unwrap_or_default(),
-            nodes: inst
-                .get_array("Nodes")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => {
-                            Some(ProceduralLayoutNode_BasePtr::from_ref(b, r))
-                        }
+            global_add_on_elements_generation_chance: inst.get_f32("GlobalAddOnElementsGenerationChance").unwrap_or_default(),
+            tint_palette_path: inst.get_str("TintPalettePath").map(String::from).unwrap_or_default(),
+            nodes: inst.get_array("Nodes")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => Some(ProceduralLayoutNode_BasePtr::from_ref(b, r)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
         }
     }
 }
+

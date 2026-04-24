@@ -12,32 +12,27 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
 /// DCB type: `DeliveryItemPortManagerComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-pub struct DeliveryItemPortManagerComponentParams {}
+pub struct DeliveryItemPortManagerComponentParams {
+}
 
 impl Pooled for DeliveryItemPortManagerComponentParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_scitem_deliveryitemportmanager
-            .delivery_item_port_manager_component_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_scitem_deliveryitemportmanager
-            .delivery_item_port_manager_component_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_deliveryitemportmanager.delivery_item_port_manager_component_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_deliveryitemportmanager.delivery_item_port_manager_component_params }
 }
 
 impl<'a> Extract<'a> for DeliveryItemPortManagerComponentParams {
     const TYPE_NAME: &'static str = "DeliveryItemPortManagerComponentParams";
     fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {}
+        Self {
+        }
     }
 }
+

@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -41,12 +41,8 @@ pub struct AreaMapCameraParams {
 }
 
 impl Pooled for AreaMapCameraParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.ui_areamap.area_map_camera_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.ui_areamap.area_map_camera_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_areamap.area_map_camera_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_areamap.area_map_camera_params }
 }
 
 impl<'a> Extract<'a> for AreaMapCameraParams {
@@ -59,18 +55,12 @@ impl<'a> Extract<'a> for AreaMapCameraParams {
             camera_zoom_max: inst.get_f32("cameraZoomMax").unwrap_or_default(),
             camera_zoom_min: inst.get_f32("cameraZoomMin").unwrap_or_default(),
             camera_pan_curve: match inst.get("cameraPanCurve") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BezierCurve>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BezierCurve>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             camera_pan_multiplier: inst.get_f32("cameraPanMultiplier").unwrap_or_default(),
             camera_zoom_curve: match inst.get("cameraZoomCurve") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BezierCurve>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BezierCurve>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             camera_zoom_multiplier: inst.get_f32("cameraZoomMultiplier").unwrap_or_default(),
@@ -120,101 +110,39 @@ pub struct AreaMapParams {
 }
 
 impl Pooled for AreaMapParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.ui_areamap.area_map_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.ui_areamap.area_map_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_areamap.area_map_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_areamap.area_map_params }
 }
 
 impl<'a> Extract<'a> for AreaMapParams {
     const TYPE_NAME: &'static str = "AreaMapParams";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            ground_material: inst
-                .get_str("groundMaterial")
-                .map(String::from)
-                .unwrap_or_default(),
-            wall_material: inst
-                .get_str("wallMaterial")
-                .map(String::from)
-                .unwrap_or_default(),
-            ground_material_faded: inst
-                .get_str("groundMaterialFaded")
-                .map(String::from)
-                .unwrap_or_default(),
-            wall_material_faded: inst
-                .get_str("wallMaterialFaded")
-                .map(String::from)
-                .unwrap_or_default(),
-            door_material: inst
-                .get_str("doorMaterial")
-                .map(String::from)
-                .unwrap_or_default(),
-            marker_material: inst
-                .get_str("markerMaterial")
-                .map(String::from)
-                .unwrap_or_default(),
-            marker_geom_name: inst
-                .get_str("markerGeomName")
-                .map(String::from)
-                .unwrap_or_default(),
-            door_geom_name: inst
-                .get_str("doorGeomName")
-                .map(String::from)
-                .unwrap_or_default(),
-            rtt_geom_material: inst
-                .get_str("rttGeomMaterial")
-                .map(String::from)
-                .unwrap_or_default(),
-            entity_clip_name: inst
-                .get_str("entityClipName")
-                .map(String::from)
-                .unwrap_or_default(),
-            rtto_name: inst
-                .get_str("rttoName")
-                .map(String::from)
-                .unwrap_or_default(),
-            outline_material: inst
-                .get_str("outlineMaterial")
-                .map(String::from)
-                .unwrap_or_default(),
-            entity_component_room_tag: inst
-                .get("entityComponentRoomTag")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            entity_component_room_connector_tag: inst
-                .get("entityComponentRoomConnectorTag")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            entity_component_room_group_tag: inst
-                .get("entityComponentRoomGroupTag")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
+            ground_material: inst.get_str("groundMaterial").map(String::from).unwrap_or_default(),
+            wall_material: inst.get_str("wallMaterial").map(String::from).unwrap_or_default(),
+            ground_material_faded: inst.get_str("groundMaterialFaded").map(String::from).unwrap_or_default(),
+            wall_material_faded: inst.get_str("wallMaterialFaded").map(String::from).unwrap_or_default(),
+            door_material: inst.get_str("doorMaterial").map(String::from).unwrap_or_default(),
+            marker_material: inst.get_str("markerMaterial").map(String::from).unwrap_or_default(),
+            marker_geom_name: inst.get_str("markerGeomName").map(String::from).unwrap_or_default(),
+            door_geom_name: inst.get_str("doorGeomName").map(String::from).unwrap_or_default(),
+            rtt_geom_material: inst.get_str("rttGeomMaterial").map(String::from).unwrap_or_default(),
+            entity_clip_name: inst.get_str("entityClipName").map(String::from).unwrap_or_default(),
+            rtto_name: inst.get_str("rttoName").map(String::from).unwrap_or_default(),
+            outline_material: inst.get_str("outlineMaterial").map(String::from).unwrap_or_default(),
+            entity_component_room_tag: inst.get("entityComponentRoomTag").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            entity_component_room_connector_tag: inst.get("entityComponentRoomConnectorTag").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            entity_component_room_group_tag: inst.get("entityComponentRoomGroupTag").and_then(|v| v.as_record_ref()).map(|r| r.guid),
             camera_params: match inst.get("cameraParams") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<AreaMapCameraParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AreaMapCameraParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             input_params: match inst.get("inputParams") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<UI3DDisplayInputParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<UI3DDisplayInputParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             rtt_geom_dimensions: match inst.get("rttGeomDimensions") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec2>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec2>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
@@ -231,29 +159,17 @@ pub struct FontSupportParams {
 }
 
 impl Pooled for FontSupportParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.ui_areamap.font_support_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.ui_areamap.font_support_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_areamap.font_support_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_areamap.font_support_params }
 }
 
 impl<'a> Extract<'a> for FontSupportParams {
     const TYPE_NAME: &'static str = "FontSupportParams";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            letter_material: inst
-                .get_str("letterMaterial")
-                .map(String::from)
-                .unwrap_or_default(),
+            letter_material: inst.get_str("letterMaterial").map(String::from).unwrap_or_default(),
             font_params: match inst.get("fontParams") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<InnerThought_Config>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<InnerThought_Config>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
@@ -268,22 +184,16 @@ pub struct SEntityComponentLocationDataParams {
 }
 
 impl Pooled for SEntityComponentLocationDataParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.ui_areamap.sentity_component_location_data_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.ui_areamap.sentity_component_location_data_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_areamap.sentity_component_location_data_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_areamap.sentity_component_location_data_params }
 }
 
 impl<'a> Extract<'a> for SEntityComponentLocationDataParams {
     const TYPE_NAME: &'static str = "SEntityComponentLocationDataParams";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            display_mesh: inst
-                .get_str("DisplayMesh")
-                .map(String::from)
-                .unwrap_or_default(),
+            display_mesh: inst.get_str("DisplayMesh").map(String::from).unwrap_or_default(),
         }
     }
 }
+

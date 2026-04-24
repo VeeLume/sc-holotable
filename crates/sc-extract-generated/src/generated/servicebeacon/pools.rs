@@ -14,8 +14,7 @@ use super::super::*;
 /// Pool storage for the `servicebeacon` feature.
 #[derive(Default)]
 pub struct ServicebeaconPools {
-    pub contract_generator_handler_service_beacon:
-        Vec<Option<ContractGeneratorHandler_ServiceBeacon>>,
+    pub contract_generator_handler_service_beacon: Vec<Option<ContractGeneratorHandler_ServiceBeacon>>,
     pub contract_class_service_beacon: Vec<Option<ContractClass_ServiceBeacon>>,
     pub mission_property_value_star_map_location: Vec<Option<MissionPropertyValue_StarMapLocation>>,
     pub beacons_contracts: Vec<Option<BeaconsContracts>>,
@@ -24,8 +23,7 @@ pub struct ServicebeaconPools {
     pub sservice_beacon_notification_override: Vec<Option<SServiceBeaconNotificationOverride>>,
     pub sservice_beacon_creator_params: Vec<Option<SServiceBeaconCreatorParams>>,
     pub sservice_beacon_difficulty_entry: Vec<Option<SServiceBeaconDifficultyEntry>>,
-    pub sservice_beacon_creator_params_with_difficulty:
-        Vec<Option<SServiceBeaconCreatorParamsWithDifficulty>>,
+    pub sservice_beacon_creator_params_with_difficulty: Vec<Option<SServiceBeaconCreatorParamsWithDifficulty>>,
     pub service_beacon_base_params: Vec<Option<ServiceBeaconBaseParams>>,
     pub personal_transport_params: Vec<Option<PersonalTransportParams>>,
     pub escort_params: Vec<Option<EscortParams>>,

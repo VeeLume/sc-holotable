@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -26,12 +26,8 @@ pub struct NavLinkLedgeLocation {
 }
 
 impl Pooled for NavLinkLedgeLocation {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_ledgeobject.nav_link_ledge_location
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_ledgeobject.nav_link_ledge_location
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_ledgeobject.nav_link_ledge_location }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_ledgeobject.nav_link_ledge_location }
 }
 
 impl<'a> Extract<'a> for NavLinkLedgeLocation {
@@ -39,12 +35,10 @@ impl<'a> Extract<'a> for NavLinkLedgeLocation {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             relative_transform: match inst.get("relativeTransform") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<QuatT>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<QuatT>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
     }
 }
+

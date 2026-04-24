@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -44,12 +44,8 @@ pub struct CameraLookBehindConfig {
 }
 
 impl Pooled for CameraLookBehindConfig {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.cameras.camera_look_behind_config
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.cameras.camera_look_behind_config
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.cameras.camera_look_behind_config }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.cameras.camera_look_behind_config }
 }
 
 impl<'a> Extract<'a> for CameraLookBehindConfig {
@@ -57,62 +53,27 @@ impl<'a> Extract<'a> for CameraLookBehindConfig {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             base_settings: match inst.get("baseSettings") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<CameraBaseSettingsConfig>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<CameraBaseSettingsConfig>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             blend_config: match inst.get("blendConfig") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<CameraBlendConfig>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<CameraBlendConfig>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             fovconfig: match inst.get("FOVConfig") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<CameraFOVConfig>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<CameraFOVConfig>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             distance_config: match inst.get("distanceConfig") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<CameraDistanceConfig>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<CameraDistanceConfig>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             height_override: inst.get_f32("heightOverride").unwrap_or_default(),
-            screen_overlay_texture_name: inst
-                .get_str("screenOverlayTextureName")
-                .map(String::from)
-                .unwrap_or_default(),
-            intro_effect_library: inst
-                .get_str("introEffectLibrary")
-                .map(String::from)
-                .unwrap_or_default(),
-            intro_effect_name: inst
-                .get_str("introEffectName")
-                .map(String::from)
-                .unwrap_or_default(),
-            outro_effect_library: inst
-                .get_str("outroEffectLibrary")
-                .map(String::from)
-                .unwrap_or_default(),
-            outro_effect_name: inst
-                .get_str("outroEffectName")
-                .map(String::from)
-                .unwrap_or_default(),
+            screen_overlay_texture_name: inst.get_str("screenOverlayTextureName").map(String::from).unwrap_or_default(),
+            intro_effect_library: inst.get_str("introEffectLibrary").map(String::from).unwrap_or_default(),
+            intro_effect_name: inst.get_str("introEffectName").map(String::from).unwrap_or_default(),
+            outro_effect_library: inst.get_str("outroEffectLibrary").map(String::from).unwrap_or_default(),
+            outro_effect_name: inst.get_str("outroEffectName").map(String::from).unwrap_or_default(),
         }
     }
 }
@@ -149,12 +110,8 @@ pub struct CameraTimeCamConfig {
 }
 
 impl Pooled for CameraTimeCamConfig {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.cameras.camera_time_cam_config
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.cameras.camera_time_cam_config
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.cameras.camera_time_cam_config }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.cameras.camera_time_cam_config }
 }
 
 impl<'a> Extract<'a> for CameraTimeCamConfig {
@@ -162,57 +119,27 @@ impl<'a> Extract<'a> for CameraTimeCamConfig {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             base_settings: match inst.get("baseSettings") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<CameraBaseSettingsConfig>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<CameraBaseSettingsConfig>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             blend_config: match inst.get("blendConfig") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<CameraBlendConfig>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<CameraBlendConfig>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             fovconfig: match inst.get("FOVConfig") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<CameraFOVConfig>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<CameraFOVConfig>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             operator_shake: match inst.get("operatorShake") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<CameraShakeConfig>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<CameraShakeConfig>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             speed_shake: match inst.get("speedShake") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<CameraSpeedShakeConfig>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<CameraSpeedShakeConfig>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             gforce_shake: match inst.get("gforceShake") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<CameraGForceShakeConfig>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<CameraGForceShakeConfig>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             raindrops_enabled: inst.get_bool("raindropsEnabled").unwrap_or_default(),
@@ -221,21 +148,11 @@ impl<'a> Extract<'a> for CameraTimeCamConfig {
             sprint_speed: inst.get_f32("sprintSpeed").unwrap_or_default(),
             free_cam_rotation_scale: inst.get_f32("freeCamRotationScale").unwrap_or_default(),
             doffocus_distance_config: match inst.get("DOFFocusDistanceConfig") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<CameraDOFFocusDistanceConfig>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<CameraDOFFocusDistanceConfig>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             collision_config: match inst.get("collisionConfig") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<CameraCollisionConfig>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<CameraCollisionConfig>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
@@ -251,12 +168,8 @@ pub struct OrbitEntityCinematicEvent {
 }
 
 impl Pooled for OrbitEntityCinematicEvent {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.cameras.orbit_entity_cinematic_event
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.cameras.orbit_entity_cinematic_event
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.cameras.orbit_entity_cinematic_event }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.cameras.orbit_entity_cinematic_event }
 }
 
 impl<'a> Extract<'a> for OrbitEntityCinematicEvent {
@@ -311,12 +224,8 @@ pub struct CameraOrbitEntityCinematicConfig {
 }
 
 impl Pooled for CameraOrbitEntityCinematicConfig {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.cameras.camera_orbit_entity_cinematic_config
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.cameras.camera_orbit_entity_cinematic_config
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.cameras.camera_orbit_entity_cinematic_config }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.cameras.camera_orbit_entity_cinematic_config }
 }
 
 impl<'a> Extract<'a> for CameraOrbitEntityCinematicConfig {
@@ -324,175 +233,77 @@ impl<'a> Extract<'a> for CameraOrbitEntityCinematicConfig {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             base_settings: match inst.get("baseSettings") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<CameraBaseSettingsConfig>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<CameraBaseSettingsConfig>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             blend_config: match inst.get("blendConfig") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<CameraBlendConfig>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<CameraBlendConfig>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             fovconfig: match inst.get("FOVConfig") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<CameraFOVConfig>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<CameraFOVConfig>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             operator_shake: match inst.get("operatorShake") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<CameraShakeConfig>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<CameraShakeConfig>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             speed_shake: match inst.get("speedShake") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<CameraSpeedShakeConfig>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<CameraSpeedShakeConfig>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             gforce_shake: match inst.get("gforceShake") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<CameraGForceShakeConfig>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<CameraGForceShakeConfig>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             raindrops_enabled: inst.get_bool("raindropsEnabled").unwrap_or_default(),
             rotation_config: match inst.get("rotationConfig") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<CameraRotationConfig>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<CameraRotationConfig>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             distance_config: match inst.get("distanceConfig") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<CameraDistanceConfig>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<CameraDistanceConfig>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             target_offset_config: match inst.get("targetOffsetConfig") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<CameraTargetOffsetConfig>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<CameraTargetOffsetConfig>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             spring_config: match inst.get("springConfig") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<CameraSpringConfig>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<CameraSpringConfig>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             collision_config: match inst.get("collisionConfig") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<CameraCollisionConfig>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<CameraCollisionConfig>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            default_views: inst
-                .get_array("defaultViews")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<SCameraViewStateOrbit>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => Some(b.alloc_nested::<SCameraViewStateOrbit>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
+            default_views: inst.get_array("defaultViews")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<SCameraViewStateOrbit>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<SCameraViewStateOrbit>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
             alternative_views_config: match inst.get("alternativeViewsConfig") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<CameraAlternativeViewsConfig>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<CameraAlternativeViewsConfig>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            actor_offset_config: inst
-                .get_array("actorOffsetConfig")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<ActorCameraOffsetFiltered>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => Some(b.alloc_nested::<ActorCameraOffsetFiltered>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
+            actor_offset_config: inst.get_array("actorOffsetConfig")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<ActorCameraOffsetFiltered>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<ActorCameraOffsetFiltered>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
-            cinematic_events: inst
-                .get_array("cinematicEvents")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<OrbitEntityCinematicEvent>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => Some(b.alloc_nested::<OrbitEntityCinematicEvent>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
+            cinematic_events: inst.get_array("cinematicEvents")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<OrbitEntityCinematicEvent>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<OrbitEntityCinematicEvent>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
             expiry_view_index: inst.get_i32("expiryViewIndex").unwrap_or_default(),
-            expiry_automatic_dolly_speed: inst
-                .get_f32("expiryAutomaticDollySpeed")
-                .unwrap_or_default(),
+            expiry_automatic_dolly_speed: inst.get_f32("expiryAutomaticDollySpeed").unwrap_or_default(),
         }
     }
 }
@@ -533,12 +344,8 @@ pub struct CameraOrbitFPSDeathCamConfig {
 }
 
 impl Pooled for CameraOrbitFPSDeathCamConfig {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.cameras.camera_orbit_fpsdeath_cam_config
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.cameras.camera_orbit_fpsdeath_cam_config
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.cameras.camera_orbit_fpsdeath_cam_config }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.cameras.camera_orbit_fpsdeath_cam_config }
 }
 
 impl<'a> Extract<'a> for CameraOrbitFPSDeathCamConfig {
@@ -546,151 +353,67 @@ impl<'a> Extract<'a> for CameraOrbitFPSDeathCamConfig {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             base_settings: match inst.get("baseSettings") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<CameraBaseSettingsConfig>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<CameraBaseSettingsConfig>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             blend_config: match inst.get("blendConfig") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<CameraBlendConfig>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<CameraBlendConfig>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             fovconfig: match inst.get("FOVConfig") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<CameraFOVConfig>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<CameraFOVConfig>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             operator_shake: match inst.get("operatorShake") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<CameraShakeConfig>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<CameraShakeConfig>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             speed_shake: match inst.get("speedShake") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<CameraSpeedShakeConfig>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<CameraSpeedShakeConfig>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             gforce_shake: match inst.get("gforceShake") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<CameraGForceShakeConfig>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<CameraGForceShakeConfig>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             raindrops_enabled: inst.get_bool("raindropsEnabled").unwrap_or_default(),
             rotation_config: match inst.get("rotationConfig") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<CameraRotationConfig>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<CameraRotationConfig>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             distance_config: match inst.get("distanceConfig") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<CameraDistanceConfig>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<CameraDistanceConfig>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             target_offset_config: match inst.get("targetOffsetConfig") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<CameraTargetOffsetConfig>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<CameraTargetOffsetConfig>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             spring_config: match inst.get("springConfig") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<CameraSpringConfig>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<CameraSpringConfig>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             collision_config: match inst.get("collisionConfig") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<CameraCollisionConfig>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<CameraCollisionConfig>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            default_views: inst
-                .get_array("defaultViews")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<SCameraViewStateOrbit>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => Some(b.alloc_nested::<SCameraViewStateOrbit>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
+            default_views: inst.get_array("defaultViews")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<SCameraViewStateOrbit>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<SCameraViewStateOrbit>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
             alternative_views_config: match inst.get("alternativeViewsConfig") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<CameraAlternativeViewsConfig>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<CameraAlternativeViewsConfig>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            actor_offset_config: inst
-                .get_array("actorOffsetConfig")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<ActorCameraOffsetFiltered>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => Some(b.alloc_nested::<ActorCameraOffsetFiltered>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
+            actor_offset_config: inst.get_array("actorOffsetConfig")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<ActorCameraOffsetFiltered>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<ActorCameraOffsetFiltered>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
         }
     }
@@ -708,12 +431,8 @@ pub struct CameraDockingConfig {
 }
 
 impl Pooled for CameraDockingConfig {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.cameras.camera_docking_config
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.cameras.camera_docking_config
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.cameras.camera_docking_config }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.cameras.camera_docking_config }
 }
 
 impl<'a> Extract<'a> for CameraDockingConfig {
@@ -721,30 +440,15 @@ impl<'a> Extract<'a> for CameraDockingConfig {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             base_settings: match inst.get("baseSettings") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<CameraBaseSettingsConfig>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<CameraBaseSettingsConfig>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             blend_config: match inst.get("blendConfig") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<CameraBlendConfig>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<CameraBlendConfig>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             fovconfig: match inst.get("FOVConfig") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<CameraFOVConfig>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<CameraFOVConfig>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
@@ -760,12 +464,8 @@ pub struct CameraShopItemOffset {
 }
 
 impl Pooled for CameraShopItemOffset {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.cameras.camera_shop_item_offset
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.cameras.camera_shop_item_offset
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.cameras.camera_shop_item_offset }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.cameras.camera_shop_item_offset }
 }
 
 impl<'a> Extract<'a> for CameraShopItemOffset {
@@ -774,10 +474,7 @@ impl<'a> Extract<'a> for CameraShopItemOffset {
         Self {
             item_type: EItemType::from_dcb_str(inst.get_str("itemType").unwrap_or("")),
             position_offset: match inst.get("positionOffset") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
@@ -821,12 +518,8 @@ pub struct CameraShopConfig {
 }
 
 impl Pooled for CameraShopConfig {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.cameras.camera_shop_config
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.cameras.camera_shop_config
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.cameras.camera_shop_config }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.cameras.camera_shop_config }
 }
 
 impl<'a> Extract<'a> for CameraShopConfig {
@@ -834,43 +527,20 @@ impl<'a> Extract<'a> for CameraShopConfig {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             initial_position_offset: match inst.get("initialPositionOffset") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            item_offsets: inst
-                .get_array("itemOffsets")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<CameraShopItemOffset>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => Some(b.alloc_nested::<CameraShopItemOffset>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
+            item_offsets: inst.get_array("itemOffsets")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<CameraShopItemOffset>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<CameraShopItemOffset>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
-            min_vertical_rotation_angle: inst
-                .get_f32("minVerticalRotationAngle")
-                .unwrap_or_default(),
-            max_vertical_rotation_angle: inst
-                .get_f32("maxVerticalRotationAngle")
-                .unwrap_or_default(),
-            min_horizontal_rotation_angle: inst
-                .get_f32("minHorizontalRotationAngle")
-                .unwrap_or_default(),
-            max_horizontal_rotation_angle: inst
-                .get_f32("maxHorizontalRotationAngle")
-                .unwrap_or_default(),
+            min_vertical_rotation_angle: inst.get_f32("minVerticalRotationAngle").unwrap_or_default(),
+            max_vertical_rotation_angle: inst.get_f32("maxVerticalRotationAngle").unwrap_or_default(),
+            min_horizontal_rotation_angle: inst.get_f32("minHorizontalRotationAngle").unwrap_or_default(),
+            max_horizontal_rotation_angle: inst.get_f32("maxHorizontalRotationAngle").unwrap_or_default(),
             in_translation_speed: inst.get_f32("inTranslationSpeed").unwrap_or_default(),
             out_translation_speed: inst.get_f32("outTranslationSpeed").unwrap_or_default(),
             in_rotation_speed: inst.get_f32("inRotationSpeed").unwrap_or_default(),
@@ -905,12 +575,8 @@ pub struct CameraStaticConfig {
 }
 
 impl Pooled for CameraStaticConfig {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.cameras.camera_static_config
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.cameras.camera_static_config
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.cameras.camera_static_config }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.cameras.camera_static_config }
 }
 
 impl<'a> Extract<'a> for CameraStaticConfig {
@@ -918,55 +584,27 @@ impl<'a> Extract<'a> for CameraStaticConfig {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             base_settings: match inst.get("baseSettings") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<CameraBaseSettingsConfig>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<CameraBaseSettingsConfig>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             blend_config: match inst.get("blendConfig") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<CameraBlendConfig>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<CameraBlendConfig>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             fovconfig: match inst.get("FOVConfig") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<CameraFOVConfig>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<CameraFOVConfig>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             target_offset_config: match inst.get("targetOffsetConfig") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<CameraTargetOffsetConfig>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<CameraTargetOffsetConfig>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            focus_target_attachment_name: inst
-                .get_str("focusTargetAttachmentName")
-                .map(String::from)
-                .unwrap_or_default(),
+            focus_target_attachment_name: inst.get_str("focusTargetAttachmentName").map(String::from).unwrap_or_default(),
             target_attachment_position_offset: match inst.get("targetAttachmentPositionOffset") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            target_attachment_lerp_factor: inst
-                .get_f32("targetAttachmentLerpFactor")
-                .unwrap_or_default(),
+            target_attachment_lerp_factor: inst.get_f32("targetAttachmentLerpFactor").unwrap_or_default(),
         }
     }
 }
@@ -991,12 +629,8 @@ pub struct CameraView2ShipsFrameParams {
 }
 
 impl Pooled for CameraView2ShipsFrameParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.cameras.camera_view2_ships_frame_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.cameras.camera_view2_ships_frame_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.cameras.camera_view2_ships_frame_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.cameras.camera_view2_ships_frame_params }
 }
 
 impl<'a> Extract<'a> for CameraView2ShipsFrameParams {
@@ -1004,57 +638,27 @@ impl<'a> Extract<'a> for CameraView2ShipsFrameParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             base_settings: match inst.get("baseSettings") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<CameraBaseSettingsConfig>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<CameraBaseSettingsConfig>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             blend_config: match inst.get("blendConfig") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<CameraBlendConfig>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<CameraBlendConfig>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             fovconfig: match inst.get("FOVConfig") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<CameraFOVConfig>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<CameraFOVConfig>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             operator_shake: match inst.get("operatorShake") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<CameraShakeConfig>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<CameraShakeConfig>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             speed_shake: match inst.get("speedShake") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<CameraSpeedShakeConfig>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<CameraSpeedShakeConfig>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             gforce_shake: match inst.get("gforceShake") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<CameraGForceShakeConfig>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<CameraGForceShakeConfig>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             raindrops_enabled: inst.get_bool("raindropsEnabled").unwrap_or_default(),
@@ -1074,12 +678,8 @@ pub struct CameraTrackviewConfig {
 }
 
 impl Pooled for CameraTrackviewConfig {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.cameras.camera_trackview_config
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.cameras.camera_trackview_config
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.cameras.camera_trackview_config }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.cameras.camera_trackview_config }
 }
 
 impl<'a> Extract<'a> for CameraTrackviewConfig {
@@ -1087,30 +687,15 @@ impl<'a> Extract<'a> for CameraTrackviewConfig {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             base_settings: match inst.get("baseSettings") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<CameraBaseSettingsConfig>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<CameraBaseSettingsConfig>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             blend_config: match inst.get("blendConfig") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<CameraBlendConfig>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<CameraBlendConfig>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             fovconfig: match inst.get("FOVConfig") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<CameraFOVConfig>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<CameraFOVConfig>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
@@ -1126,12 +711,8 @@ pub struct CinematicCameraControllerSetup {
 }
 
 impl Pooled for CinematicCameraControllerSetup {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.cameras.cinematic_camera_controller_setup
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.cameras.cinematic_camera_controller_setup
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.cameras.cinematic_camera_controller_setup }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.cameras.cinematic_camera_controller_setup }
 }
 
 impl<'a> Extract<'a> for CinematicCameraControllerSetup {
@@ -1153,12 +734,8 @@ pub struct CameraFOVChangeData {
 }
 
 impl Pooled for CameraFOVChangeData {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.cameras.camera_fovchange_data
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.cameras.camera_fovchange_data
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.cameras.camera_fovchange_data }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.cameras.camera_fovchange_data }
 }
 
 impl<'a> Extract<'a> for CameraFOVChangeData {
@@ -1170,3 +747,4 @@ impl<'a> Extract<'a> for CameraFOVChangeData {
         }
     }
 }
+

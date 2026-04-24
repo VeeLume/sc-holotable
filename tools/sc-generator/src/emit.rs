@@ -311,12 +311,6 @@ pub fn compute_pool_field_names(emitted_names: &EmittedStructNames) -> PoolField
     out
 }
 
-/// Build a map from struct index → feature module name.
-///
-/// - `Single(f)` → the type lives in feature `f`'s module.
-/// - `Multi(_)` → the type lives in the `core` module but is gated by a
-///   `#[cfg(any(...))]` attribute (see `compute_feature_cfg_map`).
-/// - `Core` → the type lives unconditionally in `core`.
 /// Synthetic feature name for the always-compiled module containing types
 /// that are shared across multiple real features. Each type inside carries
 /// its own `#[cfg(any(feature = "f1", feature = "f2", ...))]` gate; the
@@ -709,7 +703,6 @@ pub fn emit_feature_mod(feature_name: &str, has_index: bool) -> String {
     // module names themselves — those conflict with neighbor features'
     // submodules of the same name and trigger `ambiguous_glob_reexports`.
     // The `pub use` below re-exports their contents for public access.
-    out.push_str("#[allow(unused_imports)]\n");
     out.push_str("mod types;\n");
     out.push_str("mod pools;\n");
     if has_index {
@@ -1069,7 +1062,7 @@ pub fn emit_enums(db: &DataCoreDatabase) -> String {
         variant_names.insert(FALLBACK_VARIANT.to_string());
         let mut kept_variants: Vec<(&str, String)> = Vec::new();
         for value in &values {
-            let raw: &str = *value;
+            let raw: &str = value;
             let variant = sanitize_variant_name(raw);
             if variant.is_empty() || !variant_names.insert(variant.clone()) {
                 continue;

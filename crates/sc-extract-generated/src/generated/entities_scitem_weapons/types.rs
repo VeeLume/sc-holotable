@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -42,12 +42,8 @@ pub struct SSensorMineProximityTrigger {
 }
 
 impl Pooled for SSensorMineProximityTrigger {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_scitem_weapons.ssensor_mine_proximity_trigger
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_scitem_weapons.ssensor_mine_proximity_trigger
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_weapons.ssensor_mine_proximity_trigger }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_weapons.ssensor_mine_proximity_trigger }
 }
 
 impl<'a> Extract<'a> for SSensorMineProximityTrigger {
@@ -61,24 +57,15 @@ impl<'a> Extract<'a> for SSensorMineProximityTrigger {
             angle_horizontal: inst.get_f32("AngleHorizontal").unwrap_or_default(),
             guide_laser_length: inst.get_f32("GuideLaserLength").unwrap_or_default(),
             front: match inst.get("Front") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             up: match inst.get("Up") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             center: match inst.get("Center") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
@@ -99,16 +86,8 @@ pub struct SGalactapediaUnlockableComponentParams {
 }
 
 impl Pooled for SGalactapediaUnlockableComponentParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_scitem_weapons
-            .sgalactapedia_unlockable_component_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_scitem_weapons
-            .sgalactapedia_unlockable_component_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_weapons.sgalactapedia_unlockable_component_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_weapons.sgalactapedia_unlockable_component_params }
 }
 
 impl<'a> Extract<'a> for SGalactapediaUnlockableComponentParams {
@@ -118,18 +97,8 @@ impl<'a> Extract<'a> for SGalactapediaUnlockableComponentParams {
             unlocked_by_scan: inst.get_bool("unlockedByScan").unwrap_or_default(),
             unlocked_by_interaction: inst.get_bool("unlockedByInteraction").unwrap_or_default(),
             unlocked_by_picking_up: inst.get_bool("unlockedByPickingUp").unwrap_or_default(),
-            entries_to_unlock: inst
-                .get_array("entriesToUnlock")
-                .map(|arr| {
-                    arr.filter_map(|v| {
-                        if let Value::Reference(Some(r)) = v {
-                            Some(r.guid)
-                        } else {
-                            None
-                        }
-                    })
-                    .collect()
-                })
+            entries_to_unlock: inst.get_array("entriesToUnlock")
+                .map(|arr| arr.filter_map(|v| if let Value::Reference(Some(r)) = v { Some(r.guid) } else { None }).collect())
                 .unwrap_or_default(),
         }
     }
@@ -143,16 +112,8 @@ pub struct SChangeHoloEntityStateModifier {
 }
 
 impl Pooled for SChangeHoloEntityStateModifier {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_scitem_weapons
-            .schange_holo_entity_state_modifier
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_scitem_weapons
-            .schange_holo_entity_state_modifier
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_weapons.schange_holo_entity_state_modifier }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_weapons.schange_holo_entity_state_modifier }
 }
 
 impl<'a> Extract<'a> for SChangeHoloEntityStateModifier {
@@ -160,12 +121,7 @@ impl<'a> Extract<'a> for SChangeHoloEntityStateModifier {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             holo_entity_state: match inst.get("holoEntityState") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<SInteractionState>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SInteractionState>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
         }
@@ -188,12 +144,8 @@ pub struct SWeaponAIBeamParams {
 }
 
 impl Pooled for SWeaponAIBeamParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_scitem_weapons.sweapon_aibeam_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_scitem_weapons.sweapon_aibeam_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_weapons.sweapon_aibeam_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_weapons.sweapon_aibeam_params }
 }
 
 impl<'a> Extract<'a> for SWeaponAIBeamParams {
@@ -201,21 +153,13 @@ impl<'a> Extract<'a> for SWeaponAIBeamParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             name: inst.get_str("name").map(String::from).unwrap_or_default(),
-            ai_shooting_mode: EAIWeaponShootingMode::from_dcb_str(
-                inst.get_str("aiShootingMode").unwrap_or(""),
-            ),
+            ai_shooting_mode: EAIWeaponShootingMode::from_dcb_str(inst.get_str("aiShootingMode").unwrap_or("")),
             duration: match inst.get("duration") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             cooldown: match inst.get("cooldown") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             min_bullets: inst.get_i32("minBullets").unwrap_or_default(),
@@ -231,16 +175,8 @@ pub struct SWeaponConditionTargetingFire {
 }
 
 impl Pooled for SWeaponConditionTargetingFire {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_scitem_weapons
-            .sweapon_condition_targeting_fire
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_scitem_weapons
-            .sweapon_condition_targeting_fire
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_weapons.sweapon_condition_targeting_fire }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_weapons.sweapon_condition_targeting_fire }
 }
 
 impl<'a> Extract<'a> for SWeaponConditionTargetingFire {
@@ -263,28 +199,16 @@ pub struct SWeaponActionFireThrustParams {
 }
 
 impl Pooled for SWeaponActionFireThrustParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_scitem_weapons
-            .sweapon_action_fire_thrust_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_scitem_weapons
-            .sweapon_action_fire_thrust_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_weapons.sweapon_action_fire_thrust_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_weapons.sweapon_action_fire_thrust_params }
 }
 
 impl<'a> Extract<'a> for SWeaponActionFireThrustParams {
     const TYPE_NAME: &'static str = "SWeaponActionFireThrustParams";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            positive_acceleration_limit: inst
-                .get_f32("positiveAccelerationLimit")
-                .unwrap_or_default(),
-            negative_acceleration_limit: inst
-                .get_f32("negativeAccelerationLimit")
-                .unwrap_or_default(),
+            positive_acceleration_limit: inst.get_f32("positiveAccelerationLimit").unwrap_or_default(),
+            negative_acceleration_limit: inst.get_f32("negativeAccelerationLimit").unwrap_or_default(),
             max_speed: inst.get_f32("maxSpeed").unwrap_or_default(),
         }
     }
@@ -341,12 +265,8 @@ pub struct SChargeDrainPrimeParams {
 }
 
 impl Pooled for SChargeDrainPrimeParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_scitem_weapons.scharge_drain_prime_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_scitem_weapons.scharge_drain_prime_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_weapons.scharge_drain_prime_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_weapons.scharge_drain_prime_params }
 }
 
 impl<'a> Extract<'a> for SChargeDrainPrimeParams {
@@ -360,51 +280,25 @@ impl<'a> Extract<'a> for SChargeDrainPrimeParams {
             resource_rate_prime_scalar: inst.get_f32("resourceRatePrimeScalar").unwrap_or_default(),
             unstable_priming_modifier: inst.get_f32("unstablePrimingModifier").unwrap_or_default(),
             base_storage_time: inst.get_f32("baseStorageTime").unwrap_or_default(),
-            additional_storage_time_per_volt: inst
-                .get_f32("additionalStorageTimePerVolt")
-                .unwrap_or_default(),
+            additional_storage_time_per_volt: inst.get_f32("additionalStorageTimePerVolt").unwrap_or_default(),
             minigame_radius: inst.get_f32("minigameRadius").unwrap_or_default(),
             seconds_to_fail: inst.get_f32("secondsToFail").unwrap_or_default(),
             recoil_interval: inst.get_f32("recoilInterval").unwrap_or_default(),
-            boosting_recoil: inst
-                .get("boostingRecoil")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            volt_boost_state_recoil: inst
-                .get("voltBoostStateRecoil")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            volt_boost_unleash_recoil: inst
-                .get("voltBoostUnleashRecoil")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            volt_boost_dump_recoil: inst
-                .get("voltBoostDumpRecoil")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
+            boosting_recoil: inst.get("boostingRecoil").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            volt_boost_state_recoil: inst.get("voltBoostStateRecoil").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            volt_boost_unleash_recoil: inst.get("voltBoostUnleashRecoil").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            volt_boost_dump_recoil: inst.get("voltBoostDumpRecoil").and_then(|v| v.as_record_ref()).map(|r| r.guid),
             damage: match inst.get("damage") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(DamageBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(DamageBasePtr::from_ref(b, r)),
                 _ => None,
             },
             hit_radius: inst.get_f32("hitRadius").unwrap_or_default(),
-            hit_type: inst
-                .get_str("hitType")
-                .map(String::from)
-                .unwrap_or_default(),
+            hit_type: inst.get_str("hitType").map(String::from).unwrap_or_default(),
             min_charge_loss_percentage: inst.get_f32("minChargeLossPercentage").unwrap_or_default(),
             max_charge_loss_percentage: inst.get_f32("maxChargeLossPercentage").unwrap_or_default(),
-            lower_random_loss_limit_percentage: inst
-                .get_f32("lowerRandomLossLimitPercentage")
-                .unwrap_or_default(),
-            upper_random_loss_limit_percentage: inst
-                .get_f32("upperRandomLossLimitPercentage")
-                .unwrap_or_default(),
-            charge_fire_action_tag: inst
-                .get("chargeFireActionTag")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
+            lower_random_loss_limit_percentage: inst.get_f32("lowerRandomLossLimitPercentage").unwrap_or_default(),
+            upper_random_loss_limit_percentage: inst.get_f32("upperRandomLossLimitPercentage").unwrap_or_default(),
+            charge_fire_action_tag: inst.get("chargeFireActionTag").and_then(|v| v.as_record_ref()).map(|r| r.guid),
         }
     }
 }
@@ -420,12 +314,8 @@ pub struct SChargeDrainRangeParams {
 }
 
 impl Pooled for SChargeDrainRangeParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_scitem_weapons.scharge_drain_range_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_scitem_weapons.scharge_drain_range_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_weapons.scharge_drain_range_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_weapons.scharge_drain_range_params }
 }
 
 impl<'a> Extract<'a> for SChargeDrainRangeParams {
@@ -567,16 +457,8 @@ pub struct SWeaponActionFireChargeDrainParams {
 }
 
 impl Pooled for SWeaponActionFireChargeDrainParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_scitem_weapons
-            .sweapon_action_fire_charge_drain_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_scitem_weapons
-            .sweapon_action_fire_charge_drain_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_weapons.sweapon_action_fire_charge_drain_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_weapons.sweapon_action_fire_charge_drain_params }
 }
 
 impl<'a> Extract<'a> for SWeaponActionFireChargeDrainParams {
@@ -584,468 +466,202 @@ impl<'a> Extract<'a> for SWeaponActionFireChargeDrainParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             name: inst.get_str("name").map(String::from).unwrap_or_default(),
-            localised_name: inst
-                .get_str("localisedName")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
+            localised_name: inst.get_str("localisedName").map(LocaleKey::from).unwrap_or_default(),
             mannequin_tag: match inst.get("mannequinTag") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<SMannequinTagParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SMannequinTagParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            entity_tag: inst
-                .get("entityTag")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
+            entity_tag: inst.get("entityTag").and_then(|v| v.as_record_ref()).map(|r| r.guid),
             entity_tags: match inst.get("entityTags") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<TagList>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<TagList>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            ui_bindings_tag: inst
-                .get("uiBindingsTag")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            ai_shooting_mode: EAIWeaponShootingMode::from_dcb_str(
-                inst.get_str("aiShootingMode").unwrap_or(""),
-            ),
+            ui_bindings_tag: inst.get("uiBindingsTag").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            ai_shooting_mode: EAIWeaponShootingMode::from_dcb_str(inst.get_str("aiShootingMode").unwrap_or("")),
             switch_fire_mode_audio_trigger: match inst.get("switchFireModeAudioTrigger") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<GlobalResourceAudio>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             selectable_condition: match inst.get("selectableCondition") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(SWeaponConditionBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(SWeaponConditionBasePtr::from_ref(b, r)),
                 _ => None,
             },
             has_reload_modes_on_ui: inst.get_bool("hasReloadModesOnUI").unwrap_or_default(),
-            localised_functionality_name: inst
-                .get_str("localisedFunctionalityName")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
-            functionality_tag: inst
-                .get("functionalityTag")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            fire_helper: inst
-                .get_str("fireHelper")
-                .map(String::from)
-                .unwrap_or_default(),
+            localised_functionality_name: inst.get_str("localisedFunctionalityName").map(LocaleKey::from).unwrap_or_default(),
+            functionality_tag: inst.get("functionalityTag").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            fire_helper: inst.get_str("fireHelper").map(String::from).unwrap_or_default(),
             toggle: inst.get_bool("toggle").unwrap_or_default(),
             range_params: match inst.get("rangeParams") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<SChargeDrainRangeParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SChargeDrainRangeParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             max_aim_radius: inst.get_f32("maxAimRadius").unwrap_or_default(),
             resource_rate: inst.get_f32("resourceRate").unwrap_or_default(),
-            charge_drain_mode: EChargeDrainMode::from_dcb_str(
-                inst.get_str("chargeDrainMode").unwrap_or(""),
-            ),
+            charge_drain_mode: EChargeDrainMode::from_dcb_str(inst.get_str("chargeDrainMode").unwrap_or("")),
             ammo_type: EAmmoContainerType::from_dcb_str(inst.get_str("ammoType").unwrap_or("")),
             wear_per_second: inst.get_f32("wearPerSecond").unwrap_or_default(),
             recoil_interval: inst.get_f32("recoilInterval").unwrap_or_default(),
-            recoil: inst
-                .get("recoil")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
+            recoil: inst.get("recoil").and_then(|v| v.as_record_ref()).map(|r| r.guid),
             prime_params: match inst.get("primeParams") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<SChargeDrainPrimeParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SChargeDrainPrimeParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             overload_duration: inst.get_f32("overloadDuration").unwrap_or_default(),
-            target_resource: inst
-                .get("targetResource")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            should_dry_fire_in_green_zones: inst
-                .get_bool("shouldDryFireInGreenZones")
-                .unwrap_or_default(),
+            target_resource: inst.get("targetResource").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            should_dry_fire_in_green_zones: inst.get_bool("shouldDryFireInGreenZones").unwrap_or_default(),
             fire_fragment: match inst.get("fireFragment") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<SFragmentParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SFragmentParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             stop_fire_fragment: match inst.get("stopFireFragment") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<SFragmentParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SFragmentParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             priming_fragment: match inst.get("primingFragment") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<SFragmentParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SFragmentParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             primed_fragment: match inst.get("primedFragment") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<SFragmentParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SFragmentParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             overload_fragment: match inst.get("overloadFragment") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<SFragmentParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SFragmentParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             start_fire_one_shot_audio_trigger: match inst.get("startFireOneShotAudioTrigger") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<GlobalResourceAudio>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             start_fire_loop_audio_trigger: match inst.get("startFireLoopAudioTrigger") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<GlobalResourceAudio>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             stop_fire_audio_trigger: match inst.get("stopFireAudioTrigger") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<GlobalResourceAudio>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             dry_fire_audio_trigger: match inst.get("dryFireAudioTrigger") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<GlobalResourceAudio>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             start_overload_audio_trigger: match inst.get("startOverloadAudioTrigger") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<GlobalResourceAudio>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             stop_overload_audio_trigger: match inst.get("stopOverloadAudioTrigger") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<GlobalResourceAudio>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             overload_fire_attempt_audio_trigger: match inst.get("overloadFireAttemptAudioTrigger") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<GlobalResourceAudio>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             start_priming_loop_audio_trigger: match inst.get("startPrimingLoopAudioTrigger") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<GlobalResourceAudio>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             stop_priming_loop_audio_trigger: match inst.get("stopPrimingLoopAudioTrigger") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<GlobalResourceAudio>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            start_priming_unstable_loop_audio_trigger: match inst
-                .get("startPrimingUnstableLoopAudioTrigger")
-            {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<GlobalResourceAudio>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+            start_priming_unstable_loop_audio_trigger: match inst.get("startPrimingUnstableLoopAudioTrigger") {
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            stop_priming_unstable_loop_audio_trigger: match inst
-                .get("stopPrimingUnstableLoopAudioTrigger")
-            {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<GlobalResourceAudio>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+            stop_priming_unstable_loop_audio_trigger: match inst.get("stopPrimingUnstableLoopAudioTrigger") {
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             priming_unstable_audio_trigger: match inst.get("primingUnstableAudioTrigger") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<GlobalResourceAudio>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            prime_unstable_audio_retrigger_time: inst
-                .get_f32("primeUnstableAudioRetriggerTime")
-                .unwrap_or_default(),
+            prime_unstable_audio_retrigger_time: inst.get_f32("primeUnstableAudioRetriggerTime").unwrap_or_default(),
             start_primed_loop_audio_trigger: match inst.get("startPrimedLoopAudioTrigger") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<GlobalResourceAudio>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             stop_primed_loop_audio_trigger: match inst.get("stopPrimedLoopAudioTrigger") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<GlobalResourceAudio>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             on_jumpstart_audio_trigger: match inst.get("onJumpstartAudioTrigger") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<GlobalResourceAudio>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             post_jumpstart_audio_trigger: match inst.get("postJumpstartAudioTrigger") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<GlobalResourceAudio>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             dump_primed_charge_audio_trigger: match inst.get("dumpPrimedChargeAudioTrigger") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<GlobalResourceAudio>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             weapon_battery_level_rtpc: match inst.get("weaponBatteryLevelRTPC") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             weapon_primed_percentage_rtpc: match inst.get("weaponPrimedPercentageRTPC") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            fire_effects: inst
-                .get_array("fireEffects")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<SWeaponParticleEffectParams>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => Some(b.alloc_nested::<SWeaponParticleEffectParams>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
+            fire_effects: inst.get_array("fireEffects")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<SWeaponParticleEffectParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<SWeaponParticleEffectParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
-            overload_effects: inst
-                .get_array("overloadEffects")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<SWeaponParticleEffectParams>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => Some(b.alloc_nested::<SWeaponParticleEffectParams>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
+            overload_effects: inst.get_array("overloadEffects")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<SWeaponParticleEffectParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<SWeaponParticleEffectParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
-            overload_fire_attempt_effects: inst
-                .get_array("overloadFireAttemptEffects")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<SWeaponParticleEffectParams>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => Some(b.alloc_nested::<SWeaponParticleEffectParams>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
+            overload_fire_attempt_effects: inst.get_array("overloadFireAttemptEffects")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<SWeaponParticleEffectParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<SWeaponParticleEffectParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
-            primed_effects: inst
-                .get_array("primedEffects")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<SWeaponParticleEffectParams>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => Some(b.alloc_nested::<SWeaponParticleEffectParams>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
+            primed_effects: inst.get_array("primedEffects")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<SWeaponParticleEffectParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<SWeaponParticleEffectParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
-            post_jumpstart_effects: inst
-                .get_array("postJumpstartEffects")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<SWeaponParticleEffectParams>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => Some(b.alloc_nested::<SWeaponParticleEffectParams>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
+            post_jumpstart_effects: inst.get_array("postJumpstartEffects")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<SWeaponParticleEffectParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<SWeaponParticleEffectParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
-            dump_primed_charge_effects: inst
-                .get_array("dumpPrimedChargeEffects")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<SWeaponParticleEffectParams>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => Some(b.alloc_nested::<SWeaponParticleEffectParams>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
+            dump_primed_charge_effects: inst.get_array("dumpPrimedChargeEffects")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<SWeaponParticleEffectParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<SWeaponParticleEffectParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
             beam_group: match inst.get("beamGroup") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<SBeamGroupParams>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SBeamGroupParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             jumpstart_beam_group: match inst.get("jumpstartBeamGroup") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<SBeamGroupParams>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SBeamGroupParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             update_condition: match inst.get("updateCondition") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(SWeaponConditionBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(SWeaponConditionBasePtr::from_ref(b, r)),
                 _ => None,
             },
             signature_emitter_params: match inst.get("signatureEmitterParams") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<SSCSignatureEmitterParams>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SSCSignatureEmitterParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
         }
@@ -1061,12 +677,8 @@ pub struct SExtinguisherImpactParams {
 }
 
 impl Pooled for SExtinguisherImpactParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_scitem_weapons.sextinguisher_impact_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_scitem_weapons.sextinguisher_impact_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_weapons.sextinguisher_impact_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_weapons.sextinguisher_impact_params }
 }
 
 impl<'a> Extract<'a> for SExtinguisherImpactParams {
@@ -1074,12 +686,7 @@ impl<'a> Extract<'a> for SExtinguisherImpactParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             particle_effect: match inst.get("particleEffect") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<GlobalResourceParticle>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceParticle>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             distance_from_impact_point: inst.get_f32("distanceFromImpactPoint").unwrap_or_default(),
@@ -1098,12 +705,8 @@ pub struct STemperatureReadOutParams {
 }
 
 impl Pooled for STemperatureReadOutParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_scitem_weapons.stemperature_read_out_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_scitem_weapons.stemperature_read_out_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_weapons.stemperature_read_out_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_weapons.stemperature_read_out_params }
 }
 
 impl<'a> Extract<'a> for STemperatureReadOutParams {
@@ -1132,12 +735,8 @@ pub struct SVectorFieldParams {
 }
 
 impl Pooled for SVectorFieldParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_scitem_weapons.svector_field_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_scitem_weapons.svector_field_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_weapons.svector_field_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_weapons.svector_field_params }
 }
 
 impl<'a> Extract<'a> for SVectorFieldParams {
@@ -1162,16 +761,8 @@ pub struct SExtinguisherVectorFieldParams {
 }
 
 impl Pooled for SExtinguisherVectorFieldParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_scitem_weapons
-            .sextinguisher_vector_field_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_scitem_weapons
-            .sextinguisher_vector_field_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_weapons.sextinguisher_vector_field_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_weapons.sextinguisher_vector_field_params }
 }
 
 impl<'a> Extract<'a> for SExtinguisherVectorFieldParams {
@@ -1179,21 +770,11 @@ impl<'a> Extract<'a> for SExtinguisherVectorFieldParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             main: match inst.get("main") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<SVectorFieldParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SVectorFieldParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             spray: match inst.get("spray") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<SVectorFieldParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SVectorFieldParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
@@ -1286,16 +867,8 @@ pub struct SWeaponActionFireExtinguisherParams {
 }
 
 impl Pooled for SWeaponActionFireExtinguisherParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_scitem_weapons
-            .sweapon_action_fire_extinguisher_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_scitem_weapons
-            .sweapon_action_fire_extinguisher_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_weapons.sweapon_action_fire_extinguisher_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_weapons.sweapon_action_fire_extinguisher_params }
 }
 
 impl<'a> Extract<'a> for SWeaponActionFireExtinguisherParams {
@@ -1303,202 +876,97 @@ impl<'a> Extract<'a> for SWeaponActionFireExtinguisherParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             name: inst.get_str("name").map(String::from).unwrap_or_default(),
-            localised_name: inst
-                .get_str("localisedName")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
+            localised_name: inst.get_str("localisedName").map(LocaleKey::from).unwrap_or_default(),
             mannequin_tag: match inst.get("mannequinTag") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<SMannequinTagParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SMannequinTagParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            entity_tag: inst
-                .get("entityTag")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
+            entity_tag: inst.get("entityTag").and_then(|v| v.as_record_ref()).map(|r| r.guid),
             entity_tags: match inst.get("entityTags") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<TagList>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<TagList>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            ui_bindings_tag: inst
-                .get("uiBindingsTag")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            ai_shooting_mode: EAIWeaponShootingMode::from_dcb_str(
-                inst.get_str("aiShootingMode").unwrap_or(""),
-            ),
+            ui_bindings_tag: inst.get("uiBindingsTag").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            ai_shooting_mode: EAIWeaponShootingMode::from_dcb_str(inst.get_str("aiShootingMode").unwrap_or("")),
             switch_fire_mode_audio_trigger: match inst.get("switchFireModeAudioTrigger") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<GlobalResourceAudio>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             selectable_condition: match inst.get("selectableCondition") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(SWeaponConditionBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(SWeaponConditionBasePtr::from_ref(b, r)),
                 _ => None,
             },
             has_reload_modes_on_ui: inst.get_bool("hasReloadModesOnUI").unwrap_or_default(),
             toggle: inst.get_bool("toggle").unwrap_or_default(),
-            fire_helper: inst
-                .get_str("fireHelper")
-                .map(String::from)
-                .unwrap_or_default(),
+            fire_helper: inst.get_str("fireHelper").map(String::from).unwrap_or_default(),
             extinguishing_range: inst.get_f32("extinguishingRange").unwrap_or_default(),
             sensor_range: inst.get_f32("sensorRange").unwrap_or_default(),
             fire_detection_range: inst.get_f32("fireDetectionRange").unwrap_or_default(),
-            fire_detection_interval_time: inst
-                .get_f32("fireDetectionIntervalTime")
-                .unwrap_or_default(),
+            fire_detection_interval_time: inst.get_f32("fireDetectionIntervalTime").unwrap_or_default(),
             temperature_read_out_params: match inst.get("temperatureReadOutParams") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<STemperatureReadOutParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<STemperatureReadOutParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            extinguish_strength_falloff_distance: inst
-                .get_f32("extinguishStrengthFalloffDistance")
-                .unwrap_or_default(),
+            extinguish_strength_falloff_distance: inst.get_f32("extinguishStrengthFalloffDistance").unwrap_or_default(),
             cone_angle: inst.get_f32("coneAngle").unwrap_or_default(),
             max_radius: inst.get_f32("maxRadius").unwrap_or_default(),
             min_radius: inst.get_f32("minRadius").unwrap_or_default(),
             extinguish_strength: inst.get_f32("extinguishStrength").unwrap_or_default(),
-            max_range_extinguish_strength: inst
-                .get_f32("maxRangeExtinguishStrength")
-                .unwrap_or_default(),
+            max_range_extinguish_strength: inst.get_f32("maxRangeExtinguishStrength").unwrap_or_default(),
             ammo_per_second: inst.get_f32("ammoPerSecond").unwrap_or_default(),
             wear_per_second: inst.get_f32("wearPerSecond").unwrap_or_default(),
-            room_helper_class: inst
-                .get("roomHelperClass")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
+            room_helper_class: inst.get("roomHelperClass").and_then(|v| v.as_record_ref()).map(|r| r.guid),
             vector_field_params: match inst.get("vectorFieldParams") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<SExtinguisherVectorFieldParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SExtinguisherVectorFieldParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            fire_effects: inst
-                .get_array("fireEffects")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<SWeaponParticleEffectParams>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => Some(b.alloc_nested::<SWeaponParticleEffectParams>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
+            fire_effects: inst.get_array("fireEffects")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<SWeaponParticleEffectParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<SWeaponParticleEffectParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
             impact_effect: match inst.get("impactEffect") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<SExtinguisherImpactParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SExtinguisherImpactParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             fire_fragment: match inst.get("fireFragment") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<SFragmentParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SFragmentParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             stop_fire_fragment: match inst.get("stopFireFragment") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<SFragmentParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SFragmentParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             start_fire_one_shot_audio_trigger: match inst.get("startFireOneShotAudioTrigger") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<GlobalResourceAudio>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             start_fire_loop_audio_trigger: match inst.get("startFireLoopAudioTrigger") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<GlobalResourceAudio>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             stop_fire_audio_trigger: match inst.get("stopFireAudioTrigger") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<GlobalResourceAudio>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             dry_fire_audio_trigger: match inst.get("dryFireAudioTrigger") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<GlobalResourceAudio>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             update_condition: match inst.get("updateCondition") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(SWeaponConditionBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(SWeaponConditionBasePtr::from_ref(b, r)),
                 _ => None,
             },
-            aim_fire_detection_mode: EAimFireDetectionMode::from_dcb_str(
-                inst.get_str("aimFireDetectionMode").unwrap_or(""),
-            ),
-            aim_fire_detection_temperature: inst
-                .get_f32("aimFireDetectionTemperature")
-                .unwrap_or_default(),
+            aim_fire_detection_mode: EAimFireDetectionMode::from_dcb_str(inst.get_str("aimFireDetectionMode").unwrap_or("")),
+            aim_fire_detection_temperature: inst.get_f32("aimFireDetectionTemperature").unwrap_or_default(),
             aim_fire_detection_radius: inst.get_f32("aimFireDetectionRadius").unwrap_or_default(),
             thrust_params: match inst.get("thrustParams") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<SWeaponActionFireThrustParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SWeaponActionFireThrustParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
     }
 }
+

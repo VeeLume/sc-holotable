@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -26,16 +26,8 @@ pub struct SSequencerChangeStanceCarryableTaskParams {
 }
 
 impl Pooled for SSequencerChangeStanceCarryableTaskParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_scitem_carryables
-            .ssequencer_change_stance_carryable_task_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_scitem_carryables
-            .ssequencer_change_stance_carryable_task_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_carryables.ssequencer_change_stance_carryable_task_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_carryables.ssequencer_change_stance_carryable_task_params }
 }
 
 impl<'a> Extract<'a> for SSequencerChangeStanceCarryableTaskParams {
@@ -87,16 +79,8 @@ pub struct SSimulationParamsSpringEllipsoid {
 }
 
 impl Pooled for SSimulationParamsSpringEllipsoid {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_scitem_carryables
-            .ssimulation_params_spring_ellipsoid
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_scitem_carryables
-            .ssimulation_params_spring_ellipsoid
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_carryables.ssimulation_params_spring_ellipsoid }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_carryables.ssimulation_params_spring_ellipsoid }
 }
 
 impl<'a> Extract<'a> for SSimulationParamsSpringEllipsoid {
@@ -109,10 +93,7 @@ impl<'a> Extract<'a> for SSimulationParamsSpringEllipsoid {
             use_redirect: inst.get_bool("UseRedirect").unwrap_or_default(),
             sim_fps: inst.get_u32("SimFPS").unwrap_or_default(),
             pivot_offset: match inst.get("PivotOffset") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             mass: inst.get_f32("Mass").unwrap_or_default(),
@@ -120,38 +101,24 @@ impl<'a> Extract<'a> for SSimulationParamsSpringEllipsoid {
             damping: inst.get_f32("Damping").unwrap_or_default(),
             stiffness: inst.get_f32("Stiffness").unwrap_or_default(),
             stiffness_target: match inst.get("StiffnessTarget") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             disk_radius: inst.get_f32("DiskRadius").unwrap_or_default(),
             sphere_scale: match inst.get("SphereScale") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec2>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec2>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             disk_rotation: match inst.get("DiskRotation") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec2>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec2>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            projection_type: EProjectionSelection3::from_dcb_str(
-                inst.get_str("ProjectionType").unwrap_or(""),
-            ),
+            projection_type: EProjectionSelection3::from_dcb_str(inst.get_str("ProjectionType").unwrap_or("")),
             radius: inst.get_f32("Radius").unwrap_or_default(),
-            available_collision_proxies: inst
-                .get_array("AvailableCollisionProxies")
-                .map(|arr| {
-                    arr.filter_map(|v| v.as_str().map(EAuxiliaryProxy::from_dcb_str))
-                        .collect()
-                })
+            available_collision_proxies: inst.get_array("AvailableCollisionProxies")
+                .map(|arr| arr.filter_map(|v| v.as_str().map(EAuxiliaryProxy::from_dcb_str)).collect())
                 .unwrap_or_default(),
         }
     }
 }
+

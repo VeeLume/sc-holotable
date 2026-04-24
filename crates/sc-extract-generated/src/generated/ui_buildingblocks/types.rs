@@ -12,33 +12,27 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
 /// DCB type: `BindingsOperations_WaveformShapeTriangle`
 /// Inherits from: `BindingsOperations_WaveformShapeBase`
-pub struct BindingsOperations_WaveformShapeTriangle {}
+pub struct BindingsOperations_WaveformShapeTriangle {
+}
 
 impl Pooled for BindingsOperations_WaveformShapeTriangle {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .ui_buildingblocks
-            .bindings_operations_waveform_shape_triangle
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .ui_buildingblocks
-            .bindings_operations_waveform_shape_triangle
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_buildingblocks.bindings_operations_waveform_shape_triangle }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_buildingblocks.bindings_operations_waveform_shape_triangle }
 }
 
 impl<'a> Extract<'a> for BindingsOperations_WaveformShapeTriangle {
     const TYPE_NAME: &'static str = "BindingsOperations_WaveformShapeTriangle";
     fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {}
+        Self {
+        }
     }
 }
 
@@ -50,16 +44,8 @@ pub struct BindingsOperations_WaveformShapeSquare {
 }
 
 impl Pooled for BindingsOperations_WaveformShapeSquare {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .ui_buildingblocks
-            .bindings_operations_waveform_shape_square
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .ui_buildingblocks
-            .bindings_operations_waveform_shape_square
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_buildingblocks.bindings_operations_waveform_shape_square }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_buildingblocks.bindings_operations_waveform_shape_square }
 }
 
 impl<'a> Extract<'a> for BindingsOperations_WaveformShapeSquare {
@@ -79,16 +65,8 @@ pub struct BindingsOperations_WaveformShapeSawtooth {
 }
 
 impl Pooled for BindingsOperations_WaveformShapeSawtooth {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .ui_buildingblocks
-            .bindings_operations_waveform_shape_sawtooth
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .ui_buildingblocks
-            .bindings_operations_waveform_shape_sawtooth
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_buildingblocks.bindings_operations_waveform_shape_sawtooth }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_buildingblocks.bindings_operations_waveform_shape_sawtooth }
 }
 
 impl<'a> Extract<'a> for BindingsOperations_WaveformShapeSawtooth {
@@ -122,16 +100,8 @@ pub struct BuildingBlocks_BindingsColorFromNumberRGBA {
 }
 
 impl Pooled for BuildingBlocks_BindingsColorFromNumberRGBA {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .ui_buildingblocks
-            .building_blocks_bindings_color_from_number_rgba
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .ui_buildingblocks
-            .building_blocks_bindings_color_from_number_rgba
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_buildingblocks.building_blocks_bindings_color_from_number_rgba }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_buildingblocks.building_blocks_bindings_color_from_number_rgba }
 }
 
 impl<'a> Extract<'a> for BuildingBlocks_BindingsColorFromNumberRGBA {
@@ -139,27 +109,19 @@ impl<'a> Extract<'a> for BuildingBlocks_BindingsColorFromNumberRGBA {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             input_red: match inst.get("inputRed") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_BindingsNumberBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_BindingsNumberBasePtr::from_ref(b, r)),
                 _ => None,
             },
             input_green: match inst.get("inputGreen") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_BindingsNumberBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_BindingsNumberBasePtr::from_ref(b, r)),
                 _ => None,
             },
             input_blue: match inst.get("inputBlue") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_BindingsNumberBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_BindingsNumberBasePtr::from_ref(b, r)),
                 _ => None,
             },
             input_alpha: match inst.get("inputAlpha") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_BindingsNumberBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_BindingsNumberBasePtr::from_ref(b, r)),
                 _ => None,
             },
             default_red_value: inst.get_f32("defaultRedValue").unwrap_or_default(),
@@ -178,16 +140,8 @@ pub struct BuildingBlocks_FieldModifierEnumeratedTypeMaxHeightBehavior {
 }
 
 impl Pooled for BuildingBlocks_FieldModifierEnumeratedTypeMaxHeightBehavior {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .ui_buildingblocks
-            .building_blocks_field_modifier_enumerated_type_max_height_behavior
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .ui_buildingblocks
-            .building_blocks_field_modifier_enumerated_type_max_height_behavior
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_buildingblocks.building_blocks_field_modifier_enumerated_type_max_height_behavior }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_buildingblocks.building_blocks_field_modifier_enumerated_type_max_height_behavior }
 }
 
 impl<'a> Extract<'a> for BuildingBlocks_FieldModifierEnumeratedTypeMaxHeightBehavior {
@@ -207,16 +161,8 @@ pub struct BuildingBlocks_FieldModifierEnumeratedTypeStrokeAlignment {
 }
 
 impl Pooled for BuildingBlocks_FieldModifierEnumeratedTypeStrokeAlignment {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .ui_buildingblocks
-            .building_blocks_field_modifier_enumerated_type_stroke_alignment
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .ui_buildingblocks
-            .building_blocks_field_modifier_enumerated_type_stroke_alignment
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_buildingblocks.building_blocks_field_modifier_enumerated_type_stroke_alignment }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_buildingblocks.building_blocks_field_modifier_enumerated_type_stroke_alignment }
 }
 
 impl<'a> Extract<'a> for BuildingBlocks_FieldModifierEnumeratedTypeStrokeAlignment {
@@ -236,16 +182,8 @@ pub struct BuildingBlocks_TimingFunctionCustomCurve {
 }
 
 impl Pooled for BuildingBlocks_TimingFunctionCustomCurve {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .ui_buildingblocks
-            .building_blocks_timing_function_custom_curve
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .ui_buildingblocks
-            .building_blocks_timing_function_custom_curve
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_buildingblocks.building_blocks_timing_function_custom_curve }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_buildingblocks.building_blocks_timing_function_custom_curve }
 }
 
 impl<'a> Extract<'a> for BuildingBlocks_TimingFunctionCustomCurve {
@@ -253,10 +191,7 @@ impl<'a> Extract<'a> for BuildingBlocks_TimingFunctionCustomCurve {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             curve: match inst.get("curve") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BezierCurve>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BezierCurve>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
@@ -272,16 +207,8 @@ pub struct BuildingBlocks_IntegerWidgetPairDef {
 }
 
 impl Pooled for BuildingBlocks_IntegerWidgetPairDef {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .ui_buildingblocks
-            .building_blocks_integer_widget_pair_def
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .ui_buildingblocks
-            .building_blocks_integer_widget_pair_def
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_buildingblocks.building_blocks_integer_widget_pair_def }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_buildingblocks.building_blocks_integer_widget_pair_def }
 }
 
 impl<'a> Extract<'a> for BuildingBlocks_IntegerWidgetPairDef {
@@ -290,9 +217,7 @@ impl<'a> Extract<'a> for BuildingBlocks_IntegerWidgetPairDef {
         Self {
             first: inst.get_i64("first").unwrap_or_default(),
             second: match inst.get("second") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_WidgetBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_WidgetBasePtr::from_ref(b, r)),
                 _ => None,
             },
         }
@@ -423,12 +348,8 @@ pub struct BuildingBlocks_WidgetPolymorphic {
 }
 
 impl Pooled for BuildingBlocks_WidgetPolymorphic {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.ui_buildingblocks.building_blocks_widget_polymorphic
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.ui_buildingblocks.building_blocks_widget_polymorphic
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_buildingblocks.building_blocks_widget_polymorphic }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_buildingblocks.building_blocks_widget_polymorphic }
 }
 
 impl<'a> Extract<'a> for BuildingBlocks_WidgetPolymorphic {
@@ -436,304 +357,154 @@ impl<'a> Extract<'a> for BuildingBlocks_WidgetPolymorphic {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             name: inst.get_str("name").map(String::from).unwrap_or_default(),
-            style_tags: inst
-                .get_array("styleTags")
-                .map(|arr| {
-                    arr.filter_map(|v| {
-                        if let Value::Reference(Some(r)) = v {
-                            Some(r.guid)
-                        } else {
-                            None
-                        }
-                    })
-                    .collect()
-                })
+            style_tags: inst.get_array("styleTags")
+                .map(|arr| arr.filter_map(|v| if let Value::Reference(Some(r)) = v { Some(r.guid) } else { None }).collect())
                 .unwrap_or_default(),
-            renderer_type: BB_RendererType::from_dcb_str(
-                inst.get_str("rendererType").unwrap_or(""),
-            ),
+            renderer_type: BB_RendererType::from_dcb_str(inst.get_str("rendererType").unwrap_or("")),
             renderer_policy: match inst.get("rendererPolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_RendererPolicyBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_RendererPolicyBasePtr::from_ref(b, r)),
                 _ => None,
             },
             primitive_settings: match inst.get("primitiveSettings") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_PrimitiveSettings>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_PrimitiveSettings>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             parent: match inst.get("parent") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_WidgetBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_WidgetBasePtr::from_ref(b, r)),
                 _ => None,
             },
             preview_scene: match inst.get("previewScene") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_PreviewScreenBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_PreviewScreenBasePtr::from_ref(b, r)),
                 _ => None,
             },
             preview_scene_flattened: match inst.get("previewSceneFlattened") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_PreviewScreenBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_PreviewScreenBasePtr::from_ref(b, r)),
                 _ => None,
             },
-            culling_level: BB_CullingLevel::from_dcb_str(
-                inst.get_str("cullingLevel").unwrap_or(""),
-            ),
+            culling_level: BB_CullingLevel::from_dcb_str(inst.get_str("cullingLevel").unwrap_or("")),
             is_active: inst.get_bool("isActive").unwrap_or_default(),
             affects_layout: inst.get_bool("affectsLayout").unwrap_or_default(),
             affects_autosize: inst.get_bool("affectsAutosize").unwrap_or_default(),
             export_node: inst.get_bool("exportNode").unwrap_or_default(),
             position: match inst.get("position") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             position_offset: match inst.get("positionOffset") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             orientation: match inst.get("orientation") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Deg3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Deg3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             orientation_offset: match inst.get("orientationOffset") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Deg3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Deg3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             scale: match inst.get("scale") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             sizing: match inst.get("sizing") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_Size>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_Size>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            auto_scaling_method: BB_AutoScalingMethod::from_dcb_str(
-                inst.get_str("autoScalingMethod").unwrap_or(""),
-            ),
+            auto_scaling_method: BB_AutoScalingMethod::from_dcb_str(inst.get_str("autoScalingMethod").unwrap_or("")),
             padding: match inst.get("padding") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_TRBL>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_TRBL>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             margin: match inst.get("margin") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_TRBL>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_TRBL>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             pivot: match inst.get("pivot") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             anchor: match inst.get("anchor") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             background: match inst.get("background") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_Background>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_Background>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             segmented_fill: match inst.get("segmentedFill") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_SegmentedFill>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_SegmentedFill>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             svg_fill: match inst.get("svgFill") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_SvgFill>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_SvgFill>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             border: match inst.get("border") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_Border>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_Border>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             layout_policy: match inst.get("layoutPolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_LayoutPolicyBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_LayoutPolicyBasePtr::from_ref(b, r)),
                 _ => None,
             },
             layout_policy_item: match inst.get("layoutPolicyItem") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_LayoutPolicyItemBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_LayoutPolicyItemBasePtr::from_ref(b, r)),
                 _ => None,
             },
             layout_item_common: match inst.get("layoutItemCommon") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<BuildingBlocks_LayoutItemCommon>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<BuildingBlocks_LayoutItemCommon>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             drop_target_policy: match inst.get("dropTargetPolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_DropTargetPolicyBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_DropTargetPolicyBasePtr::from_ref(b, r)),
                 _ => None,
             },
             draggable_policy: match inst.get("draggablePolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_DraggablePolicyBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_DraggablePolicyBasePtr::from_ref(b, r)),
                 _ => None,
             },
             tooltip_policy: match inst.get("tooltipPolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<BuildingBlocks_TooltipPolicy>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<BuildingBlocks_TooltipPolicy>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             context_menu_policy: match inst.get("contextMenuPolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<BuildingBlocks_ContextMenuPolicy>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<BuildingBlocks_ContextMenuPolicy>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             grab_controls_policy: match inst.get("grabControlsPolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<BuildingBlocks_GrabControlsPolicy>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<BuildingBlocks_GrabControlsPolicy>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             callout_settings: match inst.get("calloutSettings") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<BuildingBlocks_CalloutSettings>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<BuildingBlocks_CalloutSettings>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             virtual_cursor_policy: match inst.get("virtualCursorPolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<BuildingBlocks_VirtualCursorPolicy>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<BuildingBlocks_VirtualCursorPolicy>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             overflow: match inst.get("overflow") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_Overflow>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_Overflow>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             scroll_policy: match inst.get("scrollPolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_ScrollPolicyBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_ScrollPolicyBasePtr::from_ref(b, r)),
                 _ => None,
             },
             radial_transform: match inst.get("radialTransform") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_RadialTransform>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_RadialTransform>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             radial_transform_child: match inst.get("radialTransformChild") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_RadialTransformChild>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_RadialTransformChild>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             animation: match inst.get("animation") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_Animation>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_Animation>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             interactions: match inst.get("interactions") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_Interactions>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_Interactions>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             inherits_scale: inst.get_bool("inheritsScale").unwrap_or_default(),
@@ -743,57 +514,25 @@ impl<'a> Extract<'a> for BuildingBlocks_WidgetPolymorphic {
             inherits_overflow: inst.get_bool("inheritsOverflow").unwrap_or_default(),
             alpha: inst.get_f32("alpha").unwrap_or_default(),
             layer: inst.get_u32("layer").unwrap_or_default(),
-            aspect_ratio_library: inst
-                .get("aspectRatioLibrary")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
+            aspect_ratio_library: inst.get("aspectRatioLibrary").and_then(|v| v.as_record_ref()).map(|r| r.guid),
             focus_index: inst.get_i32("focusIndex").unwrap_or_default(),
-            inline_styles: inst
-                .get_array("inlineStyles")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<BuildingBlocks_StyleEntry>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => Some(b.alloc_nested::<BuildingBlocks_StyleEntry>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
+            inline_styles: inst.get_array("inlineStyles")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<BuildingBlocks_StyleEntry>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<BuildingBlocks_StyleEntry>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
             hover_cursor: Cursor::from_dcb_str(inst.get_str("hoverCursor").unwrap_or("")),
             enable_held_cursor: inst.get_bool("enableHeldCursor").unwrap_or_default(),
             held_cursor: Cursor::from_dcb_str(inst.get_str("heldCursor").unwrap_or("")),
-            variable_name: inst
-                .get_str("variableName")
-                .map(String::from)
-                .unwrap_or_default(),
-            target_list: inst
-                .get_array("targetList")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<BuildingBlocks_IntegerWidgetPairDef>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => {
-                            Some(b.alloc_nested::<BuildingBlocks_IntegerWidgetPairDef>(
-                                b.db.instance(r.struct_index, r.instance_index),
-                                true,
-                            ))
-                        }
+            variable_name: inst.get_str("variableName").map(String::from).unwrap_or_default(),
+            target_list: inst.get_array("targetList")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<BuildingBlocks_IntegerWidgetPairDef>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<BuildingBlocks_IntegerWidgetPairDef>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
         }
     }
@@ -921,16 +660,8 @@ pub struct BuildingBlocks_WidgetParticleEffect {
 }
 
 impl Pooled for BuildingBlocks_WidgetParticleEffect {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .ui_buildingblocks
-            .building_blocks_widget_particle_effect
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .ui_buildingblocks
-            .building_blocks_widget_particle_effect
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_buildingblocks.building_blocks_widget_particle_effect }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_buildingblocks.building_blocks_widget_particle_effect }
 }
 
 impl<'a> Extract<'a> for BuildingBlocks_WidgetParticleEffect {
@@ -938,304 +669,154 @@ impl<'a> Extract<'a> for BuildingBlocks_WidgetParticleEffect {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             name: inst.get_str("name").map(String::from).unwrap_or_default(),
-            style_tags: inst
-                .get_array("styleTags")
-                .map(|arr| {
-                    arr.filter_map(|v| {
-                        if let Value::Reference(Some(r)) = v {
-                            Some(r.guid)
-                        } else {
-                            None
-                        }
-                    })
-                    .collect()
-                })
+            style_tags: inst.get_array("styleTags")
+                .map(|arr| arr.filter_map(|v| if let Value::Reference(Some(r)) = v { Some(r.guid) } else { None }).collect())
                 .unwrap_or_default(),
-            renderer_type: BB_RendererType::from_dcb_str(
-                inst.get_str("rendererType").unwrap_or(""),
-            ),
+            renderer_type: BB_RendererType::from_dcb_str(inst.get_str("rendererType").unwrap_or("")),
             renderer_policy: match inst.get("rendererPolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_RendererPolicyBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_RendererPolicyBasePtr::from_ref(b, r)),
                 _ => None,
             },
             primitive_settings: match inst.get("primitiveSettings") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_PrimitiveSettings>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_PrimitiveSettings>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             parent: match inst.get("parent") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_WidgetBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_WidgetBasePtr::from_ref(b, r)),
                 _ => None,
             },
             preview_scene: match inst.get("previewScene") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_PreviewScreenBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_PreviewScreenBasePtr::from_ref(b, r)),
                 _ => None,
             },
             preview_scene_flattened: match inst.get("previewSceneFlattened") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_PreviewScreenBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_PreviewScreenBasePtr::from_ref(b, r)),
                 _ => None,
             },
-            culling_level: BB_CullingLevel::from_dcb_str(
-                inst.get_str("cullingLevel").unwrap_or(""),
-            ),
+            culling_level: BB_CullingLevel::from_dcb_str(inst.get_str("cullingLevel").unwrap_or("")),
             is_active: inst.get_bool("isActive").unwrap_or_default(),
             affects_layout: inst.get_bool("affectsLayout").unwrap_or_default(),
             affects_autosize: inst.get_bool("affectsAutosize").unwrap_or_default(),
             export_node: inst.get_bool("exportNode").unwrap_or_default(),
             position: match inst.get("position") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             position_offset: match inst.get("positionOffset") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             orientation: match inst.get("orientation") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Deg3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Deg3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             orientation_offset: match inst.get("orientationOffset") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Deg3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Deg3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             scale: match inst.get("scale") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             sizing: match inst.get("sizing") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_Size>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_Size>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            auto_scaling_method: BB_AutoScalingMethod::from_dcb_str(
-                inst.get_str("autoScalingMethod").unwrap_or(""),
-            ),
+            auto_scaling_method: BB_AutoScalingMethod::from_dcb_str(inst.get_str("autoScalingMethod").unwrap_or("")),
             padding: match inst.get("padding") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_TRBL>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_TRBL>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             margin: match inst.get("margin") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_TRBL>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_TRBL>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             pivot: match inst.get("pivot") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             anchor: match inst.get("anchor") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             background: match inst.get("background") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_Background>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_Background>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             segmented_fill: match inst.get("segmentedFill") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_SegmentedFill>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_SegmentedFill>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             svg_fill: match inst.get("svgFill") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_SvgFill>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_SvgFill>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             border: match inst.get("border") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_Border>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_Border>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             layout_policy: match inst.get("layoutPolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_LayoutPolicyBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_LayoutPolicyBasePtr::from_ref(b, r)),
                 _ => None,
             },
             layout_policy_item: match inst.get("layoutPolicyItem") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_LayoutPolicyItemBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_LayoutPolicyItemBasePtr::from_ref(b, r)),
                 _ => None,
             },
             layout_item_common: match inst.get("layoutItemCommon") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<BuildingBlocks_LayoutItemCommon>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<BuildingBlocks_LayoutItemCommon>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             drop_target_policy: match inst.get("dropTargetPolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_DropTargetPolicyBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_DropTargetPolicyBasePtr::from_ref(b, r)),
                 _ => None,
             },
             draggable_policy: match inst.get("draggablePolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_DraggablePolicyBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_DraggablePolicyBasePtr::from_ref(b, r)),
                 _ => None,
             },
             tooltip_policy: match inst.get("tooltipPolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<BuildingBlocks_TooltipPolicy>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<BuildingBlocks_TooltipPolicy>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             context_menu_policy: match inst.get("contextMenuPolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<BuildingBlocks_ContextMenuPolicy>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<BuildingBlocks_ContextMenuPolicy>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             grab_controls_policy: match inst.get("grabControlsPolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<BuildingBlocks_GrabControlsPolicy>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<BuildingBlocks_GrabControlsPolicy>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             callout_settings: match inst.get("calloutSettings") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<BuildingBlocks_CalloutSettings>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<BuildingBlocks_CalloutSettings>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             virtual_cursor_policy: match inst.get("virtualCursorPolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<BuildingBlocks_VirtualCursorPolicy>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<BuildingBlocks_VirtualCursorPolicy>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             overflow: match inst.get("overflow") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_Overflow>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_Overflow>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             scroll_policy: match inst.get("scrollPolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_ScrollPolicyBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_ScrollPolicyBasePtr::from_ref(b, r)),
                 _ => None,
             },
             radial_transform: match inst.get("radialTransform") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_RadialTransform>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_RadialTransform>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             radial_transform_child: match inst.get("radialTransformChild") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_RadialTransformChild>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_RadialTransformChild>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             animation: match inst.get("animation") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_Animation>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_Animation>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             interactions: match inst.get("interactions") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_Interactions>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_Interactions>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             inherits_scale: inst.get_bool("inheritsScale").unwrap_or_default(),
@@ -1245,40 +826,20 @@ impl<'a> Extract<'a> for BuildingBlocks_WidgetParticleEffect {
             inherits_overflow: inst.get_bool("inheritsOverflow").unwrap_or_default(),
             alpha: inst.get_f32("alpha").unwrap_or_default(),
             layer: inst.get_u32("layer").unwrap_or_default(),
-            aspect_ratio_library: inst
-                .get("aspectRatioLibrary")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
+            aspect_ratio_library: inst.get("aspectRatioLibrary").and_then(|v| v.as_record_ref()).map(|r| r.guid),
             focus_index: inst.get_i32("focusIndex").unwrap_or_default(),
-            inline_styles: inst
-                .get_array("inlineStyles")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<BuildingBlocks_StyleEntry>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => Some(b.alloc_nested::<BuildingBlocks_StyleEntry>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
+            inline_styles: inst.get_array("inlineStyles")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<BuildingBlocks_StyleEntry>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<BuildingBlocks_StyleEntry>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
             hover_cursor: Cursor::from_dcb_str(inst.get_str("hoverCursor").unwrap_or("")),
             enable_held_cursor: inst.get_bool("enableHeldCursor").unwrap_or_default(),
             held_cursor: Cursor::from_dcb_str(inst.get_str("heldCursor").unwrap_or("")),
             effect: match inst.get("effect") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<GlobalResourceParticle>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceParticle>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
@@ -1293,12 +854,8 @@ pub struct BuildingBlocks_LookAtTransformer {
 }
 
 impl Pooled for BuildingBlocks_LookAtTransformer {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.ui_buildingblocks.building_blocks_look_at_transformer
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.ui_buildingblocks.building_blocks_look_at_transformer
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_buildingblocks.building_blocks_look_at_transformer }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_buildingblocks.building_blocks_look_at_transformer }
 }
 
 impl<'a> Extract<'a> for BuildingBlocks_LookAtTransformer {
@@ -1306,10 +863,7 @@ impl<'a> Extract<'a> for BuildingBlocks_LookAtTransformer {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             position: match inst.get("position") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
@@ -1444,16 +998,8 @@ pub struct BuildingBlocks_WidgetEnvironmentProbe {
 }
 
 impl Pooled for BuildingBlocks_WidgetEnvironmentProbe {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .ui_buildingblocks
-            .building_blocks_widget_environment_probe
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .ui_buildingblocks
-            .building_blocks_widget_environment_probe
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_buildingblocks.building_blocks_widget_environment_probe }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_buildingblocks.building_blocks_widget_environment_probe }
 }
 
 impl<'a> Extract<'a> for BuildingBlocks_WidgetEnvironmentProbe {
@@ -1461,304 +1007,154 @@ impl<'a> Extract<'a> for BuildingBlocks_WidgetEnvironmentProbe {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             name: inst.get_str("name").map(String::from).unwrap_or_default(),
-            style_tags: inst
-                .get_array("styleTags")
-                .map(|arr| {
-                    arr.filter_map(|v| {
-                        if let Value::Reference(Some(r)) = v {
-                            Some(r.guid)
-                        } else {
-                            None
-                        }
-                    })
-                    .collect()
-                })
+            style_tags: inst.get_array("styleTags")
+                .map(|arr| arr.filter_map(|v| if let Value::Reference(Some(r)) = v { Some(r.guid) } else { None }).collect())
                 .unwrap_or_default(),
-            renderer_type: BB_RendererType::from_dcb_str(
-                inst.get_str("rendererType").unwrap_or(""),
-            ),
+            renderer_type: BB_RendererType::from_dcb_str(inst.get_str("rendererType").unwrap_or("")),
             renderer_policy: match inst.get("rendererPolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_RendererPolicyBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_RendererPolicyBasePtr::from_ref(b, r)),
                 _ => None,
             },
             primitive_settings: match inst.get("primitiveSettings") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_PrimitiveSettings>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_PrimitiveSettings>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             parent: match inst.get("parent") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_WidgetBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_WidgetBasePtr::from_ref(b, r)),
                 _ => None,
             },
             preview_scene: match inst.get("previewScene") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_PreviewScreenBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_PreviewScreenBasePtr::from_ref(b, r)),
                 _ => None,
             },
             preview_scene_flattened: match inst.get("previewSceneFlattened") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_PreviewScreenBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_PreviewScreenBasePtr::from_ref(b, r)),
                 _ => None,
             },
-            culling_level: BB_CullingLevel::from_dcb_str(
-                inst.get_str("cullingLevel").unwrap_or(""),
-            ),
+            culling_level: BB_CullingLevel::from_dcb_str(inst.get_str("cullingLevel").unwrap_or("")),
             is_active: inst.get_bool("isActive").unwrap_or_default(),
             affects_layout: inst.get_bool("affectsLayout").unwrap_or_default(),
             affects_autosize: inst.get_bool("affectsAutosize").unwrap_or_default(),
             export_node: inst.get_bool("exportNode").unwrap_or_default(),
             position: match inst.get("position") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             position_offset: match inst.get("positionOffset") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             orientation: match inst.get("orientation") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Deg3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Deg3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             orientation_offset: match inst.get("orientationOffset") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Deg3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Deg3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             scale: match inst.get("scale") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             sizing: match inst.get("sizing") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_Size>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_Size>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            auto_scaling_method: BB_AutoScalingMethod::from_dcb_str(
-                inst.get_str("autoScalingMethod").unwrap_or(""),
-            ),
+            auto_scaling_method: BB_AutoScalingMethod::from_dcb_str(inst.get_str("autoScalingMethod").unwrap_or("")),
             padding: match inst.get("padding") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_TRBL>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_TRBL>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             margin: match inst.get("margin") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_TRBL>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_TRBL>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             pivot: match inst.get("pivot") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             anchor: match inst.get("anchor") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             background: match inst.get("background") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_Background>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_Background>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             segmented_fill: match inst.get("segmentedFill") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_SegmentedFill>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_SegmentedFill>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             svg_fill: match inst.get("svgFill") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_SvgFill>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_SvgFill>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             border: match inst.get("border") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_Border>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_Border>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             layout_policy: match inst.get("layoutPolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_LayoutPolicyBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_LayoutPolicyBasePtr::from_ref(b, r)),
                 _ => None,
             },
             layout_policy_item: match inst.get("layoutPolicyItem") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_LayoutPolicyItemBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_LayoutPolicyItemBasePtr::from_ref(b, r)),
                 _ => None,
             },
             layout_item_common: match inst.get("layoutItemCommon") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<BuildingBlocks_LayoutItemCommon>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<BuildingBlocks_LayoutItemCommon>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             drop_target_policy: match inst.get("dropTargetPolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_DropTargetPolicyBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_DropTargetPolicyBasePtr::from_ref(b, r)),
                 _ => None,
             },
             draggable_policy: match inst.get("draggablePolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_DraggablePolicyBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_DraggablePolicyBasePtr::from_ref(b, r)),
                 _ => None,
             },
             tooltip_policy: match inst.get("tooltipPolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<BuildingBlocks_TooltipPolicy>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<BuildingBlocks_TooltipPolicy>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             context_menu_policy: match inst.get("contextMenuPolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<BuildingBlocks_ContextMenuPolicy>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<BuildingBlocks_ContextMenuPolicy>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             grab_controls_policy: match inst.get("grabControlsPolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<BuildingBlocks_GrabControlsPolicy>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<BuildingBlocks_GrabControlsPolicy>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             callout_settings: match inst.get("calloutSettings") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<BuildingBlocks_CalloutSettings>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<BuildingBlocks_CalloutSettings>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             virtual_cursor_policy: match inst.get("virtualCursorPolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<BuildingBlocks_VirtualCursorPolicy>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<BuildingBlocks_VirtualCursorPolicy>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             overflow: match inst.get("overflow") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_Overflow>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_Overflow>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             scroll_policy: match inst.get("scrollPolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_ScrollPolicyBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_ScrollPolicyBasePtr::from_ref(b, r)),
                 _ => None,
             },
             radial_transform: match inst.get("radialTransform") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_RadialTransform>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_RadialTransform>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             radial_transform_child: match inst.get("radialTransformChild") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_RadialTransformChild>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_RadialTransformChild>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             animation: match inst.get("animation") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_Animation>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_Animation>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             interactions: match inst.get("interactions") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_Interactions>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_Interactions>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             inherits_scale: inst.get_bool("inheritsScale").unwrap_or_default(),
@@ -1768,29 +1164,14 @@ impl<'a> Extract<'a> for BuildingBlocks_WidgetEnvironmentProbe {
             inherits_overflow: inst.get_bool("inheritsOverflow").unwrap_or_default(),
             alpha: inst.get_f32("alpha").unwrap_or_default(),
             layer: inst.get_u32("layer").unwrap_or_default(),
-            aspect_ratio_library: inst
-                .get("aspectRatioLibrary")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
+            aspect_ratio_library: inst.get("aspectRatioLibrary").and_then(|v| v.as_record_ref()).map(|r| r.guid),
             focus_index: inst.get_i32("focusIndex").unwrap_or_default(),
-            inline_styles: inst
-                .get_array("inlineStyles")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<BuildingBlocks_StyleEntry>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => Some(b.alloc_nested::<BuildingBlocks_StyleEntry>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
+            inline_styles: inst.get_array("inlineStyles")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<BuildingBlocks_StyleEntry>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<BuildingBlocks_StyleEntry>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
             hover_cursor: Cursor::from_dcb_str(inst.get_str("hoverCursor").unwrap_or("")),
             enable_held_cursor: inst.get_bool("enableHeldCursor").unwrap_or_default(),
@@ -1798,15 +1179,10 @@ impl<'a> Extract<'a> for BuildingBlocks_WidgetEnvironmentProbe {
             probe_radius: inst.get_f32("probeRadius").unwrap_or_default(),
             probe_intensity: inst.get_f32("probeIntensity").unwrap_or_default(),
             probe_color: match inst.get("probeColor") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_ColorBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_ColorBasePtr::from_ref(b, r)),
                 _ => None,
             },
-            specular_image: inst
-                .get_str("specularImage")
-                .map(String::from)
-                .unwrap_or_default(),
+            specular_image: inst.get_str("specularImage").map(String::from).unwrap_or_default(),
         }
     }
 }
@@ -1842,12 +1218,8 @@ pub struct GrabCameraControlParams {
 }
 
 impl Pooled for GrabCameraControlParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.ui_buildingblocks.grab_camera_control_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.ui_buildingblocks.grab_camera_control_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_buildingblocks.grab_camera_control_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_buildingblocks.grab_camera_control_params }
 }
 
 impl<'a> Extract<'a> for GrabCameraControlParams {
@@ -1863,9 +1235,7 @@ impl<'a> Extract<'a> for GrabCameraControlParams {
             maximum_zoom_distance: inst.get_f32("maximumZoomDistance").unwrap_or_default(),
             maximum_zoom_speed: inst.get_f32("maximumZoomSpeed").unwrap_or_default(),
             is_grabbable_out_of_bounds: inst.get_bool("isGrabbableOutOfBounds").unwrap_or_default(),
-            grab_rotation_mode: BB_GrabRotationMode::from_dcb_str(
-                inst.get_str("grabRotationMode").unwrap_or(""),
-            ),
+            grab_rotation_mode: BB_GrabRotationMode::from_dcb_str(inst.get_str("grabRotationMode").unwrap_or("")),
             pan_responsiveness: inst.get_f32("panResponsiveness").unwrap_or_default(),
             pan_speed: inst.get_f32("panSpeed").unwrap_or_default(),
             pan_slowdown: inst.get_f32("panSlowdown").unwrap_or_default(),
@@ -1883,12 +1253,8 @@ pub struct BuildingBlocks_TargetSlicer {
 }
 
 impl Pooled for BuildingBlocks_TargetSlicer {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.ui_buildingblocks.building_blocks_target_slicer
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.ui_buildingblocks.building_blocks_target_slicer
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_buildingblocks.building_blocks_target_slicer }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_buildingblocks.building_blocks_target_slicer }
 }
 
 impl<'a> Extract<'a> for BuildingBlocks_TargetSlicer {
@@ -1896,14 +1262,10 @@ impl<'a> Extract<'a> for BuildingBlocks_TargetSlicer {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             target: match inst.get("target") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_WidgetBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_WidgetBasePtr::from_ref(b, r)),
                 _ => None,
             },
-            coordinate_method: BB_CanvasCoordinateMethod::from_dcb_str(
-                inst.get_str("coordinateMethod").unwrap_or(""),
-            ),
+            coordinate_method: BB_CanvasCoordinateMethod::from_dcb_str(inst.get_str("coordinateMethod").unwrap_or("")),
         }
     }
 }
@@ -2054,12 +1416,8 @@ pub struct BuildingBlocks_WidgetPagination {
 }
 
 impl Pooled for BuildingBlocks_WidgetPagination {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.ui_buildingblocks.building_blocks_widget_pagination
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.ui_buildingblocks.building_blocks_widget_pagination
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_buildingblocks.building_blocks_widget_pagination }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_buildingblocks.building_blocks_widget_pagination }
 }
 
 impl<'a> Extract<'a> for BuildingBlocks_WidgetPagination {
@@ -2067,304 +1425,154 @@ impl<'a> Extract<'a> for BuildingBlocks_WidgetPagination {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             name: inst.get_str("name").map(String::from).unwrap_or_default(),
-            style_tags: inst
-                .get_array("styleTags")
-                .map(|arr| {
-                    arr.filter_map(|v| {
-                        if let Value::Reference(Some(r)) = v {
-                            Some(r.guid)
-                        } else {
-                            None
-                        }
-                    })
-                    .collect()
-                })
+            style_tags: inst.get_array("styleTags")
+                .map(|arr| arr.filter_map(|v| if let Value::Reference(Some(r)) = v { Some(r.guid) } else { None }).collect())
                 .unwrap_or_default(),
-            renderer_type: BB_RendererType::from_dcb_str(
-                inst.get_str("rendererType").unwrap_or(""),
-            ),
+            renderer_type: BB_RendererType::from_dcb_str(inst.get_str("rendererType").unwrap_or("")),
             renderer_policy: match inst.get("rendererPolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_RendererPolicyBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_RendererPolicyBasePtr::from_ref(b, r)),
                 _ => None,
             },
             primitive_settings: match inst.get("primitiveSettings") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_PrimitiveSettings>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_PrimitiveSettings>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             parent: match inst.get("parent") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_WidgetBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_WidgetBasePtr::from_ref(b, r)),
                 _ => None,
             },
             preview_scene: match inst.get("previewScene") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_PreviewScreenBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_PreviewScreenBasePtr::from_ref(b, r)),
                 _ => None,
             },
             preview_scene_flattened: match inst.get("previewSceneFlattened") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_PreviewScreenBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_PreviewScreenBasePtr::from_ref(b, r)),
                 _ => None,
             },
-            culling_level: BB_CullingLevel::from_dcb_str(
-                inst.get_str("cullingLevel").unwrap_or(""),
-            ),
+            culling_level: BB_CullingLevel::from_dcb_str(inst.get_str("cullingLevel").unwrap_or("")),
             is_active: inst.get_bool("isActive").unwrap_or_default(),
             affects_layout: inst.get_bool("affectsLayout").unwrap_or_default(),
             affects_autosize: inst.get_bool("affectsAutosize").unwrap_or_default(),
             export_node: inst.get_bool("exportNode").unwrap_or_default(),
             position: match inst.get("position") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             position_offset: match inst.get("positionOffset") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             orientation: match inst.get("orientation") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Deg3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Deg3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             orientation_offset: match inst.get("orientationOffset") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Deg3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Deg3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             scale: match inst.get("scale") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             sizing: match inst.get("sizing") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_Size>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_Size>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            auto_scaling_method: BB_AutoScalingMethod::from_dcb_str(
-                inst.get_str("autoScalingMethod").unwrap_or(""),
-            ),
+            auto_scaling_method: BB_AutoScalingMethod::from_dcb_str(inst.get_str("autoScalingMethod").unwrap_or("")),
             padding: match inst.get("padding") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_TRBL>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_TRBL>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             margin: match inst.get("margin") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_TRBL>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_TRBL>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             pivot: match inst.get("pivot") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             anchor: match inst.get("anchor") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             background: match inst.get("background") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_Background>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_Background>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             segmented_fill: match inst.get("segmentedFill") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_SegmentedFill>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_SegmentedFill>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             svg_fill: match inst.get("svgFill") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_SvgFill>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_SvgFill>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             border: match inst.get("border") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_Border>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_Border>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             layout_policy: match inst.get("layoutPolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_LayoutPolicyBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_LayoutPolicyBasePtr::from_ref(b, r)),
                 _ => None,
             },
             layout_policy_item: match inst.get("layoutPolicyItem") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_LayoutPolicyItemBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_LayoutPolicyItemBasePtr::from_ref(b, r)),
                 _ => None,
             },
             layout_item_common: match inst.get("layoutItemCommon") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<BuildingBlocks_LayoutItemCommon>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<BuildingBlocks_LayoutItemCommon>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             drop_target_policy: match inst.get("dropTargetPolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_DropTargetPolicyBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_DropTargetPolicyBasePtr::from_ref(b, r)),
                 _ => None,
             },
             draggable_policy: match inst.get("draggablePolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_DraggablePolicyBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_DraggablePolicyBasePtr::from_ref(b, r)),
                 _ => None,
             },
             tooltip_policy: match inst.get("tooltipPolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<BuildingBlocks_TooltipPolicy>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<BuildingBlocks_TooltipPolicy>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             context_menu_policy: match inst.get("contextMenuPolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<BuildingBlocks_ContextMenuPolicy>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<BuildingBlocks_ContextMenuPolicy>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             grab_controls_policy: match inst.get("grabControlsPolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<BuildingBlocks_GrabControlsPolicy>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<BuildingBlocks_GrabControlsPolicy>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             callout_settings: match inst.get("calloutSettings") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<BuildingBlocks_CalloutSettings>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<BuildingBlocks_CalloutSettings>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             virtual_cursor_policy: match inst.get("virtualCursorPolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<BuildingBlocks_VirtualCursorPolicy>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<BuildingBlocks_VirtualCursorPolicy>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             overflow: match inst.get("overflow") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_Overflow>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_Overflow>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             scroll_policy: match inst.get("scrollPolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_ScrollPolicyBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_ScrollPolicyBasePtr::from_ref(b, r)),
                 _ => None,
             },
             radial_transform: match inst.get("radialTransform") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_RadialTransform>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_RadialTransform>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             radial_transform_child: match inst.get("radialTransformChild") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_RadialTransformChild>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_RadialTransformChild>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             animation: match inst.get("animation") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_Animation>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_Animation>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             interactions: match inst.get("interactions") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_Interactions>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_Interactions>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             inherits_scale: inst.get_bool("inheritsScale").unwrap_or_default(),
@@ -2374,77 +1582,36 @@ impl<'a> Extract<'a> for BuildingBlocks_WidgetPagination {
             inherits_overflow: inst.get_bool("inheritsOverflow").unwrap_or_default(),
             alpha: inst.get_f32("alpha").unwrap_or_default(),
             layer: inst.get_u32("layer").unwrap_or_default(),
-            aspect_ratio_library: inst
-                .get("aspectRatioLibrary")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
+            aspect_ratio_library: inst.get("aspectRatioLibrary").and_then(|v| v.as_record_ref()).map(|r| r.guid),
             focus_index: inst.get_i32("focusIndex").unwrap_or_default(),
-            inline_styles: inst
-                .get_array("inlineStyles")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<BuildingBlocks_StyleEntry>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => Some(b.alloc_nested::<BuildingBlocks_StyleEntry>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
+            inline_styles: inst.get_array("inlineStyles")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<BuildingBlocks_StyleEntry>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<BuildingBlocks_StyleEntry>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
             hover_cursor: Cursor::from_dcb_str(inst.get_str("hoverCursor").unwrap_or("")),
             enable_held_cursor: inst.get_bool("enableHeldCursor").unwrap_or_default(),
             held_cursor: Cursor::from_dcb_str(inst.get_str("heldCursor").unwrap_or("")),
             instantiated: inst.get_bool("instantiated").unwrap_or_default(),
-            url_optional: inst
-                .get_str("urlOptional")
-                .map(String::from)
-                .unwrap_or_default(),
-            url_postfix: inst
-                .get_str("urlPostfix")
-                .map(String::from)
-                .unwrap_or_default(),
-            stylesheet_override: inst
-                .get("stylesheetOverride")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            canvas: inst
-                .get("canvas")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            sizing_method: BB_CanvasWidgetSizingMethod::from_dcb_str(
-                inst.get_str("sizingMethod").unwrap_or(""),
-            ),
-            param_input_values: inst
-                .get_array("paramInputValues")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => Some(
-                            BuildingBlocks_ComponentParameterInputBasePtr::from_ref(b, r),
-                        ),
+            url_optional: inst.get_str("urlOptional").map(String::from).unwrap_or_default(),
+            url_postfix: inst.get_str("urlPostfix").map(String::from).unwrap_or_default(),
+            stylesheet_override: inst.get("stylesheetOverride").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            canvas: inst.get("canvas").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            sizing_method: BB_CanvasWidgetSizingMethod::from_dcb_str(inst.get_str("sizingMethod").unwrap_or("")),
+            param_input_values: inst.get_array("paramInputValues")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => Some(BuildingBlocks_ComponentParameterInputBasePtr::from_ref(b, r)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
             show_first_page_button: inst.get_bool("showFirstPageButton").unwrap_or_default(),
             show_previous_page_button: inst.get_bool("showPreviousPageButton").unwrap_or_default(),
             show_next_page_button: inst.get_bool("showNextPageButton").unwrap_or_default(),
             show_last_page_button: inst.get_bool("showLastPageButton").unwrap_or_default(),
-            page_number_url: inst
-                .get_str("pageNumberURL")
-                .map(String::from)
-                .unwrap_or_default(),
-            num_pages_url: inst
-                .get_str("numPagesURL")
-                .map(String::from)
-                .unwrap_or_default(),
+            page_number_url: inst.get_str("pageNumberURL").map(String::from).unwrap_or_default(),
+            num_pages_url: inst.get_str("numPagesURL").map(String::from).unwrap_or_default(),
         }
     }
 }
@@ -2587,12 +1754,8 @@ pub struct BuildingBlocks_WidgetRadioControl {
 }
 
 impl Pooled for BuildingBlocks_WidgetRadioControl {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.ui_buildingblocks.building_blocks_widget_radio_control
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.ui_buildingblocks.building_blocks_widget_radio_control
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_buildingblocks.building_blocks_widget_radio_control }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_buildingblocks.building_blocks_widget_radio_control }
 }
 
 impl<'a> Extract<'a> for BuildingBlocks_WidgetRadioControl {
@@ -2600,304 +1763,154 @@ impl<'a> Extract<'a> for BuildingBlocks_WidgetRadioControl {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             name: inst.get_str("name").map(String::from).unwrap_or_default(),
-            style_tags: inst
-                .get_array("styleTags")
-                .map(|arr| {
-                    arr.filter_map(|v| {
-                        if let Value::Reference(Some(r)) = v {
-                            Some(r.guid)
-                        } else {
-                            None
-                        }
-                    })
-                    .collect()
-                })
+            style_tags: inst.get_array("styleTags")
+                .map(|arr| arr.filter_map(|v| if let Value::Reference(Some(r)) = v { Some(r.guid) } else { None }).collect())
                 .unwrap_or_default(),
-            renderer_type: BB_RendererType::from_dcb_str(
-                inst.get_str("rendererType").unwrap_or(""),
-            ),
+            renderer_type: BB_RendererType::from_dcb_str(inst.get_str("rendererType").unwrap_or("")),
             renderer_policy: match inst.get("rendererPolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_RendererPolicyBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_RendererPolicyBasePtr::from_ref(b, r)),
                 _ => None,
             },
             primitive_settings: match inst.get("primitiveSettings") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_PrimitiveSettings>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_PrimitiveSettings>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             parent: match inst.get("parent") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_WidgetBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_WidgetBasePtr::from_ref(b, r)),
                 _ => None,
             },
             preview_scene: match inst.get("previewScene") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_PreviewScreenBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_PreviewScreenBasePtr::from_ref(b, r)),
                 _ => None,
             },
             preview_scene_flattened: match inst.get("previewSceneFlattened") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_PreviewScreenBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_PreviewScreenBasePtr::from_ref(b, r)),
                 _ => None,
             },
-            culling_level: BB_CullingLevel::from_dcb_str(
-                inst.get_str("cullingLevel").unwrap_or(""),
-            ),
+            culling_level: BB_CullingLevel::from_dcb_str(inst.get_str("cullingLevel").unwrap_or("")),
             is_active: inst.get_bool("isActive").unwrap_or_default(),
             affects_layout: inst.get_bool("affectsLayout").unwrap_or_default(),
             affects_autosize: inst.get_bool("affectsAutosize").unwrap_or_default(),
             export_node: inst.get_bool("exportNode").unwrap_or_default(),
             position: match inst.get("position") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             position_offset: match inst.get("positionOffset") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             orientation: match inst.get("orientation") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Deg3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Deg3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             orientation_offset: match inst.get("orientationOffset") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Deg3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Deg3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             scale: match inst.get("scale") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             sizing: match inst.get("sizing") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_Size>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_Size>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            auto_scaling_method: BB_AutoScalingMethod::from_dcb_str(
-                inst.get_str("autoScalingMethod").unwrap_or(""),
-            ),
+            auto_scaling_method: BB_AutoScalingMethod::from_dcb_str(inst.get_str("autoScalingMethod").unwrap_or("")),
             padding: match inst.get("padding") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_TRBL>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_TRBL>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             margin: match inst.get("margin") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_TRBL>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_TRBL>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             pivot: match inst.get("pivot") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             anchor: match inst.get("anchor") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             background: match inst.get("background") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_Background>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_Background>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             segmented_fill: match inst.get("segmentedFill") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_SegmentedFill>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_SegmentedFill>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             svg_fill: match inst.get("svgFill") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_SvgFill>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_SvgFill>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             border: match inst.get("border") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_Border>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_Border>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             layout_policy: match inst.get("layoutPolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_LayoutPolicyBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_LayoutPolicyBasePtr::from_ref(b, r)),
                 _ => None,
             },
             layout_policy_item: match inst.get("layoutPolicyItem") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_LayoutPolicyItemBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_LayoutPolicyItemBasePtr::from_ref(b, r)),
                 _ => None,
             },
             layout_item_common: match inst.get("layoutItemCommon") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<BuildingBlocks_LayoutItemCommon>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<BuildingBlocks_LayoutItemCommon>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             drop_target_policy: match inst.get("dropTargetPolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_DropTargetPolicyBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_DropTargetPolicyBasePtr::from_ref(b, r)),
                 _ => None,
             },
             draggable_policy: match inst.get("draggablePolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_DraggablePolicyBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_DraggablePolicyBasePtr::from_ref(b, r)),
                 _ => None,
             },
             tooltip_policy: match inst.get("tooltipPolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<BuildingBlocks_TooltipPolicy>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<BuildingBlocks_TooltipPolicy>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             context_menu_policy: match inst.get("contextMenuPolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<BuildingBlocks_ContextMenuPolicy>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<BuildingBlocks_ContextMenuPolicy>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             grab_controls_policy: match inst.get("grabControlsPolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<BuildingBlocks_GrabControlsPolicy>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<BuildingBlocks_GrabControlsPolicy>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             callout_settings: match inst.get("calloutSettings") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<BuildingBlocks_CalloutSettings>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<BuildingBlocks_CalloutSettings>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             virtual_cursor_policy: match inst.get("virtualCursorPolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<BuildingBlocks_VirtualCursorPolicy>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<BuildingBlocks_VirtualCursorPolicy>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             overflow: match inst.get("overflow") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_Overflow>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_Overflow>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             scroll_policy: match inst.get("scrollPolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_ScrollPolicyBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_ScrollPolicyBasePtr::from_ref(b, r)),
                 _ => None,
             },
             radial_transform: match inst.get("radialTransform") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_RadialTransform>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_RadialTransform>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             radial_transform_child: match inst.get("radialTransformChild") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_RadialTransformChild>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_RadialTransformChild>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             animation: match inst.get("animation") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_Animation>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_Animation>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             interactions: match inst.get("interactions") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_Interactions>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_Interactions>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             inherits_scale: inst.get_bool("inheritsScale").unwrap_or_default(),
@@ -2907,72 +1920,32 @@ impl<'a> Extract<'a> for BuildingBlocks_WidgetRadioControl {
             inherits_overflow: inst.get_bool("inheritsOverflow").unwrap_or_default(),
             alpha: inst.get_f32("alpha").unwrap_or_default(),
             layer: inst.get_u32("layer").unwrap_or_default(),
-            aspect_ratio_library: inst
-                .get("aspectRatioLibrary")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
+            aspect_ratio_library: inst.get("aspectRatioLibrary").and_then(|v| v.as_record_ref()).map(|r| r.guid),
             focus_index: inst.get_i32("focusIndex").unwrap_or_default(),
-            inline_styles: inst
-                .get_array("inlineStyles")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<BuildingBlocks_StyleEntry>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => Some(b.alloc_nested::<BuildingBlocks_StyleEntry>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
+            inline_styles: inst.get_array("inlineStyles")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<BuildingBlocks_StyleEntry>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<BuildingBlocks_StyleEntry>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
             hover_cursor: Cursor::from_dcb_str(inst.get_str("hoverCursor").unwrap_or("")),
             enable_held_cursor: inst.get_bool("enableHeldCursor").unwrap_or_default(),
             held_cursor: Cursor::from_dcb_str(inst.get_str("heldCursor").unwrap_or("")),
             instantiated: inst.get_bool("instantiated").unwrap_or_default(),
-            url_optional: inst
-                .get_str("urlOptional")
-                .map(String::from)
-                .unwrap_or_default(),
-            url_postfix: inst
-                .get_str("urlPostfix")
-                .map(String::from)
-                .unwrap_or_default(),
-            stylesheet_override: inst
-                .get("stylesheetOverride")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            canvas: inst
-                .get("canvas")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            sizing_method: BB_CanvasWidgetSizingMethod::from_dcb_str(
-                inst.get_str("sizingMethod").unwrap_or(""),
-            ),
-            param_input_values: inst
-                .get_array("paramInputValues")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => Some(
-                            BuildingBlocks_ComponentParameterInputBasePtr::from_ref(b, r),
-                        ),
+            url_optional: inst.get_str("urlOptional").map(String::from).unwrap_or_default(),
+            url_postfix: inst.get_str("urlPostfix").map(String::from).unwrap_or_default(),
+            stylesheet_override: inst.get("stylesheetOverride").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            canvas: inst.get("canvas").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            sizing_method: BB_CanvasWidgetSizingMethod::from_dcb_str(inst.get_str("sizingMethod").unwrap_or("")),
+            param_input_values: inst.get_array("paramInputValues")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => Some(BuildingBlocks_ComponentParameterInputBasePtr::from_ref(b, r)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
-            variable_name: inst
-                .get_str("variableName")
-                .map(String::from)
-                .unwrap_or_default(),
-            toggle_activation_event: BB_ActivationButtonAction::from_dcb_str(
-                inst.get_str("toggleActivationEvent").unwrap_or(""),
-            ),
+            variable_name: inst.get_str("variableName").map(String::from).unwrap_or_default(),
+            toggle_activation_event: BB_ActivationButtonAction::from_dcb_str(inst.get_str("toggleActivationEvent").unwrap_or("")),
         }
     }
 }
@@ -3115,12 +2088,8 @@ pub struct BuildingBlocks_WidgetBadge {
 }
 
 impl Pooled for BuildingBlocks_WidgetBadge {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.ui_buildingblocks.building_blocks_widget_badge
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.ui_buildingblocks.building_blocks_widget_badge
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_buildingblocks.building_blocks_widget_badge }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_buildingblocks.building_blocks_widget_badge }
 }
 
 impl<'a> Extract<'a> for BuildingBlocks_WidgetBadge {
@@ -3128,304 +2097,154 @@ impl<'a> Extract<'a> for BuildingBlocks_WidgetBadge {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             name: inst.get_str("name").map(String::from).unwrap_or_default(),
-            style_tags: inst
-                .get_array("styleTags")
-                .map(|arr| {
-                    arr.filter_map(|v| {
-                        if let Value::Reference(Some(r)) = v {
-                            Some(r.guid)
-                        } else {
-                            None
-                        }
-                    })
-                    .collect()
-                })
+            style_tags: inst.get_array("styleTags")
+                .map(|arr| arr.filter_map(|v| if let Value::Reference(Some(r)) = v { Some(r.guid) } else { None }).collect())
                 .unwrap_or_default(),
-            renderer_type: BB_RendererType::from_dcb_str(
-                inst.get_str("rendererType").unwrap_or(""),
-            ),
+            renderer_type: BB_RendererType::from_dcb_str(inst.get_str("rendererType").unwrap_or("")),
             renderer_policy: match inst.get("rendererPolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_RendererPolicyBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_RendererPolicyBasePtr::from_ref(b, r)),
                 _ => None,
             },
             primitive_settings: match inst.get("primitiveSettings") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_PrimitiveSettings>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_PrimitiveSettings>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             parent: match inst.get("parent") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_WidgetBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_WidgetBasePtr::from_ref(b, r)),
                 _ => None,
             },
             preview_scene: match inst.get("previewScene") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_PreviewScreenBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_PreviewScreenBasePtr::from_ref(b, r)),
                 _ => None,
             },
             preview_scene_flattened: match inst.get("previewSceneFlattened") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_PreviewScreenBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_PreviewScreenBasePtr::from_ref(b, r)),
                 _ => None,
             },
-            culling_level: BB_CullingLevel::from_dcb_str(
-                inst.get_str("cullingLevel").unwrap_or(""),
-            ),
+            culling_level: BB_CullingLevel::from_dcb_str(inst.get_str("cullingLevel").unwrap_or("")),
             is_active: inst.get_bool("isActive").unwrap_or_default(),
             affects_layout: inst.get_bool("affectsLayout").unwrap_or_default(),
             affects_autosize: inst.get_bool("affectsAutosize").unwrap_or_default(),
             export_node: inst.get_bool("exportNode").unwrap_or_default(),
             position: match inst.get("position") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             position_offset: match inst.get("positionOffset") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             orientation: match inst.get("orientation") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Deg3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Deg3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             orientation_offset: match inst.get("orientationOffset") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Deg3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Deg3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             scale: match inst.get("scale") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             sizing: match inst.get("sizing") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_Size>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_Size>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            auto_scaling_method: BB_AutoScalingMethod::from_dcb_str(
-                inst.get_str("autoScalingMethod").unwrap_or(""),
-            ),
+            auto_scaling_method: BB_AutoScalingMethod::from_dcb_str(inst.get_str("autoScalingMethod").unwrap_or("")),
             padding: match inst.get("padding") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_TRBL>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_TRBL>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             margin: match inst.get("margin") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_TRBL>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_TRBL>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             pivot: match inst.get("pivot") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             anchor: match inst.get("anchor") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             background: match inst.get("background") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_Background>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_Background>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             segmented_fill: match inst.get("segmentedFill") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_SegmentedFill>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_SegmentedFill>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             svg_fill: match inst.get("svgFill") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_SvgFill>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_SvgFill>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             border: match inst.get("border") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_Border>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_Border>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             layout_policy: match inst.get("layoutPolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_LayoutPolicyBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_LayoutPolicyBasePtr::from_ref(b, r)),
                 _ => None,
             },
             layout_policy_item: match inst.get("layoutPolicyItem") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_LayoutPolicyItemBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_LayoutPolicyItemBasePtr::from_ref(b, r)),
                 _ => None,
             },
             layout_item_common: match inst.get("layoutItemCommon") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<BuildingBlocks_LayoutItemCommon>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<BuildingBlocks_LayoutItemCommon>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             drop_target_policy: match inst.get("dropTargetPolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_DropTargetPolicyBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_DropTargetPolicyBasePtr::from_ref(b, r)),
                 _ => None,
             },
             draggable_policy: match inst.get("draggablePolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_DraggablePolicyBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_DraggablePolicyBasePtr::from_ref(b, r)),
                 _ => None,
             },
             tooltip_policy: match inst.get("tooltipPolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<BuildingBlocks_TooltipPolicy>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<BuildingBlocks_TooltipPolicy>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             context_menu_policy: match inst.get("contextMenuPolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<BuildingBlocks_ContextMenuPolicy>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<BuildingBlocks_ContextMenuPolicy>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             grab_controls_policy: match inst.get("grabControlsPolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<BuildingBlocks_GrabControlsPolicy>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<BuildingBlocks_GrabControlsPolicy>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             callout_settings: match inst.get("calloutSettings") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<BuildingBlocks_CalloutSettings>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<BuildingBlocks_CalloutSettings>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             virtual_cursor_policy: match inst.get("virtualCursorPolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<BuildingBlocks_VirtualCursorPolicy>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<BuildingBlocks_VirtualCursorPolicy>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             overflow: match inst.get("overflow") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_Overflow>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_Overflow>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             scroll_policy: match inst.get("scrollPolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_ScrollPolicyBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_ScrollPolicyBasePtr::from_ref(b, r)),
                 _ => None,
             },
             radial_transform: match inst.get("radialTransform") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_RadialTransform>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_RadialTransform>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             radial_transform_child: match inst.get("radialTransformChild") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_RadialTransformChild>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_RadialTransformChild>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             animation: match inst.get("animation") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_Animation>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_Animation>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             interactions: match inst.get("interactions") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_Interactions>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_Interactions>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             inherits_scale: inst.get_bool("inheritsScale").unwrap_or_default(),
@@ -3435,72 +2254,32 @@ impl<'a> Extract<'a> for BuildingBlocks_WidgetBadge {
             inherits_overflow: inst.get_bool("inheritsOverflow").unwrap_or_default(),
             alpha: inst.get_f32("alpha").unwrap_or_default(),
             layer: inst.get_u32("layer").unwrap_or_default(),
-            aspect_ratio_library: inst
-                .get("aspectRatioLibrary")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
+            aspect_ratio_library: inst.get("aspectRatioLibrary").and_then(|v| v.as_record_ref()).map(|r| r.guid),
             focus_index: inst.get_i32("focusIndex").unwrap_or_default(),
-            inline_styles: inst
-                .get_array("inlineStyles")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<BuildingBlocks_StyleEntry>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => Some(b.alloc_nested::<BuildingBlocks_StyleEntry>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
+            inline_styles: inst.get_array("inlineStyles")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<BuildingBlocks_StyleEntry>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<BuildingBlocks_StyleEntry>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
             hover_cursor: Cursor::from_dcb_str(inst.get_str("hoverCursor").unwrap_or("")),
             enable_held_cursor: inst.get_bool("enableHeldCursor").unwrap_or_default(),
             held_cursor: Cursor::from_dcb_str(inst.get_str("heldCursor").unwrap_or("")),
             instantiated: inst.get_bool("instantiated").unwrap_or_default(),
-            url_optional: inst
-                .get_str("urlOptional")
-                .map(String::from)
-                .unwrap_or_default(),
-            url_postfix: inst
-                .get_str("urlPostfix")
-                .map(String::from)
-                .unwrap_or_default(),
-            stylesheet_override: inst
-                .get("stylesheetOverride")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            canvas: inst
-                .get("canvas")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            sizing_method: BB_CanvasWidgetSizingMethod::from_dcb_str(
-                inst.get_str("sizingMethod").unwrap_or(""),
-            ),
-            param_input_values: inst
-                .get_array("paramInputValues")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => Some(
-                            BuildingBlocks_ComponentParameterInputBasePtr::from_ref(b, r),
-                        ),
+            url_optional: inst.get_str("urlOptional").map(String::from).unwrap_or_default(),
+            url_postfix: inst.get_str("urlPostfix").map(String::from).unwrap_or_default(),
+            stylesheet_override: inst.get("stylesheetOverride").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            canvas: inst.get("canvas").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            sizing_method: BB_CanvasWidgetSizingMethod::from_dcb_str(inst.get_str("sizingMethod").unwrap_or("")),
+            param_input_values: inst.get_array("paramInputValues")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => Some(BuildingBlocks_ComponentParameterInputBasePtr::from_ref(b, r)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
             label_properties: match inst.get("labelProperties") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_ComponentLabelProperties>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_ComponentLabelProperties>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             fill_style: BB_FillStyle::from_dcb_str(inst.get_str("fillStyle").unwrap_or("")),
@@ -3652,16 +2431,8 @@ pub struct BuildingBlocks_ComponentRadioButton {
 }
 
 impl Pooled for BuildingBlocks_ComponentRadioButton {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .ui_buildingblocks
-            .building_blocks_component_radio_button
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .ui_buildingblocks
-            .building_blocks_component_radio_button
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_buildingblocks.building_blocks_component_radio_button }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_buildingblocks.building_blocks_component_radio_button }
 }
 
 impl<'a> Extract<'a> for BuildingBlocks_ComponentRadioButton {
@@ -3669,304 +2440,154 @@ impl<'a> Extract<'a> for BuildingBlocks_ComponentRadioButton {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             name: inst.get_str("name").map(String::from).unwrap_or_default(),
-            style_tags: inst
-                .get_array("styleTags")
-                .map(|arr| {
-                    arr.filter_map(|v| {
-                        if let Value::Reference(Some(r)) = v {
-                            Some(r.guid)
-                        } else {
-                            None
-                        }
-                    })
-                    .collect()
-                })
+            style_tags: inst.get_array("styleTags")
+                .map(|arr| arr.filter_map(|v| if let Value::Reference(Some(r)) = v { Some(r.guid) } else { None }).collect())
                 .unwrap_or_default(),
-            renderer_type: BB_RendererType::from_dcb_str(
-                inst.get_str("rendererType").unwrap_or(""),
-            ),
+            renderer_type: BB_RendererType::from_dcb_str(inst.get_str("rendererType").unwrap_or("")),
             renderer_policy: match inst.get("rendererPolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_RendererPolicyBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_RendererPolicyBasePtr::from_ref(b, r)),
                 _ => None,
             },
             primitive_settings: match inst.get("primitiveSettings") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_PrimitiveSettings>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_PrimitiveSettings>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             parent: match inst.get("parent") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_WidgetBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_WidgetBasePtr::from_ref(b, r)),
                 _ => None,
             },
             preview_scene: match inst.get("previewScene") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_PreviewScreenBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_PreviewScreenBasePtr::from_ref(b, r)),
                 _ => None,
             },
             preview_scene_flattened: match inst.get("previewSceneFlattened") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_PreviewScreenBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_PreviewScreenBasePtr::from_ref(b, r)),
                 _ => None,
             },
-            culling_level: BB_CullingLevel::from_dcb_str(
-                inst.get_str("cullingLevel").unwrap_or(""),
-            ),
+            culling_level: BB_CullingLevel::from_dcb_str(inst.get_str("cullingLevel").unwrap_or("")),
             is_active: inst.get_bool("isActive").unwrap_or_default(),
             affects_layout: inst.get_bool("affectsLayout").unwrap_or_default(),
             affects_autosize: inst.get_bool("affectsAutosize").unwrap_or_default(),
             export_node: inst.get_bool("exportNode").unwrap_or_default(),
             position: match inst.get("position") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             position_offset: match inst.get("positionOffset") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             orientation: match inst.get("orientation") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Deg3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Deg3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             orientation_offset: match inst.get("orientationOffset") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Deg3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Deg3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             scale: match inst.get("scale") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             sizing: match inst.get("sizing") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_Size>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_Size>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            auto_scaling_method: BB_AutoScalingMethod::from_dcb_str(
-                inst.get_str("autoScalingMethod").unwrap_or(""),
-            ),
+            auto_scaling_method: BB_AutoScalingMethod::from_dcb_str(inst.get_str("autoScalingMethod").unwrap_or("")),
             padding: match inst.get("padding") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_TRBL>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_TRBL>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             margin: match inst.get("margin") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_TRBL>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_TRBL>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             pivot: match inst.get("pivot") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             anchor: match inst.get("anchor") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             background: match inst.get("background") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_Background>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_Background>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             segmented_fill: match inst.get("segmentedFill") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_SegmentedFill>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_SegmentedFill>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             svg_fill: match inst.get("svgFill") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_SvgFill>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_SvgFill>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             border: match inst.get("border") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_Border>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_Border>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             layout_policy: match inst.get("layoutPolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_LayoutPolicyBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_LayoutPolicyBasePtr::from_ref(b, r)),
                 _ => None,
             },
             layout_policy_item: match inst.get("layoutPolicyItem") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_LayoutPolicyItemBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_LayoutPolicyItemBasePtr::from_ref(b, r)),
                 _ => None,
             },
             layout_item_common: match inst.get("layoutItemCommon") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<BuildingBlocks_LayoutItemCommon>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<BuildingBlocks_LayoutItemCommon>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             drop_target_policy: match inst.get("dropTargetPolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_DropTargetPolicyBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_DropTargetPolicyBasePtr::from_ref(b, r)),
                 _ => None,
             },
             draggable_policy: match inst.get("draggablePolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_DraggablePolicyBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_DraggablePolicyBasePtr::from_ref(b, r)),
                 _ => None,
             },
             tooltip_policy: match inst.get("tooltipPolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<BuildingBlocks_TooltipPolicy>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<BuildingBlocks_TooltipPolicy>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             context_menu_policy: match inst.get("contextMenuPolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<BuildingBlocks_ContextMenuPolicy>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<BuildingBlocks_ContextMenuPolicy>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             grab_controls_policy: match inst.get("grabControlsPolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<BuildingBlocks_GrabControlsPolicy>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<BuildingBlocks_GrabControlsPolicy>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             callout_settings: match inst.get("calloutSettings") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<BuildingBlocks_CalloutSettings>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<BuildingBlocks_CalloutSettings>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             virtual_cursor_policy: match inst.get("virtualCursorPolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<BuildingBlocks_VirtualCursorPolicy>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<BuildingBlocks_VirtualCursorPolicy>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             overflow: match inst.get("overflow") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_Overflow>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_Overflow>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             scroll_policy: match inst.get("scrollPolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_ScrollPolicyBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_ScrollPolicyBasePtr::from_ref(b, r)),
                 _ => None,
             },
             radial_transform: match inst.get("radialTransform") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_RadialTransform>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_RadialTransform>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             radial_transform_child: match inst.get("radialTransformChild") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_RadialTransformChild>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_RadialTransformChild>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             animation: match inst.get("animation") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_Animation>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_Animation>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             interactions: match inst.get("interactions") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_Interactions>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_Interactions>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             inherits_scale: inst.get_bool("inheritsScale").unwrap_or_default(),
@@ -3976,88 +2597,38 @@ impl<'a> Extract<'a> for BuildingBlocks_ComponentRadioButton {
             inherits_overflow: inst.get_bool("inheritsOverflow").unwrap_or_default(),
             alpha: inst.get_f32("alpha").unwrap_or_default(),
             layer: inst.get_u32("layer").unwrap_or_default(),
-            aspect_ratio_library: inst
-                .get("aspectRatioLibrary")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
+            aspect_ratio_library: inst.get("aspectRatioLibrary").and_then(|v| v.as_record_ref()).map(|r| r.guid),
             focus_index: inst.get_i32("focusIndex").unwrap_or_default(),
-            inline_styles: inst
-                .get_array("inlineStyles")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<BuildingBlocks_StyleEntry>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => Some(b.alloc_nested::<BuildingBlocks_StyleEntry>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
+            inline_styles: inst.get_array("inlineStyles")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<BuildingBlocks_StyleEntry>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<BuildingBlocks_StyleEntry>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
             hover_cursor: Cursor::from_dcb_str(inst.get_str("hoverCursor").unwrap_or("")),
             enable_held_cursor: inst.get_bool("enableHeldCursor").unwrap_or_default(),
             held_cursor: Cursor::from_dcb_str(inst.get_str("heldCursor").unwrap_or("")),
             instantiated: inst.get_bool("instantiated").unwrap_or_default(),
-            url_optional: inst
-                .get_str("urlOptional")
-                .map(String::from)
-                .unwrap_or_default(),
-            url_postfix: inst
-                .get_str("urlPostfix")
-                .map(String::from)
-                .unwrap_or_default(),
-            stylesheet_override: inst
-                .get("stylesheetOverride")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            canvas: inst
-                .get("canvas")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            sizing_method: BB_CanvasWidgetSizingMethod::from_dcb_str(
-                inst.get_str("sizingMethod").unwrap_or(""),
-            ),
-            param_input_values: inst
-                .get_array("paramInputValues")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => Some(
-                            BuildingBlocks_ComponentParameterInputBasePtr::from_ref(b, r),
-                        ),
+            url_optional: inst.get_str("urlOptional").map(String::from).unwrap_or_default(),
+            url_postfix: inst.get_str("urlPostfix").map(String::from).unwrap_or_default(),
+            stylesheet_override: inst.get("stylesheetOverride").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            canvas: inst.get("canvas").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            sizing_method: BB_CanvasWidgetSizingMethod::from_dcb_str(inst.get_str("sizingMethod").unwrap_or("")),
+            param_input_values: inst.get_array("paramInputValues")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => Some(BuildingBlocks_ComponentParameterInputBasePtr::from_ref(b, r)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
-            variable_name: inst
-                .get_str("variableName")
-                .map(String::from)
-                .unwrap_or_default(),
-            toggle_activation_event: BB_ActivationButtonAction::from_dcb_str(
-                inst.get_str("toggleActivationEvent").unwrap_or(""),
-            ),
+            variable_name: inst.get_str("variableName").map(String::from).unwrap_or_default(),
+            toggle_activation_event: BB_ActivationButtonAction::from_dcb_str(inst.get_str("toggleActivationEvent").unwrap_or("")),
             label_properties: match inst.get("labelProperties") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_ComponentLabelProperties>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_ComponentLabelProperties>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             caption_properties: match inst.get("captionProperties") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_ComponentCaptionProperties>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_ComponentCaptionProperties>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             alignment: BB_TextAlignment::from_dcb_str(inst.get_str("alignment").unwrap_or("")),
@@ -4211,16 +2782,8 @@ pub struct BuildingBlocks_ComponentToggleListItem {
 }
 
 impl Pooled for BuildingBlocks_ComponentToggleListItem {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .ui_buildingblocks
-            .building_blocks_component_toggle_list_item
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .ui_buildingblocks
-            .building_blocks_component_toggle_list_item
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_buildingblocks.building_blocks_component_toggle_list_item }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_buildingblocks.building_blocks_component_toggle_list_item }
 }
 
 impl<'a> Extract<'a> for BuildingBlocks_ComponentToggleListItem {
@@ -4228,304 +2791,154 @@ impl<'a> Extract<'a> for BuildingBlocks_ComponentToggleListItem {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             name: inst.get_str("name").map(String::from).unwrap_or_default(),
-            style_tags: inst
-                .get_array("styleTags")
-                .map(|arr| {
-                    arr.filter_map(|v| {
-                        if let Value::Reference(Some(r)) = v {
-                            Some(r.guid)
-                        } else {
-                            None
-                        }
-                    })
-                    .collect()
-                })
+            style_tags: inst.get_array("styleTags")
+                .map(|arr| arr.filter_map(|v| if let Value::Reference(Some(r)) = v { Some(r.guid) } else { None }).collect())
                 .unwrap_or_default(),
-            renderer_type: BB_RendererType::from_dcb_str(
-                inst.get_str("rendererType").unwrap_or(""),
-            ),
+            renderer_type: BB_RendererType::from_dcb_str(inst.get_str("rendererType").unwrap_or("")),
             renderer_policy: match inst.get("rendererPolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_RendererPolicyBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_RendererPolicyBasePtr::from_ref(b, r)),
                 _ => None,
             },
             primitive_settings: match inst.get("primitiveSettings") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_PrimitiveSettings>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_PrimitiveSettings>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             parent: match inst.get("parent") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_WidgetBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_WidgetBasePtr::from_ref(b, r)),
                 _ => None,
             },
             preview_scene: match inst.get("previewScene") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_PreviewScreenBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_PreviewScreenBasePtr::from_ref(b, r)),
                 _ => None,
             },
             preview_scene_flattened: match inst.get("previewSceneFlattened") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_PreviewScreenBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_PreviewScreenBasePtr::from_ref(b, r)),
                 _ => None,
             },
-            culling_level: BB_CullingLevel::from_dcb_str(
-                inst.get_str("cullingLevel").unwrap_or(""),
-            ),
+            culling_level: BB_CullingLevel::from_dcb_str(inst.get_str("cullingLevel").unwrap_or("")),
             is_active: inst.get_bool("isActive").unwrap_or_default(),
             affects_layout: inst.get_bool("affectsLayout").unwrap_or_default(),
             affects_autosize: inst.get_bool("affectsAutosize").unwrap_or_default(),
             export_node: inst.get_bool("exportNode").unwrap_or_default(),
             position: match inst.get("position") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             position_offset: match inst.get("positionOffset") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             orientation: match inst.get("orientation") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Deg3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Deg3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             orientation_offset: match inst.get("orientationOffset") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Deg3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Deg3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             scale: match inst.get("scale") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             sizing: match inst.get("sizing") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_Size>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_Size>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            auto_scaling_method: BB_AutoScalingMethod::from_dcb_str(
-                inst.get_str("autoScalingMethod").unwrap_or(""),
-            ),
+            auto_scaling_method: BB_AutoScalingMethod::from_dcb_str(inst.get_str("autoScalingMethod").unwrap_or("")),
             padding: match inst.get("padding") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_TRBL>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_TRBL>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             margin: match inst.get("margin") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_TRBL>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_TRBL>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             pivot: match inst.get("pivot") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             anchor: match inst.get("anchor") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             background: match inst.get("background") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_Background>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_Background>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             segmented_fill: match inst.get("segmentedFill") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_SegmentedFill>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_SegmentedFill>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             svg_fill: match inst.get("svgFill") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_SvgFill>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_SvgFill>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             border: match inst.get("border") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_Border>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_Border>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             layout_policy: match inst.get("layoutPolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_LayoutPolicyBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_LayoutPolicyBasePtr::from_ref(b, r)),
                 _ => None,
             },
             layout_policy_item: match inst.get("layoutPolicyItem") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_LayoutPolicyItemBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_LayoutPolicyItemBasePtr::from_ref(b, r)),
                 _ => None,
             },
             layout_item_common: match inst.get("layoutItemCommon") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<BuildingBlocks_LayoutItemCommon>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<BuildingBlocks_LayoutItemCommon>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             drop_target_policy: match inst.get("dropTargetPolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_DropTargetPolicyBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_DropTargetPolicyBasePtr::from_ref(b, r)),
                 _ => None,
             },
             draggable_policy: match inst.get("draggablePolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_DraggablePolicyBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_DraggablePolicyBasePtr::from_ref(b, r)),
                 _ => None,
             },
             tooltip_policy: match inst.get("tooltipPolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<BuildingBlocks_TooltipPolicy>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<BuildingBlocks_TooltipPolicy>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             context_menu_policy: match inst.get("contextMenuPolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<BuildingBlocks_ContextMenuPolicy>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<BuildingBlocks_ContextMenuPolicy>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             grab_controls_policy: match inst.get("grabControlsPolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<BuildingBlocks_GrabControlsPolicy>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<BuildingBlocks_GrabControlsPolicy>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             callout_settings: match inst.get("calloutSettings") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<BuildingBlocks_CalloutSettings>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<BuildingBlocks_CalloutSettings>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             virtual_cursor_policy: match inst.get("virtualCursorPolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<BuildingBlocks_VirtualCursorPolicy>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<BuildingBlocks_VirtualCursorPolicy>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             overflow: match inst.get("overflow") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_Overflow>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_Overflow>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             scroll_policy: match inst.get("scrollPolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_ScrollPolicyBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_ScrollPolicyBasePtr::from_ref(b, r)),
                 _ => None,
             },
             radial_transform: match inst.get("radialTransform") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_RadialTransform>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_RadialTransform>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             radial_transform_child: match inst.get("radialTransformChild") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_RadialTransformChild>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_RadialTransformChild>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             animation: match inst.get("animation") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_Animation>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_Animation>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             interactions: match inst.get("interactions") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_Interactions>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_Interactions>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             inherits_scale: inst.get_bool("inheritsScale").unwrap_or_default(),
@@ -4535,97 +2948,42 @@ impl<'a> Extract<'a> for BuildingBlocks_ComponentToggleListItem {
             inherits_overflow: inst.get_bool("inheritsOverflow").unwrap_or_default(),
             alpha: inst.get_f32("alpha").unwrap_or_default(),
             layer: inst.get_u32("layer").unwrap_or_default(),
-            aspect_ratio_library: inst
-                .get("aspectRatioLibrary")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
+            aspect_ratio_library: inst.get("aspectRatioLibrary").and_then(|v| v.as_record_ref()).map(|r| r.guid),
             focus_index: inst.get_i32("focusIndex").unwrap_or_default(),
-            inline_styles: inst
-                .get_array("inlineStyles")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<BuildingBlocks_StyleEntry>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => Some(b.alloc_nested::<BuildingBlocks_StyleEntry>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
+            inline_styles: inst.get_array("inlineStyles")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<BuildingBlocks_StyleEntry>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<BuildingBlocks_StyleEntry>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
             hover_cursor: Cursor::from_dcb_str(inst.get_str("hoverCursor").unwrap_or("")),
             enable_held_cursor: inst.get_bool("enableHeldCursor").unwrap_or_default(),
             held_cursor: Cursor::from_dcb_str(inst.get_str("heldCursor").unwrap_or("")),
             instantiated: inst.get_bool("instantiated").unwrap_or_default(),
-            url_optional: inst
-                .get_str("urlOptional")
-                .map(String::from)
-                .unwrap_or_default(),
-            url_postfix: inst
-                .get_str("urlPostfix")
-                .map(String::from)
-                .unwrap_or_default(),
-            stylesheet_override: inst
-                .get("stylesheetOverride")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            canvas: inst
-                .get("canvas")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            sizing_method: BB_CanvasWidgetSizingMethod::from_dcb_str(
-                inst.get_str("sizingMethod").unwrap_or(""),
-            ),
-            param_input_values: inst
-                .get_array("paramInputValues")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => Some(
-                            BuildingBlocks_ComponentParameterInputBasePtr::from_ref(b, r),
-                        ),
+            url_optional: inst.get_str("urlOptional").map(String::from).unwrap_or_default(),
+            url_postfix: inst.get_str("urlPostfix").map(String::from).unwrap_or_default(),
+            stylesheet_override: inst.get("stylesheetOverride").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            canvas: inst.get("canvas").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            sizing_method: BB_CanvasWidgetSizingMethod::from_dcb_str(inst.get_str("sizingMethod").unwrap_or("")),
+            param_input_values: inst.get_array("paramInputValues")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => Some(BuildingBlocks_ComponentParameterInputBasePtr::from_ref(b, r)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
-            variable_name: inst
-                .get_str("variableName")
-                .map(String::from)
-                .unwrap_or_default(),
-            toggle_activation_event: BB_ActivationButtonAction::from_dcb_str(
-                inst.get_str("toggleActivationEvent").unwrap_or(""),
-            ),
+            variable_name: inst.get_str("variableName").map(String::from).unwrap_or_default(),
+            toggle_activation_event: BB_ActivationButtonAction::from_dcb_str(inst.get_str("toggleActivationEvent").unwrap_or("")),
             label_properties: match inst.get("labelProperties") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_ComponentLabelProperties>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_ComponentLabelProperties>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             caption_properties: match inst.get("captionProperties") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_ComponentCaptionProperties>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_ComponentCaptionProperties>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             icon_properties: match inst.get("iconProperties") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_ComponentIconProperties>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_ComponentIconProperties>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             alignment: BB_TextAlignment::from_dcb_str(inst.get_str("alignment").unwrap_or("")),
@@ -4783,16 +3141,8 @@ pub struct BuildingBlocks_ComponentRadialRangeSlider {
 }
 
 impl Pooled for BuildingBlocks_ComponentRadialRangeSlider {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .ui_buildingblocks
-            .building_blocks_component_radial_range_slider
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .ui_buildingblocks
-            .building_blocks_component_radial_range_slider
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_buildingblocks.building_blocks_component_radial_range_slider }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_buildingblocks.building_blocks_component_radial_range_slider }
 }
 
 impl<'a> Extract<'a> for BuildingBlocks_ComponentRadialRangeSlider {
@@ -4800,304 +3150,154 @@ impl<'a> Extract<'a> for BuildingBlocks_ComponentRadialRangeSlider {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             name: inst.get_str("name").map(String::from).unwrap_or_default(),
-            style_tags: inst
-                .get_array("styleTags")
-                .map(|arr| {
-                    arr.filter_map(|v| {
-                        if let Value::Reference(Some(r)) = v {
-                            Some(r.guid)
-                        } else {
-                            None
-                        }
-                    })
-                    .collect()
-                })
+            style_tags: inst.get_array("styleTags")
+                .map(|arr| arr.filter_map(|v| if let Value::Reference(Some(r)) = v { Some(r.guid) } else { None }).collect())
                 .unwrap_or_default(),
-            renderer_type: BB_RendererType::from_dcb_str(
-                inst.get_str("rendererType").unwrap_or(""),
-            ),
+            renderer_type: BB_RendererType::from_dcb_str(inst.get_str("rendererType").unwrap_or("")),
             renderer_policy: match inst.get("rendererPolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_RendererPolicyBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_RendererPolicyBasePtr::from_ref(b, r)),
                 _ => None,
             },
             primitive_settings: match inst.get("primitiveSettings") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_PrimitiveSettings>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_PrimitiveSettings>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             parent: match inst.get("parent") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_WidgetBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_WidgetBasePtr::from_ref(b, r)),
                 _ => None,
             },
             preview_scene: match inst.get("previewScene") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_PreviewScreenBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_PreviewScreenBasePtr::from_ref(b, r)),
                 _ => None,
             },
             preview_scene_flattened: match inst.get("previewSceneFlattened") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_PreviewScreenBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_PreviewScreenBasePtr::from_ref(b, r)),
                 _ => None,
             },
-            culling_level: BB_CullingLevel::from_dcb_str(
-                inst.get_str("cullingLevel").unwrap_or(""),
-            ),
+            culling_level: BB_CullingLevel::from_dcb_str(inst.get_str("cullingLevel").unwrap_or("")),
             is_active: inst.get_bool("isActive").unwrap_or_default(),
             affects_layout: inst.get_bool("affectsLayout").unwrap_or_default(),
             affects_autosize: inst.get_bool("affectsAutosize").unwrap_or_default(),
             export_node: inst.get_bool("exportNode").unwrap_or_default(),
             position: match inst.get("position") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             position_offset: match inst.get("positionOffset") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             orientation: match inst.get("orientation") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Deg3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Deg3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             orientation_offset: match inst.get("orientationOffset") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Deg3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Deg3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             scale: match inst.get("scale") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             sizing: match inst.get("sizing") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_Size>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_Size>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            auto_scaling_method: BB_AutoScalingMethod::from_dcb_str(
-                inst.get_str("autoScalingMethod").unwrap_or(""),
-            ),
+            auto_scaling_method: BB_AutoScalingMethod::from_dcb_str(inst.get_str("autoScalingMethod").unwrap_or("")),
             padding: match inst.get("padding") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_TRBL>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_TRBL>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             margin: match inst.get("margin") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_TRBL>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_TRBL>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             pivot: match inst.get("pivot") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             anchor: match inst.get("anchor") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             background: match inst.get("background") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_Background>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_Background>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             segmented_fill: match inst.get("segmentedFill") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_SegmentedFill>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_SegmentedFill>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             svg_fill: match inst.get("svgFill") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_SvgFill>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_SvgFill>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             border: match inst.get("border") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_Border>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_Border>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             layout_policy: match inst.get("layoutPolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_LayoutPolicyBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_LayoutPolicyBasePtr::from_ref(b, r)),
                 _ => None,
             },
             layout_policy_item: match inst.get("layoutPolicyItem") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_LayoutPolicyItemBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_LayoutPolicyItemBasePtr::from_ref(b, r)),
                 _ => None,
             },
             layout_item_common: match inst.get("layoutItemCommon") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<BuildingBlocks_LayoutItemCommon>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<BuildingBlocks_LayoutItemCommon>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             drop_target_policy: match inst.get("dropTargetPolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_DropTargetPolicyBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_DropTargetPolicyBasePtr::from_ref(b, r)),
                 _ => None,
             },
             draggable_policy: match inst.get("draggablePolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_DraggablePolicyBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_DraggablePolicyBasePtr::from_ref(b, r)),
                 _ => None,
             },
             tooltip_policy: match inst.get("tooltipPolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<BuildingBlocks_TooltipPolicy>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<BuildingBlocks_TooltipPolicy>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             context_menu_policy: match inst.get("contextMenuPolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<BuildingBlocks_ContextMenuPolicy>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<BuildingBlocks_ContextMenuPolicy>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             grab_controls_policy: match inst.get("grabControlsPolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<BuildingBlocks_GrabControlsPolicy>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<BuildingBlocks_GrabControlsPolicy>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             callout_settings: match inst.get("calloutSettings") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<BuildingBlocks_CalloutSettings>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<BuildingBlocks_CalloutSettings>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             virtual_cursor_policy: match inst.get("virtualCursorPolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<BuildingBlocks_VirtualCursorPolicy>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<BuildingBlocks_VirtualCursorPolicy>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             overflow: match inst.get("overflow") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_Overflow>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_Overflow>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             scroll_policy: match inst.get("scrollPolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_ScrollPolicyBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_ScrollPolicyBasePtr::from_ref(b, r)),
                 _ => None,
             },
             radial_transform: match inst.get("radialTransform") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_RadialTransform>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_RadialTransform>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             radial_transform_child: match inst.get("radialTransformChild") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_RadialTransformChild>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_RadialTransformChild>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             animation: match inst.get("animation") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_Animation>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_Animation>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             interactions: match inst.get("interactions") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_Interactions>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_Interactions>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             inherits_scale: inst.get_bool("inheritsScale").unwrap_or_default(),
@@ -5107,96 +3307,43 @@ impl<'a> Extract<'a> for BuildingBlocks_ComponentRadialRangeSlider {
             inherits_overflow: inst.get_bool("inheritsOverflow").unwrap_or_default(),
             alpha: inst.get_f32("alpha").unwrap_or_default(),
             layer: inst.get_u32("layer").unwrap_or_default(),
-            aspect_ratio_library: inst
-                .get("aspectRatioLibrary")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
+            aspect_ratio_library: inst.get("aspectRatioLibrary").and_then(|v| v.as_record_ref()).map(|r| r.guid),
             focus_index: inst.get_i32("focusIndex").unwrap_or_default(),
-            inline_styles: inst
-                .get_array("inlineStyles")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<BuildingBlocks_StyleEntry>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => Some(b.alloc_nested::<BuildingBlocks_StyleEntry>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
+            inline_styles: inst.get_array("inlineStyles")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<BuildingBlocks_StyleEntry>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<BuildingBlocks_StyleEntry>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
             hover_cursor: Cursor::from_dcb_str(inst.get_str("hoverCursor").unwrap_or("")),
             enable_held_cursor: inst.get_bool("enableHeldCursor").unwrap_or_default(),
             held_cursor: Cursor::from_dcb_str(inst.get_str("heldCursor").unwrap_or("")),
             instantiated: inst.get_bool("instantiated").unwrap_or_default(),
-            url_optional: inst
-                .get_str("urlOptional")
-                .map(String::from)
-                .unwrap_or_default(),
-            url_postfix: inst
-                .get_str("urlPostfix")
-                .map(String::from)
-                .unwrap_or_default(),
-            stylesheet_override: inst
-                .get("stylesheetOverride")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            canvas: inst
-                .get("canvas")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            sizing_method: BB_CanvasWidgetSizingMethod::from_dcb_str(
-                inst.get_str("sizingMethod").unwrap_or(""),
-            ),
-            param_input_values: inst
-                .get_array("paramInputValues")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => Some(
-                            BuildingBlocks_ComponentParameterInputBasePtr::from_ref(b, r),
-                        ),
+            url_optional: inst.get_str("urlOptional").map(String::from).unwrap_or_default(),
+            url_postfix: inst.get_str("urlPostfix").map(String::from).unwrap_or_default(),
+            stylesheet_override: inst.get("stylesheetOverride").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            canvas: inst.get("canvas").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            sizing_method: BB_CanvasWidgetSizingMethod::from_dcb_str(inst.get_str("sizingMethod").unwrap_or("")),
+            param_input_values: inst.get_array("paramInputValues")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => Some(BuildingBlocks_ComponentParameterInputBasePtr::from_ref(b, r)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
-            target_variable_name: inst
-                .get_str("targetVariableName")
-                .map(String::from)
-                .unwrap_or_default(),
-            current_variable_name: inst
-                .get_str("currentVariableName")
-                .map(String::from)
-                .unwrap_or_default(),
+            target_variable_name: inst.get_str("targetVariableName").map(String::from).unwrap_or_default(),
+            current_variable_name: inst.get_str("currentVariableName").map(String::from).unwrap_or_default(),
             label_properties: match inst.get("labelProperties") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_ComponentLabelProperties>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_ComponentLabelProperties>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             caption_properties: match inst.get("captionProperties") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_ComponentCaptionProperties>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_ComponentCaptionProperties>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             limiter_angle: inst.get_f32("limiterAngle").unwrap_or_default(),
             start_angle_offset: inst.get_f32("startAngleOffset").unwrap_or_default(),
-            meter_state: BB_ProgressMeterState::from_dcb_str(
-                inst.get_str("meterState").unwrap_or(""),
-            ),
+            meter_state: BB_ProgressMeterState::from_dcb_str(inst.get_str("meterState").unwrap_or("")),
             increment_proportion: inst.get_u32("incrementProportion").unwrap_or_default(),
         }
     }
@@ -5350,16 +3497,8 @@ pub struct BuildingBlocks_ComponentNotification {
 }
 
 impl Pooled for BuildingBlocks_ComponentNotification {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .ui_buildingblocks
-            .building_blocks_component_notification
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .ui_buildingblocks
-            .building_blocks_component_notification
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_buildingblocks.building_blocks_component_notification }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_buildingblocks.building_blocks_component_notification }
 }
 
 impl<'a> Extract<'a> for BuildingBlocks_ComponentNotification {
@@ -5367,304 +3506,154 @@ impl<'a> Extract<'a> for BuildingBlocks_ComponentNotification {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             name: inst.get_str("name").map(String::from).unwrap_or_default(),
-            style_tags: inst
-                .get_array("styleTags")
-                .map(|arr| {
-                    arr.filter_map(|v| {
-                        if let Value::Reference(Some(r)) = v {
-                            Some(r.guid)
-                        } else {
-                            None
-                        }
-                    })
-                    .collect()
-                })
+            style_tags: inst.get_array("styleTags")
+                .map(|arr| arr.filter_map(|v| if let Value::Reference(Some(r)) = v { Some(r.guid) } else { None }).collect())
                 .unwrap_or_default(),
-            renderer_type: BB_RendererType::from_dcb_str(
-                inst.get_str("rendererType").unwrap_or(""),
-            ),
+            renderer_type: BB_RendererType::from_dcb_str(inst.get_str("rendererType").unwrap_or("")),
             renderer_policy: match inst.get("rendererPolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_RendererPolicyBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_RendererPolicyBasePtr::from_ref(b, r)),
                 _ => None,
             },
             primitive_settings: match inst.get("primitiveSettings") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_PrimitiveSettings>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_PrimitiveSettings>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             parent: match inst.get("parent") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_WidgetBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_WidgetBasePtr::from_ref(b, r)),
                 _ => None,
             },
             preview_scene: match inst.get("previewScene") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_PreviewScreenBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_PreviewScreenBasePtr::from_ref(b, r)),
                 _ => None,
             },
             preview_scene_flattened: match inst.get("previewSceneFlattened") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_PreviewScreenBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_PreviewScreenBasePtr::from_ref(b, r)),
                 _ => None,
             },
-            culling_level: BB_CullingLevel::from_dcb_str(
-                inst.get_str("cullingLevel").unwrap_or(""),
-            ),
+            culling_level: BB_CullingLevel::from_dcb_str(inst.get_str("cullingLevel").unwrap_or("")),
             is_active: inst.get_bool("isActive").unwrap_or_default(),
             affects_layout: inst.get_bool("affectsLayout").unwrap_or_default(),
             affects_autosize: inst.get_bool("affectsAutosize").unwrap_or_default(),
             export_node: inst.get_bool("exportNode").unwrap_or_default(),
             position: match inst.get("position") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             position_offset: match inst.get("positionOffset") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             orientation: match inst.get("orientation") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Deg3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Deg3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             orientation_offset: match inst.get("orientationOffset") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Deg3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Deg3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             scale: match inst.get("scale") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             sizing: match inst.get("sizing") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_Size>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_Size>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            auto_scaling_method: BB_AutoScalingMethod::from_dcb_str(
-                inst.get_str("autoScalingMethod").unwrap_or(""),
-            ),
+            auto_scaling_method: BB_AutoScalingMethod::from_dcb_str(inst.get_str("autoScalingMethod").unwrap_or("")),
             padding: match inst.get("padding") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_TRBL>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_TRBL>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             margin: match inst.get("margin") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_TRBL>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_TRBL>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             pivot: match inst.get("pivot") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             anchor: match inst.get("anchor") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             background: match inst.get("background") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_Background>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_Background>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             segmented_fill: match inst.get("segmentedFill") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_SegmentedFill>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_SegmentedFill>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             svg_fill: match inst.get("svgFill") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_SvgFill>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_SvgFill>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             border: match inst.get("border") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_Border>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_Border>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             layout_policy: match inst.get("layoutPolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_LayoutPolicyBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_LayoutPolicyBasePtr::from_ref(b, r)),
                 _ => None,
             },
             layout_policy_item: match inst.get("layoutPolicyItem") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_LayoutPolicyItemBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_LayoutPolicyItemBasePtr::from_ref(b, r)),
                 _ => None,
             },
             layout_item_common: match inst.get("layoutItemCommon") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<BuildingBlocks_LayoutItemCommon>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<BuildingBlocks_LayoutItemCommon>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             drop_target_policy: match inst.get("dropTargetPolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_DropTargetPolicyBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_DropTargetPolicyBasePtr::from_ref(b, r)),
                 _ => None,
             },
             draggable_policy: match inst.get("draggablePolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_DraggablePolicyBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_DraggablePolicyBasePtr::from_ref(b, r)),
                 _ => None,
             },
             tooltip_policy: match inst.get("tooltipPolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<BuildingBlocks_TooltipPolicy>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<BuildingBlocks_TooltipPolicy>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             context_menu_policy: match inst.get("contextMenuPolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<BuildingBlocks_ContextMenuPolicy>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<BuildingBlocks_ContextMenuPolicy>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             grab_controls_policy: match inst.get("grabControlsPolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<BuildingBlocks_GrabControlsPolicy>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<BuildingBlocks_GrabControlsPolicy>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             callout_settings: match inst.get("calloutSettings") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<BuildingBlocks_CalloutSettings>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<BuildingBlocks_CalloutSettings>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             virtual_cursor_policy: match inst.get("virtualCursorPolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<BuildingBlocks_VirtualCursorPolicy>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<BuildingBlocks_VirtualCursorPolicy>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             overflow: match inst.get("overflow") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_Overflow>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_Overflow>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             scroll_policy: match inst.get("scrollPolicy") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(BuildingBlocks_ScrollPolicyBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BuildingBlocks_ScrollPolicyBasePtr::from_ref(b, r)),
                 _ => None,
             },
             radial_transform: match inst.get("radialTransform") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_RadialTransform>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_RadialTransform>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             radial_transform_child: match inst.get("radialTransformChild") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_RadialTransformChild>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_RadialTransformChild>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             animation: match inst.get("animation") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_Animation>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_Animation>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             interactions: match inst.get("interactions") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_Interactions>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_Interactions>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             inherits_scale: inst.get_bool("inheritsScale").unwrap_or_default(),
@@ -5674,97 +3663,42 @@ impl<'a> Extract<'a> for BuildingBlocks_ComponentNotification {
             inherits_overflow: inst.get_bool("inheritsOverflow").unwrap_or_default(),
             alpha: inst.get_f32("alpha").unwrap_or_default(),
             layer: inst.get_u32("layer").unwrap_or_default(),
-            aspect_ratio_library: inst
-                .get("aspectRatioLibrary")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
+            aspect_ratio_library: inst.get("aspectRatioLibrary").and_then(|v| v.as_record_ref()).map(|r| r.guid),
             focus_index: inst.get_i32("focusIndex").unwrap_or_default(),
-            inline_styles: inst
-                .get_array("inlineStyles")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<BuildingBlocks_StyleEntry>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => Some(b.alloc_nested::<BuildingBlocks_StyleEntry>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
+            inline_styles: inst.get_array("inlineStyles")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<BuildingBlocks_StyleEntry>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<BuildingBlocks_StyleEntry>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
             hover_cursor: Cursor::from_dcb_str(inst.get_str("hoverCursor").unwrap_or("")),
             enable_held_cursor: inst.get_bool("enableHeldCursor").unwrap_or_default(),
             held_cursor: Cursor::from_dcb_str(inst.get_str("heldCursor").unwrap_or("")),
             instantiated: inst.get_bool("instantiated").unwrap_or_default(),
-            url_optional: inst
-                .get_str("urlOptional")
-                .map(String::from)
-                .unwrap_or_default(),
-            url_postfix: inst
-                .get_str("urlPostfix")
-                .map(String::from)
-                .unwrap_or_default(),
-            stylesheet_override: inst
-                .get("stylesheetOverride")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            canvas: inst
-                .get("canvas")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            sizing_method: BB_CanvasWidgetSizingMethod::from_dcb_str(
-                inst.get_str("sizingMethod").unwrap_or(""),
-            ),
-            param_input_values: inst
-                .get_array("paramInputValues")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => Some(
-                            BuildingBlocks_ComponentParameterInputBasePtr::from_ref(b, r),
-                        ),
+            url_optional: inst.get_str("urlOptional").map(String::from).unwrap_or_default(),
+            url_postfix: inst.get_str("urlPostfix").map(String::from).unwrap_or_default(),
+            stylesheet_override: inst.get("stylesheetOverride").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            canvas: inst.get("canvas").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            sizing_method: BB_CanvasWidgetSizingMethod::from_dcb_str(inst.get_str("sizingMethod").unwrap_or("")),
+            param_input_values: inst.get_array("paramInputValues")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => Some(BuildingBlocks_ComponentParameterInputBasePtr::from_ref(b, r)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
-            variable_name: inst
-                .get_str("variableName")
-                .map(String::from)
-                .unwrap_or_default(),
-            toggle_activation_event: BB_ActivationButtonAction::from_dcb_str(
-                inst.get_str("toggleActivationEvent").unwrap_or(""),
-            ),
+            variable_name: inst.get_str("variableName").map(String::from).unwrap_or_default(),
+            toggle_activation_event: BB_ActivationButtonAction::from_dcb_str(inst.get_str("toggleActivationEvent").unwrap_or("")),
             label_properties: match inst.get("labelProperties") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_ComponentLabelProperties>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_ComponentLabelProperties>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             caption_properties: match inst.get("captionProperties") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_ComponentCaptionProperties>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_ComponentCaptionProperties>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             icon_properties: match inst.get("iconProperties") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<BuildingBlocks_ComponentIconProperties>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BuildingBlocks_ComponentIconProperties>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             alignment: BB_TextAlignment::from_dcb_str(inst.get_str("alignment").unwrap_or("")),
@@ -5784,34 +3718,17 @@ pub struct BuildingBlocks_FontReplacementPair {
 }
 
 impl Pooled for BuildingBlocks_FontReplacementPair {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .ui_buildingblocks
-            .building_blocks_font_replacement_pair
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .ui_buildingblocks
-            .building_blocks_font_replacement_pair
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_buildingblocks.building_blocks_font_replacement_pair }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_buildingblocks.building_blocks_font_replacement_pair }
 }
 
 impl<'a> Extract<'a> for BuildingBlocks_FontReplacementPair {
     const TYPE_NAME: &'static str = "BuildingBlocks_FontReplacementPair";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            english_font: inst
-                .get("englishFont")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            replacement_font_name: inst
-                .get_str("replacementFontName")
-                .map(String::from)
-                .unwrap_or_default(),
-            replacement_font_paint_file: inst
-                .get_str("replacementFontPaintFile")
-                .map(String::from)
-                .unwrap_or_default(),
+            english_font: inst.get("englishFont").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            replacement_font_name: inst.get_str("replacementFontName").map(String::from).unwrap_or_default(),
+            replacement_font_paint_file: inst.get_str("replacementFontPaintFile").map(String::from).unwrap_or_default(),
         }
     }
 }
@@ -5823,42 +3740,20 @@ pub struct BuildingBlocks_LanguageSpecificFontReplacement {
 }
 
 impl Pooled for BuildingBlocks_LanguageSpecificFontReplacement {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .ui_buildingblocks
-            .building_blocks_language_specific_font_replacement
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .ui_buildingblocks
-            .building_blocks_language_specific_font_replacement
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_buildingblocks.building_blocks_language_specific_font_replacement }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_buildingblocks.building_blocks_language_specific_font_replacement }
 }
 
 impl<'a> Extract<'a> for BuildingBlocks_LanguageSpecificFontReplacement {
     const TYPE_NAME: &'static str = "BuildingBlocks_LanguageSpecificFontReplacement";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            font_replacement_list: inst
-                .get_array("fontReplacementList")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<BuildingBlocks_FontReplacementPair>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => {
-                            Some(b.alloc_nested::<BuildingBlocks_FontReplacementPair>(
-                                b.db.instance(r.struct_index, r.instance_index),
-                                true,
-                            ))
-                        }
+            font_replacement_list: inst.get_array("fontReplacementList")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<BuildingBlocks_FontReplacementPair>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<BuildingBlocks_FontReplacementPair>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
         }
     }
@@ -5874,22 +3769,15 @@ pub struct BuildingBlocks_TriggerNavigation {
 }
 
 impl Pooled for BuildingBlocks_TriggerNavigation {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.ui_buildingblocks.building_blocks_trigger_navigation
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.ui_buildingblocks.building_blocks_trigger_navigation
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_buildingblocks.building_blocks_trigger_navigation }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_buildingblocks.building_blocks_trigger_navigation }
 }
 
 impl<'a> Extract<'a> for BuildingBlocks_TriggerNavigation {
     const TYPE_NAME: &'static str = "BuildingBlocks_TriggerNavigation";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            layer_name: inst
-                .get_str("layerName")
-                .map(String::from)
-                .unwrap_or_default(),
+            layer_name: inst.get_str("layerName").map(String::from).unwrap_or_default(),
             r#type: BB_NavigationType::from_dcb_str(inst.get_str("type").unwrap_or("")),
         }
     }
@@ -5905,16 +3793,8 @@ pub struct BuildingBlocks_TriggerSubsumptionBroadcast {
 }
 
 impl Pooled for BuildingBlocks_TriggerSubsumptionBroadcast {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .ui_buildingblocks
-            .building_blocks_trigger_subsumption_broadcast
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .ui_buildingblocks
-            .building_blocks_trigger_subsumption_broadcast
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_buildingblocks.building_blocks_trigger_subsumption_broadcast }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_buildingblocks.building_blocks_trigger_subsumption_broadcast }
 }
 
 impl<'a> Extract<'a> for BuildingBlocks_TriggerSubsumptionBroadcast {
@@ -5941,12 +3821,8 @@ pub struct BuildingBlocks_ShapeCircle {
 }
 
 impl Pooled for BuildingBlocks_ShapeCircle {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.ui_buildingblocks.building_blocks_shape_circle
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.ui_buildingblocks.building_blocks_shape_circle
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_buildingblocks.building_blocks_shape_circle }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_buildingblocks.building_blocks_shape_circle }
 }
 
 impl<'a> Extract<'a> for BuildingBlocks_ShapeCircle {
@@ -5954,10 +3830,7 @@ impl<'a> Extract<'a> for BuildingBlocks_ShapeCircle {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             center: match inst.get("center") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec2>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec2>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             show_bounds_debug: inst.get_bool("showBoundsDebug").unwrap_or_default(),
@@ -5976,24 +3849,16 @@ pub struct DockingSensitivity {
 }
 
 impl Pooled for DockingSensitivity {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.ui_buildingblocks.docking_sensitivity
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.ui_buildingblocks.docking_sensitivity
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_buildingblocks.docking_sensitivity }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_buildingblocks.docking_sensitivity }
 }
 
 impl<'a> Extract<'a> for DockingSensitivity {
     const TYPE_NAME: &'static str = "DockingSensitivity";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            docking_uirotational_sensitivity: inst
-                .get_f32("DockingUIRotationalSensitivity")
-                .unwrap_or_default(),
-            docking_uilinear_sensitivity: inst
-                .get_f32("DockingUILinearSensitivity")
-                .unwrap_or_default(),
+            docking_uirotational_sensitivity: inst.get_f32("DockingUIRotationalSensitivity").unwrap_or_default(),
+            docking_uilinear_sensitivity: inst.get_f32("DockingUILinearSensitivity").unwrap_or_default(),
         }
     }
 }
@@ -6013,12 +3878,8 @@ pub struct DisplayState {
 }
 
 impl Pooled for DisplayState {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.ui_buildingblocks.display_state
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.ui_buildingblocks.display_state
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_buildingblocks.display_state }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_buildingblocks.display_state }
 }
 
 impl<'a> Extract<'a> for DisplayState {
@@ -6055,12 +3916,8 @@ pub struct StatusWidgetDisplayPreset {
 }
 
 impl Pooled for StatusWidgetDisplayPreset {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.ui_buildingblocks.status_widget_display_preset
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.ui_buildingblocks.status_widget_display_preset
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_buildingblocks.status_widget_display_preset }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_buildingblocks.status_widget_display_preset }
 }
 
 impl<'a> Extract<'a> for StatusWidgetDisplayPreset {
@@ -6068,15 +3925,10 @@ impl<'a> Extract<'a> for StatusWidgetDisplayPreset {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             ranges: match inst.get("ranges") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<DisplayState>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<DisplayState>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            increment_display_duration: inst
-                .get_f32("incrementDisplayDuration")
-                .unwrap_or_default(),
+            increment_display_duration: inst.get_f32("incrementDisplayDuration").unwrap_or_default(),
             increment_step: inst.get_f32("incrementStep").unwrap_or_default(),
             maximum_change_per_second: inst.get_f32("maximumChangePerSecond").unwrap_or_default(),
             history_seconds: inst.get_i32("historySeconds").unwrap_or_default(),
@@ -6094,30 +3946,16 @@ pub struct VisorLens_Layout {
 }
 
 impl Pooled for VisorLens_Layout {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.ui_buildingblocks.visor_lens_layout
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.ui_buildingblocks.visor_lens_layout
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_buildingblocks.visor_lens_layout }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_buildingblocks.visor_lens_layout }
 }
 
 impl<'a> Extract<'a> for VisorLens_Layout {
     const TYPE_NAME: &'static str = "VisorLens_Layout";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            regions: inst
-                .get_array("regions")
-                .map(|arr| {
-                    arr.filter_map(|v| {
-                        if let Value::Reference(Some(r)) = v {
-                            Some(r.guid)
-                        } else {
-                            None
-                        }
-                    })
-                    .collect()
-                })
+            regions: inst.get_array("regions")
+                .map(|arr| arr.filter_map(|v| if let Value::Reference(Some(r)) = v { Some(r.guid) } else { None }).collect())
                 .unwrap_or_default(),
         }
     }
@@ -6148,12 +3986,8 @@ pub struct VisorLens_Region {
 }
 
 impl Pooled for VisorLens_Region {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.ui_buildingblocks.visor_lens_region
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.ui_buildingblocks.visor_lens_region
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_buildingblocks.visor_lens_region }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_buildingblocks.visor_lens_region }
 }
 
 impl<'a> Extract<'a> for VisorLens_Region {
@@ -6162,63 +3996,31 @@ impl<'a> Extract<'a> for VisorLens_Region {
         Self {
             name: inst.get_str("name").map(String::from).unwrap_or_default(),
             orientation: match inst.get("orientation") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Deg3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Deg3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             size: match inst.get("size") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             anchor: match inst.get("anchor") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             pivot: match inst.get("pivot") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            flex_direction: BB_FlexDirection::from_dcb_str(
-                inst.get_str("flexDirection").unwrap_or(""),
-            ),
-            flex_axis_justification: BB_FlexAxisJustification::from_dcb_str(
-                inst.get_str("flexAxisJustification").unwrap_or(""),
-            ),
-            flex_cross_axis_justification: BB_FlexAxisJustification::from_dcb_str(
-                inst.get_str("flexCrossAxisJustification").unwrap_or(""),
-            ),
-            flex_item_alignment: BB_FlexItemAlignment::from_dcb_str(
-                inst.get_str("flexItemAlignment").unwrap_or(""),
-            ),
-            widgets: inst
-                .get_array("widgets")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<VisorLens_Widget>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => Some(b.alloc_nested::<VisorLens_Widget>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
+            flex_direction: BB_FlexDirection::from_dcb_str(inst.get_str("flexDirection").unwrap_or("")),
+            flex_axis_justification: BB_FlexAxisJustification::from_dcb_str(inst.get_str("flexAxisJustification").unwrap_or("")),
+            flex_cross_axis_justification: BB_FlexAxisJustification::from_dcb_str(inst.get_str("flexCrossAxisJustification").unwrap_or("")),
+            flex_item_alignment: BB_FlexItemAlignment::from_dcb_str(inst.get_str("flexItemAlignment").unwrap_or("")),
+            widgets: inst.get_array("widgets")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<VisorLens_Widget>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<VisorLens_Widget>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
         }
     }
@@ -6245,12 +4047,8 @@ pub struct VisorLens_Widget {
 }
 
 impl Pooled for VisorLens_Widget {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.ui_buildingblocks.visor_lens_widget
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.ui_buildingblocks.visor_lens_widget
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_buildingblocks.visor_lens_widget }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_buildingblocks.visor_lens_widget }
 }
 
 impl<'a> Extract<'a> for VisorLens_Widget {
@@ -6258,55 +4056,24 @@ impl<'a> Extract<'a> for VisorLens_Widget {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             name: inst.get_str("name").map(String::from).unwrap_or_default(),
-            namespace: inst
-                .get_str("namespace")
-                .map(String::from)
-                .unwrap_or_default(),
-            canvas: inst
-                .get("canvas")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
+            namespace: inst.get_str("namespace").map(String::from).unwrap_or_default(),
+            canvas: inst.get("canvas").and_then(|v| v.as_record_ref()).map(|r| r.guid),
             size: match inst.get("size") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             orientation: match inst.get("orientation") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Ang3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Ang3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             slot: inst.get_i32("slot").unwrap_or_default(),
-            show_tags: inst
-                .get_array("showTags")
-                .map(|arr| {
-                    arr.filter_map(|v| {
-                        if let Value::Reference(Some(r)) = v {
-                            Some(r.guid)
-                        } else {
-                            None
-                        }
-                    })
-                    .collect()
-                })
+            show_tags: inst.get_array("showTags")
+                .map(|arr| arr.filter_map(|v| if let Value::Reference(Some(r)) = v { Some(r.guid) } else { None }).collect())
                 .unwrap_or_default(),
-            hide_tags: inst
-                .get_array("hideTags")
-                .map(|arr| {
-                    arr.filter_map(|v| {
-                        if let Value::Reference(Some(r)) = v {
-                            Some(r.guid)
-                        } else {
-                            None
-                        }
-                    })
-                    .collect()
-                })
+            hide_tags: inst.get_array("hideTags")
+                .map(|arr| arr.filter_map(|v| if let Value::Reference(Some(r)) = v { Some(r.guid) } else { None }).collect())
                 .unwrap_or_default(),
         }
     }
 }
+

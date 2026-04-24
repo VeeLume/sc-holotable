@@ -14,8 +14,7 @@ use super::super::*;
 /// Pool storage for the `megamap` feature.
 #[derive(Default)]
 pub struct MegamapPools {
-    pub arena_commander_location_object_containers_params:
-        Vec<Option<ArenaCommanderLocationObjectContainersParams>>,
+    pub arena_commander_location_object_containers_params: Vec<Option<ArenaCommanderLocationObjectContainersParams>>,
     pub arena_commander_planet_override_params: Vec<Option<ArenaCommanderPlanetOverrideParams>>,
     pub arena_commander_scenario_params: Vec<Option<ArenaCommanderScenarioParams>>,
     pub smega_map_solar_system: Vec<Option<SMegaMapSolarSystem>>,

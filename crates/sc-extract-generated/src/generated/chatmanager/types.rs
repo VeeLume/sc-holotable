@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -35,12 +35,8 @@ pub struct ChatManagerDefaultChannelColor {
 }
 
 impl Pooled for ChatManagerDefaultChannelColor {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.chatmanager.chat_manager_default_channel_color
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.chatmanager.chat_manager_default_channel_color
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.chatmanager.chat_manager_default_channel_color }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.chatmanager.chat_manager_default_channel_color }
 }
 
 impl<'a> Extract<'a> for ChatManagerDefaultChannelColor {
@@ -66,12 +62,8 @@ pub struct ChatManagerColor {
 }
 
 impl Pooled for ChatManagerColor {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.chatmanager.chat_manager_color
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.chatmanager.chat_manager_color
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.chatmanager.chat_manager_color }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.chatmanager.chat_manager_color }
 }
 
 impl<'a> Extract<'a> for ChatManagerColor {
@@ -80,10 +72,7 @@ impl<'a> Extract<'a> for ChatManagerColor {
         Self {
             color_type: ChannelColor::from_dcb_str(inst.get_str("colorType").unwrap_or("")),
             color: match inst.get("color") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SRGB8>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SRGB8>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
@@ -99,12 +88,8 @@ pub struct ChatManagerGlobalParams {
 }
 
 impl Pooled for ChatManagerGlobalParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.chatmanager.chat_manager_global_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.chatmanager.chat_manager_global_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.chatmanager.chat_manager_global_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.chatmanager.chat_manager_global_params }
 }
 
 impl<'a> Extract<'a> for ChatManagerGlobalParams {
@@ -112,33 +97,17 @@ impl<'a> Extract<'a> for ChatManagerGlobalParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             default_channel_color: match inst.get("defaultChannelColor") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<ChatManagerDefaultChannelColor>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<ChatManagerDefaultChannelColor>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            color_options: inst
-                .get_array("colorOptions")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<ChatManagerColor>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => Some(b.alloc_nested::<ChatManagerColor>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
+            color_options: inst.get_array("colorOptions")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<ChatManagerColor>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<ChatManagerColor>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
         }
     }
 }
+

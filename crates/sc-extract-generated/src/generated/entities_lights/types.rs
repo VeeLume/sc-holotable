@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -36,12 +36,8 @@ pub struct SLightFlickerVolumeComponentParams {
 }
 
 impl Pooled for SLightFlickerVolumeComponentParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_lights.slight_flicker_volume_component_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_lights.slight_flicker_volume_component_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_lights.slight_flicker_volume_component_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_lights.slight_flicker_volume_component_params }
 }
 
 impl<'a> Extract<'a> for SLightFlickerVolumeComponentParams {
@@ -49,30 +45,18 @@ impl<'a> Extract<'a> for SLightFlickerVolumeComponentParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             wave_control_params: match inst.get("waveControlParams") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(LightFlickerWaveParamsPtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(LightFlickerWaveParamsPtr::from_ref(b, r)),
                 _ => None,
             },
             anim_params: match inst.get("animParams") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<SLightFlickerAnimParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SLightFlickerAnimParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             random_seed: inst.get_u32("randomSeed").unwrap_or_default(),
             search_radius: inst.get_f32("searchRadius").unwrap_or_default(),
             wave_passes: inst.get_i32("wavePasses").unwrap_or_default(),
             filtering_params: match inst.get("filteringParams") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<SLightFlickerFilteringParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SLightFlickerFilteringParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
@@ -90,12 +74,8 @@ pub struct SLightFlickerFilteringParams {
 }
 
 impl Pooled for SLightFlickerFilteringParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_lights.slight_flicker_filtering_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_lights.slight_flicker_filtering_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_lights.slight_flicker_filtering_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_lights.slight_flicker_filtering_params }
 }
 
 impl<'a> Extract<'a> for SLightFlickerFilteringParams {
@@ -132,12 +112,8 @@ pub struct SLightFlickerAnimParams {
 }
 
 impl Pooled for SLightFlickerAnimParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_lights.slight_flicker_anim_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_lights.slight_flicker_anim_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_lights.slight_flicker_anim_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_lights.slight_flicker_anim_params }
 }
 
 impl<'a> Extract<'a> for SLightFlickerAnimParams {
@@ -148,23 +124,15 @@ impl<'a> Extract<'a> for SLightFlickerAnimParams {
             max_anim_time: inst.get_f32("maxAnimTime").unwrap_or_default(),
             min_speed_multiplier: inst.get_f32("minSpeedMultiplier").unwrap_or_default(),
             max_speed_multiplier: inst.get_f32("maxSpeedMultiplier").unwrap_or_default(),
-            light_styles: inst
-                .get_array("lightStyles")
+            light_styles: inst.get_array("lightStyles")
                 .map(|arr| arr.filter_map(|v| v.as_i32()).collect())
                 .unwrap_or_default(),
             end_color: match inst.get("endColor") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SRGB8>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SRGB8>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            restore_original_after_time: inst
-                .get_f32("restoreOriginalAfterTime")
-                .unwrap_or_default(),
-            keep_active_after_wave_finished: inst
-                .get_bool("keepActiveAfterWaveFinished")
-                .unwrap_or_default(),
+            restore_original_after_time: inst.get_f32("restoreOriginalAfterTime").unwrap_or_default(),
+            keep_active_after_wave_finished: inst.get_bool("keepActiveAfterWaveFinished").unwrap_or_default(),
             trackview_time: inst.get_f32("trackviewTime").unwrap_or_default(),
         }
     }
@@ -204,12 +172,8 @@ pub struct LightAudioComponentParams {
 }
 
 impl Pooled for LightAudioComponentParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_lights.light_audio_component_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_lights.light_audio_component_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_lights.light_audio_component_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_lights.light_audio_component_params }
 }
 
 impl<'a> Extract<'a> for LightAudioComponentParams {
@@ -218,116 +182,47 @@ impl<'a> Extract<'a> for LightAudioComponentParams {
         Self {
             enable_audio: inst.get_bool("enableAudio").unwrap_or_default(),
             play_trigger: match inst.get("playTrigger") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<GlobalResourceAudio>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             stop_trigger: match inst.get("stopTrigger") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<GlobalResourceAudio>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            light_group_state_default_play_trigger: match inst
-                .get("lightGroupStateDefaultPlayTrigger")
-            {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<GlobalResourceAudio>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+            light_group_state_default_play_trigger: match inst.get("lightGroupStateDefaultPlayTrigger") {
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            light_group_state_default_stop_trigger: match inst
-                .get("lightGroupStateDefaultStopTrigger")
-            {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<GlobalResourceAudio>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+            light_group_state_default_stop_trigger: match inst.get("lightGroupStateDefaultStopTrigger") {
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            light_group_state_auxiliary_play_trigger: match inst
-                .get("lightGroupStateAuxiliaryPlayTrigger")
-            {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<GlobalResourceAudio>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+            light_group_state_auxiliary_play_trigger: match inst.get("lightGroupStateAuxiliaryPlayTrigger") {
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            light_group_state_auxiliary_stop_trigger: match inst
-                .get("lightGroupStateAuxiliaryStopTrigger")
-            {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<GlobalResourceAudio>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+            light_group_state_auxiliary_stop_trigger: match inst.get("lightGroupStateAuxiliaryStopTrigger") {
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            light_group_state_emergency_play_trigger: match inst
-                .get("lightGroupStateEmergencyPlayTrigger")
-            {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<GlobalResourceAudio>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+            light_group_state_emergency_play_trigger: match inst.get("lightGroupStateEmergencyPlayTrigger") {
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            light_group_state_emergency_stop_trigger: match inst
-                .get("lightGroupStateEmergencyStopTrigger")
-            {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<GlobalResourceAudio>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+            light_group_state_emergency_stop_trigger: match inst.get("lightGroupStateEmergencyStopTrigger") {
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            light_group_state_cinematic_play_trigger: match inst
-                .get("lightGroupStateCinematicPlayTrigger")
-            {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<GlobalResourceAudio>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+            light_group_state_cinematic_play_trigger: match inst.get("lightGroupStateCinematicPlayTrigger") {
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            light_group_state_cinematic_stop_trigger: match inst
-                .get("lightGroupStateCinematicStopTrigger")
-            {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<GlobalResourceAudio>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+            light_group_state_cinematic_stop_trigger: match inst.get("lightGroupStateCinematicStopTrigger") {
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             luminance_rtpc: match inst.get("luminanceRtpc") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             attenuation_scale: inst.get_f32("attenuationScale").unwrap_or_default(),
@@ -338,20 +233,19 @@ impl<'a> Extract<'a> for LightAudioComponentParams {
 
 /// DCB type: `LightBoxComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-pub struct LightBoxComponentParams {}
+pub struct LightBoxComponentParams {
+}
 
 impl Pooled for LightBoxComponentParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_lights.light_box_component_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_lights.light_box_component_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_lights.light_box_component_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_lights.light_box_component_params }
 }
 
 impl<'a> Extract<'a> for LightBoxComponentParams {
     const TYPE_NAME: &'static str = "LightBoxComponentParams";
     fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {}
+        Self {
+        }
     }
 }
+

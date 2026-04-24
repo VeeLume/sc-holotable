@@ -14,7 +14,6 @@ use super::super::*;
 /// Pool storage for the `entities-physicalizedjobboard` feature.
 #[derive(Default)]
 pub struct EntitiesPhysicalizedjobboardPools {
-    pub smission_accept_gameplay_trigger_notifications:
-        Vec<Option<SMissionAcceptGameplayTriggerNotifications>>,
+    pub smission_accept_gameplay_trigger_notifications: Vec<Option<SMissionAcceptGameplayTriggerNotifications>>,
     pub smission_accept_gameplay_trigger: Vec<Option<SMissionAcceptGameplayTrigger>>,
 }

@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -33,12 +33,8 @@ pub struct UIModeVisibilitySettings {
 }
 
 impl Pooled for UIModeVisibilitySettings {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.ui_uimodes.uimode_visibility_settings
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.ui_uimodes.uimode_visibility_settings
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_uimodes.uimode_visibility_settings }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_uimodes.uimode_visibility_settings }
 }
 
 impl<'a> Extract<'a> for UIModeVisibilitySettings {
@@ -47,13 +43,10 @@ impl<'a> Extract<'a> for UIModeVisibilitySettings {
         Self {
             item_port_trackers: inst.get_bool("itemPortTrackers").unwrap_or_default(),
             grenade_trackers: inst.get_bool("grenadeTrackers").unwrap_or_default(),
-            mission_objective_trackers: inst
-                .get_bool("missionObjectiveTrackers")
-                .unwrap_or_default(),
-            unattended_vehicle_trackers: inst
-                .get_bool("unattendedVehicleTrackers")
-                .unwrap_or_default(),
+            mission_objective_trackers: inst.get_bool("missionObjectiveTrackers").unwrap_or_default(),
+            unattended_vehicle_trackers: inst.get_bool("unattendedVehicleTrackers").unwrap_or_default(),
             radar_object_trackers: inst.get_bool("radarObjectTrackers").unwrap_or_default(),
         }
     }
 }
+

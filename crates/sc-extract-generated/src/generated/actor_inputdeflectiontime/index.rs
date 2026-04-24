@@ -9,17 +9,16 @@
 
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
-use super::super::*;
-use crate::Handle;
 use std::collections::HashMap;
 use svarog_common::CigGuid;
+use crate::Handle;
+use super::super::*;
 
 /// Record index for the `actor-inputdeflectiontime` feature.
 #[derive(Default)]
 pub struct ActorInputdeflectiontimeIndex {
     pub ifcs_input_deflection_time_params: HashMap<CigGuid, Handle<IfcsInputDeflectionTimeParams>>,
-    pub turret_input_deflection_time_params:
-        HashMap<CigGuid, Handle<TurretInputDeflectionTimeParams>>,
+    pub turret_input_deflection_time_params: HashMap<CigGuid, Handle<TurretInputDeflectionTimeParams>>,
 }
 
 impl ActorInputdeflectiontimeIndex {
@@ -31,7 +30,5 @@ impl ActorInputdeflectiontimeIndex {
         total
     }
 
-    pub fn is_empty(&self) -> bool {
-        self.len() == 0
-    }
+    pub fn is_empty(&self) -> bool { self.len() == 0 }
 }

@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -30,12 +30,8 @@ pub struct QuantumColorShiftParams {
 }
 
 impl Pooled for QuantumColorShiftParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_quantumcolorshift.quantum_color_shift_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_quantumcolorshift.quantum_color_shift_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_quantumcolorshift.quantum_color_shift_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_quantumcolorshift.quantum_color_shift_params }
 }
 
 impl<'a> Extract<'a> for QuantumColorShiftParams {
@@ -48,3 +44,4 @@ impl<'a> Extract<'a> for QuantumColorShiftParams {
         }
     }
 }
+

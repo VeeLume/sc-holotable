@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -82,12 +82,8 @@ pub struct ConstraintParams {
 }
 
 impl Pooled for ConstraintParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_physics.constraint_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_physics.constraint_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_physics.constraint_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_physics.constraint_params }
 }
 
 impl<'a> Extract<'a> for ConstraintParams {
@@ -107,68 +103,38 @@ impl<'a> Extract<'a> for ConstraintParams {
             x_min: inst.get_f32("xMin").unwrap_or_default(),
             x_max: inst.get_f32("xMax").unwrap_or_default(),
             yz_max: inst.get_f32("yzMax").unwrap_or_default(),
-            x_translational_compliance: inst
-                .get_f32("xTranslationalCompliance")
-                .unwrap_or_default(),
-            yz_translational_compliance: inst
-                .get_f32("yzTranslationalCompliance")
-                .unwrap_or_default(),
-            x_translational_damping_rate: inst
-                .get_f32("xTranslationalDampingRate")
-                .unwrap_or_default(),
-            yz_translational_damping_rate: inst
-                .get_f32("yzTranslationalDampingRate")
-                .unwrap_or_default(),
+            x_translational_compliance: inst.get_f32("xTranslationalCompliance").unwrap_or_default(),
+            yz_translational_compliance: inst.get_f32("yzTranslationalCompliance").unwrap_or_default(),
+            x_translational_damping_rate: inst.get_f32("xTranslationalDampingRate").unwrap_or_default(),
+            yz_translational_damping_rate: inst.get_f32("yzTranslationalDampingRate").unwrap_or_default(),
             x_rotational_compliance: inst.get_f32("xRotationalCompliance").unwrap_or_default(),
             yz_rotational_compliance: inst.get_f32("yzRotationalCompliance").unwrap_or_default(),
             x_rotational_damping_rate: inst.get_f32("xRotationalDampingRate").unwrap_or_default(),
             yz_rotational_damping_rate: inst.get_f32("yzRotationalDampingRate").unwrap_or_default(),
             target_relative_position: match inst.get("targetRelativePosition") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             target_relative_rotation: match inst.get("targetRelativeRotation") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Ang3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Ang3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             target_relative_linear_velocity: match inst.get("targetRelativeLinearVelocity") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             max_motor_force_lin: inst.get_f32("maxMotorForceLin").unwrap_or_default(),
-            linear_motor_inviscosity_coefficient: match inst
-                .get("linearMotorInviscosityCoefficient")
-            {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+            linear_motor_inviscosity_coefficient: match inst.get("linearMotorInviscosityCoefficient") {
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             target_relative_angular_velocity: match inst.get("targetRelativeAngularVelocity") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             max_motor_force_ang: inst.get_f32("maxMotorForceAng").unwrap_or_default(),
-            angular_motor_inviscosity_coefficient: match inst
-                .get("angularMotorInviscosityCoefficient")
-            {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+            angular_motor_inviscosity_coefficient: match inst.get("angularMotorInviscosityCoefficient") {
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
@@ -183,12 +149,8 @@ pub struct DeadBodyParams {
 }
 
 impl Pooled for DeadBodyParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_physics.dead_body_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_physics.dead_body_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_physics.dead_body_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_physics.dead_body_params }
 }
 
 impl<'a> Extract<'a> for DeadBodyParams {
@@ -202,21 +164,19 @@ impl<'a> Extract<'a> for DeadBodyParams {
 
 /// DCB type: `SRopeProxyParams`
 /// Inherits from: `DataForgeComponentParams`
-pub struct SRopeProxyParams {}
+pub struct SRopeProxyParams {
+}
 
 impl Pooled for SRopeProxyParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_physics.srope_proxy_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_physics.srope_proxy_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_physics.srope_proxy_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_physics.srope_proxy_params }
 }
 
 impl<'a> Extract<'a> for SRopeProxyParams {
     const TYPE_NAME: &'static str = "SRopeProxyParams";
     fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {}
+        Self {
+        }
     }
 }
 
@@ -242,12 +202,8 @@ pub struct WindAreaParams {
 }
 
 impl Pooled for WindAreaParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_physics.wind_area_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_physics.wind_area_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_physics.wind_area_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_physics.wind_area_params }
 }
 
 impl<'a> Extract<'a> for WindAreaParams {
@@ -256,19 +212,13 @@ impl<'a> Extract<'a> for WindAreaParams {
         Self {
             default_active: inst.get_bool("defaultActive").unwrap_or_default(),
             size: match inst.get("size") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             ellipsoidal: inst.get_bool("ellipsoidal").unwrap_or_default(),
             falloff_inner: inst.get_f32("falloffInner").unwrap_or_default(),
             direction: match inst.get("direction") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             speed: inst.get_f32("speed").unwrap_or_default(),
@@ -280,25 +230,19 @@ impl<'a> Extract<'a> for WindAreaParams {
 
 /// DCB type: `SEntityComponentConstraintPartnerComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-pub struct SEntityComponentConstraintPartnerComponentParams {}
+pub struct SEntityComponentConstraintPartnerComponentParams {
+}
 
 impl Pooled for SEntityComponentConstraintPartnerComponentParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_physics
-            .sentity_component_constraint_partner_component_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_physics
-            .sentity_component_constraint_partner_component_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_physics.sentity_component_constraint_partner_component_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_physics.sentity_component_constraint_partner_component_params }
 }
 
 impl<'a> Extract<'a> for SEntityComponentConstraintPartnerComponentParams {
     const TYPE_NAME: &'static str = "SEntityComponentConstraintPartnerComponentParams";
     fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {}
+        Self {
+        }
     }
 }
 
@@ -324,16 +268,8 @@ pub struct SLayerEntitiesGroupComponentParams {
 }
 
 impl Pooled for SLayerEntitiesGroupComponentParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_physics
-            .slayer_entities_group_component_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_physics
-            .slayer_entities_group_component_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_physics.slayer_entities_group_component_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_physics.slayer_entities_group_component_params }
 }
 
 impl<'a> Extract<'a> for SLayerEntitiesGroupComponentParams {
@@ -392,16 +328,8 @@ pub struct SEntityArticulatedPhysicsControllerParams {
 }
 
 impl Pooled for SEntityArticulatedPhysicsControllerParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_physics
-            .sentity_articulated_physics_controller_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_physics
-            .sentity_articulated_physics_controller_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_physics.sentity_articulated_physics_controller_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_physics.sentity_articulated_physics_controller_params }
 }
 
 impl<'a> Extract<'a> for SEntityArticulatedPhysicsControllerParams {
@@ -411,21 +339,11 @@ impl<'a> Extract<'a> for SEntityArticulatedPhysicsControllerParams {
             mass: inst.get_f32("Mass").unwrap_or_default(),
             compounding_allowed: inst.get_bool("compoundingAllowed").unwrap_or_default(),
             breakable_params: match inst.get("breakableParams") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<SBreakablePhysicsParams>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SBreakablePhysicsParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             game_collision_class: match inst.get("gameCollisionClass") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<SGameCollisionClass>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SGameCollisionClass>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             spawn_box_scale: inst.get_f32("spawnBoxScale").unwrap_or_default(),
@@ -440,9 +358,8 @@ impl<'a> Extract<'a> for SEntityArticulatedPhysicsControllerParams {
             lying_damping: inst.get_f32("LyingDamping").unwrap_or_default(),
             lying_sleep_speed: inst.get_f32("LyingSleepSpeed").unwrap_or_default(),
             resting: inst.get_bool("Resting").unwrap_or_default(),
-            ai_navigation_type: EAINavigationGeneration::from_dcb_str(
-                inst.get_str("aiNavigationType").unwrap_or(""),
-            ),
+            ai_navigation_type: EAINavigationGeneration::from_dcb_str(inst.get_str("aiNavigationType").unwrap_or("")),
         }
     }
 }
+

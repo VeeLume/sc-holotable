@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -26,22 +26,15 @@ pub struct FireAreaHazards {
 }
 
 impl Pooled for FireAreaHazards {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_roomsystem.fire_area_hazards
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_roomsystem.fire_area_hazards
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_roomsystem.fire_area_hazards }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_roomsystem.fire_area_hazards }
 }
 
 impl<'a> Extract<'a> for FireAreaHazards {
     const TYPE_NAME: &'static str = "FireAreaHazards";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            override_config: inst
-                .get("overrideConfig")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
+            override_config: inst.get("overrideConfig").and_then(|v| v.as_record_ref()).map(|r| r.guid),
         }
     }
 }
@@ -58,23 +51,16 @@ pub struct CIGAudioParams {
 }
 
 impl Pooled for CIGAudioParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_roomsystem.cigaudio_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_roomsystem.cigaudio_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_roomsystem.cigaudio_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_roomsystem.cigaudio_params }
 }
 
 impl<'a> Extract<'a> for CIGAudioParams {
     const TYPE_NAME: &'static str = "CIGAudioParams";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            naming_strategy: CIGAudioContextNamingStrategy::from_dcb_str(
-                inst.get_str("namingStrategy").unwrap_or(""),
-            ),
-            bone_names: inst
-                .get_array("boneNames")
+            naming_strategy: CIGAudioContextNamingStrategy::from_dcb_str(inst.get_str("namingStrategy").unwrap_or("")),
+            bone_names: inst.get_array("boneNames")
                 .map(|arr| arr.filter_map(|v| v.as_str().map(String::from)).collect())
                 .unwrap_or_default(),
             enable_anim_start: inst.get_bool("enableAnimStart").unwrap_or_default(),
@@ -92,12 +78,8 @@ pub struct EntityComponentFireArea {
 }
 
 impl Pooled for EntityComponentFireArea {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_roomsystem.entity_component_fire_area
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_roomsystem.entity_component_fire_area
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_roomsystem.entity_component_fire_area }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_roomsystem.entity_component_fire_area }
 }
 
 impl<'a> Extract<'a> for EntityComponentFireArea {
@@ -118,12 +100,8 @@ pub struct FireVoxelSelectionShape_Box {
 }
 
 impl Pooled for FireVoxelSelectionShape_Box {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_roomsystem.fire_voxel_selection_shape_box
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_roomsystem.fire_voxel_selection_shape_box
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_roomsystem.fire_voxel_selection_shape_box }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_roomsystem.fire_voxel_selection_shape_box }
 }
 
 impl<'a> Extract<'a> for FireVoxelSelectionShape_Box {
@@ -131,10 +109,7 @@ impl<'a> Extract<'a> for FireVoxelSelectionShape_Box {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             size: match inst.get("size") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
@@ -151,12 +126,8 @@ pub struct EntityComponentFireFilter {
 }
 
 impl Pooled for EntityComponentFireFilter {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_roomsystem.entity_component_fire_filter
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_roomsystem.entity_component_fire_filter
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_roomsystem.entity_component_fire_filter }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_roomsystem.entity_component_fire_filter }
 }
 
 impl<'a> Extract<'a> for EntityComponentFireFilter {
@@ -165,9 +136,7 @@ impl<'a> Extract<'a> for EntityComponentFireFilter {
         Self {
             mode: FireFilterMode::from_dcb_str(inst.get_str("mode").unwrap_or("")),
             shape: match inst.get("shape") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(FireVoxelSelectionShapePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(FireVoxelSelectionShapePtr::from_ref(b, r)),
                 _ => None,
             },
         }
@@ -196,12 +165,8 @@ pub struct EntityComponentExtinguisher {
 }
 
 impl Pooled for EntityComponentExtinguisher {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_roomsystem.entity_component_extinguisher
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_roomsystem.entity_component_extinguisher
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_roomsystem.entity_component_extinguisher }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_roomsystem.entity_component_extinguisher }
 }
 
 impl<'a> Extract<'a> for EntityComponentExtinguisher {
@@ -211,18 +176,11 @@ impl<'a> Extract<'a> for EntityComponentExtinguisher {
             enable: inst.get_bool("enable").unwrap_or_default(),
             strength: inst.get_f32("strength").unwrap_or_default(),
             r#type: match inst.get("type") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(ExtinguishType_BasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(ExtinguishType_BasePtr::from_ref(b, r)),
                 _ => None,
             },
             extinguishing_effect_override: match inst.get("extinguishingEffectOverride") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<GlobalResourceParticle>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceParticle>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             vector_field_radius: inst.get_f32("vectorFieldRadius").unwrap_or_default(),
@@ -243,12 +201,8 @@ pub struct ExtinguishType_Spray {
 }
 
 impl Pooled for ExtinguishType_Spray {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_roomsystem.extinguish_type_spray
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_roomsystem.extinguish_type_spray
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_roomsystem.extinguish_type_spray }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_roomsystem.extinguish_type_spray }
 }
 
 impl<'a> Extract<'a> for ExtinguishType_Spray {
@@ -275,12 +229,8 @@ pub struct EntityComponentFireRepairer {
 }
 
 impl Pooled for EntityComponentFireRepairer {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_roomsystem.entity_component_fire_repairer
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_roomsystem.entity_component_fire_repairer
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_roomsystem.entity_component_fire_repairer }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_roomsystem.entity_component_fire_repairer }
 }
 
 impl<'a> Extract<'a> for EntityComponentFireRepairer {
@@ -291,9 +241,7 @@ impl<'a> Extract<'a> for EntityComponentFireRepairer {
             repair_rate: inst.get_f32("repairRate").unwrap_or_default(),
             radius: inst.get_f32("radius").unwrap_or_default(),
             r#type: match inst.get("type") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(FireRepairerType_BasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(FireRepairerType_BasePtr::from_ref(b, r)),
                 _ => None,
             },
         }
@@ -302,21 +250,19 @@ impl<'a> Extract<'a> for EntityComponentFireRepairer {
 
 /// DCB type: `FireRepairerType_EntityPos`
 /// Inherits from: `FireRepairerType_Base`
-pub struct FireRepairerType_EntityPos {}
+pub struct FireRepairerType_EntityPos {
+}
 
 impl Pooled for FireRepairerType_EntityPos {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_roomsystem.fire_repairer_type_entity_pos
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_roomsystem.fire_repairer_type_entity_pos
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_roomsystem.fire_repairer_type_entity_pos }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_roomsystem.fire_repairer_type_entity_pos }
 }
 
 impl<'a> Extract<'a> for FireRepairerType_EntityPos {
     const TYPE_NAME: &'static str = "FireRepairerType_EntityPos";
     fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {}
+        Self {
+        }
     }
 }
 
@@ -328,36 +274,20 @@ pub struct EntityTemperatureStateModifier {
 }
 
 impl Pooled for EntityTemperatureStateModifier {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_roomsystem.entity_temperature_state_modifier
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_roomsystem.entity_temperature_state_modifier
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_roomsystem.entity_temperature_state_modifier }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_roomsystem.entity_temperature_state_modifier }
 }
 
 impl<'a> Extract<'a> for EntityTemperatureStateModifier {
     const TYPE_NAME: &'static str = "EntityTemperatureStateModifier";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            state_ranges: inst
-                .get_array("stateRanges")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<SRangeStateLevel>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => Some(b.alloc_nested::<SRangeStateLevel>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
+            state_ranges: inst.get_array("stateRanges")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<SRangeStateLevel>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<SRangeStateLevel>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
         }
     }
@@ -365,49 +295,37 @@ impl<'a> Extract<'a> for EntityTemperatureStateModifier {
 
 /// DCB type: `ItemResourceDynamicAmountLifeSupport`
 /// Inherits from: `ItemResourceDynamicAmountBase`
-pub struct ItemResourceDynamicAmountLifeSupport {}
+pub struct ItemResourceDynamicAmountLifeSupport {
+}
 
 impl Pooled for ItemResourceDynamicAmountLifeSupport {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_roomsystem
-            .item_resource_dynamic_amount_life_support
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_roomsystem
-            .item_resource_dynamic_amount_life_support
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_roomsystem.item_resource_dynamic_amount_life_support }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_roomsystem.item_resource_dynamic_amount_life_support }
 }
 
 impl<'a> Extract<'a> for ItemResourceDynamicAmountLifeSupport {
     const TYPE_NAME: &'static str = "ItemResourceDynamicAmountLifeSupport";
     fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {}
+        Self {
+        }
     }
 }
 
 /// DCB type: `SEntityComponentRoomGroupParams`
 /// Inherits from: `DataForgeComponentParams`
-pub struct SEntityComponentRoomGroupParams {}
+pub struct SEntityComponentRoomGroupParams {
+}
 
 impl Pooled for SEntityComponentRoomGroupParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_roomsystem
-            .sentity_component_room_group_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_roomsystem
-            .sentity_component_room_group_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_roomsystem.sentity_component_room_group_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_roomsystem.sentity_component_room_group_params }
 }
 
 impl<'a> Extract<'a> for SEntityComponentRoomGroupParams {
     const TYPE_NAME: &'static str = "SEntityComponentRoomGroupParams";
     fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {}
+        Self {
+        }
     }
 }
 
@@ -421,16 +339,8 @@ pub struct EntityComponentRoomFadeVolumeParams {
 }
 
 impl Pooled for EntityComponentRoomFadeVolumeParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_roomsystem
-            .entity_component_room_fade_volume_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_roomsystem
-            .entity_component_room_fade_volume_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_roomsystem.entity_component_room_fade_volume_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_roomsystem.entity_component_room_fade_volume_params }
 }
 
 impl<'a> Extract<'a> for EntityComponentRoomFadeVolumeParams {
@@ -438,9 +348,7 @@ impl<'a> Extract<'a> for EntityComponentRoomFadeVolumeParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             area_volume: match inst.get("areaVolume") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(VolumeShapePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(VolumeShapePtr::from_ref(b, r)),
                 _ => None,
             },
             fade_zone: inst.get_f32("fadeZone").unwrap_or_default(),
@@ -456,12 +364,8 @@ pub struct VolumeShape_Sphere {
 }
 
 impl Pooled for VolumeShape_Sphere {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_roomsystem.volume_shape_sphere
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_roomsystem.volume_shape_sphere
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_roomsystem.volume_shape_sphere }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_roomsystem.volume_shape_sphere }
 }
 
 impl<'a> Extract<'a> for VolumeShape_Sphere {
@@ -475,21 +379,19 @@ impl<'a> Extract<'a> for VolumeShape_Sphere {
 
 /// DCB type: `SAtmosphericCompositionInherit`
 /// Inherits from: `SAtmosphericCompositionBaseParams`
-pub struct SAtmosphericCompositionInherit {}
+pub struct SAtmosphericCompositionInherit {
+}
 
 impl Pooled for SAtmosphericCompositionInherit {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_roomsystem.satmospheric_composition_inherit
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_roomsystem.satmospheric_composition_inherit
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_roomsystem.satmospheric_composition_inherit }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_roomsystem.satmospheric_composition_inherit }
 }
 
 impl<'a> Extract<'a> for SAtmosphericCompositionInherit {
     const TYPE_NAME: &'static str = "SAtmosphericCompositionInherit";
     fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {}
+        Self {
+        }
     }
 }
 
@@ -503,22 +405,17 @@ pub struct AsteroidState {
 }
 
 impl Pooled for AsteroidState {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_roomsystem.asteroid_state
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_roomsystem.asteroid_state
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_roomsystem.asteroid_state }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_roomsystem.asteroid_state }
 }
 
 impl<'a> Extract<'a> for AsteroidState {
     const TYPE_NAME: &'static str = "AsteroidState";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            debris_density_mod: RoomStateModifyType::from_dcb_str(
-                inst.get_str("debrisDensityMod").unwrap_or(""),
-            ),
+            debris_density_mod: RoomStateModifyType::from_dcb_str(inst.get_str("debrisDensityMod").unwrap_or("")),
             debris_density: inst.get_f32("debrisDensity").unwrap_or_default(),
         }
     }
 }
+

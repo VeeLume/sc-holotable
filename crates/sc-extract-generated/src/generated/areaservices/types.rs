@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -35,36 +35,20 @@ pub struct BaseService {
 }
 
 impl Pooled for BaseService {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.areaservices.base_service
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.areaservices.base_service
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.areaservices.base_service }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.areaservices.base_service }
 }
 
 impl<'a> Extract<'a> for BaseService {
     const TYPE_NAME: &'static str = "BaseService";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            text: inst
-                .get_str("text")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
-            description: inst
-                .get_str("description")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
-            product_name: inst
-                .get_str("productName")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
+            text: inst.get_str("text").map(LocaleKey::from).unwrap_or_default(),
+            description: inst.get_str("description").map(LocaleKey::from).unwrap_or_default(),
+            product_name: inst.get_str("productName").map(LocaleKey::from).unwrap_or_default(),
             icon: inst.get_str("icon").map(String::from).unwrap_or_default(),
             service_delay_time: inst.get_f32("serviceDelayTime").unwrap_or_default(),
-            hud_message: inst
-                .get_str("hudMessage")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
+            hud_message: inst.get_str("hudMessage").map(LocaleKey::from).unwrap_or_default(),
         }
     }
 }
@@ -93,44 +77,23 @@ pub struct RepairService {
 }
 
 impl Pooled for RepairService {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.areaservices.repair_service
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.areaservices.repair_service
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.areaservices.repair_service }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.areaservices.repair_service }
 }
 
 impl<'a> Extract<'a> for RepairService {
     const TYPE_NAME: &'static str = "RepairService";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            text: inst
-                .get_str("text")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
-            description: inst
-                .get_str("description")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
-            product_name: inst
-                .get_str("productName")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
+            text: inst.get_str("text").map(LocaleKey::from).unwrap_or_default(),
+            description: inst.get_str("description").map(LocaleKey::from).unwrap_or_default(),
+            product_name: inst.get_str("productName").map(LocaleKey::from).unwrap_or_default(),
             icon: inst.get_str("icon").map(String::from).unwrap_or_default(),
             service_delay_time: inst.get_f32("serviceDelayTime").unwrap_or_default(),
-            hud_message: inst
-                .get_str("hudMessage")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
+            hud_message: inst.get_str("hudMessage").map(LocaleKey::from).unwrap_or_default(),
             commodity_to_hit_points: inst.get_i32("commodityToHitPoints").unwrap_or_default(),
-            commodity_to_degradation_lifetime: inst
-                .get_i32("commodityToDegradationLifetime")
-                .unwrap_or_default(),
-            repair_commodity: inst
-                .get("repairCommodity")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
+            commodity_to_degradation_lifetime: inst.get_i32("commodityToDegradationLifetime").unwrap_or_default(),
+            repair_commodity: inst.get("repairCommodity").and_then(|v| v.as_record_ref()).map(|r| r.guid),
         }
     }
 }
@@ -159,42 +122,23 @@ pub struct QuantumRefuelService {
 }
 
 impl Pooled for QuantumRefuelService {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.areaservices.quantum_refuel_service
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.areaservices.quantum_refuel_service
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.areaservices.quantum_refuel_service }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.areaservices.quantum_refuel_service }
 }
 
 impl<'a> Extract<'a> for QuantumRefuelService {
     const TYPE_NAME: &'static str = "QuantumRefuelService";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            text: inst
-                .get_str("text")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
-            description: inst
-                .get_str("description")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
-            product_name: inst
-                .get_str("productName")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
+            text: inst.get_str("text").map(LocaleKey::from).unwrap_or_default(),
+            description: inst.get_str("description").map(LocaleKey::from).unwrap_or_default(),
+            product_name: inst.get_str("productName").map(LocaleKey::from).unwrap_or_default(),
             icon: inst.get_str("icon").map(String::from).unwrap_or_default(),
             service_delay_time: inst.get_f32("serviceDelayTime").unwrap_or_default(),
-            hud_message: inst
-                .get_str("hudMessage")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
+            hud_message: inst.get_str("hudMessage").map(LocaleKey::from).unwrap_or_default(),
             instant_refuel: inst.get_bool("instantRefuel").unwrap_or_default(),
             refuel_unit_per_second: inst.get_i32("refuelUnitPerSecond").unwrap_or_default(),
-            fuel_commodity: inst
-                .get("fuelCommodity")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
+            fuel_commodity: inst.get("fuelCommodity").and_then(|v| v.as_record_ref()).map(|r| r.guid),
         }
     }
 }
@@ -223,42 +167,23 @@ pub struct HydrogenRefuelService {
 }
 
 impl Pooled for HydrogenRefuelService {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.areaservices.hydrogen_refuel_service
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.areaservices.hydrogen_refuel_service
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.areaservices.hydrogen_refuel_service }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.areaservices.hydrogen_refuel_service }
 }
 
 impl<'a> Extract<'a> for HydrogenRefuelService {
     const TYPE_NAME: &'static str = "HydrogenRefuelService";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            text: inst
-                .get_str("text")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
-            description: inst
-                .get_str("description")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
-            product_name: inst
-                .get_str("productName")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
+            text: inst.get_str("text").map(LocaleKey::from).unwrap_or_default(),
+            description: inst.get_str("description").map(LocaleKey::from).unwrap_or_default(),
+            product_name: inst.get_str("productName").map(LocaleKey::from).unwrap_or_default(),
             icon: inst.get_str("icon").map(String::from).unwrap_or_default(),
             service_delay_time: inst.get_f32("serviceDelayTime").unwrap_or_default(),
-            hud_message: inst
-                .get_str("hudMessage")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
+            hud_message: inst.get_str("hudMessage").map(LocaleKey::from).unwrap_or_default(),
             instant_refuel: inst.get_bool("instantRefuel").unwrap_or_default(),
             refuel_unit_per_second: inst.get_i32("refuelUnitPerSecond").unwrap_or_default(),
-            fuel_commodity: inst
-                .get("fuelCommodity")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
+            fuel_commodity: inst.get("fuelCommodity").and_then(|v| v.as_record_ref()).map(|r| r.guid),
         }
     }
 }
@@ -283,40 +208,21 @@ pub struct RestockService {
 }
 
 impl Pooled for RestockService {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.areaservices.restock_service
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.areaservices.restock_service
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.areaservices.restock_service }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.areaservices.restock_service }
 }
 
 impl<'a> Extract<'a> for RestockService {
     const TYPE_NAME: &'static str = "RestockService";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            text: inst
-                .get_str("text")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
-            description: inst
-                .get_str("description")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
-            product_name: inst
-                .get_str("productName")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
+            text: inst.get_str("text").map(LocaleKey::from).unwrap_or_default(),
+            description: inst.get_str("description").map(LocaleKey::from).unwrap_or_default(),
+            product_name: inst.get_str("productName").map(LocaleKey::from).unwrap_or_default(),
             icon: inst.get_str("icon").map(String::from).unwrap_or_default(),
             service_delay_time: inst.get_f32("serviceDelayTime").unwrap_or_default(),
-            hud_message: inst
-                .get_str("hudMessage")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
-            ammo_commodity: inst
-                .get("AmmoCommodity")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
+            hud_message: inst.get_str("hudMessage").map(LocaleKey::from).unwrap_or_default(),
+            ammo_commodity: inst.get("AmmoCommodity").and_then(|v| v.as_record_ref()).map(|r| r.guid),
         }
     }
 }
@@ -332,12 +238,8 @@ pub struct AreaServices {
 }
 
 impl Pooled for AreaServices {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.areaservices.area_services
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.areaservices.area_services
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.areaservices.area_services }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.areaservices.area_services }
 }
 
 impl<'a> Extract<'a> for AreaServices {
@@ -346,18 +248,13 @@ impl<'a> Extract<'a> for AreaServices {
         Self {
             name: inst.get_str("name").map(String::from).unwrap_or_default(),
             lingering_timeout: inst.get_f32("lingeringTimeout").unwrap_or_default(),
-            service: inst
-                .get_array("service")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => {
-                            Some(BaseServicePtr::from_ref(b, r))
-                        }
+            service: inst.get_array("service")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => Some(BaseServicePtr::from_ref(b, r)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
         }
     }
 }
+

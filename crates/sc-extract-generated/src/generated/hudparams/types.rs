@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -41,12 +41,8 @@ pub struct STargetSelectorColorHighlighting {
 }
 
 impl Pooled for STargetSelectorColorHighlighting {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.hudparams.starget_selector_color_highlighting
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.hudparams.starget_selector_color_highlighting
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.hudparams.starget_selector_color_highlighting }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.hudparams.starget_selector_color_highlighting }
 }
 
 impl<'a> Extract<'a> for STargetSelectorColorHighlighting {
@@ -54,10 +50,7 @@ impl<'a> Extract<'a> for STargetSelectorColorHighlighting {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             highlight_color: match inst.get("highlightColor") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<RGB>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<RGB>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             occluded_alpha: inst.get_f32("occludedAlpha").unwrap_or_default(),
@@ -103,82 +96,40 @@ pub struct STargetSelectorHudParams {
 }
 
 impl Pooled for STargetSelectorHudParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.hudparams.starget_selector_hud_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.hudparams.starget_selector_hud_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.hudparams.starget_selector_hud_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.hudparams.starget_selector_hud_params }
 }
 
 impl<'a> Extract<'a> for STargetSelectorHudParams {
     const TYPE_NAME: &'static str = "STargetSelectorHudParams";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            calculate_locked_target_bracket: inst
-                .get_bool("calculateLockedTargetBracket")
-                .unwrap_or_default(),
-            calculate_selected_target_bracket: inst
-                .get_bool("calculateSelectedTargetBracket")
-                .unwrap_or_default(),
-            hud_target_pointer_angle_offset: inst
-                .get_f32("hudTargetPointerAngleOffset")
-                .unwrap_or_default(),
-            hud_target_pointer_head_follow_angle_inner: inst
-                .get_f32("hudTargetPointerHeadFollowAngleInner")
-                .unwrap_or_default(),
-            hud_target_pointer_head_follow_angle_outer: inst
-                .get_f32("hudTargetPointerHeadFollowAngleOuter")
-                .unwrap_or_default(),
-            hud_target_pointer_head_follow_swap_time: inst
-                .get_f32("hudTargetPointerHeadFollowSwapTime")
-                .unwrap_or_default(),
-            relative_attitude_pointer_position: inst
-                .get_f32("relativeAttitudePointerPosition")
-                .unwrap_or_default(),
+            calculate_locked_target_bracket: inst.get_bool("calculateLockedTargetBracket").unwrap_or_default(),
+            calculate_selected_target_bracket: inst.get_bool("calculateSelectedTargetBracket").unwrap_or_default(),
+            hud_target_pointer_angle_offset: inst.get_f32("hudTargetPointerAngleOffset").unwrap_or_default(),
+            hud_target_pointer_head_follow_angle_inner: inst.get_f32("hudTargetPointerHeadFollowAngleInner").unwrap_or_default(),
+            hud_target_pointer_head_follow_angle_outer: inst.get_f32("hudTargetPointerHeadFollowAngleOuter").unwrap_or_default(),
+            hud_target_pointer_head_follow_swap_time: inst.get_f32("hudTargetPointerHeadFollowSwapTime").unwrap_or_default(),
+            relative_attitude_pointer_position: inst.get_f32("relativeAttitudePointerPosition").unwrap_or_default(),
             show_all_subtargets: inst.get_bool("showAllSubtargets").unwrap_or_default(),
             target_pointer_alpha: match inst.get("targetPointerAlpha") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BezierCurve>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BezierCurve>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             outline_subtargets_locked: match inst.get("outlineSubtargetsLocked") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<STargetSelectorColorHighlighting>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<STargetSelectorColorHighlighting>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             outline_subtargets_available: match inst.get("outlineSubtargetsAvailable") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<STargetSelectorColorHighlighting>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<STargetSelectorColorHighlighting>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             outline_subtargets_objective: match inst.get("outlineSubtargetsObjective") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<STargetSelectorColorHighlighting>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<STargetSelectorColorHighlighting>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            outline_subtargets_objective_locked: match inst.get("outlineSubtargetsObjectiveLocked")
-            {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<STargetSelectorColorHighlighting>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+            outline_subtargets_objective_locked: match inst.get("outlineSubtargetsObjectiveLocked") {
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<STargetSelectorColorHighlighting>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
@@ -218,12 +169,8 @@ pub struct SProjectedPitchLadderParams {
 }
 
 impl Pooled for SProjectedPitchLadderParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.hudparams.sprojected_pitch_ladder_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.hudparams.sprojected_pitch_ladder_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.hudparams.sprojected_pitch_ladder_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.hudparams.sprojected_pitch_ladder_params }
 }
 
 impl<'a> Extract<'a> for SProjectedPitchLadderParams {
@@ -234,32 +181,16 @@ impl<'a> Extract<'a> for SProjectedPitchLadderParams {
             visible_fade_ratio: inst.get_f32("visibleFadeRatio").unwrap_or_default(),
             increment_angle: inst.get_f32("incrementAngle").unwrap_or_default(),
             centers_enabled: inst.get_bool("centersEnabled").unwrap_or_default(),
-            centers_alignment_type: EProjectedHudAlignmentType::from_dcb_str(
-                inst.get_str("centersAlignmentType").unwrap_or(""),
-            ),
+            centers_alignment_type: EProjectedHudAlignmentType::from_dcb_str(inst.get_str("centersAlignmentType").unwrap_or("")),
             sides_enabled: inst.get_bool("sidesEnabled").unwrap_or_default(),
-            sides_horizontal_offset_angle: inst
-                .get_f32("sidesHorizontalOffsetAngle")
-                .unwrap_or_default(),
-            sides_position_type: EProjectedHudPositionType::from_dcb_str(
-                inst.get_str("sidesPositionType").unwrap_or(""),
-            ),
-            sides_alignment_type: EProjectedHudAlignmentType::from_dcb_str(
-                inst.get_str("sidesAlignmentType").unwrap_or(""),
-            ),
+            sides_horizontal_offset_angle: inst.get_f32("sidesHorizontalOffsetAngle").unwrap_or_default(),
+            sides_position_type: EProjectedHudPositionType::from_dcb_str(inst.get_str("sidesPositionType").unwrap_or("")),
+            sides_alignment_type: EProjectedHudAlignmentType::from_dcb_str(inst.get_str("sidesAlignmentType").unwrap_or("")),
             labels_enabled: inst.get_bool("labelsEnabled").unwrap_or_default(),
-            labels_horizontal_offset_angle: inst
-                .get_f32("labelsHorizontalOffsetAngle")
-                .unwrap_or_default(),
-            labels_position_type: EProjectedHudPositionType::from_dcb_str(
-                inst.get_str("labelsPositionType").unwrap_or(""),
-            ),
-            labels_alignment_type: EProjectedHudAlignmentType::from_dcb_str(
-                inst.get_str("labelsAlignmentType").unwrap_or(""),
-            ),
-            enable_zero_pitch_elements: inst
-                .get_bool("enableZeroPitchElements")
-                .unwrap_or_default(),
+            labels_horizontal_offset_angle: inst.get_f32("labelsHorizontalOffsetAngle").unwrap_or_default(),
+            labels_position_type: EProjectedHudPositionType::from_dcb_str(inst.get_str("labelsPositionType").unwrap_or("")),
+            labels_alignment_type: EProjectedHudAlignmentType::from_dcb_str(inst.get_str("labelsAlignmentType").unwrap_or("")),
+            enable_zero_pitch_elements: inst.get_bool("enableZeroPitchElements").unwrap_or_default(),
         }
     }
 }
@@ -299,12 +230,8 @@ pub struct SProjectedYawLineParams {
 }
 
 impl Pooled for SProjectedYawLineParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.hudparams.sprojected_yaw_line_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.hudparams.sprojected_yaw_line_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.hudparams.sprojected_yaw_line_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.hudparams.sprojected_yaw_line_params }
 }
 
 impl<'a> Extract<'a> for SProjectedYawLineParams {
@@ -315,27 +242,17 @@ impl<'a> Extract<'a> for SProjectedYawLineParams {
             start_angle: inst.get_f32("startAngle").unwrap_or_default(),
             end_angle: inst.get_f32("endAngle").unwrap_or_default(),
             ticks_enabled: inst.get_bool("ticksEnabled").unwrap_or_default(),
-            tick_forward_fade_start_angle: inst
-                .get_f32("tickForwardFadeStartAngle")
-                .unwrap_or_default(),
-            tick_forward_fade_end_angle: inst
-                .get_f32("tickForwardFadeEndAngle")
-                .unwrap_or_default(),
+            tick_forward_fade_start_angle: inst.get_f32("tickForwardFadeStartAngle").unwrap_or_default(),
+            tick_forward_fade_end_angle: inst.get_f32("tickForwardFadeEndAngle").unwrap_or_default(),
             tick_border_fade_angle: inst.get_f32("tickBorderFadeAngle").unwrap_or_default(),
             tick_increment_angle: inst.get_f32("tickIncrementAngle").unwrap_or_default(),
-            tick_increment_visual_angle_ratio: inst
-                .get_f32("tickIncrementVisualAngleRatio")
-                .unwrap_or_default(),
-            tick_alignment_type: EProjectedHudAlignmentType::from_dcb_str(
-                inst.get_str("tickAlignmentType").unwrap_or(""),
-            ),
+            tick_increment_visual_angle_ratio: inst.get_f32("tickIncrementVisualAngleRatio").unwrap_or_default(),
+            tick_alignment_type: EProjectedHudAlignmentType::from_dcb_str(inst.get_str("tickAlignmentType").unwrap_or("")),
             ticks_add_corners: inst.get_bool("ticksAddCorners").unwrap_or_default(),
             ticks_as_full_circle: inst.get_bool("ticksAsFullCircle").unwrap_or_default(),
             fix_yaw_line_to_angle: inst.get_bool("fixYawLineToAngle").unwrap_or_default(),
             fixed_angle: inst.get_f32("fixedAngle").unwrap_or_default(),
-            anchor_type: EProjectedHudYawLineAnchorType::from_dcb_str(
-                inst.get_str("anchorType").unwrap_or(""),
-            ),
+            anchor_type: EProjectedHudYawLineAnchorType::from_dcb_str(inst.get_str("anchorType").unwrap_or("")),
         }
     }
 }
@@ -353,12 +270,8 @@ pub struct SProjectedDisplayParams {
 }
 
 impl Pooled for SProjectedDisplayParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.hudparams.sprojected_display_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.hudparams.sprojected_display_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.hudparams.sprojected_display_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.hudparams.sprojected_display_params }
 }
 
 impl<'a> Extract<'a> for SProjectedDisplayParams {
@@ -368,9 +281,7 @@ impl<'a> Extract<'a> for SProjectedDisplayParams {
             enabled: inst.get_bool("enabled").unwrap_or_default(),
             pitch_offset: inst.get_f32("pitchOffset").unwrap_or_default(),
             yaw_offset: inst.get_f32("yawOffset").unwrap_or_default(),
-            alignment_type: EProjectedHudAlignmentType::from_dcb_str(
-                inst.get_str("alignmentType").unwrap_or(""),
-            ),
+            alignment_type: EProjectedHudAlignmentType::from_dcb_str(inst.get_str("alignmentType").unwrap_or("")),
         }
     }
 }
@@ -386,12 +297,8 @@ pub struct SHudTapeParams {
 }
 
 impl Pooled for SHudTapeParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.hudparams.shud_tape_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.hudparams.shud_tape_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.hudparams.shud_tape_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.hudparams.shud_tape_params }
 }
 
 impl<'a> Extract<'a> for SHudTapeParams {
@@ -422,12 +329,8 @@ pub struct SProjectedHudParams {
 }
 
 impl Pooled for SProjectedHudParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.hudparams.sprojected_hud_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.hudparams.sprojected_hud_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.hudparams.sprojected_hud_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.hudparams.sprojected_hud_params }
 }
 
 impl<'a> Extract<'a> for SProjectedHudParams {
@@ -435,37 +338,20 @@ impl<'a> Extract<'a> for SProjectedHudParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             pitch_ladder: match inst.get("pitchLadder") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<SProjectedPitchLadderParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SProjectedPitchLadderParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             yaw_line: match inst.get("yawLine") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<SProjectedYawLineParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SProjectedYawLineParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             display: match inst.get("display") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<SProjectedDisplayParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SProjectedDisplayParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             coil_arrow_show: inst.get_bool("coilArrowShow").unwrap_or_default(),
             coil_arrow_offset_angle: inst.get_f32("coilArrowOffsetAngle").unwrap_or_default(),
-            coil_arrow_rotates_to_target: inst
-                .get_bool("coilArrowRotatesToTarget")
-                .unwrap_or_default(),
+            coil_arrow_rotates_to_target: inst.get_bool("coilArrowRotatesToTarget").unwrap_or_default(),
         }
     }
 }
@@ -481,12 +367,8 @@ pub struct SVehicleHudParams {
 }
 
 impl Pooled for SVehicleHudParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.hudparams.svehicle_hud_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.hudparams.svehicle_hud_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.hudparams.svehicle_hud_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.hudparams.svehicle_hud_params }
 }
 
 impl<'a> Extract<'a> for SVehicleHudParams {
@@ -494,24 +376,12 @@ impl<'a> Extract<'a> for SVehicleHudParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             altitude_tape: match inst.get("altitudeTape") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<SHudTapeParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SHudTapeParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            radar_altimeter_widget_threshold: inst
-                .get_f32("radarAltimeterWidgetThreshold")
-                .unwrap_or_default(),
+            radar_altimeter_widget_threshold: inst.get_f32("radarAltimeterWidgetThreshold").unwrap_or_default(),
             compass_tape: match inst.get("compassTape") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<SHudTapeParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SHudTapeParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
@@ -531,34 +401,18 @@ pub struct SAimableGimbalModeLabels {
 }
 
 impl Pooled for SAimableGimbalModeLabels {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.hudparams.saimable_gimbal_mode_labels
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.hudparams.saimable_gimbal_mode_labels
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.hudparams.saimable_gimbal_mode_labels }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.hudparams.saimable_gimbal_mode_labels }
 }
 
 impl<'a> Extract<'a> for SAimableGimbalModeLabels {
     const TYPE_NAME: &'static str = "SAimableGimbalModeLabels";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            aim_type_names_full: inst
-                .get_str("aimTypeNamesFull")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
-            aim_type_names_short: inst
-                .get_str("aimTypeNamesShort")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
-            gimbal_state_names_full: inst
-                .get_str("gimbalStateNamesFull")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
-            gimbal_state_names_short: inst
-                .get_str("gimbalStateNamesShort")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
+            aim_type_names_full: inst.get_str("aimTypeNamesFull").map(LocaleKey::from).unwrap_or_default(),
+            aim_type_names_short: inst.get_str("aimTypeNamesShort").map(LocaleKey::from).unwrap_or_default(),
+            gimbal_state_names_full: inst.get_str("gimbalStateNamesFull").map(LocaleKey::from).unwrap_or_default(),
+            gimbal_state_names_short: inst.get_str("gimbalStateNamesShort").map(LocaleKey::from).unwrap_or_default(),
         }
     }
 }
@@ -590,47 +444,32 @@ pub struct SAimableControllerHudParams {
 }
 
 impl Pooled for SAimableControllerHudParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.hudparams.saimable_controller_hud_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.hudparams.saimable_controller_hud_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.hudparams.saimable_controller_hud_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.hudparams.saimable_controller_hud_params }
 }
 
 impl<'a> Extract<'a> for SAimableControllerHudParams {
     const TYPE_NAME: &'static str = "SAimableControllerHudParams";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            hud_auto_gimbal_tracking_marker_animation_time: inst
-                .get_f32("hudAutoGimbalTrackingMarkerAnimationTime")
-                .unwrap_or_default(),
-            show_auto_gimbal_combined_all_pip: inst
-                .get_bool("showAutoGimbalCombinedAllPIP")
-                .unwrap_or_default(),
+            hud_auto_gimbal_tracking_marker_animation_time: inst.get_f32("hudAutoGimbalTrackingMarkerAnimationTime").unwrap_or_default(),
+            show_auto_gimbal_combined_all_pip: inst.get_bool("showAutoGimbalCombinedAllPIP").unwrap_or_default(),
             lead_pip_fading_angle: inst.get_f32("leadPipFadingAngle").unwrap_or_default(),
             lead_pip_fading_curve: match inst.get("leadPipFadingCurve") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BezierCurve>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BezierCurve>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             lag_pip_fading_angle: inst.get_f32("lagPipFadingAngle").unwrap_or_default(),
             lag_pip_fading_curve: match inst.get("lagPipFadingCurve") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BezierCurve>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BezierCurve>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             border_offset_angle_min: inst.get_f32("borderOffsetAngleMin").unwrap_or_default(),
             border_offset_angle_max: inst.get_f32("borderOffsetAngleMax").unwrap_or_default(),
             crosshair_shapes: inst.get_i32("crosshairShapes").unwrap_or_default(),
             gimbal_alignment_angle: inst.get_f32("gimbalAlignmentAngle").unwrap_or_default(),
-            gimbal_alignment_exclude_out_of_angle: inst
-                .get_bool("gimbalAlignmentExcludeOutOfAngle")
-                .unwrap_or_default(),
+            gimbal_alignment_exclude_out_of_angle: inst.get_bool("gimbalAlignmentExcludeOutOfAngle").unwrap_or_default(),
         }
     }
 }
+

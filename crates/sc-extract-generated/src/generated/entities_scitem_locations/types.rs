@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -30,16 +30,8 @@ pub struct ItemResourceContainerPlaceholderParams {
 }
 
 impl Pooled for ItemResourceContainerPlaceholderParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_scitem_locations
-            .item_resource_container_placeholder_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_scitem_locations
-            .item_resource_container_placeholder_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_locations.item_resource_container_placeholder_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_locations.item_resource_container_placeholder_params }
 }
 
 impl<'a> Extract<'a> for ItemResourceContainerPlaceholderParams {
@@ -49,14 +41,10 @@ impl<'a> Extract<'a> for ItemResourceContainerPlaceholderParams {
             capacity: inst.get_f32("capacity").unwrap_or_default(),
             default_fullness: inst.get_f32("defaultFullness").unwrap_or_default(),
             composition: match inst.get("composition") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<ItemResourceComposition>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<ItemResourceComposition>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
     }
 }
+

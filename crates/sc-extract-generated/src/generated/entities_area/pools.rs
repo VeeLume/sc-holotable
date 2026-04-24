@@ -36,8 +36,7 @@ pub struct EntitiesAreaPools {
     pub ship_recall_banned_area_params: Vec<Option<ShipRecallBannedAreaParams>>,
     pub eamessage_trigger_component_params: Vec<Option<EAMessageTriggerComponentParams>>,
     pub eaplayable_area_movement_type_params_def: Vec<Option<EAPlayableAreaMovementTypeParamsDef>>,
-    pub eaplayable_area_controller_component_params_def:
-        Vec<Option<EAPlayableAreaControllerComponentParamsDef>>,
+    pub eaplayable_area_controller_component_params_def: Vec<Option<EAPlayableAreaControllerComponentParamsDef>>,
     pub slanding_area_object_metadata_params: Vec<Option<SLandingAreaObjectMetadataParams>>,
     pub extra_legal_bounds: Vec<Option<ExtraLegalBounds>>,
     pub landing_area_component_params: Vec<Option<LandingAreaComponentParams>>,

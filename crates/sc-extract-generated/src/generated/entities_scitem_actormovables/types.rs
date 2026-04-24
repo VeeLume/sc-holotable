@@ -12,33 +12,27 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
 /// DCB type: `BuildModeKioskProviderComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-pub struct BuildModeKioskProviderComponentParams {}
+pub struct BuildModeKioskProviderComponentParams {
+}
 
 impl Pooled for BuildModeKioskProviderComponentParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_scitem_actormovables
-            .build_mode_kiosk_provider_component_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_scitem_actormovables
-            .build_mode_kiosk_provider_component_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_actormovables.build_mode_kiosk_provider_component_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_actormovables.build_mode_kiosk_provider_component_params }
 }
 
 impl<'a> Extract<'a> for BuildModeKioskProviderComponentParams {
     const TYPE_NAME: &'static str = "BuildModeKioskProviderComponentParams";
     fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {}
+        Self {
+        }
     }
 }
 
@@ -52,16 +46,8 @@ pub struct InteractionConditionHoverPowerStageEqual {
 }
 
 impl Pooled for InteractionConditionHoverPowerStageEqual {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_scitem_actormovables
-            .interaction_condition_hover_power_stage_equal
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_scitem_actormovables
-            .interaction_condition_hover_power_stage_equal
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_actormovables.interaction_condition_hover_power_stage_equal }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_actormovables.interaction_condition_hover_power_stage_equal }
 }
 
 impl<'a> Extract<'a> for InteractionConditionHoverPowerStageEqual {
@@ -69,12 +55,7 @@ impl<'a> Extract<'a> for InteractionConditionHoverPowerStageEqual {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             condition_display: match inst.get("conditionDisplay") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<ConditionDisplayParams>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<ConditionDisplayParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             power_stage: EHoverPowerStage::from_dcb_str(inst.get_str("powerStage").unwrap_or("")),
@@ -96,16 +77,8 @@ pub struct StateModifierHoverPowerStage {
 }
 
 impl Pooled for StateModifierHoverPowerStage {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_scitem_actormovables
-            .state_modifier_hover_power_stage
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_scitem_actormovables
-            .state_modifier_hover_power_stage
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_actormovables.state_modifier_hover_power_stage }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_actormovables.state_modifier_hover_power_stage }
 }
 
 impl<'a> Extract<'a> for StateModifierHoverPowerStage {
@@ -113,39 +86,19 @@ impl<'a> Extract<'a> for StateModifierHoverPowerStage {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             powered_off: match inst.get("poweredOff") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<SInteractionState>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SInteractionState>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             powering_off: match inst.get("poweringOff") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<SInteractionState>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SInteractionState>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             powering_on: match inst.get("poweringOn") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<SInteractionState>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SInteractionState>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             powered_on: match inst.get("poweredOn") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<SInteractionState>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SInteractionState>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
         }
@@ -162,16 +115,8 @@ pub struct SStateModifierMovableMover {
 }
 
 impl Pooled for SStateModifierMovableMover {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_scitem_actormovables
-            .sstate_modifier_movable_mover
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_scitem_actormovables
-            .sstate_modifier_movable_mover
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_actormovables.sstate_modifier_movable_mover }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_actormovables.sstate_modifier_movable_mover }
 }
 
 impl<'a> Extract<'a> for SStateModifierMovableMover {
@@ -179,21 +124,11 @@ impl<'a> Extract<'a> for SStateModifierMovableMover {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             has_mover_state: match inst.get("hasMoverState") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<SInteractionState>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SInteractionState>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             no_mover_state: match inst.get("noMoverState") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<SInteractionState>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SInteractionState>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
         }
@@ -243,16 +178,8 @@ pub struct SEntityHoverPhysicsPartialParams {
 }
 
 impl Pooled for SEntityHoverPhysicsPartialParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_scitem_actormovables
-            .sentity_hover_physics_partial_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_scitem_actormovables
-            .sentity_hover_physics_partial_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_actormovables.sentity_hover_physics_partial_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_actormovables.sentity_hover_physics_partial_params }
 }
 
 impl<'a> Extract<'a> for SEntityHoverPhysicsPartialParams {
@@ -263,40 +190,20 @@ impl<'a> Extract<'a> for SEntityHoverPhysicsPartialParams {
             desired_hover_min_height: inst.get_f32("desiredHoverMinHeight").unwrap_or_default(),
             align_to_surface: inst.get_f32("alignToSurface").unwrap_or_default(),
             align_to_surface_max_angle: inst.get_f32("alignToSurfaceMaxAngle").unwrap_or_default(),
-            align_to_surface_easing_start_angle: inst
-                .get_f32("alignToSurfaceEasingStartAngle")
-                .unwrap_or_default(),
-            align_to_surface_easing_end_angle: inst
-                .get_f32("alignToSurfaceEasingEndAngle")
-                .unwrap_or_default(),
+            align_to_surface_easing_start_angle: inst.get_f32("alignToSurfaceEasingStartAngle").unwrap_or_default(),
+            align_to_surface_easing_end_angle: inst.get_f32("alignToSurfaceEasingEndAngle").unwrap_or_default(),
             max_ground_search_depth: inst.get_f32("maxGroundSearchDepth").unwrap_or_default(),
             max_climb_height: inst.get_f32("maxClimbHeight").unwrap_or_default(),
             desired_max_fall_speed: inst.get_f32("desiredMaxFallSpeed").unwrap_or_default(),
-            desired_fall_speed_easing_start_depth: inst
-                .get_f32("desiredFallSpeedEasingStartDepth")
-                .unwrap_or_default(),
-            desired_fall_speed_easing_power: inst
-                .get_f32("desiredFallSpeedEasingPower")
-                .unwrap_or_default(),
+            desired_fall_speed_easing_start_depth: inst.get_f32("desiredFallSpeedEasingStartDepth").unwrap_or_default(),
+            desired_fall_speed_easing_power: inst.get_f32("desiredFallSpeedEasingPower").unwrap_or_default(),
             desired_max_raise_speed: inst.get_f32("desiredMaxRaiseSpeed").unwrap_or_default(),
-            desired_raise_speed_easing_start_height: inst
-                .get_f32("desiredRaiseSpeedEasingStartHeight")
-                .unwrap_or_default(),
-            desired_raise_speed_easing_power: inst
-                .get_f32("desiredRaiseSpeedEasingPower")
-                .unwrap_or_default(),
-            desired_max_rotational_adjustment_speed: inst
-                .get_f32("desiredMaxRotationalAdjustmentSpeed")
-                .unwrap_or_default(),
-            desired_angular_speed_easing_start_angle: inst
-                .get_f32("desiredAngularSpeedEasingStartAngle")
-                .unwrap_or_default(),
-            desired_angular_speed_easing_power: inst
-                .get_f32("desiredAngularSpeedEasingPower")
-                .unwrap_or_default(),
-            lateral_move_stop_max_speed: inst
-                .get_f32("lateralMoveStopMaxSpeed")
-                .unwrap_or_default(),
+            desired_raise_speed_easing_start_height: inst.get_f32("desiredRaiseSpeedEasingStartHeight").unwrap_or_default(),
+            desired_raise_speed_easing_power: inst.get_f32("desiredRaiseSpeedEasingPower").unwrap_or_default(),
+            desired_max_rotational_adjustment_speed: inst.get_f32("desiredMaxRotationalAdjustmentSpeed").unwrap_or_default(),
+            desired_angular_speed_easing_start_angle: inst.get_f32("desiredAngularSpeedEasingStartAngle").unwrap_or_default(),
+            desired_angular_speed_easing_power: inst.get_f32("desiredAngularSpeedEasingPower").unwrap_or_default(),
+            lateral_move_stop_max_speed: inst.get_f32("lateralMoveStopMaxSpeed").unwrap_or_default(),
             yaw_stop_max_speed: inst.get_f32("yawStopMaxSpeed").unwrap_or_default(),
         }
     }
@@ -337,16 +244,8 @@ pub struct SEntityHoverPhysicsControllerParams {
 }
 
 impl Pooled for SEntityHoverPhysicsControllerParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_scitem_actormovables
-            .sentity_hover_physics_controller_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_scitem_actormovables
-            .sentity_hover_physics_controller_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_actormovables.sentity_hover_physics_controller_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_actormovables.sentity_hover_physics_controller_params }
 }
 
 impl<'a> Extract<'a> for SEntityHoverPhysicsControllerParams {
@@ -354,64 +253,33 @@ impl<'a> Extract<'a> for SEntityHoverPhysicsControllerParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             interaction_activate: match inst.get("interactionActivate") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<SSharedInteractionParams>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SSharedInteractionParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             interaction_deactivate: match inst.get("interactionDeactivate") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<SSharedInteractionParams>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SSharedInteractionParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             activate_hover_by_default: inst.get_bool("activateHoverByDefault").unwrap_or_default(),
-            activate_hover_on_grip_attached: inst
-                .get_bool("activateHoverOnGripAttached")
-                .unwrap_or_default(),
-            deactivate_hover_on_grip_detached: inst
-                .get_bool("deactivateHoverOnGripDetached")
-                .unwrap_or_default(),
+            activate_hover_on_grip_attached: inst.get_bool("activateHoverOnGripAttached").unwrap_or_default(),
+            deactivate_hover_on_grip_detached: inst.get_bool("deactivateHoverOnGripDetached").unwrap_or_default(),
             blend_in_duration: inst.get_f32("blendInDuration").unwrap_or_default(),
             blend_out_duration: inst.get_f32("blendOutDuration").unwrap_or_default(),
-            power_off_desired_hover_height: inst
-                .get_f32("powerOffDesiredHoverHeight")
-                .unwrap_or_default(),
+            power_off_desired_hover_height: inst.get_f32("powerOffDesiredHoverHeight").unwrap_or_default(),
             max_hover_mass: inst.get_f32("maxHoverMass").unwrap_or_default(),
-            max_rotational_adjustment_torque: inst
-                .get_f32("maxRotationalAdjustmentTorque")
-                .unwrap_or_default(),
+            max_rotational_adjustment_torque: inst.get_f32("maxRotationalAdjustmentTorque").unwrap_or_default(),
             base_plane_half_width: inst.get_f32("basePlaneHalfWidth").unwrap_or_default(),
             base_plane_half_length: inst.get_f32("basePlaneHalfLength").unwrap_or_default(),
             base_plane_origin_offset: match inst.get("basePlaneOriginOffset") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             hover_physics_idle: match inst.get("hoverPhysicsIdle") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<SEntityHoverPhysicsPartialParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SEntityHoverPhysicsPartialParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             hover_physics_grip_attached: match inst.get("hoverPhysicsGripAttached") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<SEntityHoverPhysicsPartialParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SEntityHoverPhysicsPartialParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
@@ -428,16 +296,8 @@ pub struct SEntityHoverPhysicsControllerComponentParams {
 }
 
 impl Pooled for SEntityHoverPhysicsControllerComponentParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_scitem_actormovables
-            .sentity_hover_physics_controller_component_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_scitem_actormovables
-            .sentity_hover_physics_controller_component_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_actormovables.sentity_hover_physics_controller_component_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_actormovables.sentity_hover_physics_controller_component_params }
 }
 
 impl<'a> Extract<'a> for SEntityHoverPhysicsControllerComponentParams {
@@ -445,20 +305,14 @@ impl<'a> Extract<'a> for SEntityHoverPhysicsControllerComponentParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             phys_type: match inst.get("PhysType") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(SEntityBasePhysicsControllerParamsPtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(SEntityBasePhysicsControllerParamsPtr::from_ref(b, r)),
                 _ => None,
             },
             hover: match inst.get("hover") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<SEntityHoverPhysicsControllerParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SEntityHoverPhysicsControllerParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
     }
 }
+

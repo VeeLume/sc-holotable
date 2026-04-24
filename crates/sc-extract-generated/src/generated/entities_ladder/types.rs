@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -32,41 +32,22 @@ pub struct LadderNavigationLink {
 }
 
 impl Pooled for LadderNavigationLink {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_ladder.ladder_navigation_link
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_ladder.ladder_navigation_link
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_ladder.ladder_navigation_link }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_ladder.ladder_navigation_link }
 }
 
 impl<'a> Extract<'a> for LadderNavigationLink {
     const TYPE_NAME: &'static str = "LadderNavigationLink";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            link_valid_for_agent_type: inst
-                .get_str("linkValidForAgentType")
-                .map(String::from)
-                .unwrap_or_default(),
+            link_valid_for_agent_type: inst.get_str("linkValidForAgentType").map(String::from).unwrap_or_default(),
             cost_multiplier_setup: match inst.get("costMultiplierSetup") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<NavigationLinkCostCustomization>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<NavigationLinkCostCustomization>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            linking_type: ENavigationLinkLinkingType::from_dcb_str(
-                inst.get_str("linkingType").unwrap_or(""),
-            ),
+            linking_type: ENavigationLinkLinkingType::from_dcb_str(inst.get_str("linkingType").unwrap_or("")),
             use_channel: match inst.get("useChannel") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<UsableUseChannelInstance>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<UsableUseChannelInstance>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
         }
@@ -82,12 +63,8 @@ pub struct ExitCollisionCheckOverrideParams {
 }
 
 impl Pooled for ExitCollisionCheckOverrideParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_ladder.exit_collision_check_override_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_ladder.exit_collision_check_override_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_ladder.exit_collision_check_override_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_ladder.exit_collision_check_override_params }
 }
 
 impl<'a> Extract<'a> for ExitCollisionCheckOverrideParams {
@@ -95,10 +72,7 @@ impl<'a> Extract<'a> for ExitCollisionCheckOverrideParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             offset: match inst.get("offset") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             scale: inst.get_f32("scale").unwrap_or_default(),
@@ -119,12 +93,8 @@ pub struct AutoMountRadiusParams {
 }
 
 impl Pooled for AutoMountRadiusParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_ladder.auto_mount_radius_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_ladder.auto_mount_radius_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_ladder.auto_mount_radius_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_ladder.auto_mount_radius_params }
 }
 
 impl<'a> Extract<'a> for AutoMountRadiusParams {
@@ -156,12 +126,8 @@ pub struct LadderAccessClimbParams {
 }
 
 impl Pooled for LadderAccessClimbParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_ladder.ladder_access_climb_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_ladder.ladder_access_climb_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_ladder.ladder_access_climb_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_ladder.ladder_access_climb_params }
 }
 
 impl<'a> Extract<'a> for LadderAccessClimbParams {
@@ -173,17 +139,10 @@ impl<'a> Extract<'a> for LadderAccessClimbParams {
             auto_mount_radius_offset: inst.get_f32("autoMountRadiusOffset").unwrap_or_default(),
             auto_mount_radius: inst.get_f32("autoMountRadius").unwrap_or_default(),
             exit_collision_check_override: match inst.get("exitCollisionCheckOverride") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<ExitCollisionCheckOverrideParams>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<ExitCollisionCheckOverrideParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
-            enter_anim_will_go_underneath: inst
-                .get_bool("enterAnimWillGoUnderneath")
-                .unwrap_or_default(),
+            enter_anim_will_go_underneath: inst.get_bool("enterAnimWillGoUnderneath").unwrap_or_default(),
         }
     }
 }
@@ -207,12 +166,8 @@ pub struct LadderAccessPointParams {
 }
 
 impl Pooled for LadderAccessPointParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_ladder.ladder_access_point_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_ladder.ladder_access_point_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_ladder.ladder_access_point_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_ladder.ladder_access_point_params }
 }
 
 impl<'a> Extract<'a> for LadderAccessPointParams {
@@ -222,32 +177,17 @@ impl<'a> Extract<'a> for LadderAccessPointParams {
             rung_number: inst.get_i32("rungNumber").unwrap_or_default(),
             direction_includes_front: inst.get_bool("directionIncludesFront").unwrap_or_default(),
             front_entry_params: match inst.get("frontEntryParams") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<LadderAccessClimbParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<LadderAccessClimbParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             direction_includes_left: inst.get_bool("directionIncludesLeft").unwrap_or_default(),
             left_entry_params: match inst.get("leftEntryParams") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<LadderAccessClimbParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<LadderAccessClimbParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             direction_includes_right: inst.get_bool("directionIncludesRight").unwrap_or_default(),
             right_entry_params: match inst.get("rightEntryParams") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<LadderAccessClimbParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<LadderAccessClimbParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
@@ -302,12 +242,8 @@ pub struct LadderComponentParams {
 }
 
 impl Pooled for LadderComponentParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_ladder.ladder_component_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_ladder.ladder_component_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_ladder.ladder_component_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_ladder.ladder_component_params }
 }
 
 impl<'a> Extract<'a> for LadderComponentParams {
@@ -315,106 +251,48 @@ impl<'a> Extract<'a> for LadderComponentParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             height: inst.get_f32("height").unwrap_or_default(),
-            user_ignore_static_collisions: inst
-                .get_bool("userIgnoreStaticCollisions")
-                .unwrap_or_default(),
+            user_ignore_static_collisions: inst.get_bool("userIgnoreStaticCollisions").unwrap_or_default(),
             slideable: inst.get_bool("slideable").unwrap_or_default(),
             auto_mountable: inst.get_bool("autoMountable").unwrap_or_default(),
-            auto_mountable_radius_parameters_at_bottom: match inst
-                .get("autoMountableRadiusParametersAtBottom")
-            {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<AutoMountRadiusParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+            auto_mountable_radius_parameters_at_bottom: match inst.get("autoMountableRadiusParametersAtBottom") {
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AutoMountRadiusParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             approach_angle_at_bottom: inst.get_f32("approachAngleAtBottom").unwrap_or_default(),
             facing_angle_at_bottom: inst.get_f32("facingAngleAtBottom").unwrap_or_default(),
             remount_delay_at_bottom: inst.get_f32("remountDelayAtBottom").unwrap_or_default(),
-            auto_mountable_radius_parameters_at_top: match inst
-                .get("autoMountableRadiusParametersAtTop")
-            {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<AutoMountRadiusParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+            auto_mountable_radius_parameters_at_top: match inst.get("autoMountableRadiusParametersAtTop") {
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AutoMountRadiusParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             approach_angle_at_top: inst.get_f32("approachAngleAtTop").unwrap_or_default(),
             facing_angle_at_top: inst.get_f32("facingAngleAtTop").unwrap_or_default(),
             remount_delay_at_top: inst.get_f32("remountDelayAtTop").unwrap_or_default(),
-            direction_at_top_includes_back: inst
-                .get_bool("directionAtTopIncludesBack")
-                .unwrap_or_default(),
-            top_back_exit_collision_check_override: match inst
-                .get("topBackExitCollisionCheckOverride")
-            {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<ExitCollisionCheckOverrideParams>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+            direction_at_top_includes_back: inst.get_bool("directionAtTopIncludesBack").unwrap_or_default(),
+            top_back_exit_collision_check_override: match inst.get("topBackExitCollisionCheckOverride") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<ExitCollisionCheckOverrideParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
-            direction_at_top_includes_left: inst
-                .get_bool("directionAtTopIncludesLeft")
-                .unwrap_or_default(),
-            top_left_exit_collision_check_override: match inst
-                .get("topLeftExitCollisionCheckOverride")
-            {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<ExitCollisionCheckOverrideParams>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+            direction_at_top_includes_left: inst.get_bool("directionAtTopIncludesLeft").unwrap_or_default(),
+            top_left_exit_collision_check_override: match inst.get("topLeftExitCollisionCheckOverride") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<ExitCollisionCheckOverrideParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
-            direction_at_top_includes_right: inst
-                .get_bool("directionAtTopIncludesRight")
-                .unwrap_or_default(),
-            top_right_exit_collision_check_override: match inst
-                .get("topRightExitCollisionCheckOverride")
-            {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<ExitCollisionCheckOverrideParams>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+            direction_at_top_includes_right: inst.get_bool("directionAtTopIncludesRight").unwrap_or_default(),
+            top_right_exit_collision_check_override: match inst.get("topRightExitCollisionCheckOverride") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<ExitCollisionCheckOverrideParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
-            auto_dismount_on_highest_mid_point_when_no_top_available: inst
-                .get_bool("autoDismountOnHighestMidPointWhenNoTopAvailable")
-                .unwrap_or_default(),
-            mid_access_points: inst
-                .get_array("midAccessPoints")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<LadderAccessPointParams>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => Some(b.alloc_nested::<LadderAccessPointParams>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
+            auto_dismount_on_highest_mid_point_when_no_top_available: inst.get_bool("autoDismountOnHighestMidPointWhenNoTopAvailable").unwrap_or_default(),
+            mid_access_points: inst.get_array("midAccessPoints")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<LadderAccessPointParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<LadderAccessPointParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
-            hackuse_parent_zone_exiting_ladder_top_hack: inst
-                .get_bool("HACKUseParentZoneExitingLadderTopHACK")
-                .unwrap_or_default(),
+            hackuse_parent_zone_exiting_ladder_top_hack: inst.get_bool("HACKUseParentZoneExitingLadderTopHACK").unwrap_or_default(),
         }
     }
 }
+

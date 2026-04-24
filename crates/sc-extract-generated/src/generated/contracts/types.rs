@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -28,27 +28,17 @@ pub struct MissionLocationValidation_EntityTags {
 }
 
 impl Pooled for MissionLocationValidation_EntityTags {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.contracts.mission_location_validation_entity_tags
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.contracts.mission_location_validation_entity_tags
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.contracts.mission_location_validation_entity_tags }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.contracts.mission_location_validation_entity_tags }
 }
 
 impl<'a> Extract<'a> for MissionLocationValidation_EntityTags {
     const TYPE_NAME: &'static str = "MissionLocationValidation_EntityTags";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            general_tag: inst
-                .get("generalTag")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
+            general_tag: inst.get("generalTag").and_then(|v| v.as_record_ref()).map(|r| r.guid),
             required_entity_tags: match inst.get("requiredEntityTags") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<TagList>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<TagList>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
@@ -75,12 +65,8 @@ pub struct ContractGeneratorHandler_LinearSeries {
 }
 
 impl Pooled for ContractGeneratorHandler_LinearSeries {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.contracts.contract_generator_handler_linear_series
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.contracts.contract_generator_handler_linear_series
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.contracts.contract_generator_handler_linear_series }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.contracts.contract_generator_handler_linear_series }
 }
 
 impl<'a> Extract<'a> for ContractGeneratorHandler_LinearSeries {
@@ -89,57 +75,24 @@ impl<'a> Extract<'a> for ContractGeneratorHandler_LinearSeries {
         Self {
             not_for_release: inst.get_bool("notForRelease").unwrap_or_default(),
             work_in_progress: inst.get_bool("workInProgress").unwrap_or_default(),
-            debug_name: inst
-                .get_str("debugName")
-                .map(String::from)
-                .unwrap_or_default(),
-            required_active_scenarios: inst
-                .get_array("required_active_scenarios")
-                .map(|arr| {
-                    arr.filter_map(|v| {
-                        if let Value::Reference(Some(r)) = v {
-                            Some(r.guid)
-                        } else {
-                            None
-                        }
-                    })
-                    .collect()
-                })
+            debug_name: inst.get_str("debugName").map(String::from).unwrap_or_default(),
+            required_active_scenarios: inst.get_array("required_active_scenarios")
+                .map(|arr| arr.filter_map(|v| if let Value::Reference(Some(r)) = v { Some(r.guid) } else { None }).collect())
                 .unwrap_or_default(),
             default_availability: match inst.get("defaultAvailability") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<ContractAvailability>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<ContractAvailability>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             contract_params: match inst.get("contractParams") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<ContractParamOverrides>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<ContractParamOverrides>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            contracts: inst
-                .get_array("contracts")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<Contract>(
-                            Instance::from_inline_data(b.db, struct_index, data),
-                            false,
-                        )),
-                        Value::ClassRef(r) => Some(b.alloc_nested::<Contract>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
+            contracts: inst.get_array("contracts")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<Contract>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<Contract>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
         }
     }
@@ -165,16 +118,8 @@ pub struct ContractGeneratorHandler_TutorialSeriesDef {
 }
 
 impl Pooled for ContractGeneratorHandler_TutorialSeriesDef {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .contracts
-            .contract_generator_handler_tutorial_series_def
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .contracts
-            .contract_generator_handler_tutorial_series_def
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.contracts.contract_generator_handler_tutorial_series_def }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.contracts.contract_generator_handler_tutorial_series_def }
 }
 
 impl<'a> Extract<'a> for ContractGeneratorHandler_TutorialSeriesDef {
@@ -183,57 +128,24 @@ impl<'a> Extract<'a> for ContractGeneratorHandler_TutorialSeriesDef {
         Self {
             not_for_release: inst.get_bool("notForRelease").unwrap_or_default(),
             work_in_progress: inst.get_bool("workInProgress").unwrap_or_default(),
-            debug_name: inst
-                .get_str("debugName")
-                .map(String::from)
-                .unwrap_or_default(),
-            required_active_scenarios: inst
-                .get_array("required_active_scenarios")
-                .map(|arr| {
-                    arr.filter_map(|v| {
-                        if let Value::Reference(Some(r)) = v {
-                            Some(r.guid)
-                        } else {
-                            None
-                        }
-                    })
-                    .collect()
-                })
+            debug_name: inst.get_str("debugName").map(String::from).unwrap_or_default(),
+            required_active_scenarios: inst.get_array("required_active_scenarios")
+                .map(|arr| arr.filter_map(|v| if let Value::Reference(Some(r)) = v { Some(r.guid) } else { None }).collect())
                 .unwrap_or_default(),
             default_availability: match inst.get("defaultAvailability") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<ContractAvailability>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<ContractAvailability>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             contract_params: match inst.get("contractParams") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<ContractParamOverrides>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<ContractParamOverrides>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            contracts: inst
-                .get_array("contracts")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<Contract>(
-                            Instance::from_inline_data(b.db, struct_index, data),
-                            false,
-                        )),
-                        Value::ClassRef(r) => Some(b.alloc_nested::<Contract>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
+            contracts: inst.get_array("contracts")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<Contract>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<Contract>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
         }
     }
@@ -259,12 +171,8 @@ pub struct ContractGeneratorHandler_List {
 }
 
 impl Pooled for ContractGeneratorHandler_List {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.contracts.contract_generator_handler_list
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.contracts.contract_generator_handler_list
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.contracts.contract_generator_handler_list }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.contracts.contract_generator_handler_list }
 }
 
 impl<'a> Extract<'a> for ContractGeneratorHandler_List {
@@ -273,57 +181,24 @@ impl<'a> Extract<'a> for ContractGeneratorHandler_List {
         Self {
             not_for_release: inst.get_bool("notForRelease").unwrap_or_default(),
             work_in_progress: inst.get_bool("workInProgress").unwrap_or_default(),
-            debug_name: inst
-                .get_str("debugName")
-                .map(String::from)
-                .unwrap_or_default(),
-            required_active_scenarios: inst
-                .get_array("required_active_scenarios")
-                .map(|arr| {
-                    arr.filter_map(|v| {
-                        if let Value::Reference(Some(r)) = v {
-                            Some(r.guid)
-                        } else {
-                            None
-                        }
-                    })
-                    .collect()
-                })
+            debug_name: inst.get_str("debugName").map(String::from).unwrap_or_default(),
+            required_active_scenarios: inst.get_array("required_active_scenarios")
+                .map(|arr| arr.filter_map(|v| if let Value::Reference(Some(r)) = v { Some(r.guid) } else { None }).collect())
                 .unwrap_or_default(),
             default_availability: match inst.get("defaultAvailability") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<ContractAvailability>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<ContractAvailability>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             contract_params: match inst.get("contractParams") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<ContractParamOverrides>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<ContractParamOverrides>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            contracts: inst
-                .get_array("contracts")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<Contract>(
-                            Instance::from_inline_data(b.db, struct_index, data),
-                            false,
-                        )),
-                        Value::ClassRef(r) => Some(b.alloc_nested::<Contract>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
+            contracts: inst.get_array("contracts")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<Contract>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<Contract>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
         }
     }
@@ -349,12 +224,8 @@ pub struct ContractGeneratorHandler_Legacy {
 }
 
 impl Pooled for ContractGeneratorHandler_Legacy {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.contracts.contract_generator_handler_legacy
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.contracts.contract_generator_handler_legacy
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.contracts.contract_generator_handler_legacy }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.contracts.contract_generator_handler_legacy }
 }
 
 impl<'a> Extract<'a> for ContractGeneratorHandler_Legacy {
@@ -363,59 +234,24 @@ impl<'a> Extract<'a> for ContractGeneratorHandler_Legacy {
         Self {
             not_for_release: inst.get_bool("notForRelease").unwrap_or_default(),
             work_in_progress: inst.get_bool("workInProgress").unwrap_or_default(),
-            debug_name: inst
-                .get_str("debugName")
-                .map(String::from)
-                .unwrap_or_default(),
-            required_active_scenarios: inst
-                .get_array("required_active_scenarios")
-                .map(|arr| {
-                    arr.filter_map(|v| {
-                        if let Value::Reference(Some(r)) = v {
-                            Some(r.guid)
-                        } else {
-                            None
-                        }
-                    })
-                    .collect()
-                })
+            debug_name: inst.get_str("debugName").map(String::from).unwrap_or_default(),
+            required_active_scenarios: inst.get_array("required_active_scenarios")
+                .map(|arr| arr.filter_map(|v| if let Value::Reference(Some(r)) = v { Some(r.guid) } else { None }).collect())
                 .unwrap_or_default(),
             default_availability: match inst.get("defaultAvailability") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<ContractAvailability>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<ContractAvailability>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             contract_params: match inst.get("contractParams") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<ContractParamOverrides>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<ContractParamOverrides>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            legacy_contracts: inst
-                .get_array("legacyContracts")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<ContractLegacy>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => Some(b.alloc_nested::<ContractLegacy>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
+            legacy_contracts: inst.get_array("legacyContracts")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<ContractLegacy>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<ContractLegacy>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
         }
     }
@@ -455,12 +291,8 @@ pub struct ContractLegacy {
 }
 
 impl Pooled for ContractLegacy {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.contracts.contract_legacy
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.contracts.contract_legacy
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.contracts.contract_legacy }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.contracts.contract_legacy }
 }
 
 impl<'a> Extract<'a> for ContractLegacy {
@@ -470,105 +302,47 @@ impl<'a> Extract<'a> for ContractLegacy {
             id: inst.get_guid("id").unwrap_or_default(),
             not_for_release: inst.get_bool("notForRelease").unwrap_or_default(),
             work_in_progress: inst.get_bool("workInProgress").unwrap_or_default(),
-            debug_name: inst
-                .get_str("debugName")
-                .map(String::from)
-                .unwrap_or_default(),
-            template: inst
-                .get("template")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            required_active_scenarios: inst
-                .get_array("required_active_scenarios")
-                .map(|arr| {
-                    arr.filter_map(|v| {
-                        if let Value::Reference(Some(r)) = v {
-                            Some(r.guid)
-                        } else {
-                            None
-                        }
-                    })
-                    .collect()
-                })
+            debug_name: inst.get_str("debugName").map(String::from).unwrap_or_default(),
+            template: inst.get("template").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            required_active_scenarios: inst.get_array("required_active_scenarios")
+                .map(|arr| arr.filter_map(|v| if let Value::Reference(Some(r)) = v { Some(r.guid) } else { None }).collect())
                 .unwrap_or_default(),
             param_overrides: match inst.get("paramOverrides") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<ContractParamOverrides>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<ContractParamOverrides>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            sub_contracts: inst
-                .get_array("subContracts")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<SubContract>(
-                            Instance::from_inline_data(b.db, struct_index, data),
-                            false,
-                        )),
-                        Value::ClassRef(r) => Some(b.alloc_nested::<SubContract>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
+            sub_contracts: inst.get_array("subContracts")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<SubContract>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<SubContract>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
-            additional_prerequisites: inst
-                .get_array("additionalPrerequisites")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => {
-                            Some(ContractPrerequisiteBasePtr::from_ref(b, r))
-                        }
+            additional_prerequisites: inst.get_array("additionalPrerequisites")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => Some(ContractPrerequisiteBasePtr::from_ref(b, r)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
             generation_params: match inst.get("generationParams") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(ContractGenerationParamsBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(ContractGenerationParamsBasePtr::from_ref(b, r)),
                 _ => None,
             },
             contract_life_time: match inst.get("contractLifeTime") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<ContractLifeTime>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<ContractLifeTime>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
-            contract_plugins: inst
-                .get_array("contractPlugins")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => {
-                            Some(SContractPlugin_BasePtr::from_ref(b, r))
-                        }
+            contract_plugins: inst.get_array("contractPlugins")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => Some(SContractPlugin_BasePtr::from_ref(b, r)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
             contract_results: match inst.get("contractResults") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<ContractResults>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<ContractResults>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            mission_broker_entry: inst
-                .get("missionBrokerEntry")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
+            mission_broker_entry: inst.get("missionBrokerEntry").and_then(|v| v.as_record_ref()).map(|r| r.guid),
         }
     }
 }
@@ -609,12 +383,8 @@ pub struct CareerContract {
 }
 
 impl Pooled for CareerContract {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.contracts.career_contract
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.contracts.career_contract
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.contracts.career_contract }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.contracts.career_contract }
 }
 
 impl<'a> Extract<'a> for CareerContract {
@@ -624,109 +394,48 @@ impl<'a> Extract<'a> for CareerContract {
             id: inst.get_guid("id").unwrap_or_default(),
             not_for_release: inst.get_bool("notForRelease").unwrap_or_default(),
             work_in_progress: inst.get_bool("workInProgress").unwrap_or_default(),
-            debug_name: inst
-                .get_str("debugName")
-                .map(String::from)
-                .unwrap_or_default(),
-            template: inst
-                .get("template")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            required_active_scenarios: inst
-                .get_array("required_active_scenarios")
-                .map(|arr| {
-                    arr.filter_map(|v| {
-                        if let Value::Reference(Some(r)) = v {
-                            Some(r.guid)
-                        } else {
-                            None
-                        }
-                    })
-                    .collect()
-                })
+            debug_name: inst.get_str("debugName").map(String::from).unwrap_or_default(),
+            template: inst.get("template").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            required_active_scenarios: inst.get_array("required_active_scenarios")
+                .map(|arr| arr.filter_map(|v| if let Value::Reference(Some(r)) = v { Some(r.guid) } else { None }).collect())
                 .unwrap_or_default(),
             param_overrides: match inst.get("paramOverrides") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<ContractParamOverrides>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<ContractParamOverrides>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            sub_contracts: inst
-                .get_array("subContracts")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<SubContract>(
-                            Instance::from_inline_data(b.db, struct_index, data),
-                            false,
-                        )),
-                        Value::ClassRef(r) => Some(b.alloc_nested::<SubContract>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
+            sub_contracts: inst.get_array("subContracts")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<SubContract>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<SubContract>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
-            additional_prerequisites: inst
-                .get_array("additionalPrerequisites")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => {
-                            Some(ContractPrerequisiteBasePtr::from_ref(b, r))
-                        }
+            additional_prerequisites: inst.get_array("additionalPrerequisites")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => Some(ContractPrerequisiteBasePtr::from_ref(b, r)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
             generation_params: match inst.get("generationParams") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(ContractGenerationParamsBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(ContractGenerationParamsBasePtr::from_ref(b, r)),
                 _ => None,
             },
             contract_life_time: match inst.get("contractLifeTime") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<ContractLifeTime>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<ContractLifeTime>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
-            contract_plugins: inst
-                .get_array("contractPlugins")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => {
-                            Some(SContractPlugin_BasePtr::from_ref(b, r))
-                        }
+            contract_plugins: inst.get_array("contractPlugins")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => Some(SContractPlugin_BasePtr::from_ref(b, r)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
             contract_results: match inst.get("contractResults") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<ContractResults>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<ContractResults>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            min_standing: inst
-                .get("minStanding")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            max_standing: inst
-                .get("maxStanding")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
+            min_standing: inst.get("minStanding").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            max_standing: inst.get("maxStanding").and_then(|v| v.as_record_ref()).map(|r| r.guid),
         }
     }
 }
@@ -757,12 +466,8 @@ pub struct ContractGeneratorHandler_Career {
 }
 
 impl Pooled for ContractGeneratorHandler_Career {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.contracts.contract_generator_handler_career
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.contracts.contract_generator_handler_career
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.contracts.contract_generator_handler_career }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.contracts.contract_generator_handler_career }
 }
 
 impl<'a> Extract<'a> for ContractGeneratorHandler_Career {
@@ -771,84 +476,33 @@ impl<'a> Extract<'a> for ContractGeneratorHandler_Career {
         Self {
             not_for_release: inst.get_bool("notForRelease").unwrap_or_default(),
             work_in_progress: inst.get_bool("workInProgress").unwrap_or_default(),
-            debug_name: inst
-                .get_str("debugName")
-                .map(String::from)
-                .unwrap_or_default(),
-            required_active_scenarios: inst
-                .get_array("required_active_scenarios")
-                .map(|arr| {
-                    arr.filter_map(|v| {
-                        if let Value::Reference(Some(r)) = v {
-                            Some(r.guid)
-                        } else {
-                            None
-                        }
-                    })
-                    .collect()
-                })
+            debug_name: inst.get_str("debugName").map(String::from).unwrap_or_default(),
+            required_active_scenarios: inst.get_array("required_active_scenarios")
+                .map(|arr| arr.filter_map(|v| if let Value::Reference(Some(r)) = v { Some(r.guid) } else { None }).collect())
                 .unwrap_or_default(),
             default_availability: match inst.get("defaultAvailability") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<ContractAvailability>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<ContractAvailability>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             contract_params: match inst.get("contractParams") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<ContractParamOverrides>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<ContractParamOverrides>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            intro_contracts: inst
-                .get_array("introContracts")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<Contract>(
-                            Instance::from_inline_data(b.db, struct_index, data),
-                            false,
-                        )),
-                        Value::ClassRef(r) => Some(b.alloc_nested::<Contract>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
+            intro_contracts: inst.get_array("introContracts")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<Contract>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<Contract>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
-            faction_reputation: inst
-                .get("factionReputation")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            reputation_scope: inst
-                .get("reputationScope")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            contracts: inst
-                .get_array("contracts")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<CareerContract>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => Some(b.alloc_nested::<CareerContract>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
+            faction_reputation: inst.get("factionReputation").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            reputation_scope: inst.get("reputationScope").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            contracts: inst.get_array("contracts")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<CareerContract>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<CareerContract>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
         }
     }
@@ -868,30 +522,17 @@ pub struct SContractPlugin_SScenarioProgress {
 }
 
 impl Pooled for SContractPlugin_SScenarioProgress {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.contracts.scontract_plugin_sscenario_progress
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.contracts.scontract_plugin_sscenario_progress
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.contracts.scontract_plugin_sscenario_progress }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.contracts.scontract_plugin_sscenario_progress }
 }
 
 impl<'a> Extract<'a> for SContractPlugin_SScenarioProgress {
     const TYPE_NAME: &'static str = "SContractPlugin_SScenarioProgress";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            mission_scenario: inst
-                .get("missionScenario")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            scenario_progress_record: inst
-                .get("scenarioProgressRecord")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            faction: inst
-                .get("faction")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
+            mission_scenario: inst.get("missionScenario").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            scenario_progress_record: inst.get("scenarioProgressRecord").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            faction: inst.get("faction").and_then(|v| v.as_record_ref()).map(|r| r.guid),
             split_points_for_party: inst.get_bool("splitPointsForParty").unwrap_or_default(),
         }
     }
@@ -905,22 +546,15 @@ pub struct ContractPrerequisite_Locality {
 }
 
 impl Pooled for ContractPrerequisite_Locality {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.contracts.contract_prerequisite_locality
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.contracts.contract_prerequisite_locality
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.contracts.contract_prerequisite_locality }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.contracts.contract_prerequisite_locality }
 }
 
 impl<'a> Extract<'a> for ContractPrerequisite_Locality {
     const TYPE_NAME: &'static str = "ContractPrerequisite_Locality";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            locality_available: inst
-                .get("localityAvailable")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
+            locality_available: inst.get("localityAvailable").and_then(|v| v.as_record_ref()).map(|r| r.guid),
         }
     }
 }
@@ -933,22 +567,15 @@ pub struct ContractPrerequisite_Location {
 }
 
 impl Pooled for ContractPrerequisite_Location {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.contracts.contract_prerequisite_location
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.contracts.contract_prerequisite_location
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.contracts.contract_prerequisite_location }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.contracts.contract_prerequisite_location }
 }
 
 impl<'a> Extract<'a> for ContractPrerequisite_Location {
     const TYPE_NAME: &'static str = "ContractPrerequisite_Location";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            location_available: inst
-                .get("locationAvailable")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
+            location_available: inst.get("locationAvailable").and_then(|v| v.as_record_ref()).map(|r| r.guid),
         }
     }
 }
@@ -965,29 +592,17 @@ pub struct ContractPrerequisite_LocationProperty {
 }
 
 impl Pooled for ContractPrerequisite_LocationProperty {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.contracts.contract_prerequisite_location_property
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.contracts.contract_prerequisite_location_property
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.contracts.contract_prerequisite_location_property }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.contracts.contract_prerequisite_location_property }
 }
 
 impl<'a> Extract<'a> for ContractPrerequisite_LocationProperty {
     const TYPE_NAME: &'static str = "ContractPrerequisite_LocationProperty";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            property_variable_name: inst
-                .get_str("propertyVariableName")
-                .map(String::from)
-                .unwrap_or_default(),
-            property_extended_text_token: inst
-                .get_str("propertyExtendedTextToken")
-                .map(String::from)
-                .unwrap_or_default(),
-            location_level_type: ELocationTypeLevel::from_dcb_str(
-                inst.get_str("locationLevelType").unwrap_or(""),
-            ),
+            property_variable_name: inst.get_str("propertyVariableName").map(String::from).unwrap_or_default(),
+            property_extended_text_token: inst.get_str("propertyExtendedTextToken").map(String::from).unwrap_or_default(),
+            location_level_type: ELocationTypeLevel::from_dcb_str(inst.get_str("locationLevelType").unwrap_or("")),
         }
     }
 }
@@ -1006,25 +621,16 @@ pub struct ContractPrerequisite_CrimeStat {
 }
 
 impl Pooled for ContractPrerequisite_CrimeStat {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.contracts.contract_prerequisite_crime_stat
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.contracts.contract_prerequisite_crime_stat
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.contracts.contract_prerequisite_crime_stat }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.contracts.contract_prerequisite_crime_stat }
 }
 
 impl<'a> Extract<'a> for ContractPrerequisite_CrimeStat {
     const TYPE_NAME: &'static str = "ContractPrerequisite_CrimeStat";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            include_prerequisite_when_sharing: inst
-                .get_bool("includePrerequisiteWhenSharing")
-                .unwrap_or_default(),
-            crime_stat_jurisdiction_override: inst
-                .get("crimeStatJurisdictionOverride")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
+            include_prerequisite_when_sharing: inst.get_bool("includePrerequisiteWhenSharing").unwrap_or_default(),
+            crime_stat_jurisdiction_override: inst.get("crimeStatJurisdictionOverride").and_then(|v| v.as_record_ref()).map(|r| r.guid),
             min_crime_stat: inst.get_f32("minCrimeStat").unwrap_or_default(),
             max_crime_stat: inst.get_f32("maxCrimeStat").unwrap_or_default(),
         }
@@ -1049,38 +655,20 @@ pub struct ContractPrerequisite_Reputation {
 }
 
 impl Pooled for ContractPrerequisite_Reputation {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.contracts.contract_prerequisite_reputation
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.contracts.contract_prerequisite_reputation
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.contracts.contract_prerequisite_reputation }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.contracts.contract_prerequisite_reputation }
 }
 
 impl<'a> Extract<'a> for ContractPrerequisite_Reputation {
     const TYPE_NAME: &'static str = "ContractPrerequisite_Reputation";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            include_prerequisite_when_sharing: inst
-                .get_bool("includePrerequisiteWhenSharing")
-                .unwrap_or_default(),
-            faction_reputation: inst
-                .get("factionReputation")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            scope: inst
-                .get("scope")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
+            include_prerequisite_when_sharing: inst.get_bool("includePrerequisiteWhenSharing").unwrap_or_default(),
+            faction_reputation: inst.get("factionReputation").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            scope: inst.get("scope").and_then(|v| v.as_record_ref()).map(|r| r.guid),
             exclude: inst.get_bool("exclude").unwrap_or_default(),
-            min_standing: inst
-                .get("minStanding")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            max_standing: inst
-                .get("maxStanding")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
+            min_standing: inst.get("minStanding").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            max_standing: inst.get("maxStanding").and_then(|v| v.as_record_ref()).map(|r| r.guid),
         }
     }
 }
@@ -1101,38 +689,22 @@ pub struct ContractPrerequisite_CompletedContractTags {
 }
 
 impl Pooled for ContractPrerequisite_CompletedContractTags {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .contracts
-            .contract_prerequisite_completed_contract_tags
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .contracts
-            .contract_prerequisite_completed_contract_tags
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.contracts.contract_prerequisite_completed_contract_tags }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.contracts.contract_prerequisite_completed_contract_tags }
 }
 
 impl<'a> Extract<'a> for ContractPrerequisite_CompletedContractTags {
     const TYPE_NAME: &'static str = "ContractPrerequisite_CompletedContractTags";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            include_prerequisite_when_sharing: inst
-                .get_bool("includePrerequisiteWhenSharing")
-                .unwrap_or_default(),
+            include_prerequisite_when_sharing: inst.get_bool("includePrerequisiteWhenSharing").unwrap_or_default(),
             required_completed_contract_tags: match inst.get("requiredCompletedContractTags") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<TagList>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<TagList>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             required_count_value: inst.get_i32("requiredCountValue").unwrap_or_default(),
             excluded_completed_contract_tags: match inst.get("excludedCompletedContractTags") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<TagList>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<TagList>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             excluded_count_value: inst.get_i32("excludedCountValue").unwrap_or_default(),
@@ -1150,12 +722,8 @@ pub struct ContractResult_Reward {
 }
 
 impl Pooled for ContractResult_Reward {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.contracts.contract_result_reward
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.contracts.contract_result_reward
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.contracts.contract_result_reward }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.contracts.contract_result_reward }
 }
 
 impl<'a> Extract<'a> for ContractResult_Reward {
@@ -1164,10 +732,7 @@ impl<'a> Extract<'a> for ContractResult_Reward {
         Self {
             mission_results: inst.get_bool("missionResults").unwrap_or_default(),
             contract_reward: match inst.get("contractReward") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<MissionReward>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<MissionReward>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
@@ -1184,12 +749,8 @@ pub struct ContractResult_LegacyReputation {
 }
 
 impl Pooled for ContractResult_LegacyReputation {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.contracts.contract_result_legacy_reputation
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.contracts.contract_result_legacy_reputation
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.contracts.contract_result_legacy_reputation }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.contracts.contract_result_legacy_reputation }
 }
 
 impl<'a> Extract<'a> for ContractResult_LegacyReputation {
@@ -1198,12 +759,7 @@ impl<'a> Extract<'a> for ContractResult_LegacyReputation {
         Self {
             mission_results: inst.get_bool("missionResults").unwrap_or_default(),
             contract_result_reputation_amounts: match inst.get("contractResultReputationAmounts") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<SReputationAmountParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SReputationAmountParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
@@ -1222,12 +778,8 @@ pub struct ContractResult_CalculatedReputation {
 }
 
 impl Pooled for ContractResult_CalculatedReputation {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.contracts.contract_result_calculated_reputation
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.contracts.contract_result_calculated_reputation
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.contracts.contract_result_calculated_reputation }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.contracts.contract_result_calculated_reputation }
 }
 
 impl<'a> Extract<'a> for ContractResult_CalculatedReputation {
@@ -1235,14 +787,8 @@ impl<'a> Extract<'a> for ContractResult_CalculatedReputation {
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
             mission_results: inst.get_bool("missionResults").unwrap_or_default(),
-            faction_reputation: inst
-                .get("factionReputation")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            reputation_scope: inst
-                .get("reputationScope")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
+            faction_reputation: inst.get("factionReputation").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            reputation_scope: inst.get("reputationScope").and_then(|v| v.as_record_ref()).map(|r| r.guid),
         }
     }
 }
@@ -1259,12 +805,8 @@ pub struct ContractResult_JournalEntry {
 }
 
 impl Pooled for ContractResult_JournalEntry {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.contracts.contract_result_journal_entry
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.contracts.contract_result_journal_entry
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.contracts.contract_result_journal_entry }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.contracts.contract_result_journal_entry }
 }
 
 impl<'a> Extract<'a> for ContractResult_JournalEntry {
@@ -1272,31 +814,11 @@ impl<'a> Extract<'a> for ContractResult_JournalEntry {
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
             mission_results: inst.get_bool("missionResults").unwrap_or_default(),
-            journal_entries_to_add: inst
-                .get_array("journalEntriesToAdd")
-                .map(|arr| {
-                    arr.filter_map(|v| {
-                        if let Value::Reference(Some(r)) = v {
-                            Some(r.guid)
-                        } else {
-                            None
-                        }
-                    })
-                    .collect()
-                })
+            journal_entries_to_add: inst.get_array("journalEntriesToAdd")
+                .map(|arr| arr.filter_map(|v| if let Value::Reference(Some(r)) = v { Some(r.guid) } else { None }).collect())
                 .unwrap_or_default(),
-            journal_entries_to_remove: inst
-                .get_array("journalEntriesToRemove")
-                .map(|arr| {
-                    arr.filter_map(|v| {
-                        if let Value::Reference(Some(r)) = v {
-                            Some(r.guid)
-                        } else {
-                            None
-                        }
-                    })
-                    .collect()
-                })
+            journal_entries_to_remove: inst.get_array("journalEntriesToRemove")
+                .map(|arr| arr.filter_map(|v| if let Value::Reference(Some(r)) = v { Some(r.guid) } else { None }).collect())
                 .unwrap_or_default(),
         }
     }
@@ -1312,12 +834,8 @@ pub struct ContractResult_RefundBuyIn {
 }
 
 impl Pooled for ContractResult_RefundBuyIn {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.contracts.contract_result_refund_buy_in
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.contracts.contract_result_refund_buy_in
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.contracts.contract_result_refund_buy_in }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.contracts.contract_result_refund_buy_in }
 }
 
 impl<'a> Extract<'a> for ContractResult_RefundBuyIn {
@@ -1339,12 +857,8 @@ pub struct ContractResult_CompletionTag {
 }
 
 impl Pooled for ContractResult_CompletionTag {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.contracts.contract_result_completion_tag
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.contracts.contract_result_completion_tag
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.contracts.contract_result_completion_tag }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.contracts.contract_result_completion_tag }
 }
 
 impl<'a> Extract<'a> for ContractResult_CompletionTag {
@@ -1352,10 +866,7 @@ impl<'a> Extract<'a> for ContractResult_CompletionTag {
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
             count: inst.get_i32("count").unwrap_or_default(),
-            tag: inst
-                .get("tag")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
+            tag: inst.get("tag").and_then(|v| v.as_record_ref()).map(|r| r.guid),
         }
     }
 }
@@ -1370,12 +881,8 @@ pub struct ContractResult_CompletionTags {
 }
 
 impl Pooled for ContractResult_CompletionTags {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.contracts.contract_result_completion_tags
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.contracts.contract_result_completion_tags
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.contracts.contract_result_completion_tags }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.contracts.contract_result_completion_tags }
 }
 
 impl<'a> Extract<'a> for ContractResult_CompletionTags {
@@ -1383,24 +890,12 @@ impl<'a> Extract<'a> for ContractResult_CompletionTags {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             mission_results: inst.get_bool("missionResults").unwrap_or_default(),
-            completion_tags: inst
-                .get_array("completionTags")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<ContractResult_CompletionTag>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => Some(b.alloc_nested::<ContractResult_CompletionTag>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
+            completion_tags: inst.get_array("completionTags")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<ContractResult_CompletionTag>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<ContractResult_CompletionTag>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
         }
     }
@@ -1415,22 +910,15 @@ pub struct MinCompletionTags {
 }
 
 impl Pooled for MinCompletionTags {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.contracts.min_completion_tags
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.contracts.min_completion_tags
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.contracts.min_completion_tags }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.contracts.min_completion_tags }
 }
 
 impl<'a> Extract<'a> for MinCompletionTags {
     const TYPE_NAME: &'static str = "MinCompletionTags";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            required_tag: inst
-                .get("requiredTag")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
+            required_tag: inst.get("requiredTag").and_then(|v| v.as_record_ref()).map(|r| r.guid),
             min_required: inst.get_i32("minRequired").unwrap_or_default(),
         }
     }
@@ -1450,12 +938,8 @@ pub struct ContractResult_BadgeAward {
 }
 
 impl Pooled for ContractResult_BadgeAward {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.contracts.contract_result_badge_award
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.contracts.contract_result_badge_award
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.contracts.contract_result_badge_award }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.contracts.contract_result_badge_award }
 }
 
 impl<'a> Extract<'a> for ContractResult_BadgeAward {
@@ -1463,30 +947,15 @@ impl<'a> Extract<'a> for ContractResult_BadgeAward {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             mission_results: inst.get_bool("missionResults").unwrap_or_default(),
-            required_completion_tags: inst
-                .get_array("requiredCompletionTags")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<MinCompletionTags>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => Some(b.alloc_nested::<MinCompletionTags>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
+            required_completion_tags: inst.get_array("requiredCompletionTags")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<MinCompletionTags>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<MinCompletionTags>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
             badge_to_award: EAwardId::from_dcb_str(inst.get_str("badgeToAward").unwrap_or("")),
-            comms_notification: inst
-                .get("commsNotification")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
+            comms_notification: inst.get("commsNotification").and_then(|v| v.as_record_ref()).map(|r| r.guid),
         }
     }
 }
@@ -1511,12 +980,8 @@ pub struct ContractResult_Item {
 }
 
 impl Pooled for ContractResult_Item {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.contracts.contract_result_item
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.contracts.contract_result_item
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.contracts.contract_result_item }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.contracts.contract_result_item }
 }
 
 impl<'a> Extract<'a> for ContractResult_Item {
@@ -1524,33 +989,16 @@ impl<'a> Extract<'a> for ContractResult_Item {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             mission_results: inst.get_bool("missionResults").unwrap_or_default(),
-            entity_class: inst
-                .get("entityClass")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
+            entity_class: inst.get("entityClass").and_then(|v| v.as_record_ref()).map(|r| r.guid),
             amount: inst.get_i32("amount").unwrap_or_default(),
-            send_to_player_home_location: inst
-                .get_bool("sendToPlayerHomeLocation")
-                .unwrap_or_default(),
-            award_only_to_mission_owner: inst
-                .get_bool("awardOnlyToMissionOwner")
-                .unwrap_or_default(),
+            send_to_player_home_location: inst.get_bool("sendToPlayerHomeLocation").unwrap_or_default(),
+            award_only_to_mission_owner: inst.get_bool("awardOnlyToMissionOwner").unwrap_or_default(),
             target_location: match inst.get("targetLocation") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<MissionProperty>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<MissionProperty>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             notification: match inst.get("notification") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<RewardNotification>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<RewardNotification>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
@@ -1565,12 +1013,8 @@ pub struct ContractResult_CompletionBounty {
 }
 
 impl Pooled for ContractResult_CompletionBounty {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.contracts.contract_result_completion_bounty
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.contracts.contract_result_completion_bounty
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.contracts.contract_result_completion_bounty }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.contracts.contract_result_completion_bounty }
 }
 
 impl<'a> Extract<'a> for ContractResult_CompletionBounty {
@@ -1592,12 +1036,8 @@ pub struct ItemAwardEntityClass {
 }
 
 impl Pooled for ItemAwardEntityClass {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.contracts.item_award_entity_class
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.contracts.item_award_entity_class
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.contracts.item_award_entity_class }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.contracts.item_award_entity_class }
 }
 
 impl<'a> Extract<'a> for ItemAwardEntityClass {
@@ -1605,10 +1045,7 @@ impl<'a> Extract<'a> for ItemAwardEntityClass {
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
             amount_to_award: inst.get_i32("amountToAward").unwrap_or_default(),
-            entity_class: inst
-                .get("entityClass")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
+            entity_class: inst.get("entityClass").and_then(|v| v.as_record_ref()).map(|r| r.guid),
         }
     }
 }
@@ -1621,22 +1058,15 @@ pub struct ItemAwardWeightingsParams {
 }
 
 impl Pooled for ItemAwardWeightingsParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.contracts.item_award_weightings_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.contracts.item_award_weightings_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.contracts.item_award_weightings_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.contracts.item_award_weightings_params }
 }
 
 impl<'a> Extract<'a> for ItemAwardWeightingsParams {
     const TYPE_NAME: &'static str = "ItemAwardWeightingsParams";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            awards_record: inst
-                .get("awardsRecord")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
+            awards_record: inst.get("awardsRecord").and_then(|v| v.as_record_ref()).map(|r| r.guid),
         }
     }
 }
@@ -1657,12 +1087,8 @@ pub struct ContractResult_ItemsWeighting {
 }
 
 impl Pooled for ContractResult_ItemsWeighting {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.contracts.contract_result_items_weighting
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.contracts.contract_result_items_weighting
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.contracts.contract_result_items_weighting }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.contracts.contract_result_items_weighting }
 }
 
 impl<'a> Extract<'a> for ContractResult_ItemsWeighting {
@@ -1671,36 +1097,18 @@ impl<'a> Extract<'a> for ContractResult_ItemsWeighting {
         Self {
             mission_results: inst.get_bool("missionResults").unwrap_or_default(),
             target_location: match inst.get("targetLocation") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<MissionProperty>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<MissionProperty>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
-            award_only_to_mission_owner: inst
-                .get_bool("awardOnlyToMissionOwner")
-                .unwrap_or_default(),
-            item_award_structure: inst
-                .get_array("itemAwardStructure")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => {
-                            Some(ItemAwardWeightingsBasePtr::from_ref(b, r))
-                        }
+            award_only_to_mission_owner: inst.get_bool("awardOnlyToMissionOwner").unwrap_or_default(),
+            item_award_structure: inst.get_array("itemAwardStructure")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => Some(ItemAwardWeightingsBasePtr::from_ref(b, r)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
             notification: match inst.get("notification") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<RewardNotification>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<RewardNotification>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
@@ -1719,12 +1127,8 @@ pub struct ContractResult_ScenarioProgress {
 }
 
 impl Pooled for ContractResult_ScenarioProgress {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.contracts.contract_result_scenario_progress
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.contracts.contract_result_scenario_progress
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.contracts.contract_result_scenario_progress }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.contracts.contract_result_scenario_progress }
 }
 
 impl<'a> Extract<'a> for ContractResult_ScenarioProgress {
@@ -1734,12 +1138,7 @@ impl<'a> Extract<'a> for ContractResult_ScenarioProgress {
             mission_results: inst.get_bool("missionResults").unwrap_or_default(),
             points_to_award: inst.get_i32("PointsToAward").unwrap_or_default(),
             scenario_progress_plugin: match inst.get("scenarioProgressPlugin") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<SContractPlugin_SScenarioProgress>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SContractPlugin_SScenarioProgress>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
@@ -1777,12 +1176,8 @@ pub struct RewardNotification {
 }
 
 impl Pooled for RewardNotification {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.contracts.reward_notification
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.contracts.reward_notification
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.contracts.reward_notification }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.contracts.reward_notification }
 }
 
 impl<'a> Extract<'a> for RewardNotification {
@@ -1791,53 +1186,18 @@ impl<'a> Extract<'a> for RewardNotification {
         Self {
             enabled: inst.get_bool("enabled").unwrap_or_default(),
             enable_prompt: inst.get_bool("enablePrompt").unwrap_or_default(),
-            award_notification: inst
-                .get_str("awardNotification")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
-            multi_award_notification: inst
-                .get_str("multiAwardNotification")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
-            selection_prompt: inst
-                .get_str("selectionPrompt")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
-            ship_kiosk_destination: inst
-                .get_str("shipKioskDestination")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
-            freight_elevator_destination: inst
-                .get_str("freightElevatorDestination")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
-            freight_elevator_cannot_retrieve: inst
-                .get_str("freightElevatorCannotRetrieve")
-                .map(LocaleKey::from)
-                .unwrap_or_default(),
-            reward_extended_text_token: inst
-                .get_str("rewardExtendedTextToken")
-                .map(String::from)
-                .unwrap_or_default(),
-            destination_location_extended_text_token: inst
-                .get_str("destinationLocationExtendedTextToken")
-                .map(String::from)
-                .unwrap_or_default(),
-            kiosk_destination_extended_text_token: inst
-                .get_str("kioskDestinationExtendedTextToken")
-                .map(String::from)
-                .unwrap_or_default(),
-            reward_amount_extended_text_token: inst
-                .get_str("rewardAmountExtendedTextToken")
-                .map(String::from)
-                .unwrap_or_default(),
+            award_notification: inst.get_str("awardNotification").map(LocaleKey::from).unwrap_or_default(),
+            multi_award_notification: inst.get_str("multiAwardNotification").map(LocaleKey::from).unwrap_or_default(),
+            selection_prompt: inst.get_str("selectionPrompt").map(LocaleKey::from).unwrap_or_default(),
+            ship_kiosk_destination: inst.get_str("shipKioskDestination").map(LocaleKey::from).unwrap_or_default(),
+            freight_elevator_destination: inst.get_str("freightElevatorDestination").map(LocaleKey::from).unwrap_or_default(),
+            freight_elevator_cannot_retrieve: inst.get_str("freightElevatorCannotRetrieve").map(LocaleKey::from).unwrap_or_default(),
+            reward_extended_text_token: inst.get_str("rewardExtendedTextToken").map(String::from).unwrap_or_default(),
+            destination_location_extended_text_token: inst.get_str("destinationLocationExtendedTextToken").map(String::from).unwrap_or_default(),
+            kiosk_destination_extended_text_token: inst.get_str("kioskDestinationExtendedTextToken").map(String::from).unwrap_or_default(),
+            reward_amount_extended_text_token: inst.get_str("rewardAmountExtendedTextToken").map(String::from).unwrap_or_default(),
             music_wwise_event: match inst.get("musicWwiseEvent") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<GlobalResourceAudio>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
@@ -1856,12 +1216,8 @@ pub struct BlueprintRewards {
 }
 
 impl Pooled for BlueprintRewards {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.contracts.blueprint_rewards
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.contracts.blueprint_rewards
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.contracts.blueprint_rewards }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.contracts.blueprint_rewards }
 }
 
 impl<'a> Extract<'a> for BlueprintRewards {
@@ -1870,10 +1226,7 @@ impl<'a> Extract<'a> for BlueprintRewards {
         Self {
             mission_results: inst.get_bool("missionResults").unwrap_or_default(),
             chance: inst.get_f32("chance").unwrap_or_default(),
-            blueprint_pool: inst
-                .get("blueprintPool")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
+            blueprint_pool: inst.get("blueprintPool").and_then(|v| v.as_record_ref()).map(|r| r.guid),
         }
     }
 }
@@ -1891,12 +1244,8 @@ pub struct ContractAutoFinishSettings {
 }
 
 impl Pooled for ContractAutoFinishSettings {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.contracts.contract_auto_finish_settings
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.contracts.contract_auto_finish_settings
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.contracts.contract_auto_finish_settings }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.contracts.contract_auto_finish_settings }
 }
 
 impl<'a> Extract<'a> for ContractAutoFinishSettings {
@@ -1904,12 +1253,7 @@ impl<'a> Extract<'a> for ContractAutoFinishSettings {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             contract_deadline: match inst.get("contractDeadline") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<MissionDeadline>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<MissionDeadline>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             fail_if_sent_to_prison: inst.get_bool("failIfSentToPrison").unwrap_or_default(),
@@ -1934,12 +1278,8 @@ pub struct ActiveContractSettings {
 }
 
 impl Pooled for ActiveContractSettings {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.contracts.active_contract_settings
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.contracts.active_contract_settings
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.contracts.active_contract_settings }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.contracts.active_contract_settings }
 }
 
 impl<'a> Extract<'a> for ActiveContractSettings {
@@ -1965,12 +1305,8 @@ pub struct ContractClass_Contract {
 }
 
 impl Pooled for ContractClass_Contract {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.contracts.contract_class_contract
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.contracts.contract_class_contract
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.contracts.contract_class_contract }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.contracts.contract_class_contract }
 }
 
 impl<'a> Extract<'a> for ContractClass_Contract {
@@ -1978,21 +1314,11 @@ impl<'a> Extract<'a> for ContractClass_Contract {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             additional_params: match inst.get("additionalParams") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<ActiveContractSettings>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<ActiveContractSettings>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             auto_finish_settings: match inst.get("autoFinishSettings") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<ContractAutoFinishSettings>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<ContractAutoFinishSettings>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
@@ -2001,21 +1327,19 @@ impl<'a> Extract<'a> for ContractClass_Contract {
 
 /// DCB type: `ContractClass_PVPBounty`
 /// Inherits from: `ContractClassBase`
-pub struct ContractClass_PVPBounty {}
+pub struct ContractClass_PVPBounty {
+}
 
 impl Pooled for ContractClass_PVPBounty {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.contracts.contract_class_pvpbounty
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.contracts.contract_class_pvpbounty
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.contracts.contract_class_pvpbounty }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.contracts.contract_class_pvpbounty }
 }
 
 impl<'a> Extract<'a> for ContractClass_PVPBounty {
     const TYPE_NAME: &'static str = "ContractClass_PVPBounty";
     fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {}
+        Self {
+        }
     }
 }
 
@@ -2033,22 +1357,15 @@ pub struct HaulingOrderContent_Resource {
 }
 
 impl Pooled for HaulingOrderContent_Resource {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.contracts.hauling_order_content_resource
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.contracts.hauling_order_content_resource
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.contracts.hauling_order_content_resource }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.contracts.hauling_order_content_resource }
 }
 
 impl<'a> Extract<'a> for HaulingOrderContent_Resource {
     const TYPE_NAME: &'static str = "HaulingOrderContent_Resource";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            resource: inst
-                .get("resource")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
+            resource: inst.get("resource").and_then(|v| v.as_record_ref()).map(|r| r.guid),
             max_container_size: inst.get_f32("maxContainerSize").unwrap_or_default(),
             min_scu: inst.get_f32("minSCU").unwrap_or_default(),
             max_scu: inst.get_f32("maxSCU").unwrap_or_default(),
@@ -2068,22 +1385,15 @@ pub struct HaulingOrderContent_EntityClasses {
 }
 
 impl Pooled for HaulingOrderContent_EntityClasses {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.contracts.hauling_order_content_entity_classes
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.contracts.hauling_order_content_entity_classes
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.contracts.hauling_order_content_entity_classes }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.contracts.hauling_order_content_entity_classes }
 }
 
 impl<'a> Extract<'a> for HaulingOrderContent_EntityClasses {
     const TYPE_NAME: &'static str = "HaulingOrderContent_EntityClasses";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            hauling_entity_classes: inst
-                .get("haulingEntityClasses")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
+            hauling_entity_classes: inst.get("haulingEntityClasses").and_then(|v| v.as_record_ref()).map(|r| r.guid),
             min_amount: inst.get_i32("minAmount").unwrap_or_default(),
             max_amount: inst.get_i32("maxAmount").unwrap_or_default(),
         }
@@ -2102,22 +1412,15 @@ pub struct HaulingOrderContent_EntityClass {
 }
 
 impl Pooled for HaulingOrderContent_EntityClass {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.contracts.hauling_order_content_entity_class
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.contracts.hauling_order_content_entity_class
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.contracts.hauling_order_content_entity_class }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.contracts.hauling_order_content_entity_class }
 }
 
 impl<'a> Extract<'a> for HaulingOrderContent_EntityClass {
     const TYPE_NAME: &'static str = "HaulingOrderContent_EntityClass";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            entity_class: inst
-                .get("entityClass")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
+            entity_class: inst.get("entityClass").and_then(|v| v.as_record_ref()).map(|r| r.guid),
             min_amount: inst.get_i32("minAmount").unwrap_or_default(),
             max_amount: inst.get_i32("maxAmount").unwrap_or_default(),
         }
@@ -2136,12 +1439,8 @@ pub struct HaulingOrderContent_MissionItem {
 }
 
 impl Pooled for HaulingOrderContent_MissionItem {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.contracts.hauling_order_content_mission_item
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.contracts.hauling_order_content_mission_item
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.contracts.hauling_order_content_mission_item }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.contracts.hauling_order_content_mission_item }
 }
 
 impl<'a> Extract<'a> for HaulingOrderContent_MissionItem {
@@ -2149,12 +1448,7 @@ impl<'a> Extract<'a> for HaulingOrderContent_MissionItem {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             item: match inst.get("item") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<MissionProperty>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<MissionProperty>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             min_amount: inst.get_i32("minAmount").unwrap_or_default(),
@@ -2179,12 +1473,8 @@ pub struct HaulingOrder_Property {
 }
 
 impl Pooled for HaulingOrder_Property {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.contracts.hauling_order_property
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.contracts.hauling_order_property
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.contracts.hauling_order_property }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.contracts.hauling_order_property }
 }
 
 impl<'a> Extract<'a> for HaulingOrder_Property {
@@ -2192,47 +1482,21 @@ impl<'a> Extract<'a> for HaulingOrder_Property {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             pick_up_location: match inst.get("pickUpLocation") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(ObjectivePropertyBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(ObjectivePropertyBasePtr::from_ref(b, r)),
                 _ => None,
             },
             drop_off_location: match inst.get("dropOffLocation") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(ObjectivePropertyBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(ObjectivePropertyBasePtr::from_ref(b, r)),
                 _ => None,
             },
-            pick_up_target_types: inst
-                .get_array("pickUpTargetTypes")
-                .map(|arr| {
-                    arr.filter_map(|v| {
-                        if let Value::Reference(Some(r)) = v {
-                            Some(r.guid)
-                        } else {
-                            None
-                        }
-                    })
-                    .collect()
-                })
+            pick_up_target_types: inst.get_array("pickUpTargetTypes")
+                .map(|arr| arr.filter_map(|v| if let Value::Reference(Some(r)) = v { Some(r.guid) } else { None }).collect())
                 .unwrap_or_default(),
-            drop_off_target_types: inst
-                .get_array("dropOffTargetTypes")
-                .map(|arr| {
-                    arr.filter_map(|v| {
-                        if let Value::Reference(Some(r)) = v {
-                            Some(r.guid)
-                        } else {
-                            None
-                        }
-                    })
-                    .collect()
-                })
+            drop_off_target_types: inst.get_array("dropOffTargetTypes")
+                .map(|arr| arr.filter_map(|v| if let Value::Reference(Some(r)) = v { Some(r.guid) } else { None }).collect())
                 .unwrap_or_default(),
             hauling_orders_property: match inst.get("haulingOrdersProperty") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(ObjectivePropertyBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(ObjectivePropertyBasePtr::from_ref(b, r)),
                 _ => None,
             },
         }
@@ -2257,12 +1521,8 @@ pub struct HaulingOrder_ResourceUnlimitedDropOff {
 }
 
 impl Pooled for HaulingOrder_ResourceUnlimitedDropOff {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.contracts.hauling_order_resource_unlimited_drop_off
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.contracts.hauling_order_resource_unlimited_drop_off
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.contracts.hauling_order_resource_unlimited_drop_off }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.contracts.hauling_order_resource_unlimited_drop_off }
 }
 
 impl<'a> Extract<'a> for HaulingOrder_ResourceUnlimitedDropOff {
@@ -2270,47 +1530,20 @@ impl<'a> Extract<'a> for HaulingOrder_ResourceUnlimitedDropOff {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             pick_up_location: match inst.get("pickUpLocation") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(ObjectivePropertyBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(ObjectivePropertyBasePtr::from_ref(b, r)),
                 _ => None,
             },
             drop_off_location: match inst.get("dropOffLocation") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(ObjectivePropertyBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(ObjectivePropertyBasePtr::from_ref(b, r)),
                 _ => None,
             },
-            pick_up_target_types: inst
-                .get_array("pickUpTargetTypes")
-                .map(|arr| {
-                    arr.filter_map(|v| {
-                        if let Value::Reference(Some(r)) = v {
-                            Some(r.guid)
-                        } else {
-                            None
-                        }
-                    })
-                    .collect()
-                })
+            pick_up_target_types: inst.get_array("pickUpTargetTypes")
+                .map(|arr| arr.filter_map(|v| if let Value::Reference(Some(r)) = v { Some(r.guid) } else { None }).collect())
                 .unwrap_or_default(),
-            drop_off_target_types: inst
-                .get_array("dropOffTargetTypes")
-                .map(|arr| {
-                    arr.filter_map(|v| {
-                        if let Value::Reference(Some(r)) = v {
-                            Some(r.guid)
-                        } else {
-                            None
-                        }
-                    })
-                    .collect()
-                })
+            drop_off_target_types: inst.get_array("dropOffTargetTypes")
+                .map(|arr| arr.filter_map(|v| if let Value::Reference(Some(r)) = v { Some(r.guid) } else { None }).collect())
                 .unwrap_or_default(),
-            resource: inst
-                .get("resource")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
+            resource: inst.get("resource").and_then(|v| v.as_record_ref()).map(|r| r.guid),
             max_container_size: inst.get_f32("maxContainerSize").unwrap_or_default(),
         }
     }
@@ -2336,12 +1569,8 @@ pub struct HaulingOrder_EntityClasses {
 }
 
 impl Pooled for HaulingOrder_EntityClasses {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.contracts.hauling_order_entity_classes
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.contracts.hauling_order_entity_classes
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.contracts.hauling_order_entity_classes }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.contracts.hauling_order_entity_classes }
 }
 
 impl<'a> Extract<'a> for HaulingOrder_EntityClasses {
@@ -2349,47 +1578,20 @@ impl<'a> Extract<'a> for HaulingOrder_EntityClasses {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             pick_up_location: match inst.get("pickUpLocation") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(ObjectivePropertyBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(ObjectivePropertyBasePtr::from_ref(b, r)),
                 _ => None,
             },
             drop_off_location: match inst.get("dropOffLocation") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(ObjectivePropertyBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(ObjectivePropertyBasePtr::from_ref(b, r)),
                 _ => None,
             },
-            pick_up_target_types: inst
-                .get_array("pickUpTargetTypes")
-                .map(|arr| {
-                    arr.filter_map(|v| {
-                        if let Value::Reference(Some(r)) = v {
-                            Some(r.guid)
-                        } else {
-                            None
-                        }
-                    })
-                    .collect()
-                })
+            pick_up_target_types: inst.get_array("pickUpTargetTypes")
+                .map(|arr| arr.filter_map(|v| if let Value::Reference(Some(r)) = v { Some(r.guid) } else { None }).collect())
                 .unwrap_or_default(),
-            drop_off_target_types: inst
-                .get_array("dropOffTargetTypes")
-                .map(|arr| {
-                    arr.filter_map(|v| {
-                        if let Value::Reference(Some(r)) = v {
-                            Some(r.guid)
-                        } else {
-                            None
-                        }
-                    })
-                    .collect()
-                })
+            drop_off_target_types: inst.get_array("dropOffTargetTypes")
+                .map(|arr| arr.filter_map(|v| if let Value::Reference(Some(r)) = v { Some(r.guid) } else { None }).collect())
                 .unwrap_or_default(),
-            hauling_entity_classes: inst
-                .get("haulingEntityClasses")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
+            hauling_entity_classes: inst.get("haulingEntityClasses").and_then(|v| v.as_record_ref()).map(|r| r.guid),
             min_amount: inst.get_i32("minAmount").unwrap_or_default(),
             max_amount: inst.get_i32("maxAmount").unwrap_or_default(),
         }
@@ -2416,12 +1618,8 @@ pub struct HaulingOrder_EntityClass {
 }
 
 impl Pooled for HaulingOrder_EntityClass {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.contracts.hauling_order_entity_class
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.contracts.hauling_order_entity_class
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.contracts.hauling_order_entity_class }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.contracts.hauling_order_entity_class }
 }
 
 impl<'a> Extract<'a> for HaulingOrder_EntityClass {
@@ -2429,47 +1627,20 @@ impl<'a> Extract<'a> for HaulingOrder_EntityClass {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             pick_up_location: match inst.get("pickUpLocation") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(ObjectivePropertyBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(ObjectivePropertyBasePtr::from_ref(b, r)),
                 _ => None,
             },
             drop_off_location: match inst.get("dropOffLocation") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(ObjectivePropertyBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(ObjectivePropertyBasePtr::from_ref(b, r)),
                 _ => None,
             },
-            pick_up_target_types: inst
-                .get_array("pickUpTargetTypes")
-                .map(|arr| {
-                    arr.filter_map(|v| {
-                        if let Value::Reference(Some(r)) = v {
-                            Some(r.guid)
-                        } else {
-                            None
-                        }
-                    })
-                    .collect()
-                })
+            pick_up_target_types: inst.get_array("pickUpTargetTypes")
+                .map(|arr| arr.filter_map(|v| if let Value::Reference(Some(r)) = v { Some(r.guid) } else { None }).collect())
                 .unwrap_or_default(),
-            drop_off_target_types: inst
-                .get_array("dropOffTargetTypes")
-                .map(|arr| {
-                    arr.filter_map(|v| {
-                        if let Value::Reference(Some(r)) = v {
-                            Some(r.guid)
-                        } else {
-                            None
-                        }
-                    })
-                    .collect()
-                })
+            drop_off_target_types: inst.get_array("dropOffTargetTypes")
+                .map(|arr| arr.filter_map(|v| if let Value::Reference(Some(r)) = v { Some(r.guid) } else { None }).collect())
                 .unwrap_or_default(),
-            entity_class: inst
-                .get("entityClass")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
+            entity_class: inst.get("entityClass").and_then(|v| v.as_record_ref()).map(|r| r.guid),
             min_amount: inst.get_i32("minAmount").unwrap_or_default(),
             max_amount: inst.get_i32("maxAmount").unwrap_or_default(),
         }
@@ -2496,12 +1667,8 @@ pub struct HaulingOrder_MissionItem {
 }
 
 impl Pooled for HaulingOrder_MissionItem {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.contracts.hauling_order_mission_item
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.contracts.hauling_order_mission_item
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.contracts.hauling_order_mission_item }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.contracts.hauling_order_mission_item }
 }
 
 impl<'a> Extract<'a> for HaulingOrder_MissionItem {
@@ -2509,47 +1676,21 @@ impl<'a> Extract<'a> for HaulingOrder_MissionItem {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             pick_up_location: match inst.get("pickUpLocation") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(ObjectivePropertyBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(ObjectivePropertyBasePtr::from_ref(b, r)),
                 _ => None,
             },
             drop_off_location: match inst.get("dropOffLocation") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(ObjectivePropertyBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(ObjectivePropertyBasePtr::from_ref(b, r)),
                 _ => None,
             },
-            pick_up_target_types: inst
-                .get_array("pickUpTargetTypes")
-                .map(|arr| {
-                    arr.filter_map(|v| {
-                        if let Value::Reference(Some(r)) = v {
-                            Some(r.guid)
-                        } else {
-                            None
-                        }
-                    })
-                    .collect()
-                })
+            pick_up_target_types: inst.get_array("pickUpTargetTypes")
+                .map(|arr| arr.filter_map(|v| if let Value::Reference(Some(r)) = v { Some(r.guid) } else { None }).collect())
                 .unwrap_or_default(),
-            drop_off_target_types: inst
-                .get_array("dropOffTargetTypes")
-                .map(|arr| {
-                    arr.filter_map(|v| {
-                        if let Value::Reference(Some(r)) = v {
-                            Some(r.guid)
-                        } else {
-                            None
-                        }
-                    })
-                    .collect()
-                })
+            drop_off_target_types: inst.get_array("dropOffTargetTypes")
+                .map(|arr| arr.filter_map(|v| if let Value::Reference(Some(r)) = v { Some(r.guid) } else { None }).collect())
                 .unwrap_or_default(),
             item: match inst.get("item") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(ObjectivePropertyBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(ObjectivePropertyBasePtr::from_ref(b, r)),
                 _ => None,
             },
             min_amount: inst.get_i32("minAmount").unwrap_or_default(),
@@ -2566,29 +1707,19 @@ pub struct HaulingOrder_OrOption_And {
 }
 
 impl Pooled for HaulingOrder_OrOption_And {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.contracts.hauling_order_or_option_and
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.contracts.hauling_order_or_option_and
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.contracts.hauling_order_or_option_and }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.contracts.hauling_order_or_option_and }
 }
 
 impl<'a> Extract<'a> for HaulingOrder_OrOption_And {
     const TYPE_NAME: &'static str = "HaulingOrder_OrOption_And";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            orders: inst
-                .get_array("orders")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => {
-                            Some(HaulingOrderContentBasePtr::from_ref(b, r))
-                        }
+            orders: inst.get_array("orders")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => Some(HaulingOrderContentBasePtr::from_ref(b, r)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
         }
     }
@@ -2602,29 +1733,19 @@ pub struct HaulingOrderContent_Or {
 }
 
 impl Pooled for HaulingOrderContent_Or {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.contracts.hauling_order_content_or
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.contracts.hauling_order_content_or
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.contracts.hauling_order_content_or }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.contracts.hauling_order_content_or }
 }
 
 impl<'a> Extract<'a> for HaulingOrderContent_Or {
     const TYPE_NAME: &'static str = "HaulingOrderContent_Or";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            options: inst
-                .get_array("options")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => {
-                            Some(HaulingOrder_OrOption_BasePtr::from_ref(b, r))
-                        }
+            options: inst.get_array("options")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => Some(HaulingOrder_OrOption_BasePtr::from_ref(b, r)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
         }
     }
@@ -2638,21 +1759,15 @@ pub struct MissionFlowCondition_AllTokensState {
 }
 
 impl Pooled for MissionFlowCondition_AllTokensState {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.contracts.mission_flow_condition_all_tokens_state
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.contracts.mission_flow_condition_all_tokens_state
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.contracts.mission_flow_condition_all_tokens_state }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.contracts.mission_flow_condition_all_tokens_state }
 }
 
 impl<'a> Extract<'a> for MissionFlowCondition_AllTokensState {
     const TYPE_NAME: &'static str = "MissionFlowCondition_AllTokensState";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            token_state: EMissionPhaseStates::from_dcb_str(
-                inst.get_str("tokenState").unwrap_or(""),
-            ),
+            token_state: EMissionPhaseStates::from_dcb_str(inst.get_str("tokenState").unwrap_or("")),
         }
     }
 }
@@ -2665,42 +1780,34 @@ pub struct MissionFlowCondition_AnyTokensState {
 }
 
 impl Pooled for MissionFlowCondition_AnyTokensState {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.contracts.mission_flow_condition_any_tokens_state
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.contracts.mission_flow_condition_any_tokens_state
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.contracts.mission_flow_condition_any_tokens_state }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.contracts.mission_flow_condition_any_tokens_state }
 }
 
 impl<'a> Extract<'a> for MissionFlowCondition_AnyTokensState {
     const TYPE_NAME: &'static str = "MissionFlowCondition_AnyTokensState";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            token_state: EMissionPhaseStates::from_dcb_str(
-                inst.get_str("tokenState").unwrap_or(""),
-            ),
+            token_state: EMissionPhaseStates::from_dcb_str(inst.get_str("tokenState").unwrap_or("")),
         }
     }
 }
 
 /// DCB type: `MissionFlowCondition_OnMissionStart`
 /// Inherits from: `MissionFlowConditionBase`
-pub struct MissionFlowCondition_OnMissionStart {}
+pub struct MissionFlowCondition_OnMissionStart {
+}
 
 impl Pooled for MissionFlowCondition_OnMissionStart {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.contracts.mission_flow_condition_on_mission_start
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.contracts.mission_flow_condition_on_mission_start
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.contracts.mission_flow_condition_on_mission_start }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.contracts.mission_flow_condition_on_mission_start }
 }
 
 impl<'a> Extract<'a> for MissionFlowCondition_OnMissionStart {
     const TYPE_NAME: &'static str = "MissionFlowCondition_OnMissionStart";
     fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {}
+        Self {
+        }
     }
 }
 
@@ -2712,29 +1819,19 @@ pub struct MissionFlowCondition_OR {
 }
 
 impl Pooled for MissionFlowCondition_OR {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.contracts.mission_flow_condition_or
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.contracts.mission_flow_condition_or
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.contracts.mission_flow_condition_or }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.contracts.mission_flow_condition_or }
 }
 
 impl<'a> Extract<'a> for MissionFlowCondition_OR {
     const TYPE_NAME: &'static str = "MissionFlowCondition_OR";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            conditions: inst
-                .get_array("conditions")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => {
-                            Some(MissionFlowConditionBasePtr::from_ref(b, r))
-                        }
+            conditions: inst.get_array("conditions")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => Some(MissionFlowConditionBasePtr::from_ref(b, r)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
         }
     }
@@ -2749,12 +1846,8 @@ pub struct MissionRandomPhaseEntry {
 }
 
 impl Pooled for MissionRandomPhaseEntry {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.contracts.mission_random_phase_entry
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.contracts.mission_random_phase_entry
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.contracts.mission_random_phase_entry }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.contracts.mission_random_phase_entry }
 }
 
 impl<'a> Extract<'a> for MissionRandomPhaseEntry {
@@ -2762,9 +1855,7 @@ impl<'a> Extract<'a> for MissionRandomPhaseEntry {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             objective: match inst.get("objective") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(ObjectiveTokenPtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(ObjectiveTokenPtr::from_ref(b, r)),
                 _ => None,
             },
             probability: inst.get_f32("probability").unwrap_or_default(),
@@ -2780,40 +1871,20 @@ pub struct MissionFlowAction_PickRandomMissionPhase {
 }
 
 impl Pooled for MissionFlowAction_PickRandomMissionPhase {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .contracts
-            .mission_flow_action_pick_random_mission_phase
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .contracts
-            .mission_flow_action_pick_random_mission_phase
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.contracts.mission_flow_action_pick_random_mission_phase }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.contracts.mission_flow_action_pick_random_mission_phase }
 }
 
 impl<'a> Extract<'a> for MissionFlowAction_PickRandomMissionPhase {
     const TYPE_NAME: &'static str = "MissionFlowAction_PickRandomMissionPhase";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            mission_phases: inst
-                .get_array("missionPhases")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<MissionRandomPhaseEntry>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => Some(b.alloc_nested::<MissionRandomPhaseEntry>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
+            mission_phases: inst.get_array("missionPhases")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<MissionRandomPhaseEntry>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<MissionRandomPhaseEntry>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
         }
     }
@@ -2837,49 +1908,27 @@ pub struct MissionPropertyValue_Locations {
 }
 
 impl Pooled for MissionPropertyValue_Locations {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.contracts.mission_property_value_locations
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.contracts.mission_property_value_locations
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.contracts.mission_property_value_locations }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.contracts.mission_property_value_locations }
 }
 
 impl<'a> Extract<'a> for MissionPropertyValue_Locations {
     const TYPE_NAME: &'static str = "MissionPropertyValue_Locations";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            match_conditions: inst
-                .get_array("matchConditions")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => {
-                            Some(BaseDataSetMatchConditionPtr::from_ref(b, r))
-                        }
+            match_conditions: inst.get_array("matchConditions")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => Some(BaseDataSetMatchConditionPtr::from_ref(b, r)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
-            resource_tags: inst
-                .get_array("resourceTags")
-                .map(|arr| {
-                    arr.filter_map(|v| {
-                        if let Value::Reference(Some(r)) = v {
-                            Some(r.guid)
-                        } else {
-                            None
-                        }
-                    })
-                    .collect()
-                })
+            resource_tags: inst.get_array("resourceTags")
+                .map(|arr| arr.filter_map(|v| if let Value::Reference(Some(r)) = v { Some(r.guid) } else { None }).collect())
                 .unwrap_or_default(),
             log_error_on_search_fail: inst.get_bool("logErrorOnSearchFail").unwrap_or_default(),
             min_locations_to_find: inst.get_i32("minLocationsToFind").unwrap_or_default(),
             max_locations_to_find: inst.get_i32("maxLocationsToFind").unwrap_or_default(),
-            fail_if_min_amount_not_found: inst
-                .get_bool("failIfMinAmountNotFound")
-                .unwrap_or_default(),
+            fail_if_min_amount_not_found: inst.get_bool("failIfMinAmountNotFound").unwrap_or_default(),
         }
     }
 }
@@ -2892,29 +1941,19 @@ pub struct MissionPropertyValue_HaulingOrders {
 }
 
 impl Pooled for MissionPropertyValue_HaulingOrders {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.contracts.mission_property_value_hauling_orders
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.contracts.mission_property_value_hauling_orders
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.contracts.mission_property_value_hauling_orders }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.contracts.mission_property_value_hauling_orders }
 }
 
 impl<'a> Extract<'a> for MissionPropertyValue_HaulingOrders {
     const TYPE_NAME: &'static str = "MissionPropertyValue_HaulingOrders";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            hauling_order_content: inst
-                .get_array("haulingOrderContent")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => {
-                            Some(HaulingOrderContentBasePtr::from_ref(b, r))
-                        }
+            hauling_order_content: inst.get_array("haulingOrderContent")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => Some(HaulingOrderContentBasePtr::from_ref(b, r)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
         }
     }
@@ -2929,26 +1968,16 @@ pub struct MissionModuleHierarchySubMission {
 }
 
 impl Pooled for MissionModuleHierarchySubMission {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.contracts.mission_module_hierarchy_sub_mission
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.contracts.mission_module_hierarchy_sub_mission
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.contracts.mission_module_hierarchy_sub_mission }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.contracts.mission_module_hierarchy_sub_mission }
 }
 
 impl<'a> Extract<'a> for MissionModuleHierarchySubMission {
     const TYPE_NAME: &'static str = "MissionModuleHierarchySubMission";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            sub_mission_module: inst
-                .get_str("subMissionModule")
-                .map(String::from)
-                .unwrap_or_default(),
-            sub_module_hierarchy: inst
-                .get("subModuleHierarchy")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
+            sub_mission_module: inst.get_str("subMissionModule").map(String::from).unwrap_or_default(),
+            sub_module_hierarchy: inst.get("subModuleHierarchy").and_then(|v| v.as_record_ref()).map(|r| r.guid),
         }
     }
 }
@@ -2962,42 +1991,21 @@ pub struct MissionModuleHierarchy {
 }
 
 impl Pooled for MissionModuleHierarchy {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.contracts.mission_module_hierarchy
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.contracts.mission_module_hierarchy
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.contracts.mission_module_hierarchy }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.contracts.mission_module_hierarchy }
 }
 
 impl<'a> Extract<'a> for MissionModuleHierarchy {
     const TYPE_NAME: &'static str = "MissionModuleHierarchy";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            mission_module: inst
-                .get_str("missionModule")
-                .map(String::from)
-                .unwrap_or_default(),
-            sub_mission_modules: inst
-                .get_array("subMissionModules")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<MissionModuleHierarchySubMission>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => {
-                            Some(b.alloc_nested::<MissionModuleHierarchySubMission>(
-                                b.db.instance(r.struct_index, r.instance_index),
-                                true,
-                            ))
-                        }
+            mission_module: inst.get_str("missionModule").map(String::from).unwrap_or_default(),
+            sub_mission_modules: inst.get_array("subMissionModules")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<MissionModuleHierarchySubMission>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<MissionModuleHierarchySubMission>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
         }
     }
@@ -3033,70 +2041,38 @@ pub struct ObjectiveHandler_Local {
 }
 
 impl Pooled for ObjectiveHandler_Local {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.contracts.objective_handler_local
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.contracts.objective_handler_local
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.contracts.objective_handler_local }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.contracts.objective_handler_local }
 }
 
 impl<'a> Extract<'a> for ObjectiveHandler_Local {
     const TYPE_NAME: &'static str = "ObjectiveHandler_Local";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            module_declaration: inst
-                .get("moduleDeclaration")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
+            module_declaration: inst.get("moduleDeclaration").and_then(|v| v.as_record_ref()).map(|r| r.guid),
             module: inst.get_str("module").map(String::from).unwrap_or_default(),
-            module_hierarchy: inst
-                .get("moduleHierarchy")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
+            module_hierarchy: inst.get("moduleHierarchy").and_then(|v| v.as_record_ref()).map(|r| r.guid),
             disable_travel_objectives: inst.get_bool("disableTravelObjectives").unwrap_or_default(),
             disable_return_objectives: inst.get_bool("disableReturnObjectives").unwrap_or_default(),
             travel_radius_km: inst.get_f32("travelRadiusKM").unwrap_or_default(),
-            all_players_left_grace_period: inst
-                .get_f32("allPlayersLeftGracePeriod")
-                .unwrap_or_default(),
+            all_players_left_grace_period: inst.get_f32("allPlayersLeftGracePeriod").unwrap_or_default(),
             travel_objective_info: match inst.get("travelObjectiveInfo") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<ObjectiveDisplayInfo>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<ObjectiveDisplayInfo>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             return_objective_info: match inst.get("returnObjectiveInfo") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<ObjectiveDisplayInfo>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<ObjectiveDisplayInfo>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             nav_point_spawn_info: match inst.get("navPointSpawnInfo") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<NavPointSpawnInformation>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<NavPointSpawnInformation>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             location: match inst.get("location") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(ObjectivePropertyBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(ObjectivePropertyBasePtr::from_ref(b, r)),
                 _ => None,
             },
-            security_manifest_to_override: inst
-                .get("securityManifestToOverride")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
+            security_manifest_to_override: inst.get("securityManifestToOverride").and_then(|v| v.as_record_ref()).map(|r| r.guid),
         }
     }
 }
@@ -3133,64 +2109,35 @@ pub struct ObjectiveHandler_NearLocation {
 }
 
 impl Pooled for ObjectiveHandler_NearLocation {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.contracts.objective_handler_near_location
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.contracts.objective_handler_near_location
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.contracts.objective_handler_near_location }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.contracts.objective_handler_near_location }
 }
 
 impl<'a> Extract<'a> for ObjectiveHandler_NearLocation {
     const TYPE_NAME: &'static str = "ObjectiveHandler_NearLocation";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            module_declaration: inst
-                .get("moduleDeclaration")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
+            module_declaration: inst.get("moduleDeclaration").and_then(|v| v.as_record_ref()).map(|r| r.guid),
             module: inst.get_str("module").map(String::from).unwrap_or_default(),
-            module_hierarchy: inst
-                .get("moduleHierarchy")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
+            module_hierarchy: inst.get("moduleHierarchy").and_then(|v| v.as_record_ref()).map(|r| r.guid),
             disable_travel_objectives: inst.get_bool("disableTravelObjectives").unwrap_or_default(),
             disable_return_objectives: inst.get_bool("disableReturnObjectives").unwrap_or_default(),
             travel_radius_km: inst.get_f32("travelRadiusKM").unwrap_or_default(),
-            all_players_left_grace_period: inst
-                .get_f32("allPlayersLeftGracePeriod")
-                .unwrap_or_default(),
+            all_players_left_grace_period: inst.get_f32("allPlayersLeftGracePeriod").unwrap_or_default(),
             travel_objective_info: match inst.get("travelObjectiveInfo") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<ObjectiveDisplayInfo>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<ObjectiveDisplayInfo>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             return_objective_info: match inst.get("returnObjectiveInfo") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<ObjectiveDisplayInfo>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<ObjectiveDisplayInfo>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             nav_point_spawn_info: match inst.get("navPointSpawnInfo") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<NavPointSpawnInformation>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<NavPointSpawnInformation>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             location: match inst.get("location") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(ObjectivePropertyBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(ObjectivePropertyBasePtr::from_ref(b, r)),
                 _ => None,
             },
             max_distance: inst.get_f32("maxDistance").unwrap_or_default(),
@@ -3221,12 +2168,8 @@ pub struct ContractGeneratorHandler_PVPBountyDef {
 }
 
 impl Pooled for ContractGeneratorHandler_PVPBountyDef {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.contracts.contract_generator_handler_pvpbounty_def
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.contracts.contract_generator_handler_pvpbounty_def
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.contracts.contract_generator_handler_pvpbounty_def }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.contracts.contract_generator_handler_pvpbounty_def }
 }
 
 impl<'a> Extract<'a> for ContractGeneratorHandler_PVPBountyDef {
@@ -3235,57 +2178,24 @@ impl<'a> Extract<'a> for ContractGeneratorHandler_PVPBountyDef {
         Self {
             not_for_release: inst.get_bool("notForRelease").unwrap_or_default(),
             work_in_progress: inst.get_bool("workInProgress").unwrap_or_default(),
-            debug_name: inst
-                .get_str("debugName")
-                .map(String::from)
-                .unwrap_or_default(),
-            required_active_scenarios: inst
-                .get_array("required_active_scenarios")
-                .map(|arr| {
-                    arr.filter_map(|v| {
-                        if let Value::Reference(Some(r)) = v {
-                            Some(r.guid)
-                        } else {
-                            None
-                        }
-                    })
-                    .collect()
-                })
+            debug_name: inst.get_str("debugName").map(String::from).unwrap_or_default(),
+            required_active_scenarios: inst.get_array("required_active_scenarios")
+                .map(|arr| arr.filter_map(|v| if let Value::Reference(Some(r)) = v { Some(r.guid) } else { None }).collect())
                 .unwrap_or_default(),
             default_availability: match inst.get("defaultAvailability") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<ContractAvailability>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<ContractAvailability>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             contract_params: match inst.get("contractParams") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<ContractParamOverrides>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<ContractParamOverrides>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            pvpbounty_contract: inst
-                .get_array("PVPBountyContract")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<Contract>(
-                            Instance::from_inline_data(b.db, struct_index, data),
-                            false,
-                        )),
-                        Value::ClassRef(r) => Some(b.alloc_nested::<Contract>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
+            pvpbounty_contract: inst.get_array("PVPBountyContract")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<Contract>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<Contract>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
             escaped_convicts: inst.get_bool("escapedConvicts").unwrap_or_default(),
         }
@@ -3301,26 +2211,16 @@ pub struct SPVPBountyContractGenerators {
 }
 
 impl Pooled for SPVPBountyContractGenerators {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.contracts.spvpbounty_contract_generators
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.contracts.spvpbounty_contract_generators
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.contracts.spvpbounty_contract_generators }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.contracts.spvpbounty_contract_generators }
 }
 
 impl<'a> Extract<'a> for SPVPBountyContractGenerators {
     const TYPE_NAME: &'static str = "SPVPBountyContractGenerators";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            location_available: inst
-                .get("locationAvailable")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            contract_generator: inst
-                .get("contractGenerator")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
+            location_available: inst.get("locationAvailable").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            contract_generator: inst.get("contractGenerator").and_then(|v| v.as_record_ref()).map(|r| r.guid),
         }
     }
 }
@@ -3336,53 +2236,29 @@ pub struct GlobalMissionSettings {
 }
 
 impl Pooled for GlobalMissionSettings {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.contracts.global_mission_settings
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.contracts.global_mission_settings
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.contracts.global_mission_settings }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.contracts.global_mission_settings }
 }
 
 impl<'a> Extract<'a> for GlobalMissionSettings {
     const TYPE_NAME: &'static str = "GlobalMissionSettings";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            location_validation: inst
-                .get_array("locationValidation")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => {
-                            Some(MissionLocationValidationPtr::from_ref(b, r))
-                        }
+            location_validation: inst.get_array("locationValidation")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => Some(MissionLocationValidationPtr::from_ref(b, r)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
-            default_jurisdiction_for_player_crime_stats: inst
-                .get("defaultJurisdictionForPlayerCrimeStats")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            pvpbounty_contract_generators: inst
-                .get_array("PVPBountyContractGenerators")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<SPVPBountyContractGenerators>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => Some(b.alloc_nested::<SPVPBountyContractGenerators>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
+            default_jurisdiction_for_player_crime_stats: inst.get("defaultJurisdictionForPlayerCrimeStats").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            pvpbounty_contract_generators: inst.get_array("PVPBountyContractGenerators")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<SPVPBountyContractGenerators>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<SPVPBountyContractGenerators>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
         }
     }
 }
+

@@ -29,8 +29,7 @@ pub struct EntitiesScitemShipsPools {
     pub sifcsmodifiers_legacy: Vec<Option<SIFCSModifiersLegacy>>,
     pub send_docking_enable_event: Vec<Option<SendDockingEnableEvent>>,
     pub self_destruct_state_modifier: Vec<Option<SelfDestructStateModifier>>,
-    pub item_resource_dynamic_amount_fuel_nozzle_fuel:
-        Vec<Option<ItemResourceDynamicAmountFuelNozzleFuel>>,
+    pub item_resource_dynamic_amount_fuel_nozzle_fuel: Vec<Option<ItemResourceDynamicAmountFuelNozzleFuel>>,
     pub scitem_empparams: Vec<Option<SCItemEMPParams>>,
     pub scitem_fuel_nozzle_params: Vec<Option<SCItemFuelNozzleParams>>,
     pub scitem_space_mine_params: Vec<Option<SCItemSpaceMineParams>>,

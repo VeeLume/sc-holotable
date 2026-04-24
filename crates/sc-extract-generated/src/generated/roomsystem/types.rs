@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -37,12 +37,8 @@ pub struct FireHazardSurfaceProperties {
 }
 
 impl Pooled for FireHazardSurfaceProperties {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.roomsystem.fire_hazard_surface_properties
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.roomsystem.fire_hazard_surface_properties
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.roomsystem.fire_hazard_surface_properties }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.roomsystem.fire_hazard_surface_properties }
 }
 
 impl<'a> Extract<'a> for FireHazardSurfaceProperties {
@@ -50,31 +46,19 @@ impl<'a> Extract<'a> for FireHazardSurfaceProperties {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             albedo_tint_start: match inst.get("albedoTintStart") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SRGBA8>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SRGBA8>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             albedo_tint_end: match inst.get("albedoTintEnd") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SRGBA8>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SRGBA8>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             specular_tint: match inst.get("specularTint") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SRGBA8>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SRGBA8>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             smoothness_tint: match inst.get("smoothnessTint") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SRGBA8>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SRGBA8>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             edges_intensity: inst.get_f32("edgesIntensity").unwrap_or_default(),
@@ -101,12 +85,8 @@ pub struct FireHazardFireProperties {
 }
 
 impl Pooled for FireHazardFireProperties {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.roomsystem.fire_hazard_fire_properties
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.roomsystem.fire_hazard_fire_properties
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.roomsystem.fire_hazard_fire_properties }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.roomsystem.fire_hazard_fire_properties }
 }
 
 impl<'a> Extract<'a> for FireHazardFireProperties {
@@ -115,9 +95,7 @@ impl<'a> Extract<'a> for FireHazardFireProperties {
         Self {
             fire_underlying_glow: inst.get_f32("fireUnderlyingGlow").unwrap_or_default(),
             fire_intensity_multiplier: inst.get_f32("fireIntensityMultiplier").unwrap_or_default(),
-            fire_flowmap_movement_speed: inst
-                .get_f32("fireFlowmapMovementSpeed")
-                .unwrap_or_default(),
+            fire_flowmap_movement_speed: inst.get_f32("fireFlowmapMovementSpeed").unwrap_or_default(),
             fire_swirl_speed: inst.get_f32("fireSwirlSpeed").unwrap_or_default(),
             fire_movement_speed: inst.get_f32("fireMovementSpeed").unwrap_or_default(),
             maximum_luminance: inst.get_f32("maximumLuminance").unwrap_or_default(),
@@ -148,12 +126,8 @@ pub struct FireHazardAfterglowProperties {
 }
 
 impl Pooled for FireHazardAfterglowProperties {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.roomsystem.fire_hazard_afterglow_properties
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.roomsystem.fire_hazard_afterglow_properties
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.roomsystem.fire_hazard_afterglow_properties }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.roomsystem.fire_hazard_afterglow_properties }
 }
 
 impl<'a> Extract<'a> for FireHazardAfterglowProperties {
@@ -196,12 +170,8 @@ pub struct FireHazardPermanentEffects {
 }
 
 impl Pooled for FireHazardPermanentEffects {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.roomsystem.fire_hazard_permanent_effects
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.roomsystem.fire_hazard_permanent_effects
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.roomsystem.fire_hazard_permanent_effects }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.roomsystem.fire_hazard_permanent_effects }
 }
 
 impl<'a> Extract<'a> for FireHazardPermanentEffects {
@@ -215,30 +185,15 @@ impl<'a> Extract<'a> for FireHazardPermanentEffects {
             triplanar_dither_max_angle: inst.get_f32("triplanarDitherMaxAngle").unwrap_or_default(),
             breakup_size: inst.get_f32("breakupSize").unwrap_or_default(),
             fire: match inst.get("fire") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<FireHazardFireProperties>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<FireHazardFireProperties>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             afterglow: match inst.get("afterglow") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<FireHazardAfterglowProperties>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<FireHazardAfterglowProperties>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             surfaces: match inst.get("surfaces") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<FireHazardSurfaceProperties>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<FireHazardSurfaceProperties>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
@@ -260,12 +215,8 @@ pub struct FireHazardSpawnParams {
 }
 
 impl Pooled for FireHazardSpawnParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.roomsystem.fire_hazard_spawn_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.roomsystem.fire_hazard_spawn_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.roomsystem.fire_hazard_spawn_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.roomsystem.fire_hazard_spawn_params }
 }
 
 impl<'a> Extract<'a> for FireHazardSpawnParams {
@@ -276,9 +227,7 @@ impl<'a> Extract<'a> for FireHazardSpawnParams {
             walls_max_angle: inst.get_f32("wallsMaxAngle").unwrap_or_default(),
             ceiling_max_angle: inst.get_f32("ceilingMaxAngle").unwrap_or_default(),
             lod_transition_distance: inst.get_f32("lodTransitionDistance").unwrap_or_default(),
-            lod_effect_reference_volume: inst
-                .get_f32("lodEffectReferenceVolume")
-                .unwrap_or_default(),
+            lod_effect_reference_volume: inst.get_f32("lodEffectReferenceVolume").unwrap_or_default(),
         }
     }
 }
@@ -296,12 +245,8 @@ pub struct FireHazardFogNoiseParams {
 }
 
 impl Pooled for FireHazardFogNoiseParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.roomsystem.fire_hazard_fog_noise_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.roomsystem.fire_hazard_fog_noise_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.roomsystem.fire_hazard_fog_noise_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.roomsystem.fire_hazard_fog_noise_params }
 }
 
 impl<'a> Extract<'a> for FireHazardFogNoiseParams {
@@ -309,17 +254,12 @@ impl<'a> Extract<'a> for FireHazardFogNoiseParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             noise_frequency: match inst.get("noiseFrequency") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             noise_scale: inst.get_f32("noiseScale").unwrap_or_default(),
             noise_speed: inst.get_f32("noiseSpeed").unwrap_or_default(),
-            noise_texture: FireHazardFogNoiseTextures::from_dcb_str(
-                inst.get_str("noiseTexture").unwrap_or(""),
-            ),
+            noise_texture: FireHazardFogNoiseTextures::from_dcb_str(inst.get_str("noiseTexture").unwrap_or("")),
         }
     }
 }
@@ -345,12 +285,8 @@ pub struct FireHazardFogParams {
 }
 
 impl Pooled for FireHazardFogParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.roomsystem.fire_hazard_fog_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.roomsystem.fire_hazard_fog_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.roomsystem.fire_hazard_fog_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.roomsystem.fire_hazard_fog_params }
 }
 
 impl<'a> Extract<'a> for FireHazardFogParams {
@@ -365,12 +301,7 @@ impl<'a> Extract<'a> for FireHazardFogParams {
             falloff_sharpness: inst.get_f32("falloffSharpness").unwrap_or_default(),
             noise_volume_offset: inst.get_f32("noiseVolumeOffset").unwrap_or_default(),
             noise: match inst.get("noise") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<FireHazardFogNoiseParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<FireHazardFogNoiseParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
@@ -406,12 +337,8 @@ pub struct FireHazardGlobalParams {
 }
 
 impl Pooled for FireHazardGlobalParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.roomsystem.fire_hazard_global_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.roomsystem.fire_hazard_global_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.roomsystem.fire_hazard_global_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.roomsystem.fire_hazard_global_params }
 }
 
 impl<'a> Extract<'a> for FireHazardGlobalParams {
@@ -419,111 +346,51 @@ impl<'a> Extract<'a> for FireHazardGlobalParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             update: match inst.get("update") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<FireHazardGlobalUpdate>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<FireHazardGlobalUpdate>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             ignition: match inst.get("ignition") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<FireHazardGlobalIgnition>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<FireHazardGlobalIgnition>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             propagation: match inst.get("propagation") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<FireHazardGlobalPropagation>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<FireHazardGlobalPropagation>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             smoke: match inst.get("smoke") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<FireHazardGlobalSmokeParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<FireHazardGlobalSmokeParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             damage_to_health: match inst.get("damageToHealth") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<FireHazardGlobalDamageToHealthParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<FireHazardGlobalDamageToHealthParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             extinguishing: match inst.get("extinguishing") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<FireHazardGlobalExtinguishing>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<FireHazardGlobalExtinguishing>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             default_effects: match inst.get("defaultEffects") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<FireHazardGlobalDefaultEffects>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<FireHazardGlobalDefaultEffects>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             light_params: match inst.get("lightParams") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<FireHazardGlobalLightParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<FireHazardGlobalLightParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             room_connector: match inst.get("roomConnector") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<FireHazardGlobalRoomConnectorParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<FireHazardGlobalRoomConnectorParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             particle_spawning: match inst.get("particleSpawning") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<FireHazardSpawnParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<FireHazardSpawnParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             fog: match inst.get("fog") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<FireHazardFogParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<FireHazardFogParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             permanent_effects: match inst.get("permanentEffects") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<FireHazardPermanentEffects>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<FireHazardPermanentEffects>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
@@ -537,12 +404,8 @@ pub struct FireHazardGlobalUpdate {
 }
 
 impl Pooled for FireHazardGlobalUpdate {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.roomsystem.fire_hazard_global_update
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.roomsystem.fire_hazard_global_update
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.roomsystem.fire_hazard_global_update }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.roomsystem.fire_hazard_global_update }
 }
 
 impl<'a> Extract<'a> for FireHazardGlobalUpdate {
@@ -573,39 +436,21 @@ pub struct FireHazardGlobalIgnition {
 }
 
 impl Pooled for FireHazardGlobalIgnition {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.roomsystem.fire_hazard_global_ignition
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.roomsystem.fire_hazard_global_ignition
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.roomsystem.fire_hazard_global_ignition }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.roomsystem.fire_hazard_global_ignition }
 }
 
 impl<'a> Extract<'a> for FireHazardGlobalIgnition {
     const TYPE_NAME: &'static str = "FireHazardGlobalIgnition";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            global_ignition_chance_multiplier: inst
-                .get_f32("globalIgnitionChanceMultiplier")
-                .unwrap_or_default(),
-            explosion_chance_multiplier: inst
-                .get_f32("explosionChanceMultiplier")
-                .unwrap_or_default(),
-            projectile_chance_multiplier: inst
-                .get_f32("projectileChanceMultiplier")
-                .unwrap_or_default(),
-            collision_chance_multiplier: inst
-                .get_f32("collisionChanceMultiplier")
-                .unwrap_or_default(),
-            fallback_chance_multiplier: inst
-                .get_f32("fallbackChanceMultiplier")
-                .unwrap_or_default(),
-            global_flash_ignition_threshold_multiplier: inst
-                .get_f32("globalFlashIgnitionThresholdMultiplier")
-                .unwrap_or_default(),
-            damage_type_ignition_modifiers: inst
-                .get_f32("damageTypeIgnitionModifiers")
-                .unwrap_or_default(),
+            global_ignition_chance_multiplier: inst.get_f32("globalIgnitionChanceMultiplier").unwrap_or_default(),
+            explosion_chance_multiplier: inst.get_f32("explosionChanceMultiplier").unwrap_or_default(),
+            projectile_chance_multiplier: inst.get_f32("projectileChanceMultiplier").unwrap_or_default(),
+            collision_chance_multiplier: inst.get_f32("collisionChanceMultiplier").unwrap_or_default(),
+            fallback_chance_multiplier: inst.get_f32("fallbackChanceMultiplier").unwrap_or_default(),
+            global_flash_ignition_threshold_multiplier: inst.get_f32("globalFlashIgnitionThresholdMultiplier").unwrap_or_default(),
+            damage_type_ignition_modifiers: inst.get_f32("damageTypeIgnitionModifiers").unwrap_or_default(),
         }
     }
 }
@@ -633,12 +478,8 @@ pub struct FireHazardGlobalPropagation {
 }
 
 impl Pooled for FireHazardGlobalPropagation {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.roomsystem.fire_hazard_global_propagation
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.roomsystem.fire_hazard_global_propagation
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.roomsystem.fire_hazard_global_propagation }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.roomsystem.fire_hazard_global_propagation }
 }
 
 impl<'a> Extract<'a> for FireHazardGlobalPropagation {
@@ -647,27 +488,14 @@ impl<'a> Extract<'a> for FireHazardGlobalPropagation {
         Self {
             fire_mass_threshold: inst.get_f32("fireMassThreshold").unwrap_or_default(),
             radiative_factor: inst.get_f32("radiativeFactor").unwrap_or_default(),
-            minimum_heat_intensity_output: inst
-                .get_f32("minimumHeatIntensityOutput")
-                .unwrap_or_default(),
+            minimum_heat_intensity_output: inst.get_f32("minimumHeatIntensityOutput").unwrap_or_default(),
             maximum_radiation_radius: inst.get_f32("maximumRadiationRadius").unwrap_or_default(),
-            maximum_convection_distance: inst
-                .get_f32("maximumConvectionDistance")
-                .unwrap_or_default(),
-            standard_convection_temperature: inst
-                .get_f32("standardConvectionTemperature")
-                .unwrap_or_default(),
-            surface_area_burn_rate_curve_voxels: inst
-                .get_f32("surfaceAreaBurnRateCurveVoxels")
-                .unwrap_or_default(),
-            surface_area_burn_rate_curve_entities: inst
-                .get_f32("surfaceAreaBurnRateCurveEntities")
-                .unwrap_or_default(),
+            maximum_convection_distance: inst.get_f32("maximumConvectionDistance").unwrap_or_default(),
+            standard_convection_temperature: inst.get_f32("standardConvectionTemperature").unwrap_or_default(),
+            surface_area_burn_rate_curve_voxels: inst.get_f32("surfaceAreaBurnRateCurveVoxels").unwrap_or_default(),
+            surface_area_burn_rate_curve_entities: inst.get_f32("surfaceAreaBurnRateCurveEntities").unwrap_or_default(),
             oxygen_pressure_range: match inst.get("oxygenPressureRange") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
@@ -687,31 +515,18 @@ pub struct FireHazardGlobalSmokeParams {
 }
 
 impl Pooled for FireHazardGlobalSmokeParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.roomsystem.fire_hazard_global_smoke_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.roomsystem.fire_hazard_global_smoke_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.roomsystem.fire_hazard_global_smoke_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.roomsystem.fire_hazard_global_smoke_params }
 }
 
 impl<'a> Extract<'a> for FireHazardGlobalSmokeParams {
     const TYPE_NAME: &'static str = "FireHazardGlobalSmokeParams";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            default_smoke_composition: inst
-                .get("defaultSmokeComposition")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
+            default_smoke_composition: inst.get("defaultSmokeComposition").and_then(|v| v.as_record_ref()).map(|r| r.guid),
             dynamic_part: inst.get_f32("dynamicPart").unwrap_or_default(),
-            particulate_matter: inst
-                .get("particulateMatter")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            water_vapor: inst
-                .get("waterVapor")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
+            particulate_matter: inst.get("particulateMatter").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            water_vapor: inst.get("waterVapor").and_then(|v| v.as_record_ref()).map(|r| r.guid),
         }
     }
 }
@@ -731,21 +546,15 @@ pub struct FireHazardGlobalDamageToHealthParams {
 }
 
 impl Pooled for FireHazardGlobalDamageToHealthParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.roomsystem.fire_hazard_global_damage_to_health_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.roomsystem.fire_hazard_global_damage_to_health_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.roomsystem.fire_hazard_global_damage_to_health_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.roomsystem.fire_hazard_global_damage_to_health_params }
 }
 
 impl<'a> Extract<'a> for FireHazardGlobalDamageToHealthParams {
     const TYPE_NAME: &'static str = "FireHazardGlobalDamageToHealthParams";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            minimum_damage_temperature: inst
-                .get_f32("minimumDamageTemperature")
-                .unwrap_or_default(),
+            minimum_damage_temperature: inst.get_f32("minimumDamageTemperature").unwrap_or_default(),
             base_damage: inst.get_f32("baseDamage").unwrap_or_default(),
             reference_health: inst.get_f32("referenceHealth").unwrap_or_default(),
             curve_angle: inst.get_f32("curveAngle").unwrap_or_default(),
@@ -769,12 +578,8 @@ pub struct FireHazardGlobalExtinguishing {
 }
 
 impl Pooled for FireHazardGlobalExtinguishing {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.roomsystem.fire_hazard_global_extinguishing
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.roomsystem.fire_hazard_global_extinguishing
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.roomsystem.fire_hazard_global_extinguishing }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.roomsystem.fire_hazard_global_extinguishing }
 }
 
 impl<'a> Extract<'a> for FireHazardGlobalExtinguishing {
@@ -784,14 +589,8 @@ impl<'a> Extract<'a> for FireHazardGlobalExtinguishing {
             oxygen_reduction: inst.get_f32("oxygenReduction").unwrap_or_default(),
             heat_transfer_multiplier: inst.get_f32("heatTransferMultiplier").unwrap_or_default(),
             radiation_absorption: inst.get_f32("radiationAbsorption").unwrap_or_default(),
-            vector_field_path_spray: inst
-                .get_str("vectorFieldPathSpray")
-                .map(String::from)
-                .unwrap_or_default(),
-            vector_field_path_sphere: inst
-                .get_str("vectorFieldPathSphere")
-                .map(String::from)
-                .unwrap_or_default(),
+            vector_field_path_spray: inst.get_str("vectorFieldPathSpray").map(String::from).unwrap_or_default(),
+            vector_field_path_sphere: inst.get_str("vectorFieldPathSphere").map(String::from).unwrap_or_default(),
         }
     }
 }
@@ -819,66 +618,33 @@ pub struct FireHazardGlobalDefaultEffects {
 }
 
 impl Pooled for FireHazardGlobalDefaultEffects {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.roomsystem.fire_hazard_global_default_effects
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.roomsystem.fire_hazard_global_default_effects
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.roomsystem.fire_hazard_global_default_effects }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.roomsystem.fire_hazard_global_default_effects }
 }
 
 impl<'a> Extract<'a> for FireHazardGlobalDefaultEffects {
     const TYPE_NAME: &'static str = "FireHazardGlobalDefaultEffects";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            voxel_fire_effect: inst
-                .get_str("voxelFireEffect")
-                .map(String::from)
-                .unwrap_or_default(),
+            voxel_fire_effect: inst.get_str("voxelFireEffect").map(String::from).unwrap_or_default(),
             voxel_flash_ignition_effect: match inst.get("voxelFlashIgnitionEffect") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<GlobalResourceParticle>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceParticle>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             entity_fire_effect: match inst.get("entityFireEffect") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<GlobalResourceParticle>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceParticle>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             entity_smoke_effect: match inst.get("entitySmokeEffect") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<GlobalResourceParticle>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceParticle>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             default_spray_extinguishing_effect: match inst.get("defaultSprayExtinguishingEffect") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<GlobalResourceParticle>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceParticle>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
-            default_sphere_extinguishing_effect: match inst.get("defaultSphereExtinguishingEffect")
-            {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<GlobalResourceParticle>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+            default_sphere_extinguishing_effect: match inst.get("defaultSphereExtinguishingEffect") {
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceParticle>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             maximum_smoke_emission: inst.get_f32("maximumSmokeEmission").unwrap_or_default(),
@@ -935,12 +701,8 @@ pub struct FireHazardGlobalLightParams {
 }
 
 impl Pooled for FireHazardGlobalLightParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.roomsystem.fire_hazard_global_light_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.roomsystem.fire_hazard_global_light_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.roomsystem.fire_hazard_global_light_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.roomsystem.fire_hazard_global_light_params }
 }
 
 impl<'a> Extract<'a> for FireHazardGlobalLightParams {
@@ -948,10 +710,7 @@ impl<'a> Extract<'a> for FireHazardGlobalLightParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             light_color: match inst.get("lightColor") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<RGB>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<RGB>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             max_lights: inst.get_i32("maxLights").unwrap_or_default(),
@@ -962,17 +721,11 @@ impl<'a> Extract<'a> for FireHazardGlobalLightParams {
             anim_shrink_speed: inst.get_f32("animShrinkSpeed").unwrap_or_default(),
             radius: inst.get_f32("radius").unwrap_or_default(),
             bulb_radius_range: match inst.get("bulbRadiusRange") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             light_intensity_range: match inst.get("lightIntensityRange") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             specular_multiplier: inst.get_f32("specularMultiplier").unwrap_or_default(),
@@ -1015,12 +768,8 @@ pub struct FireHazardGlobalRoomConnectorParams {
 }
 
 impl Pooled for FireHazardGlobalRoomConnectorParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.roomsystem.fire_hazard_global_room_connector_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.roomsystem.fire_hazard_global_room_connector_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.roomsystem.fire_hazard_global_room_connector_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.roomsystem.fire_hazard_global_room_connector_params }
 }
 
 impl<'a> Extract<'a> for FireHazardGlobalRoomConnectorParams {
@@ -1029,17 +778,12 @@ impl<'a> Extract<'a> for FireHazardGlobalRoomConnectorParams {
         Self {
             ignite_threshold: inst.get_f32("igniteThreshold").unwrap_or_default(),
             max_volume_radius: inst.get_f32("maxVolumeRadius").unwrap_or_default(),
-            vector_field_path: inst
-                .get_str("vectorFieldPath")
-                .map(String::from)
-                .unwrap_or_default(),
+            vector_field_path: inst.get_str("vectorFieldPath").map(String::from).unwrap_or_default(),
             vector_field_rotation: inst.get_f32("vectorFieldRotation").unwrap_or_default(),
             vector_field_radius: inst.get_f32("vectorFieldRadius").unwrap_or_default(),
             vector_field_falloff: inst.get_f32("vectorFieldFalloff").unwrap_or_default(),
             vector_field_threshold: inst.get_f32("vectorFieldThreshold").unwrap_or_default(),
-            vector_field_max_heat_release_rate_diff: inst
-                .get_f32("vectorFieldMaxHeatReleaseRateDiff")
-                .unwrap_or_default(),
+            vector_field_max_heat_release_rate_diff: inst.get_f32("vectorFieldMaxHeatReleaseRateDiff").unwrap_or_default(),
             vector_field_max_strength: inst.get_f32("vectorFieldMaxStrength").unwrap_or_default(),
             vector_field_depth: inst.get_f32("vectorFieldDepth").unwrap_or_default(),
         }
@@ -1053,36 +797,20 @@ pub struct LightningBehavior {
 }
 
 impl Pooled for LightningBehavior {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.roomsystem.lightning_behavior
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.roomsystem.lightning_behavior
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.roomsystem.lightning_behavior }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.roomsystem.lightning_behavior }
 }
 
 impl<'a> Extract<'a> for LightningBehavior {
     const TYPE_NAME: &'static str = "LightningBehavior";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            effects: inst
-                .get_array("effects")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<LightningBehavior_Effect>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => Some(b.alloc_nested::<LightningBehavior_Effect>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
+            effects: inst.get_array("effects")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<LightningBehavior_Effect>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<LightningBehavior_Effect>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
         }
     }
@@ -1099,41 +827,23 @@ pub struct LightningBehavior_Effect {
 }
 
 impl Pooled for LightningBehavior_Effect {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.roomsystem.lightning_behavior_effect
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.roomsystem.lightning_behavior_effect
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.roomsystem.lightning_behavior_effect }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.roomsystem.lightning_behavior_effect }
 }
 
 impl<'a> Extract<'a> for LightningBehavior_Effect {
     const TYPE_NAME: &'static str = "LightningBehavior_Effect";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            lightning_effect: inst
-                .get_str("lightningEffect")
-                .map(String::from)
-                .unwrap_or_default(),
-            target_modes: inst
-                .get_array("targetModes")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => {
-                            Some(LightningTargetModePtr::from_ref(b, r))
-                        }
+            lightning_effect: inst.get_str("lightningEffect").map(String::from).unwrap_or_default(),
+            target_modes: inst.get_array("targetModes")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => Some(LightningTargetModePtr::from_ref(b, r)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
             audio: match inst.get("audio") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<LightningStrikeAudio>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<LightningStrikeAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
@@ -1147,12 +857,8 @@ pub struct LightningTargetMode {
 }
 
 impl Pooled for LightningTargetMode {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.roomsystem.lightning_target_mode
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.roomsystem.lightning_target_mode
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.roomsystem.lightning_target_mode }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.roomsystem.lightning_target_mode }
 }
 
 impl<'a> Extract<'a> for LightningTargetMode {
@@ -1181,12 +887,8 @@ pub struct ApparentTemperatureParams {
 }
 
 impl Pooled for ApparentTemperatureParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.roomsystem.apparent_temperature_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.roomsystem.apparent_temperature_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.roomsystem.apparent_temperature_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.roomsystem.apparent_temperature_params }
 }
 
 impl<'a> Extract<'a> for ApparentTemperatureParams {
@@ -1198,9 +900,7 @@ impl<'a> Extract<'a> for ApparentTemperatureParams {
             wind_chill_blend_threshold: inst.get_f64("windChillBlendThreshold").unwrap_or_default(),
             wind_chill_hard_threshold: inst.get_f64("windChillHardThreshold").unwrap_or_default(),
             max_pressure_for_scaling: inst.get_f64("maxPressureForScaling").unwrap_or_default(),
-            default_temperature_for_pressure_scaling: inst
-                .get_f64("defaultTemperatureForPressureScaling")
-                .unwrap_or_default(),
+            default_temperature_for_pressure_scaling: inst.get_f64("defaultTemperatureForPressureScaling").unwrap_or_default(),
         }
     }
 }
@@ -1236,51 +936,28 @@ pub struct GlobalGasParams {
 }
 
 impl Pooled for GlobalGasParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.roomsystem.global_gas_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.roomsystem.global_gas_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.roomsystem.global_gas_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.roomsystem.global_gas_params }
 }
 
 impl<'a> Extract<'a> for GlobalGasParams {
     const TYPE_NAME: &'static str = "GlobalGasParams";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            transfer_rate_per_atmosphere_square_metre: inst
-                .get_f64("transferRatePerAtmosphereSquareMetre")
-                .unwrap_or_default(),
+            transfer_rate_per_atmosphere_square_metre: inst.get_f64("transferRatePerAtmosphereSquareMetre").unwrap_or_default(),
             minimum_transfer_rate: inst.get_f64("minimumTransferRate").unwrap_or_default(),
             mix_rate_per_square_metre: inst.get_f64("mixRatePerSquareMetre").unwrap_or_default(),
-            mix_abs_pressure_difference_threshold: inst
-                .get_f64("mixAbsPressureDifferenceThreshold")
-                .unwrap_or_default(),
-            mass_addition_rate_per_cubic_metre_matching_gases: inst
-                .get_f64("massAdditionRatePerCubicMetre_MatchingGases")
-                .unwrap_or_default(),
-            mass_subtraction_rate_per_cubic_metre_matching_gases: inst
-                .get_f64("massSubtractionRatePerCubicMetre_MatchingGases")
-                .unwrap_or_default(),
-            mass_subtraction_rate_per_cubic_metre_foreign_gases: inst
-                .get_f64("massSubtractionRatePerCubicMetre_ForeignGases")
-                .unwrap_or_default(),
-            resource_cost_per_kilogram_corrected: inst
-                .get_f64("resourceCostPerKilogramCorrected")
-                .unwrap_or_default(),
-            thermal_energy_correction_rate_per_cubic_metre: inst
-                .get_f64("thermalEnergyCorrectionRatePerCubicMetre")
-                .unwrap_or_default(),
+            mix_abs_pressure_difference_threshold: inst.get_f64("mixAbsPressureDifferenceThreshold").unwrap_or_default(),
+            mass_addition_rate_per_cubic_metre_matching_gases: inst.get_f64("massAdditionRatePerCubicMetre_MatchingGases").unwrap_or_default(),
+            mass_subtraction_rate_per_cubic_metre_matching_gases: inst.get_f64("massSubtractionRatePerCubicMetre_MatchingGases").unwrap_or_default(),
+            mass_subtraction_rate_per_cubic_metre_foreign_gases: inst.get_f64("massSubtractionRatePerCubicMetre_ForeignGases").unwrap_or_default(),
+            resource_cost_per_kilogram_corrected: inst.get_f64("resourceCostPerKilogramCorrected").unwrap_or_default(),
+            thermal_energy_correction_rate_per_cubic_metre: inst.get_f64("thermalEnergyCorrectionRatePerCubicMetre").unwrap_or_default(),
             resource_cost_per_joule: inst.get_f64("resourceCostPerJoule").unwrap_or_default(),
             humidity_correction_rate: inst.get_f64("humidityCorrectionRate").unwrap_or_default(),
             resource_cost_per_humidity: inst.get_f64("resourceCostPerHumidity").unwrap_or_default(),
             apparent_temperature_params: match inst.get("apparentTemperatureParams") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<ApparentTemperatureParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<ApparentTemperatureParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
@@ -1300,12 +977,8 @@ pub struct GlobalRoomStateParams {
 }
 
 impl Pooled for GlobalRoomStateParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.roomsystem.global_room_state_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.roomsystem.global_room_state_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.roomsystem.global_room_state_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.roomsystem.global_room_state_params }
 }
 
 impl<'a> Extract<'a> for GlobalRoomStateParams {
@@ -1313,35 +986,19 @@ impl<'a> Extract<'a> for GlobalRoomStateParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             type_ranges: match inst.get("typeRanges") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             type_debug_colors: match inst.get("typeDebugColors") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<RGB>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<RGB>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             debug_particles: match inst.get("debugParticles") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<GlobalResourceParticle>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceParticle>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             default_space_dust: match inst.get("defaultSpaceDust") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<WeatherEffects_SpaceLoopEffect>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<WeatherEffects_SpaceLoopEffect>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
@@ -1358,12 +1015,8 @@ pub struct ElectricalStateTemplateInternal {
 }
 
 impl Pooled for ElectricalStateTemplateInternal {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.roomsystem.electrical_state_template_internal
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.roomsystem.electrical_state_template_internal
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.roomsystem.electrical_state_template_internal }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.roomsystem.electrical_state_template_internal }
 }
 
 impl<'a> Extract<'a> for ElectricalStateTemplateInternal {
@@ -1383,12 +1036,8 @@ pub struct ElectricalStateTemplate {
 }
 
 impl Pooled for ElectricalStateTemplate {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.roomsystem.electrical_state_template
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.roomsystem.electrical_state_template
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.roomsystem.electrical_state_template }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.roomsystem.electrical_state_template }
 }
 
 impl<'a> Extract<'a> for ElectricalStateTemplate {
@@ -1396,12 +1045,7 @@ impl<'a> Extract<'a> for ElectricalStateTemplate {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             state: match inst.get("state") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<ElectricalStateTemplateInternal>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<ElectricalStateTemplateInternal>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
@@ -1417,26 +1061,17 @@ pub struct ElectricalCalculationPropertyRange {
 }
 
 impl Pooled for ElectricalCalculationPropertyRange {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.roomsystem.electrical_calculation_property_range
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.roomsystem.electrical_calculation_property_range
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.roomsystem.electrical_calculation_property_range }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.roomsystem.electrical_calculation_property_range }
 }
 
 impl<'a> Extract<'a> for ElectricalCalculationPropertyRange {
     const TYPE_NAME: &'static str = "ElectricalCalculationPropertyRange";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            r#type: ElectricalCalculationPropertyType::from_dcb_str(
-                inst.get_str("type").unwrap_or(""),
-            ),
+            r#type: ElectricalCalculationPropertyType::from_dcb_str(inst.get_str("type").unwrap_or("")),
             range: match inst.get("range") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
@@ -1457,12 +1092,8 @@ pub struct Behavior_ElectricalVehicleEffectParams {
 }
 
 impl Pooled for Behavior_ElectricalVehicleEffectParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.roomsystem.behavior_electrical_vehicle_effect_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.roomsystem.behavior_electrical_vehicle_effect_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.roomsystem.behavior_electrical_vehicle_effect_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.roomsystem.behavior_electrical_vehicle_effect_params }
 }
 
 impl<'a> Extract<'a> for Behavior_ElectricalVehicleEffectParams {
@@ -1472,21 +1103,11 @@ impl<'a> Extract<'a> for Behavior_ElectricalVehicleEffectParams {
             enable_engine_trails: inst.get_bool("enableEngineTrails").unwrap_or_default(),
             enable_engine_contrails: inst.get_bool("enableEngineContrails").unwrap_or_default(),
             custom_vehicle_effects: match inst.get("customVehicleEffects") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<Behavior_CustomVehicleEffectsPreset>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<Behavior_CustomVehicleEffectsPreset>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             custom_vehicle_calculation: match inst.get("customVehicleCalculation") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<ElectricalCalculationPropertyRange>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<ElectricalCalculationPropertyRange>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
@@ -1502,12 +1123,8 @@ pub struct ElectricalBehavior {
 }
 
 impl Pooled for ElectricalBehavior {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.roomsystem.electrical_behavior
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.roomsystem.electrical_behavior
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.roomsystem.electrical_behavior }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.roomsystem.electrical_behavior }
 }
 
 impl<'a> Extract<'a> for ElectricalBehavior {
@@ -1515,21 +1132,11 @@ impl<'a> Extract<'a> for ElectricalBehavior {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             lightning: match inst.get("lightning") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<LightningBehavior>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<LightningBehavior>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             vehicle_effects: match inst.get("vehicleEffects") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<Behavior_ElectricalVehicleEffectParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Behavior_ElectricalVehicleEffectParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
@@ -1548,16 +1155,8 @@ pub struct RadiationBehavior_AsteroidDesignCurveSurfaceRadiationParams {
 }
 
 impl Pooled for RadiationBehavior_AsteroidDesignCurveSurfaceRadiationParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .roomsystem
-            .radiation_behavior_asteroid_design_curve_surface_radiation_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .roomsystem
-            .radiation_behavior_asteroid_design_curve_surface_radiation_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.roomsystem.radiation_behavior_asteroid_design_curve_surface_radiation_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.roomsystem.radiation_behavior_asteroid_design_curve_surface_radiation_params }
 }
 
 impl<'a> Extract<'a> for RadiationBehavior_AsteroidDesignCurveSurfaceRadiationParams {
@@ -1566,17 +1165,11 @@ impl<'a> Extract<'a> for RadiationBehavior_AsteroidDesignCurveSurfaceRadiationPa
         Self {
             scale_on_largest_asteroid: inst.get_f32("scaleOnLargestAsteroid").unwrap_or_default(),
             radius_range: match inst.get("radiusRange") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             curve: match inst.get("curve") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BezierCurve>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BezierCurve>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
@@ -1597,16 +1190,8 @@ pub struct RadiationBehavior_AsteroidInverseSquareSurfaceRadiationParams {
 }
 
 impl Pooled for RadiationBehavior_AsteroidInverseSquareSurfaceRadiationParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .roomsystem
-            .radiation_behavior_asteroid_inverse_square_surface_radiation_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .roomsystem
-            .radiation_behavior_asteroid_inverse_square_surface_radiation_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.roomsystem.radiation_behavior_asteroid_inverse_square_surface_radiation_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.roomsystem.radiation_behavior_asteroid_inverse_square_surface_radiation_params }
 }
 
 impl<'a> Extract<'a> for RadiationBehavior_AsteroidInverseSquareSurfaceRadiationParams {
@@ -1630,12 +1215,8 @@ pub struct WeatherEffects_Atmosphere_Property {
 }
 
 impl Pooled for WeatherEffects_Atmosphere_Property {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.roomsystem.weather_effects_atmosphere_property
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.roomsystem.weather_effects_atmosphere_property
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.roomsystem.weather_effects_atmosphere_property }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.roomsystem.weather_effects_atmosphere_property }
 }
 
 impl<'a> Extract<'a> for WeatherEffects_Atmosphere_Property {
@@ -1644,10 +1225,7 @@ impl<'a> Extract<'a> for WeatherEffects_Atmosphere_Property {
         Self {
             r#type: AtmosphereStatePropertyType::from_dcb_str(inst.get_str("type").unwrap_or("")),
             interpolation_range: match inst.get("interpolationRange") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
@@ -1666,16 +1244,8 @@ pub struct WeatherEffects_Atmosphere_MultiPropertyValue {
 }
 
 impl Pooled for WeatherEffects_Atmosphere_MultiPropertyValue {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .roomsystem
-            .weather_effects_atmosphere_multi_property_value
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .roomsystem
-            .weather_effects_atmosphere_multi_property_value
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.roomsystem.weather_effects_atmosphere_multi_property_value }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.roomsystem.weather_effects_atmosphere_multi_property_value }
 }
 
 impl<'a> Extract<'a> for WeatherEffects_Atmosphere_MultiPropertyValue {
@@ -1683,35 +1253,16 @@ impl<'a> Extract<'a> for WeatherEffects_Atmosphere_MultiPropertyValue {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             space_loop_effect: match inst.get("spaceLoopEffect") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<WeatherEffects_SpaceLoopEffect>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<WeatherEffects_SpaceLoopEffect>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             causes_puddles: inst.get_bool("causesPuddles").unwrap_or_default(),
-            properties: inst
-                .get_array("properties")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<WeatherEffects_Atmosphere_Property>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => {
-                            Some(b.alloc_nested::<WeatherEffects_Atmosphere_Property>(
-                                b.db.instance(r.struct_index, r.instance_index),
-                                true,
-                            ))
-                        }
+            properties: inst.get_array("properties")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<WeatherEffects_Atmosphere_Property>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<WeatherEffects_Atmosphere_Property>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
         }
     }
@@ -1727,16 +1278,8 @@ pub struct WeatherEffects_Atmosphere_GasCloudOpticalDensity {
 }
 
 impl Pooled for WeatherEffects_Atmosphere_GasCloudOpticalDensity {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .roomsystem
-            .weather_effects_atmosphere_gas_cloud_optical_density
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .roomsystem
-            .weather_effects_atmosphere_gas_cloud_optical_density
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.roomsystem.weather_effects_atmosphere_gas_cloud_optical_density }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.roomsystem.weather_effects_atmosphere_gas_cloud_optical_density }
 }
 
 impl<'a> Extract<'a> for WeatherEffects_Atmosphere_GasCloudOpticalDensity {
@@ -1744,21 +1287,14 @@ impl<'a> Extract<'a> for WeatherEffects_Atmosphere_GasCloudOpticalDensity {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             space_loop_effect: match inst.get("spaceLoopEffect") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<WeatherEffects_SpaceLoopEffect>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<WeatherEffects_SpaceLoopEffect>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             interpolation_range: match inst.get("interpolationRange") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
     }
 }
+

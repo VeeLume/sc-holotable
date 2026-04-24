@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -26,30 +26,16 @@ pub struct HarvestableTagListTagEditor {
 }
 
 impl Pooled for HarvestableTagListTagEditor {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.harvestable.harvestable_tag_list_tag_editor
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.harvestable.harvestable_tag_list_tag_editor
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.harvestable.harvestable_tag_list_tag_editor }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.harvestable.harvestable_tag_list_tag_editor }
 }
 
 impl<'a> Extract<'a> for HarvestableTagListTagEditor {
     const TYPE_NAME: &'static str = "HarvestableTagListTagEditor";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            tags: inst
-                .get_array("tags")
-                .map(|arr| {
-                    arr.filter_map(|v| {
-                        if let Value::Reference(Some(r)) = v {
-                            Some(r.guid)
-                        } else {
-                            None
-                        }
-                    })
-                    .collect()
-                })
+            tags: inst.get_array("tags")
+                .map(|arr| arr.filter_map(|v| if let Value::Reference(Some(r)) = v { Some(r.guid) } else { None }).collect())
                 .unwrap_or_default(),
         }
     }
@@ -62,12 +48,8 @@ pub struct SubHarvestableMultiConfigRecord {
 }
 
 impl Pooled for SubHarvestableMultiConfigRecord {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.harvestable.sub_harvestable_multi_config_record
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.harvestable.sub_harvestable_multi_config_record
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.harvestable.sub_harvestable_multi_config_record }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.harvestable.sub_harvestable_multi_config_record }
 }
 
 impl<'a> Extract<'a> for SubHarvestableMultiConfigRecord {
@@ -75,12 +57,7 @@ impl<'a> Extract<'a> for SubHarvestableMultiConfigRecord {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             multi_config: match inst.get("multiConfig") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<SubHarvestableMultiConfig>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SubHarvestableMultiConfig>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
@@ -95,22 +72,15 @@ pub struct SubHarvestableConfigSingleRef {
 }
 
 impl Pooled for SubHarvestableConfigSingleRef {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.harvestable.sub_harvestable_config_single_ref
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.harvestable.sub_harvestable_config_single_ref
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.harvestable.sub_harvestable_config_single_ref }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.harvestable.sub_harvestable_config_single_ref }
 }
 
 impl<'a> Extract<'a> for SubHarvestableConfigSingleRef {
     const TYPE_NAME: &'static str = "SubHarvestableConfigSingleRef";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            sub_config_ref: inst
-                .get("subConfigRef")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
+            sub_config_ref: inst.get("subConfigRef").and_then(|v| v.as_record_ref()).map(|r| r.guid),
         }
     }
 }
@@ -123,12 +93,8 @@ pub struct HarvestConditionDamageMap {
 }
 
 impl Pooled for HarvestConditionDamageMap {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.harvestable.harvest_condition_damage_map
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.harvestable.harvest_condition_damage_map
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.harvestable.harvest_condition_damage_map }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.harvestable.harvest_condition_damage_map }
 }
 
 impl<'a> Extract<'a> for HarvestConditionDamageMap {
@@ -155,12 +121,8 @@ pub struct HarvestableSetup {
 }
 
 impl Pooled for HarvestableSetup {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.harvestable.harvestable_setup
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.harvestable.harvestable_setup
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.harvestable.harvestable_setup }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.harvestable.harvestable_setup }
 }
 
 impl<'a> Extract<'a> for HarvestableSetup {
@@ -168,34 +130,19 @@ impl<'a> Extract<'a> for HarvestableSetup {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             harvest_behaviour: match inst.get("harvestBehaviour") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<HarvestBehaviourParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<HarvestBehaviourParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             transform_params: match inst.get("transformParams") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<HarvestableTransformParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<HarvestableTransformParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             sub_config_base: match inst.get("subConfigBase") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(SubHarvestableConfigBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(SubHarvestableConfigBasePtr::from_ref(b, r)),
                 _ => None,
             },
             respawn_in_slot_time: inst.get_f32("respawnInSlotTime").unwrap_or_default(),
-            special_harvestable_string: inst
-                .get_str("specialHarvestableString")
-                .map(String::from)
-                .unwrap_or_default(),
+            special_harvestable_string: inst.get_str("specialHarvestableString").map(String::from).unwrap_or_default(),
         }
     }
 }
@@ -215,12 +162,8 @@ pub struct HarvestableClusterParams {
 }
 
 impl Pooled for HarvestableClusterParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.harvestable.harvestable_cluster_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.harvestable.harvestable_cluster_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.harvestable.harvestable_cluster_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.harvestable.harvestable_cluster_params }
 }
 
 impl<'a> Extract<'a> for HarvestableClusterParams {
@@ -245,12 +188,8 @@ pub struct HarvestableClusterPreset {
 }
 
 impl Pooled for HarvestableClusterPreset {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.harvestable.harvestable_cluster_preset
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.harvestable.harvestable_cluster_preset
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.harvestable.harvestable_cluster_preset }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.harvestable.harvestable_cluster_preset }
 }
 
 impl<'a> Extract<'a> for HarvestableClusterPreset {
@@ -258,24 +197,12 @@ impl<'a> Extract<'a> for HarvestableClusterPreset {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             probability_of_clustering: inst.get_f32("probabilityOfClustering").unwrap_or_default(),
-            cluster_params_array: inst
-                .get_array("clusterParamsArray")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<HarvestableClusterParams>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => Some(b.alloc_nested::<HarvestableClusterParams>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
+            cluster_params_array: inst.get_array("clusterParamsArray")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<HarvestableClusterParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<HarvestableClusterParams>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
         }
     }
@@ -298,53 +225,25 @@ pub struct HarvestableElement {
 }
 
 impl Pooled for HarvestableElement {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.harvestable.harvestable_element
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.harvestable.harvestable_element
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.harvestable.harvestable_element }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.harvestable.harvestable_element }
 }
 
 impl<'a> Extract<'a> for HarvestableElement {
     const TYPE_NAME: &'static str = "HarvestableElement";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            harvestable: inst
-                .get("harvestable")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            harvestable_entity_class: inst
-                .get("harvestableEntityClass")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            harvestable_setup: inst
-                .get("harvestableSetup")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
+            harvestable: inst.get("harvestable").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            harvestable_entity_class: inst.get("harvestableEntityClass").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            harvestable_setup: inst.get("harvestableSetup").and_then(|v| v.as_record_ref()).map(|r| r.guid),
             relative_probability: inst.get_f32("relativeProbability").unwrap_or_default(),
-            clustering: inst
-                .get("clustering")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-            geometries: inst
-                .get_array("geometries")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<HarvestableGeometry>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => Some(b.alloc_nested::<HarvestableGeometry>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
+            clustering: inst.get("clustering").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            geometries: inst.get_array("geometries")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<HarvestableGeometry>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<HarvestableGeometry>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
         }
     }
@@ -361,41 +260,22 @@ pub struct HarvestableElementGroup {
 }
 
 impl Pooled for HarvestableElementGroup {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.harvestable.harvestable_element_group
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.harvestable.harvestable_element_group
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.harvestable.harvestable_element_group }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.harvestable.harvestable_element_group }
 }
 
 impl<'a> Extract<'a> for HarvestableElementGroup {
     const TYPE_NAME: &'static str = "HarvestableElementGroup";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            group_name: inst
-                .get_str("groupName")
-                .map(String::from)
-                .unwrap_or_default(),
+            group_name: inst.get_str("groupName").map(String::from).unwrap_or_default(),
             group_probability: inst.get_f32("groupProbability").unwrap_or_default(),
-            harvestables: inst
-                .get_array("harvestables")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<HarvestableElement>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => Some(b.alloc_nested::<HarvestableElement>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
+            harvestables: inst.get_array("harvestables")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<HarvestableElement>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<HarvestableElement>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
         }
     }
@@ -412,12 +292,8 @@ pub struct HarvestableElementModifier {
 }
 
 impl Pooled for HarvestableElementModifier {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.harvestable.harvestable_element_modifier
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.harvestable.harvestable_element_modifier
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.harvestable.harvestable_element_modifier }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.harvestable.harvestable_element_modifier }
 }
 
 impl<'a> Extract<'a> for HarvestableElementModifier {
@@ -425,33 +301,16 @@ impl<'a> Extract<'a> for HarvestableElementModifier {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             harvestable_element: match inst.get("harvestableElement") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<HarvestableElement>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<HarvestableElement>(b.db.instance(r.struct_index, r.instance_index), true)),
                 _ => None,
             },
             harvestable_modifier: inst.get_f32("harvestableModifier").unwrap_or_default(),
-            geometries: inst
-                .get_array("geometries")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<HarvestableGeometry>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => Some(b.alloc_nested::<HarvestableGeometry>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
+            geometries: inst.get_array("geometries")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<HarvestableGeometry>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<HarvestableGeometry>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
         }
     }
@@ -465,20 +324,15 @@ pub struct HarvestableAreaTypeObjectPreset {
 }
 
 impl Pooled for HarvestableAreaTypeObjectPreset {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.harvestable.harvestable_area_type_object_preset
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.harvestable.harvestable_area_type_object_preset
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.harvestable.harvestable_area_type_object_preset }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.harvestable.harvestable_area_type_object_preset }
 }
 
 impl<'a> Extract<'a> for HarvestableAreaTypeObjectPreset {
     const TYPE_NAME: &'static str = "HarvestableAreaTypeObjectPreset";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            object_preset_paths: inst
-                .get_array("objectPresetPaths")
+            object_preset_paths: inst.get_array("objectPresetPaths")
                 .map(|arr| arr.filter_map(|v| v.as_str().map(String::from)).collect())
                 .unwrap_or_default(),
         }
@@ -498,47 +352,26 @@ pub struct HarvestableAreaPreset {
 }
 
 impl Pooled for HarvestableAreaPreset {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.harvestable.harvestable_area_preset
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.harvestable.harvestable_area_preset
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.harvestable.harvestable_area_preset }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.harvestable.harvestable_area_preset }
 }
 
 impl<'a> Extract<'a> for HarvestableAreaPreset {
     const TYPE_NAME: &'static str = "HarvestableAreaPreset";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            debug_group_name: inst
-                .get_str("debugGroupName")
-                .map(String::from)
-                .unwrap_or_default(),
+            debug_group_name: inst.get_str("debugGroupName").map(String::from).unwrap_or_default(),
             area_type: match inst.get("areaType") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(HarvestableAreaTypeBasePtr::from_ref(b, r))
-                }
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(HarvestableAreaTypeBasePtr::from_ref(b, r)),
                 _ => None,
             },
             global_modifier: inst.get_f32("globalModifier").unwrap_or_default(),
-            modifiers: inst
-                .get_array("modifiers")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<HarvestableElementModifier>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => Some(b.alloc_nested::<HarvestableElementModifier>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
+            modifiers: inst.get_array("modifiers")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<HarvestableElementModifier>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<HarvestableElementModifier>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
         }
     }
@@ -553,56 +386,29 @@ pub struct HarvestableProviderPreset {
 }
 
 impl Pooled for HarvestableProviderPreset {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.harvestable.harvestable_provider_preset
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.harvestable.harvestable_provider_preset
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.harvestable.harvestable_provider_preset }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.harvestable.harvestable_provider_preset }
 }
 
 impl<'a> Extract<'a> for HarvestableProviderPreset {
     const TYPE_NAME: &'static str = "HarvestableProviderPreset";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            harvestable_groups: inst
-                .get_array("harvestableGroups")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<HarvestableElementGroup>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => Some(b.alloc_nested::<HarvestableElementGroup>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
+            harvestable_groups: inst.get_array("harvestableGroups")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<HarvestableElementGroup>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<HarvestableElementGroup>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
-            areas: inst
-                .get_array("areas")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<HarvestableAreaPreset>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => Some(b.alloc_nested::<HarvestableAreaPreset>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
+            areas: inst.get_array("areas")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<HarvestableAreaPreset>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<HarvestableAreaPreset>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
         }
     }
 }
+

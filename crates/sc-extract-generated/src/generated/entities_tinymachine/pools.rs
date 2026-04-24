@@ -14,6 +14,5 @@ use super::super::*;
 /// Pool storage for the `entities-tinymachine` feature.
 #[derive(Default)]
 pub struct EntitiesTinymachinePools {
-    pub tiny_machine_graph_instance_component_params:
-        Vec<Option<TinyMachineGraphInstanceComponentParams>>,
+    pub tiny_machine_graph_instance_component_params: Vec<Option<TinyMachineGraphInstanceComponentParams>>,
 }

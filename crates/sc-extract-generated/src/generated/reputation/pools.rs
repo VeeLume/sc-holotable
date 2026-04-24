@@ -21,8 +21,6 @@ pub struct ReputationPools {
     pub sreputation_state_modifier_set_bool: Vec<Option<SReputationStateModifierSetBool>>,
     pub sreputation_state_modifier_set_to_state: Vec<Option<SReputationStateModifierSetToState>>,
     pub sreputation_state_modifier_params: Vec<Option<SReputationStateModifierParams>>,
-    pub sreputation_state_mission_result_modifier_list_params:
-        Vec<Option<SReputationStateMissionResultModifierListParams>>,
-    pub sreputation_state_mission_result_modifier_params:
-        Vec<Option<SReputationStateMissionResultModifierParams>>,
+    pub sreputation_state_mission_result_modifier_list_params: Vec<Option<SReputationStateMissionResultModifierListParams>>,
+    pub sreputation_state_mission_result_modifier_params: Vec<Option<SReputationStateMissionResultModifierParams>>,
 }

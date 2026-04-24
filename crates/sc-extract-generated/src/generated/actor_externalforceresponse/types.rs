@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -36,16 +36,8 @@ pub struct SActorForceReactionProceduralXianLeanPose {
 }
 
 impl Pooled for SActorForceReactionProceduralXianLeanPose {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .actor_externalforceresponse
-            .sactor_force_reaction_procedural_xian_lean_pose
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .actor_externalforceresponse
-            .sactor_force_reaction_procedural_xian_lean_pose
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.actor_externalforceresponse.sactor_force_reaction_procedural_xian_lean_pose }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.actor_externalforceresponse.sactor_force_reaction_procedural_xian_lean_pose }
 }
 
 impl<'a> Extract<'a> for SActorForceReactionProceduralXianLeanPose {
@@ -55,19 +47,10 @@ impl<'a> Extract<'a> for SActorForceReactionProceduralXianLeanPose {
             hip_offset_scale_fb: inst.get_f32("hipOffsetScaleFB").unwrap_or_default(),
             hip_offset_scale_lr: inst.get_f32("hipOffsetScaleLR").unwrap_or_default(),
             foot_offset_scale: inst.get_f32("footOffsetScale").unwrap_or_default(),
-            first_person_lean_pitch_scale: inst
-                .get_f32("firstPersonLeanPitchScale")
-                .unwrap_or_default(),
-            first_person_lean_roll_scale: inst
-                .get_f32("firstPersonLeanRollScale")
-                .unwrap_or_default(),
+            first_person_lean_pitch_scale: inst.get_f32("firstPersonLeanPitchScale").unwrap_or_default(),
+            first_person_lean_roll_scale: inst.get_f32("firstPersonLeanRollScale").unwrap_or_default(),
             spine_bones: match inst.get("spineBones") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<SActorForceReactionLeanBoneDef>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SActorForceReactionLeanBoneDef>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
@@ -82,16 +65,8 @@ pub struct SActorForceReactionProceduralXianLeanPoseList {
 }
 
 impl Pooled for SActorForceReactionProceduralXianLeanPoseList {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .actor_externalforceresponse
-            .sactor_force_reaction_procedural_xian_lean_pose_list
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .actor_externalforceresponse
-            .sactor_force_reaction_procedural_xian_lean_pose_list
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.actor_externalforceresponse.sactor_force_reaction_procedural_xian_lean_pose_list }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.actor_externalforceresponse.sactor_force_reaction_procedural_xian_lean_pose_list }
 }
 
 impl<'a> Extract<'a> for SActorForceReactionProceduralXianLeanPoseList {
@@ -99,12 +74,7 @@ impl<'a> Extract<'a> for SActorForceReactionProceduralXianLeanPoseList {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             pose_types: match inst.get("poseTypes") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<SActorForceReactionProceduralXianLeanPose>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SActorForceReactionProceduralXianLeanPose>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
@@ -134,16 +104,8 @@ pub struct SActorForceReactionsProceduralLeanOverride {
 }
 
 impl Pooled for SActorForceReactionsProceduralLeanOverride {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .actor_externalforceresponse
-            .sactor_force_reactions_procedural_lean_override
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .actor_externalforceresponse
-            .sactor_force_reactions_procedural_lean_override
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.actor_externalforceresponse.sactor_force_reactions_procedural_lean_override }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.actor_externalforceresponse.sactor_force_reactions_procedural_lean_override }
 }
 
 impl<'a> Extract<'a> for SActorForceReactionsProceduralLeanOverride {
@@ -170,43 +132,22 @@ pub struct SActorForceReactionsPresetRecord {
 }
 
 impl Pooled for SActorForceReactionsPresetRecord {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .actor_externalforceresponse
-            .sactor_force_reactions_preset_record
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .actor_externalforceresponse
-            .sactor_force_reactions_preset_record
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.actor_externalforceresponse.sactor_force_reactions_preset_record }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.actor_externalforceresponse.sactor_force_reactions_preset_record }
 }
 
 impl<'a> Extract<'a> for SActorForceReactionsPresetRecord {
     const TYPE_NAME: &'static str = "SActorForceReactionsPresetRecord";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            proc_lean_overrides: inst
-                .get_array("procLeanOverrides")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(
-                            b.alloc_nested::<SActorForceReactionsProceduralLeanOverride>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ),
-                        ),
-                        Value::ClassRef(r) => Some(
-                            b.alloc_nested::<SActorForceReactionsProceduralLeanOverride>(
-                                b.db.instance(r.struct_index, r.instance_index),
-                                true,
-                            ),
-                        ),
+            proc_lean_overrides: inst.get_array("procLeanOverrides")
+                .map(|arr| arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<SActorForceReactionsProceduralLeanOverride>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<SActorForceReactionsProceduralLeanOverride>(b.db.instance(r.struct_index, r.instance_index), true)),
                         _ => None,
-                    })
-                    .collect()
-                })
+                    }).collect())
                 .unwrap_or_default(),
         }
     }
 }
+

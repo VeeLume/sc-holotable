@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -27,12 +27,8 @@ pub struct ARMarkerPlayerOffsetParams {
 }
 
 impl Pooled for ARMarkerPlayerOffsetParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.globalarmarkerparams.armarker_player_offset_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.globalarmarkerparams.armarker_player_offset_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.globalarmarkerparams.armarker_player_offset_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.globalarmarkerparams.armarker_player_offset_params }
 }
 
 impl<'a> Extract<'a> for ARMarkerPlayerOffsetParams {
@@ -40,17 +36,11 @@ impl<'a> Extract<'a> for ARMarkerPlayerOffsetParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             offset: match inst.get("offset") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
             offset_proportion_per_meter: match inst.get("offsetProportionPerMeter") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
@@ -64,12 +54,8 @@ pub struct ARMarkerGlobalParams {
 }
 
 impl Pooled for ARMarkerGlobalParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.globalarmarkerparams.armarker_global_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.globalarmarkerparams.armarker_global_params
-    }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.globalarmarkerparams.armarker_global_params }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.globalarmarkerparams.armarker_global_params }
 }
 
 impl<'a> Extract<'a> for ARMarkerGlobalParams {
@@ -77,14 +63,10 @@ impl<'a> Extract<'a> for ARMarkerGlobalParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             armarker_player_offset: match inst.get("ARMarkerPlayerOffset") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<ARMarkerPlayerOffsetParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<ARMarkerPlayerOffsetParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
                 _ => None,
             },
         }
     }
 }
+
