@@ -15,8 +15,10 @@ use super::super::*;
 #[derive(Default)]
 pub struct TransitsystemPools {
     pub transit_navigation_link: Vec<Option<TransitNavigationLink>>,
-    pub hospital_emergency_screen_component_params: Vec<Option<HospitalEmergencyScreenComponentParams>>,
-    pub security_clearance_giver_component_params: Vec<Option<SecurityClearanceGiverComponentParams>>,
+    pub hospital_emergency_screen_component_params:
+        Vec<Option<HospitalEmergencyScreenComponentParams>>,
+    pub security_clearance_giver_component_params:
+        Vec<Option<SecurityClearanceGiverComponentParams>>,
     pub sbinding_trigger_gameplay_trigger: Vec<Option<SBindingTriggerGameplayTrigger>>,
     pub transit_node_dialogue_context: Vec<Option<TransitNodeDialogueContext>>,
     pub transit_carriage_audio: Vec<Option<TransitCarriageAudio>>,

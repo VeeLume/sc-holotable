@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -31,8 +31,12 @@ pub struct MotionConnection {
 }
 
 impl Pooled for MotionConnection {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.motionstatemachine.motion_connection }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.motionstatemachine.motion_connection }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.motionstatemachine.motion_connection
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.motionstatemachine.motion_connection
+    }
 }
 
 impl<'a> Extract<'a> for MotionConnection {
@@ -41,9 +45,17 @@ impl<'a> Extract<'a> for MotionConnection {
         Self {
             wait_untill_finished: inst.get_bool("waitUntillFinished").unwrap_or_default(),
             delay_seconds: inst.get_f32("delaySeconds").unwrap_or_default(),
-            wait_for_event: inst.get_str("waitForEvent").map(String::from).unwrap_or_default(),
+            wait_for_event: inst
+                .get_str("waitForEvent")
+                .map(String::from)
+                .unwrap_or_default(),
             next_state: match inst.get("nextState") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<MotionState>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<MotionState>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
                 _ => None,
             },
         }
@@ -69,8 +81,12 @@ pub struct MotionState {
 }
 
 impl Pooled for MotionState {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.motionstatemachine.motion_state }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.motionstatemachine.motion_state }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.motionstatemachine.motion_state
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.motionstatemachine.motion_state
+    }
 }
 
 impl<'a> Extract<'a> for MotionState {
@@ -78,17 +94,41 @@ impl<'a> Extract<'a> for MotionState {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             r#type: MotionStateType::from_dcb_str(inst.get_str("type").unwrap_or("")),
-            mannequin_tags: inst.get_str("mannequinTags").map(String::from).unwrap_or_default(),
-            mannequin_fragment: inst.get_str("mannequinFragment").map(String::from).unwrap_or_default(),
-            motion_type_fp: MotionControlType::from_dcb_str(inst.get_str("motionTypeFP").unwrap_or("")),
-            motion_type_tp: MotionControlType::from_dcb_str(inst.get_str("motionTypeTP").unwrap_or("")),
-            motion_type_remote: MotionControlType::from_dcb_str(inst.get_str("motionTypeRemote").unwrap_or("")),
-            connections: inst.get_array("connections")
-                .map(|arr| arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<MotionConnection>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r) => Some(b.alloc_nested::<MotionConnection>(b.db.instance(r.struct_index, r.instance_index), true)),
+            mannequin_tags: inst
+                .get_str("mannequinTags")
+                .map(String::from)
+                .unwrap_or_default(),
+            mannequin_fragment: inst
+                .get_str("mannequinFragment")
+                .map(String::from)
+                .unwrap_or_default(),
+            motion_type_fp: MotionControlType::from_dcb_str(
+                inst.get_str("motionTypeFP").unwrap_or(""),
+            ),
+            motion_type_tp: MotionControlType::from_dcb_str(
+                inst.get_str("motionTypeTP").unwrap_or(""),
+            ),
+            motion_type_remote: MotionControlType::from_dcb_str(
+                inst.get_str("motionTypeRemote").unwrap_or(""),
+            ),
+            connections: inst
+                .get_array("connections")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<MotionConnection>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => Some(b.alloc_nested::<MotionConnection>(
+                            b.db.instance(r.struct_index, r.instance_index),
+                            true,
+                        )),
                         _ => None,
-                    }).collect())
+                    })
+                    .collect()
+                })
                 .unwrap_or_default(),
         }
     }
@@ -113,8 +153,12 @@ pub struct ProceduralIdleToMoveParams {
 }
 
 impl Pooled for ProceduralIdleToMoveParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.motionstatemachine.procedural_idle_to_move_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.motionstatemachine.procedural_idle_to_move_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.motionstatemachine.procedural_idle_to_move_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.motionstatemachine.procedural_idle_to_move_params
+    }
 }
 
 impl<'a> Extract<'a> for ProceduralIdleToMoveParams {
@@ -149,8 +193,12 @@ pub struct MotionSmoothingParams {
 }
 
 impl Pooled for MotionSmoothingParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.motionstatemachine.motion_smoothing_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.motionstatemachine.motion_smoothing_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.motionstatemachine.motion_smoothing_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.motionstatemachine.motion_smoothing_params
+    }
 }
 
 impl<'a> Extract<'a> for MotionSmoothingParams {
@@ -160,7 +208,9 @@ impl<'a> Extract<'a> for MotionSmoothingParams {
             enabled: inst.get_bool("enabled").unwrap_or_default(),
             max_jitter_rating: inst.get_f32("maxJitterRating").unwrap_or_default(),
             jitter_sensitivity: inst.get_f32("jitterSensitivity").unwrap_or_default(),
-            jitter_detection_threshold: inst.get_f32("jitterDetectionThreshold").unwrap_or_default(),
+            jitter_detection_threshold: inst
+                .get_f32("jitterDetectionThreshold")
+                .unwrap_or_default(),
             jitter_decay_duration: inst.get_f32("jitterDecayDuration").unwrap_or_default(),
             speed_smoothing_duration: inst.get_f32("speedSmoothingDuration").unwrap_or_default(),
         }
@@ -178,8 +228,12 @@ pub struct MotionJukeParams {
 }
 
 impl Pooled for MotionJukeParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.motionstatemachine.motion_juke_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.motionstatemachine.motion_juke_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.motionstatemachine.motion_juke_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.motionstatemachine.motion_juke_params
+    }
 }
 
 impl<'a> Extract<'a> for MotionJukeParams {
@@ -212,8 +266,12 @@ pub struct MotionTurnParams {
 }
 
 impl Pooled for MotionTurnParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.motionstatemachine.motion_turn_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.motionstatemachine.motion_turn_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.motionstatemachine.motion_turn_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.motionstatemachine.motion_turn_params
+    }
 }
 
 impl<'a> Extract<'a> for MotionTurnParams {
@@ -267,30 +325,68 @@ pub struct MotionTurnSetupFiltered {
 }
 
 impl Pooled for MotionTurnSetupFiltered {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.motionstatemachine.motion_turn_setup_filtered }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.motionstatemachine.motion_turn_setup_filtered }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.motionstatemachine.motion_turn_setup_filtered
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.motionstatemachine.motion_turn_setup_filtered
+    }
 }
 
 impl<'a> Extract<'a> for MotionTurnSetupFiltered {
     const TYPE_NAME: &'static str = "MotionTurnSetupFiltered";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            filter_name: inst.get_str("filterName").map(String::from).unwrap_or_default(),
-            filter_by_state: ActorStateFilterByState::from_dcb_str(inst.get_str("filterByState").unwrap_or("")),
-            filter_by_motion_speed: ActorStateFilterByMotionSpeed::from_dcb_str(inst.get_str("filterByMotionSpeed").unwrap_or("")),
-            filter_by_pose_state: ActorStateFilterByPoseState::from_dcb_str(inst.get_str("filterByPoseState").unwrap_or("")),
-            filter_by_stance_state: ActorStateFilterByStanceState::from_dcb_str(inst.get_str("filterByStanceState").unwrap_or("")),
-            filter_by_aim_stance_state: ActorStateFilterByAimStanceState::from_dcb_str(inst.get_str("filterByAimStanceState").unwrap_or("")),
-            filter_by_lean_state: ActorStateFilterByLeanState::from_dcb_str(inst.get_str("filterByLeanState").unwrap_or("")),
-            filter_by_held_item_type: ActorStateFilterByHeldItemType::from_dcb_str(inst.get_str("filterByHeldItemType").unwrap_or("")),
-            filter_by_skeleton: ActorStateFilterBySkeleton::from_dcb_str(inst.get_str("filterBySkeleton").unwrap_or("")),
-            filter_by_character_type: ActorStateFilterByCharacterType::from_dcb_str(inst.get_str("filterByCharacterType").unwrap_or("")),
-            filter_by_restrained_state: EActorStateFilterByBoolState::from_dcb_str(inst.get_str("filterByRestrainedState").unwrap_or("")),
-            filter_by_player_camera: EActorStateFilterByPlayerCamera::from_dcb_str(inst.get_str("filterByPlayerCamera").unwrap_or("")),
-            filter_by_aiming_restriction: EActorStateFilterByAimingRestriction::from_dcb_str(inst.get_str("filterByAimingRestriction").unwrap_or("")),
-            filter_by_locomotion_set: ActorStateFilterByLocomotionSet::from_dcb_str(inst.get_str("filterByLocomotionSet").unwrap_or("")),
+            filter_name: inst
+                .get_str("filterName")
+                .map(String::from)
+                .unwrap_or_default(),
+            filter_by_state: ActorStateFilterByState::from_dcb_str(
+                inst.get_str("filterByState").unwrap_or(""),
+            ),
+            filter_by_motion_speed: ActorStateFilterByMotionSpeed::from_dcb_str(
+                inst.get_str("filterByMotionSpeed").unwrap_or(""),
+            ),
+            filter_by_pose_state: ActorStateFilterByPoseState::from_dcb_str(
+                inst.get_str("filterByPoseState").unwrap_or(""),
+            ),
+            filter_by_stance_state: ActorStateFilterByStanceState::from_dcb_str(
+                inst.get_str("filterByStanceState").unwrap_or(""),
+            ),
+            filter_by_aim_stance_state: ActorStateFilterByAimStanceState::from_dcb_str(
+                inst.get_str("filterByAimStanceState").unwrap_or(""),
+            ),
+            filter_by_lean_state: ActorStateFilterByLeanState::from_dcb_str(
+                inst.get_str("filterByLeanState").unwrap_or(""),
+            ),
+            filter_by_held_item_type: ActorStateFilterByHeldItemType::from_dcb_str(
+                inst.get_str("filterByHeldItemType").unwrap_or(""),
+            ),
+            filter_by_skeleton: ActorStateFilterBySkeleton::from_dcb_str(
+                inst.get_str("filterBySkeleton").unwrap_or(""),
+            ),
+            filter_by_character_type: ActorStateFilterByCharacterType::from_dcb_str(
+                inst.get_str("filterByCharacterType").unwrap_or(""),
+            ),
+            filter_by_restrained_state: EActorStateFilterByBoolState::from_dcb_str(
+                inst.get_str("filterByRestrainedState").unwrap_or(""),
+            ),
+            filter_by_player_camera: EActorStateFilterByPlayerCamera::from_dcb_str(
+                inst.get_str("filterByPlayerCamera").unwrap_or(""),
+            ),
+            filter_by_aiming_restriction: EActorStateFilterByAimingRestriction::from_dcb_str(
+                inst.get_str("filterByAimingRestriction").unwrap_or(""),
+            ),
+            filter_by_locomotion_set: ActorStateFilterByLocomotionSet::from_dcb_str(
+                inst.get_str("filterByLocomotionSet").unwrap_or(""),
+            ),
             params: match inst.get("params") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<MotionTurnParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<MotionTurnParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
         }
@@ -304,20 +400,36 @@ pub struct MotionTurnSetupList {
 }
 
 impl Pooled for MotionTurnSetupList {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.motionstatemachine.motion_turn_setup_list }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.motionstatemachine.motion_turn_setup_list }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.motionstatemachine.motion_turn_setup_list
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.motionstatemachine.motion_turn_setup_list
+    }
 }
 
 impl<'a> Extract<'a> for MotionTurnSetupList {
     const TYPE_NAME: &'static str = "MotionTurnSetupList";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            setup_list: inst.get_array("setupList")
-                .map(|arr| arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<MotionTurnSetupFiltered>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r) => Some(b.alloc_nested::<MotionTurnSetupFiltered>(b.db.instance(r.struct_index, r.instance_index), true)),
+            setup_list: inst
+                .get_array("setupList")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<MotionTurnSetupFiltered>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => Some(b.alloc_nested::<MotionTurnSetupFiltered>(
+                            b.db.instance(r.struct_index, r.instance_index),
+                            true,
+                        )),
                         _ => None,
-                    }).collect())
+                    })
+                    .collect()
+                })
                 .unwrap_or_default(),
         }
     }
@@ -340,8 +452,12 @@ pub struct MotionFootPinningParams {
 }
 
 impl Pooled for MotionFootPinningParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.motionstatemachine.motion_foot_pinning_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.motionstatemachine.motion_foot_pinning_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.motionstatemachine.motion_foot_pinning_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.motionstatemachine.motion_foot_pinning_params
+    }
 }
 
 impl<'a> Extract<'a> for MotionFootPinningParams {
@@ -352,8 +468,12 @@ impl<'a> Extract<'a> for MotionFootPinningParams {
             auto_reposition_distance: inst.get_f32("autoRepositionDistance").unwrap_or_default(),
             animation_duration: inst.get_f32("animationDuration").unwrap_or_default(),
             animation_weight: inst.get_f32("animationWeight").unwrap_or_default(),
-            animation_blend_in_duration: inst.get_f32("animationBlendInDuration").unwrap_or_default(),
-            animation_blend_out_duration: inst.get_f32("animationBlendOutDuration").unwrap_or_default(),
+            animation_blend_in_duration: inst
+                .get_f32("animationBlendInDuration")
+                .unwrap_or_default(),
+            animation_blend_out_duration: inst
+                .get_f32("animationBlendOutDuration")
+                .unwrap_or_default(),
         }
     }
 }
@@ -381,51 +501,105 @@ pub struct MotionGraph {
 }
 
 impl Pooled for MotionGraph {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.motionstatemachine.motion_graph }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.motionstatemachine.motion_graph }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.motionstatemachine.motion_graph
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.motionstatemachine.motion_graph
+    }
 }
 
 impl<'a> Extract<'a> for MotionGraph {
     const TYPE_NAME: &'static str = "MotionGraph";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            motion_states: inst.get_array("motionStates")
-                .map(|arr| arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<MotionState>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r) => Some(b.alloc_nested::<MotionState>(b.db.instance(r.struct_index, r.instance_index), true)),
+            motion_states: inst
+                .get_array("motionStates")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<MotionState>(
+                            Instance::from_inline_data(b.db, struct_index, data),
+                            false,
+                        )),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<MotionState>(
+                            b.db.instance(r.struct_index, r.instance_index),
+                            true,
+                        )),
                         _ => None,
-                    }).collect())
+                    })
+                    .collect()
+                })
                 .unwrap_or_default(),
             motion_smoothing_config: match inst.get("motionSmoothingConfig") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<MotionSmoothingParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<MotionSmoothingParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             juke_config: match inst.get("jukeConfig") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<MotionJukeParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<MotionJukeParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             idle_to_move_proc_params_forward: match inst.get("idleToMoveProcParamsForward") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<ProceduralIdleToMoveParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<ProceduralIdleToMoveParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             idle_to_move_proc_params_back: match inst.get("idleToMoveProcParamsBack") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<ProceduralIdleToMoveParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<ProceduralIdleToMoveParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             idle_to_move_proc_params_right: match inst.get("idleToMoveProcParamsRight") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<ProceduralIdleToMoveParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<ProceduralIdleToMoveParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             idle_to_move_proc_params_left: match inst.get("idleToMoveProcParamsLeft") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<ProceduralIdleToMoveParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<ProceduralIdleToMoveParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             turn_config: match inst.get("turnConfig") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<MotionTurnSetupList>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<MotionTurnSetupList>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             foot_pinning_params: match inst.get("footPinningParams") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<MotionFootPinningParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<MotionFootPinningParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
         }
@@ -439,8 +613,12 @@ pub struct SCProneMotionGraphDef {
 }
 
 impl Pooled for SCProneMotionGraphDef {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.motionstatemachine.scprone_motion_graph_def }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.motionstatemachine.scprone_motion_graph_def }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.motionstatemachine.scprone_motion_graph_def
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.motionstatemachine.scprone_motion_graph_def
+    }
 }
 
 impl<'a> Extract<'a> for SCProneMotionGraphDef {
@@ -451,4 +629,3 @@ impl<'a> Extract<'a> for SCProneMotionGraphDef {
         }
     }
 }
-

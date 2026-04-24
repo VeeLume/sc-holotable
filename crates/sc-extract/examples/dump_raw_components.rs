@@ -28,10 +28,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         if (name.contains("LaserCannon_S7")
             || name.contains("BallisticGatling_S1")
             || name.contains("LaserRepeater_S1"))
-            && found < 5 {
-                println!("Record name format: '{}'", name);
-                found += 1;
-            }
+            && found < 5
+        {
+            println!("Record name format: '{}'", name);
+            found += 1;
+        }
     }
 
     for record in db.records() {

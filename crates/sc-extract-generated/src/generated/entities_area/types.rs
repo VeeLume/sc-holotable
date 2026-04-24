@@ -12,27 +12,29 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
 /// DCB type: `DesignerNavigationVolumeParams`
 /// Inherits from: `DataForgeComponentParams`
-pub struct DesignerNavigationVolumeParams {
-}
+pub struct DesignerNavigationVolumeParams {}
 
 impl Pooled for DesignerNavigationVolumeParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_area.designer_navigation_volume_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_area.designer_navigation_volume_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_area.designer_navigation_volume_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_area.designer_navigation_volume_params
+    }
 }
 
 impl<'a> Extract<'a> for DesignerNavigationVolumeParams {
     const TYPE_NAME: &'static str = "DesignerNavigationVolumeParams";
     fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
-        }
+        Self {}
     }
 }
 
@@ -44,8 +46,12 @@ pub struct PlanetInclusionVolumeParams {
 }
 
 impl Pooled for PlanetInclusionVolumeParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_area.planet_inclusion_volume_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_area.planet_inclusion_volume_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_area.planet_inclusion_volume_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_area.planet_inclusion_volume_params
+    }
 }
 
 impl<'a> Extract<'a> for PlanetInclusionVolumeParams {
@@ -53,7 +59,10 @@ impl<'a> Extract<'a> for PlanetInclusionVolumeParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             size: match inst.get("size") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
         }
@@ -86,8 +95,12 @@ pub struct AreaTriggerParams {
 }
 
 impl Pooled for AreaTriggerParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_area.area_trigger_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_area.area_trigger_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_area.area_trigger_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_area.area_trigger_params
+    }
 }
 
 impl<'a> Extract<'a> for AreaTriggerParams {
@@ -128,8 +141,12 @@ pub struct GravityBoxParams {
 }
 
 impl Pooled for GravityBoxParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_area.gravity_box_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_area.gravity_box_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_area.gravity_box_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_area.gravity_box_params
+    }
 }
 
 impl<'a> Extract<'a> for GravityBoxParams {
@@ -141,12 +158,18 @@ impl<'a> Extract<'a> for GravityBoxParams {
             fall_off_inner: inst.get_f32("fallOffInner").unwrap_or_default(),
             gravity_magnitude: inst.get_f32("gravityMagnitude").unwrap_or_default(),
             gravity_direction: match inst.get("gravityDirection") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             filled: inst.get_bool("filled").unwrap_or_default(),
             size: match inst.get("size") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
         }
@@ -163,8 +186,12 @@ pub struct HarvestableOverrideAreaParams {
 }
 
 impl Pooled for HarvestableOverrideAreaParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_area.harvestable_override_area_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_area.harvestable_override_area_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_area.harvestable_override_area_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_area.harvestable_override_area_params
+    }
 }
 
 impl<'a> Extract<'a> for HarvestableOverrideAreaParams {
@@ -197,8 +224,12 @@ pub struct SLockCameraViewAreaParams {
 }
 
 impl Pooled for SLockCameraViewAreaParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_area.slock_camera_view_area_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_area.slock_camera_view_area_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_area.slock_camera_view_area_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_area.slock_camera_view_area_params
+    }
 }
 
 impl<'a> Extract<'a> for SLockCameraViewAreaParams {
@@ -209,100 +240,117 @@ impl<'a> Extract<'a> for SLockCameraViewAreaParams {
             lock_third_person: inst.get_bool("lockThirdPerson").unwrap_or_default(),
             lock_to_default_view: inst.get_bool("lockToDefaultView").unwrap_or_default(),
             lock_to_enter_exit_view: inst.get_bool("lockToEnterExitView").unwrap_or_default(),
-            camera_enter_toggle_seconds_delay: inst.get_f32("cameraEnterToggleSecondsDelay").unwrap_or_default(),
-            camera_exit_toggle_seconds_delay: inst.get_f32("cameraExitToggleSecondsDelay").unwrap_or_default(),
-            exit_area_tag: inst.get("exitAreaTag").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            camera_enter_toggle_seconds_delay: inst
+                .get_f32("cameraEnterToggleSecondsDelay")
+                .unwrap_or_default(),
+            camera_exit_toggle_seconds_delay: inst
+                .get_f32("cameraExitToggleSecondsDelay")
+                .unwrap_or_default(),
+            exit_area_tag: inst
+                .get("exitAreaTag")
+                .and_then(|v| v.as_record_ref())
+                .map(|r| r.guid),
         }
     }
 }
 
 /// DCB type: `AreaEllipsoidComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-pub struct AreaEllipsoidComponentParams {
-}
+pub struct AreaEllipsoidComponentParams {}
 
 impl Pooled for AreaEllipsoidComponentParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_area.area_ellipsoid_component_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_area.area_ellipsoid_component_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_area.area_ellipsoid_component_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_area.area_ellipsoid_component_params
+    }
 }
 
 impl<'a> Extract<'a> for AreaEllipsoidComponentParams {
     const TYPE_NAME: &'static str = "AreaEllipsoidComponentParams";
     fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
-        }
+        Self {}
     }
 }
 
 /// DCB type: `GravityShapeComponentParams`
 /// Inherits from: `GameShapeComponentParams`
-pub struct GravityShapeComponentParams {
-}
+pub struct GravityShapeComponentParams {}
 
 impl Pooled for GravityShapeComponentParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_area.gravity_shape_component_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_area.gravity_shape_component_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_area.gravity_shape_component_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_area.gravity_shape_component_params
+    }
 }
 
 impl<'a> Extract<'a> for GravityShapeComponentParams {
     const TYPE_NAME: &'static str = "GravityShapeComponentParams";
     fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
-        }
+        Self {}
     }
 }
 
 /// DCB type: `NavigationShapeComponentParams`
 /// Inherits from: `AreaShapeComponentParams`
-pub struct NavigationShapeComponentParams {
-}
+pub struct NavigationShapeComponentParams {}
 
 impl Pooled for NavigationShapeComponentParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_area.navigation_shape_component_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_area.navigation_shape_component_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_area.navigation_shape_component_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_area.navigation_shape_component_params
+    }
 }
 
 impl<'a> Extract<'a> for NavigationShapeComponentParams {
     const TYPE_NAME: &'static str = "NavigationShapeComponentParams";
     fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
-        }
+        Self {}
     }
 }
 
 /// DCB type: `NavigationCostShapeComponentParams`
 /// Inherits from: `AreaShapeComponentParams`
-pub struct NavigationCostShapeComponentParams {
-}
+pub struct NavigationCostShapeComponentParams {}
 
 impl Pooled for NavigationCostShapeComponentParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_area.navigation_cost_shape_component_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_area.navigation_cost_shape_component_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_area.navigation_cost_shape_component_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_area.navigation_cost_shape_component_params
+    }
 }
 
 impl<'a> Extract<'a> for NavigationCostShapeComponentParams {
     const TYPE_NAME: &'static str = "NavigationCostShapeComponentParams";
     fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
-        }
+        Self {}
     }
 }
 
 /// DCB type: `SLandingCommunicationParams`
 /// Inherits from: `DataForgeComponentParams`
-pub struct SLandingCommunicationParams {
-}
+pub struct SLandingCommunicationParams {}
 
 impl Pooled for SLandingCommunicationParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_area.slanding_communication_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_area.slanding_communication_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_area.slanding_communication_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_area.slanding_communication_params
+    }
 }
 
 impl<'a> Extract<'a> for SLandingCommunicationParams {
     const TYPE_NAME: &'static str = "SLandingCommunicationParams";
     fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
-        }
+        Self {}
     }
 }
 
@@ -314,8 +362,12 @@ pub struct LandingAreaGroupParams {
 }
 
 impl Pooled for LandingAreaGroupParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_area.landing_area_group_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_area.landing_area_group_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_area.landing_area_group_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_area.landing_area_group_params
+    }
 }
 
 impl<'a> Extract<'a> for LandingAreaGroupParams {
@@ -323,7 +375,10 @@ impl<'a> Extract<'a> for LandingAreaGroupParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             dimensions: match inst.get("dimensions") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
         }
@@ -342,8 +397,12 @@ pub struct HangarAreaComponentParams {
 }
 
 impl Pooled for HangarAreaComponentParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_area.hangar_area_component_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_area.hangar_area_component_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_area.hangar_area_component_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_area.hangar_area_component_params
+    }
 }
 
 impl<'a> Extract<'a> for HangarAreaComponentParams {
@@ -370,8 +429,12 @@ pub struct RestrictedAreaRedoutParams {
 }
 
 impl Pooled for RestrictedAreaRedoutParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_area.restricted_area_redout_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_area.restricted_area_redout_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_area.restricted_area_redout_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_area.restricted_area_redout_params
+    }
 }
 
 impl<'a> Extract<'a> for RestrictedAreaRedoutParams {
@@ -393,8 +456,12 @@ pub struct RestrictedAreaAutopilotParams {
 }
 
 impl Pooled for RestrictedAreaAutopilotParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_area.restricted_area_autopilot_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_area.restricted_area_autopilot_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_area.restricted_area_autopilot_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_area.restricted_area_autopilot_params
+    }
 }
 
 impl<'a> Extract<'a> for RestrictedAreaAutopilotParams {
@@ -423,8 +490,12 @@ pub struct RestrictedAreaKillParams {
 }
 
 impl Pooled for RestrictedAreaKillParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_area.restricted_area_kill_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_area.restricted_area_kill_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_area.restricted_area_kill_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_area.restricted_area_kill_params
+    }
 }
 
 impl<'a> Extract<'a> for RestrictedAreaKillParams {
@@ -436,8 +507,18 @@ impl<'a> Extract<'a> for RestrictedAreaKillParams {
             kill_ships: inst.get_bool("killShips").unwrap_or_default(),
             despawn_objects: inst.get_bool("despawnObjects").unwrap_or_default(),
             despawn_delay: inst.get_f32("despawnDelay").unwrap_or_default(),
-            allow_tags_on_load: inst.get_array("allowTagsOnLoad")
-                .map(|arr| arr.filter_map(|v| if let Value::Reference(Some(r)) = v { Some(r.guid) } else { None }).collect())
+            allow_tags_on_load: inst
+                .get_array("allowTagsOnLoad")
+                .map(|arr| {
+                    arr.filter_map(|v| {
+                        if let Value::Reference(Some(r)) = v {
+                            Some(r.guid)
+                        } else {
+                            None
+                        }
+                    })
+                    .collect()
+                })
                 .unwrap_or_default(),
         }
     }
@@ -464,22 +545,42 @@ pub struct RestrictedAreaHUDMessageParams {
 }
 
 impl Pooled for RestrictedAreaHUDMessageParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_area.restricted_area_hudmessage_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_area.restricted_area_hudmessage_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_area.restricted_area_hudmessage_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_area.restricted_area_hudmessage_params
+    }
 }
 
 impl<'a> Extract<'a> for RestrictedAreaHUDMessageParams {
     const TYPE_NAME: &'static str = "RestrictedAreaHUDMessageParams";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            proximity_warning_min_distance: inst.get_f32("proximityWarningMinDistance").unwrap_or_default(),
+            proximity_warning_min_distance: inst
+                .get_f32("proximityWarningMinDistance")
+                .unwrap_or_default(),
             proximity_warning_max_time: inst.get_f32("proximityWarningMaxTime").unwrap_or_default(),
-            proximity_warning_detection_cone_angle: inst.get_f32("proximityWarningDetectionConeAngle").unwrap_or_default(),
-            proximity_warning_messages: inst.get_str("proximityWarningMessages").map(LocaleKey::from).unwrap_or_default(),
-            autopilot_message: inst.get_str("autopilotMessage").map(LocaleKey::from).unwrap_or_default(),
+            proximity_warning_detection_cone_angle: inst
+                .get_f32("proximityWarningDetectionConeAngle")
+                .unwrap_or_default(),
+            proximity_warning_messages: inst
+                .get_str("proximityWarningMessages")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
+            autopilot_message: inst
+                .get_str("autopilotMessage")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
             proximity_message_timer: inst.get_f32("proximityMessageTimer").unwrap_or_default(),
-            near_warning_message: inst.get_str("nearWarningMessage").map(LocaleKey::from).unwrap_or_default(),
-            leave_warning_message: inst.get_str("leaveWarningMessage").map(LocaleKey::from).unwrap_or_default(),
+            near_warning_message: inst
+                .get_str("nearWarningMessage")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
+            leave_warning_message: inst
+                .get_str("leaveWarningMessage")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
         }
     }
 }
@@ -498,8 +599,12 @@ pub struct RestrictedAreaParams {
 }
 
 impl Pooled for RestrictedAreaParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_area.restricted_area_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_area.restricted_area_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_area.restricted_area_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_area.restricted_area_params
+    }
 }
 
 impl<'a> Extract<'a> for RestrictedAreaParams {
@@ -507,19 +612,39 @@ impl<'a> Extract<'a> for RestrictedAreaParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             redout_params: match inst.get("redoutParams") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<RestrictedAreaRedoutParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<RestrictedAreaRedoutParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             autopilot_params: match inst.get("autopilotParams") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<RestrictedAreaAutopilotParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<RestrictedAreaAutopilotParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             kill_params: match inst.get("killParams") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<RestrictedAreaKillParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<RestrictedAreaKillParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             hud_message_params: match inst.get("hudMessageParams") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<RestrictedAreaHUDMessageParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<RestrictedAreaHUDMessageParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
         }
@@ -528,37 +653,41 @@ impl<'a> Extract<'a> for RestrictedAreaParams {
 
 /// DCB type: `RestrictedAreaSphereParams`
 /// Inherits from: `DataForgeComponentParams`
-pub struct RestrictedAreaSphereParams {
-}
+pub struct RestrictedAreaSphereParams {}
 
 impl Pooled for RestrictedAreaSphereParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_area.restricted_area_sphere_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_area.restricted_area_sphere_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_area.restricted_area_sphere_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_area.restricted_area_sphere_params
+    }
 }
 
 impl<'a> Extract<'a> for RestrictedAreaSphereParams {
     const TYPE_NAME: &'static str = "RestrictedAreaSphereParams";
     fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
-        }
+        Self {}
     }
 }
 
 /// DCB type: `ShipRecallBannedAreaParams`
 /// Inherits from: `DataForgeComponentParams`
-pub struct ShipRecallBannedAreaParams {
-}
+pub struct ShipRecallBannedAreaParams {}
 
 impl Pooled for ShipRecallBannedAreaParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_area.ship_recall_banned_area_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_area.ship_recall_banned_area_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_area.ship_recall_banned_area_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_area.ship_recall_banned_area_params
+    }
 }
 
 impl<'a> Extract<'a> for ShipRecallBannedAreaParams {
     const TYPE_NAME: &'static str = "ShipRecallBannedAreaParams";
     fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
-        }
+        Self {}
     }
 }
 
@@ -578,20 +707,36 @@ pub struct EAMessageTriggerComponentParams {
 }
 
 impl Pooled for EAMessageTriggerComponentParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_area.eamessage_trigger_component_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_area.eamessage_trigger_component_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_area.eamessage_trigger_component_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_area.eamessage_trigger_component_params
+    }
 }
 
 impl<'a> Extract<'a> for EAMessageTriggerComponentParams {
     const TYPE_NAME: &'static str = "EAMessageTriggerComponentParams";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            trigger_frequency: EEAMessageTriggerFrequency::from_dcb_str(inst.get_str("triggerFrequency").unwrap_or("")),
+            trigger_frequency: EEAMessageTriggerFrequency::from_dcb_str(
+                inst.get_str("triggerFrequency").unwrap_or(""),
+            ),
             phase: inst.get_i32("phase").unwrap_or_default(),
-            faction: inst.get("faction").and_then(|v| v.as_record_ref()).map(|r| r.guid),
-            trigger_marker_type: EEntityMarkerType::from_dcb_str(inst.get_str("triggerMarkerType").unwrap_or("")),
+            faction: inst
+                .get("faction")
+                .and_then(|v| v.as_record_ref())
+                .map(|r| r.guid),
+            trigger_marker_type: EEntityMarkerType::from_dcb_str(
+                inst.get_str("triggerMarkerType").unwrap_or(""),
+            ),
             trigger_notification: match inst.get("triggerNotification") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SEACriticalMessageDef>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<SEACriticalMessageDef>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
         }
@@ -617,8 +762,12 @@ pub struct EAPlayableAreaMovementTypeParamsDef {
 }
 
 impl Pooled for EAPlayableAreaMovementTypeParamsDef {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_area.eaplayable_area_movement_type_params_def }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_area.eaplayable_area_movement_type_params_def }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_area.eaplayable_area_movement_type_params_def
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_area.eaplayable_area_movement_type_params_def
+    }
 }
 
 impl<'a> Extract<'a> for EAPlayableAreaMovementTypeParamsDef {
@@ -630,7 +779,9 @@ impl<'a> Extract<'a> for EAPlayableAreaMovementTypeParamsDef {
             on_exit_delay_phase_change: inst.get_f32("onExitDelayPhaseChange").unwrap_or_default(),
             max_redout_percent: inst.get_f32("maxRedoutPercent").unwrap_or_default(),
             time_to_max_redout: inst.get_f32("timeToMaxRedout").unwrap_or_default(),
-            time_to_max_redout_phase_change: inst.get_f32("timeToMaxRedoutPhaseChange").unwrap_or_default(),
+            time_to_max_redout_phase_change: inst
+                .get_f32("timeToMaxRedoutPhaseChange")
+                .unwrap_or_default(),
             ignore_ai: inst.get_bool("ignoreAI").unwrap_or_default(),
         }
     }
@@ -662,8 +813,16 @@ pub struct EAPlayableAreaControllerComponentParamsDef {
 }
 
 impl Pooled for EAPlayableAreaControllerComponentParamsDef {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_area.eaplayable_area_controller_component_params_def }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_area.eaplayable_area_controller_component_params_def }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_area
+            .eaplayable_area_controller_component_params_def
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_area
+            .eaplayable_area_controller_component_params_def
+    }
 }
 
 impl<'a> Extract<'a> for EAPlayableAreaControllerComponentParamsDef {
@@ -671,31 +830,66 @@ impl<'a> Extract<'a> for EAPlayableAreaControllerComponentParamsDef {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             params_on_foot: match inst.get("paramsOnFoot") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<EAPlayableAreaMovementTypeParamsDef>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<EAPlayableAreaMovementTypeParamsDef>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
                 _ => None,
             },
             params_ground_vehicle: match inst.get("paramsGroundVehicle") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<EAPlayableAreaMovementTypeParamsDef>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<EAPlayableAreaMovementTypeParamsDef>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
                 _ => None,
             },
             params_spaceship: match inst.get("paramsSpaceship") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<EAPlayableAreaMovementTypeParamsDef>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<EAPlayableAreaMovementTypeParamsDef>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
                 _ => None,
             },
             despawn_delay: inst.get_f32("despawnDelay").unwrap_or_default(),
-            oobattacking_team_message: inst.get_str("OOBAttackingTeamMessage").map(LocaleKey::from).unwrap_or_default(),
-            oobdefending_team_message: inst.get_str("OOBDefendingTeamMessage").map(LocaleKey::from).unwrap_or_default(),
-            oobgeneral_message: inst.get_str("OOBGeneralMessage").map(LocaleKey::from).unwrap_or_default(),
+            oobattacking_team_message: inst
+                .get_str("OOBAttackingTeamMessage")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
+            oobdefending_team_message: inst
+                .get_str("OOBDefendingTeamMessage")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
+            oobgeneral_message: inst
+                .get_str("OOBGeneralMessage")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
             audiotrigger_out_of_bounds: match inst.get("audiotriggerOutOfBounds") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<GlobalResourceAudio>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             danger_level_rtpc: match inst.get("dangerLevelRtpc") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             out_of_bounds_time_remaining_rtpc: match inst.get("outOfBoundsTimeRemainingRtpc") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
         }
@@ -704,19 +898,21 @@ impl<'a> Extract<'a> for EAPlayableAreaControllerComponentParamsDef {
 
 /// DCB type: `SLandingAreaObjectMetadataParams`
 /// Inherits from: `SObjectMetadataParams`
-pub struct SLandingAreaObjectMetadataParams {
-}
+pub struct SLandingAreaObjectMetadataParams {}
 
 impl Pooled for SLandingAreaObjectMetadataParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_area.slanding_area_object_metadata_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_area.slanding_area_object_metadata_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_area.slanding_area_object_metadata_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_area.slanding_area_object_metadata_params
+    }
 }
 
 impl<'a> Extract<'a> for SLandingAreaObjectMetadataParams {
     const TYPE_NAME: &'static str = "SLandingAreaObjectMetadataParams";
     fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
-        }
+        Self {}
     }
 }
 
@@ -737,8 +933,12 @@ pub struct ExtraLegalBounds {
 }
 
 impl Pooled for ExtraLegalBounds {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_area.extra_legal_bounds }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_area.extra_legal_bounds }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_area.extra_legal_bounds
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_area.extra_legal_bounds
+    }
 }
 
 impl<'a> Extract<'a> for ExtraLegalBounds {
@@ -799,8 +999,12 @@ pub struct LandingAreaComponentParams {
 }
 
 impl Pooled for LandingAreaComponentParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_area.landing_area_component_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_area.landing_area_component_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_area.landing_area_component_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_area.landing_area_component_params
+    }
 }
 
 impl<'a> Extract<'a> for LandingAreaComponentParams {
@@ -809,15 +1013,26 @@ impl<'a> Extract<'a> for LandingAreaComponentParams {
         Self {
             enabled: inst.get_bool("enabled").unwrap_or_default(),
             dimensions: match inst.get("dimensions") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             extra_legal_bounds: match inst.get("extraLegalBounds") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<ExtraLegalBounds>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<ExtraLegalBounds>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             hudoffset: inst.get_f32("HUDOffset").unwrap_or_default(),
-            huddisplay_name: inst.get_str("HUDDisplayName").map(LocaleKey::from).unwrap_or_default(),
+            huddisplay_name: inst
+                .get_str("HUDDisplayName")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
             align_direction: inst.get_bool("alignDirection").unwrap_or_default(),
             autopilot_enabled: inst.get_bool("autopilotEnabled").unwrap_or_default(),
             approach_distance: inst.get_f32("approachDistance").unwrap_or_default(),
@@ -826,12 +1041,16 @@ impl<'a> Extract<'a> for LandingAreaComponentParams {
             allow_ground_vehicles: inst.get_bool("allowGroundVehicles").unwrap_or_default(),
             allow_spaceships: inst.get_bool("allowSpaceships").unwrap_or_default(),
             auto_register_with_atc: inst.get_bool("autoRegisterWithATC").unwrap_or_default(),
-            can_be_used_by: ELandingAreaCanBeUsedBy::from_dcb_str(inst.get_str("canBeUsedBy").unwrap_or("")),
+            can_be_used_by: ELandingAreaCanBeUsedBy::from_dcb_str(
+                inst.get_str("canBeUsedBy").unwrap_or(""),
+            ),
             atcpriority: inst.get_i32("ATCPriority").unwrap_or_default(),
             auto_generate_ui: inst.get_bool("autoGenerateUI").unwrap_or_default(),
             base_uiscale: inst.get_f32("baseUIScale").unwrap_or_default(),
             skip_obstruction_check: inst.get_bool("skipObstructionCheck").unwrap_or_default(),
-            always_lower_platform_before_spawn: inst.get_bool("alwaysLowerPlatformBeforeSpawn").unwrap_or_default(),
+            always_lower_platform_before_spawn: inst
+                .get_bool("alwaysLowerPlatformBeforeSpawn")
+                .unwrap_or_default(),
         }
     }
 }
@@ -846,16 +1065,26 @@ pub struct LandingAreaParamOverrideParams {
 }
 
 impl Pooled for LandingAreaParamOverrideParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_area.landing_area_param_override_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_area.landing_area_param_override_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_area.landing_area_param_override_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_area.landing_area_param_override_params
+    }
 }
 
 impl<'a> Extract<'a> for LandingAreaParamOverrideParams {
     const TYPE_NAME: &'static str = "LandingAreaParamOverrideParams";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            landing_area_override: inst.get_str("landingAreaOverride").map(String::from).unwrap_or_default(),
-            huddisplay_name: inst.get_str("HUDDisplayName").map(LocaleKey::from).unwrap_or_default(),
+            landing_area_override: inst
+                .get_str("landingAreaOverride")
+                .map(String::from)
+                .unwrap_or_default(),
+            huddisplay_name: inst
+                .get_str("HUDDisplayName")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
         }
     }
 }
@@ -886,8 +1115,12 @@ pub struct SLoadingAreaParams {
 }
 
 impl Pooled for SLoadingAreaParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_area.sloading_area_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_area.sloading_area_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_area.sloading_area_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_area.sloading_area_params
+    }
 }
 
 impl<'a> Extract<'a> for SLoadingAreaParams {
@@ -896,15 +1129,23 @@ impl<'a> Extract<'a> for SLoadingAreaParams {
         Self {
             enabled: inst.get_bool("enabled").unwrap_or_default(),
             dimensions: match inst.get("dimensions") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             auto_register_with_atc: inst.get_bool("autoRegisterWithATC").unwrap_or_default(),
             docking_class_override: inst.get_i32("dockingClassOverride").unwrap_or_default(),
             allow_ground_vehicles: inst.get_bool("allowGroundVehicles").unwrap_or_default(),
             allow_spaceships: inst.get_bool("allowSpaceships").unwrap_or_default(),
-            can_be_used_by: ELandingAreaCanBeUsedBy::from_dcb_str(inst.get_str("canBeUsedBy").unwrap_or("")),
-            huddisplay_name: inst.get_str("HUDDisplayName").map(LocaleKey::from).unwrap_or_default(),
+            can_be_used_by: ELandingAreaCanBeUsedBy::from_dcb_str(
+                inst.get_str("canBeUsedBy").unwrap_or(""),
+            ),
+            huddisplay_name: inst
+                .get_str("HUDDisplayName")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
             atcpriority: inst.get_i32("ATCPriority").unwrap_or_default(),
             auto_generate_ui: inst.get_bool("autoGenerateUI").unwrap_or_default(),
         }
@@ -929,8 +1170,12 @@ pub struct TrespassAreaComponentParams {
 }
 
 impl Pooled for TrespassAreaComponentParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_area.trespass_area_component_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_area.trespass_area_component_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_area.trespass_area_component_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_area.trespass_area_component_params
+    }
 }
 
 impl<'a> Extract<'a> for TrespassAreaComponentParams {
@@ -938,7 +1183,12 @@ impl<'a> Extract<'a> for TrespassAreaComponentParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             security_clearance_conditions: match inst.get("securityClearanceConditions") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SecurityClearanceConditions>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<SecurityClearanceConditions>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             is_felony: inst.get_bool("isFelony").unwrap_or_default(),
@@ -952,19 +1202,21 @@ impl<'a> Extract<'a> for TrespassAreaComponentParams {
 
 /// DCB type: `SLandingAreaEntryTrackerParams`
 /// Inherits from: `SObjectDataBankEntryTrackerParams`
-pub struct SLandingAreaEntryTrackerParams {
-}
+pub struct SLandingAreaEntryTrackerParams {}
 
 impl Pooled for SLandingAreaEntryTrackerParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_area.slanding_area_entry_tracker_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_area.slanding_area_entry_tracker_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_area.slanding_area_entry_tracker_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_area.slanding_area_entry_tracker_params
+    }
 }
 
 impl<'a> Extract<'a> for SLandingAreaEntryTrackerParams {
     const TYPE_NAME: &'static str = "SLandingAreaEntryTrackerParams";
     fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
-        }
+        Self {}
     }
 }
 
@@ -980,20 +1232,33 @@ pub struct SCCommsChannelAreaComponentParams {
 }
 
 impl Pooled for SCCommsChannelAreaComponentParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_area.sccomms_channel_area_component_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_area.sccomms_channel_area_component_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_area.sccomms_channel_area_component_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_area.sccomms_channel_area_component_params
+    }
 }
 
 impl<'a> Extract<'a> for SCCommsChannelAreaComponentParams {
     const TYPE_NAME: &'static str = "SCCommsChannelAreaComponentParams";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            comms_channels: inst.get_array("commsChannels")
-                .map(|arr| arr.filter_map(|v| if let Value::Reference(Some(r)) = v { Some(r.guid) } else { None }).collect())
+            comms_channels: inst
+                .get_array("commsChannels")
+                .map(|arr| {
+                    arr.filter_map(|v| {
+                        if let Value::Reference(Some(r)) = v {
+                            Some(r.guid)
+                        } else {
+                            None
+                        }
+                    })
+                    .collect()
+                })
                 .unwrap_or_default(),
             inner_radius: inst.get_f32("innerRadius").unwrap_or_default(),
             outer_radius: inst.get_f32("outerRadius").unwrap_or_default(),
         }
     }
 }
-

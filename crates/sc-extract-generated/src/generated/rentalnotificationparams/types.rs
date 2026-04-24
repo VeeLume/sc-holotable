@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -29,18 +29,30 @@ pub struct RentalNotificationParams {
 }
 
 impl Pooled for RentalNotificationParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.rentalnotificationparams.rental_notification_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.rentalnotificationparams.rental_notification_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.rentalnotificationparams.rental_notification_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.rentalnotificationparams.rental_notification_params
+    }
 }
 
 impl<'a> Extract<'a> for RentalNotificationParams {
     const TYPE_NAME: &'static str = "RentalNotificationParams";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            time_to_rental_expire_message: inst.get_str("timeToRentalExpireMessage").map(LocaleKey::from).unwrap_or_default(),
-            rented_item_name_token: inst.get_str("rentedItemNameToken").map(String::from).unwrap_or_default(),
-            rental_duration_token: inst.get_str("rentalDurationToken").map(String::from).unwrap_or_default(),
+            time_to_rental_expire_message: inst
+                .get_str("timeToRentalExpireMessage")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
+            rented_item_name_token: inst
+                .get_str("rentedItemNameToken")
+                .map(String::from)
+                .unwrap_or_default(),
+            rental_duration_token: inst
+                .get_str("rentalDurationToken")
+                .map(String::from)
+                .unwrap_or_default(),
         }
     }
 }
-

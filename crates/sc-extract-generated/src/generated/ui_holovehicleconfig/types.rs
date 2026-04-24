@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -111,8 +111,12 @@ pub struct UIHoloVehicle_Config {
 }
 
 impl Pooled for UIHoloVehicle_Config {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_holovehicleconfig.uiholo_vehicle_config }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_holovehicleconfig.uiholo_vehicle_config }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.ui_holovehicleconfig.uiholo_vehicle_config
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.ui_holovehicleconfig.uiholo_vehicle_config
+    }
 }
 
 impl<'a> Extract<'a> for UIHoloVehicle_Config {
@@ -123,52 +127,120 @@ impl<'a> Extract<'a> for UIHoloVehicle_Config {
             highlight_effect_time: inst.get_f32("highlightEffectTime").unwrap_or_default(),
             flicker_time: inst.get_f32("flickerTime").unwrap_or_default(),
             shield_distance: inst.get_f32("shieldDistance").unwrap_or_default(),
-            unknown_marker_proxy_model: inst.get_str("unknownMarkerProxyModel").map(String::from).unwrap_or_default(),
-            shield_proxy_model: inst.get_str("shieldProxyModel").map(String::from).unwrap_or_default(),
-            turret_view_proxy_model: inst.get_str("turretViewProxyModel").map(String::from).unwrap_or_default(),
+            unknown_marker_proxy_model: inst
+                .get_str("unknownMarkerProxyModel")
+                .map(String::from)
+                .unwrap_or_default(),
+            shield_proxy_model: inst
+                .get_str("shieldProxyModel")
+                .map(String::from)
+                .unwrap_or_default(),
+            turret_view_proxy_model: inst
+                .get_str("turretViewProxyModel")
+                .map(String::from)
+                .unwrap_or_default(),
             turret_view_length_ratio: inst.get_f32("turretViewLengthRatio").unwrap_or_default(),
             turret_view_width_ratio: inst.get_f32("turretViewWidthRatio").unwrap_or_default(),
             turret_view_pitch: inst.get_f32("turretViewPitch").unwrap_or_default(),
             turret_view_roll: inst.get_f32("turretViewRoll").unwrap_or_default(),
             turret_view_yaw: inst.get_f32("turretViewYaw").unwrap_or_default(),
-            turret_aim_proxy_model: inst.get_str("turretAimProxyModel").map(String::from).unwrap_or_default(),
+            turret_aim_proxy_model: inst
+                .get_str("turretAimProxyModel")
+                .map(String::from)
+                .unwrap_or_default(),
             turret_aim_width_ratio: inst.get_f32("turretAimWidthRatio").unwrap_or_default(),
             camera_fov: inst.get_f32("cameraFOV").unwrap_or_default(),
             own_camera_distance_scaler: inst.get_f32("ownCameraDistanceScaler").unwrap_or_default(),
             own_angular_offset_range: inst.get_f32("ownAngularOffsetRange").unwrap_or_default(),
             own_default_view_angle: inst.get_f32("ownDefaultViewAngle").unwrap_or_default(),
-            own_translation_smoothing_time: inst.get_f32("ownTranslationSmoothingTime").unwrap_or_default(),
-            own_translation_offset_radius_ratio: inst.get_f32("ownTranslationOffsetRadiusRatio").unwrap_or_default(),
+            own_translation_smoothing_time: inst
+                .get_f32("ownTranslationSmoothingTime")
+                .unwrap_or_default(),
+            own_translation_offset_radius_ratio: inst
+                .get_f32("ownTranslationOffsetRadiusRatio")
+                .unwrap_or_default(),
             hit_material_darken_factor: inst.get_f32("hitMaterialDarkenFactor").unwrap_or_default(),
             hit_indicator_anim_time: inst.get_f32("hitIndicatorAnimTime").unwrap_or_default(),
-            target_camera_distance_scaler: inst.get_f32("targetCameraDistanceScaler").unwrap_or_default(),
+            target_camera_distance_scaler: inst
+                .get_f32("targetCameraDistanceScaler")
+                .unwrap_or_default(),
             camera_intro_time: inst.get_f32("cameraIntroTime").unwrap_or_default(),
-            camera_intro_distance_scaler: inst.get_f32("cameraIntroDistanceScaler").unwrap_or_default(),
-            camera_intro_interpolation_mode: InterpolationMode::from_dcb_str(inst.get_str("cameraIntroInterpolationMode").unwrap_or("")),
-            camera_views_transition_time: inst.get_f32("cameraViewsTransitionTime").unwrap_or_default(),
-            camera_view_transition_mode: CameraViewTransitionMode::from_dcb_str(inst.get_str("cameraViewTransitionMode").unwrap_or("")),
-            vehicle_material: inst.get_str("vehicleMaterial").map(String::from).unwrap_or_default(),
-            item_highlight_material: inst.get_str("itemHighlightMaterial").map(String::from).unwrap_or_default(),
-            shield_material: inst.get_str("shieldMaterial").map(String::from).unwrap_or_default(),
-            turret_view_standby_material: inst.get_str("turretViewStandbyMaterial").map(String::from).unwrap_or_default(),
-            turret_view_fire_material: inst.get_str("turretViewFireMaterial").map(String::from).unwrap_or_default(),
-            turret_aim_material: inst.get_str("turretAimMaterial").map(String::from).unwrap_or_default(),
-            vehicle_hit_material: inst.get_str("vehicleHitMaterial").map(String::from).unwrap_or_default(),
-            shield_hit_material: inst.get_str("shieldHitMaterial").map(String::from).unwrap_or_default(),
-            item_type_whitelist: inst.get_array("itemTypeWhitelist")
-                .map(|arr| arr.filter_map(|v| v.as_str().map(EItemType::from_dcb_str)).collect())
+            camera_intro_distance_scaler: inst
+                .get_f32("cameraIntroDistanceScaler")
+                .unwrap_or_default(),
+            camera_intro_interpolation_mode: InterpolationMode::from_dcb_str(
+                inst.get_str("cameraIntroInterpolationMode").unwrap_or(""),
+            ),
+            camera_views_transition_time: inst
+                .get_f32("cameraViewsTransitionTime")
+                .unwrap_or_default(),
+            camera_view_transition_mode: CameraViewTransitionMode::from_dcb_str(
+                inst.get_str("cameraViewTransitionMode").unwrap_or(""),
+            ),
+            vehicle_material: inst
+                .get_str("vehicleMaterial")
+                .map(String::from)
+                .unwrap_or_default(),
+            item_highlight_material: inst
+                .get_str("itemHighlightMaterial")
+                .map(String::from)
+                .unwrap_or_default(),
+            shield_material: inst
+                .get_str("shieldMaterial")
+                .map(String::from)
+                .unwrap_or_default(),
+            turret_view_standby_material: inst
+                .get_str("turretViewStandbyMaterial")
+                .map(String::from)
+                .unwrap_or_default(),
+            turret_view_fire_material: inst
+                .get_str("turretViewFireMaterial")
+                .map(String::from)
+                .unwrap_or_default(),
+            turret_aim_material: inst
+                .get_str("turretAimMaterial")
+                .map(String::from)
+                .unwrap_or_default(),
+            vehicle_hit_material: inst
+                .get_str("vehicleHitMaterial")
+                .map(String::from)
+                .unwrap_or_default(),
+            shield_hit_material: inst
+                .get_str("shieldHitMaterial")
+                .map(String::from)
+                .unwrap_or_default(),
+            item_type_whitelist: inst
+                .get_array("itemTypeWhitelist")
+                .map(|arr| {
+                    arr.filter_map(|v| v.as_str().map(EItemType::from_dcb_str))
+                        .collect()
+                })
                 .unwrap_or_default(),
             silhouette_params: match inst.get("silhouetteParams") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SSilhouetteParamsDef>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<SSilhouetteParamsDef>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
-            direction_arrow_geom_name: inst.get_str("directionArrowGeomName").map(String::from).unwrap_or_default(),
-            direction_arrow_tip_geom_name: inst.get_str("directionArrowTipGeomName").map(String::from).unwrap_or_default(),
+            direction_arrow_geom_name: inst
+                .get_str("directionArrowGeomName")
+                .map(String::from)
+                .unwrap_or_default(),
+            direction_arrow_tip_geom_name: inst
+                .get_str("directionArrowTipGeomName")
+                .map(String::from)
+                .unwrap_or_default(),
             direction_arrow_scale: inst.get_f32("directionArrowScale").unwrap_or_default(),
-            direction_arrow_forward_offset: inst.get_f32("directionArrowForwardOffset").unwrap_or_default(),
+            direction_arrow_forward_offset: inst
+                .get_f32("directionArrowForwardOffset")
+                .unwrap_or_default(),
             direction_arrow_up_offset: inst.get_f32("directionArrowUpOffset").unwrap_or_default(),
-            direction_arrow_right_offset: inst.get_f32("directionArrowRightOffset").unwrap_or_default(),
+            direction_arrow_right_offset: inst
+                .get_f32("directionArrowRightOffset")
+                .unwrap_or_default(),
         }
     }
 }
-

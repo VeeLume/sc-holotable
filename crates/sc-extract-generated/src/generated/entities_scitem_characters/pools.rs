@@ -15,5 +15,6 @@ use super::super::*;
 #[derive(Default)]
 pub struct EntitiesScitemCharactersPools {
     pub not_killable_state: Vec<Option<NotKillableState>>,
-    pub set_health_vulnerability_state_gameplay_trigger: Vec<Option<SetHealthVulnerabilityStateGameplayTrigger>>,
+    pub set_health_vulnerability_state_gameplay_trigger:
+        Vec<Option<SetHealthVulnerabilityStateGameplayTrigger>>,
 }

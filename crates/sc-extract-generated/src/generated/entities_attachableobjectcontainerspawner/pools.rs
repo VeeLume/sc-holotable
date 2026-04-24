@@ -15,5 +15,6 @@ use super::super::*;
 #[derive(Default)]
 pub struct EntitiesAttachableobjectcontainerspawnerPools {
     pub sattachable_object_container_data: Vec<Option<SAttachableObjectContainerData>>,
-    pub sattachable_object_container_spawner_params: Vec<Option<SAttachableObjectContainerSpawnerParams>>,
+    pub sattachable_object_container_spawner_params:
+        Vec<Option<SAttachableObjectContainerSpawnerParams>>,
 }

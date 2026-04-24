@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -41,8 +41,12 @@ pub struct VirtualCursorParams {
 }
 
 impl Pooled for VirtualCursorParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.hardwaremouse.virtual_cursor_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.hardwaremouse.virtual_cursor_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.hardwaremouse.virtual_cursor_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.hardwaremouse.virtual_cursor_params
+    }
 }
 
 impl<'a> Extract<'a> for VirtualCursorParams {
@@ -71,8 +75,12 @@ pub struct VirtualCursorHoverFrictionParams {
 }
 
 impl Pooled for VirtualCursorHoverFrictionParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.hardwaremouse.virtual_cursor_hover_friction_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.hardwaremouse.virtual_cursor_hover_friction_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.hardwaremouse.virtual_cursor_hover_friction_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.hardwaremouse.virtual_cursor_hover_friction_params
+    }
 }
 
 impl<'a> Extract<'a> for VirtualCursorHoverFrictionParams {
@@ -102,8 +110,12 @@ pub struct VirtualCursorWheelParams {
 }
 
 impl Pooled for VirtualCursorWheelParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.hardwaremouse.virtual_cursor_wheel_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.hardwaremouse.virtual_cursor_wheel_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.hardwaremouse.virtual_cursor_wheel_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.hardwaremouse.virtual_cursor_wheel_params
+    }
 }
 
 impl<'a> Extract<'a> for VirtualCursorWheelParams {
@@ -133,8 +145,12 @@ pub struct HardwareMouseParams {
 }
 
 impl Pooled for HardwareMouseParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.hardwaremouse.hardware_mouse_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.hardwaremouse.hardware_mouse_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.hardwaremouse.hardware_mouse_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.hardwaremouse.hardware_mouse_params
+    }
 }
 
 impl<'a> Extract<'a> for HardwareMouseParams {
@@ -142,19 +158,33 @@ impl<'a> Extract<'a> for HardwareMouseParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             cursor: match inst.get("cursor") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<VirtualCursorParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<VirtualCursorParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             hover_friction: match inst.get("hoverFriction") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<VirtualCursorHoverFrictionParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<VirtualCursorHoverFrictionParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             wheel: match inst.get("wheel") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<VirtualCursorWheelParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<VirtualCursorWheelParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             enable_dpad_navigation: inst.get_bool("enableDPadNavigation").unwrap_or_default(),
         }
     }
 }
-

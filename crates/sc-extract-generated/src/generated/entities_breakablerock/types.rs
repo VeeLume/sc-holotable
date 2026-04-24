@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -26,15 +26,22 @@ pub struct GeometryAsteroidModelTag {
 }
 
 impl Pooled for GeometryAsteroidModelTag {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_breakablerock.geometry_asteroid_model_tag }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_breakablerock.geometry_asteroid_model_tag }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_breakablerock.geometry_asteroid_model_tag
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_breakablerock.geometry_asteroid_model_tag
+    }
 }
 
 impl<'a> Extract<'a> for GeometryAsteroidModelTag {
     const TYPE_NAME: &'static str = "GeometryAsteroidModelTag";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            tag: inst.get("tag").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            tag: inst
+                .get("tag")
+                .and_then(|v| v.as_record_ref())
+                .map(|r| r.guid),
         }
     }
 }
@@ -55,15 +62,21 @@ pub struct LightningTargetParams {
 }
 
 impl Pooled for LightningTargetParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_breakablerock.lightning_target_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_breakablerock.lightning_target_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_breakablerock.lightning_target_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_breakablerock.lightning_target_params
+    }
 }
 
 impl<'a> Extract<'a> for LightningTargetParams {
     const TYPE_NAME: &'static str = "LightningTargetParams";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            override_surface_type_conductivity: inst.get_bool("overrideSurfaceTypeConductivity").unwrap_or_default(),
+            override_surface_type_conductivity: inst
+                .get_bool("overrideSurfaceTypeConductivity")
+                .unwrap_or_default(),
             conductivity_override: inst.get_f32("conductivityOverride").unwrap_or_default(),
             conductivity_multiplier: inst.get_f32("conductivityMultiplier").unwrap_or_default(),
             resistance: inst.get_f32("resistance").unwrap_or_default(),
@@ -71,4 +84,3 @@ impl<'a> Extract<'a> for LightningTargetParams {
         }
     }
 }
-

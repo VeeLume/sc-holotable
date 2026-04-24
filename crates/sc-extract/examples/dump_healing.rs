@@ -52,24 +52,25 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         let mut has_healing = false;
         for action in &wp.fire_actions {
             if let SWeaponActionParamsPtr::SWeaponActionFireHealingBeamParams(h) = action
-                && let Some(hb) = h.get(pools) {
-                    if !has_healing {
-                        println!("{} ({})", name, display);
-                        println!("  fireActions: {}", wp.fire_actions.len());
-                        has_healing = true;
-                    }
-                    println!("  HealingBeam:");
-                    println!("    name: {}", hb.name);
-                    println!("    healingMode: {:?}", hb.healing_mode);
-                    println!("    externalHealingMode: {}", hb.external_healing_mode);
-                    println!("    toggle: {}", hb.toggle);
-                    println!("    maxDistance: {}", hb.max_distance);
-                    println!("    maxSensorDistance: {}", hb.max_sensor_distance);
-                    println!("    mSCUPerSec: {}", hb.m_scuper_sec);
-                    println!("    ammoPerMSCU: {}", hb.ammo_per_mscu);
-                    println!("    medicalAmmoType: {:?}", hb.medical_ammo_type);
-                    println!("    wearPerSec: {}", hb.wear_per_sec);
+                && let Some(hb) = h.get(pools)
+            {
+                if !has_healing {
+                    println!("{} ({})", name, display);
+                    println!("  fireActions: {}", wp.fire_actions.len());
+                    has_healing = true;
                 }
+                println!("  HealingBeam:");
+                println!("    name: {}", hb.name);
+                println!("    healingMode: {:?}", hb.healing_mode);
+                println!("    externalHealingMode: {}", hb.external_healing_mode);
+                println!("    toggle: {}", hb.toggle);
+                println!("    maxDistance: {}", hb.max_distance);
+                println!("    maxSensorDistance: {}", hb.max_sensor_distance);
+                println!("    mSCUPerSec: {}", hb.m_scuper_sec);
+                println!("    ammoPerMSCU: {}", hb.ammo_per_mscu);
+                println!("    medicalAmmoType: {:?}", hb.medical_ammo_type);
+                println!("    wearPerSec: {}", hb.wear_per_sec);
+            }
         }
 
         // Also show non-healing actions on the same weapon

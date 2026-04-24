@@ -9,9 +9,9 @@
 
 //! Feature module: `entities-entityclassdefinition_shopkiosk`
 
-mod types;
 mod pools;
+mod types;
 
+pub use pools::*;
 #[allow(unused_imports)]
 pub use types::*;
-pub use pools::*;

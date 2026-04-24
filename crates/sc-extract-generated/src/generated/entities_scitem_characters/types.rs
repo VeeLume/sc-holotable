@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -26,8 +26,12 @@ pub struct NotKillableState {
 }
 
 impl Pooled for NotKillableState {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_characters.not_killable_state }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_characters.not_killable_state }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_scitem_characters.not_killable_state
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_scitem_characters.not_killable_state
+    }
 }
 
 impl<'a> Extract<'a> for NotKillableState {
@@ -47,8 +51,16 @@ pub struct SetHealthVulnerabilityStateGameplayTrigger {
 }
 
 impl Pooled for SetHealthVulnerabilityStateGameplayTrigger {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_characters.set_health_vulnerability_state_gameplay_trigger }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_characters.set_health_vulnerability_state_gameplay_trigger }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_scitem_characters
+            .set_health_vulnerability_state_gameplay_trigger
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_scitem_characters
+            .set_health_vulnerability_state_gameplay_trigger
+    }
 }
 
 impl<'a> Extract<'a> for SetHealthVulnerabilityStateGameplayTrigger {
@@ -56,10 +68,11 @@ impl<'a> Extract<'a> for SetHealthVulnerabilityStateGameplayTrigger {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             vulnerability_state: match inst.get("vulnerabilityState") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(VulnerabilityStatePtr::from_ref(b, r)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(VulnerabilityStatePtr::from_ref(b, r))
+                }
                 _ => None,
             },
         }
     }
 }
-

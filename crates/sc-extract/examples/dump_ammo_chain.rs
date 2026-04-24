@@ -117,10 +117,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
         // === Try direct AmmoParams ===
         if let Some(&ammo_h) = ammo_map.get(&ref_guid)
-            && ammo_h.get(pools).is_some() {
-                direct_ammo += 1;
-                continue;
-            }
+            && ammo_h.get(pools).is_some()
+        {
+            direct_ammo += 1;
+            continue;
+        }
 
         // === Try two-hop: ref → EntityClassDefinition → SAmmoContainerComponentParams → AmmoParams ===
         if let Some(&container_h) = ecd_map.get(&ref_guid) {

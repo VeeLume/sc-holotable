@@ -8,9 +8,7 @@
 use std::collections::HashMap;
 
 use sc_extract::generated::*;
-use sc_extract::{
-    AssetConfig, AssetData, AssetSource, DataPools, DatacoreConfig, Guid,
-};
+use sc_extract::{AssetConfig, AssetData, AssetSource, DataPools, DatacoreConfig, Guid};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     tracing_subscriber::fmt()
@@ -396,21 +394,24 @@ fn try_extract_component<'a, T: 'static>(
 ) -> Option<&'a T> {
     use std::any::TypeId;
     if TypeId::of::<T>() == TypeId::of::<SCItemWeaponComponentParams>()
-        && let DataForgeComponentParamsPtr::SCItemWeaponComponentParams(h) = comp {
-            let r = h.get(pools)?;
-            // SAFETY: we just checked TypeId matches
-            return Some(unsafe { &*(r as *const SCItemWeaponComponentParams as *const T) });
-        }
+        && let DataForgeComponentParamsPtr::SCItemWeaponComponentParams(h) = comp
+    {
+        let r = h.get(pools)?;
+        // SAFETY: we just checked TypeId matches
+        return Some(unsafe { &*(r as *const SCItemWeaponComponentParams as *const T) });
+    }
     if TypeId::of::<T>() == TypeId::of::<SAttachableComponentParams>()
-        && let DataForgeComponentParamsPtr::SAttachableComponentParams(h) = comp {
-            let r = h.get(pools)?;
-            return Some(unsafe { &*(r as *const SAttachableComponentParams as *const T) });
-        }
+        && let DataForgeComponentParamsPtr::SAttachableComponentParams(h) = comp
+    {
+        let r = h.get(pools)?;
+        return Some(unsafe { &*(r as *const SAttachableComponentParams as *const T) });
+    }
     if TypeId::of::<T>() == TypeId::of::<SAmmoContainerComponentParams>()
-        && let DataForgeComponentParamsPtr::SAmmoContainerComponentParams(h) = comp {
-            let r = h.get(pools)?;
-            return Some(unsafe { &*(r as *const SAmmoContainerComponentParams as *const T) });
-        }
+        && let DataForgeComponentParamsPtr::SAmmoContainerComponentParams(h) = comp
+    {
+        let r = h.get(pools)?;
+        return Some(unsafe { &*(r as *const SAmmoContainerComponentParams as *const T) });
+    }
     None
 }
 
@@ -424,20 +425,22 @@ fn resolve_ammo<'a>(
     // Path 1: weapon's ammoContainerRecord → AmmoParams directly
     if let Some(guid) = wp.ammo_container_record {
         if let Some(&ammo_h) = ammo_map.get(&guid)
-            && let Some(ammo) = ammo_h.get(pools) {
-                return Some(ammo);
-            }
+            && let Some(ammo) = ammo_h.get(pools)
+        {
+            return Some(ammo);
+        }
         // Path 2: two-hop — ammoContainerRecord → EntityClassDefinition → SAmmoContainerComponentParams → ammoParamsRecord
         if let Some(&container_h) = ecd_map.get(&guid)
-            && let Some(container_ecd) = container_h.get(pools) {
-                let ammo_comp =
-                    find_component::<SAmmoContainerComponentParams>(container_ecd, pools);
-                if let Some(ac) = ammo_comp
-                    && let Some(ammo_guid) = ac.ammo_params_record
-                        && let Some(&ammo_h) = ammo_map.get(&ammo_guid) {
-                            return ammo_h.get(pools);
-                        }
+            && let Some(container_ecd) = container_h.get(pools)
+        {
+            let ammo_comp = find_component::<SAmmoContainerComponentParams>(container_ecd, pools);
+            if let Some(ac) = ammo_comp
+                && let Some(ammo_guid) = ac.ammo_params_record
+                && let Some(&ammo_h) = ammo_map.get(&ammo_guid)
+            {
+                return ammo_h.get(pools);
             }
+        }
     }
 
     // Path 3: ammo container on the weapon entity itself
@@ -469,25 +472,28 @@ fn extract_ammo_data(
                 // Direct damage
                 if let Some(dmg_ptr) = &bullet.damage
                     && let DamageBasePtr::DamageInfo(dh) = dmg_ptr
-                        && let Some(d) = dh.get(pools) {
-                            phys += d.damage_physical;
-                            energy += d.damage_energy;
-                            dist += d.damage_distortion;
-                        }
+                    && let Some(d) = dh.get(pools)
+                {
+                    phys += d.damage_physical;
+                    energy += d.damage_energy;
+                    dist += d.damage_distortion;
+                }
                 // Penetration
                 if let Some(pen_h) = bullet.detonation_params.and_then(|h| h.get(pools))
-                    && let Some(expl) = pen_h.explosion_params.and_then(|h| h.get(pools)) {
-                        expl_min = expl.min_radius;
-                        expl_max = expl.max_radius;
-                        // Explosion damage
-                        if let Some(dmg_ptr) = &expl.damage
-                            && let DamageBasePtr::DamageInfo(dh) = dmg_ptr
-                                && let Some(d) = dh.get(pools) {
-                                    phys += d.damage_physical;
-                                    energy += d.damage_energy;
-                                    dist += d.damage_distortion;
-                                }
+                    && let Some(expl) = pen_h.explosion_params.and_then(|h| h.get(pools))
+                {
+                    expl_min = expl.min_radius;
+                    expl_max = expl.max_radius;
+                    // Explosion damage
+                    if let Some(dmg_ptr) = &expl.damage
+                        && let DamageBasePtr::DamageInfo(dh) = dmg_ptr
+                        && let Some(d) = dh.get(pools)
+                    {
+                        phys += d.damage_physical;
+                        energy += d.damage_energy;
+                        dist += d.damage_distortion;
                     }
+                }
                 // Penetration params are on BulletProjectileParams level
                 // Actually they're on the ammo level
             }

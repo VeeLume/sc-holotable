@@ -26,7 +26,8 @@ pub struct RoomsystemPools {
     pub fire_hazard_global_ignition: Vec<Option<FireHazardGlobalIgnition>>,
     pub fire_hazard_global_propagation: Vec<Option<FireHazardGlobalPropagation>>,
     pub fire_hazard_global_smoke_params: Vec<Option<FireHazardGlobalSmokeParams>>,
-    pub fire_hazard_global_damage_to_health_params: Vec<Option<FireHazardGlobalDamageToHealthParams>>,
+    pub fire_hazard_global_damage_to_health_params:
+        Vec<Option<FireHazardGlobalDamageToHealthParams>>,
     pub fire_hazard_global_extinguishing: Vec<Option<FireHazardGlobalExtinguishing>>,
     pub fire_hazard_global_default_effects: Vec<Option<FireHazardGlobalDefaultEffects>>,
     pub fire_hazard_global_light_params: Vec<Option<FireHazardGlobalLightParams>>,
@@ -40,11 +41,16 @@ pub struct RoomsystemPools {
     pub electrical_state_template_internal: Vec<Option<ElectricalStateTemplateInternal>>,
     pub electrical_state_template: Vec<Option<ElectricalStateTemplate>>,
     pub electrical_calculation_property_range: Vec<Option<ElectricalCalculationPropertyRange>>,
-    pub behavior_electrical_vehicle_effect_params: Vec<Option<Behavior_ElectricalVehicleEffectParams>>,
+    pub behavior_electrical_vehicle_effect_params:
+        Vec<Option<Behavior_ElectricalVehicleEffectParams>>,
     pub electrical_behavior: Vec<Option<ElectricalBehavior>>,
-    pub radiation_behavior_asteroid_design_curve_surface_radiation_params: Vec<Option<RadiationBehavior_AsteroidDesignCurveSurfaceRadiationParams>>,
-    pub radiation_behavior_asteroid_inverse_square_surface_radiation_params: Vec<Option<RadiationBehavior_AsteroidInverseSquareSurfaceRadiationParams>>,
+    pub radiation_behavior_asteroid_design_curve_surface_radiation_params:
+        Vec<Option<RadiationBehavior_AsteroidDesignCurveSurfaceRadiationParams>>,
+    pub radiation_behavior_asteroid_inverse_square_surface_radiation_params:
+        Vec<Option<RadiationBehavior_AsteroidInverseSquareSurfaceRadiationParams>>,
     pub weather_effects_atmosphere_property: Vec<Option<WeatherEffects_Atmosphere_Property>>,
-    pub weather_effects_atmosphere_multi_property_value: Vec<Option<WeatherEffects_Atmosphere_MultiPropertyValue>>,
-    pub weather_effects_atmosphere_gas_cloud_optical_density: Vec<Option<WeatherEffects_Atmosphere_GasCloudOpticalDensity>>,
+    pub weather_effects_atmosphere_multi_property_value:
+        Vec<Option<WeatherEffects_Atmosphere_MultiPropertyValue>>,
+    pub weather_effects_atmosphere_gas_cloud_optical_density:
+        Vec<Option<WeatherEffects_Atmosphere_GasCloudOpticalDensity>>,
 }

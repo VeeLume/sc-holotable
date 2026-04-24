@@ -12,27 +12,32 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
 /// DCB type: `AICoverSurfaceComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-pub struct AICoverSurfaceComponentParams {
-}
+pub struct AICoverSurfaceComponentParams {}
 
 impl Pooled for AICoverSurfaceComponentParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_aicoversurface.aicover_surface_component_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_aicoversurface.aicover_surface_component_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_aicoversurface
+            .aicover_surface_component_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_aicoversurface
+            .aicover_surface_component_params
+    }
 }
 
 impl<'a> Extract<'a> for AICoverSurfaceComponentParams {
     const TYPE_NAME: &'static str = "AICoverSurfaceComponentParams";
     fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
-        }
+        Self {}
     }
 }
-

@@ -284,269 +284,533 @@ impl RecordIndex {
         let mut n = 0;
         n += self.multi_feature.len();
         #[cfg(feature = "actor-externalforceresponse")]
-        { n += self.actor_externalforceresponse.len(); }
+        {
+            n += self.actor_externalforceresponse.len();
+        }
         #[cfg(feature = "actor-gforce")]
-        { n += self.actor_gforce.len(); }
+        {
+            n += self.actor_gforce.len();
+        }
         #[cfg(feature = "actor-inputdeflectiontime")]
-        { n += self.actor_inputdeflectiontime.len(); }
+        {
+            n += self.actor_inputdeflectiontime.len();
+        }
         #[cfg(feature = "actor-playerdefaultactionsconfig")]
-        { n += self.actor_playerdefaultactionsconfig.len(); }
+        {
+            n += self.actor_playerdefaultactionsconfig.len();
+        }
         #[cfg(feature = "actor-quantumtravelcameraeffects")]
-        { n += self.actor_quantumtravelcameraeffects.len(); }
+        {
+            n += self.actor_quantumtravelcameraeffects.len();
+        }
         #[cfg(feature = "aiglobalsettings")]
-        { n += self.aiglobalsettings.len(); }
+        {
+            n += self.aiglobalsettings.len();
+        }
         #[cfg(feature = "aiprofile")]
-        { n += self.aiprofile.len(); }
+        {
+            n += self.aiprofile.len();
+        }
         #[cfg(feature = "aiwavecollection")]
-        { n += self.aiwavecollection.len(); }
+        {
+            n += self.aiwavecollection.len();
+        }
         #[cfg(feature = "analytics")]
-        { n += self.analytics.len(); }
+        {
+            n += self.analytics.len();
+        }
         #[cfg(feature = "areaservices")]
-        { n += self.areaservices.len(); }
+        {
+            n += self.areaservices.len();
+        }
         #[cfg(feature = "audio")]
-        { n += self.audio.len(); }
+        {
+            n += self.audio.len();
+        }
         #[cfg(feature = "awardservice")]
-        { n += self.awardservice.len(); }
+        {
+            n += self.awardservice.len();
+        }
         #[cfg(feature = "cameras")]
-        { n += self.cameras.len(); }
+        {
+            n += self.cameras.len();
+        }
         #[cfg(feature = "character")]
-        { n += self.character.len(); }
+        {
+            n += self.character.len();
+        }
         #[cfg(feature = "chatcommandfastaccess")]
-        { n += self.chatcommandfastaccess.len(); }
+        {
+            n += self.chatcommandfastaccess.len();
+        }
         #[cfg(feature = "chatemoterecord")]
-        { n += self.chatemoterecord.len(); }
+        {
+            n += self.chatemoterecord.len();
+        }
         #[cfg(feature = "chatfilteroptions")]
-        { n += self.chatfilteroptions.len(); }
+        {
+            n += self.chatfilteroptions.len();
+        }
         #[cfg(feature = "chatmanager")]
-        { n += self.chatmanager.len(); }
+        {
+            n += self.chatmanager.len();
+        }
         #[cfg(feature = "commodityconfiguration")]
-        { n += self.commodityconfiguration.len(); }
+        {
+            n += self.commodityconfiguration.len();
+        }
         #[cfg(feature = "commoditytypedatabase")]
-        { n += self.commoditytypedatabase.len(); }
+        {
+            n += self.commoditytypedatabase.len();
+        }
         #[cfg(feature = "communicationatlconfig")]
-        { n += self.communicationatlconfig.len(); }
+        {
+            n += self.communicationatlconfig.len();
+        }
         #[cfg(feature = "communicationsystem")]
-        { n += self.communicationsystem.len(); }
+        {
+            n += self.communicationsystem.len();
+        }
         #[cfg(feature = "communicationvariableconfig")]
-        { n += self.communicationvariableconfig.len(); }
+        {
+            n += self.communicationvariableconfig.len();
+        }
         #[cfg(feature = "consumabletypesdatabase")]
-        { n += self.consumabletypesdatabase.len(); }
+        {
+            n += self.consumabletypesdatabase.len();
+        }
         #[cfg(feature = "contextualcommunicationconfig")]
-        { n += self.contextualcommunicationconfig.len(); }
+        {
+            n += self.contextualcommunicationconfig.len();
+        }
         #[cfg(feature = "contracts")]
-        { n += self.contracts.len(); }
+        {
+            n += self.contracts.len();
+        }
         #[cfg(feature = "conversation")]
-        { n += self.conversation.len(); }
+        {
+            n += self.conversation.len();
+        }
         #[cfg(feature = "crafting")]
-        { n += self.crafting.len(); }
+        {
+            n += self.crafting.len();
+        }
         #[cfg(feature = "densityclasses")]
-        { n += self.densityclasses.len(); }
+        {
+            n += self.densityclasses.len();
+        }
         #[cfg(feature = "dialoguecontentbank")]
-        { n += self.dialoguecontentbank.len(); }
+        {
+            n += self.dialoguecontentbank.len();
+        }
         #[cfg(feature = "dynamiccameraeffects")]
-        { n += self.dynamiccameraeffects.len(); }
+        {
+            n += self.dynamiccameraeffects.len();
+        }
         #[cfg(feature = "emotions")]
-        { n += self.emotions.len(); }
+        {
+            n += self.emotions.len();
+        }
         #[cfg(feature = "entities-scitem-mastermodeexclusionglobalparams")]
-        { n += self.entities_scitem_mastermodeexclusionglobalparams.len(); }
+        {
+            n += self.entities_scitem_mastermodeexclusionglobalparams.len();
+        }
         #[cfg(feature = "entities-scitem-ships")]
-        { n += self.entities_scitem_ships.len(); }
+        {
+            n += self.entities_scitem_ships.len();
+        }
         #[cfg(feature = "entities-scitem-usables")]
-        { n += self.entities_scitem_usables.len(); }
+        {
+            n += self.entities_scitem_usables.len();
+        }
         #[cfg(feature = "entities-ui")]
-        { n += self.entities_ui.len(); }
+        {
+            n += self.entities_ui.len();
+        }
         #[cfg(feature = "entities-vfx")]
-        { n += self.entities_vfx.len(); }
+        {
+            n += self.entities_vfx.len();
+        }
         #[cfg(feature = "entitlementpolicies")]
-        { n += self.entitlementpolicies.len(); }
+        {
+            n += self.entitlementpolicies.len();
+        }
         #[cfg(feature = "environments")]
-        { n += self.environments.len(); }
+        {
+            n += self.environments.len();
+        }
         #[cfg(feature = "evagraph")]
-        { n += self.evagraph.len(); }
+        {
+            n += self.evagraph.len();
+        }
         #[cfg(feature = "explosiveordnance")]
-        { n += self.explosiveordnance.len(); }
+        {
+            n += self.explosiveordnance.len();
+        }
         #[cfg(feature = "fidgetconfig")]
-        { n += self.fidgetconfig.len(); }
+        {
+            n += self.fidgetconfig.len();
+        }
         #[cfg(feature = "forcefeedback_forcefeedbackeffects")]
-        { n += self.forcefeedback_forcefeedbackeffects.len(); }
+        {
+            n += self.forcefeedback_forcefeedbackeffects.len();
+        }
         #[cfg(feature = "friendmanager")]
-        { n += self.friendmanager.len(); }
+        {
+            n += self.friendmanager.len();
+        }
         #[cfg(feature = "gamemode")]
-        { n += self.gamemode.len(); }
+        {
+            n += self.gamemode.len();
+        }
         #[cfg(feature = "globalarmarkerparams")]
-        { n += self.globalarmarkerparams.len(); }
+        {
+            n += self.globalarmarkerparams.len();
+        }
         #[cfg(feature = "globalcargoloadingparams")]
-        { n += self.globalcargoloadingparams.len(); }
+        {
+            n += self.globalcargoloadingparams.len();
+        }
         #[cfg(feature = "globalcommsnotificationparams")]
-        { n += self.globalcommsnotificationparams.len(); }
+        {
+            n += self.globalcommsnotificationparams.len();
+        }
         #[cfg(feature = "globalcuttableshapeparams")]
-        { n += self.globalcuttableshapeparams.len(); }
+        {
+            n += self.globalcuttableshapeparams.len();
+        }
         #[cfg(feature = "globalinteractionparams")]
-        { n += self.globalinteractionparams.len(); }
+        {
+            n += self.globalinteractionparams.len();
+        }
         #[cfg(feature = "globalshopparams")]
-        { n += self.globalshopparams.len(); }
+        {
+            n += self.globalshopparams.len();
+        }
         #[cfg(feature = "globaltutorialparams")]
-        { n += self.globaltutorialparams.len(); }
+        {
+            n += self.globaltutorialparams.len();
+        }
         #[cfg(feature = "handholdgripdatabase")]
-        { n += self.handholdgripdatabase.len(); }
+        {
+            n += self.handholdgripdatabase.len();
+        }
         #[cfg(feature = "hardwaremouse")]
-        { n += self.hardwaremouse.len(); }
+        {
+            n += self.hardwaremouse.len();
+        }
         #[cfg(feature = "harvestable")]
-        { n += self.harvestable.len(); }
+        {
+            n += self.harvestable.len();
+        }
         #[cfg(feature = "hudparams")]
-        { n += self.hudparams.len(); }
+        {
+            n += self.hudparams.len();
+        }
         #[cfg(feature = "ifcs")]
-        { n += self.ifcs.len(); }
+        {
+            n += self.ifcs.len();
+        }
         #[cfg(feature = "instancedinterior")]
-        { n += self.instancedinterior.len(); }
+        {
+            n += self.instancedinterior.len();
+        }
         #[cfg(feature = "interactionconditions")]
-        { n += self.interactionconditions.len(); }
+        {
+            n += self.interactionconditions.len();
+        }
         #[cfg(feature = "inventorycontainers")]
-        { n += self.inventorycontainers.len(); }
+        {
+            n += self.inventorycontainers.len();
+        }
         #[cfg(feature = "item")]
-        { n += self.item.len(); }
+        {
+            n += self.item.len();
+        }
         #[cfg(feature = "journalentry")]
-        { n += self.journalentry.len(); }
+        {
+            n += self.journalentry.len();
+        }
         #[cfg(feature = "jumppoints")]
-        { n += self.jumppoints.len(); }
+        {
+            n += self.jumppoints.len();
+        }
         #[cfg(feature = "lawsystem")]
-        { n += self.lawsystem.len(); }
+        {
+            n += self.lawsystem.len();
+        }
         #[cfg(feature = "leangraph")]
-        { n += self.leangraph.len(); }
+        {
+            n += self.leangraph.len();
+        }
         #[cfg(feature = "longtermpersistence")]
-        { n += self.longtermpersistence.len(); }
+        {
+            n += self.longtermpersistence.len();
+        }
         #[cfg(feature = "lootgeneration")]
-        { n += self.lootgeneration.len(); }
+        {
+            n += self.lootgeneration.len();
+        }
         #[cfg(feature = "megamap")]
-        { n += self.megamap.len(); }
+        {
+            n += self.megamap.len();
+        }
         #[cfg(feature = "missiondata")]
-        { n += self.missiondata.len(); }
+        {
+            n += self.missiondata.len();
+        }
         #[cfg(feature = "missionfailureconditions")]
-        { n += self.missionfailureconditions.len(); }
+        {
+            n += self.missionfailureconditions.len();
+        }
         #[cfg(feature = "motionstatemachine")]
-        { n += self.motionstatemachine.len(); }
+        {
+            n += self.motionstatemachine.len();
+        }
         #[cfg(feature = "musiclogic")]
-        { n += self.musiclogic.len(); }
+        {
+            n += self.musiclogic.len();
+        }
         #[cfg(feature = "planetdaynighttemperatureparams")]
-        { n += self.planetdaynighttemperatureparams.len(); }
+        {
+            n += self.planetdaynighttemperatureparams.len();
+        }
         #[cfg(feature = "procbreathing")]
-        { n += self.procbreathing.len(); }
+        {
+            n += self.procbreathing.len();
+        }
         #[cfg(feature = "procedurallayout")]
-        { n += self.procedurallayout.len(); }
+        {
+            n += self.procedurallayout.len();
+        }
         #[cfg(feature = "qteconfigs")]
-        { n += self.qteconfigs.len(); }
+        {
+            n += self.qteconfigs.len();
+        }
         #[cfg(feature = "radarsystem")]
-        { n += self.radarsystem.len(); }
+        {
+            n += self.radarsystem.len();
+        }
         #[cfg(feature = "rastar")]
-        { n += self.rastar.len(); }
+        {
+            n += self.rastar.len();
+        }
         #[cfg(feature = "refinerynotificationconfiguration")]
-        { n += self.refinerynotificationconfiguration.len(); }
+        {
+            n += self.refinerynotificationconfiguration.len();
+        }
         #[cfg(feature = "refiningprocess")]
-        { n += self.refiningprocess.len(); }
+        {
+            n += self.refiningprocess.len();
+        }
         #[cfg(feature = "rentalnotificationparams")]
-        { n += self.rentalnotificationparams.len(); }
+        {
+            n += self.rentalnotificationparams.len();
+        }
         #[cfg(feature = "reputation")]
-        { n += self.reputation.len(); }
+        {
+            n += self.reputation.len();
+        }
         #[cfg(feature = "resourcetypedatabase")]
-        { n += self.resourcetypedatabase.len(); }
+        {
+            n += self.resourcetypedatabase.len();
+        }
         #[cfg(feature = "roomsystem")]
-        { n += self.roomsystem.len(); }
+        {
+            n += self.roomsystem.len();
+        }
         #[cfg(feature = "scuttableshapedefinition")]
-        { n += self.scuttableshapedefinition.len(); }
+        {
+            n += self.scuttableshapedefinition.len();
+        }
         #[cfg(feature = "servicebeacon")]
-        { n += self.servicebeacon.len(); }
+        {
+            n += self.servicebeacon.len();
+        }
         #[cfg(feature = "sgeometryviewdistanceratiocategories")]
-        { n += self.sgeometryviewdistanceratiocategories.len(); }
+        {
+            n += self.sgeometryviewdistanceratiocategories.len();
+        }
         #[cfg(feature = "sglobalchargedrainbeamparams")]
-        { n += self.sglobalchargedrainbeamparams.len(); }
+        {
+            n += self.sglobalchargedrainbeamparams.len();
+        }
         #[cfg(feature = "sglobalcrosshairparams")]
-        { n += self.sglobalcrosshairparams.len(); }
+        {
+            n += self.sglobalcrosshairparams.len();
+        }
         #[cfg(feature = "sglobalelectronparams")]
-        { n += self.sglobalelectronparams.len(); }
+        {
+            n += self.sglobalelectronparams.len();
+        }
         #[cfg(feature = "sglobalhealingbeamparams")]
-        { n += self.sglobalhealingbeamparams.len(); }
+        {
+            n += self.sglobalhealingbeamparams.len();
+        }
         #[cfg(feature = "sglobalhitbehaviorparams")]
-        { n += self.sglobalhitbehaviorparams.len(); }
+        {
+            n += self.sglobalhitbehaviorparams.len();
+        }
         #[cfg(feature = "sglobalsalvagerepairbeamparams")]
-        { n += self.sglobalsalvagerepairbeamparams.len(); }
+        {
+            n += self.sglobalsalvagerepairbeamparams.len();
+        }
         #[cfg(feature = "sglobaltractorbeamparams")]
-        { n += self.sglobaltractorbeamparams.len(); }
+        {
+            n += self.sglobaltractorbeamparams.len();
+        }
         #[cfg(feature = "shipinsurancerecord")]
-        { n += self.shipinsurancerecord.len(); }
+        {
+            n += self.shipinsurancerecord.len();
+        }
         #[cfg(feature = "specialeventdatabase")]
-        { n += self.specialeventdatabase.len(); }
+        {
+            n += self.specialeventdatabase.len();
+        }
         #[cfg(feature = "sreputationglobalcontextbbparams")]
-        { n += self.sreputationglobalcontextbbparams.len(); }
+        {
+            n += self.sreputationglobalcontextbbparams.len();
+        }
         #[cfg(feature = "starmap")]
-        { n += self.starmap.len(); }
+        {
+            n += self.starmap.len();
+        }
         #[cfg(feature = "tacticalquery")]
-        { n += self.tacticalquery.len(); }
+        {
+            n += self.tacticalquery.len();
+        }
         #[cfg(feature = "tagdatabase")]
-        { n += self.tagdatabase.len(); }
+        {
+            n += self.tagdatabase.len();
+        }
         #[cfg(feature = "trackview")]
-        { n += self.trackview.len(); }
+        {
+            n += self.trackview.len();
+        }
         #[cfg(feature = "turret")]
-        { n += self.turret.len(); }
+        {
+            n += self.turret.len();
+        }
         #[cfg(feature = "ui-animatedmarkers")]
-        { n += self.ui_animatedmarkers.len(); }
+        {
+            n += self.ui_animatedmarkers.len();
+        }
         #[cfg(feature = "ui-armarkerconfiguration")]
-        { n += self.ui_armarkerconfiguration.len(); }
+        {
+            n += self.ui_armarkerconfiguration.len();
+        }
         #[cfg(feature = "ui-buildingblocks")]
-        { n += self.ui_buildingblocks.len(); }
+        {
+            n += self.ui_buildingblocks.len();
+        }
         #[cfg(feature = "ui-digitalsignage")]
-        { n += self.ui_digitalsignage.len(); }
+        {
+            n += self.ui_digitalsignage.len();
+        }
         #[cfg(feature = "ui-directrtt")]
-        { n += self.ui_directrtt.len(); }
+        {
+            n += self.ui_directrtt.len();
+        }
         #[cfg(feature = "ui-dockingslotvisibility")]
-        { n += self.ui_dockingslotvisibility.len(); }
+        {
+            n += self.ui_dockingslotvisibility.len();
+        }
         #[cfg(feature = "ui-flashobjectbindinggroups")]
-        { n += self.ui_flashobjectbindinggroups.len(); }
+        {
+            n += self.ui_flashobjectbindinggroups.len();
+        }
         #[cfg(feature = "ui-frontend")]
-        { n += self.ui_frontend.len(); }
+        {
+            n += self.ui_frontend.len();
+        }
         #[cfg(feature = "ui-holovehicleconfig")]
-        { n += self.ui_holovehicleconfig.len(); }
+        {
+            n += self.ui_holovehicleconfig.len();
+        }
         #[cfg(feature = "ui-hudcolors_shipcolorpalettes")]
-        { n += self.ui_hudcolors_shipcolorpalettes.len(); }
+        {
+            n += self.ui_hudcolors_shipcolorpalettes.len();
+        }
         #[cfg(feature = "ui-innerthought")]
-        { n += self.ui_innerthought.len(); }
+        {
+            n += self.ui_innerthought.len();
+        }
         #[cfg(feature = "ui-itemtypedefinition")]
-        { n += self.ui_itemtypedefinition.len(); }
+        {
+            n += self.ui_itemtypedefinition.len();
+        }
         #[cfg(feature = "ui-markertrackingvolumeconfig")]
-        { n += self.ui_markertrackingvolumeconfig.len(); }
+        {
+            n += self.ui_markertrackingvolumeconfig.len();
+        }
         #[cfg(feature = "ui-missilelockreticleconfig")]
-        { n += self.ui_missilelockreticleconfig.len(); }
+        {
+            n += self.ui_missilelockreticleconfig.len();
+        }
         #[cfg(feature = "ui-objectdatabankentrymarkerconfig")]
-        { n += self.ui_objectdatabankentrymarkerconfig.len(); }
+        {
+            n += self.ui_objectdatabankentrymarkerconfig.len();
+        }
         #[cfg(feature = "ui-playerchoice_library_playerchoicelibrary")]
-        { n += self.ui_playerchoice_library_playerchoicelibrary.len(); }
+        {
+            n += self.ui_playerchoice_library_playerchoicelibrary.len();
+        }
         #[cfg(feature = "ui-playerecggraph_config_playerecggraphconfig")]
-        { n += self.ui_playerecggraph_config_playerecggraphconfig.len(); }
+        {
+            n += self.ui_playerecggraph_config_playerecggraphconfig.len();
+        }
         #[cfg(feature = "ui-popups")]
-        { n += self.ui_popups.len(); }
+        {
+            n += self.ui_popups.len();
+        }
         #[cfg(feature = "ui-radardisplay_config_radar")]
-        { n += self.ui_radardisplay_config_radar.len(); }
+        {
+            n += self.ui_radardisplay_config_radar.len();
+        }
         #[cfg(feature = "ui-seatreticlearchetype")]
-        { n += self.ui_seatreticlearchetype.len(); }
+        {
+            n += self.ui_seatreticlearchetype.len();
+        }
         #[cfg(feature = "ui-transformationinterpolatorrecords")]
-        { n += self.ui_transformationinterpolatorrecords.len(); }
+        {
+            n += self.ui_transformationinterpolatorrecords.len();
+        }
         #[cfg(feature = "ui-uiconfig_starcitizen")]
-        { n += self.ui_uiconfig_starcitizen.len(); }
+        {
+            n += self.ui_uiconfig_starcitizen.len();
+        }
         #[cfg(feature = "ui-uimodes")]
-        { n += self.ui_uimodes.len(); }
+        {
+            n += self.ui_uimodes.len();
+        }
         #[cfg(feature = "ui-uistatedisplay")]
-        { n += self.ui_uistatedisplay.len(); }
+        {
+            n += self.ui_uistatedisplay.len();
+        }
         #[cfg(feature = "ui-videocomms")]
-        { n += self.ui_videocomms.len(); }
+        {
+            n += self.ui_videocomms.len();
+        }
         #[cfg(feature = "unittest_unittestb")]
-        { n += self.unittest_unittestb.len(); }
+        {
+            n += self.unittest_unittestb.len();
+        }
         #[cfg(feature = "vehicle")]
-        { n += self.vehicle.len(); }
+        {
+            n += self.vehicle.len();
+        }
         #[cfg(feature = "vfx")]
-        { n += self.vfx.len(); }
+        {
+            n += self.vfx.len();
+        }
         #[cfg(feature = "zerogtraversalgraph")]
-        { n += self.zerogtraversalgraph.len(); }
+        {
+            n += self.zerogtraversalgraph.len();
+        }
         n
     }
 
-    pub fn is_empty(&self) -> bool { self.len() == 0 }
+    pub fn is_empty(&self) -> bool {
+        self.len() == 0
+    }
 }

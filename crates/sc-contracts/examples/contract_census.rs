@@ -793,11 +793,12 @@ fn walk_rewards(
             R::ContractResult_Item(ih) => {
                 c.bump_reward("Item");
                 if let Some(item) = ih.get(pools)
-                    && let Some(ec) = item.entity_class {
-                        let entry = c.item_entity_class.entry(ec).or_insert((0, 0));
-                        entry.0 += 1;
-                        entry.1 += item.amount as i64;
-                    }
+                    && let Some(ec) = item.entity_class
+                {
+                    let entry = c.item_entity_class.entry(ec).or_insert((0, 0));
+                    entry.0 += 1;
+                    entry.1 += item.amount as i64;
+                }
             }
             R::ContractResult_CompletionBounty(_) => c.bump_reward("CompletionBounty"),
             R::ContractResult_ItemsWeighting(_) => c.bump_reward("ItemsWeighting"),

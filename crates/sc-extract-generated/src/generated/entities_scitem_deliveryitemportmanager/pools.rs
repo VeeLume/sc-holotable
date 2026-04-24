@@ -14,5 +14,6 @@ use super::super::*;
 /// Pool storage for the `entities-scitem-deliveryitemportmanager` feature.
 #[derive(Default)]
 pub struct EntitiesScitemDeliveryitemportmanagerPools {
-    pub delivery_item_port_manager_component_params: Vec<Option<DeliveryItemPortManagerComponentParams>>,
+    pub delivery_item_port_manager_component_params:
+        Vec<Option<DeliveryItemPortManagerComponentParams>>,
 }

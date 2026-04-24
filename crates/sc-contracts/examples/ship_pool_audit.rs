@@ -699,25 +699,26 @@ fn dump_tag_hierarchy(datacore: &Datacore) {
     for (guid, name, size) in root_sizes.iter().take(20) {
         println!("  {size:>6}  {name}");
         if ["AI", "Missions", "Ship"].contains(&name.as_str())
-            && let Some(root_tag) = by_guid.get(guid) {
-                let mut child_names: Vec<(String, usize)> = root_tag
-                    .children
-                    .iter()
-                    .filter_map(|c| {
-                        by_guid.get(c).map(|t| {
-                            let mut seen = HashSet::new();
-                            (
-                                t.tag_name.clone(),
-                                count_descendants(c, &by_guid, &mut seen),
-                            )
-                        })
+            && let Some(root_tag) = by_guid.get(guid)
+        {
+            let mut child_names: Vec<(String, usize)> = root_tag
+                .children
+                .iter()
+                .filter_map(|c| {
+                    by_guid.get(c).map(|t| {
+                        let mut seen = HashSet::new();
+                        (
+                            t.tag_name.clone(),
+                            count_descendants(c, &by_guid, &mut seen),
+                        )
                     })
-                    .collect();
-                child_names.sort_by(|a, b| b.1.cmp(&a.1));
-                for (n, c) in child_names.iter().take(10) {
-                    println!("           ▸ {c:>5}  {n}");
-                }
+                })
+                .collect();
+            child_names.sort_by(|a, b| b.1.cmp(&a.1));
+            for (n, c) in child_names.iter().take(10) {
+                println!("           ▸ {c:>5}  {n}");
             }
+        }
     }
     println!();
 }
@@ -810,21 +811,22 @@ fn explain_contract(options: &[Option_<'_>], pools: &DataPools, datacore: &Datac
 
         // Show the first three entities carrying the most-selective tag.
         if let Some((tag_name, count, guid)) = rows.first()
-            && let Some(list) = full_carriers.get(guid) {
-                let examples: Vec<String> = list
-                    .iter()
-                    .take(5)
-                    .map(|g| {
-                        db.record(g)
-                            .and_then(|r| r.name().map(|s| s.to_string()))
-                            .unwrap_or_default()
-                    })
-                    .collect();
-                println!(
-                    "    Most-selective tag: '{tag_name}' ({count} carriers). First few: {}",
-                    examples.join(", ")
-                );
-            }
+            && let Some(list) = full_carriers.get(guid)
+        {
+            let examples: Vec<String> = list
+                .iter()
+                .take(5)
+                .map(|g| {
+                    db.record(g)
+                        .and_then(|r| r.name().map(|s| s.to_string()))
+                        .unwrap_or_default()
+                })
+                .collect();
+            println!(
+                "    Most-selective tag: '{tag_name}' ({count} carriers). First few: {}",
+                examples.join(", ")
+            );
+        }
     }
     println!();
 }
@@ -1203,11 +1205,12 @@ fn walk_subcontract<'p>(
         let mut t = String::new();
         for h in &sub.string_param_overrides {
             if let Some(param) = h.get(pools)
-                && matches!(param.param, ContractStringParamType::Title) && !param.value.is_empty()
-                {
-                    t = param.value.stripped().to_string();
-                    break;
-                }
+                && matches!(param.param, ContractStringParamType::Title)
+                && !param.value.is_empty()
+            {
+                t = param.value.stripped().to_string();
+                break;
+            }
         }
         if t.is_empty() {
             parent.contract_title.clone()
@@ -1288,9 +1291,11 @@ fn title_from_overrides(pools: &DataPools, h: Option<&Handle<ContractParamOverri
     };
     for p in &po.string_param_overrides {
         if let Some(param) = p.get(pools)
-            && matches!(param.param, ContractStringParamType::Title) && !param.value.is_empty() {
-                return param.value.stripped().to_string();
-            }
+            && matches!(param.param, ContractStringParamType::Title)
+            && !param.value.is_empty()
+        {
+            return param.value.stripped().to_string();
+        }
     }
     String::new()
 }

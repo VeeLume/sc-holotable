@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -31,8 +31,12 @@ pub struct AreaOutdoorMaterialParams {
 }
 
 impl Pooled for AreaOutdoorMaterialParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_capturearea.area_outdoor_material_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_capturearea.area_outdoor_material_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_capturearea.area_outdoor_material_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_capturearea.area_outdoor_material_params
+    }
 }
 
 impl<'a> Extract<'a> for AreaOutdoorMaterialParams {
@@ -95,8 +99,12 @@ pub struct CaptureAreaUIParams {
 }
 
 impl Pooled for CaptureAreaUIParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_capturearea.capture_area_uiparams }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_capturearea.capture_area_uiparams }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_capturearea.capture_area_uiparams
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_capturearea.capture_area_uiparams
+    }
 }
 
 impl<'a> Extract<'a> for CaptureAreaUIParams {
@@ -108,7 +116,10 @@ impl<'a> Extract<'a> for CaptureAreaUIParams {
             time_to_loop: inst.get_f32("timeToLoop").unwrap_or_default(),
             grid_layer_count: inst.get_i32("gridLayerCount").unwrap_or_default(),
             dimensions: match inst.get("dimensions") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             draw_far_distance: inst.get_f32("drawFarDistance").unwrap_or_default(),
@@ -120,20 +131,40 @@ impl<'a> Extract<'a> for CaptureAreaUIParams {
             base_noise_power: inst.get_f32("baseNoisePower").unwrap_or_default(),
             grid_padding_inner_perc: inst.get_f32("gridPaddingInnerPerc").unwrap_or_default(),
             grid_line_width_perc: inst.get_f32("gridLineWidthPerc").unwrap_or_default(),
-            grid_highlight_feather_perc: inst.get_f32("gridHighlightFeatherPerc").unwrap_or_default(),
+            grid_highlight_feather_perc: inst
+                .get_f32("gridHighlightFeatherPerc")
+                .unwrap_or_default(),
             grid_falloff_perc: inst.get_f32("gridFalloffPerc").unwrap_or_default(),
             indoor_area_params: match inst.get("indoorAreaParams") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AreaOutdoorMaterialParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<AreaOutdoorMaterialParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             outdoor_area_params: match inst.get("outdoorAreaParams") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AreaOutdoorMaterialParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<AreaOutdoorMaterialParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
-            base_line_material: inst.get_str("baseLineMaterial").map(String::from).unwrap_or_default(),
-            beam_material: inst.get_str("beamMaterial").map(String::from).unwrap_or_default(),
-            grid_line_material: inst.get_str("gridLineMaterial").map(String::from).unwrap_or_default(),
+            base_line_material: inst
+                .get_str("baseLineMaterial")
+                .map(String::from)
+                .unwrap_or_default(),
+            beam_material: inst
+                .get_str("beamMaterial")
+                .map(String::from)
+                .unwrap_or_default(),
+            grid_line_material: inst
+                .get_str("gridLineMaterial")
+                .map(String::from)
+                .unwrap_or_default(),
         }
     }
 }
-

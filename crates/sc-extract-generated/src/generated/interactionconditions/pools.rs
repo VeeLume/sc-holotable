@@ -15,6 +15,7 @@ use super::super::*;
 #[derive(Default)]
 pub struct InteractionconditionsPools {
     pub interaction_condition_can_afford_item: Vec<Option<InteractionConditionCanAffordItem>>,
-    pub interaction_condition_can_be_body_dragged: Vec<Option<InteractionConditionCanBeBodyDragged>>,
+    pub interaction_condition_can_be_body_dragged:
+        Vec<Option<InteractionConditionCanBeBodyDragged>>,
     pub shop_interaction_data: Vec<Option<ShopInteractionData>>,
 }

@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -35,19 +35,35 @@ pub struct BoidsGroupComposition {
 }
 
 impl Pooled for BoidsGroupComposition {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.creatures.boids_group_composition }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.creatures.boids_group_composition }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.creatures.boids_group_composition
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.creatures.boids_group_composition
+    }
 }
 
 impl<'a> Extract<'a> for BoidsGroupComposition {
     const TYPE_NAME: &'static str = "BoidsGroupComposition";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            boids_entity_classes: inst.get_array("boidsEntityClasses")
-                .map(|arr| arr.filter_map(|v| if let Value::Reference(Some(r)) = v { Some(r.guid) } else { None }).collect())
+            boids_entity_classes: inst
+                .get_array("boidsEntityClasses")
+                .map(|arr| {
+                    arr.filter_map(|v| {
+                        if let Value::Reference(Some(r)) = v {
+                            Some(r.guid)
+                        } else {
+                            None
+                        }
+                    })
+                    .collect()
+                })
                 .unwrap_or_default(),
             amount_of_entities: inst.get_i32("amountOfEntities").unwrap_or_default(),
-            amount_of_entities_variation: inst.get_i32("amountOfEntitiesVariation").unwrap_or_default(),
+            amount_of_entities_variation: inst
+                .get_i32("amountOfEntitiesVariation")
+                .unwrap_or_default(),
             size_variation: inst.get_f32("sizeVariation").unwrap_or_default(),
             name: inst.get_str("name").map(String::from).unwrap_or_default(),
             spawn_on_navmesh: inst.get_bool("spawnOnNavmesh").unwrap_or_default(),
@@ -70,18 +86,33 @@ pub struct BoidTransition {
 }
 
 impl Pooled for BoidTransition {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.creatures.boid_transition }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.creatures.boid_transition }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.creatures.boid_transition
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.creatures.boid_transition
+    }
 }
 
 impl<'a> Extract<'a> for BoidTransition {
     const TYPE_NAME: &'static str = "BoidTransition";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            animation_tag: inst.get_str("animationTag").map(String::from).unwrap_or_default(),
-            fragment_tag: inst.get_str("fragmentTag").map(String::from).unwrap_or_default(),
+            animation_tag: inst
+                .get_str("animationTag")
+                .map(String::from)
+                .unwrap_or_default(),
+            fragment_tag: inst
+                .get_str("fragmentTag")
+                .map(String::from)
+                .unwrap_or_default(),
             transition: match inst.get("transition") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<BoidState>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<BoidState>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
                 _ => None,
             },
             instant_transition: inst.get_bool("instantTransition").unwrap_or_default(),
@@ -111,32 +142,63 @@ pub struct BoidState {
 }
 
 impl Pooled for BoidState {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.creatures.boid_state }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.creatures.boid_state }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.creatures.boid_state
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.creatures.boid_state
+    }
 }
 
 impl<'a> Extract<'a> for BoidState {
     const TYPE_NAME: &'static str = "BoidState";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            state_name: inst.get_str("stateName").map(String::from).unwrap_or_default(),
-            rules: inst.get_array("rules")
-                .map(|arr| arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<BoidsBehaviorRuleContainer>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r) => Some(b.alloc_nested::<BoidsBehaviorRuleContainer>(b.db.instance(r.struct_index, r.instance_index), true)),
+            state_name: inst
+                .get_str("stateName")
+                .map(String::from)
+                .unwrap_or_default(),
+            rules: inst
+                .get_array("rules")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<BoidsBehaviorRuleContainer>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => Some(b.alloc_nested::<BoidsBehaviorRuleContainer>(
+                            b.db.instance(r.struct_index, r.instance_index),
+                            true,
+                        )),
                         _ => None,
-                    }).collect())
+                    })
+                    .collect()
+                })
                 .unwrap_or_default(),
             should_be_on_navmesh: inst.get_bool("shouldBeOnNavmesh").unwrap_or_default(),
             deterministic: inst.get_bool("deterministic").unwrap_or_default(),
-            boid_transitions: inst.get_array("boidTransitions")
-                .map(|arr| arr.filter_map(|v| match v {
-                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => Some(BoidTransitionPtr::from_ref(b, r)),
+            boid_transitions: inst
+                .get_array("boidTransitions")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => {
+                            Some(BoidTransitionPtr::from_ref(b, r))
+                        }
                         _ => None,
-                    }).collect())
+                    })
+                    .collect()
+                })
                 .unwrap_or_default(),
-            animation_tag: inst.get_str("animationTag").map(String::from).unwrap_or_default(),
-            fragment_tag: inst.get_str("fragmentTag").map(String::from).unwrap_or_default(),
+            animation_tag: inst
+                .get_str("animationTag")
+                .map(String::from)
+                .unwrap_or_default(),
+            fragment_tag: inst
+                .get_str("fragmentTag")
+                .map(String::from)
+                .unwrap_or_default(),
             max_linear_speed: inst.get_f32("maxLinearSpeed").unwrap_or_default(),
         }
     }
@@ -162,18 +224,33 @@ pub struct BoidRandomTransition {
 }
 
 impl Pooled for BoidRandomTransition {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.creatures.boid_random_transition }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.creatures.boid_random_transition }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.creatures.boid_random_transition
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.creatures.boid_random_transition
+    }
 }
 
 impl<'a> Extract<'a> for BoidRandomTransition {
     const TYPE_NAME: &'static str = "BoidRandomTransition";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            animation_tag: inst.get_str("animationTag").map(String::from).unwrap_or_default(),
-            fragment_tag: inst.get_str("fragmentTag").map(String::from).unwrap_or_default(),
+            animation_tag: inst
+                .get_str("animationTag")
+                .map(String::from)
+                .unwrap_or_default(),
+            fragment_tag: inst
+                .get_str("fragmentTag")
+                .map(String::from)
+                .unwrap_or_default(),
             transition: match inst.get("transition") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<BoidState>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<BoidState>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
                 _ => None,
             },
             instant_transition: inst.get_bool("instantTransition").unwrap_or_default(),
@@ -200,18 +277,33 @@ pub struct BoidAlertedTransition {
 }
 
 impl Pooled for BoidAlertedTransition {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.creatures.boid_alerted_transition }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.creatures.boid_alerted_transition }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.creatures.boid_alerted_transition
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.creatures.boid_alerted_transition
+    }
 }
 
 impl<'a> Extract<'a> for BoidAlertedTransition {
     const TYPE_NAME: &'static str = "BoidAlertedTransition";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            animation_tag: inst.get_str("animationTag").map(String::from).unwrap_or_default(),
-            fragment_tag: inst.get_str("fragmentTag").map(String::from).unwrap_or_default(),
+            animation_tag: inst
+                .get_str("animationTag")
+                .map(String::from)
+                .unwrap_or_default(),
+            fragment_tag: inst
+                .get_str("fragmentTag")
+                .map(String::from)
+                .unwrap_or_default(),
             transition: match inst.get("transition") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<BoidState>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<BoidState>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
                 _ => None,
             },
             instant_transition: inst.get_bool("instantTransition").unwrap_or_default(),
@@ -238,18 +330,33 @@ pub struct BoidActorProximityTransition {
 }
 
 impl Pooled for BoidActorProximityTransition {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.creatures.boid_actor_proximity_transition }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.creatures.boid_actor_proximity_transition }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.creatures.boid_actor_proximity_transition
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.creatures.boid_actor_proximity_transition
+    }
 }
 
 impl<'a> Extract<'a> for BoidActorProximityTransition {
     const TYPE_NAME: &'static str = "BoidActorProximityTransition";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            animation_tag: inst.get_str("animationTag").map(String::from).unwrap_or_default(),
-            fragment_tag: inst.get_str("fragmentTag").map(String::from).unwrap_or_default(),
+            animation_tag: inst
+                .get_str("animationTag")
+                .map(String::from)
+                .unwrap_or_default(),
+            fragment_tag: inst
+                .get_str("fragmentTag")
+                .map(String::from)
+                .unwrap_or_default(),
             transition: match inst.get("transition") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<BoidState>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<BoidState>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
                 _ => None,
             },
             instant_transition: inst.get_bool("instantTransition").unwrap_or_default(),
@@ -266,8 +373,12 @@ pub struct BoidsBehaviorRule {
 }
 
 impl Pooled for BoidsBehaviorRule {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.creatures.boids_behavior_rule }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.creatures.boids_behavior_rule }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.creatures.boids_behavior_rule
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.creatures.boids_behavior_rule
+    }
 }
 
 impl<'a> Extract<'a> for BoidsBehaviorRule {
@@ -287,8 +398,12 @@ pub struct BoidsAlignmentRule {
 }
 
 impl Pooled for BoidsAlignmentRule {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.creatures.boids_alignment_rule }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.creatures.boids_alignment_rule }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.creatures.boids_alignment_rule
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.creatures.boids_alignment_rule
+    }
 }
 
 impl<'a> Extract<'a> for BoidsAlignmentRule {
@@ -312,8 +427,12 @@ pub struct BoidsSeparationRule {
 }
 
 impl Pooled for BoidsSeparationRule {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.creatures.boids_separation_rule }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.creatures.boids_separation_rule }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.creatures.boids_separation_rule
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.creatures.boids_separation_rule
+    }
 }
 
 impl<'a> Extract<'a> for BoidsSeparationRule {
@@ -335,8 +454,12 @@ pub struct BoidsCohesionRule {
 }
 
 impl Pooled for BoidsCohesionRule {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.creatures.boids_cohesion_rule }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.creatures.boids_cohesion_rule }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.creatures.boids_cohesion_rule
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.creatures.boids_cohesion_rule
+    }
 }
 
 impl<'a> Extract<'a> for BoidsCohesionRule {
@@ -360,8 +483,12 @@ pub struct BoidsSphericalLimiterRule {
 }
 
 impl Pooled for BoidsSphericalLimiterRule {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.creatures.boids_spherical_limiter_rule }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.creatures.boids_spherical_limiter_rule }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.creatures.boids_spherical_limiter_rule
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.creatures.boids_spherical_limiter_rule
+    }
 }
 
 impl<'a> Extract<'a> for BoidsSphericalLimiterRule {
@@ -387,8 +514,12 @@ pub struct BoidsOceanSurfaceRepelRule {
 }
 
 impl Pooled for BoidsOceanSurfaceRepelRule {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.creatures.boids_ocean_surface_repel_rule }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.creatures.boids_ocean_surface_repel_rule }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.creatures.boids_ocean_surface_repel_rule
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.creatures.boids_ocean_surface_repel_rule
+    }
 }
 
 impl<'a> Extract<'a> for BoidsOceanSurfaceRepelRule {
@@ -412,8 +543,12 @@ pub struct BoidsTerrainSurfaceRepelRule {
 }
 
 impl Pooled for BoidsTerrainSurfaceRepelRule {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.creatures.boids_terrain_surface_repel_rule }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.creatures.boids_terrain_surface_repel_rule }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.creatures.boids_terrain_surface_repel_rule
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.creatures.boids_terrain_surface_repel_rule
+    }
 }
 
 impl<'a> Extract<'a> for BoidsTerrainSurfaceRepelRule {
@@ -440,8 +575,12 @@ pub struct BoidsNavmeshEdgeRepelRule {
 }
 
 impl Pooled for BoidsNavmeshEdgeRepelRule {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.creatures.boids_navmesh_edge_repel_rule }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.creatures.boids_navmesh_edge_repel_rule }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.creatures.boids_navmesh_edge_repel_rule
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.creatures.boids_navmesh_edge_repel_rule
+    }
 }
 
 impl<'a> Extract<'a> for BoidsNavmeshEdgeRepelRule {
@@ -468,8 +607,12 @@ pub struct BoidsAlertPointRepelRule {
 }
 
 impl Pooled for BoidsAlertPointRepelRule {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.creatures.boids_alert_point_repel_rule }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.creatures.boids_alert_point_repel_rule }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.creatures.boids_alert_point_repel_rule
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.creatures.boids_alert_point_repel_rule
+    }
 }
 
 impl<'a> Extract<'a> for BoidsAlertPointRepelRule {
@@ -492,8 +635,12 @@ pub struct BoidsBehaviorRuleContainer {
 }
 
 impl Pooled for BoidsBehaviorRuleContainer {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.creatures.boids_behavior_rule_container }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.creatures.boids_behavior_rule_container }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.creatures.boids_behavior_rule_container
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.creatures.boids_behavior_rule_container
+    }
 }
 
 impl<'a> Extract<'a> for BoidsBehaviorRuleContainer {
@@ -502,7 +649,9 @@ impl<'a> Extract<'a> for BoidsBehaviorRuleContainer {
         Self {
             enabled: inst.get_bool("enabled").unwrap_or_default(),
             rule: match inst.get("rule") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(BoidsBehaviorRulePtr::from_ref(b, r)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(BoidsBehaviorRulePtr::from_ref(b, r))
+                }
                 _ => None,
             },
         }
@@ -519,8 +668,12 @@ pub struct BoidsActorRepelRule {
 }
 
 impl Pooled for BoidsActorRepelRule {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.creatures.boids_actor_repel_rule }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.creatures.boids_actor_repel_rule }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.creatures.boids_actor_repel_rule
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.creatures.boids_actor_repel_rule
+    }
 }
 
 impl<'a> Extract<'a> for BoidsActorRepelRule {
@@ -543,8 +696,12 @@ pub struct BoidsVehicleRepelRule {
 }
 
 impl Pooled for BoidsVehicleRepelRule {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.creatures.boids_vehicle_repel_rule }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.creatures.boids_vehicle_repel_rule }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.creatures.boids_vehicle_repel_rule
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.creatures.boids_vehicle_repel_rule
+    }
 }
 
 impl<'a> Extract<'a> for BoidsVehicleRepelRule {
@@ -571,28 +728,54 @@ pub struct BoidsComponentParams {
 }
 
 impl Pooled for BoidsComponentParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.creatures.boids_component_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.creatures.boids_component_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.creatures.boids_component_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.creatures.boids_component_params
+    }
 }
 
 impl<'a> Extract<'a> for BoidsComponentParams {
     const TYPE_NAME: &'static str = "BoidsComponentParams";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            boids_groups: inst.get_array("boidsGroups")
-                .map(|arr| arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<BoidsGroupComposition>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r) => Some(b.alloc_nested::<BoidsGroupComposition>(b.db.instance(r.struct_index, r.instance_index), true)),
+            boids_groups: inst
+                .get_array("boidsGroups")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<BoidsGroupComposition>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => Some(b.alloc_nested::<BoidsGroupComposition>(
+                            b.db.instance(r.struct_index, r.instance_index),
+                            true,
+                        )),
                         _ => None,
-                    }).collect())
+                    })
+                    .collect()
+                })
                 .unwrap_or_default(),
             group_influence_range: inst.get_f32("groupInfluenceRange").unwrap_or_default(),
-            boid_states: inst.get_array("boidStates")
-                .map(|arr| arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<BoidState>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r) => Some(b.alloc_nested::<BoidState>(b.db.instance(r.struct_index, r.instance_index), true)),
+            boid_states: inst
+                .get_array("boidStates")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<BoidState>(
+                            Instance::from_inline_data(b.db, struct_index, data),
+                            false,
+                        )),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<BoidState>(
+                            b.db.instance(r.struct_index, r.instance_index),
+                            true,
+                        )),
                         _ => None,
-                    }).collect())
+                    })
+                    .collect()
+                })
                 .unwrap_or_default(),
             query_sphere_radius: inst.get_f32("querySphereRadius").unwrap_or_default(),
         }
@@ -609,17 +792,26 @@ pub struct BoidAgentComponentParams {
 }
 
 impl Pooled for BoidAgentComponentParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.creatures.boid_agent_component_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.creatures.boid_agent_component_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.creatures.boid_agent_component_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.creatures.boid_agent_component_params
+    }
 }
 
 impl<'a> Extract<'a> for BoidAgentComponentParams {
     const TYPE_NAME: &'static str = "BoidAgentComponentParams";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            death_mannequin_tag: inst.get_str("deathMannequinTag").map(String::from).unwrap_or_default(),
-            death_mannequin_fragment: inst.get_str("deathMannequinFragment").map(String::from).unwrap_or_default(),
+            death_mannequin_tag: inst
+                .get_str("deathMannequinTag")
+                .map(String::from)
+                .unwrap_or_default(),
+            death_mannequin_fragment: inst
+                .get_str("deathMannequinFragment")
+                .map(String::from)
+                .unwrap_or_default(),
         }
     }
 }
-

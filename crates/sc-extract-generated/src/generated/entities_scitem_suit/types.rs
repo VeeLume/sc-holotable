@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -36,8 +36,12 @@ pub struct LegacyMobiGlasParams {
 }
 
 impl Pooled for LegacyMobiGlasParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_suit.legacy_mobi_glas_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_suit.legacy_mobi_glas_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_scitem_suit.legacy_mobi_glas_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_scitem_suit.legacy_mobi_glas_params
+    }
 }
 
 impl<'a> Extract<'a> for LegacyMobiGlasParams {
@@ -56,55 +60,69 @@ impl<'a> Extract<'a> for LegacyMobiGlasParams {
 
 /// DCB type: `LandingAreaServicesParams`
 /// Inherits from: `DataForgeComponentParams`
-pub struct LandingAreaServicesParams {
-}
+pub struct LandingAreaServicesParams {}
 
 impl Pooled for LandingAreaServicesParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_suit.landing_area_services_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_suit.landing_area_services_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_scitem_suit.landing_area_services_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_scitem_suit.landing_area_services_params
+    }
 }
 
 impl<'a> Extract<'a> for LandingAreaServicesParams {
     const TYPE_NAME: &'static str = "LandingAreaServicesParams";
     fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
-        }
+        Self {}
     }
 }
 
 /// DCB type: `EntityComponentDockingHubParams`
 /// Inherits from: `DataForgeComponentParams`
-pub struct EntityComponentDockingHubParams {
-}
+pub struct EntityComponentDockingHubParams {}
 
 impl Pooled for EntityComponentDockingHubParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_suit.entity_component_docking_hub_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_suit.entity_component_docking_hub_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_scitem_suit
+            .entity_component_docking_hub_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_scitem_suit
+            .entity_component_docking_hub_params
+    }
 }
 
 impl<'a> Extract<'a> for EntityComponentDockingHubParams {
     const TYPE_NAME: &'static str = "EntityComponentDockingHubParams";
     fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
-        }
+        Self {}
     }
 }
 
 /// DCB type: `SMissionBrokerInterfaceComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-pub struct SMissionBrokerInterfaceComponentParams {
-}
+pub struct SMissionBrokerInterfaceComponentParams {}
 
 impl Pooled for SMissionBrokerInterfaceComponentParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_suit.smission_broker_interface_component_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_suit.smission_broker_interface_component_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_scitem_suit
+            .smission_broker_interface_component_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_scitem_suit
+            .smission_broker_interface_component_params
+    }
 }
 
 impl<'a> Extract<'a> for SMissionBrokerInterfaceComponentParams {
     const TYPE_NAME: &'static str = "SMissionBrokerInterfaceComponentParams";
     fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
-        }
+        Self {}
     }
 }
 
@@ -121,8 +139,12 @@ pub struct MobiGlasPositionParams {
 }
 
 impl Pooled for MobiGlasPositionParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_suit.mobi_glas_position_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_suit.mobi_glas_position_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_scitem_suit.mobi_glas_position_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_scitem_suit.mobi_glas_position_params
+    }
 }
 
 impl<'a> Extract<'a> for MobiGlasPositionParams {
@@ -130,7 +152,10 @@ impl<'a> Extract<'a> for MobiGlasPositionParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             offset: match inst.get("offset") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             scale: inst.get_f32("scale").unwrap_or_default(),
@@ -151,8 +176,12 @@ pub struct MobiGlasClientParams {
 }
 
 impl Pooled for MobiGlasClientParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_suit.mobi_glas_client_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_suit.mobi_glas_client_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_scitem_suit.mobi_glas_client_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_scitem_suit.mobi_glas_client_params
+    }
 }
 
 impl<'a> Extract<'a> for MobiGlasClientParams {
@@ -160,14 +189,27 @@ impl<'a> Extract<'a> for MobiGlasClientParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             arm_position_params: match inst.get("armPositionParams") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<MobiGlasPositionParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<MobiGlasPositionParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             head_position_params: match inst.get("headPositionParams") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<MobiGlasPositionParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<MobiGlasPositionParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
-            proc_breathing_setup: inst.get("procBreathingSetup").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            proc_breathing_setup: inst
+                .get("procBreathingSetup")
+                .and_then(|v| v.as_record_ref())
+                .map(|r| r.guid),
         }
     }
 }
@@ -188,8 +230,12 @@ pub struct MobiGlasRemoteParams {
 }
 
 impl Pooled for MobiGlasRemoteParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_suit.mobi_glas_remote_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_suit.mobi_glas_remote_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_scitem_suit.mobi_glas_remote_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_scitem_suit.mobi_glas_remote_params
+    }
 }
 
 impl<'a> Extract<'a> for MobiGlasRemoteParams {
@@ -197,17 +243,35 @@ impl<'a> Extract<'a> for MobiGlasRemoteParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             arm_position_params: match inst.get("armPositionParams") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<MobiGlasPositionParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<MobiGlasPositionParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             head_position_params: match inst.get("headPositionParams") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<MobiGlasPositionParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<MobiGlasPositionParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
-            proc_breathing_setup: inst.get("procBreathingSetup").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            proc_breathing_setup: inst
+                .get("procBreathingSetup")
+                .and_then(|v| v.as_record_ref())
+                .map(|r| r.guid),
             material_glow: inst.get_f32("materialGlow").unwrap_or_default(),
             obj_model: match inst.get("objModel") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceGeometry>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<GlobalResourceGeometry>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
         }
@@ -223,16 +287,24 @@ pub struct MobiGlasEffectParams {
 }
 
 impl Pooled for MobiGlasEffectParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_suit.mobi_glas_effect_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_suit.mobi_glas_effect_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_scitem_suit.mobi_glas_effect_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_scitem_suit.mobi_glas_effect_params
+    }
 }
 
 impl<'a> Extract<'a> for MobiGlasEffectParams {
     const TYPE_NAME: &'static str = "MobiGlasEffectParams";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            projection_fade_in_duration: inst.get_f32("projectionFadeInDuration").unwrap_or_default(),
-            projection_fade_out_duration: inst.get_f32("projectionFadeOutDuration").unwrap_or_default(),
+            projection_fade_in_duration: inst
+                .get_f32("projectionFadeInDuration")
+                .unwrap_or_default(),
+            projection_fade_out_duration: inst
+                .get_f32("projectionFadeOutDuration")
+                .unwrap_or_default(),
         }
     }
 }
@@ -249,8 +321,12 @@ pub struct SCItemMobiGlasParams {
 }
 
 impl Pooled for SCItemMobiGlasParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_suit.scitem_mobi_glas_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_suit.scitem_mobi_glas_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_scitem_suit.scitem_mobi_glas_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_scitem_suit.scitem_mobi_glas_params
+    }
 }
 
 impl<'a> Extract<'a> for SCItemMobiGlasParams {
@@ -258,15 +334,30 @@ impl<'a> Extract<'a> for SCItemMobiGlasParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             client_params: match inst.get("clientParams") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<MobiGlasClientParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<MobiGlasClientParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             remote_params: match inst.get("remoteParams") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<MobiGlasRemoteParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<MobiGlasRemoteParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             effect_settings: match inst.get("effectSettings") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<MobiGlasEffectParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<MobiGlasEffectParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
         }
@@ -283,8 +374,16 @@ pub struct PlayerAssetManagerProviderParams {
 }
 
 impl Pooled for PlayerAssetManagerProviderParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_suit.player_asset_manager_provider_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_suit.player_asset_manager_provider_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_scitem_suit
+            .player_asset_manager_provider_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_scitem_suit
+            .player_asset_manager_provider_params
+    }
 }
 
 impl<'a> Extract<'a> for PlayerAssetManagerProviderParams {
@@ -292,44 +391,50 @@ impl<'a> Extract<'a> for PlayerAssetManagerProviderParams {
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
             inventory_items_per_page: inst.get_u32("inventoryItemsPerPage").unwrap_or_default(),
-            inventory_paint_geo_tag: inst.get_str("inventoryPaintGeoTag").map(String::from).unwrap_or_default(),
+            inventory_paint_geo_tag: inst
+                .get_str("inventoryPaintGeoTag")
+                .map(String::from)
+                .unwrap_or_default(),
         }
     }
 }
 
 /// DCB type: `PlayerTradeProviderParams`
 /// Inherits from: `DataForgeComponentParams`
-pub struct PlayerTradeProviderParams {
-}
+pub struct PlayerTradeProviderParams {}
 
 impl Pooled for PlayerTradeProviderParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_suit.player_trade_provider_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_suit.player_trade_provider_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_scitem_suit.player_trade_provider_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_scitem_suit.player_trade_provider_params
+    }
 }
 
 impl<'a> Extract<'a> for PlayerTradeProviderParams {
     const TYPE_NAME: &'static str = "PlayerTradeProviderParams";
     fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
-        }
+        Self {}
     }
 }
 
 /// DCB type: `ReputationProviderParams`
 /// Inherits from: `DataForgeComponentParams`
-pub struct ReputationProviderParams {
-}
+pub struct ReputationProviderParams {}
 
 impl Pooled for ReputationProviderParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_suit.reputation_provider_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_suit.reputation_provider_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_scitem_suit.reputation_provider_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_scitem_suit.reputation_provider_params
+    }
 }
 
 impl<'a> Extract<'a> for ReputationProviderParams {
     const TYPE_NAME: &'static str = "ReputationProviderParams";
     fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
-        }
+        Self {}
     }
 }
-

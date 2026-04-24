@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -29,8 +29,12 @@ pub struct DirectRTT_ChromaticAberrationParams {
 }
 
 impl Pooled for DirectRTT_ChromaticAberrationParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_directrtt.direct_rtt_chromatic_aberration_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_directrtt.direct_rtt_chromatic_aberration_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.ui_directrtt.direct_rtt_chromatic_aberration_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.ui_directrtt.direct_rtt_chromatic_aberration_params
+    }
 }
 
 impl<'a> Extract<'a> for DirectRTT_ChromaticAberrationParams {
@@ -38,15 +42,24 @@ impl<'a> Extract<'a> for DirectRTT_ChromaticAberrationParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             red_channel_offset: match inst.get("RedChannelOffset") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec2>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec2>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             green_channel_offset: match inst.get("GreenChannelOffset") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec2>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec2>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             blue_channel_offset: match inst.get("BlueChannelOffset") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec2>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec2>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
         }
@@ -72,8 +85,12 @@ pub struct DirectRTT_DropShadowParams {
 }
 
 impl Pooled for DirectRTT_DropShadowParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_directrtt.direct_rtt_drop_shadow_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_directrtt.direct_rtt_drop_shadow_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.ui_directrtt.direct_rtt_drop_shadow_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.ui_directrtt.direct_rtt_drop_shadow_params
+    }
 }
 
 impl<'a> Extract<'a> for DirectRTT_DropShadowParams {
@@ -84,11 +101,17 @@ impl<'a> Extract<'a> for DirectRTT_DropShadowParams {
             soft_shadow_intensity: inst.get_f32("SoftShadowIntensity").unwrap_or_default(),
             spread: inst.get_f32("Spread").unwrap_or_default(),
             offset: match inst.get("Offset") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec2>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec2>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             color: match inst.get("Color") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SRGB8>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SRGB8>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             opacity_in_bright_scenes: inst.get_f32("OpacityInBrightScenes").unwrap_or_default(),
@@ -112,8 +135,12 @@ pub struct DirectRTT_BloomParams {
 }
 
 impl Pooled for DirectRTT_BloomParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_directrtt.direct_rtt_bloom_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_directrtt.direct_rtt_bloom_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.ui_directrtt.direct_rtt_bloom_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.ui_directrtt.direct_rtt_bloom_params
+    }
 }
 
 impl<'a> Extract<'a> for DirectRTT_BloomParams {
@@ -121,7 +148,9 @@ impl<'a> Extract<'a> for DirectRTT_BloomParams {
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
             cutoff: inst.get_f32("Cutoff").unwrap_or_default(),
-            bloom_additive_blend_factor: inst.get_f32("BloomAdditiveBlendFactor").unwrap_or_default(),
+            bloom_additive_blend_factor: inst
+                .get_f32("BloomAdditiveBlendFactor")
+                .unwrap_or_default(),
             saturation_factor: inst.get_f32("SaturationFactor").unwrap_or_default(),
             opacity_in_bright_scenes: inst.get_f32("OpacityInBrightScenes").unwrap_or_default(),
             opacity_in_dark_scenes: inst.get_f32("OpacityInDarkScenes").unwrap_or_default(),
@@ -142,15 +171,22 @@ pub struct DirectRTT_PixelGridParams {
 }
 
 impl Pooled for DirectRTT_PixelGridParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_directrtt.direct_rtt_pixel_grid_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_directrtt.direct_rtt_pixel_grid_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.ui_directrtt.direct_rtt_pixel_grid_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.ui_directrtt.direct_rtt_pixel_grid_params
+    }
 }
 
 impl<'a> Extract<'a> for DirectRTT_PixelGridParams {
     const TYPE_NAME: &'static str = "DirectRTT_PixelGridParams";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            texture_path: inst.get_str("TexturePath").map(String::from).unwrap_or_default(),
+            texture_path: inst
+                .get_str("TexturePath")
+                .map(String::from)
+                .unwrap_or_default(),
             intensity: inst.get_f32("Intensity").unwrap_or_default(),
             tiling: inst.get_f32("Tiling").unwrap_or_default(),
             scroll_speed: inst.get_f32("ScrollSpeed").unwrap_or_default(),
@@ -171,8 +207,12 @@ pub struct DirectRTT_InterferenceParams {
 }
 
 impl Pooled for DirectRTT_InterferenceParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_directrtt.direct_rtt_interference_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_directrtt.direct_rtt_interference_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.ui_directrtt.direct_rtt_interference_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.ui_directrtt.direct_rtt_interference_params
+    }
 }
 
 impl<'a> Extract<'a> for DirectRTT_InterferenceParams {
@@ -210,8 +250,12 @@ pub struct DirectRTT_AfterTonemappingParams {
 }
 
 impl Pooled for DirectRTT_AfterTonemappingParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_directrtt.direct_rtt_after_tonemapping_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_directrtt.direct_rtt_after_tonemapping_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.ui_directrtt.direct_rtt_after_tonemapping_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.ui_directrtt.direct_rtt_after_tonemapping_params
+    }
 }
 
 impl<'a> Extract<'a> for DirectRTT_AfterTonemappingParams {
@@ -223,26 +267,50 @@ impl<'a> Extract<'a> for DirectRTT_AfterTonemappingParams {
             opacity_in_dark_scenes: inst.get_f32("OpacityInDarkScenes").unwrap_or_default(),
             additive_blend_factor: inst.get_f32("AdditiveBlendFactor").unwrap_or_default(),
             chromatic_aberration_params: match inst.get("ChromaticAberrationParams") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<DirectRTT_ChromaticAberrationParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<DirectRTT_ChromaticAberrationParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             drop_shadow_params: match inst.get("DropShadowParams") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<DirectRTT_DropShadowParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<DirectRTT_DropShadowParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             bloom_params: match inst.get("BloomParams") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<DirectRTT_BloomParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<DirectRTT_BloomParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             pixel_grid_params: match inst.get("PixelGridParams") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<DirectRTT_PixelGridParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<DirectRTT_PixelGridParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             screen_interference_params: match inst.get("ScreenInterferenceParams") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<DirectRTT_InterferenceParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<DirectRTT_InterferenceParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
         }
     }
 }
-

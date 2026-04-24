@@ -9,17 +9,18 @@
 
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
+use super::super::*;
+use crate::Handle;
 use std::collections::HashMap;
 use svarog_common::CigGuid;
-use crate::Handle;
-use super::super::*;
 
 /// Record index for the `radarsystem` feature.
 #[derive(Default)]
 pub struct RadarsystemIndex {
     pub radar_system_global_params: HashMap<CigGuid, Handle<RadarSystemGlobalParams>>,
     pub scan_information_table: HashMap<CigGuid, Handle<ScanInformationTable>>,
-    pub radar_signature_category_definition: HashMap<CigGuid, Handle<RadarSignatureCategoryDefinition>>,
+    pub radar_signature_category_definition:
+        HashMap<CigGuid, Handle<RadarSignatureCategoryDefinition>>,
     pub radar_signature_category_entry: HashMap<CigGuid, Handle<RadarSignatureCategoryEntry>>,
     pub radar_contact_type_definition: HashMap<CigGuid, Handle<RadarContactTypeDefinition>>,
     pub radar_contact_group_definition: HashMap<CigGuid, Handle<RadarContactGroupDefinition>>,
@@ -40,5 +41,7 @@ impl RadarsystemIndex {
         total
     }
 
-    pub fn is_empty(&self) -> bool { self.len() == 0 }
+    pub fn is_empty(&self) -> bool {
+        self.len() == 0
+    }
 }

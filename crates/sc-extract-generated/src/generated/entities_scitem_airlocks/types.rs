@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -25,15 +25,21 @@ pub struct AirlockGreenzoneParams {
 }
 
 impl Pooled for AirlockGreenzoneParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_airlocks.airlock_greenzone_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_airlocks.airlock_greenzone_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_scitem_airlocks.airlock_greenzone_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_scitem_airlocks.airlock_greenzone_params
+    }
 }
 
 impl<'a> Extract<'a> for AirlockGreenzoneParams {
     const TYPE_NAME: &'static str = "AirlockGreenzoneParams";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            green_zone_toggle_door_index: inst.get_i32("GreenZoneToggleDoorIndex").unwrap_or_default(),
+            green_zone_toggle_door_index: inst
+                .get_i32("GreenZoneToggleDoorIndex")
+                .unwrap_or_default(),
         }
     }
 }
@@ -47,8 +53,12 @@ pub struct AirlockAreaParams {
 }
 
 impl Pooled for AirlockAreaParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_airlocks.airlock_area_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_airlocks.airlock_area_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_scitem_airlocks.airlock_area_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_scitem_airlocks.airlock_area_params
+    }
 }
 
 impl<'a> Extract<'a> for AirlockAreaParams {
@@ -56,11 +66,17 @@ impl<'a> Extract<'a> for AirlockAreaParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             area_offset: match inst.get("AreaOffset") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             area_size: match inst.get("AreaSize") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
         }
@@ -83,8 +99,12 @@ pub struct SCItemAirlockParams {
 }
 
 impl Pooled for SCItemAirlockParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_airlocks.scitem_airlock_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_airlocks.scitem_airlock_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_scitem_airlocks.scitem_airlock_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_scitem_airlocks.scitem_airlock_params
+    }
 }
 
 impl<'a> Extract<'a> for SCItemAirlockParams {
@@ -92,17 +112,28 @@ impl<'a> Extract<'a> for SCItemAirlockParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             max_time_to_wait_for_doors: inst.get_f32("MaxTimeToWaitForDoors").unwrap_or_default(),
-            min_time_to_wait_after_doors_closed: inst.get_f32("MinTimeToWaitAfterDoorsClosed").unwrap_or_default(),
+            min_time_to_wait_after_doors_closed: inst
+                .get_f32("MinTimeToWaitAfterDoorsClosed")
+                .unwrap_or_default(),
             cycle_time: inst.get_f32("CycleTime").unwrap_or_default(),
             greenzone_params: match inst.get("GreenzoneParams") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<AirlockGreenzoneParams>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<AirlockGreenzoneParams>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
                 _ => None,
             },
             area_override: match inst.get("AreaOverride") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<AirlockAreaParams>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<AirlockAreaParams>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
                 _ => None,
             },
         }
     }
 }
-

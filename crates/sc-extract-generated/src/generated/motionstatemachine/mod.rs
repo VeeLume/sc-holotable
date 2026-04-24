@@ -9,11 +9,11 @@
 
 //! Feature module: `motionstatemachine`
 
-mod types;
-mod pools;
 mod index;
+mod pools;
+mod types;
 
+pub use index::*;
+pub use pools::*;
 #[allow(unused_imports)]
 pub use types::*;
-pub use pools::*;
-pub use index::*;

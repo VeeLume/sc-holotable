@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -26,8 +26,16 @@ pub struct SetLightningEnabledStateGameplayTrigger {
 }
 
 impl Pooled for SetLightningEnabledStateGameplayTrigger {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_toggleableentities.set_lightning_enabled_state_gameplay_trigger }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_toggleableentities.set_lightning_enabled_state_gameplay_trigger }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_scitem_toggleableentities
+            .set_lightning_enabled_state_gameplay_trigger
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_scitem_toggleableentities
+            .set_lightning_enabled_state_gameplay_trigger
+    }
 }
 
 impl<'a> Extract<'a> for SetLightningEnabledStateGameplayTrigger {
@@ -47,8 +55,16 @@ pub struct SSetParticleEnabledStateGameplayTrigger {
 }
 
 impl Pooled for SSetParticleEnabledStateGameplayTrigger {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_toggleableentities.sset_particle_enabled_state_gameplay_trigger }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_toggleableentities.sset_particle_enabled_state_gameplay_trigger }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_scitem_toggleableentities
+            .sset_particle_enabled_state_gameplay_trigger
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_scitem_toggleableentities
+            .sset_particle_enabled_state_gameplay_trigger
+    }
 }
 
 impl<'a> Extract<'a> for SSetParticleEnabledStateGameplayTrigger {
@@ -59,4 +75,3 @@ impl<'a> Extract<'a> for SSetParticleEnabledStateGameplayTrigger {
         }
     }
 }
-

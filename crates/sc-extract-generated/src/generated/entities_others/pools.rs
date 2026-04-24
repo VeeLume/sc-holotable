@@ -19,8 +19,11 @@ pub struct EntitiesOthersPools {
     pub loudspeaker_component_params: Vec<Option<LoudspeakerComponentParams>>,
     pub restricted_area_spline_params: Vec<Option<RestrictedAreaSplineParams>>,
     pub landing_spline_visual_params: Vec<Option<LandingSplineVisualParams>>,
-    pub entity_component_water_disturbance_noise_params: Vec<Option<EntityComponentWaterDisturbance_NoiseParams>>,
-    pub entity_component_water_disturbance_params: Vec<Option<EntityComponentWaterDisturbanceParams>>,
-    pub entity_component_water_impact_test_params: Vec<Option<EntityComponentWaterImpactTestParams>>,
+    pub entity_component_water_disturbance_noise_params:
+        Vec<Option<EntityComponentWaterDisturbance_NoiseParams>>,
+    pub entity_component_water_disturbance_params:
+        Vec<Option<EntityComponentWaterDisturbanceParams>>,
+    pub entity_component_water_impact_test_params:
+        Vec<Option<EntityComponentWaterImpactTestParams>>,
     pub transit_nav_spline_data_params: Vec<Option<TransitNavSplineDataParams>>,
 }

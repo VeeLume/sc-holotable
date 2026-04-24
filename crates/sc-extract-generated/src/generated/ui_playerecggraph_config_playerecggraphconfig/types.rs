@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -37,8 +37,16 @@ pub struct PlayerECGGraph_Config {
 }
 
 impl Pooled for PlayerECGGraph_Config {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_playerecggraph_config_playerecggraphconfig.player_ecggraph_config }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_playerecggraph_config_playerecggraphconfig.player_ecggraph_config }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .ui_playerecggraph_config_playerecggraphconfig
+            .player_ecggraph_config
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .ui_playerecggraph_config_playerecggraphconfig
+            .player_ecggraph_config
+    }
 }
 
 impl<'a> Extract<'a> for PlayerECGGraph_Config {
@@ -47,7 +55,9 @@ impl<'a> Extract<'a> for PlayerECGGraph_Config {
         Self {
             idle_amp_range_max: inst.get_f32("idleAmpRangeMax").unwrap_or_default(),
             spike_frame_duration: inst.get_u32("spikeFrameDuration").unwrap_or_default(),
-            spike_frame_duration_rand_factor: inst.get_f32("spikeFrameDurationRandFactor").unwrap_or_default(),
+            spike_frame_duration_rand_factor: inst
+                .get_f32("spikeFrameDurationRandFactor")
+                .unwrap_or_default(),
             wave_freq: inst.get_u32("waveFreq").unwrap_or_default(),
             pulse_amp_min: inst.get_f32("pulseAmpMin").unwrap_or_default(),
             pulse_amp_max: inst.get_f32("pulseAmpMax").unwrap_or_default(),
@@ -55,4 +65,3 @@ impl<'a> Extract<'a> for PlayerECGGraph_Config {
         }
     }
 }
-

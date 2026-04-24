@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -31,8 +31,12 @@ pub struct DefaultPlayerLoadoutEntitlementParams {
 }
 
 impl Pooled for DefaultPlayerLoadoutEntitlementParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.character.default_player_loadout_entitlement_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.character.default_player_loadout_entitlement_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.character.default_player_loadout_entitlement_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.character.default_player_loadout_entitlement_params
+    }
 }
 
 impl<'a> Extract<'a> for DefaultPlayerLoadoutEntitlementParams {
@@ -41,9 +45,13 @@ impl<'a> Extract<'a> for DefaultPlayerLoadoutEntitlementParams {
         Self {
             name: inst.get_str("Name").map(String::from).unwrap_or_default(),
             loadout_id: inst.get_u32("LoadoutId").unwrap_or_default(),
-            entitlement: EDefaultEntitlement::from_dcb_str(inst.get_str("Entitlement").unwrap_or("")),
+            entitlement: EDefaultEntitlement::from_dcb_str(
+                inst.get_str("Entitlement").unwrap_or(""),
+            ),
             loadout: match inst.get("Loadout") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(SItemPortLoadoutBaseParamsPtr::from_ref(b, r)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(SItemPortLoadoutBaseParamsPtr::from_ref(b, r))
+                }
                 _ => None,
             },
         }
@@ -57,22 +65,39 @@ pub struct DefaultPlayerLoadoutEntitlementRecord {
 }
 
 impl Pooled for DefaultPlayerLoadoutEntitlementRecord {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.character.default_player_loadout_entitlement_record }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.character.default_player_loadout_entitlement_record }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.character.default_player_loadout_entitlement_record
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.character.default_player_loadout_entitlement_record
+    }
 }
 
 impl<'a> Extract<'a> for DefaultPlayerLoadoutEntitlementRecord {
     const TYPE_NAME: &'static str = "DefaultPlayerLoadoutEntitlementRecord";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            loadouts: inst.get_array("Loadouts")
-                .map(|arr| arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<DefaultPlayerLoadoutEntitlementParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r) => Some(b.alloc_nested::<DefaultPlayerLoadoutEntitlementParams>(b.db.instance(r.struct_index, r.instance_index), true)),
+            loadouts: inst
+                .get_array("Loadouts")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<DefaultPlayerLoadoutEntitlementParams>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => {
+                            Some(b.alloc_nested::<DefaultPlayerLoadoutEntitlementParams>(
+                                b.db.instance(r.struct_index, r.instance_index),
+                                true,
+                            ))
+                        }
                         _ => None,
-                    }).collect())
+                    })
+                    .collect()
+                })
                 .unwrap_or_default(),
         }
     }
 }
-

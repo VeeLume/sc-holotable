@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -33,8 +33,12 @@ pub struct SMagLaunchRecoveryNoiseParams {
 }
 
 impl Pooled for SMagLaunchRecoveryNoiseParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_maglaunch.smag_launch_recovery_noise_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_maglaunch.smag_launch_recovery_noise_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_maglaunch.smag_launch_recovery_noise_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_maglaunch.smag_launch_recovery_noise_params
+    }
 }
 
 impl<'a> Extract<'a> for SMagLaunchRecoveryNoiseParams {
@@ -43,7 +47,10 @@ impl<'a> Extract<'a> for SMagLaunchRecoveryNoiseParams {
         Self {
             max_offset: inst.get_f32("maxOffset").unwrap_or_default(),
             frequencies: match inst.get("frequencies") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             multiplier: inst.get_f32("multiplier").unwrap_or_default(),
@@ -74,8 +81,12 @@ pub struct SMagLaunchMotionParams {
 }
 
 impl Pooled for SMagLaunchMotionParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_maglaunch.smag_launch_motion_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_maglaunch.smag_launch_motion_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_maglaunch.smag_launch_motion_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_maglaunch.smag_launch_motion_params
+    }
 }
 
 impl<'a> Extract<'a> for SMagLaunchMotionParams {
@@ -120,8 +131,12 @@ pub struct MagLaunchParams {
 }
 
 impl Pooled for MagLaunchParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_maglaunch.mag_launch_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_maglaunch.mag_launch_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_maglaunch.mag_launch_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_maglaunch.mag_launch_params
+    }
 }
 
 impl<'a> Extract<'a> for MagLaunchParams {
@@ -129,28 +144,49 @@ impl<'a> Extract<'a> for MagLaunchParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             lift_motion: match inst.get("liftMotion") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SMagLaunchMotionParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<SMagLaunchMotionParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             launch_motion: match inst.get("launchMotion") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SMagLaunchMotionParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<SMagLaunchMotionParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             mag_lift_spool_up_time: inst.get_f32("magLiftSpoolUpTime").unwrap_or_default(),
             max_time_wait_after_lift: inst.get_f32("maxTimeWaitAfterLift").unwrap_or_default(),
             launch_length: inst.get_f32("launchLength").unwrap_or_default(),
             landing_gear_auto_raise: inst.get_bool("landingGearAutoRaise").unwrap_or_default(),
-            landing_gear_auto_raise_hover_ratio: inst.get_f32("landingGearAutoRaiseHoverRatio").unwrap_or_default(),
+            landing_gear_auto_raise_hover_ratio: inst
+                .get_f32("landingGearAutoRaiseHoverRatio")
+                .unwrap_or_default(),
             apply_noise: inst.get_bool("applyNoise").unwrap_or_default(),
             hover_noise_lin: match inst.get("hoverNoiseLin") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SMagLaunchRecoveryNoiseParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<SMagLaunchRecoveryNoiseParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             hover_noise_ang: match inst.get("hoverNoiseAng") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SMagLaunchRecoveryNoiseParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<SMagLaunchRecoveryNoiseParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
         }
     }
 }
-

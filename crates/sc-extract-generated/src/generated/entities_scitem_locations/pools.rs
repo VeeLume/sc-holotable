@@ -14,5 +14,6 @@ use super::super::*;
 /// Pool storage for the `entities-scitem-locations` feature.
 #[derive(Default)]
 pub struct EntitiesScitemLocationsPools {
-    pub item_resource_container_placeholder_params: Vec<Option<ItemResourceContainerPlaceholderParams>>,
+    pub item_resource_container_placeholder_params:
+        Vec<Option<ItemResourceContainerPlaceholderParams>>,
 }

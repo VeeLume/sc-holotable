@@ -90,10 +90,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         if (name.contains("BEHR_LaserCannon")
             || name.contains("GATS_BallisticGatling")
             || name.contains("KLWE_LaserRepeater"))
-            && count < 3 {
-                println!("Found record: '{}'", name);
-                count += 1;
-            }
+            && count < 3
+        {
+            println!("Found record: '{}'", name);
+            count += 1;
+        }
     }
     for record in db.records_by_type("EntityClassDefinition") {
         let name = record.name().unwrap_or("");

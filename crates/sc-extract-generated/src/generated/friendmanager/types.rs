@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -29,8 +29,12 @@ pub struct FriendManagerNotificationsParams {
 }
 
 impl Pooled for FriendManagerNotificationsParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.friendmanager.friend_manager_notifications_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.friendmanager.friend_manager_notifications_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.friendmanager.friend_manager_notifications_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.friendmanager.friend_manager_notifications_params
+    }
 }
 
 impl<'a> Extract<'a> for FriendManagerNotificationsParams {
@@ -38,15 +42,30 @@ impl<'a> Extract<'a> for FriendManagerNotificationsParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             friend_added: match inst.get("friendAdded") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<PlayerNotificationBannerParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<PlayerNotificationBannerParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             friend_request_received: match inst.get("friendRequestReceived") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<PlayerNotificationBannerParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<PlayerNotificationBannerParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             friend_request_declined: match inst.get("friendRequestDeclined") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<PlayerNotificationBannerParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<PlayerNotificationBannerParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
         }
@@ -60,8 +79,12 @@ pub struct FriendManagerGlobalParams {
 }
 
 impl Pooled for FriendManagerGlobalParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.friendmanager.friend_manager_global_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.friendmanager.friend_manager_global_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.friendmanager.friend_manager_global_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.friendmanager.friend_manager_global_params
+    }
 }
 
 impl<'a> Extract<'a> for FriendManagerGlobalParams {
@@ -69,10 +92,14 @@ impl<'a> Extract<'a> for FriendManagerGlobalParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             notifications_params: match inst.get("notificationsParams") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<FriendManagerNotificationsParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<FriendManagerNotificationsParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
         }
     }
 }
-

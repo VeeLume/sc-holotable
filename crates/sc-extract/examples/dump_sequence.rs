@@ -289,21 +289,24 @@ fn resolve_ammo<'a>(
 ) -> Option<&'a AmmoParams> {
     if let Some(guid) = wp.ammo_container_record {
         if let Some(&ammo_h) = ammo_map.get(&guid)
-            && let Some(ammo) = ammo_h.get(pools) {
-                return Some(ammo);
-            }
+            && let Some(ammo) = ammo_h.get(pools)
+        {
+            return Some(ammo);
+        }
         if let Some(&container_h) = ecd_map.get(&guid)
-            && let Some(container_ecd) = container_h.get(pools) {
-                let ac = container_ecd.components.iter().find_map(|c| match c {
-                    DataForgeComponentParamsPtr::SAmmoContainerComponentParams(h) => h.get(pools),
-                    _ => None,
-                });
-                if let Some(ac) = ac
-                    && let Some(ammo_guid) = ac.ammo_params_record
-                        && let Some(&ammo_h) = ammo_map.get(&ammo_guid) {
-                            return ammo_h.get(pools);
-                        }
+            && let Some(container_ecd) = container_h.get(pools)
+        {
+            let ac = container_ecd.components.iter().find_map(|c| match c {
+                DataForgeComponentParamsPtr::SAmmoContainerComponentParams(h) => h.get(pools),
+                _ => None,
+            });
+            if let Some(ac) = ac
+                && let Some(ammo_guid) = ac.ammo_params_record
+                && let Some(&ammo_h) = ammo_map.get(&ammo_guid)
+            {
+                return ammo_h.get(pools);
             }
+        }
     }
     let ac = ecd.components.iter().find_map(|c| match c {
         DataForgeComponentParamsPtr::SAmmoContainerComponentParams(h) => h.get(pools),
@@ -318,21 +321,24 @@ fn extract_damage(ammo: &AmmoParams, pools: &DataPools) -> (f32, f32, f32) {
     let mut e = 0.0f32;
     let mut d = 0.0f32;
     if let Some(ProjectileParamsPtr::BulletProjectileParams(h)) = &ammo.projectile_params
-        && let Some(bullet) = h.get(pools) {
-            if let Some(DamageBasePtr::DamageInfo(dh)) = &bullet.damage
-                && let Some(di) = dh.get(pools) {
-                    p += di.damage_physical;
-                    e += di.damage_energy;
-                    d += di.damage_distortion;
-                }
-            if let Some(det) = bullet.detonation_params.and_then(|h| h.get(pools))
-                && let Some(expl) = det.explosion_params.and_then(|h| h.get(pools))
-                    && let Some(DamageBasePtr::DamageInfo(dh)) = &expl.damage
-                        && let Some(di) = dh.get(pools) {
-                            p += di.damage_physical;
-                            e += di.damage_energy;
-                            d += di.damage_distortion;
-                        }
+        && let Some(bullet) = h.get(pools)
+    {
+        if let Some(DamageBasePtr::DamageInfo(dh)) = &bullet.damage
+            && let Some(di) = dh.get(pools)
+        {
+            p += di.damage_physical;
+            e += di.damage_energy;
+            d += di.damage_distortion;
         }
+        if let Some(det) = bullet.detonation_params.and_then(|h| h.get(pools))
+            && let Some(expl) = det.explosion_params.and_then(|h| h.get(pools))
+            && let Some(DamageBasePtr::DamageInfo(dh)) = &expl.damage
+            && let Some(di) = dh.get(pools)
+        {
+            p += di.damage_physical;
+            e += di.damage_energy;
+            d += di.damage_distortion;
+        }
+    }
     (p, e, d)
 }

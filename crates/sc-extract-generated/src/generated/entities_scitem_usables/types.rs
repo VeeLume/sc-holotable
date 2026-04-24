@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -26,8 +26,16 @@ pub struct ProceduralConnectionLinkController {
 }
 
 impl Pooled for ProceduralConnectionLinkController {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_usables.procedural_connection_link_controller }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_usables.procedural_connection_link_controller }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_scitem_usables
+            .procedural_connection_link_controller
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_scitem_usables
+            .procedural_connection_link_controller
+    }
 }
 
 impl<'a> Extract<'a> for ProceduralConnectionLinkController {
@@ -49,8 +57,16 @@ pub struct ClosestOrientationHandholdAttachSpotChoiceParams {
 }
 
 impl Pooled for ClosestOrientationHandholdAttachSpotChoiceParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_usables.closest_orientation_handhold_attach_spot_choice_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_usables.closest_orientation_handhold_attach_spot_choice_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_scitem_usables
+            .closest_orientation_handhold_attach_spot_choice_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_scitem_usables
+            .closest_orientation_handhold_attach_spot_choice_params
+    }
 }
 
 impl<'a> Extract<'a> for ClosestOrientationHandholdAttachSpotChoiceParams {
@@ -58,10 +74,15 @@ impl<'a> Extract<'a> for ClosestOrientationHandholdAttachSpotChoiceParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             desired_up_direction: match inst.get("desiredUpDirection") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
-            space: EHandholdAttachOrientationSpace::from_dcb_str(inst.get_str("space").unwrap_or("")),
+            space: EHandholdAttachOrientationSpace::from_dcb_str(
+                inst.get_str("space").unwrap_or(""),
+            ),
         }
     }
 }
@@ -76,17 +97,33 @@ pub struct SpecificHandholdAttachSpotChoiceParams {
 }
 
 impl Pooled for SpecificHandholdAttachSpotChoiceParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_usables.specific_handhold_attach_spot_choice_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_usables.specific_handhold_attach_spot_choice_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_scitem_usables
+            .specific_handhold_attach_spot_choice_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_scitem_usables
+            .specific_handhold_attach_spot_choice_params
+    }
 }
 
 impl<'a> Extract<'a> for SpecificHandholdAttachSpotChoiceParams {
     const TYPE_NAME: &'static str = "SpecificHandholdAttachSpotChoiceParams";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            attach_spot_name: inst.get_str("attachSpotName").map(String::from).unwrap_or_default(),
+            attach_spot_name: inst
+                .get_str("attachSpotName")
+                .map(String::from)
+                .unwrap_or_default(),
             fallback_params: match inst.get("fallbackParams") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<ClosestOrientationHandholdAttachSpotChoiceParams>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(
+                    b.alloc_nested::<ClosestOrientationHandholdAttachSpotChoiceParams>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ),
+                ),
                 _ => None,
             },
         }
@@ -106,8 +143,16 @@ pub struct HandholdAttachmentTriggerParams {
 }
 
 impl Pooled for HandholdAttachmentTriggerParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_usables.handhold_attachment_trigger_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_usables.handhold_attachment_trigger_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_scitem_usables
+            .handhold_attachment_trigger_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_scitem_usables
+            .handhold_attachment_trigger_params
+    }
 }
 
 impl<'a> Extract<'a> for HandholdAttachmentTriggerParams {
@@ -115,10 +160,18 @@ impl<'a> Extract<'a> for HandholdAttachmentTriggerParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             name: inst.get_str("name").map(String::from).unwrap_or_default(),
-            entity_link_name: inst.get_str("entityLinkName").map(String::from).unwrap_or_default(),
-            handhold_name: inst.get_str("handholdName").map(String::from).unwrap_or_default(),
+            entity_link_name: inst
+                .get_str("entityLinkName")
+                .map(String::from)
+                .unwrap_or_default(),
+            handhold_name: inst
+                .get_str("handholdName")
+                .map(String::from)
+                .unwrap_or_default(),
             attach_point_choice_params: match inst.get("attachPointChoiceParams") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(HandholdAttachPointChoiceParamsPtr::from_ref(b, r)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(HandholdAttachPointChoiceParamsPtr::from_ref(b, r))
+                }
                 _ => None,
             },
         }
@@ -137,21 +190,41 @@ pub struct HandholdSharedInteractionLink {
 }
 
 impl Pooled for HandholdSharedInteractionLink {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_usables.handhold_shared_interaction_link }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_usables.handhold_shared_interaction_link }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_scitem_usables
+            .handhold_shared_interaction_link
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_scitem_usables
+            .handhold_shared_interaction_link
+    }
 }
 
 impl<'a> Extract<'a> for HandholdSharedInteractionLink {
     const TYPE_NAME: &'static str = "HandholdSharedInteractionLink";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            ignore_interaction_on_fail: inst.get_bool("ignoreInteractionOnFail").unwrap_or_default(),
+            ignore_interaction_on_fail: inst
+                .get_bool("ignoreInteractionOnFail")
+                .unwrap_or_default(),
             attachment_trigger: match inst.get("attachmentTrigger") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<HandholdAttachmentTriggerParams>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<HandholdAttachmentTriggerParams>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
                 _ => None,
             },
             source_shared_interaction: match inst.get("sourceSharedInteraction") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SSharedInteractionParams>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<SSharedInteractionParams>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
                 _ => None,
             },
         }
@@ -170,21 +243,41 @@ pub struct HandholdInteractionPointLink {
 }
 
 impl Pooled for HandholdInteractionPointLink {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_usables.handhold_interaction_point_link }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_usables.handhold_interaction_point_link }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_scitem_usables
+            .handhold_interaction_point_link
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_scitem_usables
+            .handhold_interaction_point_link
+    }
 }
 
 impl<'a> Extract<'a> for HandholdInteractionPointLink {
     const TYPE_NAME: &'static str = "HandholdInteractionPointLink";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            ignore_interaction_on_fail: inst.get_bool("ignoreInteractionOnFail").unwrap_or_default(),
+            ignore_interaction_on_fail: inst
+                .get_bool("ignoreInteractionOnFail")
+                .unwrap_or_default(),
             attachment_trigger: match inst.get("attachmentTrigger") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<HandholdAttachmentTriggerParams>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<HandholdAttachmentTriggerParams>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
                 _ => None,
             },
             source_interaction_point: match inst.get("sourceInteractionPoint") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SInteractionPointParams>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<SInteractionPointParams>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
                 _ => None,
             },
         }
@@ -203,34 +296,78 @@ pub struct HandholdLinkComponentParams {
 }
 
 impl Pooled for HandholdLinkComponentParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_usables.handhold_link_component_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_usables.handhold_link_component_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_scitem_usables.handhold_link_component_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_scitem_usables.handhold_link_component_params
+    }
 }
 
 impl<'a> Extract<'a> for HandholdLinkComponentParams {
     const TYPE_NAME: &'static str = "HandholdLinkComponentParams";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            attachment_triggers: inst.get_array("attachmentTriggers")
-                .map(|arr| arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<HandholdAttachmentTriggerParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r) => Some(b.alloc_nested::<HandholdAttachmentTriggerParams>(b.db.instance(r.struct_index, r.instance_index), true)),
+            attachment_triggers: inst
+                .get_array("attachmentTriggers")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<HandholdAttachmentTriggerParams>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => {
+                            Some(b.alloc_nested::<HandholdAttachmentTriggerParams>(
+                                b.db.instance(r.struct_index, r.instance_index),
+                                true,
+                            ))
+                        }
                         _ => None,
-                    }).collect())
+                    })
+                    .collect()
+                })
                 .unwrap_or_default(),
-            shared_interaction_links: inst.get_array("sharedInteractionLinks")
-                .map(|arr| arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<HandholdSharedInteractionLink>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r) => Some(b.alloc_nested::<HandholdSharedInteractionLink>(b.db.instance(r.struct_index, r.instance_index), true)),
+            shared_interaction_links: inst
+                .get_array("sharedInteractionLinks")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<HandholdSharedInteractionLink>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => {
+                            Some(b.alloc_nested::<HandholdSharedInteractionLink>(
+                                b.db.instance(r.struct_index, r.instance_index),
+                                true,
+                            ))
+                        }
                         _ => None,
-                    }).collect())
+                    })
+                    .collect()
+                })
                 .unwrap_or_default(),
-            interaction_point_links: inst.get_array("interactionPointLinks")
-                .map(|arr| arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<HandholdInteractionPointLink>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r) => Some(b.alloc_nested::<HandholdInteractionPointLink>(b.db.instance(r.struct_index, r.instance_index), true)),
+            interaction_point_links: inst
+                .get_array("interactionPointLinks")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<HandholdInteractionPointLink>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => Some(b.alloc_nested::<HandholdInteractionPointLink>(
+                            b.db.instance(r.struct_index, r.instance_index),
+                            true,
+                        )),
                         _ => None,
-                    }).collect())
+                    })
+                    .collect()
+                })
                 .unwrap_or_default(),
         }
     }
@@ -247,8 +384,16 @@ pub struct SPlayerUsableSearchRouteUsable {
 }
 
 impl Pooled for SPlayerUsableSearchRouteUsable {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_usables.splayer_usable_search_route_usable }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_usables.splayer_usable_search_route_usable }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_scitem_usables
+            .splayer_usable_search_route_usable
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_scitem_usables
+            .splayer_usable_search_route_usable
+    }
 }
 
 impl<'a> Extract<'a> for SPlayerUsableSearchRouteUsable {
@@ -256,15 +401,26 @@ impl<'a> Extract<'a> for SPlayerUsableSearchRouteUsable {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             search_usable_tags: match inst.get("searchUsableTags") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<TagList>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<TagList>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             search_usable_item_provider_tags: match inst.get("searchUsableItemProviderTags") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<TagList>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<TagList>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             routing_settings: match inst.get("routingSettings") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SUsableRoutingSettings>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<SUsableRoutingSettings>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
         }
@@ -279,8 +435,16 @@ pub struct SSequencerPlayerUsableTaskParams {
 }
 
 impl Pooled for SSequencerPlayerUsableTaskParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_usables.ssequencer_player_usable_task_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_usables.ssequencer_player_usable_task_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_scitem_usables
+            .ssequencer_player_usable_task_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_scitem_usables
+            .ssequencer_player_usable_task_params
+    }
 }
 
 impl<'a> Extract<'a> for SSequencerPlayerUsableTaskParams {
@@ -304,8 +468,16 @@ pub struct SSequencerPlayerUsableSwitchChannelTaskParams {
 }
 
 impl Pooled for SSequencerPlayerUsableSwitchChannelTaskParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_usables.ssequencer_player_usable_switch_channel_task_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_usables.ssequencer_player_usable_switch_channel_task_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_scitem_usables
+            .ssequencer_player_usable_switch_channel_task_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_scitem_usables
+            .ssequencer_player_usable_switch_channel_task_params
+    }
 }
 
 impl<'a> Extract<'a> for SSequencerPlayerUsableSwitchChannelTaskParams {
@@ -313,8 +485,14 @@ impl<'a> Extract<'a> for SSequencerPlayerUsableSwitchChannelTaskParams {
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
             name: inst.get_str("name").map(String::from).unwrap_or_default(),
-            use_channel_name: inst.get_str("useChannelName").map(String::from).unwrap_or_default(),
-            user_on_channel: inst.get("userOnChannel").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            use_channel_name: inst
+                .get_str("useChannelName")
+                .map(String::from)
+                .unwrap_or_default(),
+            user_on_channel: inst
+                .get("userOnChannel")
+                .and_then(|v| v.as_record_ref())
+                .map(|r| r.guid),
         }
     }
 }
@@ -329,8 +507,16 @@ pub struct SSequencerPlayerUsableScoochTaskParams {
 }
 
 impl Pooled for SSequencerPlayerUsableScoochTaskParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_usables.ssequencer_player_usable_scooch_task_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_usables.ssequencer_player_usable_scooch_task_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_scitem_usables
+            .ssequencer_player_usable_scooch_task_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_scitem_usables
+            .ssequencer_player_usable_scooch_task_params
+    }
 }
 
 impl<'a> Extract<'a> for SSequencerPlayerUsableScoochTaskParams {
@@ -339,7 +525,12 @@ impl<'a> Extract<'a> for SSequencerPlayerUsableScoochTaskParams {
         Self {
             name: inst.get_str("name").map(String::from).unwrap_or_default(),
             search_usable_route: match inst.get("searchUsableRoute") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SPlayerUsableSearchRouteUsable>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<SPlayerUsableSearchRouteUsable>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
         }
@@ -356,8 +547,16 @@ pub struct SSequencerPlayerUsableUseChannelTaskParams {
 }
 
 impl Pooled for SSequencerPlayerUsableUseChannelTaskParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_usables.ssequencer_player_usable_use_channel_task_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_usables.ssequencer_player_usable_use_channel_task_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_scitem_usables
+            .ssequencer_player_usable_use_channel_task_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_scitem_usables
+            .ssequencer_player_usable_use_channel_task_params
+    }
 }
 
 impl<'a> Extract<'a> for SSequencerPlayerUsableUseChannelTaskParams {
@@ -366,7 +565,12 @@ impl<'a> Extract<'a> for SSequencerPlayerUsableUseChannelTaskParams {
         Self {
             name: inst.get_str("name").map(String::from).unwrap_or_default(),
             player_usable_port: match inst.get("playerUsablePort") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<PlayerUsableItemPort>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<PlayerUsableItemPort>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
                 _ => None,
             },
         }
@@ -385,8 +589,16 @@ pub struct SSequencerPlayerUsableReserveSlotTaskParams {
 }
 
 impl Pooled for SSequencerPlayerUsableReserveSlotTaskParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_usables.ssequencer_player_usable_reserve_slot_task_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_usables.ssequencer_player_usable_reserve_slot_task_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_scitem_usables
+            .ssequencer_player_usable_reserve_slot_task_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_scitem_usables
+            .ssequencer_player_usable_reserve_slot_task_params
+    }
 }
 
 impl<'a> Extract<'a> for SSequencerPlayerUsableReserveSlotTaskParams {
@@ -395,7 +607,12 @@ impl<'a> Extract<'a> for SSequencerPlayerUsableReserveSlotTaskParams {
         Self {
             name: inst.get_str("name").map(String::from).unwrap_or_default(),
             search_usable_route: match inst.get("searchUsableRoute") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SPlayerUsableSearchRouteUsable>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<SPlayerUsableSearchRouteUsable>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             reserve_slot: inst.get_bool("reserveSlot").unwrap_or_default(),
@@ -414,8 +631,16 @@ pub struct PlayerUsableInteractionPoint {
 }
 
 impl Pooled for PlayerUsableInteractionPoint {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_usables.player_usable_interaction_point }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_usables.player_usable_interaction_point }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_scitem_usables
+            .player_usable_interaction_point
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_scitem_usables
+            .player_usable_interaction_point
+    }
 }
 
 impl<'a> Extract<'a> for PlayerUsableInteractionPoint {
@@ -423,14 +648,27 @@ impl<'a> Extract<'a> for PlayerUsableInteractionPoint {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             interaction_point: match inst.get("interactionPoint") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SInteractionPointParams>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<SInteractionPointParams>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
                 _ => None,
             },
             use_interaction: match inst.get("useInteraction") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SSharedInteractionParams>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<SSharedInteractionParams>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
                 _ => None,
             },
-            fragment_tag: inst.get_str("fragmentTag").map(String::from).unwrap_or_default(),
+            fragment_tag: inst
+                .get_str("fragmentTag")
+                .map(String::from)
+                .unwrap_or_default(),
         }
     }
 }
@@ -444,8 +682,12 @@ pub struct PlayerUsableItemPort {
 }
 
 impl Pooled for PlayerUsableItemPort {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_usables.player_usable_item_port }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_usables.player_usable_item_port }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_scitem_usables.player_usable_item_port
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_scitem_usables.player_usable_item_port
+    }
 }
 
 impl<'a> Extract<'a> for PlayerUsableItemPort {
@@ -453,11 +695,21 @@ impl<'a> Extract<'a> for PlayerUsableItemPort {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             item_port: match inst.get("itemPort") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SItemPortDef>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<SItemPortDef>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
                 _ => None,
             },
             use_interaction: match inst.get("useInteraction") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SSharedInteractionParams>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<SSharedInteractionParams>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
                 _ => None,
             },
         }
@@ -475,8 +727,12 @@ pub struct PlayerUsableSlot {
 }
 
 impl Pooled for PlayerUsableSlot {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_usables.player_usable_slot }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_usables.player_usable_slot }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_scitem_usables.player_usable_slot
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_scitem_usables.player_usable_slot
+    }
 }
 
 impl<'a> Extract<'a> for PlayerUsableSlot {
@@ -484,22 +740,51 @@ impl<'a> Extract<'a> for PlayerUsableSlot {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             use_slot: match inst.get("useSlot") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<UsableUseSlot>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<UsableUseSlot>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
                 _ => None,
             },
-            player_usable_interaction_points: inst.get_array("playerUsableInteractionPoints")
-                .map(|arr| arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<PlayerUsableInteractionPoint>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r) => Some(b.alloc_nested::<PlayerUsableInteractionPoint>(b.db.instance(r.struct_index, r.instance_index), true)),
+            player_usable_interaction_points: inst
+                .get_array("playerUsableInteractionPoints")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<PlayerUsableInteractionPoint>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => Some(b.alloc_nested::<PlayerUsableInteractionPoint>(
+                            b.db.instance(r.struct_index, r.instance_index),
+                            true,
+                        )),
                         _ => None,
-                    }).collect())
+                    })
+                    .collect()
+                })
                 .unwrap_or_default(),
-            player_usable_item_ports: inst.get_array("playerUsableItemPorts")
-                .map(|arr| arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<PlayerUsableItemPort>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r) => Some(b.alloc_nested::<PlayerUsableItemPort>(b.db.instance(r.struct_index, r.instance_index), true)),
+            player_usable_item_ports: inst
+                .get_array("playerUsableItemPorts")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<PlayerUsableItemPort>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => Some(b.alloc_nested::<PlayerUsableItemPort>(
+                            b.db.instance(r.struct_index, r.instance_index),
+                            true,
+                        )),
                         _ => None,
-                    }).collect())
+                    })
+                    .collect()
+                })
                 .unwrap_or_default(),
         }
     }
@@ -516,8 +801,16 @@ pub struct PlayerUsableUseChannelInstance {
 }
 
 impl Pooled for PlayerUsableUseChannelInstance {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_usables.player_usable_use_channel_instance }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_usables.player_usable_use_channel_instance }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_scitem_usables
+            .player_usable_use_channel_instance
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_scitem_usables
+            .player_usable_use_channel_instance
+    }
 }
 
 impl<'a> Extract<'a> for PlayerUsableUseChannelInstance {
@@ -525,16 +818,37 @@ impl<'a> Extract<'a> for PlayerUsableUseChannelInstance {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             use_channel_instance: match inst.get("useChannelInstance") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<UsableUseChannelInstance>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<UsableUseChannelInstance>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
                 _ => None,
             },
-            delink_on_enter_complete: EDelinkMode::from_dcb_str(inst.get_str("delinkOnEnterComplete").unwrap_or("")),
-            available_action_groups: inst.get_array("availableActionGroups")
-                .map(|arr| arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<UsableChannelInputActionGroup>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r) => Some(b.alloc_nested::<UsableChannelInputActionGroup>(b.db.instance(r.struct_index, r.instance_index), true)),
+            delink_on_enter_complete: EDelinkMode::from_dcb_str(
+                inst.get_str("delinkOnEnterComplete").unwrap_or(""),
+            ),
+            available_action_groups: inst
+                .get_array("availableActionGroups")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<UsableChannelInputActionGroup>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => {
+                            Some(b.alloc_nested::<UsableChannelInputActionGroup>(
+                                b.db.instance(r.struct_index, r.instance_index),
+                                true,
+                            ))
+                        }
                         _ => None,
-                    }).collect())
+                    })
+                    .collect()
+                })
                 .unwrap_or_default(),
         }
     }
@@ -551,8 +865,12 @@ pub struct PlayerUsableView {
 }
 
 impl Pooled for PlayerUsableView {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_usables.player_usable_view }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_usables.player_usable_view }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_scitem_usables.player_usable_view
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_scitem_usables.player_usable_view
+    }
 }
 
 impl<'a> Extract<'a> for PlayerUsableView {
@@ -560,9 +878,17 @@ impl<'a> Extract<'a> for PlayerUsableView {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             focus_on_user: inst.get_bool("focusOnUser").unwrap_or_default(),
-            camera_view: inst.get("cameraView").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            camera_view: inst
+                .get("cameraView")
+                .and_then(|v| v.as_record_ref())
+                .map(|r| r.guid),
             transition_params: match inst.get("transitionParams") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<CameraTransitionParams>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<CameraTransitionParams>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
                 _ => None,
             },
         }
@@ -585,44 +911,97 @@ pub struct SPlayerUsableParams {
 }
 
 impl Pooled for SPlayerUsableParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_usables.splayer_usable_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_usables.splayer_usable_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_scitem_usables.splayer_usable_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_scitem_usables.splayer_usable_params
+    }
 }
 
 impl<'a> Extract<'a> for SPlayerUsableParams {
     const TYPE_NAME: &'static str = "SPlayerUsableParams";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            player_usable_slots: inst.get_array("playerUsableSlots")
-                .map(|arr| arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<PlayerUsableSlot>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r) => Some(b.alloc_nested::<PlayerUsableSlot>(b.db.instance(r.struct_index, r.instance_index), true)),
+            player_usable_slots: inst
+                .get_array("playerUsableSlots")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<PlayerUsableSlot>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => Some(b.alloc_nested::<PlayerUsableSlot>(
+                            b.db.instance(r.struct_index, r.instance_index),
+                            true,
+                        )),
                         _ => None,
-                    }).collect())
+                    })
+                    .collect()
+                })
                 .unwrap_or_default(),
-            player_use_channels: inst.get_array("playerUseChannels")
-                .map(|arr| arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<PlayerUsableUseChannelInstance>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r) => Some(b.alloc_nested::<PlayerUsableUseChannelInstance>(b.db.instance(r.struct_index, r.instance_index), true)),
+            player_use_channels: inst
+                .get_array("playerUseChannels")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<PlayerUsableUseChannelInstance>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => {
+                            Some(b.alloc_nested::<PlayerUsableUseChannelInstance>(
+                                b.db.instance(r.struct_index, r.instance_index),
+                                true,
+                            ))
+                        }
                         _ => None,
-                    }).collect())
+                    })
+                    .collect()
+                })
                 .unwrap_or_default(),
-            sequencer_tasks: inst.get_array("sequencerTasks")
-                .map(|arr| arr.filter_map(|v| match v {
-                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => Some(SSequencerPlayerUsableTaskParamsPtr::from_ref(b, r)),
+            sequencer_tasks: inst
+                .get_array("sequencerTasks")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => {
+                            Some(SSequencerPlayerUsableTaskParamsPtr::from_ref(b, r))
+                        }
                         _ => None,
-                    }).collect())
+                    })
+                    .collect()
+                })
                 .unwrap_or_default(),
             specialized_data: match inst.get("specializedData") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SSpecializedData>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<SSpecializedData>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
-            views: inst.get_array("views")
-                .map(|arr| arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<PlayerUsableView>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r) => Some(b.alloc_nested::<PlayerUsableView>(b.db.instance(r.struct_index, r.instance_index), true)),
+            views: inst
+                .get_array("views")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<PlayerUsableView>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => Some(b.alloc_nested::<PlayerUsableView>(
+                            b.db.instance(r.struct_index, r.instance_index),
+                            true,
+                        )),
                         _ => None,
-                    }).collect())
+                    })
+                    .collect()
+                })
                 .unwrap_or_default(),
         }
     }
@@ -630,19 +1009,21 @@ impl<'a> Extract<'a> for SPlayerUsableParams {
 
 /// DCB type: `MedBedProviderParams`
 /// Inherits from: `DataForgeComponentParams`
-pub struct MedBedProviderParams {
-}
+pub struct MedBedProviderParams {}
 
 impl Pooled for MedBedProviderParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_usables.med_bed_provider_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_usables.med_bed_provider_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_scitem_usables.med_bed_provider_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_scitem_usables.med_bed_provider_params
+    }
 }
 
 impl<'a> Extract<'a> for MedBedProviderParams {
     const TYPE_NAME: &'static str = "MedBedProviderParams";
     fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
-        }
+        Self {}
     }
 }
 
@@ -657,17 +1038,34 @@ pub struct MedBedSurgeryNamesInjurySeverity {
 }
 
 impl Pooled for MedBedSurgeryNamesInjurySeverity {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_usables.med_bed_surgery_names_injury_severity }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_usables.med_bed_surgery_names_injury_severity }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_scitem_usables
+            .med_bed_surgery_names_injury_severity
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_scitem_usables
+            .med_bed_surgery_names_injury_severity
+    }
 }
 
 impl<'a> Extract<'a> for MedBedSurgeryNamesInjurySeverity {
     const TYPE_NAME: &'static str = "MedBedSurgeryNamesInjurySeverity";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            injury_name: inst.get_str("injuryName").map(LocaleKey::from).unwrap_or_default(),
-            major_injury_name: inst.get_str("majorInjuryName").map(LocaleKey::from).unwrap_or_default(),
-            deadly_injury_name: inst.get_str("deadlyInjuryName").map(LocaleKey::from).unwrap_or_default(),
+            injury_name: inst
+                .get_str("injuryName")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
+            major_injury_name: inst
+                .get_str("majorInjuryName")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
+            deadly_injury_name: inst
+                .get_str("deadlyInjuryName")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
         }
     }
 }
@@ -689,8 +1087,12 @@ pub struct MedBedSurgeryNames {
 }
 
 impl Pooled for MedBedSurgeryNames {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_usables.med_bed_surgery_names }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_usables.med_bed_surgery_names }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_scitem_usables.med_bed_surgery_names
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_scitem_usables.med_bed_surgery_names
+    }
 }
 
 impl<'a> Extract<'a> for MedBedSurgeryNames {
@@ -698,27 +1100,57 @@ impl<'a> Extract<'a> for MedBedSurgeryNames {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             head_injuries: match inst.get("headInjuries") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<MedBedSurgeryNamesInjurySeverity>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<MedBedSurgeryNamesInjurySeverity>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             torso_injuries: match inst.get("torsoInjuries") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<MedBedSurgeryNamesInjurySeverity>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<MedBedSurgeryNamesInjurySeverity>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             left_arm_injuries: match inst.get("leftArmInjuries") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<MedBedSurgeryNamesInjurySeverity>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<MedBedSurgeryNamesInjurySeverity>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             right_arm_injuries: match inst.get("rightArmInjuries") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<MedBedSurgeryNamesInjurySeverity>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<MedBedSurgeryNamesInjurySeverity>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             left_leg_injuries: match inst.get("leftLegInjuries") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<MedBedSurgeryNamesInjurySeverity>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<MedBedSurgeryNamesInjurySeverity>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             right_leg_injuries: match inst.get("rightLegInjuries") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<MedBedSurgeryNamesInjurySeverity>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<MedBedSurgeryNamesInjurySeverity>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
         }
@@ -732,8 +1164,12 @@ pub struct MedBedRespawnRangeOverride {
 }
 
 impl Pooled for MedBedRespawnRangeOverride {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_usables.med_bed_respawn_range_override }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_usables.med_bed_respawn_range_override }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_scitem_usables.med_bed_respawn_range_override
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_scitem_usables.med_bed_respawn_range_override
+    }
 }
 
 impl<'a> Extract<'a> for MedBedRespawnRangeOverride {
@@ -787,8 +1223,12 @@ pub struct MedBedComponentParams {
 }
 
 impl Pooled for MedBedComponentParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_usables.med_bed_component_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_usables.med_bed_component_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_scitem_usables.med_bed_component_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_scitem_usables.med_bed_component_params
+    }
 }
 
 impl<'a> Extract<'a> for MedBedComponentParams {
@@ -796,54 +1236,109 @@ impl<'a> Extract<'a> for MedBedComponentParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             heal_interaction: match inst.get("healInteraction") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SSharedInteractionParams>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<SSharedInteractionParams>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
                 _ => None,
             },
             set_respawn_interaction: match inst.get("setRespawnInteraction") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SSharedInteractionParams>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<SSharedInteractionParams>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
                 _ => None,
             },
             cancel_respawn_interaction: match inst.get("cancelRespawnInteraction") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SSharedInteractionParams>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<SSharedInteractionParams>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
                 _ => None,
             },
             cancel_all_respawns_interaction: match inst.get("cancelAllRespawnsInteraction") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SSharedInteractionParams>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<SSharedInteractionParams>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
                 _ => None,
             },
             respawn_interaction: match inst.get("respawnInteraction") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SSharedInteractionParams>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<SSharedInteractionParams>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
                 _ => None,
             },
             respawn_interaction_point: match inst.get("respawnInteractionPoint") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SInteractionPointParams>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<SInteractionPointParams>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
                 _ => None,
             },
             use_channel_to_heal_actor: match inst.get("useChannelToHealActor") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<UsableUseChannelInstance>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<UsableUseChannelInstance>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
                 _ => None,
             },
             surgery_sequence_state: match inst.get("surgerySequenceState") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SInteractionState>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<SInteractionState>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
                 _ => None,
             },
             respawn_range_override: match inst.get("respawnRangeOverride") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<MedBedRespawnRangeOverride>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<MedBedRespawnRangeOverride>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
                 _ => None,
             },
             time_to_heal: inst.get_f32("timeToHeal").unwrap_or_default(),
             delay_before_heal: inst.get_f32("delayBeforeHeal").unwrap_or_default(),
             med_bed_tier: MedBedTier::from_dcb_str(inst.get_str("medBedTier").unwrap_or("")),
-            medical_item_tier_config: inst.get("medicalItemTierConfig").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            medical_item_tier_config: inst
+                .get("medicalItemTierConfig")
+                .and_then(|v| v.as_record_ref())
+                .map(|r| r.guid),
             can_respawn_here: inst.get_bool("canRespawnHere").unwrap_or_default(),
             invulnerable_user: inst.get_bool("invulnerableUser").unwrap_or_default(),
             invulnerable_duration: inst.get_f32("invulnerableDuration").unwrap_or_default(),
             surgery_names: match inst.get("surgeryNames") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<MedBedSurgeryNames>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<MedBedSurgeryNames>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             resource_regeneration_per_minute: match inst.get("resourceRegenerationPerMinute") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(SBaseCargoUnitPtr::from_ref(b, r)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(SBaseCargoUnitPtr::from_ref(b, r))
+                }
                 _ => None,
             },
         }
@@ -852,37 +1347,49 @@ impl<'a> Extract<'a> for MedBedComponentParams {
 
 /// DCB type: `MedicalSkeletonUIProviderParams`
 /// Inherits from: `DataForgeComponentParams`
-pub struct MedicalSkeletonUIProviderParams {
-}
+pub struct MedicalSkeletonUIProviderParams {}
 
 impl Pooled for MedicalSkeletonUIProviderParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_usables.medical_skeleton_uiprovider_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_usables.medical_skeleton_uiprovider_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_scitem_usables
+            .medical_skeleton_uiprovider_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_scitem_usables
+            .medical_skeleton_uiprovider_params
+    }
 }
 
 impl<'a> Extract<'a> for MedicalSkeletonUIProviderParams {
     const TYPE_NAME: &'static str = "MedicalSkeletonUIProviderParams";
     fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
-        }
+        Self {}
     }
 }
 
 /// DCB type: `LinkedCloneLocationMedicalTier`
 /// Inherits from: `CloneLocationMedicalTier`
-pub struct LinkedCloneLocationMedicalTier {
-}
+pub struct LinkedCloneLocationMedicalTier {}
 
 impl Pooled for LinkedCloneLocationMedicalTier {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_usables.linked_clone_location_medical_tier }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_usables.linked_clone_location_medical_tier }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_scitem_usables
+            .linked_clone_location_medical_tier
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_scitem_usables
+            .linked_clone_location_medical_tier
+    }
 }
 
 impl<'a> Extract<'a> for LinkedCloneLocationMedicalTier {
     const TYPE_NAME: &'static str = "LinkedCloneLocationMedicalTier";
     fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
-        }
+        Self {}
     }
 }
 
@@ -894,15 +1401,25 @@ pub struct SetCloneLocationMedicalTier {
 }
 
 impl Pooled for SetCloneLocationMedicalTier {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_usables.set_clone_location_medical_tier }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_usables.set_clone_location_medical_tier }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_scitem_usables
+            .set_clone_location_medical_tier
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_scitem_usables
+            .set_clone_location_medical_tier
+    }
 }
 
 impl<'a> Extract<'a> for SetCloneLocationMedicalTier {
     const TYPE_NAME: &'static str = "SetCloneLocationMedicalTier";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            location_medical_tier: MedBedTier::from_dcb_str(inst.get_str("locationMedicalTier").unwrap_or("")),
+            location_medical_tier: MedBedTier::from_dcb_str(
+                inst.get_str("locationMedicalTier").unwrap_or(""),
+            ),
         }
     }
 }
@@ -915,8 +1432,16 @@ pub struct CloneLocationUIProviderParams {
 }
 
 impl Pooled for CloneLocationUIProviderParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_usables.clone_location_uiprovider_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_usables.clone_location_uiprovider_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_scitem_usables
+            .clone_location_uiprovider_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_scitem_usables
+            .clone_location_uiprovider_params
+    }
 }
 
 impl<'a> Extract<'a> for CloneLocationUIProviderParams {
@@ -924,7 +1449,9 @@ impl<'a> Extract<'a> for CloneLocationUIProviderParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             medical_tier: match inst.get("medicalTier") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(CloneLocationMedicalTierPtr::from_ref(b, r)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(CloneLocationMedicalTierPtr::from_ref(b, r))
+                }
                 _ => None,
             },
         }
@@ -933,19 +1460,25 @@ impl<'a> Extract<'a> for CloneLocationUIProviderParams {
 
 /// DCB type: `SEntityComponentPersistentEntityEntitlementSpawnerParams`
 /// Inherits from: `DataForgeComponentParams`
-pub struct SEntityComponentPersistentEntityEntitlementSpawnerParams {
-}
+pub struct SEntityComponentPersistentEntityEntitlementSpawnerParams {}
 
 impl Pooled for SEntityComponentPersistentEntityEntitlementSpawnerParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_usables.sentity_component_persistent_entity_entitlement_spawner_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_usables.sentity_component_persistent_entity_entitlement_spawner_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_scitem_usables
+            .sentity_component_persistent_entity_entitlement_spawner_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_scitem_usables
+            .sentity_component_persistent_entity_entitlement_spawner_params
+    }
 }
 
 impl<'a> Extract<'a> for SEntityComponentPersistentEntityEntitlementSpawnerParams {
     const TYPE_NAME: &'static str = "SEntityComponentPersistentEntityEntitlementSpawnerParams";
     fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
-        }
+        Self {}
     }
 }
 
@@ -959,8 +1492,16 @@ pub struct SSequencerImmediateDespawnDespawnerTaskParams {
 }
 
 impl Pooled for SSequencerImmediateDespawnDespawnerTaskParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_usables.ssequencer_immediate_despawn_despawner_task_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_usables.ssequencer_immediate_despawn_despawner_task_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_scitem_usables
+            .ssequencer_immediate_despawn_despawner_task_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_scitem_usables
+            .ssequencer_immediate_despawn_despawner_task_params
+    }
 }
 
 impl<'a> Extract<'a> for SSequencerImmediateDespawnDespawnerTaskParams {
@@ -968,11 +1509,20 @@ impl<'a> Extract<'a> for SSequencerImmediateDespawnDespawnerTaskParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             name: inst.get_str("name").map(String::from).unwrap_or_default(),
-            immediate_despawn_ports: inst.get_array("immediateDespawnPorts")
-                .map(|arr| arr.filter_map(|v| match v {
-                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => Some(b.alloc_nested::<SItemPortDef>(b.db.instance(r.struct_index, r.instance_index), true)),
+            immediate_despawn_ports: inst
+                .get_array("immediateDespawnPorts")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => {
+                            Some(b.alloc_nested::<SItemPortDef>(
+                                b.db.instance(r.struct_index, r.instance_index),
+                                true,
+                            ))
+                        }
                         _ => None,
-                    }).collect())
+                    })
+                    .collect()
+                })
                 .unwrap_or_default(),
         }
     }
@@ -986,15 +1536,26 @@ pub struct EntityEffectSystem_EnableSequencerTask {
 }
 
 impl Pooled for EntityEffectSystem_EnableSequencerTask {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_usables.entity_effect_system_enable_sequencer_task }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_usables.entity_effect_system_enable_sequencer_task }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_scitem_usables
+            .entity_effect_system_enable_sequencer_task
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_scitem_usables
+            .entity_effect_system_enable_sequencer_task
+    }
 }
 
 impl<'a> Extract<'a> for EntityEffectSystem_EnableSequencerTask {
     const TYPE_NAME: &'static str = "EntityEffectSystem_EnableSequencerTask";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            tag: inst.get("tag").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            tag: inst
+                .get("tag")
+                .and_then(|v| v.as_record_ref())
+                .map(|r| r.guid),
         }
     }
 }
@@ -1007,34 +1568,51 @@ pub struct EntityEffectSystem_DisableSequencerTask {
 }
 
 impl Pooled for EntityEffectSystem_DisableSequencerTask {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_usables.entity_effect_system_disable_sequencer_task }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_usables.entity_effect_system_disable_sequencer_task }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_scitem_usables
+            .entity_effect_system_disable_sequencer_task
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_scitem_usables
+            .entity_effect_system_disable_sequencer_task
+    }
 }
 
 impl<'a> Extract<'a> for EntityEffectSystem_DisableSequencerTask {
     const TYPE_NAME: &'static str = "EntityEffectSystem_DisableSequencerTask";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            tag: inst.get("tag").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            tag: inst
+                .get("tag")
+                .and_then(|v| v.as_record_ref())
+                .map(|r| r.guid),
         }
     }
 }
 
 /// DCB type: `HospitalCheckinScreenComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-pub struct HospitalCheckinScreenComponentParams {
-}
+pub struct HospitalCheckinScreenComponentParams {}
 
 impl Pooled for HospitalCheckinScreenComponentParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_usables.hospital_checkin_screen_component_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_usables.hospital_checkin_screen_component_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_scitem_usables
+            .hospital_checkin_screen_component_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_scitem_usables
+            .hospital_checkin_screen_component_params
+    }
 }
 
 impl<'a> Extract<'a> for HospitalCheckinScreenComponentParams {
     const TYPE_NAME: &'static str = "HospitalCheckinScreenComponentParams";
     fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
-        }
+        Self {}
     }
 }
 
@@ -1048,8 +1626,16 @@ pub struct InteractionConditionEmptyUsableItemPort {
 }
 
 impl Pooled for InteractionConditionEmptyUsableItemPort {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_usables.interaction_condition_empty_usable_item_port }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_usables.interaction_condition_empty_usable_item_port }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_scitem_usables
+            .interaction_condition_empty_usable_item_port
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_scitem_usables
+            .interaction_condition_empty_usable_item_port
+    }
 }
 
 impl<'a> Extract<'a> for InteractionConditionEmptyUsableItemPort {
@@ -1057,10 +1643,18 @@ impl<'a> Extract<'a> for InteractionConditionEmptyUsableItemPort {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             condition_display: match inst.get("conditionDisplay") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<ConditionDisplayParams>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<ConditionDisplayParams>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
                 _ => None,
             },
-            item_port_tag: inst.get_str("itemPortTag").map(String::from).unwrap_or_default(),
+            item_port_tag: inst
+                .get_str("itemPortTag")
+                .map(String::from)
+                .unwrap_or_default(),
         }
     }
 }
@@ -1075,8 +1669,16 @@ pub struct InteractionConditionUsableAlignmentSlotEmpty {
 }
 
 impl Pooled for InteractionConditionUsableAlignmentSlotEmpty {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_usables.interaction_condition_usable_alignment_slot_empty }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_usables.interaction_condition_usable_alignment_slot_empty }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_scitem_usables
+            .interaction_condition_usable_alignment_slot_empty
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_scitem_usables
+            .interaction_condition_usable_alignment_slot_empty
+    }
 }
 
 impl<'a> Extract<'a> for InteractionConditionUsableAlignmentSlotEmpty {
@@ -1084,11 +1686,18 @@ impl<'a> Extract<'a> for InteractionConditionUsableAlignmentSlotEmpty {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             condition_display: match inst.get("conditionDisplay") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<ConditionDisplayParams>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<ConditionDisplayParams>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
                 _ => None,
             },
             alignment_slot: match inst.get("alignmentSlot") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(AlignmentSlotBasePtr::from_ref(b, r)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(AlignmentSlotBasePtr::from_ref(b, r))
+                }
                 _ => None,
             },
         }
@@ -1111,8 +1720,16 @@ pub struct InteractionConditionAvailableSpaceInLinkedUsableItem {
 }
 
 impl Pooled for InteractionConditionAvailableSpaceInLinkedUsableItem {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_usables.interaction_condition_available_space_in_linked_usable_item }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_usables.interaction_condition_available_space_in_linked_usable_item }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_scitem_usables
+            .interaction_condition_available_space_in_linked_usable_item
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_scitem_usables
+            .interaction_condition_available_space_in_linked_usable_item
+    }
 }
 
 impl<'a> Extract<'a> for InteractionConditionAvailableSpaceInLinkedUsableItem {
@@ -1120,11 +1737,22 @@ impl<'a> Extract<'a> for InteractionConditionAvailableSpaceInLinkedUsableItem {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             condition_display: match inst.get("conditionDisplay") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<ConditionDisplayParams>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<ConditionDisplayParams>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
                 _ => None,
             },
-            usable_port_tag: inst.get_str("usablePortTag").map(String::from).unwrap_or_default(),
-            item_port_tag: inst.get_str("itemPortTag").map(String::from).unwrap_or_default(),
+            usable_port_tag: inst
+                .get_str("usablePortTag")
+                .map(String::from)
+                .unwrap_or_default(),
+            item_port_tag: inst
+                .get_str("itemPortTag")
+                .map(String::from)
+                .unwrap_or_default(),
             item_type: EItemType::from_dcb_str(inst.get_str("itemType").unwrap_or("")),
             item_sub_type: EItemSubType::from_dcb_str(inst.get_str("itemSubType").unwrap_or("")),
         }
@@ -1141,8 +1769,16 @@ pub struct InteractionConditionLinkedUsableHasTag {
 }
 
 impl Pooled for InteractionConditionLinkedUsableHasTag {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_usables.interaction_condition_linked_usable_has_tag }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_usables.interaction_condition_linked_usable_has_tag }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_scitem_usables
+            .interaction_condition_linked_usable_has_tag
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_scitem_usables
+            .interaction_condition_linked_usable_has_tag
+    }
 }
 
 impl<'a> Extract<'a> for InteractionConditionLinkedUsableHasTag {
@@ -1150,11 +1786,19 @@ impl<'a> Extract<'a> for InteractionConditionLinkedUsableHasTag {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             condition_display: match inst.get("conditionDisplay") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<ConditionDisplayParams>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<ConditionDisplayParams>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
                 _ => None,
             },
             usable_tags: match inst.get("usableTags") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<TagsDNFTerm>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<TagsDNFTerm>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
         }
@@ -1173,23 +1817,48 @@ pub struct SResourceContainerStateModifier {
 }
 
 impl Pooled for SResourceContainerStateModifier {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_usables.sresource_container_state_modifier }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_usables.sresource_container_state_modifier }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_scitem_usables
+            .sresource_container_state_modifier
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_scitem_usables
+            .sresource_container_state_modifier
+    }
 }
 
 impl<'a> Extract<'a> for SResourceContainerStateModifier {
     const TYPE_NAME: &'static str = "SResourceContainerStateModifier";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            state_ranges: inst.get_array("stateRanges")
-                .map(|arr| arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<SRangeStateLevel>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r) => Some(b.alloc_nested::<SRangeStateLevel>(b.db.instance(r.struct_index, r.instance_index), true)),
+            state_ranges: inst
+                .get_array("stateRanges")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<SRangeStateLevel>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => Some(b.alloc_nested::<SRangeStateLevel>(
+                            b.db.instance(r.struct_index, r.instance_index),
+                            true,
+                        )),
                         _ => None,
-                    }).collect())
+                    })
+                    .collect()
+                })
                 .unwrap_or_default(),
-            container_resource: inst.get("containerResource").and_then(|v| v.as_record_ref()).map(|r| r.guid),
-            use_actual_occupancy_value: inst.get_bool("useActualOccupancyValue").unwrap_or_default(),
+            container_resource: inst
+                .get("containerResource")
+                .and_then(|v| v.as_record_ref())
+                .map(|r| r.guid),
+            use_actual_occupancy_value: inst
+                .get_bool("useActualOccupancyValue")
+                .unwrap_or_default(),
         }
     }
 }
@@ -1202,8 +1871,16 @@ pub struct SItemPortRule_TriggerSequenceDef {
 }
 
 impl Pooled for SItemPortRule_TriggerSequenceDef {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_usables.sitem_port_rule_trigger_sequence_def }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_usables.sitem_port_rule_trigger_sequence_def }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_scitem_usables
+            .sitem_port_rule_trigger_sequence_def
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_scitem_usables
+            .sitem_port_rule_trigger_sequence_def
+    }
 }
 
 impl<'a> Extract<'a> for SItemPortRule_TriggerSequenceDef {
@@ -1211,7 +1888,9 @@ impl<'a> Extract<'a> for SItemPortRule_TriggerSequenceDef {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             trigger_sequence: match inst.get("triggerSequence") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(SSequencerDefSequenceParamsPtr::from_ref(b, r)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(SSequencerDefSequenceParamsPtr::from_ref(b, r))
+                }
                 _ => None,
             },
         }
@@ -1231,22 +1910,44 @@ pub struct UsableChannelInputActionGroup {
 }
 
 impl Pooled for UsableChannelInputActionGroup {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_usables.usable_channel_input_action_group }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_usables.usable_channel_input_action_group }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_scitem_usables
+            .usable_channel_input_action_group
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_scitem_usables
+            .usable_channel_input_action_group
+    }
 }
 
 impl<'a> Extract<'a> for UsableChannelInputActionGroup {
     const TYPE_NAME: &'static str = "UsableChannelInputActionGroup";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            tag: inst.get("tag").and_then(|v| v.as_record_ref()).map(|r| r.guid),
-            hint_description: inst.get_str("hintDescription").map(LocaleKey::from).unwrap_or_default(),
-            activation_mode: ActivationMode::from_dcb_str(inst.get_str("activationMode").unwrap_or("")),
-            actions: inst.get_array("actions")
-                .map(|arr| arr.filter_map(|v| match v {
-                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => Some(UsableChannelInputActionPtr::from_ref(b, r)),
+            tag: inst
+                .get("tag")
+                .and_then(|v| v.as_record_ref())
+                .map(|r| r.guid),
+            hint_description: inst
+                .get_str("hintDescription")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
+            activation_mode: ActivationMode::from_dcb_str(
+                inst.get_str("activationMode").unwrap_or(""),
+            ),
+            actions: inst
+                .get_array("actions")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => {
+                            Some(UsableChannelInputActionPtr::from_ref(b, r))
+                        }
                         _ => None,
-                    }).collect())
+                    })
+                    .collect()
+                })
                 .unwrap_or_default(),
         }
     }
@@ -1261,8 +1962,12 @@ pub struct UsableChannelInputAction {
 }
 
 impl Pooled for UsableChannelInputAction {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_usables.usable_channel_input_action }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_usables.usable_channel_input_action }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_scitem_usables.usable_channel_input_action
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_scitem_usables.usable_channel_input_action
+    }
 }
 
 impl<'a> Extract<'a> for UsableChannelInputAction {
@@ -1270,11 +1975,19 @@ impl<'a> Extract<'a> for UsableChannelInputAction {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             input_action: match inst.get("inputAction") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<InputAction>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<InputAction>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             interaction_on_action: match inst.get("interactionOnAction") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SSharedInteractionParams>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<SSharedInteractionParams>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
                 _ => None,
             },
         }
@@ -1293,8 +2006,16 @@ pub struct UsableChannelInputAction_ControlInteractive {
 }
 
 impl Pooled for UsableChannelInputAction_ControlInteractive {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_usables.usable_channel_input_action_control_interactive }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_usables.usable_channel_input_action_control_interactive }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_scitem_usables
+            .usable_channel_input_action_control_interactive
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_scitem_usables
+            .usable_channel_input_action_control_interactive
+    }
 }
 
 impl<'a> Extract<'a> for UsableChannelInputAction_ControlInteractive {
@@ -1302,15 +2023,25 @@ impl<'a> Extract<'a> for UsableChannelInputAction_ControlInteractive {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             input_action: match inst.get("inputAction") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<InputAction>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<InputAction>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             interaction_on_action: match inst.get("interactionOnAction") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SSharedInteractionParams>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<SSharedInteractionParams>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
                 _ => None,
             },
             control_variable: match inst.get("controlVariable") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(ControlInteractiveVariablePtr::from_ref(b, r)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(ControlInteractiveVariablePtr::from_ref(b, r))
+                }
                 _ => None,
             },
         }
@@ -1325,8 +2056,16 @@ pub struct InteractiveVariable_BackToDefaultIntParams {
 }
 
 impl Pooled for InteractiveVariable_BackToDefaultIntParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_usables.interactive_variable_back_to_default_int_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_usables.interactive_variable_back_to_default_int_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_scitem_usables
+            .interactive_variable_back_to_default_int_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_scitem_usables
+            .interactive_variable_back_to_default_int_params
+    }
 }
 
 impl<'a> Extract<'a> for InteractiveVariable_BackToDefaultIntParams {
@@ -1346,8 +2085,16 @@ pub struct InteractiveVariable_BackToDefaultFloatParams {
 }
 
 impl Pooled for InteractiveVariable_BackToDefaultFloatParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_usables.interactive_variable_back_to_default_float_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_usables.interactive_variable_back_to_default_float_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_scitem_usables
+            .interactive_variable_back_to_default_float_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_scitem_usables
+            .interactive_variable_back_to_default_float_params
+    }
 }
 
 impl<'a> Extract<'a> for InteractiveVariable_BackToDefaultFloatParams {
@@ -1377,8 +2124,12 @@ pub struct IntInteractiveVariable {
 }
 
 impl Pooled for IntInteractiveVariable {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_usables.int_interactive_variable }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_usables.int_interactive_variable }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_scitem_usables.int_interactive_variable
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_scitem_usables.int_interactive_variable
+    }
 }
 
 impl<'a> Extract<'a> for IntInteractiveVariable {
@@ -1389,9 +2140,16 @@ impl<'a> Extract<'a> for IntInteractiveVariable {
             default_value: inst.get_i32("defaultValue").unwrap_or_default(),
             min_value: inst.get_i32("minValue").unwrap_or_default(),
             max_value: inst.get_i32("maxValue").unwrap_or_default(),
-            loop_type: InteractiveVariableLoopType::from_dcb_str(inst.get_str("loopType").unwrap_or("")),
+            loop_type: InteractiveVariableLoopType::from_dcb_str(
+                inst.get_str("loopType").unwrap_or(""),
+            ),
             back_to_default_params: match inst.get("backToDefaultParams") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<InteractiveVariable_BackToDefaultIntParams>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(
+                    b.alloc_nested::<InteractiveVariable_BackToDefaultIntParams>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ),
+                ),
                 _ => None,
             },
         }
@@ -1416,8 +2174,12 @@ pub struct FloatInteractiveVariable {
 }
 
 impl Pooled for FloatInteractiveVariable {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_usables.float_interactive_variable }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_usables.float_interactive_variable }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_scitem_usables.float_interactive_variable
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_scitem_usables.float_interactive_variable
+    }
 }
 
 impl<'a> Extract<'a> for FloatInteractiveVariable {
@@ -1428,9 +2190,13 @@ impl<'a> Extract<'a> for FloatInteractiveVariable {
             default_value: inst.get_f32("defaultValue").unwrap_or_default(),
             min_value: inst.get_f32("minValue").unwrap_or_default(),
             max_value: inst.get_f32("maxValue").unwrap_or_default(),
-            loop_type: InteractiveVariableLoopType::from_dcb_str(inst.get_str("loopType").unwrap_or("")),
+            loop_type: InteractiveVariableLoopType::from_dcb_str(
+                inst.get_str("loopType").unwrap_or(""),
+            ),
             back_to_default_params: match inst.get("backToDefaultParams") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(InteractiveVariable_BackToDefaultFloatParamsPtr::from_ref(b, r)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(
+                    InteractiveVariable_BackToDefaultFloatParamsPtr::from_ref(b, r),
+                ),
                 _ => None,
             },
         }
@@ -1446,8 +2212,12 @@ pub struct ControlInteractiveVariable {
 }
 
 impl Pooled for ControlInteractiveVariable {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_usables.control_interactive_variable }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_usables.control_interactive_variable }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_scitem_usables.control_interactive_variable
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_scitem_usables.control_interactive_variable
+    }
 }
 
 impl<'a> Extract<'a> for ControlInteractiveVariable {
@@ -1455,7 +2225,10 @@ impl<'a> Extract<'a> for ControlInteractiveVariable {
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
             name: inst.get_str("name").map(String::from).unwrap_or_default(),
-            fragment_tag: inst.get_str("fragmentTag").map(String::from).unwrap_or_default(),
+            fragment_tag: inst
+                .get_str("fragmentTag")
+                .map(String::from)
+                .unwrap_or_default(),
         }
     }
 }
@@ -1474,8 +2247,16 @@ pub struct ControlIntInteractiveVariable {
 }
 
 impl Pooled for ControlIntInteractiveVariable {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_usables.control_int_interactive_variable }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_usables.control_int_interactive_variable }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_scitem_usables
+            .control_int_interactive_variable
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_scitem_usables
+            .control_int_interactive_variable
+    }
 }
 
 impl<'a> Extract<'a> for ControlIntInteractiveVariable {
@@ -1483,9 +2264,17 @@ impl<'a> Extract<'a> for ControlIntInteractiveVariable {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             name: inst.get_str("name").map(String::from).unwrap_or_default(),
-            fragment_tag: inst.get_str("fragmentTag").map(String::from).unwrap_or_default(),
+            fragment_tag: inst
+                .get_str("fragmentTag")
+                .map(String::from)
+                .unwrap_or_default(),
             variable: match inst.get("variable") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<IntInteractiveVariable>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<IntInteractiveVariable>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
                 _ => None,
             },
             amount_to_change: inst.get_i32("amountToChange").unwrap_or_default(),
@@ -1511,8 +2300,16 @@ pub struct ControlFloatInteractiveVariable {
 }
 
 impl Pooled for ControlFloatInteractiveVariable {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_usables.control_float_interactive_variable }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_usables.control_float_interactive_variable }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_scitem_usables
+            .control_float_interactive_variable
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_scitem_usables
+            .control_float_interactive_variable
+    }
 }
 
 impl<'a> Extract<'a> for ControlFloatInteractiveVariable {
@@ -1520,12 +2317,22 @@ impl<'a> Extract<'a> for ControlFloatInteractiveVariable {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             name: inst.get_str("name").map(String::from).unwrap_or_default(),
-            fragment_tag: inst.get_str("fragmentTag").map(String::from).unwrap_or_default(),
+            fragment_tag: inst
+                .get_str("fragmentTag")
+                .map(String::from)
+                .unwrap_or_default(),
             variable: match inst.get("variable") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<FloatInteractiveVariable>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<FloatInteractiveVariable>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
                 _ => None,
             },
-            use_animation_effective_section: inst.get_bool("useAnimationEffectiveSection").unwrap_or_default(),
+            use_animation_effective_section: inst
+                .get_bool("useAnimationEffectiveSection")
+                .unwrap_or_default(),
             amount_to_change: inst.get_f32("amountToChange").unwrap_or_default(),
             animation_cycle: inst.get_f32("animationCycle").unwrap_or_default(),
         }
@@ -1546,41 +2353,101 @@ pub struct SCLinkedInteractiveControllerParams {
 }
 
 impl Pooled for SCLinkedInteractiveControllerParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_usables.sclinked_interactive_controller_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_usables.sclinked_interactive_controller_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_scitem_usables
+            .sclinked_interactive_controller_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_scitem_usables
+            .sclinked_interactive_controller_params
+    }
 }
 
 impl<'a> Extract<'a> for SCLinkedInteractiveControllerParams {
     const TYPE_NAME: &'static str = "SCLinkedInteractiveControllerParams";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            ints: inst.get_array("ints")
-                .map(|arr| arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<IntInteractiveVariable>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r) => Some(b.alloc_nested::<IntInteractiveVariable>(b.db.instance(r.struct_index, r.instance_index), true)),
+            ints: inst
+                .get_array("ints")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<IntInteractiveVariable>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => Some(b.alloc_nested::<IntInteractiveVariable>(
+                            b.db.instance(r.struct_index, r.instance_index),
+                            true,
+                        )),
                         _ => None,
-                    }).collect())
+                    })
+                    .collect()
+                })
                 .unwrap_or_default(),
-            control_int_variables: inst.get_array("controlIntVariables")
-                .map(|arr| arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<ControlIntInteractiveVariable>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r) => Some(b.alloc_nested::<ControlIntInteractiveVariable>(b.db.instance(r.struct_index, r.instance_index), true)),
+            control_int_variables: inst
+                .get_array("controlIntVariables")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<ControlIntInteractiveVariable>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => {
+                            Some(b.alloc_nested::<ControlIntInteractiveVariable>(
+                                b.db.instance(r.struct_index, r.instance_index),
+                                true,
+                            ))
+                        }
                         _ => None,
-                    }).collect())
+                    })
+                    .collect()
+                })
                 .unwrap_or_default(),
-            floats: inst.get_array("floats")
-                .map(|arr| arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<FloatInteractiveVariable>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r) => Some(b.alloc_nested::<FloatInteractiveVariable>(b.db.instance(r.struct_index, r.instance_index), true)),
+            floats: inst
+                .get_array("floats")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<FloatInteractiveVariable>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => Some(b.alloc_nested::<FloatInteractiveVariable>(
+                            b.db.instance(r.struct_index, r.instance_index),
+                            true,
+                        )),
                         _ => None,
-                    }).collect())
+                    })
+                    .collect()
+                })
                 .unwrap_or_default(),
-            control_float_variables: inst.get_array("controlFloatVariables")
-                .map(|arr| arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<ControlFloatInteractiveVariable>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r) => Some(b.alloc_nested::<ControlFloatInteractiveVariable>(b.db.instance(r.struct_index, r.instance_index), true)),
+            control_float_variables: inst
+                .get_array("controlFloatVariables")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<ControlFloatInteractiveVariable>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => {
+                            Some(b.alloc_nested::<ControlFloatInteractiveVariable>(
+                                b.db.instance(r.struct_index, r.instance_index),
+                                true,
+                            ))
+                        }
                         _ => None,
-                    }).collect())
+                    })
+                    .collect()
+                })
                 .unwrap_or_default(),
         }
     }
@@ -1593,16 +2460,30 @@ pub struct UsableArchetypes {
 }
 
 impl Pooled for UsableArchetypes {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_usables.usable_archetypes }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_usables.usable_archetypes }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_scitem_usables.usable_archetypes
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_scitem_usables.usable_archetypes
+    }
 }
 
 impl<'a> Extract<'a> for UsableArchetypes {
     const TYPE_NAME: &'static str = "UsableArchetypes";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            archetypes: inst.get_array("archetypes")
-                .map(|arr| arr.filter_map(|v| if let Value::Reference(Some(r)) = v { Some(r.guid) } else { None }).collect())
+            archetypes: inst
+                .get_array("archetypes")
+                .map(|arr| {
+                    arr.filter_map(|v| {
+                        if let Value::Reference(Some(r)) = v {
+                            Some(r.guid)
+                        } else {
+                            None
+                        }
+                    })
+                    .collect()
+                })
                 .unwrap_or_default(),
         }
     }
@@ -1616,8 +2497,16 @@ pub struct SphereAreaAlignmentSlotTypeParams {
 }
 
 impl Pooled for SphereAreaAlignmentSlotTypeParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_usables.sphere_area_alignment_slot_type_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_usables.sphere_area_alignment_slot_type_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_scitem_usables
+            .sphere_area_alignment_slot_type_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_scitem_usables
+            .sphere_area_alignment_slot_type_params
+    }
 }
 
 impl<'a> Extract<'a> for SphereAreaAlignmentSlotTypeParams {
@@ -1646,42 +2535,59 @@ pub struct SUsableRoutingSettings {
 }
 
 impl Pooled for SUsableRoutingSettings {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_usables.susable_routing_settings }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_usables.susable_routing_settings }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_scitem_usables.susable_routing_settings
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_scitem_usables.susable_routing_settings
+    }
 }
 
 impl<'a> Extract<'a> for SUsableRoutingSettings {
     const TYPE_NAME: &'static str = "SUsableRoutingSettings";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            use_channel_name: inst.get_str("useChannelName").map(String::from).unwrap_or_default(),
+            use_channel_name: inst
+                .get_str("useChannelName")
+                .map(String::from)
+                .unwrap_or_default(),
             slot_game_tags: match inst.get("slotGameTags") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<TagList>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<TagList>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
-            selection_type: EUsableEntrySelectionType::from_dcb_str(inst.get_str("selectionType").unwrap_or("")),
+            selection_type: EUsableEntrySelectionType::from_dcb_str(
+                inst.get_str("selectionType").unwrap_or(""),
+            ),
             skip_entry: inst.get_bool("skipEntry").unwrap_or_default(),
             verify_nav_mesh: inst.get_bool("verifyNavMesh").unwrap_or_default(),
-            interaction_tag: inst.get("interactionTag").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            interaction_tag: inst
+                .get("interactionTag")
+                .and_then(|v| v.as_record_ref())
+                .map(|r| r.guid),
         }
     }
 }
 
 /// DCB type: `SSequencerUsableDelinkTask`
 /// Inherits from: `SSequencerUsableTask`
-pub struct SSequencerUsableDelinkTask {
-}
+pub struct SSequencerUsableDelinkTask {}
 
 impl Pooled for SSequencerUsableDelinkTask {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_usables.ssequencer_usable_delink_task }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_usables.ssequencer_usable_delink_task }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_scitem_usables.ssequencer_usable_delink_task
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_scitem_usables.ssequencer_usable_delink_task
+    }
 }
 
 impl<'a> Extract<'a> for SSequencerUsableDelinkTask {
     const TYPE_NAME: &'static str = "SSequencerUsableDelinkTask";
     fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
-        }
+        Self {}
     }
 }
 
@@ -1701,17 +2607,31 @@ pub struct SSequencerUsableFillConsumableTaskParams {
 }
 
 impl Pooled for SSequencerUsableFillConsumableTaskParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_usables.ssequencer_usable_fill_consumable_task_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_usables.ssequencer_usable_fill_consumable_task_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_scitem_usables
+            .ssequencer_usable_fill_consumable_task_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_scitem_usables
+            .ssequencer_usable_fill_consumable_task_params
+    }
 }
 
 impl<'a> Extract<'a> for SSequencerUsableFillConsumableTaskParams {
     const TYPE_NAME: &'static str = "SSequencerUsableFillConsumableTaskParams";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            item_port_tag: inst.get_str("itemPortTag").map(String::from).unwrap_or_default(),
+            item_port_tag: inst
+                .get_str("itemPortTag")
+                .map(String::from)
+                .unwrap_or_default(),
             use_reserved_contents: inst.get_bool("useReservedContents").unwrap_or_default(),
-            content_type: inst.get_str("contentType").map(String::from).unwrap_or_default(),
+            content_type: inst
+                .get_str("contentType")
+                .map(String::from)
+                .unwrap_or_default(),
             duration: inst.get_f32("duration").unwrap_or_default(),
             amount_to_add: inst.get_f32("amountToAdd").unwrap_or_default(),
         }
@@ -1731,8 +2651,12 @@ pub struct CameraTransitionParams {
 }
 
 impl Pooled for CameraTransitionParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_usables.camera_transition_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_usables.camera_transition_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_scitem_usables.camera_transition_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_scitem_usables.camera_transition_params
+    }
 }
 
 impl<'a> Extract<'a> for CameraTransitionParams {
@@ -1742,8 +2666,10 @@ impl<'a> Extract<'a> for CameraTransitionParams {
             transition_time: inst.get_f32("transitionTime").unwrap_or_default(),
             is_cinematic: inst.get_bool("isCinematic").unwrap_or_default(),
             near_face_distance_sq: inst.get_f32("nearFaceDistanceSq").unwrap_or_default(),
-            interpolation_to_point: inst.get("interpolationToPoint").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            interpolation_to_point: inst
+                .get("interpolationToPoint")
+                .and_then(|v| v.as_record_ref())
+                .map(|r| r.guid),
         }
     }
 }
-

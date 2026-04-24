@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -29,30 +29,59 @@ pub struct AnimatedMarker_Marker {
 }
 
 impl Pooled for AnimatedMarker_Marker {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_animatedmarkers.animated_marker_marker }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_animatedmarkers.animated_marker_marker }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.ui_animatedmarkers.animated_marker_marker
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.ui_animatedmarkers.animated_marker_marker
+    }
 }
 
 impl<'a> Extract<'a> for AnimatedMarker_Marker {
     const TYPE_NAME: &'static str = "AnimatedMarker_Marker";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            matrix_stack_id: inst.get_array("matrixStackID")
+            matrix_stack_id: inst
+                .get_array("matrixStackID")
                 .map(|arr| arr.filter_map(|v| v.as_str().map(String::from)).collect())
                 .unwrap_or_default(),
-            timelines: inst.get_array("timelines")
-                .map(|arr| arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<AnimationGraph_Timeline>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r) => Some(b.alloc_nested::<AnimationGraph_Timeline>(b.db.instance(r.struct_index, r.instance_index), true)),
+            timelines: inst
+                .get_array("timelines")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<AnimationGraph_Timeline>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => Some(b.alloc_nested::<AnimationGraph_Timeline>(
+                            b.db.instance(r.struct_index, r.instance_index),
+                            true,
+                        )),
                         _ => None,
-                    }).collect())
+                    })
+                    .collect()
+                })
                 .unwrap_or_default(),
-            timers: inst.get_array("timers")
-                .map(|arr| arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<AnimationGraph_Timer>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r) => Some(b.alloc_nested::<AnimationGraph_Timer>(b.db.instance(r.struct_index, r.instance_index), true)),
+            timers: inst
+                .get_array("timers")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<AnimationGraph_Timer>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => Some(b.alloc_nested::<AnimationGraph_Timer>(
+                            b.db.instance(r.struct_index, r.instance_index),
+                            true,
+                        )),
                         _ => None,
-                    }).collect())
+                    })
+                    .collect()
+                })
                 .unwrap_or_default(),
         }
     }
@@ -81,8 +110,12 @@ pub struct AnimatedMarker {
 }
 
 impl Pooled for AnimatedMarker {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_animatedmarkers.animated_marker }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_animatedmarkers.animated_marker }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.ui_animatedmarkers.animated_marker
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.ui_animatedmarkers.animated_marker
+    }
 }
 
 impl<'a> Extract<'a> for AnimatedMarker {
@@ -90,15 +123,25 @@ impl<'a> Extract<'a> for AnimatedMarker {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             name: inst.get_str("name").map(String::from).unwrap_or_default(),
-            object_name: inst.get_str("objectName").map(String::from).unwrap_or_default(),
+            object_name: inst
+                .get_str("objectName")
+                .map(String::from)
+                .unwrap_or_default(),
             do_origin_offset_scale: inst.get_bool("doOriginOffsetScale").unwrap_or_default(),
             origin_offset_scale_min: inst.get_f32("originOffsetScaleMin").unwrap_or_default(),
-            origin_offset_target_bound_inc: inst.get_f32("originOffsetTargetBoundInc").unwrap_or_default(),
+            origin_offset_target_bound_inc: inst
+                .get_f32("originOffsetTargetBoundInc")
+                .unwrap_or_default(),
             matrix_blend_rate: inst.get_f32("matrixBlendRate").unwrap_or_default(),
             lock_lost_length: inst.get_f32("lockLostLength").unwrap_or_default(),
             addition_attachments: inst.get_u32("additionAttachments").unwrap_or_default(),
             markers: match inst.get("markers") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AnimatedMarker_Marker>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<AnimatedMarker_Marker>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
         }
@@ -170,15 +213,22 @@ pub struct CombatMarker {
 }
 
 impl Pooled for CombatMarker {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_animatedmarkers.combat_marker }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_animatedmarkers.combat_marker }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.ui_animatedmarkers.combat_marker
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.ui_animatedmarkers.combat_marker
+    }
 }
 
 impl<'a> Extract<'a> for CombatMarker {
     const TYPE_NAME: &'static str = "CombatMarker";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            object_name: inst.get_str("objectName").map(String::from).unwrap_or_default(),
+            object_name: inst
+                .get_str("objectName")
+                .map(String::from)
+                .unwrap_or_default(),
             minimum_scale: inst.get_f32("minimumScale").unwrap_or_default(),
             inverse_scale_multiplier: inst.get_f32("inverseScaleMultiplier").unwrap_or_default(),
             hit_anim_total_time: inst.get_f32("hitAnimTotalTime").unwrap_or_default(),
@@ -186,33 +236,64 @@ impl<'a> Extract<'a> for CombatMarker {
             ease_type: InterpolationMode::from_dcb_str(inst.get_str("easeType").unwrap_or("")),
             text_offset: inst.get_f32("textOffset").unwrap_or_default(),
             intro_anim_time: inst.get_f32("introAnimTime").unwrap_or_default(),
-            intro_anim_pitch_rotation_frequency: inst.get_f32("introAnimPitchRotationFrequency").unwrap_or_default(),
-            intro_anim_yaw_rotation_frequency: inst.get_f32("introAnimYawRotationFrequency").unwrap_or_default(),
-            intro_anim_roll_rotation_frequency: inst.get_f32("introAnimRollRotationFrequency").unwrap_or_default(),
-            intro_anim_ease_type: InterpolationMode::from_dcb_str(inst.get_str("introAnimEaseType").unwrap_or("")),
+            intro_anim_pitch_rotation_frequency: inst
+                .get_f32("introAnimPitchRotationFrequency")
+                .unwrap_or_default(),
+            intro_anim_yaw_rotation_frequency: inst
+                .get_f32("introAnimYawRotationFrequency")
+                .unwrap_or_default(),
+            intro_anim_roll_rotation_frequency: inst
+                .get_f32("introAnimRollRotationFrequency")
+                .unwrap_or_default(),
+            intro_anim_ease_type: InterpolationMode::from_dcb_str(
+                inst.get_str("introAnimEaseType").unwrap_or(""),
+            ),
             intro_starting_scale: inst.get_f32("introStartingScale").unwrap_or_default(),
-            intro_starting_offset_scale: inst.get_f32("introStartingOffsetScale").unwrap_or_default(),
+            intro_starting_offset_scale: inst
+                .get_f32("introStartingOffsetScale")
+                .unwrap_or_default(),
             intro_anim_offset: inst.get_f32("introAnimOffset").unwrap_or_default(),
             transition_anim_length: inst.get_f32("transitionAnimLength").unwrap_or_default(),
-            transition_anim_ease_type: InterpolationMode::from_dcb_str(inst.get_str("transitionAnimEaseType").unwrap_or("")),
-            rotational_animation_clamp: inst.get_f32("rotationalAnimationClamp").unwrap_or_default(),
-            rotational_animation_integration_time: inst.get_f32("rotationalAnimationIntegrationTime").unwrap_or_default(),
+            transition_anim_ease_type: InterpolationMode::from_dcb_str(
+                inst.get_str("transitionAnimEaseType").unwrap_or(""),
+            ),
+            rotational_animation_clamp: inst
+                .get_f32("rotationalAnimationClamp")
+                .unwrap_or_default(),
+            rotational_animation_integration_time: inst
+                .get_f32("rotationalAnimationIntegrationTime")
+                .unwrap_or_default(),
             signal_lost_animation_time: inst.get_f32("signalLostAnimationTime").unwrap_or_default(),
-            signal_lost_animation_pulse_frequency: inst.get_f32("signalLostAnimationPulseFrequency").unwrap_or_default(),
-            unfocused_object_name: inst.get_str("unfocusedObjectName").map(String::from).unwrap_or_default(),
+            signal_lost_animation_pulse_frequency: inst
+                .get_f32("signalLostAnimationPulseFrequency")
+                .unwrap_or_default(),
+            unfocused_object_name: inst
+                .get_str("unfocusedObjectName")
+                .map(String::from)
+                .unwrap_or_default(),
             unfocused_marker_scale: inst.get_f32("unfocusedMarkerScale").unwrap_or_default(),
             hit_animation_color: match inst.get("hitAnimationColor") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<RGB>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<RGB>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             hit_animation_flicker_time: inst.get_f32("hitAnimationFlickerTime").unwrap_or_default(),
             hit_anim_offset_factor: inst.get_f32("hitAnimOffsetFactor").unwrap_or_default(),
             transition_scale_curve: match inst.get("transitionScaleCurve") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BezierCurve>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BezierCurve>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
-            gained_focus_anim_total_time: inst.get_f32("gainedFocusAnimTotalTime").unwrap_or_default(),
-            gained_focus_anim_flicker_time: inst.get_f32("gainedFocusAnimFlickerTime").unwrap_or_default(),
+            gained_focus_anim_total_time: inst
+                .get_f32("gainedFocusAnimTotalTime")
+                .unwrap_or_default(),
+            gained_focus_anim_flicker_time: inst
+                .get_f32("gainedFocusAnimFlickerTime")
+                .unwrap_or_default(),
             un_focused_rotation_factor: inst.get_f32("unFocusedRotationFactor").unwrap_or_default(),
         }
     }
@@ -231,8 +312,12 @@ pub struct AnimationGraph_KeyFrame {
 }
 
 impl Pooled for AnimationGraph_KeyFrame {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_animatedmarkers.animation_graph_key_frame }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_animatedmarkers.animation_graph_key_frame }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.ui_animatedmarkers.animation_graph_key_frame
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.ui_animatedmarkers.animation_graph_key_frame
+    }
 }
 
 impl<'a> Extract<'a> for AnimationGraph_KeyFrame {
@@ -241,7 +326,9 @@ impl<'a> Extract<'a> for AnimationGraph_KeyFrame {
         Self {
             frame: inst.get_u32("frame").unwrap_or_default(),
             value: inst.get_f32("value").unwrap_or_default(),
-            time_modifier: AnimationGraph_TimeModifier::from_dcb_str(inst.get_str("timeModifier").unwrap_or("")),
+            time_modifier: AnimationGraph_TimeModifier::from_dcb_str(
+                inst.get_str("timeModifier").unwrap_or(""),
+            ),
             ease_type: InterpolationMode::from_dcb_str(inst.get_str("easeType").unwrap_or("")),
         }
     }
@@ -258,22 +345,41 @@ pub struct AnimationGraph_Track {
 }
 
 impl Pooled for AnimationGraph_Track {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_animatedmarkers.animation_graph_track }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_animatedmarkers.animation_graph_track }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.ui_animatedmarkers.animation_graph_track
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.ui_animatedmarkers.animation_graph_track
+    }
 }
 
 impl<'a> Extract<'a> for AnimationGraph_Track {
     const TYPE_NAME: &'static str = "AnimationGraph_Track";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            track_name: inst.get_str("trackName").map(String::from).unwrap_or_default(),
+            track_name: inst
+                .get_str("trackName")
+                .map(String::from)
+                .unwrap_or_default(),
             r#type: AnimationGraph_TrackType::from_dcb_str(inst.get_str("type").unwrap_or("")),
-            key_frames: inst.get_array("keyFrames")
-                .map(|arr| arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<AnimationGraph_KeyFrame>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r) => Some(b.alloc_nested::<AnimationGraph_KeyFrame>(b.db.instance(r.struct_index, r.instance_index), true)),
+            key_frames: inst
+                .get_array("keyFrames")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<AnimationGraph_KeyFrame>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => Some(b.alloc_nested::<AnimationGraph_KeyFrame>(
+                            b.db.instance(r.struct_index, r.instance_index),
+                            true,
+                        )),
                         _ => None,
-                    }).collect())
+                    })
+                    .collect()
+                })
                 .unwrap_or_default(),
         }
     }
@@ -292,8 +398,12 @@ pub struct AnimationGraph_Timer {
 }
 
 impl Pooled for AnimationGraph_Timer {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_animatedmarkers.animation_graph_timer }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_animatedmarkers.animation_graph_timer }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.ui_animatedmarkers.animation_graph_timer
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.ui_animatedmarkers.animation_graph_timer
+    }
 }
 
 impl<'a> Extract<'a> for AnimationGraph_Timer {
@@ -319,24 +429,42 @@ pub struct AnimationGraph_Timeline {
 }
 
 impl Pooled for AnimationGraph_Timeline {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_animatedmarkers.animation_graph_timeline }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_animatedmarkers.animation_graph_timeline }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.ui_animatedmarkers.animation_graph_timeline
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.ui_animatedmarkers.animation_graph_timeline
+    }
 }
 
 impl<'a> Extract<'a> for AnimationGraph_Timeline {
     const TYPE_NAME: &'static str = "AnimationGraph_Timeline";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            timer_id: inst.get_str("timerID").map(String::from).unwrap_or_default(),
+            timer_id: inst
+                .get_str("timerID")
+                .map(String::from)
+                .unwrap_or_default(),
             frame_rate: inst.get_u32("frameRate").unwrap_or_default(),
-            tracks: inst.get_array("tracks")
-                .map(|arr| arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<AnimationGraph_Track>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r) => Some(b.alloc_nested::<AnimationGraph_Track>(b.db.instance(r.struct_index, r.instance_index), true)),
+            tracks: inst
+                .get_array("tracks")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<AnimationGraph_Track>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => Some(b.alloc_nested::<AnimationGraph_Track>(
+                            b.db.instance(r.struct_index, r.instance_index),
+                            true,
+                        )),
                         _ => None,
-                    }).collect())
+                    })
+                    .collect()
+                })
                 .unwrap_or_default(),
         }
     }
 }
-

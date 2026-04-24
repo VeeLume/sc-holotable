@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -31,19 +31,34 @@ pub struct CommunicationATLConfig {
 }
 
 impl Pooled for CommunicationATLConfig {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.communicationatlconfig.communication_atlconfig }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.communicationatlconfig.communication_atlconfig }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.communicationatlconfig.communication_atlconfig
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.communicationatlconfig.communication_atlconfig
+    }
 }
 
 impl<'a> Extract<'a> for CommunicationATLConfig {
     const TYPE_NAME: &'static str = "CommunicationATLConfig";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            play_trigger_prefix: inst.get_str("playTriggerPrefix").map(String::from).unwrap_or_default(),
-            stop_trigger_prefix: inst.get_str("stopTriggerPrefix").map(String::from).unwrap_or_default(),
-            speaker_voice_switch: inst.get_str("speakerVoiceSwitch").map(String::from).unwrap_or_default(),
-            speaker_type_switch: inst.get_str("speakerTypeSwitch").map(String::from).unwrap_or_default(),
+            play_trigger_prefix: inst
+                .get_str("playTriggerPrefix")
+                .map(String::from)
+                .unwrap_or_default(),
+            stop_trigger_prefix: inst
+                .get_str("stopTriggerPrefix")
+                .map(String::from)
+                .unwrap_or_default(),
+            speaker_voice_switch: inst
+                .get_str("speakerVoiceSwitch")
+                .map(String::from)
+                .unwrap_or_default(),
+            speaker_type_switch: inst
+                .get_str("speakerTypeSwitch")
+                .map(String::from)
+                .unwrap_or_default(),
         }
     }
 }
-

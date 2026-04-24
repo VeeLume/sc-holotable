@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -42,8 +42,12 @@ pub struct RaceRingComponentParams {
 }
 
 impl Pooled for RaceRingComponentParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_racering.race_ring_component_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_racering.race_ring_component_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_racering.race_ring_component_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_racering.race_ring_component_params
+    }
 }
 
 impl<'a> Extract<'a> for RaceRingComponentParams {
@@ -55,11 +59,22 @@ impl<'a> Extract<'a> for RaceRingComponentParams {
             close_speed: inst.get_f32("closeSpeed").unwrap_or_default(),
             open_amount: inst.get_f32("openAmount").unwrap_or_default(),
             close_amount: inst.get_f32("closeAmount").unwrap_or_default(),
-            inner_ring_model: inst.get_str("innerRingModel").map(String::from).unwrap_or_default(),
-            outer_ring_model: inst.get_str("outerRingModel").map(String::from).unwrap_or_default(),
-            iris_model: inst.get_str("irisModel").map(String::from).unwrap_or_default(),
-            open_anim_name: inst.get_str("openAnimName").map(String::from).unwrap_or_default(),
+            inner_ring_model: inst
+                .get_str("innerRingModel")
+                .map(String::from)
+                .unwrap_or_default(),
+            outer_ring_model: inst
+                .get_str("outerRingModel")
+                .map(String::from)
+                .unwrap_or_default(),
+            iris_model: inst
+                .get_str("irisModel")
+                .map(String::from)
+                .unwrap_or_default(),
+            open_anim_name: inst
+                .get_str("openAnimName")
+                .map(String::from)
+                .unwrap_or_default(),
         }
     }
 }
-

@@ -14,5 +14,6 @@ use super::super::*;
 /// Pool storage for the `entities-test` feature.
 #[derive(Default)]
 pub struct EntitiesTestPools {
-    pub uipaint_render_node_entity_component_params: Vec<Option<UIPaintRenderNodeEntityComponentParams>>,
+    pub uipaint_render_node_entity_component_params:
+        Vec<Option<UIPaintRenderNodeEntityComponentParams>>,
 }

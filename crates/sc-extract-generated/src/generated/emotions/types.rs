@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -27,16 +27,26 @@ pub struct EmotionDescription {
 }
 
 impl Pooled for EmotionDescription {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.emotions.emotion_description }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.emotions.emotion_description }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.emotions.emotion_description
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.emotions.emotion_description
+    }
 }
 
 impl<'a> Extract<'a> for EmotionDescription {
     const TYPE_NAME: &'static str = "EmotionDescription";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            emotion_name: inst.get_str("emotionName").map(String::from).unwrap_or_default(),
-            facial_emotion_tag: inst.get_str("facialEmotionTag").map(String::from).unwrap_or_default(),
+            emotion_name: inst
+                .get_str("emotionName")
+                .map(String::from)
+                .unwrap_or_default(),
+            facial_emotion_tag: inst
+                .get_str("facialEmotionTag")
+                .map(String::from)
+                .unwrap_or_default(),
         }
     }
 }
@@ -48,22 +58,37 @@ pub struct EmotionList {
 }
 
 impl Pooled for EmotionList {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.emotions.emotion_list }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.emotions.emotion_list }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.emotions.emotion_list
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.emotions.emotion_list
+    }
 }
 
 impl<'a> Extract<'a> for EmotionList {
     const TYPE_NAME: &'static str = "EmotionList";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            emotions: inst.get_array("emotions")
-                .map(|arr| arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<EmotionDescription>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r) => Some(b.alloc_nested::<EmotionDescription>(b.db.instance(r.struct_index, r.instance_index), true)),
+            emotions: inst
+                .get_array("emotions")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<EmotionDescription>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => Some(b.alloc_nested::<EmotionDescription>(
+                            b.db.instance(r.struct_index, r.instance_index),
+                            true,
+                        )),
                         _ => None,
-                    }).collect())
+                    })
+                    .collect()
+                })
                 .unwrap_or_default(),
         }
     }
 }
-

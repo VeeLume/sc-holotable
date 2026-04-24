@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -25,20 +25,36 @@ pub struct FlashObjectBindingGroup {
 }
 
 impl Pooled for FlashObjectBindingGroup {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_flashobjectbindinggroups.flash_object_binding_group }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_flashobjectbindinggroups.flash_object_binding_group }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.ui_flashobjectbindinggroups.flash_object_binding_group
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.ui_flashobjectbindinggroups.flash_object_binding_group
+    }
 }
 
 impl<'a> Extract<'a> for FlashObjectBindingGroup {
     const TYPE_NAME: &'static str = "FlashObjectBindingGroup";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            variable_objects: inst.get_array("variableObjects")
-                .map(|arr| arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<FlashVariableObject>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r) => Some(b.alloc_nested::<FlashVariableObject>(b.db.instance(r.struct_index, r.instance_index), true)),
+            variable_objects: inst
+                .get_array("variableObjects")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<FlashVariableObject>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => Some(b.alloc_nested::<FlashVariableObject>(
+                            b.db.instance(r.struct_index, r.instance_index),
+                            true,
+                        )),
                         _ => None,
-                    }).collect())
+                    })
+                    .collect()
+                })
                 .unwrap_or_default(),
         }
     }
@@ -109,15 +125,22 @@ pub struct FlashVariableObject {
 }
 
 impl Pooled for FlashVariableObject {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_flashobjectbindinggroups.flash_variable_object }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_flashobjectbindinggroups.flash_variable_object }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.ui_flashobjectbindinggroups.flash_variable_object
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.ui_flashobjectbindinggroups.flash_variable_object
+    }
 }
 
 impl<'a> Extract<'a> for FlashVariableObject {
     const TYPE_NAME: &'static str = "FlashVariableObject";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            link_name: inst.get_str("linkName").map(String::from).unwrap_or_default(),
+            link_name: inst
+                .get_str("linkName")
+                .map(String::from)
+                .unwrap_or_default(),
             set_alpha: inst.get_bool("setAlpha").unwrap_or_default(),
             alpha: inst.get_f32("alpha").unwrap_or_default(),
             set_current_frame: inst.get_bool("setCurrentFrame").unwrap_or_default(),
@@ -130,9 +153,15 @@ impl<'a> Extract<'a> for FlashVariableObject {
             z: inst.get_f32("z").unwrap_or_default(),
             attach_x: inst.get_f32("attachX").unwrap_or_default(),
             attach_y: inst.get_f32("attachY").unwrap_or_default(),
-            mode_rotation_x: FlashValueUpdateMode::from_dcb_str(inst.get_str("modeRotationX").unwrap_or("")),
-            mode_rotation_y: FlashValueUpdateMode::from_dcb_str(inst.get_str("modeRotationY").unwrap_or("")),
-            mode_rotation_z: FlashValueUpdateMode::from_dcb_str(inst.get_str("modeRotationZ").unwrap_or("")),
+            mode_rotation_x: FlashValueUpdateMode::from_dcb_str(
+                inst.get_str("modeRotationX").unwrap_or(""),
+            ),
+            mode_rotation_y: FlashValueUpdateMode::from_dcb_str(
+                inst.get_str("modeRotationY").unwrap_or(""),
+            ),
+            mode_rotation_z: FlashValueUpdateMode::from_dcb_str(
+                inst.get_str("modeRotationZ").unwrap_or(""),
+            ),
             rotation_x: inst.get_f32("rotationX").unwrap_or_default(),
             rotation_y: inst.get_f32("rotationY").unwrap_or_default(),
             rotation_z: inst.get_f32("rotationZ").unwrap_or_default(),
@@ -150,4 +179,3 @@ impl<'a> Extract<'a> for FlashVariableObject {
         }
     }
 }
-

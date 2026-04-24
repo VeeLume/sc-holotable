@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -43,8 +43,12 @@ pub struct SAutoLoadingBoxSizePrices {
 }
 
 impl Pooled for SAutoLoadingBoxSizePrices {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.globalshopparams.sauto_loading_box_size_prices }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.globalshopparams.sauto_loading_box_size_prices }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.globalshopparams.sauto_loading_box_size_prices
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.globalshopparams.sauto_loading_box_size_prices
+    }
 }
 
 impl<'a> Extract<'a> for SAutoLoadingBoxSizePrices {
@@ -120,18 +124,29 @@ pub struct GlobalShopCommodityParams {
 }
 
 impl Pooled for GlobalShopCommodityParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.globalshopparams.global_shop_commodity_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.globalshopparams.global_shop_commodity_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.globalshopparams.global_shop_commodity_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.globalshopparams.global_shop_commodity_params
+    }
 }
 
 impl<'a> Extract<'a> for GlobalShopCommodityParams {
     const TYPE_NAME: &'static str = "GlobalShopCommodityParams";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            max_kiosk_cargo_grid_display_size: inst.get_i32("MaxKioskCargoGridDisplaySize").unwrap_or_default(),
+            max_kiosk_cargo_grid_display_size: inst
+                .get_i32("MaxKioskCargoGridDisplaySize")
+                .unwrap_or_default(),
             auto_loading_base_price: inst.get_i32("autoLoadingBasePrice").unwrap_or_default(),
             auto_loading_box_size_prices: match inst.get("autoLoadingBoxSizePrices") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SAutoLoadingBoxSizePrices>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<SAutoLoadingBoxSizePrices>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             no_supply_level: inst.get_f32("noSupplyLevel").unwrap_or_default(),
@@ -146,25 +161,66 @@ impl<'a> Extract<'a> for GlobalShopCommodityParams {
             medium_demand_level: inst.get_f32("MediumDemandLevel").unwrap_or_default(),
             high_demand_level: inst.get_f32("HighDemandLevel").unwrap_or_default(),
             very_high_demand_level: inst.get_f32("VeryHighDemandLevel").unwrap_or_default(),
-            transaction_supported_resource_container_types: inst.get_array("transactionSupportedResourceContainerTypes")
-                .map(|arr| arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<SItemPortDefTypes>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r) => Some(b.alloc_nested::<SItemPortDefTypes>(b.db.instance(r.struct_index, r.instance_index), true)),
+            transaction_supported_resource_container_types: inst
+                .get_array("transactionSupportedResourceContainerTypes")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<SItemPortDefTypes>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => Some(b.alloc_nested::<SItemPortDefTypes>(
+                            b.db.instance(r.struct_index, r.instance_index),
+                            true,
+                        )),
                         _ => None,
-                    }).collect())
+                    })
+                    .collect()
+                })
                 .unwrap_or_default(),
-            rmc_resource_type: inst.get("RMC_ResourceType").and_then(|v| v.as_record_ref()).map(|r| r.guid),
-            rmc_salvage_cannister_entity: inst.get("RMC_SalvageCannisterEntity").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            rmc_resource_type: inst
+                .get("RMC_ResourceType")
+                .and_then(|v| v.as_record_ref())
+                .map(|r| r.guid),
+            rmc_salvage_cannister_entity: inst
+                .get("RMC_SalvageCannisterEntity")
+                .and_then(|v| v.as_record_ref())
+                .map(|r| r.guid),
             generic_crates: match inst.get("genericCrates") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SResourceTypeDefaultCargoContainers>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<SResourceTypeDefaultCargoContainers>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
-            location_select: inst.get_str("Location_Select").map(LocaleKey::from).unwrap_or_default(),
-            sub_location_all: inst.get_str("subLocation_All").map(LocaleKey::from).unwrap_or_default(),
-            sub_location_cargo_grid: inst.get_str("subLocation_CargoGrid").map(LocaleKey::from).unwrap_or_default(),
-            sub_location_general_storage: inst.get_str("subLocation_GeneralStorage").map(LocaleKey::from).unwrap_or_default(),
-            sub_location_resource_containers: inst.get_str("subLocation_ResourceContainers").map(LocaleKey::from).unwrap_or_default(),
-            sub_location_items_all: inst.get_str("subLocationItems_All").map(LocaleKey::from).unwrap_or_default(),
+            location_select: inst
+                .get_str("Location_Select")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
+            sub_location_all: inst
+                .get_str("subLocation_All")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
+            sub_location_cargo_grid: inst
+                .get_str("subLocation_CargoGrid")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
+            sub_location_general_storage: inst
+                .get_str("subLocation_GeneralStorage")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
+            sub_location_resource_containers: inst
+                .get_str("subLocation_ResourceContainers")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
+            sub_location_items_all: inst
+                .get_str("subLocationItems_All")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
         }
     }
 }
@@ -186,8 +242,12 @@ pub struct GlobalShopTerminalParams {
 }
 
 impl Pooled for GlobalShopTerminalParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.globalshopparams.global_shop_terminal_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.globalshopparams.global_shop_terminal_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.globalshopparams.global_shop_terminal_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.globalshopparams.global_shop_terminal_params
+    }
 }
 
 impl<'a> Extract<'a> for GlobalShopTerminalParams {
@@ -195,14 +255,28 @@ impl<'a> Extract<'a> for GlobalShopTerminalParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             displayed_items_per_page: inst.get_i32("displayedItemsPerPage").unwrap_or_default(),
-            confirmation_auto_close_time: inst.get_f32("confirmationAutoCloseTime").unwrap_or_default(),
-            max_buying_multiplier: inst.get_i32("maxBuyingMultiplier").unwrap_or_default(),
-            inventory_query_items_type: inst.get_array("inventoryQueryItemsType")
-                .map(|arr| arr.filter_map(|v| v.as_str().map(EItemType::from_dcb_str)).collect())
+            confirmation_auto_close_time: inst
+                .get_f32("confirmationAutoCloseTime")
                 .unwrap_or_default(),
-            all_items_category: inst.get_str("all_items_category").map(LocaleKey::from).unwrap_or_default(),
+            max_buying_multiplier: inst.get_i32("maxBuyingMultiplier").unwrap_or_default(),
+            inventory_query_items_type: inst
+                .get_array("inventoryQueryItemsType")
+                .map(|arr| {
+                    arr.filter_map(|v| v.as_str().map(EItemType::from_dcb_str))
+                        .collect()
+                })
+                .unwrap_or_default(),
+            all_items_category: inst
+                .get_str("all_items_category")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
             shop_errors: match inst.get("shopErrors") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SGlobalShopErrors>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<SGlobalShopErrors>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
         }
@@ -338,76 +412,266 @@ pub struct SGlobalShopErrors {
 }
 
 impl Pooled for SGlobalShopErrors {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.globalshopparams.sglobal_shop_errors }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.globalshopparams.sglobal_shop_errors }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.globalshopparams.sglobal_shop_errors
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.globalshopparams.sglobal_shop_errors
+    }
 }
 
 impl<'a> Extract<'a> for SGlobalShopErrors {
     const TYPE_NAME: &'static str = "SGlobalShopErrors";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            confirmation_success: inst.get_str("confirmation_success").map(LocaleKey::from).unwrap_or_default(),
-            confirmation_fail: inst.get_str("confirmation_fail").map(LocaleKey::from).unwrap_or_default(),
-            confirmation_fail_authority_error: inst.get_str("confirmation_fail_AuthorityError").map(LocaleKey::from).unwrap_or_default(),
-            confirmation_fail_transaction_service_error: inst.get_str("confirmation_fail_TransactionServiceError").map(LocaleKey::from).unwrap_or_default(),
-            confirmation_fail_invalid_location: inst.get_str("confirmation_fail_InvalidLocation").map(LocaleKey::from).unwrap_or_default(),
-            confirmation_fail_invalid_player_inventory_id: inst.get_str("confirmation_fail_InvalidPlayerInventoryId").map(LocaleKey::from).unwrap_or_default(),
-            confirmation_fail_inventory_container_request_fail: inst.get_str("confirmation_fail_InventoryContainerRequestFail").map(LocaleKey::from).unwrap_or_default(),
-            confirmation_fail_inventory_item_fail: inst.get_str("confirmation_fail_InventoryItemFail").map(LocaleKey::from).unwrap_or_default(),
-            confirmation_fail_inventory_item_content_fail: inst.get_str("confirmation_fail_InventoryItemContentFail").map(LocaleKey::from).unwrap_or_default(),
-            confirmation_fail_invalid_quantity_error: inst.get_str("confirmation_fail_InvalidQuantityError").map(LocaleKey::from).unwrap_or_default(),
-            confirmation_fail_quick_buy_restocking_error: inst.get_str("confirmation_fail_QuickBuyRestockingError").map(LocaleKey::from).unwrap_or_default(),
-            confirmation_fail_invalid_transaction_flow: inst.get_str("confirmation_fail_InvalidTransactionFlow").map(LocaleKey::from).unwrap_or_default(),
-            confirmation_fail_invalid_location_source: inst.get_str("confirmation_fail_InvalidLocationSource").map(LocaleKey::from).unwrap_or_default(),
-            confirmation_fail_invalid_shop: inst.get_str("confirmation_fail_InvalidShop").map(LocaleKey::from).unwrap_or_default(),
-            confirmation_fail_invalid_shop_type: inst.get_str("confirmation_fail_InvalidShopType").map(LocaleKey::from).unwrap_or_default(),
-            confirmation_fail_internal_error: inst.get_str("confirmation_fail_InternalError").map(LocaleKey::from).unwrap_or_default(),
-            confirmation_fail_invalid_rental_option: inst.get_str("confirmation_fail_InvalidRentalOption").map(LocaleKey::from).unwrap_or_default(),
-            confirmation_fail_ship_not_in_valid_location: inst.get_str("confirmation_fail_ShipNotInValidLocation").map(LocaleKey::from).unwrap_or_default(),
-            confirmation_fail_no_items_in_sale_error: inst.get_str("confirmation_fail_NoItemsInSaleError").map(LocaleKey::from).unwrap_or_default(),
-            confirmation_fail_waiting_for_pending_result: inst.get_str("confirmation_fail_WaitingForPendingResult").map(LocaleKey::from).unwrap_or_default(),
-            confirmation_fail_actor_does_not_own_sale_item: inst.get_str("confirmation_fail_ActorDoesNotOwnSaleItem").map(LocaleKey::from).unwrap_or_default(),
-            confirmation_fail_transaction_cost_mismatch: inst.get_str("confirmation_fail_TransactionCostMismatch").map(LocaleKey::from).unwrap_or_default(),
-            confirmation_fail_item_max_stock_error: inst.get_str("confirmation_fail_ItemMaxStockError").map(LocaleKey::from).unwrap_or_default(),
-            confirmation_fail_item_not_sellable: inst.get_str("confirmation_fail_ItemNotSellable").map(LocaleKey::from).unwrap_or_default(),
-            confirmation_fail_item_not_buyable: inst.get_str("confirmation_fail_ItemNotBuyable").map(LocaleKey::from).unwrap_or_default(),
-            confirmation_fail_timed_out: inst.get_str("confirmation_fail_TimedOut").map(LocaleKey::from).unwrap_or_default(),
-            confirmation_fail_insuffient_stock: inst.get_str("confirmation_fail_InsuffientStock").map(LocaleKey::from).unwrap_or_default(),
-            confirmation_fail_service_error: inst.get_str("confirmation_fail_ServiceError").map(LocaleKey::from).unwrap_or_default(),
-            confirmation_fail_database_error: inst.get_str("confirmation_fail_DatabaseError").map(LocaleKey::from).unwrap_or_default(),
-            confirmation_fail_invalid_buyer: inst.get_str("confirmation_fail_InvalidBuyer").map(LocaleKey::from).unwrap_or_default(),
-            confirmation_fail_invalid_item: inst.get_str("confirmation_fail_InvalidItem").map(LocaleKey::from).unwrap_or_default(),
-            confirmation_fail_invalid_request: inst.get_str("confirmation_fail_InvalidRequest").map(LocaleKey::from).unwrap_or_default(),
-            confirmation_fail_insufficent_funds: inst.get_str("confirmation_fail_InsufficentFunds").map(LocaleKey::from).unwrap_or_default(),
-            confirmation_fail_invalid_entity_class_guid: inst.get_str("confirmation_fail_InvalidEntityClassGUID").map(LocaleKey::from).unwrap_or_default(),
-            confirmation_fail_invalid_kiosk_id: inst.get_str("confirmation_fail_InvalidKioskId").map(LocaleKey::from).unwrap_or_default(),
-            confirmation_fail_invalid_sell_price: inst.get_str("confirmation_fail_InvalidSellPrice").map(LocaleKey::from).unwrap_or_default(),
-            confirmation_fail_invalid_mineable_entry: inst.get_str("confirmation_fail_InvalidMineableEntry").map(LocaleKey::from).unwrap_or_default(),
-            confirmation_fail_player_id_mismatch: inst.get_str("confirmation_fail_PlayerIdMismatch").map(LocaleKey::from).unwrap_or_default(),
-            confirmation_fail_cargo_creation_failed: inst.get_str("confirmation_fail_CargoCreationFailed").map(LocaleKey::from).unwrap_or_default(),
-            confirmation_fail_wallet_not_found: inst.get_str("confirmation_fail_WalletNotFound").map(LocaleKey::from).unwrap_or_default(),
-            confirmation_fail_missing_resource_data_type: inst.get_str("confirmation_fail_MissingResourceDataType").map(LocaleKey::from).unwrap_or_default(),
-            confirmation_fail_player_in_vehicle_during_cargo_transaction: inst.get_str("confirmation_fail_PlayerInVehicleDuringCargoTransaction").map(LocaleKey::from).unwrap_or_default(),
-            confirmation_fail_invalid_parent_state: inst.get_str("confirmation_fail_InvalidParentState").map(LocaleKey::from).unwrap_or_default(),
-            confirmation_fail_invalid_resource_type_guid: inst.get_str("confirmation_fail_InvalidResourceTypeGUID").map(LocaleKey::from).unwrap_or_default(),
-            confirmation_fail_cargo_removal_failed: inst.get_str("confirmation_fail_CargoRemovalFailed").map(LocaleKey::from).unwrap_or_default(),
-            confirmation_fail_wallet_update_failed: inst.get_str("confirmation_fail_WalletUpdateFailed").map(LocaleKey::from).unwrap_or_default(),
-            confirmation_fail_resource_container_query_failed: inst.get_str("confirmation_fail_ResourceContainerQueryFailed").map(LocaleKey::from).unwrap_or_default(),
-            confirmation_fail_price_per_unit_mismatch: inst.get_str("confirmation_fail_PricePerUnitMismatch").map(LocaleKey::from).unwrap_or_default(),
-            confirmation_fail_invalid_container: inst.get_str("confirmation_fail_InvalidContainer").map(LocaleKey::from).unwrap_or_default(),
-            confirmation_fail_entity_query_failed: inst.get_str("confirmation_fail_EntityQueryFailed").map(LocaleKey::from).unwrap_or_default(),
-            confirmation_fail_missing_snapshot: inst.get_str("confirmation_fail_MissingSnapshot").map(LocaleKey::from).unwrap_or_default(),
-            confirmation_fail_missing_snapshot_data: inst.get_str("confirmation_fail_MissingSnapshotData").map(LocaleKey::from).unwrap_or_default(),
-            confirmation_fail_snapshot_get_fail: inst.get_str("confirmation_fail_SnapshotGetFail").map(LocaleKey::from).unwrap_or_default(),
-            confirmation_fail_exceeded_buy_limit: inst.get_str("confirmation_fail_ExceededBuyLimit").map(LocaleKey::from).unwrap_or_default(),
-            confirmation_fail_license_error: inst.get_str("confirmation_fail_LicenseError").map(LocaleKey::from).unwrap_or_default(),
-            confirmation_fail_invalid_player_state: inst.get_str("confirmation_fail_InvalidPlayerState").map(LocaleKey::from).unwrap_or_default(),
-            confirmation_fail_invalid_box_size: inst.get_str("confirmation_fail_InvalidBoxSize").map(LocaleKey::from).unwrap_or_default(),
-            confirmation_fail_invalid_box_class: inst.get_str("confirmation_fail_InvalidBoxClass").map(LocaleKey::from).unwrap_or_default(),
-            confirmation_fail_missing_auto_load_rate: inst.get_str("confirmation_fail_MissingAutoLoadRate").map(LocaleKey::from).unwrap_or_default(),
-            confirmation_fail_auto_load_price_mismatch: inst.get_str("confirmation_fail_AutoLoadPriceMismatch").map(LocaleKey::from).unwrap_or_default(),
-            confirmation_fail_auto_load_time_mismatch: inst.get_str("confirmation_fail_AutoLoadTimeMismatch").map(LocaleKey::from).unwrap_or_default(),
-            confirmation_fail_auto_load_start_failed: inst.get_str("confirmation_fail_AutoLoadStartFailed").map(LocaleKey::from).unwrap_or_default(),
+            confirmation_success: inst
+                .get_str("confirmation_success")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
+            confirmation_fail: inst
+                .get_str("confirmation_fail")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
+            confirmation_fail_authority_error: inst
+                .get_str("confirmation_fail_AuthorityError")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
+            confirmation_fail_transaction_service_error: inst
+                .get_str("confirmation_fail_TransactionServiceError")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
+            confirmation_fail_invalid_location: inst
+                .get_str("confirmation_fail_InvalidLocation")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
+            confirmation_fail_invalid_player_inventory_id: inst
+                .get_str("confirmation_fail_InvalidPlayerInventoryId")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
+            confirmation_fail_inventory_container_request_fail: inst
+                .get_str("confirmation_fail_InventoryContainerRequestFail")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
+            confirmation_fail_inventory_item_fail: inst
+                .get_str("confirmation_fail_InventoryItemFail")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
+            confirmation_fail_inventory_item_content_fail: inst
+                .get_str("confirmation_fail_InventoryItemContentFail")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
+            confirmation_fail_invalid_quantity_error: inst
+                .get_str("confirmation_fail_InvalidQuantityError")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
+            confirmation_fail_quick_buy_restocking_error: inst
+                .get_str("confirmation_fail_QuickBuyRestockingError")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
+            confirmation_fail_invalid_transaction_flow: inst
+                .get_str("confirmation_fail_InvalidTransactionFlow")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
+            confirmation_fail_invalid_location_source: inst
+                .get_str("confirmation_fail_InvalidLocationSource")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
+            confirmation_fail_invalid_shop: inst
+                .get_str("confirmation_fail_InvalidShop")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
+            confirmation_fail_invalid_shop_type: inst
+                .get_str("confirmation_fail_InvalidShopType")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
+            confirmation_fail_internal_error: inst
+                .get_str("confirmation_fail_InternalError")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
+            confirmation_fail_invalid_rental_option: inst
+                .get_str("confirmation_fail_InvalidRentalOption")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
+            confirmation_fail_ship_not_in_valid_location: inst
+                .get_str("confirmation_fail_ShipNotInValidLocation")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
+            confirmation_fail_no_items_in_sale_error: inst
+                .get_str("confirmation_fail_NoItemsInSaleError")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
+            confirmation_fail_waiting_for_pending_result: inst
+                .get_str("confirmation_fail_WaitingForPendingResult")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
+            confirmation_fail_actor_does_not_own_sale_item: inst
+                .get_str("confirmation_fail_ActorDoesNotOwnSaleItem")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
+            confirmation_fail_transaction_cost_mismatch: inst
+                .get_str("confirmation_fail_TransactionCostMismatch")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
+            confirmation_fail_item_max_stock_error: inst
+                .get_str("confirmation_fail_ItemMaxStockError")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
+            confirmation_fail_item_not_sellable: inst
+                .get_str("confirmation_fail_ItemNotSellable")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
+            confirmation_fail_item_not_buyable: inst
+                .get_str("confirmation_fail_ItemNotBuyable")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
+            confirmation_fail_timed_out: inst
+                .get_str("confirmation_fail_TimedOut")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
+            confirmation_fail_insuffient_stock: inst
+                .get_str("confirmation_fail_InsuffientStock")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
+            confirmation_fail_service_error: inst
+                .get_str("confirmation_fail_ServiceError")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
+            confirmation_fail_database_error: inst
+                .get_str("confirmation_fail_DatabaseError")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
+            confirmation_fail_invalid_buyer: inst
+                .get_str("confirmation_fail_InvalidBuyer")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
+            confirmation_fail_invalid_item: inst
+                .get_str("confirmation_fail_InvalidItem")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
+            confirmation_fail_invalid_request: inst
+                .get_str("confirmation_fail_InvalidRequest")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
+            confirmation_fail_insufficent_funds: inst
+                .get_str("confirmation_fail_InsufficentFunds")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
+            confirmation_fail_invalid_entity_class_guid: inst
+                .get_str("confirmation_fail_InvalidEntityClassGUID")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
+            confirmation_fail_invalid_kiosk_id: inst
+                .get_str("confirmation_fail_InvalidKioskId")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
+            confirmation_fail_invalid_sell_price: inst
+                .get_str("confirmation_fail_InvalidSellPrice")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
+            confirmation_fail_invalid_mineable_entry: inst
+                .get_str("confirmation_fail_InvalidMineableEntry")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
+            confirmation_fail_player_id_mismatch: inst
+                .get_str("confirmation_fail_PlayerIdMismatch")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
+            confirmation_fail_cargo_creation_failed: inst
+                .get_str("confirmation_fail_CargoCreationFailed")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
+            confirmation_fail_wallet_not_found: inst
+                .get_str("confirmation_fail_WalletNotFound")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
+            confirmation_fail_missing_resource_data_type: inst
+                .get_str("confirmation_fail_MissingResourceDataType")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
+            confirmation_fail_player_in_vehicle_during_cargo_transaction: inst
+                .get_str("confirmation_fail_PlayerInVehicleDuringCargoTransaction")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
+            confirmation_fail_invalid_parent_state: inst
+                .get_str("confirmation_fail_InvalidParentState")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
+            confirmation_fail_invalid_resource_type_guid: inst
+                .get_str("confirmation_fail_InvalidResourceTypeGUID")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
+            confirmation_fail_cargo_removal_failed: inst
+                .get_str("confirmation_fail_CargoRemovalFailed")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
+            confirmation_fail_wallet_update_failed: inst
+                .get_str("confirmation_fail_WalletUpdateFailed")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
+            confirmation_fail_resource_container_query_failed: inst
+                .get_str("confirmation_fail_ResourceContainerQueryFailed")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
+            confirmation_fail_price_per_unit_mismatch: inst
+                .get_str("confirmation_fail_PricePerUnitMismatch")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
+            confirmation_fail_invalid_container: inst
+                .get_str("confirmation_fail_InvalidContainer")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
+            confirmation_fail_entity_query_failed: inst
+                .get_str("confirmation_fail_EntityQueryFailed")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
+            confirmation_fail_missing_snapshot: inst
+                .get_str("confirmation_fail_MissingSnapshot")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
+            confirmation_fail_missing_snapshot_data: inst
+                .get_str("confirmation_fail_MissingSnapshotData")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
+            confirmation_fail_snapshot_get_fail: inst
+                .get_str("confirmation_fail_SnapshotGetFail")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
+            confirmation_fail_exceeded_buy_limit: inst
+                .get_str("confirmation_fail_ExceededBuyLimit")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
+            confirmation_fail_license_error: inst
+                .get_str("confirmation_fail_LicenseError")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
+            confirmation_fail_invalid_player_state: inst
+                .get_str("confirmation_fail_InvalidPlayerState")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
+            confirmation_fail_invalid_box_size: inst
+                .get_str("confirmation_fail_InvalidBoxSize")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
+            confirmation_fail_invalid_box_class: inst
+                .get_str("confirmation_fail_InvalidBoxClass")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
+            confirmation_fail_missing_auto_load_rate: inst
+                .get_str("confirmation_fail_MissingAutoLoadRate")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
+            confirmation_fail_auto_load_price_mismatch: inst
+                .get_str("confirmation_fail_AutoLoadPriceMismatch")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
+            confirmation_fail_auto_load_time_mismatch: inst
+                .get_str("confirmation_fail_AutoLoadTimeMismatch")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
+            confirmation_fail_auto_load_start_failed: inst
+                .get_str("confirmation_fail_AutoLoadStartFailed")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
         }
     }
 }
@@ -423,8 +687,12 @@ pub struct ItemTypeModifier {
 }
 
 impl Pooled for ItemTypeModifier {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.globalshopparams.item_type_modifier }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.globalshopparams.item_type_modifier }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.globalshopparams.item_type_modifier
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.globalshopparams.item_type_modifier
+    }
 }
 
 impl<'a> Extract<'a> for ItemTypeModifier {
@@ -455,8 +723,12 @@ pub struct GlobalShopSellingParams {
 }
 
 impl Pooled for GlobalShopSellingParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.globalshopparams.global_shop_selling_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.globalshopparams.global_shop_selling_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.globalshopparams.global_shop_selling_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.globalshopparams.global_shop_selling_params
+    }
 }
 
 impl<'a> Extract<'a> for GlobalShopSellingParams {
@@ -465,19 +737,35 @@ impl<'a> Extract<'a> for GlobalShopSellingParams {
         Self {
             match_percentage: inst.get_f32("matchPercentage").unwrap_or_default(),
             no_match_percentage: inst.get_f32("noMatchPercentage").unwrap_or_default(),
-            mission_item_sell_price_reduction_percentage: inst.get_f32("missionItemSellPriceReductionPercentage").unwrap_or_default(),
-            max_inventory_curve: inst.get_array("maxInventoryCurve")
+            mission_item_sell_price_reduction_percentage: inst
+                .get_f32("missionItemSellPriceReductionPercentage")
+                .unwrap_or_default(),
+            max_inventory_curve: inst
+                .get_array("maxInventoryCurve")
                 .map(|arr| arr.filter_map(|v| v.as_f32()).collect())
                 .unwrap_or_default(),
-            wear_curve: inst.get_array("wearCurve")
+            wear_curve: inst
+                .get_array("wearCurve")
                 .map(|arr| arr.filter_map(|v| v.as_f32()).collect())
                 .unwrap_or_default(),
-            item_type_modifiers: inst.get_array("itemTypeModifiers")
-                .map(|arr| arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<ItemTypeModifier>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r) => Some(b.alloc_nested::<ItemTypeModifier>(b.db.instance(r.struct_index, r.instance_index), true)),
+            item_type_modifiers: inst
+                .get_array("itemTypeModifiers")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<ItemTypeModifier>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => Some(b.alloc_nested::<ItemTypeModifier>(
+                            b.db.instance(r.struct_index, r.instance_index),
+                            true,
+                        )),
                         _ => None,
-                    }).collect())
+                    })
+                    .collect()
+                })
                 .unwrap_or_default(),
         }
     }
@@ -496,18 +784,27 @@ pub struct LicensedItemModifier {
 }
 
 impl Pooled for LicensedItemModifier {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.globalshopparams.licensed_item_modifier }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.globalshopparams.licensed_item_modifier }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.globalshopparams.licensed_item_modifier
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.globalshopparams.licensed_item_modifier
+    }
 }
 
 impl<'a> Extract<'a> for LicensedItemModifier {
     const TYPE_NAME: &'static str = "LicensedItemModifier";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            licensed_item: inst.get("LicensedItem").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            licensed_item: inst
+                .get("LicensedItem")
+                .and_then(|v| v.as_record_ref())
+                .map(|r| r.guid),
             r#type: ELicenseType::from_dcb_str(inst.get_str("Type").unwrap_or("")),
             percentage_modifier: inst.get_f32("PercentageModifier").unwrap_or_default(),
-            disable_duplicate_badge_check: inst.get_bool("DisableDuplicateBadgeCheck").unwrap_or_default(),
+            disable_duplicate_badge_check: inst
+                .get_bool("DisableDuplicateBadgeCheck")
+                .unwrap_or_default(),
         }
     }
 }
@@ -521,23 +818,40 @@ pub struct GlobalShopBuyingParams {
 }
 
 impl Pooled for GlobalShopBuyingParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.globalshopparams.global_shop_buying_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.globalshopparams.global_shop_buying_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.globalshopparams.global_shop_buying_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.globalshopparams.global_shop_buying_params
+    }
 }
 
 impl<'a> Extract<'a> for GlobalShopBuyingParams {
     const TYPE_NAME: &'static str = "GlobalShopBuyingParams";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            tutorial_item_buy_limit_per_hour: inst.get_u32("tutorialItemBuyLimitPerHour").unwrap_or_default(),
-            licensed_item_modifiers: inst.get_array("licensedItemModifiers")
-                .map(|arr| arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<LicensedItemModifier>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r) => Some(b.alloc_nested::<LicensedItemModifier>(b.db.instance(r.struct_index, r.instance_index), true)),
+            tutorial_item_buy_limit_per_hour: inst
+                .get_u32("tutorialItemBuyLimitPerHour")
+                .unwrap_or_default(),
+            licensed_item_modifiers: inst
+                .get_array("licensedItemModifiers")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<LicensedItemModifier>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => Some(b.alloc_nested::<LicensedItemModifier>(
+                            b.db.instance(r.struct_index, r.instance_index),
+                            true,
+                        )),
                         _ => None,
-                    }).collect())
+                    })
+                    .collect()
+                })
                 .unwrap_or_default(),
         }
     }
 }
-

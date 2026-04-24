@@ -16,7 +16,8 @@ use super::super::*;
 pub struct EntitlementpoliciesPools {
     pub entitlement_item_type: Vec<Option<EntitlementItemType>>,
     pub entitlement_account_item_global_params: Vec<Option<EntitlementAccountItemGlobalParams>>,
-    pub entitlement_non_inventory_storable_item_global_params: Vec<Option<EntitlementNonInventoryStorableItemGlobalParams>>,
+    pub entitlement_non_inventory_storable_item_global_params:
+        Vec<Option<EntitlementNonInventoryStorableItemGlobalParams>>,
     pub corpse_interaction_params: Vec<Option<CorpseInteractionParams>>,
     pub item_recovery_configuration_params: Vec<Option<ItemRecoveryConfigurationParams>>,
     pub item_recovery_notification_params: Vec<Option<ItemRecoveryNotificationParams>>,

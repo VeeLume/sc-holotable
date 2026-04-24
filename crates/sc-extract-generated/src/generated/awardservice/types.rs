@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -37,8 +37,12 @@ pub struct AwardService_Award {
 }
 
 impl Pooled for AwardService_Award {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.awardservice.award_service_award }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.awardservice.award_service_award }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.awardservice.award_service_award
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.awardservice.award_service_award
+    }
 }
 
 impl<'a> Extract<'a> for AwardService_Award {
@@ -46,14 +50,26 @@ impl<'a> Extract<'a> for AwardService_Award {
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
             enabled: inst.get_bool("enabled").unwrap_or_default(),
-            trigger_id: inst.get_str("triggerId").map(String::from).unwrap_or_default(),
-            display_title: inst.get_str("displayTitle").map(LocaleKey::from).unwrap_or_default(),
-            display_message: inst.get_str("displayMessage").map(LocaleKey::from).unwrap_or_default(),
+            trigger_id: inst
+                .get_str("triggerId")
+                .map(String::from)
+                .unwrap_or_default(),
+            display_title: inst
+                .get_str("displayTitle")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
+            display_message: inst
+                .get_str("displayMessage")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
             badge_id: inst.get_u32("badgeId").unwrap_or_default(),
-            prerequisite_badge_ids: inst.get_array("prerequisiteBadgeIds")
+            prerequisite_badge_ids: inst
+                .get_array("prerequisiteBadgeIds")
                 .map(|arr| arr.filter_map(|v| v.as_u32()).collect())
                 .unwrap_or_default(),
-            push_comm_link_notification: inst.get_bool("pushCommLinkNotification").unwrap_or_default(),
+            push_comm_link_notification: inst
+                .get_bool("pushCommLinkNotification")
+                .unwrap_or_default(),
         }
     }
 }
@@ -67,8 +83,12 @@ pub struct AwardService_Config {
 }
 
 impl Pooled for AwardService_Config {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.awardservice.award_service_config }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.awardservice.award_service_config }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.awardservice.award_service_config
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.awardservice.award_service_config
+    }
 }
 
 impl<'a> Extract<'a> for AwardService_Config {
@@ -76,14 +96,23 @@ impl<'a> Extract<'a> for AwardService_Config {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             awards: match inst.get("Awards") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AwardService_Award>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<AwardService_Award>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             played: match inst.get("Played") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AwardService_Award>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<AwardService_Award>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
         }
     }
 }
-

@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -43,8 +43,12 @@ pub struct ActorGForceCameraEffectsData {
 }
 
 impl Pooled for ActorGForceCameraEffectsData {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.actor_gforce.actor_gforce_camera_effects_data }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.actor_gforce.actor_gforce_camera_effects_data }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.actor_gforce.actor_gforce_camera_effects_data
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.actor_gforce.actor_gforce_camera_effects_data
+    }
 }
 
 impl<'a> Extract<'a> for ActorGForceCameraEffectsData {
@@ -52,16 +56,25 @@ impl<'a> Extract<'a> for ActorGForceCameraEffectsData {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             enabled: inst.get_bool("enabled").unwrap_or_default(),
-            effects_only_applied_forward: inst.get_bool("effectsOnlyAppliedForward").unwrap_or_default(),
+            effects_only_applied_forward: inst
+                .get_bool("effectsOnlyAppliedForward")
+                .unwrap_or_default(),
             g_force_angle_outer: inst.get_f32("gForceAngleOuter").unwrap_or_default(),
             g_force_angle_inner: inst.get_f32("gForceAngleInner").unwrap_or_default(),
             g_force_min: inst.get_f32("gForceMin").unwrap_or_default(),
             g_force_max: inst.get_f32("gForceMax").unwrap_or_default(),
             g_force_fov: inst.get_f32("gForceFOV").unwrap_or_default(),
             focus_distance: inst.get_f32("focusDistance").unwrap_or_default(),
-            afterburner_effect_min_ratio: inst.get_f32("afterburnerEffectMinRatio").unwrap_or_default(),
+            afterburner_effect_min_ratio: inst
+                .get_f32("afterburnerEffectMinRatio")
+                .unwrap_or_default(),
             generic_modifiers: match inst.get("genericModifiers") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<CameraEffectsModifiers>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<CameraEffectsModifiers>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
         }
@@ -75,8 +88,12 @@ pub struct ActorGForceCameraEffects {
 }
 
 impl Pooled for ActorGForceCameraEffects {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.actor_gforce.actor_gforce_camera_effects }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.actor_gforce.actor_gforce_camera_effects }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.actor_gforce.actor_gforce_camera_effects
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.actor_gforce.actor_gforce_camera_effects
+    }
 }
 
 impl<'a> Extract<'a> for ActorGForceCameraEffects {
@@ -84,10 +101,14 @@ impl<'a> Extract<'a> for ActorGForceCameraEffects {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             camera_effects: match inst.get("cameraEffects") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<ActorGForceCameraEffectsData>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<ActorGForceCameraEffectsData>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
         }
     }
 }
-

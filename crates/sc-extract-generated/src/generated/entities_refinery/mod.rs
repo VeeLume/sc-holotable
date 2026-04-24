@@ -9,9 +9,9 @@
 
 //! Feature module: `entities-refinery`
 
-mod types;
 mod pools;
+mod types;
 
+pub use pools::*;
 #[allow(unused_imports)]
 pub use types::*;
-pub use pools::*;

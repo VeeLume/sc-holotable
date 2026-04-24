@@ -18,10 +18,6 @@ pub mod enums;
 pub mod metadata;
 pub mod poly_enums;
 
-pub mod core;
-pub mod multi_feature;
-#[cfg(feature = "dormant")]
-pub mod dormant;
 #[cfg(feature = "actor-actorblockhelper")]
 pub mod actor_actorblockhelper;
 #[cfg(feature = "actor-actors")]
@@ -82,6 +78,7 @@ pub mod contextualcommunicationconfig;
 pub mod contracts;
 #[cfg(feature = "conversation")]
 pub mod conversation;
+pub mod core;
 #[cfg(feature = "crafting")]
 pub mod crafting;
 #[cfg(feature = "creatures")]
@@ -90,6 +87,8 @@ pub mod creatures;
 pub mod densityclasses;
 #[cfg(feature = "dialoguecontentbank")]
 pub mod dialoguecontentbank;
+#[cfg(feature = "dormant")]
+pub mod dormant;
 #[cfg(feature = "dynamiccameraeffects")]
 pub mod dynamiccameraeffects;
 #[cfg(feature = "emotions")]
@@ -374,6 +373,7 @@ pub mod missiondata;
 pub mod missionfailureconditions;
 #[cfg(feature = "motionstatemachine")]
 pub mod motionstatemachine;
+pub mod multi_feature;
 #[cfg(feature = "musiclogic")]
 pub mod musiclogic;
 #[cfg(feature = "personalinnerthoughtrules")]
@@ -511,10 +511,6 @@ pub mod data_pools;
 pub mod record_index;
 pub mod record_store;
 
-pub use core::*;
-pub use multi_feature::*;
-#[cfg(feature = "dormant")]
-pub use dormant::*;
 #[cfg(feature = "actor-actorblockhelper")]
 pub use actor_actorblockhelper::*;
 #[cfg(feature = "actor-actors")]
@@ -575,14 +571,18 @@ pub use contextualcommunicationconfig::*;
 pub use contracts::*;
 #[cfg(feature = "conversation")]
 pub use conversation::*;
+pub use core::*;
 #[cfg(feature = "crafting")]
 pub use crafting::*;
 #[cfg(feature = "creatures")]
 pub use creatures::*;
+pub use data_pools::DataPools;
 #[cfg(feature = "densityclasses")]
 pub use densityclasses::*;
 #[cfg(feature = "dialoguecontentbank")]
 pub use dialoguecontentbank::*;
+#[cfg(feature = "dormant")]
+pub use dormant::*;
 #[cfg(feature = "dynamiccameraeffects")]
 pub use dynamiccameraeffects::*;
 #[cfg(feature = "emotions")]
@@ -799,6 +799,7 @@ pub use entities_worlddisplay::*;
 pub use entitlementpolicies::*;
 #[cfg(feature = "entityclassdefinition")]
 pub use entityclassdefinition::*;
+pub use enums::*;
 #[cfg(feature = "environments")]
 pub use environments::*;
 #[cfg(feature = "evagraph")]
@@ -867,12 +868,14 @@ pub use missiondata::*;
 pub use missionfailureconditions::*;
 #[cfg(feature = "motionstatemachine")]
 pub use motionstatemachine::*;
+pub use multi_feature::*;
 #[cfg(feature = "musiclogic")]
 pub use musiclogic::*;
 #[cfg(feature = "personalinnerthoughtrules")]
 pub use personalinnerthoughtrules::*;
 #[cfg(feature = "planetdaynighttemperatureparams")]
 pub use planetdaynighttemperatureparams::*;
+pub use poly_enums::*;
 #[cfg(feature = "procbreathing")]
 pub use procbreathing::*;
 #[cfg(feature = "procedurallayout")]
@@ -883,6 +886,8 @@ pub use qteconfigs::*;
 pub use radarsystem::*;
 #[cfg(feature = "rastar")]
 pub use rastar::*;
+pub use record_index::RecordIndex;
+pub use record_store::RecordStore;
 #[cfg(feature = "refinerynotificationconfiguration")]
 pub use refinerynotificationconfiguration::*;
 #[cfg(feature = "refiningprocess")]
@@ -999,11 +1004,6 @@ pub use vehicle::*;
 pub use vfx::*;
 #[cfg(feature = "zerogtraversalgraph")]
 pub use zerogtraversalgraph::*;
-pub use enums::*;
-pub use poly_enums::*;
-pub use data_pools::DataPools;
-pub use record_index::RecordIndex;
-pub use record_store::RecordStore;
 
 // ── Auto-generated feature list ────────────────────────────────────────
 //

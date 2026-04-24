@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -28,15 +28,22 @@ pub struct SCItemFishParams {
 }
 
 impl Pooled for SCItemFishParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_flair.scitem_fish_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_flair.scitem_fish_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_scitem_flair.scitem_fish_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_scitem_flair.scitem_fish_params
+    }
 }
 
 impl<'a> Extract<'a> for SCItemFishParams {
     const TYPE_NAME: &'static str = "SCItemFishParams";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            species: inst.get_str("species").map(String::from).unwrap_or_default(),
+            species: inst
+                .get_str("species")
+                .map(String::from)
+                .unwrap_or_default(),
             count: inst.get_i32("count").unwrap_or_default(),
         }
     }
@@ -52,8 +59,12 @@ pub struct SCJukeboxParams {
 }
 
 impl Pooled for SCJukeboxParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_flair.scjukebox_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_flair.scjukebox_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_scitem_flair.scjukebox_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_scitem_flair.scjukebox_params
+    }
 }
 
 impl<'a> Extract<'a> for SCJukeboxParams {
@@ -61,14 +72,23 @@ impl<'a> Extract<'a> for SCJukeboxParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             start_trigger: match inst.get("startTrigger") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<GlobalResourceAudio>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             stop_trigger: match inst.get("stopTrigger") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<GlobalResourceAudio>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
         }
     }
 }
-

@@ -9,23 +9,26 @@
 
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
+use super::super::*;
+use crate::Handle;
 use std::collections::HashMap;
 use svarog_common::CigGuid;
-use crate::Handle;
-use super::super::*;
 
 /// Record index for the `audio` feature.
 #[derive(Default)]
 pub struct AudioIndex {
     pub audio_breath_style_condition_list: HashMap<CigGuid, Handle<AudioBreathStyleConditionList>>,
-    pub entity_audio_controller_type_params: HashMap<CigGuid, Handle<EntityAudioControllerTypeParams>>,
-    pub entity_audio_controller_manager_params: HashMap<CigGuid, Handle<EntityAudioControllerManagerParams>>,
+    pub entity_audio_controller_type_params:
+        HashMap<CigGuid, Handle<EntityAudioControllerTypeParams>>,
+    pub entity_audio_controller_manager_params:
+        HashMap<CigGuid, Handle<EntityAudioControllerManagerParams>>,
     pub audio_whitelist: HashMap<CigGuid, Handle<AudioWhitelist>>,
     pub audio_environment: HashMap<CigGuid, Handle<AudioEnvironment>>,
     pub audio_budget_definition: HashMap<CigGuid, Handle<AudioBudgetDefinition>>,
     pub audio_game_context_globals: HashMap<CigGuid, Handle<AudioGameContextGlobals>>,
     pub audio_game_context_setup: HashMap<CigGuid, Handle<AudioGameContextSetup>>,
-    pub surface_audio_properties_definition: HashMap<CigGuid, Handle<SurfaceAudioPropertiesDefinition>>,
+    pub surface_audio_properties_definition:
+        HashMap<CigGuid, Handle<SurfaceAudioPropertiesDefinition>>,
     pub global_audio_settings: HashMap<CigGuid, Handle<GlobalAudioSettings>>,
     pub audio_tag_action_list: HashMap<CigGuid, Handle<AudioTagActionList>>,
     pub audio_value_output_setup: HashMap<CigGuid, Handle<AudioValueOutputSetup>>,
@@ -70,5 +73,7 @@ impl AudioIndex {
         total
     }
 
-    pub fn is_empty(&self) -> bool { self.len() == 0 }
+    pub fn is_empty(&self) -> bool {
+        self.len() == 0
+    }
 }

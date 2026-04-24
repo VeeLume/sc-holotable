@@ -9,9 +9,9 @@
 
 //! Feature module: `entities-scitem-entityclassdefinition_test_gadget`
 
-mod types;
 mod pools;
+mod types;
 
+pub use pools::*;
 #[allow(unused_imports)]
 pub use types::*;
-pub use pools::*;

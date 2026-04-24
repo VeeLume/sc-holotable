@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -32,8 +32,12 @@ pub struct TQSInputIntValue {
 }
 
 impl Pooled for TQSInputIntValue {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.tacticalquery.tqsinput_int_value }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.tacticalquery.tqsinput_int_value }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.tacticalquery.tqsinput_int_value
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.tacticalquery.tqsinput_int_value
+    }
 }
 
 impl<'a> Extract<'a> for TQSInputIntValue {
@@ -41,17 +45,35 @@ impl<'a> Extract<'a> for TQSInputIntValue {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             requirements: match inst.get("requirements") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<TagsDNF>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<TagsDNF>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
-            condition: inst.get_str("condition").map(String::from).unwrap_or_default(),
+            condition: inst
+                .get_str("condition")
+                .map(String::from)
+                .unwrap_or_default(),
             value: inst.get_i32("value").unwrap_or_default(),
-            overrides: inst.get_array("overrides")
-                .map(|arr| arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<TQSInputIntValue>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r) => Some(b.alloc_nested::<TQSInputIntValue>(b.db.instance(r.struct_index, r.instance_index), true)),
+            overrides: inst
+                .get_array("overrides")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<TQSInputIntValue>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => Some(b.alloc_nested::<TQSInputIntValue>(
+                            b.db.instance(r.struct_index, r.instance_index),
+                            true,
+                        )),
                         _ => None,
-                    }).collect())
+                    })
+                    .collect()
+                })
                 .unwrap_or_default(),
         }
     }
@@ -71,8 +93,12 @@ pub struct TQSInputDynamicVariableValue {
 }
 
 impl Pooled for TQSInputDynamicVariableValue {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.tacticalquery.tqsinput_dynamic_variable_value }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.tacticalquery.tqsinput_dynamic_variable_value }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.tacticalquery.tqsinput_dynamic_variable_value
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.tacticalquery.tqsinput_dynamic_variable_value
+    }
 }
 
 impl<'a> Extract<'a> for TQSInputDynamicVariableValue {
@@ -80,17 +106,35 @@ impl<'a> Extract<'a> for TQSInputDynamicVariableValue {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             requirements: match inst.get("requirements") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<TagsDNF>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<TagsDNF>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
-            condition: inst.get_str("condition").map(String::from).unwrap_or_default(),
+            condition: inst
+                .get_str("condition")
+                .map(String::from)
+                .unwrap_or_default(),
             value: inst.get_str("value").map(String::from).unwrap_or_default(),
-            overrides: inst.get_array("overrides")
-                .map(|arr| arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<TQSInputDynamicVariableValue>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r) => Some(b.alloc_nested::<TQSInputDynamicVariableValue>(b.db.instance(r.struct_index, r.instance_index), true)),
+            overrides: inst
+                .get_array("overrides")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<TQSInputDynamicVariableValue>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => Some(b.alloc_nested::<TQSInputDynamicVariableValue>(
+                            b.db.instance(r.struct_index, r.instance_index),
+                            true,
+                        )),
                         _ => None,
-                    }).collect())
+                    })
+                    .collect()
+                })
                 .unwrap_or_default(),
         }
     }
@@ -112,8 +156,12 @@ pub struct TQSWeightInputFloatValue {
 }
 
 impl Pooled for TQSWeightInputFloatValue {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.tacticalquery.tqsweight_input_float_value }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.tacticalquery.tqsweight_input_float_value }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.tacticalquery.tqsweight_input_float_value
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.tacticalquery.tqsweight_input_float_value
+    }
 }
 
 impl<'a> Extract<'a> for TQSWeightInputFloatValue {
@@ -121,18 +169,36 @@ impl<'a> Extract<'a> for TQSWeightInputFloatValue {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             requirements: match inst.get("requirements") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<TagsDNF>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<TagsDNF>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
-            condition: inst.get_str("condition").map(String::from).unwrap_or_default(),
+            condition: inst
+                .get_str("condition")
+                .map(String::from)
+                .unwrap_or_default(),
             weight: inst.get_f32("weight").unwrap_or_default(),
             value: inst.get_f32("value").unwrap_or_default(),
-            overrides: inst.get_array("overrides")
-                .map(|arr| arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<TQSWeightInputFloatValue>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r) => Some(b.alloc_nested::<TQSWeightInputFloatValue>(b.db.instance(r.struct_index, r.instance_index), true)),
+            overrides: inst
+                .get_array("overrides")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<TQSWeightInputFloatValue>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => Some(b.alloc_nested::<TQSWeightInputFloatValue>(
+                            b.db.instance(r.struct_index, r.instance_index),
+                            true,
+                        )),
                         _ => None,
-                    }).collect())
+                    })
+                    .collect()
+                })
                 .unwrap_or_default(),
         }
     }
@@ -154,8 +220,12 @@ pub struct TQSWeightInputTagValue {
 }
 
 impl Pooled for TQSWeightInputTagValue {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.tacticalquery.tqsweight_input_tag_value }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.tacticalquery.tqsweight_input_tag_value }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.tacticalquery.tqsweight_input_tag_value
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.tacticalquery.tqsweight_input_tag_value
+    }
 }
 
 impl<'a> Extract<'a> for TQSWeightInputTagValue {
@@ -163,21 +233,42 @@ impl<'a> Extract<'a> for TQSWeightInputTagValue {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             requirements: match inst.get("requirements") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<TagsDNF>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<TagsDNF>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
-            condition: inst.get_str("condition").map(String::from).unwrap_or_default(),
+            condition: inst
+                .get_str("condition")
+                .map(String::from)
+                .unwrap_or_default(),
             weight: inst.get_f32("weight").unwrap_or_default(),
             value: match inst.get("value") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<TagsDNF>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<TagsDNF>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
-            overrides: inst.get_array("overrides")
-                .map(|arr| arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<TQSWeightInputTagValue>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r) => Some(b.alloc_nested::<TQSWeightInputTagValue>(b.db.instance(r.struct_index, r.instance_index), true)),
+            overrides: inst
+                .get_array("overrides")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<TQSWeightInputTagValue>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => Some(b.alloc_nested::<TQSWeightInputTagValue>(
+                            b.db.instance(r.struct_index, r.instance_index),
+                            true,
+                        )),
                         _ => None,
-                    }).collect())
+                    })
+                    .collect()
+                })
                 .unwrap_or_default(),
         }
     }
@@ -190,8 +281,12 @@ pub struct TQSOptionContentRecord {
 }
 
 impl Pooled for TQSOptionContentRecord {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.tacticalquery.tqsoption_content_record }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.tacticalquery.tqsoption_content_record }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.tacticalquery.tqsoption_content_record
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.tacticalquery.tqsoption_content_record
+    }
 }
 
 impl<'a> Extract<'a> for TQSOptionContentRecord {
@@ -199,7 +294,12 @@ impl<'a> Extract<'a> for TQSOptionContentRecord {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             content: match inst.get("content") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<TQSOptionContent>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<TQSOptionContent>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
         }
@@ -218,8 +318,12 @@ pub struct TQSOptionReference {
 }
 
 impl Pooled for TQSOptionReference {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.tacticalquery.tqsoption_reference }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.tacticalquery.tqsoption_reference }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.tacticalquery.tqsoption_reference
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.tacticalquery.tqsoption_reference
+    }
 }
 
 impl<'a> Extract<'a> for TQSOptionReference {
@@ -227,17 +331,28 @@ impl<'a> Extract<'a> for TQSOptionReference {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             requirements: match inst.get("requirements") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<TagsDNF>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<TagsDNF>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
-            content: inst.get("content").and_then(|v| v.as_record_ref()).map(|r| r.guid),
-            option_overrides: inst.get_array("optionOverrides")
-                .map(|arr| arr.filter_map(|v| match v {
-                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => Some(TQSOptionPtr::from_ref(b, r)),
+            content: inst
+                .get("content")
+                .and_then(|v| v.as_record_ref())
+                .map(|r| r.guid),
+            option_overrides: inst
+                .get_array("optionOverrides")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => {
+                            Some(TQSOptionPtr::from_ref(b, r))
+                        }
                         _ => None,
-                    }).collect())
+                    })
+                    .collect()
+                })
                 .unwrap_or_default(),
         }
     }
 }
-

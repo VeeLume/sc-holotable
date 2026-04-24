@@ -179,9 +179,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                             println!("    -> resolves to: {}", ammo_name);
 
                             if let Some(&ammo_h) = ammo_map.get(&ammo_guid)
-                                && let Some(ammo) = ammo_h.get(pools) {
-                                    dump_ammo(ammo, pools, &record_names, ammo_map);
-                                }
+                                && let Some(ammo) = ammo_h.get(pools)
+                            {
+                                dump_ammo(ammo, pools, &record_names, ammo_map);
+                            }
                         }
                     }
 

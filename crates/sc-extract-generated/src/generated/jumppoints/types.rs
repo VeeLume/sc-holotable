@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -43,8 +43,12 @@ pub struct SJumpTunnelVisualParams {
 }
 
 impl Pooled for SJumpTunnelVisualParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.jumppoints.sjump_tunnel_visual_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.jumppoints.sjump_tunnel_visual_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.jumppoints.sjump_tunnel_visual_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.jumppoints.sjump_tunnel_visual_params
+    }
 }
 
 impl<'a> Extract<'a> for SJumpTunnelVisualParams {
@@ -52,15 +56,21 @@ impl<'a> Extract<'a> for SJumpTunnelVisualParams {
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
             quantum_effect: inst.get_bool("quantumEffect").unwrap_or_default(),
-            portal_external_view_dist_ratio: inst.get_f32("portalExternalViewDistRatio").unwrap_or_default(),
-            portal_internal_view_dist_ratio: inst.get_f32("portalInternalViewDistRatio").unwrap_or_default(),
+            portal_external_view_dist_ratio: inst
+                .get_f32("portalExternalViewDistRatio")
+                .unwrap_or_default(),
+            portal_internal_view_dist_ratio: inst
+                .get_f32("portalInternalViewDistRatio")
+                .unwrap_or_default(),
             vis_area_view_dist_ratio: inst.get_f32("visAreaViewDistRatio").unwrap_or_default(),
             probe_intensity: inst.get_f32("probeIntensity").unwrap_or_default(),
             internal_draw_distance: inst.get_f32("internalDrawDistance").unwrap_or_default(),
             external_draw_distance: inst.get_f32("externalDrawDistance").unwrap_or_default(),
             opening_hidden_time: inst.get_f32("openingHiddenTime").unwrap_or_default(),
             closing_hidden_time: inst.get_f32("closingHiddenTime").unwrap_or_default(),
-            exit_portal_culling_distance: inst.get_f32("exitPortalCullingDistance").unwrap_or_default(),
+            exit_portal_culling_distance: inst
+                .get_f32("exitPortalCullingDistance")
+                .unwrap_or_default(),
         }
     }
 }
@@ -75,16 +85,26 @@ pub struct SSpreadMisfireEffect {
 }
 
 impl Pooled for SSpreadMisfireEffect {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.jumppoints.sspread_misfire_effect }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.jumppoints.sspread_misfire_effect }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.jumppoints.sspread_misfire_effect
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.jumppoints.sspread_misfire_effect
+    }
 }
 
 impl<'a> Extract<'a> for SSpreadMisfireEffect {
     const TYPE_NAME: &'static str = "SSpreadMisfireEffect";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            effect_trigger: inst.get("effectTrigger").and_then(|v| v.as_record_ref()).map(|r| r.guid),
-            effect_tag: inst.get("effectTag").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            effect_trigger: inst
+                .get("effectTrigger")
+                .and_then(|v| v.as_record_ref())
+                .map(|r| r.guid),
+            effect_tag: inst
+                .get("effectTag")
+                .and_then(|v| v.as_record_ref())
+                .map(|r| r.guid),
         }
     }
 }
@@ -96,8 +116,12 @@ pub struct GlobalJumpPointTuningParams {
 }
 
 impl Pooled for GlobalJumpPointTuningParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.jumppoints.global_jump_point_tuning_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.jumppoints.global_jump_point_tuning_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.jumppoints.global_jump_point_tuning_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.jumppoints.global_jump_point_tuning_params
+    }
 }
 
 impl<'a> Extract<'a> for GlobalJumpPointTuningParams {
@@ -132,8 +156,12 @@ pub struct GlobalJumpPointOpeningParams {
 }
 
 impl Pooled for GlobalJumpPointOpeningParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.jumppoints.global_jump_point_opening_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.jumppoints.global_jump_point_opening_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.jumppoints.global_jump_point_opening_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.jumppoints.global_jump_point_opening_params
+    }
 }
 
 impl<'a> Extract<'a> for GlobalJumpPointOpeningParams {
@@ -145,14 +173,20 @@ impl<'a> Extract<'a> for GlobalJumpPointOpeningParams {
             open_effect_start_delay: inst.get_f32("openEffectStartDelay").unwrap_or_default(),
             reveal_time: inst.get_f32("revealTime").unwrap_or_default(),
             reveal_anim_curve: match inst.get("revealAnimCurve") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BezierCurve>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BezierCurve>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             reveal_fade_delay: inst.get_f32("revealFadeDelay").unwrap_or_default(),
             opening_time: inst.get_f32("openingTime").unwrap_or_default(),
             opening_end_delay: inst.get_f32("openingEndDelay").unwrap_or_default(),
             aperture_time_scale_range: match inst.get("apertureTimeScaleRange") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
         }
@@ -170,8 +204,12 @@ pub struct GlobalJumpPointClosingParams {
 }
 
 impl Pooled for GlobalJumpPointClosingParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.jumppoints.global_jump_point_closing_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.jumppoints.global_jump_point_closing_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.jumppoints.global_jump_point_closing_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.jumppoints.global_jump_point_closing_params
+    }
 }
 
 impl<'a> Extract<'a> for GlobalJumpPointClosingParams {
@@ -196,8 +234,12 @@ pub struct GlobalJumpPointEffectParams {
 }
 
 impl Pooled for GlobalJumpPointEffectParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.jumppoints.global_jump_point_effect_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.jumppoints.global_jump_point_effect_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.jumppoints.global_jump_point_effect_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.jumppoints.global_jump_point_effect_params
+    }
 }
 
 impl<'a> Extract<'a> for GlobalJumpPointEffectParams {
@@ -205,15 +247,30 @@ impl<'a> Extract<'a> for GlobalJumpPointEffectParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             tuning_params: match inst.get("tuningParams") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalJumpPointTuningParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<GlobalJumpPointTuningParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             opening_params: match inst.get("openingParams") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalJumpPointOpeningParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<GlobalJumpPointOpeningParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             closing_params: match inst.get("closingParams") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalJumpPointClosingParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<GlobalJumpPointClosingParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
         }
@@ -231,8 +288,12 @@ pub struct JumpDriveUIConeParams {
 }
 
 impl Pooled for JumpDriveUIConeParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.jumppoints.jump_drive_uicone_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.jumppoints.jump_drive_uicone_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.jumppoints.jump_drive_uicone_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.jumppoints.jump_drive_uicone_params
+    }
 }
 
 impl<'a> Extract<'a> for JumpDriveUIConeParams {
@@ -271,8 +332,12 @@ pub struct GlobalJumpPointParams {
 }
 
 impl Pooled for GlobalJumpPointParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.jumppoints.global_jump_point_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.jumppoints.global_jump_point_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.jumppoints.global_jump_point_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.jumppoints.global_jump_point_params
+    }
 }
 
 impl<'a> Extract<'a> for GlobalJumpPointParams {
@@ -285,14 +350,28 @@ impl<'a> Extract<'a> for GlobalJumpPointParams {
             start_closing_time: inst.get_f32("startClosingTime").unwrap_or_default(),
             ship_pull_in_delay_time: inst.get_f32("shipPullInDelayTime").unwrap_or_default(),
             ship_pull_in_buffer_time: inst.get_f32("shipPullInBufferTime").unwrap_or_default(),
-            debris_push_out_acceleration: inst.get_f32("debrisPushOutAcceleration").unwrap_or_default(),
-            debris_push_out_maximum_speed: inst.get_f32("debrisPushOutMaximumSpeed").unwrap_or_default(),
+            debris_push_out_acceleration: inst
+                .get_f32("debrisPushOutAcceleration")
+                .unwrap_or_default(),
+            debris_push_out_maximum_speed: inst
+                .get_f32("debrisPushOutMaximumSpeed")
+                .unwrap_or_default(),
             effect_params: match inst.get("effectParams") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalJumpPointEffectParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<GlobalJumpPointEffectParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             ui_cone_params: match inst.get("uiConeParams") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<JumpDriveUIConeParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<JumpDriveUIConeParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
         }
@@ -308,8 +387,12 @@ pub struct SJumpTunnelSectionProbabilityParams {
 }
 
 impl Pooled for SJumpTunnelSectionProbabilityParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.jumppoints.sjump_tunnel_section_probability_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.jumppoints.sjump_tunnel_section_probability_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.jumppoints.sjump_tunnel_section_probability_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.jumppoints.sjump_tunnel_section_probability_params
+    }
 }
 
 impl<'a> Extract<'a> for SJumpTunnelSectionProbabilityParams {
@@ -317,7 +400,12 @@ impl<'a> Extract<'a> for SJumpTunnelSectionProbabilityParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             section: match inst.get("section") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SJumpTunnelSectionGenerationParams>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<SJumpTunnelSectionGenerationParams>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
                 _ => None,
             },
             probability: inst.get_f32("probability").unwrap_or_default(),
@@ -336,8 +424,16 @@ pub struct SJumpTunnelSectionControlPointGenerationParams {
 }
 
 impl Pooled for SJumpTunnelSectionControlPointGenerationParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.jumppoints.sjump_tunnel_section_control_point_generation_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.jumppoints.sjump_tunnel_section_control_point_generation_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .jumppoints
+            .sjump_tunnel_section_control_point_generation_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .jumppoints
+            .sjump_tunnel_section_control_point_generation_params
+    }
 }
 
 impl<'a> Extract<'a> for SJumpTunnelSectionControlPointGenerationParams {
@@ -345,15 +441,24 @@ impl<'a> Extract<'a> for SJumpTunnelSectionControlPointGenerationParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             section_offset: match inst.get("sectionOffset") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             section_length: match inst.get("sectionLength") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             angle_offset: match inst.get("angleOffset") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
         }
@@ -371,8 +476,12 @@ pub struct SJumpTunnelObstacleGenerationParams {
 }
 
 impl Pooled for SJumpTunnelObstacleGenerationParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.jumppoints.sjump_tunnel_obstacle_generation_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.jumppoints.sjump_tunnel_obstacle_generation_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.jumppoints.sjump_tunnel_obstacle_generation_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.jumppoints.sjump_tunnel_obstacle_generation_params
+    }
 }
 
 impl<'a> Extract<'a> for SJumpTunnelObstacleGenerationParams {
@@ -380,15 +489,24 @@ impl<'a> Extract<'a> for SJumpTunnelObstacleGenerationParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             size: match inst.get("size") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             offset: match inst.get("offset") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             angle: match inst.get("angle") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
         }
@@ -414,8 +532,12 @@ pub struct SJumpTunnelEllipticalParams {
 }
 
 impl Pooled for SJumpTunnelEllipticalParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.jumppoints.sjump_tunnel_elliptical_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.jumppoints.sjump_tunnel_elliptical_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.jumppoints.sjump_tunnel_elliptical_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.jumppoints.sjump_tunnel_elliptical_params
+    }
 }
 
 impl<'a> Extract<'a> for SJumpTunnelEllipticalParams {
@@ -425,13 +547,19 @@ impl<'a> Extract<'a> for SJumpTunnelEllipticalParams {
             min_radius: inst.get_f32("minRadius").unwrap_or_default(),
             max_radius: inst.get_f32("maxRadius").unwrap_or_default(),
             radius_multiplier: match inst.get("radiusMultiplier") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BezierCurve>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BezierCurve>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             min_aspect_ratio: inst.get_f32("minAspectRatio").unwrap_or_default(),
             max_aspect_ratio: inst.get_f32("maxAspectRatio").unwrap_or_default(),
             aspect_ratio_multiplier: match inst.get("aspectRatioMultiplier") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BezierCurve>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BezierCurve>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             chance_to_follow_curvature: inst.get_f32("chanceToFollowCurvature").unwrap_or_default(),
@@ -460,41 +588,89 @@ pub struct SJumpTunnelSectionGenerationParams {
 }
 
 impl Pooled for SJumpTunnelSectionGenerationParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.jumppoints.sjump_tunnel_section_generation_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.jumppoints.sjump_tunnel_section_generation_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.jumppoints.sjump_tunnel_section_generation_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.jumppoints.sjump_tunnel_section_generation_params
+    }
 }
 
 impl<'a> Extract<'a> for SJumpTunnelSectionGenerationParams {
     const TYPE_NAME: &'static str = "SJumpTunnelSectionGenerationParams";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            debug_name: inst.get_str("debugName").map(String::from).unwrap_or_default(),
-            default_section_length: inst.get_f32("defaultSectionLength").unwrap_or_default(),
-            next_section_probabilities: inst.get_array("nextSectionProbabilities")
-                .map(|arr| arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<SJumpTunnelSectionProbabilityParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r) => Some(b.alloc_nested::<SJumpTunnelSectionProbabilityParams>(b.db.instance(r.struct_index, r.instance_index), true)),
-                        _ => None,
-                    }).collect())
+            debug_name: inst
+                .get_str("debugName")
+                .map(String::from)
                 .unwrap_or_default(),
-            control_points: inst.get_array("controlPoints")
-                .map(|arr| arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<SJumpTunnelSectionControlPointGenerationParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r) => Some(b.alloc_nested::<SJumpTunnelSectionControlPointGenerationParams>(b.db.instance(r.struct_index, r.instance_index), true)),
+            default_section_length: inst.get_f32("defaultSectionLength").unwrap_or_default(),
+            next_section_probabilities: inst
+                .get_array("nextSectionProbabilities")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<SJumpTunnelSectionProbabilityParams>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => {
+                            Some(b.alloc_nested::<SJumpTunnelSectionProbabilityParams>(
+                                b.db.instance(r.struct_index, r.instance_index),
+                                true,
+                            ))
+                        }
                         _ => None,
-                    }).collect())
+                    })
+                    .collect()
+                })
+                .unwrap_or_default(),
+            control_points: inst
+                .get_array("controlPoints")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(
+                            b.alloc_nested::<SJumpTunnelSectionControlPointGenerationParams>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ),
+                        ),
+                        Value::ClassRef(r) => Some(
+                            b.alloc_nested::<SJumpTunnelSectionControlPointGenerationParams>(
+                                b.db.instance(r.struct_index, r.instance_index),
+                                true,
+                            ),
+                        ),
+                        _ => None,
+                    })
+                    .collect()
+                })
                 .unwrap_or_default(),
             chance_of_obstacles: inst.get_f32("chanceOfObstacles").unwrap_or_default(),
             number_of_obstacles: match inst.get("numberOfObstacles") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             obstacle_generation: match inst.get("obstacleGeneration") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SJumpTunnelObstacleGenerationParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<SJumpTunnelObstacleGenerationParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             elliptical_params: match inst.get("ellipticalParams") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SJumpTunnelEllipticalParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<SJumpTunnelEllipticalParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
         }
@@ -524,8 +700,12 @@ pub struct SJumpTunnelGenerationParams {
 }
 
 impl Pooled for SJumpTunnelGenerationParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.jumppoints.sjump_tunnel_generation_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.jumppoints.sjump_tunnel_generation_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.jumppoints.sjump_tunnel_generation_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.jumppoints.sjump_tunnel_generation_params
+    }
 }
 
 impl<'a> Extract<'a> for SJumpTunnelGenerationParams {
@@ -533,31 +713,71 @@ impl<'a> Extract<'a> for SJumpTunnelGenerationParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             tunnel_radius: inst.get_f32("tunnelRadius").unwrap_or_default(),
-            tunnel_radius_gameplay_buffer: inst.get_f32("tunnelRadiusGameplayBuffer").unwrap_or_default(),
+            tunnel_radius_gameplay_buffer: inst
+                .get_f32("tunnelRadiusGameplayBuffer")
+                .unwrap_or_default(),
             tunnel_length: inst.get_f32("tunnelLength").unwrap_or_default(),
             entrance_length: inst.get_f32("entranceLength").unwrap_or_default(),
             exit_length: inst.get_f32("exitLength").unwrap_or_default(),
             entrance_elliptical_params: match inst.get("entranceEllipticalParams") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SJumpTunnelEllipticalParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<SJumpTunnelEllipticalParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             exit_elliptical_params: match inst.get("exitEllipticalParams") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SJumpTunnelEllipticalParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<SJumpTunnelEllipticalParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
-            first_section_probabilities: inst.get_array("firstSectionProbabilities")
-                .map(|arr| arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<SJumpTunnelSectionProbabilityParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r) => Some(b.alloc_nested::<SJumpTunnelSectionProbabilityParams>(b.db.instance(r.struct_index, r.instance_index), true)),
+            first_section_probabilities: inst
+                .get_array("firstSectionProbabilities")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<SJumpTunnelSectionProbabilityParams>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => {
+                            Some(b.alloc_nested::<SJumpTunnelSectionProbabilityParams>(
+                                b.db.instance(r.struct_index, r.instance_index),
+                                true,
+                            ))
+                        }
                         _ => None,
-                    }).collect())
+                    })
+                    .collect()
+                })
                 .unwrap_or_default(),
-            gen_params: inst.get_array("genParams")
-                .map(|arr| arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<SJumpTunnelSectionGenerationParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r) => Some(b.alloc_nested::<SJumpTunnelSectionGenerationParams>(b.db.instance(r.struct_index, r.instance_index), true)),
+            gen_params: inst
+                .get_array("genParams")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<SJumpTunnelSectionGenerationParams>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => {
+                            Some(b.alloc_nested::<SJumpTunnelSectionGenerationParams>(
+                                b.db.instance(r.struct_index, r.instance_index),
+                                true,
+                            ))
+                        }
                         _ => None,
-                    }).collect())
+                    })
+                    .collect()
+                })
                 .unwrap_or_default(),
         }
     }
@@ -580,8 +800,12 @@ pub struct GlobalJumpTunnelLightParams {
 }
 
 impl Pooled for GlobalJumpTunnelLightParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.jumppoints.global_jump_tunnel_light_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.jumppoints.global_jump_tunnel_light_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.jumppoints.global_jump_tunnel_light_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.jumppoints.global_jump_tunnel_light_params
+    }
 }
 
 impl<'a> Extract<'a> for GlobalJumpTunnelLightParams {
@@ -611,8 +835,12 @@ pub struct GlobalJumpTunnelFogParams {
 }
 
 impl Pooled for GlobalJumpTunnelFogParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.jumppoints.global_jump_tunnel_fog_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.jumppoints.global_jump_tunnel_fog_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.jumppoints.global_jump_tunnel_fog_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.jumppoints.global_jump_tunnel_fog_params
+    }
 }
 
 impl<'a> Extract<'a> for GlobalJumpTunnelFogParams {
@@ -622,11 +850,17 @@ impl<'a> Extract<'a> for GlobalJumpTunnelFogParams {
             fog_start_offset: inst.get_f32("fogStartOffset").unwrap_or_default(),
             fog_end_offset: inst.get_f32("fogEndOffset").unwrap_or_default(),
             fog_end_intensity_distance_range: match inst.get("fogEndIntensityDistanceRange") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             fog_animated_intensity_scale_range: match inst.get("fogAnimatedIntensityScaleRange") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
         }
@@ -660,8 +894,12 @@ pub struct GlobalJumpTunnelPassByLightParams {
 }
 
 impl Pooled for GlobalJumpTunnelPassByLightParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.jumppoints.global_jump_tunnel_pass_by_light_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.jumppoints.global_jump_tunnel_pass_by_light_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.jumppoints.global_jump_tunnel_pass_by_light_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.jumppoints.global_jump_tunnel_pass_by_light_params
+    }
 }
 
 impl<'a> Extract<'a> for GlobalJumpTunnelPassByLightParams {
@@ -669,31 +907,52 @@ impl<'a> Extract<'a> for GlobalJumpTunnelPassByLightParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             intensity_range: match inst.get("intensityRange") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             radius_range: match inst.get("radiusRange") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             bulb_range: match inst.get("bulbRange") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             spacing_range: match inst.get("spacingRange") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             distance_from_spline: match inst.get("distanceFromSpline") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             speed_range: match inst.get("speedRange") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             color_random_offset_range: match inst.get("colorRandomOffsetRange") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             entrance_offset: inst.get_f32("entranceOffset").unwrap_or_default(),
@@ -711,8 +970,12 @@ pub struct GlobalJumpTunnelProbeParams {
 }
 
 impl Pooled for GlobalJumpTunnelProbeParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.jumppoints.global_jump_tunnel_probe_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.jumppoints.global_jump_tunnel_probe_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.jumppoints.global_jump_tunnel_probe_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.jumppoints.global_jump_tunnel_probe_params
+    }
 }
 
 impl<'a> Extract<'a> for GlobalJumpTunnelProbeParams {
@@ -751,8 +1014,12 @@ pub struct GlobalJumpTunnelEffectParams {
 }
 
 impl Pooled for GlobalJumpTunnelEffectParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.jumppoints.global_jump_tunnel_effect_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.jumppoints.global_jump_tunnel_effect_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.jumppoints.global_jump_tunnel_effect_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.jumppoints.global_jump_tunnel_effect_params
+    }
 }
 
 impl<'a> Extract<'a> for GlobalJumpTunnelEffectParams {
@@ -760,43 +1027,93 @@ impl<'a> Extract<'a> for GlobalJumpTunnelEffectParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             fail_effect: match inst.get("failEffect") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceParticle>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<GlobalResourceParticle>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             interior_exit_effect: match inst.get("interiorExitEffect") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceParticle>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<GlobalResourceParticle>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             spaceloop_effect: match inst.get("spaceloopEffect") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceParticle>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<GlobalResourceParticle>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             central_spline_effect: match inst.get("centralSplineEffect") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceParticle>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<GlobalResourceParticle>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             space_filling_spline_effect: match inst.get("spaceFillingSplineEffect") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceParticle>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<GlobalResourceParticle>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             sun_flare_effect: match inst.get("sunFlareEffect") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceParticle>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<GlobalResourceParticle>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             sun_light_params: match inst.get("sunLightParams") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalJumpTunnelLightParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<GlobalJumpTunnelLightParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             probe_params: match inst.get("probeParams") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalJumpTunnelProbeParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<GlobalJumpTunnelProbeParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             fog_params: match inst.get("fogParams") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalJumpTunnelFogParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<GlobalJumpTunnelFogParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             pass_by_light_params: match inst.get("passByLightParams") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalJumpTunnelPassByLightParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<GlobalJumpTunnelPassByLightParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             spline_length: inst.get_f32("splineLength").unwrap_or_default(),
@@ -811,8 +1128,12 @@ pub struct JumpTunnelCameraEffectParam {
 }
 
 impl Pooled for JumpTunnelCameraEffectParam {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.jumppoints.jump_tunnel_camera_effect_param }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.jumppoints.jump_tunnel_camera_effect_param }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.jumppoints.jump_tunnel_camera_effect_param
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.jumppoints.jump_tunnel_camera_effect_param
+    }
 }
 
 impl<'a> Extract<'a> for JumpTunnelCameraEffectParam {
@@ -841,8 +1162,12 @@ pub struct JumpTunnelCameraEffects {
 }
 
 impl Pooled for JumpTunnelCameraEffects {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.jumppoints.jump_tunnel_camera_effects }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.jumppoints.jump_tunnel_camera_effects }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.jumppoints.jump_tunnel_camera_effects
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.jumppoints.jump_tunnel_camera_effects
+    }
 }
 
 impl<'a> Extract<'a> for JumpTunnelCameraEffects {
@@ -850,27 +1175,57 @@ impl<'a> Extract<'a> for JumpTunnelCameraEffects {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             blur: match inst.get("blur") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<JumpTunnelCameraEffectParam>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<JumpTunnelCameraEffectParam>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             bloom: match inst.get("bloom") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<JumpTunnelCameraEffectParam>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<JumpTunnelCameraEffectParam>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             chromatic_aberation: match inst.get("chromaticAberation") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<JumpTunnelCameraEffectParam>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<JumpTunnelCameraEffectParam>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             shutter_speed: match inst.get("shutterSpeed") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<JumpTunnelCameraEffectParam>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<JumpTunnelCameraEffectParam>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             fov: match inst.get("fov") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<JumpTunnelCameraEffectParam>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<JumpTunnelCameraEffectParam>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             fov_scale: match inst.get("fovScale") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<JumpTunnelCameraEffectParam>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<JumpTunnelCameraEffectParam>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
         }
@@ -886,8 +1241,12 @@ pub struct JumpDriveVelocityStrengthParams {
 }
 
 impl Pooled for JumpDriveVelocityStrengthParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.jumppoints.jump_drive_velocity_strength_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.jumppoints.jump_drive_velocity_strength_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.jumppoints.jump_drive_velocity_strength_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.jumppoints.jump_drive_velocity_strength_params
+    }
 }
 
 impl<'a> Extract<'a> for JumpDriveVelocityStrengthParams {
@@ -919,8 +1278,12 @@ pub struct GlobalJumpTunnelCameraEffectParams {
 }
 
 impl Pooled for GlobalJumpTunnelCameraEffectParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.jumppoints.global_jump_tunnel_camera_effect_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.jumppoints.global_jump_tunnel_camera_effect_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.jumppoints.global_jump_tunnel_camera_effect_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.jumppoints.global_jump_tunnel_camera_effect_params
+    }
 }
 
 impl<'a> Extract<'a> for GlobalJumpTunnelCameraEffectParams {
@@ -928,31 +1291,66 @@ impl<'a> Extract<'a> for GlobalJumpTunnelCameraEffectParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             alignment_to_spline: match inst.get("alignmentToSpline") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<JumpTunnelCameraEffects>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<JumpTunnelCameraEffects>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             distortion_ratio: match inst.get("distortionRatio") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<JumpTunnelCameraEffects>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<JumpTunnelCameraEffects>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             opening_proximity: match inst.get("openingProximity") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<JumpTunnelCameraEffects>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<JumpTunnelCameraEffects>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             wall_proximity: match inst.get("wallProximity") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<JumpTunnelCameraEffects>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<JumpTunnelCameraEffects>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             failure_state: match inst.get("failureState") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<JumpTunnelCameraEffects>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<JumpTunnelCameraEffects>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             velocity_strength: match inst.get("velocityStrength") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<JumpTunnelCameraEffects>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<JumpTunnelCameraEffects>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             velocity_strength_params: match inst.get("velocityStrengthParams") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<JumpDriveVelocityStrengthParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<JumpDriveVelocityStrengthParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
         }
@@ -968,8 +1366,12 @@ pub struct SJumpTunnelDistortionParams {
 }
 
 impl Pooled for SJumpTunnelDistortionParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.jumppoints.sjump_tunnel_distortion_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.jumppoints.sjump_tunnel_distortion_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.jumppoints.sjump_tunnel_distortion_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.jumppoints.sjump_tunnel_distortion_params
+    }
 }
 
 impl<'a> Extract<'a> for SJumpTunnelDistortionParams {
@@ -1011,8 +1413,12 @@ pub struct SJumpTunnelFailureParams {
 }
 
 impl Pooled for SJumpTunnelFailureParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.jumppoints.sjump_tunnel_failure_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.jumppoints.sjump_tunnel_failure_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.jumppoints.sjump_tunnel_failure_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.jumppoints.sjump_tunnel_failure_params
+    }
 }
 
 impl<'a> Extract<'a> for SJumpTunnelFailureParams {
@@ -1024,13 +1430,26 @@ impl<'a> Extract<'a> for SJumpTunnelFailureParams {
             exit_roll_acceleration: inst.get_f32("exitRollAcceleration").unwrap_or_default(),
             exit_pitch_acceleration: inst.get_f32("exitPitchAcceleration").unwrap_or_default(),
             exit_yaw_acceleration: inst.get_f32("exitYawAcceleration").unwrap_or_default(),
-            exit_angular_velocity_maximum: inst.get_f32("exitAngularVelocityMaximum").unwrap_or_default(),
-            ratio_of_max_distortion_damage: inst.get_f32("ratioOfMaxDistortionDamage").unwrap_or_default(),
-            ratio_of_max_jdrvwear_damage: inst.get_f32("ratioOfMaxJDRVWearDamage").unwrap_or_default(),
-            ratio_of_max_qdrvwear_damage: inst.get_f32("ratioOfMaxQDRVWearDamage").unwrap_or_default(),
-            ratio_of_max_hull_wear_damage: inst.get_f32("ratioOfMaxHullWearDamage").unwrap_or_default(),
+            exit_angular_velocity_maximum: inst
+                .get_f32("exitAngularVelocityMaximum")
+                .unwrap_or_default(),
+            ratio_of_max_distortion_damage: inst
+                .get_f32("ratioOfMaxDistortionDamage")
+                .unwrap_or_default(),
+            ratio_of_max_jdrvwear_damage: inst
+                .get_f32("ratioOfMaxJDRVWearDamage")
+                .unwrap_or_default(),
+            ratio_of_max_qdrvwear_damage: inst
+                .get_f32("ratioOfMaxQDRVWearDamage")
+                .unwrap_or_default(),
+            ratio_of_max_hull_wear_damage: inst
+                .get_f32("ratioOfMaxHullWearDamage")
+                .unwrap_or_default(),
             teleport_range_offset: match inst.get("teleportRangeOffset") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             teleport_max_height: inst.get_f32("teleportMaxHeight").unwrap_or_default(),
@@ -1049,8 +1468,12 @@ pub struct SJumpTunnelExitParams {
 }
 
 impl Pooled for SJumpTunnelExitParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.jumppoints.sjump_tunnel_exit_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.jumppoints.sjump_tunnel_exit_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.jumppoints.sjump_tunnel_exit_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.jumppoints.sjump_tunnel_exit_params
+    }
 }
 
 impl<'a> Extract<'a> for SJumpTunnelExitParams {
@@ -1058,12 +1481,20 @@ impl<'a> Extract<'a> for SJumpTunnelExitParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             default_distance_range: match inst.get("defaultDistanceRange") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             default_max_height: inst.get_f32("defaultMaxHeight").unwrap_or_default(),
             exit_push_area: match inst.get("exitPushArea") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SJumpPointPushAreaParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<SJumpPointPushAreaParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
         }
@@ -1091,8 +1522,12 @@ pub struct GlobalJumpTunnelHostParams {
 }
 
 impl Pooled for GlobalJumpTunnelHostParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.jumppoints.global_jump_tunnel_host_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.jumppoints.global_jump_tunnel_host_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.jumppoints.global_jump_tunnel_host_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.jumppoints.global_jump_tunnel_host_params
+    }
 }
 
 impl<'a> Extract<'a> for GlobalJumpTunnelHostParams {
@@ -1100,34 +1535,71 @@ impl<'a> Extract<'a> for GlobalJumpTunnelHostParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             material: match inst.get("material") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceMaterial>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<GlobalResourceMaterial>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             tunnel_generation_params: match inst.get("tunnelGenerationParams") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SJumpTunnelGenerationParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<SJumpTunnelGenerationParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             tunnel_distortion_params: match inst.get("tunnelDistortionParams") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SJumpTunnelDistortionParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<SJumpTunnelDistortionParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             tunnel_failure_params: match inst.get("tunnelFailureParams") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SJumpTunnelFailureParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<SJumpTunnelFailureParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             tunnel_exit_params: match inst.get("tunnelExitParams") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SJumpTunnelExitParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<SJumpTunnelExitParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             visual_params: match inst.get("visualParams") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SJumpTunnelVisualParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<SJumpTunnelVisualParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             effect_params: match inst.get("effectParams") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalJumpTunnelEffectParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<GlobalJumpTunnelEffectParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
-            entity_pull_in_acceleration: inst.get_f32("entityPullInAcceleration").unwrap_or_default(),
+            entity_pull_in_acceleration: inst
+                .get_f32("entityPullInAcceleration")
+                .unwrap_or_default(),
         }
     }
 }
@@ -1145,8 +1617,12 @@ pub struct JumpDriveStateAudioMap {
 }
 
 impl Pooled for JumpDriveStateAudioMap {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.jumppoints.jump_drive_state_audio_map }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.jumppoints.jump_drive_state_audio_map }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.jumppoints.jump_drive_state_audio_map
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.jumppoints.jump_drive_state_audio_map
+    }
 }
 
 impl<'a> Extract<'a> for JumpDriveStateAudioMap {
@@ -1154,18 +1630,35 @@ impl<'a> Extract<'a> for JumpDriveStateAudioMap {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             enter_state_loop: match inst.get("enterStateLoop") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<GlobalResourceAudio>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             enter_state_one_shot: match inst.get("enterStateOneShot") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<GlobalResourceAudio>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             exit_state_loop: match inst.get("exitStateLoop") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<GlobalResourceAudio>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
-            jump_drive_state: ItemJumpDriveState::from_dcb_str(inst.get_str("jumpDriveState").unwrap_or("")),
+            jump_drive_state: ItemJumpDriveState::from_dcb_str(
+                inst.get_str("jumpDriveState").unwrap_or(""),
+            ),
         }
     }
 }
@@ -1225,8 +1718,12 @@ pub struct JumpDriveAudioMovementParams {
 }
 
 impl Pooled for JumpDriveAudioMovementParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.jumppoints.jump_drive_audio_movement_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.jumppoints.jump_drive_audio_movement_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.jumppoints.jump_drive_audio_movement_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.jumppoints.jump_drive_audio_movement_params
+    }
 }
 
 impl<'a> Extract<'a> for JumpDriveAudioMovementParams {
@@ -1234,103 +1731,178 @@ impl<'a> Extract<'a> for JumpDriveAudioMovementParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             ship_linear_acceleration_rl: match inst.get("shipLinearAccelerationRL") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             ship_linear_acceleration_fb: match inst.get("shipLinearAccelerationFB") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             ship_linear_acceleration_ud: match inst.get("shipLinearAccelerationUD") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             ship_angular_acceleration_pitch: match inst.get("shipAngularAccelerationPitch") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             ship_angular_acceleration_roll: match inst.get("shipAngularAccelerationRoll") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             ship_angular_acceleration_yaw: match inst.get("shipAngularAccelerationYaw") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             ship_angular_turbulence_pitch: match inst.get("shipAngularTurbulencePitch") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             ship_angular_turbulence_roll: match inst.get("shipAngularTurbulenceRoll") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             ship_angular_turbulence_yaw: match inst.get("shipAngularTurbulenceYaw") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             ship_linear_velocity_rl: match inst.get("shipLinearVelocityRL") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             ship_linear_velocity_fb: match inst.get("shipLinearVelocityFB") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             ship_linear_velocity_ud: match inst.get("shipLinearVelocityUD") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             tunnel_linear_acceleration_rl: match inst.get("tunnelLinearAccelerationRL") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             tunnel_linear_acceleration_fb: match inst.get("tunnelLinearAccelerationFB") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             tunnel_linear_acceleration_ud: match inst.get("tunnelLinearAccelerationUD") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             tunnel_angular_acceleration_pitch: match inst.get("tunnelAngularAccelerationPitch") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             tunnel_angular_acceleration_roll: match inst.get("tunnelAngularAccelerationRoll") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             tunnel_angular_acceleration_yaw: match inst.get("tunnelAngularAccelerationYaw") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             player_input_pitch: match inst.get("playerInputPitch") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             player_input_roll: match inst.get("playerInputRoll") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             player_input_yaw: match inst.get("playerInputYaw") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             player_input_strafe_rl: match inst.get("playerInputStrafeRL") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             player_input_strafe_fb: match inst.get("playerInputStrafeFB") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             player_input_strafe_ud: match inst.get("playerInputStrafeUD") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             afterburner_requested_rtpc: match inst.get("afterburnerRequestedRtpc") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
         }
@@ -1382,8 +1954,12 @@ pub struct JumpDriveAudioParams {
 }
 
 impl Pooled for JumpDriveAudioParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.jumppoints.jump_drive_audio_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.jumppoints.jump_drive_audio_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.jumppoints.jump_drive_audio_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.jumppoints.jump_drive_audio_params
+    }
 }
 
 impl<'a> Extract<'a> for JumpDriveAudioParams {
@@ -1391,74 +1967,149 @@ impl<'a> Extract<'a> for JumpDriveAudioParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             state_map: match inst.get("stateMap") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<JumpDriveStateAudioMap>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<JumpDriveStateAudioMap>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             tunnel_progress_rtpc: match inst.get("tunnelProgressRtpc") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             in_jump_tunnel_rtpc: match inst.get("inJumpTunnelRtpc") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             distance_from_spline_rtpc: match inst.get("distanceFromSplineRtpc") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
-            wall_impact_speed_threshold: inst.get_f32("wallImpactSpeedThreshold").unwrap_or_default(),
-            wall_impact_distance_threshold: inst.get_f32("wallImpactDistanceThreshold").unwrap_or_default(),
-            pass_by_light_distance_threshold: inst.get_f32("passByLightDistanceThreshold").unwrap_or_default(),
+            wall_impact_speed_threshold: inst
+                .get_f32("wallImpactSpeedThreshold")
+                .unwrap_or_default(),
+            wall_impact_distance_threshold: inst
+                .get_f32("wallImpactDistanceThreshold")
+                .unwrap_or_default(),
+            pass_by_light_distance_threshold: inst
+                .get_f32("passByLightDistanceThreshold")
+                .unwrap_or_default(),
             pass_by_light_distance_norm_rtpc: match inst.get("passByLightDistanceNormRtpc") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             pass_by_light_dot_rtpc: match inst.get("passByLightDotRtpc") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             tunnel_wall_impact_speed_rtpc: match inst.get("tunnelWallImpactSpeedRtpc") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             tunnel_wall_impact_one_shot: match inst.get("tunnelWallImpactOneShot") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<GlobalResourceAudio>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             start_tunnel_wall_contact_loop: match inst.get("startTunnelWallContactLoop") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<GlobalResourceAudio>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             stop_tunnel_wall_contact_loop: match inst.get("stopTunnelWallContactLoop") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<GlobalResourceAudio>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             spline_vel_rtpc: match inst.get("splineVelRtpc") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             distortion_rtpc: match inst.get("distortionRtpc") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             start_spline_center_loop: match inst.get("startSplineCenterLoop") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<GlobalResourceAudio>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             stop_spline_center_loop: match inst.get("stopSplineCenterLoop") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<GlobalResourceAudio>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             start_ship_tunnel_midpoint_loop: match inst.get("startShipTunnelMidpointLoop") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<GlobalResourceAudio>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             stop_ship_tunnel_midpoint_loop: match inst.get("stopShipTunnelMidpointLoop") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<GlobalResourceAudio>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             movement_params: match inst.get("movementParams") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<JumpDriveAudioMovementParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<JumpDriveAudioMovementParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
         }
@@ -1474,17 +2125,29 @@ pub struct JumpDriveMusicEvent {
 }
 
 impl Pooled for JumpDriveMusicEvent {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.jumppoints.jump_drive_music_event }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.jumppoints.jump_drive_music_event }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.jumppoints.jump_drive_music_event
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.jumppoints.jump_drive_music_event
+    }
 }
 
 impl<'a> Extract<'a> for JumpDriveMusicEvent {
     const TYPE_NAME: &'static str = "JumpDriveMusicEvent";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            music_logic_event: inst.get("musicLogicEvent").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            music_logic_event: inst
+                .get("musicLogicEvent")
+                .and_then(|v| v.as_record_ref())
+                .map(|r| r.guid),
             music_wwise_event: match inst.get("musicWwiseEvent") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<GlobalResourceAudio>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
         }
@@ -1500,8 +2163,12 @@ pub struct JumpDriveStateMusicMap {
 }
 
 impl Pooled for JumpDriveStateMusicMap {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.jumppoints.jump_drive_state_music_map }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.jumppoints.jump_drive_state_music_map }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.jumppoints.jump_drive_state_music_map
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.jumppoints.jump_drive_state_music_map
+    }
 }
 
 impl<'a> Extract<'a> for JumpDriveStateMusicMap {
@@ -1509,10 +2176,17 @@ impl<'a> Extract<'a> for JumpDriveStateMusicMap {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             music_event: match inst.get("musicEvent") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<JumpDriveMusicEvent>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<JumpDriveMusicEvent>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
-            jump_drive_state: ItemJumpDriveState::from_dcb_str(inst.get_str("jumpDriveState").unwrap_or("")),
+            jump_drive_state: ItemJumpDriveState::from_dcb_str(
+                inst.get_str("jumpDriveState").unwrap_or(""),
+            ),
         }
     }
 }
@@ -1530,8 +2204,12 @@ pub struct JumpDriveMusicParams {
 }
 
 impl Pooled for JumpDriveMusicParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.jumppoints.jump_drive_music_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.jumppoints.jump_drive_music_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.jumppoints.jump_drive_music_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.jumppoints.jump_drive_music_params
+    }
 }
 
 impl<'a> Extract<'a> for JumpDriveMusicParams {
@@ -1539,19 +2217,39 @@ impl<'a> Extract<'a> for JumpDriveMusicParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             tunnel_progress_rtpc: match inst.get("tunnelProgressRtpc") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
-            state_map: inst.get_array("stateMap")
-                .map(|arr| arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<JumpDriveStateMusicMap>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r) => Some(b.alloc_nested::<JumpDriveStateMusicMap>(b.db.instance(r.struct_index, r.instance_index), true)),
+            state_map: inst
+                .get_array("stateMap")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<JumpDriveStateMusicMap>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => Some(b.alloc_nested::<JumpDriveStateMusicMap>(
+                            b.db.instance(r.struct_index, r.instance_index),
+                            true,
+                        )),
                         _ => None,
-                    }).collect())
+                    })
+                    .collect()
+                })
                 .unwrap_or_default(),
             pre_arrival_duration_secs: inst.get_f32("preArrivalDurationSecs").unwrap_or_default(),
             pre_arrival_music_event: match inst.get("preArrivalMusicEvent") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<JumpDriveMusicEvent>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<JumpDriveMusicEvent>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
         }
@@ -1567,8 +2265,12 @@ pub struct GlobalJumpDriveTuningEffectParams {
 }
 
 impl Pooled for GlobalJumpDriveTuningEffectParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.jumppoints.global_jump_drive_tuning_effect_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.jumppoints.global_jump_drive_tuning_effect_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.jumppoints.global_jump_drive_tuning_effect_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.jumppoints.global_jump_drive_tuning_effect_params
+    }
 }
 
 impl<'a> Extract<'a> for GlobalJumpDriveTuningEffectParams {
@@ -1576,7 +2278,9 @@ impl<'a> Extract<'a> for GlobalJumpDriveTuningEffectParams {
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
             interference_strength: inst.get_f32("interferenceStrength").unwrap_or_default(),
-            mid_point_for_interference_percentage: inst.get_f32("midPointForInterferencePercentage").unwrap_or_default(),
+            mid_point_for_interference_percentage: inst
+                .get_f32("midPointForInterferencePercentage")
+                .unwrap_or_default(),
         }
     }
 }
@@ -1588,15 +2292,21 @@ pub struct GlobalJumpDriveEntryEffectParams {
 }
 
 impl Pooled for GlobalJumpDriveEntryEffectParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.jumppoints.global_jump_drive_entry_effect_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.jumppoints.global_jump_drive_entry_effect_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.jumppoints.global_jump_drive_entry_effect_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.jumppoints.global_jump_drive_entry_effect_params
+    }
 }
 
 impl<'a> Extract<'a> for GlobalJumpDriveEntryEffectParams {
     const TYPE_NAME: &'static str = "GlobalJumpDriveEntryEffectParams";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            trail_strength_max_distance: inst.get_f32("trailStrengthMaxDistance").unwrap_or_default(),
+            trail_strength_max_distance: inst
+                .get_f32("trailStrengthMaxDistance")
+                .unwrap_or_default(),
         }
     }
 }
@@ -1608,8 +2318,12 @@ pub struct GlobalJumpDriveExitEffectParams {
 }
 
 impl Pooled for GlobalJumpDriveExitEffectParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.jumppoints.global_jump_drive_exit_effect_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.jumppoints.global_jump_drive_exit_effect_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.jumppoints.global_jump_drive_exit_effect_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.jumppoints.global_jump_drive_exit_effect_params
+    }
 }
 
 impl<'a> Extract<'a> for GlobalJumpDriveExitEffectParams {
@@ -1636,8 +2350,12 @@ pub struct GlobalJumpDriveEffectParams {
 }
 
 impl Pooled for GlobalJumpDriveEffectParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.jumppoints.global_jump_drive_effect_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.jumppoints.global_jump_drive_effect_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.jumppoints.global_jump_drive_effect_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.jumppoints.global_jump_drive_effect_params
+    }
 }
 
 impl<'a> Extract<'a> for GlobalJumpDriveEffectParams {
@@ -1645,15 +2363,30 @@ impl<'a> Extract<'a> for GlobalJumpDriveEffectParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             tuning_params: match inst.get("tuningParams") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalJumpDriveTuningEffectParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<GlobalJumpDriveTuningEffectParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             entry_params: match inst.get("entryParams") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalJumpDriveEntryEffectParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<GlobalJumpDriveEntryEffectParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             exit_params: match inst.get("exitParams") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalJumpDriveExitEffectParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<GlobalJumpDriveExitEffectParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             failure_build_up_time: inst.get_f32("failureBuildUpTime").unwrap_or_default(),
@@ -1673,8 +2406,12 @@ pub struct JumpDriveApproachRingsParams {
 }
 
 impl Pooled for JumpDriveApproachRingsParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.jumppoints.jump_drive_approach_rings_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.jumppoints.jump_drive_approach_rings_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.jumppoints.jump_drive_approach_rings_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.jumppoints.jump_drive_approach_rings_params
+    }
 }
 
 impl<'a> Extract<'a> for JumpDriveApproachRingsParams {
@@ -1709,8 +2446,12 @@ pub struct GlobalJumpDriveParams {
 }
 
 impl Pooled for GlobalJumpDriveParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.jumppoints.global_jump_drive_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.jumppoints.global_jump_drive_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.jumppoints.global_jump_drive_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.jumppoints.global_jump_drive_params
+    }
 }
 
 impl<'a> Extract<'a> for GlobalJumpDriveParams {
@@ -1718,23 +2459,45 @@ impl<'a> Extract<'a> for GlobalJumpDriveParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             audio_params: match inst.get("audioParams") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<JumpDriveAudioParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<JumpDriveAudioParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             music_params: match inst.get("musicParams") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<JumpDriveMusicParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<JumpDriveMusicParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             effect_params: match inst.get("effectParams") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalJumpDriveEffectParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<GlobalJumpDriveEffectParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             approach_ring_params: match inst.get("approachRingParams") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<JumpDriveApproachRingsParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<JumpDriveApproachRingsParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             malfunction: match inst.get("malfunction") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(SMisfireEffectPtr::from_ref(b, r)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(SMisfireEffectPtr::from_ref(b, r))
+                }
                 _ => None,
             },
             checks_passed_delay: inst.get_f32("checksPassedDelay").unwrap_or_default(),
@@ -1753,8 +2516,12 @@ pub struct JumpTravelCameraParams {
 }
 
 impl Pooled for JumpTravelCameraParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.jumppoints.jump_travel_camera_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.jumppoints.jump_travel_camera_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.jumppoints.jump_travel_camera_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.jumppoints.jump_travel_camera_params
+    }
 }
 
 impl<'a> Extract<'a> for JumpTravelCameraParams {
@@ -1762,14 +2529,23 @@ impl<'a> Extract<'a> for JumpTravelCameraParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             generic_modifiers: match inst.get("genericModifiers") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<CameraEffectsModifiers>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<CameraEffectsModifiers>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             camera_effect_params: match inst.get("cameraEffectParams") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalJumpTunnelCameraEffectParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<GlobalJumpTunnelCameraEffectParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
         }
     }
 }
-

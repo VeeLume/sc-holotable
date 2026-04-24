@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -41,8 +41,12 @@ pub struct AsteroidProcedural {
 }
 
 impl Pooled for AsteroidProcedural {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.environments.asteroid_procedural }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.environments.asteroid_procedural }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.environments.asteroid_procedural
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.environments.asteroid_procedural
+    }
 }
 
 impl<'a> Extract<'a> for AsteroidProcedural {
@@ -56,15 +60,28 @@ impl<'a> Extract<'a> for AsteroidProcedural {
             distribution_a: inst.get_f32("distributionA").unwrap_or_default(),
             distribution_b: inst.get_f32("distributionB").unwrap_or_default(),
             tint: match inst.get("tint") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<RGB>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<RGB>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             mesh: match inst.get("mesh") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceCGF>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<GlobalResourceCGF>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             material: match inst.get("material") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceMaterial>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<GlobalResourceMaterial>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
         }
@@ -84,8 +101,12 @@ pub struct AsteroidFieldComposition {
 }
 
 impl Pooled for AsteroidFieldComposition {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.environments.asteroid_field_composition }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.environments.asteroid_field_composition }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.environments.asteroid_field_composition
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.environments.asteroid_field_composition
+    }
 }
 
 impl<'a> Extract<'a> for AsteroidFieldComposition {
@@ -95,17 +116,31 @@ impl<'a> Extract<'a> for AsteroidFieldComposition {
             fog_density: inst.get_f32("fogDensity").unwrap_or_default(),
             fog_noise_scale: inst.get_f32("fogNoiseScale").unwrap_or_default(),
             fog_albedo: match inst.get("fogAlbedo") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<RGB>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<RGB>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
-            asteroids: inst.get_array("asteroids")
-                .map(|arr| arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<AsteroidProcedural>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r) => Some(b.alloc_nested::<AsteroidProcedural>(b.db.instance(r.struct_index, r.instance_index), true)),
+            asteroids: inst
+                .get_array("asteroids")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<AsteroidProcedural>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => Some(b.alloc_nested::<AsteroidProcedural>(
+                            b.db.instance(r.struct_index, r.instance_index),
+                            true,
+                        )),
                         _ => None,
-                    }).collect())
+                    })
+                    .collect()
+                })
                 .unwrap_or_default(),
         }
     }
 }
-

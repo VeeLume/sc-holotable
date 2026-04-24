@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -36,8 +36,16 @@ pub struct SCItemDeployableShieldParams {
 }
 
 impl Pooled for SCItemDeployableShieldParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_entityclassdefinition_test_gadget.scitem_deployable_shield_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_entityclassdefinition_test_gadget.scitem_deployable_shield_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_scitem_entityclassdefinition_test_gadget
+            .scitem_deployable_shield_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_scitem_entityclassdefinition_test_gadget
+            .scitem_deployable_shield_params
+    }
 }
 
 impl<'a> Extract<'a> for SCItemDeployableShieldParams {
@@ -45,15 +53,29 @@ impl<'a> Extract<'a> for SCItemDeployableShieldParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             shield: inst.get_str("shield").map(String::from).unwrap_or_default(),
-            startup_vfx: inst.get_str("startupVFX").map(String::from).unwrap_or_default(),
-            destroyed_vfx: inst.get_str("destroyedVFX").map(String::from).unwrap_or_default(),
-            open_anim: inst.get_str("openAnim").map(String::from).unwrap_or_default(),
-            closed_anim: inst.get_str("closedAnim").map(String::from).unwrap_or_default(),
+            startup_vfx: inst
+                .get_str("startupVFX")
+                .map(String::from)
+                .unwrap_or_default(),
+            destroyed_vfx: inst
+                .get_str("destroyedVFX")
+                .map(String::from)
+                .unwrap_or_default(),
+            open_anim: inst
+                .get_str("openAnim")
+                .map(String::from)
+                .unwrap_or_default(),
+            closed_anim: inst
+                .get_str("closedAnim")
+                .map(String::from)
+                .unwrap_or_default(),
             size: match inst.get("size") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
         }
     }
 }
-

@@ -89,70 +89,54 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         // Also resolve the ammo and check detonation details
         if let Some(ammo_guid) = wp.ammo_container_record
             && let Some(&container_h) = ecd_map.get(&ammo_guid)
-                && let Some(container_ecd) = container_h.get(pools)
-                    && let Some(ac) = find_ammo_container(container_ecd, pools)
-                        && let Some(ammo_guid2) = ac.ammo_params_record
-                            && let Some(&ammo_h) = ammo_map.get(&ammo_guid2)
-                                && let Some(ammo) = ammo_h.get(pools) {
-                                    println!("\n  AmmoParams detail:");
-                                    println!("    noBulletHits: {}", ammo.no_bullet_hits);
-                                    println!("    quietRemoval: {}", ammo.quiet_removal);
-                                    println!("    hitPoints: {}", ammo.hit_points);
-                                    println!("    bulletType: {}", ammo.bullet_type);
+            && let Some(container_ecd) = container_h.get(pools)
+            && let Some(ac) = find_ammo_container(container_ecd, pools)
+            && let Some(ammo_guid2) = ac.ammo_params_record
+            && let Some(&ammo_h) = ammo_map.get(&ammo_guid2)
+            && let Some(ammo) = ammo_h.get(pools)
+        {
+            println!("\n  AmmoParams detail:");
+            println!("    noBulletHits: {}", ammo.no_bullet_hits);
+            println!("    quietRemoval: {}", ammo.quiet_removal);
+            println!("    hitPoints: {}", ammo.hit_points);
+            println!("    bulletType: {}", ammo.bullet_type);
 
-                                    if let Some(ProjectileParamsPtr::BulletProjectileParams(h)) =
-                                        &ammo.projectile_params
-                                        && let Some(bullet) = h.get(pools) {
-                                            println!(
-                                                "    keepAliveOnZeroDamage: {}",
-                                                bullet.keep_alive_on_zero_damage
-                                            );
-                                            // Proximity trigger
-                                            if let Some(pt) = bullet
-                                                .proximity_trigger_params
-                                                .and_then(|h| h.get(pools))
-                                            {
-                                                println!(
-                                                    "    proximityTrigger: armTime={} safeDistance={} radius={}",
-                                                    pt.arm_time, pt.safe_distance, pt.radius
-                                                );
-                                            } else {
-                                                println!("    proximityTrigger: None");
-                                            }
+            if let Some(ProjectileParamsPtr::BulletProjectileParams(h)) = &ammo.projectile_params
+                && let Some(bullet) = h.get(pools)
+            {
+                println!(
+                    "    keepAliveOnZeroDamage: {}",
+                    bullet.keep_alive_on_zero_damage
+                );
+                // Proximity trigger
+                if let Some(pt) = bullet.proximity_trigger_params.and_then(|h| h.get(pools)) {
+                    println!(
+                        "    proximityTrigger: armTime={} safeDistance={} radius={}",
+                        pt.arm_time, pt.safe_distance, pt.radius
+                    );
+                } else {
+                    println!("    proximityTrigger: None");
+                }
 
-                                            // Full detonation details
-                                            if let Some(det) =
-                                                bullet.detonation_params.and_then(|h| h.get(pools))
-                                            {
-                                                println!("    detonation:");
-                                                println!("      armTime: {}", det.arm_time);
-                                                println!(
-                                                    "      safeDistance: {}",
-                                                    det.safe_distance
-                                                );
-                                                println!(
-                                                    "      destructDelay: {}",
-                                                    det.destruct_delay
-                                                );
-                                                println!(
-                                                    "      explodeOnImpact: {}",
-                                                    det.explode_on_impact
-                                                );
-                                                println!(
-                                                    "      explodeOnFinalImpact: {}",
-                                                    det.explode_on_final_impact
-                                                );
-                                                println!(
-                                                    "      explodeOnExpire: {}",
-                                                    det.explode_on_expire
-                                                );
-                                                println!(
-                                                    "      explodeOnTargetRange: {}",
-                                                    det.explode_on_target_range
-                                                );
-                                            }
-                                        }
-                                }
+                // Full detonation details
+                if let Some(det) = bullet.detonation_params.and_then(|h| h.get(pools)) {
+                    println!("    detonation:");
+                    println!("      armTime: {}", det.arm_time);
+                    println!("      safeDistance: {}", det.safe_distance);
+                    println!("      destructDelay: {}", det.destruct_delay);
+                    println!("      explodeOnImpact: {}", det.explode_on_impact);
+                    println!(
+                        "      explodeOnFinalImpact: {}",
+                        det.explode_on_final_impact
+                    );
+                    println!("      explodeOnExpire: {}", det.explode_on_expire);
+                    println!(
+                        "      explodeOnTargetRange: {}",
+                        det.explode_on_target_range
+                    );
+                }
+            }
+        }
         break;
     }
 
@@ -170,36 +154,31 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
         if let Some(ProjectileParamsPtr::BulletProjectileParams(h)) = &ammo.projectile_params
             && let Some(bullet) = h.get(pools)
-                && let Some(det) = bullet.detonation_params.and_then(|h| h.get(pools))
-                    && let Some(expl) = det.explosion_params.and_then(|h| h.get(pools))
-                        && expl.pressure != 0.0 {
-                            let (ep, ee, ed) = if let Some(ref dp) = expl.damage {
-                                match dp {
-                                    DamageBasePtr::DamageInfo(dh) => dh
-                                        .get(pools)
-                                        .map(|d| {
-                                            (
-                                                d.damage_physical,
-                                                d.damage_energy,
-                                                d.damage_distortion,
-                                            )
-                                        })
-                                        .unwrap_or_default(),
-                                    _ => (0.0, 0.0, 0.0),
-                                }
-                            } else {
-                                (0.0, 0.0, 0.0)
-                            };
-                            entries.push((
-                                name.to_string(),
-                                expl.pressure,
-                                expl.min_radius,
-                                expl.max_radius,
-                                ep,
-                                ee,
-                                ed,
-                            ));
-                        }
+            && let Some(det) = bullet.detonation_params.and_then(|h| h.get(pools))
+            && let Some(expl) = det.explosion_params.and_then(|h| h.get(pools))
+            && expl.pressure != 0.0
+        {
+            let (ep, ee, ed) = if let Some(ref dp) = expl.damage {
+                match dp {
+                    DamageBasePtr::DamageInfo(dh) => dh
+                        .get(pools)
+                        .map(|d| (d.damage_physical, d.damage_energy, d.damage_distortion))
+                        .unwrap_or_default(),
+                    _ => (0.0, 0.0, 0.0),
+                }
+            } else {
+                (0.0, 0.0, 0.0)
+            };
+            entries.push((
+                name.to_string(),
+                expl.pressure,
+                expl.min_radius,
+                expl.max_radius,
+                ep,
+                ee,
+                ed,
+            ));
+        }
     }
 
     entries.sort_by(|a, b| b.1.partial_cmp(&a.1).unwrap());
@@ -244,28 +223,29 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             };
 
             if let Some(SLauncherBasePtr::SProjectileLauncher(h)) = launcher
-                && let Some(pl) = h.get(pools) {
-                    let (sp_min, sp_max) = pl
-                        .spread_params
-                        .and_then(|h| h.get(pools))
-                        .map(|sp| (sp.min, sp.max))
-                        .unwrap_or((0.0, 0.0));
-                    // Skip CML launchers (countermeasures) — only show combat
-                    let short_name = name.replace("EntityClassDefinition.", "");
-                    if short_name.contains("CML") || short_name.contains("binoculars") {
-                        continue;
-                    }
-                    println!(
-                        "{}\t{}\t{}\t{:.2}\t{:.2}\t{:.2}\t{:?}",
-                        short_name,
-                        display,
-                        pl.pellet_count,
-                        sp_min,
-                        sp_max,
-                        pl.damage_multiplier,
-                        pl.projectile_type
-                    );
+                && let Some(pl) = h.get(pools)
+            {
+                let (sp_min, sp_max) = pl
+                    .spread_params
+                    .and_then(|h| h.get(pools))
+                    .map(|sp| (sp.min, sp.max))
+                    .unwrap_or((0.0, 0.0));
+                // Skip CML launchers (countermeasures) — only show combat
+                let short_name = name.replace("EntityClassDefinition.", "");
+                if short_name.contains("CML") || short_name.contains("binoculars") {
+                    continue;
                 }
+                println!(
+                    "{}\t{}\t{}\t{:.2}\t{:.2}\t{:.2}\t{:?}",
+                    short_name,
+                    display,
+                    pl.pellet_count,
+                    sp_min,
+                    sp_max,
+                    pl.damage_multiplier,
+                    pl.projectile_type
+                );
+            }
         }
     }
 

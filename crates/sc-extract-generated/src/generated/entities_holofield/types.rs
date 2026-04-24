@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -52,8 +52,12 @@ pub struct SHoloFieldComponentParams {
 }
 
 impl Pooled for SHoloFieldComponentParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_holofield.sholo_field_component_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_holofield.sholo_field_component_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_holofield.sholo_field_component_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_holofield.sholo_field_component_params
+    }
 }
 
 impl<'a> Extract<'a> for SHoloFieldComponentParams {
@@ -62,9 +66,14 @@ impl<'a> Extract<'a> for SHoloFieldComponentParams {
         Self {
             shape: EHoloFieldShape::from_dcb_str(inst.get_str("shape").unwrap_or("")),
             model: inst.get_str("model").map(String::from).unwrap_or_default(),
-            material: inst.get_str("material").map(String::from).unwrap_or_default(),
+            material: inst
+                .get_str("material")
+                .map(String::from)
+                .unwrap_or_default(),
             audio_message_distance: inst.get_f32("audioMessageDistance").unwrap_or_default(),
-            audio_message_distance_no_vehicle: inst.get_f32("audioMessageDistanceNoVehicle").unwrap_or_default(),
+            audio_message_distance_no_vehicle: inst
+                .get_f32("audioMessageDistanceNoVehicle")
+                .unwrap_or_default(),
             audio_message_delay: inst.get_f32("audioMessageDelay").unwrap_or_default(),
             vehicle_destroy_distance: inst.get_f32("vehicleDestroyDistance").unwrap_or_default(),
             hit_radius: inst.get_f32("hitRadius").unwrap_or_default(),
@@ -77,4 +86,3 @@ impl<'a> Extract<'a> for SHoloFieldComponentParams {
         }
     }
 }
-

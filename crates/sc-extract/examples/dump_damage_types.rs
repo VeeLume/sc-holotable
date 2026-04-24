@@ -116,9 +116,10 @@ fn extract_all_damage(ammo: &AmmoParams, pools: &DataPools) -> (DmgSet, DmgSet) 
                 }
                 if let Some(det) = bullet.detonation_params.and_then(|h| h.get(pools))
                     && let Some(expl) = det.explosion_params.and_then(|h| h.get(pools))
-                        && let Some(dmg_ptr) = &expl.damage {
-                            explosion = read_damage(dmg_ptr, pools);
-                        }
+                    && let Some(dmg_ptr) = &expl.damage
+                {
+                    explosion = read_damage(dmg_ptr, pools);
+                }
             }
         }
     }

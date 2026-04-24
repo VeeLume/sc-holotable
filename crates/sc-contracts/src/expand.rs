@@ -177,8 +177,7 @@ pub struct DurationRange {
 }
 
 /// How a reward amount is delivered.
-#[derive(Debug, Clone, Copy, PartialEq)]
-#[derive(Default)]
+#[derive(Debug, Clone, Copy, PartialEq, Default)]
 pub enum RewardAmount {
     /// No reward of this kind.
     #[default]
@@ -191,7 +190,6 @@ pub enum RewardAmount {
     /// Fixed amount from the DCB.
     Fixed(i32),
 }
-
 
 /// One scrip / typed-currency reward.
 #[derive(Debug, Clone)]

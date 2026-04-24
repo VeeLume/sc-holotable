@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -30,8 +30,16 @@ pub struct RaceCheckpointComponentParams {
 }
 
 impl Pooled for RaceCheckpointComponentParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_entityclassdefinition_racecheckpoint.race_checkpoint_component_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_entityclassdefinition_racecheckpoint.race_checkpoint_component_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_entityclassdefinition_racecheckpoint
+            .race_checkpoint_component_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_entityclassdefinition_racecheckpoint
+            .race_checkpoint_component_params
+    }
 }
 
 impl<'a> Extract<'a> for RaceCheckpointComponentParams {
@@ -41,7 +49,10 @@ impl<'a> Extract<'a> for RaceCheckpointComponentParams {
             checkpoint_number: inst.get_i32("checkpointNumber").unwrap_or_default(),
             radius: inst.get_f32("radius").unwrap_or_default(),
             bounds: match inst.get("bounds") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
         }
@@ -50,37 +61,48 @@ impl<'a> Extract<'a> for RaceCheckpointComponentParams {
 
 /// DCB type: `SRaceCheckpointObjectMetadataParams`
 /// Inherits from: `SObjectMetadataParams`
-pub struct SRaceCheckpointObjectMetadataParams {
-}
+pub struct SRaceCheckpointObjectMetadataParams {}
 
 impl Pooled for SRaceCheckpointObjectMetadataParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_entityclassdefinition_racecheckpoint.srace_checkpoint_object_metadata_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_entityclassdefinition_racecheckpoint.srace_checkpoint_object_metadata_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_entityclassdefinition_racecheckpoint
+            .srace_checkpoint_object_metadata_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_entityclassdefinition_racecheckpoint
+            .srace_checkpoint_object_metadata_params
+    }
 }
 
 impl<'a> Extract<'a> for SRaceCheckpointObjectMetadataParams {
     const TYPE_NAME: &'static str = "SRaceCheckpointObjectMetadataParams";
     fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
-        }
+        Self {}
     }
 }
 
 /// DCB type: `SRaceCheckpointEntryTrackerParams`
 /// Inherits from: `SObjectDataBankEntryTrackerParams`
-pub struct SRaceCheckpointEntryTrackerParams {
-}
+pub struct SRaceCheckpointEntryTrackerParams {}
 
 impl Pooled for SRaceCheckpointEntryTrackerParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_entityclassdefinition_racecheckpoint.srace_checkpoint_entry_tracker_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_entityclassdefinition_racecheckpoint.srace_checkpoint_entry_tracker_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_entityclassdefinition_racecheckpoint
+            .srace_checkpoint_entry_tracker_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_entityclassdefinition_racecheckpoint
+            .srace_checkpoint_entry_tracker_params
+    }
 }
 
 impl<'a> Extract<'a> for SRaceCheckpointEntryTrackerParams {
     const TYPE_NAME: &'static str = "SRaceCheckpointEntryTrackerParams";
     fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
-        }
+        Self {}
     }
 }
-

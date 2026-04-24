@@ -9,15 +9,16 @@
 
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
+use super::super::*;
+use crate::Handle;
 use std::collections::HashMap;
 use svarog_common::CigGuid;
-use crate::Handle;
-use super::super::*;
 
 /// Record index for the `densityclasses` feature.
 #[derive(Default)]
 pub struct DensityclassesIndex {
-    pub sentity_density_class_overrides_record: HashMap<CigGuid, Handle<SEntityDensityClassOverridesRecord>>,
+    pub sentity_density_class_overrides_record:
+        HashMap<CigGuid, Handle<SEntityDensityClassOverridesRecord>>,
 }
 
 impl DensityclassesIndex {
@@ -28,5 +29,7 @@ impl DensityclassesIndex {
         total
     }
 
-    pub fn is_empty(&self) -> bool { self.len() == 0 }
+    pub fn is_empty(&self) -> bool {
+        self.len() == 0
+    }
 }

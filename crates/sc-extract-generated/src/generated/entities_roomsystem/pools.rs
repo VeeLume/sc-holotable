@@ -24,7 +24,8 @@ pub struct EntitiesRoomsystemPools {
     pub entity_component_fire_repairer: Vec<Option<EntityComponentFireRepairer>>,
     pub fire_repairer_type_entity_pos: Vec<Option<FireRepairerType_EntityPos>>,
     pub entity_temperature_state_modifier: Vec<Option<EntityTemperatureStateModifier>>,
-    pub item_resource_dynamic_amount_life_support: Vec<Option<ItemResourceDynamicAmountLifeSupport>>,
+    pub item_resource_dynamic_amount_life_support:
+        Vec<Option<ItemResourceDynamicAmountLifeSupport>>,
     pub sentity_component_room_group_params: Vec<Option<SEntityComponentRoomGroupParams>>,
     pub entity_component_room_fade_volume_params: Vec<Option<EntityComponentRoomFadeVolumeParams>>,
     pub volume_shape_sphere: Vec<Option<VolumeShape_Sphere>>,
