@@ -174,8 +174,11 @@ pub(crate) fn find_component<'a, T: 'static>(
     None
 }
 
-/// Extract magazine size from `SAmmoContainerComponentParams`.
-pub(crate) fn extract_magazine_size(
+/// Extract the weapon's total ammo capacity from
+/// `SAmmoContainerComponentParams.maxAmmoCount`. This is the physical
+/// round count (ballistic) — distinct from burst_seconds / overheat
+/// budget. Returns `None` for energy weapons (no ammo container).
+pub(crate) fn extract_total_ammo(
     ecd: &EntityClassDefinition,
     pools: &DataPools,
 ) -> Option<i32> {

@@ -197,8 +197,8 @@ fn print_ship_weapon(w: &ShipWeapon, snap: &sc_extract::DatacoreSnapshot, ctx: &
     if let Some(p) = w.pellet_count {
         println!("  Pellets:      {p}");
     }
-    if let Some(m) = w.magazine_size {
-        println!("  Magazine:     {m}");
+    if let Some(m) = w.total_ammo {
+        println!("  Total ammo:   {m}");
     }
 
     // Sustain
@@ -329,8 +329,8 @@ fn print_fps_weapon(w: &FpsWeapon, snap: &sc_extract::DatacoreSnapshot) {
     if let Some(p) = w.pellet_count {
         println!("  Pellets:      {p}");
     }
-    if let Some(m) = w.magazine_size {
-        println!("  Magazine:     {m}");
+    if let Some(m) = w.total_ammo {
+        println!("  Total ammo:   {m}");
     }
     println!();
 }

@@ -33,8 +33,9 @@ pub struct FpsWeapon {
     /// Kastak burst→burst, beam-rifle wrappers, etc.). 97 of 331 FPS
     /// weapons in 4.7 expose >1 mode.
     pub fire_actions: Vec<FireActionKind>,
-    /// Magazine size from `SAmmoContainerComponentParams.maxAmmoCount`.
-    pub magazine_size: Option<i32>,
+    /// Total ammo capacity (physical round count) from
+    /// `SAmmoContainerComponentParams.maxAmmoCount`.
+    pub total_ammo: Option<i32>,
     /// Per-shot damage. `None` if ammo could not be resolved.
     pub damage: Option<DamageSummary>,
     /// Ammo projectile speed in m/s.
@@ -77,7 +78,7 @@ impl FpsWeapon {
 
         let ammo = damage::resolve_ammo(ecd, wp, pools, ecd_map, ammo_map);
         let pellet_count = damage::extract_pellet_count(wp, pools);
-        let magazine_size = damage::extract_magazine_size(ecd, pools);
+        let total_ammo = damage::extract_total_ammo(ecd, pools);
 
         let record_name = record_names
             .get(&guid)
@@ -94,7 +95,7 @@ impl FpsWeapon {
             item_sub_type: item_def.sub_type.clone(),
             manufacturer_guid: item_def.manufacturer,
             fire_actions,
-            magazine_size,
+            total_ammo,
             damage: ammo.as_ref().map(|a| a.damage),
             ammo_speed: ammo.as_ref().map(|a| a.speed),
             ammo_lifetime: ammo.as_ref().map(|a| a.lifetime),

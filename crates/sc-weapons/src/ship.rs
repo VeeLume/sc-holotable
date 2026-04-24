@@ -45,8 +45,11 @@ pub struct ShipWeapon {
     /// Pellet count from `SProjectileLauncher` (scatter guns: 8 or 12).
     /// `None` for single-projectile weapons.
     pub pellet_count: Option<i32>,
-    /// Magazine size from `SAmmoContainerComponentParams.maxAmmoCount`.
-    pub magazine_size: Option<i32>,
+    /// Total ammo capacity (physical round count) from
+    /// `SAmmoContainerComponentParams.maxAmmoCount`. Distinct from
+    /// `burst_seconds`: ammo is the hard budget, burst is the heat budget.
+    /// `None` for energy weapons (no ammo container).
+    pub total_ammo: Option<i32>,
     /// Power draw per second when active (from `ItemResourceComponentParams`).
     pub power_draw: Option<f32>,
     /// Weapon health points (from `SHealthComponentParams`).
@@ -100,8 +103,8 @@ impl ShipWeapon {
         // Pellets
         let pellet_count = damage::extract_pellet_count(wp, pools);
 
-        // Magazine
-        let magazine_size = damage::extract_magazine_size(ecd, pools);
+        // Total ammo (ammo container physical round count)
+        let total_ammo = damage::extract_total_ammo(ecd, pools);
 
         // Power draw
         let power_draw = extract_power_draw(ecd, pools);
@@ -131,7 +134,7 @@ impl ShipWeapon {
             ammo_speed: ammo.as_ref().map(|a| a.speed),
             ammo_lifetime: ammo.as_ref().map(|a| a.lifetime),
             pellet_count,
-            magazine_size,
+            total_ammo,
             power_draw,
             health,
             entity_handle: handle,
