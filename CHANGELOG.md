@@ -14,6 +14,8 @@ separate commits and advance independently.
 
 ## [Unreleased]
 
+## [v0.1.0] - 2026-04-25
+
 ### Added
 
 - `sc_contracts::Contract` and `sc_contracts::Variation` now carry
