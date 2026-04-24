@@ -179,7 +179,11 @@ fn autodiscover_p4k() -> Result<PathBuf, String> {
         install.manifest.version,
         install.channel,
         branch,
-        if changelist.is_empty() { "-" } else { changelist },
+        if changelist.is_empty() {
+            "-"
+        } else {
+            changelist
+        },
         p4k.display(),
     );
     Ok(p4k)
