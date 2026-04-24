@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -33,8 +33,12 @@ pub struct SeatReticleArchetype {
 }
 
 impl Pooled for SeatReticleArchetype {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_seatreticlearchetype.seat_reticle_archetype }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_seatreticlearchetype.seat_reticle_archetype }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.ui_seatreticlearchetype.seat_reticle_archetype
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.ui_seatreticlearchetype.seat_reticle_archetype
+    }
 }
 
 impl<'a> Extract<'a> for SeatReticleArchetype {
@@ -49,4 +53,3 @@ impl<'a> Extract<'a> for SeatReticleArchetype {
         }
     }
 }
-

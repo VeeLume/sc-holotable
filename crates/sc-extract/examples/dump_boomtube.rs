@@ -8,14 +8,10 @@
 use std::collections::HashMap;
 
 use sc_extract::generated::*;
-use sc_extract::{
-    AssetConfig, AssetData, AssetSource, DataPools, DatacoreConfig, Guid,
-};
+use sc_extract::{AssetConfig, AssetData, AssetSource, DataPools, DatacoreConfig, Guid};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    tracing_subscriber::fmt()
-        .with_env_filter("info")
-        .init();
+    tracing_subscriber::fmt().with_env_filter("info").init();
 
     let install = sc_installs::discover_primary()?;
     let assets = AssetSource::from_install(&install)?;
@@ -37,9 +33,15 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     // Find the base Boomtube
     for (&guid, &handle) in ecd_map {
-        let Some(ecd) = handle.get(pools) else { continue };
+        let Some(ecd) = handle.get(pools) else {
+            continue;
+        };
         let name = record_names.get(&guid).copied().unwrap_or("?");
-        if !name.contains("none_special_ballistic_01") || name.contains("_tint") || name.contains("_collector") || name.contains("Prop") {
+        if !name.contains("none_special_ballistic_01")
+            || name.contains("_tint")
+            || name.contains("_collector")
+            || name.contains("Prop")
+        {
             continue;
         }
 
@@ -51,9 +53,15 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         println!("\nComponent types:");
         for (i, comp) in ecd.components.iter().enumerate() {
             let type_name = match comp {
-                DataForgeComponentParamsPtr::SCItemWeaponComponentParams(_) => "SCItemWeaponComponentParams",
-                DataForgeComponentParamsPtr::SAttachableComponentParams(_) => "SAttachableComponentParams",
-                DataForgeComponentParamsPtr::SAmmoContainerComponentParams(_) => "SAmmoContainerComponentParams",
+                DataForgeComponentParamsPtr::SCItemWeaponComponentParams(_) => {
+                    "SCItemWeaponComponentParams"
+                }
+                DataForgeComponentParamsPtr::SAttachableComponentParams(_) => {
+                    "SAttachableComponentParams"
+                }
+                DataForgeComponentParamsPtr::SAmmoContainerComponentParams(_) => {
+                    "SAmmoContainerComponentParams"
+                }
                 DataForgeComponentParamsPtr::SHealthComponentParams(_) => "SHealthComponentParams",
                 _ => "other",
             };
@@ -89,7 +97,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                             }
                             // Check launch params
                             if let Some(ref lp) = s.launch_params {
-                                println!("    launchParams variant: {:?}", std::mem::discriminant(lp));
+                                println!(
+                                    "    launchParams variant: {:?}",
+                                    std::mem::discriminant(lp)
+                                );
                             }
                         }
                     }
@@ -102,7 +113,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             // Connection params
             if let Some(conn) = wp.connection_params.and_then(|h| h.get(pools)) {
                 println!("\n--- SWeaponConnectionParams ---");
-                println!("simplifiedHeatParams: {}", conn.simplified_heat_params.is_some());
+                println!(
+                    "simplifiedHeatParams: {}",
+                    conn.simplified_heat_params.is_some()
+                );
                 println!("rangedHeatStats count: {}", conn.ranged_heat_stats.len());
                 if let Some(stats) = conn.no_power_stats.and_then(|h| h.get(pools)) {
                     println!("noPowerStats.pellets: {}", stats.pellets);
@@ -116,7 +130,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 println!("\n--- SWeaponRegenConsumerParams ---");
                 println!("maxAmmoLoad: {}", regen.max_ammo_load);
                 println!("regenerationCooldown: {}", regen.regeneration_cooldown);
-                println!("regenerationCostPerBullet: {}", regen.regeneration_cost_per_bullet);
+                println!(
+                    "regenerationCostPerBullet: {}",
+                    regen.regeneration_cost_per_bullet
+                );
                 println!("maxRegenPerSec: {}", regen.max_regen_per_sec);
             }
         }
@@ -184,7 +201,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 
-fn dump_ammo(ammo: &AmmoParams, pools: &DataPools, names: &HashMap<Guid, &str>, ammo_map: &HashMap<Guid, Handle<AmmoParams>>) {
+fn dump_ammo(
+    ammo: &AmmoParams,
+    pools: &DataPools,
+    names: &HashMap<Guid, &str>,
+    ammo_map: &HashMap<Guid, Handle<AmmoParams>>,
+) {
     println!("\n  --- AmmoParams ---");
     println!("  speed: {}", ammo.speed);
     println!("  lifetime: {}", ammo.lifetime);
@@ -203,7 +225,10 @@ fn dump_ammo(ammo: &AmmoParams, pools: &DataPools, names: &HashMap<Guid, &str>, 
                         print_damage("    direct damage", dmg_ptr, pools);
                     }
                     println!("    impactRadius: {}", bullet.impact_radius);
-                    println!("    detonationParams: {}", bullet.detonation_params.is_some());
+                    println!(
+                        "    detonationParams: {}",
+                        bullet.detonation_params.is_some()
+                    );
                     if let Some(det) = bullet.detonation_params.and_then(|h| h.get(pools)) {
                         println!("    detonation armTime: {}", det.arm_time);
                         println!("    detonation explodeOnImpact: {}", det.explode_on_impact);
@@ -249,17 +274,30 @@ fn dump_ammo(ammo: &AmmoParams, pools: &DataPools, names: &HashMap<Guid, &str>, 
     // Check for additional projectiles field on AmmoParams
     // The struct had no such field directly, but let's check if there's something
     // in the geometry or physics controller params
-    println!("  geometryResourceParams: {}", ammo.geometry_resource_params.is_some());
-    println!("  physicsControllerParams: {}", ammo.physics_controller_params.is_some());
+    println!(
+        "  geometryResourceParams: {}",
+        ammo.geometry_resource_params.is_some()
+    );
+    println!(
+        "  physicsControllerParams: {}",
+        ammo.physics_controller_params.is_some()
+    );
 }
 
 fn print_damage(label: &str, ptr: &DamageBasePtr, pools: &DataPools) {
     match ptr {
         DamageBasePtr::DamageInfo(h) => {
             if let Some(d) = h.get(pools) {
-                println!("{}: phys={:.2} energy={:.2} dist={:.2} thermal={:.2} biochem={:.2} stun={:.2}",
-                    label, d.damage_physical, d.damage_energy, d.damage_distortion,
-                    d.damage_thermal, d.damage_biochemical, d.damage_stun);
+                println!(
+                    "{}: phys={:.2} energy={:.2} dist={:.2} thermal={:.2} biochem={:.2} stun={:.2}",
+                    label,
+                    d.damage_physical,
+                    d.damage_energy,
+                    d.damage_distortion,
+                    d.damage_thermal,
+                    d.damage_biochemical,
+                    d.damage_stun
+                );
             }
         }
         DamageBasePtr::DamageParams(h) => {
@@ -271,13 +309,22 @@ fn print_damage(label: &str, ptr: &DamageBasePtr, pools: &DataPools) {
         DamageBasePtr::DamageBase(_) => {
             println!("{}: DamageBase (empty base)", label);
         }
-        DamageBasePtr::Unknown { struct_index, instance_index } => {
-            println!("{}: Unknown(si={}, ii={})", label, struct_index, instance_index);
+        DamageBasePtr::Unknown {
+            struct_index,
+            instance_index,
+        } => {
+            println!(
+                "{}: Unknown(si={}, ii={})",
+                label, struct_index, instance_index
+            );
         }
     }
 }
 
-fn find_weapon_component<'a>(ecd: &'a EntityClassDefinition, pools: &'a DataPools) -> Option<&'a SCItemWeaponComponentParams> {
+fn find_weapon_component<'a>(
+    ecd: &'a EntityClassDefinition,
+    pools: &'a DataPools,
+) -> Option<&'a SCItemWeaponComponentParams> {
     for comp in &ecd.components {
         if let DataForgeComponentParamsPtr::SCItemWeaponComponentParams(h) = comp {
             return h.get(pools);
@@ -286,7 +333,10 @@ fn find_weapon_component<'a>(ecd: &'a EntityClassDefinition, pools: &'a DataPool
     None
 }
 
-fn find_ammo_container<'a>(ecd: &'a EntityClassDefinition, pools: &'a DataPools) -> Option<&'a SAmmoContainerComponentParams> {
+fn find_ammo_container<'a>(
+    ecd: &'a EntityClassDefinition,
+    pools: &'a DataPools,
+) -> Option<&'a SAmmoContainerComponentParams> {
     for comp in &ecd.components {
         if let DataForgeComponentParamsPtr::SAmmoContainerComponentParams(h) = comp {
             return h.get(pools);

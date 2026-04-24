@@ -9,18 +9,21 @@
 
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
+use super::super::*;
+use crate::Handle;
 use std::collections::HashMap;
 use svarog_common::CigGuid;
-use crate::Handle;
-use super::super::*;
 
 /// Record index for the `entitlementpolicies` feature.
 #[derive(Default)]
 pub struct EntitlementpoliciesIndex {
-    pub entitlement_account_item_global_params: HashMap<CigGuid, Handle<EntitlementAccountItemGlobalParams>>,
-    pub entitlement_non_inventory_storable_item_global_params: HashMap<CigGuid, Handle<EntitlementNonInventoryStorableItemGlobalParams>>,
+    pub entitlement_account_item_global_params:
+        HashMap<CigGuid, Handle<EntitlementAccountItemGlobalParams>>,
+    pub entitlement_non_inventory_storable_item_global_params:
+        HashMap<CigGuid, Handle<EntitlementNonInventoryStorableItemGlobalParams>>,
     pub corpse_interaction_params: HashMap<CigGuid, Handle<CorpseInteractionParams>>,
-    pub item_recovery_configuration_params: HashMap<CigGuid, Handle<ItemRecoveryConfigurationParams>>,
+    pub item_recovery_configuration_params:
+        HashMap<CigGuid, Handle<ItemRecoveryConfigurationParams>>,
     pub web_customization_debug: HashMap<CigGuid, Handle<WebCustomizationDebug>>,
     pub web_customization_global_params: HashMap<CigGuid, Handle<WebCustomizationGlobalParams>>,
 }
@@ -30,7 +33,9 @@ impl EntitlementpoliciesIndex {
     pub fn len(&self) -> usize {
         let mut total = 0usize;
         total += self.entitlement_account_item_global_params.len();
-        total += self.entitlement_non_inventory_storable_item_global_params.len();
+        total += self
+            .entitlement_non_inventory_storable_item_global_params
+            .len();
         total += self.corpse_interaction_params.len();
         total += self.item_recovery_configuration_params.len();
         total += self.web_customization_debug.len();
@@ -38,5 +43,7 @@ impl EntitlementpoliciesIndex {
         total
     }
 
-    pub fn is_empty(&self) -> bool { self.len() == 0 }
+    pub fn is_empty(&self) -> bool {
+        self.len() == 0
+    }
 }

@@ -9,12 +9,12 @@
 
 //! Feature module: `musiclogic`
 
+mod index;
+mod pools;
 #[allow(unused_imports)]
 mod types;
-mod pools;
-mod index;
 
+pub use index::*;
+pub use pools::*;
 #[allow(unused_imports)]
 pub use types::*;
-pub use pools::*;
-pub use index::*;

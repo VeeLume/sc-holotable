@@ -390,7 +390,9 @@ fn prereq_signature(p: &PrereqView) -> String {
             include_when_sharing,
         } => format!(
             "cs:{min}-{max}:{}:{include_when_sharing}",
-            jurisdiction_override.map(|g| g.to_string()).unwrap_or_default()
+            jurisdiction_override
+                .map(|g| g.to_string())
+                .unwrap_or_default()
         ),
         PrereqView::Reputation {
             faction,
@@ -540,7 +542,10 @@ pub fn find_bp_conflicts(contracts: &[Contract]) -> Vec<BpConflictGroup> {
         let mut has_no_bp = false;
         for id in &group_ids {
             let Some(&idx) = by_id.get(id) else { continue };
-            let pool = contracts[idx].blueprint_reward.as_ref().map(|b| b.pool_guid);
+            let pool = contracts[idx]
+                .blueprint_reward
+                .as_ref()
+                .map(|b| b.pool_guid);
             distinct_pools.insert(pool);
             if pool.is_some() {
                 has_bp = true;
@@ -564,7 +569,11 @@ pub fn find_bp_conflicts(contracts: &[Contract]) -> Vec<BpConflictGroup> {
                 handler_kind: c.handler_kind,
                 blueprint_pool: c.blueprint_reward.as_ref().map(|b| b.pool_guid),
                 pool_name: c.blueprint_reward.as_ref().map(|b| b.pool_name.clone()),
-                item_count: c.blueprint_reward.as_ref().map(|b| b.items.len()).unwrap_or(0),
+                item_count: c
+                    .blueprint_reward
+                    .as_ref()
+                    .map(|b| b.items.len())
+                    .unwrap_or(0),
             })
             .collect();
         members.sort_by(|a, b| a.debug_name.cmp(&b.debug_name));
@@ -579,7 +588,11 @@ pub fn find_bp_conflicts(contracts: &[Contract]) -> Vec<BpConflictGroup> {
     }
 
     // Stable output: sort by title.
-    out.sort_by(|a, b| a.title.cmp(&b.title).then(a.description.cmp(&b.description)));
+    out.sort_by(|a, b| {
+        a.title
+            .cmp(&b.title)
+            .then(a.description.cmp(&b.description))
+    });
     out
 }
 

@@ -95,9 +95,6 @@ mod tests {
 
     #[test]
     fn mining_excluded() {
-        assert_eq!(
-            classify(&EItemType::WeaponMining, &EItemSubType::Gun),
-            None
-        );
+        assert_eq!(classify(&EItemType::WeaponMining, &EItemSubType::Gun), None);
     }
 }

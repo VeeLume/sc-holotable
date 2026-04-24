@@ -15,7 +15,6 @@ pub type Result<T> = std::result::Result<T, Error>;
 #[non_exhaustive]
 pub enum Error {
     // ── Localization ─────────────────────────────────────────────────────
-
     /// A `global.ini` file could not be read from disk.
     #[error("failed to read locale file at {path}")]
     LocaleIoError {
@@ -35,7 +34,6 @@ pub enum Error {
     LocaleMalformedLine { line_number: usize, line: String },
 
     // ── Asset / P4K access ───────────────────────────────────────────────
-
     /// Failed to open a `Data.p4k` archive.
     #[error("failed to open P4K archive at {path}")]
     P4kOpen {
@@ -53,7 +51,6 @@ pub enum Error {
     FileNotInP4k(String),
 
     // ── DCB parse ────────────────────────────────────────────────────────
-
     /// `Game2.dcb` could not be located inside the P4K archive.
     #[error("Game2.dcb not found inside P4K archive")]
     DcbNotFound,
@@ -63,7 +60,6 @@ pub enum Error {
     DcbParse(#[source] svarog_datacore::Error),
 
     // ── Snapshot save / load ─────────────────────────────────────────────
-
     /// Reading a snapshot file from disk failed.
     #[error("failed to read snapshot at {path}")]
     SnapshotRead {

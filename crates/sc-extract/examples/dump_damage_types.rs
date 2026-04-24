@@ -7,14 +7,10 @@
 use std::collections::HashMap;
 
 use sc_extract::generated::*;
-use sc_extract::{
-    AssetConfig, AssetData, AssetSource, DataPools, DatacoreConfig, Guid,
-};
+use sc_extract::{AssetConfig, AssetData, AssetSource, DataPools, DatacoreConfig, Guid};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    tracing_subscriber::fmt()
-        .with_env_filter("info")
-        .init();
+    tracing_subscriber::fmt().with_env_filter("info").init();
 
     let install = sc_installs::discover_primary()?;
     let assets = AssetSource::from_install(&install)?;
@@ -33,24 +29,44 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let ammo_map = &snap.records.records.multi_feature.ammo_params;
 
-    println!("Record\tPhys\tEnergy\tDist\tThermal\tBiochem\tStun\tExpl Phys\tExpl Energy\tExpl Dist\tExpl Thermal\tExpl Biochem\tExpl Stun");
+    println!(
+        "Record\tPhys\tEnergy\tDist\tThermal\tBiochem\tStun\tExpl Phys\tExpl Energy\tExpl Dist\tExpl Thermal\tExpl Biochem\tExpl Stun"
+    );
 
     for (&guid, &handle) in ammo_map {
-        let Some(ammo) = handle.get(pools) else { continue };
+        let Some(ammo) = handle.get(pools) else {
+            continue;
+        };
         let name = record_names.get(&guid).copied().unwrap_or("?");
 
         let (d, ed) = extract_all_damage(ammo, pools);
 
         // Only print rows where any non-standard damage type is nonzero
-        let has_interesting = d.thermal != 0.0 || d.biochem != 0.0 || d.stun != 0.0
-            || ed.thermal != 0.0 || ed.biochem != 0.0 || ed.stun != 0.0
-            || d.dist != 0.0 || ed.dist != 0.0;
+        let has_interesting = d.thermal != 0.0
+            || d.biochem != 0.0
+            || d.stun != 0.0
+            || ed.thermal != 0.0
+            || ed.biochem != 0.0
+            || ed.stun != 0.0
+            || d.dist != 0.0
+            || ed.dist != 0.0;
 
         if has_interesting {
-            println!("{}\t{:.2}\t{:.2}\t{:.2}\t{:.2}\t{:.2}\t{:.2}\t{:.2}\t{:.2}\t{:.2}\t{:.2}\t{:.2}\t{:.2}",
+            println!(
+                "{}\t{:.2}\t{:.2}\t{:.2}\t{:.2}\t{:.2}\t{:.2}\t{:.2}\t{:.2}\t{:.2}\t{:.2}\t{:.2}\t{:.2}",
                 name,
-                d.phys, d.energy, d.dist, d.thermal, d.biochem, d.stun,
-                ed.phys, ed.energy, ed.dist, ed.thermal, ed.biochem, ed.stun,
+                d.phys,
+                d.energy,
+                d.dist,
+                d.thermal,
+                d.biochem,
+                d.stun,
+                ed.phys,
+                ed.energy,
+                ed.dist,
+                ed.thermal,
+                ed.biochem,
+                ed.stun,
             );
         }
     }

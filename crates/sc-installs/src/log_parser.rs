@@ -20,8 +20,7 @@ use crate::error::{Error, Result};
 ///   inside the path may be `\\`-escaped by the JSON framing; we unescape
 ///   them after capture.)
 static LAUNCH_RE: LazyLock<Regex> = LazyLock::new(|| {
-    Regex::new(r"Launching Star Citizen (\S+) from \((.*)\)")
-        .expect("launch marker regex is valid")
+    Regex::new(r"Launching Star Citizen (\S+) from \((.*)\)").expect("launch marker regex is valid")
 });
 
 /// Default path to the RSI Launcher log file on Windows:

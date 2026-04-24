@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -27,8 +27,16 @@ pub struct SSalvageRepairHighlightColorParams {
 }
 
 impl Pooled for SSalvageRepairHighlightColorParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.sglobalsalvagerepairbeamparams.ssalvage_repair_highlight_color_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.sglobalsalvagerepairbeamparams.ssalvage_repair_highlight_color_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .sglobalsalvagerepairbeamparams
+            .ssalvage_repair_highlight_color_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .sglobalsalvagerepairbeamparams
+            .ssalvage_repair_highlight_color_params
+    }
 }
 
 impl<'a> Extract<'a> for SSalvageRepairHighlightColorParams {
@@ -36,7 +44,10 @@ impl<'a> Extract<'a> for SSalvageRepairHighlightColorParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             color: match inst.get("color") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<RGB>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<RGB>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             hull_threshold: inst.get_f32("hullThreshold").unwrap_or_default(),
@@ -55,8 +66,16 @@ pub struct SSalvageRepairHighlightOutlineValues {
 }
 
 impl Pooled for SSalvageRepairHighlightOutlineValues {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.sglobalsalvagerepairbeamparams.ssalvage_repair_highlight_outline_values }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.sglobalsalvagerepairbeamparams.ssalvage_repair_highlight_outline_values }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .sglobalsalvagerepairbeamparams
+            .ssalvage_repair_highlight_outline_values
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .sglobalsalvagerepairbeamparams
+            .ssalvage_repair_highlight_outline_values
+    }
 }
 
 impl<'a> Extract<'a> for SSalvageRepairHighlightOutlineValues {
@@ -79,8 +98,12 @@ pub struct SItemTypeFilter {
 }
 
 impl Pooled for SItemTypeFilter {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.sglobalsalvagerepairbeamparams.sitem_type_filter }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.sglobalsalvagerepairbeamparams.sitem_type_filter }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.sglobalsalvagerepairbeamparams.sitem_type_filter
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.sglobalsalvagerepairbeamparams.sitem_type_filter
+    }
 }
 
 impl<'a> Extract<'a> for SItemTypeFilter {
@@ -88,8 +111,12 @@ impl<'a> Extract<'a> for SItemTypeFilter {
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
             item_type: EItemType::from_dcb_str(inst.get_str("itemType").unwrap_or("")),
-            item_sub_types: inst.get_array("itemSubTypes")
-                .map(|arr| arr.filter_map(|v| v.as_str().map(EItemSubType::from_dcb_str)).collect())
+            item_sub_types: inst
+                .get_array("itemSubTypes")
+                .map(|arr| {
+                    arr.filter_map(|v| v.as_str().map(EItemSubType::from_dcb_str))
+                        .collect()
+                })
                 .unwrap_or_default(),
         }
     }
@@ -110,39 +137,86 @@ pub struct SSalvageRepairHighlightParams {
 }
 
 impl Pooled for SSalvageRepairHighlightParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.sglobalsalvagerepairbeamparams.ssalvage_repair_highlight_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.sglobalsalvagerepairbeamparams.ssalvage_repair_highlight_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .sglobalsalvagerepairbeamparams
+            .ssalvage_repair_highlight_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .sglobalsalvagerepairbeamparams
+            .ssalvage_repair_highlight_params
+    }
 }
 
 impl<'a> Extract<'a> for SSalvageRepairHighlightParams {
     const TYPE_NAME: &'static str = "SSalvageRepairHighlightParams";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            colors: inst.get_array("colors")
-                .map(|arr| arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<SSalvageRepairHighlightColorParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r) => Some(b.alloc_nested::<SSalvageRepairHighlightColorParams>(b.db.instance(r.struct_index, r.instance_index), true)),
+            colors: inst
+                .get_array("colors")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<SSalvageRepairHighlightColorParams>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => {
+                            Some(b.alloc_nested::<SSalvageRepairHighlightColorParams>(
+                                b.db.instance(r.struct_index, r.instance_index),
+                                true,
+                            ))
+                        }
                         _ => None,
-                    }).collect())
+                    })
+                    .collect()
+                })
                 .unwrap_or_default(),
             valid_outline_values: match inst.get("validOutlineValues") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SSalvageRepairHighlightOutlineValues>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<SSalvageRepairHighlightOutlineValues>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             invalid_target_color: match inst.get("invalidTargetColor") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<RGB>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<RGB>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             invalid_outline_values: match inst.get("invalidOutlineValues") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SSalvageRepairHighlightOutlineValues>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<SSalvageRepairHighlightOutlineValues>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
-            filter_item_types: inst.get_array("filterItemTypes")
-                .map(|arr| arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<SItemTypeFilter>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r) => Some(b.alloc_nested::<SItemTypeFilter>(b.db.instance(r.struct_index, r.instance_index), true)),
+            filter_item_types: inst
+                .get_array("filterItemTypes")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<SItemTypeFilter>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => Some(b.alloc_nested::<SItemTypeFilter>(
+                            b.db.instance(r.struct_index, r.instance_index),
+                            true,
+                        )),
                         _ => None,
-                    }).collect())
+                    })
+                    .collect()
+                })
                 .unwrap_or_default(),
         }
     }
@@ -165,8 +239,16 @@ pub struct SSalvageRepairCardParams {
 }
 
 impl Pooled for SSalvageRepairCardParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.sglobalsalvagerepairbeamparams.ssalvage_repair_card_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.sglobalsalvagerepairbeamparams.ssalvage_repair_card_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .sglobalsalvagerepairbeamparams
+            .ssalvage_repair_card_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .sglobalsalvagerepairbeamparams
+            .ssalvage_repair_card_params
+    }
 }
 
 impl<'a> Extract<'a> for SSalvageRepairCardParams {
@@ -178,7 +260,10 @@ impl<'a> Extract<'a> for SSalvageRepairCardParams {
             closing_transition_time: inst.get_f32("closingTransitionTime").unwrap_or_default(),
             near_distance: inst.get_f32("nearDistance").unwrap_or_default(),
             default_screen_pos: match inst.get("defaultScreenPos") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec2>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec2>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             max_dist_screen_pos_scale: inst.get_f32("maxDistScreenPosScale").unwrap_or_default(),
@@ -195,8 +280,16 @@ pub struct SSalvageRepairItemTypeLocalizationPair {
 }
 
 impl Pooled for SSalvageRepairItemTypeLocalizationPair {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.sglobalsalvagerepairbeamparams.ssalvage_repair_item_type_localization_pair }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.sglobalsalvagerepairbeamparams.ssalvage_repair_item_type_localization_pair }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .sglobalsalvagerepairbeamparams
+            .ssalvage_repair_item_type_localization_pair
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .sglobalsalvagerepairbeamparams
+            .ssalvage_repair_item_type_localization_pair
+    }
 }
 
 impl<'a> Extract<'a> for SSalvageRepairItemTypeLocalizationPair {
@@ -204,7 +297,10 @@ impl<'a> Extract<'a> for SSalvageRepairItemTypeLocalizationPair {
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
             item_type: EItemType::from_dcb_str(inst.get_str("itemType").unwrap_or("")),
-            type_loc: inst.get_str("typeLoc").map(LocaleKey::from).unwrap_or_default(),
+            type_loc: inst
+                .get_str("typeLoc")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
         }
     }
 }
@@ -220,23 +316,51 @@ pub struct SSalvageRepairLocalizationParams {
 }
 
 impl Pooled for SSalvageRepairLocalizationParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.sglobalsalvagerepairbeamparams.ssalvage_repair_localization_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.sglobalsalvagerepairbeamparams.ssalvage_repair_localization_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .sglobalsalvagerepairbeamparams
+            .ssalvage_repair_localization_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .sglobalsalvagerepairbeamparams
+            .ssalvage_repair_localization_params
+    }
 }
 
 impl<'a> Extract<'a> for SSalvageRepairLocalizationParams {
     const TYPE_NAME: &'static str = "SSalvageRepairLocalizationParams";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            hull_loc: inst.get_str("hullLoc").map(LocaleKey::from).unwrap_or_default(),
-            item_type_localization_pairs: inst.get_array("itemTypeLocalizationPairs")
-                .map(|arr| arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<SSalvageRepairItemTypeLocalizationPair>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r) => Some(b.alloc_nested::<SSalvageRepairItemTypeLocalizationPair>(b.db.instance(r.struct_index, r.instance_index), true)),
-                        _ => None,
-                    }).collect())
+            hull_loc: inst
+                .get_str("hullLoc")
+                .map(LocaleKey::from)
                 .unwrap_or_default(),
-            item_type_not_found_loc: inst.get_str("itemTypeNotFoundLoc").map(LocaleKey::from).unwrap_or_default(),
+            item_type_localization_pairs: inst
+                .get_array("itemTypeLocalizationPairs")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<SSalvageRepairItemTypeLocalizationPair>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => {
+                            Some(b.alloc_nested::<SSalvageRepairItemTypeLocalizationPair>(
+                                b.db.instance(r.struct_index, r.instance_index),
+                                true,
+                            ))
+                        }
+                        _ => None,
+                    })
+                    .collect()
+                })
+                .unwrap_or_default(),
+            item_type_not_found_loc: inst
+                .get_str("itemTypeNotFoundLoc")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
         }
     }
 }
@@ -252,8 +376,16 @@ pub struct SSalvageRepairMaterialParams {
 }
 
 impl Pooled for SSalvageRepairMaterialParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.sglobalsalvagerepairbeamparams.ssalvage_repair_material_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.sglobalsalvagerepairbeamparams.ssalvage_repair_material_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .sglobalsalvagerepairbeamparams
+            .ssalvage_repair_material_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .sglobalsalvagerepairbeamparams
+            .ssalvage_repair_material_params
+    }
 }
 
 impl<'a> Extract<'a> for SSalvageRepairMaterialParams {
@@ -262,7 +394,10 @@ impl<'a> Extract<'a> for SSalvageRepairMaterialParams {
         Self {
             hull_thickness_meters: inst.get_f32("hullThicknessMeters").unwrap_or_default(),
             ammo_to_material_factor: inst.get_f32("ammoToMaterialFactor").unwrap_or_default(),
-            rmcresource_type: inst.get("RMCResourceType").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            rmcresource_type: inst
+                .get("RMCResourceType")
+                .and_then(|v| v.as_record_ref())
+                .map(|r| r.guid),
         }
     }
 }
@@ -276,8 +411,16 @@ pub struct SSalvageRepairAudioParams {
 }
 
 impl Pooled for SSalvageRepairAudioParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.sglobalsalvagerepairbeamparams.ssalvage_repair_audio_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.sglobalsalvagerepairbeamparams.ssalvage_repair_audio_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .sglobalsalvagerepairbeamparams
+            .ssalvage_repair_audio_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .sglobalsalvagerepairbeamparams
+            .ssalvage_repair_audio_params
+    }
 }
 
 impl<'a> Extract<'a> for SSalvageRepairAudioParams {
@@ -285,10 +428,15 @@ impl<'a> Extract<'a> for SSalvageRepairAudioParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             salvage_cargo_occupancy_factor_rtpc: match inst.get("salvageCargoOccupancyFactorRTPC") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
-            friendly_fire_message_cooldown_scale: inst.get_f32("friendlyFireMessageCooldownScale").unwrap_or_default(),
+            friendly_fire_message_cooldown_scale: inst
+                .get_f32("friendlyFireMessageCooldownScale")
+                .unwrap_or_default(),
         }
     }
 }
@@ -314,33 +462,69 @@ pub struct SGlobalSalvageRepairBeamParams {
 }
 
 impl Pooled for SGlobalSalvageRepairBeamParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.sglobalsalvagerepairbeamparams.sglobal_salvage_repair_beam_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.sglobalsalvagerepairbeamparams.sglobal_salvage_repair_beam_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .sglobalsalvagerepairbeamparams
+            .sglobal_salvage_repair_beam_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .sglobalsalvagerepairbeamparams
+            .sglobal_salvage_repair_beam_params
+    }
 }
 
 impl<'a> Extract<'a> for SGlobalSalvageRepairBeamParams {
     const TYPE_NAME: &'static str = "SGlobalSalvageRepairBeamParams";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            tag: inst.get("tag").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            tag: inst
+                .get("tag")
+                .and_then(|v| v.as_record_ref())
+                .map(|r| r.guid),
             card_params: match inst.get("cardParams") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SSalvageRepairCardParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<SSalvageRepairCardParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             highlight_params: match inst.get("highlightParams") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SSalvageRepairHighlightParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<SSalvageRepairHighlightParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             localization_params: match inst.get("localizationParams") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SSalvageRepairLocalizationParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<SSalvageRepairLocalizationParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             material_params: match inst.get("materialParams") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SSalvageRepairMaterialParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<SSalvageRepairMaterialParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             global_salvage_audio_params: match inst.get("globalSalvageAudioParams") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SSalvageRepairAudioParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<SSalvageRepairAudioParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             hits_per_second: inst.get_f32("hitsPerSecond").unwrap_or_default(),
@@ -348,4 +532,3 @@ impl<'a> Extract<'a> for SGlobalSalvageRepairBeamParams {
         }
     }
 }
-

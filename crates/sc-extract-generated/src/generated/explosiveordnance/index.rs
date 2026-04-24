@@ -9,15 +9,16 @@
 
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
+use super::super::*;
+use crate::Handle;
 use std::collections::HashMap;
 use svarog_common::CigGuid;
-use crate::Handle;
-use super::super::*;
 
 /// Record index for the `explosiveordnance` feature.
 #[derive(Default)]
 pub struct ExplosiveordnanceIndex {
-    pub explosive_ordnance_ping_global_params: HashMap<CigGuid, Handle<ExplosiveOrdnancePingGlobalParams>>,
+    pub explosive_ordnance_ping_global_params:
+        HashMap<CigGuid, Handle<ExplosiveOrdnancePingGlobalParams>>,
 }
 
 impl ExplosiveordnanceIndex {
@@ -28,5 +29,7 @@ impl ExplosiveordnanceIndex {
         total
     }
 
-    pub fn is_empty(&self) -> bool { self.len() == 0 }
+    pub fn is_empty(&self) -> bool {
+        self.len() == 0
+    }
 }

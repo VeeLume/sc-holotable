@@ -68,11 +68,7 @@ pub fn sanitize_field_name(name: &str) -> String {
         .next()
         .map(|c| c.is_ascii_alphabetic() || c == '_')
         .unwrap_or(false);
-    let snake = if first_ok {
-        snake
-    } else {
-        format!("_{snake}")
-    };
+    let snake = if first_ok { snake } else { format!("_{snake}") };
 
     if NON_RAW_KEYWORDS.contains(&snake.as_str()) {
         format!("{snake}_")
@@ -93,8 +89,7 @@ pub fn sanitize_struct_name(name: &str) -> String {
     // Type names can't use raw identifiers for the keywords `self`, `Self`,
     // `super`, `extern`, `crate`. Suffix with `_` instead. Also handle the
     // regular keywords since `r#Weapon` etc. isn't typical for types.
-    if NON_RAW_KEYWORDS.contains(&collapsed.as_str())
-        || RUST_KEYWORDS.contains(&collapsed.as_str())
+    if NON_RAW_KEYWORDS.contains(&collapsed.as_str()) || RUST_KEYWORDS.contains(&collapsed.as_str())
     {
         format!("{collapsed}_")
     } else {

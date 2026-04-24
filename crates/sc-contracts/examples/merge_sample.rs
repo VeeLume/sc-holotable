@@ -11,9 +11,9 @@
 use std::time::Instant;
 
 use sc_contracts::{
-    expand_all, find_bp_conflicts, merge_expansions, merge_stats, BlueprintPoolRegistry, Contract,
-    HandlerKind, LocalityRegistry, LocationRegistry, RewardAmount, RewardCurrencyCatalog,
-    ShipRegistry,
+    BlueprintPoolRegistry, Contract, HandlerKind, LocalityRegistry, LocationRegistry, RewardAmount,
+    RewardCurrencyCatalog, ShipRegistry, expand_all, find_bp_conflicts, merge_expansions,
+    merge_stats,
 };
 use sc_extract::{AssetConfig, AssetData, AssetSource, Datacore, DatacoreConfig};
 
@@ -86,10 +86,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("─── Merge stats ─────────────────────────────────");
     println!("  Total contracts:          {}", stats.total_contracts);
     println!("  Total variations:         {}", stats.total_variations);
-    println!(
-        "  Largest variation group:  {}",
-        stats.largest_variation
-    );
+    println!("  Largest variation group:  {}", stats.largest_variation);
     println!(
         "  Contracts with title siblings: {}  ({:.1}%)",
         stats.contracts_with_title_siblings,
@@ -119,10 +116,22 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     }
 
     // Reward content breakdown.
-    let with_bp = contracts.iter().filter(|c| c.blueprint_reward.is_some()).count();
-    let with_scrip = contracts.iter().filter(|c| !c.reward_scrip.is_empty()).count();
-    let with_rep = contracts.iter().filter(|c| !c.reward_rep.is_empty()).count();
-    let with_items = contracts.iter().filter(|c| !c.reward_items.is_empty()).count();
+    let with_bp = contracts
+        .iter()
+        .filter(|c| c.blueprint_reward.is_some())
+        .count();
+    let with_scrip = contracts
+        .iter()
+        .filter(|c| !c.reward_scrip.is_empty())
+        .count();
+    let with_rep = contracts
+        .iter()
+        .filter(|c| !c.reward_rep.is_empty())
+        .count();
+    let with_items = contracts
+        .iter()
+        .filter(|c| !c.reward_items.is_empty())
+        .count();
     let uec_calc = contracts
         .iter()
         .filter(|c| matches!(c.reward_uec, RewardAmount::Calculated))
@@ -143,8 +152,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             .filter(|c| {
                 c.debug_name.to_lowercase().contains(&f)
                     || c.handler_debug_name.to_lowercase().contains(&f)
-                    || c
-                        .title
+                    || c.title
                         .as_deref()
                         .map(|t| t.to_lowercase().contains(&f))
                         .unwrap_or(false)
@@ -162,12 +170,20 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         println!("─── Sample contracts ──────────────────────────");
         println!();
         println!("  [Unique-title] (no siblings):");
-        for c in contracts.iter().filter(|c| c.title_siblings.is_empty()).take(3) {
+        for c in contracts
+            .iter()
+            .filter(|c| c.title_siblings.is_empty())
+            .take(3)
+        {
             print_contract(c, &localities);
         }
         println!();
         println!("  [Shared-title] (one+ siblings):");
-        for c in contracts.iter().filter(|c| !c.title_siblings.is_empty()).take(3) {
+        for c in contracts
+            .iter()
+            .filter(|c| !c.title_siblings.is_empty())
+            .take(3)
+        {
             print_contract(c, &localities);
         }
 
@@ -196,11 +212,17 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 syss.len() > 1
             })
             .count();
-        let with_span = contracts.iter().filter(|c| !c.mission_span.is_empty()).count();
+        let with_span = contracts
+            .iter()
+            .filter(|c| !c.mission_span.is_empty())
+            .count();
         println!();
         println!(
             "─── Mission-span: {with_span} contracts have span ({} locality record(s) total); {multi_system} cross multiple systems",
-            contracts.iter().map(|c| c.mission_span.len()).sum::<usize>(),
+            contracts
+                .iter()
+                .map(|c| c.mission_span.len())
+                .sum::<usize>(),
         );
     }
 
@@ -209,7 +231,13 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
 fn print_contract(c: &Contract, localities: &sc_contracts::LocalityRegistry) {
     let title = c.title.as_deref().unwrap_or("<no title>");
-    let desc_short: String = c.description.as_deref().unwrap_or("").chars().take(80).collect();
+    let desc_short: String = c
+        .description
+        .as_deref()
+        .unwrap_or("")
+        .chars()
+        .take(80)
+        .collect();
     let desc_tail = if c
         .description
         .as_deref()
@@ -271,7 +299,11 @@ fn print_contract(c: &Contract, localities: &sc_contracts::LocalityRegistry) {
         RewardAmount::Fixed(n) => bits.push(format!("UEC: {n}")),
     }
     for s in &c.reward_scrip {
-        let name = if s.display_name.is_empty() { &s.record_name } else { &s.display_name };
+        let name = if s.display_name.is_empty() {
+            &s.record_name
+        } else {
+            &s.display_name
+        };
         bits.push(format!("{name}×{}", s.amount));
     }
     if !c.reward_rep.is_empty() {
@@ -286,11 +318,7 @@ fn print_contract(c: &Contract, localities: &sc_contracts::LocalityRegistry) {
         bits.push(format!("rep: [{}]", total.join(",")));
     }
     if let Some(bp) = &c.blueprint_reward {
-        bits.push(format!(
-            "BP×{} ({:.0}%)",
-            bp.items.len(),
-            bp.chance * 100.0
-        ));
+        bits.push(format!("BP×{} ({:.0}%)", bp.items.len(), bp.chance * 100.0));
     }
     if !bits.is_empty() {
         println!("      rewards:  {}", bits.join("; "));
@@ -301,7 +329,11 @@ fn print_contract(c: &Contract, localities: &sc_contracts::LocalityRegistry) {
             .iter()
             .filter_map(|g| localities.get(g))
             .map(|v| {
-                let tag = if v.name.is_empty() { "?".to_string() } else { v.name.clone() };
+                let tag = if v.name.is_empty() {
+                    "?".to_string()
+                } else {
+                    v.name.clone()
+                };
                 if v.region_label.is_empty() {
                     tag
                 } else {
@@ -346,8 +378,14 @@ fn delta_against_target(n: usize, target: usize) -> String {
     if d == 0 {
         "exactly on target".into()
     } else if d > 0 {
-        format!("+{d} over target ({:+.1}%)", (d as f64) * 100.0 / target as f64)
+        format!(
+            "+{d} over target ({:+.1}%)",
+            (d as f64) * 100.0 / target as f64
+        )
     } else {
-        format!("{d} under target ({:+.1}%)", (d as f64) * 100.0 / target as f64)
+        format!(
+            "{d} under target ({:+.1}%)",
+            (d as f64) * 100.0 / target as f64
+        )
     }
 }

@@ -14,5 +14,6 @@ use super::super::*;
 /// Pool storage for the `entities-groundvehicles` feature.
 #[derive(Default)]
 pub struct EntitiesGroundvehiclesPools {
-    pub track_wheeled_vehicle_audio_component_params: Vec<Option<TrackWheeledVehicleAudioComponentParams>>,
+    pub track_wheeled_vehicle_audio_component_params:
+        Vec<Option<TrackWheeledVehicleAudioComponentParams>>,
 }

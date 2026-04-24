@@ -237,7 +237,9 @@ impl LocationRegistry {
             HashMap::with_capacity(records.multi_feature.star_map_object.len());
 
         for (guid, handle) in &records.multi_feature.star_map_object {
-            let Some(obj) = handle.get(pools) else { continue };
+            let Some(obj) = handle.get(pools) else {
+                continue;
+            };
 
             let name = record_name_stripped(db, guid, "StarMapObject.");
             let display_name = display_by_guid.get(guid).cloned().unwrap_or_default();
@@ -610,7 +612,10 @@ mod tests {
         ];
         let mut systems = BTreeSet::new();
         systems.insert(SystemKey::Pyro);
-        assert_eq!(build_region_label(&locs, &systems), "Pyro: Bloom, Monox, Sirus");
+        assert_eq!(
+            build_region_label(&locs, &systems),
+            "Pyro: Bloom, Monox, Sirus"
+        );
     }
 
     #[test]
@@ -650,10 +655,7 @@ mod tests {
 
     #[test]
     fn region_label_system_only_marks_system_wide() {
-        let locs = vec![
-            mk_loc(None, SystemKey::Pyro),
-            mk_loc(None, SystemKey::Pyro),
-        ];
+        let locs = vec![mk_loc(None, SystemKey::Pyro), mk_loc(None, SystemKey::Pyro)];
         let mut systems = BTreeSet::new();
         systems.insert(SystemKey::Pyro);
         assert_eq!(build_region_label(&locs, &systems), "Pyro (system-wide)");

@@ -29,7 +29,7 @@ use crate::blueprints::BlueprintPoolRegistry;
 use crate::currency::RewardCurrencyCatalog;
 use crate::expand::expand_all;
 use crate::locality::{LocalityRegistry, LocationRegistry};
-use crate::merge::{merge_expansions, Contract};
+use crate::merge::{Contract, merge_expansions};
 use crate::ships::ShipRegistry;
 
 /// Bundled output of the four-stage contracts pipeline.

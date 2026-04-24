@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -25,8 +25,16 @@ pub struct SQuantumCameraStateMappingDef {
 }
 
 impl Pooled for SQuantumCameraStateMappingDef {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.actor_quantumtravelcameraeffects.squantum_camera_state_mapping_def }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.actor_quantumtravelcameraeffects.squantum_camera_state_mapping_def }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .actor_quantumtravelcameraeffects
+            .squantum_camera_state_mapping_def
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .actor_quantumtravelcameraeffects
+            .squantum_camera_state_mapping_def
+    }
 }
 
 impl<'a> Extract<'a> for SQuantumCameraStateMappingDef {
@@ -34,7 +42,10 @@ impl<'a> Extract<'a> for SQuantumCameraStateMappingDef {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             strength_mapping: match inst.get("strengthMapping") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BezierCurve>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BezierCurve>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
         }
@@ -58,8 +69,16 @@ pub struct SQuantumCameraStateEffectsDef {
 }
 
 impl Pooled for SQuantumCameraStateEffectsDef {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.actor_quantumtravelcameraeffects.squantum_camera_state_effects_def }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.actor_quantumtravelcameraeffects.squantum_camera_state_effects_def }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .actor_quantumtravelcameraeffects
+            .squantum_camera_state_effects_def
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .actor_quantumtravelcameraeffects
+            .squantum_camera_state_effects_def
+    }
 }
 
 impl<'a> Extract<'a> for SQuantumCameraStateEffectsDef {
@@ -71,11 +90,18 @@ impl<'a> Extract<'a> for SQuantumCameraStateEffectsDef {
             fov_scale: inst.get_f32("fovScale").unwrap_or_default(),
             focus_distance: inst.get_f32("focusDistance").unwrap_or_default(),
             generic_modifiers: match inst.get("genericModifiers") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<CameraEffectsModifiers>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<CameraEffectsModifiers>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             custom_mapping: match inst.get("customMapping") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(SQuantumCameraStateMappingDefPtr::from_ref(b, r)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(SQuantumCameraStateMappingDefPtr::from_ref(b, r))
+                }
                 _ => None,
             },
         }
@@ -91,8 +117,16 @@ pub struct SQuantumCameraEffectsDef {
 }
 
 impl Pooled for SQuantumCameraEffectsDef {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.actor_quantumtravelcameraeffects.squantum_camera_effects_def }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.actor_quantumtravelcameraeffects.squantum_camera_effects_def }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .actor_quantumtravelcameraeffects
+            .squantum_camera_effects_def
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .actor_quantumtravelcameraeffects
+            .squantum_camera_effects_def
+    }
 }
 
 impl<'a> Extract<'a> for SQuantumCameraEffectsDef {
@@ -100,11 +134,15 @@ impl<'a> Extract<'a> for SQuantumCameraEffectsDef {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             camera_by_state: match inst.get("cameraByState") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SQuantumCameraStateEffectsDef>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<SQuantumCameraStateEffectsDef>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
                 _ => None,
             },
             smoothing_fallback: inst.get_f32("smoothingFallback").unwrap_or_default(),
         }
     }
 }
-

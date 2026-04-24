@@ -3,7 +3,7 @@ use std::collections::HashMap;
 use sc_extract::generated::*;
 use sc_extract::{DataPools, Guid};
 
-use crate::classify::{classify, WeaponCategory};
+use crate::classify::{WeaponCategory, classify};
 use crate::damage::{self, DamageSummary};
 use crate::fire_action::{self, FireActionKind};
 use crate::sustain::{self, SustainKind};
@@ -110,8 +110,7 @@ impl ShipWeapon {
         let power_draw = extract_power_draw(ecd, pools);
 
         // Health
-        let health = damage::find_component::<SHealthComponentParams>(ecd, pools)
-            .map(|h| h.health);
+        let health = damage::find_component::<SHealthComponentParams>(ecd, pools).map(|h| h.health);
 
         // Record name
         let record_name = record_names
@@ -153,12 +152,22 @@ impl ShipWeapon {
     /// `None` for Beam (no per-shot concept), Burst, Unknown.
     pub fn burst_rpm(&self) -> Option<f32> {
         match self.fire_actions.first()? {
-            FireActionKind::Rapid { fire_rate, .. }
-            | FireActionKind::Single { fire_rate, .. } => Some(*fire_rate as f32),
+            FireActionKind::Rapid { fire_rate, .. } | FireActionKind::Single { fire_rate, .. } => {
+                Some(*fire_rate as f32)
+            }
             FireActionKind::Sequence { effective_rpm, .. } => Some(*effective_rpm),
-            FireActionKind::Charged { charge_time, overcharge_time, cooldown, .. } => {
+            FireActionKind::Charged {
+                charge_time,
+                overcharge_time,
+                cooldown,
+                ..
+            } => {
                 let cycle = charge_time + overcharge_time + cooldown;
-                if cycle > 0.0 { Some(60.0 / cycle) } else { None }
+                if cycle > 0.0 {
+                    Some(60.0 / cycle)
+                } else {
+                    None
+                }
             }
             _ => None,
         }
@@ -514,8 +523,10 @@ fn extract_power_draw(ecd: &EntityClassDefinition, pools: &DataPools) -> Option<
                 let cons = h.get(pools)?;
                 let amount = cons.consumption.and_then(|h| h.get(pools))?;
                 if matches!(amount.resource, ResourceNetworkResource::Power) {
-                    let val = amount.resource_amount_per_second.as_ref().and_then(|u| {
-                        match u {
+                    let val = amount
+                        .resource_amount_per_second
+                        .as_ref()
+                        .and_then(|u| match u {
                             SBaseResourceUnitPtr::SStandardResourceUnit(h) => {
                                 h.get(pools).map(|v| v.standard_resource_units)
                             }
@@ -523,8 +534,7 @@ fn extract_power_draw(ecd: &EntityClassDefinition, pools: &DataPools) -> Option<
                                 h.get(pools).map(|v| v.units as f32)
                             }
                             _ => None,
-                        }
-                    });
+                        });
                     if let Some(v) = val {
                         return Some(v);
                     }

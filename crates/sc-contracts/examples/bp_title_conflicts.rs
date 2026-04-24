@@ -13,7 +13,7 @@
 //! cargo run -p sc-contracts --release --example bp_title_conflicts -- --pyro-only
 //! ```
 
-use sc_contracts::{find_bp_conflicts, Contract, ContractIndex, LocalityRegistry};
+use sc_contracts::{Contract, ContractIndex, LocalityRegistry, find_bp_conflicts};
 use sc_extract::{AssetConfig, AssetData, AssetSource, Datacore, DatacoreConfig};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -45,7 +45,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     if pyro_only {
         conflicts.retain(|g| {
             g.members.iter().any(|m| {
-                let Some(c) = index.get(m.contract_id) else { return false };
+                let Some(c) = index.get(m.contract_id) else {
+                    return false;
+                };
                 c.debug_name.to_lowercase().contains("pyro")
                     || c.handler_debug_name.to_lowercase().contains("pyro")
             })
@@ -56,7 +58,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!(
         "  {} blueprint conflict group(s){}",
         conflicts.len(),
-        if pyro_only { " (Pyro-touching only)" } else { "" }
+        if pyro_only {
+            " (Pyro-touching only)"
+        } else {
+            ""
+        }
     );
     println!(
         "  {} with mixed BP presence (some variants have BP, some don't)",
@@ -74,10 +80,16 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             "   {} siblings across {} distinct BP pool(s){}",
             group.members.len(),
             group.distinct_pool_count,
-            if group.has_mixed_presence { " — MIXED PRESENCE" } else { "" }
+            if group.has_mixed_presence {
+                " — MIXED PRESENCE"
+            } else {
+                ""
+            }
         );
         for m in &group.members {
-            let Some(c) = index.get(m.contract_id) else { continue };
+            let Some(c) = index.get(m.contract_id) else {
+                continue;
+            };
             let bp_label = match (&m.pool_name, m.item_count) {
                 (Some(pool), n) if n > 0 => {
                     let sample = sample_items(c);
@@ -96,7 +108,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     if conflicts.len() > 15 {
         println!();
-        println!("  … and {} more groups (limited to 15)", conflicts.len() - 15);
+        println!(
+            "  … and {} more groups (limited to 15)",
+            conflicts.len() - 15
+        );
     }
 
     Ok(())
@@ -127,7 +142,9 @@ fn render_span(c: &Contract, localities: &LocalityRegistry) -> String {
 
 /// First 4 BP item display names for an at-a-glance preview.
 fn sample_items(c: &Contract) -> String {
-    let Some(bp) = &c.blueprint_reward else { return "—".into() };
+    let Some(bp) = &c.blueprint_reward else {
+        return "—".into();
+    };
     let names: Vec<&str> = bp
         .items
         .iter()

@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -27,8 +27,16 @@ pub struct LightStatusMultiplier {
 }
 
 impl Pooled for LightStatusMultiplier {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_perceptionmodifierarea.light_status_multiplier }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_perceptionmodifierarea.light_status_multiplier }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_perceptionmodifierarea
+            .light_status_multiplier
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_perceptionmodifierarea
+            .light_status_multiplier
+    }
 }
 
 impl<'a> Extract<'a> for LightStatusMultiplier {
@@ -49,8 +57,16 @@ pub struct ActionAreaAudioNoiseExtension {
 }
 
 impl Pooled for ActionAreaAudioNoiseExtension {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_perceptionmodifierarea.action_area_audio_noise_extension }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_perceptionmodifierarea.action_area_audio_noise_extension }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_perceptionmodifierarea
+            .action_area_audio_noise_extension
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_perceptionmodifierarea
+            .action_area_audio_noise_extension
+    }
 }
 
 impl<'a> Extract<'a> for ActionAreaAudioNoiseExtension {
@@ -70,21 +86,37 @@ pub struct ActionAreaLightExtension {
 }
 
 impl Pooled for ActionAreaLightExtension {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_perceptionmodifierarea.action_area_light_extension }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_perceptionmodifierarea.action_area_light_extension }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_perceptionmodifierarea
+            .action_area_light_extension
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_perceptionmodifierarea
+            .action_area_light_extension
+    }
 }
 
 impl<'a> Extract<'a> for ActionAreaLightExtension {
     const TYPE_NAME: &'static str = "ActionAreaLightExtension";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            light_status_multipliers: inst.get_array("lightStatusMultipliers")
-                .map(|arr| arr.filter_map(|v| match v {
-                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => Some(b.alloc_nested::<LightStatusMultiplier>(b.db.instance(r.struct_index, r.instance_index), true)),
+            light_status_multipliers: inst
+                .get_array("lightStatusMultipliers")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => {
+                            Some(b.alloc_nested::<LightStatusMultiplier>(
+                                b.db.instance(r.struct_index, r.instance_index),
+                                true,
+                            ))
+                        }
                         _ => None,
-                    }).collect())
+                    })
+                    .collect()
+                })
                 .unwrap_or_default(),
         }
     }
 }
-

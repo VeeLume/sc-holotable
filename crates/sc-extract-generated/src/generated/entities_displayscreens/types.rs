@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -26,8 +26,12 @@ pub struct SelfStateChange {
 }
 
 impl Pooled for SelfStateChange {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_displayscreens.self_state_change }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_displayscreens.self_state_change }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_displayscreens.self_state_change
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_displayscreens.self_state_change
+    }
 }
 
 impl<'a> Extract<'a> for SelfStateChange {
@@ -35,10 +39,14 @@ impl<'a> Extract<'a> for SelfStateChange {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             target_self_state: match inst.get("targetSelfState") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SInteractionState>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<SInteractionState>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
                 _ => None,
             },
         }
     }
 }
-

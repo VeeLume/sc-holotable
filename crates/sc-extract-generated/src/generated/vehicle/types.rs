@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -27,16 +27,26 @@ pub struct SOperatorModeLabels {
 }
 
 impl Pooled for SOperatorModeLabels {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.vehicle.soperator_mode_labels }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.vehicle.soperator_mode_labels }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.vehicle.soperator_mode_labels
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.vehicle.soperator_mode_labels
+    }
 }
 
 impl<'a> Extract<'a> for SOperatorModeLabels {
     const TYPE_NAME: &'static str = "SOperatorModeLabels";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            full_names: inst.get_str("fullNames").map(LocaleKey::from).unwrap_or_default(),
-            short_names: inst.get_str("shortNames").map(LocaleKey::from).unwrap_or_default(),
+            full_names: inst
+                .get_str("fullNames")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
+            short_names: inst
+                .get_str("shortNames")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
         }
     }
 }
@@ -50,16 +60,26 @@ pub struct SMasterModeLabels {
 }
 
 impl Pooled for SMasterModeLabels {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.vehicle.smaster_mode_labels }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.vehicle.smaster_mode_labels }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.vehicle.smaster_mode_labels
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.vehicle.smaster_mode_labels
+    }
 }
 
 impl<'a> Extract<'a> for SMasterModeLabels {
     const TYPE_NAME: &'static str = "SMasterModeLabels";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            full_names: inst.get_str("fullNames").map(LocaleKey::from).unwrap_or_default(),
-            short_names: inst.get_str("shortNames").map(LocaleKey::from).unwrap_or_default(),
+            full_names: inst
+                .get_str("fullNames")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
+            short_names: inst
+                .get_str("shortNames")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
         }
     }
 }
@@ -71,18 +91,31 @@ pub struct VehicleCareerList {
 }
 
 impl Pooled for VehicleCareerList {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.vehicle.vehicle_career_list }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.vehicle.vehicle_career_list }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.vehicle.vehicle_career_list
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.vehicle.vehicle_career_list
+    }
 }
 
 impl<'a> Extract<'a> for VehicleCareerList {
     const TYPE_NAME: &'static str = "VehicleCareerList";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            career_list: inst.get_array("careerList")
-                .map(|arr| arr.filter_map(|v| if let Value::Reference(Some(r)) = v { Some(r.guid) } else { None }).collect())
+            career_list: inst
+                .get_array("careerList")
+                .map(|arr| {
+                    arr.filter_map(|v| {
+                        if let Value::Reference(Some(r)) = v {
+                            Some(r.guid)
+                        } else {
+                            None
+                        }
+                    })
+                    .collect()
+                })
                 .unwrap_or_default(),
         }
     }
 }
-

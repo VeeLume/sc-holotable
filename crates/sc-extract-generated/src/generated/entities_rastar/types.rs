@@ -12,27 +12,29 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
 /// DCB type: `BaseBuildingParams`
 /// Inherits from: `DataForgeComponentParams`
-pub struct BaseBuildingParams {
-}
+pub struct BaseBuildingParams {}
 
 impl Pooled for BaseBuildingParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_rastar.base_building_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_rastar.base_building_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_rastar.base_building_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_rastar.base_building_params
+    }
 }
 
 impl<'a> Extract<'a> for BaseBuildingParams {
     const TYPE_NAME: &'static str = "BaseBuildingParams";
     fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
-        }
+        Self {}
     }
 }
 
@@ -52,8 +54,12 @@ pub struct ObjectContainerModifierParams {
 }
 
 impl Pooled for ObjectContainerModifierParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_rastar.object_container_modifier_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_rastar.object_container_modifier_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_rastar.object_container_modifier_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_rastar.object_container_modifier_params
+    }
 }
 
 impl<'a> Extract<'a> for ObjectContainerModifierParams {
@@ -64,7 +70,10 @@ impl<'a> Extract<'a> for ObjectContainerModifierParams {
             external_dirt: inst.get_f32("ExternalDirt").unwrap_or_default(),
             internal_wear: inst.get_f32("InternalWear").unwrap_or_default(),
             internal_dirt: inst.get_f32("InternalDirt").unwrap_or_default(),
-            tint_palette_override: inst.get("TintPaletteOverride").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            tint_palette_override: inst
+                .get("TintPaletteOverride")
+                .and_then(|v| v.as_record_ref())
+                .map(|r| r.guid),
         }
     }
 }
@@ -89,8 +98,12 @@ pub struct RastarLocationParams {
 }
 
 impl Pooled for RastarLocationParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_rastar.rastar_location_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_rastar.rastar_location_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_rastar.rastar_location_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_rastar.rastar_location_params
+    }
 }
 
 impl<'a> Extract<'a> for RastarLocationParams {
@@ -103,26 +116,30 @@ impl<'a> Extract<'a> for RastarLocationParams {
             external_dirt: inst.get_f32("externalDirt").unwrap_or_default(),
             internal_wear: inst.get_f32("internalWear").unwrap_or_default(),
             internal_dirt: inst.get_f32("internalDirt").unwrap_or_default(),
-            tint_palette: inst.get("tintPalette").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            tint_palette: inst
+                .get("tintPalette")
+                .and_then(|v| v.as_record_ref())
+                .map(|r| r.guid),
         }
     }
 }
 
 /// DCB type: `RastarUIParams`
 /// Inherits from: `DataForgeComponentParams`
-pub struct RastarUIParams {
-}
+pub struct RastarUIParams {}
 
 impl Pooled for RastarUIParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_rastar.rastar_uiparams }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_rastar.rastar_uiparams }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_rastar.rastar_uiparams
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_rastar.rastar_uiparams
+    }
 }
 
 impl<'a> Extract<'a> for RastarUIParams {
     const TYPE_NAME: &'static str = "RastarUIParams";
     fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
-        }
+        Self {}
     }
 }
-

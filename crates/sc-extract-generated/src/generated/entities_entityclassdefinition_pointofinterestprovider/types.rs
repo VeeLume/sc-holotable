@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -26,16 +26,26 @@ pub struct EntityComponentPointOfInterestProvider {
 }
 
 impl Pooled for EntityComponentPointOfInterestProvider {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_entityclassdefinition_pointofinterestprovider.entity_component_point_of_interest_provider }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_entityclassdefinition_pointofinterestprovider.entity_component_point_of_interest_provider }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_entityclassdefinition_pointofinterestprovider
+            .entity_component_point_of_interest_provider
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_entityclassdefinition_pointofinterestprovider
+            .entity_component_point_of_interest_provider
+    }
 }
 
 impl<'a> Extract<'a> for EntityComponentPointOfInterestProvider {
     const TYPE_NAME: &'static str = "EntityComponentPointOfInterestProvider";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            points_of_interest_list: inst.get("pointsOfInterestList").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            points_of_interest_list: inst
+                .get("pointsOfInterestList")
+                .and_then(|v| v.as_record_ref())
+                .map(|r| r.guid),
         }
     }
 }
-

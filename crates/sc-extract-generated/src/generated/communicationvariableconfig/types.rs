@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -25,20 +25,40 @@ pub struct CommunicationVariableConfig {
 }
 
 impl Pooled for CommunicationVariableConfig {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.communicationvariableconfig.communication_variable_config }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.communicationvariableconfig.communication_variable_config }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .communicationvariableconfig
+            .communication_variable_config
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .communicationvariableconfig
+            .communication_variable_config
+    }
 }
 
 impl<'a> Extract<'a> for CommunicationVariableConfig {
     const TYPE_NAME: &'static str = "CommunicationVariableConfig";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            variables: inst.get_array("variables")
-                .map(|arr| arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<CommunicationVariableBool>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r) => Some(b.alloc_nested::<CommunicationVariableBool>(b.db.instance(r.struct_index, r.instance_index), true)),
+            variables: inst
+                .get_array("variables")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<CommunicationVariableBool>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => Some(b.alloc_nested::<CommunicationVariableBool>(
+                            b.db.instance(r.struct_index, r.instance_index),
+                            true,
+                        )),
                         _ => None,
-                    }).collect())
+                    })
+                    .collect()
+                })
                 .unwrap_or_default(),
         }
     }
@@ -56,8 +76,16 @@ pub struct CommunicationVariableBool {
 }
 
 impl Pooled for CommunicationVariableBool {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.communicationvariableconfig.communication_variable_bool }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.communicationvariableconfig.communication_variable_bool }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .communicationvariableconfig
+            .communication_variable_bool
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .communicationvariableconfig
+            .communication_variable_bool
+    }
 }
 
 impl<'a> Extract<'a> for CommunicationVariableBool {
@@ -70,4 +98,3 @@ impl<'a> Extract<'a> for CommunicationVariableBool {
         }
     }
 }
-

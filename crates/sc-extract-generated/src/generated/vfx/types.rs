@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -37,8 +37,12 @@ pub struct AtmosphericFlightEffects {
 }
 
 impl Pooled for AtmosphericFlightEffects {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.vfx.atmospheric_flight_effects }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.vfx.atmospheric_flight_effects }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.vfx.atmospheric_flight_effects
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.vfx.atmospheric_flight_effects
+    }
 }
 
 impl<'a> Extract<'a> for AtmosphericFlightEffects {
@@ -47,27 +51,57 @@ impl<'a> Extract<'a> for AtmosphericFlightEffects {
         Self {
             max_atmospheric_pressure: inst.get_f32("maxAtmosphericPressure").unwrap_or_default(),
             trail_fading: match inst.get("trailFading") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<TrailFadingSettings>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<TrailFadingSettings>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             reverse_trail_disabling: match inst.get("reverseTrailDisabling") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<ReverseTrailsSetting>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<ReverseTrailsSetting>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
                 _ => None,
             },
             engine_trails: match inst.get("engineTrails") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalEngineTrailsSetting>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<GlobalEngineTrailsSetting>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             aerodynamic_trails: match inst.get("aerodynamicTrails") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalAerodynamicTrailSettings>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<GlobalAerodynamicTrailSettings>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             atmospheric_heating: match inst.get("atmosphericHeating") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalAtmosphericHeatingSettings>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<GlobalAtmosphericHeatingSettings>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             custom_environment_effects: match inst.get("customEnvironmentEffects") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalEnvironmentEffectSettings>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<GlobalEnvironmentEffectSettings>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
         }
@@ -89,8 +123,12 @@ pub struct TrailFadingSettings {
 }
 
 impl Pooled for TrailFadingSettings {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.vfx.trail_fading_settings }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.vfx.trail_fading_settings }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.vfx.trail_fading_settings
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.vfx.trail_fading_settings
+    }
 }
 
 impl<'a> Extract<'a> for TrailFadingSettings {
@@ -115,8 +153,12 @@ pub struct ReverseTrailsSetting {
 }
 
 impl Pooled for ReverseTrailsSetting {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.vfx.reverse_trails_setting }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.vfx.reverse_trails_setting }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.vfx.reverse_trails_setting
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.vfx.reverse_trails_setting
+    }
 }
 
 impl<'a> Extract<'a> for ReverseTrailsSetting {
@@ -140,8 +182,12 @@ pub struct GlobalEngineTrailsSetting {
 }
 
 impl Pooled for GlobalEngineTrailsSetting {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.vfx.global_engine_trails_setting }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.vfx.global_engine_trails_setting }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.vfx.global_engine_trails_setting
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.vfx.global_engine_trails_setting
+    }
 }
 
 impl<'a> Extract<'a> for GlobalEngineTrailsSetting {
@@ -149,9 +195,14 @@ impl<'a> Extract<'a> for GlobalEngineTrailsSetting {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             pressure_threshold: inst.get_f32("pressureThreshold").unwrap_or_default(),
-            contrail_pressure_fade_range: inst.get_f32("contrailPressureFadeRange").unwrap_or_default(),
+            contrail_pressure_fade_range: inst
+                .get_f32("contrailPressureFadeRange")
+                .unwrap_or_default(),
             contrail_cloud_density_range: match inst.get("contrailCloudDensityRange") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
         }
@@ -179,8 +230,12 @@ pub struct GlobalAtmosphericHeatingSettings {
 }
 
 impl Pooled for GlobalAtmosphericHeatingSettings {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.vfx.global_atmospheric_heating_settings }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.vfx.global_atmospheric_heating_settings }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.vfx.global_atmospheric_heating_settings
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.vfx.global_atmospheric_heating_settings
+    }
 }
 
 impl<'a> Extract<'a> for GlobalAtmosphericHeatingSettings {
@@ -190,18 +245,30 @@ impl<'a> Extract<'a> for GlobalAtmosphericHeatingSettings {
             flare_start_temperature: inst.get_f32("flareStartTemperature").unwrap_or_default(),
             gravity_direction_bias: inst.get_f32("gravityDirectionBias").unwrap_or_default(),
             relative_altitude_range: match inst.get("relativeAltitudeRange") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
-            relative_altitude_peak_strength: inst.get_f32("relativeAltitudePeakStrength").unwrap_or_default(),
+            relative_altitude_peak_strength: inst
+                .get_f32("relativeAltitudePeakStrength")
+                .unwrap_or_default(),
             minimum_speed: inst.get_f32("minimumSpeed").unwrap_or_default(),
             maximum_non_vehicle_speed: inst.get_f32("maximumNonVehicleSpeed").unwrap_or_default(),
-            maximum_non_vehicle_angular_velocity: match inst.get("maximumNonVehicleAngularVelocity") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
+            maximum_non_vehicle_angular_velocity: match inst.get("maximumNonVehicleAngularVelocity")
+            {
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             fade_angle_range: match inst.get("fadeAngleRange") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
         }
@@ -227,8 +294,12 @@ pub struct GlobalAerodynamicTrailSettings {
 }
 
 impl Pooled for GlobalAerodynamicTrailSettings {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.vfx.global_aerodynamic_trail_settings }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.vfx.global_aerodynamic_trail_settings }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.vfx.global_aerodynamic_trail_settings
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.vfx.global_aerodynamic_trail_settings
+    }
 }
 
 impl<'a> Extract<'a> for GlobalAerodynamicTrailSettings {
@@ -237,12 +308,17 @@ impl<'a> Extract<'a> for GlobalAerodynamicTrailSettings {
         Self {
             maximum_angle_of_attack: inst.get_f32("maximumAngleOfAttack").unwrap_or_default(),
             maximum_roll_velocity: inst.get_f32("maximumRollVelocity").unwrap_or_default(),
-            maximum_dew_point_deviation: inst.get_f32("maximumDewPointDeviation").unwrap_or_default(),
+            maximum_dew_point_deviation: inst
+                .get_f32("maximumDewPointDeviation")
+                .unwrap_or_default(),
             speed_influence: inst.get_f32("speedInfluence").unwrap_or_default(),
             engine_trail_reduction: inst.get_f32("engineTrailReduction").unwrap_or_default(),
             heating_reduction: inst.get_f32("heatingReduction").unwrap_or_default(),
             cloud_density_range: match inst.get("cloudDensityRange") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
         }
@@ -258,8 +334,12 @@ pub struct GlobalEnvironmentEffectSettings {
 }
 
 impl Pooled for GlobalEnvironmentEffectSettings {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.vfx.global_environment_effect_settings }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.vfx.global_environment_effect_settings }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.vfx.global_environment_effect_settings
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.vfx.global_environment_effect_settings
+    }
 }
 
 impl<'a> Extract<'a> for GlobalEnvironmentEffectSettings {
@@ -281,8 +361,12 @@ pub struct DamageMapDamageTypes {
 }
 
 impl Pooled for DamageMapDamageTypes {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.vfx.damage_map_damage_types }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.vfx.damage_map_damage_types }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.vfx.damage_map_damage_types
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.vfx.damage_map_damage_types
+    }
 }
 
 impl<'a> Extract<'a> for DamageMapDamageTypes {
@@ -290,11 +374,21 @@ impl<'a> Extract<'a> for DamageMapDamageTypes {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             physical: match inst.get("physical") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<DamageMapChannels>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<DamageMapChannels>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             energy: match inst.get("energy") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<DamageMapChannels>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<DamageMapChannels>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
         }
@@ -314,8 +408,12 @@ pub struct DamageMapDamageForm {
 }
 
 impl Pooled for DamageMapDamageForm {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.vfx.damage_map_damage_form }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.vfx.damage_map_damage_form }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.vfx.damage_map_damage_form
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.vfx.damage_map_damage_form
+    }
 }
 
 impl<'a> Extract<'a> for DamageMapDamageForm {
@@ -323,19 +421,39 @@ impl<'a> Extract<'a> for DamageMapDamageForm {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             damage_strength_multipliers: match inst.get("damageStrengthMultipliers") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<DamageMapDamageTypes>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<DamageMapDamageTypes>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             inner_radius_multipliers: match inst.get("innerRadiusMultipliers") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<DamageMapChannels>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<DamageMapChannels>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             outer_radius_multipliers: match inst.get("outerRadiusMultipliers") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<DamageMapChannels>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<DamageMapChannels>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             noise_strength: match inst.get("noiseStrength") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<DamageMapChannels>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<DamageMapChannels>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
         }
@@ -353,8 +471,12 @@ pub struct DamageMapGlobalParams {
 }
 
 impl Pooled for DamageMapGlobalParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.vfx.damage_map_global_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.vfx.damage_map_global_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.vfx.damage_map_global_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.vfx.damage_map_global_params
+    }
 }
 
 impl<'a> Extract<'a> for DamageMapGlobalParams {
@@ -362,15 +484,30 @@ impl<'a> Extract<'a> for DamageMapGlobalParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             impact: match inst.get("impact") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<DamageMapDamageForm>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<DamageMapDamageForm>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             squib: match inst.get("squib") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<DamageMapDamageForm>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<DamageMapDamageForm>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             explosions: match inst.get("explosions") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<DamageMapDamageForm>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<DamageMapDamageForm>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
         }
@@ -396,8 +533,12 @@ pub struct DematerializeAnimation {
 }
 
 impl Pooled for DematerializeAnimation {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.vfx.dematerialize_animation }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.vfx.dematerialize_animation }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.vfx.dematerialize_animation
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.vfx.dematerialize_animation
+    }
 }
 
 impl<'a> Extract<'a> for DematerializeAnimation {
@@ -407,23 +548,48 @@ impl<'a> Extract<'a> for DematerializeAnimation {
             dissolve_start_time: inst.get_f32("dissolveStartTime").unwrap_or_default(),
             dissolve_duration: inst.get_f32("dissolveDuration").unwrap_or_default(),
             head_effect: match inst.get("headEffect") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceParticle>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<GlobalResourceParticle>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             arm_effect: match inst.get("armEffect") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceParticle>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<GlobalResourceParticle>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             leg_effect: match inst.get("legEffect") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceParticle>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<GlobalResourceParticle>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             torso_effect: match inst.get("torsoEffect") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceParticle>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<GlobalResourceParticle>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             debug_effect: match inst.get("debugEffect") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceParticle>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<GlobalResourceParticle>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
         }
@@ -439,8 +605,12 @@ pub struct GlobalGasCloudVDB_GameplayParams {
 }
 
 impl Pooled for GlobalGasCloudVDB_GameplayParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.vfx.global_gas_cloud_vdb_gameplay_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.vfx.global_gas_cloud_vdb_gameplay_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.vfx.global_gas_cloud_vdb_gameplay_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.vfx.global_gas_cloud_vdb_gameplay_params
+    }
 }
 
 impl<'a> Extract<'a> for GlobalGasCloudVDB_GameplayParams {
@@ -448,11 +618,17 @@ impl<'a> Extract<'a> for GlobalGasCloudVDB_GameplayParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             optical_density_range: match inst.get("opticalDensityRange") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             gameplay_density_curve: match inst.get("gameplayDensityCurve") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BezierCurve>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BezierCurve>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
         }
@@ -466,8 +642,12 @@ pub struct GlobalGasCloudVDBParams {
 }
 
 impl Pooled for GlobalGasCloudVDBParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.vfx.global_gas_cloud_vdbparams }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.vfx.global_gas_cloud_vdbparams }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.vfx.global_gas_cloud_vdbparams
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.vfx.global_gas_cloud_vdbparams
+    }
 }
 
 impl<'a> Extract<'a> for GlobalGasCloudVDBParams {
@@ -475,7 +655,12 @@ impl<'a> Extract<'a> for GlobalGasCloudVDBParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             gameplay: match inst.get("gameplay") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalGasCloudVDB_GameplayParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<GlobalGasCloudVDB_GameplayParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
         }
@@ -493,8 +678,12 @@ pub struct PlanetEffectLODDistance {
 }
 
 impl Pooled for PlanetEffectLODDistance {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.vfx.planet_effect_loddistance }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.vfx.planet_effect_loddistance }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.vfx.planet_effect_loddistance
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.vfx.planet_effect_loddistance
+    }
 }
 
 impl<'a> Extract<'a> for PlanetEffectLODDistance {
@@ -525,8 +714,12 @@ pub struct GlobalFogVolume {
 }
 
 impl Pooled for GlobalFogVolume {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.vfx.global_fog_volume }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.vfx.global_fog_volume }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.vfx.global_fog_volume
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.vfx.global_fog_volume
+    }
 }
 
 impl<'a> Extract<'a> for GlobalFogVolume {
@@ -534,7 +727,10 @@ impl<'a> Extract<'a> for GlobalFogVolume {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             fog_size: match inst.get("fogSize") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             noise_life_time: inst.get_f32("noiseLifeTime").unwrap_or_default(),
@@ -561,28 +757,51 @@ pub struct PlanetEffectLOD {
 }
 
 impl Pooled for PlanetEffectLOD {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.vfx.planet_effect_lod }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.vfx.planet_effect_lod }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.vfx.planet_effect_lod
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.vfx.planet_effect_lod
+    }
 }
 
 impl<'a> Extract<'a> for PlanetEffectLOD {
     const TYPE_NAME: &'static str = "PlanetEffectLOD";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            lodlist: inst.get_array("LODList")
-                .map(|arr| arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<PlanetEffectLODDistance>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r) => Some(b.alloc_nested::<PlanetEffectLODDistance>(b.db.instance(r.struct_index, r.instance_index), true)),
+            lodlist: inst
+                .get_array("LODList")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<PlanetEffectLODDistance>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => Some(b.alloc_nested::<PlanetEffectLODDistance>(
+                            b.db.instance(r.struct_index, r.instance_index),
+                            true,
+                        )),
                         _ => None,
-                    }).collect())
+                    })
+                    .collect()
+                })
                 .unwrap_or_default(),
             global_fog_volume: match inst.get("globalFogVolume") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalFogVolume>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<GlobalFogVolume>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             tint_color_sample_cells: inst.get_u32("tintColorSampleCells").unwrap_or_default(),
             sort_by_view_distance: inst.get_bool("sortByViewDistance").unwrap_or_default(),
-            override_half_res_insert_depth: inst.get_f32("overrideHalfResInsertDepth").unwrap_or_default(),
+            override_half_res_insert_depth: inst
+                .get_f32("overrideHalfResInsertDepth")
+                .unwrap_or_default(),
         }
     }
 }
@@ -600,18 +819,30 @@ pub struct QuantumDriveEffectSettings {
 }
 
 impl Pooled for QuantumDriveEffectSettings {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.vfx.quantum_drive_effect_settings }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.vfx.quantum_drive_effect_settings }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.vfx.quantum_drive_effect_settings
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.vfx.quantum_drive_effect_settings
+    }
 }
 
 impl<'a> Extract<'a> for QuantumDriveEffectSettings {
     const TYPE_NAME: &'static str = "QuantumDriveEffectSettings";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            spooling_effect_fade_in_duration: inst.get_f32("spoolingEffectFadeInDuration").unwrap_or_default(),
-            spooling_effect_fade_out_duration: inst.get_f32("spoolingEffectFadeOutDuration").unwrap_or_default(),
-            spooling_effect_multiplier: inst.get_f32("spoolingEffectMultiplier").unwrap_or_default(),
-            spooling_effect_speed_input: inst.get_f32("spoolingEffectSpeedInput").unwrap_or_default(),
+            spooling_effect_fade_in_duration: inst
+                .get_f32("spoolingEffectFadeInDuration")
+                .unwrap_or_default(),
+            spooling_effect_fade_out_duration: inst
+                .get_f32("spoolingEffectFadeOutDuration")
+                .unwrap_or_default(),
+            spooling_effect_multiplier: inst
+                .get_f32("spoolingEffectMultiplier")
+                .unwrap_or_default(),
+            spooling_effect_speed_input: inst
+                .get_f32("spoolingEffectSpeedInput")
+                .unwrap_or_default(),
         }
     }
 }
@@ -623,16 +854,30 @@ pub struct ScreenEffects_Library {
 }
 
 impl Pooled for ScreenEffects_Library {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.vfx.screen_effects_library }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.vfx.screen_effects_library }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.vfx.screen_effects_library
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.vfx.screen_effects_library
+    }
 }
 
 impl<'a> Extract<'a> for ScreenEffects_Library {
     const TYPE_NAME: &'static str = "ScreenEffects_Library";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            effect_list: inst.get_array("effectList")
-                .map(|arr| arr.filter_map(|v| if let Value::Reference(Some(r)) = v { Some(r.guid) } else { None }).collect())
+            effect_list: inst
+                .get_array("effectList")
+                .map(|arr| {
+                    arr.filter_map(|v| {
+                        if let Value::Reference(Some(r)) = v {
+                            Some(r.guid)
+                        } else {
+                            None
+                        }
+                    })
+                    .collect()
+                })
                 .unwrap_or_default(),
         }
     }
@@ -651,26 +896,47 @@ pub struct ScreenEffects_Effect {
 }
 
 impl Pooled for ScreenEffects_Effect {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.vfx.screen_effects_effect }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.vfx.screen_effects_effect }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.vfx.screen_effects_effect
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.vfx.screen_effects_effect
+    }
 }
 
 impl<'a> Extract<'a> for ScreenEffects_Effect {
     const TYPE_NAME: &'static str = "ScreenEffects_Effect";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            name: inst.get("name").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            name: inst
+                .get("name")
+                .and_then(|v| v.as_record_ref())
+                .map(|r| r.guid),
             disable_in_third_person: inst.get_bool("disableInThirdPerson").unwrap_or_default(),
             shared_pattern: match inst.get("sharedPattern") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(ScreenEffects_PatternPtr::from_ref(b, r)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(ScreenEffects_PatternPtr::from_ref(b, r))
+                }
                 _ => None,
             },
-            parameters: inst.get_array("parameters")
-                .map(|arr| arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<ScreenEffects_Param>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r) => Some(b.alloc_nested::<ScreenEffects_Param>(b.db.instance(r.struct_index, r.instance_index), true)),
+            parameters: inst
+                .get_array("parameters")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<ScreenEffects_Param>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => Some(b.alloc_nested::<ScreenEffects_Param>(
+                            b.db.instance(r.struct_index, r.instance_index),
+                            true,
+                        )),
                         _ => None,
-                    }).collect())
+                    })
+                    .collect()
+                })
                 .unwrap_or_default(),
         }
     }
@@ -683,8 +949,12 @@ pub struct ScreenEffects_Pattern {
 }
 
 impl Pooled for ScreenEffects_Pattern {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.vfx.screen_effects_pattern }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.vfx.screen_effects_pattern }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.vfx.screen_effects_pattern
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.vfx.screen_effects_pattern
+    }
 }
 
 impl<'a> Extract<'a> for ScreenEffects_Pattern {
@@ -707,8 +977,12 @@ pub struct ScreenEffects_Param {
 }
 
 impl Pooled for ScreenEffects_Param {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.vfx.screen_effects_param }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.vfx.screen_effects_param }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.vfx.screen_effects_param
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.vfx.screen_effects_param
+    }
 }
 
 impl<'a> Extract<'a> for ScreenEffects_Param {
@@ -717,11 +991,15 @@ impl<'a> Extract<'a> for ScreenEffects_Param {
         Self {
             parameter: PostEffectParams::from_dcb_str(inst.get_str("parameter").unwrap_or("")),
             value: match inst.get("value") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(ScreenEffects_ParamValuePtr::from_ref(b, r)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(ScreenEffects_ParamValuePtr::from_ref(b, r))
+                }
                 _ => None,
             },
             strength_behavior: match inst.get("strengthBehavior") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(ScreenEffects_ParamStrengthBehaviorPtr::from_ref(b, r)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(ScreenEffects_ParamStrengthBehaviorPtr::from_ref(b, r))
+                }
                 _ => None,
             },
         }
@@ -735,15 +1013,22 @@ pub struct ScreenEffects_ParamStrengthBehavior {
 }
 
 impl Pooled for ScreenEffects_ParamStrengthBehavior {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.vfx.screen_effects_param_strength_behavior }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.vfx.screen_effects_param_strength_behavior }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.vfx.screen_effects_param_strength_behavior
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.vfx.screen_effects_param_strength_behavior
+    }
 }
 
 impl<'a> Extract<'a> for ScreenEffects_ParamStrengthBehavior {
     const TYPE_NAME: &'static str = "ScreenEffects_ParamStrengthBehavior";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            strength_tag: inst.get("strengthTag").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            strength_tag: inst
+                .get("strengthTag")
+                .and_then(|v| v.as_record_ref())
+                .map(|r| r.guid),
         }
     }
 }
@@ -758,8 +1043,12 @@ pub struct ScreenEffects_Pattern_Linear {
 }
 
 impl Pooled for ScreenEffects_Pattern_Linear {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.vfx.screen_effects_pattern_linear }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.vfx.screen_effects_pattern_linear }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.vfx.screen_effects_pattern_linear
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.vfx.screen_effects_pattern_linear
+    }
 }
 
 impl<'a> Extract<'a> for ScreenEffects_Pattern_Linear {
@@ -782,8 +1071,12 @@ pub struct ScreenEffects_ParamValue_Float {
 }
 
 impl Pooled for ScreenEffects_ParamValue_Float {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.vfx.screen_effects_param_value_float }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.vfx.screen_effects_param_value_float }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.vfx.screen_effects_param_value_float
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.vfx.screen_effects_param_value_float
+    }
 }
 
 impl<'a> Extract<'a> for ScreenEffects_ParamValue_Float {
@@ -808,15 +1101,26 @@ pub struct ScreenEffects_ParamStrengthBehavior_RangeEnable {
 }
 
 impl Pooled for ScreenEffects_ParamStrengthBehavior_RangeEnable {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.vfx.screen_effects_param_strength_behavior_range_enable }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.vfx.screen_effects_param_strength_behavior_range_enable }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .vfx
+            .screen_effects_param_strength_behavior_range_enable
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .vfx
+            .screen_effects_param_strength_behavior_range_enable
+    }
 }
 
 impl<'a> Extract<'a> for ScreenEffects_ParamStrengthBehavior_RangeEnable {
     const TYPE_NAME: &'static str = "ScreenEffects_ParamStrengthBehavior_RangeEnable";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            strength_tag: inst.get("strengthTag").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            strength_tag: inst
+                .get("strengthTag")
+                .and_then(|v| v.as_record_ref())
+                .map(|r| r.guid),
             range_start: inst.get_f32("rangeStart").unwrap_or_default(),
             range_end: inst.get_f32("rangeEnd").unwrap_or_default(),
         }
@@ -837,15 +1141,22 @@ pub struct ScreenEffects_ParamStrengthBehavior_RangeFade {
 }
 
 impl Pooled for ScreenEffects_ParamStrengthBehavior_RangeFade {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.vfx.screen_effects_param_strength_behavior_range_fade }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.vfx.screen_effects_param_strength_behavior_range_fade }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.vfx.screen_effects_param_strength_behavior_range_fade
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.vfx.screen_effects_param_strength_behavior_range_fade
+    }
 }
 
 impl<'a> Extract<'a> for ScreenEffects_ParamStrengthBehavior_RangeFade {
     const TYPE_NAME: &'static str = "ScreenEffects_ParamStrengthBehavior_RangeFade";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            strength_tag: inst.get("strengthTag").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            strength_tag: inst
+                .get("strengthTag")
+                .and_then(|v| v.as_record_ref())
+                .map(|r| r.guid),
             range_start: inst.get_f32("rangeStart").unwrap_or_default(),
             range_end: inst.get_f32("rangeEnd").unwrap_or_default(),
             use_shared_pattern: inst.get_bool("useSharedPattern").unwrap_or_default(),
@@ -860,20 +1171,36 @@ pub struct ScreenEffects_Debug {
 }
 
 impl Pooled for ScreenEffects_Debug {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.vfx.screen_effects_debug }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.vfx.screen_effects_debug }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.vfx.screen_effects_debug
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.vfx.screen_effects_debug
+    }
 }
 
 impl<'a> Extract<'a> for ScreenEffects_Debug {
     const TYPE_NAME: &'static str = "ScreenEffects_Debug";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            effect_list: inst.get_array("effectList")
-                .map(|arr| arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<ScreenEffects_DebugEffect>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r) => Some(b.alloc_nested::<ScreenEffects_DebugEffect>(b.db.instance(r.struct_index, r.instance_index), true)),
+            effect_list: inst
+                .get_array("effectList")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<ScreenEffects_DebugEffect>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => Some(b.alloc_nested::<ScreenEffects_DebugEffect>(
+                            b.db.instance(r.struct_index, r.instance_index),
+                            true,
+                        )),
                         _ => None,
-                    }).collect())
+                    })
+                    .collect()
+                })
                 .unwrap_or_default(),
         }
     }
@@ -890,22 +1217,41 @@ pub struct ScreenEffects_DebugEffect {
 }
 
 impl Pooled for ScreenEffects_DebugEffect {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.vfx.screen_effects_debug_effect }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.vfx.screen_effects_debug_effect }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.vfx.screen_effects_debug_effect
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.vfx.screen_effects_debug_effect
+    }
 }
 
 impl<'a> Extract<'a> for ScreenEffects_DebugEffect {
     const TYPE_NAME: &'static str = "ScreenEffects_DebugEffect";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            name: inst.get("name").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            name: inst
+                .get("name")
+                .and_then(|v| v.as_record_ref())
+                .map(|r| r.guid),
             enable: inst.get_bool("enable").unwrap_or_default(),
-            parameters: inst.get_array("parameters")
-                .map(|arr| arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<ScreenEffects_DebugParam>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r) => Some(b.alloc_nested::<ScreenEffects_DebugParam>(b.db.instance(r.struct_index, r.instance_index), true)),
+            parameters: inst
+                .get_array("parameters")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<ScreenEffects_DebugParam>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => Some(b.alloc_nested::<ScreenEffects_DebugParam>(
+                            b.db.instance(r.struct_index, r.instance_index),
+                            true,
+                        )),
                         _ => None,
-                    }).collect())
+                    })
+                    .collect()
+                })
                 .unwrap_or_default(),
         }
     }
@@ -920,15 +1266,22 @@ pub struct ScreenEffects_DebugParam {
 }
 
 impl Pooled for ScreenEffects_DebugParam {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.vfx.screen_effects_debug_param }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.vfx.screen_effects_debug_param }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.vfx.screen_effects_debug_param
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.vfx.screen_effects_debug_param
+    }
 }
 
 impl<'a> Extract<'a> for ScreenEffects_DebugParam {
     const TYPE_NAME: &'static str = "ScreenEffects_DebugParam";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            strength_tag: inst.get("strengthTag").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            strength_tag: inst
+                .get("strengthTag")
+                .and_then(|v| v.as_record_ref())
+                .map(|r| r.guid),
             strength: inst.get_f32("strength").unwrap_or_default(),
         }
     }
@@ -955,8 +1308,12 @@ pub struct VideoCommsShaderParams {
 }
 
 impl Pooled for VideoCommsShaderParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.vfx.video_comms_shader_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.vfx.video_comms_shader_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.vfx.video_comms_shader_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.vfx.video_comms_shader_params
+    }
 }
 
 impl<'a> Extract<'a> for VideoCommsShaderParams {
@@ -964,31 +1321,55 @@ impl<'a> Extract<'a> for VideoCommsShaderParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             fade_in_spline_high_tech: match inst.get("fadeInSplineHighTech") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BezierCurve>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BezierCurve>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             fade_out_spline_high_tech: match inst.get("fadeOutSplineHighTech") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BezierCurve>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BezierCurve>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             switch_comms_spline_high_tech: match inst.get("switchCommsSplineHighTech") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BezierCurve>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BezierCurve>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             fade_in_spline_low_tech: match inst.get("fadeInSplineLowTech") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BezierCurve>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BezierCurve>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             fade_out_spline_low_tech: match inst.get("fadeOutSplineLowTech") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BezierCurve>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BezierCurve>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             switch_comms_spline_low_tech: match inst.get("switchCommsSplineLowTech") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BezierCurve>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BezierCurve>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
-            low_tech_material: inst.get_str("lowTechMaterial").map(String::from).unwrap_or_default(),
-            high_tech_material: inst.get_str("highTechMaterial").map(String::from).unwrap_or_default(),
+            low_tech_material: inst
+                .get_str("lowTechMaterial")
+                .map(String::from)
+                .unwrap_or_default(),
+            high_tech_material: inst
+                .get_str("highTechMaterial")
+                .map(String::from)
+                .unwrap_or_default(),
         }
     }
 }
@@ -1004,8 +1385,12 @@ pub struct WaterInteractionEffectParams {
 }
 
 impl Pooled for WaterInteractionEffectParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.vfx.water_interaction_effect_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.vfx.water_interaction_effect_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.vfx.water_interaction_effect_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.vfx.water_interaction_effect_params
+    }
 }
 
 impl<'a> Extract<'a> for WaterInteractionEffectParams {
@@ -1013,12 +1398,20 @@ impl<'a> Extract<'a> for WaterInteractionEffectParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             effect: match inst.get("effect") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceParticle>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<GlobalResourceParticle>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             max_duration: inst.get_f32("maxDuration").unwrap_or_default(),
             velocity_range: match inst.get("velocityRange") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
         }
@@ -1034,8 +1427,12 @@ pub struct WaterEffectsGlobalParams {
 }
 
 impl Pooled for WaterEffectsGlobalParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.vfx.water_effects_global_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.vfx.water_effects_global_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.vfx.water_effects_global_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.vfx.water_effects_global_params
+    }
 }
 
 impl<'a> Extract<'a> for WaterEffectsGlobalParams {
@@ -1043,14 +1440,23 @@ impl<'a> Extract<'a> for WaterEffectsGlobalParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             exit_water_effect: match inst.get("exitWaterEffect") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<WaterInteractionEffectParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<WaterInteractionEffectParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             enter_water_effect: match inst.get("enterWaterEffect") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<WaterInteractionEffectParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<WaterInteractionEffectParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
         }
     }
 }
-

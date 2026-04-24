@@ -16,5 +16,6 @@ use super::super::*;
 pub struct EntitiesVfxPools {
     pub daylight_particle_group_component_params: Vec<Option<DaylightParticleGroupComponentParams>>,
     pub placed_surface_effects_emitter: Vec<Option<PlacedSurfaceEffects_Emitter>>,
-    pub surface_raindrops_target_component_params: Vec<Option<SurfaceRaindropsTargetComponentParams>>,
+    pub surface_raindrops_target_component_params:
+        Vec<Option<SurfaceRaindropsTargetComponentParams>>,
 }

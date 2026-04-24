@@ -25,6 +25,7 @@
 use std::collections::{BTreeMap, HashMap};
 use std::time::Instant;
 
+use sc_contracts::{BlueprintPoolRegistry, RewardCurrencyCatalog, ShipRegistry};
 use sc_extract::generated::{
     CareerContract, Contract, ContractGeneratorHandlerBasePtr, ContractLegacy,
     ContractParamOverrides, ContractPrerequisiteBasePtr, ContractResultBasePtr,
@@ -32,7 +33,6 @@ use sc_extract::generated::{
 };
 use sc_extract::svarog_datacore::DataCoreDatabase;
 use sc_extract::{AssetConfig, AssetData, AssetSource, Datacore, DatacoreConfig, Guid, LocaleKey};
-use sc_contracts::{BlueprintPoolRegistry, RewardCurrencyCatalog, ShipRegistry};
 
 // ── Accumulator ─────────────────────────────────────────────────────────────
 
@@ -266,12 +266,8 @@ fn print_currency_catalog(c: &Census, catalog: &RewardCurrencyCatalog) {
     let total_distinct = c.item_entity_class.len();
     let currency_count = rows.iter().filter(|(_, n)| *n > 0).count();
     println!();
-    println!(
-        "  ContractResult_Item distinct entity_classes: {total_distinct}"
-    );
-    println!(
-        "    of which currency:  {currency_count}"
-    );
+    println!("  ContractResult_Item distinct entity_classes: {total_distinct}");
+    println!("    of which currency:  {currency_count}");
     println!(
         "    of which item:      {}",
         total_distinct - currency_count
@@ -456,8 +452,15 @@ fn diagnose_unresolved_spawns(
         // excluded from the ship registry?
         let mut full_matches = 0usize;
         let mut first_full: Option<String> = None;
-        for (guid, handle) in &datacore.records().records.multi_feature.entity_class_definition {
-            let Some(ecd) = handle.get(pools) else { continue };
+        for (guid, handle) in &datacore
+            .records()
+            .records
+            .multi_feature
+            .entity_class_definition
+        {
+            let Some(ecd) = handle.get(pools) else {
+                continue;
+            };
             let entity_tag_set: HashSet<Guid> = ecd.tags.iter().copied().collect();
             if positive.iter().all(|t| entity_tag_set.contains(t))
                 && negative.iter().all(|t| !entity_tag_set.contains(t))
@@ -485,7 +488,9 @@ fn diagnose_unresolved_spawns(
                 first_full.unwrap()
             );
         } else {
-            println!("    FULL-DCB match: 0 — no EntityClassDefinition satisfies this query (impossible tag combo or tags live elsewhere).");
+            println!(
+                "    FULL-DCB match: 0 — no EntityClassDefinition satisfies this query (impossible tag combo or tags live elsewhere)."
+            );
         }
     }
     println!();
@@ -614,7 +619,12 @@ fn walk_handler(
 
 fn walk_contract(c: &mut Census, db: &DataCoreDatabase, pools: &DataPools, contract: &Contract) {
     c.total_expansions += 1;
-    walk_param_overrides(c, pools, contract.param_overrides.as_ref(), /*level=*/ 1);
+    walk_param_overrides(
+        c,
+        pools,
+        contract.param_overrides.as_ref(),
+        /*level=*/ 1,
+    );
     walk_prereqs(c, db, &contract.additional_prerequisites);
     walk_rewards(c, db, pools, contract.contract_results.as_ref());
 
@@ -661,12 +671,7 @@ fn walk_career_contract(
     }
 }
 
-fn walk_subcontract(
-    c: &mut Census,
-    db: &DataCoreDatabase,
-    pools: &DataPools,
-    sub: &SubContract,
-) {
+fn walk_subcontract(c: &mut Census, db: &DataCoreDatabase, pools: &DataPools, sub: &SubContract) {
     c.subcontracts += 1;
     c.total_expansions += 1;
     // SubContract flattens ContractParamOverrides fields inline — walk its
@@ -816,7 +821,10 @@ fn print_report(c: &Census, db: &DataCoreDatabase, top_n: usize, ships: &ShipReg
 
     println!("Generators:          {}", c.total_generators);
     println!("Handlers:            {}", c.total_handlers);
-    println!("Expansions:          {}  (handler × contract × sub?)", c.total_expansions);
+    println!(
+        "Expansions:          {}  (handler × contract × sub?)",
+        c.total_expansions
+    );
     println!("Sub-contracts:       {}", c.subcontracts);
     println!("Intro contracts:     {}", c.intro_contracts);
     println!();
@@ -863,27 +871,41 @@ fn print_report(c: &Census, db: &DataCoreDatabase, top_n: usize, ships: &ShipReg
     println!("─── Coverage signals (non-zero = lint) ────────────");
     println!("Missing titles:          {}", c.missing_titles);
     println!("Missing descriptions:    {}", c.missing_descriptions);
-    println!("Unknown handler kinds:   {}",
-        c.handler_unknown.values().sum::<usize>());
-    println!("Unknown prereq kinds:    {}",
-        c.prereq_unknown.values().sum::<usize>());
-    println!("Unknown reward kinds:    {}",
-        c.reward_unknown.values().sum::<usize>());
-    println!("Unresolved spawn queries:{} of {} ({:.1}%)",
+    println!(
+        "Unknown handler kinds:   {}",
+        c.handler_unknown.values().sum::<usize>()
+    );
+    println!(
+        "Unknown prereq kinds:    {}",
+        c.prereq_unknown.values().sum::<usize>()
+    );
+    println!(
+        "Unknown reward kinds:    {}",
+        c.reward_unknown.values().sum::<usize>()
+    );
+    println!(
+        "Unresolved spawn queries:{} of {} ({:.1}%)",
         c.spawn_options_unresolved,
         c.spawn_options_total,
         if c.spawn_options_total > 0 {
             100.0 * c.spawn_options_unresolved as f64 / c.spawn_options_total as f64
         } else {
             0.0
-        });
+        }
+    );
 }
 
 fn print_ship_registry(c: &Census, ships: &ShipRegistry) {
     println!("─── Ship registry ─────────────────────────────");
     println!("  entities:                {}", ships.len());
-    println!("  spawn-referenced tags:   {}", ships.spawn_referenced_tags().len());
-    println!("  ship-relevant tags:      {}", ships.ship_relevant_tags().len());
+    println!(
+        "  spawn-referenced tags:   {}",
+        ships.spawn_referenced_tags().len()
+    );
+    println!(
+        "  ship-relevant tags:      {}",
+        ships.ship_relevant_tags().len()
+    );
     println!();
     println!("  size  count");
     for (size, count) in &c.ship_sizes {
@@ -892,9 +914,15 @@ fn print_ship_registry(c: &Census, ships: &ShipRegistry) {
     println!();
     println!("  Spawn-query coverage:");
     println!("    total options:         {}", c.spawn_options_total);
-    println!("    empty positive set:    {}  (no constraint — skipped)", c.spawn_options_empty_positive);
+    println!(
+        "    empty positive set:    {}  (no constraint — skipped)",
+        c.spawn_options_empty_positive
+    );
     println!("    resolved (≥1 cand):    {}", c.spawn_options_resolved);
-    println!("    unresolved (0 cand):   {}  ← coverage invariant", c.spawn_options_unresolved);
+    println!(
+        "    unresolved (0 cand):   {}  ← coverage invariant",
+        c.spawn_options_unresolved
+    );
     println!();
 }
 
@@ -923,7 +951,10 @@ fn print_entity_class_top_n(c: &Census, db: &DataCoreDatabase, top_n: usize) {
         .map(|(g, (n, a))| (g, *n, *a))
         .collect();
     items.sort_by(|a, b| b.1.cmp(&a.1));
-    println!("  {:<38} {:>6} {:>14} {}", "entity_class guid", "count", "sum amount", "record name");
+    println!(
+        "  {:<38} {:>6} {:>14} {}",
+        "entity_class guid", "count", "sum amount", "record name"
+    );
     for (g, n, sum) in items.iter().take(top_n) {
         let name = db
             .record(g)
@@ -931,7 +962,10 @@ fn print_entity_class_top_n(c: &Census, db: &DataCoreDatabase, top_n: usize) {
             .unwrap_or_else(|| "?".to_string());
         println!("  {:<38} {:>6} {:>14} {name}", g.to_string(), n, sum);
     }
-    println!("  ({} distinct entity_classes total)\n", c.item_entity_class.len());
+    println!(
+        "  ({} distinct entity_classes total)\n",
+        c.item_entity_class.len()
+    );
 }
 
 fn print_mission_variable_top_n(c: &Census, top_n: usize) {
@@ -942,7 +976,10 @@ fn print_mission_variable_top_n(c: &Census, top_n: usize) {
     for (k, v) in items.iter().take(top_n) {
         println!("  {k:<48} {v:>6}");
     }
-    println!("  ({} distinct variable names total)\n", c.mission_variable_names.len());
+    println!(
+        "  ({} distinct variable names total)\n",
+        c.mission_variable_names.len()
+    );
 }
 
 fn print_title_collisions(c: &Census, top_n: usize) {

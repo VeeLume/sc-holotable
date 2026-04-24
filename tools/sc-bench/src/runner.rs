@@ -230,8 +230,7 @@ fn exercise_filters(datacore: &Datacore, asset_data: &AssetData, r: &mut BenchRe
         let class_name = record.name().unwrap_or("");
 
         // Resolve display name for this entity.
-        let display_name =
-            sc_extract::resolve_entity_display_name(&inst, db, &asset_data.locale);
+        let display_name = sc_extract::resolve_entity_display_name(&inst, db, &asset_data.locale);
 
         // Extract AttachDef fields for weapon filter.
         let (type_name, sub_type, size) = extract_attach_def_fields(&inst, db);
@@ -315,9 +314,11 @@ fn value_to_instance<'a>(
 ) -> Option<sc_extract::Instance<'a>> {
     use sc_extract::svarog_datacore::Value;
     match value {
-        Value::Class { struct_index, data } => {
-            Some(sc_extract::Instance::from_inline_data(db, *struct_index, data))
-        }
+        Value::Class { struct_index, data } => Some(sc_extract::Instance::from_inline_data(
+            db,
+            *struct_index,
+            data,
+        )),
         Value::ClassRef(r) | Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => {
             Some(db.instance(r.struct_index, r.instance_index))
         }

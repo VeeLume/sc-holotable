@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -50,8 +50,12 @@ pub struct SunLightComponentParams {
 }
 
 impl Pooled for SunLightComponentParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_sunlight.sun_light_component_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_sunlight.sun_light_component_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_sunlight.sun_light_component_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_sunlight.sun_light_component_params
+    }
 }
 
 impl<'a> Extract<'a> for SunLightComponentParams {
@@ -59,13 +63,19 @@ impl<'a> Extract<'a> for SunLightComponentParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             light_color: match inst.get("lightColor") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SRGB8>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SRGB8>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             radius: inst.get_f32("radius").unwrap_or_default(),
             surface_intensity: inst.get_f32("surfaceIntensity").unwrap_or_default(),
             surface_color: match inst.get("surfaceColor") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SRGB8>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SRGB8>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             dist1: inst.get_f32("dist1").unwrap_or_default(),
@@ -80,4 +90,3 @@ impl<'a> Extract<'a> for SunLightComponentParams {
         }
     }
 }
-

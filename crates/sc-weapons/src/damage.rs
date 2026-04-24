@@ -20,12 +20,7 @@ pub struct DamageSummary {
 impl DamageSummary {
     /// Scalar total across all damage types.
     pub fn total(&self) -> f32 {
-        self.physical
-            + self.energy
-            + self.distortion
-            + self.thermal
-            + self.biochemical
-            + self.stun
+        self.physical + self.energy + self.distortion + self.thermal + self.biochemical + self.stun
     }
 
     fn add_damage_info(&mut self, d: &DamageInfo) {
@@ -178,10 +173,7 @@ pub(crate) fn find_component<'a, T: 'static>(
 /// `SAmmoContainerComponentParams.maxAmmoCount`. This is the physical
 /// round count (ballistic) — distinct from burst_seconds / overheat
 /// budget. Returns `None` for energy weapons (no ammo container).
-pub(crate) fn extract_total_ammo(
-    ecd: &EntityClassDefinition,
-    pools: &DataPools,
-) -> Option<i32> {
+pub(crate) fn extract_total_ammo(ecd: &EntityClassDefinition, pools: &DataPools) -> Option<i32> {
     let ac = find_component::<SAmmoContainerComponentParams>(ecd, pools)?;
     Some(ac.max_ammo_count)
 }

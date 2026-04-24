@@ -14,7 +14,8 @@ use super::super::*;
 /// Pool storage for the `entities-partymembermarker` feature.
 #[derive(Default)]
 pub struct EntitiesPartymembermarkerPools {
-    pub sparty_member_marker_object_metadata_params: Vec<Option<SPartyMemberMarkerObjectMetadataParams>>,
+    pub sparty_member_marker_object_metadata_params:
+        Vec<Option<SPartyMemberMarkerObjectMetadataParams>>,
     pub sentity_component_party_marker_params: Vec<Option<SEntityComponentPartyMarkerParams>>,
     pub sparty_member_entry_tracker_params: Vec<Option<SPartyMemberEntryTrackerParams>>,
 }

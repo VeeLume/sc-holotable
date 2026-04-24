@@ -32,7 +32,7 @@ use std::collections::{BTreeMap, HashMap, HashSet, VecDeque};
 use svarog_common::CigGuid;
 use svarog_datacore::{DataCoreDatabase, DataType};
 
-use crate::closure::{walk_closure, GuidLookup};
+use crate::closure::{GuidLookup, walk_closure};
 use crate::emit::PropertyCache;
 
 // ── Public types ──────────────────────────────────────────────────────────
@@ -335,7 +335,18 @@ fn walk_tree(
             let deeper = children_at_depth(records, child_prefix, depth + 1);
             if deeper.len() > 1 {
                 // Can split — recurse.
-                walk_tree(records, field_counts, db, reachable, child_prefix, depth + 1, rules, cache, leaves, parents);
+                walk_tree(
+                    records,
+                    field_counts,
+                    db,
+                    reachable,
+                    child_prefix,
+                    depth + 1,
+                    rules,
+                    cache,
+                    leaves,
+                    parents,
+                );
                 let child_name = path_to_feature_name(child_prefix);
                 child_feature_names.push(child_name);
             } else {

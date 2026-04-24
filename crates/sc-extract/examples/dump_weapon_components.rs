@@ -8,9 +8,7 @@
 use std::collections::HashMap;
 
 use sc_extract::generated::*;
-use sc_extract::{
-    AssetConfig, AssetData, AssetSource, DataPools, DatacoreConfig, Guid,
-};
+use sc_extract::{AssetConfig, AssetData, AssetSource, DataPools, DatacoreConfig, Guid};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     tracing_subscriber::fmt().with_env_filter("info").init();
@@ -42,13 +40,21 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     ];
 
     for (&guid, &handle) in ecd_map {
-        let Some(ecd) = handle.get(pools) else { continue };
+        let Some(ecd) = handle.get(pools) else {
+            continue;
+        };
         let name = record_names.get(&guid).copied().unwrap_or("?");
 
-        if !targets.contains(&name) { continue; }
+        if !targets.contains(&name) {
+            continue;
+        }
 
         let display = snap.display_names.get(&guid).unwrap_or("");
-        println!("=== {} ({}) ===", name.replace("EntityClassDefinition.", ""), display);
+        println!(
+            "=== {} ({}) ===",
+            name.replace("EntityClassDefinition.", ""),
+            display
+        );
         println!("Components: {}", ecd.components.len());
 
         // Use the raw DB to get component type names since the poly enum only gives us known variants
@@ -62,8 +68,14 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 DataForgeComponentParamsPtr::SCItemWeaponComponentParams(h) => {
                     if let Some(wp) = h.get(pools) {
                         let conn = wp.connection_params.and_then(|h| h.get(pools));
-                        println!("       powerActiveCooldown: {}", conn.map(|c| c.power_active_cooldown).unwrap_or(0.0));
-                        println!("       heatRateOnline: {}", conn.map(|c| c.heat_rate_online).unwrap_or(0.0));
+                        println!(
+                            "       powerActiveCooldown: {}",
+                            conn.map(|c| c.power_active_cooldown).unwrap_or(0.0)
+                        );
+                        println!(
+                            "       heatRateOnline: {}",
+                            conn.map(|c| c.heat_rate_online).unwrap_or(0.0)
+                        );
                     }
                 }
                 _ => {}
@@ -78,7 +90,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut count = 0;
     for record in db.records_by_type("EntityClassDefinition") {
         let name = record.name().unwrap_or("");
-        if name.contains("BEHR_LaserCannon") || name.contains("GATS_BallisticGatling") || name.contains("KLWE_LaserRepeater") {
+        if name.contains("BEHR_LaserCannon")
+            || name.contains("GATS_BallisticGatling")
+            || name.contains("KLWE_LaserRepeater")
+        {
             if count < 3 {
                 println!("Found record: '{}'", name);
                 count += 1;
@@ -87,7 +102,15 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     }
     for record in db.records_by_type("EntityClassDefinition") {
         let name = record.name().unwrap_or("");
-        if !["BEHR_LaserCannon_S7", "KLWE_LaserRepeater_S1", "GATS_BallisticGatling_S1"].contains(&name) { continue; }
+        if ![
+            "BEHR_LaserCannon_S7",
+            "KLWE_LaserRepeater_S1",
+            "GATS_BallisticGatling_S1",
+        ]
+        .contains(&name)
+        {
+            continue;
+        }
 
         let inst = record.as_instance();
         if let Some(components) = inst.get_array("Components") {
@@ -112,11 +135,17 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
 fn component_type_name(comp: &DataForgeComponentParamsPtr) -> &'static str {
     match comp {
-        DataForgeComponentParamsPtr::SCItemWeaponComponentParams(_) => "SCItemWeaponComponentParams",
+        DataForgeComponentParamsPtr::SCItemWeaponComponentParams(_) => {
+            "SCItemWeaponComponentParams"
+        }
         DataForgeComponentParamsPtr::SAttachableComponentParams(_) => "SAttachableComponentParams",
-        DataForgeComponentParamsPtr::SAmmoContainerComponentParams(_) => "SAmmoContainerComponentParams",
+        DataForgeComponentParamsPtr::SAmmoContainerComponentParams(_) => {
+            "SAmmoContainerComponentParams"
+        }
         DataForgeComponentParamsPtr::SHealthComponentParams(_) => "SHealthComponentParams",
-        DataForgeComponentParamsPtr::DataForgeComponentParams(_) => "DataForgeComponentParams(base)",
+        DataForgeComponentParamsPtr::DataForgeComponentParams(_) => {
+            "DataForgeComponentParams(base)"
+        }
         _ => "other (check raw DB)",
     }
 }

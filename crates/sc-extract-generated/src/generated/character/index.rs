@@ -9,15 +9,16 @@
 
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
+use super::super::*;
+use crate::Handle;
 use std::collections::HashMap;
 use svarog_common::CigGuid;
-use crate::Handle;
-use super::super::*;
 
 /// Record index for the `character` feature.
 #[derive(Default)]
 pub struct CharacterIndex {
-    pub default_player_loadout_entitlement_record: HashMap<CigGuid, Handle<DefaultPlayerLoadoutEntitlementRecord>>,
+    pub default_player_loadout_entitlement_record:
+        HashMap<CigGuid, Handle<DefaultPlayerLoadoutEntitlementRecord>>,
 }
 
 impl CharacterIndex {
@@ -28,5 +29,7 @@ impl CharacterIndex {
         total
     }
 
-    pub fn is_empty(&self) -> bool { self.len() == 0 }
+    pub fn is_empty(&self) -> bool {
+        self.len() == 0
+    }
 }

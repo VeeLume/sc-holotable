@@ -14,5 +14,6 @@ use super::super::*;
 /// Pool storage for the `entities-unattendedvehiclemarker` feature.
 #[derive(Default)]
 pub struct EntitiesUnattendedvehiclemarkerPools {
-    pub sentity_component_unattended_vehicle_marker_params: Vec<Option<SEntityComponentUnattendedVehicleMarkerParams>>,
+    pub sentity_component_unattended_vehicle_marker_params:
+        Vec<Option<SEntityComponentUnattendedVehicleMarkerParams>>,
 }

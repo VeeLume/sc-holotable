@@ -125,7 +125,10 @@ impl<T> fmt::Debug for Handle<T> {
         write!(
             f,
             "Handle<{}>({})",
-            std::any::type_name::<T>().rsplit("::").next().unwrap_or("?"),
+            std::any::type_name::<T>()
+                .rsplit("::")
+                .next()
+                .unwrap_or("?"),
             self.0
         )
     }

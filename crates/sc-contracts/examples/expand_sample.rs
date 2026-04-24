@@ -16,8 +16,8 @@ use std::collections::BTreeMap;
 use std::time::Instant;
 
 use sc_contracts::{
-    expand_all, BlueprintPoolRegistry, ExpandedContract, HandlerKind, LocalityRegistry,
-    LocationRegistry, RewardAmount, RewardCurrencyCatalog, ShipRegistry,
+    BlueprintPoolRegistry, ExpandedContract, HandlerKind, LocalityRegistry, LocationRegistry,
+    RewardAmount, RewardCurrencyCatalog, ShipRegistry, expand_all,
 };
 use sc_extract::{AssetConfig, AssetData, AssetSource, Datacore, DatacoreConfig, Guid};
 
@@ -87,8 +87,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             .filter(|e| {
                 e.debug_name.to_lowercase().contains(&f)
                     || e.handler_debug_name.to_lowercase().contains(&f)
-                    || e
-                        .title
+                    || e.title
                         .as_deref()
                         .map(|t| t.to_lowercase().contains(&f))
                         .unwrap_or(false)
@@ -126,7 +125,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         // One blueprint-bearing row.
         println!();
         println!("─── Sample rows with blueprint rewards ───");
-        for e in expansions.iter().filter(|e| e.blueprint_reward.is_some()).take(3) {
+        for e in expansions
+            .iter()
+            .filter(|e| e.blueprint_reward.is_some())
+            .take(3)
+        {
             print_expansion(e);
         }
     }
@@ -141,15 +144,24 @@ fn print_summary(expansions: &[ExpandedContract]) {
     }
 
     let with_title = expansions.iter().filter(|e| e.title.is_some()).count();
-    let with_desc = expansions.iter().filter(|e| e.description.is_some()).count();
+    let with_desc = expansions
+        .iter()
+        .filter(|e| e.description.is_some())
+        .count();
     let with_subst = expansions
         .iter()
         .filter(|e| e.has_runtime_substitution)
         .count();
     let shareable = expansions.iter().filter(|e| e.shareable).count();
-    let once_only = expansions.iter().filter(|e| e.availability.once_only).count();
+    let once_only = expansions
+        .iter()
+        .filter(|e| e.availability.once_only)
+        .count();
     let illegal = expansions.iter().filter(|e| e.illegal_flag).count();
-    let with_bp = expansions.iter().filter(|e| e.blueprint_reward.is_some()).count();
+    let with_bp = expansions
+        .iter()
+        .filter(|e| e.blueprint_reward.is_some())
+        .count();
     let uec_calc = expansions
         .iter()
         .filter(|e| matches!(e.reward_uec, RewardAmount::Calculated))
@@ -158,9 +170,18 @@ fn print_summary(expansions: &[ExpandedContract]) {
         .iter()
         .filter(|e| matches!(e.reward_uec, RewardAmount::Fixed(_)))
         .count();
-    let with_scrip = expansions.iter().filter(|e| !e.reward_scrip.is_empty()).count();
-    let with_rep = expansions.iter().filter(|e| !e.reward_rep.is_empty()).count();
-    let with_items = expansions.iter().filter(|e| !e.reward_items.is_empty()).count();
+    let with_scrip = expansions
+        .iter()
+        .filter(|e| !e.reward_scrip.is_empty())
+        .count();
+    let with_rep = expansions
+        .iter()
+        .filter(|e| !e.reward_rep.is_empty())
+        .count();
+    let with_items = expansions
+        .iter()
+        .filter(|e| !e.reward_items.is_empty())
+        .count();
     let with_prereq = expansions
         .iter()
         .filter(|e| !e.prerequisites.is_empty())
@@ -234,7 +255,11 @@ fn print_expansion(e: &ExpandedContract) {
     println!("      title:    {title}{subst}");
     if let Some(desc) = &e.description {
         let trimmed: String = desc.chars().take(120).collect();
-        let tail = if desc.chars().count() > 120 { "…" } else { "" };
+        let tail = if desc.chars().count() > 120 {
+            "…"
+        } else {
+            ""
+        };
         println!("      desc:     {trimmed}{tail}");
     }
     println!("      flags:    {}", flags.join(", "));
@@ -300,7 +325,11 @@ fn print_expansion(e: &ExpandedContract) {
         sc_contracts::RewardAmount::Fixed(n) => reward_bits.push(format!("UEC: {n}")),
     }
     for s in &e.reward_scrip {
-        let name = if s.display_name.is_empty() { &s.record_name } else { &s.display_name };
+        let name = if s.display_name.is_empty() {
+            &s.record_name
+        } else {
+            &s.display_name
+        };
         reward_bits.push(format!("{} ×{}", name, s.amount));
     }
     for r in &e.reward_rep {
@@ -315,7 +344,11 @@ fn print_expansion(e: &ExpandedContract) {
             .reward_items
             .iter()
             .map(|i| {
-                let n = if i.display_name.is_empty() { "?" } else { i.display_name.as_str() };
+                let n = if i.display_name.is_empty() {
+                    "?"
+                } else {
+                    i.display_name.as_str()
+                };
                 format!("{n}×{}", i.amount)
             })
             .take(3)
@@ -331,7 +364,13 @@ fn print_expansion(e: &ExpandedContract) {
         let kinds: Vec<String> = e
             .reward_other
             .iter()
-            .map(|o| format!("{:?}", o).split('(').next().unwrap_or("").to_string())
+            .map(|o| {
+                format!("{:?}", o)
+                    .split('(')
+                    .next()
+                    .unwrap_or("")
+                    .to_string()
+            })
             .collect();
         reward_bits.push(format!("other: [{}]", kinds.join(", ")));
     }
@@ -369,10 +408,7 @@ fn print_expansion(e: &ExpandedContract) {
             };
             *histogram.entry(k).or_default() += 1;
         }
-        let summary: Vec<String> = histogram
-            .iter()
-            .map(|(k, v)| format!("{k}×{v}"))
-            .collect();
+        let summary: Vec<String> = histogram.iter().map(|(k, v)| format!("{k}×{v}")).collect();
         println!("      prereq:   {}", summary.join(", "));
     }
 }
@@ -398,34 +434,75 @@ fn print_detail(e: &ExpandedContract) {
                     location.map(|g| g.to_string()).unwrap_or("<none>".into())
                 );
             }
-            sc_contracts::PrereqView::LocationProperty { variable_name, extended_text_token, level } => {
+            sc_contracts::PrereqView::LocationProperty {
+                variable_name,
+                extended_text_token,
+                level,
+            } => {
                 println!(
                     "      pre#{i}:   LocationProperty {{ var='{variable_name}', token='{extended_text_token}', level={level:?} }}"
                 );
             }
-            sc_contracts::PrereqView::CrimeStat { min, max, jurisdiction_override, include_when_sharing } => {
+            sc_contracts::PrereqView::CrimeStat {
+                min,
+                max,
+                jurisdiction_override,
+                include_when_sharing,
+            } => {
                 println!(
                     "      pre#{i}:   CrimeStat {{ min={min}, max={max}, jurisdiction={}, share={include_when_sharing} }}",
-                    jurisdiction_override.map(|g| g.to_string()).unwrap_or("<none>".into())
+                    jurisdiction_override
+                        .map(|g| g.to_string())
+                        .unwrap_or("<none>".into())
                 );
             }
-            sc_contracts::PrereqView::Reputation { faction, scope, exclude, min_standing, max_standing, include_when_sharing } => {
+            sc_contracts::PrereqView::Reputation {
+                faction,
+                scope,
+                exclude,
+                min_standing,
+                max_standing,
+                include_when_sharing,
+            } => {
                 println!(
                     "      pre#{i}:   Reputation {{ faction={}, scope={}, min_standing={}, max_standing={}, exclude={exclude}, share={include_when_sharing} }}",
                     faction.map(|g| g.to_string()).unwrap_or("<none>".into()),
                     scope.map(|g| g.to_string()).unwrap_or("<none>".into()),
-                    min_standing.map(|g| g.to_string()).unwrap_or("<none>".into()),
-                    max_standing.map(|g| g.to_string()).unwrap_or("<none>".into()),
+                    min_standing
+                        .map(|g| g.to_string())
+                        .unwrap_or("<none>".into()),
+                    max_standing
+                        .map(|g| g.to_string())
+                        .unwrap_or("<none>".into()),
                 );
             }
-            sc_contracts::PrereqView::CompletedContractTags { required_tags, required_count, excluded_tags, excluded_count, include_when_sharing } => {
+            sc_contracts::PrereqView::CompletedContractTags {
+                required_tags,
+                required_count,
+                excluded_tags,
+                excluded_count,
+                include_when_sharing,
+            } => {
                 println!(
                     "      pre#{i}:   CompletedContractTags {{ req=[{}] count≥{required_count}, excl=[{}] count≥{excluded_count}, share={include_when_sharing} }}",
-                    required_tags.iter().take(3).map(|g| g.to_string()).collect::<Vec<_>>().join(", "),
-                    excluded_tags.iter().take(3).map(|g| g.to_string()).collect::<Vec<_>>().join(", "),
+                    required_tags
+                        .iter()
+                        .take(3)
+                        .map(|g| g.to_string())
+                        .collect::<Vec<_>>()
+                        .join(", "),
+                    excluded_tags
+                        .iter()
+                        .take(3)
+                        .map(|g| g.to_string())
+                        .collect::<Vec<_>>()
+                        .join(", "),
                 );
             }
-            sc_contracts::PrereqView::Unknown { struct_index, instance_index } => {
+            sc_contracts::PrereqView::Unknown {
+                struct_index,
+                instance_index,
+            } => {
                 println!("      pre#{i}:   Unknown {{ si={struct_index}, ii={instance_index} }}");
             }
         }
@@ -452,10 +529,7 @@ fn print_locality_detail(e: &ExpandedContract, datacore: &Datacore) {
     }
 }
 
-fn dump_locality(
-    guid: &Guid,
-    datacore: &Datacore,
-) {
+fn dump_locality(guid: &Guid, datacore: &Datacore) {
     let db = datacore.db();
     let pools = &datacore.records().pools;
     let records = &datacore.records().records;
@@ -518,7 +592,11 @@ fn dump_locality(
                 .or_else(|| loc_name.strip_prefix("MissionLocationTemplate."))
                 .unwrap_or(&loc_name);
             let (sys, body) = classify_location(short_strip);
-            let body_tag = if body.is_empty() { sys.to_string() } else { format!("{sys}/{body}") };
+            let body_tag = if body.is_empty() {
+                sys.to_string()
+            } else {
+                format!("{sys}/{body}")
+            };
             println!("         {i:>2}. [{body_tag}] {}", strip_noise(short_strip));
         }
         if count > 12 {
@@ -529,11 +607,7 @@ fn dump_locality(
     }
 }
 
-fn dump_location(
-    guid: &Guid,
-    db: &sc_extract::svarog_datacore::DataCoreDatabase,
-    prefix: &str,
-) {
+fn dump_location(guid: &Guid, db: &sc_extract::svarog_datacore::DataCoreDatabase, prefix: &str) {
     let record_name = db
         .record(guid)
         .and_then(|r| r.name().map(|s| s.to_string()))
@@ -591,17 +665,35 @@ fn classify_location(name: &str) -> (&'static str, &'static str) {
     // Pyro infix markers: `_P1_`, `_P2_`, … appear in station / asteroid /
     // region-specific record names (`RR_P1_LEO`, `AsteroidCluster_Pyro_RegionD_*`,
     // `*_Pyro_RegionBandD_*`).
-    if lower.contains("pyro") || lower.contains("_p1_") || lower.contains("_p2_")
-        || lower.contains("_p3_") || lower.contains("_p4_") || lower.contains("_p5_")
-        || lower.contains("_p6_") || lower.contains("regionb") || lower.contains("regiond")
+    if lower.contains("pyro")
+        || lower.contains("_p1_")
+        || lower.contains("_p2_")
+        || lower.contains("_p3_")
+        || lower.contains("_p4_")
+        || lower.contains("_p5_")
+        || lower.contains("_p6_")
+        || lower.contains("regionb")
+        || lower.contains("regiond")
     {
         // Try to narrow to a body.
-        if lower.contains("_p1") || lower.contains("pyro1") { return ("Pyro", "Sirus (Pyro I)"); }
-        if lower.contains("_p2") || lower.contains("pyro2") { return ("Pyro", "Monox (Pyro II)"); }
-        if lower.contains("_p3") || lower.contains("pyro3") { return ("Pyro", "Bloom (Pyro III)"); }
-        if lower.contains("_p4") || lower.contains("pyro4") { return ("Pyro", "Terminus (Pyro IV)"); }
-        if lower.contains("_p5") || lower.contains("pyro5") { return ("Pyro", "Ignis (Pyro V)"); }
-        if lower.contains("_p6") || lower.contains("pyro6") { return ("Pyro", "Vuur (Pyro VI)"); }
+        if lower.contains("_p1") || lower.contains("pyro1") {
+            return ("Pyro", "Sirus (Pyro I)");
+        }
+        if lower.contains("_p2") || lower.contains("pyro2") {
+            return ("Pyro", "Monox (Pyro II)");
+        }
+        if lower.contains("_p3") || lower.contains("pyro3") {
+            return ("Pyro", "Bloom (Pyro III)");
+        }
+        if lower.contains("_p4") || lower.contains("pyro4") {
+            return ("Pyro", "Terminus (Pyro IV)");
+        }
+        if lower.contains("_p5") || lower.contains("pyro5") {
+            return ("Pyro", "Ignis (Pyro V)");
+        }
+        if lower.contains("_p6") || lower.contains("pyro6") {
+            return ("Pyro", "Vuur (Pyro VI)");
+        }
         return ("Pyro", "");
     }
     // Known Stanton body short-names.
@@ -635,24 +727,36 @@ fn print_delta(matching: &[&ExpandedContract]) {
         return;
     }
     println!();
-    println!("─── Delta across {} matching expansions ───", matching.len());
+    println!(
+        "─── Delta across {} matching expansions ───",
+        matching.len()
+    );
 
     let first = matching[0];
     let all_ids: Vec<String> = matching.iter().map(|e| format!("{}", e.id)).collect();
     println!("  ids:              {}", all_ids.join("  "));
     println!(
         "  all ids unique?   {}",
-        all_ids.iter().collect::<std::collections::HashSet<_>>().len() == matching.len()
+        all_ids
+            .iter()
+            .collect::<std::collections::HashSet<_>>()
+            .len()
+            == matching.len()
     );
 
     let titles_same = matching.iter().all(|e| e.title == first.title);
     let descs_same = matching.iter().all(|e| e.description == first.description);
-    let subst_same = matching.iter().all(|e| e.has_runtime_substitution == first.has_runtime_substitution);
+    let subst_same = matching
+        .iter()
+        .all(|e| e.has_runtime_substitution == first.has_runtime_substitution);
     println!("  title identical?  {titles_same}");
     println!("  desc identical?   {descs_same}");
     println!("  subst flag same?  {subst_same}");
 
-    println!("  origins:          {:?}", matching.iter().map(|e| e.origin).collect::<Vec<_>>());
+    println!(
+        "  origins:          {:?}",
+        matching.iter().map(|e| e.origin).collect::<Vec<_>>()
+    );
 
     // Prereq-guid fingerprint per row.
     println!();
@@ -663,21 +767,34 @@ fn print_delta(matching: &[&ExpandedContract]) {
             .iter()
             .flat_map(|p| match p {
                 sc_contracts::PrereqView::CompletedContractTags { required_tags, .. } => {
-                    required_tags.iter().map(|g| format!("tag:{}", &g.to_string()[..8])).collect::<Vec<_>>()
+                    required_tags
+                        .iter()
+                        .map(|g| format!("tag:{}", &g.to_string()[..8]))
+                        .collect::<Vec<_>>()
                 }
-                sc_contracts::PrereqView::Locality { locality } => {
-                    locality.map(|g| vec![format!("loc:{}", &g.to_string()[..8])]).unwrap_or_default()
-                }
-                sc_contracts::PrereqView::Location { location } => {
-                    location.map(|g| vec![format!("loca:{}", &g.to_string()[..8])]).unwrap_or_default()
-                }
+                sc_contracts::PrereqView::Locality { locality } => locality
+                    .map(|g| vec![format!("loc:{}", &g.to_string()[..8])])
+                    .unwrap_or_default(),
+                sc_contracts::PrereqView::Location { location } => location
+                    .map(|g| vec![format!("loca:{}", &g.to_string()[..8])])
+                    .unwrap_or_default(),
                 sc_contracts::PrereqView::CrimeStat { min, max, .. } => {
                     vec![format!("cs:{min}-{max}")]
                 }
-                sc_contracts::PrereqView::Reputation { min_standing, max_standing, .. } => {
-                    vec![format!("rep:{}-{}",
-                        min_standing.map(|g| g.to_string()[..8].to_string()).unwrap_or_default(),
-                        max_standing.map(|g| g.to_string()[..8].to_string()).unwrap_or_default())]
+                sc_contracts::PrereqView::Reputation {
+                    min_standing,
+                    max_standing,
+                    ..
+                } => {
+                    vec![format!(
+                        "rep:{}-{}",
+                        min_standing
+                            .map(|g| g.to_string()[..8].to_string())
+                            .unwrap_or_default(),
+                        max_standing
+                            .map(|g| g.to_string()[..8].to_string())
+                            .unwrap_or_default()
+                    )]
                 }
                 _ => vec![],
             })
@@ -690,18 +807,32 @@ fn print_delta(matching: &[&ExpandedContract]) {
     println!();
     println!("  Reward fingerprints:");
     for (i, e) in matching.iter().enumerate() {
-        let rep_fp: Vec<String> = e.reward_rep.iter().map(|r| {
-            format!(
-                "{}/{}:{}",
-                r.faction.map(|g| g.to_string()[..8].to_string()).unwrap_or_default(),
-                r.scope.map(|g| g.to_string()[..8].to_string()).unwrap_or_default(),
-                r.amount.map(|n| n.to_string()).unwrap_or("calc".into()),
-            )
-        }).collect();
-        let scrip_fp: Vec<String> = e.reward_scrip.iter().map(|s| {
-            format!("{}×{}", s.display_name, s.amount)
-        }).collect();
-        let bp_fp = e.blueprint_reward.as_ref().map(|b| b.pool_name.as_str()).unwrap_or("");
+        let rep_fp: Vec<String> = e
+            .reward_rep
+            .iter()
+            .map(|r| {
+                format!(
+                    "{}/{}:{}",
+                    r.faction
+                        .map(|g| g.to_string()[..8].to_string())
+                        .unwrap_or_default(),
+                    r.scope
+                        .map(|g| g.to_string()[..8].to_string())
+                        .unwrap_or_default(),
+                    r.amount.map(|n| n.to_string()).unwrap_or("calc".into()),
+                )
+            })
+            .collect();
+        let scrip_fp: Vec<String> = e
+            .reward_scrip
+            .iter()
+            .map(|s| format!("{}×{}", s.display_name, s.amount))
+            .collect();
+        let bp_fp = e
+            .blueprint_reward
+            .as_ref()
+            .map(|b| b.pool_name.as_str())
+            .unwrap_or("");
         println!(
             "    [{i}] uec={:?} scrip=[{}] rep=[{}] bp='{}'",
             e.reward_uec,

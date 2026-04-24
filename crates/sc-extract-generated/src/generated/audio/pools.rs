@@ -16,7 +16,8 @@ use super::super::*;
 pub struct AudioPools {
     pub audio_breath_style_condition_list: Vec<Option<AudioBreathStyleConditionList>>,
     pub entity_audio_controller_type_params: Vec<Option<EntityAudioControllerTypeParams>>,
-    pub entity_audio_controller_type_management_params: Vec<Option<EntityAudioControllerTypeManagementParams>>,
+    pub entity_audio_controller_type_management_params:
+        Vec<Option<EntityAudioControllerTypeManagementParams>>,
     pub entity_audio_controller_manager_params: Vec<Option<EntityAudioControllerManagerParams>>,
     pub audio_whitelist: Vec<Option<AudioWhitelist>>,
     pub audio_environment: Vec<Option<AudioEnvironment>>,

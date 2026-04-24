@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -62,8 +62,12 @@ pub struct HackableParams {
 }
 
 impl Pooled for HackableParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_mission_entities.hackable_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_mission_entities.hackable_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_scitem_mission_entities.hackable_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_scitem_mission_entities.hackable_params
+    }
 }
 
 impl<'a> Extract<'a> for HackableParams {
@@ -77,55 +81,112 @@ impl<'a> Extract<'a> for HackableParams {
             update_progress_delta_time: inst.get_f32("updateProgressDeltaTime").unwrap_or_default(),
             reset_after_hack_success: inst.get_bool("resetAfterHackSuccess").unwrap_or_default(),
             audio_trigger_progress_loop_start: match inst.get("audioTriggerProgressLoopStart") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<GlobalResourceAudio>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             audio_trigger_progress_loop_stop: match inst.get("audioTriggerProgressLoopStop") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<GlobalResourceAudio>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             audio_trigger_start: match inst.get("audioTriggerStart") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<GlobalResourceAudio>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             audio_trigger_pause: match inst.get("audioTriggerPause") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<GlobalResourceAudio>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             audio_trigger_resume: match inst.get("audioTriggerResume") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<GlobalResourceAudio>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             audio_trigger_error: match inst.get("audioTriggerError") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<GlobalResourceAudio>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             audio_trigger_part_success: match inst.get("audioTriggerPartSuccess") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<GlobalResourceAudio>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             audio_trigger_success: match inst.get("audioTriggerSuccess") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<GlobalResourceAudio>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             audio_trigger_reset: match inst.get("audioTriggerReset") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceAudio>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<GlobalResourceAudio>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             audio_rtpc_overall_progress: match inst.get("audioRtpcOverallProgress") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             audio_rtpc_part_progress: match inst.get("audioRtpcPartProgress") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             audio_rtpc_total_duration: match inst.get("audioRtpcTotalDuration") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             audio_rtpc_remaining_duration: match inst.get("audioRtpcRemainingDuration") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
         }
@@ -141,8 +202,16 @@ pub struct SShopUIProviderCategoryIcon {
 }
 
 impl Pooled for SShopUIProviderCategoryIcon {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_mission_entities.sshop_uiprovider_category_icon }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_mission_entities.sshop_uiprovider_category_icon }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_scitem_mission_entities
+            .sshop_uiprovider_category_icon
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_scitem_mission_entities
+            .sshop_uiprovider_category_icon
+    }
 }
 
 impl<'a> Extract<'a> for SShopUIProviderCategoryIcon {
@@ -167,42 +236,71 @@ pub struct SShopUIProviderParams {
 }
 
 impl Pooled for SShopUIProviderParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_mission_entities.sshop_uiprovider_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_mission_entities.sshop_uiprovider_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_scitem_mission_entities
+            .sshop_uiprovider_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_scitem_mission_entities
+            .sshop_uiprovider_params
+    }
 }
 
 impl<'a> Extract<'a> for SShopUIProviderParams {
     const TYPE_NAME: &'static str = "SShopUIProviderParams";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            category_icons: inst.get_array("categoryIcons")
-                .map(|arr| arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<SShopUIProviderCategoryIcon>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r) => Some(b.alloc_nested::<SShopUIProviderCategoryIcon>(b.db.instance(r.struct_index, r.instance_index), true)),
+            category_icons: inst
+                .get_array("categoryIcons")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<SShopUIProviderCategoryIcon>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => Some(b.alloc_nested::<SShopUIProviderCategoryIcon>(
+                            b.db.instance(r.struct_index, r.instance_index),
+                            true,
+                        )),
                         _ => None,
-                    }).collect())
+                    })
+                    .collect()
+                })
                 .unwrap_or_default(),
             default_mode_buying: inst.get_bool("defaultModeBuying").unwrap_or_default(),
-            degradation_icon: inst.get_str("degradationIcon").map(String::from).unwrap_or_default(),
+            degradation_icon: inst
+                .get_str("degradationIcon")
+                .map(String::from)
+                .unwrap_or_default(),
         }
     }
 }
 
 /// DCB type: `SCommodityUIProviderParams`
 /// Inherits from: `DataForgeComponentParams`
-pub struct SCommodityUIProviderParams {
-}
+pub struct SCommodityUIProviderParams {}
 
 impl Pooled for SCommodityUIProviderParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_mission_entities.scommodity_uiprovider_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_mission_entities.scommodity_uiprovider_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_scitem_mission_entities
+            .scommodity_uiprovider_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_scitem_mission_entities
+            .scommodity_uiprovider_params
+    }
 }
 
 impl<'a> Extract<'a> for SCommodityUIProviderParams {
     const TYPE_NAME: &'static str = "SCommodityUIProviderParams";
     fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
-        }
+        Self {}
     }
 }
 
@@ -216,8 +314,16 @@ pub struct MonitoredZoneControllerParams {
 }
 
 impl Pooled for MonitoredZoneControllerParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_mission_entities.monitored_zone_controller_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_mission_entities.monitored_zone_controller_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_scitem_mission_entities
+            .monitored_zone_controller_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_scitem_mission_entities
+            .monitored_zone_controller_params
+    }
 }
 
 impl<'a> Extract<'a> for MonitoredZoneControllerParams {
@@ -225,11 +331,21 @@ impl<'a> Extract<'a> for MonitoredZoneControllerParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             state_to_enable: match inst.get("stateToEnable") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SInteractionState>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<SInteractionState>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
                 _ => None,
             },
             state_to_disable: match inst.get("stateToDisable") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SInteractionState>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<SInteractionState>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
                 _ => None,
             },
         }
@@ -252,8 +368,16 @@ pub struct SCriminalRecordStateModifier {
 }
 
 impl Pooled for SCriminalRecordStateModifier {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_mission_entities.scriminal_record_state_modifier }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_mission_entities.scriminal_record_state_modifier }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_scitem_mission_entities
+            .scriminal_record_state_modifier
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_scitem_mission_entities
+            .scriminal_record_state_modifier
+    }
 }
 
 impl<'a> Extract<'a> for SCriminalRecordStateModifier {
@@ -261,23 +385,48 @@ impl<'a> Extract<'a> for SCriminalRecordStateModifier {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             on_infraction_selected_state: match inst.get("onInfractionSelectedState") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SInteractionState>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<SInteractionState>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
                 _ => None,
             },
             on_infraction_added_state: match inst.get("onInfractionAddedState") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SInteractionState>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<SInteractionState>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
                 _ => None,
             },
             on_infraction_removed_state: match inst.get("onInfractionRemovedState") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SInteractionState>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<SInteractionState>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
                 _ => None,
             },
             on_infraction_paid_state: match inst.get("onInfractionPaidState") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SInteractionState>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<SInteractionState>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
                 _ => None,
             },
             on_infraction_remove_time_end_state: match inst.get("onInfractionRemoveTimeEndState") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SInteractionState>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<SInteractionState>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
                 _ => None,
             },
         }
@@ -300,8 +449,16 @@ pub struct SCriminalRecordHackingStateModifier {
 }
 
 impl Pooled for SCriminalRecordHackingStateModifier {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_mission_entities.scriminal_record_hacking_state_modifier }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_mission_entities.scriminal_record_hacking_state_modifier }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_scitem_mission_entities
+            .scriminal_record_hacking_state_modifier
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_scitem_mission_entities
+            .scriminal_record_hacking_state_modifier
+    }
 }
 
 impl<'a> Extract<'a> for SCriminalRecordHackingStateModifier {
@@ -311,14 +468,27 @@ impl<'a> Extract<'a> for SCriminalRecordHackingStateModifier {
             max_unchallenged_removals: inst.get_i32("maxUnchallengedRemovals").unwrap_or_default(),
             detection_chance: inst.get_f32("detectionChance").unwrap_or_default(),
             on_crime_hacking_detected_state: match inst.get("onCrimeHackingDetectedState") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SInteractionState>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<SInteractionState>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
                 _ => None,
             },
             item_port: match inst.get("itemPort") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SItemPortDef>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<SItemPortDef>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
                 _ => None,
             },
-            detection_chance_multiplier_name: inst.get_str("detectionChanceMultiplierName").map(String::from).unwrap_or_default(),
+            detection_chance_multiplier_name: inst
+                .get_str("detectionChanceMultiplierName")
+                .map(String::from)
+                .unwrap_or_default(),
         }
     }
 }
@@ -333,8 +503,16 @@ pub struct SGasTankFillerStateModifier {
 }
 
 impl Pooled for SGasTankFillerStateModifier {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_mission_entities.sgas_tank_filler_state_modifier }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_mission_entities.sgas_tank_filler_state_modifier }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_scitem_mission_entities
+            .sgas_tank_filler_state_modifier
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_scitem_mission_entities
+            .sgas_tank_filler_state_modifier
+    }
 }
 
 impl<'a> Extract<'a> for SGasTankFillerStateModifier {
@@ -342,11 +520,21 @@ impl<'a> Extract<'a> for SGasTankFillerStateModifier {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             on_gas_tank_full_state: match inst.get("onGasTankFullState") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SInteractionState>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<SInteractionState>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
                 _ => None,
             },
             on_gas_tank_filler_empty_state: match inst.get("onGasTankFillerEmptyState") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SInteractionState>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<SInteractionState>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
                 _ => None,
             },
         }
@@ -365,8 +553,16 @@ pub struct SHackableStateModifier {
 }
 
 impl Pooled for SHackableStateModifier {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_mission_entities.shackable_state_modifier }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_mission_entities.shackable_state_modifier }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_scitem_mission_entities
+            .shackable_state_modifier
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_scitem_mission_entities
+            .shackable_state_modifier
+    }
 }
 
 impl<'a> Extract<'a> for SHackableStateModifier {
@@ -374,15 +570,30 @@ impl<'a> Extract<'a> for SHackableStateModifier {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             on_hacking_success_state: match inst.get("onHackingSuccessState") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SInteractionState>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<SInteractionState>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
                 _ => None,
             },
             on_hacking_error_state: match inst.get("onHackingErrorState") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SInteractionState>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<SInteractionState>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
                 _ => None,
             },
             on_hacking_reset_state: match inst.get("onHackingResetState") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SInteractionState>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<SInteractionState>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
                 _ => None,
             },
         }
@@ -413,8 +624,16 @@ pub struct SVendingMachineStateModifier {
 }
 
 impl Pooled for SVendingMachineStateModifier {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_mission_entities.svending_machine_state_modifier }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_mission_entities.svending_machine_state_modifier }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_scitem_mission_entities
+            .svending_machine_state_modifier
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_scitem_mission_entities
+            .svending_machine_state_modifier
+    }
 }
 
 impl<'a> Extract<'a> for SVendingMachineStateModifier {
@@ -422,39 +641,84 @@ impl<'a> Extract<'a> for SVendingMachineStateModifier {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             on_cooldown_end: match inst.get("onCooldownEnd") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SInteractionState>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<SInteractionState>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
                 _ => None,
             },
             on_item_spawned: match inst.get("onItemSpawned") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SInteractionState>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<SInteractionState>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
                 _ => None,
             },
             on_item_despawned: match inst.get("onItemDespawned") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SInteractionState>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<SInteractionState>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
                 _ => None,
             },
             on_item_detached: match inst.get("onItemDetached") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SInteractionState>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<SInteractionState>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
                 _ => None,
             },
             on_item_interacted: match inst.get("onItemInteracted") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SInteractionState>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<SInteractionState>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
                 _ => None,
             },
             on_transaction_complete: match inst.get("onTransactionComplete") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SInteractionState>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<SInteractionState>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
                 _ => None,
             },
             on_hatch_should_open: match inst.get("onHatchShouldOpen") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SInteractionState>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<SInteractionState>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
                 _ => None,
             },
             on_hatch_should_close: match inst.get("onHatchShouldClose") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SInteractionState>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<SInteractionState>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
                 _ => None,
             },
             on_transaction_should_close: match inst.get("onTransactionShouldClose") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SInteractionState>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<SInteractionState>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
                 _ => None,
             },
         }
@@ -469,52 +733,73 @@ pub struct SRemoveCrimesGameplayTrigger {
 }
 
 impl Pooled for SRemoveCrimesGameplayTrigger {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_mission_entities.sremove_crimes_gameplay_trigger }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_mission_entities.sremove_crimes_gameplay_trigger }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_scitem_mission_entities
+            .sremove_crimes_gameplay_trigger
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_scitem_mission_entities
+            .sremove_crimes_gameplay_trigger
+    }
 }
 
 impl<'a> Extract<'a> for SRemoveCrimesGameplayTrigger {
     const TYPE_NAME: &'static str = "SRemoveCrimesGameplayTrigger";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            remove_selected_infraction_only: inst.get_bool("removeSelectedInfractionOnly").unwrap_or_default(),
+            remove_selected_infraction_only: inst
+                .get_bool("removeSelectedInfractionOnly")
+                .unwrap_or_default(),
         }
     }
 }
 
 /// DCB type: `SStartRemoveInfractionTimerGameplayTrigger`
 /// Inherits from: `SBaseInteractionGameplayTrigger`
-pub struct SStartRemoveInfractionTimerGameplayTrigger {
-}
+pub struct SStartRemoveInfractionTimerGameplayTrigger {}
 
 impl Pooled for SStartRemoveInfractionTimerGameplayTrigger {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_mission_entities.sstart_remove_infraction_timer_gameplay_trigger }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_mission_entities.sstart_remove_infraction_timer_gameplay_trigger }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_scitem_mission_entities
+            .sstart_remove_infraction_timer_gameplay_trigger
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_scitem_mission_entities
+            .sstart_remove_infraction_timer_gameplay_trigger
+    }
 }
 
 impl<'a> Extract<'a> for SStartRemoveInfractionTimerGameplayTrigger {
     const TYPE_NAME: &'static str = "SStartRemoveInfractionTimerGameplayTrigger";
     fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
-        }
+        Self {}
     }
 }
 
 /// DCB type: `VendingMachineShopParams`
 /// Inherits from: `DataForgeComponentParams`
-pub struct VendingMachineShopParams {
-}
+pub struct VendingMachineShopParams {}
 
 impl Pooled for VendingMachineShopParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_scitem_mission_entities.vending_machine_shop_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_scitem_mission_entities.vending_machine_shop_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_scitem_mission_entities
+            .vending_machine_shop_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_scitem_mission_entities
+            .vending_machine_shop_params
+    }
 }
 
 impl<'a> Extract<'a> for VendingMachineShopParams {
     const TYPE_NAME: &'static str = "VendingMachineShopParams";
     fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
-        }
+        Self {}
     }
 }
-

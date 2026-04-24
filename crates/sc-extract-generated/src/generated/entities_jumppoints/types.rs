@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -37,8 +37,12 @@ pub struct JumpTunnelEffectTintingParams {
 }
 
 impl Pooled for JumpTunnelEffectTintingParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_jumppoints.jump_tunnel_effect_tinting_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_jumppoints.jump_tunnel_effect_tinting_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_jumppoints.jump_tunnel_effect_tinting_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_jumppoints.jump_tunnel_effect_tinting_params
+    }
 }
 
 impl<'a> Extract<'a> for JumpTunnelEffectTintingParams {
@@ -46,15 +50,24 @@ impl<'a> Extract<'a> for JumpTunnelEffectTintingParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             start_color: match inst.get("startColor") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<RGB>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<RGB>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             mid_color: match inst.get("midColor") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<RGB>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<RGB>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             end_color: match inst.get("endColor") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<RGB>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<RGB>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             start_glow: inst.get_f32("startGlow").unwrap_or_default(),
@@ -78,8 +91,12 @@ pub struct JumpTunnelCubeMapParams {
 }
 
 impl Pooled for JumpTunnelCubeMapParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_jumppoints.jump_tunnel_cube_map_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_jumppoints.jump_tunnel_cube_map_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_jumppoints.jump_tunnel_cube_map_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_jumppoints.jump_tunnel_cube_map_params
+    }
 }
 
 impl<'a> Extract<'a> for JumpTunnelCubeMapParams {
@@ -87,19 +104,39 @@ impl<'a> Extract<'a> for JumpTunnelCubeMapParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             entry_spec_probe: match inst.get("entrySpecProbe") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceTextureDDS>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<GlobalResourceTextureDDS>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             entry_diff_probe: match inst.get("entryDiffProbe") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceTextureDDS>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<GlobalResourceTextureDDS>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             exit_spec_probe: match inst.get("exitSpecProbe") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceTextureDDS>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<GlobalResourceTextureDDS>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             exit_diff_probe: match inst.get("exitDiffProbe") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceTextureDDS>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<GlobalResourceTextureDDS>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
         }
@@ -115,8 +152,12 @@ pub struct JumpPointEffectParams {
 }
 
 impl Pooled for JumpPointEffectParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_jumppoints.jump_point_effect_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_jumppoints.jump_point_effect_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_jumppoints.jump_point_effect_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_jumppoints.jump_point_effect_params
+    }
 }
 
 impl<'a> Extract<'a> for JumpPointEffectParams {
@@ -124,11 +165,21 @@ impl<'a> Extract<'a> for JumpPointEffectParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             tunnel_effect_tinting: match inst.get("tunnelEffectTinting") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<JumpTunnelEffectTintingParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<JumpTunnelEffectTintingParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             cube_map_params: match inst.get("cubeMapParams") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<JumpTunnelCubeMapParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<JumpTunnelCubeMapParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
         }
@@ -155,25 +206,48 @@ pub struct SJumpPointParams {
 }
 
 impl Pooled for SJumpPointParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_jumppoints.sjump_point_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_jumppoints.sjump_point_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_jumppoints.sjump_point_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_jumppoints.sjump_point_params
+    }
 }
 
 impl<'a> Extract<'a> for SJumpPointParams {
     const TYPE_NAME: &'static str = "SJumpPointParams";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            jump_gate_super_guid: inst.get_str("jumpGateSuperGuid").map(String::from).unwrap_or_default(),
+            jump_gate_super_guid: inst
+                .get_str("jumpGateSuperGuid")
+                .map(String::from)
+                .unwrap_or_default(),
             effect_params: match inst.get("effectParams") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<JumpPointEffectParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<JumpPointEffectParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             entrance_push_area_params: match inst.get("entrancePushAreaParams") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SJumpPointPushAreaParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<SJumpPointPushAreaParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
-            push_area_radar_geometry_name: inst.get_str("pushAreaRadarGeometryName").map(String::from).unwrap_or_default(),
-            largest_ship_size: inst.get("largestShipSize").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            push_area_radar_geometry_name: inst
+                .get_str("pushAreaRadarGeometryName")
+                .map(String::from)
+                .unwrap_or_default(),
+            largest_ship_size: inst
+                .get("largestShipSize")
+                .and_then(|v| v.as_record_ref())
+                .map(|r| r.guid),
             linking_range: inst.get_f32("linkingRange").unwrap_or_default(),
             required_fuel: inst.get_f32("requiredFuel").unwrap_or_default(),
         }
@@ -182,37 +256,41 @@ impl<'a> Extract<'a> for SJumpPointParams {
 
 /// DCB type: `SJumpPointATCParams`
 /// Inherits from: `DataForgeComponentParams`
-pub struct SJumpPointATCParams {
-}
+pub struct SJumpPointATCParams {}
 
 impl Pooled for SJumpPointATCParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_jumppoints.sjump_point_atcparams }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_jumppoints.sjump_point_atcparams }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_jumppoints.sjump_point_atcparams
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_jumppoints.sjump_point_atcparams
+    }
 }
 
 impl<'a> Extract<'a> for SJumpPointATCParams {
     const TYPE_NAME: &'static str = "SJumpPointATCParams";
     fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
-        }
+        Self {}
     }
 }
 
 /// DCB type: `SJumpTunnelHostParams`
 /// Inherits from: `DataForgeComponentParams`
-pub struct SJumpTunnelHostParams {
-}
+pub struct SJumpTunnelHostParams {}
 
 impl Pooled for SJumpTunnelHostParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_jumppoints.sjump_tunnel_host_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_jumppoints.sjump_tunnel_host_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_jumppoints.sjump_tunnel_host_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_jumppoints.sjump_tunnel_host_params
+    }
 }
 
 impl<'a> Extract<'a> for SJumpTunnelHostParams {
     const TYPE_NAME: &'static str = "SJumpTunnelHostParams";
     fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
-        }
+        Self {}
     }
 }
 
@@ -224,8 +302,12 @@ pub struct GlobalResourceTextureDDS {
 }
 
 impl Pooled for GlobalResourceTextureDDS {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_jumppoints.global_resource_texture_dds }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_jumppoints.global_resource_texture_dds }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_jumppoints.global_resource_texture_dds
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_jumppoints.global_resource_texture_dds
+    }
 }
 
 impl<'a> Extract<'a> for GlobalResourceTextureDDS {
@@ -236,4 +318,3 @@ impl<'a> Extract<'a> for GlobalResourceTextureDDS {
         }
     }
 }
-

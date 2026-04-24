@@ -14,6 +14,8 @@ use super::super::*;
 /// Pool storage for the `entities-scitem-toggleableentities` feature.
 #[derive(Default)]
 pub struct EntitiesScitemToggleableentitiesPools {
-    pub set_lightning_enabled_state_gameplay_trigger: Vec<Option<SetLightningEnabledStateGameplayTrigger>>,
-    pub sset_particle_enabled_state_gameplay_trigger: Vec<Option<SSetParticleEnabledStateGameplayTrigger>>,
+    pub set_lightning_enabled_state_gameplay_trigger:
+        Vec<Option<SetLightningEnabledStateGameplayTrigger>>,
+    pub sset_particle_enabled_state_gameplay_trigger:
+        Vec<Option<SSetParticleEnabledStateGameplayTrigger>>,
 }

@@ -62,11 +62,11 @@ mod manifest;
 
 pub use channel::Channel;
 pub use discovery::{
-    discover, discover_from, discover_last_launched, discover_last_launched_from,
-    discover_primary, discover_primary_from,
+    discover, discover_from, discover_last_launched, discover_last_launched_from, discover_primary,
+    discover_primary_from,
 };
 pub use error::{Error, Result};
 pub use installation::Installation;
 pub use language::Language;
 pub use log_parser::{detect_channel_from_process, launcher_log_path, parse_launcher_log_entries};
-pub use manifest::{read_build_manifest, BuildManifest};
+pub use manifest::{BuildManifest, read_build_manifest};

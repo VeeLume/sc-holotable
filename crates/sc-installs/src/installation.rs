@@ -7,7 +7,7 @@ use serde::{Deserialize, Serialize};
 use crate::channel::Channel;
 use crate::error::{Error, Result};
 use crate::language::Language;
-use crate::manifest::{read_build_manifest, BuildManifest};
+use crate::manifest::{BuildManifest, read_build_manifest};
 
 /// A discovered, validated Star Citizen installation.
 ///
@@ -246,9 +246,15 @@ mod tests {
     #[test]
     fn localization_override_english() {
         let inst = make_install(Channel::Live, "4.6.1.0", None);
-        let expected: PathBuf = ["C:\\SC\\LIVE", "data", "Localization", "english", "global.ini"]
-            .iter()
-            .collect();
+        let expected: PathBuf = [
+            "C:\\SC\\LIVE",
+            "data",
+            "Localization",
+            "english",
+            "global.ini",
+        ]
+        .iter()
+        .collect();
         assert_eq!(inst.localization_override(Language::English), expected);
     }
 
@@ -300,9 +306,15 @@ mod tests {
         drop(f);
 
         let inst = Installation::from_parts(Channel::Live, &install).unwrap();
-        assert!(!inst.is_valid(), "is_valid should be false without Data.p4k");
+        assert!(
+            !inst.is_valid(),
+            "is_valid should be false without Data.p4k"
+        );
 
         std::fs::write(install.join("Data.p4k"), b"fake p4k bytes").unwrap();
-        assert!(inst.is_valid(), "is_valid should be true once Data.p4k exists");
+        assert!(
+            inst.is_valid(),
+            "is_valid should be true once Data.p4k exists"
+        );
     }
 }

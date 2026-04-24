@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -26,8 +26,16 @@ pub struct ProximityAssistModifierParams {
 }
 
 impl Pooled for ProximityAssistModifierParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_proximityassistmodifier.proximity_assist_modifier_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_proximityassistmodifier.proximity_assist_modifier_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_proximityassistmodifier
+            .proximity_assist_modifier_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_proximityassistmodifier
+            .proximity_assist_modifier_params
+    }
 }
 
 impl<'a> Extract<'a> for ProximityAssistModifierParams {
@@ -38,4 +46,3 @@ impl<'a> Extract<'a> for ProximityAssistModifierParams {
         }
     }
 }
-

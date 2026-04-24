@@ -109,14 +109,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             continue;
         };
 
-        let record_name = record_names
-            .get(&guid)
-            .copied()
-            .unwrap_or("<unknown>");
+        let record_name = record_names.get(&guid).copied().unwrap_or("<unknown>");
 
         // Find SAttachableComponentParams → SItemDefinition
-        let item_def = find_attachable(ecd, pools)
-            .and_then(|a| a.attach_def.and_then(|h| h.get(pools)));
+        let item_def =
+            find_attachable(ecd, pools).and_then(|a| a.attach_def.and_then(|h| h.get(pools)));
 
         // Find SCItemWeaponComponentParams
         let weapon_params = find_weapon_params(ecd, pools);
@@ -153,9 +150,18 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     other_weapons.sort_by(|a, b| a.name.cmp(&b.name));
 
     println!("  without SCItemWeaponComponentParams: {no_weapon_component}");
-    println!("  ship weapons (WeaponGun + Gun/Rocket): {}", ship_weapons.len());
-    println!("  FPS weapons (WeaponPersonal, !Gadget): {}", fps_weapons.len());
-    println!("  other (has weapon component but different type/subtype): {}", other_weapons.len());
+    println!(
+        "  ship weapons (WeaponGun + Gun/Rocket): {}",
+        ship_weapons.len()
+    );
+    println!(
+        "  FPS weapons (WeaponPersonal, !Gadget): {}",
+        fps_weapons.len()
+    );
+    println!(
+        "  other (has weapon component but different type/subtype): {}",
+        other_weapons.len()
+    );
 
     // ── Ship weapons ─────────────────────────────────────────────────────
     println!("\n{}", "=".repeat(80));
@@ -172,7 +178,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // ── Other weapon-component entities ──────────────────────────────────
     if !other_weapons.is_empty() {
         println!("\n{}", "=".repeat(80));
-        println!("OTHER WEAPON-COMPONENT ENTITIES ({} total)", other_weapons.len());
+        println!(
+            "OTHER WEAPON-COMPONENT ENTITIES ({} total)",
+            other_weapons.len()
+        );
         println!("{}", "=".repeat(80));
         for w in &other_weapons {
             println!(
@@ -312,24 +321,19 @@ fn build_weapon_info<'a>(
     let (fire_rate_rpm, fire_action_type, heat_per_shot_from_action) = extract_fire_info(wp, pools);
 
     // Heat params from connection_params → simplified_heat_params
-    let connection = wp
-        .connection_params
-        .and_then(|h| h.get(pools));
+    let connection = wp.connection_params.and_then(|h| h.get(pools));
     let heat_params = connection
         .and_then(|c| c.simplified_heat_params)
         .and_then(|h| h.get(pools));
 
     // Regen consumer params
-    let regen = wp
-        .weapon_regen_consumer_params
-        .and_then(|h| h.get(pools));
+    let regen = wp.weapon_regen_consumer_params.and_then(|h| h.get(pools));
 
     // Ammo container ref — check both on weapon component and on the
     // SAmmoContainerComponentParams component
-    let ammo_ref = wp.ammo_container_record.or_else(|| {
-        find_ammo_container(ecd, pools)
-            .and_then(|ac| ac.ammo_params_record)
-    });
+    let ammo_ref = wp
+        .ammo_container_record
+        .or_else(|| find_ammo_container(ecd, pools).and_then(|ac| ac.ammo_params_record));
 
     WeaponInfo {
         guid,
@@ -384,19 +388,12 @@ fn extract_fire_info(
         }
         SWeaponActionParamsPtr::SWeaponActionFireSingleParams(h) => {
             let p = h.get(pools);
-            (
-                p.map(|p| p.fire_rate),
-                Some("FireSingle".into()),
-                None,
-            )
+            (p.map(|p| p.fire_rate), Some("FireSingle".into()), None)
         }
         SWeaponActionParamsPtr::SWeaponActionFireBeamParams(_) => {
             (None, Some("FireBeam".into()), None)
         }
-        #[cfg(any(
-            feature = "entities-scitem-ships",
-            feature = "entities-scitem-weapons",
-        ))]
+        #[cfg(any(feature = "entities-scitem-ships", feature = "entities-scitem-weapons",))]
         SWeaponActionParamsPtr::SWeaponActionFireHealingBeamParams(_) => {
             (None, Some("HealingBeam".into()), None)
         }
@@ -429,7 +426,11 @@ fn print_weapon_table(weapons: &[WeaponInfo], verbose: bool) {
             w.fire_rate_rpm.unwrap_or(0),
             w.fire_action_type.as_deref().unwrap_or("?"),
             sustain,
-            if w.ammo_container_ref.is_some() { "yes" } else { "no " },
+            if w.ammo_container_ref.is_some() {
+                "yes"
+            } else {
+                "no "
+            },
             w.num_components,
         );
 
@@ -470,7 +471,10 @@ fn analyze_ammo_chain(
     store: &RecordStore,
 ) {
     let all: Vec<&WeaponInfo> = ship.iter().chain(fps.iter()).collect();
-    let with_ammo = all.iter().filter(|w| w.ammo_container_ref.is_some()).count();
+    let with_ammo = all
+        .iter()
+        .filter(|w| w.ammo_container_ref.is_some())
+        .count();
     let without_ammo = all.len() - with_ammo;
 
     println!("  weapons with ammo reference: {with_ammo}");
@@ -485,7 +489,9 @@ fn analyze_ammo_chain(
     let mut projectile_types: HashMap<String, u32> = HashMap::new();
 
     for w in &all {
-        let Some(ammo_guid) = w.ammo_container_ref else { continue };
+        let Some(ammo_guid) = w.ammo_container_ref else {
+            continue;
+        };
         if let Some(&ammo_handle) = ammo_map.get(&ammo_guid) {
             if let Some(ammo) = ammo_handle.get(pools) {
                 resolved += 1;

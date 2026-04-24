@@ -1,5 +1,5 @@
-use sc_extract::generated::*;
 use sc_extract::DataPools;
+use sc_extract::generated::*;
 
 /// Ballistic heat model — extracted from `SWeaponSimplifiedHeatParams` +
 /// the weapon's primary fire action / `SWeaponConnectionParams`.
@@ -220,9 +220,7 @@ pub(crate) fn extract_sustain(
     weapon_params: &SCItemWeaponComponentParams,
     pools: &DataPools,
 ) -> SustainKind {
-    let connection = weapon_params
-        .connection_params
-        .and_then(|h| h.get(pools));
+    let connection = weapon_params.connection_params.and_then(|h| h.get(pools));
 
     // Check heat model first
     if let Some(heat) = connection
@@ -268,10 +266,7 @@ pub(crate) fn extract_sustain(
 /// `heat_per_shot` field with meaningful value. Returns `None` for
 /// Sequence variants (no per-shot heat) or Rapid/Single with zero hps
 /// (scatter guns) — the caller falls back to `heat_rate_online`.
-fn heat_rate_from_fire_action(
-    wp: &SCItemWeaponComponentParams,
-    pools: &DataPools,
-) -> Option<f32> {
+fn heat_rate_from_fire_action(wp: &SCItemWeaponComponentParams, pools: &DataPools) -> Option<f32> {
     let action = wp.fire_actions.first()?;
     match action {
         SWeaponActionParamsPtr::SWeaponActionFireRapidParams(h) => {
@@ -326,7 +321,10 @@ mod tests {
         let h = gats_s1_heat();
         let cold = h.time_to_overheat_cold().unwrap();
         let warm = h.time_to_overheat_warm().unwrap();
-        assert!((cold - warm).abs() < 0.01, "expected equal, got cold={cold} warm={warm}");
+        assert!(
+            (cold - warm).abs() < 0.01,
+            "expected equal, got cold={cold} warm={warm}"
+        );
     }
 
     #[test]
@@ -344,14 +342,20 @@ mod tests {
             overheat_temperature: 100.0,
             cooling_per_second: 34.6,
             overheat_fix_time: 3.3,
-            temperature_after_overheat_fix: 99.0,  // only 1 unit of headroom!
+            temperature_after_overheat_fix: 99.0, // only 1 unit of headroom!
             time_till_cooling_starts: 0.6,
             heat_rate_per_second: 35.55,
         };
         let cold = h.time_to_overheat_cold().unwrap();
         let warm = h.time_to_overheat_warm().unwrap();
-        assert!((cold - 2.81).abs() < 0.02, "expected cold~2.81s, got {cold}");
-        assert!((warm - 0.028).abs() < 0.005, "expected warm~0.028s, got {warm}");
+        assert!(
+            (cold - 2.81).abs() < 0.02,
+            "expected cold~2.81s, got {cold}"
+        );
+        assert!(
+            (warm - 0.028).abs() < 0.005,
+            "expected warm~0.028s, got {warm}"
+        );
         // Long-run duty is dominated by lockout: 0.028 / (0.028 + 3.3) = 0.84%.
         let duty = h.duty_cycle_long_run().unwrap();
         assert!(duty < 0.01, "expected <1% sustained duty, got {duty}");
@@ -370,7 +374,10 @@ mod tests {
         assert!((h.fire_time_in_window(25.64) - 23.44).abs() < 0.05);
         // T=60 → expected 51.2s fire → retention = 85.3%
         let fire_60 = h.fire_time_in_window(60.0);
-        assert!((fire_60 - 51.2).abs() < 0.1, "expected ~51.2s, got {fire_60}");
+        assert!(
+            (fire_60 - 51.2).abs() < 0.1,
+            "expected ~51.2s, got {fire_60}"
+        );
     }
 
     #[test]
@@ -411,8 +418,8 @@ mod tests {
     /// HRST Attrition-3 S3 (LaserRepeater). Live DCB values.
     fn attrition3_s3_energy() -> EnergyModel {
         EnergyModel {
-            max_ammo_load: 75.0,          // 75 shots capacity
-            max_regen_per_sec: 15.0,      // 15 shots/sec regen
+            max_ammo_load: 75.0,     // 75 shots capacity
+            max_regen_per_sec: 15.0, // 15 shots/sec regen
             regeneration_cooldown: 0.7,
             regeneration_cost_per_bullet: 84.0, // ship-level ammo-pool cost, not weapon-cycle
             requested_regen_per_sec: 4853.0,
@@ -432,7 +439,9 @@ mod tests {
     #[test]
     fn attrition3_asymptotic_fraction() {
         // 12.857 / 18.557 = 0.693 → 69.3% of burst
-        let f = attrition3_s3_energy().asymptotic_dps_fraction(350.0).unwrap();
+        let f = attrition3_s3_energy()
+            .asymptotic_dps_fraction(350.0)
+            .unwrap();
         assert!((f - 0.693).abs() < 0.005, "expected ~0.693, got {f}");
     }
 
@@ -444,7 +453,10 @@ mod tests {
         let alpha = 134.8;
         let shots = e.shots_in_window(rpm, 60.0).unwrap();
         let dps_60 = shots * alpha / 60.0;
-        assert!((dps_60 - 561.1).abs() < 2.0, "expected ~561.1 DPS, got {dps_60}");
+        assert!(
+            (dps_60 - 561.1).abs() < 2.0,
+            "expected ~561.1 DPS, got {dps_60}"
+        );
     }
 
     #[test]
@@ -460,7 +472,10 @@ mod tests {
         };
         let shots = e.shots_in_window(750.0, 60.0).unwrap();
         let dps_60 = shots * 43.7 / 60.0;
-        assert!((dps_60 - 306.9).abs() < 3.0, "expected ~306.9 DPS, got {dps_60}");
+        assert!(
+            (dps_60 - 306.9).abs() < 3.0,
+            "expected ~306.9 DPS, got {dps_60}"
+        );
     }
 
     #[test]
@@ -476,7 +491,10 @@ mod tests {
         };
         let shots = e.shots_in_window(100.0, 60.0).unwrap();
         let dps_60 = shots * 410.2 / 60.0;
-        assert!((dps_60 - 463.4).abs() < 2.0, "expected ~463.4 DPS, got {dps_60}");
+        assert!(
+            (dps_60 - 463.4).abs() < 2.0,
+            "expected ~463.4 DPS, got {dps_60}"
+        );
     }
 
     #[test]
@@ -496,7 +514,10 @@ mod tests {
         let alpha_per_shot = 49.5 * 8.0;
         let shots = e.shots_in_window(burst_rpm, 60.0).unwrap();
         let dps_60 = shots * alpha_per_shot / 60.0;
-        assert!((dps_60 - 462.0).abs() < 1.0, "expected 462 DPS, got {dps_60}");
+        assert!(
+            (dps_60 - 462.0).abs() < 1.0,
+            "expected 462 DPS, got {dps_60}"
+        );
     }
 
     #[test]

@@ -63,7 +63,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         .manufacturers
         .all()
         .map(|mfg| {
-            let resolved = mfg.name_key.as_deref()
+            let resolved = mfg
+                .name_key
+                .as_deref()
                 .and_then(|k| asset_data.locale.resolve(&sc_extract::LocaleKey::new(k)))
                 .map(|s| s.to_string())
                 .unwrap_or_else(|| mfg.code.clone());
@@ -77,13 +79,17 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut rows: Vec<WeaponRow> = Vec::new();
 
     for (&guid, &handle) in ecd_map {
-        let Some(ecd) = handle.get(pools) else { continue };
+        let Some(ecd) = handle.get(pools) else {
+            continue;
+        };
 
         let wp = find_component::<SCItemWeaponComponentParams>(ecd, pools);
         let Some(wp) = wp else { continue };
 
         // Only FireRapid primary action
-        if wp.fire_actions.is_empty() { continue; }
+        if wp.fire_actions.is_empty() {
+            continue;
+        }
         let action = &wp.fire_actions[0];
         let rapid = match action {
             SWeaponActionParamsPtr::SWeaponActionFireRapidParams(h) => h.get(pools),
@@ -113,8 +119,18 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         let ammo = resolve_ammo(ecd, wp, pools, ecd_map, ammo_map);
 
         // Extract damage from ammo
-        let (dmg_phys, dmg_energy, dmg_dist, ammo_speed, ammo_lifetime,
-             pen_base, pen_near, pen_far, expl_min, expl_max) = ammo
+        let (
+            dmg_phys,
+            dmg_energy,
+            dmg_dist,
+            ammo_speed,
+            ammo_lifetime,
+            pen_base,
+            pen_near,
+            pen_far,
+            expl_min,
+            expl_max,
+        ) = ammo
             .map(|a| extract_ammo_data(a, pools))
             .unwrap_or_default();
 
@@ -148,15 +164,25 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             display_name: display_name.to_string(),
             manufacturer: mfg_name.to_string(),
             size: item_def.map(|d| d.size).unwrap_or(0),
-            item_type: item_def.map(|d| format!("{:?}", d.r#type)).unwrap_or_default(),
-            item_subtype: item_def.map(|d| format!("{:?}", d.sub_type)).unwrap_or_default(),
+            item_type: item_def
+                .map(|d| format!("{:?}", d.r#type))
+                .unwrap_or_default(),
+            item_subtype: item_def
+                .map(|d| format!("{:?}", d.sub_type))
+                .unwrap_or_default(),
             rpm: rapid.fire_rate,
-            dmg_phys, dmg_energy, dmg_dist,
-            ammo_speed, ammo_lifetime,
+            dmg_phys,
+            dmg_energy,
+            dmg_dist,
+            ammo_speed,
+            ammo_lifetime,
             mag_size,
             pellets,
-            pen_base, pen_near, pen_far,
-            expl_min, expl_max,
+            pen_base,
+            pen_near,
+            pen_far,
+            expl_min,
+            expl_max,
             spin_up: rapid.spin_up_time,
             spin_down: rapid.spin_down_time,
             heat_per_shot: rapid.heat_per_shot,
@@ -177,7 +203,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 (false, true) => "ENERGY",
                 (true, true) => "BOTH",
                 (false, false) => "none",
-            }.to_string(),
+            }
+            .to_string(),
         });
     }
 
@@ -185,64 +212,111 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         // Ship (uppercase) first, then FPS (lowercase)
         let a_ship = a.record_name.starts_with(|c: char| c.is_uppercase());
         let b_ship = b.record_name.starts_with(|c: char| c.is_uppercase());
-        b_ship.cmp(&a_ship)
+        b_ship
+            .cmp(&a_ship)
             .then(a.size.cmp(&b.size))
             .then(a.record_name.cmp(&b.record_name))
     });
 
     // Print TSV header
-    println!("{}", [
-        "Record", "Display Name", "Manufacturer", "S", "Type", "SubType",
-        "RPM", "Phys", "Energy", "Dist", "Speed", "Lifetime",
-        "Mag", "Pellets",
-        "Pen Base", "Pen Near", "Pen Far",
-        "Expl Min", "Expl Max",
-        "SpinUp", "SpinDown",
-        "Sustain",
-        "HPS", "CoolDelay", "Cool/s",
-        "OHTemp", "OHFix", "AfterFix", "OHRounds", "OHTime",
-        "CapAmmo", "CapRegen/s", "CapCool", "CapCost",
-        "Actions",
-    ].join("\t"));
+    println!(
+        "{}",
+        [
+            "Record",
+            "Display Name",
+            "Manufacturer",
+            "S",
+            "Type",
+            "SubType",
+            "RPM",
+            "Phys",
+            "Energy",
+            "Dist",
+            "Speed",
+            "Lifetime",
+            "Mag",
+            "Pellets",
+            "Pen Base",
+            "Pen Near",
+            "Pen Far",
+            "Expl Min",
+            "Expl Max",
+            "SpinUp",
+            "SpinDown",
+            "Sustain",
+            "HPS",
+            "CoolDelay",
+            "Cool/s",
+            "OHTemp",
+            "OHFix",
+            "AfterFix",
+            "OHRounds",
+            "OHTime",
+            "CapAmmo",
+            "CapRegen/s",
+            "CapCool",
+            "CapCost",
+            "Actions",
+        ]
+        .join("\t")
+    );
 
     for r in &rows {
-        println!("{}", [
-            r.record_name.replace("EntityClassDefinition.", ""),
-            r.display_name.clone(),
-            r.manufacturer.clone(),
-            r.size.to_string(),
-            r.item_type.clone(),
-            r.item_subtype.clone(),
-            r.rpm.to_string(),
-            fmt_f32(r.dmg_phys),
-            fmt_f32(r.dmg_energy),
-            fmt_f32(r.dmg_dist),
-            fmt_f32(r.ammo_speed),
-            fmt_f32(r.ammo_lifetime),
-            r.mag_size.map(|v| v.to_string()).unwrap_or_default(),
-            if r.pellets > 0 { r.pellets.to_string() } else { String::new() },
-            fmt_f32(r.pen_base),
-            fmt_f32(r.pen_near),
-            fmt_f32(r.pen_far),
-            fmt_f32(r.expl_min),
-            fmt_f32(r.expl_max),
-            fmt_f32(r.spin_up),
-            fmt_f32(r.spin_down),
-            r.sustain.clone(),
-            fmt_f32(r.heat_per_shot),
-            fmt_opt(r.cool_delay),
-            fmt_opt(r.cool_per_sec),
-            fmt_opt(r.overheat_temp),
-            fmt_opt(r.overheat_fix),
-            fmt_opt(r.after_fix),
-            r.max_rounds_overheat.map(|v| v.to_string()).unwrap_or_default(),
-            r.max_time_overheat.map(|v| format!("{v:.2}")).unwrap_or_default(),
-            r.regen_max_ammo.map(|v| format!("{v:.0}")).unwrap_or_default(),
-            r.regen_max_per_sec.map(|v| format!("{v:.1}")).unwrap_or_default(),
-            r.regen_cooldown.map(|v| format!("{v:.1}")).unwrap_or_default(),
-            r.regen_cost.map(|v| format!("{v:.2}")).unwrap_or_default(),
-            r.num_fire_actions.to_string(),
-        ].join("\t"));
+        println!(
+            "{}",
+            [
+                r.record_name.replace("EntityClassDefinition.", ""),
+                r.display_name.clone(),
+                r.manufacturer.clone(),
+                r.size.to_string(),
+                r.item_type.clone(),
+                r.item_subtype.clone(),
+                r.rpm.to_string(),
+                fmt_f32(r.dmg_phys),
+                fmt_f32(r.dmg_energy),
+                fmt_f32(r.dmg_dist),
+                fmt_f32(r.ammo_speed),
+                fmt_f32(r.ammo_lifetime),
+                r.mag_size.map(|v| v.to_string()).unwrap_or_default(),
+                if r.pellets > 0 {
+                    r.pellets.to_string()
+                } else {
+                    String::new()
+                },
+                fmt_f32(r.pen_base),
+                fmt_f32(r.pen_near),
+                fmt_f32(r.pen_far),
+                fmt_f32(r.expl_min),
+                fmt_f32(r.expl_max),
+                fmt_f32(r.spin_up),
+                fmt_f32(r.spin_down),
+                r.sustain.clone(),
+                fmt_f32(r.heat_per_shot),
+                fmt_opt(r.cool_delay),
+                fmt_opt(r.cool_per_sec),
+                fmt_opt(r.overheat_temp),
+                fmt_opt(r.overheat_fix),
+                fmt_opt(r.after_fix),
+                r.max_rounds_overheat
+                    .map(|v| v.to_string())
+                    .unwrap_or_default(),
+                r.max_time_overheat
+                    .map(|v| format!("{v:.2}"))
+                    .unwrap_or_default(),
+                r.regen_max_ammo
+                    .map(|v| format!("{v:.0}"))
+                    .unwrap_or_default(),
+                r.regen_max_per_sec
+                    .map(|v| format!("{v:.1}"))
+                    .unwrap_or_default(),
+                r.regen_cooldown
+                    .map(|v| format!("{v:.1}"))
+                    .unwrap_or_default(),
+                r.regen_cost.map(|v| format!("{v:.2}")).unwrap_or_default(),
+                r.num_fire_actions.to_string(),
+            ]
+            .join("\t")
+        );
     }
 
     eprintln!("\n{} FireRapid weapons dumped", rows.len());
@@ -293,7 +367,10 @@ struct WeaponRow {
 
 // ── Helpers ──────────────────────────────────────────────────────────────
 
-fn find_component<'a, T: 'static>(ecd: &'a EntityClassDefinition, pools: &'a DataPools) -> Option<&'a T> {
+fn find_component<'a, T: 'static>(
+    ecd: &'a EntityClassDefinition,
+    pools: &'a DataPools,
+) -> Option<&'a T> {
     for comp in &ecd.components {
         // Try each known component variant
         let ptr = try_extract_component::<T>(comp, pools);
@@ -348,7 +425,8 @@ fn resolve_ammo<'a>(
         // Path 2: two-hop — ammoContainerRecord → EntityClassDefinition → SAmmoContainerComponentParams → ammoParamsRecord
         if let Some(&container_h) = ecd_map.get(&guid) {
             if let Some(container_ecd) = container_h.get(pools) {
-                let ammo_comp = find_component::<SAmmoContainerComponentParams>(container_ecd, pools);
+                let ammo_comp =
+                    find_component::<SAmmoContainerComponentParams>(container_ecd, pools);
                 if let Some(ac) = ammo_comp {
                     if let Some(ammo_guid) = ac.ammo_params_record {
                         if let Some(&ammo_h) = ammo_map.get(&ammo_guid) {
@@ -367,7 +445,10 @@ fn resolve_ammo<'a>(
     ammo_h.get(pools)
 }
 
-fn extract_ammo_data(ammo: &AmmoParams, pools: &DataPools) -> (f32, f32, f32, f32, f32, f32, f32, f32, f32, f32) {
+fn extract_ammo_data(
+    ammo: &AmmoParams,
+    pools: &DataPools,
+) -> (f32, f32, f32, f32, f32, f32, f32, f32, f32, f32) {
     let speed = ammo.speed;
     let lifetime = ammo.lifetime;
 
@@ -432,14 +513,26 @@ fn extract_ammo_data(ammo: &AmmoParams, pools: &DataPools) -> (f32, f32, f32, f3
     // that doesn't exist on BulletProjectileParams. It's in a different struct.
     // Let's skip pen for now and verify the path later.
 
-    (phys, energy, dist, speed, lifetime, pen_base, pen_near, pen_far, expl_min, expl_max)
+    (
+        phys, energy, dist, speed, lifetime, pen_base, pen_near, pen_far, expl_min, expl_max,
+    )
 }
 
 fn fmt_f32(v: f32) -> String {
-    if v == 0.0 { String::new() } else { format!("{v:.2}") }
+    if v == 0.0 {
+        String::new()
+    } else {
+        format!("{v:.2}")
+    }
 }
 
 fn fmt_opt(v: Option<f32>) -> String {
-    v.map(|v| if v == 0.0 { String::new() } else { format!("{v:.2}") })
-        .unwrap_or_default()
+    v.map(|v| {
+        if v == 0.0 {
+            String::new()
+        } else {
+            format!("{v:.2}")
+        }
+    })
+    .unwrap_or_default()
 }

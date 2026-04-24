@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -39,8 +39,16 @@ pub struct GeometryInstancer_Serialized {
 }
 
 impl Pooled for GeometryInstancer_Serialized {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_geometryinstancer.geometry_instancer_serialized }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_geometryinstancer.geometry_instancer_serialized }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_geometryinstancer
+            .geometry_instancer_serialized
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_geometryinstancer
+            .geometry_instancer_serialized
+    }
 }
 
 impl<'a> Extract<'a> for GeometryInstancer_Serialized {
@@ -50,23 +58,42 @@ impl<'a> Extract<'a> for GeometryInstancer_Serialized {
             version: inst.get_i32("Version").unwrap_or_default(),
             flags: inst.get_i32("Flags").unwrap_or_default(),
             geometry: match inst.get("Geometry") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceCGF>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<GlobalResourceCGF>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             material: match inst.get("Material") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceMaterial>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<GlobalResourceMaterial>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             min_aabb: match inst.get("MinAABB") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             max_aabb: match inst.get("MaxAABB") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             encoded_size: inst.get_i32("EncodedSize").unwrap_or_default(),
-            encoded_base64: inst.get_str("EncodedBase64").map(String::from).unwrap_or_default(),
+            encoded_base64: inst
+                .get_str("EncodedBase64")
+                .map(String::from)
+                .unwrap_or_default(),
         }
     }
 }
@@ -79,8 +106,16 @@ pub struct GeometryInstancerComponentParams {
 }
 
 impl Pooled for GeometryInstancerComponentParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_geometryinstancer.geometry_instancer_component_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_geometryinstancer.geometry_instancer_component_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_geometryinstancer
+            .geometry_instancer_component_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_geometryinstancer
+            .geometry_instancer_component_params
+    }
 }
 
 impl<'a> Extract<'a> for GeometryInstancerComponentParams {
@@ -88,10 +123,14 @@ impl<'a> Extract<'a> for GeometryInstancerComponentParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             serialized: match inst.get("Serialized") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GeometryInstancer_Serialized>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<GeometryInstancer_Serialized>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
         }
     }
 }
-

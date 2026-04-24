@@ -132,7 +132,8 @@ pub fn run(options: &RunOptions) -> Result<Summary> {
     // feature classifier (via `reachable_indices` derived from
     // `emitted_names`). Previously this BFS was hidden inside
     // `compute_emitted_struct_names`.
-    let reachable_structs = emit::compute_reachable_struct_indices(&db, &descendants, &property_cache);
+    let reachable_structs =
+        emit::compute_reachable_struct_indices(&db, &descendants, &property_cache);
     let emitted_names = emit::compute_emitted_struct_names(&db, &reachable_structs);
     let pool_fields = emit::compute_pool_field_names(&emitted_names);
     let poly_bases = emit::compute_poly_bases(&emitted_names, &descendants, &property_cache);
@@ -162,14 +163,13 @@ pub fn run(options: &RunOptions) -> Result<Summary> {
 
     // Classify types into features.
     tracing::info!("classifying types into features");
-    let reachable: std::collections::HashSet<usize> = emitted_names
-        .keys()
-        .map(|&idx| idx as usize)
-        .collect();
+    let reachable: std::collections::HashSet<usize> =
+        emitted_names.keys().map(|&idx| idx as usize).collect();
     tracing::info!("building GUID → instance lookup for Reference resolution");
     let guid_lookup = crate::closure::build_guid_lookup(&db);
     let feature_rules = features::FeatureRules::default();
-    let mut dangling_refs: std::collections::HashSet<svarog_common::CigGuid> = std::collections::HashSet::new();
+    let mut dangling_refs: std::collections::HashSet<svarog_common::CigGuid> =
+        std::collections::HashSet::new();
     let feature_map = features::classify_features(
         &db,
         &reachable,
@@ -225,9 +225,13 @@ pub fn run(options: &RunOptions) -> Result<Summary> {
     }
 
     // Group struct indices by feature.
-    let mut by_feature: std::collections::BTreeMap<String, Vec<u32>> = std::collections::BTreeMap::new();
+    let mut by_feature: std::collections::BTreeMap<String, Vec<u32>> =
+        std::collections::BTreeMap::new();
     for (&struct_idx, feature) in &feature_assignments {
-        by_feature.entry(feature.clone()).or_default().push(struct_idx);
+        by_feature
+            .entry(feature.clone())
+            .or_default()
+            .push(struct_idx);
     }
     // Sort indices within each feature for deterministic output.
     for indices in by_feature.values_mut() {
@@ -235,7 +239,8 @@ pub fn run(options: &RunOptions) -> Result<Summary> {
     }
 
     // Discover record types.
-    let mut record_struct_indices: std::collections::HashSet<u32> = std::collections::HashSet::new();
+    let mut record_struct_indices: std::collections::HashSet<u32> =
+        std::collections::HashSet::new();
     for record in db.records() {
         if record.struct_index >= 0 && emitted_names.contains_key(&(record.struct_index as u32)) {
             record_struct_indices.insert(record.struct_index as u32);
@@ -288,7 +293,13 @@ pub fn run(options: &RunOptions) -> Result<Summary> {
         write_file(&feature_dir.join("types.rs"), &types_src)?;
 
         // pools.rs
-        let pools_src = emit::emit_feature_pools(feature, &indices, &emitted_names, &pool_fields, &feature_cfgs);
+        let pools_src = emit::emit_feature_pools(
+            feature,
+            &indices,
+            &emitted_names,
+            &pool_fields,
+            &feature_cfgs,
+        );
         write_file(&feature_dir.join("pools.rs"), &pools_src)?;
 
         // index.rs (only if this feature has record types)
@@ -299,7 +310,13 @@ pub fn run(options: &RunOptions) -> Result<Summary> {
             .collect();
         let has_index = !feature_record_indices.is_empty();
         if has_index {
-            if let Some(index_src) = emit::emit_feature_index(&db, feature, &feature_record_indices, &emitted_names, &feature_cfgs) {
+            if let Some(index_src) = emit::emit_feature_index(
+                &db,
+                feature,
+                &feature_record_indices,
+                &emitted_names,
+                &feature_cfgs,
+            ) {
                 write_file(&feature_dir.join("index.rs"), &index_src)?;
             }
             features_with_index.push(feature.clone());
@@ -317,23 +334,51 @@ pub fn run(options: &RunOptions) -> Result<Summary> {
     tracing::info!("emitting poly_enums.rs");
     write_file(
         &options.out_dir.join("poly_enums.rs"),
-        &emit::emit_poly_enums_file(&db, &poly_bases, &emitted_names, &descendants, &feature_assignments, &feature_cfgs),
+        &emit::emit_poly_enums_file(
+            &db,
+            &poly_bases,
+            &emitted_names,
+            &descendants,
+            &feature_assignments,
+            &feature_cfgs,
+        ),
     )?;
 
     tracing::info!("emitting data_pools.rs");
-    write_file(&options.out_dir.join("data_pools.rs"), &emit::emit_top_data_pools(&features_emitted))?;
+    write_file(
+        &options.out_dir.join("data_pools.rs"),
+        &emit::emit_top_data_pools(&features_emitted),
+    )?;
 
     tracing::info!("emitting record_index.rs");
-    write_file(&options.out_dir.join("record_index.rs"), &emit::emit_top_record_index(&features_with_index))?;
+    write_file(
+        &options.out_dir.join("record_index.rs"),
+        &emit::emit_top_record_index(&features_with_index),
+    )?;
 
     tracing::info!("emitting record_store.rs");
-    write_file(&options.out_dir.join("record_store.rs"), &emit::emit_record_store(&db, &emitted_names, &pool_fields, &feature_assignments, &feature_cfgs))?;
+    write_file(
+        &options.out_dir.join("record_store.rs"),
+        &emit::emit_record_store(
+            &db,
+            &emitted_names,
+            &pool_fields,
+            &feature_assignments,
+            &feature_cfgs,
+        ),
+    )?;
 
     tracing::info!("emitting metadata.rs");
-    write_file(&options.out_dir.join("metadata.rs"), &emit::emit_metadata(&metadata))?;
+    write_file(
+        &options.out_dir.join("metadata.rs"),
+        &emit::emit_metadata(&metadata),
+    )?;
 
     tracing::info!("emitting mod.rs");
-    write_file(&options.out_dir.join("mod.rs"), &emit::emit_top_mod(&features_emitted, &feature_map))?;
+    write_file(
+        &options.out_dir.join("mod.rs"),
+        &emit::emit_top_mod(&features_emitted, &feature_map),
+    )?;
 
     // Update Cargo.toml [features] sections.
     // 1. sc-extract-generated/Cargo.toml — leaf features
@@ -358,7 +403,8 @@ pub fn run(options: &RunOptions) -> Result<Summary> {
         update_cargo_features(&gen_dir.join("Cargo.toml"), &cargo_features, &feature_map)?;
 
         // sc-extract lives alongside sc-extract-generated under crates/.
-        let extract_cargo = gen_dir.parent() // crates/
+        let extract_cargo = gen_dir
+            .parent() // crates/
             .map(|p| p.join("sc-extract").join("Cargo.toml"));
         if let Some(extract_path) = extract_cargo
             && extract_path.exists()
@@ -433,7 +479,6 @@ fn write_file(path: &Path, contents: &str) -> Result<()> {
         source,
     })
 }
-
 
 /// Update the [features] section in Cargo.toml.
 ///
@@ -564,9 +609,14 @@ fn update_sc_extract_features(
             continue;
         }
         let _ = write!(out, "{parent} = [");
-        let valid: Vec<&String> = children.iter().filter(|c| all_features.contains(c)).collect();
+        let valid: Vec<&String> = children
+            .iter()
+            .filter(|c| all_features.contains(c))
+            .collect();
         for (i, child) in valid.iter().enumerate() {
-            if i > 0 { out.push_str(", "); }
+            if i > 0 {
+                out.push_str(", ");
+            }
             let _ = write!(out, "\"sc-extract-generated/{child}\"");
         }
         out.push_str("]\n");
@@ -576,7 +626,9 @@ fn update_sc_extract_features(
     out.push('\n');
     out.push_str("# Auto-generated: each feature forwards to sc-extract-generated.\n");
     for f in all_features {
-        if f == "core" { continue; }
+        if f == "core" {
+            continue;
+        }
         if !written.insert(f.clone()) {
             continue;
         }
@@ -620,11 +672,15 @@ pub fn run_dump_refs(options: &RunOptions) -> Result<()> {
     // Histogram: map (instance_index, guid_class) → count
     // where guid_class ∈ { Zero, InMap, NotInMap }.
     let mut by_idx_zero: std::collections::BTreeMap<i32, usize> = std::collections::BTreeMap::new();
-    let mut by_idx_inmap: std::collections::BTreeMap<i32, usize> = std::collections::BTreeMap::new();
-    let mut by_idx_dangling: std::collections::BTreeMap<i32, usize> = std::collections::BTreeMap::new();
+    let mut by_idx_inmap: std::collections::BTreeMap<i32, usize> =
+        std::collections::BTreeMap::new();
+    let mut by_idx_dangling: std::collections::BTreeMap<i32, usize> =
+        std::collections::BTreeMap::new();
 
     for i in 0..total {
-        let Some(entry) = db.reference_value(i) else { continue };
+        let Some(entry) = db.reference_value(i) else {
+            continue;
+        };
         let instance_index = entry.instance_index;
         let guid = entry.record_id;
         if guid.is_empty() {
@@ -643,7 +699,9 @@ pub fn run_dump_refs(options: &RunOptions) -> Result<()> {
     let mut inmap_unique: std::collections::HashSet<svarog_common::CigGuid> =
         std::collections::HashSet::new();
     for i in 0..total {
-        let Some(entry) = db.reference_value(i) else { continue };
+        let Some(entry) = db.reference_value(i) else {
+            continue;
+        };
         if entry.record_id.is_empty() {
             continue;
         }
@@ -664,7 +722,10 @@ pub fn run_dump_refs(options: &RunOptions) -> Result<()> {
     println!();
     println!("  zero GUID (svarog 'null'):     {zero_total}");
     println!("  non-zero GUID, resolves:       {inmap_total}");
-    println!("  non-zero GUID, DANGLING:       {dangling_total}  (unique guids: {})", dangling_guids_unique.len());
+    println!(
+        "  non-zero GUID, DANGLING:       {dangling_total}  (unique guids: {})",
+        dangling_guids_unique.len()
+    );
     println!("  non-zero GUID, in-map unique:  {}", inmap_unique.len());
     println!();
 
@@ -692,7 +753,9 @@ pub fn run_dump_refs(options: &RunOptions) -> Result<()> {
         if shown >= 10 {
             break;
         }
-        let Some(entry) = db.reference_value(i) else { continue };
+        let Some(entry) = db.reference_value(i) else {
+            continue;
+        };
         if entry.record_id.is_empty() {
             continue;
         }

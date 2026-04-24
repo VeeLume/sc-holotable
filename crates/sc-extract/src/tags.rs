@@ -17,8 +17,8 @@ use std::collections::HashMap;
 
 use serde::{Deserialize, Serialize};
 
-use crate::svarog_datacore::DataCoreDatabase;
 use crate::Guid;
+use crate::svarog_datacore::DataCoreDatabase;
 
 /// A single node in the [`TagTree`].
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]

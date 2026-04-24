@@ -169,7 +169,12 @@ mod tests {
 
     /// Create a fake install directory with a valid `build_manifest.id` and
     /// (optionally) a `Data.p4k` file. Returns the path to the install root.
-    fn fake_install(parent: &Path, channel_name: &str, version: &str, with_data_p4k: bool) -> PathBuf {
+    fn fake_install(
+        parent: &Path,
+        channel_name: &str,
+        version: &str,
+        with_data_p4k: bool,
+    ) -> PathBuf {
         let root = parent.join(channel_name);
         std::fs::create_dir_all(&root).unwrap();
         let mut f = std::fs::File::create(root.join("build_manifest.id")).unwrap();

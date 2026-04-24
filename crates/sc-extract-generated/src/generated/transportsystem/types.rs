@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -36,8 +36,12 @@ pub struct TransportNavSplineParams {
 }
 
 impl Pooled for TransportNavSplineParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.transportsystem.transport_nav_spline_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.transportsystem.transport_nav_spline_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.transportsystem.transport_nav_spline_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.transportsystem.transport_nav_spline_params
+    }
 }
 
 impl<'a> Extract<'a> for TransportNavSplineParams {
@@ -45,19 +49,31 @@ impl<'a> Extract<'a> for TransportNavSplineParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             start_tags: match inst.get("startTags") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<TagList>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<TagList>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             start_tag_filter: match inst.get("startTagFilter") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<TagsDNFTerm>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<TagsDNFTerm>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             end_tags: match inst.get("endTags") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<TagList>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<TagList>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             end_tag_filter: match inst.get("endTagFilter") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<TagsDNFTerm>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<TagsDNFTerm>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             reversible: inst.get_bool("reversible").unwrap_or_default(),
@@ -65,4 +81,3 @@ impl<'a> Extract<'a> for TransportNavSplineParams {
         }
     }
 }
-

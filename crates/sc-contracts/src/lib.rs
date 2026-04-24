@@ -55,18 +55,18 @@ mod ships;
 mod titles;
 
 pub use blueprints::{BlueprintItem, BlueprintPool, BlueprintPoolRegistry};
-pub use classify::{parse_ai_skill, SpawnContext};
+pub use classify::{SpawnContext, parse_ai_skill};
 pub use currency::{CurrencyInfo, RewardCurrencyCatalog};
 pub use expand::{
-    expand_all, Availability, BlueprintReward, ContractOrigin, Cooldowns, DurationRange,
-    EncounterGroup, EncounterSlot, EncounterWave, ExpandedContract, HandlerKind, ItemReward,
-    OtherReward, PrereqView, RepReward, RewardAmount, ScripReward,
+    Availability, BlueprintReward, ContractOrigin, Cooldowns, DurationRange, EncounterGroup,
+    EncounterSlot, EncounterWave, ExpandedContract, HandlerKind, ItemReward, OtherReward,
+    PrereqView, RepReward, RewardAmount, ScripReward, expand_all,
 };
 pub use index::ContractIndex;
 pub use locality::{LocalityRegistry, LocalityView, LocationRef, LocationRegistry, SystemKey};
 pub use merge::{
-    find_bp_conflicts, merge_expansions, merge_stats, BpConflictGroup, BpConflictMember, Contract,
-    MergeStats, Variation,
+    BpConflictGroup, BpConflictMember, Contract, MergeStats, Variation, find_bp_conflicts,
+    merge_expansions, merge_stats,
 };
 pub use ships::{ShipCandidate, ShipEntity, ShipRegistry};
-pub use titles::{resolve_contract_text, ContractAnchor, ResolvedText};
+pub use titles::{ContractAnchor, ResolvedText, resolve_contract_text};

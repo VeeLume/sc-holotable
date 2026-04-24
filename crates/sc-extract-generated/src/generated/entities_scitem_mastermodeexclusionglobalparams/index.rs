@@ -9,15 +9,16 @@
 
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
+use super::super::*;
+use crate::Handle;
 use std::collections::HashMap;
 use svarog_common::CigGuid;
-use crate::Handle;
-use super::super::*;
 
 /// Record index for the `entities-scitem-mastermodeexclusionglobalparams` feature.
 #[derive(Default)]
 pub struct EntitiesScitemMastermodeexclusionglobalparamsIndex {
-    pub master_mode_exclusion_global_params: HashMap<CigGuid, Handle<MasterModeExclusionGlobalParams>>,
+    pub master_mode_exclusion_global_params:
+        HashMap<CigGuid, Handle<MasterModeExclusionGlobalParams>>,
 }
 
 impl EntitiesScitemMastermodeexclusionglobalparamsIndex {
@@ -28,5 +29,7 @@ impl EntitiesScitemMastermodeexclusionglobalparamsIndex {
         total
     }
 
-    pub fn is_empty(&self) -> bool { self.len() == 0 }
+    pub fn is_empty(&self) -> bool {
+        self.len() == 0
+    }
 }

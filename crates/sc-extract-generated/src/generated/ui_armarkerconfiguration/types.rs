@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -31,18 +31,34 @@ pub struct GlobalMarkerConfigs {
 }
 
 impl Pooled for GlobalMarkerConfigs {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_armarkerconfiguration.global_marker_configs }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_armarkerconfiguration.global_marker_configs }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.ui_armarkerconfiguration.global_marker_configs
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.ui_armarkerconfiguration.global_marker_configs
+    }
 }
 
 impl<'a> Extract<'a> for GlobalMarkerConfigs {
     const TYPE_NAME: &'static str = "GlobalMarkerConfigs";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            mission_point_marker_config: inst.get("missionPointMarkerConfig").and_then(|v| v.as_record_ref()).map(|r| r.guid),
-            party_member_marker_config: inst.get("partyMemberMarkerConfig").and_then(|v| v.as_record_ref()).map(|r| r.guid),
-            landing_area_marker_config: inst.get("landingAreaMarkerConfig").and_then(|v| v.as_record_ref()).map(|r| r.guid),
-            unattended_vehicle_marker_config: inst.get("unattendedVehicleMarkerConfig").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            mission_point_marker_config: inst
+                .get("missionPointMarkerConfig")
+                .and_then(|v| v.as_record_ref())
+                .map(|r| r.guid),
+            party_member_marker_config: inst
+                .get("partyMemberMarkerConfig")
+                .and_then(|v| v.as_record_ref())
+                .map(|r| r.guid),
+            landing_area_marker_config: inst
+                .get("landingAreaMarkerConfig")
+                .and_then(|v| v.as_record_ref())
+                .map(|r| r.guid),
+            unattended_vehicle_marker_config: inst
+                .get("unattendedVehicleMarkerConfig")
+                .and_then(|v| v.as_record_ref())
+                .map(|r| r.guid),
         }
     }
 }
@@ -59,8 +75,12 @@ pub struct Marker_AbilityNearestFace {
 }
 
 impl Pooled for Marker_AbilityNearestFace {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_armarkerconfiguration.marker_ability_nearest_face }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_armarkerconfiguration.marker_ability_nearest_face }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.ui_armarkerconfiguration.marker_ability_nearest_face
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.ui_armarkerconfiguration.marker_ability_nearest_face
+    }
 }
 
 impl<'a> Extract<'a> for Marker_AbilityNearestFace {
@@ -73,4 +93,3 @@ impl<'a> Extract<'a> for Marker_AbilityNearestFace {
         }
     }
 }
-

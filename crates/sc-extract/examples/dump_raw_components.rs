@@ -5,10 +5,7 @@
 //!     --example dump_raw_components
 //! ```
 
-use sc_extract::{
-    AssetConfig, AssetData, AssetSource, DatacoreConfig,
-    svarog_datacore::Value,
-};
+use sc_extract::{AssetConfig, AssetData, AssetSource, DatacoreConfig, svarog_datacore::Value};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     tracing_subscriber::fmt().with_env_filter("info").init();
@@ -24,9 +21,14 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut found = 0;
     for record in db.records() {
         let struct_name = db.struct_name(record.struct_index as usize).unwrap_or("?");
-        if struct_name != "EntityClassDefinition" { continue; }
+        if struct_name != "EntityClassDefinition" {
+            continue;
+        }
         let name = db.record_name(record).unwrap_or("");
-        if name.contains("LaserCannon_S7") || name.contains("BallisticGatling_S1") || name.contains("LaserRepeater_S1") {
+        if name.contains("LaserCannon_S7")
+            || name.contains("BallisticGatling_S1")
+            || name.contains("LaserRepeater_S1")
+        {
             if found < 5 {
                 println!("Record name format: '{}'", name);
                 found += 1;
@@ -36,10 +38,14 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     for record in db.records() {
         let name = db.record_name(record).unwrap_or("");
-        if !name.contains("BEHR_LaserCannon_S7") && !name.contains("GATS_BallisticGatling_S1") { continue; }
+        if !name.contains("BEHR_LaserCannon_S7") && !name.contains("GATS_BallisticGatling_S1") {
+            continue;
+        }
 
         let struct_name = db.struct_name(record.struct_index as usize).unwrap_or("?");
-        if struct_name != "EntityClassDefinition" { continue; }
+        if struct_name != "EntityClassDefinition" {
+            continue;
+        }
 
         println!("=== {} (type: {}) ===", name, struct_name);
 

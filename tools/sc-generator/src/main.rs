@@ -30,7 +30,7 @@ mod features;
 mod naming;
 mod pipeline;
 
-use pipeline::{run, run_dump_refs, RunOptions};
+use pipeline::{RunOptions, run, run_dump_refs};
 
 fn main() -> ExitCode {
     tracing_subscriber::fmt()

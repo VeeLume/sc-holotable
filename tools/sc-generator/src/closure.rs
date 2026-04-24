@@ -70,7 +70,9 @@ pub fn walk_closure(
     let mut visited_records: HashSet<CigGuid> = HashSet::new();
 
     for record in db.all_records() {
-        let Some(file_name) = record.file_name() else { continue };
+        let Some(file_name) = record.file_name() else {
+            continue;
+        };
         if !prefixes.iter().any(|p| file_name.starts_with(p.as_str())) {
             continue;
         }
@@ -84,7 +86,9 @@ pub fn walk_closure(
         let parent_struct = inst.struct_index();
         let props = db.get_struct_properties(parent_struct as usize);
         for prop in props {
-            let Some(name) = db.property_name(prop) else { continue };
+            let Some(name) = db.property_name(prop) else {
+                continue;
+            };
             let data_type = prop.get_data_type();
             match data_type {
                 Some(DataType::Class) => {
@@ -122,8 +126,11 @@ pub fn walk_closure(
                             match elem {
                                 Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => {
                                     observed.insert(r.struct_index);
-                                    if visited_pool_targets.insert((r.struct_index, r.instance_index)) {
-                                        worklist.push(db.instance(r.struct_index, r.instance_index));
+                                    if visited_pool_targets
+                                        .insert((r.struct_index, r.instance_index))
+                                    {
+                                        worklist
+                                            .push(db.instance(r.struct_index, r.instance_index));
                                     }
                                 }
                                 _ => {}
@@ -138,7 +145,8 @@ pub fn walk_closure(
                         {
                             let Some(&(si, ii)) = guid_to_instance.get(&r.guid) else {
                                 if dangling.insert(r.guid) {
-                                    let parent_name = db.struct_name(parent_struct as usize).unwrap_or("<?>");
+                                    let parent_name =
+                                        db.struct_name(parent_struct as usize).unwrap_or("<?>");
                                     tracing::warn!(
                                         parent = parent_name,
                                         parent_idx = parent_struct,
@@ -159,7 +167,8 @@ pub fn walk_closure(
                             {
                                 let Some(&(si, ii)) = guid_to_instance.get(&r.guid) else {
                                     if dangling.insert(r.guid) {
-                                        let parent_name = db.struct_name(parent_struct as usize).unwrap_or("<?>");
+                                        let parent_name =
+                                            db.struct_name(parent_struct as usize).unwrap_or("<?>");
                                         tracing::warn!(
                                             parent = parent_name,
                                             parent_idx = parent_struct,

@@ -8,9 +8,7 @@
 use std::collections::HashMap;
 
 use sc_extract::generated::*;
-use sc_extract::{
-    AssetConfig, AssetData, AssetSource, DataPools, DatacoreConfig, Guid,
-};
+use sc_extract::{AssetConfig, AssetData, AssetSource, DataPools, DatacoreConfig, Guid};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     tracing_subscriber::fmt().with_env_filter("info").init();
@@ -55,28 +53,41 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut power_details: Vec<String> = Vec::new();
 
     for (&guid, &handle) in ecd_map {
-        let Some(ecd) = handle.get(pools) else { continue };
-        let name = record_names.get(&guid).copied().unwrap_or("?").replace("EntityClassDefinition.", "");
+        let Some(ecd) = handle.get(pools) else {
+            continue;
+        };
+        let name = record_names
+            .get(&guid)
+            .copied()
+            .unwrap_or("?")
+            .replace("EntityClassDefinition.", "");
         let display = snap.display_names.get(&guid).unwrap_or("").to_string();
 
         let Some(wp) = ecd.components.iter().find_map(|c| match c {
             DataForgeComponentParamsPtr::SCItemWeaponComponentParams(h) => h.get(pools),
             _ => None,
-        }) else { continue };
+        }) else {
+            continue;
+        };
 
         // Dedup
         let base = dedup_name(&name);
-        if seen.contains(&base) { continue; }
+        if seen.contains(&base) {
+            continue;
+        }
         seen.insert(base);
 
         let item_def = ecd.components.iter().find_map(|c| match c {
-            DataForgeComponentParamsPtr::SAttachableComponentParams(h) =>
-                h.get(pools).and_then(|a| a.attach_def.and_then(|h| h.get(pools))),
+            DataForgeComponentParamsPtr::SAttachableComponentParams(h) => h
+                .get(pools)
+                .and_then(|a| a.attach_def.and_then(|h| h.get(pools))),
             _ => None,
         });
 
         let size = item_def.map(|d| d.size).unwrap_or(0);
-        let subtype = item_def.map(|d| format!("{:?}", d.sub_type)).unwrap_or("None".into());
+        let subtype = item_def
+            .map(|d| format!("{:?}", d.sub_type))
+            .unwrap_or("None".into());
         *subtype_counts.entry(subtype).or_default() += 1;
 
         // === Health ===
@@ -98,35 +109,100 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             let hs = conn.heat_stats.and_then(|h| h.get(pools));
             let ol = conn.overheat_locked_stats.and_then(|h| h.get(pools));
 
-            if np.is_some() { has_no_power += 1; }
-            if up.is_some() { has_underpower += 1; }
-            if op.is_some() { has_overpower += 1; }
-            if oc.is_some() { has_overclock += 1; }
-            if hs.is_some() { has_heat_stats += 1; }
-            if ol.is_some() { has_overheat_locked += 1; }
-            if !conn.ranged_heat_stats.is_empty() { has_ranged_heat += 1; }
+            if np.is_some() {
+                has_no_power += 1;
+            }
+            if up.is_some() {
+                has_underpower += 1;
+            }
+            if op.is_some() {
+                has_overpower += 1;
+            }
+            if oc.is_some() {
+                has_overclock += 1;
+            }
+            if hs.is_some() {
+                has_heat_stats += 1;
+            }
+            if ol.is_some() {
+                has_overheat_locked += 1;
+            }
+            if !conn.ranged_heat_stats.is_empty() {
+                has_ranged_heat += 1;
+            }
 
             // Dump details if any non-default modifier has interesting values
             let any_interesting = [up, op, oc, hs, ol].iter().any(|s| {
-                s.map(|stats| stats.damage_multiplier != 0.0 || stats.fire_rate != 0 || stats.pellets != 0 || stats.projectile_speed_multiplier != 0.0)
-                    .unwrap_or(false)
+                s.map(|stats| {
+                    stats.damage_multiplier != 0.0
+                        || stats.fire_rate != 0
+                        || stats.pellets != 0
+                        || stats.projectile_speed_multiplier != 0.0
+                })
+                .unwrap_or(false)
             });
 
             if any_interesting {
                 let mut detail = format!("{} ({}) S{}", name, display, size);
-                if let Some(s) = np { detail += &format!("\n  noPower: rpm={} dmg={:.2} speed={:.2} pellets={}", s.fire_rate, s.damage_multiplier, s.projectile_speed_multiplier, s.pellets); }
-                if let Some(s) = up { detail += &format!("\n  underpower: rpm={} dmg={:.2} speed={:.2} pellets={}", s.fire_rate, s.damage_multiplier, s.projectile_speed_multiplier, s.pellets); }
-                if let Some(s) = op { detail += &format!("\n  overpower: rpm={} dmg={:.2} speed={:.2} pellets={}", s.fire_rate, s.damage_multiplier, s.projectile_speed_multiplier, s.pellets); }
-                if let Some(s) = oc { detail += &format!("\n  overclock: rpm={} dmg={:.2} speed={:.2} pellets={}", s.fire_rate, s.damage_multiplier, s.projectile_speed_multiplier, s.pellets); }
-                if let Some(s) = hs { detail += &format!("\n  heatStats: rpm={} dmg={:.2} speed={:.2} pellets={}", s.fire_rate, s.damage_multiplier, s.projectile_speed_multiplier, s.pellets); }
-                if let Some(s) = ol { detail += &format!("\n  overheatLocked: rpm={} dmg={:.2} speed={:.2} pellets={}", s.fire_rate, s.damage_multiplier, s.projectile_speed_multiplier, s.pellets); }
+                if let Some(s) = np {
+                    detail += &format!(
+                        "\n  noPower: rpm={} dmg={:.2} speed={:.2} pellets={}",
+                        s.fire_rate, s.damage_multiplier, s.projectile_speed_multiplier, s.pellets
+                    );
+                }
+                if let Some(s) = up {
+                    detail += &format!(
+                        "\n  underpower: rpm={} dmg={:.2} speed={:.2} pellets={}",
+                        s.fire_rate, s.damage_multiplier, s.projectile_speed_multiplier, s.pellets
+                    );
+                }
+                if let Some(s) = op {
+                    detail += &format!(
+                        "\n  overpower: rpm={} dmg={:.2} speed={:.2} pellets={}",
+                        s.fire_rate, s.damage_multiplier, s.projectile_speed_multiplier, s.pellets
+                    );
+                }
+                if let Some(s) = oc {
+                    detail += &format!(
+                        "\n  overclock: rpm={} dmg={:.2} speed={:.2} pellets={}",
+                        s.fire_rate, s.damage_multiplier, s.projectile_speed_multiplier, s.pellets
+                    );
+                }
+                if let Some(s) = hs {
+                    detail += &format!(
+                        "\n  heatStats: rpm={} dmg={:.2} speed={:.2} pellets={}",
+                        s.fire_rate, s.damage_multiplier, s.projectile_speed_multiplier, s.pellets
+                    );
+                }
+                if let Some(s) = ol {
+                    detail += &format!(
+                        "\n  overheatLocked: rpm={} dmg={:.2} speed={:.2} pellets={}",
+                        s.fire_rate, s.damage_multiplier, s.projectile_speed_multiplier, s.pellets
+                    );
+                }
                 if !conn.ranged_heat_stats.is_empty() {
                     for (i, rhs_h) in conn.ranged_heat_stats.iter().enumerate() {
                         if let Some(rhs) = rhs_h.get(pools) {
-                            let range_str = rhs.range.and_then(|h| h.get(pools)).map(|r| format!("{:.1}-{:.1}", r.minimum, r.maximum)).unwrap_or("?".into());
+                            let range_str = rhs
+                                .range
+                                .and_then(|h| h.get(pools))
+                                .map(|r| format!("{:.1}-{:.1}", r.minimum, r.maximum))
+                                .unwrap_or("?".into());
                             let ws = rhs.weapon_stats.and_then(|h| h.get(pools));
-                            let ws_str = ws.map(|s| format!("rpm={} dmg={:.2} speed={:.2}", s.fire_rate, s.damage_multiplier, s.projectile_speed_multiplier)).unwrap_or("none".into());
-                            detail += &format!("\n  rangedHeat[{}]: range={} interp={} {}", i, range_str, rhs.interpolate, ws_str);
+                            let ws_str = ws
+                                .map(|s| {
+                                    format!(
+                                        "rpm={} dmg={:.2} speed={:.2}",
+                                        s.fire_rate,
+                                        s.damage_multiplier,
+                                        s.projectile_speed_multiplier
+                                    )
+                                })
+                                .unwrap_or("none".into());
+                            detail += &format!(
+                                "\n  rangedHeat[{}]: range={} interp={} {}",
+                                i, range_str, rhs.interpolate, ws_str
+                            );
                         }
                     }
                 }
@@ -176,8 +252,14 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     println!("\n=== HEALTH VALUES ===\n");
     // Group by ship (uppercase) vs FPS (lowercase)
-    let ship_health: Vec<_> = health_values.iter().filter(|(n, _, _, _)| n.starts_with(|c: char| c.is_uppercase())).collect();
-    let fps_health: Vec<_> = health_values.iter().filter(|(n, _, _, _)| n.starts_with(|c: char| c.is_lowercase())).collect();
+    let ship_health: Vec<_> = health_values
+        .iter()
+        .filter(|(n, _, _, _)| n.starts_with(|c: char| c.is_uppercase()))
+        .collect();
+    let fps_health: Vec<_> = health_values
+        .iter()
+        .filter(|(n, _, _, _)| n.starts_with(|c: char| c.is_lowercase()))
+        .collect();
 
     println!("Ship weapons with health ({}):", ship_health.len());
     let mut ship_by_size: HashMap<i32, Vec<f32>> = HashMap::new();
@@ -232,8 +314,14 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 }
 
 fn dedup_name(name: &str) -> String {
-    if name.starts_with(|c: char| c.is_uppercase()) { return name.to_string(); }
-    if let Some(pos) = name.find("_01_") { return name[..pos + 3].to_string(); }
-    if let Some(pos) = name.find("_02_") { return name[..pos + 3].to_string(); }
+    if name.starts_with(|c: char| c.is_uppercase()) {
+        return name.to_string();
+    }
+    if let Some(pos) = name.find("_01_") {
+        return name[..pos + 3].to_string();
+    }
+    if let Some(pos) = name.find("_02_") {
+        return name[..pos + 3].to_string();
+    }
     name.to_string()
 }

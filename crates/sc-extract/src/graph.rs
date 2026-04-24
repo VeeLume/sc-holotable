@@ -31,8 +31,8 @@ use std::collections::{HashMap, HashSet};
 
 use serde::{Deserialize, Serialize};
 
-use crate::svarog_datacore::{DataCoreDatabase, Instance, Value};
 use crate::Guid;
+use crate::svarog_datacore::{DataCoreDatabase, Instance, Value};
 
 /// Directed graph of cross-record references.
 ///
@@ -150,23 +150,16 @@ impl ReferenceGraph {
                                             graph.insert(source, r.guid);
                                         }
                                         Value::Class { struct_index, data } => {
-                                            let nested = Instance::from_inline_data(
-                                                db,
-                                                struct_index,
-                                                data,
-                                            );
+                                            let nested =
+                                                Instance::from_inline_data(db, struct_index, data);
                                             worklist.push((nested, source));
                                         }
                                         Value::ClassRef(r)
                                         | Value::StrongPointer(Some(r))
                                         | Value::WeakPointer(Some(r)) => {
-                                            if visited
-                                                .insert((r.struct_index, r.instance_index))
-                                            {
-                                                let nested = db.instance(
-                                                    r.struct_index,
-                                                    r.instance_index,
-                                                );
+                                            if visited.insert((r.struct_index, r.instance_index)) {
+                                                let nested =
+                                                    db.instance(r.struct_index, r.instance_index);
                                                 worklist.push((nested, source));
                                             }
                                         }

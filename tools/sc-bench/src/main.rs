@@ -35,10 +35,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let human = args.iter().any(|a| a == "--human");
     let include_graph = args.iter().any(|a| a == "--all");
     let skip_assets = args.iter().any(|a| a == "--no-assets");
-    let p4k_path = args
-        .iter()
-        .find(|a| !a.starts_with('-'))
-        .map(Into::into);
+    let p4k_path = args.iter().find(|a| !a.starts_with('-')).map(Into::into);
 
     // In JSON mode, suppress tracing entirely so stdout contains only the
     // JSON object. In human mode, enable tracing at info level (unless

@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -27,8 +27,16 @@ pub struct LongTermPersistenceWhiteListSubTypeEntry {
 }
 
 impl Pooled for LongTermPersistenceWhiteListSubTypeEntry {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.longtermpersistence.long_term_persistence_white_list_sub_type_entry }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.longtermpersistence.long_term_persistence_white_list_sub_type_entry }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .longtermpersistence
+            .long_term_persistence_white_list_sub_type_entry
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .longtermpersistence
+            .long_term_persistence_white_list_sub_type_entry
+    }
 }
 
 impl<'a> Extract<'a> for LongTermPersistenceWhiteListSubTypeEntry {
@@ -49,8 +57,12 @@ pub struct LongTermPersistenceSubTypeAll {
 }
 
 impl Pooled for LongTermPersistenceSubTypeAll {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.longtermpersistence.long_term_persistence_sub_type_all }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.longtermpersistence.long_term_persistence_sub_type_all }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.longtermpersistence.long_term_persistence_sub_type_all
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.longtermpersistence.long_term_persistence_sub_type_all
+    }
 }
 
 impl<'a> Extract<'a> for LongTermPersistenceSubTypeAll {
@@ -70,20 +82,42 @@ pub struct LongTermPersistenceSubTypeList {
 }
 
 impl Pooled for LongTermPersistenceSubTypeList {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.longtermpersistence.long_term_persistence_sub_type_list }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.longtermpersistence.long_term_persistence_sub_type_list }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .longtermpersistence
+            .long_term_persistence_sub_type_list
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .longtermpersistence
+            .long_term_persistence_sub_type_list
+    }
 }
 
 impl<'a> Extract<'a> for LongTermPersistenceSubTypeList {
     const TYPE_NAME: &'static str = "LongTermPersistenceSubTypeList";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            item_sub_type_entries: inst.get_array("ItemSubTypeEntries")
-                .map(|arr| arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<LongTermPersistenceWhiteListSubTypeEntry>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r) => Some(b.alloc_nested::<LongTermPersistenceWhiteListSubTypeEntry>(b.db.instance(r.struct_index, r.instance_index), true)),
+            item_sub_type_entries: inst
+                .get_array("ItemSubTypeEntries")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<LongTermPersistenceWhiteListSubTypeEntry>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => {
+                            Some(b.alloc_nested::<LongTermPersistenceWhiteListSubTypeEntry>(
+                                b.db.instance(r.struct_index, r.instance_index),
+                                true,
+                            ))
+                        }
                         _ => None,
-                    }).collect())
+                    })
+                    .collect()
+                })
                 .unwrap_or_default(),
         }
     }
@@ -98,8 +132,16 @@ pub struct LongTermPersistenceWhiteListEntry {
 }
 
 impl Pooled for LongTermPersistenceWhiteListEntry {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.longtermpersistence.long_term_persistence_white_list_entry }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.longtermpersistence.long_term_persistence_white_list_entry }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .longtermpersistence
+            .long_term_persistence_white_list_entry
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .longtermpersistence
+            .long_term_persistence_white_list_entry
+    }
 }
 
 impl<'a> Extract<'a> for LongTermPersistenceWhiteListEntry {
@@ -108,7 +150,9 @@ impl<'a> Extract<'a> for LongTermPersistenceWhiteListEntry {
         Self {
             item_type: EItemType::from_dcb_str(inst.get_str("ItemType").unwrap_or("")),
             sub_type_list_option: match inst.get("SubTypeListOption") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(LongTermPersistenceSubTypeListOptionPtr::from_ref(b, r)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(LongTermPersistenceSubTypeListOptionPtr::from_ref(b, r))
+                }
                 _ => None,
             },
         }
@@ -122,22 +166,43 @@ pub struct LongTermPersistenceGlobalParams {
 }
 
 impl Pooled for LongTermPersistenceGlobalParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.longtermpersistence.long_term_persistence_global_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.longtermpersistence.long_term_persistence_global_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .longtermpersistence
+            .long_term_persistence_global_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .longtermpersistence
+            .long_term_persistence_global_params
+    }
 }
 
 impl<'a> Extract<'a> for LongTermPersistenceGlobalParams {
     const TYPE_NAME: &'static str = "LongTermPersistenceGlobalParams";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            long_term_persistence_white_list: inst.get_array("LongTermPersistenceWhiteList")
-                .map(|arr| arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<LongTermPersistenceWhiteListEntry>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r) => Some(b.alloc_nested::<LongTermPersistenceWhiteListEntry>(b.db.instance(r.struct_index, r.instance_index), true)),
+            long_term_persistence_white_list: inst
+                .get_array("LongTermPersistenceWhiteList")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<LongTermPersistenceWhiteListEntry>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => {
+                            Some(b.alloc_nested::<LongTermPersistenceWhiteListEntry>(
+                                b.db.instance(r.struct_index, r.instance_index),
+                                true,
+                            ))
+                        }
                         _ => None,
-                    }).collect())
+                    })
+                    .collect()
+                })
                 .unwrap_or_default(),
         }
     }
 }
-

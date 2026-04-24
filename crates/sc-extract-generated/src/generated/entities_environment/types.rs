@@ -12,27 +12,29 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
 /// DCB type: `PlanetNavigationVolumeParams`
 /// Inherits from: `DataForgeComponentParams`
-pub struct PlanetNavigationVolumeParams {
-}
+pub struct PlanetNavigationVolumeParams {}
 
 impl Pooled for PlanetNavigationVolumeParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_environment.planet_navigation_volume_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_environment.planet_navigation_volume_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_environment.planet_navigation_volume_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_environment.planet_navigation_volume_params
+    }
 }
 
 impl<'a> Extract<'a> for PlanetNavigationVolumeParams {
     const TYPE_NAME: &'static str = "PlanetNavigationVolumeParams";
     fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
-        }
+        Self {}
     }
 }
 
@@ -69,21 +71,29 @@ pub struct AsteroidFieldShapeLinkParams {
 }
 
 impl Pooled for AsteroidFieldShapeLinkParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_environment.asteroid_field_shape_link_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_environment.asteroid_field_shape_link_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_environment.asteroid_field_shape_link_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_environment.asteroid_field_shape_link_params
+    }
 }
 
 impl<'a> Extract<'a> for AsteroidFieldShapeLinkParams {
     const TYPE_NAME: &'static str = "AsteroidFieldShapeLinkParams";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            shape_link_name: inst.get_array("shapeLinkName")
+            shape_link_name: inst
+                .get_array("shapeLinkName")
                 .map(|arr| arr.filter_map(|v| v.as_str().map(String::from)).collect())
                 .unwrap_or_default(),
             rng_seed: inst.get_i32("rngSeed").unwrap_or_default(),
             view_dist_ratio: inst.get_u32("viewDistRatio").unwrap_or_default(),
             lod_ratio: inst.get_u32("lodRatio").unwrap_or_default(),
-            composition: inst.get("composition").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            composition: inst
+                .get("composition")
+                .and_then(|v| v.as_record_ref())
+                .map(|r| r.guid),
             density_scale: inst.get_f32("densityScale").unwrap_or_default(),
             noise_amplitude: inst.get_f32("noiseAmplitude").unwrap_or_default(),
             noise_roughness: inst.get_f32("noiseRoughness").unwrap_or_default(),
@@ -131,8 +141,16 @@ pub struct SAsteroidClusterComponentParams {
 }
 
 impl Pooled for SAsteroidClusterComponentParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_environment.sasteroid_cluster_component_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_environment.sasteroid_cluster_component_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_environment
+            .sasteroid_cluster_component_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_environment
+            .sasteroid_cluster_component_params
+    }
 }
 
 impl<'a> Extract<'a> for SAsteroidClusterComponentParams {
@@ -142,7 +160,10 @@ impl<'a> Extract<'a> for SAsteroidClusterComponentParams {
             rng_seed: inst.get_i32("rngSeed").unwrap_or_default(),
             view_dist_ratio: inst.get_u32("viewDistRatio").unwrap_or_default(),
             lod_ratio: inst.get_u32("lodRatio").unwrap_or_default(),
-            composition: inst.get_str("composition").map(String::from).unwrap_or_default(),
+            composition: inst
+                .get_str("composition")
+                .map(String::from)
+                .unwrap_or_default(),
             noise_amplitude: inst.get_f32("noiseAmplitude").unwrap_or_default(),
             noise_roughness: inst.get_f32("noiseRoughness").unwrap_or_default(),
             noise_granularity: inst.get_f32("noiseGranularity").unwrap_or_default(),
@@ -187,8 +208,12 @@ pub struct SAsteroidRingComponentParams {
 }
 
 impl Pooled for SAsteroidRingComponentParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_environment.sasteroid_ring_component_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_environment.sasteroid_ring_component_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_environment.sasteroid_ring_component_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_environment.sasteroid_ring_component_params
+    }
 }
 
 impl<'a> Extract<'a> for SAsteroidRingComponentParams {
@@ -198,7 +223,10 @@ impl<'a> Extract<'a> for SAsteroidRingComponentParams {
             rng_seed: inst.get_i32("rngSeed").unwrap_or_default(),
             view_dist_ratio: inst.get_u32("viewDistRatio").unwrap_or_default(),
             lod_ratio: inst.get_u32("lodRatio").unwrap_or_default(),
-            composition: inst.get_str("composition").map(String::from).unwrap_or_default(),
+            composition: inst
+                .get_str("composition")
+                .map(String::from)
+                .unwrap_or_default(),
             noise_amplitude: inst.get_f32("noiseAmplitude").unwrap_or_default(),
             noise_roughness: inst.get_f32("noiseRoughness").unwrap_or_default(),
             noise_granularity: inst.get_f32("noiseGranularity").unwrap_or_default(),
@@ -239,8 +267,16 @@ pub struct SAsteroidGasCloudComponentParams {
 }
 
 impl Pooled for SAsteroidGasCloudComponentParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_environment.sasteroid_gas_cloud_component_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_environment.sasteroid_gas_cloud_component_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_environment
+            .sasteroid_gas_cloud_component_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_environment
+            .sasteroid_gas_cloud_component_params
+    }
 }
 
 impl<'a> Extract<'a> for SAsteroidGasCloudComponentParams {
@@ -250,7 +286,10 @@ impl<'a> Extract<'a> for SAsteroidGasCloudComponentParams {
             rng_seed: inst.get_i32("rngSeed").unwrap_or_default(),
             view_dist_ratio: inst.get_u32("viewDistRatio").unwrap_or_default(),
             lod_ratio: inst.get_u32("lodRatio").unwrap_or_default(),
-            composition: inst.get_str("composition").map(String::from).unwrap_or_default(),
+            composition: inst
+                .get_str("composition")
+                .map(String::from)
+                .unwrap_or_default(),
             noise_amplitude: inst.get_f32("noiseAmplitude").unwrap_or_default(),
             noise_roughness: inst.get_f32("noiseRoughness").unwrap_or_default(),
             noise_granularity: inst.get_f32("noiseGranularity").unwrap_or_default(),
@@ -294,8 +333,12 @@ pub struct SAsteroidShapeComponentParams {
 }
 
 impl Pooled for SAsteroidShapeComponentParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_environment.sasteroid_shape_component_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_environment.sasteroid_shape_component_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_environment.sasteroid_shape_component_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_environment.sasteroid_shape_component_params
+    }
 }
 
 impl<'a> Extract<'a> for SAsteroidShapeComponentParams {
@@ -305,7 +348,10 @@ impl<'a> Extract<'a> for SAsteroidShapeComponentParams {
             rng_seed: inst.get_i32("rngSeed").unwrap_or_default(),
             view_dist_ratio: inst.get_u32("viewDistRatio").unwrap_or_default(),
             lod_ratio: inst.get_u32("lodRatio").unwrap_or_default(),
-            composition: inst.get_str("composition").map(String::from).unwrap_or_default(),
+            composition: inst
+                .get_str("composition")
+                .map(String::from)
+                .unwrap_or_default(),
             noise_amplitude: inst.get_f32("noiseAmplitude").unwrap_or_default(),
             noise_roughness: inst.get_f32("noiseRoughness").unwrap_or_default(),
             noise_granularity: inst.get_f32("noiseGranularity").unwrap_or_default(),
@@ -313,14 +359,27 @@ impl<'a> Extract<'a> for SAsteroidShapeComponentParams {
             noise_frequency_x: inst.get_f32("noiseFrequencyX").unwrap_or_default(),
             noise_frequency_y: inst.get_f32("noiseFrequencyY").unwrap_or_default(),
             noise_frequency_z: inst.get_f32("noiseFrequencyZ").unwrap_or_default(),
-            shape_links: inst.get_array("shapeLinks")
-                .map(|arr| arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<AsteroidFieldShapeLinkParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r) => Some(b.alloc_nested::<AsteroidFieldShapeLinkParams>(b.db.instance(r.struct_index, r.instance_index), true)),
+            shape_links: inst
+                .get_array("shapeLinks")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<AsteroidFieldShapeLinkParams>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => Some(b.alloc_nested::<AsteroidFieldShapeLinkParams>(
+                            b.db.instance(r.struct_index, r.instance_index),
+                            true,
+                        )),
                         _ => None,
-                    }).collect())
+                    })
+                    .collect()
+                })
                 .unwrap_or_default(),
-            exclusion_shape_links: inst.get_array("exclusionShapeLinks")
+            exclusion_shape_links: inst
+                .get_array("exclusionShapeLinks")
                 .map(|arr| arr.filter_map(|v| v.as_str().map(String::from)).collect())
                 .unwrap_or_default(),
         }
@@ -379,8 +438,12 @@ pub struct FogVolumeComponentParams {
 }
 
 impl Pooled for FogVolumeComponentParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_environment.fog_volume_component_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_environment.fog_volume_component_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_environment.fog_volume_component_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_environment.fog_volume_component_params
+    }
 }
 
 impl<'a> Extract<'a> for FogVolumeComponentParams {
@@ -390,11 +453,17 @@ impl<'a> Extract<'a> for FogVolumeComponentParams {
             active: inst.get_bool("active").unwrap_or_default(),
             volume_type: inst.get_i32("volumeType").unwrap_or_default(),
             size: match inst.get("size") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             color: match inst.get("color") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<RGB>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<RGB>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             hdr_dynamic: inst.get_f32("hdrDynamic").unwrap_or_default(),
@@ -411,12 +480,19 @@ impl<'a> Extract<'a> for FogVolumeComponentParams {
             ramp_influence: inst.get_f32("rampInfluence").unwrap_or_default(),
             density_noise_scale: inst.get_f32("densityNoiseScale").unwrap_or_default(),
             density_noise_offset: inst.get_f32("densityNoiseOffset").unwrap_or_default(),
-            density_noise_time_frequency: inst.get_f32("densityNoiseTimeFrequency").unwrap_or_default(),
+            density_noise_time_frequency: inst
+                .get_f32("densityNoiseTimeFrequency")
+                .unwrap_or_default(),
             density_noise_size: match inst.get("densityNoiseSize") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
-            density_noise_wind_influence: inst.get_f32("densityNoiseWindInfluence").unwrap_or_default(),
+            density_noise_wind_influence: inst
+                .get_f32("densityNoiseWindInfluence")
+                .unwrap_or_default(),
             affects_this_area_only: inst.get_bool("affectsThisAreaOnly").unwrap_or_default(),
             max_distance: inst.get_f32("maxDistance").unwrap_or_default(),
         }
@@ -431,52 +507,71 @@ pub struct HarvestableProviderParams {
 }
 
 impl Pooled for HarvestableProviderParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_environment.harvestable_provider_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_environment.harvestable_provider_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_environment.harvestable_provider_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_environment.harvestable_provider_params
+    }
 }
 
 impl<'a> Extract<'a> for HarvestableProviderParams {
     const TYPE_NAME: &'static str = "HarvestableProviderParams";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            preset: inst.get("preset").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            preset: inst
+                .get("preset")
+                .and_then(|v| v.as_record_ref())
+                .map(|r| r.guid),
         }
     }
 }
 
 /// DCB type: `SEntityComponentManagedEntityRegionParams`
 /// Inherits from: `DataForgeComponentParams`
-pub struct SEntityComponentManagedEntityRegionParams {
-}
+pub struct SEntityComponentManagedEntityRegionParams {}
 
 impl Pooled for SEntityComponentManagedEntityRegionParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_environment.sentity_component_managed_entity_region_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_environment.sentity_component_managed_entity_region_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_environment
+            .sentity_component_managed_entity_region_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_environment
+            .sentity_component_managed_entity_region_params
+    }
 }
 
 impl<'a> Extract<'a> for SEntityComponentManagedEntityRegionParams {
     const TYPE_NAME: &'static str = "SEntityComponentManagedEntityRegionParams";
     fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
-        }
+        Self {}
     }
 }
 
 /// DCB type: `SEntityComponentManagedEntityZoneParams`
 /// Inherits from: `DataForgeComponentParams`
-pub struct SEntityComponentManagedEntityZoneParams {
-}
+pub struct SEntityComponentManagedEntityZoneParams {}
 
 impl Pooled for SEntityComponentManagedEntityZoneParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_environment.sentity_component_managed_entity_zone_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_environment.sentity_component_managed_entity_zone_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_environment
+            .sentity_component_managed_entity_zone_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_environment
+            .sentity_component_managed_entity_zone_params
+    }
 }
 
 impl<'a> Extract<'a> for SEntityComponentManagedEntityZoneParams {
     const TYPE_NAME: &'static str = "SEntityComponentManagedEntityZoneParams";
     fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
-        }
+        Self {}
     }
 }
 
@@ -490,16 +585,30 @@ pub struct ProceduralPlanetAudioComponentParams {
 }
 
 impl Pooled for ProceduralPlanetAudioComponentParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_environment.procedural_planet_audio_component_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_environment.procedural_planet_audio_component_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_environment
+            .procedural_planet_audio_component_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_environment
+            .procedural_planet_audio_component_params
+    }
 }
 
 impl<'a> Extract<'a> for ProceduralPlanetAudioComponentParams {
     const TYPE_NAME: &'static str = "ProceduralPlanetAudioComponentParams";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            planet_audio_data: inst.get("planetAudioData").and_then(|v| v.as_record_ref()).map(|r| r.guid),
-            river_audio_data: inst.get("riverAudioData").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            planet_audio_data: inst
+                .get("planetAudioData")
+                .and_then(|v| v.as_record_ref())
+                .map(|r| r.guid),
+            river_audio_data: inst
+                .get("riverAudioData")
+                .and_then(|v| v.as_record_ref())
+                .map(|r| r.guid),
         }
     }
 }
@@ -512,15 +621,26 @@ pub struct PlanetOceanAudioComponentParams {
 }
 
 impl Pooled for PlanetOceanAudioComponentParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_environment.planet_ocean_audio_component_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_environment.planet_ocean_audio_component_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_environment
+            .planet_ocean_audio_component_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_environment
+            .planet_ocean_audio_component_params
+    }
 }
 
 impl<'a> Extract<'a> for PlanetOceanAudioComponentParams {
     const TYPE_NAME: &'static str = "PlanetOceanAudioComponentParams";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            planet_ocean_audio_data: inst.get("planetOceanAudioData").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            planet_ocean_audio_data: inst
+                .get("planetOceanAudioData")
+                .and_then(|v| v.as_record_ref())
+                .map(|r| r.guid),
         }
     }
 }
@@ -534,8 +654,12 @@ pub struct DefaultSphereGeom {
 }
 
 impl Pooled for DefaultSphereGeom {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_environment.default_sphere_geom }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_environment.default_sphere_geom }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_environment.default_sphere_geom
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_environment.default_sphere_geom
+    }
 }
 
 impl<'a> Extract<'a> for DefaultSphereGeom {
@@ -557,8 +681,12 @@ pub struct SphereFieldGeom {
 }
 
 impl Pooled for SphereFieldGeom {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_environment.sphere_field_geom }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_environment.sphere_field_geom }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_environment.sphere_field_geom
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_environment.sphere_field_geom
+    }
 }
 
 impl<'a> Extract<'a> for SphereFieldGeom {
@@ -566,7 +694,10 @@ impl<'a> Extract<'a> for SphereFieldGeom {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             center: match inst.get("center") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             r: inst.get_f32("R").unwrap_or_default(),
@@ -587,8 +718,12 @@ pub struct BoxFieldGeom {
 }
 
 impl Pooled for BoxFieldGeom {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_environment.box_field_geom }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_environment.box_field_geom }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_environment.box_field_geom
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_environment.box_field_geom
+    }
 }
 
 impl<'a> Extract<'a> for BoxFieldGeom {
@@ -596,16 +731,25 @@ impl<'a> Extract<'a> for BoxFieldGeom {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             center: match inst.get("center") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             oriented: inst.get_bool("oriented").unwrap_or_default(),
             basis: match inst.get("basis") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Quat>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Quat>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             size: match inst.get("size") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
         }
@@ -625,8 +769,12 @@ pub struct CylinderFieldGeom {
 }
 
 impl Pooled for CylinderFieldGeom {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_environment.cylinder_field_geom }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_environment.cylinder_field_geom }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_environment.cylinder_field_geom
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_environment.cylinder_field_geom
+    }
 }
 
 impl<'a> Extract<'a> for CylinderFieldGeom {
@@ -634,11 +782,17 @@ impl<'a> Extract<'a> for CylinderFieldGeom {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             center: match inst.get("center") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             axis: match inst.get("axis") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             radius: inst.get_f32("radius").unwrap_or_default(),
@@ -660,8 +814,12 @@ pub struct CapsuleFieldGeom {
 }
 
 impl Pooled for CapsuleFieldGeom {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_environment.capsule_field_geom }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_environment.capsule_field_geom }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_environment.capsule_field_geom
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_environment.capsule_field_geom
+    }
 }
 
 impl<'a> Extract<'a> for CapsuleFieldGeom {
@@ -669,11 +827,17 @@ impl<'a> Extract<'a> for CapsuleFieldGeom {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             center: match inst.get("center") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             axis: match inst.get("axis") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             radius: inst.get_f32("radius").unwrap_or_default(),
@@ -695,8 +859,12 @@ pub struct TorusFieldGeom {
 }
 
 impl Pooled for TorusFieldGeom {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_environment.torus_field_geom }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_environment.torus_field_geom }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_environment.torus_field_geom
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_environment.torus_field_geom
+    }
 }
 
 impl<'a> Extract<'a> for TorusFieldGeom {
@@ -704,11 +872,17 @@ impl<'a> Extract<'a> for TorusFieldGeom {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             center: match inst.get("center") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             axis: match inst.get("axis") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             r: inst.get_f32("R").unwrap_or_default(),
@@ -724,8 +898,12 @@ pub struct MeshFieldGeom {
 }
 
 impl Pooled for MeshFieldGeom {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_environment.mesh_field_geom }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_environment.mesh_field_geom }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_environment.mesh_field_geom
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_environment.mesh_field_geom
+    }
 }
 
 impl<'a> Extract<'a> for MeshFieldGeom {
@@ -733,7 +911,12 @@ impl<'a> Extract<'a> for MeshFieldGeom {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             geometry: match inst.get("geometry") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GlobalResourceGeometry>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<GlobalResourceGeometry>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
         }
@@ -753,25 +936,41 @@ pub struct Texture3DFieldGeom {
 }
 
 impl Pooled for Texture3DFieldGeom {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_environment.texture3_dfield_geom }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_environment.texture3_dfield_geom }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_environment.texture3_dfield_geom
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_environment.texture3_dfield_geom
+    }
 }
 
 impl<'a> Extract<'a> for Texture3DFieldGeom {
     const TYPE_NAME: &'static str = "Texture3DFieldGeom";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            texture3_d: inst.get_str("texture3D").map(String::from).unwrap_or_default(),
+            texture3_d: inst
+                .get_str("texture3D")
+                .map(String::from)
+                .unwrap_or_default(),
             size: match inst.get("size") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             pos_offset: match inst.get("posOffset") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             rot_offset: match inst.get("rotOffset") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Ang3>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Ang3>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
         }
@@ -800,8 +999,12 @@ pub struct QuantumObstacleParams {
 }
 
 impl Pooled for QuantumObstacleParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_environment.quantum_obstacle_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_environment.quantum_obstacle_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_environment.quantum_obstacle_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_environment.quantum_obstacle_params
+    }
 }
 
 impl<'a> Extract<'a> for QuantumObstacleParams {
@@ -809,57 +1012,146 @@ impl<'a> Extract<'a> for QuantumObstacleParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             default_sphere_field_geometry: match inst.get("defaultSphereFieldGeometry") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<DefaultSphereGeom>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<DefaultSphereGeom>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
-            sphere_field_geometries: inst.get_array("sphereFieldGeometries")
-                .map(|arr| arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<SphereFieldGeom>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r) => Some(b.alloc_nested::<SphereFieldGeom>(b.db.instance(r.struct_index, r.instance_index), true)),
+            sphere_field_geometries: inst
+                .get_array("sphereFieldGeometries")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<SphereFieldGeom>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => Some(b.alloc_nested::<SphereFieldGeom>(
+                            b.db.instance(r.struct_index, r.instance_index),
+                            true,
+                        )),
                         _ => None,
-                    }).collect())
+                    })
+                    .collect()
+                })
                 .unwrap_or_default(),
-            box_field_geometries: inst.get_array("boxFieldGeometries")
-                .map(|arr| arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<BoxFieldGeom>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r) => Some(b.alloc_nested::<BoxFieldGeom>(b.db.instance(r.struct_index, r.instance_index), true)),
+            box_field_geometries: inst
+                .get_array("boxFieldGeometries")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<BoxFieldGeom>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => Some(b.alloc_nested::<BoxFieldGeom>(
+                            b.db.instance(r.struct_index, r.instance_index),
+                            true,
+                        )),
                         _ => None,
-                    }).collect())
+                    })
+                    .collect()
+                })
                 .unwrap_or_default(),
-            cylinder_field_geometries: inst.get_array("cylinderFieldGeometries")
-                .map(|arr| arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<CylinderFieldGeom>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r) => Some(b.alloc_nested::<CylinderFieldGeom>(b.db.instance(r.struct_index, r.instance_index), true)),
+            cylinder_field_geometries: inst
+                .get_array("cylinderFieldGeometries")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<CylinderFieldGeom>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => Some(b.alloc_nested::<CylinderFieldGeom>(
+                            b.db.instance(r.struct_index, r.instance_index),
+                            true,
+                        )),
                         _ => None,
-                    }).collect())
+                    })
+                    .collect()
+                })
                 .unwrap_or_default(),
-            capsule_field_geometries: inst.get_array("capsuleFieldGeometries")
-                .map(|arr| arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<CapsuleFieldGeom>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r) => Some(b.alloc_nested::<CapsuleFieldGeom>(b.db.instance(r.struct_index, r.instance_index), true)),
+            capsule_field_geometries: inst
+                .get_array("capsuleFieldGeometries")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<CapsuleFieldGeom>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => Some(b.alloc_nested::<CapsuleFieldGeom>(
+                            b.db.instance(r.struct_index, r.instance_index),
+                            true,
+                        )),
                         _ => None,
-                    }).collect())
+                    })
+                    .collect()
+                })
                 .unwrap_or_default(),
-            torus_field_geometries: inst.get_array("torusFieldGeometries")
-                .map(|arr| arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<TorusFieldGeom>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r) => Some(b.alloc_nested::<TorusFieldGeom>(b.db.instance(r.struct_index, r.instance_index), true)),
+            torus_field_geometries: inst
+                .get_array("torusFieldGeometries")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<TorusFieldGeom>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => Some(b.alloc_nested::<TorusFieldGeom>(
+                            b.db.instance(r.struct_index, r.instance_index),
+                            true,
+                        )),
                         _ => None,
-                    }).collect())
+                    })
+                    .collect()
+                })
                 .unwrap_or_default(),
-            mesh_field_geometries: inst.get_array("meshFieldGeometries")
-                .map(|arr| arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<MeshFieldGeom>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r) => Some(b.alloc_nested::<MeshFieldGeom>(b.db.instance(r.struct_index, r.instance_index), true)),
+            mesh_field_geometries: inst
+                .get_array("meshFieldGeometries")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<MeshFieldGeom>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => Some(b.alloc_nested::<MeshFieldGeom>(
+                            b.db.instance(r.struct_index, r.instance_index),
+                            true,
+                        )),
                         _ => None,
-                    }).collect())
+                    })
+                    .collect()
+                })
                 .unwrap_or_default(),
-            texture3_dfield_geometries: inst.get_array("texture3DFieldGeometries")
-                .map(|arr| arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<Texture3DFieldGeom>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r) => Some(b.alloc_nested::<Texture3DFieldGeom>(b.db.instance(r.struct_index, r.instance_index), true)),
+            texture3_dfield_geometries: inst
+                .get_array("texture3DFieldGeometries")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<Texture3DFieldGeom>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => Some(b.alloc_nested::<Texture3DFieldGeom>(
+                            b.db.instance(r.struct_index, r.instance_index),
+                            true,
+                        )),
                         _ => None,
-                    }).collect())
+                    })
+                    .collect()
+                })
                 .unwrap_or_default(),
         }
     }
@@ -867,19 +1159,21 @@ impl<'a> Extract<'a> for QuantumObstacleParams {
 
 /// DCB type: `SolarSystemComponentParams`
 /// Inherits from: `DataForgeComponentParams`
-pub struct SolarSystemComponentParams {
-}
+pub struct SolarSystemComponentParams {}
 
 impl Pooled for SolarSystemComponentParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_environment.solar_system_component_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_environment.solar_system_component_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_environment.solar_system_component_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_environment.solar_system_component_params
+    }
 }
 
 impl<'a> Extract<'a> for SolarSystemComponentParams {
     const TYPE_NAME: &'static str = "SolarSystemComponentParams";
     fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
-        }
+        Self {}
     }
 }
 
@@ -897,8 +1191,16 @@ pub struct SEntityComponentNoisySmoothingModificationObjectParams {
 }
 
 impl Pooled for SEntityComponentNoisySmoothingModificationObjectParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_environment.sentity_component_noisy_smoothing_modification_object_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_environment.sentity_component_noisy_smoothing_modification_object_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_environment
+            .sentity_component_noisy_smoothing_modification_object_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_environment
+            .sentity_component_noisy_smoothing_modification_object_params
+    }
 }
 
 impl<'a> Extract<'a> for SEntityComponentNoisySmoothingModificationObjectParams {
@@ -906,7 +1208,12 @@ impl<'a> Extract<'a> for SEntityComponentNoisySmoothingModificationObjectParams 
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             smoothing_params: match inst.get("smoothingParams") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SEntityComponentSmoothingModificationObjectParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(
+                    b.alloc_nested::<SEntityComponentSmoothingModificationObjectParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ),
+                ),
                 _ => None,
             },
             noise_amount: inst.get_f32("noiseAmount").unwrap_or_default(),
@@ -932,8 +1239,16 @@ pub struct SEntityComponentPlanetAreaParams {
 }
 
 impl Pooled for SEntityComponentPlanetAreaParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_environment.sentity_component_planet_area_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_environment.sentity_component_planet_area_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_environment
+            .sentity_component_planet_area_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_environment
+            .sentity_component_planet_area_params
+    }
 }
 
 impl<'a> Extract<'a> for SEntityComponentPlanetAreaParams {
@@ -941,13 +1256,18 @@ impl<'a> Extract<'a> for SEntityComponentPlanetAreaParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             size: match inst.get("size") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             area_type: PlanetAreaType::from_dcb_str(inst.get_str("areaType").unwrap_or("")),
             lod_level: inst.get_i32("lodLevel").unwrap_or_default(),
             b_override: inst.get_bool("bOverride").unwrap_or_default(),
-            area_fitting: PlanetAreaFitting::from_dcb_str(inst.get_str("areaFitting").unwrap_or("")),
+            area_fitting: PlanetAreaFitting::from_dcb_str(
+                inst.get_str("areaFitting").unwrap_or(""),
+            ),
         }
     }
 }
@@ -972,8 +1292,16 @@ pub struct SEntityComponentPushPullModificationObjectParams {
 }
 
 impl Pooled for SEntityComponentPushPullModificationObjectParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_environment.sentity_component_push_pull_modification_object_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_environment.sentity_component_push_pull_modification_object_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_environment
+            .sentity_component_push_pull_modification_object_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_environment
+            .sentity_component_push_pull_modification_object_params
+    }
 }
 
 impl<'a> Extract<'a> for SEntityComponentPushPullModificationObjectParams {
@@ -1007,8 +1335,16 @@ pub struct SEntityComponentRectangleModificationObjectParams {
 }
 
 impl Pooled for SEntityComponentRectangleModificationObjectParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_environment.sentity_component_rectangle_modification_object_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_environment.sentity_component_rectangle_modification_object_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_environment
+            .sentity_component_rectangle_modification_object_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_environment
+            .sentity_component_rectangle_modification_object_params
+    }
 }
 
 impl<'a> Extract<'a> for SEntityComponentRectangleModificationObjectParams {
@@ -1016,7 +1352,10 @@ impl<'a> Extract<'a> for SEntityComponentRectangleModificationObjectParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             size: match inst.get("size") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             roll_off: inst.get_f32("rollOff").unwrap_or_default(),
@@ -1041,8 +1380,16 @@ pub struct SEntityComponentSmoothingModificationObjectParams {
 }
 
 impl Pooled for SEntityComponentSmoothingModificationObjectParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_environment.sentity_component_smoothing_modification_object_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_environment.sentity_component_smoothing_modification_object_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_environment
+            .sentity_component_smoothing_modification_object_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_environment
+            .sentity_component_smoothing_modification_object_params
+    }
 }
 
 impl<'a> Extract<'a> for SEntityComponentSmoothingModificationObjectParams {
@@ -1070,8 +1417,12 @@ pub struct GasCloudSunShadowParams {
 }
 
 impl Pooled for GasCloudSunShadowParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_environment.gas_cloud_sun_shadow_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_environment.gas_cloud_sun_shadow_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_environment.gas_cloud_sun_shadow_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_environment.gas_cloud_sun_shadow_params
+    }
 }
 
 impl<'a> Extract<'a> for GasCloudSunShadowParams {
@@ -1093,8 +1444,12 @@ pub struct GasCloudVDBDataParams {
 }
 
 impl Pooled for GasCloudVDBDataParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_environment.gas_cloud_vdbdata_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_environment.gas_cloud_vdbdata_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_environment.gas_cloud_vdbdata_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_environment.gas_cloud_vdbdata_params
+    }
 }
 
 impl<'a> Extract<'a> for GasCloudVDBDataParams {
@@ -1115,8 +1470,12 @@ pub struct GasCloudFadeSphereParams {
 }
 
 impl Pooled for GasCloudFadeSphereParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_environment.gas_cloud_fade_sphere_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_environment.gas_cloud_fade_sphere_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_environment.gas_cloud_fade_sphere_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_environment.gas_cloud_fade_sphere_params
+    }
 }
 
 impl<'a> Extract<'a> for GasCloudFadeSphereParams {
@@ -1146,8 +1505,12 @@ pub struct GasCloudFadeCubeParams {
 }
 
 impl Pooled for GasCloudFadeCubeParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_environment.gas_cloud_fade_cube_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_environment.gas_cloud_fade_cube_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_environment.gas_cloud_fade_cube_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_environment.gas_cloud_fade_cube_params
+    }
 }
 
 impl<'a> Extract<'a> for GasCloudFadeCubeParams {
@@ -1177,21 +1540,37 @@ pub struct GasCloudFadeParams {
 }
 
 impl Pooled for GasCloudFadeParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_environment.gas_cloud_fade_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_environment.gas_cloud_fade_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_environment.gas_cloud_fade_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_environment.gas_cloud_fade_params
+    }
 }
 
 impl<'a> Extract<'a> for GasCloudFadeParams {
     const TYPE_NAME: &'static str = "GasCloudFadeParams";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            volume_type: EGasCloudFadeVolumeType::from_dcb_str(inst.get_str("volumeType").unwrap_or("")),
+            volume_type: EGasCloudFadeVolumeType::from_dcb_str(
+                inst.get_str("volumeType").unwrap_or(""),
+            ),
             sphere_params: match inst.get("sphereParams") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GasCloudFadeSphereParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<GasCloudFadeSphereParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             cube_params: match inst.get("cubeParams") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GasCloudFadeCubeParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<GasCloudFadeCubeParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             preview: inst.get_bool("preview").unwrap_or_default(),
@@ -1238,8 +1617,12 @@ pub struct GasCloudVDBShapingParams {
 }
 
 impl Pooled for GasCloudVDBShapingParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_environment.gas_cloud_vdbshaping_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_environment.gas_cloud_vdbshaping_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_environment.gas_cloud_vdbshaping_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_environment.gas_cloud_vdbshaping_params
+    }
 }
 
 impl<'a> Extract<'a> for GasCloudVDBShapingParams {
@@ -1247,20 +1630,26 @@ impl<'a> Extract<'a> for GasCloudVDBShapingParams {
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
             enabled: inst.get_bool("enabled").unwrap_or_default(),
-            extinction_to_optical_density: inst.get_f32("extinctionToOpticalDensity").unwrap_or_default(),
+            extinction_to_optical_density: inst
+                .get_f32("extinctionToOpticalDensity")
+                .unwrap_or_default(),
             shape_noise_tile_factor: inst.get_f32("shapeNoiseTileFactor").unwrap_or_default(),
             shape_noise_mip_bias: inst.get_f32("shapeNoiseMipBias").unwrap_or_default(),
             shape_factor_control: inst.get_f32("shapeFactorControl").unwrap_or_default(),
             shape_noise_min: inst.get_f32("shapeNoiseMin").unwrap_or_default(),
             shape_noise_max: inst.get_f32("shapeNoiseMax").unwrap_or_default(),
             shape_noise_erosion_scale: inst.get_f32("shapeNoiseErosionScale").unwrap_or_default(),
-            shape_noise_erosion_density_boost: inst.get_f32("shapeNoiseErosionDensityBoost").unwrap_or_default(),
+            shape_noise_erosion_density_boost: inst
+                .get_f32("shapeNoiseErosionDensityBoost")
+                .unwrap_or_default(),
             erosion_noise_tile_factor: inst.get_f32("erosionNoiseTileFactor").unwrap_or_default(),
             erosion_noise_mip_bias: inst.get_f32("erosionNoiseMipBias").unwrap_or_default(),
             erosion_scale: inst.get_f32("erosionScale").unwrap_or_default(),
             erosion_density_boost: inst.get_f32("erosionDensityBoost").unwrap_or_default(),
             erosion_hi_freq_scale: inst.get_f32("erosionHiFreqScale").unwrap_or_default(),
-            erosion_hi_freq_density_boost: inst.get_f32("erosionHiFreqDensityBoost").unwrap_or_default(),
+            erosion_hi_freq_density_boost: inst
+                .get_f32("erosionHiFreqDensityBoost")
+                .unwrap_or_default(),
             vdb_density_scale: inst.get_f32("vdbDensityScale").unwrap_or_default(),
             vdb_density_bias: inst.get_f32("vdbDensityBias").unwrap_or_default(),
         }
@@ -1286,8 +1675,16 @@ pub struct GasCloudVDBEdgeAlbedoControlParams {
 }
 
 impl Pooled for GasCloudVDBEdgeAlbedoControlParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_environment.gas_cloud_vdbedge_albedo_control_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_environment.gas_cloud_vdbedge_albedo_control_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_environment
+            .gas_cloud_vdbedge_albedo_control_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_environment
+            .gas_cloud_vdbedge_albedo_control_params
+    }
 }
 
 impl<'a> Extract<'a> for GasCloudVDBEdgeAlbedoControlParams {
@@ -1299,8 +1696,12 @@ impl<'a> Extract<'a> for GasCloudVDBEdgeAlbedoControlParams {
             density_offset: inst.get_f32("densityOffset").unwrap_or_default(),
             density_ramp: inst.get_f32("densityRamp").unwrap_or_default(),
             density_falloff: inst.get_f32("densityFalloff").unwrap_or_default(),
-            environment_sensitivity_global: inst.get_f32("environmentSensitivityGlobal").unwrap_or_default(),
-            environment_sensitivity_local: inst.get_f32("environmentSensitivityLocal").unwrap_or_default(),
+            environment_sensitivity_global: inst
+                .get_f32("environmentSensitivityGlobal")
+                .unwrap_or_default(),
+            environment_sensitivity_local: inst
+                .get_f32("environmentSensitivityLocal")
+                .unwrap_or_default(),
         }
     }
 }
@@ -1324,8 +1725,12 @@ pub struct GasCloudVDBLightingParams {
 }
 
 impl Pooled for GasCloudVDBLightingParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_environment.gas_cloud_vdblighting_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_environment.gas_cloud_vdblighting_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_environment.gas_cloud_vdblighting_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_environment.gas_cloud_vdblighting_params
+    }
 }
 
 impl<'a> Extract<'a> for GasCloudVDBLightingParams {
@@ -1333,11 +1738,17 @@ impl<'a> Extract<'a> for GasCloudVDBLightingParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             albedo: match inst.get("albedo") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SRGB8>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SRGB8>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             light_leak_color: match inst.get("lightLeakColor") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SRGB8>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SRGB8>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             light_leak_scale: inst.get_f32("lightLeakScale").unwrap_or_default(),
@@ -1345,7 +1756,12 @@ impl<'a> Extract<'a> for GasCloudVDBLightingParams {
             inherit_parent_density: inst.get_bool("inheritParentDensity").unwrap_or_default(),
             ray_step_multiplier: inst.get_f32("rayStepMultiplier").unwrap_or_default(),
             fade_params: match inst.get("fadeParams") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GasCloudFadeParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<GasCloudFadeParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
         }
@@ -1361,8 +1777,12 @@ pub struct GasCloudVDBGamePlayParams {
 }
 
 impl Pooled for GasCloudVDBGamePlayParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_environment.gas_cloud_vdbgame_play_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_environment.gas_cloud_vdbgame_play_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_environment.gas_cloud_vdbgame_play_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_environment.gas_cloud_vdbgame_play_params
+    }
 }
 
 impl<'a> Extract<'a> for GasCloudVDBGamePlayParams {
@@ -1395,8 +1815,12 @@ pub struct GasCloudVDBParams {
 }
 
 impl Pooled for GasCloudVDBParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_environment.gas_cloud_vdbparams }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_environment.gas_cloud_vdbparams }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_environment.gas_cloud_vdbparams
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_environment.gas_cloud_vdbparams
+    }
 }
 
 impl<'a> Extract<'a> for GasCloudVDBParams {
@@ -1405,27 +1829,57 @@ impl<'a> Extract<'a> for GasCloudVDBParams {
         Self {
             is_child: inst.get_bool("isChild").unwrap_or_default(),
             data: match inst.get("data") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GasCloudVDBDataParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<GasCloudVDBDataParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             shaping: match inst.get("shaping") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GasCloudVDBShapingParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<GasCloudVDBShapingParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             edge_albedo_control: match inst.get("edgeAlbedoControl") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GasCloudVDBEdgeAlbedoControlParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<GasCloudVDBEdgeAlbedoControlParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             lighting: match inst.get("lighting") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GasCloudVDBLightingParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<GasCloudVDBLightingParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             shadow: match inst.get("shadow") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GasCloudSunShadowParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<GasCloudSunShadowParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             game_play: match inst.get("gamePlay") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<GasCloudVDBGamePlayParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<GasCloudVDBGamePlayParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
         }
@@ -1439,8 +1893,12 @@ pub struct ProceduralEntityAudioParams {
 }
 
 impl Pooled for ProceduralEntityAudioParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_environment.procedural_entity_audio_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_environment.procedural_entity_audio_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_environment.procedural_entity_audio_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_environment.procedural_entity_audio_params
+    }
 }
 
 impl<'a> Extract<'a> for ProceduralEntityAudioParams {
@@ -1448,7 +1906,10 @@ impl<'a> Extract<'a> for ProceduralEntityAudioParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             biome_switch: match inst.get("biomeSwitch") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioSwitch>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioSwitch>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
         }
@@ -1480,8 +1941,12 @@ pub struct PlanetWeatherParams {
 }
 
 impl Pooled for PlanetWeatherParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_environment.planet_weather_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_environment.planet_weather_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_environment.planet_weather_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_environment.planet_weather_params
+    }
 }
 
 impl<'a> Extract<'a> for PlanetWeatherParams {
@@ -1490,14 +1955,23 @@ impl<'a> Extract<'a> for PlanetWeatherParams {
         Self {
             maximum_wind_speed: inst.get_f32("maximumWindSpeed").unwrap_or_default(),
             air_density: inst.get_f32("airDensity").unwrap_or_default(),
-            wind_map_override: inst.get_str("windMapOverride").map(String::from).unwrap_or_default(),
+            wind_map_override: inst
+                .get_str("windMapOverride")
+                .map(String::from)
+                .unwrap_or_default(),
             wind_map_offset: inst.get_f32("windMapOffset").unwrap_or_default(),
             wind_map_rotation_speed: inst.get_f32("windMapRotationSpeed").unwrap_or_default(),
             wind_gust_strength_range: inst.get_f32("windGustStrengthRange").unwrap_or_default(),
             wind_gust_speed_multiplier: inst.get_f32("windGustSpeedMultiplier").unwrap_or_default(),
-            elevation_begin_wind_speed_drop_off: inst.get_f32("elevationBeginWindSpeedDropOff").unwrap_or_default(),
-            wind_gust_repetition_amount: inst.get_u32("windGustRepetitionAmount").unwrap_or_default(),
-            enable_planetary_ground_effects: inst.get_bool("enablePlanetaryGroundEffects").unwrap_or_default(),
+            elevation_begin_wind_speed_drop_off: inst
+                .get_f32("elevationBeginWindSpeedDropOff")
+                .unwrap_or_default(),
+            wind_gust_repetition_amount: inst
+                .get_u32("windGustRepetitionAmount")
+                .unwrap_or_default(),
+            enable_planetary_ground_effects: inst
+                .get_bool("enablePlanetaryGroundEffects")
+                .unwrap_or_default(),
         }
     }
 }
@@ -1513,8 +1987,12 @@ pub struct PlanetRoomParams {
 }
 
 impl Pooled for PlanetRoomParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_environment.planet_room_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_environment.planet_room_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_environment.planet_room_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_environment.planet_room_params
+    }
 }
 
 impl<'a> Extract<'a> for PlanetRoomParams {
@@ -1524,7 +2002,9 @@ impl<'a> Extract<'a> for PlanetRoomParams {
             temperature_range: inst.get_f32("TemperatureRange").unwrap_or_default(),
             humidity_range: inst.get_f32("HumidityRange").unwrap_or_default(),
             day_night_temperature_params: match inst.get("dayNightTemperatureParams") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(PlanetDayNightTemperatureBaseParamsPtr::from_ref(b, r)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(PlanetDayNightTemperatureBaseParamsPtr::from_ref(b, r))
+                }
                 _ => None,
             },
         }
@@ -1538,15 +2018,21 @@ pub struct PlanetAtmosphereParams {
 }
 
 impl Pooled for PlanetAtmosphereParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_environment.planet_atmosphere_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_environment.planet_atmosphere_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_environment.planet_atmosphere_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_environment.planet_atmosphere_params
+    }
 }
 
 impl<'a> Extract<'a> for PlanetAtmosphereParams {
     const TYPE_NAME: &'static str = "PlanetAtmosphereParams";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            pressure_linear_falloff_interpolation: inst.get_f64("PressureLinearFalloffInterpolation").unwrap_or_default(),
+            pressure_linear_falloff_interpolation: inst
+                .get_f64("PressureLinearFalloffInterpolation")
+                .unwrap_or_default(),
         }
     }
 }
@@ -1565,8 +2051,12 @@ pub struct ProceduralEntityParams {
 }
 
 impl Pooled for ProceduralEntityParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_environment.procedural_entity_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_environment.procedural_entity_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_environment.procedural_entity_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_environment.procedural_entity_params
+    }
 }
 
 impl<'a> Extract<'a> for ProceduralEntityParams {
@@ -1574,19 +2064,39 @@ impl<'a> Extract<'a> for ProceduralEntityParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             weather: match inst.get("Weather") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<PlanetWeatherParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<PlanetWeatherParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             room: match inst.get("Room") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<PlanetRoomParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<PlanetRoomParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             atmosphere: match inst.get("Atmosphere") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<PlanetAtmosphereParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<PlanetAtmosphereParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             audio_params: match inst.get("AudioParams") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<ProceduralEntityAudioParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<ProceduralEntityAudioParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
         }
@@ -1601,15 +2111,22 @@ pub struct AsteroidStateRef {
 }
 
 impl Pooled for AsteroidStateRef {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_environment.asteroid_state_ref }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_environment.asteroid_state_ref }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_environment.asteroid_state_ref
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_environment.asteroid_state_ref
+    }
 }
 
 impl<'a> Extract<'a> for AsteroidStateRef {
     const TYPE_NAME: &'static str = "AsteroidStateRef";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            state_template: inst.get("stateTemplate").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            state_template: inst
+                .get("stateTemplate")
+                .and_then(|v| v.as_record_ref())
+                .map(|r| r.guid),
         }
     }
 }
@@ -1626,17 +2143,30 @@ pub struct AtmosphereStateMultiRef {
 }
 
 impl Pooled for AtmosphereStateMultiRef {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_environment.atmosphere_state_multi_ref }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_environment.atmosphere_state_multi_ref }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_environment.atmosphere_state_multi_ref
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_environment.atmosphere_state_multi_ref
+    }
 }
 
 impl<'a> Extract<'a> for AtmosphereStateMultiRef {
     const TYPE_NAME: &'static str = "AtmosphereStateMultiRef";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            pressure_template: inst.get("pressureTemplate").and_then(|v| v.as_record_ref()).map(|r| r.guid),
-            temperature_template: inst.get("temperatureTemplate").and_then(|v| v.as_record_ref()).map(|r| r.guid),
-            humidity_template: inst.get("humidityTemplate").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            pressure_template: inst
+                .get("pressureTemplate")
+                .and_then(|v| v.as_record_ref())
+                .map(|r| r.guid),
+            temperature_template: inst
+                .get("temperatureTemplate")
+                .and_then(|v| v.as_record_ref())
+                .map(|r| r.guid),
+            humidity_template: inst
+                .get("humidityTemplate")
+                .and_then(|v| v.as_record_ref())
+                .map(|r| r.guid),
         }
     }
 }
@@ -1661,31 +2191,53 @@ pub struct RadiationState {
 }
 
 impl Pooled for RadiationState {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.entities_environment.radiation_state }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.entities_environment.radiation_state }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_environment.radiation_state
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_environment.radiation_state
+    }
 }
 
 impl<'a> Extract<'a> for RadiationState {
     const TYPE_NAME: &'static str = "RadiationState";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            distortion_mod: RoomStateModifyType::from_dcb_str(inst.get_str("distortionMod").unwrap_or("")),
+            distortion_mod: RoomStateModifyType::from_dcb_str(
+                inst.get_str("distortionMod").unwrap_or(""),
+            ),
             distortion: inst.get_f32("distortion").unwrap_or_default(),
             ir: match inst.get("IR") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<RadiationStatePropertyParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<RadiationStatePropertyParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             em: match inst.get("EM") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<RadiationStatePropertyParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<RadiationStatePropertyParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             cs: match inst.get("CS") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<RadiationStatePropertyParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<RadiationStatePropertyParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
-            hazardous_radiation_mod: RoomStateModifyType::from_dcb_str(inst.get_str("hazardousRadiationMod").unwrap_or("")),
+            hazardous_radiation_mod: RoomStateModifyType::from_dcb_str(
+                inst.get_str("hazardousRadiationMod").unwrap_or(""),
+            ),
             hazardous_radiation_rate: inst.get_f32("hazardousRadiationRate").unwrap_or_default(),
         }
     }
 }
-

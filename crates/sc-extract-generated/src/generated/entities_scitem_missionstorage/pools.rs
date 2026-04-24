@@ -15,6 +15,7 @@ use super::super::*;
 #[derive(Default)]
 pub struct EntitiesScitemMissionstoragePools {
     pub sdespawn_rule_on_parts_detached: Vec<Option<SDespawnRule_OnPartsDetached>>,
-    pub interaction_condition_delivery_mission_item: Vec<Option<InteractionConditionDeliveryMissionItem>>,
+    pub interaction_condition_delivery_mission_item:
+        Vec<Option<InteractionConditionDeliveryMissionItem>>,
     pub delivery_item_port_component_params: Vec<Option<DeliveryItemPortComponentParams>>,
 }

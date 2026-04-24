@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -25,8 +25,12 @@ pub struct STurretHealthModifierDef {
 }
 
 impl Pooled for STurretHealthModifierDef {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.turret.sturret_health_modifier_def }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.turret.sturret_health_modifier_def }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.turret.sturret_health_modifier_def
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.turret.sturret_health_modifier_def
+    }
 }
 
 impl<'a> Extract<'a> for STurretHealthModifierDef {
@@ -34,7 +38,10 @@ impl<'a> Extract<'a> for STurretHealthModifierDef {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             damage_movement_modifier: match inst.get("damageMovementModifier") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BezierCurve>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BezierCurve>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
         }
@@ -66,8 +73,12 @@ pub struct STurretESP {
 }
 
 impl Pooled for STurretESP {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.turret.sturret_esp }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.turret.sturret_esp }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.turret.sturret_esp
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.turret.sturret_esp
+    }
 }
 
 impl<'a> Extract<'a> for STurretESP {
@@ -75,7 +86,10 @@ impl<'a> Extract<'a> for STurretESP {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             trigger_zone_ramp_in_curve: match inst.get("triggerZoneRampInCurve") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BezierCurve>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BezierCurve>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             max_tracking_strength: inst.get_f32("maxTrackingStrength").unwrap_or_default(),
@@ -86,7 +100,9 @@ impl<'a> Extract<'a> for STurretESP {
             ads_zone_min_size_deg: inst.get_f32("adsZoneMinSizeDeg").unwrap_or_default(),
             input_scaler_min: inst.get_f32("inputScalerMin").unwrap_or_default(),
             input_scaler_max: inst.get_f32("inputScalerMax").unwrap_or_default(),
-            allow_with_relative_mouse_modes: inst.get_bool("allowWithRelativeMouseModes").unwrap_or_default(),
+            allow_with_relative_mouse_modes: inst
+                .get_bool("allowWithRelativeMouseModes")
+                .unwrap_or_default(),
         }
     }
 }
@@ -118,8 +134,12 @@ pub struct STurretGlobalParams {
 }
 
 impl Pooled for STurretGlobalParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.turret.sturret_global_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.turret.sturret_global_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.turret.sturret_global_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.turret.sturret_global_params
+    }
 }
 
 impl<'a> Extract<'a> for STurretGlobalParams {
@@ -127,17 +147,26 @@ impl<'a> Extract<'a> for STurretGlobalParams {
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
             pointer_mode_allowed: inst.get_bool("pointerModeAllowed").unwrap_or_default(),
-            pointer_mode_input_smoothing: inst.get_f32("pointerModeInputSmoothing").unwrap_or_default(),
+            pointer_mode_input_smoothing: inst
+                .get_f32("pointerModeInputSmoothing")
+                .unwrap_or_default(),
             pointer_mode_inner_angle: inst.get_f32("pointerModeInnerAngle").unwrap_or_default(),
-            pointer_mode_inner_angle_max_speed_modifier: inst.get_f32("pointerModeInnerAngleMaxSpeedModifier").unwrap_or_default(),
-            pointer_mode_inner_angle_turret_smoothing: inst.get_f32("pointerModeInnerAngleTurretSmoothing").unwrap_or_default(),
+            pointer_mode_inner_angle_max_speed_modifier: inst
+                .get_f32("pointerModeInnerAngleMaxSpeedModifier")
+                .unwrap_or_default(),
+            pointer_mode_inner_angle_turret_smoothing: inst
+                .get_f32("pointerModeInnerAngleTurretSmoothing")
+                .unwrap_or_default(),
             pointer_mode_middle_angle: inst.get_f32("pointerModeMiddleAngle").unwrap_or_default(),
             pointer_mode_outer_angle: inst.get_f32("pointerModeOuterAngle").unwrap_or_default(),
-            pointer_mode_outer_angle_turret_smoothing: inst.get_f32("pointerModeOuterAngleTurretSmoothing").unwrap_or_default(),
-            pointer_mode_max_deg_per_sec: inst.get_f32("pointerModeMaxDegPerSec").unwrap_or_default(),
+            pointer_mode_outer_angle_turret_smoothing: inst
+                .get_f32("pointerModeOuterAngleTurretSmoothing")
+                .unwrap_or_default(),
+            pointer_mode_max_deg_per_sec: inst
+                .get_f32("pointerModeMaxDegPerSec")
+                .unwrap_or_default(),
             relative_input_allowed: inst.get_bool("relativeInputAllowed").unwrap_or_default(),
             relative_input_smoothing: inst.get_f32("relativeInputSmoothing").unwrap_or_default(),
         }
     }
 }
-

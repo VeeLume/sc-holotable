@@ -15,7 +15,8 @@ use super::super::*;
 #[derive(Default)]
 pub struct EntitiesScitemWeaponsPools {
     pub ssensor_mine_proximity_trigger: Vec<Option<SSensorMineProximityTrigger>>,
-    pub sgalactapedia_unlockable_component_params: Vec<Option<SGalactapediaUnlockableComponentParams>>,
+    pub sgalactapedia_unlockable_component_params:
+        Vec<Option<SGalactapediaUnlockableComponentParams>>,
     pub schange_holo_entity_state_modifier: Vec<Option<SChangeHoloEntityStateModifier>>,
     pub sweapon_aibeam_params: Vec<Option<SWeaponAIBeamParams>>,
     pub sweapon_condition_targeting_fire: Vec<Option<SWeaponConditionTargetingFire>>,

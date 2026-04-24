@@ -231,9 +231,7 @@ impl ExtractSnapshot {
 
         if config.archive_dcb {
             tracing::info!("capturing game2.dcb");
-            match assets
-                .find_and_read(|name| name.to_ascii_lowercase().ends_with("game2.dcb"))?
-            {
+            match assets.find_and_read(|name| name.to_ascii_lowercase().ends_with("game2.dcb"))? {
                 Some((path, bytes)) => {
                     tracing::info!(
                         path = %path,
@@ -294,8 +292,8 @@ impl ExtractSnapshot {
     /// the destination, so a crash mid-write leaves the previous snapshot
     /// (if any) intact.
     pub fn save(&self, path: &Path) -> Result<()> {
-        let msgpack = rmp_serde::to_vec_named(self)
-            .map_err(|e| Error::SnapshotEncode(e.to_string()))?;
+        let msgpack =
+            rmp_serde::to_vec_named(self).map_err(|e| Error::SnapshotEncode(e.to_string()))?;
 
         let compressed = zstd::stream::encode_all(msgpack.as_slice(), Self::ZSTD_LEVEL)
             .map_err(Error::SnapshotCompression)?;
@@ -344,11 +342,11 @@ impl ExtractSnapshot {
             source,
         })?;
 
-        let msgpack = zstd::stream::decode_all(compressed.as_slice())
-            .map_err(Error::SnapshotCompression)?;
+        let msgpack =
+            zstd::stream::decode_all(compressed.as_slice()).map_err(Error::SnapshotCompression)?;
 
-        let data: Self = rmp_serde::from_slice(&msgpack)
-            .map_err(|e| Error::SnapshotDecode(e.to_string()))?;
+        let data: Self =
+            rmp_serde::from_slice(&msgpack).map_err(|e| Error::SnapshotDecode(e.to_string()))?;
 
         if data.meta.schema_version != Self::SCHEMA_VERSION {
             return Err(Error::SnapshotVersionMismatch {
@@ -562,9 +560,11 @@ mod tests {
             .unwrap();
         assert_eq!(snap.files.len(), 1);
         assert!(snap.files.contains_key("data\\game2.dcb"));
-        assert!(!snap
-            .files
-            .contains_key("data\\localization\\english\\global.ini"));
+        assert!(
+            !snap
+                .files
+                .contains_key("data\\localization\\english\\global.ini")
+        );
     }
 
     #[test]

@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -27,8 +27,16 @@ pub struct TransformationInterpolator {
 }
 
 impl Pooled for TransformationInterpolator {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_transformationinterpolatorrecords.transformation_interpolator }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_transformationinterpolatorrecords.transformation_interpolator }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .ui_transformationinterpolatorrecords
+            .transformation_interpolator
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .ui_transformationinterpolatorrecords
+            .transformation_interpolator
+    }
 }
 
 impl<'a> Extract<'a> for TransformationInterpolator {
@@ -37,10 +45,14 @@ impl<'a> Extract<'a> for TransformationInterpolator {
         Self {
             interpolation_time: inst.get_f32("interpolationTime").unwrap_or_default(),
             transformation_interpolator_params: match inst.get("transformationInterpolatorParams") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<TransformationInterpolatorParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<TransformationInterpolatorParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
         }
     }
 }
-

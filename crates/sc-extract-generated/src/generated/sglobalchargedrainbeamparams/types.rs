@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -31,8 +31,16 @@ pub struct SChargeDrainHighlightOutlineValues {
 }
 
 impl Pooled for SChargeDrainHighlightOutlineValues {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.sglobalchargedrainbeamparams.scharge_drain_highlight_outline_values }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.sglobalchargedrainbeamparams.scharge_drain_highlight_outline_values }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .sglobalchargedrainbeamparams
+            .scharge_drain_highlight_outline_values
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .sglobalchargedrainbeamparams
+            .scharge_drain_highlight_outline_values
+    }
 }
 
 impl<'a> Extract<'a> for SChargeDrainHighlightOutlineValues {
@@ -40,7 +48,10 @@ impl<'a> Extract<'a> for SChargeDrainHighlightOutlineValues {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             color: match inst.get("color") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<RGB>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<RGB>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             occluded_alpha: inst.get_f32("occludedAlpha").unwrap_or_default(),
@@ -63,8 +74,16 @@ pub struct SChargeDrainTargetStateOutlineParams {
 }
 
 impl Pooled for SChargeDrainTargetStateOutlineParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.sglobalchargedrainbeamparams.scharge_drain_target_state_outline_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.sglobalchargedrainbeamparams.scharge_drain_target_state_outline_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .sglobalchargedrainbeamparams
+            .scharge_drain_target_state_outline_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .sglobalchargedrainbeamparams
+            .scharge_drain_target_state_outline_params
+    }
 }
 
 impl<'a> Extract<'a> for SChargeDrainTargetStateOutlineParams {
@@ -72,19 +91,39 @@ impl<'a> Extract<'a> for SChargeDrainTargetStateOutlineParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             inoperable_outline_values: match inst.get("inoperableOutlineValues") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SChargeDrainHighlightOutlineValues>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<SChargeDrainHighlightOutlineValues>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             jumpstart_required_outline_values: match inst.get("jumpstartRequiredOutlineValues") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SChargeDrainHighlightOutlineValues>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<SChargeDrainHighlightOutlineValues>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             jumpstart_possible_outline_values: match inst.get("jumpstartPossibleOutlineValues") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SChargeDrainHighlightOutlineValues>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<SChargeDrainHighlightOutlineValues>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             valid_target_outline_values: match inst.get("validTargetOutlineValues") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SChargeDrainHighlightOutlineValues>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<SChargeDrainHighlightOutlineValues>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
         }
@@ -110,8 +149,12 @@ pub struct SChargeDrainCardParams {
 }
 
 impl Pooled for SChargeDrainCardParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.sglobalchargedrainbeamparams.scharge_drain_card_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.sglobalchargedrainbeamparams.scharge_drain_card_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.sglobalchargedrainbeamparams.scharge_drain_card_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.sglobalchargedrainbeamparams.scharge_drain_card_params
+    }
 }
 
 impl<'a> Extract<'a> for SChargeDrainCardParams {
@@ -124,7 +167,10 @@ impl<'a> Extract<'a> for SChargeDrainCardParams {
             closing_transition_time: inst.get_f32("closingTransitionTime").unwrap_or_default(),
             near_distance: inst.get_f32("nearDistance").unwrap_or_default(),
             default_screen_pos: match inst.get("defaultScreenPos") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec2>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec2>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             max_dist_screen_pos_scale: inst.get_f32("maxDistScreenPosScale").unwrap_or_default(),
@@ -143,8 +189,16 @@ pub struct SGlobalChargeDrainBeamParams {
 }
 
 impl Pooled for SGlobalChargeDrainBeamParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.sglobalchargedrainbeamparams.sglobal_charge_drain_beam_params }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.sglobalchargedrainbeamparams.sglobal_charge_drain_beam_params }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .sglobalchargedrainbeamparams
+            .sglobal_charge_drain_beam_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .sglobalchargedrainbeamparams
+            .sglobal_charge_drain_beam_params
+    }
 }
 
 impl<'a> Extract<'a> for SGlobalChargeDrainBeamParams {
@@ -152,18 +206,32 @@ impl<'a> Extract<'a> for SGlobalChargeDrainBeamParams {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             target_state_outline_params: match inst.get("targetStateOutlineParams") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SChargeDrainTargetStateOutlineParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<SChargeDrainTargetStateOutlineParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             target_card_params: match inst.get("targetCardParams") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SChargeDrainCardParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<SChargeDrainCardParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             charge_card_params: match inst.get("chargeCardParams") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SChargeDrainCardParams>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<SChargeDrainCardParams>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
         }
     }
 }
-

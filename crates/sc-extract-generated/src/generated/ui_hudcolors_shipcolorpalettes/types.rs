@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -27,8 +27,12 @@ pub struct HudColors {
 }
 
 impl Pooled for HudColors {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_hudcolors_shipcolorpalettes.hud_colors }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_hudcolors_shipcolorpalettes.hud_colors }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.ui_hudcolors_shipcolorpalettes.hud_colors
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.ui_hudcolors_shipcolorpalettes.hud_colors
+    }
 }
 
 impl<'a> Extract<'a> for HudColors {
@@ -36,15 +40,32 @@ impl<'a> Extract<'a> for HudColors {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             holo_mat_params: match inst.get("HoloMatParams") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<HudColor_HoloParam>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<HudColor_HoloParam>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
-            palettes: inst.get_array("Palettes")
-                .map(|arr| arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<HudColor_Palette>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r) => Some(b.alloc_nested::<HudColor_Palette>(b.db.instance(r.struct_index, r.instance_index), true)),
+            palettes: inst
+                .get_array("Palettes")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<HudColor_Palette>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => Some(b.alloc_nested::<HudColor_Palette>(
+                            b.db.instance(r.struct_index, r.instance_index),
+                            true,
+                        )),
                         _ => None,
-                    }).collect())
+                    })
+                    .collect()
+                })
                 .unwrap_or_default(),
         }
     }
@@ -61,8 +82,12 @@ pub struct HudColor_Palette {
 }
 
 impl Pooled for HudColor_Palette {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_hudcolors_shipcolorpalettes.hud_color_palette }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_hudcolors_shipcolorpalettes.hud_color_palette }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.ui_hudcolors_shipcolorpalettes.hud_color_palette
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.ui_hudcolors_shipcolorpalettes.hud_color_palette
+    }
 }
 
 impl<'a> Extract<'a> for HudColor_Palette {
@@ -71,15 +96,32 @@ impl<'a> Extract<'a> for HudColor_Palette {
         Self {
             name: inst.get_str("Name").map(String::from).unwrap_or_default(),
             standard_entries: match inst.get("StandardEntries") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<HudColor_Entry>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<HudColor_Entry>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
-            custom_entries: inst.get_array("CustomEntries")
-                .map(|arr| arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<HudColor_CustomEntry>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r) => Some(b.alloc_nested::<HudColor_CustomEntry>(b.db.instance(r.struct_index, r.instance_index), true)),
+            custom_entries: inst
+                .get_array("CustomEntries")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<HudColor_CustomEntry>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => Some(b.alloc_nested::<HudColor_CustomEntry>(
+                            b.db.instance(r.struct_index, r.instance_index),
+                            true,
+                        )),
                         _ => None,
-                    }).collect())
+                    })
+                    .collect()
+                })
                 .unwrap_or_default(),
         }
     }
@@ -94,8 +136,12 @@ pub struct HudColor_Entry {
 }
 
 impl Pooled for HudColor_Entry {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_hudcolors_shipcolorpalettes.hud_color_entry }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_hudcolors_shipcolorpalettes.hud_color_entry }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.ui_hudcolors_shipcolorpalettes.hud_color_entry
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.ui_hudcolors_shipcolorpalettes.hud_color_entry
+    }
 }
 
 impl<'a> Extract<'a> for HudColor_Entry {
@@ -103,11 +149,18 @@ impl<'a> Extract<'a> for HudColor_Entry {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             flash_color: match inst.get("FlashColor") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SRGBA8>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(
+                    b.alloc_nested::<SRGBA8>(b.db.instance(r.struct_index, r.instance_index), true),
+                ),
                 _ => None,
             },
             holo_mat_colors: match inst.get("HoloMatColors") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<HudColor_HoloMatColors>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<HudColor_HoloMatColors>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
         }
@@ -126,8 +179,12 @@ pub struct HudColor_CustomEntry {
 }
 
 impl Pooled for HudColor_CustomEntry {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_hudcolors_shipcolorpalettes.hud_color_custom_entry }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_hudcolors_shipcolorpalettes.hud_color_custom_entry }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.ui_hudcolors_shipcolorpalettes.hud_color_custom_entry
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.ui_hudcolors_shipcolorpalettes.hud_color_custom_entry
+    }
 }
 
 impl<'a> Extract<'a> for HudColor_CustomEntry {
@@ -135,11 +192,18 @@ impl<'a> Extract<'a> for HudColor_CustomEntry {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             flash_color: match inst.get("FlashColor") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SRGBA8>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(
+                    b.alloc_nested::<SRGBA8>(b.db.instance(r.struct_index, r.instance_index), true),
+                ),
                 _ => None,
             },
             holo_mat_colors: match inst.get("HoloMatColors") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<HudColor_HoloMatColors>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<HudColor_HoloMatColors>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
             name: inst.get_str("Name").map(String::from).unwrap_or_default(),
@@ -164,8 +228,12 @@ pub struct HudColor_HoloParam {
 }
 
 impl Pooled for HudColor_HoloParam {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_hudcolors_shipcolorpalettes.hud_color_holo_param }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_hudcolors_shipcolorpalettes.hud_color_holo_param }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.ui_hudcolors_shipcolorpalettes.hud_color_holo_param
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.ui_hudcolors_shipcolorpalettes.hud_color_holo_param
+    }
 }
 
 impl<'a> Extract<'a> for HudColor_HoloParam {
@@ -197,8 +265,16 @@ pub struct HudColor_HoloMatColors {
 }
 
 impl Pooled for HudColor_HoloMatColors {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_hudcolors_shipcolorpalettes.hud_color_holo_mat_colors }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_hudcolors_shipcolorpalettes.hud_color_holo_mat_colors }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .ui_hudcolors_shipcolorpalettes
+            .hud_color_holo_mat_colors
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .ui_hudcolors_shipcolorpalettes
+            .hud_color_holo_mat_colors
+    }
 }
 
 impl<'a> Extract<'a> for HudColor_HoloMatColors {
@@ -206,23 +282,40 @@ impl<'a> Extract<'a> for HudColor_HoloMatColors {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             diffuse: match inst.get("Diffuse") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SRGB8>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SRGB8>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             emissive: match inst.get("Emissive") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SRGB8>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SRGB8>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             rim_color: match inst.get("RimColor") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SRGB8>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SRGB8>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             silhouette_color: match inst.get("SilhouetteColor") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SRGB8>(Instance::from_inline_data(b.db, struct_index, data), false)),
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<SRGB8>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
                 _ => None,
             },
             textures: match inst.get("Textures") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<HudColor_HoloMatTextures>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<HudColor_HoloMatTextures>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
                 _ => None,
             },
         }
@@ -236,16 +329,26 @@ pub struct HudColor_HoloMatTextures {
 }
 
 impl Pooled for HudColor_HoloMatTextures {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_hudcolors_shipcolorpalettes.hud_color_holo_mat_textures }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_hudcolors_shipcolorpalettes.hud_color_holo_mat_textures }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .ui_hudcolors_shipcolorpalettes
+            .hud_color_holo_mat_textures
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .ui_hudcolors_shipcolorpalettes
+            .hud_color_holo_mat_textures
+    }
 }
 
 impl<'a> Extract<'a> for HudColor_HoloMatTextures {
     const TYPE_NAME: &'static str = "HudColor_HoloMatTextures";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            diffuse_name: inst.get_str("DiffuseName").map(String::from).unwrap_or_default(),
+            diffuse_name: inst
+                .get_str("DiffuseName")
+                .map(String::from)
+                .unwrap_or_default(),
         }
     }
 }
-

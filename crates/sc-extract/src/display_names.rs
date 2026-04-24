@@ -23,9 +23,9 @@ use std::collections::HashMap;
 
 use serde::{Deserialize, Serialize};
 
+use crate::Guid;
 use crate::locale::{LocaleKey, LocaleMap};
 use crate::svarog_datacore::{DataCoreDatabase, Instance, Value};
-use crate::Guid;
 
 // Bring `FromBytes` etc. into scope implicitly via the re-export at the
 // crate root; no explicit use statement needed for them here.

@@ -21,8 +21,8 @@ use sc_extract::generated::{
     ContractParamOverrides, ContractPrerequisite_CompletedContractTags,
     ContractPrerequisite_CrimeStat, ContractPrerequisite_Locality, ContractPrerequisite_Location,
     ContractPrerequisite_LocationProperty, ContractPrerequisite_Reputation,
-    ContractPrerequisiteBasePtr, ContractResultBasePtr, ContractResults, DataPools, ELocationTypeLevel,
-    Handle, MissionProperty, SubContract, TagList,
+    ContractPrerequisiteBasePtr, ContractResultBasePtr, ContractResults, DataPools,
+    ELocationTypeLevel, Handle, MissionProperty, SubContract, TagList,
 };
 use sc_extract::{Datacore, Guid, LocaleMap};
 
@@ -31,7 +31,7 @@ use crate::classify::SpawnContext;
 use crate::currency::RewardCurrencyCatalog;
 use crate::locality::LocalityRegistry;
 use crate::ships::{ShipCandidate, ShipRegistry};
-use crate::titles::{resolve_contract_text, ContractAnchor, ResolvedText};
+use crate::titles::{ContractAnchor, ResolvedText, resolve_contract_text};
 
 /// One concrete contract node in the expanded generator graph.
 ///
@@ -323,7 +323,9 @@ pub enum ContractOrigin {
     CareerContract,
     /// A sub-contract inside a parent `Contract` / `CareerContract` /
     /// `ContractLegacy`. `parent` is the parent record's GUID.
-    SubContract { parent: Guid },
+    SubContract {
+        parent: Guid,
+    },
 }
 
 /// A group of related ship-spawn waves emitted for a contract —
@@ -414,8 +416,17 @@ pub fn expand_all(
         };
         for handler_ptr in &generator.generators {
             walk_handler(
-                datacore, locale, ships, blueprints, currency, localities, pools, tree, *gen_guid,
-                handler_ptr, &mut out,
+                datacore,
+                locale,
+                ships,
+                blueprints,
+                currency,
+                localities,
+                pools,
+                tree,
+                *gen_guid,
+                handler_ptr,
+                &mut out,
             );
         }
     }
@@ -452,8 +463,18 @@ fn walk_handler(
             for c_handle in &handler.legacy_contracts {
                 if let Some(c) = c_handle.get(pools) {
                     emit_from_legacy(
-                        datacore, locale, ships, blueprints, currency, localities, pools, tree,
-                        generator_id, &ctx, c, out,
+                        datacore,
+                        locale,
+                        ships,
+                        blueprints,
+                        currency,
+                        localities,
+                        pools,
+                        tree,
+                        generator_id,
+                        &ctx,
+                        c,
+                        out,
                     );
                 }
             }
@@ -469,23 +490,52 @@ fn walk_handler(
             for c_handle in &handler.contracts {
                 if let Some(c) = c_handle.get(pools) {
                     emit_from_career(
-                        datacore, locale, ships, blueprints, currency, localities, pools, tree,
-                        generator_id, &ctx, c, out,
+                        datacore,
+                        locale,
+                        ships,
+                        blueprints,
+                        currency,
+                        localities,
+                        pools,
+                        tree,
+                        generator_id,
+                        &ctx,
+                        c,
+                        out,
                     );
                 }
             }
             for c_handle in &handler.intro_contracts {
                 if let Some(c) = c_handle.get(pools) {
                     emit_from_contract(
-                        datacore, locale, ships, blueprints, currency, localities, pools, tree,
-                        generator_id, &ctx, c, out,
+                        datacore,
+                        locale,
+                        ships,
+                        blueprints,
+                        currency,
+                        localities,
+                        pools,
+                        tree,
+                        generator_id,
+                        &ctx,
+                        c,
+                        out,
                     );
                 }
             }
         }
         H::ContractGeneratorHandler_List(h) => emit_list_like(
-            datacore, locale, ships, blueprints, currency, localities, pools, tree, generator_id,
-            HandlerKind::List, h.get(pools).map(|h| ListLikeHandler {
+            datacore,
+            locale,
+            ships,
+            blueprints,
+            currency,
+            localities,
+            pools,
+            tree,
+            generator_id,
+            HandlerKind::List,
+            h.get(pools).map(|h| ListLikeHandler {
                 debug_name: &h.debug_name,
                 contract_params: h.contract_params.as_ref(),
                 default_availability: h.default_availability.as_ref(),
@@ -494,8 +544,17 @@ fn walk_handler(
             out,
         ),
         H::ContractGeneratorHandler_LinearSeries(h) => emit_list_like(
-            datacore, locale, ships, blueprints, currency, localities, pools, tree, generator_id,
-            HandlerKind::LinearSeries, h.get(pools).map(|h| ListLikeHandler {
+            datacore,
+            locale,
+            ships,
+            blueprints,
+            currency,
+            localities,
+            pools,
+            tree,
+            generator_id,
+            HandlerKind::LinearSeries,
+            h.get(pools).map(|h| ListLikeHandler {
                 debug_name: &h.debug_name,
                 contract_params: h.contract_params.as_ref(),
                 default_availability: h.default_availability.as_ref(),
@@ -504,8 +563,17 @@ fn walk_handler(
             out,
         ),
         H::ContractGeneratorHandler_TutorialSeriesDef(h) => emit_list_like(
-            datacore, locale, ships, blueprints, currency, localities, pools, tree, generator_id,
-            HandlerKind::Tutorial, h.get(pools).map(|h| ListLikeHandler {
+            datacore,
+            locale,
+            ships,
+            blueprints,
+            currency,
+            localities,
+            pools,
+            tree,
+            generator_id,
+            HandlerKind::Tutorial,
+            h.get(pools).map(|h| ListLikeHandler {
                 debug_name: &h.debug_name,
                 contract_params: h.contract_params.as_ref(),
                 default_availability: h.default_availability.as_ref(),
@@ -552,8 +620,18 @@ fn emit_list_like<'p>(
     for c_handle in contracts {
         if let Some(c) = c_handle.get(pools) {
             emit_from_contract(
-                datacore, locale, ships, blueprints, currency, localities, pools, tree,
-                generator_id, &ctx, c, out,
+                datacore,
+                locale,
+                ships,
+                blueprints,
+                currency,
+                localities,
+                pools,
+                tree,
+                generator_id,
+                &ctx,
+                c,
+                out,
             );
         }
     }
@@ -598,16 +676,47 @@ fn emit_from_contract(
     let param_overrides = c.param_overrides.as_ref();
 
     out.push(build_expansion(
-        datacore, locale, ships, blueprints, currency, localities, pools, tree, generator_id, ctx,
-        anchor, None, c.additional_prerequisites.as_slice(), contract_results, param_overrides,
-        c.id, &c.debug_name, c.template, ContractOrigin::Contract,
+        datacore,
+        locale,
+        ships,
+        blueprints,
+        currency,
+        localities,
+        pools,
+        tree,
+        generator_id,
+        ctx,
+        anchor,
+        None,
+        c.additional_prerequisites.as_slice(),
+        contract_results,
+        param_overrides,
+        c.id,
+        &c.debug_name,
+        c.template,
+        ContractOrigin::Contract,
     ));
     for sub_h in &c.sub_contracts {
         if let Some(sub) = sub_h.get(pools) {
             out.push(build_expansion(
-                datacore, locale, ships, blueprints, currency, localities, pools, tree,
-                generator_id, ctx, anchor, Some(sub), c.additional_prerequisites.as_slice(),
-                contract_results, param_overrides, sub.id, &c.debug_name, c.template,
+                datacore,
+                locale,
+                ships,
+                blueprints,
+                currency,
+                localities,
+                pools,
+                tree,
+                generator_id,
+                ctx,
+                anchor,
+                Some(sub),
+                c.additional_prerequisites.as_slice(),
+                contract_results,
+                param_overrides,
+                sub.id,
+                &c.debug_name,
+                c.template,
                 ContractOrigin::SubContract { parent: c.id },
             ));
         }
@@ -634,16 +743,47 @@ fn emit_from_legacy(
     let param_overrides = c.param_overrides.as_ref();
 
     out.push(build_expansion(
-        datacore, locale, ships, blueprints, currency, localities, pools, tree, generator_id, ctx,
-        anchor, None, c.additional_prerequisites.as_slice(), contract_results, param_overrides,
-        c.id, &c.debug_name, c.template, ContractOrigin::ContractLegacy,
+        datacore,
+        locale,
+        ships,
+        blueprints,
+        currency,
+        localities,
+        pools,
+        tree,
+        generator_id,
+        ctx,
+        anchor,
+        None,
+        c.additional_prerequisites.as_slice(),
+        contract_results,
+        param_overrides,
+        c.id,
+        &c.debug_name,
+        c.template,
+        ContractOrigin::ContractLegacy,
     ));
     for sub_h in &c.sub_contracts {
         if let Some(sub) = sub_h.get(pools) {
             out.push(build_expansion(
-                datacore, locale, ships, blueprints, currency, localities, pools, tree,
-                generator_id, ctx, anchor, Some(sub), c.additional_prerequisites.as_slice(),
-                contract_results, param_overrides, sub.id, &c.debug_name, c.template,
+                datacore,
+                locale,
+                ships,
+                blueprints,
+                currency,
+                localities,
+                pools,
+                tree,
+                generator_id,
+                ctx,
+                anchor,
+                Some(sub),
+                c.additional_prerequisites.as_slice(),
+                contract_results,
+                param_overrides,
+                sub.id,
+                &c.debug_name,
+                c.template,
                 ContractOrigin::SubContract { parent: c.id },
             ));
         }
@@ -670,16 +810,47 @@ fn emit_from_career(
     let param_overrides = c.param_overrides.as_ref();
 
     out.push(build_expansion(
-        datacore, locale, ships, blueprints, currency, localities, pools, tree, generator_id, ctx,
-        anchor, None, c.additional_prerequisites.as_slice(), contract_results, param_overrides,
-        c.id, &c.debug_name, c.template, ContractOrigin::CareerContract,
+        datacore,
+        locale,
+        ships,
+        blueprints,
+        currency,
+        localities,
+        pools,
+        tree,
+        generator_id,
+        ctx,
+        anchor,
+        None,
+        c.additional_prerequisites.as_slice(),
+        contract_results,
+        param_overrides,
+        c.id,
+        &c.debug_name,
+        c.template,
+        ContractOrigin::CareerContract,
     ));
     for sub_h in &c.sub_contracts {
         if let Some(sub) = sub_h.get(pools) {
             out.push(build_expansion(
-                datacore, locale, ships, blueprints, currency, localities, pools, tree,
-                generator_id, ctx, anchor, Some(sub), c.additional_prerequisites.as_slice(),
-                contract_results, param_overrides, sub.id, &c.debug_name, c.template,
+                datacore,
+                locale,
+                ships,
+                blueprints,
+                currency,
+                localities,
+                pools,
+                tree,
+                generator_id,
+                ctx,
+                anchor,
+                Some(sub),
+                c.additional_prerequisites.as_slice(),
+                contract_results,
+                param_overrides,
+                sub.id,
+                &c.debug_name,
+                c.template,
                 ContractOrigin::SubContract { parent: c.id },
             ));
         }
@@ -971,9 +1142,13 @@ fn a_abandon_var(
 }
 
 fn resolve_shareable_from_template(template_guid: Option<Guid>, datacore: &Datacore) -> bool {
-    let Some(guid) = template_guid else { return false };
+    let Some(guid) = template_guid else {
+        return false;
+    };
     let db = datacore.db();
-    let Some(record) = db.record(&guid) else { return false };
+    let Some(record) = db.record(&guid) else {
+        return false;
+    };
     let inst = record.as_instance();
     let Some(cclass) = inst.get_instance("contractClass") else {
         return false;
@@ -1066,7 +1241,9 @@ fn resolve_rewards(
             }
             R::ContractResult_Item(ih) => {
                 let Some(item) = ih.get(pools) else { continue };
-                let Some(ec) = item.entity_class else { continue };
+                let Some(ec) = item.entity_class else {
+                    continue;
+                };
                 if let Some(info) = currency.get(&ec) {
                     scrip.push(ScripReward {
                         currency_guid: ec,
@@ -1088,7 +1265,9 @@ fn resolve_rewards(
                 let Some(amounts_h) = lrep.contract_result_reputation_amounts.as_ref() else {
                     continue;
                 };
-                let Some(amounts) = amounts_h.get(pools) else { continue };
+                let Some(amounts) = amounts_h.get(pools) else {
+                    continue;
+                };
                 // Resolve the `reward` GUID → SReputationRewardAmount.reputationAmount
                 let amount = amounts
                     .reward
@@ -1199,11 +1378,13 @@ fn classify_prereq(pools: &DataPools, p: &ContractPrerequisiteBasePtr) -> Prereq
             .unwrap_or(PrereqView::Location { location: None }),
         P::ContractPrerequisite_LocationProperty(h) => h
             .get(pools)
-            .map(|q: &ContractPrerequisite_LocationProperty| PrereqView::LocationProperty {
-                variable_name: q.property_variable_name.clone(),
-                extended_text_token: q.property_extended_text_token.clone(),
-                level: q.location_level_type.clone(),
-            })
+            .map(
+                |q: &ContractPrerequisite_LocationProperty| PrereqView::LocationProperty {
+                    variable_name: q.property_variable_name.clone(),
+                    extended_text_token: q.property_extended_text_token.clone(),
+                    level: q.location_level_type.clone(),
+                },
+            )
             .unwrap_or(PrereqView::LocationProperty {
                 variable_name: String::new(),
                 extended_text_token: String::new(),
@@ -1225,14 +1406,16 @@ fn classify_prereq(pools: &DataPools, p: &ContractPrerequisiteBasePtr) -> Prereq
             }),
         P::ContractPrerequisite_Reputation(h) => h
             .get(pools)
-            .map(|q: &ContractPrerequisite_Reputation| PrereqView::Reputation {
-                include_when_sharing: q.include_prerequisite_when_sharing,
-                faction: q.faction_reputation,
-                scope: q.scope,
-                exclude: q.exclude,
-                min_standing: q.min_standing,
-                max_standing: q.max_standing,
-            })
+            .map(
+                |q: &ContractPrerequisite_Reputation| PrereqView::Reputation {
+                    include_when_sharing: q.include_prerequisite_when_sharing,
+                    faction: q.faction_reputation,
+                    scope: q.scope,
+                    exclude: q.exclude,
+                    min_standing: q.min_standing,
+                    max_standing: q.max_standing,
+                },
+            )
             .unwrap_or(PrereqView::Reputation {
                 include_when_sharing: false,
                 faction: None,
@@ -1348,29 +1531,41 @@ fn collect_property_encounters(
     out: &mut Vec<EncounterGroup>,
 ) {
     for prop_h in props {
-        let Some(prop) = prop_h.get(pools) else { continue };
-        let Some(value_ptr) = prop.value.as_ref() else { continue };
+        let Some(prop) = prop_h.get(pools) else {
+            continue;
+        };
+        let Some(value_ptr) = prop.value.as_ref() else {
+            continue;
+        };
         let BaseMissionPropertyValuePtr::MissionPropertyValue_ShipSpawnDescriptions(val_h) =
             value_ptr
         else {
             continue;
         };
-        let Some(val) = val_h.get(pools) else { continue };
+        let Some(val) = val_h.get(pools) else {
+            continue;
+        };
 
         let mut group = EncounterGroup {
             variable_name: prop.mission_variable_name.clone(),
             waves: Vec::new(),
         };
         for group_h in &val.spawn_descriptions {
-            let Some(wave_group) = group_h.get(pools) else { continue };
+            let Some(wave_group) = group_h.get(pools) else {
+                continue;
+            };
             let mut wave = EncounterWave {
                 name: wave_group.name.clone(),
                 slots: Vec::new(),
             };
             for options_h in &wave_group.ships {
-                let Some(options) = options_h.get(pools) else { continue };
+                let Some(options) = options_h.get(pools) else {
+                    continue;
+                };
                 for option_h in &options.options {
-                    let Some(option) = option_h.get(pools) else { continue };
+                    let Some(option) = option_h.get(pools) else {
+                        continue;
+                    };
                     let pos = tag_list_guids(pools, option.tags.as_ref());
                     let neg = tag_list_guids(pools, option.negative_tags.as_ref());
                     let candidates = ships.resolve_spawn(&pos, &neg);
@@ -1395,7 +1590,9 @@ fn collect_property_encounters(
 
 fn tag_list_guids(pools: &DataPools, h: Option<&Handle<TagList>>) -> HashSet<Guid> {
     let Some(h) = h else { return HashSet::new() };
-    let Some(list) = h.get(pools) else { return HashSet::new() };
+    let Some(list) = h.get(pools) else {
+        return HashSet::new();
+    };
     list.tags.iter().copied().collect()
 }
 

@@ -78,7 +78,7 @@ pub use asset_data::{AssetConfig, AssetData};
 pub use assets::AssetSource;
 pub use config::{DatacoreConfig, DatacoreConfigBuilder};
 pub use datacore::{Datacore, DatacoreSnapshot};
-pub use display_names::{resolve_entity_display_name, DisplayNameCache};
+pub use display_names::{DisplayNameCache, resolve_entity_display_name};
 pub use error::{Error, Result};
 pub use filters::{is_playable_ship, is_playable_weapon};
 pub use graph::ReferenceGraph;

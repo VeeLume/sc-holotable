@@ -79,4 +79,3 @@ pub(crate) fn reserve_pool_slot<T: Pooled>(pools: &mut crate::DataPools) -> u32 
 pub(crate) fn store_in_pool<T: Pooled>(pools: &mut crate::DataPools, slot: u32, value: T) {
     T::pool_mut(pools)[slot as usize] = Some(value);
 }
-

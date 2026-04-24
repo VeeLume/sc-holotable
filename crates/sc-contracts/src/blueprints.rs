@@ -117,7 +117,11 @@ impl BlueprintPoolRegistry {
             let name = db
                 .record(pool_guid)
                 .and_then(|r| r.name().map(|s| s.to_string()))
-                .map(|n| n.strip_prefix("BlueprintPoolRecord.").unwrap_or(&n).to_string())
+                .map(|n| {
+                    n.strip_prefix("BlueprintPoolRecord.")
+                        .unwrap_or(&n)
+                        .to_string()
+                })
                 .unwrap_or_default();
 
             let mut items: Vec<BlueprintItem> = Vec::new();

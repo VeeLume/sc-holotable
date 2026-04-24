@@ -14,6 +14,7 @@ use super::super::*;
 /// Pool storage for the `inventorycontainers` feature.
 #[derive(Default)]
 pub struct InventorycontainersPools {
-    pub open_inventory_occupant_item_type_properties: Vec<Option<OpenInventoryOccupantItemTypeProperties>>,
+    pub open_inventory_occupant_item_type_properties:
+        Vec<Option<OpenInventoryOccupantItemTypeProperties>>,
     pub inventory_container_manager: Vec<Option<InventoryContainerManager>>,
 }

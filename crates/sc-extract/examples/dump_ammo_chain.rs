@@ -8,9 +8,7 @@
 use std::collections::HashMap;
 
 use sc_extract::generated::*;
-use sc_extract::{
-    AssetConfig, AssetData, AssetSource, DataPools, DatacoreConfig, Guid,
-};
+use sc_extract::{AssetConfig, AssetData, AssetSource, DataPools, DatacoreConfig, Guid};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     tracing_subscriber::fmt().with_env_filter("info").init();
@@ -51,17 +49,27 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut failures: Vec<String> = Vec::new();
 
     for (&guid, &handle) in ecd_map {
-        let Some(ecd) = handle.get(pools) else { continue };
-        let name = record_names.get(&guid).copied().unwrap_or("?").replace("EntityClassDefinition.", "");
+        let Some(ecd) = handle.get(pools) else {
+            continue;
+        };
+        let name = record_names
+            .get(&guid)
+            .copied()
+            .unwrap_or("?")
+            .replace("EntityClassDefinition.", "");
 
         let Some(wp) = ecd.components.iter().find_map(|c| match c {
             DataForgeComponentParamsPtr::SCItemWeaponComponentParams(h) => h.get(pools),
             _ => None,
-        }) else { continue };
+        }) else {
+            continue;
+        };
 
         // Dedup
         let base = dedup_name(&name);
-        if seen.contains(&base) { continue; }
+        if seen.contains(&base) {
+            continue;
+        }
         seen.insert(base);
 
         // === Path 1: ammoContainerRecord on weapon component ===
@@ -76,12 +84,19 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
             if let Some(ac) = local_ac {
                 if let Some(ammo_guid) = ac.ammo_params_record {
-                    if ammo_map.get(&ammo_guid).and_then(|h| h.get(pools)).is_some() {
+                    if ammo_map
+                        .get(&ammo_guid)
+                        .and_then(|h| h.get(pools))
+                        .is_some()
+                    {
                         local_container_ok += 1;
                     } else {
                         local_container_fail += 1;
-                        failures.push(format!("LOCAL_NO_AMMO_RECORD {} ac.ammoParamsRecord={}", name,
-                            record_names.get(&ammo_guid).unwrap_or(&"?")));
+                        failures.push(format!(
+                            "LOCAL_NO_AMMO_RECORD {} ac.ammoParamsRecord={}",
+                            name,
+                            record_names.get(&ammo_guid).unwrap_or(&"?")
+                        ));
                     }
                 } else {
                     no_ref += 1;
@@ -89,7 +104,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 }
             } else {
                 no_ref += 1;
-                failures.push(format!("NO_REF {} (no ammoContainerRecord, no local SAmmoContainerComponentParams)", name));
+                failures.push(format!(
+                    "NO_REF {} (no ammoContainerRecord, no local SAmmoContainerComponentParams)",
+                    name
+                ));
             }
             continue;
         }
@@ -115,7 +133,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
                 if let Some(ac) = ammo_comp {
                     if let Some(ammo_guid) = ac.ammo_params_record {
-                        if ammo_map.get(&ammo_guid).and_then(|h| h.get(pools)).is_some() {
+                        if ammo_map
+                            .get(&ammo_guid)
+                            .and_then(|h| h.get(pools))
+                            .is_some()
+                        {
                             two_hop_ok += 1;
                         } else {
                             two_hop_no_ammo_record += 1;
@@ -129,27 +151,48 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                     }
                 } else {
                     // Container entity has no SAmmoContainerComponentParams — check what it does have
-                    let comp_types: Vec<&str> = container_ecd.components.iter().map(|c| match c {
-                        DataForgeComponentParamsPtr::SCItemWeaponComponentParams(_) => "WeaponComp",
-                        DataForgeComponentParamsPtr::SAttachableComponentParams(_) => "Attachable",
-                        DataForgeComponentParamsPtr::SAmmoContainerComponentParams(_) => "AmmoContainer",
-                        DataForgeComponentParamsPtr::SHealthComponentParams(_) => "Health",
-                        _ => "other",
-                    }).filter(|t| *t != "other").collect();
+                    let comp_types: Vec<&str> = container_ecd
+                        .components
+                        .iter()
+                        .map(|c| match c {
+                            DataForgeComponentParamsPtr::SCItemWeaponComponentParams(_) => {
+                                "WeaponComp"
+                            }
+                            DataForgeComponentParamsPtr::SAttachableComponentParams(_) => {
+                                "Attachable"
+                            }
+                            DataForgeComponentParamsPtr::SAmmoContainerComponentParams(_) => {
+                                "AmmoContainer"
+                            }
+                            DataForgeComponentParamsPtr::SHealthComponentParams(_) => "Health",
+                            _ => "other",
+                        })
+                        .filter(|t| *t != "other")
+                        .collect();
 
                     two_hop_no_ammo_comp += 1;
-                    failures.push(format!("TWO_HOP_NO_AMMO_COMP {} -> {} (comps: {}, has: [{}])",
-                        name, ref_name, container_ecd.components.len(), comp_types.join(", ")));
+                    failures.push(format!(
+                        "TWO_HOP_NO_AMMO_COMP {} -> {} (comps: {}, has: [{}])",
+                        name,
+                        ref_name,
+                        container_ecd.components.len(),
+                        comp_types.join(", ")
+                    ));
                 }
             } else {
                 two_hop_no_container += 1;
-                failures.push(format!("TWO_HOP_POOL_FAIL {} -> {} (entity in map but not in pool)", name, ref_name));
+                failures.push(format!(
+                    "TWO_HOP_POOL_FAIL {} -> {} (entity in map but not in pool)",
+                    name, ref_name
+                ));
             }
         } else {
             // GUID not in ecd_map either — could be a different record type
             guid_not_found += 1;
-            failures.push(format!("GUID_NOT_FOUND {} -> {} (not in entity_class_definition or ammo_params maps)",
-                name, ref_name));
+            failures.push(format!(
+                "GUID_NOT_FOUND {} -> {} (not in entity_class_definition or ammo_params maps)",
+                name, ref_name
+            ));
         }
     }
 
@@ -167,7 +210,13 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("Local container fail:            {local_container_fail}");
 
     let total_ok = direct_ammo + two_hop_ok + local_container_ok;
-    let total_fail = no_ref + two_hop_no_ammo_comp + two_hop_no_ammo_ref + two_hop_no_ammo_record + two_hop_no_container + guid_not_found + local_container_fail;
+    let total_fail = no_ref
+        + two_hop_no_ammo_comp
+        + two_hop_no_ammo_ref
+        + two_hop_no_ammo_record
+        + two_hop_no_container
+        + guid_not_found
+        + local_container_fail;
     println!("\nTotal resolved: {total_ok}");
     println!("Total unresolved: {total_fail}");
 
@@ -182,8 +231,14 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 }
 
 fn dedup_name(name: &str) -> String {
-    if name.starts_with(|c: char| c.is_uppercase()) { return name.to_string(); }
-    if let Some(pos) = name.find("_01_") { return name[..pos + 3].to_string(); }
-    if let Some(pos) = name.find("_02_") { return name[..pos + 3].to_string(); }
+    if name.starts_with(|c: char| c.is_uppercase()) {
+        return name.to_string();
+    }
+    if let Some(pos) = name.find("_01_") {
+        return name[..pos + 3].to_string();
+    }
+    if let Some(pos) = name.find("_02_") {
+        return name[..pos + 3].to_string();
+    }
     name.to_string()
 }

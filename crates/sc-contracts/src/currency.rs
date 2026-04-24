@@ -54,7 +54,12 @@ impl RewardCurrencyCatalog {
 
         let mut by_guid: HashMap<Guid, CurrencyInfo> = HashMap::new();
 
-        for (guid, handle) in &datacore.records().records.multi_feature.entity_class_definition {
+        for (guid, handle) in &datacore
+            .records()
+            .records
+            .multi_feature
+            .entity_class_definition
+        {
             let Some(ecd) = handle.get(pools) else {
                 continue;
             };

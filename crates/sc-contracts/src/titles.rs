@@ -133,7 +133,12 @@ pub fn resolve_contract_text(
 
     // Level 2 — contract-level paramOverrides.
     if title_key.is_none() || desc_key.is_none() {
-        pick_from_param_overrides(pools, anchor.param_overrides(), &mut title_key, &mut desc_key);
+        pick_from_param_overrides(
+            pools,
+            anchor.param_overrides(),
+            &mut title_key,
+            &mut desc_key,
+        );
     }
 
     // Level 3 — handler's contractParams.
@@ -171,9 +176,7 @@ fn pick_from_sub_contract(
         }
         match param.param {
             ContractStringParamType::Title if title.is_none() => *title = Some(key.to_string()),
-            ContractStringParamType::Description if desc.is_none() => {
-                *desc = Some(key.to_string())
-            }
+            ContractStringParamType::Description if desc.is_none() => *desc = Some(key.to_string()),
             _ => {}
         }
     }
@@ -195,9 +198,7 @@ fn pick_from_param_overrides(
         }
         match param.param {
             ContractStringParamType::Title if title.is_none() => *title = Some(key.to_string()),
-            ContractStringParamType::Description if desc.is_none() => {
-                *desc = Some(key.to_string())
-            }
+            ContractStringParamType::Description if desc.is_none() => *desc = Some(key.to_string()),
             _ => {}
         }
     }

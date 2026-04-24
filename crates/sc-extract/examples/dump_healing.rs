@@ -8,9 +8,7 @@
 use std::collections::HashMap;
 
 use sc_extract::generated::*;
-use sc_extract::{
-    AssetConfig, AssetData, AssetSource, DataPools, DatacoreConfig, Guid,
-};
+use sc_extract::{AssetConfig, AssetData, AssetSource, DataPools, DatacoreConfig, Guid};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     tracing_subscriber::fmt().with_env_filter("info").init();
@@ -33,14 +31,22 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let ecd_map = &snap.records.records.multi_feature.entity_class_definition;
 
     for (&guid, &handle) in ecd_map {
-        let Some(ecd) = handle.get(pools) else { continue };
-        let name = record_names.get(&guid).copied().unwrap_or("?").replace("EntityClassDefinition.", "");
+        let Some(ecd) = handle.get(pools) else {
+            continue;
+        };
+        let name = record_names
+            .get(&guid)
+            .copied()
+            .unwrap_or("?")
+            .replace("EntityClassDefinition.", "");
         let display = snap.display_names.get(&guid).unwrap_or("").to_string();
 
         let Some(wp) = ecd.components.iter().find_map(|c| match c {
             DataForgeComponentParamsPtr::SCItemWeaponComponentParams(h) => h.get(pools),
             _ => None,
-        }) else { continue };
+        }) else {
+            continue;
+        };
 
         // Collect all HealingBeam actions
         let mut has_healing = false;
@@ -72,11 +78,17 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             for (i, action) in wp.fire_actions.iter().enumerate() {
                 let desc = match action {
                     SWeaponActionParamsPtr::SWeaponActionFireHealingBeamParams(_) => continue,
-                    SWeaponActionParamsPtr::SWeaponActionFireRapidParams(h) =>
-                        h.get(pools).map(|r| format!("[{}] FireRapid rpm={}", i, r.fire_rate)).unwrap_or_default(),
-                    SWeaponActionParamsPtr::SWeaponActionFireSingleParams(h) =>
-                        h.get(pools).map(|s| format!("[{}] FireSingle rpm={}", i, s.fire_rate)).unwrap_or_default(),
-                    SWeaponActionParamsPtr::SWeaponActionFireBeamParams(_) => format!("[{}] FireBeam", i),
+                    SWeaponActionParamsPtr::SWeaponActionFireRapidParams(h) => h
+                        .get(pools)
+                        .map(|r| format!("[{}] FireRapid rpm={}", i, r.fire_rate))
+                        .unwrap_or_default(),
+                    SWeaponActionParamsPtr::SWeaponActionFireSingleParams(h) => h
+                        .get(pools)
+                        .map(|s| format!("[{}] FireSingle rpm={}", i, s.fire_rate))
+                        .unwrap_or_default(),
+                    SWeaponActionParamsPtr::SWeaponActionFireBeamParams(_) => {
+                        format!("[{}] FireBeam", i)
+                    }
                     _ => format!("[{}] Other", i),
                 };
                 if !desc.is_empty() {

@@ -89,9 +89,8 @@ fn snapshot_live_roundtrip() {
     assert_eq!(loaded.meta.schema_version, ExtractSnapshot::SCHEMA_VERSION);
     assert_eq!(loaded.files.len(), snapshot.files.len());
 
-    let (hydrated_assets, hydrated_dc) = loaded
-        .hydrate(&asset_config, &dc_config)
-        .expect("hydrate");
+    let (hydrated_assets, hydrated_dc) =
+        loaded.hydrate(&asset_config, &dc_config).expect("hydrate");
     let hydrated = Counts::from(&hydrated_dc, &hydrated_assets);
     println!("hydrated summary: {hydrated:?}");
 

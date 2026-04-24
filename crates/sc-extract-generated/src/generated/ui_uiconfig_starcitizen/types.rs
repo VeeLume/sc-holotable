@@ -12,9 +12,9 @@
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 #![allow(clippy::too_many_arguments)]
 
+use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 use svarog_common::CigGuid;
 use svarog_datacore::{Instance, Value};
-use crate::{Builder, Extract, Handle, LocaleKey, Pooled};
 
 use super::super::*;
 
@@ -41,8 +41,12 @@ pub struct UIConfig {
 }
 
 impl Pooled for UIConfig {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_uiconfig_starcitizen.uiconfig }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_uiconfig_starcitizen.uiconfig }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.ui_uiconfig_starcitizen.uiconfig
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.ui_uiconfig_starcitizen.uiconfig
+    }
 }
 
 impl<'a> Extract<'a> for UIConfig {
@@ -50,29 +54,66 @@ impl<'a> Extract<'a> for UIConfig {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             damage_colours: match inst.get("DamageColours") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<Flash_Palette>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<Flash_Palette>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
                 _ => None,
             },
             color_states: match inst.get("ColorStates") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<UIStateColor>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<UIStateColor>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
                 _ => None,
             },
             inner_thought: match inst.get("InnerThought") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<InnerThought_Config>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<InnerThought_Config>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
                 _ => None,
             },
             fpsreticle_config: match inst.get("FPSReticleConfig") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<FPSReticle_Config>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<FPSReticle_Config>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
                 _ => None,
             },
             evareticle_config: match inst.get("EVAReticleConfig") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<EVAReticle_Config>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(b.alloc_nested::<EVAReticle_Config>(
+                        b.db.instance(r.struct_index, r.instance_index),
+                        true,
+                    ))
+                }
                 _ => None,
             },
-            player_choice_imconfig: inst.get("playerChoiceIMConfig").and_then(|v| v.as_record_ref()).map(|r| r.guid),
-            visor_hudconfig: inst.get("visorHUDConfig").and_then(|v| v.as_record_ref()).map(|r| r.guid),
-            player_choice_pitconfig: inst.get("playerChoicePITConfig").and_then(|v| v.as_record_ref()).map(|r| r.guid),
-            flight_huduiview_config: inst.get("flightHUDUIViewConfig").and_then(|v| v.as_record_ref()).map(|r| r.guid),
+            player_choice_imconfig: inst
+                .get("playerChoiceIMConfig")
+                .and_then(|v| v.as_record_ref())
+                .map(|r| r.guid),
+            visor_hudconfig: inst
+                .get("visorHUDConfig")
+                .and_then(|v| v.as_record_ref())
+                .map(|r| r.guid),
+            player_choice_pitconfig: inst
+                .get("playerChoicePITConfig")
+                .and_then(|v| v.as_record_ref())
+                .map(|r| r.guid),
+            flight_huduiview_config: inst
+                .get("flightHUDUIViewConfig")
+                .and_then(|v| v.as_record_ref())
+                .map(|r| r.guid),
         }
     }
 }
@@ -106,8 +147,12 @@ pub struct FPSReticle_Config {
 }
 
 impl Pooled for FPSReticle_Config {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_uiconfig_starcitizen.fpsreticle_config }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_uiconfig_starcitizen.fpsreticle_config }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.ui_uiconfig_starcitizen.fpsreticle_config
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.ui_uiconfig_starcitizen.fpsreticle_config
+    }
 }
 
 impl<'a> Extract<'a> for FPSReticle_Config {
@@ -143,8 +188,12 @@ pub struct EVAReticle_Config {
 }
 
 impl Pooled for EVAReticle_Config {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_uiconfig_starcitizen.evareticle_config }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_uiconfig_starcitizen.evareticle_config }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.ui_uiconfig_starcitizen.evareticle_config
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.ui_uiconfig_starcitizen.evareticle_config
+    }
 }
 
 impl<'a> Extract<'a> for EVAReticle_Config {
@@ -154,7 +203,9 @@ impl<'a> Extract<'a> for EVAReticle_Config {
             enable_fixed_reticle: inst.get_bool("EnableFixedReticle").unwrap_or_default(),
             enable_look_reticle: inst.get_bool("EnableLookReticle").unwrap_or_default(),
             enable_velocity_vector: inst.get_bool("EnableVelocityVector").unwrap_or_default(),
-            enable_control_frame_reticle: inst.get_bool("EnableControlFrameReticle").unwrap_or_default(),
+            enable_control_frame_reticle: inst
+                .get_bool("EnableControlFrameReticle")
+                .unwrap_or_default(),
         }
     }
 }
@@ -166,20 +217,36 @@ pub struct Flash_Palette {
 }
 
 impl Pooled for Flash_Palette {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_uiconfig_starcitizen.flash_palette }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_uiconfig_starcitizen.flash_palette }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.ui_uiconfig_starcitizen.flash_palette
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.ui_uiconfig_starcitizen.flash_palette
+    }
 }
 
 impl<'a> Extract<'a> for Flash_Palette {
     const TYPE_NAME: &'static str = "Flash_Palette";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            entries: inst.get_array("Entries")
-                .map(|arr| arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<Flash_PaletteEntry>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r) => Some(b.alloc_nested::<Flash_PaletteEntry>(b.db.instance(r.struct_index, r.instance_index), true)),
+            entries: inst
+                .get_array("Entries")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<Flash_PaletteEntry>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => Some(b.alloc_nested::<Flash_PaletteEntry>(
+                            b.db.instance(r.struct_index, r.instance_index),
+                            true,
+                        )),
                         _ => None,
-                    }).collect())
+                    })
+                    .collect()
+                })
                 .unwrap_or_default(),
         }
     }
@@ -194,8 +261,12 @@ pub struct Flash_PaletteEntry {
 }
 
 impl Pooled for Flash_PaletteEntry {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_uiconfig_starcitizen.flash_palette_entry }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_uiconfig_starcitizen.flash_palette_entry }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.ui_uiconfig_starcitizen.flash_palette_entry
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.ui_uiconfig_starcitizen.flash_palette_entry
+    }
 }
 
 impl<'a> Extract<'a> for Flash_PaletteEntry {
@@ -204,7 +275,9 @@ impl<'a> Extract<'a> for Flash_PaletteEntry {
         Self {
             name: inst.get_str("Name").map(String::from).unwrap_or_default(),
             flash_color: match inst.get("FlashColor") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(b.alloc_nested::<SRGBA8>(b.db.instance(r.struct_index, r.instance_index), true)),
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => Some(
+                    b.alloc_nested::<SRGBA8>(b.db.instance(r.struct_index, r.instance_index), true),
+                ),
                 _ => None,
             },
         }
@@ -218,20 +291,36 @@ pub struct UIStateColor {
 }
 
 impl Pooled for UIStateColor {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_uiconfig_starcitizen.uistate_color }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_uiconfig_starcitizen.uistate_color }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.ui_uiconfig_starcitizen.uistate_color
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.ui_uiconfig_starcitizen.uistate_color
+    }
 }
 
 impl<'a> Extract<'a> for UIStateColor {
     const TYPE_NAME: &'static str = "UIStateColor";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            thresholds: inst.get_array("thresholds")
-                .map(|arr| arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<UIStateColor_Threshold>(Instance::from_inline_data(b.db, struct_index, data), false)),
-                        Value::ClassRef(r) => Some(b.alloc_nested::<UIStateColor_Threshold>(b.db.instance(r.struct_index, r.instance_index), true)),
+            thresholds: inst
+                .get_array("thresholds")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<UIStateColor_Threshold>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => Some(b.alloc_nested::<UIStateColor_Threshold>(
+                            b.db.instance(r.struct_index, r.instance_index),
+                            true,
+                        )),
                         _ => None,
-                    }).collect())
+                    })
+                    .collect()
+                })
                 .unwrap_or_default(),
         }
     }
@@ -246,8 +335,12 @@ pub struct UIStateColor_Threshold {
 }
 
 impl Pooled for UIStateColor_Threshold {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> { &pools.ui_uiconfig_starcitizen.uistate_color_threshold }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> { &mut pools.ui_uiconfig_starcitizen.uistate_color_threshold }
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.ui_uiconfig_starcitizen.uistate_color_threshold
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.ui_uiconfig_starcitizen.uistate_color_threshold
+    }
 }
 
 impl<'a> Extract<'a> for UIStateColor_Threshold {
@@ -259,4 +352,3 @@ impl<'a> Extract<'a> for UIStateColor_Threshold {
         }
     }
 }
-

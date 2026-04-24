@@ -63,11 +63,12 @@ struct RawManifestData {
 pub fn read_build_manifest(install_root: &Path) -> Result<BuildManifest> {
     let manifest_path = install_root.join("build_manifest.id");
 
-    let content =
-        std::fs::read_to_string(&manifest_path).map_err(|source| Error::BuildManifestUnreadable {
+    let content = std::fs::read_to_string(&manifest_path).map_err(|source| {
+        Error::BuildManifestUnreadable {
             path: manifest_path.clone(),
             source,
-        })?;
+        }
+    })?;
 
     let raw: RawManifest =
         serde_json::from_str(&content).map_err(|source| Error::BuildManifestMalformed {
@@ -81,7 +82,9 @@ pub fn read_build_manifest(install_root: &Path) -> Result<BuildManifest> {
 /// Normalize a [`RawManifest`] into a [`BuildManifest`], preferring the v2
 /// nested shape and falling back to legacy fields.
 fn from_raw(raw: RawManifest) -> BuildManifest {
-    if let Some(data) = raw.data.as_ref() && !data.version.is_empty() {
+    if let Some(data) = raw.data.as_ref()
+        && !data.version.is_empty()
+    {
         return BuildManifest {
             version: data.version.clone(),
             branch: data.branch.clone(),

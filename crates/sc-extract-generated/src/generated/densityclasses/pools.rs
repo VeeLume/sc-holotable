@@ -15,7 +15,8 @@ use super::super::*;
 #[derive(Default)]
 pub struct DensityclassesPools {
     pub sdensity_class_lifetime_override_entry: Vec<Option<SDensityClassLifetimeOverrideEntry>>,
-    pub sdefault_density_class_lifetime_overrides: Vec<Option<SDefaultDensityClassLifetimeOverrides>>,
+    pub sdefault_density_class_lifetime_overrides:
+        Vec<Option<SDefaultDensityClassLifetimeOverrides>>,
     pub sentity_density_class_overrides_record: Vec<Option<SEntityDensityClassOverridesRecord>>,
     pub sentity_density_class_overrides_manual: Vec<Option<SEntityDensityClassOverridesManual>>,
 }

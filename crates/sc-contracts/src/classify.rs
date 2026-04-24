@@ -177,7 +177,10 @@ mod tests {
     fn root_and_category_shapes() {
         assert_eq!(root_and_category(&[]), ("", None));
         assert_eq!(root_and_category(&["AI"]), ("AI", None));
-        assert_eq!(root_and_category(&["AI", "Faction"]), ("AI", Some("Faction")));
+        assert_eq!(
+            root_and_category(&["AI", "Faction"]),
+            ("AI", Some("Faction"))
+        );
         assert_eq!(
             root_and_category(&["AI", "Faction", "Criminal"]),
             ("AI", Some("Faction"))

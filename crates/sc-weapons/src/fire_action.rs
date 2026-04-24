@@ -1,5 +1,5 @@
-use sc_extract::generated::*;
 use sc_extract::DataPools;
+use sc_extract::generated::*;
 
 use crate::damage::DamageSummary;
 
@@ -17,10 +17,7 @@ pub enum FireActionKind {
         spin_down: f32,
     },
     /// Semi-automatic (cannons, scatter guns, pistols).
-    Single {
-        fire_rate: i32,
-        heat_per_shot: f32,
-    },
+    Single { fire_rate: i32, heat_per_shot: f32 },
     /// Multi-barrel round-robin (repeaters, cannons).
     /// `effective_rpm = min(sequence_delay, inner_rpm)` — verified with spviewer.
     Sequence {
@@ -142,19 +139,19 @@ pub(crate) fn extract_fire_action(
             let Some(c) = h.get(pools) else {
                 return FireActionKind::Unknown;
             };
-            let max_modifier = c
-                .max_charge_modifier
-                .and_then(|h| h.get(pools))
-                .map(|s| ChargeModifier {
-                    damage_multiplier: s.damage_multiplier,
-                    projectile_speed_multiplier: s.projectile_speed_multiplier,
-                    fire_rate_multiplier: s.fire_rate_multiplier,
-                    charge_time_multiplier: s.charge_time_multiplier,
-                    heat_generation_multiplier: s.heat_generation_multiplier,
-                    ammo_cost_multiplier: s.ammo_cost_multiplier,
-                    pellets: s.pellets,
-                    burst_shots: s.burst_shots,
-                });
+            let max_modifier =
+                c.max_charge_modifier
+                    .and_then(|h| h.get(pools))
+                    .map(|s| ChargeModifier {
+                        damage_multiplier: s.damage_multiplier,
+                        projectile_speed_multiplier: s.projectile_speed_multiplier,
+                        fire_rate_multiplier: s.fire_rate_multiplier,
+                        charge_time_multiplier: s.charge_time_multiplier,
+                        heat_generation_multiplier: s.heat_generation_multiplier,
+                        ammo_cost_multiplier: s.ammo_cost_multiplier,
+                        pellets: s.pellets,
+                        burst_shots: s.burst_shots,
+                    });
             FireActionKind::Charged {
                 charge_time: c.charge_time,
                 overcharge_time: c.overcharge_time,

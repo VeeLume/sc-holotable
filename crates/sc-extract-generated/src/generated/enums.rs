@@ -6674,15 +6674,29 @@ impl ControlHintConditionActorInteractionState {
             "PISWheelOpenMultiplePages" => Self::PISWheelOpenMultiplePages,
             "SwapWheelOpen" => Self::SwapWheelOpen,
             "SwapWheelOpenMultiplePages" => Self::SwapWheelOpenMultiplePages,
-            "PISWheelOpenCustomisablePrimarySecondary" => Self::PISWheelOpenCustomisablePrimarySecondary,
+            "PISWheelOpenCustomisablePrimarySecondary" => {
+                Self::PISWheelOpenCustomisablePrimarySecondary
+            }
             "PISWheelOpenContextMenuOpen" => Self::PISWheelOpenContextMenuOpen,
-            "QuickSelectWheelOpenSegmentHasContextMenu" => Self::QuickSelectWheelOpenSegmentHasContextMenu,
-            "QuickSelectWheelOpenHoverOverNavigationSegment" => Self::QuickSelectWheelOpenHoverOverNavigationSegment,
+            "QuickSelectWheelOpenSegmentHasContextMenu" => {
+                Self::QuickSelectWheelOpenSegmentHasContextMenu
+            }
+            "QuickSelectWheelOpenHoverOverNavigationSegment" => {
+                Self::QuickSelectWheelOpenHoverOverNavigationSegment
+            }
             "QuickSelectWheelOpenMultiplePages" => Self::QuickSelectWheelOpenMultiplePages,
-            "InteractionPromptWithSingleOptionAvailable" => Self::InteractionPromptWithSingleOptionAvailable,
-            "InteractionPromptWithMultipleOptionsAvailable" => Self::InteractionPromptWithMultipleOptionsAvailable,
-            "InteractionPromptHasAvailableSecondaryAction" => Self::InteractionPromptHasAvailableSecondaryAction,
-            "InteractionPromptOverridesHintDescription" => Self::InteractionPromptOverridesHintDescription,
+            "InteractionPromptWithSingleOptionAvailable" => {
+                Self::InteractionPromptWithSingleOptionAvailable
+            }
+            "InteractionPromptWithMultipleOptionsAvailable" => {
+                Self::InteractionPromptWithMultipleOptionsAvailable
+            }
+            "InteractionPromptHasAvailableSecondaryAction" => {
+                Self::InteractionPromptHasAvailableSecondaryAction
+            }
+            "InteractionPromptOverridesHintDescription" => {
+                Self::InteractionPromptOverridesHintDescription
+            }
             "OffscreenInteractionAvailable" => Self::OffscreenInteractionAvailable,
             "HeldItemHasAvailablePrimaryAction" => Self::HeldItemHasAvailablePrimaryAction,
             "HeldItemHasAvailableSecondaryAction" => Self::HeldItemHasAvailableSecondaryAction,
@@ -10456,22 +10470,44 @@ impl EAudioIFCSOutputData {
             "Ship_Planet_AtmosphericDensity" => Self::Ship_Planet_AtmosphericDensity,
             "Ship_Planet_HeightAboveGround" => Self::Ship_Planet_HeightAboveGround,
             "Ship_Atmospheric_Mach" => Self::Ship_Atmospheric_Mach,
-            "Ship_Atmospheric_StagnationTemperature" => Self::Ship_Atmospheric_StagnationTemperature,
-            "Ship_Atmospheric_StagnationTemperatureFlareStarted" => Self::Ship_Atmospheric_StagnationTemperatureFlareStarted,
-            "Ship_Atmospheric_StagnationTemperatureNormalized" => Self::Ship_Atmospheric_StagnationTemperatureNormalized,
-            "Ship_Atmospheric_Wind_Speed_Rotational_Non_Normalised" => Self::Ship_Atmospheric_Wind_Speed_Rotational_Non_Normalised,
-            "Ship_Atmospheric_Wind_Speed_Translational_Non_Normalised" => Self::Ship_Atmospheric_Wind_Speed_Translational_Non_Normalised,
+            "Ship_Atmospheric_StagnationTemperature" => {
+                Self::Ship_Atmospheric_StagnationTemperature
+            }
+            "Ship_Atmospheric_StagnationTemperatureFlareStarted" => {
+                Self::Ship_Atmospheric_StagnationTemperatureFlareStarted
+            }
+            "Ship_Atmospheric_StagnationTemperatureNormalized" => {
+                Self::Ship_Atmospheric_StagnationTemperatureNormalized
+            }
+            "Ship_Atmospheric_Wind_Speed_Rotational_Non_Normalised" => {
+                Self::Ship_Atmospheric_Wind_Speed_Rotational_Non_Normalised
+            }
+            "Ship_Atmospheric_Wind_Speed_Translational_Non_Normalised" => {
+                Self::Ship_Atmospheric_Wind_Speed_Translational_Non_Normalised
+            }
             "Ship_Translation_Speed" => Self::Ship_Translation_Speed,
             "Ship_Translation_Speed_NonNormalized" => Self::Ship_Translation_Speed_NonNormalized,
             "Ship_Translation_Acceleration_MaxAll" => Self::Ship_Translation_Acceleration_MaxAll,
             "Ship_Translation_Acceleration_Forward" => Self::Ship_Translation_Acceleration_Forward,
-            "Ship_Translation_Acceleration_Backward" => Self::Ship_Translation_Acceleration_Backward,
-            "Ship_Translation_Acceleration_ForwardBackward" => Self::Ship_Translation_Acceleration_ForwardBackward,
+            "Ship_Translation_Acceleration_Backward" => {
+                Self::Ship_Translation_Acceleration_Backward
+            }
+            "Ship_Translation_Acceleration_ForwardBackward" => {
+                Self::Ship_Translation_Acceleration_ForwardBackward
+            }
             "Ship_Translation_Acceleration_UpDown" => Self::Ship_Translation_Acceleration_UpDown,
-            "Ship_Translation_Acceleration_UpDownSigned" => Self::Ship_Translation_Acceleration_UpDownSigned,
-            "Ship_Translation_Acceleration_LeftRight" => Self::Ship_Translation_Acceleration_LeftRight,
-            "Ship_Translation_Acceleration_LeftRightSigned" => Self::Ship_Translation_Acceleration_LeftRightSigned,
-            "Ship_Translation_Acceleration_MaxLeftRightUpDown" => Self::Ship_Translation_Acceleration_MaxLeftRightUpDown,
+            "Ship_Translation_Acceleration_UpDownSigned" => {
+                Self::Ship_Translation_Acceleration_UpDownSigned
+            }
+            "Ship_Translation_Acceleration_LeftRight" => {
+                Self::Ship_Translation_Acceleration_LeftRight
+            }
+            "Ship_Translation_Acceleration_LeftRightSigned" => {
+                Self::Ship_Translation_Acceleration_LeftRightSigned
+            }
+            "Ship_Translation_Acceleration_MaxLeftRightUpDown" => {
+                Self::Ship_Translation_Acceleration_MaxLeftRightUpDown
+            }
             "Ship_Translation_GSafe_Strength" => Self::Ship_Translation_GSafe_Strength,
             "Ship_Translation_InCruiseRange" => Self::Ship_Translation_InCruiseRange,
             "Ship_Rotation_Speed" => Self::Ship_Rotation_Speed,
@@ -10489,7 +10525,9 @@ impl EAudioIFCSOutputData {
             "Ship_Rotation_InputDivergence_Yaw" => Self::Ship_Rotation_InputDivergence_Yaw,
             "Ship_Rotation_InputDivergence_Roll" => Self::Ship_Rotation_InputDivergence_Roll,
             "Ship_Rotation_InputDivergence_MaxAll" => Self::Ship_Rotation_InputDivergence_MaxAll,
-            "Ship_Rotation_InputDivergence_MaxPitchYaw" => Self::Ship_Rotation_InputDivergence_MaxPitchYaw,
+            "Ship_Rotation_InputDivergence_MaxPitchYaw" => {
+                Self::Ship_Rotation_InputDivergence_MaxPitchYaw
+            }
             "Gravlev_Compression_One" => Self::Gravlev_Compression_One,
             "Gravlev_Compression_Two" => Self::Gravlev_Compression_Two,
             "Gravlev_Compression_Three" => Self::Gravlev_Compression_Three,
@@ -10502,14 +10540,26 @@ impl EAudioIFCSOutputData {
             "Gravlev_Compression_Normalized_Three" => Self::Gravlev_Compression_Normalized_Three,
             "Gravlev_Compression_Normalized_Four" => Self::Gravlev_Compression_Normalized_Four,
             "Gravlev_Compression_Normalized_All" => Self::Gravlev_Compression_Normalized_All,
-            "Gravlev_Compression_Normalized_Average" => Self::Gravlev_Compression_Normalized_Average,
+            "Gravlev_Compression_Normalized_Average" => {
+                Self::Gravlev_Compression_Normalized_Average
+            }
             "Gravlev_Compression_Normalized_Max" => Self::Gravlev_Compression_Normalized_Max,
             "Gravlev_Enabled" => Self::Gravlev_Enabled,
-            "Ship_Linear_VelocityLengthNormalizedLS" => Self::Ship_Linear_VelocityLengthNormalizedLS,
-            "Ship_Linear_VelocityForwardBackwardNormalizedLS" => Self::Ship_Linear_VelocityForwardBackwardNormalizedLS,
-            "Ship_Linear_VelocityRightLeftNormalizedLS" => Self::Ship_Linear_VelocityRightLeftNormalizedLS,
-            "Ship_Linear_VelocityUpDownNormalizedLS" => Self::Ship_Linear_VelocityUpDownNormalizedLS,
-            "Ship_Linear_VelocityGoalLengthNormalizedLS" => Self::Ship_Linear_VelocityGoalLengthNormalizedLS,
+            "Ship_Linear_VelocityLengthNormalizedLS" => {
+                Self::Ship_Linear_VelocityLengthNormalizedLS
+            }
+            "Ship_Linear_VelocityForwardBackwardNormalizedLS" => {
+                Self::Ship_Linear_VelocityForwardBackwardNormalizedLS
+            }
+            "Ship_Linear_VelocityRightLeftNormalizedLS" => {
+                Self::Ship_Linear_VelocityRightLeftNormalizedLS
+            }
+            "Ship_Linear_VelocityUpDownNormalizedLS" => {
+                Self::Ship_Linear_VelocityUpDownNormalizedLS
+            }
+            "Ship_Linear_VelocityGoalLengthNormalizedLS" => {
+                Self::Ship_Linear_VelocityGoalLengthNormalizedLS
+            }
             "Ship_Angular_AccelerationLengthLS" => Self::Ship_Angular_AccelerationLengthLS,
             "Ship_Linear_RealAccelerationLS" => Self::Ship_Linear_RealAccelerationLS,
             "Ship_MaxSpeedNav" => Self::Ship_MaxSpeedNav,
@@ -12562,7 +12612,9 @@ impl EDifficultyModifierType {
             "VehicleDamage_Player_HitBy_AI" => Self::VehicleDamage_Player_HitBy_AI,
             "VehicleDamage_Player_HitBy_Player" => Self::VehicleDamage_Player_HitBy_Player,
             "VehicleDamage_Uncontrolled_HitBy_AI" => Self::VehicleDamage_Uncontrolled_HitBy_AI,
-            "VehicleDamage_Uncontrolled_HitBy_Player" => Self::VehicleDamage_Uncontrolled_HitBy_Player,
+            "VehicleDamage_Uncontrolled_HitBy_Player" => {
+                Self::VehicleDamage_Uncontrolled_HitBy_Player
+            }
             "RequiredEatAndDrink" => Self::RequiredEatAndDrink,
             "SlowerMagRelevellingEnabled" => Self::SlowerMagRelevellingEnabled,
             "SlowerMagRelevellingSpeed" => Self::SlowerMagRelevellingSpeed,
@@ -12617,9 +12669,15 @@ impl EDifficultyRange_GameKnowledge {
             "Noob_gaming_or_tutorial_1" => Self::Noob_gaming_or_tutorial_1,
             "FPS_mechanics_walk_shoot_mobiGlass_2" => Self::FPS_mechanics_walk_shoot_mobiGlass_2,
             "Flight_mechanics_fly_dock_quantum_3" => Self::Flight_mechanics_fly_dock_quantum_3,
-            "Standard_understanding_FPS_flight_professions_4" => Self::Standard_understanding_FPS_flight_professions_4,
-            "Expert_understanding_FPS_flight_professions_5" => Self::Expert_understanding_FPS_flight_professions_5,
-            "Pro_understanding_of_optimal_tactics_6" => Self::Pro_understanding_of_optimal_tactics_6,
+            "Standard_understanding_FPS_flight_professions_4" => {
+                Self::Standard_understanding_FPS_flight_professions_4
+            }
+            "Expert_understanding_FPS_flight_professions_5" => {
+                Self::Expert_understanding_FPS_flight_professions_5
+            }
+            "Pro_understanding_of_optimal_tactics_6" => {
+                Self::Pro_understanding_of_optimal_tactics_6
+            }
             "Basically_a_Dev_7" => Self::Basically_a_Dev_7,
             "No_content_like_this_yet_8" => Self::No_content_like_this_yet_8,
             _ => Self::Unrecognized(s.to_string()),
@@ -12663,8 +12721,12 @@ impl EDifficultyRange_MechanicalSkill {
             "Easy_PvE_only_action_3" => Self::Easy_PvE_only_action_3,
             "Normal_PvE_only_action_4" => Self::Normal_PvE_only_action_4,
             "Hard_PvE_or_Easy_PvP_action_5" => Self::Hard_PvE_or_Easy_PvP_action_5,
-            "Multiplayer_PvE_or_Expert_PvP_action_6" => Self::Multiplayer_PvE_or_Expert_PvP_action_6,
-            "PvE_PvP_large_group_action_eg_warzone_7" => Self::PvE_PvP_large_group_action_eg_warzone_7,
+            "Multiplayer_PvE_or_Expert_PvP_action_6" => {
+                Self::Multiplayer_PvE_or_Expert_PvP_action_6
+            }
+            "PvE_PvP_large_group_action_eg_warzone_7" => {
+                Self::PvE_PvP_large_group_action_eg_warzone_7
+            }
             "No_content_like_this_yet_8" => Self::No_content_like_this_yet_8,
             _ => Self::Unrecognized(s.to_string()),
         }
@@ -12749,7 +12811,9 @@ impl EDifficultyRange_RiskOfLoss {
             "Safe_and_sound_zzzz_1" => Self::Safe_and_sound_zzzz_1,
             "Barely_even_breaking_a_sweat_2" => Self::Barely_even_breaking_a_sweat_2,
             "Minimal_danger_FPS_NOT_ship_action_3" => Self::Minimal_danger_FPS_NOT_ship_action_3,
-            "Ship_could_get_damaged_Could_lose_cargo_4" => Self::Ship_could_get_damaged_Could_lose_cargo_4,
+            "Ship_could_get_damaged_Could_lose_cargo_4" => {
+                Self::Ship_could_get_damaged_Could_lose_cargo_4
+            }
             "Player_might_die_Ship_could_explode_5" => Self::Player_might_die_Ship_could_explode_5,
             "Player_likely_to_die_Ship_too_6" => Self::Player_likely_to_die_Ship_too_6,
             "Without_help_Player_and_Ship_die_7" => Self::Without_help_Player_and_Ship_die_7,
@@ -15103,8 +15167,12 @@ impl EHackingErrorType {
             "AbilitySwapTargetNodeIsUnrevealed" => Self::AbilitySwapTargetNodeIsUnrevealed,
             "AbilityWrapTeleportWhileMoving" => Self::AbilityWrapTeleportWhileMoving,
             "AbilityWrapAgentAlreadyTeleporting" => Self::AbilityWrapAgentAlreadyTeleporting,
-            "AbilityWrapDestinationNodeIsUnrevealed" => Self::AbilityWrapDestinationNodeIsUnrevealed,
-            "AbilityWrapNoTeleportationDirectionAvailable" => Self::AbilityWrapNoTeleportationDirectionAvailable,
+            "AbilityWrapDestinationNodeIsUnrevealed" => {
+                Self::AbilityWrapDestinationNodeIsUnrevealed
+            }
+            "AbilityWrapNoTeleportationDirectionAvailable" => {
+                Self::AbilityWrapNoTeleportationDirectionAvailable
+            }
             "AbilityWrapInvalidDestination" => Self::AbilityWrapInvalidDestination,
             "AbilityWrapAmbiguousDestination" => Self::AbilityWrapAmbiguousDestination,
             "CodeInvalidCommandToken" => Self::CodeInvalidCommandToken,
@@ -16118,7 +16186,9 @@ impl EInputPromptBoundTo {
             "EntityRoot" => Self::EntityRoot,
             "TopBoundingBoxZSurface" => Self::TopBoundingBoxZSurface,
             "NearestBoundingBoxSurface" => Self::NearestBoundingBoxSurface,
-            "NearestBoundingBoxIgnoreFurthestSurfaces" => Self::NearestBoundingBoxIgnoreFurthestSurfaces,
+            "NearestBoundingBoxIgnoreFurthestSurfaces" => {
+                Self::NearestBoundingBoxIgnoreFurthestSurfaces
+            }
             "InteractionPointFixedOffset" => Self::InteractionPointFixedOffset,
             "Tmp_AngleConstraintForwardDirection" => Self::Tmp_AngleConstraintForwardDirection,
             _ => Self::Unrecognized(s.to_string()),
@@ -27460,13 +27530,25 @@ impl HintEventType {
             "ActorStatusDeadlyInjuryStarted" => Self::ActorStatusDeadlyInjuryStarted,
             "ActorStatusDigestionAbsorptionEmpty" => Self::ActorStatusDigestionAbsorptionEmpty,
             "ActorStatusDownedEnter" => Self::ActorStatusDownedEnter,
-            "ActorStatusEffectArmsLockCannotClimbLadder" => Self::ActorStatusEffectArmsLockCannotClimbLadder,
+            "ActorStatusEffectArmsLockCannotClimbLadder" => {
+                Self::ActorStatusEffectArmsLockCannotClimbLadder
+            }
             "ActorStatusEffectArmsLockCannotMantle" => Self::ActorStatusEffectArmsLockCannotMantle,
-            "ActorStatusEffectArmsLockCannotSteerShip" => Self::ActorStatusEffectArmsLockCannotSteerShip,
-            "ActorStatusEffectArmsLockCannotRestrain" => Self::ActorStatusEffectArmsLockCannotRestrain,
-            "ActorStatusEffectArmsLockCannotTakeDown" => Self::ActorStatusEffectArmsLockCannotTakeDown,
-            "ActorStatusEffectArmsLockCannotUseMountedGun" => Self::ActorStatusEffectArmsLockCannotUseMountedGun,
-            "ActorStatusEffectArmsLockCannotUseTrolley" => Self::ActorStatusEffectArmsLockCannotUseTrolley,
+            "ActorStatusEffectArmsLockCannotSteerShip" => {
+                Self::ActorStatusEffectArmsLockCannotSteerShip
+            }
+            "ActorStatusEffectArmsLockCannotRestrain" => {
+                Self::ActorStatusEffectArmsLockCannotRestrain
+            }
+            "ActorStatusEffectArmsLockCannotTakeDown" => {
+                Self::ActorStatusEffectArmsLockCannotTakeDown
+            }
+            "ActorStatusEffectArmsLockCannotUseMountedGun" => {
+                Self::ActorStatusEffectArmsLockCannotUseMountedGun
+            }
+            "ActorStatusEffectArmsLockCannotUseTrolley" => {
+                Self::ActorStatusEffectArmsLockCannotUseTrolley
+            }
             "ActorStatusEffectArmsLockDropItem" => Self::ActorStatusEffectArmsLockDropItem,
             "ActorStatusEffectArmsLockLowerWeapon" => Self::ActorStatusEffectArmsLockLowerWeapon,
             "ActorStatusEffectArmsLockStart" => Self::ActorStatusEffectArmsLockStart,
@@ -27496,8 +27578,12 @@ impl HintEventType {
             "ActorStatusRespawnLocationSet" => Self::ActorStatusRespawnLocationSet,
             "ActorStatusRespawnCriminal" => Self::ActorStatusRespawnCriminal,
             "ActorStatusRespawnPrison" => Self::ActorStatusRespawnPrison,
-            "ActorStatusTemperatureAboveMaxResistance" => Self::ActorStatusTemperatureAboveMaxResistance,
-            "ActorStatusTemperatureBelowMinResistance" => Self::ActorStatusTemperatureBelowMinResistance,
+            "ActorStatusTemperatureAboveMaxResistance" => {
+                Self::ActorStatusTemperatureAboveMaxResistance
+            }
+            "ActorStatusTemperatureBelowMinResistance" => {
+                Self::ActorStatusTemperatureBelowMinResistance
+            }
             "ActorStatusTemperatureDeath" => Self::ActorStatusTemperatureDeath,
             "ActorStatusWearingHelmetConsume" => Self::ActorStatusWearingHelmetConsume,
             "ActorStatusWearingNoUndersuitConsume" => Self::ActorStatusWearingNoUndersuitConsume,
@@ -27510,9 +27596,13 @@ impl HintEventType {
             "ChatOpened" => Self::ChatOpened,
             "CollectCargoFromLoadingArea" => Self::CollectCargoFromLoadingArea,
             "ConsumableFirstMiningConsumableBought" => Self::ConsumableFirstMiningConsumableBought,
-            "ConsumableFirstMiningWithConsumablesEquipped" => Self::ConsumableFirstMiningWithConsumablesEquipped,
+            "ConsumableFirstMiningWithConsumablesEquipped" => {
+                Self::ConsumableFirstMiningWithConsumablesEquipped
+            }
             "ConsumableMiningConsumableExpired" => Self::ConsumableMiningConsumableExpired,
-            "ConsumableMiningConsumableExpiredNoCharges" => Self::ConsumableMiningConsumableExpiredNoCharges,
+            "ConsumableMiningConsumableExpiredNoCharges" => {
+                Self::ConsumableMiningConsumableExpiredNoCharges
+            }
             "ConsumableMiningConsumableUsed" => Self::ConsumableMiningConsumableUsed,
             "ContactsOpened" => Self::ContactsOpened,
             "CustomizeACLoadoutMenuEntered" => Self::CustomizeACLoadoutMenuEntered,
@@ -27534,8 +27624,12 @@ impl HintEventType {
             "HailCargoServicesForLoading" => Self::HailCargoServicesForLoading,
             "HarvestableInHandBackpackNotFull" => Self::HarvestableInHandBackpackNotFull,
             "HarvestableNotInHand" => Self::HarvestableNotInHand,
-            "HarvestablePlayerLooksAtHarvestableBackpackNotFull" => Self::HarvestablePlayerLooksAtHarvestableBackpackNotFull,
-            "HarvestablePlayerLooksAtHarvestableNoBackpack" => Self::HarvestablePlayerLooksAtHarvestableNoBackpack,
+            "HarvestablePlayerLooksAtHarvestableBackpackNotFull" => {
+                Self::HarvestablePlayerLooksAtHarvestableBackpackNotFull
+            }
+            "HarvestablePlayerLooksAtHarvestableNoBackpack" => {
+                Self::HarvestablePlayerLooksAtHarvestableNoBackpack
+            }
             "HintAreaEntered" => Self::HintAreaEntered,
             "HintAreaExited" => Self::HintAreaExited,
             "HullC_CargoRequiresSpindlesExtended" => Self::HullC_CargoRequiresSpindlesExtended,
@@ -27565,8 +27659,12 @@ impl HintEventType {
             "MedBeamMedgunToggleAdvancedMode" => Self::MedBeamMedgunToggleAdvancedMode,
             "MedBeamMedgunOnAdvancedModeActivated" => Self::MedBeamMedgunOnAdvancedModeActivated,
             "MedBeamMedgunAdvancedModeButtons" => Self::MedBeamMedgunAdvancedModeButtons,
-            "MedBeamMedgunAdvancedModeSafeBDLBypass" => Self::MedBeamMedgunAdvancedModeSafeBDLBypass,
-            "MedBeamMedgunAdvancedModeCriticalBDLBypass" => Self::MedBeamMedgunAdvancedModeCriticalBDLBypass,
+            "MedBeamMedgunAdvancedModeSafeBDLBypass" => {
+                Self::MedBeamMedgunAdvancedModeSafeBDLBypass
+            }
+            "MedBeamMedgunAdvancedModeCriticalBDLBypass" => {
+                Self::MedBeamMedgunAdvancedModeCriticalBDLBypass
+            }
             "MedBedClearAllRespawns" => Self::MedBedClearAllRespawns,
             "MedBedEraseDNA" => Self::MedBedEraseDNA,
             "MedBedRespawnNotAvailable" => Self::MedBedRespawnNotAvailable,
@@ -27618,19 +27716,35 @@ impl HintEventType {
             "OxygenRefilled" => Self::OxygenRefilled,
             "PersonalInnerThoughtClosed" => Self::PersonalInnerThoughtClosed,
             "PersonalInnerThoughtOpened" => Self::PersonalInnerThoughtOpened,
-            "PersonalInnerThoughtQuickSelectionMode" => Self::PersonalInnerThoughtQuickSelectionMode,
-            "PersonalInnerThoughtQuickSelectionWeaponsOpened" => Self::PersonalInnerThoughtQuickSelectionWeaponsOpened,
-            "PersonalInnerThoughtQuickSelectionModeOpened" => Self::PersonalInnerThoughtQuickSelectionModeOpened,
+            "PersonalInnerThoughtQuickSelectionMode" => {
+                Self::PersonalInnerThoughtQuickSelectionMode
+            }
+            "PersonalInnerThoughtQuickSelectionWeaponsOpened" => {
+                Self::PersonalInnerThoughtQuickSelectionWeaponsOpened
+            }
+            "PersonalInnerThoughtQuickSelectionModeOpened" => {
+                Self::PersonalInnerThoughtQuickSelectionModeOpened
+            }
             "PersonalInnerThoughtGreyedOutActions" => Self::PersonalInnerThoughtGreyedOutActions,
             "PersonalInnerThoughtAddToFavorites" => Self::PersonalInnerThoughtAddToFavorites,
-            "PersonalInnerThoughtTriedToCustomizeDefaultActions" => Self::PersonalInnerThoughtTriedToCustomizeDefaultActions,
+            "PersonalInnerThoughtTriedToCustomizeDefaultActions" => {
+                Self::PersonalInnerThoughtTriedToCustomizeDefaultActions
+            }
             "PersonalInnerThoughtCancelRebind" => Self::PersonalInnerThoughtCancelRebind,
             "PersonalInventoryBackpackFull" => Self::PersonalInventoryBackpackFull,
-            "PersonalInventoryHarvestableLootedIntoBackpack" => Self::PersonalInventoryHarvestableLootedIntoBackpack,
+            "PersonalInventoryHarvestableLootedIntoBackpack" => {
+                Self::PersonalInventoryHarvestableLootedIntoBackpack
+            }
             "PersonalInventoryItemStowed" => Self::PersonalInventoryItemStowed,
-            "PersonalInventoryShardLootedIntoBackpack" => Self::PersonalInventoryShardLootedIntoBackpack,
-            "PersonalInventoryHarvestableDirectlyStowedIntoBackpack" => Self::PersonalInventoryHarvestableDirectlyStowedIntoBackpack,
-            "PersonalInventoryUndersuitClothingIncompatible" => Self::PersonalInventoryUndersuitClothingIncompatible,
+            "PersonalInventoryShardLootedIntoBackpack" => {
+                Self::PersonalInventoryShardLootedIntoBackpack
+            }
+            "PersonalInventoryHarvestableDirectlyStowedIntoBackpack" => {
+                Self::PersonalInventoryHarvestableDirectlyStowedIntoBackpack
+            }
+            "PersonalInventoryUndersuitClothingIncompatible" => {
+                Self::PersonalInventoryUndersuitClothingIncompatible
+            }
             "PersonalInventoryOpen" => Self::PersonalInventoryOpen,
             "PersonalInventoryHomeItemAdded" => Self::PersonalInventoryHomeItemAdded,
             "PersonalInventoryItemPurchased" => Self::PersonalInventoryItemPurchased,
@@ -27640,8 +27754,12 @@ impl HintEventType {
             "PersonalInventoryOpenInVehicle" => Self::PersonalInventoryOpenInVehicle,
             "PersonalInventoryVehicleStorageUsed" => Self::PersonalInventoryVehicleStorageUsed,
             "PersonalInventoryVehicleDestroyed" => Self::PersonalInventoryVehicleDestroyed,
-            "PersonalInventoryOpenWithNoAvailableContainer" => Self::PersonalInventoryOpenWithNoAvailableContainer,
-            "PersonalInventoryInvalidClothingArmorEquip" => Self::PersonalInventoryInvalidClothingArmorEquip,
+            "PersonalInventoryOpenWithNoAvailableContainer" => {
+                Self::PersonalInventoryOpenWithNoAvailableContainer
+            }
+            "PersonalInventoryInvalidClothingArmorEquip" => {
+                Self::PersonalInventoryInvalidClothingArmorEquip
+            }
             "PersonalInventoryOutOfRange" => Self::PersonalInventoryOutOfRange,
             "PickupCollected" => Self::PickupCollected,
             "PlayerCombatHealed" => Self::PlayerCombatHealed,
@@ -27695,9 +27813,13 @@ impl HintEventType {
             "ShipQuantumTravelObstructed" => Self::ShipQuantumTravelObstructed,
             "ShipQuantumDriveSpoolingStarted" => Self::ShipQuantumDriveSpoolingStarted,
             "ShipQuantumDriveSpoolingOff" => Self::ShipQuantumDriveSpoolingOff,
-            "ShipQuantumDriveTriedSpoolingInCooldown" => Self::ShipQuantumDriveTriedSpoolingInCooldown,
+            "ShipQuantumDriveTriedSpoolingInCooldown" => {
+                Self::ShipQuantumDriveTriedSpoolingInCooldown
+            }
             "ShipQuantumCalibrationStarted" => Self::ShipQuantumCalibrationStarted,
-            "ShipQuantumCalibrationCompletedButNotSpooled" => Self::ShipQuantumCalibrationCompletedButNotSpooled,
+            "ShipQuantumCalibrationCompletedButNotSpooled" => {
+                Self::ShipQuantumCalibrationCompletedButNotSpooled
+            }
             "ShipQuantumCalibrationStalled" => Self::ShipQuantumCalibrationStalled,
             "ShipQuantumNoCalibrationButSpooled" => Self::ShipQuantumNoCalibrationButSpooled,
             "ShipQuantumCalibratedSpooledAlone" => Self::ShipQuantumCalibratedSpooledAlone,
@@ -28269,7 +28391,9 @@ impl InteractionPromptBoundTo {
             "EntityRoot" => Self::EntityRoot,
             "TopBoundingBoxZSurface" => Self::TopBoundingBoxZSurface,
             "NearestBoundingBoxSurface" => Self::NearestBoundingBoxSurface,
-            "NearestBoundingBoxIgnoreFurthestSurfaces" => Self::NearestBoundingBoxIgnoreFurthestSurfaces,
+            "NearestBoundingBoxIgnoreFurthestSurfaces" => {
+                Self::NearestBoundingBoxIgnoreFurthestSurfaces
+            }
             "InteractionPointFixedOffset" => Self::InteractionPointFixedOffset,
             "Tmp_AngleConstraintForwardDirection" => Self::Tmp_AngleConstraintForwardDirection,
             _ => Self::Unrecognized(s.to_string()),
@@ -34039,4 +34163,3 @@ impl eContextualCommunicationCriteria {
         }
     }
 }
-

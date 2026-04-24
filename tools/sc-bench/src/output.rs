@@ -114,14 +114,18 @@ impl BenchResult {
         println!("  locale             : ({:.3}s)", self.locale_exercise_time);
         println!(
             "  filters            : entities={} weapons={} ships={} ({:.3}s)",
-            self.total_entities, self.playable_weapons, self.playable_ships,
+            self.total_entities,
+            self.playable_weapons,
+            self.playable_ships,
             self.filter_exercise_time
         );
 
         if self.graph_edges > 0 {
             println!(
                 "  graph              : sources={} targets={} depth2={} ({:.3}s)",
-                self.graph_sources, self.graph_targets, self.graph_depth2_reachable,
+                self.graph_sources,
+                self.graph_targets,
+                self.graph_depth2_reachable,
                 self.graph_exercise_time
             );
         }

@@ -26,7 +26,7 @@
 use std::collections::{BTreeMap, HashSet};
 
 use sc_contracts::{
-    resolve_contract_text, ContractAnchor, ShipCandidate, ShipRegistry, SpawnContext,
+    ContractAnchor, ShipCandidate, ShipRegistry, SpawnContext, resolve_contract_text,
 };
 use sc_extract::generated::{
     BaseMissionPropertyValuePtr, CareerContract, Contract, ContractGeneratorHandlerBasePtr,
@@ -149,7 +149,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             walk_handler(pools, handler_ptr, &mut options);
         }
     }
-    println!("Collected {} spawn options from contract graph.\n", options.len());
+    println!(
+        "Collected {} spawn options from contract graph.\n",
+        options.len()
+    );
 
     if args.target_only {
         print_target_only(&options, &ships, pools, &datacore, args.limit);
@@ -166,7 +169,15 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     }
 
     if let Some(pattern) = &args.describe {
-        describe_contracts(&options, &ships, pools, &datacore, &asset_data, pattern, args.limit);
+        describe_contracts(
+            &options,
+            &ships,
+            pools,
+            &datacore,
+            &asset_data,
+            pattern,
+            args.limit,
+        );
         search_locale_for_pattern(&asset_data, pattern, 20);
     }
 
@@ -256,14 +267,22 @@ fn describe_contracts(
         let desc_text = resolved.description.clone().unwrap_or_default();
         let has_subst = resolved.has_runtime_substitution();
 
-        let cd_show = if cd.is_empty() { "<handler-level>" } else { cd.as_str() };
+        let cd_show = if cd.is_empty() {
+            "<handler-level>"
+        } else {
+            cd.as_str()
+        };
         println!("{}", "─".repeat(72));
         println!(
             "{i:>3}. handler='{hd}' contract='{cd_show}' kind={kind}",
             i = i + 1,
             kind = opts[0].ctx.handler_kind,
         );
-        let subst_marker = if has_subst { "  [runtime substitution]" } else { "" };
+        let subst_marker = if has_subst {
+            "  [runtime substitution]"
+        } else {
+            ""
+        };
         println!("     title:       {title_text}{subst_marker}");
         if !desc_text.is_empty() {
             let display = desc_text.replace("\\n", "\n                  ");
@@ -276,7 +295,10 @@ fn describe_contracts(
         // Group waves within this contract.
         let mut waves: BTreeMap<(String, &'static str), Vec<&Option_<'_>>> = BTreeMap::new();
         for o in opts {
-            waves.entry((o.group_name.clone(), o.ctx.origin)).or_default().push(o);
+            waves
+                .entry((o.group_name.clone(), o.ctx.origin))
+                .or_default()
+                .push(o);
         }
         for ((wave_name, origin), ws) in &waves {
             let wave_show = if wave_name.is_empty() {
@@ -284,13 +306,17 @@ fn describe_contracts(
             } else {
                 wave_name.as_str()
             };
-            println!("     wave={wave_show}  origin={origin}  options={}", ws.len());
+            println!(
+                "     wave={wave_show}  origin={origin}  options={}",
+                ws.len()
+            );
             for o in ws {
                 let pos = tags_set(pools, o.opt.tags.as_ref());
                 let neg = tags_set(pools, o.opt.negative_tags.as_ref());
                 let candidates = ships.resolve_spawn(&pos, &neg);
                 let ctx = SpawnContext::classify(tree, &pos);
-                let mut names: Vec<&str> = candidates.iter().map(|c| c.display_name.as_str()).collect();
+                let mut names: Vec<&str> =
+                    candidates.iter().map(|c| c.display_name.as_str()).collect();
                 names.sort();
                 names.dedup();
 
@@ -301,7 +327,10 @@ fn describe_contracts(
                 } else {
                     names.join(", ")
                 };
-                print!("       concurrent×{c:<2} → ships: {ship_str}", c = o.opt.concurrent_amount);
+                print!(
+                    "       concurrent×{c:<2} → ships: {ship_str}",
+                    c = o.opt.concurrent_amount
+                );
 
                 // Compact context on same line.
                 let mut tail = Vec::new();
@@ -327,8 +356,7 @@ fn describe_contracts(
                 // match the candidate ship model names?
                 let mentioned = mentions_ship_in_text(&desc_text, tree, &pos);
                 if !mentioned.is_empty() {
-                    let in_pool: HashSet<String> =
-                        names.iter().map(|n| n.to_lowercase()).collect();
+                    let in_pool: HashSet<String> = names.iter().map(|n| n.to_lowercase()).collect();
                     let missing: Vec<&str> = mentioned
                         .iter()
                         .filter(|m| !in_pool.iter().any(|p| p.contains(&m.to_lowercase())))
@@ -370,10 +398,7 @@ fn resolve_text_for_contract(
     resolve_contract_text(None, anchor, handler_params.as_ref(), datacore, locale)
 }
 
-fn find_contract_anchor<'p>(
-    pools: &'p DataPools,
-    debug_name: &str,
-) -> Option<ContractAnchor<'p>> {
+fn find_contract_anchor<'p>(pools: &'p DataPools, debug_name: &str) -> Option<ContractAnchor<'p>> {
     if debug_name.is_empty() {
         return None;
     }
@@ -402,27 +427,52 @@ fn find_handler_contract_params(
     if handler_debug.is_empty() {
         return None;
     }
-    for h in pools.contracts.contract_generator_handler_legacy.iter().flatten() {
+    for h in pools
+        .contracts
+        .contract_generator_handler_legacy
+        .iter()
+        .flatten()
+    {
         if h.debug_name == handler_debug {
             return h.contract_params.clone();
         }
     }
-    for h in pools.contracts.contract_generator_handler_career.iter().flatten() {
+    for h in pools
+        .contracts
+        .contract_generator_handler_career
+        .iter()
+        .flatten()
+    {
         if h.debug_name == handler_debug {
             return h.contract_params.clone();
         }
     }
-    for h in pools.contracts.contract_generator_handler_list.iter().flatten() {
+    for h in pools
+        .contracts
+        .contract_generator_handler_list
+        .iter()
+        .flatten()
+    {
         if h.debug_name == handler_debug {
             return h.contract_params.clone();
         }
     }
-    for h in pools.contracts.contract_generator_handler_linear_series.iter().flatten() {
+    for h in pools
+        .contracts
+        .contract_generator_handler_linear_series
+        .iter()
+        .flatten()
+    {
         if h.debug_name == handler_debug {
             return h.contract_params.clone();
         }
     }
-    for h in pools.contracts.contract_generator_handler_tutorial_series_def.iter().flatten() {
+    for h in pools
+        .contracts
+        .contract_generator_handler_tutorial_series_def
+        .iter()
+        .flatten()
+    {
         if h.debug_name == handler_debug {
             return h.contract_params.clone();
         }
@@ -505,7 +555,11 @@ fn find_template_for_contract(pools: &DataPools, debug_name: &str) -> Option<Gui
 
 /// Check whether the description text mentions any ship-model tag name.
 /// Returns the list of model tag names that appear in the text.
-fn mentions_ship_in_text(desc: &str, tree: &sc_extract::TagTree, tags: &std::collections::HashSet<Guid>) -> Vec<String> {
+fn mentions_ship_in_text(
+    desc: &str,
+    tree: &sc_extract::TagTree,
+    tags: &std::collections::HashSet<Guid>,
+) -> Vec<String> {
     if desc.is_empty() {
         return Vec::new();
     }
@@ -594,7 +648,12 @@ fn dump_tag_hierarchy(datacore: &Datacore) {
         .filter(|g| !parent_of.contains_key(g))
         .copied()
         .collect();
-    roots.sort_by_key(|g| by_guid.get(g).map(|t| t.tag_name.clone()).unwrap_or_default());
+    roots.sort_by_key(|g| {
+        by_guid
+            .get(g)
+            .map(|t| t.tag_name.clone())
+            .unwrap_or_default()
+    });
 
     // Count total descendants for each root (transitive closure).
     fn count_descendants(
@@ -616,7 +675,11 @@ fn dump_tag_hierarchy(datacore: &Datacore) {
     println!("\n═══════════════════════════════════════════════════");
     println!("  Tag hierarchy — top-level roots with descendants");
     println!("═══════════════════════════════════════════════════");
-    println!("  Total Tag records: {} (pool size: {})", by_guid.len(), tag_pool.len());
+    println!(
+        "  Total Tag records: {} (pool size: {})",
+        by_guid.len(),
+        tag_pool.len()
+    );
     println!("  Roots (no parent): {}\n", roots.len());
 
     let mut root_sizes: Vec<(Guid, String, usize)> = roots
@@ -643,7 +706,10 @@ fn dump_tag_hierarchy(datacore: &Datacore) {
                     .filter_map(|c| {
                         by_guid.get(c).map(|t| {
                             let mut seen = HashSet::new();
-                            (t.tag_name.clone(), count_descendants(c, &by_guid, &mut seen))
+                            (
+                                t.tag_name.clone(),
+                                count_descendants(c, &by_guid, &mut seen),
+                            )
                         })
                     })
                     .collect();
@@ -664,12 +730,7 @@ fn dump_tag_hierarchy(datacore: &Datacore) {
 /// Also lists entities matching the LEAST-common positive tag across the
 /// full DCB — that's usually the ship-model selector, and the right
 /// candidate set.
-fn explain_contract(
-    options: &[Option_<'_>],
-    pools: &DataPools,
-    datacore: &Datacore,
-    name: &str,
-) {
+fn explain_contract(options: &[Option_<'_>], pools: &DataPools, datacore: &Datacore, name: &str) {
     use std::collections::HashMap;
     let needle = name.to_lowercase();
     let tree = &datacore.snapshot().tag_tree;
@@ -678,8 +739,15 @@ fn explain_contract(
     // Pre-compute per-tag carrier counts across the full EntityClassDefinition pool.
     let mut full_carrier_count: HashMap<Guid, usize> = HashMap::new();
     let mut full_carriers: HashMap<Guid, Vec<Guid>> = HashMap::new();
-    for (guid, handle) in &datacore.records().records.multi_feature.entity_class_definition {
-        let Some(ecd) = handle.get(pools) else { continue };
+    for (guid, handle) in &datacore
+        .records()
+        .records
+        .multi_feature
+        .entity_class_definition
+    {
+        let Some(ecd) = handle.get(pools) else {
+            continue;
+        };
         for t in &ecd.tags {
             *full_carrier_count.entry(*t).or_default() += 1;
             full_carriers.entry(*t).or_default().push(*guid);
@@ -734,7 +802,7 @@ fn explain_contract(
                 (name, count, *g)
             })
             .collect();
-            rows.sort_by_key(|(_, c, _)| *c);
+        rows.sort_by_key(|(_, c, _)| *c);
         for (name, count, guid) in &rows {
             let root = find_tag_root(datacore, *guid);
             let root_str = root.unwrap_or_else(|| "<no root found>".to_string());
@@ -782,10 +850,8 @@ fn dump_contract(
     println!("═══════════════════════════════════════════════════");
 
     // Group by (handler, contract_debug, origin, wave_name)
-    let mut groups: BTreeMap<
-        (String, String, &'static str, String),
-        Vec<&Option_<'_>>,
-    > = BTreeMap::new();
+    let mut groups: BTreeMap<(String, String, &'static str, String), Vec<&Option_<'_>>> =
+        BTreeMap::new();
     for o in options {
         if !o.ctx.handler_debug.to_lowercase().contains(&needle)
             && !o.ctx.contract_debug.to_lowercase().contains(&needle)
@@ -808,7 +874,11 @@ fn dump_contract(
     }
 
     for ((hd, cd, origin, wave), opts) in &groups {
-        let cd_show = if cd.is_empty() { "<handler-level>" } else { cd.as_str() };
+        let cd_show = if cd.is_empty() {
+            "<handler-level>"
+        } else {
+            cd.as_str()
+        };
         println!(
             "\n── handler='{hd}' contract='{cd_show}' origin={origin} wave='{wave}' ({n} option(s))",
             n = opts.len()
@@ -900,8 +970,15 @@ fn print_ship_existence(needle: &str, ships: &ShipRegistry, datacore: &Datacore)
     let in_pool: HashSet<Guid> = ships.iter().map(|s| s.entity_guid).collect();
 
     let mut matches: Vec<(Guid, String, String, bool)> = Vec::new();
-    for (guid, handle) in &datacore.records().records.multi_feature.entity_class_definition {
-        let Some(_ecd) = handle.get(pools) else { continue };
+    for (guid, handle) in &datacore
+        .records()
+        .records
+        .multi_feature
+        .entity_class_definition
+    {
+        let Some(_ecd) = handle.get(pools) else {
+            continue;
+        };
         let display = display_names.get(guid).unwrap_or("").to_string();
         let record = db
             .record(guid)
@@ -920,7 +997,11 @@ fn print_ship_existence(needle: &str, ships: &ShipRegistry, datacore: &Datacore)
     );
     for (_, display, record, in_pool) in matches.iter().take(15) {
         let mark = if *in_pool { "[POOL]" } else { "[     ]" };
-        let display = if display.is_empty() { "<no display>" } else { display };
+        let display = if display.is_empty() {
+            "<no display>"
+        } else {
+            display
+        };
         println!("    {mark} {display:<40} [{record}]");
     }
     if matches.len() > 15 {
@@ -941,7 +1022,13 @@ fn walk_handler<'p>(
             let Some(handler) = h.get(pools) else { return };
             let kind = "Legacy";
             // Handler-level param overrides apply to all contracts.
-            walk_handler_params(pools, &handler.debug_name, kind, handler.contract_params.as_ref(), out);
+            walk_handler_params(
+                pools,
+                &handler.debug_name,
+                kind,
+                handler.contract_params.as_ref(),
+                out,
+            );
             for contract_h in &handler.legacy_contracts {
                 if let Some(c) = contract_h.get(pools) {
                     walk_legacy(pools, &handler.debug_name, kind, c, out);
@@ -951,7 +1038,13 @@ fn walk_handler<'p>(
         H::ContractGeneratorHandler_Career(h) => {
             let Some(handler) = h.get(pools) else { return };
             let kind = "Career";
-            walk_handler_params(pools, &handler.debug_name, kind, handler.contract_params.as_ref(), out);
+            walk_handler_params(
+                pools,
+                &handler.debug_name,
+                kind,
+                handler.contract_params.as_ref(),
+                out,
+            );
             for contract_h in &handler.contracts {
                 if let Some(c) = contract_h.get(pools) {
                     walk_career(pools, &handler.debug_name, kind, c, out);
@@ -966,7 +1059,13 @@ fn walk_handler<'p>(
         H::ContractGeneratorHandler_List(h) => {
             let Some(handler) = h.get(pools) else { return };
             let kind = "List";
-            walk_handler_params(pools, &handler.debug_name, kind, handler.contract_params.as_ref(), out);
+            walk_handler_params(
+                pools,
+                &handler.debug_name,
+                kind,
+                handler.contract_params.as_ref(),
+                out,
+            );
             for contract_h in &handler.contracts {
                 if let Some(c) = contract_h.get(pools) {
                     walk_contract(pools, &handler.debug_name, kind, c, out);
@@ -976,7 +1075,13 @@ fn walk_handler<'p>(
         H::ContractGeneratorHandler_LinearSeries(h) => {
             let Some(handler) = h.get(pools) else { return };
             let kind = "LinearSeries";
-            walk_handler_params(pools, &handler.debug_name, kind, handler.contract_params.as_ref(), out);
+            walk_handler_params(
+                pools,
+                &handler.debug_name,
+                kind,
+                handler.contract_params.as_ref(),
+                out,
+            );
             for contract_h in &handler.contracts {
                 if let Some(c) = contract_h.get(pools) {
                     walk_contract(pools, &handler.debug_name, kind, c, out);
@@ -986,7 +1091,13 @@ fn walk_handler<'p>(
         H::ContractGeneratorHandler_TutorialSeriesDef(h) => {
             let Some(handler) = h.get(pools) else { return };
             let kind = "Tutorial";
-            walk_handler_params(pools, &handler.debug_name, kind, handler.contract_params.as_ref(), out);
+            walk_handler_params(
+                pools,
+                &handler.debug_name,
+                kind,
+                handler.contract_params.as_ref(),
+                out,
+            );
             for contract_h in &handler.contracts {
                 if let Some(c) = contract_h.get(pools) {
                     walk_contract(pools, &handler.debug_name, kind, c, out);
@@ -1140,18 +1251,26 @@ fn walk_property<'p>(
     ctx: &Ctx,
     out: &mut Vec<Option_<'p>>,
 ) {
-    let Some(prop) = prop_h.get(pools) else { return };
-    let Some(value_ptr) = prop.value.as_ref() else { return };
+    let Some(prop) = prop_h.get(pools) else {
+        return;
+    };
+    let Some(value_ptr) = prop.value.as_ref() else {
+        return;
+    };
     let BaseMissionPropertyValuePtr::MissionPropertyValue_ShipSpawnDescriptions(val_h) = value_ptr
     else {
         return;
     };
     let Some(val) = val_h.get(pools) else { return };
     for group_h in &val.spawn_descriptions {
-        let Some(group) = group_h.get(pools) else { continue };
+        let Some(group) = group_h.get(pools) else {
+            continue;
+        };
         let group_name = group.name.clone();
         for options_h in &group.ships {
-            let Some(options) = options_h.get(pools) else { continue };
+            let Some(options) = options_h.get(pools) else {
+                continue;
+            };
             for option_h in &options.options {
                 if let Some(opt) = option_h.get(pools) {
                     out.push(Option_ {
@@ -1167,7 +1286,9 @@ fn walk_property<'p>(
 
 fn title_from_overrides(pools: &DataPools, h: Option<&Handle<ContractParamOverrides>>) -> String {
     let Some(h) = h else { return String::new() };
-    let Some(po) = h.get(pools) else { return String::new() };
+    let Some(po) = h.get(pools) else {
+        return String::new();
+    };
     for p in &po.string_param_overrides {
         if let Some(param) = p.get(pools) {
             if matches!(param.param, ContractStringParamType::Title) && !param.value.is_empty() {
@@ -1182,7 +1303,9 @@ fn title_from_overrides(pools: &DataPools, h: Option<&Handle<ContractParamOverri
 
 fn tags_set(pools: &DataPools, h: Option<&Handle<TagList>>) -> HashSet<Guid> {
     let Some(h) = h else { return HashSet::new() };
-    let Some(list) = h.get(pools) else { return HashSet::new() };
+    let Some(list) = h.get(pools) else {
+        return HashSet::new();
+    };
     list.tags.iter().copied().collect()
 }
 
@@ -1196,9 +1319,7 @@ fn print_target_only(
     println!("═══════════════════════════════════════════════════");
     println!("  Spawn options with only role-marker positive tags");
     println!("═══════════════════════════════════════════════════");
-    println!(
-        "  Criteria: after filtering positive tags through ship_relevant_tags,"
-    );
+    println!("  Criteria: after filtering positive tags through ship_relevant_tags,");
     println!("  nothing remains → the query selects by runtime location context.\n");
 
     let tree = &datacore.snapshot().tag_tree;
@@ -1216,18 +1337,30 @@ fn print_target_only(
         if pos.is_empty() {
             continue;
         }
-        let filtered: HashSet<Guid> = pos.iter().filter(|t| ship_rel.contains(*t)).copied().collect();
+        let filtered: HashSet<Guid> = pos
+            .iter()
+            .filter(|t| ship_rel.contains(*t))
+            .copied()
+            .collect();
         if !filtered.is_empty() {
             continue; // resolvable — skip
         }
 
         let pos_names: Vec<String> = pos
             .iter()
-            .map(|g| tree.get(g).map(|n| n.name.clone()).unwrap_or_else(|| format!("<{g}>")))
+            .map(|g| {
+                tree.get(g)
+                    .map(|n| n.name.clone())
+                    .unwrap_or_else(|| format!("<{g}>"))
+            })
             .collect();
         let neg_names: Vec<String> = neg
             .iter()
-            .map(|g| tree.get(g).map(|n| n.name.clone()).unwrap_or_else(|| format!("<{g}>")))
+            .map(|g| {
+                tree.get(g)
+                    .map(|n| n.name.clone())
+                    .unwrap_or_else(|| format!("<{g}>"))
+            })
             .collect();
         let mut pos_sorted = pos_names.clone();
         pos_sorted.sort();
@@ -1246,7 +1379,10 @@ fn print_target_only(
             .or_insert_with(|| (o.ctx.clone(), pos_sorted, neg_sorted, o.group_name.clone()));
     }
 
-    println!("Distinct (contract, tag-signature) pairs: {}", grouped.len());
+    println!(
+        "Distinct (contract, tag-signature) pairs: {}",
+        grouped.len()
+    );
     println!("Showing first {}:\n", limit.min(grouped.len()));
 
     // Sort by occurrence count descending, then stably.
@@ -1308,7 +1444,9 @@ fn print_contains(
                 &o.ctx.contract_debug
             }
         );
-        let entry = per_contract.entry(key).or_insert_with(|| (o.ctx.clone(), HashSet::new(), 0));
+        let entry = per_contract
+            .entry(key)
+            .or_insert_with(|| (o.ctx.clone(), HashSet::new(), 0));
         for m in matched {
             entry.1.insert(m.display_name.clone());
         }
@@ -1319,7 +1457,7 @@ fn print_contains(
     println!("Showing first {}:\n", limit.min(per_contract.len()));
 
     let mut items: Vec<_> = per_contract.iter().collect();
-    items.sort_by(|a, b| b.1 .2.cmp(&a.1 .2).then_with(|| a.0.cmp(b.0)));
+    items.sort_by(|a, b| b.1.2.cmp(&a.1.2).then_with(|| a.0.cmp(b.0)));
 
     for (i, (_key, (ctx, ships, query_count))) in items.iter().take(limit).enumerate() {
         let mut ship_list: Vec<&str> = ships.iter().map(String::as_str).collect();

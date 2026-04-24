@@ -9,8 +9,8 @@ use std::collections::HashMap;
 
 use serde::{Deserialize, Serialize};
 
-use crate::svarog_datacore::DataCoreDatabase;
 use crate::Guid;
+use crate::svarog_datacore::DataCoreDatabase;
 
 /// A single manufacturer entry.
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -216,9 +216,6 @@ mod tests {
         let json = serde_json::to_string(&reg).unwrap();
         let decoded: ManufacturerRegistry = serde_json::from_str(&json).unwrap();
         assert_eq!(decoded.len(), 2);
-        assert_eq!(
-            decoded.by_code("GATS").map(|m| m.guid),
-            Some(g(1))
-        );
+        assert_eq!(decoded.by_code("GATS").map(|m| m.guid), Some(g(1)));
     }
 }

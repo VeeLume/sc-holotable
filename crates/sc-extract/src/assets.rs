@@ -250,9 +250,9 @@ impl AssetSource {
     pub fn read_entry(&self, entry: &P4kEntryRef<'_>) -> Result<Vec<u8>> {
         match &self.inner {
             AssetSourceInner::Live { archive, .. } => Ok(archive.read(entry)?),
-            AssetSourceInner::Memory { .. } => {
-                Err(Error::FileNotInP4k("<read_entry on snapshot-backed source>".into()))
-            }
+            AssetSourceInner::Memory { .. } => Err(Error::FileNotInP4k(
+                "<read_entry on snapshot-backed source>".into(),
+            )),
         }
     }
 
@@ -268,9 +268,9 @@ impl AssetSource {
     /// Looks for the file by suffix match so layout shuffles inside the
     /// archive don't break callers.
     pub fn default_profile_xml(&self) -> Result<Vec<u8>> {
-        match self.find_and_read(|name| {
-            name.to_ascii_lowercase().ends_with("defaultprofile.xml")
-        })? {
+        match self
+            .find_and_read(|name| name.to_ascii_lowercase().ends_with("defaultprofile.xml"))?
+        {
             Some((_path, bytes)) => Ok(bytes),
             None => Err(Error::FileNotInP4k("defaultProfile.xml".into())),
         }

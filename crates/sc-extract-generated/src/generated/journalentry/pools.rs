@@ -17,7 +17,8 @@ pub struct JournalentryPools {
     pub journal_entry_audio_log: Vec<Option<JournalEntryAudioLog>>,
     pub journal_entry_dialogue_log: Vec<Option<JournalEntryDialogueLog>>,
     pub journal_entry_video: Vec<Option<JournalEntryVideo>>,
-    pub sreputation_standing_journal_entry_params: Vec<Option<SReputationStandingJournalEntryParams>>,
+    pub sreputation_standing_journal_entry_params:
+        Vec<Option<SReputationStandingJournalEntryParams>>,
     pub sreputation_journal_group_params: Vec<Option<SReputationJournalGroupParams>>,
     pub sreputation_journal_entries_params: Vec<Option<SReputationJournalEntriesParams>>,
     pub sreputation_journal_entry_handler_params: Vec<Option<SReputationJournalEntryHandlerParams>>,

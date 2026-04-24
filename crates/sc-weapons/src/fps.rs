@@ -3,7 +3,7 @@ use std::collections::HashMap;
 use sc_extract::generated::*;
 use sc_extract::{DataPools, Guid};
 
-use crate::classify::{classify, WeaponCategory};
+use crate::classify::{WeaponCategory, classify};
 use crate::damage::{self, DamageSummary};
 use crate::fire_action::{self, FireActionKind};
 

@@ -106,11 +106,17 @@ impl ShipRegistry {
             .flatten()
         {
             for group_h in &desc.spawn_descriptions {
-                let Some(group) = group_h.get(pools) else { continue };
+                let Some(group) = group_h.get(pools) else {
+                    continue;
+                };
                 for options_h in &group.ships {
-                    let Some(options) = options_h.get(pools) else { continue };
+                    let Some(options) = options_h.get(pools) else {
+                        continue;
+                    };
                     for option_h in &options.options {
-                        let Some(option) = option_h.get(pools) else { continue };
+                        let Some(option) = option_h.get(pools) else {
+                            continue;
+                        };
                         collect_tags(pools, option.tags.as_ref(), &mut spawn_referenced_tags);
                         collect_tags(
                             pools,
@@ -129,8 +135,15 @@ impl ShipRegistry {
 
         // The RecordIndex stores guid → handle for root records. Walk it so
         // we have both the GUID and the typed record in hand.
-        for (guid, handle) in &datacore.records().records.multi_feature.entity_class_definition {
-            let Some(ecd) = handle.get(pools) else { continue };
+        for (guid, handle) in &datacore
+            .records()
+            .records
+            .multi_feature
+            .entity_class_definition
+        {
+            let Some(ecd) = handle.get(pools) else {
+                continue;
+            };
 
             let entity_tags: HashSet<Guid> = ecd.tags.iter().copied().collect();
             if entity_tags.is_disjoint(&spawn_referenced_tags) {

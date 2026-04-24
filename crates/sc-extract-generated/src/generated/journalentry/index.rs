@@ -9,15 +9,16 @@
 
 #![allow(non_snake_case, non_camel_case_types, dead_code, unused_imports)]
 
+use super::super::*;
+use crate::Handle;
 use std::collections::HashMap;
 use svarog_common::CigGuid;
-use crate::Handle;
-use super::super::*;
 
 /// Record index for the `journalentry` feature.
 #[derive(Default)]
 pub struct JournalentryIndex {
-    pub sreputation_journal_entry_handler_params: HashMap<CigGuid, Handle<SReputationJournalEntryHandlerParams>>,
+    pub sreputation_journal_entry_handler_params:
+        HashMap<CigGuid, Handle<SReputationJournalEntryHandlerParams>>,
 }
 
 impl JournalentryIndex {
@@ -28,5 +29,7 @@ impl JournalentryIndex {
         total
     }
 
-    pub fn is_empty(&self) -> bool { self.len() == 0 }
+    pub fn is_empty(&self) -> bool {
+        self.len() == 0
+    }
 }

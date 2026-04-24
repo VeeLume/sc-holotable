@@ -1099,12 +1099,8 @@ pub fn emit_enums(db: &DataCoreDatabase) -> String {
         let _ = writeln!(out, "impl {sanitized} {{");
         out.push_str("    /// Resolve a raw DCB enum string to the typed variant.\n");
         out.push_str("    ///\n");
-        out.push_str(
-            "    /// Unknown strings (including variants added in a game patch the\n",
-        );
-        out.push_str(
-            "    /// generator didn't see) fall through to `Unrecognized(String)` for\n",
-        );
+        out.push_str("    /// Unknown strings (including variants added in a game patch the\n");
+        out.push_str("    /// generator didn't see) fall through to `Unrecognized(String)` for\n");
         out.push_str("    /// graceful forward compatibility.\n");
         out.push_str("    pub fn from_dcb_str(s: &str) -> Self {\n");
         if kept_variants.is_empty() {
@@ -1421,9 +1417,7 @@ fn rust_type_for(
         Some(DataType::Double) => "f64".into(),
         Some(DataType::String) => "String".into(),
         Some(DataType::Locale) => "LocaleKey".into(),
-        Some(DataType::EnumChoice) => {
-            enum_type_name(db, prop).unwrap_or_else(|| "String".into())
-        }
+        Some(DataType::EnumChoice) => enum_type_name(db, prop).unwrap_or_else(|| "String".into()),
         Some(DataType::Guid) => "CigGuid".into(),
         Some(DataType::Class) => {
             // Inline Class is monomorphic (wire format has no discriminator).

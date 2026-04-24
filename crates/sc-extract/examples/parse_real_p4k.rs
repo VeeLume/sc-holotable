@@ -39,10 +39,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let args: Vec<String> = std::env::args().skip(1).collect();
     let use_all = args.iter().any(|a| a == "--all");
     let skip_assets = args.iter().any(|a| a == "--no-assets");
-    let explicit_path: Option<PathBuf> = args
-        .iter()
-        .find(|a| !a.starts_with('-'))
-        .map(Into::into);
+    let explicit_path: Option<PathBuf> = args.iter().find(|a| !a.starts_with('-')).map(Into::into);
 
     let dc_config = if use_all {
         println!("-> using DatacoreConfig::all() (includes reference graph)");

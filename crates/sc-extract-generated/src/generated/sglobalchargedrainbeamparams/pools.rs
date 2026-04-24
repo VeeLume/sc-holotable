@@ -15,7 +15,8 @@ use super::super::*;
 #[derive(Default)]
 pub struct SglobalchargedrainbeamparamsPools {
     pub scharge_drain_highlight_outline_values: Vec<Option<SChargeDrainHighlightOutlineValues>>,
-    pub scharge_drain_target_state_outline_params: Vec<Option<SChargeDrainTargetStateOutlineParams>>,
+    pub scharge_drain_target_state_outline_params:
+        Vec<Option<SChargeDrainTargetStateOutlineParams>>,
     pub scharge_drain_card_params: Vec<Option<SChargeDrainCardParams>>,
     pub sglobal_charge_drain_beam_params: Vec<Option<SGlobalChargeDrainBeamParams>>,
 }

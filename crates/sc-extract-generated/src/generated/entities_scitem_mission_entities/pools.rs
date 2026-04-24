@@ -25,6 +25,7 @@ pub struct EntitiesScitemMission_entitiesPools {
     pub shackable_state_modifier: Vec<Option<SHackableStateModifier>>,
     pub svending_machine_state_modifier: Vec<Option<SVendingMachineStateModifier>>,
     pub sremove_crimes_gameplay_trigger: Vec<Option<SRemoveCrimesGameplayTrigger>>,
-    pub sstart_remove_infraction_timer_gameplay_trigger: Vec<Option<SStartRemoveInfractionTimerGameplayTrigger>>,
+    pub sstart_remove_infraction_timer_gameplay_trigger:
+        Vec<Option<SStartRemoveInfractionTimerGameplayTrigger>>,
     pub vending_machine_shop_params: Vec<Option<VendingMachineShopParams>>,
 }
