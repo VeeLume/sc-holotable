@@ -57,11 +57,15 @@ Set-Location $repoRoot
 # --- 1. Preflight ------------------------------------------------------------
 
 Step "Preflight: check working tree"
+# Only reject modifications to tracked files. Untracked files elsewhere
+# in the tree (scratch notes, draft docs) are not swept into the regen
+# commit by the scoped staging below, so they are safe to ignore here.
 $status = git status --porcelain
 if ($LASTEXITCODE -ne 0) { Die "git status failed" }
-if ($status -and -not $AllowDirty) {
-    Write-Host $status
-    Die "Working tree is not clean. Commit or stash first, or pass -AllowDirty."
+$dirtyTracked = $status | Where-Object { $_ -notmatch '^\?\?' }
+if ($dirtyTracked -and -not $AllowDirty) {
+    Write-Host ($dirtyTracked -join "`n")
+    Die "Tracked files have uncommitted changes. Commit or stash first, or pass -AllowDirty."
 }
 
 # --- 2. Generator ------------------------------------------------------------
@@ -125,8 +129,15 @@ if ($NoCommit) {
 }
 
 Step "Stage + commit"
-git add -A
-if ($LASTEXITCODE -ne 0) { Die "git add failed" }
+# Stage all tracked changes (generator output, fmt drift, clippy fixes),
+# plus any new untracked files inside the generator output directory
+# (e.g. a brand-new leaf feature directory from a game patch). Unrelated
+# untracked files elsewhere in the tree (drafts, scratch docs) are left
+# alone so they do not get swept into the regen commit.
+git add -u
+if ($LASTEXITCODE -ne 0) { Die "git add -u failed" }
+git add crates/sc-extract-generated
+if ($LASTEXITCODE -ne 0) { Die "git add crates/sc-extract-generated failed" }
 
 # If nothing changed, bail out rather than create an empty commit.
 $diffCached = git diff --cached --stat
