@@ -32,7 +32,8 @@ sc-holotable/
 │   ├── feature-gating-v2.md       feature-gating v2 — data-driven scoping + poly (implemented)
 │   ├── benchmarks.md              canonical benchmark numbers — re-run via tools/bench/bench.ps1
 │   ├── sc-ammo.md                 ammo crate spec (not implemented yet)
-│   └── sc-weapons.md              weapons crate spec (not implemented yet)
+│   ├── sc-weapons.md              weapons crate spec (not implemented yet)
+│   └── sc-contracts.md            contracts crate spec (proposal, awaiting review)
 ├── implementing/                  non-obvious implementation context (not code restated in prose)
 │   ├── sc-installs.md             port lineage + consumer switch-over plan
 │   └── sc-extract-2c.md           open caveats (tag/manufacturer field names, locale path)
@@ -115,6 +116,7 @@ These are load-bearing — deviating from them should be a deliberate decision, 
 2. **Real utility lib, not app-shaped.** When the lib and a consumer disagree, change the consumer. Awkwardness at integration time is a signal about the consumer, not the lib.
 3. **One canonical model per domain.** When two consumers need overlapping data, they share a single type — the most-demanding consumer drives correctness, others read a subset.
 4. **Layering is on data source, not format.** `sc-extract` owns both DCB (`Game2.dcb`) and non-DCB (vehicle XML, `global.ini`) access. The split between hand-written and generated code is internal, not a crate boundary.
+5. **No string matching where typed / data-derived alternatives exist.** Substring checks on entity names, `debug_name`s, or stringified enum values are almost always a symptom of missing structure. The DCB gives us typed enums (`EItemType`, `ContractStringParamType`, …), tag references (`Vec<CigGuid>` into `Tag` records), and a reachable instance graph — use those. When pools need to be derived (e.g. "which entities can be AI-spawned"), prefer walking the instance graph from the referring records over filtering by name pattern. If a string match is genuinely unavoidable, scope it tightly, comment *why* no typed alternative works, and alarm on pool-size regressions so silent data-shape changes surface. The `_PU_AI` / `_pu_ai` filter sc-langpatch carries is the cautionary example — it under-matches the real AI-ship pool, so contracts list ships that filter excludes.
 
 ## Key conventions
 
@@ -255,7 +257,7 @@ See `status.md` for the always-current version. Brief snapshot:
 - ✅ **`sc-generator`** — codegen + data-driven feature classification + Cargo.toml generation, typed enum/locale emission, ~3s run
 - 📦 **`sc-ammo`** — spec exists (`docs/sc-ammo.md`), crate not scaffolded
 - 📦 **`sc-weapons`** — spec exists (`docs/sc-weapons.md`), stub crate only
-- 📦 **`sc-contracts`** — stub crate only
+- 📦 **`sc-contracts`** — stub crate only; design spec at `docs/sc-contracts.md`
 
 ## Where to read more
 

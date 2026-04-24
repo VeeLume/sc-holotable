@@ -161,19 +161,19 @@ impl TagTree {
 
     /// Walk the DCB and build a complete tag tree.
     ///
-    /// Looks for records with the exact type name `"Tag"` and extracts
-    /// their `tagName`, `parent` (Reference), `children` (array of
-    /// References), and `legacyGUID` (integer) fields.
+    /// `Tag` records carry `tagName`, `children` (array of references to
+    /// child tags), and `legacyGUID`. Verified against SC 4.7 LIVE.
     ///
-    /// **Caveat:** The exact field names and whether tags are top-level
-    /// records or inline instances under a `TagDatabase` record hasn't
-    /// been verified against real DCB data yet. This implementation is
-    /// a best-effort port of the pattern sc-langpatch uses
-    /// (`build_tag_name_map`) and may need adjustment during end-to-end
-    /// wire-up. See `implementing/sc-extract-2c.md` for details.
+    /// The DCB does **not** store a `parent` field on tag records —
+    /// hierarchy is expressed only via outgoing `children` references.
+    /// Parent links in [`TagNode`] are derived in a second pass from the
+    /// inverse of the children graph, so [`TagTree::path`] and
+    /// [`TagTree::ancestors`] work regardless of record shape.
     pub fn from_database(db: &DataCoreDatabase) -> Self {
         let mut tree = Self::new();
 
+        // Pass 1 — insert every tag node, children-only. Parent stays
+        // `None` and gets filled in pass 2.
         for record in db.records_by_type("Tag") {
             let guid = record.id();
             let inst = record.as_instance();
@@ -182,11 +182,6 @@ impl TagTree {
             if name.is_empty() {
                 continue;
             }
-
-            let parent = inst
-                .get("parent")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid);
 
             let children: Vec<Guid> = inst
                 .get_array("children")
@@ -201,10 +196,25 @@ impl TagTree {
             tree.insert(TagNode {
                 guid,
                 name,
-                parent,
+                parent: None,
                 children,
                 legacy_guid,
             });
+        }
+
+        // Pass 2 — derive parent links from the inverse children graph.
+        let child_to_parent: Vec<(Guid, Guid)> = tree
+            .by_guid
+            .iter()
+            .flat_map(|(parent_guid, node)| {
+                let p = *parent_guid;
+                node.children.iter().map(move |child| (*child, p))
+            })
+            .collect();
+        for (child, parent) in child_to_parent {
+            if let Some(node) = tree.by_guid.get_mut(&child) {
+                node.parent = Some(parent);
+            }
         }
 
         tree

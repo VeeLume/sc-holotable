@@ -669,6 +669,14 @@ dependencies = [
 [[package]]
 name = "sc-contracts"
 version = "0.0.0"
+dependencies = [
+ "sc-extract",
+ "sc-installs",
+ "svarog-common",
+ "thiserror 2.0.18",
+ "tracing",
+ "tracing-subscriber",
+]
 
 [[package]]
 name = "sc-extract"

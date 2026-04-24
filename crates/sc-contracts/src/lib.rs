@@ -1,48 +1,72 @@
 //! Star Citizen contract / mission data.
 //!
-//! Star Citizen contains roughly 2400 player-visible contracts, generated at
-//! runtime by a few hundred **contract generators**. Generators reference
-//! data all over the DCB via tags, GUIDs, and nested references, which makes
-//! the system substantially more complex than other domains and is the
-//! primary reason this crate exists.
+//! Star Citizen ships roughly 2,400 contract records in the DCB, produced
+//! by a few hundred contract generators. After generator expansion, sub-
+//! contract tier enumeration, and similarity merging those collapse to
+//! ~1,497 effective contracts (the SCMDB catalog size).
 //!
-//! # Two-layer design
+//! This crate walks the generator graph, resolves every GUID the contracts
+//! touch (tags, ship entities, blueprint pools, reward currencies), and
+//! emits a single [`ContractIndex`] holding the merged [`Contract`] list
+//! plus the registries used to build it.
 //!
-//! This crate exposes the contract system in two distinct layers. The split
-//! is deliberate: it lets the crate ship useful value even before the
-//! higher-level understanding is complete.
+//! # Pipeline
 //!
-//! ## Raw layer
+//! ```text
+//! Datacore + LocaleMap
+//!     → ingest  (tag / ship / blueprint / currency registries)
+//!     → expand  (generator × handler × contract × sub_contract)
+//!     → resolve (GUIDs → typed values via registries)
+//!     → merge   (similarity-group expansions into Contract entries)
+//!     → ContractIndex
+//! ```
 //!
-//! Parsed-but-uninterpreted. Generators, objectives, rewards, and
-//! references expressed close to their DCB shape (after cross-reference
-//! resolution from `sc-extract`). This layer is deliberately thin and
-//! opinion-free, so it can be kept correct even while the higher-level
-//! understanding is still evolving.
+//! # Scope
 //!
-//! The raw layer is the safe fallback. Consumers that need something the
-//! model layer does not yet cover should reach into the raw layer for that
-//! slice rather than pressuring the model layer to grow half-understood
-//! types.
+//! The crate owns the generator-expansion → merged-contract pipeline plus
+//! the tag and ship-entity registries it needs along the way. The
+//! registries live here because sc-contracts is currently the only
+//! consumer that needs them; if a second crate ever does, they graduate
+//! to a shared helper.
 //!
-//! ## Model layer
-//!
-//! Clean domain types — what a "contract" *means* after generator
-//! expansion, objective resolution, and reward normalization. This layer is
-//! allowed to be incomplete and to evolve. Every type added here should
-//! correspond to real, verified understanding of how the generator system
-//! behaves, not a guess from inspecting one example contract.
+//! Escape hatch for anything the model does not cover: consumers with a
+//! `Datacore` reach through `datacore.db()` (raw svarog) or
+//! `datacore.pools()` (flat-pool generated types) directly. There is no
+//! dedicated raw layer in this crate.
 //!
 //! # Driving consumer
 //!
-//! `sc-langpatch` is the primary driver. Its contract-annotation work
-//! motivates this crate's existence — the complexity encountered while
-//! parsing contracts for localization enrichment is the concrete problem
-//! the model layer is meant to solve.
+//! `sc-langpatch` is the primary driver — its contract-annotation work
+//! motivated the crate. The full design is at `docs/sc-contracts.md`.
 //!
 //! # Status
 //!
-//! Both layers are stubs. The raw layer should land first and stabilize
-//! before any model-layer types are introduced. Until the raw layer is
-//! solid, consumers can reach through `sc_extract::svarog` for ad-hoc
-//! access — that is what the escape hatch is for.
+//! Design approved, implementation in progress. See `docs/sc-contracts.md`
+//! for the spec, `status.md` for the current implementation state.
+
+mod blueprints;
+mod classify;
+mod currency;
+mod expand;
+mod index;
+mod locality;
+mod merge;
+mod ships;
+mod titles;
+
+pub use blueprints::{BlueprintItem, BlueprintPool, BlueprintPoolRegistry};
+pub use classify::{parse_ai_skill, SpawnContext};
+pub use currency::{CurrencyInfo, RewardCurrencyCatalog};
+pub use expand::{
+    expand_all, Availability, BlueprintReward, ContractOrigin, Cooldowns, DurationRange,
+    EncounterGroup, EncounterSlot, EncounterWave, ExpandedContract, HandlerKind, ItemReward,
+    OtherReward, PrereqView, RepReward, RewardAmount, ScripReward,
+};
+pub use index::ContractIndex;
+pub use locality::{LocalityRegistry, LocalityView, LocationRef, LocationRegistry, SystemKey};
+pub use merge::{
+    find_bp_conflicts, merge_expansions, merge_stats, BpConflictGroup, BpConflictMember, Contract,
+    MergeStats, Variation,
+};
+pub use ships::{ShipCandidate, ShipEntity, ShipRegistry};
+pub use titles::{resolve_contract_text, ContractAnchor, ResolvedText};
