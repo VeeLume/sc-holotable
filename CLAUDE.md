@@ -182,6 +182,27 @@ Available flags:
 
 Note: the diagnostic flags from the feature-gating-v2 design session (`--dump-paths`, `--dump-features`, `--check-polymorphism`, `--analyze-poly-bases`, `--measure-dormancy`, `--feature-closure`, `--measure-cfg-spread`) were removed after the design was committed. If you need to re-measure, reintroduce them on a temporary branch.
 
+## Releases
+
+Two orthogonal, monotonic tag families — never mutate either.
+
+| Tag | Cut by | Means |
+|---|---|---|
+| `datacore/<sc_version>` | `tools/regenerate.ps1 -Publish` | Repo snapshot after regenerating DataCore bindings for SC version X. Advances on game patches. |
+| `sc-holotable/vX.Y.Z` | `tools/release.ps1 -Version vX.Y.Z -Publish` | Library API release. Advances on public-surface changes independent of game patches. |
+
+Consumers pin to whichever axis they care about — both tags resolve to immutable commits, may point at different commits, and advance on different schedules. `CHANGELOG.md` at the repo root tracks only the `sc-holotable/v*` axis; `datacore/*` tags are self-describing from the generator's identity line.
+
+**Pre-1.0 semver convention (for `sc-holotable/v*`):**
+
+- `0.x.Y` patch — bugfixes, internal refactors, doc-only changes.
+- `0.X.0` minor — any public-surface change, additive *or* breaking. Standard cargo pre-1.0 convention.
+- `1.0.0` — reserved for the first stable workspace API.
+
+**Cutting a release:** edit `CHANGELOG.md`'s `## [Unreleased]` section with the change, commit, then `pwsh tools/release.ps1 -Version v0.1.0 -Publish`. The script refuses dirty trees, empty `[Unreleased]` sections, duplicate tag names, and non-monotonic version numbers. Rewrites the changelog (`## [Unreleased]` → `## [v0.1.0] - YYYY-MM-DD`), commits that rewrite, annotate-tags the commit, and pushes. Without `-Publish` everything stays local for review.
+
+**Never recreate a `datacore/*` tag** to carry a library fix. Force-moved tags silently don't invalidate Cargo's lockfile-cached SHAs; use a new `sc-holotable/v*` tag instead. This is the concrete reason both tag families exist.
+
 ## Build / test / lint
 
 ```bash

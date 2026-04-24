@@ -16,7 +16,7 @@
 
 use std::collections::{BTreeMap, HashMap, HashSet};
 
-use sc_extract::Guid;
+use sc_extract::{Guid, LocaleKey};
 
 use crate::expand::{
     Availability, BlueprintReward, ContractOrigin, EncounterGroup, ExpandedContract, HandlerKind,
@@ -46,7 +46,17 @@ pub struct Contract {
     /// `(debug_name, handler_debug_name)` tuple to prevent unrelated
     /// text-less contracts from collapsing.
     pub title: Option<String>,
+    /// Raw (`@`-stripped) INI key the [`Self::title`] was resolved
+    /// from. Picked from the canonical (first non-sub-contract)
+    /// variation, mirroring the `title` selection rule. `Some` when
+    /// the DCB carried a key even if the active `LocaleMap` didn't
+    /// have a translation — consumers patching `global.ini` use this
+    /// directly.
+    pub title_key: Option<LocaleKey>,
     pub description: Option<String>,
+    /// Raw (`@`-stripped) INI key for [`Self::description`]. Mirrors
+    /// [`Self::title_key`]'s semantics.
+    pub description_key: Option<LocaleKey>,
     pub has_runtime_substitution: bool,
 
     pub shareable: bool,
@@ -114,6 +124,13 @@ pub struct Variation {
     /// group's common prereqs. For the Mission08 pattern, this holds
     /// the variation's `Locality` GUID (the planet-specific pickup).
     pub extra_prerequisites: Vec<PrereqView>,
+    /// Per-variation title key. Sub-contracts that override the
+    /// parent's title carry a distinct key here, even though the
+    /// merged [`Contract::title_key`] picks the canonical variation's
+    /// value.
+    pub title_key: Option<LocaleKey>,
+    /// Per-variation description key. Mirrors [`Self::title_key`].
+    pub description_key: Option<LocaleKey>,
 }
 
 // ── Entry point ─────────────────────────────────────────────────────────────
@@ -289,6 +306,8 @@ fn collapse_group(mut group: Vec<ExpandedContract>) -> Contract {
                 expansion_id: e.id,
                 origin: e.origin,
                 extra_prerequisites: extras,
+                title_key: e.title_key.clone(),
+                description_key: e.description_key.clone(),
             }
         })
         .collect();
@@ -311,7 +330,9 @@ fn collapse_group(mut group: Vec<ExpandedContract>) -> Contract {
         handler_kind: first.handler_kind,
         handler_debug_name: first.handler_debug_name.clone(),
         title: first.title.clone(),
+        title_key: first.title_key.clone(),
         description: first.description.clone(),
+        description_key: first.description_key.clone(),
         has_runtime_substitution: first.has_runtime_substitution,
         shareable: first.shareable,
         illegal_flag: first.illegal_flag,

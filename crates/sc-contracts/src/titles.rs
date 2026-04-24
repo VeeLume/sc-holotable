@@ -31,12 +31,19 @@ use sc_extract::generated::{
     DataPools, Handle, SubContract,
 };
 use sc_extract::svarog_datacore::{DataCoreDatabase, Value};
-use sc_extract::{Datacore, Guid, LocaleMap};
+use sc_extract::{Datacore, Guid, LocaleKey, LocaleMap};
 
 /// Resolved title + description text for a contract, combining the
 /// inheritance chain (contract → handler → template) and a
-/// [`LocaleMap`] lookup. Fields are `None` when no text was found at
-/// any inheritance level OR the key was absent from the locale.
+/// [`LocaleMap`] lookup. `title` / `description` are `None` when no
+/// text was found at any inheritance level OR the key was absent from
+/// the locale. The paired `*_key` fields carry the raw (`@`-stripped)
+/// INI key the text was resolved from, so consumers writing back to
+/// `global.ini` (sc-langpatch, translation-extraction tooling) can
+/// patch the original entry without re-walking the inheritance chain.
+/// A `*_key` may be `Some` while the corresponding text is `None` —
+/// the key existed in the DCB but was absent from the active
+/// `LocaleMap`.
 ///
 /// Text is returned verbatim — any `~mission(variable)` runtime
 /// substitution markers are preserved. [`ResolvedText::has_runtime_substitution`]
@@ -44,7 +51,9 @@ use sc_extract::{Datacore, Guid, LocaleMap};
 #[derive(Debug, Clone, Default, PartialEq, Eq)]
 pub struct ResolvedText {
     pub title: Option<String>,
+    pub title_key: Option<LocaleKey>,
     pub description: Option<String>,
+    pub description_key: Option<LocaleKey>,
 }
 
 impl ResolvedText {
@@ -122,8 +131,8 @@ pub fn resolve_contract_text(
     let pools = &datacore.records().pools;
     let db = datacore.db();
 
-    let mut title_key: Option<String> = None;
-    let mut desc_key: Option<String> = None;
+    let mut title_key: Option<LocaleKey> = None;
+    let mut desc_key: Option<LocaleKey> = None;
 
     // Level 1 — sub-contract string params (flattened directly onto
     // SubContract rather than nested in a ParamOverrides handle).
@@ -154,9 +163,17 @@ pub fn resolve_contract_text(
         pick_from_template(db, &guid, &mut title_key, &mut desc_key);
     }
 
+    let title = title_key
+        .as_ref()
+        .and_then(|k| locale.get(k.as_str()).map(String::from));
+    let description = desc_key
+        .as_ref()
+        .and_then(|k| locale.get(k.as_str()).map(String::from));
     ResolvedText {
-        title: title_key.and_then(|k| locale.get(k.as_str()).map(String::from)),
-        description: desc_key.and_then(|k| locale.get(k.as_str()).map(String::from)),
+        title,
+        title_key,
+        description,
+        description_key: desc_key,
     }
 }
 
@@ -165,8 +182,8 @@ pub fn resolve_contract_text(
 fn pick_from_sub_contract(
     pools: &DataPools,
     sub: &SubContract,
-    title: &mut Option<String>,
-    desc: &mut Option<String>,
+    title: &mut Option<LocaleKey>,
+    desc: &mut Option<LocaleKey>,
 ) {
     for h in &sub.string_param_overrides {
         let Some(param) = h.get(pools) else { continue };
@@ -175,8 +192,10 @@ fn pick_from_sub_contract(
             continue;
         }
         match param.param {
-            ContractStringParamType::Title if title.is_none() => *title = Some(key.to_string()),
-            ContractStringParamType::Description if desc.is_none() => *desc = Some(key.to_string()),
+            ContractStringParamType::Title if title.is_none() => *title = Some(LocaleKey::new(key)),
+            ContractStringParamType::Description if desc.is_none() => {
+                *desc = Some(LocaleKey::new(key))
+            }
             _ => {}
         }
     }
@@ -185,8 +204,8 @@ fn pick_from_sub_contract(
 fn pick_from_param_overrides(
     pools: &DataPools,
     handle: Option<&Handle<ContractParamOverrides>>,
-    title: &mut Option<String>,
-    desc: &mut Option<String>,
+    title: &mut Option<LocaleKey>,
+    desc: &mut Option<LocaleKey>,
 ) {
     let Some(h) = handle else { return };
     let Some(po) = h.get(pools) else { return };
@@ -197,8 +216,10 @@ fn pick_from_param_overrides(
             continue;
         }
         match param.param {
-            ContractStringParamType::Title if title.is_none() => *title = Some(key.to_string()),
-            ContractStringParamType::Description if desc.is_none() => *desc = Some(key.to_string()),
+            ContractStringParamType::Title if title.is_none() => *title = Some(LocaleKey::new(key)),
+            ContractStringParamType::Description if desc.is_none() => {
+                *desc = Some(LocaleKey::new(key))
+            }
             _ => {}
         }
     }
@@ -207,8 +228,8 @@ fn pick_from_param_overrides(
 fn pick_from_template(
     db: &DataCoreDatabase,
     template_guid: &Guid,
-    title: &mut Option<String>,
-    desc: &mut Option<String>,
+    title: &mut Option<LocaleKey>,
+    desc: &mut Option<LocaleKey>,
 ) {
     let Some(record) = db.record(template_guid) else {
         return;
@@ -230,8 +251,8 @@ fn pick_from_template(
 fn walk_string_param_overrides(
     db: &DataCoreDatabase,
     inst: &sc_extract::svarog_datacore::Instance<'_>,
-    title: &mut Option<String>,
-    desc: &mut Option<String>,
+    title: &mut Option<LocaleKey>,
+    desc: &mut Option<LocaleKey>,
 ) {
     let Some(arr) = inst.get_array("stringParamOverrides") else {
         return;
@@ -258,8 +279,8 @@ fn walk_string_param_overrides(
             continue;
         }
         match param_name.as_str() {
-            "Title" if title.is_none() => *title = Some(key),
-            "Description" if desc.is_none() => *desc = Some(key),
+            "Title" if title.is_none() => *title = Some(LocaleKey::new(key)),
+            "Description" if desc.is_none() => *desc = Some(LocaleKey::new(key)),
             _ => {}
         }
     }
@@ -273,7 +294,7 @@ mod tests {
     fn has_runtime_substitution_detects_marker() {
         let r = ResolvedText {
             title: Some("~mission(ship) clean up".into()),
-            description: None,
+            ..Default::default()
         };
         assert!(r.has_runtime_substitution());
     }
@@ -283,6 +304,7 @@ mod tests {
         let r = ResolvedText {
             title: Some("Destroy the target".into()),
             description: Some("Eliminate all hostiles.".into()),
+            ..Default::default()
         };
         assert!(!r.has_runtime_substitution());
     }

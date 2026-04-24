@@ -24,7 +24,7 @@ use sc_extract::generated::{
     ContractPrerequisiteBasePtr, ContractResultBasePtr, ContractResults, DataPools,
     ELocationTypeLevel, Handle, MissionProperty, SubContract, TagList,
 };
-use sc_extract::{Datacore, Guid, LocaleMap};
+use sc_extract::{Datacore, Guid, LocaleKey, LocaleMap};
 
 use crate::blueprints::BlueprintPoolRegistry;
 use crate::classify::SpawnContext;
@@ -59,8 +59,16 @@ pub struct ExpandedContract {
 
     /// Resolved title text (see [`resolve_contract_text`]).
     pub title: Option<String>,
+    /// Raw (`@`-stripped) INI key the `title` was resolved from.
+    /// `Some` whenever a key was found in the inheritance chain, even
+    /// if the active [`LocaleMap`] didn't carry a translation for it.
+    /// Consumers writing back to `global.ini` use this.
+    pub title_key: Option<LocaleKey>,
     /// Resolved description text.
     pub description: Option<String>,
+    /// Raw (`@`-stripped) INI key the `description` was resolved from.
+    /// Mirrors [`Self::title_key`]'s semantics.
+    pub description_key: Option<LocaleKey>,
     /// True if the title or description contains at least one
     /// `~mission(variable)` runtime substitution marker. When set,
     /// consumers should mark any text they derive from title/description
@@ -876,11 +884,16 @@ fn build_expansion(
     template_guid: Option<Guid>,
     origin: ContractOrigin,
 ) -> ExpandedContract {
-    let ResolvedText { title, description } =
-        resolve_contract_text(sub_contract, anchor, ctx.contract_params, datacore, locale);
+    let ResolvedText {
+        title,
+        title_key,
+        description,
+        description_key,
+    } = resolve_contract_text(sub_contract, anchor, ctx.contract_params, datacore, locale);
     let has_runtime_substitution = ResolvedText {
         title: title.clone(),
         description: description.clone(),
+        ..Default::default()
     }
     .has_runtime_substitution();
 
@@ -923,7 +936,9 @@ fn build_expansion(
         handler_kind: ctx.kind,
         handler_debug_name: ctx.debug_name.clone(),
         title,
+        title_key,
         description,
+        description_key,
         has_runtime_substitution,
         shareable: flags.shareable,
         illegal_flag: flags.illegal,
