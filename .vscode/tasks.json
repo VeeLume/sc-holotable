@@ -1,0 +1,68 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "sc: regenerate bindings",
+            "detail": "Generator + fmt + clippy-fix + commit. Auto-discovers LIVE P4K via sc-installs, captures SC version for the commit message. Does NOT push or tag.",
+            "type": "shell",
+            "command": "pwsh",
+            "args": [
+                "-NoProfile",
+                "-ExecutionPolicy",
+                "Bypass",
+                "-File",
+                "${workspaceFolder}/tools/regenerate.ps1"
+            ],
+            "group": "build",
+            "problemMatcher": [
+                "$rustc"
+            ],
+            "presentation": {
+                "reveal": "always",
+                "panel": "dedicated",
+                "clear": true
+            }
+        },
+        {
+            "label": "sc: regenerate and publish",
+            "detail": "Full pipeline including 'git push' and annotated tag 'datacore/<sc_version>'. Use only when the regen is known-good.",
+            "type": "shell",
+            "command": "pwsh",
+            "args": [
+                "-NoProfile",
+                "-ExecutionPolicy",
+                "Bypass",
+                "-File",
+                "${workspaceFolder}/tools/regenerate.ps1",
+                "-Publish"
+            ],
+            "group": "build",
+            "problemMatcher": [
+                "$rustc"
+            ],
+            "presentation": {
+                "reveal": "always",
+                "panel": "dedicated",
+                "clear": true
+            }
+        },
+        {
+            "label": "sc: generate --check",
+            "detail": "Parse the P4K and validate the generator without writing files. Auto-discovers LIVE P4K.",
+            "type": "shell",
+            "command": "cargo",
+            "args": [
+                "run",
+                "-p",
+                "sc-generator",
+                "--release",
+                "--",
+                "--check"
+            ],
+            "group": "test",
+            "problemMatcher": [
+                "$rustc"
+            ]
+        }
+    ]
+}

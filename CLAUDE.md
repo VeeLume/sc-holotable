@@ -148,15 +148,30 @@ These are load-bearing — deviating from them should be a deliberate decision, 
 
 ## Running the generator
 
-When a new SC patch lands, regenerate the DataCore bindings:
+When a new SC patch lands, regenerate the DataCore bindings. The canonical entry point is the `regenerate.ps1` script (wrapped as VSCode tasks):
 
-```bash
-cargo run -p sc-generator --release -- --p4k "C:/Games/StarCitizen/LIVE/Data.p4k"
+```powershell
+# Regenerate + fmt + clippy-fix + commit. Leaves the commit local for review.
+pwsh tools/regenerate.ps1
+
+# Same, plus 'git push' and annotated tag 'datacore/<sc_version>'.
+pwsh tools/regenerate.ps1 -Publish
 ```
 
-This writes the `core/`, `dormant/`, `multi_feature/`, and ~245 leaf feature directories into `crates/sc-extract-generated/src/generated/`, plus top-level `enums.rs` / `poly_enums.rs` / `data_pools.rs`, and updates both `sc-extract-generated/Cargo.toml` and `sc-extract/Cargo.toml` with the auto-detected `[features]` section. Review the diff, fix any call sites that broke, commit everything.
+VSCode tasks: `sc: regenerate bindings` (no publish) and `sc: regenerate and publish`. See `.vscode/tasks.json`.
 
-Release mode is strongly preferred over debug — DCB parse is tens of times faster. The whole run takes ~3 seconds.
+The script:
+
+1. Refuses to start with a dirty working tree (pass `-AllowDirty` to override).
+2. Runs `sc-generator`, which auto-discovers the LIVE `Data.p4k` via `sc-installs` and emits a machine-parseable identity line (`sc-generator: sc_version=... channel=... p4k=...`). The script captures the version for the commit message and tag name.
+3. `cargo fmt --all`.
+4. `cargo clippy --fix --allow-dirty --allow-staged -p sc-extract-generated --all-features -- -D warnings`, then `cargo fmt --all` again to smooth any style drift. Scoped to `sc-extract-generated` because that crate is the generator's output — lints in hand-written example code are out of scope for a regen commit.
+5. `git add -A` + one commit: `Regenerate DataCore bindings (SC <version>)`. Bails out cleanly if the generator produced an identical tree.
+6. With `-Publish`: `git push origin <branch>`, `git tag -a datacore/<sc_version> -m "..."`, `git push origin <tag>`.
+
+The generator can still be run manually: `cargo run -p sc-generator --release` (auto-discovers) or `... -- --p4k <path>` (explicit). It writes the `core/`, `dormant/`, `multi_feature/`, and ~245 leaf feature directories into `crates/sc-extract-generated/src/generated/`, plus top-level `enums.rs` / `poly_enums.rs` / `data_pools.rs`, and updates both `sc-extract-generated/Cargo.toml` and `sc-extract/Cargo.toml` with the auto-detected `[features]` section.
+
+Release mode is strongly preferred over debug — DCB parse is tens of times faster. The whole generator run takes ~3 seconds.
 
 Available flags:
 
