@@ -55,6 +55,9 @@ mod merge;
 mod ships;
 mod titles;
 
+#[cfg(feature = "tui")]
+pub mod tui;
+
 pub use blueprints::{BlueprintItem, BlueprintPool, BlueprintPoolRegistry};
 pub use classify::{SpawnContext, parse_ai_skill};
 pub use clusters::{

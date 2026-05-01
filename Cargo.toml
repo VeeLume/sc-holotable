@@ -8,6 +8,7 @@ members = [
     "crates/sc-contracts",
     "tools/sc-generator",
     "tools/sc-bench",
+    "tools/sc-explorer",
 ]
 
 [workspace.package]
@@ -26,6 +27,12 @@ sc-contracts = { path = "crates/sc-contracts" }
 # Workspace-wide logging. Every crate that emits logs uses `tracing`.
 # See the "Conventions" section of the README for the rationale.
 tracing = "0.1"
+
+# Immediate-mode TUI library used by `tools/sc-explorer` and the per-crate
+# `tui` modules in `sc-contracts` / `sc-weapons` (gated behind their `tui`
+# feature so consumers that don't need it don't pull SLT). Local clone at
+# `E:\repros\SuperLightTUI` for API exploration — see CLAUDE.md.
+superlighttui = "0.19"
 
 # Shared error handling and (de)serialization. Used by most crates.
 thiserror = "2"

@@ -30,6 +30,9 @@ mod fps;
 mod ship;
 mod sustain;
 
+#[cfg(feature = "tui")]
+pub mod tui;
+
 pub use classify::WeaponCategory;
 pub use damage::DamageSummary;
 pub use error::WeaponError;

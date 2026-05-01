@@ -23,6 +23,14 @@ svarog-common = { workspace = true }
 thiserror = { workspace = true }
 tracing = { workspace = true }
 
+# `tui` feature: pulls SuperLightTUI for the explorer view. Opt-in so
+# consumers that only want contract data don't pay for the SLT dep.
+superlighttui = { workspace = true, optional = true }
+
 [dev-dependencies]
 sc-installs = { workspace = true }
 tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+[features]
+default = []
+tui = ["dep:superlighttui"]

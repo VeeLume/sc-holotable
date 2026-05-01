@@ -1,0 +1,24 @@
+[package]
+name = "sc-explorer"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+description = "Interactive TUI explorer for sc-holotable parsed game data"
+
+[[bin]]
+name = "sc-explorer"
+path = "src/main.rs"
+
+[dependencies]
+# Aggregation crates with their `tui` feature on. Note: we explicitly
+# do NOT depend on `sc-extract` directly — the aggregation crates'
+# narrow-consumer re-exports cover everything we need (AssetSource,
+# Datacore, LocaleMap), which proves the narrow-consumer dep story.
+sc-installs = { workspace = true }
+sc-contracts = { workspace = true, features = ["tui"] }
+sc-weapons = { workspace = true, features = ["tui"] }
+superlighttui = { workspace = true }
+
+anyhow = "1"
+tracing = { workspace = true }
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }

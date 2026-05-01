@@ -307,6 +307,7 @@ See `status.md` for the always-current version. Brief snapshot:
 When working here, you may need to read code in sibling repos:
 
 - **`E:\repros\Svarog`** — read-only local clone of the svarog source. Use this to look up svarog types and APIs (e.g. `crates/svarog-datacore/src/instance.rs` for `Instance` / `Record` methods). Do not modify.
+- **`E:\repros\SuperLightTUI`** — read-only local clone of the SuperLightTUI source (the immediate-mode TUI lib `tools/sc-explorer` builds on). Use it to look up the public grammar (`Context`, `ListState`, `TabsState`, `TextInputState`, `ScrollState`, `bordered`, `row` / `col`, `command_palette`, …) — `docs/WIDGETS.md` is the categorized reference and `examples/demo_cli.rs` is the closest analogue to our explorer's list+detail layout. Do not modify.
 - **`E:\vscode\rust\bulkhead`** — the combat simulator. Reference implementation for damage-pipeline logic and the DCB data model docs (`docs/damage-system.md`, `docs/data-model.md`). Mostly scaffold, not a working app.
 - **`E:\vscode\rust\sc-damage-calculator`** — bulkhead's predecessor. Has a real working vehicle XML parser at `src/extract/hull.rs` (~490 lines). When sc-extract phase 2b is revived, port from this.
 - **`E:\vscode\rust\sc-langpatch`** — contract-patching Tauri app. Has working `discovery.rs` (reference for sc-installs) and a real contract-enhancer module (`src-tauri/src/modules/mission_enhancer.rs`) that shows the DCB contract system's complexity.
