@@ -58,9 +58,10 @@ pub use blueprints::{BlueprintItem, BlueprintPool, BlueprintPoolRegistry};
 pub use classify::{TagBag, parse_ai_skill};
 pub use currency::{CurrencyInfo, RewardCurrencyCatalog};
 pub use expand::{
-    Availability, BlueprintReward, Cooldowns, DurationRange, EncounterGroup, EncounterSlot,
-    EncounterWave, HandlerKind, ItemReward, Mission, MissionOrigin, MissionRewards, OtherReward,
-    PrereqView, RepReward, RewardAmount, ScripReward, expand_all,
+    Availability, BlueprintReward, Cooldowns, DurationRange, Encounter, EncounterPhase,
+    EntityEncounter, EntitySlot, HandlerKind, ItemReward, Mission, MissionOrigin, MissionRewards,
+    NpcEncounter, NpcSlot, OtherReward, PrereqView, RepReward, RewardAmount, ScripReward,
+    ShipEncounter, ShipSlot, expand_all,
 };
 pub use index::MissionIndex;
 pub use locality::{LocalityRegistry, LocalityView, LocationRef, LocationRegistry, SystemKey};

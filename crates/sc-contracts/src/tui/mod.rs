@@ -13,7 +13,9 @@
 use sc_extract::{Datacore, TagTree};
 use slt::{Border, Color, Context, KeyCode, ListState, ScrollState, TextInputState};
 
-use crate::expand::{EncounterSlot, Mission, RewardAmount};
+use crate::expand::{
+    Encounter, EncounterPhase, EntitySlot, Mission, NpcSlot, RewardAmount, ShipSlot,
+};
 use crate::index::MissionIndex;
 
 /// Persistent state for the contracts explorer view.
@@ -306,30 +308,32 @@ fn render_detail(
 
         // Encounters — full per-slot breakdown so we can investigate
         // typed signals (initial_damage_settings, spawn_identifiers,
-        // markup / entity / negative tag bags, ...) interactively
-        // against real contracts.
+        // markup / entity / negative tag bags, mission_allied_marker,
+        // ...) interactively against real contracts.
         if !c.encounters.is_empty() {
             let _ = ui.row(|ui| {
                 ui.text("Encounters").bold();
                 ui.spacer();
                 ui.text(format!("{}", c.encounters.len())).dim();
             });
-            for g in &c.encounters {
-                ui.text(format!("  ▸ {}", g.variable_name)).bold();
-                if !g.extended_text_token.is_empty() {
-                    ui.text(format!("      ext_token: {}", g.extended_text_token))
+            for enc in &c.encounters {
+                let kind = match enc {
+                    Encounter::Ships(_) => "ships",
+                    Encounter::Npcs(_) => "npcs",
+                    Encounter::Entities(_) => "entities",
+                    Encounter::Unknown { .. } => "unknown",
+                };
+                ui.text(format!("  ▸ [{kind}] {}", enc.variable_name())).bold();
+                if !enc.extended_text_token().is_empty() {
+                    ui.text(format!("      ext_token: {}", enc.extended_text_token()))
                         .fg(Color::Yellow);
                 }
-                for w in &g.waves {
-                    let wave_label = if w.name.is_empty() {
-                        "(unnamed wave)".to_string()
-                    } else {
-                        format!("wave \"{}\"", w.name)
-                    };
-                    ui.text(format!("      {wave_label} — {} slot(s)", w.slots.len()))
-                        .dim();
-                    for (i, s) in w.slots.iter().enumerate() {
-                        render_slot(ui, i, s, tree);
+                match enc {
+                    Encounter::Ships(s) => render_ship_phases(ui, &s.phases, tree),
+                    Encounter::Npcs(s) => render_npc_phases(ui, &s.phases, tree),
+                    Encounter::Entities(s) => render_entity_phases(ui, &s.phases, tree),
+                    Encounter::Unknown { raw_guid, .. } => {
+                        ui.text(format!("      raw_guid: {raw_guid}")).dim();
                     }
                 }
             }
@@ -371,10 +375,54 @@ fn render_detail(
     });
 }
 
-/// Render one [`EncounterSlot`] with all four tag bags surfaced.
-/// `tree` is required for the subtree-classified iterators on
-/// [`crate::TagBag`].
-fn render_slot(ui: &mut Context, i: usize, s: &EncounterSlot, tree: &TagTree) {
+/// Phase header: format the wave label + slot count.
+fn render_phase_header<S>(ui: &mut Context, phase: &EncounterPhase<S>) {
+    let label = if phase.name.is_empty() {
+        "(unnamed phase)".to_string()
+    } else {
+        format!("phase \"{}\"", phase.name)
+    };
+    ui.text(format!("      {label} — {} slot(s)", phase.slots.len())).dim();
+}
+
+fn render_ship_phases(
+    ui: &mut Context,
+    phases: &[EncounterPhase<ShipSlot>],
+    tree: &TagTree,
+) {
+    for phase in phases {
+        render_phase_header(ui, phase);
+        for (i, s) in phase.slots.iter().enumerate() {
+            render_ship_slot(ui, i, s, tree);
+        }
+    }
+}
+
+fn render_npc_phases(ui: &mut Context, phases: &[EncounterPhase<NpcSlot>], tree: &TagTree) {
+    for phase in phases {
+        render_phase_header(ui, phase);
+        for (i, s) in phase.slots.iter().enumerate() {
+            render_npc_slot(ui, i, s, tree);
+        }
+    }
+}
+
+fn render_entity_phases(
+    ui: &mut Context,
+    phases: &[EncounterPhase<EntitySlot>],
+    tree: &TagTree,
+) {
+    for phase in phases {
+        render_phase_header(ui, phase);
+        for (i, s) in phase.slots.iter().enumerate() {
+            render_entity_slot(ui, i, s, tree);
+        }
+    }
+}
+
+/// Render one ship slot with all four tag bags surfaced. `tree` is
+/// required for the subtree-classified iterators on [`crate::TagBag`].
+fn render_ship_slot(ui: &mut Context, i: usize, s: &ShipSlot, tree: &TagTree) {
     // Slot header: concurrency / weight / candidate count + flag markers.
     let damage_marker = if s.initial_damage_settings.is_some() {
         " [pre-damaged]"
@@ -461,6 +509,86 @@ fn render_slot(ui: &mut Context, i: usize, s: &EncounterSlot, tree: &TagTree) {
             String::new()
         };
         ui.text(format!("            ships: {}{suffix}", preview.join(", "))).dim();
+    }
+}
+
+/// Render one NPC slot. Surfaces the typed `mission_allied_marker` /
+/// `is_critical` / `faction_override` flags from `AutoSpawnSettings`
+/// plus the identifier-tag bag classifications.
+fn render_npc_slot(ui: &mut Context, i: usize, s: &NpcSlot, tree: &TagTree) {
+    let allied_marker = if s.mission_allied_marker {
+        " [allied-marker]"
+    } else {
+        ""
+    };
+    let critical = if s.is_critical { " [critical]" } else { "" };
+    let loc_marker = if s.include_location_ai_spawn_tags {
+        " [+location-tags]"
+    } else {
+        ""
+    };
+    ui.text(format!(
+        "        slot {i}: priority={} w={:.2} ident_tags={}{allied_marker}{critical}{loc_marker}",
+        s.priority,
+        s.weight,
+        s.identifier_tags.len(),
+    ));
+    if let Some(faction) = s.faction_override {
+        ui.text(format!("            faction_override: {faction}")).dim();
+    }
+    let factions: Vec<&str> = s.identifier_tags.factions(tree).collect();
+    if !factions.is_empty() {
+        ui.text(format!("            factions: {}", factions.join(", "))).dim();
+    }
+    let ai_traits: Vec<&str> = s.identifier_tags.ai_traits(tree).collect();
+    if !ai_traits.is_empty() {
+        ui.text(format!("            ai_traits: {}", ai_traits.join(", "))).dim();
+    }
+    let mission_tags: Vec<&str> = s.identifier_tags.mission_tags(tree).collect();
+    if !mission_tags.is_empty() {
+        ui.text(format!("            mission_tags: {}", mission_tags.join(", "))).dim();
+    }
+    if !s.identifier_tags.is_empty() {
+        ui.text(format!(
+            "            identifier_tags: {}",
+            s.identifier_tags.names.join(", ")
+        ))
+        .dim();
+    }
+}
+
+/// Render one generic-entity slot.
+fn render_entity_slot(ui: &mut Context, i: usize, s: &EntitySlot, tree: &TagTree) {
+    ui.text(format!(
+        "        slot {i}: amount={} w={:.2} pos={} neg={}",
+        s.amount,
+        s.weight,
+        s.positive.len(),
+        s.negative.len(),
+    ));
+    let factions: Vec<&str> = s.positive.factions(tree).collect();
+    if !factions.is_empty() {
+        ui.text(format!("            factions: {}", factions.join(", "))).dim();
+    }
+    let ai_traits: Vec<&str> = s.positive.ai_traits(tree).collect();
+    if !ai_traits.is_empty() {
+        ui.text(format!("            ai_traits: {}", ai_traits.join(", "))).dim();
+    }
+    let mission_tags: Vec<&str> = s.positive.mission_tags(tree).collect();
+    if !mission_tags.is_empty() {
+        ui.text(format!("            mission_tags: {}", mission_tags.join(", "))).dim();
+    }
+    if !s.positive.is_empty() {
+        ui.text(format!("            positive: {}", s.positive.names.join(", "))).dim();
+    }
+    if !s.negative.is_empty() {
+        ui.text(format!("            negative: {}", s.negative.names.join(", "))).dim();
+    }
+    if !s.markup.is_empty() {
+        ui.text(format!("            markup: {}", s.markup.names.join(", "))).dim();
+    }
+    if !s.entity.is_empty() {
+        ui.text(format!("            entity: {}", s.entity.names.join(", "))).dim();
     }
 }
 

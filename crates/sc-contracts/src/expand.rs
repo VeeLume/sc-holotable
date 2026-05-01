@@ -96,13 +96,13 @@ pub struct Mission {
     /// `(struct_index, instance_index)` pointer.
     pub prerequisites: Vec<PrereqView>,
 
-    /// Ship encounter groups — one per
-    /// `MissionPropertyValue_ShipSpawnDescriptions` in the contract
-    /// graph. Each group holds named waves whose spawn tag queries
-    /// are already resolved through [`ShipRegistry::resolve_spawn`].
-    /// Per-slot tag lists land in [`EncounterSlot`]'s four [`TagBag`]
-    /// fields (positive / negative / markup / entity).
-    pub encounters: Vec<EncounterGroup>,
+    /// Encounters attached to this mission — one [`Encounter`] per
+    /// spawn-shaped `MissionProperty.value` (Ship / NPC / Entity).
+    /// Pattern-match for typed access; `Encounter::Unknown` carries
+    /// the raw GUID for any unmodeled poly variant. Order preserves
+    /// DCB-array order (sub-contract → contract.paramOverrides →
+    /// handler → template, first-non-empty per slot).
+    pub encounters: Vec<Encounter>,
 
     /// Localities this expansion is offered at. Every `Locality`
     /// prereq in the expansion's inheritance chain (handler +
@@ -353,48 +353,123 @@ pub enum HandlerKind {
     Unknown,
 }
 
-/// A group of related ship-spawn waves emitted for a contract —
-/// typically the `MissionPropertyValue_ShipSpawnDescriptions` attached
-/// to one `missionVariableName` slot (e.g. `BP_SpawnDescriptions`,
-/// `Hostile_ShipSpawnDescriptions`, …).
+/// One encounter attached to a mission — Phase 6 of the v2 redesign
+/// widens the model from ship-only to all three spawn-shaped poly
+/// variants on `BaseMissionPropertyValuePtr`.
+///
+/// Pattern-match on the variant for typed access; iterate uniformly
+/// when consumers don't care about the shape (e.g. counting total
+/// encounters per mission). The [`Self::Unknown`] variant carries the
+/// raw `MissionProperty` GUID so consumers can walk the underlying
+/// instance via `datacore.db()` if a future poly variant lands.
 #[derive(Debug, Clone)]
-pub struct EncounterGroup {
-    /// `missionVariableName` the group was attached to — useful for
-    /// classifying the group's role (`BP_SpawnDescriptions`,
-    /// `MissionTargets`, `Hostile_*`, `WaveShips`, …).
+pub enum Encounter {
+    /// Ship spawn description — by far the most common shape (~3,045
+    /// of 4,678 spawn-encoded properties on SC 4.7 LIVE).
+    Ships(ShipEncounter),
+    /// NPC spawn description — FPS-side encounters. Carries the typed
+    /// `mission_allied_marker` flag from `AutoSpawnSettings` that v1
+    /// crimestat work needs.
+    Npcs(NpcEncounter),
+    /// Generic entity spawn description — ~316 properties on SC 4.7,
+    /// covers entity-shaped spawn buckets that aren't ship-or-NPC.
+    Entities(EntityEncounter),
+    /// Unmodeled poly variant — carries the raw `MissionProperty`
+    /// GUID so the consumer can walk the underlying instance via
+    /// `datacore.db().record(raw_guid)`.
+    Unknown {
+        variable_name: String,
+        raw_guid: Guid,
+    },
+}
+
+impl Encounter {
+    /// `mission_variable_name` of the underlying `MissionProperty`,
+    /// regardless of which spawn variant it carries.
+    pub fn variable_name(&self) -> &str {
+        match self {
+            Encounter::Ships(s) => &s.variable_name,
+            Encounter::Npcs(s) => &s.variable_name,
+            Encounter::Entities(s) => &s.variable_name,
+            Encounter::Unknown { variable_name, .. } => variable_name,
+        }
+    }
+
+    /// Raw `extendedTextToken` from the underlying `MissionProperty`.
+    /// Empty for [`Self::Unknown`].
+    pub fn extended_text_token(&self) -> &str {
+        match self {
+            Encounter::Ships(s) => &s.extended_text_token,
+            Encounter::Npcs(s) => &s.extended_text_token,
+            Encounter::Entities(s) => &s.extended_text_token,
+            Encounter::Unknown { .. } => "",
+        }
+    }
+}
+
+/// Ship spawn encounter — the original v1 shape, now wrapped in
+/// [`Encounter::Ships`].
+#[derive(Debug, Clone)]
+pub struct ShipEncounter {
+    /// `missionVariableName` the property was attached to.
     pub variable_name: String,
-    /// `MissionProperty.extendedTextToken` — sibling field to
-    /// `mission_variable_name`. Almost always empty in 4.7 (96.3%);
-    /// when populated carries free-form values like `AmbushTarget`,
-    /// `Ship`, `CargoShip`. Forwarded raw for consumer inspection.
+    /// `MissionProperty.extendedTextToken` — almost always empty in
+    /// 4.7 (96.3%); occasional values include `AmbushTarget`,
+    /// `CargoShip`. Forwarded raw for consumer inspection.
     pub extended_text_token: String,
-    /// Named sub-waves inside the group. For a bounty mission these
-    /// are `Wave1 / Wave2 / Wave3`; for a salvage target they might
-    /// be `SalvageableShip`, etc.
-    pub waves: Vec<EncounterWave>,
+    /// Ordered phases — `Wave1 / Wave2 / Wave3` in combat-gauntlet
+    /// missions, `SalvageableShip` for salvage targets, often empty.
+    /// Phase order matches DCB-array order; consumers that want a
+    /// specific display order sort themselves.
+    pub phases: Vec<EncounterPhase<ShipSlot>>,
 }
 
-/// One named wave inside an [`EncounterGroup`], plus its resolved
-/// ship candidates and classified spawn context.
+/// NPC (FPS) spawn encounter.
 #[derive(Debug, Clone)]
-pub struct EncounterWave {
-    /// `SpawnDescription_ShipGroup.Name` — `Wave1`, `SalvageableShip`,
-    /// sometimes empty.
-    pub name: String,
-    /// One slot per `SpawnDescription_ShipOptions` in the wave. Each
-    /// slot represents a single ship picked per spawn; multiple slots
-    /// means multiple ships concurrently.
-    pub slots: Vec<EncounterSlot>,
+pub struct NpcEncounter {
+    pub variable_name: String,
+    pub extended_text_token: String,
+    pub phases: Vec<EncounterPhase<NpcSlot>>,
 }
 
-/// A single ship slot inside a wave.
+/// Generic entity spawn encounter. Less constrained than
+/// [`ShipEncounter`] / [`NpcEncounter`] — used for spawn buckets that
+/// don't fit the ship or NPC mold.
+#[derive(Debug, Clone)]
+pub struct EntityEncounter {
+    pub variable_name: String,
+    pub extended_text_token: String,
+    pub phases: Vec<EncounterPhase<EntitySlot>>,
+}
+
+/// One named phase inside an encounter, plus its slots. Generic over
+/// the slot type so all three encounter kinds share the same shape.
+///
+/// Names like `Wave1` / `Reinforcements` / `SalvageableShip` come
+/// from `SpawnDescription_*Group.Name` directly — see
+/// [`crate::Mission`] doc for the wave-name reliability caveat.
+#[derive(Debug, Clone)]
+pub struct EncounterPhase<S> {
+    /// `SpawnDescription_*Group.Name` — sometimes empty, sometimes
+    /// `Wave1`, sometimes a flavour name like `Allies` (which the
+    /// encounter_analytics audit showed can mislead — civilians in
+    /// Ambush missions are flagged as `Allies` despite not being
+    /// combat allies).
+    pub name: String,
+    /// Slots in this phase. For ships, multiple slots = multiple
+    /// concurrent picks; for NPCs / entities the semantics depend on
+    /// the spawn-system that consumes them at runtime.
+    pub slots: Vec<S>,
+}
+
+/// A single ship slot inside an encounter phase.
 ///
 /// The four [`TagBag`]s correspond directly to the four `TagList`
 /// fields on the underlying `SpawnDescription_Ship`. They're surfaced
 /// symmetrically so consumers can read or classify any of them with
 /// the same shape — see [`TagBag`] for classifier methods.
 #[derive(Debug, Clone)]
-pub struct EncounterSlot {
+pub struct ShipSlot {
     /// `concurrentAmount` from `SpawnDescription_Ship` — how many
     /// ships this slot spawns at once.
     pub concurrent: i32,
@@ -437,6 +512,65 @@ pub struct EncounterSlot {
     /// `SpawnDescription_Ship.entityTags` — populated on 2.9% of
     /// options in 4.7. Semantics not yet pinned down; forwarded for
     /// consumer inspection.
+    pub entity: TagBag,
+}
+
+/// A single NPC slot inside an encounter phase.
+///
+/// Surfaces the high-value typed fields from `SpawnDescription_NPCOption`
+/// + `AutoSpawnSettings` — notably [`Self::mission_allied_marker`],
+/// the typed Allied / Hostile signal v1 crimestat work needs. Detailed
+/// FPS scope tags (closet / room / defendArea / scheduleArea) are not
+/// surfaced yet — they belong in a future v3 follow-up driven by an
+/// actual FPS consumer.
+#[derive(Debug, Clone)]
+pub struct NpcSlot {
+    /// `priority` from `SpawnDescription_NPCOption`. Used by the
+    /// engine for spawn-priority ordering.
+    pub priority: i32,
+    /// Pick weight relative to other options in the same phase.
+    pub weight: f32,
+    /// `SpawnDescription_NPCOption.includeLocationAISpawnTags`.
+    pub include_location_ai_spawn_tags: bool,
+    /// `AutoSpawnSettings.missionAlliedMarker` — when true, the spawn
+    /// carries the friendly HUD marker. Critical signal for crimestat
+    /// risk: a friendly without a marker means the player can't
+    /// distinguish them from an enemy at a glance. `false` (and
+    /// `false` when the slot has no `auto_spawn_settings`) is the
+    /// default.
+    pub mission_allied_marker: bool,
+    /// `AutoSpawnSettings.isCritical` — engine-level "this NPC must
+    /// spawn" flag. False when no `auto_spawn_settings` is attached.
+    pub is_critical: bool,
+    /// `AutoSpawnSettings.factionOverride` — when set, overrides the
+    /// NPC's faction at spawn time. None when no override or no
+    /// `auto_spawn_settings`.
+    pub faction_override: Option<Guid>,
+    /// `SpawnDescription_NPCOption.identifierTags` — typed tag bag
+    /// that classifies the NPC archetype (`Civilian`, `Marine`, etc.).
+    pub identifier_tags: TagBag,
+}
+
+/// A single generic-entity slot inside an encounter phase.
+///
+/// `SpawnDescription_Entity` carries the same four tag lists as
+/// `SpawnDescription_Ship` plus an `amount` count — but no candidate
+/// resolution and no per-slot location-tag merge flag.
+#[derive(Debug, Clone)]
+pub struct EntitySlot {
+    /// `amount` from `SpawnDescription_Entity` — how many entities
+    /// this slot spawns. Different name from ship's `concurrent`
+    /// because the engine uses different fields; preserved literally.
+    pub amount: i32,
+    /// Pick weight relative to other options in the same slot.
+    pub weight: f32,
+    /// `SpawnDescription_Entity.tags` — positive tag query.
+    pub positive: TagBag,
+    /// `SpawnDescription_Entity.negativeTags`.
+    pub negative: TagBag,
+    /// `SpawnDescription_Entity.markupTags`.
+    pub markup: TagBag,
+    /// `SpawnDescription_Entity.entityTags`.
     pub entity: TagBag,
 }
 
@@ -1576,8 +1710,8 @@ fn resolve_encounters(
     sub: Option<&SubContract>,
     contract_params: Option<&Handle<ContractParamOverrides>>,
     handler_params: Option<&Handle<ContractParamOverrides>>,
-) -> Vec<EncounterGroup> {
-    let mut out: Vec<EncounterGroup> = Vec::new();
+) -> Vec<Encounter> {
+    let mut out: Vec<Encounter> = Vec::new();
 
     // Handler-level base.
     if let Some(h) = handler_params
@@ -1606,7 +1740,7 @@ fn collect_property_encounters(
     ships: &ShipRegistry,
     tree: &sc_extract::TagTree,
     props: &[Handle<MissionProperty>],
-    out: &mut Vec<EncounterGroup>,
+    out: &mut Vec<Encounter>,
 ) {
     for prop_h in props {
         let Some(prop) = prop_h.get(pools) else {
@@ -1615,71 +1749,192 @@ fn collect_property_encounters(
         let Some(value_ptr) = prop.value.as_ref() else {
             continue;
         };
-        let BaseMissionPropertyValuePtr::MissionPropertyValue_ShipSpawnDescriptions(val_h) =
-            value_ptr
-        else {
-            continue;
-        };
-        let Some(val) = val_h.get(pools) else {
-            continue;
-        };
-
-        let mut group = EncounterGroup {
-            variable_name: prop.mission_variable_name.clone(),
-            extended_text_token: prop.extended_text_token.clone(),
-            waves: Vec::new(),
-        };
-        for group_h in &val.spawn_descriptions {
-            let Some(wave_group) = group_h.get(pools) else {
-                continue;
-            };
-            let mut wave = EncounterWave {
-                name: wave_group.name.clone(),
-                slots: Vec::new(),
-            };
-            for options_h in &wave_group.ships {
-                let Some(options) = options_h.get(pools) else {
-                    continue;
-                };
-                for option_h in &options.options {
-                    let Some(option) = option_h.get(pools) else {
-                        continue;
-                    };
-                    // Resolve all four tag lists into TagBags. ShipRegistry
-                    // still wants HashSet<Guid> for its set-arithmetic
-                    // resolver; build that from the positive/negative bags
-                    // so we don't walk the underlying TagLists twice.
-                    let positive = TagBag::from_handle(pools, tree, option.tags.as_ref());
-                    let negative =
-                        TagBag::from_handle(pools, tree, option.negative_tags.as_ref());
-                    let markup =
-                        TagBag::from_handle(pools, tree, option.markup_tags.as_ref());
-                    let entity =
-                        TagBag::from_handle(pools, tree, option.entity_tags.as_ref());
-                    let pos_set: HashSet<Guid> = positive.guids.iter().copied().collect();
-                    let neg_set: HashSet<Guid> = negative.guids.iter().copied().collect();
-                    let candidates = ships.resolve_spawn(&pos_set, &neg_set);
-                    wave.slots.push(EncounterSlot {
-                        concurrent: option.concurrent_amount,
-                        weight: option.weight,
-                        candidates,
-                        initial_damage_settings: option.initial_damage_settings,
-                        include_location_ai_spawn_tags: option.include_location_aispawn_tags,
-                        positive,
-                        negative,
-                        markup,
-                        entity,
-                    });
+        let var_name = prop.mission_variable_name.clone();
+        let ext_token = prop.extended_text_token.clone();
+        match value_ptr {
+            BaseMissionPropertyValuePtr::MissionPropertyValue_ShipSpawnDescriptions(val_h) => {
+                if let Some(enc) = build_ship_encounter(pools, ships, tree, val_h, &var_name, &ext_token) {
+                    out.push(Encounter::Ships(enc));
                 }
             }
-            if !wave.slots.is_empty() {
-                group.waves.push(wave);
+            BaseMissionPropertyValuePtr::MissionPropertyValue_NPCSpawnDescriptions(val_h) => {
+                if let Some(enc) = build_npc_encounter(pools, tree, val_h, &var_name, &ext_token) {
+                    out.push(Encounter::Npcs(enc));
+                }
             }
-        }
-        if !group.waves.is_empty() {
-            out.push(group);
+            BaseMissionPropertyValuePtr::MissionPropertyValue_EntitySpawnDescriptions(val_h) => {
+                if let Some(enc) = build_entity_encounter(pools, tree, val_h, &var_name, &ext_token) {
+                    out.push(Encounter::Entities(enc));
+                }
+            }
+            // Non-spawn variants are skipped — they're property values, not
+            // encounters. Phase 6 doesn't classify them.
+            _ => {}
         }
     }
+}
+
+fn build_ship_encounter(
+    pools: &DataPools,
+    ships: &ShipRegistry,
+    tree: &sc_extract::TagTree,
+    val_h: &Handle<sc_extract::generated::MissionPropertyValue_ShipSpawnDescriptions>,
+    var_name: &str,
+    ext_token: &str,
+) -> Option<ShipEncounter> {
+    let val = val_h.get(pools)?;
+    let mut phases: Vec<EncounterPhase<ShipSlot>> = Vec::new();
+    for group_h in &val.spawn_descriptions {
+        let Some(wave_group) = group_h.get(pools) else {
+            continue;
+        };
+        let mut phase = EncounterPhase {
+            name: wave_group.name.clone(),
+            slots: Vec::new(),
+        };
+        for options_h in &wave_group.ships {
+            let Some(options) = options_h.get(pools) else {
+                continue;
+            };
+            for option_h in &options.options {
+                let Some(option) = option_h.get(pools) else {
+                    continue;
+                };
+                let positive = TagBag::from_handle(pools, tree, option.tags.as_ref());
+                let negative = TagBag::from_handle(pools, tree, option.negative_tags.as_ref());
+                let markup = TagBag::from_handle(pools, tree, option.markup_tags.as_ref());
+                let entity = TagBag::from_handle(pools, tree, option.entity_tags.as_ref());
+                let pos_set: HashSet<Guid> = positive.guids.iter().copied().collect();
+                let neg_set: HashSet<Guid> = negative.guids.iter().copied().collect();
+                let candidates = ships.resolve_spawn(&pos_set, &neg_set);
+                phase.slots.push(ShipSlot {
+                    concurrent: option.concurrent_amount,
+                    weight: option.weight,
+                    candidates,
+                    initial_damage_settings: option.initial_damage_settings,
+                    include_location_ai_spawn_tags: option.include_location_aispawn_tags,
+                    positive,
+                    negative,
+                    markup,
+                    entity,
+                });
+            }
+        }
+        if !phase.slots.is_empty() {
+            phases.push(phase);
+        }
+    }
+    if phases.is_empty() {
+        return None;
+    }
+    Some(ShipEncounter {
+        variable_name: var_name.to_string(),
+        extended_text_token: ext_token.to_string(),
+        phases,
+    })
+}
+
+fn build_npc_encounter(
+    pools: &DataPools,
+    tree: &sc_extract::TagTree,
+    val_h: &Handle<sc_extract::generated::MissionPropertyValue_NPCSpawnDescriptions>,
+    var_name: &str,
+    ext_token: &str,
+) -> Option<NpcEncounter> {
+    let val = val_h.get(pools)?;
+    let mut phases: Vec<EncounterPhase<NpcSlot>> = Vec::new();
+    for group_h in &val.spawn_descriptions {
+        let Some(npc_group) = group_h.get(pools) else {
+            continue;
+        };
+        let mut phase = EncounterPhase {
+            name: npc_group.name.clone(),
+            slots: Vec::new(),
+        };
+        for option_h in &npc_group.options {
+            let Some(option) = option_h.get(pools) else {
+                continue;
+            };
+            // Pull the high-level fields from AutoSpawnSettings if attached.
+            let (mission_allied_marker, is_critical, faction_override) = option
+                .auto_spawn_settings
+                .as_ref()
+                .and_then(|h| h.get(pools))
+                .map(|s| (s.mission_allied_marker, s.is_critical, s.faction_override))
+                .unwrap_or((false, false, None));
+            let identifier_tags =
+                TagBag::from_handle(pools, tree, option.identifier_tags.as_ref());
+            phase.slots.push(NpcSlot {
+                priority: option.priority,
+                weight: option.weight,
+                include_location_ai_spawn_tags: option.include_location_aispawn_tags,
+                mission_allied_marker,
+                is_critical,
+                faction_override,
+                identifier_tags,
+            });
+        }
+        if !phase.slots.is_empty() {
+            phases.push(phase);
+        }
+    }
+    if phases.is_empty() {
+        return None;
+    }
+    Some(NpcEncounter {
+        variable_name: var_name.to_string(),
+        extended_text_token: ext_token.to_string(),
+        phases,
+    })
+}
+
+fn build_entity_encounter(
+    pools: &DataPools,
+    tree: &sc_extract::TagTree,
+    val_h: &Handle<sc_extract::generated::MissionPropertyValue_EntitySpawnDescriptions>,
+    var_name: &str,
+    ext_token: &str,
+) -> Option<EntityEncounter> {
+    let val = val_h.get(pools)?;
+    let mut phases: Vec<EncounterPhase<EntitySlot>> = Vec::new();
+    for group_h in &val.spawn_descriptions {
+        let Some(ent_group) = group_h.get(pools) else {
+            continue;
+        };
+        let mut phase = EncounterPhase {
+            name: ent_group.name.clone(),
+            slots: Vec::new(),
+        };
+        for options_h in &ent_group.entities {
+            let Some(options) = options_h.get(pools) else {
+                continue;
+            };
+            for option_h in &options.options {
+                let Some(option) = option_h.get(pools) else {
+                    continue;
+                };
+                phase.slots.push(EntitySlot {
+                    amount: option.amount,
+                    weight: option.weight,
+                    positive: TagBag::from_handle(pools, tree, option.tags.as_ref()),
+                    negative: TagBag::from_handle(pools, tree, option.negative_tags.as_ref()),
+                    markup: TagBag::from_handle(pools, tree, option.markup_tags.as_ref()),
+                    entity: TagBag::from_handle(pools, tree, option.entity_tags.as_ref()),
+                });
+            }
+        }
+        if !phase.slots.is_empty() {
+            phases.push(phase);
+        }
+    }
+    if phases.is_empty() {
+        return None;
+    }
+    Some(EntityEncounter {
+        variable_name: var_name.to_string(),
+        extended_text_token: ext_token.to_string(),
+        phases,
+    })
 }
 
 fn materialise_blueprint(

@@ -25,7 +25,7 @@
 
 use std::collections::{BTreeMap, BTreeSet, HashMap};
 
-use sc_contracts::{MissionIndex, EncounterGroup, EncounterSlot};
+use sc_contracts::{Encounter, MissionIndex, ShipSlot};
 use sc_extract::{AssetConfig, AssetData, AssetSource, Datacore, DatacoreConfig};
 
 /// One row in the analytics worklist — flatten contract → group →
@@ -51,7 +51,7 @@ struct Row<'a> {
     /// Wave name (`SpawnDescription_ShipGroup.Name`).
     wave_name: &'a str,
     /// Slot reference for raw access (initial_damage_settings, candidates, etc.).
-    slot: &'a EncounterSlot,
+    slot: &'a ShipSlot,
     // Precomputed classifications of the positive tag bag.
     factions: Vec<String>,
     cargo: Vec<String>,
@@ -76,9 +76,13 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut rows: Vec<Row<'_>> = Vec::new();
     for c in &index.contracts {
         let handler_kind = format!("{:?}", c.origin.kind);
-        for g in &c.encounters {
-            for w in &g.waves {
-                for slot in &w.slots {
+        // Phase 6 of v2 widened encounters to ship + npc + entity.
+        // The analytics here are ship-specific (cargo recovery vs
+        // salvage, power-state traits) so we filter to Encounter::Ships.
+        for enc in &c.encounters {
+            let Encounter::Ships(s) = enc else { continue };
+            for phase in &s.phases {
+                for slot in &phase.slots {
                     let to_owned = |it: &mut dyn Iterator<Item = &str>| -> Vec<String> {
                         it.map(String::from).collect()
                     };
@@ -92,9 +96,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                     rows.push(Row {
                         contract_debug_name: &c.debug_name,
                         handler_kind: handler_kind.clone(),
-                        var_name: &g.variable_name,
-                        ext_token: &g.extended_text_token,
-                        wave_name: &w.name,
+                        var_name: &s.variable_name,
+                        ext_token: &s.extended_text_token,
+                        wave_name: &phase.name,
                         slot,
                         factions,
                         cargo,
@@ -473,9 +477,3 @@ fn top_strings<'a, I: Iterator<Item = &'a str>>(it: I, n: usize) -> String {
         .join(", ")
 }
 
-// Suppress unused-import warning when run with cargo features that
-// don't expose every type we reference for diagnostics.
-#[allow(dead_code)]
-fn _force_imports(g: &EncounterGroup) -> usize {
-    g.waves.len()
-}

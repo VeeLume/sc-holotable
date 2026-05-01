@@ -265,18 +265,36 @@ fn print_expansion(e: &Mission) {
     }
     println!("      flags:    {}", flags.join(", "));
     if !e.encounters.is_empty() {
-        let wave_count: usize = e.encounters.iter().map(|g| g.waves.len()).sum();
-        let slot_count: usize = e
-            .encounters
-            .iter()
-            .flat_map(|g| g.waves.iter())
-            .map(|w| w.slots.len())
-            .sum();
+        let (wave_count, slot_count) = e.encounters.iter().fold((0usize, 0usize), |(w, s), enc| {
+            match enc {
+                sc_contracts::Encounter::Ships(x) => (
+                    w + x.phases.len(),
+                    s + x.phases.iter().map(|p| p.slots.len()).sum::<usize>(),
+                ),
+                sc_contracts::Encounter::Npcs(x) => (
+                    w + x.phases.len(),
+                    s + x.phases.iter().map(|p| p.slots.len()).sum::<usize>(),
+                ),
+                sc_contracts::Encounter::Entities(x) => (
+                    w + x.phases.len(),
+                    s + x.phases.iter().map(|p| p.slots.len()).sum::<usize>(),
+                ),
+                sc_contracts::Encounter::Unknown { .. } => (w, s),
+            }
+        });
+        // Sample ship names from any Ship-variant encounters.
         let sample_ships: Vec<String> = e
             .encounters
             .iter()
-            .flat_map(|g| g.waves.iter())
-            .flat_map(|w| w.slots.iter())
+            .filter_map(|enc| {
+                if let sc_contracts::Encounter::Ships(x) = enc {
+                    Some(x)
+                } else {
+                    None
+                }
+            })
+            .flat_map(|x| x.phases.iter())
+            .flat_map(|p| p.slots.iter())
             .flat_map(|s| s.candidates.iter())
             .map(|c| c.display_name.clone())
             .filter(|n| !n.is_empty())

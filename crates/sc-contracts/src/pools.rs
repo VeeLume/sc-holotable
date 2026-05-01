@@ -83,25 +83,48 @@ pub(crate) fn guid_set_eq(a: &[Guid], b: &[Guid]) -> bool {
     sa == sb
 }
 
-/// Conservative encounter-shape comparison: matches when the two have
-/// the same number of groups, and each group has the same
-/// `variable_name` + same wave count + same per-wave name + same per-
-/// wave slot count. Doesn't dive into per-slot tag comparison —
-/// real-world members that share a title but differ on encounter
-/// spawns are exactly the case the test wants to flag.
+/// Conservative encounter-shape comparison: matches when the two
+/// encounter lists have the same length, each pair shares the same
+/// kind (Ships / Npcs / Entities / Unknown) + same `variable_name` +
+/// same phase count + same per-phase name + same per-phase slot
+/// count. Doesn't dive into per-slot tag comparison — real-world
+/// members that share a title but differ on encounter spawns are
+/// exactly the case the test wants to flag.
 pub(crate) fn encounters_shape_eq(
-    a: &[crate::expand::EncounterGroup],
-    b: &[crate::expand::EncounterGroup],
+    a: &[crate::expand::Encounter],
+    b: &[crate::expand::Encounter],
 ) -> bool {
     if a.len() != b.len() {
         return false;
     }
-    a.iter().zip(b.iter()).all(|(x, y)| {
-        x.variable_name == y.variable_name
-            && x.waves.len() == y.waves.len()
-            && x.waves
-                .iter()
-                .zip(y.waves.iter())
-                .all(|(wx, wy)| wx.name == wy.name && wx.slots.len() == wy.slots.len())
+    a.iter().zip(b.iter()).all(|(x, y)| match (x, y) {
+        (crate::expand::Encounter::Ships(xs), crate::expand::Encounter::Ships(ys)) => {
+            xs.variable_name == ys.variable_name
+                && phases_eq(&xs.phases, &ys.phases, |s1, s2| s1.len() == s2.len())
+        }
+        (crate::expand::Encounter::Npcs(xs), crate::expand::Encounter::Npcs(ys)) => {
+            xs.variable_name == ys.variable_name
+                && phases_eq(&xs.phases, &ys.phases, |s1, s2| s1.len() == s2.len())
+        }
+        (crate::expand::Encounter::Entities(xs), crate::expand::Encounter::Entities(ys)) => {
+            xs.variable_name == ys.variable_name
+                && phases_eq(&xs.phases, &ys.phases, |s1, s2| s1.len() == s2.len())
+        }
+        (
+            crate::expand::Encounter::Unknown { variable_name: a, .. },
+            crate::expand::Encounter::Unknown { variable_name: b, .. },
+        ) => a == b,
+        _ => false,
     })
+}
+
+fn phases_eq<S>(
+    a: &[crate::expand::EncounterPhase<S>],
+    b: &[crate::expand::EncounterPhase<S>],
+    slots_eq: impl Fn(&[S], &[S]) -> bool,
+) -> bool {
+    a.len() == b.len()
+        && a.iter()
+            .zip(b.iter())
+            .all(|(x, y)| x.name == y.name && slots_eq(&x.slots, &y.slots))
 }

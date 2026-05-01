@@ -498,8 +498,8 @@ The refactor is large enough to warrant landing it in checkpoints. Each phase co
 3. **Phase 3 — Pool fields + divergence methods.** ✅ landed `4d74d8f`. Added `MissionPools` to ContractIndex with `title_key` / `description_key` HashMaps + opt-in divergence methods (`blueprint_mixed`, `rewards_uec_consistent`, …). Cluster API deprecated.
 4. **Phase 4 — Remove implicit merge from the pipeline.** ✅ landed `c636f51`. `ContractIndex.contracts` now holds `Vec<ExpandedContract>` directly (4,590 rows on SC 4.7 vs the 1,642 merged). `merge.rs`, `clusters.rs`, `Variation`, `title_siblings`, `find_bp_conflicts`, the cluster API and `tui/clusters.rs` all deleted.
 5. **Phase 5 — `Contract` → `Mission` rename.** ✅ landed `b271e82`. `ExpandedContract → Mission`, `ContractIndex → MissionIndex`. Three handler fields + `ContractOrigin` enum consolidated into `MissionOrigin` struct with `subcontract_of: Option<Guid>`.
-6. **Phase 6 — `Encounter` enum + NPC widening.** ⏳ pending. Convert ship-only `Vec<EncounterGroup>` into `Vec<Encounter>` with `Ships / Npcs / Entities / Unknown` variants. NPC extraction surfaces `mission_allied_marker` (the typed Allied/Hostile signal sc-langpatch §1's crimestat work needs); Entity extraction can land in the same phase or follow.
-7. **Phase 7 — `EncounterWave` → `EncounterPhase` rename.** ⏳ pending. Smallest cosmetic; saved for last so it's easy to revert if real-world consumer feedback prefers `Wave`.
+6. **Phase 6 — `Encounter` enum + NPC/Entity widening.** ✅ landed `9513c4d`. `Mission.encounters: Vec<Encounter>` with `Ships / Npcs / Entities / Unknown` variants and per-kind slot types (`ShipSlot`, `NpcSlot`, `EntitySlot`). NPC slots surface `mission_allied_marker` / `is_critical` / `faction_override` from `AutoSpawnSettings`. Live coverage SC 4.7: 4,575 ship + 523 npc + 131 entity + 0 unknown.
+7. **Phase 7 — `EncounterWave` → `EncounterPhase` rename.** ✅ landed `9513c4d` (rolled into Phase 6 since both touch the same code). Generic `EncounterPhase<S>` used uniformly across the three encounter kinds.
 
 Phases 1–4 reshape the data model; phase 5 is rename-only; phase 6 adds new data; phase 7 is naming.
 
