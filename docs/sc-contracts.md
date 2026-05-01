@@ -1,6 +1,8 @@
-# `sc-contracts` — design specification
+# `sc-contracts` — v1 design specification (historical)
 
-> Status: **proposal, awaiting review.** Depends on `docs/sc-extract.md` and `docs/codegen.md`.
+> ⚠️ **Superseded by [sc-contracts-v2.md](sc-contracts-v2.md).** This file documents the v1 design that shipped 2026-04-24 and was replaced by v2 over 2026-04-30 → 2026-05-01. Keys concepts that no longer exist in the implementation: `ContractIndex` (now `MissionIndex`), the implicit merge step (now explicit pools), `Variation` (now sibling Missions), `find_bp_conflicts` / `cluster_by_*` (replaced by `MissionPools` + divergence helpers), `EncounterGroup` / `EncounterWave` / `SpawnContext` (now `Encounter` enum + `EncounterPhase<S>` + `TagBag`).
+>
+> The crate's current consumer-facing API is documented in [sc-contracts-guide.md](sc-contracts-guide.md). This file is preserved as the design history that motivated v2.
 
 ## Purpose
 

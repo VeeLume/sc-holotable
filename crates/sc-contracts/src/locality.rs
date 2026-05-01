@@ -25,12 +25,13 @@
 //! # Why it matters
 //!
 //! Regional blueprint-reward conflicts (Adagio Pyro Region A/B vs
-//! C/D) are invisible on a contract's rewards alone — two contracts
+//! C/D) are invisible on a contract's rewards alone — two missions
 //! with the same title and description can ship different
 //! [`crate::BlueprintReward`]s. `mission_span` surfaces the region /
-//! system the contract covers, so [`crate::find_bp_conflicts`]
-//! consumers can show *why* the variants diverge and annotate the
-//! relevant region at display time.
+//! system the mission covers, so consumers iterating
+//! `index.pools.title_key` (and checking `index.blueprint_pool_consistent`)
+//! can show *why* the siblings diverge and annotate the relevant
+//! region at display time.
 
 use std::collections::{BTreeMap, BTreeSet, HashMap};
 

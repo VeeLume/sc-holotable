@@ -32,8 +32,11 @@ sc-holotable/
 │   ├── feature-gating-v2.md       feature-gating v2 — data-driven scoping + poly (implemented)
 │   ├── benchmarks.md              canonical benchmark numbers — re-run via tools/bench/bench.ps1
 │   ├── sc-ammo.md                 ammo crate spec (not implemented yet)
-│   ├── sc-weapons.md              weapons crate spec (not implemented yet)
-│   └── sc-contracts.md            contracts crate spec (proposal, awaiting review)
+│   ├── sc-weapons.md              weapons crate spec
+│   ├── sc-contracts.md            contracts v1 spec (historical — superseded by v2)
+│   ├── sc-contracts-v2.md         contracts v2 design + landing-phase log (current)
+│   ├── sc-contracts-guide.md      contracts consumer guide
+│   └── feature-request-*.md       feature requests filed by sc-langpatch
 ├── implementing/                  non-obvious implementation context (not code restated in prose)
 │   ├── sc-installs.md             port lineage + consumer switch-over plan
 │   └── sc-extract-2c.md           open caveats (tag/manufacturer field names, locale path)
@@ -42,11 +45,12 @@ sc-holotable/
 │   ├── sc-extract/                ✅ phase 2a + 2c + 2d done; API reworked 2026-04-13 (staged entry points)
 │   ├── sc-extract-generated/      ✅ workspace-internal — core/dormant/multi_feature + leaf feature dirs
 │   │   └── src/generated/         245 leaf feature dirs + core/ + dormant/ + multi_feature/
-│   ├── sc-contracts/              📦 stub only (lib.rs docs, no code)
-│   └── sc-weapons/                📦 stub only (lib.rs docs, no code)
+│   ├── sc-contracts/              ✅ v2 complete — Mission, MissionIndex, MissionPools, Encounter enum
+│   └── sc-weapons/                ✅ v1 + v2 phases 1-3 — ShipWeapon, FpsWeapon, sustain models
 └── tools/
     ├── sc-generator/              ✅ implemented — offline DCB schema → Rust codegen
     ├── sc-bench/                  ✅ runtime benchmark binary — exercises full sc-extract API
+    ├── sc-explorer/               ✅ interactive TUI (Pools / Contracts / Weapons tabs)
     └── bench/                     PowerShell benchmark script + README — writes to docs/benchmarks.md
 ```
 
@@ -292,8 +296,9 @@ See `status.md` for the always-current version. Brief snapshot:
 - ✅ **`sc-extract-generated`** — core/dormant/multi_feature split + 245 leaf feature dirs, typed enums, typed `LocaleKey`, poly enums with raw escape-hatch `Unknown`.
 - ✅ **`sc-generator`** — codegen + data-driven feature classification + Cargo.toml generation, typed enum/locale emission, ~3s run
 - 📦 **`sc-ammo`** — spec exists (`docs/sc-ammo.md`), crate not scaffolded
-- 📦 **`sc-weapons`** — spec exists (`docs/sc-weapons.md`), stub crate only
-- 📦 **`sc-contracts`** — stub crate only; design spec at `docs/sc-contracts.md`
+- ✅ **`sc-weapons`** — v1 + v2 phases 1-3 shipped. `ShipWeapon` / `FpsWeapon`, multi-mode fire actions, charge modifiers, unified heat/energy model, comparison-stats tiers. 24 unit tests.
+- ✅ **`sc-contracts`** — v2 complete (all 7 phases). `Mission` + `MissionIndex` + `MissionPools` + `Encounter` enum (Ships / NPCs / Entities / Unknown). 22 lib tests. Design history in `docs/sc-contracts.md` (v1, historical) + `docs/sc-contracts-v2.md` (v2, current); consumer guide in `docs/sc-contracts-guide.md`.
+- ✅ **`sc-explorer`** — interactive TUI binary at `tools/sc-explorer`. Per-crate `tui` modules in sc-contracts + sc-weapons own their domain views.
 
 ## Where to read more
 

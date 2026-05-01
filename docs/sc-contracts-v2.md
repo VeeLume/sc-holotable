@@ -1,8 +1,9 @@
 # sc-contracts v2 — Mission-centric API redesign
 
-> **Status:** proposal, not implemented. Builds on [`docs/sc-contracts.md`](sc-contracts.md) (v1 spec) and [`docs/sc-contracts-guide.md`](sc-contracts-guide.md) (current consumer API).
-> **Driver:** the encounter-data audit ([`role_investigation.rs`](../crates/sc-contracts/examples/role_investigation.rs), [`encounter_analytics.rs`](../crates/sc-contracts/examples/encounter_analytics.rs)) surfaced asymmetries and accretion in the v1 surface that incremental fixes can't clean up.
-> **Filed:** 2026-05-01.
+> **Status:** ✅ **implemented**, all 7 phases shipped 2026-04-30 → 2026-05-01. See [`docs/sc-contracts-guide.md`](sc-contracts-guide.md) for consumer usage; this file is the design history.
+> **Builds on:** [`docs/sc-contracts.md`](sc-contracts.md) (v1, historical).
+> **Drivers:** the encounter-data audit ([`role_investigation.rs`](../crates/sc-contracts/examples/role_investigation.rs), [`encounter_analytics.rs`](../crates/sc-contracts/examples/encounter_analytics.rs)) surfaced asymmetries and accretion in the v1 surface that incremental fixes couldn't clean up.
+> **Filed:** 2026-05-01. Phases 1-5 landed 2026-04-30; phases 6-7 + resolver fix landed 2026-05-01.
 
 ## Motivation
 
