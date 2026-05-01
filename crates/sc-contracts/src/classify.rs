@@ -40,11 +40,21 @@ pub struct SpawnContext {
     /// `UEE`, `Ninetails`) but the DCB lets a query name multiple.
     pub factions: Vec<String>,
     /// Cargo descriptors — descendants of `AI ▸ CargoManifest`
-    /// (`Full Cargo`, `Half Cargo`, `Scraps Cargo`, …).
+    /// (`Full Cargo`, `Half Cargo`, `Scraps Cargo`, `Bounty`,
+    /// `Salvage`, …). Note: `Bounty` and `Salvage` live in this
+    /// subtree despite their semantic role-marker meaning — that's
+    /// where CIG put them.
     pub cargo: Vec<String>,
-    /// Generic AI traits / role markers — descendants of `AI` that
-    /// didn't fit Faction / Cargo / Skill (e.g. `Target`, `Defenders`,
-    /// `Bounty`, `LowValue`, `HighValue`, `Mixed`).
+    /// Spawn identifiers — descendants of `AI ▸ Spawning ▸ Identifier`
+    /// (`Target`, `Defenders`, …). These are the canonical typed role
+    /// markers in 4.7 (3,073 + 318 references across all ship spawns).
+    /// Consumers building an `EncounterRole` classifier should read
+    /// these first; the `mission_variable_name` substring fallback
+    /// covers only what tags don't.
+    pub spawn_identifiers: Vec<String>,
+    /// Generic AI traits — descendants of `AI` that didn't fit
+    /// Faction / Cargo / Skill / Spawning (e.g. `LowValue`,
+    /// `MediumValue`, `HighValue`, `Mixed`, `Legal`, `Illegal`).
     pub ai_traits: Vec<String>,
     /// Tags from the `Missions` root — difficulty labels, mission-type
     /// markers, setup flags. Typical values: `VeryHard`, `Super`,
@@ -105,6 +115,7 @@ impl SpawnContext {
                 ("Ship", _) => {} // handled by ShipRegistry
                 ("AI", Some("Faction")) => ctx.factions.push(name.clone()),
                 ("AI", Some("CargoManifest")) => ctx.cargo.push(name.clone()),
+                ("AI", Some("Spawning")) => ctx.spawn_identifiers.push(name.clone()),
                 ("AI", _) => ctx.ai_traits.push(name.clone()),
                 ("Missions", _) => ctx.mission_tags.push(name.clone()),
                 _ => ctx.other.push(name.clone()),
@@ -114,6 +125,7 @@ impl SpawnContext {
         // Sort each vec so the output is deterministic across runs.
         ctx.factions.sort();
         ctx.cargo.sort();
+        ctx.spawn_identifiers.sort();
         ctx.ai_traits.sort();
         ctx.mission_tags.sort();
         ctx.directives.sort();
@@ -129,6 +141,7 @@ impl SpawnContext {
             && !self.ace_pilot
             && self.factions.is_empty()
             && self.cargo.is_empty()
+            && self.spawn_identifiers.is_empty()
             && self.ai_traits.is_empty()
             && self.mission_tags.is_empty()
             && self.directives.is_empty()

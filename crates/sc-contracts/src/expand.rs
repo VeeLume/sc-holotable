@@ -341,6 +341,11 @@ pub struct EncounterGroup {
     /// classifying the group's role (`BP_SpawnDescriptions`,
     /// `MissionTargets`, `Hostile_*`, `WaveShips`, …).
     pub variable_name: String,
+    /// `MissionProperty.extendedTextToken` — sibling field to
+    /// `mission_variable_name`. Almost always empty in 4.7 (96.3%);
+    /// when populated carries free-form values like `AmbushTarget`,
+    /// `Ship`, `CargoShip`. Forwarded raw for consumer inspection.
+    pub extended_text_token: String,
     /// Named sub-waves inside the group. For a bounty mission these
     /// are `Wave1 / Wave2 / Wave3`; for a salvage target they might
     /// be `SalvageableShip`, etc.
@@ -376,6 +381,27 @@ pub struct EncounterSlot {
     /// Non-ship tags classified by [`SpawnContext`] — AI skill,
     /// faction, cargo descriptor, mission-role markers, etc.
     pub context: SpawnContext,
+    /// `SpawnDescription_Ship.initialDamageSettings` — when set, the
+    /// ship spawns pre-damaged. Strong typed signal in `4.7` for two
+    /// distinct mission types: salvage missions (scrape / fracture
+    /// the ship itself) and cargo-recovery missions (collect cargo
+    /// from a damaged ship). Mission type disambiguates the role —
+    /// the flag itself doesn't. 4% of ship-spawn options carry it.
+    /// Forwarded as the raw record GUID; resolution to a damage
+    /// profile is consumer-side.
+    pub initial_damage_settings: Option<Guid>,
+    /// `SpawnDescription_Ship.markupTags` resolved to tag names. UI
+    /// markup hints (e.g. `Medium` difficulty marker). Populated on
+    /// 1.7% of ship-spawn options in 4.7.
+    pub markup_tag_names: Vec<String>,
+    /// `SpawnDescription_Ship.entityTags` resolved to tag names.
+    /// Populated on 2.9% of options in 4.7. Forwarded for consumer
+    /// inspection; semantics not yet pinned down.
+    pub entity_tag_names: Vec<String>,
+    /// `SpawnDescription_Ship.includeLocationAISpawnTags` — when true
+    /// the engine merges in the spawn location's AI-spawn tags at
+    /// runtime, so static tag analysis is incomplete for this slot.
+    pub include_location_ai_spawn_tags: bool,
 }
 
 /// Materialised blueprint reward for a single contract.
@@ -1558,6 +1584,7 @@ fn collect_property_encounters(
 
         let mut group = EncounterGroup {
             variable_name: prop.mission_variable_name.clone(),
+            extended_text_token: prop.extended_text_token.clone(),
             waves: Vec::new(),
         };
         for group_h in &val.spawn_descriptions {
@@ -1580,11 +1607,19 @@ fn collect_property_encounters(
                     let neg = tag_list_guids(pools, option.negative_tags.as_ref());
                     let candidates = ships.resolve_spawn(&pos, &neg);
                     let context = SpawnContext::classify(tree, &pos);
+                    let markup_tag_names =
+                        tag_names(pools, tree, option.markup_tags.as_ref());
+                    let entity_tag_names =
+                        tag_names(pools, tree, option.entity_tags.as_ref());
                     wave.slots.push(EncounterSlot {
                         concurrent: option.concurrent_amount,
                         weight: option.weight,
                         candidates,
                         context,
+                        initial_damage_settings: option.initial_damage_settings,
+                        markup_tag_names,
+                        entity_tag_names,
+                        include_location_ai_spawn_tags: option.include_location_aispawn_tags,
                     });
                 }
             }
@@ -1604,6 +1639,29 @@ fn tag_list_guids(pools: &DataPools, h: Option<&Handle<TagList>>) -> HashSet<Gui
         return HashSet::new();
     };
     list.tags.iter().copied().collect()
+}
+
+/// Resolve a `TagList` handle to a sorted, de-duplicated list of tag
+/// names via the [`TagTree`]. Tags whose GUID isn't in the tree are
+/// dropped silently. Used for surfacing `markup_tags` / `entity_tags`
+/// (typically tiny vecs) on `EncounterSlot`.
+fn tag_names(
+    pools: &DataPools,
+    tree: &sc_extract::TagTree,
+    h: Option<&Handle<TagList>>,
+) -> Vec<String> {
+    let Some(h) = h else { return Vec::new() };
+    let Some(list) = h.get(pools) else {
+        return Vec::new();
+    };
+    let mut names: Vec<String> = list
+        .tags
+        .iter()
+        .filter_map(|g| tree.get(g).map(|n| n.name.clone()))
+        .collect();
+    names.sort();
+    names.dedup();
+    names
 }
 
 fn materialise_blueprint(
