@@ -22,7 +22,7 @@ use std::collections::HashMap;
 
 use sc_extract::{Guid, LocaleKey};
 
-use crate::merge::Contract;
+use crate::expand::ExpandedContract;
 
 /// Precomputed groupings keyed off the most common consumer axes.
 ///
@@ -42,9 +42,9 @@ pub struct MissionPools {
 }
 
 impl MissionPools {
-    /// Build all grouping axes from the merged contract list. O(n) per
-    /// axis. ~14k HashMap inserts on SC 4.7 LIVE; cheap.
-    pub fn build(contracts: &[Contract]) -> Self {
+    /// Build all grouping axes from the contract list. O(n) per axis.
+    /// Cheap: ~4,590 expansion rows × 2 keys yields ~9k HashMap inserts.
+    pub fn build(contracts: &[ExpandedContract]) -> Self {
         let mut pools = Self::default();
         for c in contracts {
             if let Some(key) = c.title_key.as_ref() {

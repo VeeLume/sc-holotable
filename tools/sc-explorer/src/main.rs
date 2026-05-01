@@ -23,14 +23,13 @@ use std::time::Instant;
 
 use anyhow::{Context as _, Result};
 use sc_contracts::{
-    AssetConfig, AssetData, AssetSource, ContractIndex, Datacore, DatacoreConfig, LocaleMap,
+    AssetConfig, AssetData, AssetSource, ContractIndex, Datacore, DatacoreConfig,
 };
 use slt::{Border, Color, Context, KeyCode, KeyModifiers, RunConfig, ScrollState, TabsState, Theme};
 
 const TAB_POOLS: usize = 0;
 const TAB_CONTRACTS: usize = 1;
-const TAB_CLUSTERS: usize = 2;
-const TAB_WEAPONS: usize = 3;
+const TAB_WEAPONS: usize = 2;
 
 fn main() -> Result<()> {
     tracing_subscriber::fmt()
@@ -74,17 +73,14 @@ fn main() -> Result<()> {
 
     let mut app = AppState {
         index,
-        locale: asset_data.locale,
         weapon_set,
         pool_checks,
         tabs: TabsState::new(vec![
             "Pools".to_string(),
             "Contracts".to_string(),
-            "Clusters".to_string(),
             "Weapons".to_string(),
         ]),
         contracts_state: sc_contracts::tui::ExplorerState::new(),
-        clusters_state: sc_contracts::tui::clusters::ClustersState::new(),
         weapons_state: sc_weapons::tui::ExplorerState::new(),
         pools_scroll: ScrollState::new(),
         dark_mode: true,
@@ -106,12 +102,10 @@ fn main() -> Result<()> {
 
 struct AppState {
     index: ContractIndex,
-    locale: LocaleMap,
     weapon_set: sc_weapons::tui::WeaponSet,
     pool_checks: Vec<PoolRow>,
     tabs: TabsState,
     contracts_state: sc_contracts::tui::ExplorerState,
-    clusters_state: sc_contracts::tui::clusters::ClustersState,
     weapons_state: sc_weapons::tui::ExplorerState,
     pools_scroll: ScrollState,
     dark_mode: bool,
@@ -196,12 +190,6 @@ fn draw(ui: &mut Context, app: &mut AppState) {
                     ui,
                     &mut app.contracts_state,
                     &app.index,
-                ),
-                TAB_CLUSTERS => sc_contracts::tui::clusters::render(
-                    ui,
-                    &mut app.clusters_state,
-                    &app.index,
-                    &app.locale,
                 ),
                 TAB_WEAPONS => sc_weapons::tui::render(
                     ui,

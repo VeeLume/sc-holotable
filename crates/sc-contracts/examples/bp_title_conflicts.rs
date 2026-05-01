@@ -1,11 +1,9 @@
-//! Find mission titles where siblings disagree on blueprint rewards.
+//! Find mission titles where pool members disagree on blueprint rewards.
 //!
-//! Uses the top-level [`ContractIndex`] + [`find_bp_conflicts`] —
-//! the canonical pattern for sc-langpatch-style annotation. For
-//! every title where siblings ship different blueprint pools,
-//! renders the pools + the resolved `mission_span` so the reason
-//! for the fork (inner Pyro vs outer Pyro, Stanton vs Pyro, etc.)
-//! is visible on the row.
+//! Phase 4 of the v2 redesign: replaces the old `find_bp_conflicts`
+//! helper with the precomputed [`MissionPools`] + divergence helpers
+//! on [`ContractIndex`]. The same answer falls out of one filter over
+//! `index.pools.title_key`.
 //!
 //! Run:
 //! ```bash
@@ -13,8 +11,10 @@
 //! cargo run -p sc-contracts --release --example bp_title_conflicts -- --pyro-only
 //! ```
 
-use sc_contracts::{Contract, ContractIndex, LocalityRegistry, find_bp_conflicts};
-use sc_extract::{AssetConfig, AssetData, AssetSource, Datacore, DatacoreConfig};
+use std::collections::HashSet;
+
+use sc_contracts::{ContractIndex, ExpandedContract, LocalityRegistry};
+use sc_extract::{AssetConfig, AssetData, AssetSource, Datacore, DatacoreConfig, Guid};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     tracing_subscriber::fmt()
@@ -39,25 +39,43 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let datacore = Datacore::parse(&assets, &asset_data, &DatacoreConfig::standard())?;
 
     let index = ContractIndex::build(&datacore, &asset_data.locale);
-    println!("ContractIndex: {} merged contracts\n", index.len());
+    println!("ContractIndex: {} contract expansions\n", index.len());
 
-    let mut conflicts = find_bp_conflicts(&index.contracts);
+    // Collect title-key pools where blueprint rewards diverge across
+    // members. The two divergence axes:
+    //   blueprint_mixed              some have BP, others don't
+    //   !blueprint_pool_consistent   different BP pool GUIDs across members
+    let mut groups: Vec<(&str, &[Guid])> = index
+        .pools
+        .title_key
+        .iter()
+        .filter(|(_, ids)| {
+            ids.len() > 1
+                && (index.blueprint_mixed(ids) || !index.blueprint_pool_consistent(ids))
+        })
+        .map(|(key, ids)| (key.as_str(), ids.as_slice()))
+        .collect();
+
     if pyro_only {
-        conflicts.retain(|g| {
-            g.members.iter().any(|m| {
-                let Some(c) = index.get(m.contract_id) else {
-                    return false;
-                };
+        groups.retain(|(_, ids)| {
+            index.iter_pool(ids).any(|c| {
                 c.debug_name.to_lowercase().contains("pyro")
                     || c.handler_debug_name.to_lowercase().contains("pyro")
             })
         });
     }
+    // Deterministic order: most-divergent first (by member count), then alpha.
+    groups.sort_by(|a, b| b.1.len().cmp(&a.1.len()).then_with(|| a.0.cmp(b.0)));
+
+    let mixed_count = groups
+        .iter()
+        .filter(|(_, ids)| index.blueprint_mixed(ids))
+        .count();
 
     println!("═══════════════════════════════════════════════════════════");
     println!(
-        "  {} blueprint conflict group(s){}",
-        conflicts.len(),
+        "  {} title-key pool(s) with blueprint divergence{}",
+        groups.len(),
         if pyro_only {
             " (Pyro-touching only)"
         } else {
@@ -65,39 +83,42 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         }
     );
     println!(
-        "  {} with mixed BP presence (some variants have BP, some don't)",
-        conflicts.iter().filter(|g| g.has_mixed_presence).count()
+        "  {} with mixed BP presence (some members have BP, some don't)",
+        mixed_count
     );
     println!("═══════════════════════════════════════════════════════════");
 
-    for (idx, group) in conflicts.iter().take(15).enumerate() {
+    for (idx, (_key, ids)) in groups.iter().take(15).enumerate() {
         println!();
-        println!("── #{} title='{}'", idx + 1, truncate(&group.title, 70));
-        if let Some(d) = &group.description {
+        let head = index.get(ids[0]).expect("pool member id resolves");
+        let title = head.title.as_deref().unwrap_or(&head.debug_name);
+        println!("── #{} title='{}'", idx + 1, truncate(title, 70));
+        if let Some(d) = head.description.as_deref() {
             println!("   desc='{}'", truncate(d, 70));
         }
+        let distinct_pools: HashSet<Guid> = index
+            .iter_pool(ids)
+            .filter_map(|c| c.rewards.blueprint.as_ref().map(|bp| bp.pool_guid))
+            .collect();
+        let mixed = if index.blueprint_mixed(ids) {
+            " — MIXED PRESENCE"
+        } else {
+            ""
+        };
         println!(
-            "   {} siblings across {} distinct BP pool(s){}",
-            group.members.len(),
-            group.distinct_pool_count,
-            if group.has_mixed_presence {
-                " — MIXED PRESENCE"
-            } else {
-                ""
-            }
+            "   {} members across {} distinct BP pool(s){mixed}",
+            ids.len(),
+            distinct_pools.len(),
         );
-        for m in &group.members {
-            let Some(c) = index.get(m.contract_id) else {
-                continue;
-            };
-            let bp_label = match (&m.pool_name, m.item_count) {
-                (Some(pool), n) if n > 0 => {
+        for c in index.iter_pool(ids) {
+            let bp_label = match c.rewards.blueprint.as_ref() {
+                Some(bp) if !bp.items.is_empty() => {
                     let sample = sample_items(c);
-                    format!("  BP pool='{pool}' ({n} items): {sample}")
+                    format!("  BP pool='{}' ({} items): {sample}", bp.pool_name, bp.items.len())
                 }
                 _ => "  (no blueprint)".to_string(),
             };
-            println!("      [{:?}] {}", m.handler_kind, m.debug_name);
+            println!("      [{:?}] {}", c.handler_kind, c.debug_name);
             println!("        {bp_label}");
             let span = render_span(c, &index.localities);
             if !span.is_empty() {
@@ -106,12 +127,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         }
     }
 
-    if conflicts.len() > 15 {
+    if groups.len() > 15 {
         println!();
-        println!(
-            "  … and {} more groups (limited to 15)",
-            conflicts.len() - 15
-        );
+        println!("  … and {} more groups (limited to 15)", groups.len() - 15);
     }
 
     Ok(())
@@ -120,7 +138,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 /// Render the contract's mission_span — each locality resolved to
 /// its `region_label` (e.g., `"Pyro: Bloom, Rat's Nest"`), prefixed
 /// with the locality's stable record name (e.g., `"RegionB"`).
-fn render_span(c: &Contract, localities: &LocalityRegistry) -> String {
+fn render_span(c: &ExpandedContract, localities: &LocalityRegistry) -> String {
     c.mission_span
         .iter()
         .filter_map(|g| localities.get(g))
@@ -141,7 +159,7 @@ fn render_span(c: &Contract, localities: &LocalityRegistry) -> String {
 }
 
 /// First 4 BP item display names for an at-a-glance preview.
-fn sample_items(c: &Contract) -> String {
+fn sample_items(c: &ExpandedContract) -> String {
     let Some(bp) = &c.rewards.blueprint else {
         return "—".into();
     };

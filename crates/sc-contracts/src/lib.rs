@@ -1,14 +1,17 @@
 //! Star Citizen contract / mission data.
 //!
 //! Star Citizen ships roughly 2,400 contract records in the DCB, produced
-//! by a few hundred contract generators. After generator expansion, sub-
-//! contract tier enumeration, and similarity merging those collapse to
-//! ~1,497 effective contracts (the SCMDB catalog size).
+//! by a few hundred contract generators. Generator expansion + sub-contract
+//! tier enumeration produce ~4,590 contract rows on SC 4.7 LIVE. v2 of
+//! this crate exposes those rows directly; "what counts as the same
+//! mission" is a consumer-side pooling decision, not a baked-in
+//! equivalence rule.
 //!
 //! This crate walks the generator graph, resolves every GUID the contracts
 //! touch (tags, ship entities, blueprint pools, reward currencies), and
-//! emits a single [`ContractIndex`] holding the merged [`Contract`] list
-//! plus the registries used to build it.
+//! emits a single [`ContractIndex`] holding the contract list, the
+//! registries used to build it, and a precomputed [`MissionPools`]
+//! grouping by title key / description key.
 //!
 //! # Pipeline
 //!
@@ -17,17 +20,15 @@
 //!     → ingest  (tag / ship / blueprint / currency registries)
 //!     → expand  (generator × handler × contract × sub_contract)
 //!     → resolve (GUIDs → typed values via registries)
-//!     → merge   (similarity-group expansions into Contract entries)
-//!     → ContractIndex
+//!     → ContractIndex (with precomputed pools)
 //! ```
 //!
 //! # Scope
 //!
-//! The crate owns the generator-expansion → merged-contract pipeline plus
-//! the tag and ship-entity registries it needs along the way. The
-//! registries live here because sc-contracts is currently the only
-//! consumer that needs them; if a second crate ever does, they graduate
-//! to a shared helper.
+//! The crate owns the generator-expansion pipeline plus the tag and
+//! ship-entity registries it needs along the way. Registries live here
+//! because sc-contracts is currently the only consumer that needs them;
+//! a second consumer would graduate them into a shared helper.
 //!
 //! Escape hatch for anything the model does not cover: consumers with a
 //! `Datacore` reach through `datacore.db()` (raw svarog) or
@@ -37,21 +38,15 @@
 //! # Driving consumer
 //!
 //! `sc-langpatch` is the primary driver — its contract-annotation work
-//! motivated the crate. The full design is at `docs/sc-contracts.md`.
-//!
-//! # Status
-//!
-//! Design approved, implementation in progress. See `docs/sc-contracts.md`
-//! for the spec, `status.md` for the current implementation state.
+//! motivated the crate. The full design is at `docs/sc-contracts.md`;
+//! `docs/sc-contracts-v2.md` documents the in-flight v2 redesign.
 
 mod blueprints;
 mod classify;
-mod clusters;
 mod currency;
 mod expand;
 mod index;
 mod locality;
-mod merge;
 mod pools;
 mod ships;
 mod titles;
@@ -61,25 +56,14 @@ pub mod tui;
 
 pub use blueprints::{BlueprintItem, BlueprintPool, BlueprintPoolRegistry};
 pub use classify::{TagBag, parse_ai_skill};
-// Cluster API kept while consumers migrate to MissionPools + divergence
-// methods on ContractIndex. The deprecation marker fires at consumer
-// call sites; the re-export itself doesn't need to warn the workspace.
-#[allow(deprecated)]
-pub use clusters::{
-    ClusterDivergence, KeyCluster, cluster_by_description_key, cluster_by_title_key,
-};
 pub use currency::{CurrencyInfo, RewardCurrencyCatalog};
 pub use expand::{
     Availability, BlueprintReward, ContractOrigin, Cooldowns, DurationRange, EncounterGroup,
-    EncounterSlot, EncounterWave, ExpandedContract, HandlerKind, ItemReward, OtherReward,
-    PrereqView, RepReward, RewardAmount, ScripReward, expand_all,
+    EncounterSlot, EncounterWave, ExpandedContract, HandlerKind, ItemReward, MissionRewards,
+    OtherReward, PrereqView, RepReward, RewardAmount, ScripReward, expand_all,
 };
 pub use index::ContractIndex;
 pub use locality::{LocalityRegistry, LocalityView, LocationRef, LocationRegistry, SystemKey};
-pub use merge::{
-    BpConflictGroup, BpConflictMember, Contract, MergeStats, Variation, find_bp_conflicts,
-    merge_expansions, merge_stats,
-};
 pub use pools::MissionPools;
 pub use ships::{ShipCandidate, ShipEntity, ShipRegistry};
 pub use titles::{ContractAnchor, ResolvedText, resolve_contract_text};

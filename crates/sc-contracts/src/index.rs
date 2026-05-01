@@ -27,9 +27,8 @@ use sc_extract::{Datacore, Guid, LocaleMap, TagTree};
 
 use crate::blueprints::BlueprintPoolRegistry;
 use crate::currency::RewardCurrencyCatalog;
-use crate::expand::expand_all;
+use crate::expand::{ExpandedContract, expand_all};
 use crate::locality::{LocalityRegistry, LocationRegistry};
-use crate::merge::{Contract, merge_expansions};
 use crate::pools::{self, MissionPools};
 use crate::ships::ShipRegistry;
 
@@ -47,11 +46,13 @@ use crate::ships::ShipRegistry;
 /// registries, it can drop the rest after build.
 #[derive(Debug, Clone)]
 pub struct ContractIndex {
-    /// Merged contracts, post-similarity-collapse. Stable order:
-    /// first-seen among expansions (which iterate generators by GUID
-    /// map order, handlers / contracts / sub-contracts in
-    /// declaration order).
-    pub contracts: Vec<Contract>,
+    /// Every contract expansion as a flat list — one entry per
+    /// `(generator, handler, contract, optional sub_contract)` tuple.
+    /// Phase 4 of the v2 redesign removed the implicit merge step;
+    /// each `ExpandedContract` now has a unique GUID with no
+    /// canonical-id ambiguity. Use [`Self::pools`] for grouping by
+    /// title key, description key, etc.
+    pub contracts: Vec<ExpandedContract>,
 
     /// Ship entity lookup + spawn-query resolver. Holds every
     /// `EntityClassDefinition` reachable from a contract spawn query
@@ -112,7 +113,7 @@ impl ContractIndex {
         let locations = LocationRegistry::build(datacore, locale);
         let localities = LocalityRegistry::build(datacore, &locations);
 
-        let expansions = expand_all(
+        let contracts = expand_all(
             datacore,
             locale,
             &ships,
@@ -120,7 +121,6 @@ impl ContractIndex {
             &currency,
             &localities,
         );
-        let contracts = merge_expansions(expansions);
 
         let by_id = contracts
             .iter()
@@ -144,35 +144,19 @@ impl ContractIndex {
         }
     }
 
-    /// Look up a contract by its canonical GUID. Returns `None` if
-    /// the GUID isn't a canonical merged-contract id — note that a
-    /// `Contract.id` is the parent contract's GUID, not any
-    /// individual sub-contract's. Sub-contract lookup goes through
-    /// [`Self::get_by_variation`].
-    pub fn get(&self, id: Guid) -> Option<&Contract> {
+    /// Look up a contract by GUID. Each `ExpandedContract` has a
+    /// unique GUID (sub-contracts and their parents are sibling rows
+    /// after the merge step's removal in v2 phase 4).
+    pub fn get(&self, id: Guid) -> Option<&ExpandedContract> {
         self.by_id.get(&id).map(|&i| &self.contracts[i])
     }
 
-    /// Look up a contract by any variation's `expansion_id` (i.e.,
-    /// by the parent Contract's GUID *or* any sub-contract GUID).
-    /// Slower than [`Self::get`] — O(n_variations). Useful when
-    /// consumers hold a raw DCB GUID without knowing whether it's a
-    /// parent or a sub-contract.
-    pub fn get_by_variation(&self, expansion_id: Guid) -> Option<&Contract> {
-        if let Some(c) = self.get(expansion_id) {
-            return Some(c);
-        }
-        self.contracts
-            .iter()
-            .find(|c| c.variations.iter().any(|v| v.expansion_id == expansion_id))
-    }
-
     /// Convenience — iterate every contract in index order.
-    pub fn iter(&self) -> impl Iterator<Item = &Contract> + '_ {
+    pub fn iter(&self) -> impl Iterator<Item = &ExpandedContract> + '_ {
         self.contracts.iter()
     }
 
-    /// Number of merged contracts in the index.
+    /// Number of contract expansions in the index.
     pub fn len(&self) -> usize {
         self.contracts.len()
     }
@@ -184,7 +168,10 @@ impl ContractIndex {
     /// Iterate the contracts whose ids are in `ids`, in order. Skips
     /// ids that don't resolve. Use with [`MissionPools`] field values:
     /// `index.iter_pool(ids).filter(...)`.
-    pub fn iter_pool<'a>(&'a self, ids: &'a [Guid]) -> impl Iterator<Item = &'a Contract> + 'a {
+    pub fn iter_pool<'a>(
+        &'a self,
+        ids: &'a [Guid],
+    ) -> impl Iterator<Item = &'a ExpandedContract> + 'a {
         ids.iter().filter_map(|id| self.get(*id))
     }
 
@@ -328,7 +315,6 @@ mod tests {
         assert_eq!(idx.len(), 0);
         assert!(idx.is_empty());
         assert!(idx.get(Guid::default()).is_none());
-        assert!(idx.get_by_variation(Guid::default()).is_none());
         assert_eq!(idx.iter().count(), 0);
     }
 }

@@ -3,24 +3,18 @@
 //! Gated behind the `tui` feature. The workspace binary
 //! `tools/sc-explorer` composes this module with `sc_weapons::tui` plus
 //! its own pool-census tab. Each domain crate owns its own view so when
-//! `Contract` grows a field, the rendering updates next to it.
+//! `ExpandedContract` grows a field, the rendering updates next to it.
 //!
 //! The crate-level [`render`]/[`ExplorerState`] below is the contracts
-//! list-detail view; [`clusters`] adds the locale-key cluster pane
-//! that groups contracts by `title_key` / `description_key` and
-//! surfaces per-axis divergence, informing patcher tools where tag /
-//! description annotations are safe vs misleading.
-
-pub mod clusters;
-
-use std::collections::HashMap;
+//! list-detail view; the [`clusters`] sub-module renders pool-keyed
+//! browsing (title key / description key) using the precomputed
+//! [`crate::MissionPools`] + divergence helpers on [`ContractIndex`].
 
 use sc_extract::{Datacore, TagTree};
 use slt::{Border, Color, Context, KeyCode, ListState, ScrollState, TextInputState};
 
-use crate::expand::{EncounterSlot, RewardAmount};
+use crate::expand::{EncounterSlot, ExpandedContract, RewardAmount};
 use crate::index::ContractIndex;
-use crate::merge::Contract;
 
 /// Persistent state for the contracts explorer view.
 ///
@@ -176,9 +170,8 @@ pub fn render(ui: &mut Context, state: &mut ExplorerState, index: &ContractIndex
                     Some(idx) => render_detail(
                         ui,
                         &mut state.detail_scroll,
-                        &index.contracts,
+                        index,
                         idx,
-                        &index.tag_tree,
                     ),
                     None => {
                         ui.text("(nothing selected)").dim();
@@ -188,7 +181,7 @@ pub fn render(ui: &mut Context, state: &mut ExplorerState, index: &ContractIndex
     });
 }
 
-fn matches_filter(c: &Contract, filter: &str) -> bool {
+fn matches_filter(c: &ExpandedContract, filter: &str) -> bool {
     if filter.is_empty() {
         return true;
     }
@@ -200,13 +193,9 @@ fn matches_filter(c: &Contract, filter: &str) -> bool {
     c.debug_name.to_lowercase().contains(filter)
 }
 
-fn format_list_item(c: &Contract) -> String {
+fn format_list_item(c: &ExpandedContract) -> String {
     let title = c.title.as_deref().unwrap_or(&c.debug_name);
-    let marker = match (c.title_siblings.is_empty(), c.has_runtime_substitution) {
-        (false, _) => '⋈', // sibling cluster
-        (true, true) => '~', // runtime substitution
-        (true, false) => ' ',
-    };
+    let marker = if c.has_runtime_substitution { '~' } else { ' ' };
     let bp = if c.rewards.blueprint.is_some() { "[BP]" } else { "    " };
     format!("{marker} {bp} {title}")
 }
@@ -214,14 +203,11 @@ fn format_list_item(c: &Contract) -> String {
 fn render_detail(
     ui: &mut Context,
     scroll: &mut ScrollState,
-    contracts: &[Contract],
+    index: &ContractIndex,
     idx: usize,
-    tree: &TagTree,
 ) {
-    let c = &contracts[idx];
-
-    // Build a sibling-by-id map once so we don't index_of every render.
-    let by_id: HashMap<_, _> = contracts.iter().map(|c| (c.id, c)).collect();
+    let c = &index.contracts[idx];
+    let tree = &index.tag_tree;
 
     let _ = ui.scrollable(scroll).grow(1).col(|ui| {
         // Title block
@@ -264,43 +250,56 @@ fn render_detail(
             "illegal_flag",
             if c.illegal_flag { "yes" } else { "no" },
         );
+        kv(ui, "origin", &format!("{:?}", c.origin));
         ui.separator();
 
-        // Variations
-        let _ = ui.row(|ui| {
-            ui.text("Variations").bold();
-            ui.spacer();
-            ui.text(format!("{}", c.variations.len())).dim();
-        });
-        for v in &c.variations {
-            ui.text(format!(
-                "  • {:?}  extras: {}",
-                v.origin,
-                v.extra_prerequisites.len()
-            ))
-            .dim();
-        }
-        ui.separator();
-
-        // Sibling cluster — the locale-key headline view
-        if !c.title_siblings.is_empty() {
+        // Title-key pool sibling preview — surface other rows sharing
+        // this contract's title key. Phase 4 replaces v1's
+        // title_siblings field with the precomputed pool fields.
+        if let Some(key) = c.title_key.as_ref()
+            && let Some(ids) = index.pools.title_key.get(key)
+            && ids.len() > 1
+        {
             let _ = ui.row(|ui| {
-                ui.text("Title siblings").bold();
+                ui.text("Title-key pool").bold();
                 ui.spacer();
-                ui.text(format!("{}", c.title_siblings.len())).dim();
+                ui.text(format!("{} member(s)", ids.len())).dim();
             });
-            ui.text("(other contracts sharing this title/description)")
-                .dim();
-            for sib_id in &c.title_siblings {
-                if let Some(sib) = by_id.get(sib_id) {
+            // Flag actionable divergence at a glance.
+            let mut flags = Vec::new();
+            if index.blueprint_mixed(ids) {
+                flags.push("blueprint_mixed");
+            }
+            if !index.rewards_uec_consistent(ids) {
+                flags.push("uec");
+            }
+            if !index.rewards_scrip_consistent(ids) {
+                flags.push("scrip");
+            }
+            if !index.rewards_rep_consistent(ids) {
+                flags.push("rep");
+            }
+            if !index.blueprint_pool_consistent(ids) {
+                flags.push("bp_pool");
+            }
+            if !flags.is_empty() {
+                ui.text(format!("  divergence: {}", flags.join(", ")))
+                    .fg(Color::Yellow);
+            }
+            for &sib_id in ids.iter().take(8) {
+                if sib_id == c.id {
+                    continue;
+                }
+                if let Some(sib) = index.get(sib_id) {
                     let bp = if sib.rewards.blueprint.is_some() { "[BP] " } else { "" };
                     ui.text(format!(
                         "  • {bp}{}  ({:?})",
                         sib.debug_name, sib.handler_kind
                     ));
-                } else {
-                    ui.text(format!("  • <missing> {sib_id:?}")).fg(Color::Red);
                 }
+            }
+            if ids.len() > 8 {
+                ui.text(format!("  … (+{} more)", ids.len() - 8)).dim();
             }
             ui.separator();
         }
