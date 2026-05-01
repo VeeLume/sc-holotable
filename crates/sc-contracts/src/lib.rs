@@ -70,3 +70,22 @@ pub use merge::{
 };
 pub use ships::{ShipCandidate, ShipEntity, ShipRegistry};
 pub use titles::{ContractAnchor, ResolvedText, resolve_contract_text};
+
+// ── Narrow-consumer re-exports ──────────────────────────────────────────────
+//
+// Lets a consumer depend on `sc-contracts` alone and still construct the
+// arguments `ContractIndex::build` takes, without adding a direct
+// `sc-extract` dep. Type identity is preserved across re-exports because
+// every aggregation crate pulls the same `sc-extract` rev.
+pub use sc_extract::{
+    AssetConfig, AssetData, AssetSource, Datacore, DatacoreConfig, ExtractSnapshot, Guid,
+    LocaleKey, LocaleMap, SnapshotMeta,
+};
+
+/// Escape hatch for raw DCB queries when the typed model doesn't cover
+/// a case. Reach for these only as a last resort; if you find yourself
+/// here often, file a feature request so the model can grow to cover it.
+pub mod raw {
+    pub use sc_extract::svarog_datacore;
+    pub use sc_extract::{DataCoreDatabase, Instance, Value};
+}

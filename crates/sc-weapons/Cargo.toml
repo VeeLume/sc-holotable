@@ -5,7 +5,20 @@ edition.workspace = true
 rust-version.workspace = true
 
 [dependencies]
-sc-extract = { workspace = true, features = ["entities-scitem-weapons", "ammoparams"] }
+# Every sc-extract feature this crate's code actually reaches. Update
+# whenever a new walk lands. The aggregation crate owns its feature
+# closure so narrow consumers can depend on `sc-weapons` alone and
+# get fully-populated pools without manually enabling features.
+#
+#   entities-scitem-weapons  Ship + FPS weapon EntityClassDefinitions
+#   ammoparams               AmmoParams (damage / projectile / penetration)
+#   entityclassdefinition    EntityClassDefinition pool. Without this,
+#                            ECD records are not decoded at parse time,
+#                            iter_ship_weapons / iter_fps_weapons return
+#                            empty, and the weapon-data accessors that
+#                            chain through entity_class_definition
+#                            silently see nothing.
+sc-extract = { workspace = true, features = ["entities-scitem-weapons", "ammoparams", "entityclassdefinition"] }
 svarog-common = { workspace = true }
 thiserror = { workspace = true }
 tracing = { workspace = true }

@@ -5,7 +5,20 @@ edition.workspace = true
 rust-version.workspace = true
 
 [dependencies]
-sc-extract = { workspace = true, features = ["contracts", "servicebeacon"] }
+# Every sc-extract feature this crate's code actually reaches. Update
+# whenever a new walk lands. The aggregation crate owns its feature
+# closure so narrow consumers can depend on `sc-contracts` alone and
+# get fully-populated pools without manually enabling features.
+#
+#   contracts            ContractGenerator / ContractGeneratorHandler*
+#   servicebeacon        StarMapObject (LocationRegistry)
+#   entityclassdefinition  EntityClassDefinition (ShipRegistry,
+#                          RewardCurrencyCatalog, BlueprintPoolRegistry
+#                          item resolution). Without this, ECD records
+#                          are not decoded at parse time and the
+#                          registries silently come back empty — the
+#                          "data just wasn't there" failure mode.
+sc-extract = { workspace = true, features = ["contracts", "servicebeacon", "entityclassdefinition"] }
 svarog-common = { workspace = true }
 thiserror = { workspace = true }
 tracing = { workspace = true }

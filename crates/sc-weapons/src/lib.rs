@@ -38,7 +38,23 @@ pub use fps::FpsWeapon;
 pub use ship::{LoadoutContext, ShipWeapon};
 pub use sustain::{EnergyModel, HeatModel, SustainKind};
 
-use sc_extract::{Datacore, Guid};
+// ── Narrow-consumer re-exports ──────────────────────────────────────────────
+//
+// Lets a consumer depend on `sc-weapons` alone and still construct the
+// arguments `iter_*_weapons` takes, without adding a direct
+// `sc-extract` dep. Type identity is preserved because every aggregation
+// crate pulls the same `sc-extract` rev.
+pub use sc_extract::{
+    AssetConfig, AssetData, AssetSource, Datacore, DatacoreConfig, ExtractSnapshot, Guid,
+    LocaleKey, LocaleMap, SnapshotMeta,
+};
+
+/// Escape hatch for raw DCB queries when the typed model doesn't cover
+/// a case. Reach for these only as a last resort.
+pub mod raw {
+    pub use sc_extract::svarog_datacore;
+    pub use sc_extract::{DataCoreDatabase, Instance, Value};
+}
 
 use std::collections::HashMap;
 
