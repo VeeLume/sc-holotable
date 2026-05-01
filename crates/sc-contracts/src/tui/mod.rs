@@ -298,7 +298,9 @@ fn render_detail(
             ui.separator();
         }
 
-        // Encounters
+        // Encounters — full per-slot breakdown so we can investigate
+        // typed signals (initial_damage_settings, spawn_identifiers,
+        // markup_tag_names, ...) interactively against real contracts.
         if !c.encounters.is_empty() {
             let _ = ui.row(|ui| {
                 ui.text("Encounters").bold();
@@ -306,22 +308,129 @@ fn render_detail(
                 ui.text(format!("{}", c.encounters.len())).dim();
             });
             for g in &c.encounters {
-                ui.text(format!(
-                    "  • {} — {} wave(s)",
-                    g.variable_name,
-                    g.waves.len()
-                ));
+                ui.text(format!("  ▸ {}", g.variable_name)).bold();
+                if !g.extended_text_token.is_empty() {
+                    ui.text(format!("      ext_token: {}", g.extended_text_token))
+                        .fg(Color::Yellow);
+                }
                 for w in &g.waves {
-                    let total: i32 = w.slots.iter().map(|s| s.concurrent).sum();
-                    let cands: usize = w.slots.iter().map(|s| s.candidates.len()).sum();
-                    ui.text(format!(
-                        "      {}: {} slot(s), {} ship(s) total, {} candidate(s)",
-                        if w.name.is_empty() { "(unnamed)" } else { &w.name },
-                        w.slots.len(),
-                        total,
-                        cands,
-                    ))
-                    .dim();
+                    let wave_label = if w.name.is_empty() {
+                        "(unnamed wave)".to_string()
+                    } else {
+                        format!("wave \"{}\"", w.name)
+                    };
+                    ui.text(format!("      {wave_label} — {} slot(s)", w.slots.len()))
+                        .dim();
+                    for (i, s) in w.slots.iter().enumerate() {
+                        // Slot header: concurrency / weight / candidate count.
+                        let damage_marker = if s.initial_damage_settings.is_some() {
+                            " [pre-damaged]"
+                        } else {
+                            ""
+                        };
+                        let loc_marker = if s.include_location_ai_spawn_tags {
+                            " [+location-tags]"
+                        } else {
+                            ""
+                        };
+                        ui.text(format!(
+                            "        slot {i}: {}× w={:.2} candidates={}{damage_marker}{loc_marker}",
+                            s.concurrent,
+                            s.weight,
+                            s.candidates.len(),
+                        ));
+                        // Spawn identifiers — the canonical typed role
+                        // markers (Target / Defenders / ...).
+                        if !s.context.spawn_identifiers.is_empty() {
+                            ui.text(format!(
+                                "            spawn_identifiers: {}",
+                                s.context.spawn_identifiers.join(", ")
+                            ))
+                            .fg(Color::Cyan);
+                        }
+                        if !s.context.factions.is_empty() {
+                            ui.text(format!(
+                                "            factions: {}",
+                                s.context.factions.join(", ")
+                            ))
+                            .dim();
+                        }
+                        if !s.context.cargo.is_empty() {
+                            ui.text(format!("            cargo: {}", s.context.cargo.join(", ")))
+                                .dim();
+                        }
+                        if !s.context.ai_traits.is_empty() {
+                            ui.text(format!(
+                                "            ai_traits: {}",
+                                s.context.ai_traits.join(", ")
+                            ))
+                            .dim();
+                        }
+                        if !s.context.mission_tags.is_empty() {
+                            ui.text(format!(
+                                "            mission_tags: {}",
+                                s.context.mission_tags.join(", ")
+                            ))
+                            .dim();
+                        }
+                        if let Some(skill) = s.context.ai_skill {
+                            ui.text(format!(
+                                "            ai_skill: HumanPilot{skill}{}",
+                                if s.context.ace_pilot { " + AcePilot" } else { "" }
+                            ))
+                            .dim();
+                        }
+                        if !s.context.directives.is_empty() {
+                            ui.text(format!(
+                                "            directives: {}",
+                                s.context.directives.join(", ")
+                            ))
+                            .dim();
+                        }
+                        if !s.markup_tag_names.is_empty() {
+                            ui.text(format!(
+                                "            markup_tags: {}",
+                                s.markup_tag_names.join(", ")
+                            ))
+                            .dim();
+                        }
+                        if !s.entity_tag_names.is_empty() {
+                            ui.text(format!(
+                                "            entity_tags: {}",
+                                s.entity_tag_names.join(", ")
+                            ))
+                            .dim();
+                        }
+                        if !s.context.other.is_empty() {
+                            ui.text(format!(
+                                "            other: {}",
+                                s.context.other.join(", ")
+                            ))
+                            .dim();
+                        }
+                        // Candidate ships — first 4 to keep the panel
+                        // readable; consumers that need the full pool
+                        // can read s.candidates directly.
+                        let mut cands_iter = s.candidates.iter();
+                        let preview: Vec<String> = cands_iter
+                            .by_ref()
+                            .take(4)
+                            .map(|cand| cand.display_name.clone())
+                            .collect();
+                        let extra = s.candidates.len().saturating_sub(preview.len());
+                        if !preview.is_empty() {
+                            let suffix = if extra > 0 {
+                                format!(" (+{extra} more)")
+                            } else {
+                                String::new()
+                            };
+                            ui.text(format!(
+                                "            ships: {}{suffix}",
+                                preview.join(", ")
+                            ))
+                            .dim();
+                        }
+                    }
                 }
             }
             ui.separator();
