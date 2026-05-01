@@ -19,8 +19,8 @@ use std::collections::{BTreeMap, HashMap, HashSet};
 use sc_extract::{Guid, LocaleKey};
 
 use crate::expand::{
-    Availability, BlueprintReward, ContractOrigin, EncounterGroup, ExpandedContract, HandlerKind,
-    ItemReward, OtherReward, PrereqView, RepReward, RewardAmount, ScripReward,
+    Availability, ContractOrigin, EncounterGroup, ExpandedContract, HandlerKind, MissionRewards,
+    OtherReward, PrereqView, RewardAmount, ScripReward,
 };
 
 /// The merged-contract output of stage 4. Each `Contract` represents
@@ -69,12 +69,8 @@ pub struct Contract {
     pub availability: Availability,
 
     /// Rewards — identical across all variations by construction.
-    pub reward_uec: RewardAmount,
-    pub reward_scrip: Vec<ScripReward>,
-    pub reward_rep: Vec<RepReward>,
-    pub reward_items: Vec<ItemReward>,
-    pub reward_other: Vec<OtherReward>,
-    pub blueprint_reward: Option<BlueprintReward>,
+    /// See [`MissionRewards`] for the per-axis fields.
+    pub rewards: MissionRewards,
 
     /// Prerequisites shared by every variation. Per-variation extras
     /// live on `Variation::extra_prerequisites`.
@@ -202,14 +198,14 @@ impl MergeKey {
 fn reward_signature(e: &ExpandedContract) -> String {
     let mut s = String::new();
     // UEC.
-    match &e.reward_uec {
+    match &e.rewards.uec {
         RewardAmount::None => s.push_str("uec:none|"),
         RewardAmount::Calculated => s.push_str("uec:calc|"),
         RewardAmount::Fixed(n) => s.push_str(&format!("uec:fix{n}|")),
     }
     // Scrip.
     let mut scrip: Vec<(Guid, i32)> = e
-        .reward_scrip
+        .rewards.scrip
         .iter()
         .map(|r| (r.currency_guid, r.amount))
         .collect();
@@ -219,7 +215,7 @@ fn reward_signature(e: &ExpandedContract) -> String {
     }
     // Rep — amount may be None (CalculatedReputation).
     let mut rep: Vec<(Option<Guid>, Option<Guid>, Option<i32>)> = e
-        .reward_rep
+        .rewards.reputation
         .iter()
         .map(|r| (r.faction, r.scope, r.amount))
         .collect();
@@ -237,7 +233,7 @@ fn reward_signature(e: &ExpandedContract) -> String {
     }
     // Items.
     let mut items: Vec<(Guid, i32)> = e
-        .reward_items
+        .rewards.items
         .iter()
         .map(|r| (r.entity_class, r.amount))
         .collect();
@@ -246,12 +242,12 @@ fn reward_signature(e: &ExpandedContract) -> String {
         s.push_str(&format!("it:{g}={n}|"));
     }
     // Blueprint pool (just the pool guid + chance).
-    if let Some(bp) = &e.blueprint_reward {
+    if let Some(bp) = &e.rewards.blueprint {
         s.push_str(&format!("bp:{}@{:.3}|", bp.pool_guid, bp.chance));
     }
     // Other rewards — collapse to discriminant names.
     let mut other_kinds: Vec<&'static str> = e
-        .reward_other
+        .rewards.other
         .iter()
         .map(|o| match o {
             OtherReward::BadgeAward => "Badge",
@@ -337,12 +333,7 @@ fn collapse_group(mut group: Vec<ExpandedContract>) -> Contract {
         shareable: first.shareable,
         illegal_flag: first.illegal_flag,
         availability: first.availability.clone(),
-        reward_uec: first.reward_uec,
-        reward_scrip: first.reward_scrip.clone(),
-        reward_rep: first.reward_rep.clone(),
-        reward_items: first.reward_items.clone(),
-        reward_other: first.reward_other.clone(),
-        blueprint_reward: first.blueprint_reward.clone(),
+        rewards: first.rewards.clone(),
         prerequisites: base_prereqs,
         encounters: first.encounters.clone(),
         variations,
@@ -564,7 +555,7 @@ pub fn find_bp_conflicts(contracts: &[Contract]) -> Vec<BpConflictGroup> {
         for id in &group_ids {
             let Some(&idx) = by_id.get(id) else { continue };
             let pool = contracts[idx]
-                .blueprint_reward
+                .rewards.blueprint
                 .as_ref()
                 .map(|b| b.pool_guid);
             distinct_pools.insert(pool);
@@ -588,10 +579,10 @@ pub fn find_bp_conflicts(contracts: &[Contract]) -> Vec<BpConflictGroup> {
                 debug_name: c.debug_name.clone(),
                 handler_debug_name: c.handler_debug_name.clone(),
                 handler_kind: c.handler_kind,
-                blueprint_pool: c.blueprint_reward.as_ref().map(|b| b.pool_guid),
-                pool_name: c.blueprint_reward.as_ref().map(|b| b.pool_name.clone()),
+                blueprint_pool: c.rewards.blueprint.as_ref().map(|b| b.pool_guid),
+                pool_name: c.rewards.blueprint.as_ref().map(|b| b.pool_name.clone()),
                 item_count: c
-                    .blueprint_reward
+                    .rewards.blueprint
                     .as_ref()
                     .map(|b| b.items.len())
                     .unwrap_or(0),

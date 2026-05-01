@@ -272,17 +272,17 @@ fn render_detail(
             ui.text("REGION").dim();
         });
         for c in &cluster.members {
-            let bp = if c.blueprint_reward.is_some() { "yes" } else { "no" };
-            let uec = match c.reward_uec {
+            let bp = if c.rewards.blueprint.is_some() { "yes" } else { "no" };
+            let uec = match c.rewards.uec {
                 RewardAmount::None => "none".to_string(),
                 RewardAmount::Calculated => "calc".to_string(),
                 RewardAmount::Fixed(n) => format!("{n}"),
             };
-            let scrip = scrip_label(&c.reward_scrip);
-            let rep = if c.reward_rep.is_empty() {
+            let scrip = scrip_label(&c.rewards.scrip);
+            let rep = if c.rewards.reputation.is_empty() {
                 "-".to_string()
             } else {
-                format!("{}", c.reward_rep.len())
+                format!("{}", c.rewards.reputation.len())
             };
             let illegal = if c.illegal_flag { "yes" } else { "no" };
             let region = region_label(&c.mission_span, localities);
@@ -331,7 +331,7 @@ fn render_cross_key_breakdown(ui: &mut Context, cluster: &KeyCluster<'_>, sub_ta
     let any_bp_present = cluster
         .members
         .iter()
-        .any(|c| c.blueprint_reward.is_some());
+        .any(|c| c.rewards.blueprint.is_some());
 
     let _ = ui.row(|ui| {
         ui.text(heading).bold();
@@ -353,7 +353,7 @@ fn render_cross_key_breakdown(ui: &mut Context, cluster: &KeyCluster<'_>, sub_ta
     });
 
     for (key, members) in entries {
-        let bp_count = members.iter().filter(|c| c.blueprint_reward.is_some()).count();
+        let bp_count = members.iter().filter(|c| c.rewards.blueprint.is_some()).count();
         let n = members.len();
         let bp_summary = format!("BP {bp_count}/{n}");
         let key_label = key.unwrap_or("(no key)");

@@ -207,7 +207,7 @@ fn format_list_item(c: &Contract) -> String {
         (true, true) => '~', // runtime substitution
         (true, false) => ' ',
     };
-    let bp = if c.blueprint_reward.is_some() { "[BP]" } else { "    " };
+    let bp = if c.rewards.blueprint.is_some() { "[BP]" } else { "    " };
     format!("{marker} {bp} {title}")
 }
 
@@ -293,7 +293,7 @@ fn render_detail(
                 .dim();
             for sib_id in &c.title_siblings {
                 if let Some(sib) = by_id.get(sib_id) {
-                    let bp = if sib.blueprint_reward.is_some() { "[BP] " } else { "" };
+                    let bp = if sib.rewards.blueprint.is_some() { "[BP] " } else { "" };
                     ui.text(format!(
                         "  • {bp}{}  ({:?})",
                         sib.debug_name, sib.handler_kind
@@ -341,23 +341,23 @@ fn render_detail(
         let _ = ui.row(|ui| {
             ui.text("Rewards").bold();
         });
-        let uec = match c.reward_uec {
+        let uec = match c.rewards.uec {
             RewardAmount::None => "none".to_string(),
             RewardAmount::Calculated => "calculated (engine-computed)".to_string(),
             RewardAmount::Fixed(n) => format!("fixed {n} aUEC"),
         };
         kv(ui, "uec", &uec);
-        for s in &c.reward_scrip {
+        for s in &c.rewards.scrip {
             ui.text(format!("  scrip: {} × {}", s.amount, s.display_name));
         }
-        for r in &c.reward_rep {
+        for r in &c.rewards.reputation {
             let amount = r.amount.map(|n| n.to_string()).unwrap_or_else(|| "calc".into());
             ui.text(format!("  rep: {amount}"));
         }
-        for it in &c.reward_items {
+        for it in &c.rewards.items {
             ui.text(format!("  item: {} × {}", it.amount, it.display_name));
         }
-        if let Some(bp) = &c.blueprint_reward {
+        if let Some(bp) = &c.rewards.blueprint {
             ui.text(format!(
                 "  bp pool: {} ({:.0}% chance, {} item(s))",
                 bp.pool_name,

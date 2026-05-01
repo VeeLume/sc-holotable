@@ -89,29 +89,10 @@ pub struct ExpandedContract {
     /// sub-contract inheritance (bool + int param overrides).
     pub availability: Availability,
 
-    /// Blueprint reward attached to this contract, if any. Items are
-    /// pre-resolved via [`BlueprintPoolRegistry`].
-    pub blueprint_reward: Option<BlueprintReward>,
-
-    /// UEC reward. Most contracts use `RewardAmount::Calculated`
-    /// (engine-computed at runtime); occasional contracts pay a
-    /// `RewardAmount::Fixed(i32)` aUEC amount directly.
-    pub reward_uec: RewardAmount,
-    /// Scrip rewards — `ContractResult_Item` entries whose entity_class
-    /// is in [`RewardCurrencyCatalog`].
-    pub reward_scrip: Vec<ScripReward>,
-    /// Reputation rewards. Amount is `None` for
-    /// `ContractResult_CalculatedReputation` (engine-computed) and
-    /// `Some(i32)` for `_LegacyReputation` with a resolved amount.
-    pub reward_rep: Vec<RepReward>,
-    /// Item rewards — `ContractResult_Item` entries whose entity_class
-    /// is **not** a currency (ship unlocks, collector items, …).
-    pub reward_items: Vec<ItemReward>,
-    /// Other reward kinds (BadgeAward, ScenarioProgress, JournalEntry,
-    /// CompletionTag(s), CompletionBounty, RefundBuyIn, ItemsWeighting,
-    /// Reward). Detailed field modelling deferred to stage 4 when the
-    /// downstream interpretation is clearer.
-    pub reward_other: Vec<OtherReward>,
+    /// All reward outputs grouped together — UEC + scrip + reputation
+    /// + items + blueprint pool + miscellaneous. See [`MissionRewards`]
+    /// for per-axis details.
+    pub rewards: MissionRewards,
 
     /// Additional prerequisites — unified view across
     /// `Contract.additional_prerequisites`,
@@ -183,6 +164,51 @@ pub struct Cooldowns {
 pub struct DurationRange {
     pub mean_seconds: f32,
     pub variation_seconds: f32,
+}
+
+/// All reward outputs for one contract / mission, grouped.
+///
+/// Replaces the six top-level reward fields v1 carried directly on
+/// `Contract` (and on `ExpandedContract`). Consumers that want to
+/// query a single axis read `rewards.uec` / `rewards.scrip` / etc.;
+/// consumers that want "any reward at all" can iterate one struct
+/// instead of six.
+#[derive(Debug, Clone, Default)]
+pub struct MissionRewards {
+    /// UEC reward. Most contracts use [`RewardAmount::Calculated`]
+    /// (engine-computed at runtime); occasional contracts pay a
+    /// [`RewardAmount::Fixed`] aUEC amount directly.
+    pub uec: RewardAmount,
+    /// Scrip rewards — `ContractResult_Item` entries whose entity_class
+    /// is in [`crate::RewardCurrencyCatalog`].
+    pub scrip: Vec<ScripReward>,
+    /// Reputation rewards. Amount is [`None`] for
+    /// `ContractResult_CalculatedReputation` (engine-computed) and
+    /// [`Some(i32)`] for `_LegacyReputation` with a resolved amount.
+    pub reputation: Vec<RepReward>,
+    /// Item rewards — `ContractResult_Item` entries whose entity_class
+    /// is **not** a currency (ship unlocks, collector items, …).
+    pub items: Vec<ItemReward>,
+    /// Blueprint reward attached to this contract, if any. Items are
+    /// pre-resolved via [`crate::BlueprintPoolRegistry`].
+    pub blueprint: Option<BlueprintReward>,
+    /// Other reward kinds (BadgeAward, ScenarioProgress, JournalEntry,
+    /// CompletionTag(s), CompletionBounty, RefundBuyIn, ItemsWeighting,
+    /// Reward). Detailed field modelling deferred until a consumer
+    /// needs them.
+    pub other: Vec<OtherReward>,
+}
+
+impl MissionRewards {
+    /// True when no reward of any kind is set.
+    pub fn is_empty(&self) -> bool {
+        matches!(self.uec, RewardAmount::None)
+            && self.scrip.is_empty()
+            && self.reputation.is_empty()
+            && self.items.is_empty()
+            && self.blueprint.is_none()
+            && self.other.is_empty()
+    }
 }
 
 /// How a reward amount is delivered.
@@ -948,9 +974,17 @@ fn build_expansion(
         ctx.handler_availability,
     );
 
-    let blueprint_reward = resolve_blueprint_reward(pools, blueprints, contract_results);
-    let (reward_uec, reward_scrip, reward_rep, reward_items, reward_other) =
+    let blueprint = resolve_blueprint_reward(pools, blueprints, contract_results);
+    let (uec, scrip, reputation, items, other) =
         resolve_rewards(pools, datacore, currency, contract_results);
+    let rewards = MissionRewards {
+        uec,
+        scrip,
+        reputation,
+        items,
+        blueprint,
+        other,
+    };
 
     let prerequisites = resolve_prerequisites(
         pools,
@@ -984,12 +1018,7 @@ fn build_expansion(
         shareable: flags.shareable,
         illegal_flag: flags.illegal,
         availability: flags.availability,
-        blueprint_reward,
-        reward_uec,
-        reward_scrip,
-        reward_rep,
-        reward_items,
-        reward_other,
+        rewards,
         prerequisites,
         encounters,
         mission_span,

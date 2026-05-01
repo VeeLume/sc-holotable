@@ -118,23 +118,23 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Reward content breakdown.
     let with_bp = contracts
         .iter()
-        .filter(|c| c.blueprint_reward.is_some())
+        .filter(|c| c.rewards.blueprint.is_some())
         .count();
     let with_scrip = contracts
         .iter()
-        .filter(|c| !c.reward_scrip.is_empty())
+        .filter(|c| !c.rewards.scrip.is_empty())
         .count();
     let with_rep = contracts
         .iter()
-        .filter(|c| !c.reward_rep.is_empty())
+        .filter(|c| !c.rewards.reputation.is_empty())
         .count();
     let with_items = contracts
         .iter()
-        .filter(|c| !c.reward_items.is_empty())
+        .filter(|c| !c.rewards.items.is_empty())
         .count();
     let uec_calc = contracts
         .iter()
-        .filter(|c| matches!(c.reward_uec, RewardAmount::Calculated))
+        .filter(|c| matches!(c.rewards.uec, RewardAmount::Calculated))
         .count();
     println!();
     println!("  Reward content:");
@@ -293,12 +293,12 @@ fn print_contract(c: &Contract, localities: &sc_contracts::LocalityRegistry) {
 
     // Rewards + enc + cd summary.
     let mut bits = Vec::new();
-    match c.reward_uec {
+    match c.rewards.uec {
         RewardAmount::None => {}
         RewardAmount::Calculated => bits.push("UEC: calc".to_string()),
         RewardAmount::Fixed(n) => bits.push(format!("UEC: {n}")),
     }
-    for s in &c.reward_scrip {
+    for s in &c.rewards.scrip {
         let name = if s.display_name.is_empty() {
             &s.record_name
         } else {
@@ -306,9 +306,9 @@ fn print_contract(c: &Contract, localities: &sc_contracts::LocalityRegistry) {
         };
         bits.push(format!("{name}×{}", s.amount));
     }
-    if !c.reward_rep.is_empty() {
+    if !c.rewards.reputation.is_empty() {
         let total: Vec<String> = c
-            .reward_rep
+            .rewards.reputation
             .iter()
             .map(|r| match r.amount {
                 Some(n) => n.to_string(),
@@ -317,7 +317,7 @@ fn print_contract(c: &Contract, localities: &sc_contracts::LocalityRegistry) {
             .collect();
         bits.push(format!("rep: [{}]", total.join(",")));
     }
-    if let Some(bp) = &c.blueprint_reward {
+    if let Some(bp) = &c.rewards.blueprint {
         bits.push(format!("BP×{} ({:.0}%)", bp.items.len(), bp.chance * 100.0));
     }
     if !bits.is_empty() {

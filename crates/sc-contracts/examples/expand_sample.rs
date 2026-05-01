@@ -127,7 +127,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         println!("─── Sample rows with blueprint rewards ───");
         for e in expansions
             .iter()
-            .filter(|e| e.blueprint_reward.is_some())
+            .filter(|e| e.rewards.blueprint.is_some())
             .take(3)
         {
             print_expansion(e);
@@ -160,27 +160,27 @@ fn print_summary(expansions: &[ExpandedContract]) {
     let illegal = expansions.iter().filter(|e| e.illegal_flag).count();
     let with_bp = expansions
         .iter()
-        .filter(|e| e.blueprint_reward.is_some())
+        .filter(|e| e.rewards.blueprint.is_some())
         .count();
     let uec_calc = expansions
         .iter()
-        .filter(|e| matches!(e.reward_uec, RewardAmount::Calculated))
+        .filter(|e| matches!(e.rewards.uec, RewardAmount::Calculated))
         .count();
     let uec_fixed = expansions
         .iter()
-        .filter(|e| matches!(e.reward_uec, RewardAmount::Fixed(_)))
+        .filter(|e| matches!(e.rewards.uec, RewardAmount::Fixed(_)))
         .count();
     let with_scrip = expansions
         .iter()
-        .filter(|e| !e.reward_scrip.is_empty())
+        .filter(|e| !e.rewards.scrip.is_empty())
         .count();
     let with_rep = expansions
         .iter()
-        .filter(|e| !e.reward_rep.is_empty())
+        .filter(|e| !e.rewards.reputation.is_empty())
         .count();
     let with_items = expansions
         .iter()
-        .filter(|e| !e.reward_items.is_empty())
+        .filter(|e| !e.rewards.items.is_empty())
         .count();
     let with_prereq = expansions
         .iter()
@@ -291,7 +291,7 @@ fn print_expansion(e: &ExpandedContract) {
             },
         );
     }
-    if let Some(bp) = &e.blueprint_reward {
+    if let Some(bp) = &e.rewards.blueprint {
         let first_items: Vec<&str> = bp
             .items
             .iter()
@@ -319,12 +319,12 @@ fn print_expansion(e: &ExpandedContract) {
 
     // Rewards.
     let mut reward_bits = Vec::new();
-    match e.reward_uec {
+    match e.rewards.uec {
         sc_contracts::RewardAmount::None => {}
         sc_contracts::RewardAmount::Calculated => reward_bits.push("UEC: calculated".to_string()),
         sc_contracts::RewardAmount::Fixed(n) => reward_bits.push(format!("UEC: {n}")),
     }
-    for s in &e.reward_scrip {
+    for s in &e.rewards.scrip {
         let name = if s.display_name.is_empty() {
             &s.record_name
         } else {
@@ -332,16 +332,16 @@ fn print_expansion(e: &ExpandedContract) {
         };
         reward_bits.push(format!("{} ×{}", name, s.amount));
     }
-    for r in &e.reward_rep {
+    for r in &e.rewards.reputation {
         let val = r
             .amount
             .map(|n| n.to_string())
             .unwrap_or_else(|| "calc".into());
         reward_bits.push(format!("rep {val}"));
     }
-    if !e.reward_items.is_empty() {
+    if !e.rewards.items.is_empty() {
         let names: Vec<String> = e
-            .reward_items
+            .rewards.items
             .iter()
             .map(|i| {
                 let n = if i.display_name.is_empty() {
@@ -353,16 +353,16 @@ fn print_expansion(e: &ExpandedContract) {
             })
             .take(3)
             .collect();
-        let etc = if e.reward_items.len() > 3 {
-            format!(", …+{}", e.reward_items.len() - 3)
+        let etc = if e.rewards.items.len() > 3 {
+            format!(", …+{}", e.rewards.items.len() - 3)
         } else {
             String::new()
         };
         reward_bits.push(format!("items: [{}{}]", names.join(", "), etc));
     }
-    if !e.reward_other.is_empty() {
+    if !e.rewards.other.is_empty() {
         let kinds: Vec<String> = e
-            .reward_other
+            .rewards.other
             .iter()
             .map(|o| {
                 format!("{:?}", o)
@@ -808,7 +808,7 @@ fn print_delta(matching: &[&ExpandedContract]) {
     println!("  Reward fingerprints:");
     for (i, e) in matching.iter().enumerate() {
         let rep_fp: Vec<String> = e
-            .reward_rep
+            .rewards.reputation
             .iter()
             .map(|r| {
                 format!(
@@ -824,18 +824,18 @@ fn print_delta(matching: &[&ExpandedContract]) {
             })
             .collect();
         let scrip_fp: Vec<String> = e
-            .reward_scrip
+            .rewards.scrip
             .iter()
             .map(|s| format!("{}×{}", s.display_name, s.amount))
             .collect();
         let bp_fp = e
-            .blueprint_reward
+            .rewards.blueprint
             .as_ref()
             .map(|b| b.pool_name.as_str())
             .unwrap_or("");
         println!(
             "    [{i}] uec={:?} scrip=[{}] rep=[{}] bp='{}'",
-            e.reward_uec,
+            e.rewards.uec,
             scrip_fp.join(", "),
             rep_fp.join(", "),
             bp_fp,

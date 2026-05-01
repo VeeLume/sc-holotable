@@ -142,7 +142,7 @@ fn render_span(c: &Contract, localities: &LocalityRegistry) -> String {
 
 /// First 4 BP item display names for an at-a-glance preview.
 fn sample_items(c: &Contract) -> String {
-    let Some(bp) = &c.blueprint_reward else {
+    let Some(bp) = &c.rewards.blueprint else {
         return "—".into();
     };
     let names: Vec<&str> = bp

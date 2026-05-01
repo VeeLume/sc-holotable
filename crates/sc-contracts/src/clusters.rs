@@ -219,13 +219,13 @@ fn compute_divergence(members: &[&Contract]) -> ClusterDivergence {
         if c.illegal_flag != first.illegal_flag {
             d.illegal_mixed = true;
         }
-        if c.reward_uec != first.reward_uec {
+        if c.rewards.uec != first.rewards.uec {
             d.reward_uec = true;
         }
-        if !scrip_eq(&c.reward_scrip, &first.reward_scrip) {
+        if !scrip_eq(&c.rewards.scrip, &first.rewards.scrip) {
             d.reward_scrip = true;
         }
-        if c.reward_rep != first.reward_rep {
+        if c.rewards.reputation != first.rewards.reputation {
             d.reward_rep = true;
         }
         if !guid_set_eq(&c.mission_span, &first.mission_span) {
@@ -238,7 +238,7 @@ fn compute_divergence(members: &[&Contract]) -> ClusterDivergence {
             d.cooldowns = true;
         }
 
-        if let Some(bp) = &c.blueprint_reward {
+        if let Some(bp) = &c.rewards.blueprint {
             bp_present += 1;
             bp_pools.insert(bp.pool_guid);
         }
