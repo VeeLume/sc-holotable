@@ -9,7 +9,7 @@
 //!
 //! This crate walks the generator graph, resolves every GUID the contracts
 //! touch (tags, ship entities, blueprint pools, reward currencies), and
-//! emits a single [`ContractIndex`] holding the contract list, the
+//! emits a single [`MissionIndex`] holding the contract list, the
 //! registries used to build it, and a precomputed [`MissionPools`]
 //! grouping by title key / description key.
 //!
@@ -20,7 +20,7 @@
 //!     → ingest  (tag / ship / blueprint / currency registries)
 //!     → expand  (generator × handler × contract × sub_contract)
 //!     → resolve (GUIDs → typed values via registries)
-//!     → ContractIndex (with precomputed pools)
+//!     → MissionIndex (with precomputed pools)
 //! ```
 //!
 //! # Scope
@@ -58,11 +58,11 @@ pub use blueprints::{BlueprintItem, BlueprintPool, BlueprintPoolRegistry};
 pub use classify::{TagBag, parse_ai_skill};
 pub use currency::{CurrencyInfo, RewardCurrencyCatalog};
 pub use expand::{
-    Availability, BlueprintReward, ContractOrigin, Cooldowns, DurationRange, EncounterGroup,
-    EncounterSlot, EncounterWave, ExpandedContract, HandlerKind, ItemReward, MissionRewards,
-    OtherReward, PrereqView, RepReward, RewardAmount, ScripReward, expand_all,
+    Availability, BlueprintReward, Cooldowns, DurationRange, EncounterGroup, EncounterSlot,
+    EncounterWave, HandlerKind, ItemReward, Mission, MissionOrigin, MissionRewards, OtherReward,
+    PrereqView, RepReward, RewardAmount, ScripReward, expand_all,
 };
-pub use index::ContractIndex;
+pub use index::MissionIndex;
 pub use locality::{LocalityRegistry, LocalityView, LocationRef, LocationRegistry, SystemKey};
 pub use pools::MissionPools;
 pub use ships::{ShipCandidate, ShipEntity, ShipRegistry};
@@ -71,7 +71,7 @@ pub use titles::{ContractAnchor, ResolvedText, resolve_contract_text};
 // ── Narrow-consumer re-exports ──────────────────────────────────────────────
 //
 // Lets a consumer depend on `sc-contracts` alone and still construct the
-// arguments `ContractIndex::build` takes, without adding a direct
+// arguments `MissionIndex::build` takes, without adding a direct
 // `sc-extract` dep. Type identity is preserved across re-exports because
 // every aggregation crate pulls the same `sc-extract` rev.
 pub use sc_extract::{

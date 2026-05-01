@@ -14,7 +14,7 @@
 //!   [`LocationRef`] and the distinct systems it touches.
 //! - [`LocationRegistry`] / [`LocalityRegistry`] — walk-once lookups
 //!   used by [`crate::expand_all`] to populate
-//!   [`crate::ExpandedContract::mission_span`].
+//!   [`crate::Mission::mission_span`].
 //!
 //! Parent-chain traversal is the data-driven part (workspace principle
 //! §5): `StarMapObject.parent` walked up to the root yields the

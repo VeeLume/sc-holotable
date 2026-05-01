@@ -1,33 +1,28 @@
 //! Precomputed mission groupings.
 //!
-//! [`MissionPools`] holds the same data v1 derived through
-//! [`crate::cluster_by_title_key`] / [`crate::cluster_by_description_key`]
-//! but as direct fields on [`crate::ContractIndex`] — built once at
-//! index construction, read by direct map lookup. Each grouping axis
-//! is a `HashMap<key, Vec<Guid>>` of contract IDs sharing that key.
+//! [`MissionPools`] is built once at [`crate::MissionIndex`]
+//! construction and exposed as a public field on the index. Each
+//! grouping axis is a `HashMap<key, Vec<Guid>>` of mission IDs
+//! sharing that key.
 //!
 //! Divergence — *what* differs across a pool's members — lives as
-//! opt-in helper methods on [`crate::ContractIndex`] (see the
+//! opt-in helper methods on [`crate::MissionIndex`] (see the
 //! `*_mixed` / `*_consistent` accessors). Consumers call only what
-//! they read; the bag-of-bools `ClusterDivergence` shape is not
-//! computed eagerly.
+//! they read.
 //!
-//! # Phasing
-//!
-//! v1's `find_bp_conflicts` becomes a one-liner over `pools.title_key
-//! + index.blueprint_mixed`. The cluster API stays available
-//! (deprecated) until consumers migrate.
+//! Replaces v1's cluster API + `find_bp_conflicts` helper, which
+//! went away with the merge step in phase 4 of the v2 redesign.
 
 use std::collections::HashMap;
 
 use sc_extract::{Guid, LocaleKey};
 
-use crate::expand::ExpandedContract;
+use crate::expand::Mission;
 
 /// Precomputed groupings keyed off the most common consumer axes.
 ///
-/// Each value is a `Vec<Guid>` of canonical [`Contract`] ids — look up
-/// the actual contract via [`crate::ContractIndex::get`].
+/// Each value is a `Vec<Guid>` of [`Mission`] ids — look up the
+/// actual row via [`crate::MissionIndex::get`].
 ///
 /// More axes are non-breaking additions: a future `by_locality` field
 /// can land alongside without changing existing fields.
@@ -44,7 +39,7 @@ pub struct MissionPools {
 impl MissionPools {
     /// Build all grouping axes from the contract list. O(n) per axis.
     /// Cheap: ~4,590 expansion rows × 2 keys yields ~9k HashMap inserts.
-    pub fn build(contracts: &[ExpandedContract]) -> Self {
+    pub fn build(contracts: &[Mission]) -> Self {
         let mut pools = Self::default();
         for c in contracts {
             if let Some(key) = c.title_key.as_ref() {
@@ -65,15 +60,10 @@ impl MissionPools {
 // ── Divergence comparators ─────────────────────────────────────────────────
 //
 // Free functions used by the `*_mixed` / `*_consistent` methods on
-// `ContractIndex`. Lifted out of `clusters.rs::compute_divergence` so
-// both APIs share one implementation; clusters.rs reads them too.
+// `MissionIndex`.
 
 /// True if two `ScripReward` slices represent the same multiset of
-/// (currency, amount) pairs in the same order. Order matters here
-/// because the merge guarantees a single canonical order across
-/// expansions sharing rewards; consumers grouping on a different axis
-/// (e.g. title only) may legitimately see reordered rewards across
-/// members.
+/// (currency, amount) pairs in the same order.
 pub(crate) fn scrip_eq(a: &[crate::expand::ScripReward], b: &[crate::expand::ScripReward]) -> bool {
     if a.len() != b.len() {
         return false;

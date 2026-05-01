@@ -1,5 +1,5 @@
 //! Contract expansion — walk every `ContractGenerator` root and emit
-//! one [`ExpandedContract`] per concrete (handler, contract,
+//! one [`Mission`] per concrete (handler, contract,
 //! optional sub_contract) node in the graph.
 //!
 //! This is stage 3 of the pipeline in `docs/sc-contracts.md`. Stage 4
@@ -36,26 +36,20 @@ use crate::titles::{ContractAnchor, ResolvedText, resolve_contract_text};
 /// One concrete contract node in the expanded generator graph.
 ///
 /// A contract with three sub-contract tiers produces three
-/// `ExpandedContract`s (one per tier, each with the tier's overridden
+/// `Mission`s (one per tier, each with the tier's overridden
 /// fields). A contract with no sub-contracts produces one.
 #[derive(Debug, Clone)]
-pub struct ExpandedContract {
-    /// GUID of the contract (or sub-contract, when `origin` is
-    /// [`ContractOrigin::SubContract`]).
+pub struct Mission {
+    /// GUID of the contract (or sub-contract — see
+    /// [`MissionOrigin::subcontract_of`]).
     pub id: Guid,
     /// Internal debug name from the contract record. Useful for
     /// cross-referencing with SCMDB and the DCB.
     pub debug_name: String,
 
-    /// GUID of the owning `ContractGenerator` record.
-    pub generator_id: Guid,
-    /// Typed handler kind — which of the six `ContractGeneratorHandler_*`
-    /// shapes owns this contract.
-    pub handler_kind: HandlerKind,
-    /// `debugName` on the handler, useful for grouping contracts that
-    /// share a generator family (`TarPits_Unlawful_Salvage_Career` →
-    /// all TarPits salvage missions).
-    pub handler_debug_name: String,
+    /// Where the mission came from in the DCB graph — handler kind,
+    /// debug name, owning generator, optional parent for sub-contracts.
+    pub origin: MissionOrigin,
 
     /// Resolved title text (see [`resolve_contract_text`]).
     pub title: Option<String>,
@@ -120,10 +114,28 @@ pub struct ExpandedContract {
     /// then contract, then sub-contract (most-specific last), with
     /// first-seen-wins deduplication.
     pub mission_span: Vec<Guid>,
+}
 
-    /// Which of the three concrete contract-record subtypes this
-    /// expansion came from, plus the sub-contract GUID when applicable.
-    pub origin: ContractOrigin,
+/// Where a [`Mission`] came from. Consolidates v1's separate
+/// `handler_kind`, `handler_debug_name`, `generator_id`, and origin
+/// enum into one struct with `subcontract_of: Option<Guid>` carrying
+/// the parent reference for sub-contracts.
+#[derive(Debug, Clone)]
+pub struct MissionOrigin {
+    /// Typed handler kind — which `ContractGeneratorHandler_*` shape
+    /// owns this mission.
+    pub kind: HandlerKind,
+    /// `debugName` on the handler. Useful for grouping missions that
+    /// share a generator family (`TarPits_Unlawful_Salvage_Career` →
+    /// all TarPits salvage missions).
+    pub source_debug_name: String,
+    /// GUID of the owning `ContractGenerator` record.
+    pub generator_id: Guid,
+    /// `None` for top-level missions. `Some(parent_id)` when this
+    /// mission is a sub-contract — `parent_id` is the parent
+    /// mission's `id`. Same information v1 carried in the
+    /// `ContractOrigin::SubContract { parent_id }` enum variant.
+    pub subcontract_of: Option<Guid>,
 }
 
 /// Effective availability after inheritance resolution. Handler-level
@@ -169,7 +181,7 @@ pub struct DurationRange {
 /// All reward outputs for one contract / mission, grouped.
 ///
 /// Replaces the six top-level reward fields v1 carried directly on
-/// `Contract` (and on `ExpandedContract`). Consumers that want to
+/// `Contract` (and on `Mission`). Consumers that want to
 /// query a single axis read `rewards.uec` / `rewards.scrip` / etc.;
 /// consumers that want "any reward at all" can iterate one struct
 /// instead of six.
@@ -341,23 +353,6 @@ pub enum HandlerKind {
     Unknown,
 }
 
-/// Where the expansion came from in the source record graph. Kept so
-/// consumers with `Datacore` in hand can jump back to the raw
-/// generated type if needed.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-pub enum ContractOrigin {
-    /// `Contract` record (career-handler intro lists and List /
-    /// LinearSeries handlers use this shape).
-    Contract,
-    ContractLegacy,
-    CareerContract,
-    /// A sub-contract inside a parent `Contract` / `CareerContract` /
-    /// `ContractLegacy`. `parent` is the parent record's GUID.
-    SubContract {
-        parent: Guid,
-    },
-}
-
 /// A group of related ship-spawn waves emitted for a contract —
 /// typically the `MissionPropertyValue_ShipSpawnDescriptions` attached
 /// to one `missionVariableName` slot (e.g. `BP_SpawnDescriptions`,
@@ -462,7 +457,7 @@ pub struct BlueprintReward {
 // ── Entry point ─────────────────────────────────────────────────────────────
 
 /// Walk every `ContractGenerator` in the live DCB and produce one
-/// [`ExpandedContract`] per (handler, contract, optional sub_contract)
+/// [`Mission`] per (handler, contract, optional sub_contract)
 /// node.
 ///
 /// Order is stable across runs: generators iterate in
@@ -475,7 +470,7 @@ pub fn expand_all(
     blueprints: &BlueprintPoolRegistry,
     currency: &RewardCurrencyCatalog,
     localities: &LocalityRegistry,
-) -> Vec<ExpandedContract> {
+) -> Vec<Mission> {
     let pools = &datacore.records().pools;
     let tree = &datacore.snapshot().tag_tree;
     let mut out = Vec::new();
@@ -518,7 +513,7 @@ fn walk_handler(
     tree: &sc_extract::TagTree,
     generator_id: Guid,
     ptr: &ContractGeneratorHandlerBasePtr,
-    out: &mut Vec<ExpandedContract>,
+    out: &mut Vec<Mission>,
 ) {
     use ContractGeneratorHandlerBasePtr as H;
     match ptr {
@@ -670,7 +665,7 @@ fn emit_list_like<'p>(
     generator_id: Guid,
     kind: HandlerKind,
     handler: Option<ListLikeHandler<'p>>,
-    out: &mut Vec<ExpandedContract>,
+    out: &mut Vec<Mission>,
 ) {
     let Some(ListLikeHandler {
         debug_name,
@@ -739,7 +734,7 @@ fn emit_from_contract(
     generator_id: Guid,
     ctx: &HandlerCtx<'_>,
     c: &Contract,
-    out: &mut Vec<ExpandedContract>,
+    out: &mut Vec<Mission>,
 ) {
     let anchor = ContractAnchor::Contract(c);
     let contract_results = c.contract_results.as_ref();
@@ -764,7 +759,7 @@ fn emit_from_contract(
         c.id,
         &c.debug_name,
         c.template,
-        ContractOrigin::Contract,
+        None /*Contract*/,
     ));
     for sub_h in &c.sub_contracts {
         if let Some(sub) = sub_h.get(pools) {
@@ -787,7 +782,7 @@ fn emit_from_contract(
                 sub.id,
                 &c.debug_name,
                 c.template,
-                ContractOrigin::SubContract { parent: c.id },
+                Some(c.id),
             ));
         }
     }
@@ -806,7 +801,7 @@ fn emit_from_legacy(
     generator_id: Guid,
     ctx: &HandlerCtx<'_>,
     c: &ContractLegacy,
-    out: &mut Vec<ExpandedContract>,
+    out: &mut Vec<Mission>,
 ) {
     let anchor = ContractAnchor::ContractLegacy(c);
     let contract_results = c.contract_results.as_ref();
@@ -831,7 +826,7 @@ fn emit_from_legacy(
         c.id,
         &c.debug_name,
         c.template,
-        ContractOrigin::ContractLegacy,
+        None /*Legacy*/,
     ));
     for sub_h in &c.sub_contracts {
         if let Some(sub) = sub_h.get(pools) {
@@ -854,7 +849,7 @@ fn emit_from_legacy(
                 sub.id,
                 &c.debug_name,
                 c.template,
-                ContractOrigin::SubContract { parent: c.id },
+                Some(c.id),
             ));
         }
     }
@@ -873,7 +868,7 @@ fn emit_from_career(
     generator_id: Guid,
     ctx: &HandlerCtx<'_>,
     c: &CareerContract,
-    out: &mut Vec<ExpandedContract>,
+    out: &mut Vec<Mission>,
 ) {
     let anchor = ContractAnchor::CareerContract(c);
     let contract_results = c.contract_results.as_ref();
@@ -898,7 +893,7 @@ fn emit_from_career(
         c.id,
         &c.debug_name,
         c.template,
-        ContractOrigin::CareerContract,
+        None /*Career*/,
     ));
     for sub_h in &c.sub_contracts {
         if let Some(sub) = sub_h.get(pools) {
@@ -921,7 +916,7 @@ fn emit_from_career(
                 sub.id,
                 &c.debug_name,
                 c.template,
-                ContractOrigin::SubContract { parent: c.id },
+                Some(c.id),
             ));
         }
     }
@@ -949,8 +944,8 @@ fn build_expansion(
     id: Guid,
     debug_name: &str,
     template_guid: Option<Guid>,
-    origin: ContractOrigin,
-) -> ExpandedContract {
+    subcontract_of: Option<Guid>,
+) -> Mission {
     let ResolvedText {
         title,
         title_key,
@@ -1004,12 +999,16 @@ fn build_expansion(
 
     let mission_span = collect_mission_span(&prerequisites, localities);
 
-    ExpandedContract {
+    let origin = MissionOrigin {
+        kind: ctx.kind,
+        source_debug_name: ctx.debug_name.clone(),
+        generator_id,
+        subcontract_of,
+    };
+    Mission {
         id,
         debug_name: debug_name.to_string(),
-        generator_id,
-        handler_kind: ctx.kind,
-        handler_debug_name: ctx.debug_name.clone(),
+        origin,
         title,
         title_key,
         description,
@@ -1022,7 +1021,6 @@ fn build_expansion(
         prerequisites,
         encounters,
         mission_span,
-        origin,
     }
 }
 

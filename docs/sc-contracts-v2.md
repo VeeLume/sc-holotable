@@ -491,15 +491,15 @@ The match adds a few lines but lets us render NPC and Entity encounters distinct
 
 ## Phasing
 
-The refactor is large enough to warrant landing it in checkpoints. Suggested order, each phase compiles + tests + leaves the workspace in a working state:
+The refactor is large enough to warrant landing it in checkpoints. Each phase compiles + tests + leaves the workspace in a working state.
 
-1. **Phase 1 — TagBag symmetry on existing Encounter shape.** Replace `SpawnContext` with `TagBag` + classifier methods, surface negative/markup/entity bags. No `Mission` rename yet. Smallest possible footprint.
-2. **Phase 2 — Reward consolidation.** `MissionRewards` struct, `Contract.rewards` field. (Yes, on `Contract` — pre-rename.)
-3. **Phase 3 — Pool fields on `ContractIndex` + divergence methods + `find_bp_conflicts` deprecation.** Add `MissionPools` (built at index construction; populates `title_key`, `description_key`, `full_equivalence`). Add divergence methods (`blueprint_mixed`, `rewards_uec_consistent`, …) on the index. Existing cluster API (`KeyCluster`, `ClusterDivergence`, `cluster_by_title_key`, `cluster_by_description_key`) becomes a thin wrapper that reads from the precomputed pools; deprecate it. `find_bp_conflicts` becomes a one-line filter over `index.pools.title_key`.
-4. **Phase 4 — Remove implicit merge from the pipeline.** `ContractIndex.contracts` becomes `Vec<ExpandedRow>`-shaped — one row per expansion, no merging. `Variation` and `title_siblings` removed. Consumer code that walked variations now iterates sibling Missions in a pool. This is the biggest behavioral change: mission count goes from ~1,642 to ~4,590.
-5. **Phase 5 — `Contract` → `Mission` rename.** Mechanical: every public reference. `ContractIndex` → `MissionIndex`. Hide `handler_kind` / `handler_debug_name` behind `MissionOrigin` with optional `subcontract_of`.
-6. **Phase 6 — `Encounter` enum + NPC widening.** Convert ship-only `Vec<EncounterGroup>` into `Vec<Encounter>`. Add NPC extraction + `mission_allied_marker` surface. Entity extraction can land in the same phase or follow.
-7. **Phase 7 — `EncounterWave` → `EncounterPhase` rename.** Smallest cosmetic; saved for last so it's easy to revert if real-world consumer feedback prefers `Wave`.
+1. **Phase 1 — TagBag symmetry on existing Encounter shape.** ✅ landed `a00a0d1`. Replaced `SpawnContext` with `TagBag` + classifier methods, surfaced negative/markup/entity bags symmetrically.
+2. **Phase 2 — Reward consolidation.** ✅ landed `d2668a3`. Six top-level reward fields on Contract collapsed into one `MissionRewards` struct.
+3. **Phase 3 — Pool fields + divergence methods.** ✅ landed `4d74d8f`. Added `MissionPools` to ContractIndex with `title_key` / `description_key` HashMaps + opt-in divergence methods (`blueprint_mixed`, `rewards_uec_consistent`, …). Cluster API deprecated.
+4. **Phase 4 — Remove implicit merge from the pipeline.** ✅ landed `c636f51`. `ContractIndex.contracts` now holds `Vec<ExpandedContract>` directly (4,590 rows on SC 4.7 vs the 1,642 merged). `merge.rs`, `clusters.rs`, `Variation`, `title_siblings`, `find_bp_conflicts`, the cluster API and `tui/clusters.rs` all deleted.
+5. **Phase 5 — `Contract` → `Mission` rename.** ✅ landed `b271e82`. `ExpandedContract → Mission`, `ContractIndex → MissionIndex`. Three handler fields + `ContractOrigin` enum consolidated into `MissionOrigin` struct with `subcontract_of: Option<Guid>`.
+6. **Phase 6 — `Encounter` enum + NPC widening.** ⏳ pending. Convert ship-only `Vec<EncounterGroup>` into `Vec<Encounter>` with `Ships / Npcs / Entities / Unknown` variants. NPC extraction surfaces `mission_allied_marker` (the typed Allied/Hostile signal sc-langpatch §1's crimestat work needs); Entity extraction can land in the same phase or follow.
+7. **Phase 7 — `EncounterWave` → `EncounterPhase` rename.** ⏳ pending. Smallest cosmetic; saved for last so it's easy to revert if real-world consumer feedback prefers `Wave`.
 
 Phases 1–4 reshape the data model; phase 5 is rename-only; phase 6 adds new data; phase 7 is naming.
 

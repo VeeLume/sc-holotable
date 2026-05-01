@@ -25,7 +25,7 @@
 
 use std::collections::{BTreeMap, BTreeSet, HashMap};
 
-use sc_contracts::{ContractIndex, EncounterGroup, EncounterSlot};
+use sc_contracts::{MissionIndex, EncounterGroup, EncounterSlot};
 use sc_extract::{AssetConfig, AssetData, AssetSource, Datacore, DatacoreConfig};
 
 /// One row in the analytics worklist — flatten contract → group →
@@ -67,7 +67,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let assets = AssetSource::from_install(&install)?;
     let asset_data = AssetData::extract(&assets, &AssetConfig::standard())?;
     let datacore = Datacore::parse(&assets, &asset_data, &DatacoreConfig::standard())?;
-    let index = ContractIndex::build(&datacore, &asset_data.locale);
+    let index = MissionIndex::build(&datacore, &asset_data.locale);
 
     // Flatten everything into a single Row vec for cheap multi-pass
     // analysis. Classifier projections are materialised once here so
@@ -75,7 +75,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let tree = &index.tag_tree;
     let mut rows: Vec<Row<'_>> = Vec::new();
     for c in &index.contracts {
-        let handler_kind = format!("{:?}", c.handler_kind);
+        let handler_kind = format!("{:?}", c.origin.kind);
         for g in &c.encounters {
             for w in &g.waves {
                 for slot in &w.slots {

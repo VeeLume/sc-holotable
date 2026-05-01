@@ -2,7 +2,7 @@
 //!
 //! Phase 4 of the v2 redesign: replaces the old `find_bp_conflicts`
 //! helper with the precomputed [`MissionPools`] + divergence helpers
-//! on [`ContractIndex`]. The same answer falls out of one filter over
+//! on [`MissionIndex`]. The same answer falls out of one filter over
 //! `index.pools.title_key`.
 //!
 //! Run:
@@ -13,7 +13,7 @@
 
 use std::collections::HashSet;
 
-use sc_contracts::{ContractIndex, ExpandedContract, LocalityRegistry};
+use sc_contracts::{MissionIndex, Mission, LocalityRegistry};
 use sc_extract::{AssetConfig, AssetData, AssetSource, Datacore, DatacoreConfig, Guid};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -38,8 +38,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let asset_data = AssetData::extract(&assets, &AssetConfig::standard())?;
     let datacore = Datacore::parse(&assets, &asset_data, &DatacoreConfig::standard())?;
 
-    let index = ContractIndex::build(&datacore, &asset_data.locale);
-    println!("ContractIndex: {} contract expansions\n", index.len());
+    let index = MissionIndex::build(&datacore, &asset_data.locale);
+    println!("MissionIndex: {} contract expansions\n", index.len());
 
     // Collect title-key pools where blueprint rewards diverge across
     // members. The two divergence axes:
@@ -60,7 +60,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         groups.retain(|(_, ids)| {
             index.iter_pool(ids).any(|c| {
                 c.debug_name.to_lowercase().contains("pyro")
-                    || c.handler_debug_name.to_lowercase().contains("pyro")
+                    || c.origin.source_debug_name.to_lowercase().contains("pyro")
             })
         });
     }
@@ -118,7 +118,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 }
                 _ => "  (no blueprint)".to_string(),
             };
-            println!("      [{:?}] {}", c.handler_kind, c.debug_name);
+            println!("      [{:?}] {}", c.origin.kind, c.debug_name);
             println!("        {bp_label}");
             let span = render_span(c, &index.localities);
             if !span.is_empty() {
@@ -138,7 +138,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 /// Render the contract's mission_span — each locality resolved to
 /// its `region_label` (e.g., `"Pyro: Bloom, Rat's Nest"`), prefixed
 /// with the locality's stable record name (e.g., `"RegionB"`).
-fn render_span(c: &ExpandedContract, localities: &LocalityRegistry) -> String {
+fn render_span(c: &Mission, localities: &LocalityRegistry) -> String {
     c.mission_span
         .iter()
         .filter_map(|g| localities.get(g))
@@ -159,7 +159,7 @@ fn render_span(c: &ExpandedContract, localities: &LocalityRegistry) -> String {
 }
 
 /// First 4 BP item display names for an at-a-glance preview.
-fn sample_items(c: &ExpandedContract) -> String {
+fn sample_items(c: &Mission) -> String {
     let Some(bp) = &c.rewards.blueprint else {
         return "—".into();
     };

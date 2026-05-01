@@ -23,7 +23,7 @@ use std::time::Instant;
 
 use anyhow::{Context as _, Result};
 use sc_contracts::{
-    AssetConfig, AssetData, AssetSource, ContractIndex, Datacore, DatacoreConfig,
+    AssetConfig, AssetData, AssetSource, MissionIndex, Datacore, DatacoreConfig,
 };
 use slt::{Border, Color, Context, KeyCode, KeyModifiers, RunConfig, ScrollState, TabsState, Theme};
 
@@ -61,8 +61,8 @@ fn main() -> Result<()> {
         parse_started.elapsed().as_secs_f32()
     );
 
-    eprintln!("sc-explorer: building ContractIndex...");
-    let index = ContractIndex::build(&datacore, &asset_data.locale);
+    eprintln!("sc-explorer: building MissionIndex...");
+    let index = MissionIndex::build(&datacore, &asset_data.locale);
     eprintln!("  {} contract(s)", index.contracts.len());
 
     eprintln!("sc-explorer: materialising weapon set...");
@@ -101,7 +101,7 @@ fn main() -> Result<()> {
 }
 
 struct AppState {
-    index: ContractIndex,
+    index: MissionIndex,
     weapon_set: sc_weapons::tui::WeaponSet,
     pool_checks: Vec<PoolRow>,
     tabs: TabsState,

@@ -3,18 +3,18 @@
 //! Gated behind the `tui` feature. The workspace binary
 //! `tools/sc-explorer` composes this module with `sc_weapons::tui` plus
 //! its own pool-census tab. Each domain crate owns its own view so when
-//! `ExpandedContract` grows a field, the rendering updates next to it.
+//! `Mission` grows a field, the rendering updates next to it.
 //!
 //! The crate-level [`render`]/[`ExplorerState`] below is the contracts
 //! list-detail view; the [`clusters`] sub-module renders pool-keyed
 //! browsing (title key / description key) using the precomputed
-//! [`crate::MissionPools`] + divergence helpers on [`ContractIndex`].
+//! [`crate::MissionPools`] + divergence helpers on [`MissionIndex`].
 
 use sc_extract::{Datacore, TagTree};
 use slt::{Border, Color, Context, KeyCode, ListState, ScrollState, TextInputState};
 
-use crate::expand::{EncounterSlot, ExpandedContract, RewardAmount};
-use crate::index::ContractIndex;
+use crate::expand::{EncounterSlot, Mission, RewardAmount};
+use crate::index::MissionIndex;
 
 /// Persistent state for the contracts explorer view.
 ///
@@ -100,7 +100,7 @@ pub fn pool_checks(datacore: &Datacore) -> Vec<PoolCheck> {
 /// Layout: a bordered column with the filter input + count header, then
 /// a row split between the contract list and the detail panel for the
 /// currently selected contract.
-pub fn render(ui: &mut Context, state: &mut ExplorerState, index: &ContractIndex) {
+pub fn render(ui: &mut Context, state: &mut ExplorerState, index: &MissionIndex) {
     let filter = state.filter.value.to_lowercase();
     let filtered: Vec<usize> = index
         .contracts
@@ -181,7 +181,7 @@ pub fn render(ui: &mut Context, state: &mut ExplorerState, index: &ContractIndex
     });
 }
 
-fn matches_filter(c: &ExpandedContract, filter: &str) -> bool {
+fn matches_filter(c: &Mission, filter: &str) -> bool {
     if filter.is_empty() {
         return true;
     }
@@ -193,7 +193,7 @@ fn matches_filter(c: &ExpandedContract, filter: &str) -> bool {
     c.debug_name.to_lowercase().contains(filter)
 }
 
-fn format_list_item(c: &ExpandedContract) -> String {
+fn format_list_item(c: &Mission) -> String {
     let title = c.title.as_deref().unwrap_or(&c.debug_name);
     let marker = if c.has_runtime_substitution { '~' } else { ' ' };
     let bp = if c.rewards.blueprint.is_some() { "[BP]" } else { "    " };
@@ -203,7 +203,7 @@ fn format_list_item(c: &ExpandedContract) -> String {
 fn render_detail(
     ui: &mut Context,
     scroll: &mut ScrollState,
-    index: &ContractIndex,
+    index: &MissionIndex,
     idx: usize,
 ) {
     let c = &index.contracts[idx];
@@ -218,8 +218,8 @@ fn render_detail(
         ui.separator();
 
         // Identity
-        kv(ui, "handler", &format!("{:?}", c.handler_kind));
-        kv(ui, "handler_debug", &c.handler_debug_name);
+        kv(ui, "handler", &format!("{:?}", c.origin.kind));
+        kv(ui, "handler_debug", &c.origin.source_debug_name);
         if c.has_runtime_substitution {
             ui.text("title contains ~mission(...) runtime substitution")
                 .fg(Color::Yellow);
@@ -294,7 +294,7 @@ fn render_detail(
                     let bp = if sib.rewards.blueprint.is_some() { "[BP] " } else { "" };
                     ui.text(format!(
                         "  • {bp}{}  ({:?})",
-                        sib.debug_name, sib.handler_kind
+                        sib.debug_name, sib.origin.kind
                     ));
                 }
             }

@@ -4,7 +4,7 @@
 //! populated, and that the divergence helpers (blueprint_mixed,
 //! rewards_uec_consistent, ...) match the live cluster numbers.
 
-use sc_contracts::ContractIndex;
+use sc_contracts::MissionIndex;
 use sc_extract::{AssetConfig, AssetData, AssetSource, Datacore, DatacoreConfig};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -13,7 +13,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let assets = AssetSource::from_install(&install)?;
     let asset_data = AssetData::extract(&assets, &AssetConfig::standard())?;
     let datacore = Datacore::parse(&assets, &asset_data, &DatacoreConfig::standard())?;
-    let index = ContractIndex::build(&datacore, &asset_data.locale);
+    let index = MissionIndex::build(&datacore, &asset_data.locale);
 
     println!("=== MissionPools smoke ===");
     println!("contracts: {}", index.contracts.len());
@@ -47,7 +47,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         for c in index.iter_pool(ids).take(5) {
             let bp = if c.rewards.blueprint.is_some() { "[BP]" } else { "    " };
             let title = c.title.as_deref().unwrap_or(&c.debug_name);
-            println!("  {bp} {} ({:?})", title, c.handler_kind);
+            println!("  {bp} {} ({:?})", title, c.origin.kind);
         }
     }
 

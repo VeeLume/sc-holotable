@@ -1,20 +1,22 @@
-//! Top-level [`ContractIndex`] — the one-stop entry point for
+//! Top-level [`MissionIndex`] — the one-stop entry point for
 //! consumers.
 //!
-//! A `ContractIndex` owns the merged contract list plus every registry
-//! needed to resolve GUIDs the contracts point at. Build it once from
-//! a [`sc_extract::Datacore`] + [`sc_extract::LocaleMap`]; carry it
+//! A `MissionIndex` owns the contract-expansion list plus every
+//! registry needed to resolve the GUIDs missions point at, and a
+//! precomputed [`MissionPools`] grouping for the common patcher-tool
+//! axes (title key, description key). Build once from a
+//! [`sc_extract::Datacore`] + [`sc_extract::LocaleMap`]; carry it
 //! around freely; look up by GUID or iterate.
 //!
 //! ```no_run
-//! use sc_contracts::ContractIndex;
+//! use sc_contracts::MissionIndex;
 //! # fn demo(datacore: &sc_extract::Datacore, locale: &sc_extract::LocaleMap) {
-//! let index = ContractIndex::build(datacore, locale);
-//! println!("{} contracts ({} with mission span)",
+//! let index = MissionIndex::build(datacore, locale);
+//! println!("{} missions ({} with mission span)",
 //!     index.contracts.len(),
-//!     index.contracts.iter().filter(|c| !c.mission_span.is_empty()).count(),
+//!     index.contracts.iter().filter(|m| !m.mission_span.is_empty()).count(),
 //! );
-//! for contract in &index.contracts {
+//! for mission in &index.contracts {
 //!     // …annotate title, render rewards, resolve span via
 //!     //    index.localities.get(guid), etc.
 //! }
@@ -27,7 +29,7 @@ use sc_extract::{Datacore, Guid, LocaleMap, TagTree};
 
 use crate::blueprints::BlueprintPoolRegistry;
 use crate::currency::RewardCurrencyCatalog;
-use crate::expand::{ExpandedContract, expand_all};
+use crate::expand::{Mission, expand_all};
 use crate::locality::{LocalityRegistry, LocationRegistry};
 use crate::pools::{self, MissionPools};
 use crate::ships::ShipRegistry;
@@ -39,20 +41,20 @@ use crate::ships::ShipRegistry;
 /// `blueprint_reward.pool_guid`, `reward_scrip[i].currency_guid`,
 /// encounter candidate GUIDs — that need one of these registries to
 /// resolve into user-facing text. Consumers either keep the entire
-/// `ContractIndex` or pull specific registries out at build time.
+/// `MissionIndex` or pull specific registries out at build time.
 ///
-/// Fields are public by convention — `ContractIndex` is a plain data
+/// Fields are public by convention — `MissionIndex` is a plain data
 /// bundle, not an opaque handle. If a consumer needs only some
 /// registries, it can drop the rest after build.
 #[derive(Debug, Clone)]
-pub struct ContractIndex {
+pub struct MissionIndex {
     /// Every contract expansion as a flat list — one entry per
     /// `(generator, handler, contract, optional sub_contract)` tuple.
     /// Phase 4 of the v2 redesign removed the implicit merge step;
-    /// each `ExpandedContract` now has a unique GUID with no
+    /// each `Mission` now has a unique GUID with no
     /// canonical-id ambiguity. Use [`Self::pools`] for grouping by
     /// title key, description key, etc.
-    pub contracts: Vec<ExpandedContract>,
+    pub contracts: Vec<Mission>,
 
     /// Ship entity lookup + spawn-query resolver. Holds every
     /// `EntityClassDefinition` reachable from a contract spawn query
@@ -92,11 +94,11 @@ pub struct ContractIndex {
 
     /// Fast `Guid → index` lookup for [`Self::get`]. Built at
     /// construction; stays in sync with `contracts` because
-    /// `ContractIndex` is immutable after `build`.
+    /// `MissionIndex` is immutable after `build`.
     by_id: HashMap<Guid, usize>,
 }
 
-impl ContractIndex {
+impl MissionIndex {
     /// Run all four pipeline stages and return the result.
     ///
     /// On SC 4.7 LIVE this takes ~2–3s in release (dominated by
@@ -144,15 +146,15 @@ impl ContractIndex {
         }
     }
 
-    /// Look up a contract by GUID. Each `ExpandedContract` has a
+    /// Look up a contract by GUID. Each `Mission` has a
     /// unique GUID (sub-contracts and their parents are sibling rows
     /// after the merge step's removal in v2 phase 4).
-    pub fn get(&self, id: Guid) -> Option<&ExpandedContract> {
+    pub fn get(&self, id: Guid) -> Option<&Mission> {
         self.by_id.get(&id).map(|&i| &self.contracts[i])
     }
 
     /// Convenience — iterate every contract in index order.
-    pub fn iter(&self) -> impl Iterator<Item = &ExpandedContract> + '_ {
+    pub fn iter(&self) -> impl Iterator<Item = &Mission> + '_ {
         self.contracts.iter()
     }
 
@@ -171,7 +173,7 @@ impl ContractIndex {
     pub fn iter_pool<'a>(
         &'a self,
         ids: &'a [Guid],
-    ) -> impl Iterator<Item = &'a ExpandedContract> + 'a {
+    ) -> impl Iterator<Item = &'a Mission> + 'a {
         ids.iter().filter_map(|id| self.get(*id))
     }
 
@@ -254,7 +256,7 @@ impl ContractIndex {
 
     /// True if pool members disagree on handler_kind.
     pub fn handler_kind_mixed(&self, ids: &[Guid]) -> bool {
-        is_mixed(self.iter_pool(ids).map(|c| c.handler_kind))
+        is_mixed(self.iter_pool(ids).map(|c| c.origin.kind))
     }
 
     /// True if pool members disagree on mission_span (set-equality).
@@ -301,7 +303,7 @@ mod tests {
         // Can't build without a Datacore, but can construct an empty
         // shell to exercise the accessor surface. The real build is
         // covered by the `examples/*` live validation.
-        let idx = ContractIndex {
+        let idx = MissionIndex {
             contracts: Vec::new(),
             ships: ShipRegistry::default(),
             blueprints: BlueprintPoolRegistry::default(),

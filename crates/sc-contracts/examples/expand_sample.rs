@@ -1,6 +1,6 @@
 //! Sample run of [`sc_contracts::expand_all`].
 //!
-//! Prints summary counts + a handful of representative `ExpandedContract`
+//! Prints summary counts + a handful of representative `Mission`
 //! entries per handler kind. Used to spot-check the expansion pipeline
 //! against SC 4.7 LIVE.
 //!
@@ -16,7 +16,7 @@ use std::collections::BTreeMap;
 use std::time::Instant;
 
 use sc_contracts::{
-    BlueprintPoolRegistry, ExpandedContract, HandlerKind, LocalityRegistry, LocationRegistry,
+    BlueprintPoolRegistry, Mission, HandlerKind, LocalityRegistry, LocationRegistry,
     RewardAmount, RewardCurrencyCatalog, ShipRegistry, expand_all,
 };
 use sc_extract::{AssetConfig, AssetData, AssetSource, Datacore, DatacoreConfig, Guid};
@@ -72,7 +72,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         &localities,
     );
     println!(
-        "expand_all: {} ExpandedContract(s) in {:.2}s\n",
+        "expand_all: {} Mission(s) in {:.2}s\n",
         expansions.len(),
         t0.elapsed().as_secs_f64(),
     );
@@ -82,11 +82,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Spot-check rows.
     println!();
     if let Some(f) = filter {
-        let matching: Vec<&ExpandedContract> = expansions
+        let matching: Vec<&Mission> = expansions
             .iter()
             .filter(|e| {
                 e.debug_name.to_lowercase().contains(&f)
-                    || e.handler_debug_name.to_lowercase().contains(&f)
+                    || e.origin.source_debug_name.to_lowercase().contains(&f)
                     || e.title
                         .as_deref()
                         .map(|t| t.to_lowercase().contains(&f))
@@ -117,7 +117,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             HandlerKind::LinearSeries,
             HandlerKind::Tutorial,
         ] {
-            for e in expansions.iter().filter(|e| e.handler_kind == kind).take(2) {
+            for e in expansions.iter().filter(|e| e.origin.kind == kind).take(2) {
                 print_expansion(e);
             }
         }
@@ -137,10 +137,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 
-fn print_summary(expansions: &[ExpandedContract]) {
+fn print_summary(expansions: &[Mission]) {
     let mut by_kind: BTreeMap<HandlerKind, usize> = BTreeMap::new();
     for e in expansions {
-        *by_kind.entry(e.handler_kind).or_default() += 1;
+        *by_kind.entry(e.origin.kind).or_default() += 1;
     }
 
     let with_title = expansions.iter().filter(|e| e.title.is_some()).count();
@@ -217,12 +217,13 @@ fn print_summary(expansions: &[ExpandedContract]) {
     }
 }
 
-fn print_expansion(e: &ExpandedContract) {
-    let origin = match e.origin {
-        sc_contracts::ContractOrigin::Contract => "Contract",
-        sc_contracts::ContractOrigin::ContractLegacy => "Legacy",
-        sc_contracts::ContractOrigin::CareerContract => "Career",
-        sc_contracts::ContractOrigin::SubContract { .. } => "SubContract",
+fn print_expansion(e: &Mission) {
+    let origin = if e.origin.subcontract_of.is_some() {
+        "SubContract"
+    } else {
+        // The Contract / Legacy / Career discriminator went away in
+        // v2 phase 5; the handler kind is the actionable signal.
+        "Top-level"
     };
     let title = e.title.as_deref().unwrap_or("<none>");
     let subst = if e.has_runtime_substitution { " *" } else { "" };
@@ -248,8 +249,8 @@ fn print_expansion(e: &ExpandedContract) {
     println!();
     println!(
         "  [{kind:?}/{origin}] {hd} / {cd}",
-        kind = e.handler_kind,
-        hd = e.handler_debug_name,
+        kind = e.origin.kind,
+        hd = e.origin.source_debug_name,
         cd = e.debug_name,
     );
     println!("      title:    {title}{subst}");
@@ -415,9 +416,9 @@ fn print_expansion(e: &ExpandedContract) {
 
 /// Dump every prereq as a structured one-liner so consumers can see which
 /// tag GUIDs and which min/max rep standings drive apparent differences.
-fn print_detail(e: &ExpandedContract) {
+fn print_detail(e: &Mission) {
     println!("      id:       {}", e.id);
-    if let sc_contracts::ContractOrigin::SubContract { parent } = e.origin {
+    if let Some(parent) = e.origin.subcontract_of {
         println!("      parent:   {parent}");
     }
     for (i, p) in e.prerequisites.iter().enumerate() {
@@ -514,7 +515,7 @@ fn print_detail(e: &ExpandedContract) {
 /// the system / planet spread a contract covers — specifically useful
 /// for Pyro / Nyx sub-contract variations where the "radius" is really
 /// a set of offered pickup sites.
-fn print_locality_detail(e: &ExpandedContract, datacore: &Datacore) {
+fn print_locality_detail(e: &Mission, datacore: &Datacore) {
     let db = datacore.db();
     for p in &e.prerequisites {
         match p {
@@ -722,7 +723,7 @@ fn strip_noise(s: &str) -> String {
 /// For a list of matching expansions, find every field that differs across
 /// them. Prints a compact "what actually differs" report so the user can
 /// see sub-contract distinctions that the summary collapses.
-fn print_delta(matching: &[&ExpandedContract]) {
+fn print_delta(matching: &[&Mission]) {
     if matching.len() < 2 {
         return;
     }
@@ -755,7 +756,10 @@ fn print_delta(matching: &[&ExpandedContract]) {
 
     println!(
         "  origins:          {:?}",
-        matching.iter().map(|e| e.origin).collect::<Vec<_>>()
+        matching
+            .iter()
+            .map(|e| (e.origin.kind, e.origin.subcontract_of))
+            .collect::<Vec<_>>()
     );
 
     // Prereq-guid fingerprint per row.
