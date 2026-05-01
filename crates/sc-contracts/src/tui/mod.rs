@@ -15,10 +15,10 @@ pub mod clusters;
 
 use std::collections::HashMap;
 
-use sc_extract::Datacore;
+use sc_extract::{Datacore, TagTree};
 use slt::{Border, Color, Context, KeyCode, ListState, ScrollState, TextInputState};
 
-use crate::expand::RewardAmount;
+use crate::expand::{EncounterSlot, RewardAmount};
 use crate::index::ContractIndex;
 use crate::merge::Contract;
 
@@ -173,7 +173,13 @@ pub fn render(ui: &mut Context, state: &mut ExplorerState, index: &ContractIndex
                 .pad(1)
                 .grow(2)
                 .col(|ui| match filtered.get(state.list.selected).copied() {
-                    Some(idx) => render_detail(ui, &mut state.detail_scroll, &index.contracts, idx),
+                    Some(idx) => render_detail(
+                        ui,
+                        &mut state.detail_scroll,
+                        &index.contracts,
+                        idx,
+                        &index.tag_tree,
+                    ),
                     None => {
                         ui.text("(nothing selected)").dim();
                     }
@@ -210,6 +216,7 @@ fn render_detail(
     scroll: &mut ScrollState,
     contracts: &[Contract],
     idx: usize,
+    tree: &TagTree,
 ) {
     let c = &contracts[idx];
 
@@ -300,7 +307,8 @@ fn render_detail(
 
         // Encounters — full per-slot breakdown so we can investigate
         // typed signals (initial_damage_settings, spawn_identifiers,
-        // markup_tag_names, ...) interactively against real contracts.
+        // markup / entity / negative tag bags, ...) interactively
+        // against real contracts.
         if !c.encounters.is_empty() {
             let _ = ui.row(|ui| {
                 ui.text("Encounters").bold();
@@ -322,114 +330,7 @@ fn render_detail(
                     ui.text(format!("      {wave_label} — {} slot(s)", w.slots.len()))
                         .dim();
                     for (i, s) in w.slots.iter().enumerate() {
-                        // Slot header: concurrency / weight / candidate count.
-                        let damage_marker = if s.initial_damage_settings.is_some() {
-                            " [pre-damaged]"
-                        } else {
-                            ""
-                        };
-                        let loc_marker = if s.include_location_ai_spawn_tags {
-                            " [+location-tags]"
-                        } else {
-                            ""
-                        };
-                        ui.text(format!(
-                            "        slot {i}: {}× w={:.2} candidates={}{damage_marker}{loc_marker}",
-                            s.concurrent,
-                            s.weight,
-                            s.candidates.len(),
-                        ));
-                        // Spawn identifiers — the canonical typed role
-                        // markers (Target / Defenders / ...).
-                        if !s.context.spawn_identifiers.is_empty() {
-                            ui.text(format!(
-                                "            spawn_identifiers: {}",
-                                s.context.spawn_identifiers.join(", ")
-                            ))
-                            .fg(Color::Cyan);
-                        }
-                        if !s.context.factions.is_empty() {
-                            ui.text(format!(
-                                "            factions: {}",
-                                s.context.factions.join(", ")
-                            ))
-                            .dim();
-                        }
-                        if !s.context.cargo.is_empty() {
-                            ui.text(format!("            cargo: {}", s.context.cargo.join(", ")))
-                                .dim();
-                        }
-                        if !s.context.ai_traits.is_empty() {
-                            ui.text(format!(
-                                "            ai_traits: {}",
-                                s.context.ai_traits.join(", ")
-                            ))
-                            .dim();
-                        }
-                        if !s.context.mission_tags.is_empty() {
-                            ui.text(format!(
-                                "            mission_tags: {}",
-                                s.context.mission_tags.join(", ")
-                            ))
-                            .dim();
-                        }
-                        if let Some(skill) = s.context.ai_skill {
-                            ui.text(format!(
-                                "            ai_skill: HumanPilot{skill}{}",
-                                if s.context.ace_pilot { " + AcePilot" } else { "" }
-                            ))
-                            .dim();
-                        }
-                        if !s.context.directives.is_empty() {
-                            ui.text(format!(
-                                "            directives: {}",
-                                s.context.directives.join(", ")
-                            ))
-                            .dim();
-                        }
-                        if !s.markup_tag_names.is_empty() {
-                            ui.text(format!(
-                                "            markup_tags: {}",
-                                s.markup_tag_names.join(", ")
-                            ))
-                            .dim();
-                        }
-                        if !s.entity_tag_names.is_empty() {
-                            ui.text(format!(
-                                "            entity_tags: {}",
-                                s.entity_tag_names.join(", ")
-                            ))
-                            .dim();
-                        }
-                        if !s.context.other.is_empty() {
-                            ui.text(format!(
-                                "            other: {}",
-                                s.context.other.join(", ")
-                            ))
-                            .dim();
-                        }
-                        // Candidate ships — first 4 to keep the panel
-                        // readable; consumers that need the full pool
-                        // can read s.candidates directly.
-                        let mut cands_iter = s.candidates.iter();
-                        let preview: Vec<String> = cands_iter
-                            .by_ref()
-                            .take(4)
-                            .map(|cand| cand.display_name.clone())
-                            .collect();
-                        let extra = s.candidates.len().saturating_sub(preview.len());
-                        if !preview.is_empty() {
-                            let suffix = if extra > 0 {
-                                format!(" (+{extra} more)")
-                            } else {
-                                String::new()
-                            };
-                            ui.text(format!(
-                                "            ships: {}{suffix}",
-                                preview.join(", ")
-                            ))
-                            .dim();
-                        }
+                        render_slot(ui, i, s, tree);
                     }
                 }
             }
@@ -469,6 +370,99 @@ fn render_detail(
             kv(ui, "mission_span", &format!("{} locality refs", c.mission_span.len()));
         }
     });
+}
+
+/// Render one [`EncounterSlot`] with all four tag bags surfaced.
+/// `tree` is required for the subtree-classified iterators on
+/// [`crate::TagBag`].
+fn render_slot(ui: &mut Context, i: usize, s: &EncounterSlot, tree: &TagTree) {
+    // Slot header: concurrency / weight / candidate count + flag markers.
+    let damage_marker = if s.initial_damage_settings.is_some() {
+        " [pre-damaged]"
+    } else {
+        ""
+    };
+    let loc_marker = if s.include_location_ai_spawn_tags {
+        " [+location-tags]"
+    } else {
+        ""
+    };
+    let recovery_marker = if s.positive.is_cargo_recovery() {
+        " [cargo-recovery]"
+    } else if s.positive.is_pre_damaged_wreck() {
+        " [wreck]"
+    } else {
+        ""
+    };
+    ui.text(format!(
+        "        slot {i}: {}× w={:.2} candidates={}{damage_marker}{loc_marker}{recovery_marker}",
+        s.concurrent,
+        s.weight,
+        s.candidates.len(),
+    ));
+
+    // Positive bag — classified into subtree categories.
+    let spawn_ids: Vec<&str> = s.positive.spawn_identifiers(tree).collect();
+    if !spawn_ids.is_empty() {
+        ui.text(format!("            spawn_identifiers: {}", spawn_ids.join(", ")))
+            .fg(Color::Cyan);
+    }
+    let factions: Vec<&str> = s.positive.factions(tree).collect();
+    if !factions.is_empty() {
+        ui.text(format!("            factions: {}", factions.join(", "))).dim();
+    }
+    let cargo: Vec<&str> = s.positive.cargo(tree).collect();
+    if !cargo.is_empty() {
+        ui.text(format!("            cargo: {}", cargo.join(", "))).dim();
+    }
+    let ai_traits: Vec<&str> = s.positive.ai_traits(tree).collect();
+    if !ai_traits.is_empty() {
+        ui.text(format!("            ai_traits: {}", ai_traits.join(", "))).dim();
+    }
+    let mission_tags: Vec<&str> = s.positive.mission_tags(tree).collect();
+    if !mission_tags.is_empty() {
+        ui.text(format!("            mission_tags: {}", mission_tags.join(", "))).dim();
+    }
+    if let Some(skill) = s.positive.ai_skill() {
+        let ace = if s.positive.ace_pilot() { " + AcePilot" } else { "" };
+        ui.text(format!("            ai_skill: HumanPilot{skill}{ace}")).dim();
+    }
+    let directives: Vec<&str> = s.positive.directives().collect();
+    if !directives.is_empty() {
+        ui.text(format!("            directives: {}", directives.join(", "))).dim();
+    }
+    let other: Vec<&str> = s.positive.other(tree).collect();
+    if !other.is_empty() {
+        ui.text(format!("            other: {}", other.join(", "))).dim();
+    }
+
+    // Sibling tag bags — flat names; consumers can classify if needed.
+    if !s.negative.is_empty() {
+        ui.text(format!("            negative: {}", s.negative.names.join(", "))).dim();
+    }
+    if !s.markup.is_empty() {
+        ui.text(format!("            markup: {}", s.markup.names.join(", "))).dim();
+    }
+    if !s.entity.is_empty() {
+        ui.text(format!("            entity: {}", s.entity.names.join(", "))).dim();
+    }
+
+    // Candidate ships — first 4 to keep the panel readable.
+    let preview: Vec<String> = s
+        .candidates
+        .iter()
+        .take(4)
+        .map(|cand| cand.display_name.clone())
+        .collect();
+    let extra = s.candidates.len().saturating_sub(preview.len());
+    if !preview.is_empty() {
+        let suffix = if extra > 0 {
+            format!(" (+{extra} more)")
+        } else {
+            String::new()
+        };
+        ui.text(format!("            ships: {}{suffix}", preview.join(", "))).dim();
+    }
 }
 
 fn kv(ui: &mut Context, key: &str, value: &str) {

@@ -59,7 +59,7 @@ mod titles;
 pub mod tui;
 
 pub use blueprints::{BlueprintItem, BlueprintPool, BlueprintPoolRegistry};
-pub use classify::{SpawnContext, parse_ai_skill};
+pub use classify::{TagBag, parse_ai_skill};
 pub use clusters::{
     ClusterDivergence, KeyCluster, cluster_by_description_key, cluster_by_title_key,
 };

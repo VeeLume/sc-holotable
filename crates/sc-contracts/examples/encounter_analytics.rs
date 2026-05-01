@@ -31,6 +31,11 @@ use sc_extract::{AssetConfig, AssetData, AssetSource, Datacore, DatacoreConfig};
 /// One row in the analytics worklist — flatten contract → group →
 /// wave → slot into a single record so every section can iterate
 /// linearly without re-walking the contract graph.
+///
+/// Classified tag projections are precomputed at row construction so
+/// the analytics sections don't have to re-thread the [`TagTree`]
+/// through every helper. The projections come from the slot's
+/// [`sc_contracts::TagBag`] classifier methods.
 struct Row<'a> {
     /// Contract `debug_name` — kept for ad-hoc debugging when adding a
     /// new section that wants to spot-print which contracts a row came
@@ -45,8 +50,15 @@ struct Row<'a> {
     ext_token: &'a str,
     /// Wave name (`SpawnDescription_ShipGroup.Name`).
     wave_name: &'a str,
-    /// Slot reference for tag inspection.
+    /// Slot reference for raw access (initial_damage_settings, candidates, etc.).
     slot: &'a EncounterSlot,
+    // Precomputed classifications of the positive tag bag.
+    factions: Vec<String>,
+    cargo: Vec<String>,
+    spawn_identifiers: Vec<String>,
+    ai_traits: Vec<String>,
+    mission_tags: Vec<String>,
+    directives: Vec<String>,
 }
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -58,13 +70,25 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let index = ContractIndex::build(&datacore, &asset_data.locale);
 
     // Flatten everything into a single Row vec for cheap multi-pass
-    // analysis.
+    // analysis. Classifier projections are materialised once here so
+    // section bodies read them as plain Vec<String>s.
+    let tree = &index.tag_tree;
     let mut rows: Vec<Row<'_>> = Vec::new();
     for c in &index.contracts {
         let handler_kind = format!("{:?}", c.handler_kind);
         for g in &c.encounters {
             for w in &g.waves {
                 for slot in &w.slots {
+                    let to_owned = |it: &mut dyn Iterator<Item = &str>| -> Vec<String> {
+                        it.map(String::from).collect()
+                    };
+                    let factions = to_owned(&mut slot.positive.factions(tree));
+                    let cargo = to_owned(&mut slot.positive.cargo(tree));
+                    let spawn_identifiers =
+                        to_owned(&mut slot.positive.spawn_identifiers(tree));
+                    let ai_traits = to_owned(&mut slot.positive.ai_traits(tree));
+                    let mission_tags = to_owned(&mut slot.positive.mission_tags(tree));
+                    let directives = to_owned(&mut slot.positive.directives());
                     rows.push(Row {
                         contract_debug_name: &c.debug_name,
                         handler_kind: handler_kind.clone(),
@@ -72,6 +96,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                         ext_token: &g.extended_text_token,
                         wave_name: &w.name,
                         slot,
+                        factions,
+                        cargo,
+                        spawn_identifiers,
+                        ai_traits,
+                        mission_tags,
+                        directives,
                     });
                 }
             }
@@ -98,7 +128,7 @@ fn section_1_available_to_salvage(rows: &[Row<'_>]) {
     println!("=== Section 1: mission_tags='AvailableToSalvage' distribution ===");
     let hits: Vec<&Row<'_>> = rows
         .iter()
-        .filter(|r| r.slot.context.mission_tags.iter().any(|t| t == "AvailableToSalvage"))
+        .filter(|r| r.mission_tags.iter().any(|t| t == "AvailableToSalvage"))
         .collect();
 
     println!("  total slots tagged AvailableToSalvage: {}", hits.len());
@@ -126,15 +156,15 @@ fn section_1_available_to_salvage(rows: &[Row<'_>]) {
     let mut co_cargo: BTreeMap<&str, usize> = BTreeMap::new();
     let mut co_ai: BTreeMap<&str, usize> = BTreeMap::new();
     for r in &hits {
-        for t in &r.slot.context.mission_tags {
+        for t in &r.mission_tags {
             if t != "AvailableToSalvage" {
                 *co_mission.entry(t.as_str()).or_default() += 1;
             }
         }
-        for t in &r.slot.context.cargo {
+        for t in &r.cargo {
             *co_cargo.entry(t.as_str()).or_default() += 1;
         }
-        for t in &r.slot.context.ai_traits {
+        for t in &r.ai_traits {
             *co_ai.entry(t.as_str()).or_default() += 1;
         }
     }
@@ -185,31 +215,31 @@ fn print_fingerprint(label: &str, rows: &[Row<'_>], pred: impl Fn(&Row<'_>) -> b
     println!("    wave_name:       {}", waves);
 
     let mtags = top_strings(
-        hits.iter().flat_map(|r| r.slot.context.mission_tags.iter().map(|s| s.as_str())),
+        hits.iter().flat_map(|r| r.mission_tags.iter().map(|s| s.as_str())),
         6,
     );
     println!("    mission_tags:    {}", mtags);
 
     let cargo = top_strings(
-        hits.iter().flat_map(|r| r.slot.context.cargo.iter().map(|s| s.as_str())),
+        hits.iter().flat_map(|r| r.cargo.iter().map(|s| s.as_str())),
         6,
     );
     println!("    cargo:           {}", cargo);
 
     let ai = top_strings(
-        hits.iter().flat_map(|r| r.slot.context.ai_traits.iter().map(|s| s.as_str())),
+        hits.iter().flat_map(|r| r.ai_traits.iter().map(|s| s.as_str())),
         6,
     );
     println!("    ai_traits:       {}", ai);
 
     let dirs = top_strings(
-        hits.iter().flat_map(|r| r.slot.context.directives.iter().map(|s| s.as_str())),
+        hits.iter().flat_map(|r| r.directives.iter().map(|s| s.as_str())),
         4,
     );
     println!("    directives:      {}", dirs);
 
     let factions = top_strings(
-        hits.iter().flat_map(|r| r.slot.context.factions.iter().map(|s| s.as_str())),
+        hits.iter().flat_map(|r| r.factions.iter().map(|s| s.as_str())),
         4,
     );
     println!("    factions:        {}", factions);
@@ -239,7 +269,7 @@ fn section_3_power_state_traits(rows: &[Row<'_>]) {
     for r in rows {
         let mut present: Vec<&str> = Vec::new();
         for trait_name in &power_traits {
-            if r.slot.context.ai_traits.iter().any(|t| t == trait_name) {
+            if r.ai_traits.iter().any(|t| t == trait_name) {
                 *counts.entry(trait_name).or_default() += 1;
                 present.push(*trait_name);
             }
@@ -274,7 +304,7 @@ fn section_3_power_state_traits(rows: &[Row<'_>]) {
         .iter()
         .filter(|r| {
             r.slot.initial_damage_settings.is_some()
-                && r.slot.context.ai_traits.iter().any(|t| {
+                && r.ai_traits.iter().any(|t| {
                     matches!(t.as_str(), "PoweredOff" | "EngineOff" | "DisablePowerInteractions")
                 })
         })
@@ -321,8 +351,8 @@ fn section_4_wave_names(rows: &[Row<'_>]) {
         let allied_label = allied_names
             .iter()
             .any(|n| r.wave_name.eq_ignore_ascii_case(n) || r.wave_name.contains(n));
-        let typed_hostile = r.slot.context.spawn_identifiers.iter().any(|t| t == "Target")
-            || r.slot.context.cargo.iter().any(|t| t == "Bounty");
+        let typed_hostile = r.spawn_identifiers.iter().any(|t| t == "Target")
+            || r.cargo.iter().any(|t| t == "Bounty");
         if allied_label && typed_hostile {
             mismatches.entry(r.wave_name).or_default().push(r);
         }
@@ -350,11 +380,11 @@ fn section_5_faction_var_crosstab(rows: &[Row<'_>]) {
     let mut var_totals: BTreeMap<&str, usize> = BTreeMap::new();
     let mut faction_totals: BTreeMap<&str, usize> = BTreeMap::new();
     for r in rows {
-        for f in &r.slot.context.factions {
+        for f in &r.factions {
             *counts.entry((r.var_name, f.as_str())).or_default() += 1;
             *faction_totals.entry(f.as_str()).or_default() += 1;
         }
-        if !r.slot.context.factions.is_empty() {
+        if !r.factions.is_empty() {
             *var_totals.entry(r.var_name).or_default() += 1;
         }
     }

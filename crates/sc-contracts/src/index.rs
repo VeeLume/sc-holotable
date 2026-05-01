@@ -23,7 +23,7 @@
 
 use std::collections::HashMap;
 
-use sc_extract::{Datacore, Guid, LocaleMap};
+use sc_extract::{Datacore, Guid, LocaleMap, TagTree};
 
 use crate::blueprints::BlueprintPoolRegistry;
 use crate::currency::RewardCurrencyCatalog;
@@ -74,6 +74,13 @@ pub struct ContractIndex {
     /// with resolved locations + `region_label` summary.
     pub localities: LocalityRegistry,
 
+    /// Tag-tree handle, cloned from the underlying `Datacore` snapshot.
+    /// Required by [`crate::TagBag`] classifier methods (factions /
+    /// cargo / spawn_identifiers / ai_traits / mission_tags) which
+    /// walk tag paths against the live tree on demand. Holding it
+    /// here means consumers don't have to thread it separately.
+    pub tag_tree: TagTree,
+
     /// Fast `Guid → index` lookup for [`Self::get`]. Built at
     /// construction; stays in sync with `contracts` because
     /// `ContractIndex` is immutable after `build`.
@@ -113,6 +120,8 @@ impl ContractIndex {
             .map(|(i, c)| (c.id, i))
             .collect();
 
+        let tag_tree = datacore.snapshot().tag_tree.clone();
+
         Self {
             contracts,
             ships,
@@ -120,6 +129,7 @@ impl ContractIndex {
             currency,
             locations,
             localities,
+            tag_tree,
             by_id,
         }
     }
@@ -178,6 +188,7 @@ mod tests {
             currency: RewardCurrencyCatalog::default(),
             locations: LocationRegistry::default(),
             localities: LocalityRegistry::default(),
+            tag_tree: TagTree::default(),
             by_id: HashMap::new(),
         };
         assert_eq!(idx.len(), 0);

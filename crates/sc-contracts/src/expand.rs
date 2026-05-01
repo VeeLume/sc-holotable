@@ -22,12 +22,12 @@ use sc_extract::generated::{
     ContractPrerequisite_CrimeStat, ContractPrerequisite_Locality, ContractPrerequisite_Location,
     ContractPrerequisite_LocationProperty, ContractPrerequisite_Reputation,
     ContractPrerequisiteBasePtr, ContractResultBasePtr, ContractResults, DataPools,
-    ELocationTypeLevel, Handle, MissionProperty, SubContract, TagList,
+    ELocationTypeLevel, Handle, MissionProperty, SubContract,
 };
 use sc_extract::{Datacore, Guid, LocaleKey, LocaleMap};
 
 use crate::blueprints::BlueprintPoolRegistry;
-use crate::classify::SpawnContext;
+use crate::classify::TagBag;
 use crate::currency::RewardCurrencyCatalog;
 use crate::locality::LocalityRegistry;
 use crate::ships::{ShipCandidate, ShipRegistry};
@@ -124,8 +124,9 @@ pub struct ExpandedContract {
     /// Ship encounter groups — one per
     /// `MissionPropertyValue_ShipSpawnDescriptions` in the contract
     /// graph. Each group holds named waves whose spawn tag queries
-    /// are already resolved through [`ShipRegistry::resolve_spawn`] +
-    /// classified through [`SpawnContext::classify`].
+    /// are already resolved through [`ShipRegistry::resolve_spawn`].
+    /// Per-slot tag lists land in [`EncounterSlot`]'s four [`TagBag`]
+    /// fields (positive / negative / markup / entity).
     pub encounters: Vec<EncounterGroup>,
 
     /// Localities this expansion is offered at. Every `Locality`
@@ -366,6 +367,11 @@ pub struct EncounterWave {
 }
 
 /// A single ship slot inside a wave.
+///
+/// The four [`TagBag`]s correspond directly to the four `TagList`
+/// fields on the underlying `SpawnDescription_Ship`. They're surfaced
+/// symmetrically so consumers can read or classify any of them with
+/// the same shape — see [`TagBag`] for classifier methods.
 #[derive(Debug, Clone)]
 pub struct EncounterSlot {
     /// `concurrentAmount` from `SpawnDescription_Ship` — how many
@@ -378,9 +384,6 @@ pub struct EncounterSlot {
     /// Empty when the query is broken (e.g. Gilly Mission01 Wave3's
     /// typo'd `Relient_Tana` tag) or awaits runtime location context.
     pub candidates: Vec<ShipCandidate>,
-    /// Non-ship tags classified by [`SpawnContext`] — AI skill,
-    /// faction, cargo descriptor, mission-role markers, etc.
-    pub context: SpawnContext,
     /// `SpawnDescription_Ship.initialDamageSettings` — when set, the
     /// ship spawns pre-damaged. Strong typed signal in `4.7` for two
     /// distinct mission types: salvage missions (scrape / fracture
@@ -390,18 +393,30 @@ pub struct EncounterSlot {
     /// Forwarded as the raw record GUID; resolution to a damage
     /// profile is consumer-side.
     pub initial_damage_settings: Option<Guid>,
-    /// `SpawnDescription_Ship.markupTags` resolved to tag names. UI
-    /// markup hints (e.g. `Medium` difficulty marker). Populated on
-    /// 1.7% of ship-spawn options in 4.7.
-    pub markup_tag_names: Vec<String>,
-    /// `SpawnDescription_Ship.entityTags` resolved to tag names.
-    /// Populated on 2.9% of options in 4.7. Forwarded for consumer
-    /// inspection; semantics not yet pinned down.
-    pub entity_tag_names: Vec<String>,
     /// `SpawnDescription_Ship.includeLocationAISpawnTags` — when true
     /// the engine merges in the spawn location's AI-spawn tags at
     /// runtime, so static tag analysis is incomplete for this slot.
     pub include_location_ai_spawn_tags: bool,
+    /// `SpawnDescription_Ship.tags` — the slot's positive tag query.
+    /// Drives ship-candidate resolution; classifier methods on
+    /// [`TagBag`] surface AI skill, factions, cargo descriptors,
+    /// spawn identifiers, mission tags, directives, and role-state
+    /// predicates (`is_cargo_recovery`, `is_pre_damaged_wreck`,
+    /// `is_salvage_target`).
+    pub positive: TagBag,
+    /// `SpawnDescription_Ship.negativeTags` — tags that *exclude*
+    /// matches. Newly visible in v2; consumed by [`ShipRegistry`]
+    /// during resolution but kept here so consumers can audit what
+    /// the slot explicitly rejected.
+    pub negative: TagBag,
+    /// `SpawnDescription_Ship.markupTags` — UI markup hints
+    /// (`Medium` difficulty marker). Populated on 1.7% of ship-spawn
+    /// options in 4.7.
+    pub markup: TagBag,
+    /// `SpawnDescription_Ship.entityTags` — populated on 2.9% of
+    /// options in 4.7. Semantics not yet pinned down; forwarded for
+    /// consumer inspection.
+    pub entity: TagBag,
 }
 
 /// Materialised blueprint reward for a single contract.
@@ -1603,23 +1618,30 @@ fn collect_property_encounters(
                     let Some(option) = option_h.get(pools) else {
                         continue;
                     };
-                    let pos = tag_list_guids(pools, option.tags.as_ref());
-                    let neg = tag_list_guids(pools, option.negative_tags.as_ref());
-                    let candidates = ships.resolve_spawn(&pos, &neg);
-                    let context = SpawnContext::classify(tree, &pos);
-                    let markup_tag_names =
-                        tag_names(pools, tree, option.markup_tags.as_ref());
-                    let entity_tag_names =
-                        tag_names(pools, tree, option.entity_tags.as_ref());
+                    // Resolve all four tag lists into TagBags. ShipRegistry
+                    // still wants HashSet<Guid> for its set-arithmetic
+                    // resolver; build that from the positive/negative bags
+                    // so we don't walk the underlying TagLists twice.
+                    let positive = TagBag::from_handle(pools, tree, option.tags.as_ref());
+                    let negative =
+                        TagBag::from_handle(pools, tree, option.negative_tags.as_ref());
+                    let markup =
+                        TagBag::from_handle(pools, tree, option.markup_tags.as_ref());
+                    let entity =
+                        TagBag::from_handle(pools, tree, option.entity_tags.as_ref());
+                    let pos_set: HashSet<Guid> = positive.guids.iter().copied().collect();
+                    let neg_set: HashSet<Guid> = negative.guids.iter().copied().collect();
+                    let candidates = ships.resolve_spawn(&pos_set, &neg_set);
                     wave.slots.push(EncounterSlot {
                         concurrent: option.concurrent_amount,
                         weight: option.weight,
                         candidates,
-                        context,
                         initial_damage_settings: option.initial_damage_settings,
-                        markup_tag_names,
-                        entity_tag_names,
                         include_location_ai_spawn_tags: option.include_location_aispawn_tags,
+                        positive,
+                        negative,
+                        markup,
+                        entity,
                     });
                 }
             }
@@ -1631,37 +1653,6 @@ fn collect_property_encounters(
             out.push(group);
         }
     }
-}
-
-fn tag_list_guids(pools: &DataPools, h: Option<&Handle<TagList>>) -> HashSet<Guid> {
-    let Some(h) = h else { return HashSet::new() };
-    let Some(list) = h.get(pools) else {
-        return HashSet::new();
-    };
-    list.tags.iter().copied().collect()
-}
-
-/// Resolve a `TagList` handle to a sorted, de-duplicated list of tag
-/// names via the [`TagTree`]. Tags whose GUID isn't in the tree are
-/// dropped silently. Used for surfacing `markup_tags` / `entity_tags`
-/// (typically tiny vecs) on `EncounterSlot`.
-fn tag_names(
-    pools: &DataPools,
-    tree: &sc_extract::TagTree,
-    h: Option<&Handle<TagList>>,
-) -> Vec<String> {
-    let Some(h) = h else { return Vec::new() };
-    let Some(list) = h.get(pools) else {
-        return Vec::new();
-    };
-    let mut names: Vec<String> = list
-        .tags
-        .iter()
-        .filter_map(|g| tree.get(g).map(|n| n.name.clone()))
-        .collect();
-    names.sort();
-    names.dedup();
-    names
 }
 
 fn materialise_blueprint(

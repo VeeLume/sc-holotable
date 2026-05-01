@@ -26,7 +26,7 @@
 use std::collections::{BTreeMap, HashSet};
 
 use sc_contracts::{
-    ContractAnchor, ShipCandidate, ShipRegistry, SpawnContext, resolve_contract_text,
+    ContractAnchor, ShipCandidate, ShipRegistry, TagBag, resolve_contract_text,
 };
 use sc_extract::generated::{
     BaseMissionPropertyValuePtr, CareerContract, Contract, ContractGeneratorHandlerBasePtr,
@@ -314,7 +314,7 @@ fn describe_contracts(
                 let pos = tags_set(pools, o.opt.tags.as_ref());
                 let neg = tags_set(pools, o.opt.negative_tags.as_ref());
                 let candidates = ships.resolve_spawn(&pos, &neg);
-                let ctx = SpawnContext::classify(tree, &pos);
+                let bag = TagBag::new(pos.iter().copied(), tree);
                 let mut names: Vec<&str> =
                     candidates.iter().map(|c| c.display_name.as_str()).collect();
                 names.sort();
@@ -334,17 +334,19 @@ fn describe_contracts(
 
                 // Compact context on same line.
                 let mut tail = Vec::new();
-                if let Some(s) = ctx.ai_skill {
+                if let Some(s) = bag.ai_skill() {
                     tail.push(format!("skill={}", s));
                 }
-                if ctx.ace_pilot {
+                if bag.ace_pilot() {
                     tail.push("Ace".into());
                 }
-                if !ctx.factions.is_empty() {
-                    tail.push(format!("factions={}", ctx.factions.join("+")));
+                let factions: Vec<&str> = bag.factions(tree).collect();
+                if !factions.is_empty() {
+                    tail.push(format!("factions={}", factions.join("+")));
                 }
-                if !ctx.cargo.is_empty() {
-                    tail.push(format!("cargo={}", ctx.cargo.join("+")));
+                let cargo: Vec<&str> = bag.cargo(tree).collect();
+                if !cargo.is_empty() {
+                    tail.push(format!("cargo={}", cargo.join("+")));
                 }
                 if !tail.is_empty() {
                     println!("  [{}]", tail.join(" "));
@@ -887,7 +889,7 @@ fn dump_contract(
             let pos = tags_set(pools, o.opt.tags.as_ref());
             let neg = tags_set(pools, o.opt.negative_tags.as_ref());
             let candidates = ships.resolve_spawn(&pos, &neg);
-            let ctx = SpawnContext::classify(tree, &pos);
+            let bag = TagBag::new(pos.iter().copied(), tree);
             let mut names: Vec<&str> = candidates.iter().map(|c| c.display_name.as_str()).collect();
             names.sort();
             names.dedup();
@@ -908,8 +910,8 @@ fn dump_contract(
                 },
                 n = names.len()
             );
-            if !ctx.is_empty() {
-                print_spawn_context(&ctx, "       ");
+            if !bag.is_empty() {
+                print_spawn_context(&bag, tree, "       ");
             }
             if !neg.is_empty() {
                 let neg_names: Vec<String> = neg
@@ -929,33 +931,39 @@ fn dump_contract(
     println!();
 }
 
-fn print_spawn_context(ctx: &SpawnContext, indent: &str) {
-    if let Some(level) = ctx.ai_skill {
+fn print_spawn_context(bag: &TagBag, tree: &sc_extract::TagTree, indent: &str) {
+    if let Some(level) = bag.ai_skill() {
         print!("{indent}ai_skill={level}");
-        if ctx.ace_pilot {
+        if bag.ace_pilot() {
             print!(" (Ace)");
         }
         println!();
-    } else if ctx.ace_pilot {
+    } else if bag.ace_pilot() {
         println!("{indent}ai_skill=Ace");
     }
-    if !ctx.factions.is_empty() {
-        println!("{indent}factions: {}", ctx.factions.join(", "));
+    let factions: Vec<&str> = bag.factions(tree).collect();
+    if !factions.is_empty() {
+        println!("{indent}factions: {}", factions.join(", "));
     }
-    if !ctx.cargo.is_empty() {
-        println!("{indent}cargo:    {}", ctx.cargo.join(", "));
+    let cargo: Vec<&str> = bag.cargo(tree).collect();
+    if !cargo.is_empty() {
+        println!("{indent}cargo:    {}", cargo.join(", "));
     }
-    if !ctx.mission_tags.is_empty() {
-        println!("{indent}mission:  {}", ctx.mission_tags.join(", "));
+    let mission_tags: Vec<&str> = bag.mission_tags(tree).collect();
+    if !mission_tags.is_empty() {
+        println!("{indent}mission:  {}", mission_tags.join(", "));
     }
-    if !ctx.ai_traits.is_empty() {
-        println!("{indent}traits:   {}", ctx.ai_traits.join(", "));
+    let ai_traits: Vec<&str> = bag.ai_traits(tree).collect();
+    if !ai_traits.is_empty() {
+        println!("{indent}traits:   {}", ai_traits.join(", "));
     }
-    if !ctx.directives.is_empty() {
-        println!("{indent}runtime:  {}", ctx.directives.join(", "));
+    let directives: Vec<&str> = bag.directives().collect();
+    if !directives.is_empty() {
+        println!("{indent}runtime:  {}", directives.join(", "));
     }
-    if !ctx.other.is_empty() {
-        println!("{indent}other:    {}", ctx.other.join(", "));
+    let other: Vec<&str> = bag.other(tree).collect();
+    if !other.is_empty() {
+        println!("{indent}other:    {}", other.join(", "));
     }
 }
 
