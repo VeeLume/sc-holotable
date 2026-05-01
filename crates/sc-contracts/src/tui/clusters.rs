@@ -12,6 +12,12 @@ use std::collections::HashMap;
 use sc_extract::{Guid, LocaleMap};
 use slt::{Border, Color, Context, KeyCode, ListState, ScrollState, TabsState, TextInputState};
 
+// Phase 3 transition: the cluster API is deprecated in favour of
+// ContractIndex.pools + divergence helpers, but this TUI pane still
+// uses it. Phase 4 (merge removal) rewrites this whole file to read
+// from the new pool fields directly; silencing the deprecation
+// noise until then keeps the workspace warning-clean.
+#[allow(deprecated)]
 use crate::clusters::{KeyCluster, cluster_by_description_key, cluster_by_title_key};
 use crate::expand::RewardAmount;
 use crate::index::ContractIndex;
@@ -62,6 +68,7 @@ pub fn render(
 ) {
     // Compute clusters for the selected grouping. Cheap to redo every
     // frame on 1.6k contracts; revisit if it shows up in a profile.
+    #[allow(deprecated)]
     let clusters: Vec<KeyCluster<'_>> = match state.sub_tabs.selected {
         SUB_TITLE => cluster_by_title_key(&index.contracts),
         _ => cluster_by_description_key(&index.contracts),

@@ -52,6 +52,7 @@ mod expand;
 mod index;
 mod locality;
 mod merge;
+mod pools;
 mod ships;
 mod titles;
 
@@ -60,6 +61,10 @@ pub mod tui;
 
 pub use blueprints::{BlueprintItem, BlueprintPool, BlueprintPoolRegistry};
 pub use classify::{TagBag, parse_ai_skill};
+// Cluster API kept while consumers migrate to MissionPools + divergence
+// methods on ContractIndex. The deprecation marker fires at consumer
+// call sites; the re-export itself doesn't need to warn the workspace.
+#[allow(deprecated)]
 pub use clusters::{
     ClusterDivergence, KeyCluster, cluster_by_description_key, cluster_by_title_key,
 };
@@ -75,6 +80,7 @@ pub use merge::{
     BpConflictGroup, BpConflictMember, Contract, MergeStats, Variation, find_bp_conflicts,
     merge_expansions, merge_stats,
 };
+pub use pools::MissionPools;
 pub use ships::{ShipCandidate, ShipEntity, ShipRegistry};
 pub use titles::{ContractAnchor, ResolvedText, resolve_contract_text};
 

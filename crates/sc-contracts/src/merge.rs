@@ -20,7 +20,7 @@ use sc_extract::{Guid, LocaleKey};
 
 use crate::expand::{
     Availability, ContractOrigin, EncounterGroup, ExpandedContract, HandlerKind, MissionRewards,
-    OtherReward, PrereqView, RewardAmount, ScripReward,
+    OtherReward, PrereqView, RewardAmount,
 };
 
 /// The merged-contract output of stage 4. Each `Contract` represents

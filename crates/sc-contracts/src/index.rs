@@ -30,6 +30,7 @@ use crate::currency::RewardCurrencyCatalog;
 use crate::expand::expand_all;
 use crate::locality::{LocalityRegistry, LocationRegistry};
 use crate::merge::{Contract, merge_expansions};
+use crate::pools::{self, MissionPools};
 use crate::ships::ShipRegistry;
 
 /// Bundled output of the four-stage contracts pipeline.
@@ -81,6 +82,13 @@ pub struct ContractIndex {
     /// here means consumers don't have to thread it separately.
     pub tag_tree: TagTree,
 
+    /// Precomputed groupings of contracts by various consumer-relevant
+    /// axes — title key, description key, …. Read fields directly:
+    /// `index.pools.title_key.get(&key)`. Pair with the per-axis
+    /// divergence helpers ([`Self::blueprint_mixed`] etc.) for the
+    /// cluster-API workflow.
+    pub pools: MissionPools,
+
     /// Fast `Guid → index` lookup for [`Self::get`]. Built at
     /// construction; stays in sync with `contracts` because
     /// `ContractIndex` is immutable after `build`.
@@ -121,6 +129,7 @@ impl ContractIndex {
             .collect();
 
         let tag_tree = datacore.snapshot().tag_tree.clone();
+        let pools = MissionPools::build(&contracts);
 
         Self {
             contracts,
@@ -130,6 +139,7 @@ impl ContractIndex {
             locations,
             localities,
             tag_tree,
+            pools,
             by_id,
         }
     }
@@ -170,6 +180,129 @@ impl ContractIndex {
     pub fn is_empty(&self) -> bool {
         self.contracts.is_empty()
     }
+
+    /// Iterate the contracts whose ids are in `ids`, in order. Skips
+    /// ids that don't resolve. Use with [`MissionPools`] field values:
+    /// `index.iter_pool(ids).filter(...)`.
+    pub fn iter_pool<'a>(&'a self, ids: &'a [Guid]) -> impl Iterator<Item = &'a Contract> + 'a {
+        ids.iter().filter_map(|id| self.get(*id))
+    }
+
+    // ── Divergence helpers ──────────────────────────────────────────────────
+    //
+    // Per-axis "is this consistent across the pool" predicates. Each
+    // returns `true` when at least two members differ on the named
+    // axis (the `_mixed` variants) or when all members agree (the
+    // `_consistent` variants). Empty / single-member pools return
+    // `false` for `_mixed` and `true` for `_consistent` — vacuously
+    // not-divergent.
+
+    /// True if some pool members carry a blueprint reward and others
+    /// don't. Drives the `[BP*]` mixed-marker decision in title patchers.
+    pub fn blueprint_mixed(&self, ids: &[Guid]) -> bool {
+        let mut total = 0usize;
+        let mut with_bp = 0usize;
+        for c in self.iter_pool(ids) {
+            total += 1;
+            if c.rewards.blueprint.is_some() {
+                with_bp += 1;
+            }
+        }
+        with_bp > 0 && with_bp < total
+    }
+
+    /// True if pool members disagree on the blueprint pool GUID. (When
+    /// every member carries a blueprint but the pool varies, the line
+    /// can't name a single pool.)
+    pub fn blueprint_pool_consistent(&self, ids: &[Guid]) -> bool {
+        let mut pools = std::collections::HashSet::new();
+        for c in self.iter_pool(ids) {
+            if let Some(bp) = &c.rewards.blueprint {
+                pools.insert(bp.pool_guid);
+            }
+        }
+        pools.len() <= 1
+    }
+
+    /// True if all pool members agree on the UEC reward shape (None /
+    /// Calculated / Fixed(n)).
+    pub fn rewards_uec_consistent(&self, ids: &[Guid]) -> bool {
+        all_eq(self.iter_pool(ids).map(|c| c.rewards.uec))
+    }
+
+    /// True if all pool members carry the same scrip rewards (same
+    /// length, same currency_guid + amount per index).
+    pub fn rewards_scrip_consistent(&self, ids: &[Guid]) -> bool {
+        let mut iter = self.iter_pool(ids);
+        let Some(first) = iter.next() else { return true };
+        iter.all(|c| pools::scrip_eq(&c.rewards.scrip, &first.rewards.scrip))
+    }
+
+    /// True if all pool members agree on reputation rewards.
+    pub fn rewards_rep_consistent(&self, ids: &[Guid]) -> bool {
+        let mut iter = self.iter_pool(ids);
+        let Some(first) = iter.next() else { return true };
+        iter.all(|c| c.rewards.reputation == first.rewards.reputation)
+    }
+
+    /// True if all pool members agree on availability cooldowns.
+    pub fn cooldowns_consistent(&self, ids: &[Guid]) -> bool {
+        all_eq(self.iter_pool(ids).map(|c| c.availability.cooldowns.clone()))
+    }
+
+    /// True if pool members disagree on once_only.
+    pub fn once_only_mixed(&self, ids: &[Guid]) -> bool {
+        is_mixed(self.iter_pool(ids).map(|c| c.availability.once_only))
+    }
+
+    /// True if pool members disagree on shareable.
+    pub fn shareable_mixed(&self, ids: &[Guid]) -> bool {
+        is_mixed(self.iter_pool(ids).map(|c| c.shareable))
+    }
+
+    /// True if pool members disagree on illegal_flag.
+    pub fn illegal_mixed(&self, ids: &[Guid]) -> bool {
+        is_mixed(self.iter_pool(ids).map(|c| c.illegal_flag))
+    }
+
+    /// True if pool members disagree on handler_kind.
+    pub fn handler_kind_mixed(&self, ids: &[Guid]) -> bool {
+        is_mixed(self.iter_pool(ids).map(|c| c.handler_kind))
+    }
+
+    /// True if pool members disagree on mission_span (set-equality).
+    pub fn mission_span_consistent(&self, ids: &[Guid]) -> bool {
+        let mut iter = self.iter_pool(ids);
+        let Some(first) = iter.next() else { return true };
+        iter.all(|c| pools::guid_set_eq(&c.mission_span, &first.mission_span))
+    }
+
+    /// True if pool members agree on encounter shape (group count,
+    /// per-group variable_name, per-wave name + slot count).
+    pub fn encounters_shape_consistent(&self, ids: &[Guid]) -> bool {
+        let mut iter = self.iter_pool(ids);
+        let Some(first) = iter.next() else { return true };
+        iter.all(|c| pools::encounters_shape_eq(&c.encounters, &first.encounters))
+    }
+
+    /// True if any pool member has runtime substitution markers
+    /// (`~mission(...)`) in its title or description.
+    pub fn has_runtime_substitution(&self, ids: &[Guid]) -> bool {
+        self.iter_pool(ids).any(|c| c.has_runtime_substitution)
+    }
+}
+
+// ── Helpers ────────────────────────────────────────────────────────────────
+
+/// True iff every yielded value equals the first.
+fn all_eq<T: PartialEq>(mut iter: impl Iterator<Item = T>) -> bool {
+    let Some(first) = iter.next() else { return true };
+    iter.all(|x| x == first)
+}
+
+/// True iff at least two yielded values differ.
+fn is_mixed<T: PartialEq>(iter: impl Iterator<Item = T>) -> bool {
+    !all_eq(iter)
 }
 
 #[cfg(test)]
@@ -189,6 +322,7 @@ mod tests {
             locations: LocationRegistry::default(),
             localities: LocalityRegistry::default(),
             tag_tree: TagTree::default(),
+            pools: MissionPools::default(),
             by_id: HashMap::new(),
         };
         assert_eq!(idx.len(), 0);

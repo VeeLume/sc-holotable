@@ -127,6 +127,16 @@ impl ClusterDivergence {
 /// Group `contracts` by `title_key`. Contracts with no `title_key`
 /// are skipped. Output ordering: clusters with any divergence first,
 /// then by member count descending, then by key alphabetical.
+///
+/// **Deprecated:** Phase 3 of the v2 redesign. Use
+/// `index.pools.title_key` for the grouping and the divergence helpers
+/// on [`crate::ContractIndex`] (`blueprint_mixed`,
+/// `rewards_uec_consistent`, …) for the per-axis flags. The cluster
+/// API is kept working until consumers migrate; it will go away in a
+/// later release.
+#[deprecated(
+    note = "use ContractIndex.pools.title_key + divergence methods (blueprint_mixed, rewards_uec_consistent, ...)"
+)]
 pub fn cluster_by_title_key(contracts: &[Contract]) -> Vec<KeyCluster<'_>> {
     cluster_by(
         contracts,
@@ -138,6 +148,11 @@ pub fn cluster_by_title_key(contracts: &[Contract]) -> Vec<KeyCluster<'_>> {
 /// Group `contracts` by `description_key`. Same shape as
 /// [`cluster_by_title_key`]; contracts without a description key are
 /// skipped.
+///
+/// **Deprecated:** see [`cluster_by_title_key`].
+#[deprecated(
+    note = "use ContractIndex.pools.description_key + divergence methods (blueprint_mixed, rewards_uec_consistent, ...)"
+)]
 pub fn cluster_by_description_key(contracts: &[Contract]) -> Vec<KeyCluster<'_>> {
     cluster_by(
         contracts,
@@ -254,43 +269,6 @@ fn compute_divergence(members: &[&Contract]) -> ClusterDivergence {
     d
 }
 
-fn scrip_eq(a: &[crate::expand::ScripReward], b: &[crate::expand::ScripReward]) -> bool {
-    if a.len() != b.len() {
-        return false;
-    }
-    a.iter()
-        .zip(b.iter())
-        .all(|(x, y)| x.currency_guid == y.currency_guid && x.amount == y.amount)
-}
-
-fn guid_set_eq(a: &[Guid], b: &[Guid]) -> bool {
-    if a.len() != b.len() {
-        return false;
-    }
-    let sa: HashSet<&Guid> = a.iter().collect();
-    let sb: HashSet<&Guid> = b.iter().collect();
-    sa == sb
-}
-
-/// Conservative encounter-shape comparison: matches if the two have
-/// the same number of groups, and each group has the same
-/// `variable_name` + same wave count + same total slot count. Doesn't
-/// dive into per-slot tag comparison (real-world clusters that share
-/// description text but differ on encounter spawns are exactly the
-/// case we want flagged).
-fn encounters_shape_eq(
-    a: &[crate::expand::EncounterGroup],
-    b: &[crate::expand::EncounterGroup],
-) -> bool {
-    if a.len() != b.len() {
-        return false;
-    }
-    a.iter().zip(b.iter()).all(|(x, y)| {
-        x.variable_name == y.variable_name
-            && x.waves.len() == y.waves.len()
-            && x.waves
-                .iter()
-                .zip(y.waves.iter())
-                .all(|(wx, wy)| wx.name == wy.name && wx.slots.len() == wy.slots.len())
-    })
-}
+// Comparator helpers live in pools.rs so the divergence methods on
+// ContractIndex share one implementation.
+use crate::pools::{encounters_shape_eq, guid_set_eq, scrip_eq};
