@@ -46,6 +46,7 @@
 
 mod blueprints;
 mod classify;
+mod clusters;
 mod currency;
 mod expand;
 mod index;
@@ -56,6 +57,9 @@ mod titles;
 
 pub use blueprints::{BlueprintItem, BlueprintPool, BlueprintPoolRegistry};
 pub use classify::{SpawnContext, parse_ai_skill};
+pub use clusters::{
+    ClusterDivergence, KeyCluster, cluster_by_description_key, cluster_by_title_key,
+};
 pub use currency::{CurrencyInfo, RewardCurrencyCatalog};
 pub use expand::{
     Availability, BlueprintReward, ContractOrigin, Cooldowns, DurationRange, EncounterGroup,
