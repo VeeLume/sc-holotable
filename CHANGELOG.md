@@ -14,6 +14,8 @@ separate commits and advance independently.
 
 ## [Unreleased]
 
+## [v0.2.0] - 2026-05-02
+
 ### Changed (breaking)
 
 - **`sc-contracts` v2 redesign — Mission-centric API.** Wholesale
