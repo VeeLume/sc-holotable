@@ -14,6 +14,8 @@ separate commits and advance independently.
 
 ## [Unreleased]
 
+## [v0.3.0] - 2026-05-03
+
 ### Added
 
 - **`sc-installs`: launcher-store discovery.** New module `launcher_store`
