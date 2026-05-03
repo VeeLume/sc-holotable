@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 
 use sc_extract::generated::*;
-use sc_extract::{DataPools, Guid};
+use sc_extract::{DataPools, Guid, LocaleKey, LocaleMap, LocalizedItemCache};
 
 use crate::classify::{WeaponCategory, classify};
 use crate::damage::{self, DamageSummary};
@@ -42,8 +42,17 @@ pub struct FpsWeapon {
     pub ammo_speed: Option<f32>,
     /// Ammo lifetime in seconds.
     pub ammo_lifetime: Option<f32>,
+    /// Ammo penetration distance in metres. Same field as
+    /// [`crate::ShipWeapon::penetration_m`].
+    pub penetration_m: Option<f32>,
     /// Pellet count (shotguns: 8 or 12). `None` for single-projectile.
     pub pellet_count: Option<i32>,
+    /// `Localization.Name` INI key. Raw — `@` preserved. Resolve via
+    /// [`Self::display_name`].
+    pub name_key: Option<LocaleKey>,
+    /// `Localization.Description` INI key. Resolve via
+    /// [`Self::description`].
+    pub desc_key: Option<LocaleKey>,
     /// Raw entity handle.
     pub entity_handle: Handle<EntityClassDefinition>,
 }
@@ -59,6 +68,7 @@ impl FpsWeapon {
         ecd_map: &HashMap<Guid, Handle<EntityClassDefinition>>,
         ammo_map: &HashMap<Guid, Handle<AmmoParams>>,
         record_names: &HashMap<Guid, &str>,
+        localized_items: &LocalizedItemCache,
     ) -> Option<Self> {
         let ecd = handle.get(pools)?;
 
@@ -86,6 +96,11 @@ impl FpsWeapon {
             .unwrap_or("")
             .to_string();
 
+        let (name_key, desc_key) = localized_items
+            .get(&guid)
+            .map(|item| (item.name_key.clone(), item.desc_key.clone()))
+            .unwrap_or((None, None));
+
         Some(FpsWeapon {
             guid,
             record_name,
@@ -99,8 +114,27 @@ impl FpsWeapon {
             damage: ammo.as_ref().map(|a| a.damage),
             ammo_speed: ammo.as_ref().map(|a| a.speed),
             ammo_lifetime: ammo.as_ref().map(|a| a.lifetime),
+            penetration_m: ammo.as_ref().and_then(|a| a.penetration_m),
             pellet_count,
+            name_key,
+            desc_key,
             entity_handle: handle,
         })
+    }
+
+    // =========================================================
+    // Localization
+    // =========================================================
+
+    /// Resolve the localized display name through `locale`. Returns
+    /// `None` when the underlying entity has no `Localization.Name`
+    /// key or the key is absent from `locale`.
+    pub fn display_name<'a>(&self, locale: &'a LocaleMap) -> Option<&'a str> {
+        self.name_key.as_ref().and_then(|k| locale.resolve(k))
+    }
+
+    /// Resolve the localized description through `locale`.
+    pub fn description<'a>(&self, locale: &'a LocaleMap) -> Option<&'a str> {
+        self.desc_key.as_ref().and_then(|k| locale.resolve(k))
     }
 }

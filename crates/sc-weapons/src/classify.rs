@@ -7,6 +7,11 @@ pub enum WeaponCategory {
     Ship,
     /// FPS personal weapon: `WeaponPersonal` + any subtype except `Gadget`.
     Fps,
+    /// Ship missile / torpedo: `EItemType::Missile` + `Missile` or
+    /// `Torpedo`. The two share enough of the data shape (explosion
+    /// damage, GCS speed, optional tracking profile) that one
+    /// `Missile` model covers both.
+    Missile,
 }
 
 /// Classify a weapon from its `SItemDefinition` type and subtype.
@@ -25,6 +30,10 @@ pub fn classify(item_type: &EItemType, sub_type: &EItemSubType) -> Option<Weapon
         EItemType::WeaponPersonal => match sub_type {
             EItemSubType::Gadget => None,
             _ => Some(WeaponCategory::Fps),
+        },
+        EItemType::Missile => match sub_type {
+            EItemSubType::Missile | EItemSubType::Torpedo => Some(WeaponCategory::Missile),
+            _ => None,
         },
         _ => None,
     }
@@ -96,5 +105,32 @@ mod tests {
     #[test]
     fn mining_excluded() {
         assert_eq!(classify(&EItemType::WeaponMining, &EItemSubType::Gun), None);
+    }
+
+    #[test]
+    fn ship_missile() {
+        assert_eq!(
+            classify(&EItemType::Missile, &EItemSubType::Missile),
+            Some(WeaponCategory::Missile)
+        );
+    }
+
+    #[test]
+    fn ship_torpedo() {
+        assert_eq!(
+            classify(&EItemType::Missile, &EItemSubType::Torpedo),
+            Some(WeaponCategory::Missile)
+        );
+    }
+
+    #[test]
+    fn ground_vehicle_missile_excluded() {
+        // GroundVehicleMissile is a ground-vehicle ordnance subtype, not a
+        // ship missile. Filter it out of ship-missile coverage; if a future
+        // consumer needs it, surface a sibling `WeaponCategory::GroundMissile`.
+        assert_eq!(
+            classify(&EItemType::Missile, &EItemSubType::GroundVehicleMissile),
+            None
+        );
     }
 }

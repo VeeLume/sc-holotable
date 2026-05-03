@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 
 use sc_extract::generated::*;
-use sc_extract::{DataPools, Guid};
+use sc_extract::{DataPools, Guid, LocaleKey, LocaleMap, LocalizedItemCache};
 
 use crate::classify::{WeaponCategory, classify};
 use crate::damage::{self, DamageSummary};
@@ -42,6 +42,11 @@ pub struct ShipWeapon {
     pub ammo_speed: Option<f32>,
     /// Ammo lifetime in seconds (range ≈ speed × lifetime).
     pub ammo_lifetime: Option<f32>,
+    /// Ammo penetration distance in metres
+    /// (`projectile_params → penetration_params.basePenetrationDistance`).
+    /// `None` for energy / tachyon weapons and for projectile families
+    /// without modeled penetration data.
+    pub penetration_m: Option<f32>,
     /// Pellet count from `SProjectileLauncher` (scatter guns: 8 or 12).
     /// `None` for single-projectile weapons.
     pub pellet_count: Option<i32>,
@@ -54,6 +59,17 @@ pub struct ShipWeapon {
     pub power_draw: Option<f32>,
     /// Weapon health points (from `SHealthComponentParams`).
     pub health: Option<f32>,
+    /// `Localization.Name` INI key — the player-facing item name in
+    /// `global.ini` (e.g. `"@item_NameGATS_BallisticGatling_S1"`). Raw
+    /// — leading `@` preserved per the workspace localization rule
+    /// (`docs/localization.md`). `None` when no
+    /// `SAttachableComponentParams.AttachDef.Localization` chain
+    /// resolves. Resolve through a [`LocaleMap`] via
+    /// [`Self::display_name`].
+    pub name_key: Option<LocaleKey>,
+    /// `Localization.Description` INI key. Same shape as
+    /// [`Self::name_key`]; resolve via [`Self::description`].
+    pub desc_key: Option<LocaleKey>,
     /// Raw entity handle — escape hatch for consumers with `&DataPools`.
     pub entity_handle: Handle<EntityClassDefinition>,
 }
@@ -72,6 +88,7 @@ impl ShipWeapon {
         ecd_map: &HashMap<Guid, Handle<EntityClassDefinition>>,
         ammo_map: &HashMap<Guid, Handle<AmmoParams>>,
         record_names: &HashMap<Guid, &str>,
+        localized_items: &LocalizedItemCache,
     ) -> Option<Self> {
         let ecd = handle.get(pools)?;
 
@@ -119,6 +136,12 @@ impl ShipWeapon {
             .unwrap_or("")
             .to_string();
 
+        // Localization keys via the entity-localization cache.
+        let (name_key, desc_key) = localized_items
+            .get(&guid)
+            .map(|item| (item.name_key.clone(), item.desc_key.clone()))
+            .unwrap_or((None, None));
+
         Some(ShipWeapon {
             guid,
             record_name,
@@ -132,12 +155,31 @@ impl ShipWeapon {
             damage: ammo.as_ref().map(|a| a.damage),
             ammo_speed: ammo.as_ref().map(|a| a.speed),
             ammo_lifetime: ammo.as_ref().map(|a| a.lifetime),
+            penetration_m: ammo.as_ref().and_then(|a| a.penetration_m),
             pellet_count,
             total_ammo,
             power_draw,
             health,
+            name_key,
+            desc_key,
             entity_handle: handle,
         })
+    }
+
+    // =========================================================
+    // Localization
+    // =========================================================
+
+    /// Resolve the localized display name through `locale`. Returns
+    /// `None` when no `Localization.Name` key was found for the
+    /// underlying entity or the key is absent from `locale`.
+    pub fn display_name<'a>(&self, locale: &'a LocaleMap) -> Option<&'a str> {
+        self.name_key.as_ref().and_then(|k| locale.resolve(k))
+    }
+
+    /// Resolve the localized description through `locale`.
+    pub fn description<'a>(&self, locale: &'a LocaleMap) -> Option<&'a str> {
+        self.desc_key.as_ref().and_then(|k| locale.resolve(k))
     }
 
     // =========================================================

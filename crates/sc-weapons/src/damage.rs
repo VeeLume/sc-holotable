@@ -31,6 +31,15 @@ impl DamageSummary {
         self.biochemical += d.damage_biochemical;
         self.stun += d.damage_stun;
     }
+
+    fn add(&mut self, other: &DamageSummary) {
+        self.physical += other.physical;
+        self.energy += other.energy;
+        self.distortion += other.distortion;
+        self.thermal += other.thermal;
+        self.biochemical += other.biochemical;
+        self.stun += other.stun;
+    }
 }
 
 /// Resolved ammo data from the ammo chain.
@@ -39,6 +48,13 @@ pub(crate) struct ResolvedAmmo {
     pub damage: DamageSummary,
     pub speed: f32,
     pub lifetime: f32,
+    /// Penetration distance in metres
+    /// (`projectile_params → penetration_params.basePenetrationDistance`).
+    /// `None` for non-bullet projectile families until those gain
+    /// damage modeling (`TachyonProjectileParams.penetration_params`
+    /// exists in the schema but the damage path doesn't model
+    /// tachyons yet — keep penetration `None` to mirror that scope).
+    pub penetration_m: Option<f32>,
 }
 
 /// Resolve the ammo chain for a weapon entity and extract damage + ballistics.
@@ -55,11 +71,29 @@ pub(crate) fn resolve_ammo(
 ) -> Option<ResolvedAmmo> {
     let ammo = resolve_ammo_params(ecd, weapon_params, pools, ecd_map, ammo_map)?;
     let damage = extract_damage(ammo, pools);
+    let penetration_m = extract_penetration(ammo, pools);
     Some(ResolvedAmmo {
         damage,
         speed: ammo.speed,
         lifetime: ammo.lifetime,
+        penetration_m,
     })
+}
+
+/// Pull `basePenetrationDistance` out of the ammo's projectile-params
+/// chain. Currently only `BulletProjectileParams` is wired up — same
+/// projectile family that has its damage modeled.
+/// `TachyonProjectileParams.penetration_params` carries the same field
+/// in the DCB and can be folded in when tachyon damage lands.
+fn extract_penetration(ammo: &AmmoParams, pools: &DataPools) -> Option<f32> {
+    let proj_ptr = ammo.projectile_params.as_ref()?;
+    if let ProjectileParamsPtr::BulletProjectileParams(h) = proj_ptr
+        && let Some(bullet) = h.get(pools)
+        && let Some(pen) = bullet.penetration_params.and_then(|h| h.get(pools))
+    {
+        return Some(pen.base_penetration_distance);
+    }
+    None
 }
 
 fn resolve_ammo_params<'a>(
@@ -94,6 +128,28 @@ fn find_ammo_via_container<'a>(
     ammo_h.get(pools)
 }
 
+/// Pull the `DamageInfo` payload out of a single [`ExplosionParams`]
+/// handle and accumulate it into a [`DamageSummary`]. Returns the empty
+/// summary when the chain doesn't resolve (no explosion params, no
+/// damage pointer, or the variant isn't `DamageInfo`).
+///
+/// Shared between the bullet detonation path inside [`extract_damage`]
+/// and the missile model in `crate::missile`, where ordinance damage
+/// hangs off `SCItemMissileParams.explosion_params` directly.
+pub(crate) fn extract_explosion_damage(
+    explosion: Option<Handle<ExplosionParams>>,
+    pools: &DataPools,
+) -> DamageSummary {
+    let mut summary = DamageSummary::default();
+    if let Some(expl) = explosion.and_then(|h| h.get(pools))
+        && let Some(DamageBasePtr::DamageInfo(dh)) = &expl.damage
+        && let Some(d) = dh.get(pools)
+    {
+        summary.add_damage_info(d);
+    }
+    summary
+}
+
 fn extract_damage(ammo: &AmmoParams, pools: &DataPools) -> DamageSummary {
     let mut summary = DamageSummary::default();
 
@@ -112,14 +168,12 @@ fn extract_damage(ammo: &AmmoParams, pools: &DataPools) -> DamageSummary {
         {
             summary.add_damage_info(d);
         }
-        // Explosion damage
-        if let Some(det) = bullet.detonation_params.and_then(|h| h.get(pools))
-            && let Some(expl) = det.explosion_params.and_then(|h| h.get(pools))
-            && let Some(DamageBasePtr::DamageInfo(dh)) = &expl.damage
-            && let Some(d) = dh.get(pools)
-        {
-            summary.add_damage_info(d);
-        }
+        // Explosion damage — same chain missiles use directly.
+        let explosion = bullet
+            .detonation_params
+            .and_then(|h| h.get(pools))
+            .and_then(|det| det.explosion_params);
+        summary.add(&extract_explosion_damage(explosion, pools));
     }
 
     summary
@@ -164,6 +218,12 @@ pub(crate) fn find_component<'a, T: 'static>(
         {
             let r = h.get(pools)?;
             return Some(unsafe { &*(r as *const ItemResourceComponentParams as *const T) });
+        }
+        if TypeId::of::<T>() == TypeId::of::<SCItemMissileParams>()
+            && let DataForgeComponentParamsPtr::SCItemMissileParams(h) = comp
+        {
+            let r = h.get(pools)?;
+            return Some(unsafe { &*(r as *const SCItemMissileParams as *const T) });
         }
     }
     None

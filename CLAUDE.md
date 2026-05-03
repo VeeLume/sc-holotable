@@ -46,7 +46,7 @@ sc-holotable/
 │   ├── sc-extract-generated/      ✅ workspace-internal — core/dormant/multi_feature + leaf feature dirs
 │   │   └── src/generated/         245 leaf feature dirs + core/ + dormant/ + multi_feature/
 │   ├── sc-contracts/              ✅ v2 complete — Mission, MissionIndex, MissionPools, Encounter enum
-│   └── sc-weapons/                ✅ v1 + v2 phases 1-3 — ShipWeapon, FpsWeapon, sustain models
+│   └── sc-weapons/                ✅ v1 + v2 phases 1-3 + localization keys + Missile + penetration
 └── tools/
     ├── sc-generator/              ✅ implemented — offline DCB schema → Rust codegen
     ├── sc-bench/                  ✅ runtime benchmark binary — exercises full sc-extract API
@@ -296,7 +296,12 @@ See `status.md` for the always-current version. Brief snapshot:
 - ✅ **`sc-extract-generated`** — core/dormant/multi_feature split + 245 leaf feature dirs, typed enums, typed `LocaleKey`, poly enums with raw escape-hatch `Unknown`.
 - ✅ **`sc-generator`** — codegen + data-driven feature classification + Cargo.toml generation, typed enum/locale emission, ~3s run
 - 📦 **`sc-ammo`** — spec exists (`docs/sc-ammo.md`), crate not scaffolded
-- ✅ **`sc-weapons`** — v1 + v2 phases 1-3 shipped. `ShipWeapon` / `FpsWeapon`, multi-mode fire actions, charge modifiers, unified heat/energy model, comparison-stats tiers. 24 unit tests.
+- ✅ **`sc-weapons`** — v1 + v2 phases 1-3 shipped, plus the
+  sc-langpatch follow-up (localization keys on `ShipWeapon` /
+  `FpsWeapon`, new `Missile` model with `TrackingProfile`,
+  unified `WeaponPools` keyed off `LocaleKey → Vec<Guid>` across all
+  three families, `penetration_m` from `BulletProjectileParams`).
+  See `docs/feature-request-sc-weapons-langpatch.md`. 28 unit tests.
 - ✅ **`sc-contracts`** — v2 complete (all 7 phases). `Mission` + `MissionIndex` + `MissionPools` + `Encounter` enum (Ships / NPCs / Entities / Unknown). 22 lib tests. Design history in `docs/sc-contracts.md` (v1, historical) + `docs/sc-contracts-v2.md` (v2, current); consumer guide in `docs/sc-contracts-guide.md`.
 - ✅ **`sc-explorer`** — interactive TUI binary at `tools/sc-explorer`. Per-crate `tui` modules in sc-contracts + sc-weapons own their domain views.
 

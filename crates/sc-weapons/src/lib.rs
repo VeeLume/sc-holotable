@@ -27,6 +27,8 @@ mod damage;
 mod error;
 mod fire_action;
 mod fps;
+mod missile;
+mod pools;
 mod ship;
 mod sustain;
 
@@ -38,6 +40,8 @@ pub use damage::DamageSummary;
 pub use error::WeaponError;
 pub use fire_action::{ChargeModifier, FireActionKind};
 pub use fps::FpsWeapon;
+pub use missile::{Missile, TrackingProfile};
+pub use pools::WeaponPools;
 pub use ship::{LoadoutContext, ShipWeapon};
 pub use sustain::{EnergyModel, HeatModel, SustainKind};
 
@@ -49,7 +53,7 @@ pub use sustain::{EnergyModel, HeatModel, SustainKind};
 // crate pulls the same `sc-extract` rev.
 pub use sc_extract::{
     AssetConfig, AssetData, AssetSource, Datacore, DatacoreConfig, ExtractSnapshot, Guid,
-    LocaleKey, LocaleMap, SnapshotMeta,
+    LocaleKey, LocaleMap, LocalizedItem, LocalizedItemCache, SnapshotMeta,
 };
 
 /// Escape hatch for raw DCB queries when the typed model doesn't cover
@@ -72,6 +76,7 @@ pub fn iter_ship_weapons(datacore: &Datacore) -> impl Iterator<Item = ShipWeapon
     let pools = &snap.records.pools;
     let ecd_map = &snap.records.records.multi_feature.entity_class_definition;
     let ammo_map = &snap.records.records.multi_feature.ammo_params;
+    let localized_items = &snap.localized_items;
 
     // Pre-build GUID → record name map
     let record_names: HashMap<Guid, &str> = db
@@ -81,8 +86,36 @@ pub fn iter_ship_weapons(datacore: &Datacore) -> impl Iterator<Item = ShipWeapon
         .collect();
 
     ecd_map.iter().filter_map(move |(&guid, &handle)| {
-        ShipWeapon::try_new(handle, guid, pools, ecd_map, ammo_map, &record_names)
+        ShipWeapon::try_new(
+            handle,
+            guid,
+            pools,
+            ecd_map,
+            ammo_map,
+            &record_names,
+            localized_items,
+        )
     })
+}
+
+/// Materialize every weapon family (ship guns, FPS, missiles) and
+/// build [`WeaponPools`] in one pass. Convenience for consumers
+/// (sc-langpatch's `weapon_enhancer` is the motivating case) that need
+/// both the per-weapon lists and the `LocaleKey → Vec<Guid>` collision
+/// pool spanning all three.
+pub fn build_weapon_pools(
+    datacore: &Datacore,
+) -> (
+    Vec<ShipWeapon>,
+    Vec<FpsWeapon>,
+    Vec<Missile>,
+    WeaponPools,
+) {
+    let ships: Vec<ShipWeapon> = iter_ship_weapons(datacore).collect();
+    let fps: Vec<FpsWeapon> = iter_fps_weapons(datacore).collect();
+    let missiles: Vec<Missile> = iter_missiles(datacore).collect();
+    let pools = WeaponPools::build(&ships, &fps, &missiles);
+    (ships, fps, missiles, pools)
 }
 
 /// Iterate over all FPS weapons in the datacore.
@@ -94,6 +127,7 @@ pub fn iter_fps_weapons(datacore: &Datacore) -> impl Iterator<Item = FpsWeapon> 
     let pools = &snap.records.pools;
     let ecd_map = &snap.records.records.multi_feature.entity_class_definition;
     let ammo_map = &snap.records.records.multi_feature.ammo_params;
+    let localized_items = &snap.localized_items;
 
     let record_names: HashMap<Guid, &str> = db
         .records()
@@ -102,6 +136,37 @@ pub fn iter_fps_weapons(datacore: &Datacore) -> impl Iterator<Item = FpsWeapon> 
         .collect();
 
     ecd_map.iter().filter_map(move |(&guid, &handle)| {
-        FpsWeapon::try_new(handle, guid, pools, ecd_map, ammo_map, &record_names)
+        FpsWeapon::try_new(
+            handle,
+            guid,
+            pools,
+            ecd_map,
+            ammo_map,
+            &record_names,
+            localized_items,
+        )
+    })
+}
+
+/// Iterate over all ship missiles + torpedoes in the datacore.
+///
+/// Walks every `EntityClassDefinition`, attempts to construct a
+/// [`Missile`], and yields those that succeed. Records that aren't
+/// missile/torpedo-classified ordnance are silently skipped.
+pub fn iter_missiles(datacore: &Datacore) -> impl Iterator<Item = Missile> + '_ {
+    let snap = datacore.snapshot();
+    let db = datacore.db();
+    let pools = &snap.records.pools;
+    let ecd_map = &snap.records.records.multi_feature.entity_class_definition;
+    let localized_items = &snap.localized_items;
+
+    let record_names: HashMap<Guid, &str> = db
+        .records()
+        .iter()
+        .filter_map(|r| Some((r.id, db.record_name(r)?)))
+        .collect();
+
+    ecd_map.iter().filter_map(move |(&guid, &handle)| {
+        Missile::try_new(handle, guid, pools, ecd_map, &record_names, localized_items)
     })
 }
