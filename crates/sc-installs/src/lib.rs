@@ -12,10 +12,15 @@
 //!
 //! # Scope
 //!
-//! - Parses `%APPDATA%/rsilauncher/logs/log.log` to discover channel
-//!   install roots. Supports both the legacy plain-text format and the
-//!   JSON-per-line format used by RSI Launcher 2.x.
-//! - Reads `build_manifest.id` (legacy and v2 shapes) for version info.
+//! - Reads `%APPDATA%/rsilauncher/launcher store.json` — the launcher's
+//!   authoritative encrypted state — by extracting the AES key at runtime
+//!   from the launcher's own `app.asar`. Gives a complete inventory of
+//!   installed channels independent of any launcher activity.
+//! - Falls back to parsing `%APPDATA%/rsilauncher/logs/log.log` if the
+//!   store is unavailable. Recognises both `Launcher::launch` events and
+//!   `Installer` events, so a channel that has been installed but never
+//!   launched is still found.
+//! - Reads `build_manifest.id` for version info.
 //! - Exposes a [`Channel`] enum with priority ordering and an
 //!   [`Installation`] struct with path helpers for the common game files
 //!   — [`Installation::data_p4k`], [`Installation::user_cfg`], and the
@@ -57,16 +62,24 @@ mod discovery;
 mod error;
 mod installation;
 mod language;
+mod launcher_store;
 mod log_parser;
 mod manifest;
 
 pub use channel::Channel;
 pub use discovery::{
-    discover, discover_from, discover_last_launched, discover_last_launched_from, discover_primary,
-    discover_primary_from,
+    discover, discover_default, discover_from, discover_last_launched,
+    discover_last_launched_from, discover_primary, discover_primary_from,
 };
 pub use error::{Error, Result};
 pub use installation::Installation;
 pub use language::Language;
-pub use log_parser::{detect_channel_from_process, launcher_log_path, parse_launcher_log_entries};
+pub use launcher_store::{
+    StoreInstall, StoreSnapshot, launcher_store_path, read_launcher_snapshot,
+    read_launcher_snapshot_from, read_launcher_store, read_launcher_store_from,
+};
+pub use log_parser::{
+    LogEntry, LogEntryKind, detect_channel_from_process, launcher_log_path,
+    parse_launcher_log_entries,
+};
 pub use manifest::{BuildManifest, read_build_manifest};

@@ -1,4 +1,10 @@
 //! RSI Launcher log parsing.
+//!
+//! The launcher writes a single rolling log at
+//! `%APPDATA%/rsilauncher/logs/log.log` with one JSON-like line per event.
+//! Several distinct event shapes mention an install path; rather than
+//! waiting for the user to launch a channel, this module extracts every
+//! marker that pins an install root or library directory.
 
 use std::path::{Path, PathBuf};
 use std::sync::LazyLock;
@@ -8,20 +14,66 @@ use regex::Regex;
 use crate::channel::Channel;
 use crate::error::{Error, Result};
 
-/// Matches a `Launching Star Citizen <CHANNEL> from (<PATH>)` marker in a
-/// launcher log line. Works for both the legacy plain-text format and the
-/// JSON-per-line format used by RSI Launcher 2.x — the marker text is
-/// identical in both, only the surrounding framing differs.
-///
-/// - Channel is captured as a run of non-whitespace, non-`(` characters
-///   (e.g. `LIVE`, `PTU`, `EPTU`, `HOTFIX`, `TECHPREVIEW`).
-/// - Path is captured greedily up to the **last** `)` on the line, so paths
-///   that happen to contain `)` still round-trip correctly. (Backslashes
-///   inside the path may be `\\`-escaped by the JSON framing; we unescape
-///   them after capture.)
+/// `[Launcher::launch] Launching Star Citizen <CHANNEL> from (<ROOT>)`.
+/// The captured path is always a full channel root.
 static LAUNCH_RE: LazyLock<Regex> = LazyLock::new(|| {
-    Regex::new(r"Launching Star Citizen (\S+) from \((.*)\)").expect("launch marker regex is valid")
+    Regex::new(r"Launching Star Citizen (\S+) from \((.+?)\)")
+        .expect("launch marker regex is valid")
 });
+
+/// `[Installer] Installing Star Citizen <CHAN> <VER> at <LIB> (force DP: ...)`
+/// and the matching `Verifying ...` shape. The captured path is the parent
+/// **library directory**; the channel subdir still has to be appended.
+static INSTALLER_AT_RE: LazyLock<Regex> = LazyLock::new(|| {
+    Regex::new(r"\[Installer\] (?:Installing|Verifying) Star Citizen (\S+) \S+ at (.+?) \(force DP")
+        .expect("installer-at regex is valid")
+});
+
+/// `[Installer] ... (SC <CHAN> <VER>) in <PATH>` (with an occasional stray
+/// extra `(` that the launcher emits — `(SC (LIVE 4.7.0-live...) in ...`).
+/// Captured path may be either a library dir or a full root; the caller
+/// normalises by checking whether the path's last component already matches
+/// the channel.
+static INSTALLER_IN_RE: LazyLock<Regex> = LazyLock::new(|| {
+    Regex::new(r#"\[Installer\][^(]*\(SC \(?(\S+) \S+\)? in (.+?)(?:\\?"|$)"#)
+        .expect("installer-in regex is valid")
+});
+
+/// `[Launcher::launch] Deleting <ROOT>\loginData.json for <CHAN>`.
+/// The captured path is the full channel root.
+static DELETE_LOGIN_RE: LazyLock<Regex> = LazyLock::new(|| {
+    // `\\+` so we match either a single `\` (plain-text format) or `\\` (the
+    // JSON-framed format escapes every backslash). Channel capture uses
+    // `[A-Z-]+` rather than `\S+` to avoid swallowing the trailing `"` of
+    // the JSON envelope.
+    Regex::new(r"Deleting (.+?)\\+loginData\.json for ([A-Z-]+)")
+        .expect("delete-login regex is valid")
+});
+
+/// What kind of launcher-log marker a [`LogEntry`] came from.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+pub enum LogEntryKind {
+    /// `Launcher::launch Launching Star Citizen ... from (...)`.
+    Launch,
+    /// Any `[Installer] ...` marker (Installing, Verifying, Delta update
+    /// applied, base pack download, ...).
+    Install,
+    /// `Launcher::launch Deleting <root>\loginData.json for <channel>`,
+    /// emitted as part of a launch but observed even on launches that
+    /// later abort.
+    DeleteLoginData,
+}
+
+/// One install-related event extracted from the launcher log.
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+pub struct LogEntry {
+    pub channel: Channel,
+    /// Always normalised to a **full channel root** (the directory that
+    /// would contain `Data.p4k`), regardless of whether the underlying
+    /// marker mentioned a library directory or a root.
+    pub root: PathBuf,
+    pub kind: LogEntryKind,
+}
 
 /// Default path to the RSI Launcher log file on Windows:
 /// `%APPDATA%/rsilauncher/logs/log.log`.
@@ -33,26 +85,25 @@ pub fn launcher_log_path() -> PathBuf {
     PathBuf::from(appdata).join("rsilauncher/logs/log.log")
 }
 
-/// Parse every `Launching Star Citizen` entry from a launcher log file.
+/// Parse every install-related entry from a launcher log file.
 /// Returns the entries in chronological order (as they appear in the log).
 ///
-/// Supports both the legacy plain-text format used by older launchers and
-/// the JSON-per-line format used by RSI Launcher 2.x.
+/// Recognised marker shapes are documented on [`LogEntryKind`]. Paths are
+/// normalised to full channel roots via [`Channel::install_dir_name`].
 ///
 /// Unlike the high-level discovery functions, this does **not** validate
 /// installations or filter missing paths. It's a lower-level helper for
-/// consumers that want the raw launcher-log view. If you just want "all
-/// valid installs", use [`crate::discover`] instead.
+/// consumers that want the raw launcher-log view.
 ///
 /// # Errors
 ///
 /// - [`Error::LauncherLogNotFound`] if the file doesn't exist.
 /// - [`Error::LauncherLogUnreadable`] if the file exists but can't be read.
 ///
-/// An empty log (no launch entries) is **not** an error here — it returns an
-/// empty vec. Callers that want to treat that as an error should use
-/// `discover*` which maps empty results to [`Error::NoLaunchEntries`].
-pub fn parse_launcher_log_entries(log_path: &Path) -> Result<Vec<(Channel, PathBuf)>> {
+/// An empty log (no install-related entries) is **not** an error here — it
+/// returns an empty vec. Callers that want to treat that as an error should
+/// use `discover*` which maps empty results to [`Error::NoInstallEntries`].
+pub fn parse_launcher_log_entries(log_path: &Path) -> Result<Vec<LogEntry>> {
     if !log_path.exists() {
         return Err(Error::LauncherLogNotFound(log_path.to_path_buf()));
     }
@@ -65,7 +116,7 @@ pub fn parse_launcher_log_entries(log_path: &Path) -> Result<Vec<(Channel, PathB
 
     let mut entries = Vec::new();
     for line in content.lines() {
-        if let Some(entry) = extract_launch_entry(line) {
+        if let Some(entry) = extract_entry(line) {
             entries.push(entry);
         }
     }
@@ -73,22 +124,64 @@ pub fn parse_launcher_log_entries(log_path: &Path) -> Result<Vec<(Channel, PathB
     Ok(entries)
 }
 
-/// Extract a single `(Channel, PathBuf)` entry from a log line, if the line
-/// is a `Launching Star Citizen` entry. Handles both the legacy plain-text
-/// format and the JSON v2.x format via a single regex — the marker text is
-/// identical in both, the only post-processing needed is unescaping `\\`
-/// for the JSON-framed variant.
-fn extract_launch_entry(line: &str) -> Option<(Channel, PathBuf)> {
-    let caps = LAUNCH_RE.captures(line)?;
-    let channel_str = caps.get(1)?.as_str();
-    let path_str = caps.get(2)?.as_str();
+/// Extract a single [`LogEntry`] from a log line if any of the install-related
+/// markers match. Returns `None` for unrelated lines.
+fn extract_entry(line: &str) -> Option<LogEntry> {
+    if let Some(caps) = LAUNCH_RE.captures(line) {
+        let channel = Channel::from_str_loose(caps.get(1)?.as_str())?;
+        let raw_path = unescape_path(caps.get(2)?.as_str());
+        return Some(LogEntry {
+            channel,
+            root: normalise_root(channel, &raw_path),
+            kind: LogEntryKind::Launch,
+        });
+    }
+    if let Some(caps) = INSTALLER_AT_RE.captures(line) {
+        let channel = Channel::from_str_loose(caps.get(1)?.as_str())?;
+        let raw_path = unescape_path(caps.get(2)?.as_str());
+        return Some(LogEntry {
+            channel,
+            root: normalise_root(channel, &raw_path),
+            kind: LogEntryKind::Install,
+        });
+    }
+    if let Some(caps) = INSTALLER_IN_RE.captures(line) {
+        let channel = Channel::from_str_loose(caps.get(1)?.as_str())?;
+        let raw_path = unescape_path(caps.get(2)?.as_str());
+        return Some(LogEntry {
+            channel,
+            root: normalise_root(channel, &raw_path),
+            kind: LogEntryKind::Install,
+        });
+    }
+    if let Some(caps) = DELETE_LOGIN_RE.captures(line) {
+        let channel = Channel::from_str_loose(caps.get(2)?.as_str())?;
+        let raw_path = unescape_path(caps.get(1)?.as_str());
+        return Some(LogEntry {
+            channel,
+            root: normalise_root(channel, &raw_path),
+            kind: LogEntryKind::DeleteLoginData,
+        });
+    }
+    None
+}
 
-    // JSON format escapes backslashes as `\\`; normalize them back to single.
-    // Legacy format has single backslashes already and is unaffected.
-    let path_str = path_str.replace("\\\\", "\\");
+/// JSON-framed lines escape backslashes as `\\`; flip them back. Plain lines
+/// (which don't exist any more in 2.x but the regex still matches) are
+/// unaffected because they don't contain `\\`.
+fn unescape_path(s: &str) -> PathBuf {
+    PathBuf::from(s.replace("\\\\", "\\"))
+}
 
-    let channel = Channel::from_str_loose(channel_str)?;
-    Some((channel, PathBuf::from(path_str)))
+/// Decide whether a captured path is already a channel root or a parent
+/// library directory, and return the channel root in either case.
+fn normalise_root(channel: Channel, path: &Path) -> PathBuf {
+    let last = path.file_name().and_then(|s| s.to_str()).unwrap_or("");
+    if last.eq_ignore_ascii_case(channel.install_dir_name()) {
+        path.to_path_buf()
+    } else {
+        path.join(channel.install_dir_name())
+    }
 }
 
 /// Detect which Star Citizen channel a running process belongs to, based on
@@ -122,82 +215,126 @@ mod tests {
     use super::*;
     use std::io::Write;
 
+    fn parse(line: &str) -> Option<LogEntry> {
+        extract_entry(line)
+    }
+
     #[test]
-    fn parse_legacy_format() {
+    fn parse_launch_marker() {
+        let line = r#"{ "t":"...", "[main][info] ": "[Launcher::launch] Launching Star Citizen LIVE from (C:\\Games\\StarCitizen\\LIVE)" },"#;
+        let entry = parse(line).unwrap();
+        assert_eq!(entry.channel, Channel::Live);
+        assert_eq!(entry.root, PathBuf::from("C:\\Games\\StarCitizen\\LIVE"));
+        assert_eq!(entry.kind, LogEntryKind::Launch);
+    }
+
+    #[test]
+    fn parse_installer_at_appends_channel_dir() {
+        // The "at <library>" shape gives a parent directory; channel must
+        // be appended to reach the install root.
+        let line = r#"{ "t":"...", "[main][info] ": "[Installer] Installing Star Citizen LIVE 4.7.0-live.11576750 at C:\\Games\\StarCitizen (force DP: false)" },"#;
+        let entry = parse(line).unwrap();
+        assert_eq!(entry.channel, Channel::Live);
+        assert_eq!(entry.root, PathBuf::from("C:\\Games\\StarCitizen\\LIVE"));
+        assert_eq!(entry.kind, LogEntryKind::Install);
+    }
+
+    #[test]
+    fn parse_installer_at_verifying() {
+        let line = r#"{ "t":"...", "[main][info] ": "[Installer] Verifying Star Citizen LIVE 4.7.1-live.11592622 at C:\\Program Files\\Roberts Space Industries\\StarCitizen (force DP: false)" },"#;
+        let entry = parse(line).unwrap();
+        assert_eq!(entry.channel, Channel::Live);
+        assert_eq!(
+            entry.root,
+            PathBuf::from("C:\\Program Files\\Roberts Space Industries\\StarCitizen\\LIVE")
+        );
+    }
+
+    #[test]
+    fn parse_installer_in_root_already_includes_channel() {
+        // "in <root>" shape where the path is already a full channel root.
+        let line = r#"{ "t":"...", "[main][info] ": "[Installer] Delta update applied (SC LIVE 4.7.1-live.11592622) in C:\\Games\\StarCitizen\\LIVE" },"#;
+        let entry = parse(line).unwrap();
+        assert_eq!(entry.channel, Channel::Live);
+        assert_eq!(entry.root, PathBuf::from("C:\\Games\\StarCitizen\\LIVE"));
+        assert_eq!(entry.kind, LogEntryKind::Install);
+    }
+
+    #[test]
+    fn parse_installer_in_with_stray_paren() {
+        // The launcher emits a malformed "(SC (LIVE 4.7.0-live.123) in ..."
+        // for delta-update-start lines. The regex tolerates the optional `(`.
+        let line = r#"{ "t":"...", "[main][info] ": "[Installer] Starting delta update (SC (LIVE 4.7.0-live.11576750) in C:\\Games\\StarCitizen" },"#;
+        let entry = parse(line).unwrap();
+        assert_eq!(entry.channel, Channel::Live);
+        assert_eq!(entry.root, PathBuf::from("C:\\Games\\StarCitizen\\LIVE"));
+    }
+
+    #[test]
+    fn parse_tech_preview_uses_dashed_dirname() {
+        // TECH-PREVIEW is the on-disk dir name; display_name() is "TECH".
+        let line = r#"{ "t":"...", "[main][info] ": "[Installer] Installing Star Citizen TECH-PREVIEW 4.7-tp.11650317 at C:\\Games\\StarCitizen (force DP: false)" },"#;
+        let entry = parse(line).unwrap();
+        assert_eq!(entry.channel, Channel::TechPreview);
+        assert_eq!(
+            entry.root,
+            PathBuf::from("C:\\Games\\StarCitizen\\TECH-PREVIEW")
+        );
+    }
+
+    #[test]
+    fn parse_tech_preview_root_in_marker() {
+        let line = r#"{ "t":"...", "[main][info] ": "[Installer] Initial pack installed (SC TECH-PREVIEW 4.7-tp.11650317) in C:\\Games\\StarCitizen\\TECH-PREVIEW" },"#;
+        let entry = parse(line).unwrap();
+        assert_eq!(entry.channel, Channel::TechPreview);
+        assert_eq!(
+            entry.root,
+            PathBuf::from("C:\\Games\\StarCitizen\\TECH-PREVIEW")
+        );
+    }
+
+    #[test]
+    fn parse_delete_login_data_marker() {
+        let line = r#"{ "t":"...", "[main][info] ": "[Launcher::launch] Deleting C:\\Games\\StarCitizen\\LIVE\\loginData.json for LIVE" },"#;
+        let entry = parse(line).unwrap();
+        assert_eq!(entry.channel, Channel::Live);
+        assert_eq!(entry.root, PathBuf::from("C:\\Games\\StarCitizen\\LIVE"));
+        assert_eq!(entry.kind, LogEntryKind::DeleteLoginData);
+    }
+
+    #[test]
+    fn ignores_unrelated_lines() {
+        assert!(parse(r#"{ "t":"...", "[main][info] ": "Checking for update" },"#).is_none());
+        assert!(parse("some random log line").is_none());
+    }
+
+    #[test]
+    fn parse_full_log_collects_in_order() {
         let mut tmp = tempfile::NamedTempFile::new().unwrap();
         writeln!(
             tmp,
-            "2024-01-01 [Launcher::launch] Launching Star Citizen LIVE from (D:\\StarCitizen\\LIVE)"
+            r#"{{ "t":"...", "[main][info] ": "[Installer] Installing Star Citizen LIVE 4.7.0-live.11576750 at C:\\Games\\StarCitizen (force DP: false)" }},"#
+        )
+        .unwrap();
+        writeln!(tmp, r#"{{ "[main][info] ": "Checking for update" }},"#).unwrap();
+        writeln!(
+            tmp,
+            r#"{{ "t":"...", "[main][info] ": "[Launcher::launch] Launching Star Citizen LIVE from (C:\\Games\\StarCitizen\\LIVE)" }},"#
         )
         .unwrap();
         writeln!(
             tmp,
-            "2024-01-02 [Launcher::launch] Launching Star Citizen PTU from (D:\\StarCitizen\\PTU)"
-        )
-        .unwrap();
-        writeln!(tmp, "some other log line").unwrap();
-        writeln!(
-            tmp,
-            "2024-01-03 [Launcher::launch] Launching Star Citizen LIVE from (E:\\SC\\LIVE)"
+            r#"{{ "t":"...", "[main][info] ": "[Installer] Initial pack installed (SC TECH-PREVIEW 4.7-tp.11650317) in C:\\Games\\StarCitizen\\TECH-PREVIEW" }},"#
         )
         .unwrap();
 
         let entries = parse_launcher_log_entries(tmp.path()).unwrap();
         assert_eq!(entries.len(), 3);
-        assert_eq!(entries[0].0, Channel::Live);
-        assert_eq!(entries[0].1, PathBuf::from("D:\\StarCitizen\\LIVE"));
-        assert_eq!(entries[1].0, Channel::Ptu);
-        assert_eq!(entries[2].0, Channel::Live);
-        assert_eq!(entries[2].1, PathBuf::from("E:\\SC\\LIVE"));
-    }
-
-    #[test]
-    fn parse_json_v2_format() {
-        let mut tmp = tempfile::NamedTempFile::new().unwrap();
-        writeln!(
-            tmp,
-            r#"{{ "t":"2025-05-03 17:38:04.649", "[main][info] ": "Launching Star Citizen LIVE from (C:\\Games\\StarCitizen\\LIVE)"  }},"#
-        )
-        .unwrap();
-        writeln!(
-            tmp,
-            r#"{{ "t":"2025-05-03 18:00:42.832", "[main][info] ": "Launching Star Citizen PTU from (C:\\Games\\StarCitizen\\PTU)"  }},"#
-        )
-        .unwrap();
-        writeln!(
-            tmp,
-            r#"{{ "t":"...", "[main][info] ": "Checking for update" }},"#
-        )
-        .unwrap();
-
-        let entries = parse_launcher_log_entries(tmp.path()).unwrap();
-        assert_eq!(entries.len(), 2);
-        assert_eq!(entries[0].0, Channel::Live);
-        assert_eq!(entries[0].1, PathBuf::from("C:\\Games\\StarCitizen\\LIVE"));
-        assert_eq!(entries[1].0, Channel::Ptu);
-        assert_eq!(entries[1].1, PathBuf::from("C:\\Games\\StarCitizen\\PTU"));
-    }
-
-    #[test]
-    fn mixed_formats_in_one_log() {
-        // A log that has both plain-text and JSON lines (can happen across
-        // launcher version upgrades).
-        let mut tmp = tempfile::NamedTempFile::new().unwrap();
-        writeln!(
-            tmp,
-            "[Launcher::launch] Launching Star Citizen LIVE from (C:\\Old\\LIVE)"
-        )
-        .unwrap();
-        writeln!(
-            tmp,
-            r#"{{ "[main][info] ": "Launching Star Citizen PTU from (C:\\New\\PTU)" }},"#
-        )
-        .unwrap();
-
-        let entries = parse_launcher_log_entries(tmp.path()).unwrap();
-        assert_eq!(entries.len(), 2);
-        assert_eq!(entries[0], (Channel::Live, PathBuf::from("C:\\Old\\LIVE")));
-        assert_eq!(entries[1], (Channel::Ptu, PathBuf::from("C:\\New\\PTU")));
+        assert_eq!(entries[0].kind, LogEntryKind::Install);
+        assert_eq!(entries[0].channel, Channel::Live);
+        assert_eq!(entries[1].kind, LogEntryKind::Launch);
+        assert_eq!(entries[2].kind, LogEntryKind::Install);
+        assert_eq!(entries[2].channel, Channel::TechPreview);
     }
 
     #[test]

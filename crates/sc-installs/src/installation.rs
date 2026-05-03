@@ -24,6 +24,19 @@ pub struct Installation {
     pub root: PathBuf,
     /// Parsed `build_manifest.id` contents.
     pub manifest: BuildManifest,
+    /// Authoritative launcher-style version label from `launcher store.json`,
+    /// e.g. `"4.7.2-live.11715810"`. **This is the only source of the true
+    /// marketing version (4.7.**2**)** — the on-disk manifest's `Branch`
+    /// field only carries the upstream code branch (e.g. `sc-alpha-4.7.0`),
+    /// which doesn't roll forward when hotfixes ship.
+    ///
+    /// Set when discovery used the launcher store. `None` when discovery
+    /// fell back to log parsing, or when the install was constructed via
+    /// [`Installation::from_root`] / [`Installation::from_parts`]. Callers
+    /// that need a fallback when this is `None` must opt in explicitly via
+    /// [`Installation::launcher_version_string_derived`] and accept the
+    /// staleness caveat documented there.
+    pub launcher_version_label: Option<String>,
 }
 
 impl Installation {
@@ -45,6 +58,7 @@ impl Installation {
             channel,
             root,
             manifest,
+            launcher_version_label: None,
         })
     }
 
@@ -59,6 +73,7 @@ impl Installation {
             channel,
             root,
             manifest,
+            launcher_version_label: None,
         })
     }
 
@@ -117,12 +132,25 @@ impl Installation {
         version
     }
 
-    /// Launcher-visible version format, e.g. `"4.7.1-live.11592622"`.
+    /// Locally derived launcher-style version label from the manifest's
+    /// `Branch` + lowercased channel + changelist, e.g.
+    /// `"4.7.0-live.11715810"`.
     ///
-    /// Built from manifest `branch` (stripped of the `sc-alpha-` prefix) +
-    /// lowercase channel name + changelist. Returns `None` if the manifest
-    /// lacks a changelist (legacy manifests don't carry one).
-    pub fn launcher_version_string(&self) -> Option<String> {
+    /// **Caveat — may be stale.** The manifest's `Branch` field encodes the
+    /// upstream code branch (e.g. `sc-alpha-4.7.0`), not the released
+    /// marketing version. CIG keeps cherry-picking hotfixes onto the same
+    /// branch without renaming it, so any `4.7.1` / `4.7.2` / … hotfix
+    /// build still reports `Branch: "sc-alpha-4.7.0"`. This derivation is
+    /// off by patch number after the first hotfix ships.
+    ///
+    /// **Prefer [`Self::launcher_version_label`]** (the authoritative
+    /// store-provided label) when correctness matters. Only fall back to
+    /// this when the store can't be read AND staleness is acceptable
+    /// (e.g. a UI that just wants something to show, where the user can
+    /// see the underlying changelist anyway).
+    ///
+    /// Returns `None` if the manifest lacks a changelist.
+    pub fn launcher_version_string_derived(&self) -> Option<String> {
         let changelist = self.manifest.changelist.as_deref()?;
         let branch = self
             .manifest
@@ -164,6 +192,7 @@ mod tests {
             channel,
             root: PathBuf::from("C:\\SC\\LIVE"),
             manifest: make_manifest(version, changelist),
+            launcher_version_label: None,
         }
     }
 
@@ -192,34 +221,34 @@ mod tests {
     }
 
     #[test]
-    fn launcher_version_string_is_derived_from_branch_not_version() {
+    fn launcher_version_string_derived_from_branch_not_version() {
         // Branch is "sc-alpha-4.6.1" → stripped to "4.6.1".
         // The manifest.version field is deliberately different to prove
-        // that launcher_version_string ignores it.
+        // that launcher_version_string_derived ignores it.
         let inst = make_install(Channel::Live, "4.7.0.99", Some("42"));
         assert_eq!(
-            inst.launcher_version_string().as_deref(),
+            inst.launcher_version_string_derived().as_deref(),
             Some("4.6.1-live.42")
         );
     }
 
     #[test]
-    fn launcher_version_string_eptu_uses_lowercase() {
+    fn launcher_version_string_derived_eptu_uses_lowercase() {
         let inst = make_install(Channel::Eptu, "4.7.0.0", Some("77"));
         assert_eq!(
-            inst.launcher_version_string().as_deref(),
+            inst.launcher_version_string_derived().as_deref(),
             Some("4.6.1-eptu.77")
         );
     }
 
     #[test]
-    fn launcher_version_string_without_changelist_is_none() {
+    fn launcher_version_string_derived_without_changelist_is_none() {
         let inst = make_install(Channel::Live, "4.6.1.0", None);
-        assert!(inst.launcher_version_string().is_none());
+        assert!(inst.launcher_version_string_derived().is_none());
     }
 
     #[test]
-    fn launcher_version_string_without_alpha_prefix() {
+    fn launcher_version_string_derived_without_alpha_prefix() {
         // If branch doesn't start with "sc-alpha-", use it as-is.
         let inst = Installation {
             channel: Channel::Live,
@@ -230,10 +259,35 @@ mod tests {
                 build_id: "1".to_string(),
                 changelist: Some("99".to_string()),
             },
+            launcher_version_label: None,
         };
         assert_eq!(
-            inst.launcher_version_string().as_deref(),
+            inst.launcher_version_string_derived().as_deref(),
             Some("4.6.1-release-live.99")
+        );
+    }
+
+    #[test]
+    fn launcher_version_label_is_independent_of_derived() {
+        // The store label and the manifest-derived value can disagree —
+        // store wins on display because it's authoritative. Test that they
+        // sit in separate slots and don't influence each other.
+        let mut inst = make_install(Channel::Live, "4.7.178.50402", Some("11715810"));
+        assert_eq!(inst.launcher_version_label, None);
+        assert_eq!(
+            inst.launcher_version_string_derived().as_deref(),
+            Some("4.6.1-live.11715810")
+        );
+
+        inst.launcher_version_label = Some("4.7.2-live.11715810".into());
+        // Derived form is unchanged — store label is purely additive data.
+        assert_eq!(
+            inst.launcher_version_string_derived().as_deref(),
+            Some("4.6.1-live.11715810")
+        );
+        assert_eq!(
+            inst.launcher_version_label.as_deref(),
+            Some("4.7.2-live.11715810")
         );
     }
 

@@ -49,6 +49,23 @@ impl Channel {
         }
     }
 
+    /// On-disk subdirectory name the launcher creates inside a library
+    /// directory, e.g. `LIVE`, `HOTFIX`, `PTU`, `EPTU`, `TECH-PREVIEW`.
+    ///
+    /// This differs from [`Self::display_name`] only for [`Self::TechPreview`]
+    /// — the launcher creates a `TECH-PREVIEW` directory but reports the
+    /// channel as `TECH` in some places. Use this method when joining a
+    /// library path into a full install root.
+    pub fn install_dir_name(self) -> &'static str {
+        match self {
+            Self::Live => "LIVE",
+            Self::Hotfix => "HOTFIX",
+            Self::Ptu => "PTU",
+            Self::Eptu => "EPTU",
+            Self::TechPreview => "TECH-PREVIEW",
+        }
+    }
+
     /// Lowercase channel name for use in launcher version strings.
     /// For example `"4.7.1-live.11592622"` uses `"live"`.
     pub fn lowercase_name(self) -> &'static str {

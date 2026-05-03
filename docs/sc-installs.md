@@ -112,8 +112,8 @@ pub enum Error {
     #[error("failed to read launcher log at {path}")]
     LauncherLogUnreadable { path: PathBuf, source: io::Error },
 
-    #[error("no launch entries found in launcher log at {0}")]
-    NoLaunchEntries(PathBuf),
+    #[error("no install-related entries found in launcher log at {0}")]
+    NoInstallEntries(PathBuf),
 
     #[error("failed to read build manifest at {path}")]
     BuildManifestUnreadable { path: PathBuf, source: io::Error },
@@ -207,11 +207,26 @@ impl Installation {
     /// e.g. "4.6.173.39432" → "4.6".
     pub fn short_version(&self) -> &str;
 
-    /// Launcher-visible version format, e.g. "4.7.1-live.11592622".
-    /// Built from manifest `branch` (stripped of the `sc-alpha-` prefix) +
-    /// channel (lowercase) + `changelist`. Returns `None` if the manifest
-    /// lacks a changelist.
-    pub fn launcher_version_string(&self) -> Option<String>;
+    /// Authoritative launcher-visible version label from `launcher store.json`,
+    /// e.g. "4.7.2-live.11715810". Set when discovery used the launcher
+    /// store; `None` when discovery fell back to log parsing or the install
+    /// was constructed via `from_root` / `from_parts`.
+    ///
+    /// This is the **only** source of the true marketing version — the
+    /// on-disk manifest's `Branch` field encodes the upstream code branch
+    /// (e.g. `sc-alpha-4.7.0`), which doesn't roll forward when hotfixes
+    /// ship.
+    pub launcher_version_label: Option<String>,
+}
+
+impl Installation {
+    /// Locally derived launcher-style version label from `manifest.branch`
+    /// + channel + changelist. **Caveat — may be stale.** The manifest's
+    /// `Branch` field tracks the upstream code branch, not the released
+    /// marketing version, so this derivation is off by patch number after
+    /// the first hotfix ships off the same branch. Prefer
+    /// `launcher_version_label` when correctness matters.
+    pub fn launcher_version_string_derived(&self) -> Option<String>;
 
     // ── Validation ─────────────────────────────────────────────────────
 
@@ -226,8 +241,11 @@ impl Installation {
 For consumers that want raw data or need to bypass filtering:
 
 ```rust
-/// Parse every launch entry from the log without filtering or manifest reading.
-pub fn parse_launcher_log_entries(log_path: &Path) -> Result<Vec<(Channel, PathBuf)>, Error>;
+/// Parse every install-related entry from the log without filtering or
+/// manifest reading. Returns one `LogEntry` per recognised marker (Launcher
+/// launch event, Installer event, or login-data delete), with paths
+/// normalised to full channel roots.
+pub fn parse_launcher_log_entries(log_path: &Path) -> Result<Vec<LogEntry>, Error>;
 
 /// Read and parse a `build_manifest.id` file directly.
 pub fn read_build_manifest(install_root: &Path) -> Result<BuildManifest, Error>;
@@ -245,13 +263,51 @@ streamdeck currently returns `(String, String, String)` from `read_build_manifes
 
 ### Two derived version formats, raw manifest stays accessible
 
-Because the two consumers read different manifest fields to build "the version", both derived formats must be available without privileging one. `Installation` exposes `short_version()` and `launcher_version_string()` as convenience methods.
+Because the two consumers read different manifest fields to build "the version", both derived formats must be available without privileging one. `Installation` exposes `short_version()` and `launcher_version_string_derived()` as convenience methods, and surfaces the authoritative store-provided label as the public field `launcher_version_label`.
+
+### `launcher_version_label` is authoritative; `launcher_version_string_derived()` is explicit
+
+The two are deliberately separate, with no auto-fallback convenience method, because they answer different questions and the difference is not always trivial:
+
+- `launcher_version_label` — exactly what the launcher's UI shows. Always correct when present, but `None` when discovery couldn't reach the launcher store (custom install dir, wiped store, Wine without launcher, etc.).
+- `launcher_version_string_derived()` — built from the manifest's `Branch` + lowercased channel + changelist. **Stale once any hotfix has shipped on top of an X.Y.0 branch** — e.g. derives `4.7.0-live.11715810` for an actual `4.7.2-live.11715810` build, because `Branch: "sc-alpha-4.7.0"` doesn't roll forward.
+
+Consumers that want to fall back to the derived form when the authoritative label is unavailable must opt in explicitly:
+
+```rust
+let label = install
+    .launcher_version_label
+    .clone()
+    .or_else(|| install.launcher_version_string_derived());
+```
+
+`sc-generator` (and therefore `regenerate.ps1`) deliberately *refuses* to fall back: an unreadable launcher store there means the regen pipeline would publish a wrong tag, so failing loudly is better than silently shipping `datacore/4.7.0-live.11715810` for a 4.7.2 build.
 
 There is **no** direct `version: String` field on `Installation`. Consumers that want the raw manifest fields (`version`, `branch`, `build_id`, `changelist`) reach them through the public `manifest: BuildManifest` field. Methods exist only for *derived* formats that would otherwise each consumer would have to reimplement identically.
 
 ### Strict validation
 
 `discover()` filters out installs where either the root directory or `Data.p4k` is missing. This matches sc-langpatch's stricter check rather than streamdeck's dir-only check. Consumers that want to see raw launcher log entries (including broken ones) can call `parse_launcher_log_entries()` directly.
+
+### Two discovery sources, one fallback chain
+
+`discover()` tries the launcher's persistent store first (`%APPDATA%/rsilauncher/launcher store.json`) and falls back to log parsing on any failure. The store is the launcher's authoritative state — every installed channel appears there with its full root path and version label, regardless of whether the channel has ever been launched. The log fallback covers users with non-default launcher install dirs (where the runtime key extractor can't find the asar), launcher updates that rotate the embedded key into an unrecognised pattern, or any other store-side failure.
+
+The store file is encrypted with AES-256-CBC. The key is hardcoded inside the launcher's `resources/app.asar` (electron-store with a literal `encryptionKey` constant). Rather than embed CIG's key in this crate — which would be a third-party secret with an unbounded liability tail and would silently break on key rotation — we extract it at runtime by streaming through `app.asar` for the literal `encryptionKey:"<base64>"` marker. PBKDF2-HMAC-SHA512 (10 000 iters) derives the 32-byte AES key from `(key_b64, IV.toString('utf8'))`, and the JS-side lossy UTF-8 conversion of the IV salt has to be replicated exactly (`String::from_utf8_lossy` on the IV bytes).
+
+`discover_last_launched()` deliberately stays log-only. The store contains "installed" status but no "last launched" stamp suitable for picking the channel a user actually plays — that semantic only exists in the chronological `Launcher::launch` markers in the log.
+
+### Three "pick one install" semantics
+
+| Function | Source | Picks |
+|---|---|---|
+| [`discover_primary`] | log fallback chain | highest-priority valid (LIVE first, by `Channel::priority()`) |
+| [`discover_default`] | store `library.defaults[]`, falls back to `discover_primary` | the channel the user has configured as the launcher's default-launch target |
+| [`discover_last_launched`] | log only, strict | the channel most recently launched via `Launcher::launch` events |
+
+Use `discover_default` for "open the install the user would expect by default" UX (e.g. a Stream Deck button); `discover_last_launched` for "resume the channel the user was just on"; `discover_primary` only when LIVE-bias is genuinely correct (most consumers should prefer one of the other two).
+
+For richer info — `platform_id`, `version_label`, the launcher's default-channel pick — call [`read_launcher_snapshot`] directly. See `docs/launcher-store.md` for the full launcher-store reference.
 
 ### `Result<Vec<Installation>, Error>` not `Vec<Installation>`
 

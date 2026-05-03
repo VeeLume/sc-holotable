@@ -18,5 +18,14 @@ tracing    = { workspace = true }
 regex      = { workspace = true }
 specta     = { version = "=2.0.0-rc.21", features = ["derive"], optional = true }
 
+# Used to decrypt the RSI Launcher's `launcher store.json` (electron-store
+# format: AES-256-CBC + PBKDF2-HMAC-SHA512). The encryption key is read at
+# runtime from the launcher's own `app.asar` — we do not embed it. See
+# `src/launcher_store.rs` for format details.
+aes        = "0.8"
+cbc        = { version = "0.1", features = ["alloc"] }
+pbkdf2     = { version = "0.12", default-features = false, features = ["hmac"] }
+sha2       = "0.10"
+
 [dev-dependencies]
 tempfile = "3"

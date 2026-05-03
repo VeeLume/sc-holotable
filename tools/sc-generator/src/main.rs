@@ -142,49 +142,47 @@ fn parse_args() -> Result<RunOptions, String> {
 /// return its `Data.p4k` path. Prints a machine-parseable identity line to
 /// stdout so scripts can capture the version/channel/path without having
 /// to re-run discovery themselves.
+///
+/// **Authoritative version only.** The published `launcher_version` comes
+/// directly from `launcher store.json` (i.e. exactly what the RSI Launcher
+/// shows in its UI). If the launcher store can't be read — installation
+/// not in the expected location, asar shape changed, etc. — we fail
+/// rather than fall back to the manifest-derived label, because that
+/// derivation is silently stale once any hotfix has shipped on top of an
+/// X.Y.0 branch (the manifest's `Branch` doesn't roll forward). A failed
+/// run here surfaces the underlying problem; a wrong tag like
+/// `datacore/4.7.0-live.11715810` for an actual 4.7.2 build would not.
 fn autodiscover_p4k() -> Result<PathBuf, String> {
     let install = sc_installs::discover_primary()
         .map_err(|e| format!("auto-discovery failed: {e}. Pass --p4k <path> explicitly."))?;
     let p4k = install.data_p4k();
 
-    // Branch is usually "sc-alpha-4.7.2"; the launcher-visible marketing
-    // version strips the "sc-*-" prefix. Fall back to the branch verbatim
-    // if the prefix shape changes.
+    let launcher_version = install.launcher_version_label.as_deref().ok_or_else(|| {
+        format!(
+            "no authoritative launcher version label for {channel} install at {root}. \
+             This means sc-installs fell back to log parsing — the launcher store could \
+             not be read. Most likely cause: the RSI Launcher is installed somewhere \
+             other than `%PROGRAMFILES%/Roberts Space Industries/RSI Launcher`, or the \
+             launcher updated and rotated its `encryptionKey:\"…\"` constant in app.asar. \
+             Refusing to publish a stale, manifest-derived version that may misreport the \
+             patch number.",
+            channel = install.channel,
+            root = install.root.display(),
+        )
+    })?;
+
     let branch = install.manifest.branch.as_str();
-    let marketing_version = branch
-        .splitn(3, '-')
-        .nth(2)
-        .filter(|s| !s.is_empty())
-        .unwrap_or(branch);
-
-    let channel_lower = install.channel.to_string().to_ascii_lowercase();
-    let changelist = install.manifest.changelist.as_deref().unwrap_or("");
-
-    // Launcher-format string: "<marketing>-<channel>.<changelist>", e.g.
-    // "4.7.2-live.11674325". This is the monotonic identifier suitable
-    // for tags and downgrade comparisons. When the manifest predates the
-    // changelist field, fall back to the plain version string.
-    let launcher_version = if changelist.is_empty() {
-        install.manifest.version.clone()
-    } else {
-        format!("{marketing_version}-{channel_lower}.{changelist}")
-    };
+    let changelist = install.manifest.changelist.as_deref().unwrap_or("-");
 
     // Machine-parseable: one line, stable key=value, no tracing envelope.
     // Order is intentional: launcher_version first so scripts that only
     // need that one can stop parsing after it.
     println!(
-        "sc-generator: launcher_version={} version={} channel={} branch={} changelist={} p4k={}",
-        launcher_version,
-        install.manifest.version,
-        install.channel,
-        branch,
-        if changelist.is_empty() {
-            "-"
-        } else {
-            changelist
-        },
-        p4k.display(),
+        "sc-generator: launcher_version={launcher_version} version={version} \
+         channel={channel} branch={branch} changelist={changelist} p4k={p4k}",
+        version = install.manifest.version,
+        channel = install.channel,
+        p4k = p4k.display(),
     );
     Ok(p4k)
 }

@@ -14,6 +14,66 @@ separate commits and advance independently.
 
 ## [Unreleased]
 
+### Added
+
+- **`sc-installs`: launcher-store discovery.** New module `launcher_store`
+  reads `%APPDATA%/rsilauncher/launcher store.json` (electron-store /
+  AES-256-CBC) for an authoritative list of installed channels — works
+  even for channels never launched. Encryption key is extracted at
+  runtime from the launcher's own `app.asar` (no embedded secret).
+  - New `discover_default()` returns the channel from the launcher's
+    `library.defaults[]` — better "default install" UX than
+    `discover_primary` (hardcoded LIVE-first).
+  - `discover()` and `discover_primary()` now go through the store
+    first, fall back to log parsing on any failure.
+  - New types: `StoreInstall`, `StoreSnapshot`. New free functions:
+    `read_launcher_store`, `read_launcher_snapshot`, plus `_from`
+    siblings.
+  - New deps: `aes`, `cbc`, `pbkdf2`, `sha2` (pure-rust, no DPAPI).
+  - See `docs/launcher-store.md` for the full launcher-store reference.
+
+- **`sc-installs`: broader log parsing.** Recognises `[Installer]` and
+  `Deleting <root>\loginData.json` markers in addition to
+  `[Launcher::launch]`, so log-fallback discovery finds channels that
+  have been installed but never launched. New `LogEntry` /
+  `LogEntryKind` types; `parse_launcher_log_entries` returns
+  `Vec<LogEntry>`.
+
+- **`Channel::install_dir_name()`** — on-disk directory name for a
+  channel (notably `TECH-PREVIEW`, distinct from the display name `TECH`).
+
+### Changed (breaking)
+
+- **`sc-installs`: `Installation::launcher_version_string()` removed.**
+  Replaced with two explicit alternatives because the old auto-derivation
+  was silently off-by-patch-number once any hotfix shipped on top of an
+  X.Y.0 branch (the manifest's `Branch` field doesn't roll forward):
+  - `Installation::launcher_version_label: Option<String>` (new public
+    field) — authoritative store-provided label, e.g.
+    `"4.7.2-live.11715810"`. Set by store-using discovery paths; `None`
+    when discovery fell back to log parsing.
+  - `Installation::launcher_version_string_derived()` (renamed) —
+    locally derived from manifest fields; carries an explicit staleness
+    caveat. Consumers that want fallback semantics must opt in
+    explicitly.
+
+  `sc-generator` now uses `launcher_version_label` exclusively and
+  refuses to fall back to derivation, so a wrong tag like
+  `datacore/4.7.0-live.X` for a 4.7.2 build can't slip through. The
+  regen script gets this for free.
+
+- **`sc-installs`: `Error::NoLaunchEntries` renamed** to
+  `Error::NoInstallEntries` — the error now also covers logs that have
+  no `Installer` markers, not just no launch markers.
+
+- **`sc-installs`: `parse_launcher_log_entries` return type changed**
+  from `Vec<(Channel, PathBuf)>` to `Vec<LogEntry>`.
+
+- **`sc-installs`: legacy plain-text manifest parsing removed.** Only
+  the v2 nested `{"Data": {...}}` shape is parsed now. The legacy
+  flat-format support was code path debt — every shipped Star Citizen
+  build the workspace targets uses the v2 shape.
+
 ## [v0.2.0] - 2026-05-02
 
 ### Changed (breaking)
