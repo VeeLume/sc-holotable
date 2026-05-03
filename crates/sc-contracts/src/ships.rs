@@ -30,16 +30,17 @@ use std::collections::{HashMap, HashSet};
 use sc_extract::generated::{
     DataForgeComponentParamsPtr, DataPools, EntityClassDefinition, TagList,
 };
-use sc_extract::{Datacore, Guid};
+use sc_extract::{Datacore, Guid, LocaleMap, LocalizedItemCache};
 
 /// An AI ship entity indexed for tag-query spawn resolution.
+///
+/// Display name is intentionally absent — resolve via
+/// [`ShipRegistry::display_name`] at the call site through the active
+/// [`LocaleMap`].
 #[derive(Debug, Clone)]
 pub struct ShipEntity {
     /// The `EntityClassDefinition` record's GUID.
     pub entity_guid: Guid,
-    /// Localized display name as resolved by [`DisplayNameCache`]. May be
-    /// empty for entities whose localization isn't in `global.ini` yet.
-    pub display_name: String,
     /// The full tag set on the entity (literal tags only).
     pub tags: HashSet<Guid>,
     /// Tag-tree-expanded tag set: every tag in [`Self::tags`] plus all
@@ -58,9 +59,11 @@ pub struct ShipEntity {
 
 /// A resolved spawn-query candidate. Consumers display these; the full
 /// [`ShipEntity`] stays inside the registry for match logic.
+///
+/// Display name is intentionally absent — resolve via
+/// [`ShipRegistry::display_name`] keyed by `entity_guid`.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct ShipCandidate {
-    pub display_name: String,
     pub size: i32,
     /// Back-reference to the underlying ship entity in case the consumer
     /// needs the full tag set or raw GUID.
@@ -112,7 +115,6 @@ impl ShipRegistry {
     /// to include entities whose tag set intersects those tags.
     pub fn build(datacore: &Datacore) -> Self {
         let pools = &datacore.records().pools;
-        let display_names = &datacore.snapshot().display_names;
         let tag_tree = &datacore.snapshot().tag_tree;
 
         // Pass 1 — collect every tag referenced in ship-spawn queries.
@@ -168,7 +170,6 @@ impl ShipRegistry {
                 continue;
             }
 
-            let display_name = display_names.get(guid).unwrap_or("").to_string();
             let size = extract_size(ecd, pools);
 
             // Expand tags via tag-tree ancestor walk: every entity tag
@@ -187,18 +188,20 @@ impl ShipRegistry {
             ship_relevant_tags.extend(entity_tags.iter().copied());
             entities.push(ShipEntity {
                 entity_guid: *guid,
-                display_name,
                 tags: entity_tags,
                 tags_expanded,
                 size,
             });
         }
 
-        // Stable ordering: by size, then by display name, then by guid.
+        // Stable ordering: by size, then by entity GUID. Locale-independent
+        // — UIs that want an alphabetical order resolve display names
+        // post-hoc and re-sort. Pre-resolving here would lock the order
+        // to the parse-time LocaleMap, which goes stale under
+        // language-pack overlays (see docs/localization.md).
         entities.sort_by(|a, b| {
             a.size
                 .cmp(&b.size)
-                .then_with(|| a.display_name.cmp(&b.display_name))
                 .then_with(|| a.entity_guid.to_string().cmp(&b.entity_guid.to_string()))
         });
 
@@ -378,11 +381,23 @@ impl ShipRegistry {
                     && negative.iter().all(|t| !ship.tags_expanded.contains(t))
             })
             .map(|ship| ShipCandidate {
-                display_name: ship.display_name.clone(),
                 size: ship.size,
                 entity_guid: ship.entity_guid,
             })
             .collect()
+    }
+
+    /// Resolve the localized display name for a ship entity through the
+    /// supplied [`LocaleMap`]. Returns `None` when the entity has no
+    /// `Localization.Name` key in `cache` or the key is absent from
+    /// `locale`.
+    pub fn display_name<'a>(
+        &self,
+        guid: &Guid,
+        cache: &LocalizedItemCache,
+        locale: &'a LocaleMap,
+    ) -> Option<&'a str> {
+        cache.name_key(guid).and_then(|k| locale.resolve(k))
     }
 
     /// The set of ship-selective tag GUIDs — every descendant of the

@@ -30,9 +30,13 @@ use sc_extract::generated::{
     RecordIndex,
 };
 use sc_extract::svarog_datacore::DataCoreDatabase;
-use sc_extract::{Datacore, DisplayNameCache, Guid, LocaleMap};
+use sc_extract::{Datacore, Guid, LocaleKey, LocaleMap, LocalizedItemCache};
 
 /// A resolved blueprint item — what a contract can award.
+///
+/// Display name is intentionally absent — resolve via
+/// [`BlueprintItem::display_name`] at the call site through the active
+/// [`LocaleMap`].
 #[derive(Debug, Clone, PartialEq)]
 pub struct BlueprintItem {
     /// GUID of the `CraftingBlueprintRecord` root record.
@@ -43,15 +47,52 @@ pub struct BlueprintItem {
     /// `CraftingProcess_Creation.entity_class` (non-creation processes
     /// like refining, or a missing reference).
     pub crafted_entity_guid: Option<Guid>,
-    /// Localized item name, preferring the crafted entity's display
-    /// name (`Arclight Pistol`, `Prism Laser Shotgun`). Falls back to
-    /// the `CraftingBlueprint.blueprintName` locale key when the
-    /// entity-class path doesn't resolve. Empty when neither produces
-    /// text.
-    pub display_name: String,
+    /// Fallback `CraftingBlueprint.blueprintName` locale key, used when
+    /// the crafted-entity path doesn't resolve. Raw — leading `@`
+    /// preserved.
+    pub blueprint_name_key: Option<LocaleKey>,
     /// Pick-weight within the pool. Higher = more likely. Engine-side
     /// chance is per-pool; per-item weight is relative.
     pub weight: f32,
+}
+
+impl BlueprintItem {
+    /// Resolve the player-facing display name through a
+    /// [`LocalizedItemCache`] (for the crafted-entity path) and a
+    /// [`LocaleMap`] (for the fallback `blueprintName` key).
+    ///
+    /// Tries two sources in order:
+    ///
+    /// 1. **Crafted entity's display name** (preferred). Looks up
+    ///    `cache.name_key(crafted_entity_guid)` and resolves through
+    ///    `locale`.
+    /// 2. **`CraftingBlueprint.blueprintName`** (fallback). Resolves the
+    ///    stored [`Self::blueprint_name_key`] through `locale`.
+    ///
+    /// CIG localization placeholders (`<= PLACEHOLDER =>` etc.) are
+    /// treated as unresolved so the caller falls through to the next
+    /// source. Returns `None` when neither path produces real text.
+    pub fn display_name<'a>(
+        &self,
+        cache: &LocalizedItemCache,
+        locale: &'a LocaleMap,
+    ) -> Option<&'a str> {
+        if let Some(entity_guid) = self.crafted_entity_guid
+            && let Some(key) = cache.name_key(&entity_guid)
+            && let Some(name) = locale.resolve(key)
+            && !name.is_empty()
+            && !is_placeholder(name)
+        {
+            return Some(name);
+        }
+        if let Some(key) = &self.blueprint_name_key
+            && let Some(text) = locale.resolve(key)
+            && !is_placeholder(text)
+        {
+            return Some(text);
+        }
+        None
+    }
 }
 
 /// A resolved `BlueprintPoolRecord`.
@@ -62,9 +103,9 @@ pub struct BlueprintPool {
     /// Record name (`BlueprintPoolRecord.foo`, stripped prefix), useful
     /// for debug / census output. Empty when the record has no name.
     pub name: String,
-    /// Items in the pool with their weights. Sorted by display name
-    /// for stable output. Items with unresolvable display names are
-    /// still included — `display_name` is empty in that case.
+    /// Items in the pool with their weights. Order is locale-independent
+    /// (descending weight, then `blueprint_record_guid`); UIs that want
+    /// alphabetical order resolve display names and re-sort.
     pub items: Vec<BlueprintItem>,
 }
 
@@ -77,9 +118,6 @@ pub struct BlueprintPoolRegistry {
     /// point at anything we can resolve (feature-gated types or DCB
     /// breakage).
     unresolved_blueprint_records: usize,
-    /// Blueprint items where the `CraftingBlueprint.blueprintName` key
-    /// didn't resolve in the locale map.
-    missing_locale_names: usize,
 }
 
 impl BlueprintPoolRegistry {
@@ -100,15 +138,26 @@ impl BlueprintPoolRegistry {
     /// silently drop them, and counters are exposed via
     /// [`Self::unresolved_blueprint_records`] and
     /// [`Self::missing_locale_names`] for diagnostics.
-    pub fn build(datacore: &Datacore, locale: &LocaleMap) -> Self {
+    /// Build the registry from the current [`Datacore`].
+    ///
+    /// Walks every root `BlueprintPoolRecord` (as seen by the
+    /// generator's `RecordIndex`). For each pool:
+    ///
+    /// 1. Resolve the record's name via the raw svarog record
+    ///    (`BlueprintPoolRecord.<name>`).
+    /// 2. For each `BlueprintReward` entry, capture
+    ///    `crafted_entity_guid` and the fallback `blueprint_name_key`
+    ///    so callers can resolve text at render time.
+    ///
+    /// Locale-independent — display-name resolution happens at the
+    /// call site via [`BlueprintItem::display_name`].
+    pub fn build(datacore: &Datacore) -> Self {
         let pools = &datacore.records().pools;
         let records = &datacore.records().records;
-        let display_names = &datacore.snapshot().display_names;
         let db = datacore.db();
 
         let mut out: HashMap<Guid, BlueprintPool> = HashMap::new();
         let mut unresolved_blueprint_records = 0usize;
-        let mut missing_locale_names = 0usize;
 
         for (pool_guid, pool_handle) in &records.multi_feature.blueprint_pool_record {
             let Some(pool) = pool_handle.get(pools) else {
@@ -132,23 +181,25 @@ impl BlueprintPoolRegistry {
                 let resolved = resolve_blueprint_reward(
                     records,
                     pools,
-                    display_names,
                     reward,
-                    locale,
                     &mut unresolved_blueprint_records,
-                    &mut missing_locale_names,
                 );
                 items.push(resolved);
             }
 
-            // Stable order by display name (resolved first; empty last
-            // so unresolved items don't bury the readable ones).
+            // Stable, locale-independent order: descending weight (most
+            // likely first), then by blueprint-record GUID. UIs that
+            // want alphabetical order resolve display names and re-sort
+            // post-hoc.
             items.sort_by(|a, b| {
-                let a_empty = a.display_name.is_empty();
-                let b_empty = b.display_name.is_empty();
-                a_empty
-                    .cmp(&b_empty)
-                    .then_with(|| a.display_name.cmp(&b.display_name))
+                b.weight
+                    .partial_cmp(&a.weight)
+                    .unwrap_or(std::cmp::Ordering::Equal)
+                    .then_with(|| {
+                        a.blueprint_record_guid
+                            .to_string()
+                            .cmp(&b.blueprint_record_guid.to_string())
+                    })
             });
 
             out.insert(
@@ -164,7 +215,6 @@ impl BlueprintPoolRegistry {
         Self {
             pools: out,
             unresolved_blueprint_records,
-            missing_locale_names,
         }
     }
 
@@ -186,18 +236,11 @@ impl BlueprintPoolRegistry {
         self.pools.values()
     }
 
-    /// Total number of blueprint records we couldn't resolve to an item
-    /// display name (either the `CraftingBlueprintRecord` itself was
+    /// Total number of blueprint records we couldn't resolve to a
+    /// concrete `CraftingBlueprintRecord` (either the record was
     /// missing, or its nested `blueprint` pointer landed on `Unknown`).
     pub fn unresolved_blueprint_records(&self) -> usize {
         self.unresolved_blueprint_records
-    }
-
-    /// Items whose `blueprintName` locale key was missing from
-    /// `global.ini`. These are already in the pool with empty
-    /// `display_name`.
-    pub fn missing_locale_names(&self) -> usize {
-        self.missing_locale_names
     }
 }
 
@@ -221,16 +264,13 @@ impl BlueprintPoolRegistry {
 fn resolve_blueprint_reward(
     records: &RecordIndex,
     pools: &DataPools,
-    display_names: &DisplayNameCache,
     reward: &BlueprintReward,
-    locale: &LocaleMap,
     unresolved: &mut usize,
-    missing_locale: &mut usize,
 ) -> BlueprintItem {
     let mut item = BlueprintItem {
         blueprint_record_guid: reward.blueprint_record.unwrap_or_default(),
         crafted_entity_guid: None,
-        display_name: String::new(),
+        blueprint_name_key: None,
         weight: reward.weight,
     };
 
@@ -262,27 +302,10 @@ fn resolve_blueprint_reward(
         return item;
     };
 
-    // Primary resolution: crafted-entity GUID → DisplayNameCache.
-    if let Some(entity_guid) = extract_creation_entity(&bp.process_specific_data, pools) {
-        item.crafted_entity_guid = Some(entity_guid);
-        if let Some(name) = display_names.get(&entity_guid)
-            && !name.is_empty()
-            && !is_placeholder(name)
-        {
-            item.display_name = name.to_string();
-            return item;
-        }
-    }
+    item.crafted_entity_guid = extract_creation_entity(&bp.process_specific_data, pools);
 
-    // Fallback: CraftingBlueprint.blueprintName via LocaleMap.
-    let key = bp.blueprint_name.stripped();
-    if !key.is_empty()
-        && let Some(text) = locale.get(key)
-        && !is_placeholder(text)
-    {
-        item.display_name = text.to_string();
-    } else {
-        *missing_locale += 1;
+    if !bp.blueprint_name.is_empty() {
+        item.blueprint_name_key = Some(bp.blueprint_name.clone());
     }
 
     item

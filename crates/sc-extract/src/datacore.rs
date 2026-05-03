@@ -4,9 +4,9 @@
 //!
 //! - [`DatacoreSnapshot`] — fully owned runtime bundle of every DCB-derived
 //!   value produced in one parse pass (records, graph, tag tree,
-//!   manufacturers, display names). Not serialized — persistence happens
-//!   through [`crate::ExtractSnapshot`], which archives the raw DCB bytes
-//!   and re-parses on load.
+//!   manufacturers, localized items). Not serialized — persistence
+//!   happens through [`crate::ExtractSnapshot`], which archives the raw
+//!   DCB bytes and re-parses on load.
 //! - [`Datacore`] — live session that **owns** a [`DataCoreDatabase`] so
 //!   consumers can keep running raw svarog queries after high-level parsing.
 //!   Holds a [`DatacoreSnapshot`] for the cooked data.
@@ -17,10 +17,10 @@
 use crate::asset_data::AssetData;
 use crate::assets::AssetSource;
 use crate::config::DatacoreConfig;
-use crate::display_names::DisplayNameCache;
 use crate::error::{Error, Result};
 use crate::generated::{Builder, RecordStore};
 use crate::graph::ReferenceGraph;
+use crate::localized_items::LocalizedItemCache;
 use crate::manufacturers::ManufacturerRegistry;
 use crate::svarog_datacore::DataCoreDatabase;
 use crate::tags::TagTree;
@@ -55,10 +55,12 @@ pub struct DatacoreSnapshot {
     /// Manufacturer lookup by GUID and ticker code.
     pub manufacturers: ManufacturerRegistry,
 
-    /// Pre-computed localized entity display names. Populated only when
-    /// [`DatacoreConfig::build_display_names`] is true *and* the
-    /// accompanying [`AssetData`] had a non-empty locale.
-    pub display_names: DisplayNameCache,
+    /// Pre-computed localization-key cache for every entity record that
+    /// exposes a `SAttachableComponentParams.AttachDef.Localization`
+    /// block. Locale-independent — stores keys, not resolved strings.
+    /// Populated only when
+    /// [`DatacoreConfig::build_localized_items`] is true.
+    pub localized_items: LocalizedItemCache,
 }
 
 impl DatacoreSnapshot {
@@ -84,14 +86,16 @@ pub struct Datacore {
 
 impl Datacore {
     /// Parse the DCB from an open [`AssetSource`] and build every index
-    /// enabled by `config`. `asset_data` provides the locale map used to
-    /// resolve entity display names — pass [`AssetData::default`] if you
-    /// don't need localized names.
+    /// enabled by `config`. `asset_data` is currently retained for API
+    /// symmetry with the [`AssetSource`] / [`AssetData`] / [`Datacore`]
+    /// triple — DCB-derived indices are locale-independent post the
+    /// localization restructure (see `docs/localization.md`).
     pub fn parse(
         assets: &AssetSource,
         asset_data: &AssetData,
         config: &DatacoreConfig,
     ) -> Result<Self> {
+        let _ = asset_data; // reserved for future asset-derived indices
         let start = std::time::Instant::now();
 
         tracing::info!("locating Game2.dcb");
@@ -128,11 +132,11 @@ impl Datacore {
             ManufacturerRegistry::new()
         };
 
-        let display_names = if config.build_display_names {
-            tracing::info!("building display name cache");
-            DisplayNameCache::from_database(&db, &asset_data.locale)
+        let localized_items = if config.build_localized_items {
+            tracing::info!("building localized-item cache");
+            LocalizedItemCache::from_database(&db)
         } else {
-            DisplayNameCache::new()
+            LocalizedItemCache::new()
         };
 
         let snapshot = DatacoreSnapshot {
@@ -140,7 +144,7 @@ impl Datacore {
             graph,
             tag_tree,
             manufacturers,
-            display_names,
+            localized_items,
         };
 
         tracing::info!(
@@ -181,7 +185,7 @@ impl std::fmt::Debug for Datacore {
         f.debug_struct("Datacore")
             .field("records", &self.snapshot.records.len())
             .field("graph_edges", &self.snapshot.graph.edge_count())
-            .field("display_names", &self.snapshot.display_names.len())
+            .field("localized_items", &self.snapshot.localized_items.len())
             .finish()
     }
 }

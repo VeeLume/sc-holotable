@@ -32,11 +32,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let assets = AssetSource::from_install(&install)?;
     let asset_data = AssetData::extract(&assets, &AssetConfig::standard())?;
     let datacore = Datacore::parse(&assets, &asset_data, &DatacoreConfig::standard())?;
-    let index = MissionIndex::build(&datacore, &asset_data.locale);
+    let index = MissionIndex::build(&datacore);
 
     section_1_security_turret(&index);
     section_2_not_wanted_during_combat(&index);
-    section_3_foxwell_dig(&index, &datacore);
+    section_3_foxwell_dig(&index, &datacore, &asset_data.locale);
 
     Ok(())
 }
@@ -153,7 +153,11 @@ fn section_2_not_wanted_during_combat(index: &MissionIndex) {
 
 // ── §3 Foxwell ambush deep dive ──────────────────────────────────────────────
 
-fn section_3_foxwell_dig(index: &MissionIndex, datacore: &Datacore) {
+fn section_3_foxwell_dig(
+    index: &MissionIndex,
+    datacore: &Datacore,
+    locale: &sc_extract::LocaleMap,
+) {
     println!("=== §3 Foxwell Enforcement Ship Ambush — deep dive ===");
     let pattern = "foxwellenforcement_shipambush_";
 
@@ -166,7 +170,7 @@ fn section_3_foxwell_dig(index: &MissionIndex, datacore: &Datacore) {
 
     for c in &matches {
         println!("── {}", c.debug_name);
-        println!("    title:        {}", c.title.as_deref().unwrap_or("?"));
+        println!("    title:        {}", c.title(locale).unwrap_or("?"));
         println!("    handler:      {}", c.origin.source_debug_name);
         println!("    sub-of:       {:?}", c.origin.subcontract_of);
         println!("    crime_stat prereq:");
@@ -197,18 +201,20 @@ fn section_3_foxwell_dig(index: &MissionIndex, datacore: &Datacore) {
                     println!(
                         "      - {} :: {}  ({} location(s))",
                         view.name,
-                        view.region_label,
+                        view.region_label(locale),
                         view.locations.len(),
                     );
                     for loc in view.locations.iter().take(8) {
-                        let body = if !loc.body_display_name.is_empty() {
-                            loc.body_display_name.as_str()
-                        } else {
-                            loc.body.as_deref().unwrap_or("")
-                        };
+                        let body = loc
+                            .body_display_name(locale)
+                            .or(loc.body.as_deref())
+                            .unwrap_or("");
                         println!(
                             "          {} ({:?})  body={}  display={}",
-                            loc.record_name, loc.system, body, loc.display_name,
+                            loc.record_name,
+                            loc.system,
+                            body,
+                            loc.display_name(locale).unwrap_or(""),
                         );
                     }
                     if view.locations.len() > 8 {

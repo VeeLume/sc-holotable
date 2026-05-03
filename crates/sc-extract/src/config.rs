@@ -2,7 +2,7 @@
 //!
 //! [`DatacoreConfig`] controls which DCB-derived indices the datacore
 //! pipeline builds. The reference graph, tag tree, manufacturer registry,
-//! and display name cache are all independently toggleable.
+//! and localized-item cache are all independently toggleable.
 //!
 //! Locale parsing lives on [`crate::AssetConfig`] — it's an asset-sourced
 //! value, not DCB-derived.
@@ -45,11 +45,11 @@ pub struct DatacoreConfig {
     /// records — fast (~5ms).
     pub build_manufacturers: bool,
 
-    /// Build the DisplayNameCache? Walks "EntityClassDefinition" records
-    /// and resolves names against the [`crate::AssetData::locale`] passed
-    /// into [`crate::Datacore::parse`] — fast (~80ms), but returns 0
-    /// results if the locale is empty.
-    pub build_display_names: bool,
+    /// Build the LocalizedItemCache? Walks "EntityClassDefinition"
+    /// records and stores the `Localization.{Name, ShortName,
+    /// Description}` keys per entity GUID — locale-independent (no
+    /// `LocaleMap` consulted at parse time). Fast (~80ms).
+    pub build_localized_items: bool,
 }
 
 impl DatacoreConfig {
@@ -62,21 +62,21 @@ impl DatacoreConfig {
             build_graph: true,
             build_tag_tree: true,
             build_manufacturers: true,
-            build_display_names: true,
+            build_localized_items: true,
         }
     }
 
     /// Recommended default: everything except the reference graph.
     ///
     /// The graph is the most expensive index (~7s, ~15 MB) and most
-    /// consumers don't need it. Tags, manufacturers, and display names
-    /// are cheap and broadly useful.
+    /// consumers don't need it. Tags, manufacturers, and localized
+    /// items are cheap and broadly useful.
     pub fn standard() -> Self {
         Self {
             build_graph: false,
             build_tag_tree: true,
             build_manufacturers: true,
-            build_display_names: true,
+            build_localized_items: true,
         }
     }
 
@@ -86,7 +86,7 @@ impl DatacoreConfig {
             build_graph: false,
             build_tag_tree: false,
             build_manufacturers: false,
-            build_display_names: false,
+            build_localized_items: false,
         }
     }
 
@@ -110,7 +110,7 @@ pub struct DatacoreConfigBuilder {
     build_graph: bool,
     build_tag_tree: bool,
     build_manufacturers: bool,
-    build_display_names: bool,
+    build_localized_items: bool,
 }
 
 impl DatacoreConfigBuilder {
@@ -119,7 +119,7 @@ impl DatacoreConfigBuilder {
             build_graph: false,
             build_tag_tree: false,
             build_manufacturers: false,
-            build_display_names: false,
+            build_localized_items: false,
         }
     }
 
@@ -141,9 +141,9 @@ impl DatacoreConfigBuilder {
         self
     }
 
-    /// Enable or disable the display name cache.
-    pub fn display_names(mut self, yes: bool) -> Self {
-        self.build_display_names = yes;
+    /// Enable or disable the localized-item cache.
+    pub fn localized_items(mut self, yes: bool) -> Self {
+        self.build_localized_items = yes;
         self
     }
 
@@ -153,7 +153,7 @@ impl DatacoreConfigBuilder {
             build_graph: self.build_graph,
             build_tag_tree: self.build_tag_tree,
             build_manufacturers: self.build_manufacturers,
-            build_display_names: self.build_display_names,
+            build_localized_items: self.build_localized_items,
         }
     }
 }

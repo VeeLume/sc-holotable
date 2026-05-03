@@ -19,7 +19,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let assets = AssetSource::from_install(&install)?;
     let asset_data = AssetData::extract(&assets, &AssetConfig::standard())?;
     let datacore = Datacore::parse(&assets, &asset_data, &DatacoreConfig::standard())?;
-    let index = MissionIndex::build(&datacore, &asset_data.locale);
+    let index = MissionIndex::build(&datacore);
 
     let needle_lower = needle.to_lowercase();
     let matches: Vec<&_> = index
@@ -45,9 +45,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         if let Some(parent) = c.origin.subcontract_of {
             println!("  origin.subcontract_of: {parent}");
         }
-        println!("  title:             {:?}", c.title);
+        println!("  title:             {:?}", c.title(&asset_data.locale));
         println!("  title_key:         {:?}", c.title_key.as_ref().map(|k| k.as_str()));
-        println!("  description:       {:?}", c.description.as_deref());
+        println!("  description:       {:?}", c.description(&asset_data.locale));
         println!("  description_key:   {:?}", c.description_key.as_ref().map(|k| k.as_str()));
         println!("  shareable:         {}", c.shareable);
         println!("  illegal_flag:      {}", c.illegal_flag);
@@ -61,7 +61,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             println!("  mission_span ({}):", c.mission_span.len());
             for g in &c.mission_span {
                 if let Some(view) = index.localities.get(g) {
-                    println!("    - {} :: {}", view.name, view.region_label);
+                    println!("    - {} :: {}", view.name, view.region_label(&asset_data.locale));
                 } else {
                     println!("    - <unresolved {g}>");
                 }
@@ -87,7 +87,13 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         println!();
         println!("Encounters ({}):", c.encounters.len());
         for enc in &c.encounters {
-            dump_encounter(enc, &index.tag_tree);
+            dump_encounter(
+                enc,
+                &index.tag_tree,
+                &index.ships,
+                &datacore.snapshot().localized_items,
+                &asset_data.locale,
+            );
         }
 
         // Walk the raw MissionProperty graph attached to the contract +
@@ -102,7 +108,13 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 
-fn dump_encounter(enc: &Encounter, tree: &TagTree) {
+fn dump_encounter(
+    enc: &Encounter,
+    tree: &TagTree,
+    ships: &sc_contracts::ShipRegistry,
+    cache: &sc_extract::LocalizedItemCache,
+    locale: &sc_extract::LocaleMap,
+) {
     let kind = match enc {
         Encounter::Ships(_) => "ships",
         Encounter::Npcs(_) => "npcs",
@@ -135,14 +147,13 @@ fn dump_encounter(enc: &Encounter, tree: &TagTree) {
                     dump_bag("negative", &slot.negative, tree);
                     dump_bag("markup", &slot.markup, tree);
                     dump_bag("entity", &slot.entity, tree);
-                    let ships: Vec<&str> = slot
+                    let names: Vec<&str> = slot
                         .candidates
                         .iter()
-                        .map(|c| c.display_name.as_str())
-                        .filter(|n| !n.is_empty())
+                        .filter_map(|c| ships.display_name(&c.entity_guid, cache, locale))
                         .collect();
-                    if !ships.is_empty() {
-                        println!("          ships:    {}", ships.join(", "));
+                    if !names.is_empty() {
+                        println!("          ships:    {}", names.join(", "));
                     }
                 }
             }

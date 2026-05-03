@@ -38,7 +38,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let asset_data = AssetData::extract(&assets, &AssetConfig::standard())?;
     let datacore = Datacore::parse(&assets, &asset_data, &DatacoreConfig::standard())?;
 
-    let index = MissionIndex::build(&datacore, &asset_data.locale);
+    let index = MissionIndex::build(&datacore);
     println!("MissionIndex: {} contract expansions\n", index.len());
 
     // Collect title-key pools where blueprint rewards diverge across
@@ -91,9 +91,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     for (idx, (_key, ids)) in groups.iter().take(15).enumerate() {
         println!();
         let head = index.get(ids[0]).expect("pool member id resolves");
-        let title = head.title.as_deref().unwrap_or(&head.debug_name);
+        let title = head.title(&asset_data.locale).unwrap_or(&head.debug_name);
         println!("── #{} title='{}'", idx + 1, truncate(title, 70));
-        if let Some(d) = head.description.as_deref() {
+        if let Some(d) = head.description(&asset_data.locale) {
             println!("   desc='{}'", truncate(d, 70));
         }
         let distinct_pools: HashSet<Guid> = index
@@ -113,14 +113,14 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         for c in index.iter_pool(ids) {
             let bp_label = match c.rewards.blueprint.as_ref() {
                 Some(bp) if !bp.items.is_empty() => {
-                    let sample = sample_items(c);
+                    let sample = sample_items(c, &asset_data.locale, &datacore.snapshot().localized_items);
                     format!("  BP pool='{}' ({} items): {sample}", bp.pool_name, bp.items.len())
                 }
                 _ => "  (no blueprint)".to_string(),
             };
             println!("      [{:?}] {}", c.origin.kind, c.debug_name);
             println!("        {bp_label}");
-            let span = render_span(c, &index.localities);
+            let span = render_span(c, &index.localities, &asset_data.locale);
             if !span.is_empty() {
                 println!("        span: {span}");
             }
@@ -138,7 +138,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 /// Render the contract's mission_span — each locality resolved to
 /// its `region_label` (e.g., `"Pyro: Bloom, Rat's Nest"`), prefixed
 /// with the locality's stable record name (e.g., `"RegionB"`).
-fn render_span(c: &Mission, localities: &LocalityRegistry) -> String {
+fn render_span(
+    c: &Mission,
+    localities: &LocalityRegistry,
+    locale: &sc_extract::LocaleMap,
+) -> String {
     c.mission_span
         .iter()
         .filter_map(|g| localities.get(g))
@@ -148,10 +152,11 @@ fn render_span(c: &Mission, localities: &LocalityRegistry) -> String {
             } else {
                 view.name.clone()
             };
-            if view.region_label.is_empty() {
+            let label = view.region_label(locale);
+            if label.is_empty() {
                 tag
             } else {
-                format!("{tag} ({})", view.region_label)
+                format!("{tag} ({label})")
             }
         })
         .collect::<Vec<_>>()
@@ -159,20 +164,18 @@ fn render_span(c: &Mission, localities: &LocalityRegistry) -> String {
 }
 
 /// First 4 BP item display names for an at-a-glance preview.
-fn sample_items(c: &Mission) -> String {
+fn sample_items(
+    c: &Mission,
+    locale: &sc_extract::LocaleMap,
+    cache: &sc_extract::LocalizedItemCache,
+) -> String {
     let Some(bp) = &c.rewards.blueprint else {
         return "—".into();
     };
     let names: Vec<&str> = bp
         .items
         .iter()
-        .filter_map(|it| {
-            if it.display_name.is_empty() {
-                None
-            } else {
-                Some(it.display_name.as_str())
-            }
-        })
+        .filter_map(|it| it.display_name(cache, locale))
         .take(4)
         .collect();
     if names.is_empty() {

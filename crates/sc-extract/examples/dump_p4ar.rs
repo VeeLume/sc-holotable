@@ -40,7 +40,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             continue;
         };
         let name = record_names.get(&guid).copied().unwrap_or("?");
-        let display = snap.display_names.get(&guid).unwrap_or("");
+        let display = snap.localized_items.name_key(&guid).and_then(|k| asset_data.locale.resolve(k)).unwrap_or("");
 
         let Some(wp) = ecd.components.iter().find_map(|c| match c {
             DataForgeComponentParamsPtr::SCItemWeaponComponentParams(h) => h.get(pools),

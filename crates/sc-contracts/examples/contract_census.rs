@@ -204,15 +204,14 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     }
     run_spawn_coverage(&mut c, pools, &ships);
 
-    // Blueprint pool registry — depends on LocaleMap from AssetData.
+    // Blueprint pool registry — keys-only, locale-independent.
     let bp_start = Instant::now();
-    let blueprints = BlueprintPoolRegistry::build(&datacore, &asset_data.locale);
+    let blueprints = BlueprintPoolRegistry::build(&datacore);
     println!(
-        "Built BlueprintPoolRegistry in {:.2}s — {} pools, {} unresolved records, {} missing locale keys",
+        "Built BlueprintPoolRegistry in {:.2}s — {} pools, {} unresolved records",
         bp_start.elapsed().as_secs_f64(),
         blueprints.len(),
         blueprints.unresolved_blueprint_records(),
-        blueprints.missing_locale_names(),
     );
 
     // Reward currency catalog.
@@ -225,20 +224,24 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     );
 
     println!();
-    print_report(&c, db, top_n, &ships);
-    print_blueprint_registry(&blueprints, top_n);
-    print_currency_catalog(&c, &currencies);
-    diagnose_unresolved_spawns(pools, &ships, &datacore, 5);
+    let cache = &datacore.snapshot().localized_items;
+    let locale = &asset_data.locale;
+    print_report(&c, db, top_n, &ships, cache, locale);
+    print_blueprint_registry(&blueprints, top_n, cache, locale);
+    print_currency_catalog(&c, &currencies, cache, locale);
+    diagnose_unresolved_spawns(pools, &ships, &datacore, &asset_data, 5);
     Ok(())
 }
 
-fn print_currency_catalog(c: &Census, catalog: &RewardCurrencyCatalog) {
+fn print_currency_catalog(
+    c: &Census,
+    catalog: &RewardCurrencyCatalog,
+    cache: &sc_extract::LocalizedItemCache,
+    locale: &sc_extract::LocaleMap,
+) {
     println!("─── Reward currency catalog ───────────────────────");
     println!("  currency entities: {}", catalog.len());
     println!();
-    // For each currency, show record name + display name + how often
-    // it appears in the contract-reward census (so we see scrip rewards
-    // dominating and ship one-offs not being flagged as currency).
     let mut rows: Vec<(&CurrencyInfo, usize)> = catalog
         .iter()
         .map(|info| {
@@ -253,11 +256,9 @@ fn print_currency_catalog(c: &Census, catalog: &RewardCurrencyCatalog) {
     rows.sort_by(|a, b| b.1.cmp(&a.1));
     println!("  {:>6}  {:<30}  record", "count", "display");
     for (info, count) in &rows {
-        let display = if info.display_name.is_empty() {
-            "<none>"
-        } else {
-            info.display_name.as_str()
-        };
+        let display = catalog
+            .display_name(&info.entity_guid, cache, locale)
+            .unwrap_or("<none>");
         println!("  {count:>6}  {display:<30}  {}", info.record_name);
     }
     // Cross-check: how many distinct ContractResult_Item entity_classes
@@ -277,16 +278,17 @@ fn print_currency_catalog(c: &Census, catalog: &RewardCurrencyCatalog) {
 
 use sc_contracts::CurrencyInfo;
 
-fn print_blueprint_registry(registry: &BlueprintPoolRegistry, top_n: usize) {
+fn print_blueprint_registry(
+    registry: &BlueprintPoolRegistry,
+    top_n: usize,
+    cache: &sc_extract::LocalizedItemCache,
+    locale: &sc_extract::LocaleMap,
+) {
     println!("─── Blueprint pools ────────────────────────────────");
     println!("  pools:                      {}", registry.len());
     println!(
         "  unresolved blueprint refs:  {}",
         registry.unresolved_blueprint_records()
-    );
-    println!(
-        "  missing locale keys:        {}",
-        registry.missing_locale_names()
     );
 
     // Size distribution.
@@ -309,7 +311,7 @@ fn print_blueprint_registry(registry: &BlueprintPoolRegistry, top_n: usize) {
         let resolved: usize = pool
             .items
             .iter()
-            .filter(|i| !i.display_name.is_empty())
+            .filter(|i| i.display_name(cache, locale).is_some())
             .count();
         println!(
             "   {i:>3}. [{items} items, {resolved} resolved]  {name}",
@@ -320,13 +322,7 @@ fn print_blueprint_registry(registry: &BlueprintPoolRegistry, top_n: usize) {
         let shown: Vec<&str> = pool
             .items
             .iter()
-            .filter_map(|it| {
-                if it.display_name.is_empty() {
-                    None
-                } else {
-                    Some(it.display_name.as_str())
-                }
-            })
+            .filter_map(|it| it.display_name(cache, locale))
             .take(5)
             .collect();
         if !shown.is_empty() {
@@ -368,10 +364,13 @@ fn diagnose_unresolved_spawns(
     pools: &DataPools,
     ships: &ShipRegistry,
     datacore: &Datacore,
+    asset_data: &AssetData,
     limit: usize,
 ) {
     use std::collections::HashSet;
     let tags = &datacore.snapshot().tag_tree;
+    let cache = &datacore.snapshot().localized_items;
+    let locale = &asset_data.locale;
     let mut shown = 0usize;
 
     println!("─── Diagnostic: first {limit} unresolved spawn queries ─────────");
@@ -434,13 +433,13 @@ fn diagnose_unresolved_spawns(
                 .filter(|(_, g)| !ship.tags.contains(g))
                 .map(|(n, _)| n.as_str())
                 .collect();
+            let ship_label = ships
+                .display_name(&ship.entity_guid, cache, locale)
+                .map(str::to_string)
+                .unwrap_or_else(|| format!("<{}>", ship.entity_guid));
             println!(
                 "    Best match: {} ({}/{} tags). Missing: {{{}}}",
-                if ship.display_name.is_empty() {
-                    format!("<{}>", ship.entity_guid)
-                } else {
-                    ship.display_name.clone()
-                },
+                ship_label,
                 best_match,
                 positive.len(),
                 missing.join(", ")
@@ -467,10 +466,9 @@ fn diagnose_unresolved_spawns(
             {
                 full_matches += 1;
                 if first_full.is_none() {
-                    let name = datacore
-                        .snapshot()
-                        .display_names
-                        .get(guid)
+                    let name = cache
+                        .name_key(guid)
+                        .and_then(|k| locale.resolve(k))
                         .unwrap_or("<no display>")
                         .to_string();
                     let rec_name = datacore
@@ -814,7 +812,15 @@ fn walk_rewards(
 
 // ── Report ──────────────────────────────────────────────────────────────────
 
-fn print_report(c: &Census, db: &DataCoreDatabase, top_n: usize, ships: &ShipRegistry) {
+fn print_report(
+    c: &Census,
+    db: &DataCoreDatabase,
+    top_n: usize,
+    ships: &ShipRegistry,
+    cache: &sc_extract::LocalizedItemCache,
+    locale: &sc_extract::LocaleMap,
+) {
+    let _ = (cache, locale);
     println!("═══════════════════════════════════════════════════");
     println!("                 CONTRACT CENSUS");
     println!("═══════════════════════════════════════════════════\n");

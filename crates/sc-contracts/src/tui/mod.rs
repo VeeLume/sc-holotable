@@ -10,13 +10,14 @@
 //! browsing (title key / description key) using the precomputed
 //! [`crate::MissionPools`] + divergence helpers on [`MissionIndex`].
 
-use sc_extract::{Datacore, TagTree};
+use sc_extract::{Datacore, LocaleMap, LocalizedItemCache, TagTree};
 use slt::{Border, Color, Context, KeyCode, ListState, ScrollState, TextInputState};
 
 use crate::expand::{
     Encounter, EncounterPhase, EntitySlot, Mission, NpcSlot, RewardAmount, ShipSlot,
 };
 use crate::index::MissionIndex;
+use crate::ships::ShipRegistry;
 
 /// Persistent state for the contracts explorer view.
 ///
@@ -102,13 +103,19 @@ pub fn pool_checks(datacore: &Datacore) -> Vec<PoolCheck> {
 /// Layout: a bordered column with the filter input + count header, then
 /// a row split between the contract list and the detail panel for the
 /// currently selected contract.
-pub fn render(ui: &mut Context, state: &mut ExplorerState, index: &MissionIndex) {
+pub fn render(
+    ui: &mut Context,
+    state: &mut ExplorerState,
+    index: &MissionIndex,
+    locale: &LocaleMap,
+    cache: &LocalizedItemCache,
+) {
     let filter = state.filter.value.to_lowercase();
     let filtered: Vec<usize> = index
         .contracts
         .iter()
         .enumerate()
-        .filter(|(_, c)| matches_filter(c, &filter))
+        .filter(|(_, c)| matches_filter(c, locale, &filter))
         .map(|(i, _)| i)
         .collect();
 
@@ -152,7 +159,7 @@ pub fn render(ui: &mut Context, state: &mut ExplorerState, index: &MissionIndex)
                     } else {
                         let items: Vec<String> = filtered
                             .iter()
-                            .map(|&i| format_list_item(&index.contracts[i]))
+                            .map(|&i| format_list_item(&index.contracts[i], locale))
                             .collect();
                         // Sync ListState's items so other widgets that read
                         // from it (and the height-clamp below) stay correct.
@@ -174,6 +181,8 @@ pub fn render(ui: &mut Context, state: &mut ExplorerState, index: &MissionIndex)
                         &mut state.detail_scroll,
                         index,
                         idx,
+                        locale,
+                        cache,
                     ),
                     None => {
                         ui.text("(nothing selected)").dim();
@@ -183,11 +192,11 @@ pub fn render(ui: &mut Context, state: &mut ExplorerState, index: &MissionIndex)
     });
 }
 
-fn matches_filter(c: &Mission, filter: &str) -> bool {
+fn matches_filter(c: &Mission, locale: &LocaleMap, filter: &str) -> bool {
     if filter.is_empty() {
         return true;
     }
-    if let Some(t) = &c.title
+    if let Some(t) = c.title(locale)
         && t.to_lowercase().contains(filter)
     {
         return true;
@@ -195,9 +204,13 @@ fn matches_filter(c: &Mission, filter: &str) -> bool {
     c.debug_name.to_lowercase().contains(filter)
 }
 
-fn format_list_item(c: &Mission) -> String {
-    let title = c.title.as_deref().unwrap_or(&c.debug_name);
-    let marker = if c.has_runtime_substitution { '~' } else { ' ' };
+fn format_list_item(c: &Mission, locale: &LocaleMap) -> String {
+    let title = c.title(locale).unwrap_or(&c.debug_name);
+    let marker = if c.has_runtime_substitution(locale) {
+        '~'
+    } else {
+        ' '
+    };
     let bp = if c.rewards.blueprint.is_some() { "[BP]" } else { "    " };
     format!("{marker} {bp} {title}")
 }
@@ -207,13 +220,17 @@ fn render_detail(
     scroll: &mut ScrollState,
     index: &MissionIndex,
     idx: usize,
+    locale: &LocaleMap,
+    cache: &LocalizedItemCache,
 ) {
     let c = &index.contracts[idx];
     let tree = &index.tag_tree;
+    let ships = &index.ships;
+    let currency = &index.currency;
 
     let _ = ui.scrollable(scroll).grow(1).col(|ui| {
         // Title block
-        ui.text(c.title.as_deref().unwrap_or("(no title)"))
+        ui.text(c.title(locale).unwrap_or("(no title)"))
             .bold()
             .fg(Color::Cyan);
         ui.text(&c.debug_name).dim();
@@ -222,7 +239,7 @@ fn render_detail(
         // Identity
         kv(ui, "handler", &format!("{:?}", c.origin.kind));
         kv(ui, "handler_debug", &c.origin.source_debug_name);
-        if c.has_runtime_substitution {
+        if c.has_runtime_substitution(locale) {
             ui.text("title contains ~mission(...) runtime substitution")
                 .fg(Color::Yellow);
         }
@@ -329,7 +346,9 @@ fn render_detail(
                         .fg(Color::Yellow);
                 }
                 match enc {
-                    Encounter::Ships(s) => render_ship_phases(ui, &s.phases, tree),
+                    Encounter::Ships(s) => {
+                        render_ship_phases(ui, &s.phases, tree, ships, cache, locale)
+                    }
                     Encounter::Npcs(s) => render_npc_phases(ui, &s.phases, tree),
                     Encounter::Entities(s) => render_entity_phases(ui, &s.phases, tree),
                     Encounter::Unknown { raw_guid, .. } => {
@@ -351,14 +370,21 @@ fn render_detail(
         };
         kv(ui, "uec", &uec);
         for s in &c.rewards.scrip {
-            ui.text(format!("  scrip: {} × {}", s.amount, s.display_name));
+            let name = currency
+                .display_name(&s.currency_guid, cache, locale)
+                .unwrap_or(s.record_name.as_str());
+            ui.text(format!("  scrip: {} × {}", s.amount, name));
         }
         for r in &c.rewards.reputation {
             let amount = r.amount.map(|n| n.to_string()).unwrap_or_else(|| "calc".into());
             ui.text(format!("  rep: {amount}"));
         }
         for it in &c.rewards.items {
-            ui.text(format!("  item: {} × {}", it.amount, it.display_name));
+            let name = cache
+                .name_key(&it.entity_class)
+                .and_then(|k| locale.resolve(k))
+                .unwrap_or("(unknown)");
+            ui.text(format!("  item: {} × {}", it.amount, name));
         }
         if let Some(bp) = &c.rewards.blueprint {
             ui.text(format!(
@@ -389,11 +415,14 @@ fn render_ship_phases(
     ui: &mut Context,
     phases: &[EncounterPhase<ShipSlot>],
     tree: &TagTree,
+    ships: &ShipRegistry,
+    cache: &LocalizedItemCache,
+    locale: &LocaleMap,
 ) {
     for phase in phases {
         render_phase_header(ui, phase);
         for (i, s) in phase.slots.iter().enumerate() {
-            render_ship_slot(ui, i, s, tree);
+            render_ship_slot(ui, i, s, tree, ships, cache, locale);
         }
     }
 }
@@ -422,7 +451,15 @@ fn render_entity_phases(
 
 /// Render one ship slot with all four tag bags surfaced. `tree` is
 /// required for the subtree-classified iterators on [`crate::TagBag`].
-fn render_ship_slot(ui: &mut Context, i: usize, s: &ShipSlot, tree: &TagTree) {
+fn render_ship_slot(
+    ui: &mut Context,
+    i: usize,
+    s: &ShipSlot,
+    tree: &TagTree,
+    ships: &ShipRegistry,
+    cache: &LocalizedItemCache,
+    locale: &LocaleMap,
+) {
     // Slot header: concurrency / weight / candidate count + flag markers.
     let damage_marker = if s.initial_damage_settings.is_some() {
         " [pre-damaged]"
@@ -499,7 +536,12 @@ fn render_ship_slot(ui: &mut Context, i: usize, s: &ShipSlot, tree: &TagTree) {
         .candidates
         .iter()
         .take(4)
-        .map(|cand| cand.display_name.clone())
+        .map(|cand| {
+            ships
+                .display_name(&cand.entity_guid, cache, locale)
+                .unwrap_or("(unknown)")
+                .to_string()
+        })
         .collect();
     let extra = s.candidates.len().saturating_sub(preview.len());
     if !preview.is_empty() {

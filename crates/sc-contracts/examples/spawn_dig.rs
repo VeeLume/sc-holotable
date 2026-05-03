@@ -28,7 +28,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let assets = AssetSource::from_install(&install)?;
     let asset_data = AssetData::extract(&assets, &AssetConfig::standard())?;
     let datacore = Datacore::parse(&assets, &asset_data, &DatacoreConfig::standard())?;
-    let index = MissionIndex::build(&datacore, &asset_data.locale);
+    let index = MissionIndex::build(&datacore);
 
     section_1_name_property(&datacore);
     section_2_f7c_hornet_trace(&index);

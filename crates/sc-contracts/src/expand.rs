@@ -31,7 +31,7 @@ use crate::classify::TagBag;
 use crate::currency::RewardCurrencyCatalog;
 use crate::locality::LocalityRegistry;
 use crate::ships::{ShipCandidate, ShipRegistry};
-use crate::titles::{ContractAnchor, ResolvedText, resolve_contract_text};
+use crate::titles::{ContractAnchor, ResolvedKeys, resolve_contract_keys};
 
 /// One concrete contract node in the expanded generator graph.
 ///
@@ -51,23 +51,16 @@ pub struct Mission {
     /// debug name, owning generator, optional parent for sub-contracts.
     pub origin: MissionOrigin,
 
-    /// Resolved title text (see [`resolve_contract_text`]).
-    pub title: Option<String>,
-    /// Raw (`@`-stripped) INI key the `title` was resolved from.
-    /// `Some` whenever a key was found in the inheritance chain, even
-    /// if the active [`LocaleMap`] didn't carry a translation for it.
-    /// Consumers writing back to `global.ini` use this.
+    /// INI key the title was resolved from. Raw — leading `@`
+    /// preserved, matching the workspace localization rule
+    /// (`docs/localization.md`). `Some` whenever a key was found in the
+    /// inheritance chain, even if the active [`LocaleMap`] doesn't
+    /// carry a translation. Resolve via [`Mission::title`].
     pub title_key: Option<LocaleKey>,
-    /// Resolved description text.
-    pub description: Option<String>,
-    /// Raw (`@`-stripped) INI key the `description` was resolved from.
-    /// Mirrors [`Self::title_key`]'s semantics.
+    /// INI key the description was resolved from. Same shape and
+    /// semantics as [`Self::title_key`]. Resolve via
+    /// [`Mission::description`].
     pub description_key: Option<LocaleKey>,
-    /// True if the title or description contains at least one
-    /// `~mission(variable)` runtime substitution marker. When set,
-    /// consumers should mark any text they derive from title/description
-    /// as non-guaranteed at display time.
-    pub has_runtime_substitution: bool,
 
     /// `ActiveContractSettings.canBeShared` on the contract's template,
     /// overrideable by a `CanBeShared` bool-param at any inheritance
@@ -114,6 +107,31 @@ pub struct Mission {
     /// then contract, then sub-contract (most-specific last), with
     /// first-seen-wins deduplication.
     pub mission_span: Vec<Guid>,
+}
+
+impl Mission {
+    /// Resolve this mission's title against `locale`. Returns `None`
+    /// when no title key was found in the inheritance chain or the
+    /// key is absent from `locale`.
+    pub fn title<'a>(&self, locale: &'a LocaleMap) -> Option<&'a str> {
+        self.title_key.as_ref().and_then(|k| locale.resolve(k))
+    }
+
+    /// Resolve this mission's description against `locale`. Same
+    /// shape as [`Self::title`].
+    pub fn description<'a>(&self, locale: &'a LocaleMap) -> Option<&'a str> {
+        self.description_key.as_ref().and_then(|k| locale.resolve(k))
+    }
+
+    /// True if either the resolved title or description contains a
+    /// `~mission(...)` runtime substitution marker the engine fills
+    /// in at spawn time. Computed against `locale` so language packs
+    /// that normalise marker syntax are reflected. `false` when no
+    /// title/description text is available.
+    pub fn has_runtime_substitution(&self, locale: &LocaleMap) -> bool {
+        let has = |s: Option<&str>| s.map(|t| t.contains("~mission(")).unwrap_or(false);
+        has(self.title(locale)) || has(self.description(locale))
+    }
 }
 
 /// Where a [`Mission`] came from. Consolidates v1's separate
@@ -239,12 +257,12 @@ pub enum RewardAmount {
 }
 
 /// One scrip / typed-currency reward.
+///
+/// Display name is intentionally absent — resolve via
+/// [`crate::RewardCurrencyCatalog::display_name`] at the call site.
 #[derive(Debug, Clone)]
 pub struct ScripReward {
     pub currency_guid: Guid,
-    /// Localized display name from the currency catalog (`MG Scrip`,
-    /// `Council Scrip`).
-    pub display_name: String,
     /// Catalog record name (stable across patches, useful for
     /// faction-keyed routing).
     pub record_name: String,
@@ -263,11 +281,13 @@ pub struct RepReward {
 }
 
 /// One non-currency item reward.
+///
+/// Display name is intentionally absent — resolve through
+/// [`sc_extract::LocalizedItemCache`] keyed by `entity_class` and the
+/// active [`LocaleMap`].
 #[derive(Debug, Clone)]
 pub struct ItemReward {
     pub entity_class: Guid,
-    /// Localized display name from `DisplayNameCache`.
-    pub display_name: String,
     pub amount: i32,
 }
 
@@ -599,7 +619,6 @@ pub struct BlueprintReward {
 /// contracts in declaration order, sub-contracts in declaration order.
 pub fn expand_all(
     datacore: &Datacore,
-    locale: &LocaleMap,
     ships: &ShipRegistry,
     blueprints: &BlueprintPoolRegistry,
     currency: &RewardCurrencyCatalog,
@@ -616,7 +635,6 @@ pub fn expand_all(
         for handler_ptr in &generator.generators {
             walk_handler(
                 datacore,
-                locale,
                 ships,
                 blueprints,
                 currency,
@@ -638,7 +656,6 @@ pub fn expand_all(
 #[allow(clippy::too_many_arguments)]
 fn walk_handler(
     datacore: &Datacore,
-    locale: &LocaleMap,
     ships: &ShipRegistry,
     blueprints: &BlueprintPoolRegistry,
     currency: &RewardCurrencyCatalog,
@@ -663,7 +680,6 @@ fn walk_handler(
                 if let Some(c) = c_handle.get(pools) {
                     emit_from_legacy(
                         datacore,
-                        locale,
                         ships,
                         blueprints,
                         currency,
@@ -690,7 +706,6 @@ fn walk_handler(
                 if let Some(c) = c_handle.get(pools) {
                     emit_from_career(
                         datacore,
-                        locale,
                         ships,
                         blueprints,
                         currency,
@@ -708,7 +723,6 @@ fn walk_handler(
                 if let Some(c) = c_handle.get(pools) {
                     emit_from_contract(
                         datacore,
-                        locale,
                         ships,
                         blueprints,
                         currency,
@@ -725,7 +739,6 @@ fn walk_handler(
         }
         H::ContractGeneratorHandler_List(h) => emit_list_like(
             datacore,
-            locale,
             ships,
             blueprints,
             currency,
@@ -744,7 +757,6 @@ fn walk_handler(
         ),
         H::ContractGeneratorHandler_LinearSeries(h) => emit_list_like(
             datacore,
-            locale,
             ships,
             blueprints,
             currency,
@@ -763,7 +775,6 @@ fn walk_handler(
         ),
         H::ContractGeneratorHandler_TutorialSeriesDef(h) => emit_list_like(
             datacore,
-            locale,
             ships,
             blueprints,
             currency,
@@ -789,7 +800,6 @@ fn walk_handler(
 #[allow(clippy::too_many_arguments)]
 fn emit_list_like<'p>(
     datacore: &Datacore,
-    locale: &LocaleMap,
     ships: &ShipRegistry,
     blueprints: &BlueprintPoolRegistry,
     currency: &RewardCurrencyCatalog,
@@ -820,7 +830,6 @@ fn emit_list_like<'p>(
         if let Some(c) = c_handle.get(pools) {
             emit_from_contract(
                 datacore,
-                locale,
                 ships,
                 blueprints,
                 currency,
@@ -858,7 +867,6 @@ struct ListLikeHandler<'p> {
 #[allow(clippy::too_many_arguments)]
 fn emit_from_contract(
     datacore: &Datacore,
-    locale: &LocaleMap,
     ships: &ShipRegistry,
     blueprints: &BlueprintPoolRegistry,
     currency: &RewardCurrencyCatalog,
@@ -876,7 +884,6 @@ fn emit_from_contract(
 
     out.push(build_expansion(
         datacore,
-        locale,
         ships,
         blueprints,
         currency,
@@ -899,7 +906,6 @@ fn emit_from_contract(
         if let Some(sub) = sub_h.get(pools) {
             out.push(build_expansion(
                 datacore,
-                locale,
                 ships,
                 blueprints,
                 currency,
@@ -925,7 +931,6 @@ fn emit_from_contract(
 #[allow(clippy::too_many_arguments)]
 fn emit_from_legacy(
     datacore: &Datacore,
-    locale: &LocaleMap,
     ships: &ShipRegistry,
     blueprints: &BlueprintPoolRegistry,
     currency: &RewardCurrencyCatalog,
@@ -943,7 +948,6 @@ fn emit_from_legacy(
 
     out.push(build_expansion(
         datacore,
-        locale,
         ships,
         blueprints,
         currency,
@@ -966,7 +970,6 @@ fn emit_from_legacy(
         if let Some(sub) = sub_h.get(pools) {
             out.push(build_expansion(
                 datacore,
-                locale,
                 ships,
                 blueprints,
                 currency,
@@ -992,7 +995,6 @@ fn emit_from_legacy(
 #[allow(clippy::too_many_arguments)]
 fn emit_from_career(
     datacore: &Datacore,
-    locale: &LocaleMap,
     ships: &ShipRegistry,
     blueprints: &BlueprintPoolRegistry,
     currency: &RewardCurrencyCatalog,
@@ -1010,7 +1012,6 @@ fn emit_from_career(
 
     out.push(build_expansion(
         datacore,
-        locale,
         ships,
         blueprints,
         currency,
@@ -1033,7 +1034,6 @@ fn emit_from_career(
         if let Some(sub) = sub_h.get(pools) {
             out.push(build_expansion(
                 datacore,
-                locale,
                 ships,
                 blueprints,
                 currency,
@@ -1061,7 +1061,6 @@ fn emit_from_career(
 #[allow(clippy::too_many_arguments)]
 fn build_expansion(
     datacore: &Datacore,
-    locale: &LocaleMap,
     ships: &ShipRegistry,
     blueprints: &BlueprintPoolRegistry,
     currency: &RewardCurrencyCatalog,
@@ -1080,18 +1079,10 @@ fn build_expansion(
     template_guid: Option<Guid>,
     subcontract_of: Option<Guid>,
 ) -> Mission {
-    let ResolvedText {
-        title,
+    let ResolvedKeys {
         title_key,
-        description,
         description_key,
-    } = resolve_contract_text(sub_contract, anchor, ctx.contract_params, datacore, locale);
-    let has_runtime_substitution = ResolvedText {
-        title: title.clone(),
-        description: description.clone(),
-        ..Default::default()
-    }
-    .has_runtime_substitution();
+    } = resolve_contract_keys(sub_contract, anchor, ctx.contract_params, datacore);
 
     let flags = resolve_flags_and_availability(
         pools,
@@ -1143,11 +1134,8 @@ fn build_expansion(
         id,
         debug_name: debug_name.to_string(),
         origin,
-        title,
         title_key,
-        description,
         description_key,
-        has_runtime_substitution,
         shareable: flags.shareable,
         illegal_flag: flags.illegal,
         availability: flags.availability,
@@ -1436,7 +1424,6 @@ fn resolve_rewards(
     let Some(results) = results_handle.get(pools) else {
         return (uec, scrip, rep, items, other);
     };
-    let display_names = &datacore.snapshot().display_names;
     let records = &datacore.records().records;
     let db = datacore.db();
 
@@ -1459,15 +1446,12 @@ fn resolve_rewards(
                 if let Some(info) = currency.get(&ec) {
                     scrip.push(ScripReward {
                         currency_guid: ec,
-                        display_name: info.display_name.clone(),
                         record_name: info.record_name.clone(),
                         amount: item.amount,
                     });
                 } else {
-                    let name = display_names.get(&ec).unwrap_or("").to_string();
                     items.push(ItemReward {
                         entity_class: ec,
-                        display_name: name,
                         amount: item.amount,
                     });
                 }

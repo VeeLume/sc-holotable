@@ -49,9 +49,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let datacore = Datacore::parse(&assets, &asset_data, &DatacoreConfig::standard())?;
 
     let ships = ShipRegistry::build(&datacore);
-    let blueprints = BlueprintPoolRegistry::build(&datacore, &asset_data.locale);
+    let blueprints = BlueprintPoolRegistry::build(&datacore);
     let currency = RewardCurrencyCatalog::build(&datacore);
-    let locations = LocationRegistry::build(&datacore, &asset_data.locale);
+    let locations = LocationRegistry::build(&datacore);
     let localities = LocalityRegistry::build(&datacore, &locations);
     println!(
         "ShipRegistry: {} entities. BlueprintPoolRegistry: {} pools. RewardCurrencyCatalog: {} currencies. LocationRegistry: {} StarMapObjects. LocalityRegistry: {} localities.",
@@ -63,21 +63,16 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     );
 
     let t0 = Instant::now();
-    let expansions = expand_all(
-        &datacore,
-        &asset_data.locale,
-        &ships,
-        &blueprints,
-        &currency,
-        &localities,
-    );
+    let locale = &asset_data.locale;
+    let cache = &datacore.snapshot().localized_items;
+    let expansions = expand_all(&datacore, &ships, &blueprints, &currency, &localities);
     println!(
         "expand_all: {} Mission(s) in {:.2}s\n",
         expansions.len(),
         t0.elapsed().as_secs_f64(),
     );
 
-    print_summary(&expansions);
+    print_summary(&expansions, locale);
 
     // Spot-check rows.
     println!();
@@ -87,7 +82,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             .filter(|e| {
                 e.debug_name.to_lowercase().contains(&f)
                     || e.origin.source_debug_name.to_lowercase().contains(&f)
-                    || e.title
+                    || e.title(locale)
                         .as_deref()
                         .map(|t| t.to_lowercase().contains(&f))
                         .unwrap_or(false)
@@ -99,14 +94,14 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             expansions.len()
         );
         for e in matching.iter().take(25) {
-            print_expansion(e);
+            print_expansion(e, locale, cache);
             if detail {
-                print_detail(e);
-                print_locality_detail(e, &datacore);
+                print_detail(e, locale, cache);
+                print_locality_detail(e, &datacore, locale);
             }
         }
         if detail {
-            print_delta(&matching);
+            print_delta(&matching, locale);
         }
     } else {
         println!("─── Sample expansions (first from each handler kind) ───");
@@ -118,7 +113,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             HandlerKind::Tutorial,
         ] {
             for e in expansions.iter().filter(|e| e.origin.kind == kind).take(2) {
-                print_expansion(e);
+                print_expansion(e, locale, cache);
             }
         }
 
@@ -130,27 +125,30 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             .filter(|e| e.rewards.blueprint.is_some())
             .take(3)
         {
-            print_expansion(e);
+            print_expansion(e, locale, cache);
         }
     }
 
     Ok(())
 }
 
-fn print_summary(expansions: &[Mission]) {
+fn print_summary(expansions: &[Mission], locale: &sc_extract::LocaleMap) {
     let mut by_kind: BTreeMap<HandlerKind, usize> = BTreeMap::new();
     for e in expansions {
         *by_kind.entry(e.origin.kind).or_default() += 1;
     }
 
-    let with_title = expansions.iter().filter(|e| e.title.is_some()).count();
+    let with_title = expansions
+        .iter()
+        .filter(|e| e.title_key.is_some())
+        .count();
     let with_desc = expansions
         .iter()
-        .filter(|e| e.description.is_some())
+        .filter(|e| e.description_key.is_some())
         .count();
     let with_subst = expansions
         .iter()
-        .filter(|e| e.has_runtime_substitution)
+        .filter(|e| e.has_runtime_substitution(locale))
         .count();
     let shareable = expansions.iter().filter(|e| e.shareable).count();
     let once_only = expansions
@@ -217,7 +215,7 @@ fn print_summary(expansions: &[Mission]) {
     }
 }
 
-fn print_expansion(e: &Mission) {
+fn print_expansion(e: &Mission, locale: &sc_extract::LocaleMap, cache: &sc_extract::LocalizedItemCache) {
     let origin = if e.origin.subcontract_of.is_some() {
         "SubContract"
     } else {
@@ -225,8 +223,8 @@ fn print_expansion(e: &Mission) {
         // v2 phase 5; the handler kind is the actionable signal.
         "Top-level"
     };
-    let title = e.title.as_deref().unwrap_or("<none>");
-    let subst = if e.has_runtime_substitution { " *" } else { "" };
+    let title = e.title(locale).unwrap_or("<none>");
+    let subst = if e.has_runtime_substitution(locale) { " *" } else { "" };
     let mut flags = Vec::new();
     if e.shareable {
         flags.push("shareable");
@@ -254,7 +252,7 @@ fn print_expansion(e: &Mission) {
         cd = e.debug_name,
     );
     println!("      title:    {title}{subst}");
-    if let Some(desc) = &e.description {
+    if let Some(desc) = &e.description(locale) {
         let trimmed: String = desc.chars().take(120).collect();
         let tail = if desc.chars().count() > 120 {
             "…"
@@ -296,8 +294,12 @@ fn print_expansion(e: &Mission) {
             .flat_map(|x| x.phases.iter())
             .flat_map(|p| p.slots.iter())
             .flat_map(|s| s.candidates.iter())
-            .map(|c| c.display_name.clone())
-            .filter(|n| !n.is_empty())
+            .filter_map(|c| {
+                cache
+                    .name_key(&c.entity_guid)
+                    .and_then(|k| locale.resolve(k))
+                    .map(|n| n.to_string())
+            })
             .take(5)
             .collect();
         println!(
@@ -314,13 +316,7 @@ fn print_expansion(e: &Mission) {
         let first_items: Vec<&str> = bp
             .items
             .iter()
-            .filter_map(|i| {
-                if i.display_name.is_empty() {
-                    None
-                } else {
-                    Some(i.display_name.as_str())
-                }
-            })
+            .filter_map(|i| i.display_name(cache, locale))
             .take(4)
             .collect();
         println!(
@@ -344,11 +340,10 @@ fn print_expansion(e: &Mission) {
         sc_contracts::RewardAmount::Fixed(n) => reward_bits.push(format!("UEC: {n}")),
     }
     for s in &e.rewards.scrip {
-        let name = if s.display_name.is_empty() {
-            &s.record_name
-        } else {
-            &s.display_name
-        };
+        let name = cache
+            .name_key(&s.currency_guid)
+            .and_then(|k| locale.resolve(k))
+            .unwrap_or(s.record_name.as_str());
         reward_bits.push(format!("{} ×{}", name, s.amount));
     }
     for r in &e.rewards.reputation {
@@ -360,14 +355,14 @@ fn print_expansion(e: &Mission) {
     }
     if !e.rewards.items.is_empty() {
         let names: Vec<String> = e
-            .rewards.items
+            .rewards
+            .items
             .iter()
             .map(|i| {
-                let n = if i.display_name.is_empty() {
-                    "?"
-                } else {
-                    i.display_name.as_str()
-                };
+                let n = cache
+                    .name_key(&i.entity_class)
+                    .and_then(|k| locale.resolve(k))
+                    .unwrap_or("?");
                 format!("{n}×{}", i.amount)
             })
             .take(3)
@@ -434,7 +429,7 @@ fn print_expansion(e: &Mission) {
 
 /// Dump every prereq as a structured one-liner so consumers can see which
 /// tag GUIDs and which min/max rep standings drive apparent differences.
-fn print_detail(e: &Mission) {
+fn print_detail(e: &Mission, locale: &sc_extract::LocaleMap, cache: &sc_extract::LocalizedItemCache) {
     println!("      id:       {}", e.id);
     if let Some(parent) = e.origin.subcontract_of {
         println!("      parent:   {parent}");
@@ -533,7 +528,7 @@ fn print_detail(e: &Mission) {
 /// the system / planet spread a contract covers — specifically useful
 /// for Pyro / Nyx sub-contract variations where the "radius" is really
 /// a set of offered pickup sites.
-fn print_locality_detail(e: &Mission, datacore: &Datacore) {
+fn print_locality_detail(e: &Mission, datacore: &Datacore, locale: &sc_extract::LocaleMap) {
     let db = datacore.db();
     for p in &e.prerequisites {
         match p {
@@ -741,7 +736,7 @@ fn strip_noise(s: &str) -> String {
 /// For a list of matching expansions, find every field that differs across
 /// them. Prints a compact "what actually differs" report so the user can
 /// see sub-contract distinctions that the summary collapses.
-fn print_delta(matching: &[&Mission]) {
+fn print_delta(matching: &[&Mission], locale: &sc_extract::LocaleMap) {
     if matching.len() < 2 {
         return;
     }
@@ -763,11 +758,11 @@ fn print_delta(matching: &[&Mission]) {
             == matching.len()
     );
 
-    let titles_same = matching.iter().all(|e| e.title == first.title);
-    let descs_same = matching.iter().all(|e| e.description == first.description);
+    let titles_same = matching.iter().all(|e| e.title(locale) == first.title(locale));
+    let descs_same = matching.iter().all(|e| e.description(locale) == first.description(locale));
     let subst_same = matching
         .iter()
-        .all(|e| e.has_runtime_substitution == first.has_runtime_substitution);
+        .all(|e| e.has_runtime_substitution(locale) == first.has_runtime_substitution(locale));
     println!("  title identical?  {titles_same}");
     println!("  desc identical?   {descs_same}");
     println!("  subst flag same?  {subst_same}");
@@ -846,9 +841,10 @@ fn print_delta(matching: &[&Mission]) {
             })
             .collect();
         let scrip_fp: Vec<String> = e
-            .rewards.scrip
+            .rewards
+            .scrip
             .iter()
-            .map(|s| format!("{}×{}", s.display_name, s.amount))
+            .map(|s| format!("{}×{}", s.record_name, s.amount))
             .collect();
         let bp_fp = e
             .rewards.blueprint

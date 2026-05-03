@@ -100,7 +100,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("  records        : {}", snap_view.records.len());
     println!("  locale entries : {}", asset_data.locale.len());
     println!("  manufacturers  : {}", snap_view.manufacturers.len());
-    println!("  display names  : {}", snap_view.display_names.len());
+    println!("  display names  : {}", snap_view.localized_items.len());
     println!("  tag nodes      : {}", snap_view.tag_tree.len());
     println!("  graph edges    : {}", snap_view.graph.edge_count());
     println!("  parse time     : {parse_secs:.2}s");

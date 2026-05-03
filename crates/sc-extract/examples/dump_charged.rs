@@ -46,7 +46,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             .copied()
             .unwrap_or("?")
             .replace("EntityClassDefinition.", "");
-        let display = snap.display_names.get(&guid).unwrap_or("").to_string();
+        let display = snap.localized_items.name_key(&guid).and_then(|k| asset_data.locale.resolve(k)).unwrap_or("").to_string();
 
         let Some(wp) = ecd.components.iter().find_map(|c| match c {
             DataForgeComponentParamsPtr::SCItemWeaponComponentParams(h) => h.get(pools),

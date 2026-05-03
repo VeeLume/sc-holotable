@@ -5,13 +5,14 @@
 //! registry needed to resolve the GUIDs missions point at, and a
 //! precomputed [`MissionPools`] grouping for the common patcher-tool
 //! axes (title key, description key). Build once from a
-//! [`sc_extract::Datacore`] + [`sc_extract::LocaleMap`]; carry it
-//! around freely; look up by GUID or iterate.
+//! [`sc_extract::Datacore`]; carry it around freely; look up by GUID
+//! or iterate. Localized text is resolved on demand at the call site
+//! (see `docs/localization.md`).
 //!
 //! ```no_run
 //! use sc_contracts::MissionIndex;
-//! # fn demo(datacore: &sc_extract::Datacore, locale: &sc_extract::LocaleMap) {
-//! let index = MissionIndex::build(datacore, locale);
+//! # fn demo(datacore: &sc_extract::Datacore) {
+//! let index = MissionIndex::build(datacore);
 //! println!("{} missions ({} with mission span)",
 //!     index.contracts.len(),
 //!     index.contracts.iter().filter(|m| !m.mission_span.is_empty()).count(),
@@ -25,7 +26,7 @@
 
 use std::collections::HashMap;
 
-use sc_extract::{Datacore, Guid, LocaleMap, TagTree};
+use sc_extract::{Datacore, Guid, TagTree};
 
 use crate::blueprints::BlueprintPoolRegistry;
 use crate::currency::RewardCurrencyCatalog;
@@ -108,21 +109,14 @@ impl MissionIndex {
     /// `datacore` must have the `contracts` + `servicebeacon`
     /// features enabled — the default `sc-contracts` dependency
     /// turns both on.
-    pub fn build(datacore: &Datacore, locale: &LocaleMap) -> Self {
+    pub fn build(datacore: &Datacore) -> Self {
         let ships = ShipRegistry::build(datacore);
-        let blueprints = BlueprintPoolRegistry::build(datacore, locale);
+        let blueprints = BlueprintPoolRegistry::build(datacore);
         let currency = RewardCurrencyCatalog::build(datacore);
-        let locations = LocationRegistry::build(datacore, locale);
+        let locations = LocationRegistry::build(datacore);
         let localities = LocalityRegistry::build(datacore, &locations);
 
-        let contracts = expand_all(
-            datacore,
-            locale,
-            &ships,
-            &blueprints,
-            &currency,
-            &localities,
-        );
+        let contracts = expand_all(datacore, &ships, &blueprints, &currency, &localities);
 
         let by_id = contracts
             .iter()
@@ -275,9 +269,15 @@ impl MissionIndex {
     }
 
     /// True if any pool member has runtime substitution markers
-    /// (`~mission(...)`) in its title or description.
-    pub fn has_runtime_substitution(&self, ids: &[Guid]) -> bool {
-        self.iter_pool(ids).any(|c| c.has_runtime_substitution)
+    /// (`~mission(...)`) in its title or description, evaluated
+    /// against the supplied `locale`.
+    pub fn has_runtime_substitution(
+        &self,
+        ids: &[Guid],
+        locale: &sc_extract::LocaleMap,
+    ) -> bool {
+        self.iter_pool(ids)
+            .any(|c| c.has_runtime_substitution(locale))
     }
 }
 

@@ -17,9 +17,13 @@ use std::collections::HashMap;
 use sc_extract::generated::{
     DataForgeComponentParamsPtr, DataPools, EItemType, EntityClassDefinition, SItemDefinition,
 };
-use sc_extract::{Datacore, Guid};
+use sc_extract::{Datacore, Guid, LocaleMap};
 
 /// One resolved currency entity — scrip, favour, or other.
+///
+/// Display name is intentionally absent — resolve via
+/// [`RewardCurrencyCatalog::display_name`] at the call site through the
+/// active [`LocaleMap`].
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct CurrencyInfo {
     /// GUID of the `EntityClassDefinition` root record.
@@ -27,9 +31,6 @@ pub struct CurrencyInfo {
     /// Record name stripped of the `EntityClassDefinition.` prefix —
     /// stable across patches, useful for debug / per-faction routing.
     pub record_name: String,
-    /// Localized display name (`Merc Scrip`, `Council Scrip`,
-    /// `Wikelo Favour`). Empty if `DisplayNameCache` has no entry.
-    pub display_name: String,
 }
 
 /// Lookup catalog for currency `EntityClassDefinition`s.
@@ -49,7 +50,6 @@ impl RewardCurrencyCatalog {
     /// `EItemType::Currency`.
     pub fn build(datacore: &Datacore) -> Self {
         let pools = &datacore.records().pools;
-        let display_names = &datacore.snapshot().display_names;
         let db = datacore.db();
 
         let mut by_guid: HashMap<Guid, CurrencyInfo> = HashMap::new();
@@ -77,19 +77,32 @@ impl RewardCurrencyCatalog {
                 })
                 .unwrap_or_default();
 
-            let display_name = display_names.get(guid).unwrap_or("").to_string();
-
             by_guid.insert(
                 *guid,
                 CurrencyInfo {
                     entity_guid: *guid,
                     record_name,
-                    display_name,
                 },
             );
         }
 
         Self { by_guid }
+    }
+
+    /// Resolve the localized display name for a currency entity through
+    /// the supplied [`LocaleMap`]. Returns `None` when `guid` isn't in
+    /// the catalog or when the entity has no `Localization.Name` key /
+    /// the key is absent from `locale`.
+    pub fn display_name<'a>(
+        &self,
+        guid: &Guid,
+        cache: &sc_extract::LocalizedItemCache,
+        locale: &'a LocaleMap,
+    ) -> Option<&'a str> {
+        if !self.by_guid.contains_key(guid) {
+            return None;
+        }
+        cache.name_key(guid).and_then(|k| locale.resolve(k))
     }
 
     /// True if `guid` points at a currency entity.

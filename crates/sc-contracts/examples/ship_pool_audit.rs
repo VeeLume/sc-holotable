@@ -26,7 +26,7 @@
 use std::collections::{BTreeMap, HashSet};
 
 use sc_contracts::{
-    ContractAnchor, ShipCandidate, ShipRegistry, TagBag, resolve_contract_text,
+    ContractAnchor, ShipCandidate, ShipRegistry, TagBag, resolve_contract_keys,
 };
 use sc_extract::generated::{
     BaseMissionPropertyValuePtr, CareerContract, Contract, ContractGeneratorHandlerBasePtr,
@@ -159,12 +159,20 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     }
 
     for needle in &args.contains {
-        print_ship_existence(needle, &ships, &datacore);
-        print_contains(&options, &ships, pools, needle, args.limit);
+        print_ship_existence(needle, &ships, &datacore, &asset_data);
+        print_contains(
+            &options,
+            &ships,
+            pools,
+            &datacore.snapshot().localized_items,
+            &asset_data.locale,
+            needle,
+            args.limit,
+        );
     }
 
     if let Some(name) = &args.dump {
-        dump_contract(&options, &ships, pools, &datacore, name);
+        dump_contract(&options, &ships, pools, &datacore, &asset_data, name);
         explain_contract(&options, pools, &datacore, name);
     }
 
@@ -258,14 +266,23 @@ fn describe_contracts(
 
     for (i, ((hd, cd), opts)) in by_contract.iter().take(limit).enumerate() {
         // Resolve title + description via the full inheritance chain
-        // (sub-contract → contract → handler → template).
-        let resolved = resolve_text_for_contract(pools, datacore, &asset_data.locale, hd, cd);
+        // (sub-contract → contract → handler → template). Keys-only;
+        // resolve through the locale at render time.
+        let resolved = resolve_text_for_contract(pools, datacore, hd, cd);
+        let locale = &asset_data.locale;
         let title_text = resolved
-            .title
-            .clone()
+            .title_key
+            .as_ref()
+            .and_then(|k| locale.resolve(k))
+            .map(str::to_string)
             .unwrap_or_else(|| "<no title>".to_string());
-        let desc_text = resolved.description.clone().unwrap_or_default();
-        let has_subst = resolved.has_runtime_substitution();
+        let desc_text = resolved
+            .description_key
+            .as_ref()
+            .and_then(|k| locale.resolve(k))
+            .map(str::to_string)
+            .unwrap_or_default();
+        let has_subst = title_text.contains("~mission(") || desc_text.contains("~mission(");
 
         let cd_show = if cd.is_empty() {
             "<handler-level>"
@@ -315,8 +332,12 @@ fn describe_contracts(
                 let neg = tags_set(pools, o.opt.negative_tags.as_ref());
                 let candidates = ships.resolve_spawn(&pos, &neg);
                 let bag = TagBag::new(pos.iter().copied(), tree);
-                let mut names: Vec<&str> =
-                    candidates.iter().map(|c| c.display_name.as_str()).collect();
+                let mut names: Vec<&str> = candidates
+                    .iter()
+                    .filter_map(|c| {
+                        ships.display_name(&c.entity_guid, &datacore.snapshot().localized_items, locale)
+                    })
+                    .collect();
                 names.sort();
                 names.dedup();
 
@@ -377,27 +398,28 @@ fn describe_contracts(
     }
 }
 
-/// Resolve title + description for a contract by debug_name, walking
-/// the full inheritance chain via [`sc_contracts::resolve_contract_text`].
-/// Also returns the handler's `contractParams` if the contract lives
+/// Resolve title + description **keys** for a contract by debug_name,
+/// walking the full inheritance chain via
+/// [`sc_contracts::resolve_contract_keys`]. Returned keys can be
+/// resolved against a [`sc_extract::LocaleMap`] at the call site.
+/// Also resolves the handler's `contractParams` if the contract lives
 /// under a handler we know about (needed for Level 3 inheritance).
 fn resolve_text_for_contract(
     pools: &DataPools,
     datacore: &Datacore,
-    locale: &sc_extract::LocaleMap,
     handler_debug: &str,
     contract_debug: &str,
-) -> sc_contracts::ResolvedText {
+) -> sc_contracts::ResolvedKeys {
     // Find the contract anchor by debug_name across the three pools.
     let anchor = find_contract_anchor(pools, contract_debug);
     let Some(anchor) = anchor else {
-        return sc_contracts::ResolvedText::default();
+        return sc_contracts::ResolvedKeys::default();
     };
 
     // Find the handler's contractParams — match by handler debug_name.
     let handler_params = find_handler_contract_params(pools, handler_debug);
 
-    resolve_contract_text(None, anchor, handler_params.as_ref(), datacore, locale)
+    resolve_contract_keys(None, anchor, handler_params.as_ref(), datacore)
 }
 
 fn find_contract_anchor<'p>(pools: &'p DataPools, debug_name: &str) -> Option<ContractAnchor<'p>> {
@@ -842,10 +864,13 @@ fn dump_contract(
     ships: &ShipRegistry,
     pools: &DataPools,
     datacore: &Datacore,
+    asset_data: &AssetData,
     name: &str,
 ) {
     let needle = name.to_lowercase();
     let tree = &datacore.snapshot().tag_tree;
+    let cache = &datacore.snapshot().localized_items;
+    let locale = &asset_data.locale;
 
     println!("═══════════════════════════════════════════════════");
     println!("  Dump of spawn options for '{name}'");
@@ -890,7 +915,10 @@ fn dump_contract(
             let neg = tags_set(pools, o.opt.negative_tags.as_ref());
             let candidates = ships.resolve_spawn(&pos, &neg);
             let bag = TagBag::new(pos.iter().copied(), tree);
-            let mut names: Vec<&str> = candidates.iter().map(|c| c.display_name.as_str()).collect();
+            let mut names: Vec<&str> = candidates
+                .iter()
+                .filter_map(|c| ships.display_name(&c.entity_guid, cache, locale))
+                .collect();
             names.sort();
             names.dedup();
             println!(
@@ -971,9 +999,15 @@ fn print_spawn_context(bag: &TagBag, tree: &sc_extract::TagTree, indent: &str) {
 /// referenced by any contract's spawn query". Prints every
 /// `EntityClassDefinition` whose display name or record name contains the
 /// needle, marked with whether it's in the ship registry.
-fn print_ship_existence(needle: &str, ships: &ShipRegistry, datacore: &Datacore) {
+fn print_ship_existence(
+    needle: &str,
+    ships: &ShipRegistry,
+    datacore: &Datacore,
+    asset_data: &AssetData,
+) {
     let pools = &datacore.records().pools;
-    let display_names = &datacore.snapshot().display_names;
+    let cache = &datacore.snapshot().localized_items;
+    let locale = &asset_data.locale;
     let db = datacore.db();
     let in_pool: HashSet<Guid> = ships.iter().map(|s| s.entity_guid).collect();
 
@@ -987,7 +1021,11 @@ fn print_ship_existence(needle: &str, ships: &ShipRegistry, datacore: &Datacore)
         let Some(_ecd) = handle.get(pools) else {
             continue;
         };
-        let display = display_names.get(guid).unwrap_or("").to_string();
+        let display = cache
+            .name_key(guid)
+            .and_then(|k| locale.resolve(k))
+            .unwrap_or("")
+            .to_string();
         let record = db
             .record(guid)
             .and_then(|r| r.name().map(|s| s.to_string()))
@@ -1422,6 +1460,8 @@ fn print_contains(
     options: &[Option_<'_>],
     ships: &ShipRegistry,
     pools: &DataPools,
+    cache: &sc_extract::LocalizedItemCache,
+    locale: &sc_extract::LocaleMap,
     needle: &str,
     limit: usize,
 ) {
@@ -1439,7 +1479,12 @@ fn print_contains(
         let cands: Vec<ShipCandidate> = ships.resolve_spawn(&pos, &neg);
         let matched: Vec<&ShipCandidate> = cands
             .iter()
-            .filter(|c| c.display_name.to_lowercase().contains(needle))
+            .filter(|c| {
+                ships
+                    .display_name(&c.entity_guid, cache, locale)
+                    .map(|n| n.to_lowercase().contains(needle))
+                    .unwrap_or(false)
+            })
             .collect();
         if matched.is_empty() {
             continue;
@@ -1457,7 +1502,9 @@ fn print_contains(
             .entry(key)
             .or_insert_with(|| (o.ctx.clone(), HashSet::new(), 0));
         for m in matched {
-            entry.1.insert(m.display_name.clone());
+            if let Some(n) = ships.display_name(&m.entity_guid, cache, locale) {
+                entry.1.insert(n.to_string());
+            }
         }
         entry.2 += 1;
     }

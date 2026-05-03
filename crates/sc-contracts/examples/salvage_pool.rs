@@ -34,7 +34,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let pools = &store.pools;
     let ecd_map = &store.records.multi_feature.entity_class_definition;
     let tree = &snap.tag_tree;
-    let display_names = &snap.display_names;
+    let localized_items = &snap.localized_items;
+    let locale = &asset_data.locale;
 
     let needle = "AvailableToSalvage";
     let needle_guids: Vec<Guid> = tree.by_name(needle).to_vec();
@@ -77,8 +78,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             continue;
         }
         // Resolve display name + collect full tag-name list.
-        let display = display_names
-            .get(&guid)
+        let display = localized_items
+            .name_key(&guid)
+            .and_then(|k| locale.resolve(k))
             .map(String::from)
             .unwrap_or_default();
         let record_name = datacore

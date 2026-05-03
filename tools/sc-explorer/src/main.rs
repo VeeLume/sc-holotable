@@ -23,7 +23,8 @@ use std::time::Instant;
 
 use anyhow::{Context as _, Result};
 use sc_contracts::{
-    AssetConfig, AssetData, AssetSource, MissionIndex, Datacore, DatacoreConfig,
+    AssetConfig, AssetData, AssetSource, Datacore, DatacoreConfig, LocaleMap, LocalizedItemCache,
+    MissionIndex,
 };
 use slt::{Border, Color, Context, KeyCode, KeyModifiers, RunConfig, ScrollState, TabsState, Theme};
 
@@ -62,7 +63,7 @@ fn main() -> Result<()> {
     );
 
     eprintln!("sc-explorer: building MissionIndex...");
-    let index = MissionIndex::build(&datacore, &asset_data.locale);
+    let index = MissionIndex::build(&datacore);
     eprintln!("  {} contract(s)", index.contracts.len());
 
     eprintln!("sc-explorer: materialising weapon set...");
@@ -70,6 +71,9 @@ fn main() -> Result<()> {
     eprintln!("  {} ship weapon(s)", weapon_set.ships.len());
 
     let pool_checks = build_pool_checks(&datacore);
+
+    let localized_items = datacore.snapshot().localized_items.clone();
+    let locale = asset_data.locale.clone();
 
     let mut app = AppState {
         index,
@@ -89,6 +93,8 @@ fn main() -> Result<()> {
             install.channel,
             install.short_version()
         ),
+        locale,
+        localized_items,
     };
 
     eprintln!("sc-explorer: starting TUI (Ctrl+Q to quit)");
@@ -110,6 +116,13 @@ struct AppState {
     pools_scroll: ScrollState,
     dark_mode: bool,
     version_label: String,
+    /// Locale snapshot used by the contracts tab when resolving titles,
+    /// descriptions, and entity display names. Cloned from
+    /// `asset_data.locale` at startup; the TUI doesn't currently overlay
+    /// language packs, but threading it through here keeps the path
+    /// open.
+    locale: LocaleMap,
+    localized_items: LocalizedItemCache,
 }
 
 /// One row in the Pools tab. Aggregates the per-aggregation-crate
@@ -190,6 +203,8 @@ fn draw(ui: &mut Context, app: &mut AppState) {
                     ui,
                     &mut app.contracts_state,
                     &app.index,
+                    &app.locale,
+                    &app.localized_items,
                 ),
                 TAB_WEAPONS => sc_weapons::tui::render(
                     ui,

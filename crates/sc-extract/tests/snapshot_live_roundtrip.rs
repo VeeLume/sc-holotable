@@ -111,7 +111,7 @@ struct Counts {
     graph_edges: usize,
     tag_nodes: usize,
     manufacturers: usize,
-    display_names: usize,
+    localized_items: usize,
     locale_entries: usize,
 }
 
@@ -123,7 +123,7 @@ impl Counts {
             graph_edges: snap.graph.edge_count(),
             tag_nodes: snap.tag_tree.len(),
             manufacturers: snap.manufacturers.len(),
-            display_names: snap.display_names.len(),
+            localized_items: snap.localized_items.len(),
             locale_entries: assets.locale.len(),
         }
     }

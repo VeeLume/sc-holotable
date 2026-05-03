@@ -54,7 +54,7 @@ pub fn run(config: &RunConfig) -> Result<BenchResult, Box<dyn std::error::Error>
     let snap = datacore.snapshot();
     r.records = snap.records.len();
     r.manufacturers = snap.manufacturers.len();
-    r.display_names = snap.display_names.len();
+    r.display_names = snap.localized_items.len();
     r.tag_nodes = snap.tag_tree.len();
     r.graph_edges = snap.graph.edge_count();
 
@@ -167,9 +167,9 @@ fn exercise_manufacturers(snap: &sc_extract::DatacoreSnapshot, r: &mut BenchResu
 
 fn exercise_display_names(snap: &sc_extract::DatacoreSnapshot, r: &mut BenchResult) {
     r.display_names_non_empty = snap
-        .display_names
+        .localized_items
         .iter()
-        .filter(|(_, name)| !name.is_empty())
+        .filter(|(_, item)| item.name_key.is_some())
         .count();
 }
 
@@ -197,9 +197,9 @@ fn exercise_graph(snap: &sc_extract::DatacoreSnapshot, r: &mut BenchResult) {
     // source iterator directly, so sample by checking outgoing on records
     // from the record store that have outgoing edges.
     // Since we can't iterate the graph's source set directly, use an
-    // approach that works: iterate display_names keys (which are record
-    // GUIDs) and check for outgoing edges.
-    for (guid, _) in snap.display_names.iter() {
+    // approach that works: iterate localized_items keys (which are
+    // entity record GUIDs) and check for outgoing edges.
+    for (guid, _) in snap.localized_items.iter() {
         let outgoing = graph.outgoing(guid);
         if outgoing.is_empty() {
             continue;
@@ -229,8 +229,11 @@ fn exercise_filters(datacore: &Datacore, asset_data: &AssetData, r: &mut BenchRe
         let inst = record.as_instance();
         let class_name = record.name().unwrap_or("");
 
-        // Resolve display name for this entity.
-        let display_name = sc_extract::resolve_entity_display_name(&inst, db, &asset_data.locale);
+        // Resolve display name for this entity through the keys-only
+        // cache + locale (see docs/localization.md).
+        let display_name = sc_extract::resolve_entity_localization(&inst, db)
+            .and_then(|item| item.name_key)
+            .and_then(|k| asset_data.locale.resolve(&k).map(|s| s.to_string()));
 
         // Extract AttachDef fields for weapon filter.
         let (type_name, sub_type, size) = extract_attach_def_fields(&inst, db);

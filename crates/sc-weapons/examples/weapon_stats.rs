@@ -71,11 +71,16 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         for w in &weapons {
             if let Some(f) = filter
                 && !w.record_name.contains(f)
-                && !snap.display_names.get(&w.guid).unwrap_or("").contains(f)
+                && !snap
+                    .localized_items
+                    .name_key(&w.guid)
+                    .and_then(|k| asset_data.locale.resolve(k))
+                    .unwrap_or("")
+                    .contains(f)
             {
                 continue;
             }
-            print_fps_weapon(w, snap);
+            print_fps_weapon(w, snap, &asset_data.locale);
         }
         if filter.is_none() {
             println!("\nTotal: {} FPS weapons", weapons.len());
@@ -96,14 +101,19 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         for w in &weapons {
             if let Some(f) = filter
                 && !w.record_name.contains(f)
-                && !snap.display_names.get(&w.guid).unwrap_or("").contains(f)
+                && !snap
+                    .localized_items
+                    .name_key(&w.guid)
+                    .and_then(|k| asset_data.locale.resolve(k))
+                    .unwrap_or("")
+                    .contains(f)
             {
                 continue;
             }
             if sort_by_effective {
-                print_ship_weapon_summary(w, snap, &ctx);
+                print_ship_weapon_summary(w, snap, &asset_data.locale, &ctx);
             } else {
-                print_ship_weapon(w, snap, &ctx);
+                print_ship_weapon(w, snap, &asset_data.locale, &ctx);
             }
         }
         if filter.is_none() {
@@ -125,9 +135,14 @@ fn arg_value<'a>(args: &'a [String], flag: &str) -> Option<&'a str> {
 fn print_ship_weapon_summary(
     w: &ShipWeapon,
     snap: &sc_extract::DatacoreSnapshot,
+    locale: &sc_extract::LocaleMap,
     ctx: &LoadoutContext,
 ) {
-    let display = snap.display_names.get(&w.guid).unwrap_or("");
+    let display = snap
+        .localized_items
+        .name_key(&w.guid)
+        .and_then(|k| locale.resolve(k))
+        .unwrap_or("");
     let eff = w.effective_dps(ctx).unwrap_or(0.0);
     let burst = w.burst_dps().unwrap_or(0.0);
     let sust = w.sustained_dps().unwrap_or(0.0);
@@ -138,8 +153,17 @@ fn print_ship_weapon_summary(
     );
 }
 
-fn print_ship_weapon(w: &ShipWeapon, snap: &sc_extract::DatacoreSnapshot, ctx: &LoadoutContext) {
-    let display = snap.display_names.get(&w.guid).unwrap_or("");
+fn print_ship_weapon(
+    w: &ShipWeapon,
+    snap: &sc_extract::DatacoreSnapshot,
+    locale: &sc_extract::LocaleMap,
+    ctx: &LoadoutContext,
+) {
+    let display = snap
+        .localized_items
+        .name_key(&w.guid)
+        .and_then(|k| locale.resolve(k))
+        .unwrap_or("");
     let mfg = w
         .manufacturer_guid
         .and_then(|g| snap.manufacturers.get(&g))
@@ -289,8 +313,16 @@ fn print_ship_weapon(w: &ShipWeapon, snap: &sc_extract::DatacoreSnapshot, ctx: &
     println!();
 }
 
-fn print_fps_weapon(w: &FpsWeapon, snap: &sc_extract::DatacoreSnapshot) {
-    let display = snap.display_names.get(&w.guid).unwrap_or("");
+fn print_fps_weapon(
+    w: &FpsWeapon,
+    snap: &sc_extract::DatacoreSnapshot,
+    locale: &sc_extract::LocaleMap,
+) {
+    let display = snap
+        .localized_items
+        .name_key(&w.guid)
+        .and_then(|k| locale.resolve(k))
+        .unwrap_or("");
     let mfg = w
         .manufacturer_guid
         .and_then(|g| snap.manufacturers.get(&g))

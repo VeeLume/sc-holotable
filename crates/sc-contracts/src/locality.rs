@@ -36,7 +36,7 @@
 use std::collections::{BTreeMap, BTreeSet, HashMap};
 
 use sc_extract::generated::{MissionLocality, StarMapObject};
-use sc_extract::{Datacore, Guid, LocaleMap};
+use sc_extract::{Datacore, Guid, LocaleKey, LocaleMap};
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -89,9 +89,9 @@ impl SystemKey {
     }
 }
 
-/// One resolved `StarMapObject`. Names are stripped of the
-/// `StarMapObject.` prefix for display; the `guid` remains the
-/// canonical identity.
+/// One resolved `StarMapObject`. The `guid` is the canonical
+/// identity; record names are kept for stable identifiers; localized
+/// display strings are resolved on demand against a [`LocaleMap`].
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct LocationRef {
     pub guid: Guid,
@@ -99,12 +99,10 @@ pub struct LocationRef {
     /// (`Pyro3_L1`, `RR_P6_LEO_CLINIC`, `Stanton4b`, …). Empty if the
     /// DCB record lacks a name (shouldn't happen on clean data).
     pub record_name: String,
-    /// Localized player-facing name from `StarMapObject.name`
-    /// (`Sirus`, `Bloom`, `Hurston`, `New Babbage`, …). Empty when
-    /// the locale map has no entry (asteroid clusters, nav points,
-    /// and other CIG-internal records that never appear on a player
-    /// HUD tend to have empty names).
-    pub display_name: String,
+    /// Locale key for the player-facing name from `StarMapObject.name`
+    /// (`@starmap_name_Sirus`, `@starmap_name_Bloom`, …). Raw — leading
+    /// `@` preserved per the workspace localization rule.
+    pub name_key: Option<LocaleKey>,
     /// System derived from the parent-chain root.
     pub system: SystemKey,
     /// Body-level ancestor's stripped record name, when one exists
@@ -116,15 +114,14 @@ pub struct LocationRef {
     /// `body = Some("Pyro3")`, because its parent `Pyro3` sits
     /// directly below the `Pyro` root.
     pub body: Option<String>,
-    /// Localized name of the body ancestor (`Bloom`, `Hurston`, …).
-    /// Populated when `body` is `Some` and the body's `name` locale
-    /// key resolved. Empty otherwise.
-    pub body_display_name: String,
+    /// Locale key for the body ancestor's name. `Some` when `body` is
+    /// `Some` and the body's `StarMapObject.name` field is non-empty.
+    pub body_name_key: Option<LocaleKey>,
 }
 
 impl LocationRef {
     /// Convenience: `"Pyro / Pyro3"` or `"Stanton"` — a short tag
-    /// suitable for badges and census output.
+    /// suitable for badges and census output. Locale-independent.
     pub fn short_tag(&self) -> String {
         match &self.body {
             Some(b) => format!("{} / {}", self.system.display(), b),
@@ -132,13 +129,29 @@ impl LocationRef {
         }
     }
 
+    /// Resolve the localized display name for this location through
+    /// `locale`. Returns `None` when `name_key` is missing or absent
+    /// from `locale`.
+    pub fn display_name<'a>(&self, locale: &'a LocaleMap) -> Option<&'a str> {
+        self.name_key.as_ref().and_then(|k| locale.resolve(k))
+    }
+
+    /// Resolve the localized body-ancestor name through `locale`.
+    pub fn body_display_name<'a>(&self, locale: &'a LocaleMap) -> Option<&'a str> {
+        self.body_name_key.as_ref().and_then(|k| locale.resolve(k))
+    }
+
     /// Human-friendly tag preferring localized body and system
     /// names: `"Pyro / Bloom"`, `"Stanton / Hurston"`, or
     /// `"Stanton"` for system-level locations. Falls back to
-    /// `short_tag` when localized names aren't available.
-    pub fn human_tag(&self) -> String {
-        if self.body.is_some() && !self.body_display_name.is_empty() {
-            format!("{} / {}", self.system.display(), self.body_display_name)
+    /// [`short_tag`](Self::short_tag) when localized names aren't
+    /// available in `locale`.
+    pub fn human_tag(&self, locale: &LocaleMap) -> String {
+        if self.body.is_some()
+            && let Some(body_disp) = self.body_display_name(locale)
+            && !body_disp.is_empty()
+        {
+            format!("{} / {}", self.system.display(), body_disp)
         } else {
             self.short_tag()
         }
@@ -151,8 +164,9 @@ pub struct LocalityView {
     pub guid: Guid,
     /// Record name with `MissionLocality.` prefix stripped. Empty if
     /// the DCB record has no name. Useful as a stable identifier
-    /// (`RegionA`, `RegionC`) — see [`region_label`][Self::region_label]
-    /// for a player-facing summary.
+    /// (`RegionA`, `RegionC`) — see
+    /// [`region_label`](Self::region_label) for a player-facing
+    /// summary.
     pub name: String,
     /// Every location this locality points at, resolved through
     /// [`LocationRegistry`]. GUIDs the registry couldn't resolve are
@@ -164,19 +178,6 @@ pub struct LocalityView {
     /// registry build so consumers annotating Contracts don't have
     /// to recompute the set per render.
     pub systems: BTreeSet<SystemKey>,
-    /// Player-facing one-line summary of what bodies this locality
-    /// spans, built from the localized body names of `locations`.
-    ///
-    /// Shape (in rough preference order):
-    /// - `"Pyro: Sirus, Monox, Bloom"` — multiple bodies in one system
-    /// - `"Pyro: Bloom"` — single body in one system
-    /// - `"Pyro (system-wide)"` — only system-level locations (no body ancestor)
-    /// - `"Stanton + Pyro"` — crosses multiple systems; no body detail
-    /// - `""` — empty locality (shouldn't happen on clean DCB data)
-    ///
-    /// Built once during registry construction so downstream
-    /// rendering is a string clone.
-    pub region_label: String,
 }
 
 impl LocalityView {
@@ -184,6 +185,19 @@ impl LocalityView {
     /// the Pyro cross-system salvage span that motivates this model.
     pub fn spans_multiple_systems(&self) -> bool {
         self.systems.len() > 1
+    }
+
+    /// Player-facing one-line summary of what bodies this locality
+    /// spans, built against `locale`.
+    ///
+    /// Shape (in rough preference order):
+    /// - `"Pyro: Sirus, Monox, Bloom"` — multiple bodies in one system
+    /// - `"Pyro: Bloom"` — single body in one system
+    /// - `"Pyro (system-wide)"` — only system-level locations (no body ancestor)
+    /// - `"Stanton + Pyro"` — crosses multiple systems; no body detail
+    /// - `""` — empty locality (shouldn't happen on clean DCB data)
+    pub fn region_label(&self, locale: &LocaleMap) -> String {
+        build_region_label(&self.locations, &self.systems, locale)
     }
 }
 
@@ -207,30 +221,28 @@ impl LocationRegistry {
     /// object's own name still ends up as both the location name
     /// and (if it's the top it could find) the system key.
     ///
-    /// `locale` resolves `StarMapObject.name` into the localized
-    /// display string (`"Sirus"`, `"Hurston"`) cached on
-    /// [`LocationRef::display_name`]. Pass the same `LocaleMap`
-    /// already in use for blueprint / description resolution.
-    pub fn build(datacore: &Datacore, locale: &LocaleMap) -> Self {
+    /// Walks every `StarMapObject` and stores its name `LocaleKey`
+    /// alongside the parent-chain-derived system + body. Locale-
+    /// independent: resolved display strings are produced on demand
+    /// via [`LocationRef::display_name`] / [`LocationRef::body_display_name`].
+    pub fn build(datacore: &Datacore) -> Self {
         let pools = &datacore.records().pools;
         let records = &datacore.records().records;
         let db = datacore.db();
 
-        // Pre-resolve every StarMapObject's display_name via locale,
-        // keyed by record GUID. Used twice: once for each location's
-        // own display_name, once for its body ancestor's display_name
-        // after parent-chain walking.
-        let mut display_by_guid: HashMap<Guid, String> =
+        // Pre-collect every StarMapObject's name LocaleKey, keyed by
+        // record GUID. Used twice: once for each location's own key,
+        // once for its body ancestor's key after parent-chain walking.
+        let mut key_by_guid: HashMap<Guid, Option<LocaleKey>> =
             HashMap::with_capacity(records.multi_feature.star_map_object.len());
         for (guid, handle) in &records.multi_feature.star_map_object {
             if let Some(obj) = handle.get(pools) {
-                let name_key = obj.name.stripped();
-                let display = if name_key.is_empty() {
-                    String::new()
+                let key = if obj.name.is_empty() {
+                    None
                 } else {
-                    locale.get(name_key).unwrap_or("").to_string()
+                    Some(obj.name.clone())
                 };
-                display_by_guid.insert(*guid, display);
+                key_by_guid.insert(*guid, key);
             }
         }
 
@@ -243,7 +255,7 @@ impl LocationRegistry {
             };
 
             let name = record_name_stripped(db, guid, "StarMapObject.");
-            let display_name = display_by_guid.get(guid).cloned().unwrap_or_default();
+            let name_key = key_by_guid.get(guid).cloned().flatten();
 
             // Walk parent chain. `root_name` is the top-most
             // ancestor's record name. `body_guid` is the node
@@ -254,19 +266,19 @@ impl LocationRegistry {
             let body_name = body_guid
                 .map(|g| record_name_stripped(db, &g, "StarMapObject."))
                 .filter(|s| !s.is_empty());
-            let body_display_name = body_guid
-                .and_then(|g| display_by_guid.get(&g).cloned())
-                .unwrap_or_default();
+            let body_name_key = body_guid
+                .and_then(|g| key_by_guid.get(&g).cloned())
+                .flatten();
 
             by_guid.insert(
                 *guid,
                 LocationRef {
                     guid: *guid,
                     record_name: name,
-                    display_name,
+                    name_key,
                     system: SystemKey::from_root_name(&root_name),
                     body: body_name,
-                    body_display_name,
+                    body_name_key,
                 },
             );
         }
@@ -340,8 +352,6 @@ impl LocalityRegistry {
                     .then_with(|| a.record_name.cmp(&b.record_name))
             });
 
-            let region_label = build_region_label(&resolved_locations, &systems);
-
             by_guid.insert(
                 *guid,
                 LocalityView {
@@ -349,7 +359,6 @@ impl LocalityRegistry {
                     name,
                     locations: resolved_locations,
                     systems,
-                    region_label,
                 },
             );
         }
@@ -404,7 +413,11 @@ impl LocalityRegistry {
 ///   These localities list stations / asteroid clusters without a
 ///   planet ancestor.
 /// - Empty locality → `""`. Shouldn't occur in clean DCB data.
-fn build_region_label(locations: &[LocationRef], systems: &BTreeSet<SystemKey>) -> String {
+fn build_region_label(
+    locations: &[LocationRef],
+    systems: &BTreeSet<SystemKey>,
+    locale: &LocaleMap,
+) -> String {
     if locations.is_empty() {
         return String::new();
     }
@@ -426,11 +439,12 @@ fn build_region_label(locations: &[LocationRef], systems: &BTreeSet<SystemKey>) 
     let mut bodies: BTreeMap<String, String> = BTreeMap::new();
     let mut system_level_count = 0usize;
     for loc in locations {
-        match (&loc.body, loc.body_display_name.is_empty()) {
+        let body_disp = loc.body_display_name(locale).unwrap_or("");
+        match (&loc.body, body_disp.is_empty()) {
             (Some(body_rec), false) => {
                 bodies
                     .entry(body_rec.clone())
-                    .or_insert_with(|| loc.body_display_name.clone());
+                    .or_insert_with(|| body_disp.to_string());
             }
             (Some(body_rec), true) => {
                 bodies
@@ -568,71 +582,91 @@ mod tests {
 
     #[test]
     fn location_short_tag_formats() {
+        let mut locale = LocaleMap::new();
+        locale.set("starmap_name_Bloom", "Bloom");
         let loc = LocationRef {
             guid: Guid::default(),
             record_name: "Pyro3_L1".to_string(),
-            display_name: String::new(),
+            name_key: None,
             system: SystemKey::Pyro,
             body: Some("Pyro3".to_string()),
-            body_display_name: "Bloom".to_string(),
+            body_name_key: Some(LocaleKey::new("@starmap_name_Bloom")),
         };
         assert_eq!(loc.short_tag(), "Pyro / Pyro3");
-        assert_eq!(loc.human_tag(), "Pyro / Bloom");
+        assert_eq!(loc.human_tag(&locale), "Pyro / Bloom");
 
         let top = LocationRef {
             guid: Guid::default(),
             record_name: "Stanton".to_string(),
-            display_name: "Stanton".to_string(),
+            name_key: None,
             system: SystemKey::Stanton,
             body: None,
-            body_display_name: String::new(),
+            body_name_key: None,
         };
         assert_eq!(top.short_tag(), "Stanton");
-        assert_eq!(top.human_tag(), "Stanton");
+        assert_eq!(top.human_tag(&LocaleMap::new()), "Stanton");
     }
 
-    fn mk_loc(body: Option<(&str, &str)>, system: SystemKey) -> LocationRef {
+    /// `body` is `Some((record_name, locale_value))` — the locale
+    /// value is registered against an `@body_<record_name>` key so
+    /// the test exercises the resolve path the production code uses.
+    fn mk_loc(
+        body: Option<(&str, &str)>,
+        system: SystemKey,
+        locale: &mut LocaleMap,
+    ) -> LocationRef {
+        let body_name_key = body.map(|(rec, disp)| {
+            let key = format!("body_{rec}");
+            locale.set(key.as_str(), disp);
+            LocaleKey::new(format!("@{key}"))
+        });
         LocationRef {
             guid: Guid::default(),
             record_name: "x".to_string(),
-            display_name: String::new(),
+            name_key: None,
             system,
             body: body.map(|(rec, _)| rec.to_string()),
-            body_display_name: body.map(|(_, disp)| disp.to_string()).unwrap_or_default(),
+            body_name_key,
         }
     }
 
     #[test]
     fn region_label_single_system_with_bodies_lists_them() {
+        let mut locale = LocaleMap::new();
         let locs = vec![
-            mk_loc(Some(("Pyro1", "Sirus")), SystemKey::Pyro),
-            mk_loc(Some(("Pyro2", "Monox")), SystemKey::Pyro),
-            mk_loc(Some(("Pyro3", "Bloom")), SystemKey::Pyro),
+            mk_loc(Some(("Pyro1", "Sirus")), SystemKey::Pyro, &mut locale),
+            mk_loc(Some(("Pyro2", "Monox")), SystemKey::Pyro, &mut locale),
+            mk_loc(Some(("Pyro3", "Bloom")), SystemKey::Pyro, &mut locale),
             // Duplicate: same body, different child — must dedupe.
-            mk_loc(Some(("Pyro3", "Bloom")), SystemKey::Pyro),
+            mk_loc(Some(("Pyro3", "Bloom")), SystemKey::Pyro, &mut locale),
         ];
         let mut systems = BTreeSet::new();
         systems.insert(SystemKey::Pyro);
         assert_eq!(
-            build_region_label(&locs, &systems),
+            build_region_label(&locs, &systems, &locale),
             "Pyro: Bloom, Monox, Sirus"
         );
     }
 
     #[test]
     fn region_label_cross_system_suppresses_bodies() {
+        let mut locale = LocaleMap::new();
         let locs = vec![
-            mk_loc(Some(("Stanton1", "Hurston")), SystemKey::Stanton),
-            mk_loc(Some(("Pyro3", "Bloom")), SystemKey::Pyro),
+            mk_loc(Some(("Stanton1", "Hurston")), SystemKey::Stanton, &mut locale),
+            mk_loc(Some(("Pyro3", "Bloom")), SystemKey::Pyro, &mut locale),
         ];
         let mut systems = BTreeSet::new();
         systems.insert(SystemKey::Stanton);
         systems.insert(SystemKey::Pyro);
-        assert_eq!(build_region_label(&locs, &systems), "Stanton + Pyro");
+        assert_eq!(
+            build_region_label(&locs, &systems, &locale),
+            "Stanton + Pyro"
+        );
     }
 
     #[test]
     fn region_label_caps_long_body_list() {
+        let mut locale = LocaleMap::new();
         let bodies = [
             ("A", "Alpha"),
             ("B", "Beta"),
@@ -644,11 +678,11 @@ mod tests {
         ];
         let locs: Vec<LocationRef> = bodies
             .iter()
-            .map(|(rec, disp)| mk_loc(Some((rec, disp)), SystemKey::Pyro))
+            .map(|(rec, disp)| mk_loc(Some((rec, disp)), SystemKey::Pyro, &mut locale))
             .collect();
         let mut systems = BTreeSet::new();
         systems.insert(SystemKey::Pyro);
-        let label = build_region_label(&locs, &systems);
+        let label = build_region_label(&locs, &systems, &locale);
         // Sorted alphabetically: Alpha, Beta, Ceti, Delta, Echo shown;
         // Foxtrot + Gamma hidden behind the "+2 more" marker.
         assert_eq!(label, "Pyro: Alpha, Beta, Ceti, Delta, Echo, +2 more");
@@ -656,9 +690,16 @@ mod tests {
 
     #[test]
     fn region_label_system_only_marks_system_wide() {
-        let locs = vec![mk_loc(None, SystemKey::Pyro), mk_loc(None, SystemKey::Pyro)];
+        let mut locale = LocaleMap::new();
+        let locs = vec![
+            mk_loc(None, SystemKey::Pyro, &mut locale),
+            mk_loc(None, SystemKey::Pyro, &mut locale),
+        ];
         let mut systems = BTreeSet::new();
         systems.insert(SystemKey::Pyro);
-        assert_eq!(build_region_label(&locs, &systems), "Pyro (system-wide)");
+        assert_eq!(
+            build_region_label(&locs, &systems, &locale),
+            "Pyro (system-wide)"
+        );
     }
 }

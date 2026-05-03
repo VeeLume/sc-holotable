@@ -67,7 +67,7 @@ pub use index::MissionIndex;
 pub use locality::{LocalityRegistry, LocalityView, LocationRef, LocationRegistry, SystemKey};
 pub use pools::MissionPools;
 pub use ships::{ShipCandidate, ShipEntity, ShipRegistry};
-pub use titles::{ContractAnchor, ResolvedText, resolve_contract_text};
+pub use titles::{ContractAnchor, ResolvedKeys, resolve_contract_keys};
 
 // ── Narrow-consumer re-exports ──────────────────────────────────────────────
 //
@@ -77,7 +77,7 @@ pub use titles::{ContractAnchor, ResolvedText, resolve_contract_text};
 // every aggregation crate pulls the same `sc-extract` rev.
 pub use sc_extract::{
     AssetConfig, AssetData, AssetSource, Datacore, DatacoreConfig, ExtractSnapshot, Guid,
-    LocaleKey, LocaleMap, SnapshotMeta,
+    LocaleKey, LocaleMap, LocalizedItem, LocalizedItemCache, SnapshotMeta,
 };
 
 /// Escape hatch for raw DCB queries when the typed model doesn't cover

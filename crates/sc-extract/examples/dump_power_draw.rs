@@ -68,7 +68,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         }
         seen.insert(base);
 
-        let display = snap.display_names.get(&guid).unwrap_or("").to_string();
+        let display = snap.localized_items.name_key(&guid).and_then(|k| asset_data.locale.resolve(k)).unwrap_or("").to_string();
         let item_def = ecd.components.iter().find_map(|c| match c {
             DataForgeComponentParamsPtr::SAttachableComponentParams(h) => h
                 .get(pools)
