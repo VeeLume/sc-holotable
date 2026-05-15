@@ -592,6 +592,8 @@ pub struct MusicAreaComponentParams {
     pub dist_to_centre_rtpc: Option<Handle<AudioRtpc>>,
     /// `useAreaComponent` (Boolean)
     pub use_area_component: bool,
+    /// `suppressLocationUpdates` (Boolean)
+    pub suppress_location_updates: bool,
 }
 
 impl Pooled for MusicAreaComponentParams {
@@ -663,6 +665,7 @@ impl<'a> Extract<'a> for MusicAreaComponentParams {
                 _ => None,
             },
             use_area_component: inst.get_bool("useAreaComponent").unwrap_or_default(),
+            suppress_location_updates: inst.get_bool("suppressLocationUpdates").unwrap_or_default(),
         }
     }
 }

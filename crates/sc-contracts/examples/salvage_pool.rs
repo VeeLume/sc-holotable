@@ -39,7 +39,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let needle = "AvailableToSalvage";
     let needle_guids: Vec<Guid> = tree.by_name(needle).to_vec();
-    println!("=== AvailableToSalvage tag GUIDs ({}) ===", needle_guids.len());
+    println!(
+        "=== AvailableToSalvage tag GUIDs ({}) ===",
+        needle_guids.len()
+    );
     for g in &needle_guids {
         let path = tree.path(g);
         println!("  {} :: {}", g, path.join(" ▸ "));
@@ -69,11 +72,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("=== ECDs whose tag set intersects the AvailableToSalvage subtree ===");
     let mut hits: Vec<(String, String, Guid, Vec<String>)> = Vec::new();
     for (&guid, handle) in ecd_map.iter() {
-        let Some(ecd) = handle.get(pools) else { continue };
-        let intersects = ecd
-            .tags
-            .iter()
-            .any(|t| salvage_descendants.contains(t));
+        let Some(ecd) = handle.get(pools) else {
+            continue;
+        };
+        let intersects = ecd.tags.iter().any(|t| salvage_descendants.contains(t));
         if !intersects {
             continue;
         }
@@ -104,7 +106,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         hits.push((record_name, display, guid, tag_paths));
     }
     hits.sort_by(|a, b| a.0.cmp(&b.0));
-    println!("  {} ECD(s) tagged AvailableToSalvage (or a descendant)\n", hits.len());
+    println!(
+        "  {} ECD(s) tagged AvailableToSalvage (or a descendant)\n",
+        hits.len()
+    );
 
     for (rec, display, _guid, tags) in &hits {
         println!("──────────────────────────────────────────────────");
@@ -149,8 +154,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut coverage: HashMap<&str, usize> = HashMap::new();
     let total = hits.len();
     for (_, _, guid, _) in &hits {
-        let Some(handle) = ecd_map.get(guid) else { continue };
-        let Some(ecd) = handle.get(pools) else { continue };
+        let Some(handle) = ecd_map.get(guid) else {
+            continue;
+        };
+        let Some(ecd) = handle.get(pools) else {
+            continue;
+        };
         let names: BTreeSet<String> = ecd
             .tags
             .iter()
@@ -184,8 +193,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("=== Size-tier distribution among salvage-target ECDs ===");
     let mut by_size: BTreeMap<String, Vec<String>> = BTreeMap::new();
     for (rec, _disp, guid, _) in &hits {
-        let Some(handle) = ecd_map.get(guid) else { continue };
-        let Some(ecd) = handle.get(pools) else { continue };
+        let Some(handle) = ecd_map.get(guid) else {
+            continue;
+        };
+        let Some(ecd) = handle.get(pools) else {
+            continue;
+        };
         let mut size = String::from("(no size tag)");
         for t in &ecd.tags {
             let path = tree.path(t);

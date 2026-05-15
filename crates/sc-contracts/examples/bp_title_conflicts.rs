@@ -13,7 +13,7 @@
 
 use std::collections::HashSet;
 
-use sc_contracts::{MissionIndex, Mission, LocalityRegistry};
+use sc_contracts::{LocalityRegistry, Mission, MissionIndex};
 use sc_extract::{AssetConfig, AssetData, AssetSource, Datacore, DatacoreConfig, Guid};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -50,8 +50,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         .title_key
         .iter()
         .filter(|(_, ids)| {
-            ids.len() > 1
-                && (index.blueprint_mixed(ids) || !index.blueprint_pool_consistent(ids))
+            ids.len() > 1 && (index.blueprint_mixed(ids) || !index.blueprint_pool_consistent(ids))
         })
         .map(|(key, ids)| (key.as_str(), ids.as_slice()))
         .collect();
@@ -113,8 +112,13 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         for c in index.iter_pool(ids) {
             let bp_label = match c.rewards.blueprint.as_ref() {
                 Some(bp) if !bp.items.is_empty() => {
-                    let sample = sample_items(c, &asset_data.locale, &datacore.snapshot().localized_items);
-                    format!("  BP pool='{}' ({} items): {sample}", bp.pool_name, bp.items.len())
+                    let sample =
+                        sample_items(c, &asset_data.locale, &datacore.snapshot().localized_items);
+                    format!(
+                        "  BP pool='{}' ({} items): {sample}",
+                        bp.pool_name,
+                        bp.items.len()
+                    )
                 }
                 _ => "  (no blueprint)".to_string(),
             };

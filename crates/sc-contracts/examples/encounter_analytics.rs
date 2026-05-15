@@ -88,8 +88,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                     };
                     let factions = to_owned(&mut slot.positive.factions(tree));
                     let cargo = to_owned(&mut slot.positive.cargo(tree));
-                    let spawn_identifiers =
-                        to_owned(&mut slot.positive.spawn_identifiers(tree));
+                    let spawn_identifiers = to_owned(&mut slot.positive.spawn_identifiers(tree));
                     let ai_traits = to_owned(&mut slot.positive.ai_traits(tree));
                     let mission_tags = to_owned(&mut slot.positive.mission_tags(tree));
                     let directives = to_owned(&mut slot.positive.directives());
@@ -111,7 +110,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             }
         }
     }
-    eprintln!("[index] {} contracts, {} encounter slots", index.contracts.len(), rows.len());
+    eprintln!(
+        "[index] {} contracts, {} encounter slots",
+        index.contracts.len(),
+        rows.len()
+    );
     println!();
 
     section_1_available_to_salvage(&rows);
@@ -148,11 +151,18 @@ fn section_1_available_to_salvage(rows: &[Row<'_>]) {
     }
 
     // Pre-damage correlation
-    let with_damage = hits.iter().filter(|r| r.slot.initial_damage_settings.is_some()).count();
+    let with_damage = hits
+        .iter()
+        .filter(|r| r.slot.initial_damage_settings.is_some())
+        .count();
     println!(
         "  initial_damage_settings populated: {with_damage}/{} ({:.0}%)",
         hits.len(),
-        if hits.is_empty() { 0.0 } else { 100.0 * with_damage as f32 / hits.len() as f32 }
+        if hits.is_empty() {
+            0.0
+        } else {
+            100.0 * with_damage as f32 / hits.len() as f32
+        }
     );
 
     // Co-occurring tags (mission_tags + cargo + ai_traits)
@@ -205,7 +215,10 @@ fn print_fingerprint(label: &str, rows: &[Row<'_>], pred: impl Fn(&Row<'_>) -> b
     }
     println!("  [{label}] {} slots", hits.len());
 
-    let damaged = hits.iter().filter(|r| r.slot.initial_damage_settings.is_some()).count();
+    let damaged = hits
+        .iter()
+        .filter(|r| r.slot.initial_damage_settings.is_some())
+        .count();
     println!(
         "    pre-damaged: {damaged}/{} ({:.0}%)",
         hits.len(),
@@ -219,7 +232,8 @@ fn print_fingerprint(label: &str, rows: &[Row<'_>], pred: impl Fn(&Row<'_>) -> b
     println!("    wave_name:       {}", waves);
 
     let mtags = top_strings(
-        hits.iter().flat_map(|r| r.mission_tags.iter().map(|s| s.as_str())),
+        hits.iter()
+            .flat_map(|r| r.mission_tags.iter().map(|s| s.as_str())),
         6,
     );
     println!("    mission_tags:    {}", mtags);
@@ -231,19 +245,22 @@ fn print_fingerprint(label: &str, rows: &[Row<'_>], pred: impl Fn(&Row<'_>) -> b
     println!("    cargo:           {}", cargo);
 
     let ai = top_strings(
-        hits.iter().flat_map(|r| r.ai_traits.iter().map(|s| s.as_str())),
+        hits.iter()
+            .flat_map(|r| r.ai_traits.iter().map(|s| s.as_str())),
         6,
     );
     println!("    ai_traits:       {}", ai);
 
     let dirs = top_strings(
-        hits.iter().flat_map(|r| r.directives.iter().map(|s| s.as_str())),
+        hits.iter()
+            .flat_map(|r| r.directives.iter().map(|s| s.as_str())),
         4,
     );
     println!("    directives:      {}", dirs);
 
     let factions = top_strings(
-        hits.iter().flat_map(|r| r.factions.iter().map(|s| s.as_str())),
+        hits.iter()
+            .flat_map(|r| r.factions.iter().map(|s| s.as_str())),
         4,
     );
     println!("    factions:        {}", factions);
@@ -309,7 +326,10 @@ fn section_3_power_state_traits(rows: &[Row<'_>]) {
         .filter(|r| {
             r.slot.initial_damage_settings.is_some()
                 && r.ai_traits.iter().any(|t| {
-                    matches!(t.as_str(), "PoweredOff" | "EngineOff" | "DisablePowerInteractions")
+                    matches!(
+                        t.as_str(),
+                        "PoweredOff" | "EngineOff" | "DisablePowerInteractions"
+                    )
                 })
         })
         .count();
@@ -320,7 +340,11 @@ fn section_3_power_state_traits(rows: &[Row<'_>]) {
     println!(
         "  of {damaged_total} pre-damaged slots, {damaged_with_power} ({:.0}%) also carry one of \
          PoweredOff / EngineOff / DisablePowerInteractions",
-        if damaged_total == 0 { 0.0 } else { 100.0 * damaged_with_power as f32 / damaged_total as f32 }
+        if damaged_total == 0 {
+            0.0
+        } else {
+            100.0 * damaged_with_power as f32 / damaged_total as f32
+        }
     );
     println!();
 }
@@ -332,7 +356,11 @@ fn section_4_wave_names(rows: &[Row<'_>]) {
     let mut by_wave: HashMap<&str, BTreeSet<&str>> = HashMap::new();
     let mut wave_count: BTreeMap<&str, usize> = BTreeMap::new();
     for r in rows {
-        let name = if r.wave_name.is_empty() { "(unnamed)" } else { r.wave_name };
+        let name = if r.wave_name.is_empty() {
+            "(unnamed)"
+        } else {
+            r.wave_name
+        };
         *wave_count.entry(name).or_default() += 1;
         by_wave.entry(name).or_default().insert(r.var_name);
     }
@@ -369,7 +397,12 @@ fn section_4_wave_names(rows: &[Row<'_>]) {
             println!(
                 "    {wave:<24} {} slots across var_names: {}",
                 rs.len(),
-                var_names.iter().take(4).copied().collect::<Vec<_>>().join(", ")
+                var_names
+                    .iter()
+                    .take(4)
+                    .copied()
+                    .collect::<Vec<_>>()
+                    .join(", ")
             );
         }
     }
@@ -409,8 +442,11 @@ fn section_5_faction_var_crosstab(rows: &[Row<'_>]) {
             .map(|((_, f), c)| (*f, *c))
             .collect();
         row.sort_by(|a, b| b.1.cmp(&a.1));
-        let formatted: Vec<String> =
-            row.iter().take(3).map(|(f, c)| format!("{f}×{c}")).collect();
+        let formatted: Vec<String> = row
+            .iter()
+            .take(3)
+            .map(|(f, c)| format!("{f}×{c}"))
+            .collect();
         println!("    {total:>4}  {var:<48}  {}", formatted.join(", "));
     }
     println!();
@@ -476,4 +512,3 @@ fn top_strings<'a, I: Iterator<Item = &'a str>>(it: I, n: usize) -> String {
         .collect::<Vec<_>>()
         .join(", ")
 }
-

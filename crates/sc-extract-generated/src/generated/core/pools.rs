@@ -71,6 +71,7 @@ pub struct CorePools {
     pub building_blocks_color_base: Vec<Option<BuildingBlocks_ColorBase>>,
     pub building_blocks_container_mode_base: Vec<Option<BuildingBlocks_ContainerModeBase>>,
     pub base_cargo_fill_capacity_value: Vec<Option<BaseCargoFillCapacityValue>>,
+    pub base_cargo_manifest_quantity_type_def: Vec<Option<BaseCargoManifestQuantityTypeDef>>,
     pub scustomzier_color_def_base: Vec<Option<SCustomzierColorDefBase>>,
     pub scharacter_customizer_randomization_params:
         Vec<Option<SCharacterCustomizerRandomizationParams>>,
@@ -109,6 +110,9 @@ pub struct CorePools {
     pub crafting_optional_effect_base: Vec<Option<CraftingOptionalEffect_Base>>,
     pub crafting_gameplay_property_modifier_value_range_base:
         Vec<Option<CraftingGameplayPropertyModifierValueRange_Base>>,
+    pub crafting_display_transformation_base: Vec<Option<CraftingDisplayTransformation_Base>>,
+    pub crafting_property_name_override_condition_base:
+        Vec<Option<CraftingPropertyNameOverrideCondition_Base>>,
     pub crafting_gameplay_property_modifier_base:
         Vec<Option<CraftingGameplayPropertyModifier_Base>>,
     pub crafting_gameplay_property_modifiers_base:
@@ -135,6 +139,9 @@ pub struct CorePools {
     pub crafting_quality_location_override_base: Vec<Option<CraftingQualityLocationOverride_Base>>,
     pub crafting_quality_location_override_base_non_ref:
         Vec<Option<CraftingQualityLocationOverride_Base_NonRef>>,
+    pub crafting_quality_quantization_base: Vec<Option<CraftingQualityQuantization_Base>>,
+    pub crafting_quality_quantization_base_non_ref:
+        Vec<Option<CraftingQualityQuantization_Base_NonRef>>,
     pub custom_float: Vec<Option<CustomFloat>>,
     pub damage_base: Vec<Option<DamageBase>>,
     pub damage_resistance_base: Vec<Option<DamageResistanceBase>>,
@@ -308,7 +315,6 @@ pub struct CorePools {
     pub degradation_action: Vec<Option<DegradationAction>>,
     pub loadout_check_type: Vec<Option<LoadoutCheckType>>,
     pub scheck_type: Vec<Option<SCheckType>>,
-    pub gameplay_trigger_target_type_base: Vec<Option<GameplayTrigger_TargetType_Base>>,
     pub gameplay_trigger_filter_type_base: Vec<Option<GameplayTrigger_FilterType_Base>>,
     pub gameplay_trigger_executor_activate_interaction_base:
         Vec<Option<GameplayTrigger_Executor_ActivateInteraction_Base>>,

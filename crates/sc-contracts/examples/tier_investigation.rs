@@ -119,8 +119,19 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // ── Section 3: tag-tree probe ──────────────────────────────────────────
     println!("=== Section 3: tag-tree probe — names hinting at tier / risk / rank ===");
     let needles = [
-        "risk", "tier", "rank", "easy", "moderate", "medium", "hard", "high", "low", "extreme",
-        "verylow", "veryhigh", "difficulty",
+        "risk",
+        "tier",
+        "rank",
+        "easy",
+        "moderate",
+        "medium",
+        "hard",
+        "high",
+        "low",
+        "extreme",
+        "verylow",
+        "veryhigh",
+        "difficulty",
     ];
     let mut hits: Vec<(String, usize)> = Vec::new();
     for node in tag_tree.iter() {
@@ -142,7 +153,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     // ── Section 4: bounty-family deep dive ────────────────────────────────
     println!("=== Section 4: bounty-family deep dive ===");
-    let labels = ["VeryEasy", "Easy", "Moderate", "Medium", "High", "VeryHigh", "Extreme", "Low"];
+    let labels = [
+        "VeryEasy", "Easy", "Moderate", "Medium", "High", "VeryHigh", "Extreme", "Low",
+    ];
 
     // Find all Contract records whose debug_name contains a tier label,
     // group by the label-stripped prefix.
@@ -152,23 +165,21 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         for label in &labels {
             if let Some(pos) = dn.find(label) {
                 let prefix = &dn[..pos];
-                family_groups
-                    .entry(prefix.to_string())
-                    .or_default()
-                    .push(c);
+                family_groups.entry(prefix.to_string()).or_default().push(c);
                 break;
             }
         }
     }
 
-    let mut families: Vec<(&String, &Vec<&Contract>)> = family_groups
-        .iter()
-        .filter(|(_, v)| v.len() >= 3)
-        .collect();
+    let mut families: Vec<(&String, &Vec<&Contract>)> =
+        family_groups.iter().filter(|(_, v)| v.len() >= 3).collect();
     families.sort_by(|a, b| b.1.len().cmp(&a.1.len()));
 
     for (prefix, members) in families.iter().take(5) {
-        println!("\n--- family prefix: {prefix:?} ({} members) ---", members.len());
+        println!(
+            "\n--- family prefix: {prefix:?} ({} members) ---",
+            members.len()
+        );
         for c in members.iter() {
             let d = resolve_difficulty(&c.contract_results, pools);
             print!("  {:<60}", c.debug_name);
@@ -219,10 +230,18 @@ fn resolve_legacy_difficulty<'a>(
 
 fn tally(s: &mut DiffStats, d: &ContractDifficulty) {
     s.populated += 1;
-    *s.risk_of_loss.entry(risk_label(&d.risk_of_loss)).or_default() += 1;
-    *s.mech_skill.entry(mech_label(&d.mechanical_skill)).or_default() += 1;
-    *s.mental_load.entry(mental_label(&d.mental_load)).or_default() += 1;
-    *s.game_knowledge.entry(knowledge_label(&d.game_knowledge)).or_default() += 1;
+    *s.risk_of_loss
+        .entry(risk_label(&d.risk_of_loss))
+        .or_default() += 1;
+    *s.mech_skill
+        .entry(mech_label(&d.mechanical_skill))
+        .or_default() += 1;
+    *s.mental_load
+        .entry(mental_label(&d.mental_load))
+        .or_default() += 1;
+    *s.game_knowledge
+        .entry(knowledge_label(&d.game_knowledge))
+        .or_default() += 1;
     if let Some(p) = d.difficulty_profile {
         *s.distinct_profiles.entry(p).or_default() += 1;
     }
@@ -246,7 +265,10 @@ fn print_stats(label: &str, s: &DiffStats) {
     print_hist("  mech_skill     ", &s.mech_skill);
     print_hist("  mental_load    ", &s.mental_load);
     print_hist("  game_knowledge ", &s.game_knowledge);
-    println!("  distinct difficulty_profile refs: {}", s.distinct_profiles.len());
+    println!(
+        "  distinct difficulty_profile refs: {}",
+        s.distinct_profiles.len()
+    );
 }
 
 fn print_hist(label: &str, h: &BTreeMap<String, usize>) {
@@ -282,4 +304,3 @@ fn count_tag_carriers(tag: Guid, pools: &sc_extract::DataPools) -> usize {
     }
     count
 }
-

@@ -125,10 +125,7 @@ pub fn read_launcher_store_from(store_path: &Path, asar_path: &Path) -> Result<V
 }
 
 /// Like [`read_launcher_snapshot`] but with explicit paths.
-pub fn read_launcher_snapshot_from(
-    store_path: &Path,
-    asar_path: &Path,
-) -> Result<StoreSnapshot> {
+pub fn read_launcher_snapshot_from(store_path: &Path, asar_path: &Path) -> Result<StoreSnapshot> {
     let store_bytes = std::fs::read(store_path).map_err(|source| {
         if source.kind() == std::io::ErrorKind::NotFound {
             Error::LauncherStoreNotFound(store_path.to_path_buf())

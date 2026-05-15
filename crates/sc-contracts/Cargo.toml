@@ -18,7 +18,7 @@ rust-version.workspace = true
 #                          are not decoded at parse time and the
 #                          registries silently come back empty — the
 #                          "data just wasn't there" failure mode.
-sc-extract = { workspace = true, features = ["contracts", "servicebeacon", "entityclassdefinition"] }
+sc-extract = { workspace = true, features = ["contracts", "servicebeacon", "entities-scitem"] }
 svarog-common = { workspace = true }
 thiserror = { workspace = true }
 tracing = { workspace = true }

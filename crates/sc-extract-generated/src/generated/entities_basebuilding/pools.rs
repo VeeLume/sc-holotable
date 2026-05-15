@@ -23,11 +23,5 @@ pub struct EntitiesBasebuildingPools {
     pub crafter_paged_uilist_params: Vec<Option<CrafterPagedUIListParams>>,
     pub crafter_uiprovider_component_params: Vec<Option<CrafterUIProviderComponentParams>>,
     pub entity_component_heat_connection: Vec<Option<EntityComponentHeatConnection>>,
-    pub smisfire_band_params: Vec<Option<SMisfireBandParams>>,
-    pub smisfire_severity_factors: Vec<Option<SMisfireSeverityFactors>>,
-    pub smisfire_generation_params: Vec<Option<SMisfireGenerationParams>>,
-    pub smisfire_event_params: Vec<Option<SMisfireEventParams>>,
-    pub smisfire_events: Vec<Option<SMisfireEvents>>,
-    pub entity_component_power_connection: Vec<Option<EntityComponentPowerConnection>>,
     pub crafter_state_modifier: Vec<Option<CrafterStateModifier>>,
 }

@@ -16,8 +16,8 @@ use std::collections::BTreeMap;
 use std::time::Instant;
 
 use sc_contracts::{
-    BlueprintPoolRegistry, Mission, HandlerKind, LocalityRegistry, LocationRegistry,
-    RewardAmount, RewardCurrencyCatalog, ShipRegistry, expand_all,
+    BlueprintPoolRegistry, HandlerKind, LocalityRegistry, LocationRegistry, Mission, RewardAmount,
+    RewardCurrencyCatalog, ShipRegistry, expand_all,
 };
 use sc_extract::{AssetConfig, AssetData, AssetSource, Datacore, DatacoreConfig, Guid};
 
@@ -138,10 +138,7 @@ fn print_summary(expansions: &[Mission], locale: &sc_extract::LocaleMap) {
         *by_kind.entry(e.origin.kind).or_default() += 1;
     }
 
-    let with_title = expansions
-        .iter()
-        .filter(|e| e.title_key.is_some())
-        .count();
+    let with_title = expansions.iter().filter(|e| e.title_key.is_some()).count();
     let with_desc = expansions
         .iter()
         .filter(|e| e.description_key.is_some())
@@ -215,7 +212,11 @@ fn print_summary(expansions: &[Mission], locale: &sc_extract::LocaleMap) {
     }
 }
 
-fn print_expansion(e: &Mission, locale: &sc_extract::LocaleMap, cache: &sc_extract::LocalizedItemCache) {
+fn print_expansion(
+    e: &Mission,
+    locale: &sc_extract::LocaleMap,
+    cache: &sc_extract::LocalizedItemCache,
+) {
     let origin = if e.origin.subcontract_of.is_some() {
         "SubContract"
     } else {
@@ -224,7 +225,11 @@ fn print_expansion(e: &Mission, locale: &sc_extract::LocaleMap, cache: &sc_extra
         "Top-level"
     };
     let title = e.title(locale).unwrap_or("<none>");
-    let subst = if e.has_runtime_substitution(locale) { " *" } else { "" };
+    let subst = if e.has_runtime_substitution(locale) {
+        " *"
+    } else {
+        ""
+    };
     let mut flags = Vec::new();
     if e.shareable {
         flags.push("shareable");
@@ -263,23 +268,24 @@ fn print_expansion(e: &Mission, locale: &sc_extract::LocaleMap, cache: &sc_extra
     }
     println!("      flags:    {}", flags.join(", "));
     if !e.encounters.is_empty() {
-        let (wave_count, slot_count) = e.encounters.iter().fold((0usize, 0usize), |(w, s), enc| {
-            match enc {
-                sc_contracts::Encounter::Ships(x) => (
-                    w + x.phases.len(),
-                    s + x.phases.iter().map(|p| p.slots.len()).sum::<usize>(),
-                ),
-                sc_contracts::Encounter::Npcs(x) => (
-                    w + x.phases.len(),
-                    s + x.phases.iter().map(|p| p.slots.len()).sum::<usize>(),
-                ),
-                sc_contracts::Encounter::Entities(x) => (
-                    w + x.phases.len(),
-                    s + x.phases.iter().map(|p| p.slots.len()).sum::<usize>(),
-                ),
-                sc_contracts::Encounter::Unknown { .. } => (w, s),
-            }
-        });
+        let (wave_count, slot_count) =
+            e.encounters
+                .iter()
+                .fold((0usize, 0usize), |(w, s), enc| match enc {
+                    sc_contracts::Encounter::Ships(x) => (
+                        w + x.phases.len(),
+                        s + x.phases.iter().map(|p| p.slots.len()).sum::<usize>(),
+                    ),
+                    sc_contracts::Encounter::Npcs(x) => (
+                        w + x.phases.len(),
+                        s + x.phases.iter().map(|p| p.slots.len()).sum::<usize>(),
+                    ),
+                    sc_contracts::Encounter::Entities(x) => (
+                        w + x.phases.len(),
+                        s + x.phases.iter().map(|p| p.slots.len()).sum::<usize>(),
+                    ),
+                    sc_contracts::Encounter::Unknown { .. } => (w, s),
+                });
         // Sample ship names from any Ship-variant encounters.
         let sample_ships: Vec<String> = e
             .encounters
@@ -376,7 +382,8 @@ fn print_expansion(e: &Mission, locale: &sc_extract::LocaleMap, cache: &sc_extra
     }
     if !e.rewards.other.is_empty() {
         let kinds: Vec<String> = e
-            .rewards.other
+            .rewards
+            .other
             .iter()
             .map(|o| {
                 format!("{:?}", o)
@@ -429,7 +436,11 @@ fn print_expansion(e: &Mission, locale: &sc_extract::LocaleMap, cache: &sc_extra
 
 /// Dump every prereq as a structured one-liner so consumers can see which
 /// tag GUIDs and which min/max rep standings drive apparent differences.
-fn print_detail(e: &Mission, locale: &sc_extract::LocaleMap, cache: &sc_extract::LocalizedItemCache) {
+fn print_detail(
+    e: &Mission,
+    locale: &sc_extract::LocaleMap,
+    cache: &sc_extract::LocalizedItemCache,
+) {
     println!("      id:       {}", e.id);
     if let Some(parent) = e.origin.subcontract_of {
         println!("      parent:   {parent}");
@@ -758,8 +769,12 @@ fn print_delta(matching: &[&Mission], locale: &sc_extract::LocaleMap) {
             == matching.len()
     );
 
-    let titles_same = matching.iter().all(|e| e.title(locale) == first.title(locale));
-    let descs_same = matching.iter().all(|e| e.description(locale) == first.description(locale));
+    let titles_same = matching
+        .iter()
+        .all(|e| e.title(locale) == first.title(locale));
+    let descs_same = matching
+        .iter()
+        .all(|e| e.description(locale) == first.description(locale));
     let subst_same = matching
         .iter()
         .all(|e| e.has_runtime_substitution(locale) == first.has_runtime_substitution(locale));
@@ -825,7 +840,8 @@ fn print_delta(matching: &[&Mission], locale: &sc_extract::LocaleMap) {
     println!("  Reward fingerprints:");
     for (i, e) in matching.iter().enumerate() {
         let rep_fp: Vec<String> = e
-            .rewards.reputation
+            .rewards
+            .reputation
             .iter()
             .map(|r| {
                 format!(
@@ -847,7 +863,8 @@ fn print_delta(matching: &[&Mission], locale: &sc_extract::LocaleMap) {
             .map(|s| format!("{}×{}", s.record_name, s.amount))
             .collect();
         let bp_fp = e
-            .rewards.blueprint
+            .rewards
+            .blueprint
             .as_ref()
             .map(|b| b.pool_name.as_str())
             .unwrap_or("");

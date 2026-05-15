@@ -154,8 +154,8 @@ impl<'a> Extract<'a> for DefaultAction_ActionDef {
 pub struct DefaultActionsParams {
     /// `states` (StrongPointer (array))
     pub states: Vec<DefaultActionsEntityStatePtr>,
-    /// `defaultActions` (StrongPointer)
-    pub default_actions: Option<DefaultActionDefPtr>,
+    /// `defaultActions` (StrongPointer (array))
+    pub default_actions: Vec<DefaultActionDefPtr>,
 }
 
 impl Pooled for DefaultActionsParams {
@@ -187,12 +187,18 @@ impl<'a> Extract<'a> for DefaultActionsParams {
                     .collect()
                 })
                 .unwrap_or_default(),
-            default_actions: match inst.get("defaultActions") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(DefaultActionDefPtr::from_ref(b, r))
-                }
-                _ => None,
-            },
+            default_actions: inst
+                .get_array("defaultActions")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => {
+                            Some(DefaultActionDefPtr::from_ref(b, r))
+                        }
+                        _ => None,
+                    })
+                    .collect()
+                })
+                .unwrap_or_default(),
         }
     }
 }

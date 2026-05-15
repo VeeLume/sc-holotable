@@ -46,9 +46,18 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             println!("  origin.subcontract_of: {parent}");
         }
         println!("  title:             {:?}", c.title(&asset_data.locale));
-        println!("  title_key:         {:?}", c.title_key.as_ref().map(|k| k.as_str()));
-        println!("  description:       {:?}", c.description(&asset_data.locale));
-        println!("  description_key:   {:?}", c.description_key.as_ref().map(|k| k.as_str()));
+        println!(
+            "  title_key:         {:?}",
+            c.title_key.as_ref().map(|k| k.as_str())
+        );
+        println!(
+            "  description:       {:?}",
+            c.description(&asset_data.locale)
+        );
+        println!(
+            "  description_key:   {:?}",
+            c.description_key.as_ref().map(|k| k.as_str())
+        );
         println!("  shareable:         {}", c.shareable);
         println!("  illegal_flag:      {}", c.illegal_flag);
         println!("  availability:      {:?}", c.availability);
@@ -61,7 +70,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             println!("  mission_span ({}):", c.mission_span.len());
             for g in &c.mission_span {
                 if let Some(view) = index.localities.get(g) {
-                    println!("    - {} :: {}", view.name, view.region_label(&asset_data.locale));
+                    println!(
+                        "    - {} :: {}",
+                        view.name,
+                        view.region_label(&asset_data.locale)
+                    );
                 } else {
                     println!("    - <unresolved {g}>");
                 }
@@ -129,7 +142,11 @@ fn dump_encounter(
     match enc {
         Encounter::Ships(s) => {
             for phase in &s.phases {
-                println!("      phase {:?}, {} slot(s)", phase.name, phase.slots.len());
+                println!(
+                    "      phase {:?}, {} slot(s)",
+                    phase.name,
+                    phase.slots.len()
+                );
                 for (i, slot) in phase.slots.iter().enumerate() {
                     println!(
                         "        slot {i}: concurrent={} weight={:.2} candidates={}",
@@ -160,7 +177,11 @@ fn dump_encounter(
         }
         Encounter::Npcs(s) => {
             for phase in &s.phases {
-                println!("      phase {:?}, {} slot(s)", phase.name, phase.slots.len());
+                println!(
+                    "      phase {:?}, {} slot(s)",
+                    phase.name,
+                    phase.slots.len()
+                );
                 for (i, slot) in phase.slots.iter().enumerate() {
                     println!(
                         "        slot {i}: priority={} weight={:.2} allied_marker={} critical={} faction_override={:?}",
@@ -176,7 +197,11 @@ fn dump_encounter(
         }
         Encounter::Entities(s) => {
             for phase in &s.phases {
-                println!("      phase {:?}, {} slot(s)", phase.name, phase.slots.len());
+                println!(
+                    "      phase {:?}, {} slot(s)",
+                    phase.name,
+                    phase.slots.len()
+                );
                 for (i, slot) in phase.slots.iter().enumerate() {
                     println!(
                         "        slot {i}: amount={} weight={:.2}",
@@ -189,7 +214,10 @@ fn dump_encounter(
                 }
             }
         }
-        Encounter::Unknown { variable_name, raw_guid } => {
+        Encounter::Unknown {
+            variable_name,
+            raw_guid,
+        } => {
             println!("      raw_guid: {raw_guid} (variable_name={variable_name})");
         }
     }
@@ -230,12 +258,7 @@ fn dump_raw_properties(datacore: &Datacore, contract_id: Guid, tree: &TagTree) {
         for (i, v) in arr.enumerate() {
             if let raw::Value::StrongPointer(Some(r)) | raw::Value::WeakPointer(Some(r)) = &v {
                 let sub = db.instance(r.struct_index, r.instance_index);
-                walk_property_overrides(
-                    &sub,
-                    &format!("  sub_contracts[{i}]"),
-                    db,
-                    tree,
-                );
+                walk_property_overrides(&sub, &format!("  sub_contracts[{i}]"), db, tree);
             }
         }
     }
@@ -282,10 +305,7 @@ fn walk_property_overrides(
                         if let raw::Value::Class { struct_index, data } = v {
                             let g = raw::Instance::from_inline_data(db, struct_index, data);
                             let name = g.get_str("Name").unwrap_or("?");
-                            let opt_count = g
-                                .get_array("options")
-                                .map(|i| i.count())
-                                .unwrap_or(0);
+                            let opt_count = g.get_array("options").map(|i| i.count()).unwrap_or(0);
                             println!("    npc-group '{name}' options={opt_count}");
                         }
                     }

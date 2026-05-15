@@ -14,6 +14,10 @@ use super::super::*;
 /// Pool storage for the `gamemode` feature.
 #[derive(Default)]
 pub struct GamemodePools {
+    pub sarchetype_asset_entity_def: Vec<Option<SArchetypeAssetEntityDef>>,
+    pub sarchetype_asset_chfdef: Vec<Option<SArchetypeAssetCHFDef>>,
+    pub sarchetype_asset_loadout_def: Vec<Option<SArchetypeAssetLoadoutDef>>,
+    pub sarchetype_asset_tag_def: Vec<Option<SArchetypeAssetTagDef>>,
     pub seaplayer_loadout_snapshot_entry: Vec<Option<SEAPlayerLoadoutSnapshotEntry>>,
     pub seaplayer_loadout_snapshots: Vec<Option<SEAPlayerLoadoutSnapshots>>,
     pub entity_default_loadout_params: Vec<Option<EntityDefaultLoadoutParams>>,

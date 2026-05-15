@@ -1143,8 +1143,8 @@ impl<'a> Extract<'a> for ContractPrerequisite_CompletedContractTags {
 /// DCB type: `ContractResult_Reward`
 /// Inherits from: `ContractResultBase`
 pub struct ContractResult_Reward {
-    /// `missionResults` (Boolean)
-    pub mission_results: bool,
+    /// `missionResults` (Boolean (array))
+    pub mission_results: Vec<bool>,
     /// `contractReward` (Class)
     pub contract_reward: Option<Handle<MissionReward>>,
 }
@@ -1162,7 +1162,10 @@ impl<'a> Extract<'a> for ContractResult_Reward {
     const TYPE_NAME: &'static str = "ContractResult_Reward";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            mission_results: inst.get_bool("missionResults").unwrap_or_default(),
+            mission_results: inst
+                .get_array("missionResults")
+                .map(|arr| arr.filter_map(|v| v.as_bool()).collect())
+                .unwrap_or_default(),
             contract_reward: match inst.get("contractReward") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<MissionReward>(
                     Instance::from_inline_data(b.db, struct_index, data),
@@ -1177,8 +1180,8 @@ impl<'a> Extract<'a> for ContractResult_Reward {
 /// DCB type: `ContractResult_LegacyReputation`
 /// Inherits from: `ContractResultBase`
 pub struct ContractResult_LegacyReputation {
-    /// `missionResults` (Boolean)
-    pub mission_results: bool,
+    /// `missionResults` (Boolean (array))
+    pub mission_results: Vec<bool>,
     /// `contractResultReputationAmounts` (Class)
     pub contract_result_reputation_amounts: Option<Handle<SReputationAmountParams>>,
 }
@@ -1196,7 +1199,10 @@ impl<'a> Extract<'a> for ContractResult_LegacyReputation {
     const TYPE_NAME: &'static str = "ContractResult_LegacyReputation";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            mission_results: inst.get_bool("missionResults").unwrap_or_default(),
+            mission_results: inst
+                .get_array("missionResults")
+                .map(|arr| arr.filter_map(|v| v.as_bool()).collect())
+                .unwrap_or_default(),
             contract_result_reputation_amounts: match inst.get("contractResultReputationAmounts") {
                 Some(Value::Class { struct_index, data }) => {
                     Some(b.alloc_nested::<SReputationAmountParams>(
@@ -1213,8 +1219,8 @@ impl<'a> Extract<'a> for ContractResult_LegacyReputation {
 /// DCB type: `ContractResult_CalculatedReputation`
 /// Inherits from: `ContractResultBase`
 pub struct ContractResult_CalculatedReputation {
-    /// `missionResults` (Boolean)
-    pub mission_results: bool,
+    /// `missionResults` (Boolean (array))
+    pub mission_results: Vec<bool>,
     /// `factionReputation` (Reference)
     pub faction_reputation: Option<CigGuid>,
     /// `reputationScope` (Reference)
@@ -1234,7 +1240,10 @@ impl<'a> Extract<'a> for ContractResult_CalculatedReputation {
     const TYPE_NAME: &'static str = "ContractResult_CalculatedReputation";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            mission_results: inst.get_bool("missionResults").unwrap_or_default(),
+            mission_results: inst
+                .get_array("missionResults")
+                .map(|arr| arr.filter_map(|v| v.as_bool()).collect())
+                .unwrap_or_default(),
             faction_reputation: inst
                 .get("factionReputation")
                 .and_then(|v| v.as_record_ref())
@@ -1250,8 +1259,8 @@ impl<'a> Extract<'a> for ContractResult_CalculatedReputation {
 /// DCB type: `ContractResult_JournalEntry`
 /// Inherits from: `ContractResultBase`
 pub struct ContractResult_JournalEntry {
-    /// `missionResults` (Boolean)
-    pub mission_results: bool,
+    /// `missionResults` (Boolean (array))
+    pub mission_results: Vec<bool>,
     /// `journalEntriesToAdd` (Reference (array))
     pub journal_entries_to_add: Vec<CigGuid>,
     /// `journalEntriesToRemove` (Reference (array))
@@ -1271,7 +1280,10 @@ impl<'a> Extract<'a> for ContractResult_JournalEntry {
     const TYPE_NAME: &'static str = "ContractResult_JournalEntry";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            mission_results: inst.get_bool("missionResults").unwrap_or_default(),
+            mission_results: inst
+                .get_array("missionResults")
+                .map(|arr| arr.filter_map(|v| v.as_bool()).collect())
+                .unwrap_or_default(),
             journal_entries_to_add: inst
                 .get_array("journalEntriesToAdd")
                 .map(|arr| {
@@ -1305,8 +1317,8 @@ impl<'a> Extract<'a> for ContractResult_JournalEntry {
 /// DCB type: `ContractResult_RefundBuyIn`
 /// Inherits from: `ContractResultBase`
 pub struct ContractResult_RefundBuyIn {
-    /// `missionResults` (Boolean)
-    pub mission_results: bool,
+    /// `missionResults` (Boolean (array))
+    pub mission_results: Vec<bool>,
     /// `refundMultiplier` (Single)
     pub refund_multiplier: f32,
 }
@@ -1324,7 +1336,10 @@ impl<'a> Extract<'a> for ContractResult_RefundBuyIn {
     const TYPE_NAME: &'static str = "ContractResult_RefundBuyIn";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            mission_results: inst.get_bool("missionResults").unwrap_or_default(),
+            mission_results: inst
+                .get_array("missionResults")
+                .map(|arr| arr.filter_map(|v| v.as_bool()).collect())
+                .unwrap_or_default(),
             refund_multiplier: inst.get_f32("refundMultiplier").unwrap_or_default(),
         }
     }
@@ -1363,8 +1378,8 @@ impl<'a> Extract<'a> for ContractResult_CompletionTag {
 /// DCB type: `ContractResult_CompletionTags`
 /// Inherits from: `ContractResultBase`
 pub struct ContractResult_CompletionTags {
-    /// `missionResults` (Boolean)
-    pub mission_results: bool,
+    /// `missionResults` (Boolean (array))
+    pub mission_results: Vec<bool>,
     /// `completionTags` (Class (array))
     pub completion_tags: Vec<Handle<ContractResult_CompletionTag>>,
 }
@@ -1382,7 +1397,10 @@ impl<'a> Extract<'a> for ContractResult_CompletionTags {
     const TYPE_NAME: &'static str = "ContractResult_CompletionTags";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            mission_results: inst.get_bool("missionResults").unwrap_or_default(),
+            mission_results: inst
+                .get_array("missionResults")
+                .map(|arr| arr.filter_map(|v| v.as_bool()).collect())
+                .unwrap_or_default(),
             completion_tags: inst
                 .get_array("completionTags")
                 .map(|arr| {
@@ -1439,8 +1457,8 @@ impl<'a> Extract<'a> for MinCompletionTags {
 /// DCB type: `ContractResult_BadgeAward`
 /// Inherits from: `ContractResultBase`
 pub struct ContractResult_BadgeAward {
-    /// `missionResults` (Boolean)
-    pub mission_results: bool,
+    /// `missionResults` (Boolean (array))
+    pub mission_results: Vec<bool>,
     /// `requiredCompletionTags` (Class (array))
     pub required_completion_tags: Vec<Handle<MinCompletionTags>>,
     /// `badgeToAward` (EnumChoice)
@@ -1462,7 +1480,10 @@ impl<'a> Extract<'a> for ContractResult_BadgeAward {
     const TYPE_NAME: &'static str = "ContractResult_BadgeAward";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            mission_results: inst.get_bool("missionResults").unwrap_or_default(),
+            mission_results: inst
+                .get_array("missionResults")
+                .map(|arr| arr.filter_map(|v| v.as_bool()).collect())
+                .unwrap_or_default(),
             required_completion_tags: inst
                 .get_array("requiredCompletionTags")
                 .map(|arr| {
@@ -1494,8 +1515,8 @@ impl<'a> Extract<'a> for ContractResult_BadgeAward {
 /// DCB type: `ContractResult_Item`
 /// Inherits from: `ContractResultBase`
 pub struct ContractResult_Item {
-    /// `missionResults` (Boolean)
-    pub mission_results: bool,
+    /// `missionResults` (Boolean (array))
+    pub mission_results: Vec<bool>,
     /// `entityClass` (Reference)
     pub entity_class: Option<CigGuid>,
     /// `amount` (Int32)
@@ -1523,7 +1544,10 @@ impl<'a> Extract<'a> for ContractResult_Item {
     const TYPE_NAME: &'static str = "ContractResult_Item";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            mission_results: inst.get_bool("missionResults").unwrap_or_default(),
+            mission_results: inst
+                .get_array("missionResults")
+                .map(|arr| arr.filter_map(|v| v.as_bool()).collect())
+                .unwrap_or_default(),
             entity_class: inst
                 .get("entityClass")
                 .and_then(|v| v.as_record_ref())
@@ -1560,8 +1584,8 @@ impl<'a> Extract<'a> for ContractResult_Item {
 /// DCB type: `ContractResult_CompletionBounty`
 /// Inherits from: `ContractResult_CalculatedReward`
 pub struct ContractResult_CompletionBounty {
-    /// `missionResults` (Boolean)
-    pub mission_results: bool,
+    /// `missionResults` (Boolean (array))
+    pub mission_results: Vec<bool>,
 }
 
 impl Pooled for ContractResult_CompletionBounty {
@@ -1577,7 +1601,10 @@ impl<'a> Extract<'a> for ContractResult_CompletionBounty {
     const TYPE_NAME: &'static str = "ContractResult_CompletionBounty";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            mission_results: inst.get_bool("missionResults").unwrap_or_default(),
+            mission_results: inst
+                .get_array("missionResults")
+                .map(|arr| arr.filter_map(|v| v.as_bool()).collect())
+                .unwrap_or_default(),
         }
     }
 }
@@ -1644,8 +1671,8 @@ impl<'a> Extract<'a> for ItemAwardWeightingsParams {
 /// DCB type: `ContractResult_ItemsWeighting`
 /// Inherits from: `ContractResultBase`
 pub struct ContractResult_ItemsWeighting {
-    /// `missionResults` (Boolean)
-    pub mission_results: bool,
+    /// `missionResults` (Boolean (array))
+    pub mission_results: Vec<bool>,
     /// `targetLocation` (WeakPointer)
     pub target_location: Option<Handle<MissionProperty>>,
     /// `awardOnlyToMissionOwner` (Boolean)
@@ -1669,7 +1696,10 @@ impl<'a> Extract<'a> for ContractResult_ItemsWeighting {
     const TYPE_NAME: &'static str = "ContractResult_ItemsWeighting";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            mission_results: inst.get_bool("missionResults").unwrap_or_default(),
+            mission_results: inst
+                .get_array("missionResults")
+                .map(|arr| arr.filter_map(|v| v.as_bool()).collect())
+                .unwrap_or_default(),
             target_location: match inst.get("targetLocation") {
                 Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
                     Some(b.alloc_nested::<MissionProperty>(
@@ -1710,8 +1740,8 @@ impl<'a> Extract<'a> for ContractResult_ItemsWeighting {
 /// DCB type: `ContractResult_ScenarioProgress`
 /// Inherits from: `ContractResultBase`
 pub struct ContractResult_ScenarioProgress {
-    /// `missionResults` (Boolean)
-    pub mission_results: bool,
+    /// `missionResults` (Boolean (array))
+    pub mission_results: Vec<bool>,
     /// `PointsToAward` (Int32)
     pub points_to_award: i32,
     /// `scenarioProgressPlugin` (Class)
@@ -1731,7 +1761,10 @@ impl<'a> Extract<'a> for ContractResult_ScenarioProgress {
     const TYPE_NAME: &'static str = "ContractResult_ScenarioProgress";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            mission_results: inst.get_bool("missionResults").unwrap_or_default(),
+            mission_results: inst
+                .get_array("missionResults")
+                .map(|arr| arr.filter_map(|v| v.as_bool()).collect())
+                .unwrap_or_default(),
             points_to_award: inst.get_i32("PointsToAward").unwrap_or_default(),
             scenario_progress_plugin: match inst.get("scenarioProgressPlugin") {
                 Some(Value::Class { struct_index, data }) => {
@@ -1847,8 +1880,8 @@ impl<'a> Extract<'a> for RewardNotification {
 /// DCB type: `BlueprintRewards`
 /// Inherits from: `ContractResultBase`
 pub struct BlueprintRewards {
-    /// `missionResults` (Boolean)
-    pub mission_results: bool,
+    /// `missionResults` (Boolean (array))
+    pub mission_results: Vec<bool>,
     /// `chance` (Single)
     pub chance: f32,
     /// `blueprintPool` (Reference)
@@ -1868,7 +1901,10 @@ impl<'a> Extract<'a> for BlueprintRewards {
     const TYPE_NAME: &'static str = "BlueprintRewards";
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            mission_results: inst.get_bool("missionResults").unwrap_or_default(),
+            mission_results: inst
+                .get_array("missionResults")
+                .map(|arr| arr.filter_map(|v| v.as_bool()).collect())
+                .unwrap_or_default(),
             chance: inst.get_f32("chance").unwrap_or_default(),
             blueprint_pool: inst
                 .get("blueprintPool")
@@ -2920,89 +2956,6 @@ impl<'a> Extract<'a> for MissionPropertyValue_HaulingOrders {
     }
 }
 
-/// DCB type: `MissionModuleHierarchySubMission`
-pub struct MissionModuleHierarchySubMission {
-    /// `subMissionModule` (String)
-    pub sub_mission_module: String,
-    /// `subModuleHierarchy` (Reference)
-    pub sub_module_hierarchy: Option<CigGuid>,
-}
-
-impl Pooled for MissionModuleHierarchySubMission {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.contracts.mission_module_hierarchy_sub_mission
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.contracts.mission_module_hierarchy_sub_mission
-    }
-}
-
-impl<'a> Extract<'a> for MissionModuleHierarchySubMission {
-    const TYPE_NAME: &'static str = "MissionModuleHierarchySubMission";
-    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
-            sub_mission_module: inst
-                .get_str("subMissionModule")
-                .map(String::from)
-                .unwrap_or_default(),
-            sub_module_hierarchy: inst
-                .get("subModuleHierarchy")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
-        }
-    }
-}
-
-/// DCB type: `MissionModuleHierarchy`
-pub struct MissionModuleHierarchy {
-    /// `missionModule` (String)
-    pub mission_module: String,
-    /// `subMissionModules` (Class (array))
-    pub sub_mission_modules: Vec<Handle<MissionModuleHierarchySubMission>>,
-}
-
-impl Pooled for MissionModuleHierarchy {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.contracts.mission_module_hierarchy
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.contracts.mission_module_hierarchy
-    }
-}
-
-impl<'a> Extract<'a> for MissionModuleHierarchy {
-    const TYPE_NAME: &'static str = "MissionModuleHierarchy";
-    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
-        Self {
-            mission_module: inst
-                .get_str("missionModule")
-                .map(String::from)
-                .unwrap_or_default(),
-            sub_mission_modules: inst
-                .get_array("subMissionModules")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<MissionModuleHierarchySubMission>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
-                        }
-                        Value::ClassRef(r) => {
-                            Some(b.alloc_nested::<MissionModuleHierarchySubMission>(
-                                b.db.instance(r.struct_index, r.instance_index),
-                                true,
-                            ))
-                        }
-                        _ => None,
-                    })
-                    .collect()
-                })
-                .unwrap_or_default(),
-        }
-    }
-}
-
 /// DCB type: `ObjectiveHandler_Local`
 /// Inherits from: `ObjectiveHandler_WithModule`
 pub struct ObjectiveHandler_Local {
@@ -3325,6 +3278,54 @@ impl<'a> Extract<'a> for SPVPBountyContractGenerators {
     }
 }
 
+/// DCB type: `OneTimeComms`
+pub struct OneTimeComms {
+    /// `locationAvailable` (Reference)
+    pub location_available: Option<CigGuid>,
+    /// `tag` (Reference)
+    pub tag: Option<CigGuid>,
+    /// `comms` (Reference (array))
+    pub comms: Vec<CigGuid>,
+}
+
+impl Pooled for OneTimeComms {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.contracts.one_time_comms
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.contracts.one_time_comms
+    }
+}
+
+impl<'a> Extract<'a> for OneTimeComms {
+    const TYPE_NAME: &'static str = "OneTimeComms";
+    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {
+            location_available: inst
+                .get("locationAvailable")
+                .and_then(|v| v.as_record_ref())
+                .map(|r| r.guid),
+            tag: inst
+                .get("tag")
+                .and_then(|v| v.as_record_ref())
+                .map(|r| r.guid),
+            comms: inst
+                .get_array("comms")
+                .map(|arr| {
+                    arr.filter_map(|v| {
+                        if let Value::Reference(Some(r)) = v {
+                            Some(r.guid)
+                        } else {
+                            None
+                        }
+                    })
+                    .collect()
+                })
+                .unwrap_or_default(),
+        }
+    }
+}
+
 /// DCB type: `GlobalMissionSettings`
 pub struct GlobalMissionSettings {
     /// `locationValidation` (StrongPointer (array))
@@ -3333,6 +3334,8 @@ pub struct GlobalMissionSettings {
     pub default_jurisdiction_for_player_crime_stats: Option<CigGuid>,
     /// `PVPBountyContractGenerators` (Class (array))
     pub pvpbounty_contract_generators: Vec<Handle<SPVPBountyContractGenerators>>,
+    /// `oneTimeComms` (Class (array))
+    pub one_time_comms: Vec<Handle<OneTimeComms>>,
 }
 
 impl Pooled for GlobalMissionSettings {
@@ -3375,6 +3378,25 @@ impl<'a> Extract<'a> for GlobalMissionSettings {
                             ))
                         }
                         Value::ClassRef(r) => Some(b.alloc_nested::<SPVPBountyContractGenerators>(
+                            b.db.instance(r.struct_index, r.instance_index),
+                            true,
+                        )),
+                        _ => None,
+                    })
+                    .collect()
+                })
+                .unwrap_or_default(),
+            one_time_comms: inst
+                .get_array("oneTimeComms")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<OneTimeComms>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => Some(b.alloc_nested::<OneTimeComms>(
                             b.db.instance(r.struct_index, r.instance_index),
                             true,
                         )),

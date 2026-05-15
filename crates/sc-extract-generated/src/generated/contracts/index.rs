@@ -17,7 +17,6 @@ use svarog_common::CigGuid;
 /// Record index for the `contracts` feature.
 #[derive(Default)]
 pub struct ContractsIndex {
-    pub mission_module_hierarchy: HashMap<CigGuid, Handle<MissionModuleHierarchy>>,
     pub global_mission_settings: HashMap<CigGuid, Handle<GlobalMissionSettings>>,
 }
 
@@ -25,7 +24,6 @@ impl ContractsIndex {
     #[allow(unused_mut)]
     pub fn len(&self) -> usize {
         let mut total = 0usize;
-        total += self.mission_module_hierarchy.len();
         total += self.global_mission_settings.len();
         total
     }

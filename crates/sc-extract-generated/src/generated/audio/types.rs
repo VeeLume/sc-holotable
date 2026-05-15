@@ -427,8 +427,8 @@ impl<'a> Extract<'a> for AudioGameContext {
 
 /// DCB type: `AudioGameContextSetup`
 pub struct AudioGameContextSetup {
-    /// `gameContexts` (Class)
-    pub game_contexts: Option<Handle<AudioGameContext>>,
+    /// `gameContexts` (Class (array))
+    pub game_contexts: Vec<Handle<AudioGameContext>>,
 }
 
 impl Pooled for AudioGameContextSetup {
@@ -444,15 +444,25 @@ impl<'a> Extract<'a> for AudioGameContextSetup {
     const TYPE_NAME: &'static str = "AudioGameContextSetup";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            game_contexts: match inst.get("gameContexts") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<AudioGameContext>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
-                _ => None,
-            },
+            game_contexts: inst
+                .get_array("gameContexts")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<AudioGameContext>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => Some(b.alloc_nested::<AudioGameContext>(
+                            b.db.instance(r.struct_index, r.instance_index),
+                            true,
+                        )),
+                        _ => None,
+                    })
+                    .collect()
+                })
+                .unwrap_or_default(),
         }
     }
 }

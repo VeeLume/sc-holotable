@@ -31,8 +31,8 @@ pub struct SActorForceReactionProceduralXianLeanPose {
     pub first_person_lean_pitch_scale: f32,
     /// `firstPersonLeanRollScale` (Single)
     pub first_person_lean_roll_scale: f32,
-    /// `spineBones` (Class)
-    pub spine_bones: Option<Handle<SActorForceReactionLeanBoneDef>>,
+    /// `spineBones` (Class (array))
+    pub spine_bones: Vec<Handle<SActorForceReactionLeanBoneDef>>,
 }
 
 impl Pooled for SActorForceReactionProceduralXianLeanPose {
@@ -61,15 +61,27 @@ impl<'a> Extract<'a> for SActorForceReactionProceduralXianLeanPose {
             first_person_lean_roll_scale: inst
                 .get_f32("firstPersonLeanRollScale")
                 .unwrap_or_default(),
-            spine_bones: match inst.get("spineBones") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<SActorForceReactionLeanBoneDef>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
-                _ => None,
-            },
+            spine_bones: inst
+                .get_array("spineBones")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<SActorForceReactionLeanBoneDef>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => {
+                            Some(b.alloc_nested::<SActorForceReactionLeanBoneDef>(
+                                b.db.instance(r.struct_index, r.instance_index),
+                                true,
+                            ))
+                        }
+                        _ => None,
+                    })
+                    .collect()
+                })
+                .unwrap_or_default(),
         }
     }
 }
@@ -77,8 +89,8 @@ impl<'a> Extract<'a> for SActorForceReactionProceduralXianLeanPose {
 /// DCB type: `SActorForceReactionProceduralXianLeanPoseList`
 /// Inherits from: `SActorForceReactionProceduralLeanPoseList`
 pub struct SActorForceReactionProceduralXianLeanPoseList {
-    /// `poseTypes` (Class)
-    pub pose_types: Option<Handle<SActorForceReactionProceduralXianLeanPose>>,
+    /// `poseTypes` (Class (array))
+    pub pose_types: Vec<Handle<SActorForceReactionProceduralXianLeanPose>>,
 }
 
 impl Pooled for SActorForceReactionProceduralXianLeanPoseList {
@@ -98,15 +110,27 @@ impl<'a> Extract<'a> for SActorForceReactionProceduralXianLeanPoseList {
     const TYPE_NAME: &'static str = "SActorForceReactionProceduralXianLeanPoseList";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            pose_types: match inst.get("poseTypes") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<SActorForceReactionProceduralXianLeanPose>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
-                _ => None,
-            },
+            pose_types: inst
+                .get_array("poseTypes")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<SActorForceReactionProceduralXianLeanPose>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => {
+                            Some(b.alloc_nested::<SActorForceReactionProceduralXianLeanPose>(
+                                b.db.instance(r.struct_index, r.instance_index),
+                                true,
+                            ))
+                        }
+                        _ => None,
+                    })
+                    .collect()
+                })
+                .unwrap_or_default(),
         }
     }
 }

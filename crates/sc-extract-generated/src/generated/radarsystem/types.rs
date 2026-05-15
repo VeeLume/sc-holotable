@@ -111,8 +111,8 @@ pub struct SignatureSystemGlobalParams {
     pub actor_multiplier_params: Option<Handle<ActorSignatureMultiplierGlobalParams>>,
     /// `crossSectionParams` (Class)
     pub cross_section_params: Option<Handle<CrossSectionGlobalParams>>,
-    /// `signatureTypeParams` (Class)
-    pub signature_type_params: Option<Handle<SignatureTypeGlobalParams>>,
+    /// `signatureTypeParams` (Class (array))
+    pub signature_type_params: Vec<Handle<SignatureTypeGlobalParams>>,
     /// `masterModeDeltaSignatureType` (Class)
     pub master_mode_delta_signature_type: Option<Handle<MasterModeSwitchDeltaSignatureTypes>>,
     /// `scanWaveTriggeredDeltaSignatureType` (Reference)
@@ -164,15 +164,25 @@ impl<'a> Extract<'a> for SignatureSystemGlobalParams {
                 }
                 _ => None,
             },
-            signature_type_params: match inst.get("signatureTypeParams") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<SignatureTypeGlobalParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
-                _ => None,
-            },
+            signature_type_params: inst
+                .get_array("signatureTypeParams")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<SignatureTypeGlobalParams>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => Some(b.alloc_nested::<SignatureTypeGlobalParams>(
+                            b.db.instance(r.struct_index, r.instance_index),
+                            true,
+                        )),
+                        _ => None,
+                    })
+                    .collect()
+                })
+                .unwrap_or_default(),
             master_mode_delta_signature_type: match inst.get("masterModeDeltaSignatureType") {
                 Some(Value::Class { struct_index, data }) => {
                     Some(b.alloc_nested::<MasterModeSwitchDeltaSignatureTypes>(
@@ -192,8 +202,8 @@ impl<'a> Extract<'a> for SignatureSystemGlobalParams {
 
 /// DCB type: `ContactStateGlobalParams`
 pub struct ContactStateGlobalParams {
-    /// `contactStateIcons` (String)
-    pub contact_state_icons: String,
+    /// `contactStateIcons` (String (array))
+    pub contact_state_icons: Vec<String>,
 }
 
 impl Pooled for ContactStateGlobalParams {
@@ -210,8 +220,8 @@ impl<'a> Extract<'a> for ContactStateGlobalParams {
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
             contact_state_icons: inst
-                .get_str("contactStateIcons")
-                .map(String::from)
+                .get_array("contactStateIcons")
+                .map(|arr| arr.filter_map(|v| v.as_str().map(String::from)).collect())
                 .unwrap_or_default(),
         }
     }

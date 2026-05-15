@@ -110,8 +110,8 @@ impl<'a> Extract<'a> for SQuantumCameraStateEffectsDef {
 
 /// DCB type: `SQuantumCameraEffectsDef`
 pub struct SQuantumCameraEffectsDef {
-    /// `cameraByState` (StrongPointer)
-    pub camera_by_state: Option<Handle<SQuantumCameraStateEffectsDef>>,
+    /// `cameraByState` (StrongPointer (array))
+    pub camera_by_state: Vec<Handle<SQuantumCameraStateEffectsDef>>,
     /// `smoothingFallback` (Single)
     pub smoothing_fallback: f32,
 }
@@ -133,15 +133,21 @@ impl<'a> Extract<'a> for SQuantumCameraEffectsDef {
     const TYPE_NAME: &'static str = "SQuantumCameraEffectsDef";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            camera_by_state: match inst.get("cameraByState") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<SQuantumCameraStateEffectsDef>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
-                _ => None,
-            },
+            camera_by_state: inst
+                .get_array("cameraByState")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => {
+                            Some(b.alloc_nested::<SQuantumCameraStateEffectsDef>(
+                                b.db.instance(r.struct_index, r.instance_index),
+                                true,
+                            ))
+                        }
+                        _ => None,
+                    })
+                    .collect()
+                })
+                .unwrap_or_default(),
             smoothing_fallback: inst.get_f32("smoothingFallback").unwrap_or_default(),
         }
     }

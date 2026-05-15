@@ -18,7 +18,7 @@ rust-version.workspace = true
 #                            empty, and the weapon-data accessors that
 #                            chain through entity_class_definition
 #                            silently see nothing.
-sc-extract = { workspace = true, features = ["entities-scitem-weapons", "ammoparams", "entityclassdefinition"] }
+sc-extract = { workspace = true, features = ["entities-scitem-weapons", "ammoparams", ] }
 svarog-common = { workspace = true }
 thiserror = { workspace = true }
 tracing = { workspace = true }

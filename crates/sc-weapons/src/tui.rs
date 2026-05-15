@@ -323,9 +323,11 @@ fn scroll_list(ui: &mut Context, state: &mut ListState, items: &[String], visibl
     }
     for (idx, text) in items.iter().enumerate().take(end).skip(start) {
         if idx == state.selected {
-            ui.text(format!("► {text}"))
-                .bold()
-                .fg(if focused { Color::Cyan } else { Color::White });
+            ui.text(format!("► {text}")).bold().fg(if focused {
+                Color::Cyan
+            } else {
+                Color::White
+            });
         } else {
             ui.text(format!("  {text}"));
         }

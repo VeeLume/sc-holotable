@@ -32,8 +32,6 @@ pub struct RecordIndex {
     pub aiwavecollection: super::aiwavecollection::AiwavecollectionIndex,
     #[cfg(feature = "analytics")]
     pub analytics: super::analytics::AnalyticsIndex,
-    #[cfg(feature = "areaservices")]
-    pub areaservices: super::areaservices::AreaservicesIndex,
     #[cfg(feature = "audio")]
     pub audio: super::audio::AudioIndex,
     #[cfg(feature = "awardservice")]
@@ -202,20 +200,18 @@ pub struct RecordIndex {
     pub sglobalsalvagerepairbeamparams: super::sglobalsalvagerepairbeamparams::SglobalsalvagerepairbeamparamsIndex,
     #[cfg(feature = "sglobaltractorbeamparams")]
     pub sglobaltractorbeamparams: super::sglobaltractorbeamparams::SglobaltractorbeamparamsIndex,
-    #[cfg(feature = "shipinsurancerecord")]
-    pub shipinsurancerecord: super::shipinsurancerecord::ShipinsurancerecordIndex,
     #[cfg(feature = "specialeventdatabase")]
     pub specialeventdatabase: super::specialeventdatabase::SpecialeventdatabaseIndex,
     #[cfg(feature = "sreputationglobalcontextbbparams")]
     pub sreputationglobalcontextbbparams: super::sreputationglobalcontextbbparams::SreputationglobalcontextbbparamsIndex,
     #[cfg(feature = "starmap")]
     pub starmap: super::starmap::StarmapIndex,
-    #[cfg(feature = "tacticalquery")]
-    pub tacticalquery: super::tacticalquery::TacticalqueryIndex,
     #[cfg(feature = "tagdatabase")]
     pub tagdatabase: super::tagdatabase::TagdatabaseIndex,
     #[cfg(feature = "trackview")]
     pub trackview: super::trackview::TrackviewIndex,
+    #[cfg(feature = "transportsystem")]
+    pub transportsystem: super::transportsystem::TransportsystemIndex,
     #[cfg(feature = "turret")]
     pub turret: super::turret::TurretIndex,
     #[cfg(feature = "ui-animatedmarkers")]
@@ -318,10 +314,6 @@ impl RecordIndex {
         #[cfg(feature = "analytics")]
         {
             n += self.analytics.len();
-        }
-        #[cfg(feature = "areaservices")]
-        {
-            n += self.areaservices.len();
         }
         #[cfg(feature = "audio")]
         {
@@ -659,10 +651,6 @@ impl RecordIndex {
         {
             n += self.sglobaltractorbeamparams.len();
         }
-        #[cfg(feature = "shipinsurancerecord")]
-        {
-            n += self.shipinsurancerecord.len();
-        }
         #[cfg(feature = "specialeventdatabase")]
         {
             n += self.specialeventdatabase.len();
@@ -675,10 +663,6 @@ impl RecordIndex {
         {
             n += self.starmap.len();
         }
-        #[cfg(feature = "tacticalquery")]
-        {
-            n += self.tacticalquery.len();
-        }
         #[cfg(feature = "tagdatabase")]
         {
             n += self.tagdatabase.len();
@@ -686,6 +670,10 @@ impl RecordIndex {
         #[cfg(feature = "trackview")]
         {
             n += self.trackview.len();
+        }
+        #[cfg(feature = "transportsystem")]
+        {
+            n += self.transportsystem.len();
         }
         #[cfg(feature = "turret")]
         {

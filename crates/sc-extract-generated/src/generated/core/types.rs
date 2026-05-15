@@ -1024,6 +1024,25 @@ impl<'a> Extract<'a> for BaseCargoFillCapacityValue {
     }
 }
 
+/// DCB type: `BaseCargoManifestQuantityTypeDef`
+pub struct BaseCargoManifestQuantityTypeDef {}
+
+impl Pooled for BaseCargoManifestQuantityTypeDef {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.core.base_cargo_manifest_quantity_type_def
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.core.base_cargo_manifest_quantity_type_def
+    }
+}
+
+impl<'a> Extract<'a> for BaseCargoManifestQuantityTypeDef {
+    const TYPE_NAME: &'static str = "BaseCargoManifestQuantityTypeDef";
+    fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {}
+    }
+}
+
 /// DCB type: `SCustomzierColorDefBase`
 pub struct SCustomzierColorDefBase {}
 
@@ -1713,6 +1732,44 @@ impl<'a> Extract<'a> for CraftingGameplayPropertyModifierValueRange_Base {
     }
 }
 
+/// DCB type: `CraftingDisplayTransformation_Base`
+pub struct CraftingDisplayTransformation_Base {}
+
+impl Pooled for CraftingDisplayTransformation_Base {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.core.crafting_display_transformation_base
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.core.crafting_display_transformation_base
+    }
+}
+
+impl<'a> Extract<'a> for CraftingDisplayTransformation_Base {
+    const TYPE_NAME: &'static str = "CraftingDisplayTransformation_Base";
+    fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {}
+    }
+}
+
+/// DCB type: `CraftingPropertyNameOverrideCondition_Base`
+pub struct CraftingPropertyNameOverrideCondition_Base {}
+
+impl Pooled for CraftingPropertyNameOverrideCondition_Base {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.core.crafting_property_name_override_condition_base
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.core.crafting_property_name_override_condition_base
+    }
+}
+
+impl<'a> Extract<'a> for CraftingPropertyNameOverrideCondition_Base {
+    const TYPE_NAME: &'static str = "CraftingPropertyNameOverrideCondition_Base";
+    fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {}
+    }
+}
+
 /// DCB type: `CraftingGameplayPropertyModifier_Base`
 pub struct CraftingGameplayPropertyModifier_Base {}
 
@@ -2112,6 +2169,45 @@ impl Pooled for CraftingQualityLocationOverride_Base_NonRef {
 
 impl<'a> Extract<'a> for CraftingQualityLocationOverride_Base_NonRef {
     const TYPE_NAME: &'static str = "CraftingQualityLocationOverride_Base_NonRef";
+    fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {}
+    }
+}
+
+/// DCB type: `CraftingQualityQuantization_Base`
+pub struct CraftingQualityQuantization_Base {}
+
+impl Pooled for CraftingQualityQuantization_Base {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.core.crafting_quality_quantization_base
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.core.crafting_quality_quantization_base
+    }
+}
+
+impl<'a> Extract<'a> for CraftingQualityQuantization_Base {
+    const TYPE_NAME: &'static str = "CraftingQualityQuantization_Base";
+    fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {}
+    }
+}
+
+/// DCB type: `CraftingQualityQuantization_Base_NonRef`
+/// Inherits from: `CraftingQualityQuantization_Base`
+pub struct CraftingQualityQuantization_Base_NonRef {}
+
+impl Pooled for CraftingQualityQuantization_Base_NonRef {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.core.crafting_quality_quantization_base_non_ref
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.core.crafting_quality_quantization_base_non_ref
+    }
+}
+
+impl<'a> Extract<'a> for CraftingQualityQuantization_Base_NonRef {
+    const TYPE_NAME: &'static str = "CraftingQualityQuantization_Base_NonRef";
     fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {}
     }
@@ -5323,25 +5419,6 @@ impl Pooled for SCheckType {
 
 impl<'a> Extract<'a> for SCheckType {
     const TYPE_NAME: &'static str = "SCheckType";
-    fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {}
-    }
-}
-
-/// DCB type: `GameplayTrigger_TargetType_Base`
-pub struct GameplayTrigger_TargetType_Base {}
-
-impl Pooled for GameplayTrigger_TargetType_Base {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.core.gameplay_trigger_target_type_base
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.core.gameplay_trigger_target_type_base
-    }
-}
-
-impl<'a> Extract<'a> for GameplayTrigger_TargetType_Base {
-    const TYPE_NAME: &'static str = "GameplayTrigger_TargetType_Base";
     fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {}
     }

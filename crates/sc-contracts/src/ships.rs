@@ -237,11 +237,10 @@ impl ShipRegistry {
         let mut spawn_state_tags: HashSet<Guid> = HashSet::new();
         for node in tag_tree.iter() {
             let path = tag_tree.path(&node.guid);
-            let in_spawn_flags = path.len() >= 3
-                && path[0] == "AI"
-                && path[1] == "Ship"
-                && path[2] == "SpawnFlags";
-            let in_cargo_manifest = path.len() >= 2 && path[0] == "AI" && path[1] == "CargoManifest";
+            let in_spawn_flags =
+                path.len() >= 3 && path[0] == "AI" && path[1] == "Ship" && path[2] == "SpawnFlags";
+            let in_cargo_manifest =
+                path.len() >= 2 && path[0] == "AI" && path[1] == "CargoManifest";
             let directive = node.name.starts_with("Arrive") || node.name.starts_with("Ignore");
             if in_spawn_flags || in_cargo_manifest || directive {
                 spawn_state_tags.insert(node.guid);

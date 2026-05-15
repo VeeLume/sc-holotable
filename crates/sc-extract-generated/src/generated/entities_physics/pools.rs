@@ -14,7 +14,6 @@ use super::super::*;
 /// Pool storage for the `entities-physics` feature.
 #[derive(Default)]
 pub struct EntitiesPhysicsPools {
-    pub constraint_params: Vec<Option<ConstraintParams>>,
     pub dead_body_params: Vec<Option<DeadBodyParams>>,
     pub srope_proxy_params: Vec<Option<SRopeProxyParams>>,
     pub wind_area_params: Vec<Option<WindAreaParams>>,

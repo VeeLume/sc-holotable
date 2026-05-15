@@ -224,41 +224,13 @@ impl<'a> Extract<'a> for LocationEntityType_StaticEntity {
     }
 }
 
-/// DCB type: `ModuleLocationEntities`
-pub struct ModuleLocationEntities {
-    /// `debugName` (String)
-    pub debug_name: String,
-    /// `optional` (Boolean)
-    pub optional: bool,
-}
-
-impl Pooled for ModuleLocationEntities {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.missiondata.module_location_entities
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.missiondata.module_location_entities
-    }
-}
-
-impl<'a> Extract<'a> for ModuleLocationEntities {
-    const TYPE_NAME: &'static str = "ModuleLocationEntities";
-    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
-            debug_name: inst
-                .get_str("debugName")
-                .map(String::from)
-                .unwrap_or_default(),
-            optional: inst.get_bool("optional").unwrap_or_default(),
-        }
-    }
-}
-
 /// DCB type: `ModuleLocationEntities_Static`
 /// Inherits from: `ModuleLocationEntities`
 pub struct ModuleLocationEntities_Static {
     /// `debugName` (String)
     pub debug_name: String,
+    /// `requiredForInit` (Boolean)
+    pub required_for_init: bool,
     /// `optional` (Boolean)
     pub optional: bool,
     /// `entityDeclarations` (Reference (array))
@@ -282,6 +254,7 @@ impl<'a> Extract<'a> for ModuleLocationEntities_Static {
                 .get_str("debugName")
                 .map(String::from)
                 .unwrap_or_default(),
+            required_for_init: inst.get_bool("requiredForInit").unwrap_or_default(),
             optional: inst.get_bool("optional").unwrap_or_default(),
             entity_declarations: inst
                 .get_array("entityDeclarations")
@@ -303,12 +276,12 @@ impl<'a> Extract<'a> for ModuleLocationEntities_Static {
 /// DCB type: `ModuleDeclarationType_Mission`
 /// Inherits from: `ModuleDeclarationType_Base`
 pub struct ModuleDeclarationType_Mission {
-    /// `locationEntities` (StrongPointer (array))
-    pub location_entities: Vec<ModuleLocationEntitiesPtr>,
     /// `requiredLocationModules` (Reference (array))
     pub required_location_modules: Vec<CigGuid>,
     /// `requiredResourceSlot` (Reference)
     pub required_resource_slot: Option<CigGuid>,
+    /// `pausesLocationNPCAutospawns` (Boolean)
+    pub pauses_location_npcautospawns: bool,
 }
 
 impl Pooled for ModuleDeclarationType_Mission {
@@ -322,20 +295,8 @@ impl Pooled for ModuleDeclarationType_Mission {
 
 impl<'a> Extract<'a> for ModuleDeclarationType_Mission {
     const TYPE_NAME: &'static str = "ModuleDeclarationType_Mission";
-    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
+    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
-            location_entities: inst
-                .get_array("locationEntities")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => {
-                            Some(ModuleLocationEntitiesPtr::from_ref(b, r))
-                        }
-                        _ => None,
-                    })
-                    .collect()
-                })
-                .unwrap_or_default(),
             required_location_modules: inst
                 .get_array("requiredLocationModules")
                 .map(|arr| {
@@ -353,6 +314,9 @@ impl<'a> Extract<'a> for ModuleDeclarationType_Mission {
                 .get("requiredResourceSlot")
                 .and_then(|v| v.as_record_ref())
                 .map(|r| r.guid),
+            pauses_location_npcautospawns: inst
+                .get_bool("pausesLocationNPCAutospawns")
+                .unwrap_or_default(),
         }
     }
 }
@@ -382,50 +346,39 @@ impl<'a> Extract<'a> for ModuleDeclarationType_Location {
     }
 }
 
-/// DCB type: `ModuleDeclaration`
-pub struct ModuleDeclaration {
-    /// `module` (String)
-    pub module: String,
-    /// `moduleType` (StrongPointer)
-    pub module_type: Option<ModuleDeclarationType_BasePtr>,
-    /// `properties` (Class (array))
-    pub properties: Vec<Handle<MissionProperty>>,
+/// DCB type: `VariableDeclaration_LocationEntities`
+/// Inherits from: `VariableDeclaration_Base`
+pub struct VariableDeclaration_LocationEntities {
+    /// `subsumptionVariableName` (String)
+    pub subsumption_variable_name: String,
+    /// `locationEntities` (WeakPointer (array))
+    pub location_entities: Vec<ModuleLocationEntitiesPtr>,
 }
 
-impl Pooled for ModuleDeclaration {
+impl Pooled for VariableDeclaration_LocationEntities {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.missiondata.module_declaration
+        &pools.missiondata.variable_declaration_location_entities
     }
     fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.missiondata.module_declaration
+        &mut pools.missiondata.variable_declaration_location_entities
     }
 }
 
-impl<'a> Extract<'a> for ModuleDeclaration {
-    const TYPE_NAME: &'static str = "ModuleDeclaration";
+impl<'a> Extract<'a> for VariableDeclaration_LocationEntities {
+    const TYPE_NAME: &'static str = "VariableDeclaration_LocationEntities";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            module: inst.get_str("module").map(String::from).unwrap_or_default(),
-            module_type: match inst.get("moduleType") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(ModuleDeclarationType_BasePtr::from_ref(b, r))
-                }
-                _ => None,
-            },
-            properties: inst
-                .get_array("properties")
+            subsumption_variable_name: inst
+                .get_str("subsumptionVariableName")
+                .map(String::from)
+                .unwrap_or_default(),
+            location_entities: inst
+                .get_array("locationEntities")
                 .map(|arr| {
                     arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => {
-                            Some(b.alloc_nested::<MissionProperty>(
-                                Instance::from_inline_data(b.db, struct_index, data),
-                                false,
-                            ))
+                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => {
+                            Some(ModuleLocationEntitiesPtr::from_ref(b, r))
                         }
-                        Value::ClassRef(r) => Some(b.alloc_nested::<MissionProperty>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
                         _ => None,
                     })
                     .collect()

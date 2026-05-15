@@ -42,35 +42,6 @@ impl<'a> Extract<'a> for BindingsOperations_WaveformShapeTriangle {
     }
 }
 
-/// DCB type: `BindingsOperations_WaveformShapeSquare`
-/// Inherits from: `BindingsOperations_WaveformShapeBase`
-pub struct BindingsOperations_WaveformShapeSquare {
-    /// `interval` (Single)
-    pub interval: f32,
-}
-
-impl Pooled for BindingsOperations_WaveformShapeSquare {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .ui_buildingblocks
-            .bindings_operations_waveform_shape_square
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .ui_buildingblocks
-            .bindings_operations_waveform_shape_square
-    }
-}
-
-impl<'a> Extract<'a> for BindingsOperations_WaveformShapeSquare {
-    const TYPE_NAME: &'static str = "BindingsOperations_WaveformShapeSquare";
-    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
-            interval: inst.get_f32("interval").unwrap_or_default(),
-        }
-    }
-}
-
 /// DCB type: `BindingsOperations_WaveformShapeSawtooth`
 /// Inherits from: `BindingsOperations_WaveformShapeBase`
 pub struct BindingsOperations_WaveformShapeSawtooth {
@@ -6036,8 +6007,8 @@ impl<'a> Extract<'a> for DisplayState {
 
 /// DCB type: `StatusWidgetDisplayPreset`
 pub struct StatusWidgetDisplayPreset {
-    /// `ranges` (Class)
-    pub ranges: Option<Handle<DisplayState>>,
+    /// `ranges` (Class (array))
+    pub ranges: Vec<Handle<DisplayState>>,
     /// `incrementDisplayDuration` (Single)
     pub increment_display_duration: f32,
     /// `incrementStep` (Single)
@@ -6067,13 +6038,25 @@ impl<'a> Extract<'a> for StatusWidgetDisplayPreset {
     const TYPE_NAME: &'static str = "StatusWidgetDisplayPreset";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            ranges: match inst.get("ranges") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<DisplayState>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
-                _ => None,
-            },
+            ranges: inst
+                .get_array("ranges")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<DisplayState>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => Some(b.alloc_nested::<DisplayState>(
+                            b.db.instance(r.struct_index, r.instance_index),
+                            true,
+                        )),
+                        _ => None,
+                    })
+                    .collect()
+                })
+                .unwrap_or_default(),
             increment_display_duration: inst
                 .get_f32("incrementDisplayDuration")
                 .unwrap_or_default(),

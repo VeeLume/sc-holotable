@@ -176,14 +176,9 @@ pub fn render(
                 .pad(1)
                 .grow(2)
                 .col(|ui| match filtered.get(state.list.selected).copied() {
-                    Some(idx) => render_detail(
-                        ui,
-                        &mut state.detail_scroll,
-                        index,
-                        idx,
-                        locale,
-                        cache,
-                    ),
+                    Some(idx) => {
+                        render_detail(ui, &mut state.detail_scroll, index, idx, locale, cache)
+                    }
                     None => {
                         ui.text("(nothing selected)").dim();
                     }
@@ -211,7 +206,11 @@ fn format_list_item(c: &Mission, locale: &LocaleMap) -> String {
     } else {
         ' '
     };
-    let bp = if c.rewards.blueprint.is_some() { "[BP]" } else { "    " };
+    let bp = if c.rewards.blueprint.is_some() {
+        "[BP]"
+    } else {
+        "    "
+    };
     format!("{marker} {bp} {title}")
 }
 
@@ -246,10 +245,7 @@ fn render_detail(
         kv(
             ui,
             "title_key",
-            c.title_key
-                .as_ref()
-                .map(|k| k.as_str())
-                .unwrap_or("(none)"),
+            c.title_key.as_ref().map(|k| k.as_str()).unwrap_or("(none)"),
         );
         kv(
             ui,
@@ -259,11 +255,7 @@ fn render_detail(
                 .map(|k| k.as_str())
                 .unwrap_or("(none)"),
         );
-        kv(
-            ui,
-            "shareable",
-            if c.shareable { "yes" } else { "no" },
-        );
+        kv(ui, "shareable", if c.shareable { "yes" } else { "no" });
         kv(
             ui,
             "illegal_flag",
@@ -310,7 +302,11 @@ fn render_detail(
                     continue;
                 }
                 if let Some(sib) = index.get(sib_id) {
-                    let bp = if sib.rewards.blueprint.is_some() { "[BP] " } else { "" };
+                    let bp = if sib.rewards.blueprint.is_some() {
+                        "[BP] "
+                    } else {
+                        ""
+                    };
                     ui.text(format!(
                         "  • {bp}{}  ({:?})",
                         sib.debug_name, sib.origin.kind
@@ -340,7 +336,8 @@ fn render_detail(
                     Encounter::Entities(_) => "entities",
                     Encounter::Unknown { .. } => "unknown",
                 };
-                ui.text(format!("  ▸ [{kind}] {}", enc.variable_name())).bold();
+                ui.text(format!("  ▸ [{kind}] {}", enc.variable_name()))
+                    .bold();
                 if !enc.extended_text_token().is_empty() {
                     ui.text(format!("      ext_token: {}", enc.extended_text_token()))
                         .fg(Color::Yellow);
@@ -376,7 +373,10 @@ fn render_detail(
             ui.text(format!("  scrip: {} × {}", s.amount, name));
         }
         for r in &c.rewards.reputation {
-            let amount = r.amount.map(|n| n.to_string()).unwrap_or_else(|| "calc".into());
+            let amount = r
+                .amount
+                .map(|n| n.to_string())
+                .unwrap_or_else(|| "calc".into());
             ui.text(format!("  rep: {amount}"));
         }
         for it in &c.rewards.items {
@@ -396,7 +396,11 @@ fn render_detail(
         }
         if !c.mission_span.is_empty() {
             ui.separator();
-            kv(ui, "mission_span", &format!("{} locality refs", c.mission_span.len()));
+            kv(
+                ui,
+                "mission_span",
+                &format!("{} locality refs", c.mission_span.len()),
+            );
         }
     });
 }
@@ -408,7 +412,8 @@ fn render_phase_header<S>(ui: &mut Context, phase: &EncounterPhase<S>) {
     } else {
         format!("phase \"{}\"", phase.name)
     };
-    ui.text(format!("      {label} — {} slot(s)", phase.slots.len())).dim();
+    ui.text(format!("      {label} — {} slot(s)", phase.slots.len()))
+        .dim();
 }
 
 fn render_ship_phases(
@@ -436,11 +441,7 @@ fn render_npc_phases(ui: &mut Context, phases: &[EncounterPhase<NpcSlot>], tree:
     }
 }
 
-fn render_entity_phases(
-    ui: &mut Context,
-    phases: &[EncounterPhase<EntitySlot>],
-    tree: &TagTree,
-) {
+fn render_entity_phases(ui: &mut Context, phases: &[EncounterPhase<EntitySlot>], tree: &TagTree) {
     for phase in phases {
         render_phase_header(ui, phase);
         for (i, s) in phase.slots.iter().enumerate() {
@@ -488,47 +489,70 @@ fn render_ship_slot(
     // Positive bag — classified into subtree categories.
     let spawn_ids: Vec<&str> = s.positive.spawn_identifiers(tree).collect();
     if !spawn_ids.is_empty() {
-        ui.text(format!("            spawn_identifiers: {}", spawn_ids.join(", ")))
-            .fg(Color::Cyan);
+        ui.text(format!(
+            "            spawn_identifiers: {}",
+            spawn_ids.join(", ")
+        ))
+        .fg(Color::Cyan);
     }
     let factions: Vec<&str> = s.positive.factions(tree).collect();
     if !factions.is_empty() {
-        ui.text(format!("            factions: {}", factions.join(", "))).dim();
+        ui.text(format!("            factions: {}", factions.join(", ")))
+            .dim();
     }
     let cargo: Vec<&str> = s.positive.cargo(tree).collect();
     if !cargo.is_empty() {
-        ui.text(format!("            cargo: {}", cargo.join(", "))).dim();
+        ui.text(format!("            cargo: {}", cargo.join(", ")))
+            .dim();
     }
     let ai_traits: Vec<&str> = s.positive.ai_traits(tree).collect();
     if !ai_traits.is_empty() {
-        ui.text(format!("            ai_traits: {}", ai_traits.join(", "))).dim();
+        ui.text(format!("            ai_traits: {}", ai_traits.join(", ")))
+            .dim();
     }
     let mission_tags: Vec<&str> = s.positive.mission_tags(tree).collect();
     if !mission_tags.is_empty() {
-        ui.text(format!("            mission_tags: {}", mission_tags.join(", "))).dim();
+        ui.text(format!(
+            "            mission_tags: {}",
+            mission_tags.join(", ")
+        ))
+        .dim();
     }
     if let Some(skill) = s.positive.ai_skill() {
-        let ace = if s.positive.ace_pilot() { " + AcePilot" } else { "" };
-        ui.text(format!("            ai_skill: HumanPilot{skill}{ace}")).dim();
+        let ace = if s.positive.ace_pilot() {
+            " + AcePilot"
+        } else {
+            ""
+        };
+        ui.text(format!("            ai_skill: HumanPilot{skill}{ace}"))
+            .dim();
     }
     let directives: Vec<&str> = s.positive.directives().collect();
     if !directives.is_empty() {
-        ui.text(format!("            directives: {}", directives.join(", "))).dim();
+        ui.text(format!("            directives: {}", directives.join(", ")))
+            .dim();
     }
     let other: Vec<&str> = s.positive.other(tree).collect();
     if !other.is_empty() {
-        ui.text(format!("            other: {}", other.join(", "))).dim();
+        ui.text(format!("            other: {}", other.join(", ")))
+            .dim();
     }
 
     // Sibling tag bags — flat names; consumers can classify if needed.
     if !s.negative.is_empty() {
-        ui.text(format!("            negative: {}", s.negative.names.join(", "))).dim();
+        ui.text(format!(
+            "            negative: {}",
+            s.negative.names.join(", ")
+        ))
+        .dim();
     }
     if !s.markup.is_empty() {
-        ui.text(format!("            markup: {}", s.markup.names.join(", "))).dim();
+        ui.text(format!("            markup: {}", s.markup.names.join(", ")))
+            .dim();
     }
     if !s.entity.is_empty() {
-        ui.text(format!("            entity: {}", s.entity.names.join(", "))).dim();
+        ui.text(format!("            entity: {}", s.entity.names.join(", ")))
+            .dim();
     }
 
     // Candidate ships — first 4 to keep the panel readable.
@@ -550,7 +574,8 @@ fn render_ship_slot(
         } else {
             String::new()
         };
-        ui.text(format!("            ships: {}{suffix}", preview.join(", "))).dim();
+        ui.text(format!("            ships: {}{suffix}", preview.join(", ")))
+            .dim();
     }
 }
 
@@ -576,19 +601,26 @@ fn render_npc_slot(ui: &mut Context, i: usize, s: &NpcSlot, tree: &TagTree) {
         s.identifier_tags.len(),
     ));
     if let Some(faction) = s.faction_override {
-        ui.text(format!("            faction_override: {faction}")).dim();
+        ui.text(format!("            faction_override: {faction}"))
+            .dim();
     }
     let factions: Vec<&str> = s.identifier_tags.factions(tree).collect();
     if !factions.is_empty() {
-        ui.text(format!("            factions: {}", factions.join(", "))).dim();
+        ui.text(format!("            factions: {}", factions.join(", ")))
+            .dim();
     }
     let ai_traits: Vec<&str> = s.identifier_tags.ai_traits(tree).collect();
     if !ai_traits.is_empty() {
-        ui.text(format!("            ai_traits: {}", ai_traits.join(", "))).dim();
+        ui.text(format!("            ai_traits: {}", ai_traits.join(", ")))
+            .dim();
     }
     let mission_tags: Vec<&str> = s.identifier_tags.mission_tags(tree).collect();
     if !mission_tags.is_empty() {
-        ui.text(format!("            mission_tags: {}", mission_tags.join(", "))).dim();
+        ui.text(format!(
+            "            mission_tags: {}",
+            mission_tags.join(", ")
+        ))
+        .dim();
     }
     if !s.identifier_tags.is_empty() {
         ui.text(format!(
@@ -610,27 +642,43 @@ fn render_entity_slot(ui: &mut Context, i: usize, s: &EntitySlot, tree: &TagTree
     ));
     let factions: Vec<&str> = s.positive.factions(tree).collect();
     if !factions.is_empty() {
-        ui.text(format!("            factions: {}", factions.join(", "))).dim();
+        ui.text(format!("            factions: {}", factions.join(", ")))
+            .dim();
     }
     let ai_traits: Vec<&str> = s.positive.ai_traits(tree).collect();
     if !ai_traits.is_empty() {
-        ui.text(format!("            ai_traits: {}", ai_traits.join(", "))).dim();
+        ui.text(format!("            ai_traits: {}", ai_traits.join(", ")))
+            .dim();
     }
     let mission_tags: Vec<&str> = s.positive.mission_tags(tree).collect();
     if !mission_tags.is_empty() {
-        ui.text(format!("            mission_tags: {}", mission_tags.join(", "))).dim();
+        ui.text(format!(
+            "            mission_tags: {}",
+            mission_tags.join(", ")
+        ))
+        .dim();
     }
     if !s.positive.is_empty() {
-        ui.text(format!("            positive: {}", s.positive.names.join(", "))).dim();
+        ui.text(format!(
+            "            positive: {}",
+            s.positive.names.join(", ")
+        ))
+        .dim();
     }
     if !s.negative.is_empty() {
-        ui.text(format!("            negative: {}", s.negative.names.join(", "))).dim();
+        ui.text(format!(
+            "            negative: {}",
+            s.negative.names.join(", ")
+        ))
+        .dim();
     }
     if !s.markup.is_empty() {
-        ui.text(format!("            markup: {}", s.markup.names.join(", "))).dim();
+        ui.text(format!("            markup: {}", s.markup.names.join(", ")))
+            .dim();
     }
     if !s.entity.is_empty() {
-        ui.text(format!("            entity: {}", s.entity.names.join(", "))).dim();
+        ui.text(format!("            entity: {}", s.entity.names.join(", ")))
+            .dim();
     }
 }
 
@@ -700,9 +748,11 @@ fn scroll_list(ui: &mut Context, state: &mut ListState, items: &[String], visibl
     }
     for (idx, text) in items.iter().enumerate().take(end).skip(start) {
         if idx == state.selected {
-            ui.text(format!("► {text}"))
-                .bold()
-                .fg(if focused { Color::Cyan } else { Color::White });
+            ui.text(format!("► {text}")).bold().fg(if focused {
+                Color::Cyan
+            } else {
+                Color::White
+            });
         } else {
             ui.text(format!("  {text}"));
         }

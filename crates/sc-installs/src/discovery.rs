@@ -138,10 +138,7 @@ pub fn discover_primary_from(log_path: &Path) -> Result<Installation> {
 pub fn discover_default() -> Result<Installation> {
     if let Ok(snapshot) = read_launcher_snapshot()
         && let Some(default) = snapshot.default_channel
-        && let Some(s) = snapshot
-            .installs
-            .into_iter()
-            .find(|s| s.channel == default)
+        && let Some(s) = snapshot.installs.into_iter().find(|s| s.channel == default)
         && let Some(mut install) = validate_install(s.channel, &s.root)
     {
         install.launcher_version_label = s.version_label;

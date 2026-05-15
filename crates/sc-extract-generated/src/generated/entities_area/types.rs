@@ -532,8 +532,8 @@ pub struct RestrictedAreaHUDMessageParams {
     pub proximity_warning_max_time: f32,
     /// `proximityWarningDetectionConeAngle` (Single)
     pub proximity_warning_detection_cone_angle: f32,
-    /// `proximityWarningMessages` (Locale)
-    pub proximity_warning_messages: LocaleKey,
+    /// `proximityWarningMessages` (Locale (array))
+    pub proximity_warning_messages: Vec<LocaleKey>,
     /// `autopilotMessage` (Locale)
     pub autopilot_message: LocaleKey,
     /// `proximityMessageTimer` (Single)
@@ -565,8 +565,11 @@ impl<'a> Extract<'a> for RestrictedAreaHUDMessageParams {
                 .get_f32("proximityWarningDetectionConeAngle")
                 .unwrap_or_default(),
             proximity_warning_messages: inst
-                .get_str("proximityWarningMessages")
-                .map(LocaleKey::from)
+                .get_array("proximityWarningMessages")
+                .map(|arr| {
+                    arr.filter_map(|v| v.as_str().map(LocaleKey::from))
+                        .collect()
+                })
                 .unwrap_or_default(),
             autopilot_message: inst
                 .get_str("autopilotMessage")

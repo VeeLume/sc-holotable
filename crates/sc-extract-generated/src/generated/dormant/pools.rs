@@ -30,10 +30,9 @@ pub struct DormantPools {
         Vec<Option<SubsumptionConversationComponentParams>>,
     pub subsumption_conversation_link_component_params:
         Vec<Option<SubsumptionConversationLinkComponentParams>>,
-    pub condition_distance_to_target: Vec<Option<Condition_DistanceToTarget>>,
+    pub motive_parameter_int: Vec<Option<MotiveParameter_Int>>,
     pub condition_or: Vec<Option<Condition_Or>>,
     pub condition_target_is_ship: Vec<Option<Condition_TargetIsShip>>,
-    pub condition_target_reachable: Vec<Option<Condition_TargetReachable>>,
     pub condition_target_ship_size_category: Vec<Option<Condition_TargetShipSizeCategory>>,
     pub condition_yaw_to_target: Vec<Option<Condition_YawToTarget>>,
     pub seated_tactic_scores: Vec<Option<SeatedTacticScores>>,
@@ -64,6 +63,9 @@ pub struct DormantPools {
     pub bindings_operations_integer_string_font_style_pair:
         Vec<Option<BindingsOperations_IntegerStringFontStylePair>>,
     pub building_blocks_string_localized_pair: Vec<Option<BuildingBlocks_StringLocalizedPair>>,
+    pub building_blocks_tag_color_pair: Vec<Option<BuildingBlocks_TagColorPair>>,
+    pub building_blocks_tag_localized_pair: Vec<Option<BuildingBlocks_TagLocalizedPair>>,
+    pub building_blocks_tag_number_pair: Vec<Option<BuildingBlocks_TagNumberPair>>,
     pub building_blocks_bindings_field_base: Vec<Option<BuildingBlocks_BindingsFieldBase>>,
     pub building_blocks_bindings_operation_base: Vec<Option<BuildingBlocks_BindingsOperationBase>>,
     pub building_blocks_bindings_boolean_from_string_switch:
@@ -74,14 +76,26 @@ pub struct DormantPools {
         Vec<Option<BuildingBlocks_IntegerFromBooleanConditionDef>>,
     pub building_blocks_integer_from_boolean_condition_sum_def:
         Vec<Option<BuildingBlocks_IntegerFromBooleanConditionSumDef>>,
+    pub building_blocks_bindings_number_range_remap:
+        Vec<Option<BuildingBlocks_BindingsNumberRangeRemap>>,
+    pub building_blocks_bindings_number_box_falloff:
+        Vec<Option<BuildingBlocks_BindingsNumberBoxFalloff>>,
+    pub building_blocks_bindings_number_from_integer_progress:
+        Vec<Option<BuildingBlocks_BindingsNumberFromIntegerProgress>>,
+    pub building_blocks_bindings_number_from_tag_switch:
+        Vec<Option<BuildingBlocks_BindingsNumberFromTagSwitch>>,
     pub bindings_operations_string_from_string_canvas:
         Vec<Option<BindingsOperations_StringFromStringCanvas>>,
     pub bindings_operations_string_from_integer_switch_font_style:
         Vec<Option<BindingsOperations_StringFromIntegerSwitchFontStyle>>,
     pub building_blocks_bindings_localization_from_string_switch:
         Vec<Option<BuildingBlocks_BindingsLocalizationFromStringSwitch>>,
+    pub building_blocks_bindings_localized_from_tag_switch:
+        Vec<Option<BuildingBlocks_BindingsLocalizedFromTagSwitch>>,
     pub building_blocks_bindings_localized_random_from_integer:
         Vec<Option<BuildingBlocks_BindingsLocalizedRandomFromInteger>>,
+    pub building_blocks_bindings_color_from_tag_switch:
+        Vec<Option<BuildingBlocks_BindingsColorFromTagSwitch>>,
     pub building_blocks_bindings_transform_invert:
         Vec<Option<BuildingBlocks_BindingsTransformInvert>>,
     pub boids_cylindrical_limiter_rule: Vec<Option<BoidsCylindricalLimiterRule>>,
@@ -137,6 +151,7 @@ pub struct DormantPools {
     pub camera_build_mode_config: Vec<Option<CameraBuildModeConfig>>,
     pub cargo_fill_capacity_value_random_beta: Vec<Option<CargoFillCapacityValue_RandomBeta>>,
     pub cargo_resource_distribution: Vec<Option<CargoResourceDistribution>>,
+    pub cargo_manifest_random_range_quantity_def: Vec<Option<CargoManifestRandomRangeQuantityDef>>,
     pub scustomzier_color_rgba8: Vec<Option<SCustomzierColorRGBA8>>,
     pub scharacter_eye_validation_params: Vec<Option<SCharacterEyeValidationParams>>,
     pub scharacter_customizer_item_select: Vec<Option<SCharacterCustomizerItemSelect>>,
@@ -146,10 +161,6 @@ pub struct DormantPools {
     pub scharacter_customizer_preset: Vec<Option<SCharacterCustomizerPreset>>,
     pub scharacter_customizer_feature_preset: Vec<Option<SCharacterCustomizerFeaturePreset>>,
     pub sarchetype_entity_asset_def_base: Vec<Option<SArchetypeEntityAssetDefBase>>,
-    pub sarchetype_asset_entity_def: Vec<Option<SArchetypeAssetEntityDef>>,
-    pub sarchetype_asset_chfdef: Vec<Option<SArchetypeAssetCHFDef>>,
-    pub sarchetype_asset_loadout_def: Vec<Option<SArchetypeAssetLoadoutDef>>,
-    pub sarchetype_asset_tag_def: Vec<Option<SArchetypeAssetTagDef>>,
     pub cockpit_rule_int: Vec<Option<CockpitRuleInt>>,
     pub scollectible_component_params: Vec<Option<SCollectibleComponentParams>>,
     pub bezier_damage: Vec<Option<BezierDamage>>,
@@ -167,6 +178,7 @@ pub struct DormantPools {
     pub sscript_proxy_params: Vec<Option<SScriptProxyParams>>,
     pub dynamic_instance_properties_params: Vec<Option<DynamicInstancePropertiesParams>>,
     pub lifetime_debug_params: Vec<Option<LifetimeDebugParams>>,
+    pub entity_component_ecustest_params: Vec<Option<EntityComponentECUSTestParams>>,
     pub firing_range_params: Vec<Option<FiringRangeParams>>,
     pub firing_range_weapon_item: Vec<Option<FiringRangeWeaponItem>>,
     pub gravity_base_params: Vec<Option<GravityBaseParams>>,
@@ -252,6 +264,10 @@ pub struct DormantPools {
     pub crafting_option_effect_time: Vec<Option<CraftingOptionEffect_Time>>,
     pub crafting_gameplay_property_modifier_value_range_base_non_ref:
         Vec<Option<CraftingGameplayPropertyModifierValueRange_Base_NonRef>>,
+    pub crafting_display_transformation_base_non_ref:
+        Vec<Option<CraftingDisplayTransformation_Base_NonRef>>,
+    pub crafting_property_name_override_condition_base_non_ref:
+        Vec<Option<CraftingPropertyNameOverrideCondition_Base_NonRef>>,
     pub crafting_gameplay_property_modifier_base_non_ref:
         Vec<Option<CraftingGameplayPropertyModifier_Base_NonRef>>,
     pub crafting_gameplay_property_modifier_record_ref:
@@ -329,7 +345,6 @@ pub struct DormantPools {
     pub sbase_object_container_component_params: Vec<Option<SBaseObjectContainerComponentParams>>,
     pub sstreaming_object_container_component_params:
         Vec<Option<SStreamingObjectContainerComponentParams>>,
-    pub shake_component_params: Vec<Option<ShakeComponentParams>>,
     pub skyline_component_params: Vec<Option<SkylineComponentParams>>,
     pub area_base_component_params: Vec<Option<AreaBaseComponentParams>>,
     pub mission_beacon_provider_entity_component_params:
@@ -556,6 +571,7 @@ pub struct DormantPools {
     pub journal_entry_mission_progress_text: Vec<Option<JournalEntryMissionProgressText>>,
     pub sjump_point_access_params: Vec<Option<SJumpPointAccessParams>>,
     pub refuel_base_service: Vec<Option<RefuelBaseService>>,
+    pub refuel_base_ship_service: Vec<Option<RefuelBaseShipService>>,
     pub light_aivision_helper_extender: Vec<Option<LightAIVisionHelperExtender>>,
     pub interference_params_one_shot: Vec<Option<InterferenceParams_OneShot>>,
     pub interference_params_continuous: Vec<Option<InterferenceParams_Continuous>>,
@@ -642,7 +658,8 @@ pub struct DormantPools {
     pub mission_property_value_investigation: Vec<Option<MissionPropertyValue_Investigation>>,
     pub mission_variable_float: Vec<Option<MissionVariableFloat>>,
     pub mission_variable_string: Vec<Option<MissionVariableString>>,
-    pub module_declaration_type_beacon: Vec<Option<ModuleDeclarationType_Beacon>>,
+    pub module_spawned_entities_npc: Vec<Option<ModuleSpawnedEntities_NPC>>,
+    pub variable_declaration_spawned_entities: Vec<Option<VariableDeclaration_SpawnedEntities>>,
     pub objective_handler_with_module: Vec<Option<ObjectiveHandler_WithModule>>,
     pub objective_handler_event_module: Vec<Option<ObjectiveHandler_EventModule>>,
     pub mobiglas_display_location: Vec<Option<MobiglasDisplayLocation>>,
@@ -772,18 +789,17 @@ pub struct DormantPools {
     pub hearing_disruption_gameplay_trigger: Vec<Option<HearingDisruptionGameplayTrigger>>,
     pub sdisruption_gameplay_trigger: Vec<Option<SDisruptionGameplayTrigger>>,
     pub sreset_entity_lifetime_gameplay_trigger: Vec<Option<SResetEntityLifetimeGameplayTrigger>>,
+    pub explosion_gameplay_trigger: Vec<Option<ExplosionGameplayTrigger>>,
     pub sattachable_tag_check: Vec<Option<SAttachableTagCheck>>,
     pub gameplay_trigger_target_type_self: Vec<Option<GameplayTrigger_TargetType_Self>>,
     pub gameplay_trigger_target_type_root: Vec<Option<GameplayTrigger_TargetType_Root>>,
     pub gameplay_trigger_target_type_item_port_name:
         Vec<Option<GameplayTrigger_TargetType_ItemPortName>>,
-    pub gameplay_trigger_target_type_filtered: Vec<Option<GameplayTrigger_TargetType_Filtered>>,
+    pub gameplay_trigger_target_type_inside_linked_areas:
+        Vec<Option<GameplayTrigger_TargetType_InsideLinkedAreas>>,
     pub gameplay_trigger_filter_type_entity_class:
         Vec<Option<GameplayTrigger_FilterType_EntityClass>>,
-    pub gameplay_trigger_filter_type_entity_tag: Vec<Option<GameplayTrigger_FilterType_EntityTag>>,
     pub gameplay_trigger_filter_type_item_type: Vec<Option<GameplayTrigger_FilterType_ItemType>>,
-    pub gameplay_trigger_executor_activate_interaction_by_tag:
-        Vec<Option<GameplayTrigger_Executor_ActivateInteraction_ByTag>>,
     pub gameplay_trigger_executor_set_interaction_state_by_tag:
         Vec<Option<GameplayTrigger_Executor_SetInteractionState_ByTag>>,
     pub area_target_state_change: Vec<Option<AreaTargetStateChange>>,
@@ -874,6 +890,7 @@ pub struct DormantPools {
     pub sweapon_action_melee_params: Vec<Option<SWeaponActionMeleeParams>>,
     pub sweapon_action_grapple_params: Vec<Option<SWeaponActionGrappleParams>>,
     pub iweapon_component_params: Vec<Option<IWeaponComponentParams>>,
+    pub item_recovery_condition_entity_class: Vec<Option<ItemRecoveryCondition_EntityClass>>,
     pub item_recovery_condition_entity_tag: Vec<Option<ItemRecoveryCondition_EntityTag>>,
     pub personal_thought_action: Vec<Option<PersonalThoughtAction>>,
     pub personal_thought_category: Vec<Option<PersonalThoughtCategory>>,
@@ -926,24 +943,9 @@ pub struct DormantPools {
     pub tqsweight_dynamic_variable_value: Vec<Option<TQSWeightDynamicVariableValue>>,
     pub tile_params: Vec<Option<TileParams>>,
     pub time_value_long_seconds: Vec<Option<TimeValue_LongSeconds>>,
-    pub transport_event_item_spawner_params: Vec<Option<TransportEventItemSpawnerParams>>,
     pub transport_test_permissions_interface: Vec<Option<TransportTestPermissionsInterface>>,
     pub transport_iimhangar_interface: Vec<Option<TransportIIMHangarInterface>>,
     pub transport_blacklist_interface: Vec<Option<TransportBlacklistInterface>>,
-    pub transport_manager_params: Vec<Option<TransportManagerParams>>,
-    pub transport_destination_params: Vec<Option<TransportDestinationParams>>,
-    pub transport_gateway_params: Vec<Option<TransportGatewayParams>>,
-    pub transport_pause_point_params: Vec<Option<TransportPausePointParams>>,
-    pub transport_event_listener_params: Vec<Option<TransportEventListenerParams>>,
-    pub transport_gateway_door_params: Vec<Option<TransportGatewayDoorParams>>,
-    pub transport_gateway_timer_panel_params: Vec<Option<TransportGatewayTimerPanelParams>>,
-    pub transport_gateway_control_panel_params: Vec<Option<TransportGatewayControlPanelParams>>,
-    pub transport_carriage_door_params: Vec<Option<TransportCarriageDoorParams>>,
-    pub transport_carriage_control_panel_params: Vec<Option<TransportCarriageControlPanelParams>>,
-    pub transport_carriage_timer_panel_params: Vec<Option<TransportCarriageTimerPanelParams>>,
-    pub transport_carriage_audio: Vec<Option<TransportCarriageAudio>>,
-    pub transport_carriage_effects: Vec<Option<TransportCarriageEffects>>,
-    pub transport_carriage_params: Vec<Option<TransportCarriageParams>>,
     pub uigraph_loadout_selector_component: Vec<Option<UIGraph_LoadoutSelectorComponent>>,
     pub uigraph_contact_widget_component: Vec<Option<UIGraph_ContactWidgetComponent>>,
     pub uigraph_fast_contact_list_component: Vec<Option<UIGraph_FastContactListComponent>>,

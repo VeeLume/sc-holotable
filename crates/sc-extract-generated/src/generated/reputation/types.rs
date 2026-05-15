@@ -258,9 +258,9 @@ impl<'a> Extract<'a> for SReputationStateMissionResultModifierListParams {
 
 /// DCB type: `SReputationStateMissionResultModifierParams`
 pub struct SReputationStateMissionResultModifierParams {
-    /// `missionResultStateModifiers` (Class)
+    /// `missionResultStateModifiers` (Class (array))
     pub mission_result_state_modifiers:
-        Option<Handle<SReputationStateMissionResultModifierListParams>>,
+        Vec<Handle<SReputationStateMissionResultModifierListParams>>,
 }
 
 impl Pooled for SReputationStateMissionResultModifierParams {
@@ -280,15 +280,27 @@ impl<'a> Extract<'a> for SReputationStateMissionResultModifierParams {
     const TYPE_NAME: &'static str = "SReputationStateMissionResultModifierParams";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            mission_result_state_modifiers: match inst.get("missionResultStateModifiers") {
-                Some(Value::Class { struct_index, data }) => Some(
-                    b.alloc_nested::<SReputationStateMissionResultModifierListParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ),
-                ),
-                _ => None,
-            },
+            mission_result_state_modifiers: inst
+                .get_array("missionResultStateModifiers")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(
+                            b.alloc_nested::<SReputationStateMissionResultModifierListParams>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ),
+                        ),
+                        Value::ClassRef(r) => Some(
+                            b.alloc_nested::<SReputationStateMissionResultModifierListParams>(
+                                b.db.instance(r.struct_index, r.instance_index),
+                                true,
+                            ),
+                        ),
+                        _ => None,
+                    })
+                    .collect()
+                })
+                .unwrap_or_default(),
         }
     }
 }

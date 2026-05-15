@@ -52,10 +52,14 @@ pub struct UIHoloVehicle_Config {
     pub camera_fov: f32,
     /// `ownCameraDistanceScaler` (Single)
     pub own_camera_distance_scaler: f32,
+    /// `ownTurretCameraDistanceScaler` (Single)
+    pub own_turret_camera_distance_scaler: f32,
     /// `ownAngularOffsetRange` (Single)
     pub own_angular_offset_range: f32,
     /// `ownDefaultViewAngle` (Single)
     pub own_default_view_angle: f32,
+    /// `ownTurretDefaultViewAngle` (Single)
+    pub own_turret_default_view_angle: f32,
     /// `ownTranslationSmoothingTime` (Single)
     pub own_translation_smoothing_time: f32,
     /// `ownTranslationOffsetRadiusRatio` (Single)
@@ -90,6 +94,8 @@ pub struct UIHoloVehicle_Config {
     pub turret_aim_material: String,
     /// `vehicleHitMaterial` (String)
     pub vehicle_hit_material: String,
+    /// `vehicleHitMaterialBright` (String)
+    pub vehicle_hit_material_bright: String,
     /// `shieldHitMaterial` (String)
     pub shield_hit_material: String,
     /// `itemTypeWhitelist` (EnumChoice (array))
@@ -151,8 +157,14 @@ impl<'a> Extract<'a> for UIHoloVehicle_Config {
             turret_aim_width_ratio: inst.get_f32("turretAimWidthRatio").unwrap_or_default(),
             camera_fov: inst.get_f32("cameraFOV").unwrap_or_default(),
             own_camera_distance_scaler: inst.get_f32("ownCameraDistanceScaler").unwrap_or_default(),
+            own_turret_camera_distance_scaler: inst
+                .get_f32("ownTurretCameraDistanceScaler")
+                .unwrap_or_default(),
             own_angular_offset_range: inst.get_f32("ownAngularOffsetRange").unwrap_or_default(),
             own_default_view_angle: inst.get_f32("ownDefaultViewAngle").unwrap_or_default(),
+            own_turret_default_view_angle: inst
+                .get_f32("ownTurretDefaultViewAngle")
+                .unwrap_or_default(),
             own_translation_smoothing_time: inst
                 .get_f32("ownTranslationSmoothingTime")
                 .unwrap_or_default(),
@@ -203,6 +215,10 @@ impl<'a> Extract<'a> for UIHoloVehicle_Config {
                 .unwrap_or_default(),
             vehicle_hit_material: inst
                 .get_str("vehicleHitMaterial")
+                .map(String::from)
+                .unwrap_or_default(),
+            vehicle_hit_material_bright: inst
+                .get_str("vehicleHitMaterialBright")
                 .map(String::from)
                 .unwrap_or_default(),
             shield_hit_material: inst

@@ -188,8 +188,8 @@ pub struct ItemTypeDefinition {
     pub default_category: Option<Handle<ItemTypeCategory>>,
     /// `categories` (Class (array))
     pub categories: Vec<Handle<ItemTypeCategory>>,
-    /// `typeInfo` (Class)
-    pub type_info: Option<Handle<ItemTypeInfo>>,
+    /// `typeInfo` (Class (array))
+    pub type_info: Vec<Handle<ItemTypeInfo>>,
     /// `allCategoriesLabel` (Locale)
     pub all_categories_label: LocaleKey,
     /// `allTypesLabel` (Locale)
@@ -237,13 +237,25 @@ impl<'a> Extract<'a> for ItemTypeDefinition {
                     .collect()
                 })
                 .unwrap_or_default(),
-            type_info: match inst.get("typeInfo") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<ItemTypeInfo>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
-                _ => None,
-            },
+            type_info: inst
+                .get_array("typeInfo")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<ItemTypeInfo>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => Some(b.alloc_nested::<ItemTypeInfo>(
+                            b.db.instance(r.struct_index, r.instance_index),
+                            true,
+                        )),
+                        _ => None,
+                    })
+                    .collect()
+                })
+                .unwrap_or_default(),
             all_categories_label: inst
                 .get_str("allCategoriesLabel")
                 .map(LocaleKey::from)

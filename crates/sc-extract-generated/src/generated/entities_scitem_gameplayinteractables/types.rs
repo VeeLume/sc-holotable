@@ -261,6 +261,57 @@ impl<'a> Extract<'a> for SDissolveSelfGameplayTrigger {
     }
 }
 
+/// DCB type: `GameplayTrigger_TargetType_Random`
+/// Inherits from: `GameplayTrigger_TargetType_Base`
+pub struct GameplayTrigger_TargetType_Random {
+    /// `optionalTarget` (Boolean)
+    pub optional_target: bool,
+    /// `targets` (StrongPointer (array))
+    pub targets: Vec<GameplayTrigger_TargetType_BasePtr>,
+    /// `nextTarget` (StrongPointer)
+    pub next_target: Option<GameplayTrigger_TargetType_BasePtr>,
+}
+
+impl Pooled for GameplayTrigger_TargetType_Random {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_scitem_gameplayinteractables
+            .gameplay_trigger_target_type_random
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_scitem_gameplayinteractables
+            .gameplay_trigger_target_type_random
+    }
+}
+
+impl<'a> Extract<'a> for GameplayTrigger_TargetType_Random {
+    const TYPE_NAME: &'static str = "GameplayTrigger_TargetType_Random";
+    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
+        Self {
+            optional_target: inst.get_bool("optionalTarget").unwrap_or_default(),
+            targets: inst
+                .get_array("targets")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => {
+                            Some(GameplayTrigger_TargetType_BasePtr::from_ref(b, r))
+                        }
+                        _ => None,
+                    })
+                    .collect()
+                })
+                .unwrap_or_default(),
+            next_target: match inst.get("nextTarget") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(GameplayTrigger_TargetType_BasePtr::from_ref(b, r))
+                }
+                _ => None,
+            },
+        }
+    }
+}
+
 /// DCB type: `SelfInteractionTrigger`
 /// Inherits from: `SelfCommunicationMessage`
 pub struct SelfInteractionTrigger {

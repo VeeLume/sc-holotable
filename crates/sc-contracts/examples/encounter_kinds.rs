@@ -86,7 +86,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("missions:                  {}", index.contracts.len());
     println!("Encounter::Ships:          {ships}");
     println!("Encounter::Npcs:           {npcs}  ({npc_phases} phases, {npc_slots} slots)");
-    println!("Encounter::Entities:       {entities}  ({entity_phases} phases, {entity_slots} slots)");
+    println!(
+        "Encounter::Entities:       {entities}  ({entity_phases} phases, {entity_slots} slots)"
+    );
     println!("Encounter::Unknown:        {unknown}");
     println!();
     println!("=== NPC slot signal coverage ===");

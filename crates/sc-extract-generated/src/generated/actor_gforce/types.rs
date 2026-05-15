@@ -83,8 +83,8 @@ impl<'a> Extract<'a> for ActorGForceCameraEffectsData {
 
 /// DCB type: `ActorGForceCameraEffects`
 pub struct ActorGForceCameraEffects {
-    /// `cameraEffects` (Class)
-    pub camera_effects: Option<Handle<ActorGForceCameraEffectsData>>,
+    /// `cameraEffects` (Class (array))
+    pub camera_effects: Vec<Handle<ActorGForceCameraEffectsData>>,
 }
 
 impl Pooled for ActorGForceCameraEffects {
@@ -100,15 +100,25 @@ impl<'a> Extract<'a> for ActorGForceCameraEffects {
     const TYPE_NAME: &'static str = "ActorGForceCameraEffects";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            camera_effects: match inst.get("cameraEffects") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<ActorGForceCameraEffectsData>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
-                _ => None,
-            },
+            camera_effects: inst
+                .get_array("cameraEffects")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<ActorGForceCameraEffectsData>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => Some(b.alloc_nested::<ActorGForceCameraEffectsData>(
+                            b.db.instance(r.struct_index, r.instance_index),
+                            true,
+                        )),
+                        _ => None,
+                    })
+                    .collect()
+                })
+                .unwrap_or_default(),
         }
     }
 }

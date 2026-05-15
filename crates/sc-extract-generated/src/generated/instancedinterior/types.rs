@@ -24,8 +24,8 @@ pub struct InstancedInteriorLocationParams {
     pub location: Option<CigGuid>,
     /// `devOnly` (Boolean)
     pub dev_only: bool,
-    /// `defaultHangars` (Reference)
-    pub default_hangars: Option<CigGuid>,
+    /// `defaultHangars` (Reference (array))
+    pub default_hangars: Vec<CigGuid>,
 }
 
 impl Pooled for InstancedInteriorLocationParams {
@@ -47,9 +47,18 @@ impl<'a> Extract<'a> for InstancedInteriorLocationParams {
                 .map(|r| r.guid),
             dev_only: inst.get_bool("devOnly").unwrap_or_default(),
             default_hangars: inst
-                .get("defaultHangars")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
+                .get_array("defaultHangars")
+                .map(|arr| {
+                    arr.filter_map(|v| {
+                        if let Value::Reference(Some(r)) = v {
+                            Some(r.guid)
+                        } else {
+                            None
+                        }
+                    })
+                    .collect()
+                })
+                .unwrap_or_default(),
         }
     }
 }

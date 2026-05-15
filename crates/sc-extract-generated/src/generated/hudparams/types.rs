@@ -18,12 +18,12 @@ use svarog_datacore::{Instance, Value};
 
 use super::super::*;
 
-/// DCB type: `STargetSelectorColorHighlighting`
-pub struct STargetSelectorColorHighlighting {
+/// DCB type: `STargetSelectorColorHighlightingData`
+pub struct STargetSelectorColorHighlightingData {
     /// `highlightColor` (Class)
     pub highlight_color: Option<Handle<RGB>>,
-    /// `occludedAlpha` (Single)
-    pub occluded_alpha: f32,
+    /// `alpha` (Single)
+    pub alpha: f32,
     /// `outlineOnly` (Boolean)
     pub outline_only: bool,
     /// `outlineWidth` (Single)
@@ -36,6 +36,45 @@ pub struct STargetSelectorColorHighlighting {
     pub interference_tiling: f32,
     /// `interferenceBrightness` (Single)
     pub interference_brightness: f32,
+}
+
+impl Pooled for STargetSelectorColorHighlightingData {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.hudparams.starget_selector_color_highlighting_data
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.hudparams.starget_selector_color_highlighting_data
+    }
+}
+
+impl<'a> Extract<'a> for STargetSelectorColorHighlightingData {
+    const TYPE_NAME: &'static str = "STargetSelectorColorHighlightingData";
+    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
+        Self {
+            highlight_color: match inst.get("highlightColor") {
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<RGB>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
+                _ => None,
+            },
+            alpha: inst.get_f32("alpha").unwrap_or_default(),
+            outline_only: inst.get_bool("outlineOnly").unwrap_or_default(),
+            outline_width: inst.get_f32("outlineWidth").unwrap_or_default(),
+            interference_amount: inst.get_f32("interferenceAmount").unwrap_or_default(),
+            interference_speed: inst.get_f32("interferenceSpeed").unwrap_or_default(),
+            interference_tiling: inst.get_f32("interferenceTiling").unwrap_or_default(),
+            interference_brightness: inst.get_f32("interferenceBrightness").unwrap_or_default(),
+        }
+    }
+}
+
+/// DCB type: `STargetSelectorColorHighlighting`
+pub struct STargetSelectorColorHighlighting {
+    /// `outlineData` (Class)
+    pub outline_data: Option<Handle<STargetSelectorColorHighlightingData>>,
+    /// `occludedOutlineData` (Class)
+    pub occluded_outline_data: Option<Handle<STargetSelectorColorHighlightingData>>,
     /// `useHostilityColor` (Boolean)
     pub use_hostility_color: bool,
 }
@@ -53,20 +92,24 @@ impl<'a> Extract<'a> for STargetSelectorColorHighlighting {
     const TYPE_NAME: &'static str = "STargetSelectorColorHighlighting";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            highlight_color: match inst.get("highlightColor") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<RGB>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
+            outline_data: match inst.get("outlineData") {
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<STargetSelectorColorHighlightingData>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
                 _ => None,
             },
-            occluded_alpha: inst.get_f32("occludedAlpha").unwrap_or_default(),
-            outline_only: inst.get_bool("outlineOnly").unwrap_or_default(),
-            outline_width: inst.get_f32("outlineWidth").unwrap_or_default(),
-            interference_amount: inst.get_f32("interferenceAmount").unwrap_or_default(),
-            interference_speed: inst.get_f32("interferenceSpeed").unwrap_or_default(),
-            interference_tiling: inst.get_f32("interferenceTiling").unwrap_or_default(),
-            interference_brightness: inst.get_f32("interferenceBrightness").unwrap_or_default(),
+            occluded_outline_data: match inst.get("occludedOutlineData") {
+                Some(Value::Class { struct_index, data }) => {
+                    Some(b.alloc_nested::<STargetSelectorColorHighlightingData>(
+                        Instance::from_inline_data(b.db, struct_index, data),
+                        false,
+                    ))
+                }
+                _ => None,
+            },
             use_hostility_color: inst.get_bool("useHostilityColor").unwrap_or_default(),
         }
     }
@@ -520,14 +563,14 @@ impl<'a> Extract<'a> for SVehicleHudParams {
 
 /// DCB type: `SAimableGimbalModeLabels`
 pub struct SAimableGimbalModeLabels {
-    /// `aimTypeNamesFull` (Locale)
-    pub aim_type_names_full: LocaleKey,
-    /// `aimTypeNamesShort` (Locale)
-    pub aim_type_names_short: LocaleKey,
-    /// `gimbalStateNamesFull` (Locale)
-    pub gimbal_state_names_full: LocaleKey,
-    /// `gimbalStateNamesShort` (Locale)
-    pub gimbal_state_names_short: LocaleKey,
+    /// `aimTypeNamesFull` (Locale (array))
+    pub aim_type_names_full: Vec<LocaleKey>,
+    /// `aimTypeNamesShort` (Locale (array))
+    pub aim_type_names_short: Vec<LocaleKey>,
+    /// `gimbalStateNamesFull` (Locale (array))
+    pub gimbal_state_names_full: Vec<LocaleKey>,
+    /// `gimbalStateNamesShort` (Locale (array))
+    pub gimbal_state_names_short: Vec<LocaleKey>,
 }
 
 impl Pooled for SAimableGimbalModeLabels {
@@ -544,20 +587,32 @@ impl<'a> Extract<'a> for SAimableGimbalModeLabels {
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
             aim_type_names_full: inst
-                .get_str("aimTypeNamesFull")
-                .map(LocaleKey::from)
+                .get_array("aimTypeNamesFull")
+                .map(|arr| {
+                    arr.filter_map(|v| v.as_str().map(LocaleKey::from))
+                        .collect()
+                })
                 .unwrap_or_default(),
             aim_type_names_short: inst
-                .get_str("aimTypeNamesShort")
-                .map(LocaleKey::from)
+                .get_array("aimTypeNamesShort")
+                .map(|arr| {
+                    arr.filter_map(|v| v.as_str().map(LocaleKey::from))
+                        .collect()
+                })
                 .unwrap_or_default(),
             gimbal_state_names_full: inst
-                .get_str("gimbalStateNamesFull")
-                .map(LocaleKey::from)
+                .get_array("gimbalStateNamesFull")
+                .map(|arr| {
+                    arr.filter_map(|v| v.as_str().map(LocaleKey::from))
+                        .collect()
+                })
                 .unwrap_or_default(),
             gimbal_state_names_short: inst
-                .get_str("gimbalStateNamesShort")
-                .map(LocaleKey::from)
+                .get_array("gimbalStateNamesShort")
+                .map(|arr| {
+                    arr.filter_map(|v| v.as_str().map(LocaleKey::from))
+                        .collect()
+                })
                 .unwrap_or_default(),
         }
     }
@@ -581,8 +636,8 @@ pub struct SAimableControllerHudParams {
     pub border_offset_angle_min: f32,
     /// `borderOffsetAngleMax` (Single)
     pub border_offset_angle_max: f32,
-    /// `crosshairShapes` (Int32)
-    pub crosshair_shapes: i32,
+    /// `crosshairShapes` (Int32 (array))
+    pub crosshair_shapes: Vec<i32>,
     /// `gimbalAlignmentAngle` (Single)
     pub gimbal_alignment_angle: f32,
     /// `gimbalAlignmentExcludeOutOfAngle` (Boolean)
@@ -626,7 +681,10 @@ impl<'a> Extract<'a> for SAimableControllerHudParams {
             },
             border_offset_angle_min: inst.get_f32("borderOffsetAngleMin").unwrap_or_default(),
             border_offset_angle_max: inst.get_f32("borderOffsetAngleMax").unwrap_or_default(),
-            crosshair_shapes: inst.get_i32("crosshairShapes").unwrap_or_default(),
+            crosshair_shapes: inst
+                .get_array("crosshairShapes")
+                .map(|arr| arr.filter_map(|v| v.as_i32()).collect())
+                .unwrap_or_default(),
             gimbal_alignment_angle: inst.get_f32("gimbalAlignmentAngle").unwrap_or_default(),
             gimbal_alignment_exclude_out_of_angle: inst
                 .get_bool("gimbalAlignmentExcludeOutOfAngle")

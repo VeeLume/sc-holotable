@@ -58,21 +58,21 @@ impl<'a> Extract<'a> for LegacyMobiGlasParams {
     }
 }
 
-/// DCB type: `LandingAreaServicesParams`
+/// DCB type: `ShipServicesUIProviderParams`
 /// Inherits from: `DataForgeComponentParams`
-pub struct LandingAreaServicesParams {}
+pub struct ShipServicesUIProviderParams {}
 
-impl Pooled for LandingAreaServicesParams {
+impl Pooled for ShipServicesUIProviderParams {
     fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_scitem_suit.landing_area_services_params
+        &pools.entities_scitem_suit.ship_services_uiprovider_params
     }
     fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_scitem_suit.landing_area_services_params
+        &mut pools.entities_scitem_suit.ship_services_uiprovider_params
     }
 }
 
-impl<'a> Extract<'a> for LandingAreaServicesParams {
-    const TYPE_NAME: &'static str = "LandingAreaServicesParams";
+impl<'a> Extract<'a> for ShipServicesUIProviderParams {
+    const TYPE_NAME: &'static str = "ShipServicesUIProviderParams";
     fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {}
     }

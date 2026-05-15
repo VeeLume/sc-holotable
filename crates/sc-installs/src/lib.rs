@@ -68,8 +68,8 @@ mod manifest;
 
 pub use channel::Channel;
 pub use discovery::{
-    discover, discover_default, discover_from, discover_last_launched,
-    discover_last_launched_from, discover_primary, discover_primary_from,
+    discover, discover_default, discover_from, discover_last_launched, discover_last_launched_from,
+    discover_primary, discover_primary_from,
 };
 pub use error::{Error, Result};
 pub use installation::Installation;

@@ -25,8 +25,8 @@
 //! materialises [`crate::ShipCandidate`]s on the slot. Consumers that
 //! want the raw Ship-rooted tag GUIDs use [`TagBag::guids`].
 
-use sc_extract::{DataPools, Guid, TagTree};
 use sc_extract::generated::{Handle, TagList};
+use sc_extract::{DataPools, Guid, TagTree};
 
 /// One resolved tag list — the canonical shape exposed for each of the
 /// four `SpawnDescription_Ship` tag slots (positive / negative / markup
@@ -61,7 +61,10 @@ impl TagBag {
         let mut entries: Vec<(Guid, String)> = by_guid.into_iter().collect();
         // Sort by name (display order), tiebreak on GUID-byte ordering
         // for stable output across runs (CigGuid doesn't impl Ord).
-        entries.sort_by(|a, b| a.1.cmp(&b.1).then_with(|| a.0.as_bytes().cmp(b.0.as_bytes())));
+        entries.sort_by(|a, b| {
+            a.1.cmp(&b.1)
+                .then_with(|| a.0.as_bytes().cmp(b.0.as_bytes()))
+        });
         let mut guids = Vec::with_capacity(entries.len());
         let mut names = Vec::with_capacity(entries.len());
         for (g, n) in entries {
@@ -73,11 +76,7 @@ impl TagBag {
 
     /// Convenience: build from an underlying `Handle<TagList>` reference.
     /// Used by extraction code to materialise the four slot tag lists.
-    pub fn from_handle(
-        pools: &DataPools,
-        tree: &TagTree,
-        h: Option<&Handle<TagList>>,
-    ) -> Self {
+    pub fn from_handle(pools: &DataPools, tree: &TagTree, h: Option<&Handle<TagList>>) -> Self {
         let Some(h) = h else { return Self::default() };
         let Some(list) = h.get(pools) else {
             return Self::default();
@@ -153,10 +152,7 @@ impl TagBag {
 
     /// Tags under `Missions ▸ *` (`AvailableToSalvage`, size markers,
     /// mission-type flags).
-    pub fn mission_tags<'a>(
-        &'a self,
-        tree: &'a TagTree,
-    ) -> impl Iterator<Item = &'a str> + 'a {
+    pub fn mission_tags<'a>(&'a self, tree: &'a TagTree) -> impl Iterator<Item = &'a str> + 'a {
         self.subtree_iter(tree, "Missions", None)
     }
 

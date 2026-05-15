@@ -187,12 +187,12 @@ pub struct FireHazardPermanentEffects {
     pub triplanar_dither_max_angle: f32,
     /// `breakupSize` (Single)
     pub breakup_size: f32,
-    /// `fire` (Class)
-    pub fire: Option<Handle<FireHazardFireProperties>>,
+    /// `fire` (Class (array))
+    pub fire: Vec<Handle<FireHazardFireProperties>>,
     /// `afterglow` (Class)
     pub afterglow: Option<Handle<FireHazardAfterglowProperties>>,
-    /// `surfaces` (Class)
-    pub surfaces: Option<Handle<FireHazardSurfaceProperties>>,
+    /// `surfaces` (Class (array))
+    pub surfaces: Vec<Handle<FireHazardSurfaceProperties>>,
 }
 
 impl Pooled for FireHazardPermanentEffects {
@@ -214,15 +214,25 @@ impl<'a> Extract<'a> for FireHazardPermanentEffects {
             triplanar_dither_repeat: inst.get_f32("triplanarDitherRepeat").unwrap_or_default(),
             triplanar_dither_max_angle: inst.get_f32("triplanarDitherMaxAngle").unwrap_or_default(),
             breakup_size: inst.get_f32("breakupSize").unwrap_or_default(),
-            fire: match inst.get("fire") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<FireHazardFireProperties>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
-                _ => None,
-            },
+            fire: inst
+                .get_array("fire")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<FireHazardFireProperties>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => Some(b.alloc_nested::<FireHazardFireProperties>(
+                            b.db.instance(r.struct_index, r.instance_index),
+                            true,
+                        )),
+                        _ => None,
+                    })
+                    .collect()
+                })
+                .unwrap_or_default(),
             afterglow: match inst.get("afterglow") {
                 Some(Value::Class { struct_index, data }) => {
                     Some(b.alloc_nested::<FireHazardAfterglowProperties>(
@@ -232,15 +242,25 @@ impl<'a> Extract<'a> for FireHazardPermanentEffects {
                 }
                 _ => None,
             },
-            surfaces: match inst.get("surfaces") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<FireHazardSurfaceProperties>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
-                _ => None,
-            },
+            surfaces: inst
+                .get_array("surfaces")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<FireHazardSurfaceProperties>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => Some(b.alloc_nested::<FireHazardSurfaceProperties>(
+                            b.db.instance(r.struct_index, r.instance_index),
+                            true,
+                        )),
+                        _ => None,
+                    })
+                    .collect()
+                })
+                .unwrap_or_default(),
         }
     }
 }
@@ -558,18 +578,18 @@ impl<'a> Extract<'a> for FireHazardGlobalUpdate {
 pub struct FireHazardGlobalIgnition {
     /// `globalIgnitionChanceMultiplier` (Single)
     pub global_ignition_chance_multiplier: f32,
-    /// `explosionChanceMultiplier` (Single)
-    pub explosion_chance_multiplier: f32,
-    /// `projectileChanceMultiplier` (Single)
-    pub projectile_chance_multiplier: f32,
-    /// `collisionChanceMultiplier` (Single)
-    pub collision_chance_multiplier: f32,
-    /// `fallbackChanceMultiplier` (Single)
-    pub fallback_chance_multiplier: f32,
+    /// `explosionChanceMultiplier` (Single (array))
+    pub explosion_chance_multiplier: Vec<f32>,
+    /// `projectileChanceMultiplier` (Single (array))
+    pub projectile_chance_multiplier: Vec<f32>,
+    /// `collisionChanceMultiplier` (Single (array))
+    pub collision_chance_multiplier: Vec<f32>,
+    /// `fallbackChanceMultiplier` (Single (array))
+    pub fallback_chance_multiplier: Vec<f32>,
     /// `globalFlashIgnitionThresholdMultiplier` (Single)
     pub global_flash_ignition_threshold_multiplier: f32,
-    /// `damageTypeIgnitionModifiers` (Single)
-    pub damage_type_ignition_modifiers: f32,
+    /// `damageTypeIgnitionModifiers` (Single (array))
+    pub damage_type_ignition_modifiers: Vec<f32>,
 }
 
 impl Pooled for FireHazardGlobalIgnition {
@@ -589,22 +609,27 @@ impl<'a> Extract<'a> for FireHazardGlobalIgnition {
                 .get_f32("globalIgnitionChanceMultiplier")
                 .unwrap_or_default(),
             explosion_chance_multiplier: inst
-                .get_f32("explosionChanceMultiplier")
+                .get_array("explosionChanceMultiplier")
+                .map(|arr| arr.filter_map(|v| v.as_f32()).collect())
                 .unwrap_or_default(),
             projectile_chance_multiplier: inst
-                .get_f32("projectileChanceMultiplier")
+                .get_array("projectileChanceMultiplier")
+                .map(|arr| arr.filter_map(|v| v.as_f32()).collect())
                 .unwrap_or_default(),
             collision_chance_multiplier: inst
-                .get_f32("collisionChanceMultiplier")
+                .get_array("collisionChanceMultiplier")
+                .map(|arr| arr.filter_map(|v| v.as_f32()).collect())
                 .unwrap_or_default(),
             fallback_chance_multiplier: inst
-                .get_f32("fallbackChanceMultiplier")
+                .get_array("fallbackChanceMultiplier")
+                .map(|arr| arr.filter_map(|v| v.as_f32()).collect())
                 .unwrap_or_default(),
             global_flash_ignition_threshold_multiplier: inst
                 .get_f32("globalFlashIgnitionThresholdMultiplier")
                 .unwrap_or_default(),
             damage_type_ignition_modifiers: inst
-                .get_f32("damageTypeIgnitionModifiers")
+                .get_array("damageTypeIgnitionModifiers")
+                .map(|arr| arr.filter_map(|v| v.as_f32()).collect())
                 .unwrap_or_default(),
         }
     }
@@ -1289,10 +1314,10 @@ impl<'a> Extract<'a> for GlobalGasParams {
 
 /// DCB type: `GlobalRoomStateParams`
 pub struct GlobalRoomStateParams {
-    /// `typeRanges` (Class)
-    pub type_ranges: Option<Handle<Range>>,
-    /// `typeDebugColors` (Class)
-    pub type_debug_colors: Option<Handle<RGB>>,
+    /// `typeRanges` (Class (array))
+    pub type_ranges: Vec<Handle<Range>>,
+    /// `typeDebugColors` (Class (array))
+    pub type_debug_colors: Vec<Handle<RGB>>,
     /// `debugParticles` (Class)
     pub debug_particles: Option<Handle<GlobalResourceParticle>>,
     /// `defaultSpaceDust` (Class)
@@ -1312,20 +1337,40 @@ impl<'a> Extract<'a> for GlobalRoomStateParams {
     const TYPE_NAME: &'static str = "GlobalRoomStateParams";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            type_ranges: match inst.get("typeRanges") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
-                _ => None,
-            },
-            type_debug_colors: match inst.get("typeDebugColors") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<RGB>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
-                _ => None,
-            },
+            type_ranges: inst
+                .get_array("typeRanges")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<Range>(
+                            Instance::from_inline_data(b.db, struct_index, data),
+                            false,
+                        )),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<Range>(
+                            b.db.instance(r.struct_index, r.instance_index),
+                            true,
+                        )),
+                        _ => None,
+                    })
+                    .collect()
+                })
+                .unwrap_or_default(),
+            type_debug_colors: inst
+                .get_array("typeDebugColors")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<RGB>(
+                            Instance::from_inline_data(b.db, struct_index, data),
+                            false,
+                        )),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<RGB>(
+                            b.db.instance(r.struct_index, r.instance_index),
+                            true,
+                        )),
+                        _ => None,
+                    })
+                    .collect()
+                })
+                .unwrap_or_default(),
             debug_particles: match inst.get("debugParticles") {
                 Some(Value::Class { struct_index, data }) => {
                     Some(b.alloc_nested::<GlobalResourceParticle>(

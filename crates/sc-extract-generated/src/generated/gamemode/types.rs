@@ -18,6 +18,180 @@ use svarog_datacore::{Instance, Value};
 
 use super::super::*;
 
+/// DCB type: `SArchetypeAssetEntityDef`
+/// Inherits from: `SArchetypeEntityAssetDefBase`
+pub struct SArchetypeAssetEntityDef {
+    /// `debugName` (String)
+    pub debug_name: String,
+    /// `itemportName` (String)
+    pub itemport_name: String,
+    /// `parentItemportName` (String)
+    pub parent_itemport_name: String,
+    /// `entityClass` (Reference)
+    pub entity_class: Option<CigGuid>,
+}
+
+impl Pooled for SArchetypeAssetEntityDef {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.gamemode.sarchetype_asset_entity_def
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.gamemode.sarchetype_asset_entity_def
+    }
+}
+
+impl<'a> Extract<'a> for SArchetypeAssetEntityDef {
+    const TYPE_NAME: &'static str = "SArchetypeAssetEntityDef";
+    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {
+            debug_name: inst
+                .get_str("debugName")
+                .map(String::from)
+                .unwrap_or_default(),
+            itemport_name: inst
+                .get_str("itemportName")
+                .map(String::from)
+                .unwrap_or_default(),
+            parent_itemport_name: inst
+                .get_str("parentItemportName")
+                .map(String::from)
+                .unwrap_or_default(),
+            entity_class: inst
+                .get("entityClass")
+                .and_then(|v| v.as_record_ref())
+                .map(|r| r.guid),
+        }
+    }
+}
+
+/// DCB type: `SArchetypeAssetCHFDef`
+/// Inherits from: `SArchetypeAssetDefBase`
+pub struct SArchetypeAssetCHFDef {
+    /// `debugName` (String)
+    pub debug_name: String,
+    /// `customizationFile` (String)
+    pub customization_file: String,
+}
+
+impl Pooled for SArchetypeAssetCHFDef {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.gamemode.sarchetype_asset_chfdef
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.gamemode.sarchetype_asset_chfdef
+    }
+}
+
+impl<'a> Extract<'a> for SArchetypeAssetCHFDef {
+    const TYPE_NAME: &'static str = "SArchetypeAssetCHFDef";
+    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {
+            debug_name: inst
+                .get_str("debugName")
+                .map(String::from)
+                .unwrap_or_default(),
+            customization_file: inst
+                .get_str("customizationFile")
+                .map(String::from)
+                .unwrap_or_default(),
+        }
+    }
+}
+
+/// DCB type: `SArchetypeAssetLoadoutDef`
+/// Inherits from: `SArchetypeAssetDefBase`
+pub struct SArchetypeAssetLoadoutDef {
+    /// `debugName` (String)
+    pub debug_name: String,
+    /// `loadout` (StrongPointer)
+    pub loadout: Option<SItemPortLoadoutBaseParamsPtr>,
+}
+
+impl Pooled for SArchetypeAssetLoadoutDef {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.gamemode.sarchetype_asset_loadout_def
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.gamemode.sarchetype_asset_loadout_def
+    }
+}
+
+impl<'a> Extract<'a> for SArchetypeAssetLoadoutDef {
+    const TYPE_NAME: &'static str = "SArchetypeAssetLoadoutDef";
+    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
+        Self {
+            debug_name: inst
+                .get_str("debugName")
+                .map(String::from)
+                .unwrap_or_default(),
+            loadout: match inst.get("loadout") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(SItemPortLoadoutBaseParamsPtr::from_ref(b, r))
+                }
+                _ => None,
+            },
+        }
+    }
+}
+
+/// DCB type: `SArchetypeAssetTagDef`
+/// Inherits from: `SArchetypeEntityAssetDefBase`
+pub struct SArchetypeAssetTagDef {
+    /// `debugName` (String)
+    pub debug_name: String,
+    /// `itemportName` (String)
+    pub itemport_name: String,
+    /// `parentItemportName` (String)
+    pub parent_itemport_name: String,
+    /// `requiredTags` (Class)
+    pub required_tags: Option<Handle<TagList>>,
+    /// `forbiddenTags` (Class)
+    pub forbidden_tags: Option<Handle<TagList>>,
+}
+
+impl Pooled for SArchetypeAssetTagDef {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.gamemode.sarchetype_asset_tag_def
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.gamemode.sarchetype_asset_tag_def
+    }
+}
+
+impl<'a> Extract<'a> for SArchetypeAssetTagDef {
+    const TYPE_NAME: &'static str = "SArchetypeAssetTagDef";
+    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
+        Self {
+            debug_name: inst
+                .get_str("debugName")
+                .map(String::from)
+                .unwrap_or_default(),
+            itemport_name: inst
+                .get_str("itemportName")
+                .map(String::from)
+                .unwrap_or_default(),
+            parent_itemport_name: inst
+                .get_str("parentItemportName")
+                .map(String::from)
+                .unwrap_or_default(),
+            required_tags: match inst.get("requiredTags") {
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<TagList>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
+                _ => None,
+            },
+            forbidden_tags: match inst.get("forbiddenTags") {
+                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<TagList>(
+                    Instance::from_inline_data(b.db, struct_index, data),
+                    false,
+                )),
+                _ => None,
+            },
+        }
+    }
+}
+
 /// DCB type: `SEAPlayerLoadoutSnapshotEntry`
 pub struct SEAPlayerLoadoutSnapshotEntry {
     /// `loadout` (StrongPointer)
@@ -49,8 +223,8 @@ impl<'a> Extract<'a> for SEAPlayerLoadoutSnapshotEntry {
 
 /// DCB type: `SEAPlayerLoadoutSnapshots`
 pub struct SEAPlayerLoadoutSnapshots {
-    /// `entries` (Class)
-    pub entries: Option<Handle<SEAPlayerLoadoutSnapshotEntry>>,
+    /// `entries` (Class (array))
+    pub entries: Vec<Handle<SEAPlayerLoadoutSnapshotEntry>>,
 }
 
 impl Pooled for SEAPlayerLoadoutSnapshots {
@@ -66,15 +240,27 @@ impl<'a> Extract<'a> for SEAPlayerLoadoutSnapshots {
     const TYPE_NAME: &'static str = "SEAPlayerLoadoutSnapshots";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            entries: match inst.get("entries") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<SEAPlayerLoadoutSnapshotEntry>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
-                _ => None,
-            },
+            entries: inst
+                .get_array("entries")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<SEAPlayerLoadoutSnapshotEntry>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => {
+                            Some(b.alloc_nested::<SEAPlayerLoadoutSnapshotEntry>(
+                                b.db.instance(r.struct_index, r.instance_index),
+                                true,
+                            ))
+                        }
+                        _ => None,
+                    })
+                    .collect()
+                })
+                .unwrap_or_default(),
         }
     }
 }

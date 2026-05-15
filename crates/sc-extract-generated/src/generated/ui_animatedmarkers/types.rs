@@ -105,8 +105,8 @@ pub struct AnimatedMarker {
     pub lock_lost_length: f32,
     /// `additionAttachments` (UInt32)
     pub addition_attachments: u32,
-    /// `markers` (Class)
-    pub markers: Option<Handle<AnimatedMarker_Marker>>,
+    /// `markers` (Class (array))
+    pub markers: Vec<Handle<AnimatedMarker_Marker>>,
 }
 
 impl Pooled for AnimatedMarker {
@@ -135,15 +135,25 @@ impl<'a> Extract<'a> for AnimatedMarker {
             matrix_blend_rate: inst.get_f32("matrixBlendRate").unwrap_or_default(),
             lock_lost_length: inst.get_f32("lockLostLength").unwrap_or_default(),
             addition_attachments: inst.get_u32("additionAttachments").unwrap_or_default(),
-            markers: match inst.get("markers") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<AnimatedMarker_Marker>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
-                _ => None,
-            },
+            markers: inst
+                .get_array("markers")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<AnimatedMarker_Marker>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => Some(b.alloc_nested::<AnimatedMarker_Marker>(
+                            b.db.instance(r.struct_index, r.instance_index),
+                            true,
+                        )),
+                        _ => None,
+                    })
+                    .collect()
+                })
+                .unwrap_or_default(),
         }
     }
 }

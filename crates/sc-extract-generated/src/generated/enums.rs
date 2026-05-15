@@ -634,6 +634,41 @@ impl ActiveRange {
     }
 }
 
+/// DCB enum: `ActorAccelerationDirection`
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+pub enum ActorAccelerationDirection {
+    /// DCB value: `Up`
+    Up,
+    /// DCB value: `Down`
+    Down,
+    /// DCB value: `Front`
+    Front,
+    /// DCB value: `Back`
+    Back,
+    /// DCB value: `LeftRight`
+    LeftRight,
+    /// Unrecognised / newly-added enum value.
+    Unrecognized(String),
+}
+
+impl ActorAccelerationDirection {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Up" => Self::Up,
+            "Down" => Self::Down,
+            "Front" => Self::Front,
+            "Back" => Self::Back,
+            "LeftRight" => Self::LeftRight,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
 /// DCB enum: `ActorBodyDirection`
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ActorBodyDirection {
@@ -4839,6 +4874,32 @@ impl BB_ProgressMeterState {
         match s {
             "Static" => Self::Static,
             "Active" => Self::Active,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+/// DCB enum: `BB_ProgressType`
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+pub enum BB_ProgressType {
+    /// DCB value: `Ratio`
+    Ratio,
+    /// DCB value: `Percent`
+    Percent,
+    /// Unrecognised / newly-added enum value.
+    Unrecognized(String),
+}
+
+impl BB_ProgressType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Ratio" => Self::Ratio,
+            "Percent" => Self::Percent,
             _ => Self::Unrecognized(s.to_string()),
         }
     }
@@ -11815,6 +11876,32 @@ impl EChatEmoteType {
     }
 }
 
+/// DCB enum: `ECommandModuleType`
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+pub enum ECommandModuleType {
+    /// DCB value: `Parasite`
+    Parasite,
+    /// DCB value: `Host`
+    Host,
+    /// Unrecognised / newly-added enum value.
+    Unrecognized(String),
+}
+
+impl ECommandModuleType {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "Parasite" => Self::Parasite,
+            "Host" => Self::Host,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
 /// DCB enum: `ECommsNotificationTiming`
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ECommsNotificationTiming {
@@ -16576,12 +16663,16 @@ pub enum EItemResourceNegativeStates {
     eOverheating,
     /// DCB value: `eNoPower`
     eNoPower,
+    /// DCB value: `eBricking`
+    eBricking,
     /// DCB value: `eDistortion`
     eDistortion,
     /// DCB value: `eOverheatedShutDown`
     eOverheatedShutDown,
     /// DCB value: `eDestroyed`
     eDestroyed,
+    /// DCB value: `eBricked`
+    eBricked,
     /// DCB value: `eIgnited`
     eIgnited,
     /// Unrecognised / newly-added enum value.
@@ -16600,9 +16691,11 @@ impl EItemResourceNegativeStates {
             "eDamaged" => Self::eDamaged,
             "eOverheating" => Self::eOverheating,
             "eNoPower" => Self::eNoPower,
+            "eBricking" => Self::eBricking,
             "eDistortion" => Self::eDistortion,
             "eOverheatedShutDown" => Self::eOverheatedShutDown,
             "eDestroyed" => Self::eDestroyed,
+            "eBricked" => Self::eBricked,
             "eIgnited" => Self::eIgnited,
             _ => Self::Unrecognized(s.to_string()),
         }
@@ -17488,6 +17581,8 @@ pub enum EItemType {
     GroundVehicleMissileLauncher,
     /// DCB value: `HangarExpansion`
     HangarExpansion,
+    /// DCB value: `Hangar`
+    Hangar,
     /// DCB value: `HangarStock`
     HangarStock,
     /// DCB value: `Interior`
@@ -17779,6 +17874,7 @@ impl EItemType {
             "Grenade" => Self::Grenade,
             "GroundVehicleMissileLauncher" => Self::GroundVehicleMissileLauncher,
             "HangarExpansion" => Self::HangarExpansion,
+            "Hangar" => Self::Hangar,
             "HangarStock" => Self::HangarStock,
             "Interior" => Self::Interior,
             "InventoryContainer" => Self::InventoryContainer,
@@ -18943,6 +19039,8 @@ pub enum EMasterMode {
     SCM,
     /// DCB value: `Stealth`
     Stealth,
+    /// DCB value: `SMP`
+    SMP,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
 }
@@ -18959,6 +19057,7 @@ impl EMasterMode {
             "Navigation" => Self::Navigation,
             "SCM" => Self::SCM,
             "Stealth" => Self::Stealth,
+            "SMP" => Self::SMP,
             _ => Self::Unrecognized(s.to_string()),
         }
     }
@@ -19508,14 +19607,12 @@ pub enum EMotionProcessorLimiterType {
     NormalizedUniform,
     /// DCB value: `NormalizedUniformWithMaxRadius`
     NormalizedUniformWithMaxRadius,
-    /// DCB value: `NormalizedUniformLateral`
-    NormalizedUniformLateral,
+    /// DCB value: `NormalizedUniformWithMaxRadiusForwardOnly`
+    NormalizedUniformWithMaxRadiusForwardOnly,
     /// DCB value: `Ellipsoid`
     Ellipsoid,
     /// DCB value: `PerAxis`
     PerAxis,
-    /// DCB value: `PerAxisWithMaxRadius`
-    PerAxisWithMaxRadius,
     /// DCB value: `PerAxisLateral`
     PerAxisLateral,
     /// Unrecognised / newly-added enum value.
@@ -19532,10 +19629,11 @@ impl EMotionProcessorLimiterType {
         match s {
             "NormalizedUniform" => Self::NormalizedUniform,
             "NormalizedUniformWithMaxRadius" => Self::NormalizedUniformWithMaxRadius,
-            "NormalizedUniformLateral" => Self::NormalizedUniformLateral,
+            "NormalizedUniformWithMaxRadiusForwardOnly" => {
+                Self::NormalizedUniformWithMaxRadiusForwardOnly
+            }
             "Ellipsoid" => Self::Ellipsoid,
             "PerAxis" => Self::PerAxis,
-            "PerAxisWithMaxRadius" => Self::PerAxisWithMaxRadius,
             "PerAxisLateral" => Self::PerAxisLateral,
             _ => Self::Unrecognized(s.to_string()),
         }
@@ -20739,32 +20837,46 @@ pub enum EPlayerStateActions {
     FinishConsume,
     /// DCB value: `FirstSelect`
     FirstSelect,
+    /// DCB value: `Hack`
+    Hack,
     /// DCB value: `Inspect`
     Inspect,
     /// DCB value: `Interact`
     Interact,
+    /// DCB value: `HolsterItem`
+    HolsterItem,
     /// DCB value: `OffHandStore`
     OffHandStore,
     /// DCB value: `OffHandStow`
     OffHandStow,
+    /// DCB value: `OpenCloseContainer`
+    OpenCloseContainer,
     /// DCB value: `OpenMobiGlas`
     OpenMobiGlas,
     /// DCB value: `Place`
     Place,
     /// DCB value: `PlaceReady`
     PlaceReady,
+    /// DCB value: `PrimeItem`
+    PrimeItem,
     /// DCB value: `Stow`
     Stow,
     /// DCB value: `Store`
     Store,
     /// DCB value: `SwapAttachments`
     SwapAttachments,
+    /// DCB value: `SelectAttachment`
+    SelectAttachment,
+    /// DCB value: `Take`
+    Take,
     /// DCB value: `ThrowReady`
     ThrowReady,
     /// DCB value: `ThrowV2`
     ThrowV2,
     /// DCB value: `Unequip`
     Unequip,
+    /// DCB value: `UnholsterItem`
+    UnholsterItem,
     /// DCB value: `UnprimeItem`
     UnprimeItem,
     /// DCB value: `Unstow`
@@ -20773,6 +20885,8 @@ pub enum EPlayerStateActions {
     VisorWipe,
     /// DCB value: `SelfTarget`
     SelfTarget,
+    /// DCB value: `AmmoRepool`
+    AmmoRepool,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
 }
@@ -20792,23 +20906,31 @@ impl EPlayerStateActions {
             "Equip" => Self::Equip,
             "FinishConsume" => Self::FinishConsume,
             "FirstSelect" => Self::FirstSelect,
+            "Hack" => Self::Hack,
             "Inspect" => Self::Inspect,
             "Interact" => Self::Interact,
+            "HolsterItem" => Self::HolsterItem,
             "OffHandStore" => Self::OffHandStore,
             "OffHandStow" => Self::OffHandStow,
+            "OpenCloseContainer" => Self::OpenCloseContainer,
             "OpenMobiGlas" => Self::OpenMobiGlas,
             "Place" => Self::Place,
             "PlaceReady" => Self::PlaceReady,
+            "PrimeItem" => Self::PrimeItem,
             "Stow" => Self::Stow,
             "Store" => Self::Store,
             "SwapAttachments" => Self::SwapAttachments,
+            "SelectAttachment" => Self::SelectAttachment,
+            "Take" => Self::Take,
             "ThrowReady" => Self::ThrowReady,
             "ThrowV2" => Self::ThrowV2,
             "Unequip" => Self::Unequip,
+            "UnholsterItem" => Self::UnholsterItem,
             "UnprimeItem" => Self::UnprimeItem,
             "Unstow" => Self::Unstow,
             "VisorWipe" => Self::VisorWipe,
             "SelfTarget" => Self::SelfTarget,
+            "AmmoRepool" => Self::AmmoRepool,
             _ => Self::Unrecognized(s.to_string()),
         }
     }
@@ -25428,6 +25550,8 @@ pub enum EViewType {
     eView_Weapons,
     /// DCB value: `eView_Shields`
     eView_Shields,
+    /// DCB value: `eView_SMP`
+    eView_SMP,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
 }
@@ -25451,6 +25575,7 @@ impl EViewType {
             "eView_Scanning" => Self::eView_Scanning,
             "eView_Weapons" => Self::eView_Weapons,
             "eView_Shields" => Self::eView_Shields,
+            "eView_SMP" => Self::eView_SMP,
             _ => Self::Unrecognized(s.to_string()),
         }
     }
@@ -26386,6 +26511,10 @@ pub enum FlightHUDMessageType {
     OverheatedThrustersWarning,
     /// DCB value: `OverheatedGenericWarning`
     OverheatedGenericWarning,
+    /// DCB value: `BrickingWarning`
+    BrickingWarning,
+    /// DCB value: `BrickedWarning`
+    BrickedWarning,
     /// DCB value: `QuantumDriveInterdictionAlert`
     QuantumDriveInterdictionAlert,
     /// DCB value: `IncomingEMPDetected`
@@ -26447,6 +26576,8 @@ impl FlightHUDMessageType {
             "OverheatedShieldsWarning" => Self::OverheatedShieldsWarning,
             "OverheatedThrustersWarning" => Self::OverheatedThrustersWarning,
             "OverheatedGenericWarning" => Self::OverheatedGenericWarning,
+            "BrickingWarning" => Self::BrickingWarning,
+            "BrickedWarning" => Self::BrickedWarning,
             "QuantumDriveInterdictionAlert" => Self::QuantumDriveInterdictionAlert,
             "IncomingEMPDetected" => Self::IncomingEMPDetected,
             "GreenZoneWarning" => Self::GreenZoneWarning,
@@ -28265,6 +28396,8 @@ pub enum InteractionBindingsMethod {
     Name,
     /// DCB value: `States`
     States,
+    /// DCB value: `UiTag`
+    UiTag,
     /// Unrecognised / newly-added enum value.
     Unrecognized(String),
 }
@@ -28280,6 +28413,7 @@ impl InteractionBindingsMethod {
             "None" => Self::None,
             "Name" => Self::Name,
             "States" => Self::States,
+            "UiTag" => Self::UiTag,
             _ => Self::Unrecognized(s.to_string()),
         }
     }
@@ -31539,44 +31673,6 @@ impl RefiningSpeed {
     }
 }
 
-/// DCB enum: `RelativeDirection`
-#[derive(Debug, Clone, PartialEq, Eq, Hash)]
-pub enum RelativeDirection {
-    /// DCB value: `Up`
-    Up,
-    /// DCB value: `Down`
-    Down,
-    /// DCB value: `Front`
-    Front,
-    /// DCB value: `Back`
-    Back,
-    /// DCB value: `Right`
-    Right,
-    /// DCB value: `Left`
-    Left,
-    /// Unrecognised / newly-added enum value.
-    Unrecognized(String),
-}
-
-impl RelativeDirection {
-    /// Resolve a raw DCB enum string to the typed variant.
-    ///
-    /// Unknown strings (including variants added in a game patch the
-    /// generator didn't see) fall through to `Unrecognized(String)` for
-    /// graceful forward compatibility.
-    pub fn from_dcb_str(s: &str) -> Self {
-        match s {
-            "Up" => Self::Up,
-            "Down" => Self::Down,
-            "Front" => Self::Front,
-            "Back" => Self::Back,
-            "Right" => Self::Right,
-            "Left" => Self::Left,
-            _ => Self::Unrecognized(s.to_string()),
-        }
-    }
-}
-
 /// DCB enum: `RenderToTextureTarget`
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum RenderToTextureTarget {
@@ -33201,6 +33297,32 @@ impl TestType {
             "PhysicsImpact_Ocean" => Self::PhysicsImpact_Ocean,
             "PhysicsImpact_WaterVolume" => Self::PhysicsImpact_WaterVolume,
             "MFXHit" => Self::MFXHit,
+            _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+}
+
+/// DCB enum: `TransportDestinationCategoryLayout`
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+pub enum TransportDestinationCategoryLayout {
+    /// DCB value: `List`
+    List,
+    /// DCB value: `ButtonGrid`
+    ButtonGrid,
+    /// Unrecognised / newly-added enum value.
+    Unrecognized(String),
+}
+
+impl TransportDestinationCategoryLayout {
+    /// Resolve a raw DCB enum string to the typed variant.
+    ///
+    /// Unknown strings (including variants added in a game patch the
+    /// generator didn't see) fall through to `Unrecognized(String)` for
+    /// graceful forward compatibility.
+    pub fn from_dcb_str(s: &str) -> Self {
+        match s {
+            "List" => Self::List,
+            "ButtonGrid" => Self::ButtonGrid,
             _ => Self::Unrecognized(s.to_string()),
         }
     }

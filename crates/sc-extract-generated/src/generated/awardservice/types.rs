@@ -76,10 +76,10 @@ impl<'a> Extract<'a> for AwardService_Award {
 
 /// DCB type: `AwardService_Config`
 pub struct AwardService_Config {
-    /// `Awards` (Class)
-    pub awards: Option<Handle<AwardService_Award>>,
-    /// `Played` (Class)
-    pub played: Option<Handle<AwardService_Award>>,
+    /// `Awards` (Class (array))
+    pub awards: Vec<Handle<AwardService_Award>>,
+    /// `Played` (Class (array))
+    pub played: Vec<Handle<AwardService_Award>>,
 }
 
 impl Pooled for AwardService_Config {
@@ -95,24 +95,44 @@ impl<'a> Extract<'a> for AwardService_Config {
     const TYPE_NAME: &'static str = "AwardService_Config";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            awards: match inst.get("Awards") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<AwardService_Award>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
-                _ => None,
-            },
-            played: match inst.get("Played") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<AwardService_Award>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
-                _ => None,
-            },
+            awards: inst
+                .get_array("Awards")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<AwardService_Award>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => Some(b.alloc_nested::<AwardService_Award>(
+                            b.db.instance(r.struct_index, r.instance_index),
+                            true,
+                        )),
+                        _ => None,
+                    })
+                    .collect()
+                })
+                .unwrap_or_default(),
+            played: inst
+                .get_array("Played")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<AwardService_Award>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => Some(b.alloc_nested::<AwardService_Award>(
+                            b.db.instance(r.struct_index, r.instance_index),
+                            true,
+                        )),
+                        _ => None,
+                    })
+                    .collect()
+                })
+                .unwrap_or_default(),
         }
     }
 }

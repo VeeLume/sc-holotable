@@ -113,7 +113,8 @@ impl Missile {
 
         let missile_params = damage::find_component::<SCItemMissileParams>(ecd, pools)?;
 
-        let damage_summary = damage::extract_explosion_damage(missile_params.explosion_params, pools);
+        let damage_summary =
+            damage::extract_explosion_damage(missile_params.explosion_params, pools);
         let damage = if damage_summary.total() > 0.0 {
             Some(damage_summary)
         } else {

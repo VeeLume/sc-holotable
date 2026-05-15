@@ -25,9 +25,7 @@
 
 use std::collections::{BTreeMap, HashSet};
 
-use sc_contracts::{
-    ContractAnchor, ShipCandidate, ShipRegistry, TagBag, resolve_contract_keys,
-};
+use sc_contracts::{ContractAnchor, ShipCandidate, ShipRegistry, TagBag, resolve_contract_keys};
 use sc_extract::generated::{
     BaseMissionPropertyValuePtr, CareerContract, Contract, ContractGeneratorHandlerBasePtr,
     ContractLegacy, ContractParamOverrides, ContractStringParamType, DataPools, Handle,
@@ -335,7 +333,11 @@ fn describe_contracts(
                 let mut names: Vec<&str> = candidates
                     .iter()
                     .filter_map(|c| {
-                        ships.display_name(&c.entity_guid, &datacore.snapshot().localized_items, locale)
+                        ships.display_name(
+                            &c.entity_guid,
+                            &datacore.snapshot().localized_items,
+                            locale,
+                        )
                     })
                     .collect();
                 names.sort();

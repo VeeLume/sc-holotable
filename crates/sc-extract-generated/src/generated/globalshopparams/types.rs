@@ -409,6 +409,8 @@ pub struct SGlobalShopErrors {
     pub confirmation_fail_auto_load_time_mismatch: LocaleKey,
     /// `confirmation_fail_AutoLoadStartFailed` (Locale)
     pub confirmation_fail_auto_load_start_failed: LocaleKey,
+    /// `confirmation_fail_ItemOwnershipStatusPreventedSale` (Locale)
+    pub confirmation_fail_item_ownership_status_prevented_sale: LocaleKey,
 }
 
 impl Pooled for SGlobalShopErrors {
@@ -670,6 +672,10 @@ impl<'a> Extract<'a> for SGlobalShopErrors {
                 .unwrap_or_default(),
             confirmation_fail_auto_load_start_failed: inst
                 .get_str("confirmation_fail_AutoLoadStartFailed")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
+            confirmation_fail_item_ownership_status_prevented_sale: inst
+                .get_str("confirmation_fail_ItemOwnershipStatusPreventedSale")
                 .map(LocaleKey::from)
                 .unwrap_or_default(),
         }

@@ -68,11 +68,13 @@ fn section_1_security_turret(index: &MissionIndex) {
             }
         }
     }
-    println!("  {} ship slots use this crew-manifest archetype.", hits.len());
+    println!(
+        "  {} ship slots use this crew-manifest archetype.",
+        hits.len()
+    );
 
     // Group by variable_name to see the host pattern.
-    let mut by_var: std::collections::BTreeMap<String, usize> =
-        std::collections::BTreeMap::new();
+    let mut by_var: std::collections::BTreeMap<String, usize> = std::collections::BTreeMap::new();
     for h in &hits {
         *by_var.entry(h.2.clone()).or_default() += 1;
     }
@@ -82,8 +84,7 @@ fn section_1_security_turret(index: &MissionIndex) {
     }
 
     // Distinct contract families (collapse on debug-name common prefix).
-    let mut families: std::collections::BTreeMap<String, usize> =
-        std::collections::BTreeMap::new();
+    let mut families: std::collections::BTreeMap<String, usize> = std::collections::BTreeMap::new();
     for h in &hits {
         let prefix = family_prefix(&h.1);
         *families.entry(prefix).or_default() += 1;
@@ -109,10 +110,8 @@ fn section_2_not_wanted_during_combat(index: &MissionIndex) {
 
     let mut hits = 0usize;
     let mut also_security = 0usize;
-    let mut by_var: std::collections::BTreeMap<String, usize> =
-        std::collections::BTreeMap::new();
-    let mut families: std::collections::BTreeMap<String, usize> =
-        std::collections::BTreeMap::new();
+    let mut by_var: std::collections::BTreeMap<String, usize> = std::collections::BTreeMap::new();
+    let mut families: std::collections::BTreeMap<String, usize> = std::collections::BTreeMap::new();
 
     for c in &index.contracts {
         for enc in &c.encounters {
@@ -229,11 +228,10 @@ fn section_3_foxwell_dig(
         println!();
     }
     let _ = datacore; // raw-walk path was investigative-only; sub-contract
-                     // record lookup via db.record() returns None for the
-                     // parent CareerContract id, so the typed encounter list
-                     // (already dumped by contract_dump) is what we trust.
+    // record lookup via db.record() returns None for the
+    // parent CareerContract id, so the typed encounter list
+    // (already dumped by contract_dump) is what we trust.
 }
-
 
 /// Trim numeric / suffix tail off a debug_name to group by family.
 /// `FoxwellEnforcement_ShipAmbush_Stanton_VeryEasy` →

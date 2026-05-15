@@ -74,12 +74,11 @@ pub struct ContractsPools {
         Vec<Option<MissionFlowAction_PickRandomMissionPhase>>,
     pub mission_property_value_locations: Vec<Option<MissionPropertyValue_Locations>>,
     pub mission_property_value_hauling_orders: Vec<Option<MissionPropertyValue_HaulingOrders>>,
-    pub mission_module_hierarchy_sub_mission: Vec<Option<MissionModuleHierarchySubMission>>,
-    pub mission_module_hierarchy: Vec<Option<MissionModuleHierarchy>>,
     pub objective_handler_local: Vec<Option<ObjectiveHandler_Local>>,
     pub objective_handler_near_location: Vec<Option<ObjectiveHandler_NearLocation>>,
     pub contract_generator_handler_pvpbounty_def:
         Vec<Option<ContractGeneratorHandler_PVPBountyDef>>,
     pub spvpbounty_contract_generators: Vec<Option<SPVPBountyContractGenerators>>,
+    pub one_time_comms: Vec<Option<OneTimeComms>>,
     pub global_mission_settings: Vec<Option<GlobalMissionSettings>>,
 }

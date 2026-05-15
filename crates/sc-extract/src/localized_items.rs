@@ -234,5 +234,4 @@ mod tests {
         // Stored key keeps the '@'; consumers strip at call time if needed.
         assert!(cache.name_key(&guid).unwrap().as_str().starts_with('@'));
     }
-
 }

@@ -652,7 +652,11 @@ mod tests {
     fn region_label_cross_system_suppresses_bodies() {
         let mut locale = LocaleMap::new();
         let locs = vec![
-            mk_loc(Some(("Stanton1", "Hurston")), SystemKey::Stanton, &mut locale),
+            mk_loc(
+                Some(("Stanton1", "Hurston")),
+                SystemKey::Stanton,
+                &mut locale,
+            ),
             mk_loc(Some(("Pyro3", "Bloom")), SystemKey::Pyro, &mut locale),
         ];
         let mut systems = BTreeSet::new();

@@ -21,7 +21,6 @@ pub struct MissiondataIndex {
     pub entity_cluster_id: HashMap<CigGuid, Handle<EntityClusterId>>,
     pub entity_cluster_member: HashMap<CigGuid, Handle<EntityClusterMember>>,
     pub location_resource_slot: HashMap<CigGuid, Handle<LocationResourceSlot>>,
-    pub module_declaration: HashMap<CigGuid, Handle<ModuleDeclaration>>,
     pub spawn_descriptions: HashMap<CigGuid, Handle<SpawnDescriptions>>,
 }
 
@@ -33,7 +32,6 @@ impl MissiondataIndex {
         total += self.entity_cluster_id.len();
         total += self.entity_cluster_member.len();
         total += self.location_resource_slot.len();
-        total += self.module_declaration.len();
         total += self.spawn_descriptions.len();
         total
     }

@@ -20,8 +20,8 @@ use super::super::*;
 
 /// DCB type: `HudColors`
 pub struct HudColors {
-    /// `HoloMatParams` (Class)
-    pub holo_mat_params: Option<Handle<HudColor_HoloParam>>,
+    /// `HoloMatParams` (Class (array))
+    pub holo_mat_params: Vec<Handle<HudColor_HoloParam>>,
     /// `Palettes` (Class (array))
     pub palettes: Vec<Handle<HudColor_Palette>>,
 }
@@ -39,15 +39,25 @@ impl<'a> Extract<'a> for HudColors {
     const TYPE_NAME: &'static str = "HudColors";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            holo_mat_params: match inst.get("HoloMatParams") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<HudColor_HoloParam>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
-                _ => None,
-            },
+            holo_mat_params: inst
+                .get_array("HoloMatParams")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<HudColor_HoloParam>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => Some(b.alloc_nested::<HudColor_HoloParam>(
+                            b.db.instance(r.struct_index, r.instance_index),
+                            true,
+                        )),
+                        _ => None,
+                    })
+                    .collect()
+                })
+                .unwrap_or_default(),
             palettes: inst
                 .get_array("Palettes")
                 .map(|arr| {
@@ -75,8 +85,8 @@ impl<'a> Extract<'a> for HudColors {
 pub struct HudColor_Palette {
     /// `Name` (String)
     pub name: String,
-    /// `StandardEntries` (Class)
-    pub standard_entries: Option<Handle<HudColor_Entry>>,
+    /// `StandardEntries` (Class (array))
+    pub standard_entries: Vec<Handle<HudColor_Entry>>,
     /// `CustomEntries` (Class (array))
     pub custom_entries: Vec<Handle<HudColor_CustomEntry>>,
 }
@@ -95,15 +105,25 @@ impl<'a> Extract<'a> for HudColor_Palette {
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             name: inst.get_str("Name").map(String::from).unwrap_or_default(),
-            standard_entries: match inst.get("StandardEntries") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<HudColor_Entry>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
-                _ => None,
-            },
+            standard_entries: inst
+                .get_array("StandardEntries")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<HudColor_Entry>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => Some(b.alloc_nested::<HudColor_Entry>(
+                            b.db.instance(r.struct_index, r.instance_index),
+                            true,
+                        )),
+                        _ => None,
+                    })
+                    .collect()
+                })
+                .unwrap_or_default(),
             custom_entries: inst
                 .get_array("CustomEntries")
                 .map(|arr| {

@@ -205,12 +205,20 @@ impl<'a> Extract<'a> for CorpseInteractionParams {
 
 /// DCB type: `ItemRecoveryConfigurationParams`
 pub struct ItemRecoveryConfigurationParams {
-    /// `nonEligibleItems` (StrongPointer (array))
-    pub non_eligible_items: Vec<ItemRecoverySetConditionDefPtr>,
-    /// `consumableItems` (StrongPointer (array))
-    pub consumable_items: Vec<ItemRecoverySetConditionDefPtr>,
-    /// `dontEquipBrickedItems` (StrongPointer (array))
-    pub dont_equip_bricked_items: Vec<ItemRecoverySetConditionDefPtr>,
+    /// `Insurable` (StrongPointer (array))
+    pub insurable: Vec<ItemRecoverySetConditionDefPtr>,
+    /// `ReplenishOnRearm` (StrongPointer (array))
+    pub replenish_on_rearm: Vec<ItemRecoverySetConditionDefPtr>,
+    /// `ReplenishOnClaimAndRepair` (StrongPointer (array))
+    pub replenish_on_claim_and_repair: Vec<ItemRecoverySetConditionDefPtr>,
+    /// `NeverRepair` (StrongPointer (array))
+    pub never_repair: Vec<ItemRecoverySetConditionDefPtr>,
+    /// `NeverLTP` (StrongPointer (array))
+    pub never_ltp: Vec<ItemRecoverySetConditionDefPtr>,
+    /// `ForceLTP` (StrongPointer (array))
+    pub force_ltp: Vec<ItemRecoverySetConditionDefPtr>,
+    /// `DontEquipWhenBricked` (StrongPointer (array))
+    pub dont_equip_when_bricked: Vec<ItemRecoverySetConditionDefPtr>,
     /// `economyParams` (Class)
     pub economy_params: Option<Handle<ItemRecoveryEconomyParams>>,
     /// `notificationParams` (Class)
@@ -230,8 +238,8 @@ impl<'a> Extract<'a> for ItemRecoveryConfigurationParams {
     const TYPE_NAME: &'static str = "ItemRecoveryConfigurationParams";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            non_eligible_items: inst
-                .get_array("nonEligibleItems")
+            insurable: inst
+                .get_array("Insurable")
                 .map(|arr| {
                     arr.filter_map(|v| match v {
                         Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => {
@@ -242,8 +250,8 @@ impl<'a> Extract<'a> for ItemRecoveryConfigurationParams {
                     .collect()
                 })
                 .unwrap_or_default(),
-            consumable_items: inst
-                .get_array("consumableItems")
+            replenish_on_rearm: inst
+                .get_array("ReplenishOnRearm")
                 .map(|arr| {
                     arr.filter_map(|v| match v {
                         Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => {
@@ -254,8 +262,56 @@ impl<'a> Extract<'a> for ItemRecoveryConfigurationParams {
                     .collect()
                 })
                 .unwrap_or_default(),
-            dont_equip_bricked_items: inst
-                .get_array("dontEquipBrickedItems")
+            replenish_on_claim_and_repair: inst
+                .get_array("ReplenishOnClaimAndRepair")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => {
+                            Some(ItemRecoverySetConditionDefPtr::from_ref(b, r))
+                        }
+                        _ => None,
+                    })
+                    .collect()
+                })
+                .unwrap_or_default(),
+            never_repair: inst
+                .get_array("NeverRepair")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => {
+                            Some(ItemRecoverySetConditionDefPtr::from_ref(b, r))
+                        }
+                        _ => None,
+                    })
+                    .collect()
+                })
+                .unwrap_or_default(),
+            never_ltp: inst
+                .get_array("NeverLTP")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => {
+                            Some(ItemRecoverySetConditionDefPtr::from_ref(b, r))
+                        }
+                        _ => None,
+                    })
+                    .collect()
+                })
+                .unwrap_or_default(),
+            force_ltp: inst
+                .get_array("ForceLTP")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => {
+                            Some(ItemRecoverySetConditionDefPtr::from_ref(b, r))
+                        }
+                        _ => None,
+                    })
+                    .collect()
+                })
+                .unwrap_or_default(),
+            dont_equip_when_bricked: inst
+                .get_array("DontEquipWhenBricked")
                 .map(|arr| {
                     arr.filter_map(|v| match v {
                         Value::StrongPointer(Some(r)) | Value::WeakPointer(Some(r)) => {
@@ -372,8 +428,14 @@ pub struct ItemRecoveryEconomyParams {
     pub scaling_price_floor: f32,
     /// `aUECperSecond` (Single)
     pub a_uecper_second: f32,
+    /// `defaultLoadoutCooldownMultiplier` (Single)
+    pub default_loadout_cooldown_multiplier: f32,
     /// `claimCostMultiplier` (Single)
     pub claim_cost_multiplier: f32,
+    /// `cooldownOverrides` (Class (array))
+    pub cooldown_overrides: Vec<Handle<ItemRecoveryOverrideGroupDef>>,
+    /// `costOverrides` (Class (array))
+    pub cost_overrides: Vec<Handle<ItemRecoveryOverrideGroupDef>>,
 }
 
 impl Pooled for ItemRecoveryEconomyParams {
@@ -387,13 +449,93 @@ impl Pooled for ItemRecoveryEconomyParams {
 
 impl<'a> Extract<'a> for ItemRecoveryEconomyParams {
     const TYPE_NAME: &'static str = "ItemRecoveryEconomyParams";
-    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
             global_brick_timer: inst.get_f32("globalBrickTimer").unwrap_or_default(),
             base_reclaim_time: inst.get_f32("baseReclaimTime").unwrap_or_default(),
             scaling_price_floor: inst.get_f32("scalingPriceFloor").unwrap_or_default(),
             a_uecper_second: inst.get_f32("aUECperSecond").unwrap_or_default(),
+            default_loadout_cooldown_multiplier: inst
+                .get_f32("defaultLoadoutCooldownMultiplier")
+                .unwrap_or_default(),
             claim_cost_multiplier: inst.get_f32("claimCostMultiplier").unwrap_or_default(),
+            cooldown_overrides: inst
+                .get_array("cooldownOverrides")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<ItemRecoveryOverrideGroupDef>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => Some(b.alloc_nested::<ItemRecoveryOverrideGroupDef>(
+                            b.db.instance(r.struct_index, r.instance_index),
+                            true,
+                        )),
+                        _ => None,
+                    })
+                    .collect()
+                })
+                .unwrap_or_default(),
+            cost_overrides: inst
+                .get_array("costOverrides")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<ItemRecoveryOverrideGroupDef>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => Some(b.alloc_nested::<ItemRecoveryOverrideGroupDef>(
+                            b.db.instance(r.struct_index, r.instance_index),
+                            true,
+                        )),
+                        _ => None,
+                    })
+                    .collect()
+                })
+                .unwrap_or_default(),
+        }
+    }
+}
+
+/// DCB type: `ItemRecoveryOverrideGroupDef`
+pub struct ItemRecoveryOverrideGroupDef {
+    /// `multiplier` (Single)
+    pub multiplier: f32,
+    /// `classes` (Reference (array))
+    pub classes: Vec<CigGuid>,
+}
+
+impl Pooled for ItemRecoveryOverrideGroupDef {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entitlementpolicies.item_recovery_override_group_def
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entitlementpolicies.item_recovery_override_group_def
+    }
+}
+
+impl<'a> Extract<'a> for ItemRecoveryOverrideGroupDef {
+    const TYPE_NAME: &'static str = "ItemRecoveryOverrideGroupDef";
+    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {
+            multiplier: inst.get_f32("multiplier").unwrap_or_default(),
+            classes: inst
+                .get_array("classes")
+                .map(|arr| {
+                    arr.filter_map(|v| {
+                        if let Value::Reference(Some(r)) = v {
+                            Some(r.guid)
+                        } else {
+                            None
+                        }
+                    })
+                    .collect()
+                })
+                .unwrap_or_default(),
         }
     }
 }
@@ -422,38 +564,6 @@ impl<'a> Extract<'a> for ItemRecoveryCondition_ItemType {
         Self {
             r#type: EItemType::from_dcb_str(inst.get_str("type").unwrap_or("")),
             sub_type: EItemSubType::from_dcb_str(inst.get_str("subType").unwrap_or("")),
-        }
-    }
-}
-
-/// DCB type: `ItemRecoveryCondition_EntityClass`
-/// Inherits from: `ItemRecoverySetConditionDef`
-pub struct ItemRecoveryCondition_EntityClass {
-    /// `classDef` (Reference)
-    pub class_def: Option<CigGuid>,
-}
-
-impl Pooled for ItemRecoveryCondition_EntityClass {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entitlementpolicies
-            .item_recovery_condition_entity_class
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entitlementpolicies
-            .item_recovery_condition_entity_class
-    }
-}
-
-impl<'a> Extract<'a> for ItemRecoveryCondition_EntityClass {
-    const TYPE_NAME: &'static str = "ItemRecoveryCondition_EntityClass";
-    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
-            class_def: inst
-                .get("classDef")
-                .and_then(|v| v.as_record_ref())
-                .map(|r| r.guid),
         }
     }
 }

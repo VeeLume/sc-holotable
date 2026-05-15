@@ -49,7 +49,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             continue;
         }
 
-        let display = snap.localized_items.name_key(&guid).and_then(|k| asset_data.locale.resolve(k)).unwrap_or("");
+        let display = snap
+            .localized_items
+            .name_key(&guid)
+            .and_then(|k| asset_data.locale.resolve(k))
+            .unwrap_or("");
         println!(
             "=== {} ({}) ===",
             name.replace("EntityClassDefinition.", ""),

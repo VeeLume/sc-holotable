@@ -34,8 +34,8 @@
 use std::collections::{BTreeMap, HashMap, HashSet};
 
 use sc_extract::generated::{
-    BaseMissionPropertyValuePtr, MissionPropertyValue_ShipSpawnDescriptions,
-    SpawnDescription_Ship, SpawnDescription_ShipOptions, TagList,
+    BaseMissionPropertyValuePtr, MissionPropertyValue_ShipSpawnDescriptions, SpawnDescription_Ship,
+    SpawnDescription_ShipOptions, TagList,
 };
 use sc_extract::{AssetConfig, AssetData, AssetSource, Datacore, DatacoreConfig, Guid};
 
@@ -83,7 +83,10 @@ fn classify_sub_role(var_name: &str) -> Option<String> {
     None
 }
 
-fn tag_set(pools: &sc_extract::DataPools, h: Option<&sc_extract::generated::Handle<TagList>>) -> HashSet<Guid> {
+fn tag_set(
+    pools: &sc_extract::DataPools,
+    h: Option<&sc_extract::generated::Handle<TagList>>,
+) -> HashSet<Guid> {
     let Some(h) = h else { return HashSet::new() };
     let Some(list) = h.get(pools) else {
         return HashSet::new();
@@ -279,7 +282,15 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     for node in tag_tree.iter() {
         let lower = node.name.to_lowercase();
         if role_keywords.iter().any(|kw| lower.contains(kw)) {
-            role_tags.push((node.name.clone(), node.guid, tag_tree.path(&node.guid).iter().map(|s| s.to_string()).collect()));
+            role_tags.push((
+                node.name.clone(),
+                node.guid,
+                tag_tree
+                    .path(&node.guid)
+                    .iter()
+                    .map(|s| s.to_string())
+                    .collect(),
+            ));
         }
     }
     // Count how many ship-spawn samples reference each role tag (positive
@@ -335,7 +346,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     );
     println!();
     println!("  Top variable_names by sample count, with damage-settings fraction:");
-    println!("  {:>5} {:>5} {:>5}  {:<48} substring-role", "with", "tot", "%", "name");
+    println!(
+        "  {:>5} {:>5} {:>5}  {:<48} substring-role",
+        "with", "tot", "%", "name"
+    );
     for (name, (with_dmg, total)) in dmg_entries.iter().take(30) {
         let pct = 100.0 * (*with_dmg as f32) / (*total as f32);
         let role = classify_role_substring(name);

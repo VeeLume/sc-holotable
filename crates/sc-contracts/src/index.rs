@@ -164,10 +164,7 @@ impl MissionIndex {
     /// Iterate the contracts whose ids are in `ids`, in order. Skips
     /// ids that don't resolve. Use with [`MissionPools`] field values:
     /// `index.iter_pool(ids).filter(...)`.
-    pub fn iter_pool<'a>(
-        &'a self,
-        ids: &'a [Guid],
-    ) -> impl Iterator<Item = &'a Mission> + 'a {
+    pub fn iter_pool<'a>(&'a self, ids: &'a [Guid]) -> impl Iterator<Item = &'a Mission> + 'a {
         ids.iter().filter_map(|id| self.get(*id))
     }
 
@@ -217,20 +214,27 @@ impl MissionIndex {
     /// length, same currency_guid + amount per index).
     pub fn rewards_scrip_consistent(&self, ids: &[Guid]) -> bool {
         let mut iter = self.iter_pool(ids);
-        let Some(first) = iter.next() else { return true };
+        let Some(first) = iter.next() else {
+            return true;
+        };
         iter.all(|c| pools::scrip_eq(&c.rewards.scrip, &first.rewards.scrip))
     }
 
     /// True if all pool members agree on reputation rewards.
     pub fn rewards_rep_consistent(&self, ids: &[Guid]) -> bool {
         let mut iter = self.iter_pool(ids);
-        let Some(first) = iter.next() else { return true };
+        let Some(first) = iter.next() else {
+            return true;
+        };
         iter.all(|c| c.rewards.reputation == first.rewards.reputation)
     }
 
     /// True if all pool members agree on availability cooldowns.
     pub fn cooldowns_consistent(&self, ids: &[Guid]) -> bool {
-        all_eq(self.iter_pool(ids).map(|c| c.availability.cooldowns.clone()))
+        all_eq(
+            self.iter_pool(ids)
+                .map(|c| c.availability.cooldowns.clone()),
+        )
     }
 
     /// True if pool members disagree on once_only.
@@ -256,7 +260,9 @@ impl MissionIndex {
     /// True if pool members disagree on mission_span (set-equality).
     pub fn mission_span_consistent(&self, ids: &[Guid]) -> bool {
         let mut iter = self.iter_pool(ids);
-        let Some(first) = iter.next() else { return true };
+        let Some(first) = iter.next() else {
+            return true;
+        };
         iter.all(|c| pools::guid_set_eq(&c.mission_span, &first.mission_span))
     }
 
@@ -264,18 +270,16 @@ impl MissionIndex {
     /// per-group variable_name, per-wave name + slot count).
     pub fn encounters_shape_consistent(&self, ids: &[Guid]) -> bool {
         let mut iter = self.iter_pool(ids);
-        let Some(first) = iter.next() else { return true };
+        let Some(first) = iter.next() else {
+            return true;
+        };
         iter.all(|c| pools::encounters_shape_eq(&c.encounters, &first.encounters))
     }
 
     /// True if any pool member has runtime substitution markers
     /// (`~mission(...)`) in its title or description, evaluated
     /// against the supplied `locale`.
-    pub fn has_runtime_substitution(
-        &self,
-        ids: &[Guid],
-        locale: &sc_extract::LocaleMap,
-    ) -> bool {
+    pub fn has_runtime_substitution(&self, ids: &[Guid], locale: &sc_extract::LocaleMap) -> bool {
         self.iter_pool(ids)
             .any(|c| c.has_runtime_substitution(locale))
     }
@@ -285,7 +289,9 @@ impl MissionIndex {
 
 /// True iff every yielded value equals the first.
 fn all_eq<T: PartialEq>(mut iter: impl Iterator<Item = T>) -> bool {
-    let Some(first) = iter.next() else { return true };
+    let Some(first) = iter.next() else {
+        return true;
+    };
     iter.all(|x| x == first)
 }
 

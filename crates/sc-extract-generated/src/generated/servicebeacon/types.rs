@@ -220,12 +220,16 @@ pub struct ServiceBeaconBaseTemplateParams {
     pub beacon_tax_percentage: i32,
     /// `beaconMaxPaymentAmount` (Int32)
     pub beacon_max_payment_amount: i32,
+    /// `beaconFeeDisabledReason` (Locale)
+    pub beacon_fee_disabled_reason: LocaleKey,
     /// `npcRequesterNameDef` (Class)
     pub npc_requester_name_def: Option<Handle<MissionPropertyValue_AIName>>,
     /// `npcCreatorParams` (StrongPointer)
     pub npc_creator_params: Option<SServiceBeaconCreatorParamsBasePtr>,
     /// `beaconModuleDeclaration` (Reference)
     pub beacon_module_declaration: Option<CigGuid>,
+    /// `cooldownTimeOverride` (Single)
+    pub cooldown_time_override: f32,
 }
 
 impl Pooled for ServiceBeaconBaseTemplateParams {
@@ -259,6 +263,10 @@ impl<'a> Extract<'a> for ServiceBeaconBaseTemplateParams {
                 .unwrap_or_default(),
             beacon_tax_percentage: inst.get_i32("beaconTaxPercentage").unwrap_or_default(),
             beacon_max_payment_amount: inst.get_i32("beaconMaxPaymentAmount").unwrap_or_default(),
+            beacon_fee_disabled_reason: inst
+                .get_str("beaconFeeDisabledReason")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
             npc_requester_name_def: match inst.get("npcRequesterNameDef") {
                 Some(Value::Class { struct_index, data }) => {
                     Some(b.alloc_nested::<MissionPropertyValue_AIName>(
@@ -278,6 +286,7 @@ impl<'a> Extract<'a> for ServiceBeaconBaseTemplateParams {
                 .get("beaconModuleDeclaration")
                 .and_then(|v| v.as_record_ref())
                 .map(|r| r.guid),
+            cooldown_time_override: inst.get_f32("cooldownTimeOverride").unwrap_or_default(),
         }
     }
 }
@@ -299,12 +308,16 @@ pub struct PersonalTransportBeaconParams {
     pub beacon_tax_percentage: i32,
     /// `beaconMaxPaymentAmount` (Int32)
     pub beacon_max_payment_amount: i32,
+    /// `beaconFeeDisabledReason` (Locale)
+    pub beacon_fee_disabled_reason: LocaleKey,
     /// `npcRequesterNameDef` (Class)
     pub npc_requester_name_def: Option<Handle<MissionPropertyValue_AIName>>,
     /// `npcCreatorParams` (StrongPointer)
     pub npc_creator_params: Option<SServiceBeaconCreatorParamsBasePtr>,
     /// `beaconModuleDeclaration` (Reference)
     pub beacon_module_declaration: Option<CigGuid>,
+    /// `cooldownTimeOverride` (Single)
+    pub cooldown_time_override: f32,
     /// `pickUpObjectiveTitle` (Locale)
     pub pick_up_objective_title: LocaleKey,
     /// `pickUpObjectiveDescription` (Locale)
@@ -346,6 +359,10 @@ impl<'a> Extract<'a> for PersonalTransportBeaconParams {
                 .unwrap_or_default(),
             beacon_tax_percentage: inst.get_i32("beaconTaxPercentage").unwrap_or_default(),
             beacon_max_payment_amount: inst.get_i32("beaconMaxPaymentAmount").unwrap_or_default(),
+            beacon_fee_disabled_reason: inst
+                .get_str("beaconFeeDisabledReason")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
             npc_requester_name_def: match inst.get("npcRequesterNameDef") {
                 Some(Value::Class { struct_index, data }) => {
                     Some(b.alloc_nested::<MissionPropertyValue_AIName>(
@@ -365,6 +382,7 @@ impl<'a> Extract<'a> for PersonalTransportBeaconParams {
                 .get("beaconModuleDeclaration")
                 .and_then(|v| v.as_record_ref())
                 .map(|r| r.guid),
+            cooldown_time_override: inst.get_f32("cooldownTimeOverride").unwrap_or_default(),
             pick_up_objective_title: inst
                 .get_str("pickUpObjectiveTitle")
                 .map(LocaleKey::from)
@@ -1175,6 +1193,8 @@ pub struct ServiceBeaconGlobalParams {
     pub quantum_travel_point_class: Option<CigGuid>,
     /// `missionTypeRecord` (Reference)
     pub mission_type_record: Option<CigGuid>,
+    /// `cooldownTimeDefault` (Single)
+    pub cooldown_time_default: f32,
     /// `personalTransportDetectedNotification` (Class)
     pub personal_transport_detected_notification: Option<Handle<ServiceBeaconNotificationParams>>,
     /// `combatAssistanceDetectedNotification` (Class)
@@ -1243,6 +1263,12 @@ pub struct ServiceBeaconGlobalParams {
     pub insufficient_funds_error_message: LocaleKey,
     /// `invalidLocationSelectedErrorMessage` (Locale)
     pub invalid_location_selected_error_message: LocaleKey,
+    /// `noBeaconTypeErrorMessage` (Locale)
+    pub no_beacon_type_error_message: LocaleKey,
+    /// `beaconAlreadyActiveErrorMessage` (Locale)
+    pub beacon_already_active_error_message: LocaleKey,
+    /// `beaconCooldownErrorMessage` (Locale)
+    pub beacon_cooldown_error_message: LocaleKey,
 }
 
 impl Pooled for ServiceBeaconGlobalParams {
@@ -1266,6 +1292,7 @@ impl<'a> Extract<'a> for ServiceBeaconGlobalParams {
                 .get("missionTypeRecord")
                 .and_then(|v| v.as_record_ref())
                 .map(|r| r.guid),
+            cooldown_time_default: inst.get_f32("cooldownTimeDefault").unwrap_or_default(),
             personal_transport_detected_notification: match inst
                 .get("personalTransportDetectedNotification")
             {
@@ -1477,6 +1504,18 @@ impl<'a> Extract<'a> for ServiceBeaconGlobalParams {
                 .unwrap_or_default(),
             invalid_location_selected_error_message: inst
                 .get_str("invalidLocationSelectedErrorMessage")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
+            no_beacon_type_error_message: inst
+                .get_str("noBeaconTypeErrorMessage")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
+            beacon_already_active_error_message: inst
+                .get_str("beaconAlreadyActiveErrorMessage")
+                .map(LocaleKey::from)
+                .unwrap_or_default(),
+            beacon_cooldown_error_message: inst
+                .get_str("beaconCooldownErrorMessage")
                 .map(LocaleKey::from)
                 .unwrap_or_default(),
         }

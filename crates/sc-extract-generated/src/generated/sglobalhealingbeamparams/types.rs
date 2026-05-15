@@ -190,8 +190,8 @@ pub struct SGlobalHealingBeamParams {
     pub self_heal_mode_limb_card_bone_entry: Option<Handle<SHealingBeamBoneEntryParams>>,
     /// `transparentMaterial` (Class)
     pub transparent_material: Option<Handle<GlobalResourceMaterial>>,
-    /// `injuryHighlightColors` (Class)
-    pub injury_highlight_colors: Option<Handle<RGB>>,
+    /// `injuryHighlightColors` (Class (array))
+    pub injury_highlight_colors: Vec<Handle<RGB>>,
     /// `highlightOccludedAlpha` (Single)
     pub highlight_occluded_alpha: f32,
     /// `highlightOutlineWidth` (Single)
@@ -282,13 +282,23 @@ impl<'a> Extract<'a> for SGlobalHealingBeamParams {
                 }
                 _ => None,
             },
-            injury_highlight_colors: match inst.get("injuryHighlightColors") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<RGB>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
-                _ => None,
-            },
+            injury_highlight_colors: inst
+                .get_array("injuryHighlightColors")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<RGB>(
+                            Instance::from_inline_data(b.db, struct_index, data),
+                            false,
+                        )),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<RGB>(
+                            b.db.instance(r.struct_index, r.instance_index),
+                            true,
+                        )),
+                        _ => None,
+                    })
+                    .collect()
+                })
+                .unwrap_or_default(),
             highlight_occluded_alpha: inst.get_f32("highlightOccludedAlpha").unwrap_or_default(),
             highlight_outline_width: inst.get_f32("highlightOutlineWidth").unwrap_or_default(),
             highlight_outline_only: inst.get_bool("highlightOutlineOnly").unwrap_or_default(),

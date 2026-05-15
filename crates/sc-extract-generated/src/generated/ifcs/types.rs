@@ -112,8 +112,6 @@ pub struct SIFCSEspParams {
     pub ads_zone_min_size_deg: f32,
     /// `targetChangedRampTime` (Single)
     pub target_changed_ramp_time: f32,
-    /// `dampeningRange` (Single)
-    pub dampening_range: f32,
     /// `inputScalerMin` (Single)
     pub input_scaler_min: f32,
     /// `inputScalerMax` (Single)
@@ -128,6 +126,14 @@ pub struct SIFCSEspParams {
     pub smoothing_time: f32,
     /// `smoothingTimeDecreaseMultiplier` (Single)
     pub smoothing_time_decrease_multiplier: f32,
+    /// `dampeningMaxExponent` (Single)
+    pub dampening_max_exponent: f32,
+    /// `dampeningOuterZoneDeg` (Single)
+    pub dampening_outer_zone_deg: f32,
+    /// `dampeningInnerZoneRatio` (Single)
+    pub dampening_inner_zone_ratio: f32,
+    /// `dampeningExpandToTargetSize` (Boolean)
+    pub dampening_expand_to_target_size: bool,
 }
 
 impl Pooled for SIFCSEspParams {
@@ -157,7 +163,6 @@ impl<'a> Extract<'a> for SIFCSEspParams {
             inner_zone_ratio: inst.get_f32("innerZoneRatio").unwrap_or_default(),
             ads_zone_min_size_deg: inst.get_f32("adsZoneMinSizeDeg").unwrap_or_default(),
             target_changed_ramp_time: inst.get_f32("targetChangedRampTime").unwrap_or_default(),
-            dampening_range: inst.get_f32("dampeningRange").unwrap_or_default(),
             input_scaler_min: inst.get_f32("inputScalerMin").unwrap_or_default(),
             input_scaler_max: inst.get_f32("inputScalerMax").unwrap_or_default(),
             input_scaler_smooth_time: inst.get_f32("inputScalerSmoothTime").unwrap_or_default(),
@@ -167,14 +172,20 @@ impl<'a> Extract<'a> for SIFCSEspParams {
             smoothing_time_decrease_multiplier: inst
                 .get_f32("smoothingTimeDecreaseMultiplier")
                 .unwrap_or_default(),
+            dampening_max_exponent: inst.get_f32("dampeningMaxExponent").unwrap_or_default(),
+            dampening_outer_zone_deg: inst.get_f32("dampeningOuterZoneDeg").unwrap_or_default(),
+            dampening_inner_zone_ratio: inst.get_f32("dampeningInnerZoneRatio").unwrap_or_default(),
+            dampening_expand_to_target_size: inst
+                .get_bool("dampeningExpandToTargetSize")
+                .unwrap_or_default(),
         }
     }
 }
 
 /// DCB type: `SIFCSEsp`
 pub struct SIFCSEsp {
-    /// `espPerType` (Class)
-    pub esp_per_type: Option<Handle<SIFCSEspParams>>,
+    /// `espPerType` (Class (array))
+    pub esp_per_type: Vec<Handle<SIFCSEspParams>>,
 }
 
 impl Pooled for SIFCSEsp {
@@ -190,15 +201,25 @@ impl<'a> Extract<'a> for SIFCSEsp {
     const TYPE_NAME: &'static str = "SIFCSEsp";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            esp_per_type: match inst.get("espPerType") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<SIFCSEspParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
-                _ => None,
-            },
+            esp_per_type: inst
+                .get_array("espPerType")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<SIFCSEspParams>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => Some(b.alloc_nested::<SIFCSEspParams>(
+                            b.db.instance(r.struct_index, r.instance_index),
+                            true,
+                        )),
+                        _ => None,
+                    })
+                    .collect()
+                })
+                .unwrap_or_default(),
         }
     }
 }
@@ -244,8 +265,8 @@ pub struct SIFCSGameModeParams {
     pub allow_disabling_ifcscore: bool,
     /// `cruiseModeOnByDefault` (Boolean)
     pub cruise_mode_on_by_default: bool,
-    /// `physicsDamping` (Class)
-    pub physics_damping: Option<Handle<SIFCSGameModePhysicsDamping>>,
+    /// `physicsDamping` (Class (array))
+    pub physics_damping: Vec<Handle<SIFCSGameModePhysicsDamping>>,
     /// `legacyIncludeWindInAerodynamics` (Boolean)
     pub legacy_include_wind_in_aerodynamics: bool,
     /// `legacyMaxAcceptedWindSpeed` (Single)
@@ -277,15 +298,25 @@ impl<'a> Extract<'a> for SIFCSGameModeParams {
                 .unwrap_or_default(),
             allow_disabling_ifcscore: inst.get_bool("allowDisablingIFCSCore").unwrap_or_default(),
             cruise_mode_on_by_default: inst.get_bool("cruiseModeOnByDefault").unwrap_or_default(),
-            physics_damping: match inst.get("physicsDamping") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<SIFCSGameModePhysicsDamping>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
-                _ => None,
-            },
+            physics_damping: inst
+                .get_array("physicsDamping")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<SIFCSGameModePhysicsDamping>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => Some(b.alloc_nested::<SIFCSGameModePhysicsDamping>(
+                            b.db.instance(r.struct_index, r.instance_index),
+                            true,
+                        )),
+                        _ => None,
+                    })
+                    .collect()
+                })
+                .unwrap_or_default(),
             legacy_include_wind_in_aerodynamics: inst
                 .get_bool("legacyIncludeWindInAerodynamics")
                 .unwrap_or_default(),

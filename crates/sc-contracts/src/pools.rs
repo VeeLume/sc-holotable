@@ -111,8 +111,12 @@ pub(crate) fn encounters_shape_eq(
                 && phases_eq(&xs.phases, &ys.phases, |s1, s2| s1.len() == s2.len())
         }
         (
-            crate::expand::Encounter::Unknown { variable_name: a, .. },
-            crate::expand::Encounter::Unknown { variable_name: b, .. },
+            crate::expand::Encounter::Unknown {
+                variable_name: a, ..
+            },
+            crate::expand::Encounter::Unknown {
+                variable_name: b, ..
+            },
         ) => a == b,
         _ => false,
     })

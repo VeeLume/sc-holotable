@@ -714,50 +714,6 @@ impl<'a> Extract<'a> for CheckEntitiesOnActorsLoadoutWithinAreaGameplayTrigger {
     }
 }
 
-/// DCB type: `SCItemProximitySensorBoxParams`
-/// Inherits from: `SCItemProximitySensorShapeParams`
-pub struct SCItemProximitySensorBoxParams {
-    /// `Extent` (Class)
-    pub extent: Option<Handle<Vec3>>,
-    /// `Offset` (Class)
-    pub offset: Option<Handle<Vec3>>,
-}
-
-impl Pooled for SCItemProximitySensorBoxParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_scitem_doors
-            .scitem_proximity_sensor_box_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_scitem_doors
-            .scitem_proximity_sensor_box_params
-    }
-}
-
-impl<'a> Extract<'a> for SCItemProximitySensorBoxParams {
-    const TYPE_NAME: &'static str = "SCItemProximitySensorBoxParams";
-    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
-        Self {
-            extent: match inst.get("Extent") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
-                _ => None,
-            },
-            offset: match inst.get("Offset") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
-                _ => None,
-            },
-        }
-    }
-}
-
 /// DCB type: `SCItemDoorCodeProceduralParams`
 /// Inherits from: `SCItemDoorAnimationParams`
 pub struct SCItemDoorCodeProceduralParams {
@@ -928,5 +884,83 @@ impl<'a> Extract<'a> for SCItemDoorHazardLightsParams {
                 .map(String::from)
                 .unwrap_or_default(),
         }
+    }
+}
+
+/// DCB type: `TransportEventTriggerableDoorParams`
+/// Inherits from: `DataForgeComponentParams`
+pub struct TransportEventTriggerableDoorParams {
+    /// `openSplineEvent` (String)
+    pub open_spline_event: String,
+    /// `closeSplineEvent` (String)
+    pub close_spline_event: String,
+}
+
+impl Pooled for TransportEventTriggerableDoorParams {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools
+            .entities_scitem_doors
+            .transport_event_triggerable_door_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools
+            .entities_scitem_doors
+            .transport_event_triggerable_door_params
+    }
+}
+
+impl<'a> Extract<'a> for TransportEventTriggerableDoorParams {
+    const TYPE_NAME: &'static str = "TransportEventTriggerableDoorParams";
+    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {
+            open_spline_event: inst
+                .get_str("openSplineEvent")
+                .map(String::from)
+                .unwrap_or_default(),
+            close_spline_event: inst
+                .get_str("closeSplineEvent")
+                .map(String::from)
+                .unwrap_or_default(),
+        }
+    }
+}
+
+/// DCB type: `TransportGatewayDoorParams`
+/// Inherits from: `DataForgeComponentParams`
+pub struct TransportGatewayDoorParams {}
+
+impl Pooled for TransportGatewayDoorParams {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_scitem_doors.transport_gateway_door_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_scitem_doors.transport_gateway_door_params
+    }
+}
+
+impl<'a> Extract<'a> for TransportGatewayDoorParams {
+    const TYPE_NAME: &'static str = "TransportGatewayDoorParams";
+    fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {}
+    }
+}
+
+/// DCB type: `TransportCarriageDoorParams`
+/// Inherits from: `DataForgeComponentParams`
+pub struct TransportCarriageDoorParams {}
+
+impl Pooled for TransportCarriageDoorParams {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.entities_scitem_doors.transport_carriage_door_params
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.entities_scitem_doors.transport_carriage_door_params
+    }
+}
+
+impl<'a> Extract<'a> for TransportCarriageDoorParams {
+    const TYPE_NAME: &'static str = "TransportCarriageDoorParams";
+    fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {}
     }
 }

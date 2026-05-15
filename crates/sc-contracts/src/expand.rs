@@ -120,7 +120,9 @@ impl Mission {
     /// Resolve this mission's description against `locale`. Same
     /// shape as [`Self::title`].
     pub fn description<'a>(&self, locale: &'a LocaleMap) -> Option<&'a str> {
-        self.description_key.as_ref().and_then(|k| locale.resolve(k))
+        self.description_key
+            .as_ref()
+            .and_then(|k| locale.resolve(k))
     }
 
     /// True if either the resolved title or description contains a
@@ -900,7 +902,7 @@ fn emit_from_contract(
         c.id,
         &c.debug_name,
         c.template,
-        None /*Contract*/,
+        None, /*Contract*/
     ));
     for sub_h in &c.sub_contracts {
         if let Some(sub) = sub_h.get(pools) {
@@ -964,7 +966,7 @@ fn emit_from_legacy(
         c.id,
         &c.debug_name,
         c.template,
-        None /*Legacy*/,
+        None, /*Legacy*/
     ));
     for sub_h in &c.sub_contracts {
         if let Some(sub) = sub_h.get(pools) {
@@ -1028,7 +1030,7 @@ fn emit_from_career(
         c.id,
         &c.debug_name,
         c.template,
-        None /*Career*/,
+        None, /*Career*/
     ));
     for sub_h in &c.sub_contracts {
         if let Some(sub) = sub_h.get(pools) {
@@ -1737,7 +1739,9 @@ fn collect_property_encounters(
         let ext_token = prop.extended_text_token.clone();
         match value_ptr {
             BaseMissionPropertyValuePtr::MissionPropertyValue_ShipSpawnDescriptions(val_h) => {
-                if let Some(enc) = build_ship_encounter(pools, ships, tree, val_h, &var_name, &ext_token) {
+                if let Some(enc) =
+                    build_ship_encounter(pools, ships, tree, val_h, &var_name, &ext_token)
+                {
                     out.push(Encounter::Ships(enc));
                 }
             }
@@ -1747,7 +1751,8 @@ fn collect_property_encounters(
                 }
             }
             BaseMissionPropertyValuePtr::MissionPropertyValue_EntitySpawnDescriptions(val_h) => {
-                if let Some(enc) = build_entity_encounter(pools, tree, val_h, &var_name, &ext_token) {
+                if let Some(enc) = build_entity_encounter(pools, tree, val_h, &var_name, &ext_token)
+                {
                     out.push(Encounter::Entities(enc));
                 }
             }
@@ -1846,8 +1851,7 @@ fn build_npc_encounter(
                 .and_then(|h| h.get(pools))
                 .map(|s| (s.mission_allied_marker, s.is_critical, s.faction_override))
                 .unwrap_or((false, false, None));
-            let identifier_tags =
-                TagBag::from_handle(pools, tree, option.identifier_tags.as_ref());
+            let identifier_tags = TagBag::from_handle(pools, tree, option.identifier_tags.as_ref());
             phase.slots.push(NpcSlot {
                 priority: option.priority,
                 weight: option.weight,

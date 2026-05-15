@@ -97,10 +97,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                         .unwrap_or_else(|| "<unresolved>".to_string());
                     println!("    {field}: {ent_guid} ({ent_name})");
                 } else {
-                    let mut fields: Vec<String> = inst
-                        .properties()
-                        .map(|p| p.name.to_string())
-                        .collect();
+                    let mut fields: Vec<String> =
+                        inst.properties().map(|p| p.name.to_string()).collect();
                     fields.sort();
                     fields.dedup();
                     println!("    fields: {}", fields.join(", "));
@@ -109,8 +107,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         }
 
         println!("    used by {total} slot(s); {zero_count} have candidates=0");
-        let mut family_var: BTreeMap<(String, String), (usize, usize)> =
-            BTreeMap::new();
+        let mut family_var: BTreeMap<(String, String), (usize, usize)> = BTreeMap::new();
         for (fam, var, empty) in usages {
             let entry = family_var.entry((fam.clone(), var.clone())).or_default();
             entry.0 += 1;

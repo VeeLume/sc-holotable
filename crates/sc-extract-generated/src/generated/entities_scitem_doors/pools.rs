@@ -33,9 +33,11 @@ pub struct EntitiesScitemDoorsPools {
     pub loadout_entity_check: Vec<Option<LoadoutEntityCheck>>,
     pub check_entities_on_actors_loadout_within_area_gameplay_trigger:
         Vec<Option<CheckEntitiesOnActorsLoadoutWithinAreaGameplayTrigger>>,
-    pub scitem_proximity_sensor_box_params: Vec<Option<SCItemProximitySensorBoxParams>>,
     pub scitem_door_code_procedural_params: Vec<Option<SCItemDoorCodeProceduralParams>>,
     pub sdoor_collision_reaction_toggle_params: Vec<Option<SDoorCollisionReactionToggleParams>>,
     pub sdoor_collision_reaction_open_params: Vec<Option<SDoorCollisionReactionOpenParams>>,
     pub scitem_door_hazard_lights_params: Vec<Option<SCItemDoorHazardLightsParams>>,
+    pub transport_event_triggerable_door_params: Vec<Option<TransportEventTriggerableDoorParams>>,
+    pub transport_gateway_door_params: Vec<Option<TransportGatewayDoorParams>>,
+    pub transport_carriage_door_params: Vec<Option<TransportCarriageDoorParams>>,
 }

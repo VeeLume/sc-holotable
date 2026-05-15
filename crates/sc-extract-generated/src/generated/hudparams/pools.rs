@@ -14,6 +14,7 @@ use super::super::*;
 /// Pool storage for the `hudparams` feature.
 #[derive(Default)]
 pub struct HudparamsPools {
+    pub starget_selector_color_highlighting_data: Vec<Option<STargetSelectorColorHighlightingData>>,
     pub starget_selector_color_highlighting: Vec<Option<STargetSelectorColorHighlighting>>,
     pub starget_selector_hud_params: Vec<Option<STargetSelectorHudParams>>,
     pub sprojected_pitch_ladder_params: Vec<Option<SProjectedPitchLadderParams>>,

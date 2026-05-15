@@ -37,8 +37,8 @@ pub struct EntityComponentCharacterCustomizerParams {
     pub library_deselect_delay_time: f32,
     /// `libraryHeadCount` (Int32)
     pub library_head_count: i32,
-    /// `customizerDNARegions` (Class)
-    pub customizer_dnaregions: Option<Handle<SCharacterCustomizerDNARegionParams>>,
+    /// `customizerDNARegions` (Class (array))
+    pub customizer_dnaregions: Vec<Handle<SCharacterCustomizerDNARegionParams>>,
     /// `bodyTypes` (Class (array))
     pub body_types: Vec<Handle<SCharacterCustomizerBodyTypeParams>>,
     /// `blankSkinVariant` (Reference)
@@ -170,15 +170,27 @@ impl<'a> Extract<'a> for EntityComponentCharacterCustomizerParams {
                 .get_f32("libraryDeselectDelayTime")
                 .unwrap_or_default(),
             library_head_count: inst.get_i32("libraryHeadCount").unwrap_or_default(),
-            customizer_dnaregions: match inst.get("customizerDNARegions") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<SCharacterCustomizerDNARegionParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
-                _ => None,
-            },
+            customizer_dnaregions: inst
+                .get_array("customizerDNARegions")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<SCharacterCustomizerDNARegionParams>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => {
+                            Some(b.alloc_nested::<SCharacterCustomizerDNARegionParams>(
+                                b.db.instance(r.struct_index, r.instance_index),
+                                true,
+                            ))
+                        }
+                        _ => None,
+                    })
+                    .collect()
+                })
+                .unwrap_or_default(),
             body_types: inst
                 .get_array("bodyTypes")
                 .map(|arr| {

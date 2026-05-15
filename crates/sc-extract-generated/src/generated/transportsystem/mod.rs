@@ -9,9 +9,11 @@
 
 //! Feature module: `transportsystem`
 
+mod index;
 mod pools;
 mod types;
 
+pub use index::*;
 pub use pools::*;
 #[allow(unused_imports)]
 pub use types::*;

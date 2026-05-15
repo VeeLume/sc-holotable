@@ -97,7 +97,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         let has_explosion_on_action = single.explosion_params.is_some();
 
         let record_name = record_names.get(&guid).copied().unwrap_or("?");
-        let display_name = snap.localized_items.name_key(&guid).and_then(|k| asset_data.locale.resolve(k)).unwrap_or("");
+        let display_name = snap
+            .localized_items
+            .name_key(&guid)
+            .and_then(|k| asset_data.locale.resolve(k))
+            .unwrap_or("");
 
         let item_def = find_component::<SAttachableComponentParams>(ecd, pools)
             .and_then(|a| a.attach_def.and_then(|h| h.get(pools)));

@@ -39,8 +39,6 @@ pub struct DataPools {
     pub aiwavecollection: super::aiwavecollection::AiwavecollectionPools,
     #[cfg(feature = "analytics")]
     pub analytics: super::analytics::AnalyticsPools,
-    #[cfg(feature = "areaservices")]
-    pub areaservices: super::areaservices::AreaservicesPools,
     #[cfg(feature = "audio")]
     pub audio: super::audio::AudioPools,
     #[cfg(feature = "awardservice")]
@@ -115,6 +113,8 @@ pub struct DataPools {
     pub entities_capturearea: super::entities_capturearea::EntitiesCaptureareaPools,
     #[cfg(feature = "entities-charactercustomizer")]
     pub entities_charactercustomizer: super::entities_charactercustomizer::EntitiesCharactercustomizerPools,
+    #[cfg(feature = "entities-colorgradient")]
+    pub entities_colorgradient: super::entities_colorgradient::EntitiesColorgradientPools,
     #[cfg(feature = "entities-corpsemarker")]
     pub entities_corpsemarker: super::entities_corpsemarker::EntitiesCorpsemarkerPools,
     #[cfg(feature = "entities-cuttableshape")]
@@ -125,20 +125,6 @@ pub struct DataPools {
     pub entities_displayscreens: super::entities_displayscreens::EntitiesDisplayscreensPools,
     #[cfg(feature = "entities-ea")]
     pub entities_ea: super::entities_ea::EntitiesEaPools,
-    #[cfg(feature = "entities-entityclassdefinition_colorgradient")]
-    pub entities_entityclassdefinition_colorgradient: super::entities_entityclassdefinition_colorgradient::EntitiesEntityclassdefinition_colorgradientPools,
-    #[cfg(feature = "entities-entityclassdefinition_pointofinterestprovider")]
-    pub entities_entityclassdefinition_pointofinterestprovider: super::entities_entityclassdefinition_pointofinterestprovider::EntitiesEntityclassdefinition_pointofinterestproviderPools,
-    #[cfg(feature = "entities-entityclassdefinition_racecheckpoint")]
-    pub entities_entityclassdefinition_racecheckpoint: super::entities_entityclassdefinition_racecheckpoint::EntitiesEntityclassdefinition_racecheckpointPools,
-    #[cfg(feature = "entities-entityclassdefinition_shopkiosk")]
-    pub entities_entityclassdefinition_shopkiosk: super::entities_entityclassdefinition_shopkiosk::EntitiesEntityclassdefinition_shopkioskPools,
-    #[cfg(feature = "entities-entityclassdefinition_spawnprotectionbarrier")]
-    pub entities_entityclassdefinition_spawnprotectionbarrier: super::entities_entityclassdefinition_spawnprotectionbarrier::EntitiesEntityclassdefinition_spawnprotectionbarrierPools,
-    #[cfg(feature = "entities-entityclassdefinition_spectatorpoint")]
-    pub entities_entityclassdefinition_spectatorpoint: super::entities_entityclassdefinition_spectatorpoint::EntitiesEntityclassdefinition_spectatorpointPools,
-    #[cfg(feature = "entities-entityclassdefinition_tilesocket")]
-    pub entities_entityclassdefinition_tilesocket: super::entities_entityclassdefinition_tilesocket::EntitiesEntityclassdefinition_tilesocketPools,
     #[cfg(feature = "entities-entityspawncameracontroller")]
     pub entities_entityspawncameracontroller: super::entities_entityspawncameracontroller::EntitiesEntityspawncameracontrollerPools,
     #[cfg(feature = "entities-entityspawners")]
@@ -155,6 +141,8 @@ pub struct DataPools {
     pub entities_groundvehicles: super::entities_groundvehicles::EntitiesGroundvehiclesPools,
     #[cfg(feature = "entities-holofield")]
     pub entities_holofield: super::entities_holofield::EntitiesHolofieldPools,
+    #[cfg(feature = "entities-instancedinteriormanager")]
+    pub entities_instancedinteriormanager: super::entities_instancedinteriormanager::EntitiesInstancedinteriormanagerPools,
     #[cfg(feature = "entities-jumppoints")]
     pub entities_jumppoints: super::entities_jumppoints::EntitiesJumppointsPools,
     #[cfg(feature = "entities-ladder")]
@@ -165,6 +153,8 @@ pub struct DataPools {
     pub entities_lights: super::entities_lights::EntitiesLightsPools,
     #[cfg(feature = "entities-loadingplatformmanager")]
     pub entities_loadingplatformmanager: super::entities_loadingplatformmanager::EntitiesLoadingplatformmanagerPools,
+    #[cfg(feature = "entities-localmissionsession")]
+    pub entities_localmissionsession: super::entities_localmissionsession::EntitiesLocalmissionsessionPools,
     #[cfg(feature = "entities-locationmanager")]
     pub entities_locationmanager: super::entities_locationmanager::EntitiesLocationmanagerPools,
     #[cfg(feature = "entities-maglaunch")]
@@ -193,8 +183,12 @@ pub struct DataPools {
     pub entities_physicalizedjobboard: super::entities_physicalizedjobboard::EntitiesPhysicalizedjobboardPools,
     #[cfg(feature = "entities-physics")]
     pub entities_physics: super::entities_physics::EntitiesPhysicsPools,
+    #[cfg(feature = "entities-planeteffecttest")]
+    pub entities_planeteffecttest: super::entities_planeteffecttest::EntitiesPlaneteffecttestPools,
     #[cfg(feature = "entities-planetkillvolume")]
     pub entities_planetkillvolume: super::entities_planetkillvolume::EntitiesPlanetkillvolumePools,
+    #[cfg(feature = "entities-pointofinterestprovider")]
+    pub entities_pointofinterestprovider: super::entities_pointofinterestprovider::EntitiesPointofinterestproviderPools,
     #[cfg(feature = "entities-projectilespawnerentity")]
     pub entities_projectilespawnerentity: super::entities_projectilespawnerentity::EntitiesProjectilespawnerentityPools,
     #[cfg(feature = "entities-proximityassistmodifier")]
@@ -203,6 +197,8 @@ pub struct DataPools {
     pub entities_quantumcolorshift: super::entities_quantumcolorshift::EntitiesQuantumcolorshiftPools,
     #[cfg(feature = "entities-quantumtrail")]
     pub entities_quantumtrail: super::entities_quantumtrail::EntitiesQuantumtrailPools,
+    #[cfg(feature = "entities-racecheckpoint")]
+    pub entities_racecheckpoint: super::entities_racecheckpoint::EntitiesRacecheckpointPools,
     #[cfg(feature = "entities-racering")]
     pub entities_racering: super::entities_racering::EntitiesRaceringPools,
     #[cfg(feature = "entities-rastar")]
@@ -235,10 +231,6 @@ pub struct DataPools {
     pub entities_scitem_deliveryitemportmanager: super::entities_scitem_deliveryitemportmanager::EntitiesScitemDeliveryitemportmanagerPools,
     #[cfg(feature = "entities-scitem-doors")]
     pub entities_scitem_doors: super::entities_scitem_doors::EntitiesScitemDoorsPools,
-    #[cfg(feature = "entities-scitem-entityclassdefinition_sequenceobjectitem")]
-    pub entities_scitem_entityclassdefinition_sequenceobjectitem: super::entities_scitem_entityclassdefinition_sequenceobjectitem::EntitiesScitemEntityclassdefinition_sequenceobjectitemPools,
-    #[cfg(feature = "entities-scitem-entityclassdefinition_test_gadget")]
-    pub entities_scitem_entityclassdefinition_test_gadget: super::entities_scitem_entityclassdefinition_test_gadget::EntitiesScitemEntityclassdefinition_test_gadgetPools,
     #[cfg(feature = "entities-scitem-flair")]
     pub entities_scitem_flair: super::entities_scitem_flair::EntitiesScitemFlairPools,
     #[cfg(feature = "entities-scitem-gameplayinteractables")]
@@ -257,12 +249,16 @@ pub struct DataPools {
     pub entities_scitem_remoteconnectionreceiver: super::entities_scitem_remoteconnectionreceiver::EntitiesScitemRemoteconnectionreceiverPools,
     #[cfg(feature = "entities-scitem-scitem_debris")]
     pub entities_scitem_scitem_debris: super::entities_scitem_scitem_debris::EntitiesScitemScitem_debrisPools,
+    #[cfg(feature = "entities-scitem-sequenceobjectitem")]
+    pub entities_scitem_sequenceobjectitem: super::entities_scitem_sequenceobjectitem::EntitiesScitemSequenceobjectitemPools,
     #[cfg(feature = "entities-scitem-ships")]
     pub entities_scitem_ships: super::entities_scitem_ships::EntitiesScitemShipsPools,
     #[cfg(feature = "entities-scitem-storage")]
     pub entities_scitem_storage: super::entities_scitem_storage::EntitiesScitemStoragePools,
     #[cfg(feature = "entities-scitem-suit")]
     pub entities_scitem_suit: super::entities_scitem_suit::EntitiesScitemSuitPools,
+    #[cfg(feature = "entities-scitem-test_gadget")]
+    pub entities_scitem_test_gadget: super::entities_scitem_test_gadget::EntitiesScitemTest_gadgetPools,
     #[cfg(feature = "entities-scitem-toggleableentities")]
     pub entities_scitem_toggleableentities: super::entities_scitem_toggleableentities::EntitiesScitemToggleableentitiesPools,
     #[cfg(feature = "entities-scitem-usables")]
@@ -271,14 +267,22 @@ pub struct DataPools {
     pub entities_scitem_weapons: super::entities_scitem_weapons::EntitiesScitemWeaponsPools,
     #[cfg(feature = "entities-shadowregionentity")]
     pub entities_shadowregionentity: super::entities_shadowregionentity::EntitiesShadowregionentityPools,
+    #[cfg(feature = "entities-shopkiosk")]
+    pub entities_shopkiosk: super::entities_shopkiosk::EntitiesShopkioskPools,
     #[cfg(feature = "entities-slotspawnpoint")]
     pub entities_slotspawnpoint: super::entities_slotspawnpoint::EntitiesSlotspawnpointPools,
     #[cfg(feature = "entities-spawnhelper")]
     pub entities_spawnhelper: super::entities_spawnhelper::EntitiesSpawnhelperPools,
+    #[cfg(feature = "entities-spawnprotectionbarrier")]
+    pub entities_spawnprotectionbarrier: super::entities_spawnprotectionbarrier::EntitiesSpawnprotectionbarrierPools,
+    #[cfg(feature = "entities-spectatorpoint")]
+    pub entities_spectatorpoint: super::entities_spectatorpoint::EntitiesSpectatorpointPools,
     #[cfg(feature = "entities-sunlight")]
     pub entities_sunlight: super::entities_sunlight::EntitiesSunlightPools,
     #[cfg(feature = "entities-test")]
     pub entities_test: super::entities_test::EntitiesTestPools,
+    #[cfg(feature = "entities-tilesocket")]
+    pub entities_tilesocket: super::entities_tilesocket::EntitiesTilesocketPools,
     #[cfg(feature = "entities-tinymachine")]
     pub entities_tinymachine: super::entities_tinymachine::EntitiesTinymachinePools,
     #[cfg(feature = "entities-ui")]
@@ -299,8 +303,6 @@ pub struct DataPools {
     pub entities_worlddisplay: super::entities_worlddisplay::EntitiesWorlddisplayPools,
     #[cfg(feature = "entitlementpolicies")]
     pub entitlementpolicies: super::entitlementpolicies::EntitlementpoliciesPools,
-    #[cfg(feature = "entityclassdefinition")]
-    pub entityclassdefinition: super::entityclassdefinition::EntityclassdefinitionPools,
     #[cfg(feature = "environments")]
     pub environments: super::environments::EnvironmentsPools,
     #[cfg(feature = "evagraph")]
@@ -417,8 +419,6 @@ pub struct DataPools {
     pub sglobalsalvagerepairbeamparams: super::sglobalsalvagerepairbeamparams::SglobalsalvagerepairbeamparamsPools,
     #[cfg(feature = "sglobaltractorbeamparams")]
     pub sglobaltractorbeamparams: super::sglobaltractorbeamparams::SglobaltractorbeamparamsPools,
-    #[cfg(feature = "shipinsurancerecord")]
-    pub shipinsurancerecord: super::shipinsurancerecord::ShipinsurancerecordPools,
     #[cfg(feature = "specialeventdatabase")]
     pub specialeventdatabase: super::specialeventdatabase::SpecialeventdatabasePools,
     #[cfg(feature = "sreputationglobalcontextbbparams")]

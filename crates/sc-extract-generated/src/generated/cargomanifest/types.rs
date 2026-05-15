@@ -149,3 +149,149 @@ impl<'a> Extract<'a> for CargoResourceAllocation {
         }
     }
 }
+
+/// DCB type: `CargoManifestFixedQuantityDef`
+/// Inherits from: `BaseCargoManifestQuantityTypeDef`
+pub struct CargoManifestFixedQuantityDef {
+    /// `quantity` (Int32)
+    pub quantity: i32,
+}
+
+impl Pooled for CargoManifestFixedQuantityDef {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.cargomanifest.cargo_manifest_fixed_quantity_def
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.cargomanifest.cargo_manifest_fixed_quantity_def
+    }
+}
+
+impl<'a> Extract<'a> for CargoManifestFixedQuantityDef {
+    const TYPE_NAME: &'static str = "CargoManifestFixedQuantityDef";
+    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {
+            quantity: inst.get_i32("quantity").unwrap_or_default(),
+        }
+    }
+}
+
+/// DCB type: `CargoManifestProportionQuantityDef`
+/// Inherits from: `BaseCargoManifestQuantityTypeDef`
+pub struct CargoManifestProportionQuantityDef {
+    /// `proportion` (Single)
+    pub proportion: f32,
+}
+
+impl Pooled for CargoManifestProportionQuantityDef {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.cargomanifest.cargo_manifest_proportion_quantity_def
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.cargomanifest.cargo_manifest_proportion_quantity_def
+    }
+}
+
+impl<'a> Extract<'a> for CargoManifestProportionQuantityDef {
+    const TYPE_NAME: &'static str = "CargoManifestProportionQuantityDef";
+    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
+        Self {
+            proportion: inst.get_f32("proportion").unwrap_or_default(),
+        }
+    }
+}
+
+/// DCB type: `CargoSpawnEntityDef`
+/// Inherits from: `BaseCargoManifestSpawnRuleDef`
+pub struct CargoSpawnEntityDef {
+    /// `probability` (Single)
+    pub probability: f32,
+    /// `entities` (Reference (array))
+    pub entities: Vec<CigGuid>,
+    /// `quantityAlgorithmType` (StrongPointer)
+    pub quantity_algorithm_type: Option<BaseCargoManifestQuantityTypeDefPtr>,
+}
+
+impl Pooled for CargoSpawnEntityDef {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.cargomanifest.cargo_spawn_entity_def
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.cargomanifest.cargo_spawn_entity_def
+    }
+}
+
+impl<'a> Extract<'a> for CargoSpawnEntityDef {
+    const TYPE_NAME: &'static str = "CargoSpawnEntityDef";
+    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
+        Self {
+            probability: inst.get_f32("probability").unwrap_or_default(),
+            entities: inst
+                .get_array("entities")
+                .map(|arr| {
+                    arr.filter_map(|v| {
+                        if let Value::Reference(Some(r)) = v {
+                            Some(r.guid)
+                        } else {
+                            None
+                        }
+                    })
+                    .collect()
+                })
+                .unwrap_or_default(),
+            quantity_algorithm_type: match inst.get("quantityAlgorithmType") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(BaseCargoManifestQuantityTypeDefPtr::from_ref(b, r))
+                }
+                _ => None,
+            },
+        }
+    }
+}
+
+/// DCB type: `CargoSpawnResourceDef`
+/// Inherits from: `BaseCargoManifestSpawnRuleDef`
+pub struct CargoSpawnResourceDef {
+    /// `probability` (Single)
+    pub probability: f32,
+    /// `resources` (Reference (array))
+    pub resources: Vec<CigGuid>,
+    /// `quantityAlgorithmType` (StrongPointer)
+    pub quantity_algorithm_type: Option<BaseCargoManifestQuantityTypeDefPtr>,
+}
+
+impl Pooled for CargoSpawnResourceDef {
+    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
+        &pools.cargomanifest.cargo_spawn_resource_def
+    }
+    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
+        &mut pools.cargomanifest.cargo_spawn_resource_def
+    }
+}
+
+impl<'a> Extract<'a> for CargoSpawnResourceDef {
+    const TYPE_NAME: &'static str = "CargoSpawnResourceDef";
+    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
+        Self {
+            probability: inst.get_f32("probability").unwrap_or_default(),
+            resources: inst
+                .get_array("resources")
+                .map(|arr| {
+                    arr.filter_map(|v| {
+                        if let Value::Reference(Some(r)) = v {
+                            Some(r.guid)
+                        } else {
+                            None
+                        }
+                    })
+                    .collect()
+                })
+                .unwrap_or_default(),
+            quantity_algorithm_type: match inst.get("quantityAlgorithmType") {
+                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
+                    Some(BaseCargoManifestQuantityTypeDefPtr::from_ref(b, r))
+                }
+                _ => None,
+            },
+        }
+    }
+}

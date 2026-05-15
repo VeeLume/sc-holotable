@@ -26,7 +26,9 @@ use sc_contracts::{
     AssetConfig, AssetData, AssetSource, Datacore, DatacoreConfig, LocaleMap, LocalizedItemCache,
     MissionIndex,
 };
-use slt::{Border, Color, Context, KeyCode, KeyModifiers, RunConfig, ScrollState, TabsState, Theme};
+use slt::{
+    Border, Color, Context, KeyCode, KeyModifiers, RunConfig, ScrollState, TabsState, Theme,
+};
 
 const TAB_POOLS: usize = 0;
 const TAB_CONTRACTS: usize = 1;
@@ -43,14 +45,19 @@ fn main() -> Result<()> {
 
     eprintln!("sc-explorer: discovering primary install...");
     let install = sc_installs::discover_primary().context("discover SC install")?;
-    eprintln!("  {} v{} at {}", install.channel, install.short_version(), install.root.display());
+    eprintln!(
+        "  {} v{} at {}",
+        install.channel,
+        install.short_version(),
+        install.root.display()
+    );
 
     eprintln!("sc-explorer: opening {}", install.data_p4k().display());
     let assets = AssetSource::from_install(&install).context("open Data.p4k")?;
 
     eprintln!("sc-explorer: extracting locale + DCB bytes...");
-    let asset_data = AssetData::extract(&assets, &AssetConfig::standard())
-        .context("extract asset data")?;
+    let asset_data =
+        AssetData::extract(&assets, &AssetConfig::standard()).context("extract asset data")?;
 
     let parse_started = Instant::now();
     eprintln!("sc-explorer: parsing Datacore (~25s)...");
@@ -88,11 +95,7 @@ fn main() -> Result<()> {
         weapons_state: sc_weapons::tui::ExplorerState::new(),
         pools_scroll: ScrollState::new(),
         dark_mode: true,
-        version_label: format!(
-            "{} v{}",
-            install.channel,
-            install.short_version()
-        ),
+        version_label: format!("{} v{}", install.channel, install.short_version()),
         locale,
         localized_items,
     };
@@ -101,8 +104,10 @@ fn main() -> Result<()> {
     // Mouse enabled so the detail-pane scrollable receives wheel events —
     // SLT's `auto_scroll_nested` only consumes mouse events, so without
     // this the scroll indicator paints but the viewport never moves.
-    slt::run_with(RunConfig::default().mouse(true), |ui: &mut Context| draw(ui, &mut app))
-        .context("run SLT")?;
+    slt::run_with(RunConfig::default().mouse(true), |ui: &mut Context| {
+        draw(ui, &mut app)
+    })
+    .context("run SLT")?;
     Ok(())
 }
 
@@ -206,11 +211,7 @@ fn draw(ui: &mut Context, app: &mut AppState) {
                     &app.locale,
                     &app.localized_items,
                 ),
-                TAB_WEAPONS => sc_weapons::tui::render(
-                    ui,
-                    &mut app.weapons_state,
-                    &app.weapon_set,
-                ),
+                TAB_WEAPONS => sc_weapons::tui::render(ui, &mut app.weapons_state, &app.weapon_set),
                 _ => {}
             }
 

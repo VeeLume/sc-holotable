@@ -72,8 +72,8 @@ impl<'a> Extract<'a> for SOCInstanceSlot {
 /// DCB type: `SOCInstanceComponentParams`
 /// Inherits from: `DataForgeComponentParams`
 pub struct SOCInstanceComponentParams {
-    /// `slots` (Class)
-    pub slots: Option<Handle<SOCInstanceSlot>>,
+    /// `slots` (Class (array))
+    pub slots: Vec<Handle<SOCInstanceSlot>>,
     /// `rulesConfig` (Reference)
     pub rules_config: Option<CigGuid>,
 }
@@ -91,15 +91,25 @@ impl<'a> Extract<'a> for SOCInstanceComponentParams {
     const TYPE_NAME: &'static str = "SOCInstanceComponentParams";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            slots: match inst.get("slots") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<SOCInstanceSlot>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
-                _ => None,
-            },
+            slots: inst
+                .get_array("slots")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<SOCInstanceSlot>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => Some(b.alloc_nested::<SOCInstanceSlot>(
+                            b.db.instance(r.struct_index, r.instance_index),
+                            true,
+                        )),
+                        _ => None,
+                    })
+                    .collect()
+                })
+                .unwrap_or_default(),
             rules_config: inst
                 .get("rulesConfig")
                 .and_then(|v| v.as_record_ref())

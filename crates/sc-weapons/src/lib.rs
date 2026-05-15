@@ -105,12 +105,7 @@ pub fn iter_ship_weapons(datacore: &Datacore) -> impl Iterator<Item = ShipWeapon
 /// pool spanning all three.
 pub fn build_weapon_pools(
     datacore: &Datacore,
-) -> (
-    Vec<ShipWeapon>,
-    Vec<FpsWeapon>,
-    Vec<Missile>,
-    WeaponPools,
-) {
+) -> (Vec<ShipWeapon>, Vec<FpsWeapon>, Vec<Missile>, WeaponPools) {
     let ships: Vec<ShipWeapon> = iter_ship_weapons(datacore).collect();
     let fps: Vec<FpsWeapon> = iter_fps_weapons(datacore).collect();
     let missiles: Vec<Missile> = iter_missiles(datacore).collect();

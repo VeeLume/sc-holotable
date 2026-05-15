@@ -74,7 +74,8 @@ fn section_1_name_property(datacore: &Datacore) {
             // Walk raw to extract the .name field on the AIName value.
             let raw_inst = db_instance_for_mission_property(db, prop, datacore);
             if let Some(name) = raw_inst.and_then(|i| {
-                i.get_instance("value").and_then(|v| v.get_str("name").map(String::from))
+                i.get_instance("value")
+                    .and_then(|v| v.get_str("name").map(String::from))
             }) {
                 if sample_ainame.len() < 8 {
                     sample_ainame.push((
@@ -280,7 +281,10 @@ fn section_3_empty_candidate_census(index: &MissionIndex) {
         println!("           sample contract: {sample}");
     }
     if entries.len() > 30 {
-        println!("  ... +{} more (family, var) combinations", entries.len() - 30);
+        println!(
+            "  ... +{} more (family, var) combinations",
+            entries.len() - 30
+        );
     }
 }
 

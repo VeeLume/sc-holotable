@@ -15,7 +15,7 @@ use super::super::*;
 #[derive(Default)]
 pub struct EntitiesScitemSuitPools {
     pub legacy_mobi_glas_params: Vec<Option<LegacyMobiGlasParams>>,
-    pub landing_area_services_params: Vec<Option<LandingAreaServicesParams>>,
+    pub ship_services_uiprovider_params: Vec<Option<ShipServicesUIProviderParams>>,
     pub entity_component_docking_hub_params: Vec<Option<EntityComponentDockingHubParams>>,
     pub smission_broker_interface_component_params:
         Vec<Option<SMissionBrokerInterfaceComponentParams>>,

@@ -20,10 +20,10 @@ use super::super::*;
 
 /// DCB type: `SOperatorModeLabels`
 pub struct SOperatorModeLabels {
-    /// `fullNames` (Locale)
-    pub full_names: LocaleKey,
-    /// `shortNames` (Locale)
-    pub short_names: LocaleKey,
+    /// `fullNames` (Locale (array))
+    pub full_names: Vec<LocaleKey>,
+    /// `shortNames` (Locale (array))
+    pub short_names: Vec<LocaleKey>,
 }
 
 impl Pooled for SOperatorModeLabels {
@@ -40,12 +40,18 @@ impl<'a> Extract<'a> for SOperatorModeLabels {
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
             full_names: inst
-                .get_str("fullNames")
-                .map(LocaleKey::from)
+                .get_array("fullNames")
+                .map(|arr| {
+                    arr.filter_map(|v| v.as_str().map(LocaleKey::from))
+                        .collect()
+                })
                 .unwrap_or_default(),
             short_names: inst
-                .get_str("shortNames")
-                .map(LocaleKey::from)
+                .get_array("shortNames")
+                .map(|arr| {
+                    arr.filter_map(|v| v.as_str().map(LocaleKey::from))
+                        .collect()
+                })
                 .unwrap_or_default(),
         }
     }
@@ -53,10 +59,10 @@ impl<'a> Extract<'a> for SOperatorModeLabels {
 
 /// DCB type: `SMasterModeLabels`
 pub struct SMasterModeLabels {
-    /// `fullNames` (Locale)
-    pub full_names: LocaleKey,
-    /// `shortNames` (Locale)
-    pub short_names: LocaleKey,
+    /// `fullNames` (Locale (array))
+    pub full_names: Vec<LocaleKey>,
+    /// `shortNames` (Locale (array))
+    pub short_names: Vec<LocaleKey>,
 }
 
 impl Pooled for SMasterModeLabels {
@@ -73,12 +79,18 @@ impl<'a> Extract<'a> for SMasterModeLabels {
     fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
         Self {
             full_names: inst
-                .get_str("fullNames")
-                .map(LocaleKey::from)
+                .get_array("fullNames")
+                .map(|arr| {
+                    arr.filter_map(|v| v.as_str().map(LocaleKey::from))
+                        .collect()
+                })
                 .unwrap_or_default(),
             short_names: inst
-                .get_str("shortNames")
-                .map(LocaleKey::from)
+                .get_array("shortNames")
+                .map(|arr| {
+                    arr.filter_map(|v| v.as_str().map(LocaleKey::from))
+                        .collect()
+                })
                 .unwrap_or_default(),
         }
     }

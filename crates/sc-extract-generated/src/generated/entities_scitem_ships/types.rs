@@ -127,369 +127,6 @@ impl<'a> Extract<'a> for SMisfireFunctionalityCondition {
     }
 }
 
-/// DCB type: `HoverPlane`
-pub struct HoverPlane {
-    /// `width` (Single)
-    pub width: f32,
-    /// `length` (Single)
-    pub length: f32,
-    /// `offset` (Class)
-    pub offset: Option<Handle<Vec3>>,
-}
-
-impl Pooled for HoverPlane {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_scitem_ships.hover_plane
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_scitem_ships.hover_plane
-    }
-}
-
-impl<'a> Extract<'a> for HoverPlane {
-    const TYPE_NAME: &'static str = "HoverPlane";
-    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
-        Self {
-            width: inst.get_f32("width").unwrap_or_default(),
-            length: inst.get_f32("length").unwrap_or_default(),
-            offset: match inst.get("offset") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Vec3>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
-                _ => None,
-            },
-        }
-    }
-}
-
-/// DCB type: `SuspensionSprings`
-pub struct SuspensionSprings {
-    /// `undampedFrequency` (Single)
-    pub undamped_frequency: f32,
-    /// `dampingRatio` (Single)
-    pub damping_ratio: f32,
-    /// `forceBlendOutDelay` (Single)
-    pub force_blend_out_delay: f32,
-    /// `forceBlendInRate` (Single)
-    pub force_blend_in_rate: f32,
-    /// `forceBlendOutRate` (Single)
-    pub force_blend_out_rate: f32,
-    /// `bumpStop` (Single)
-    pub bump_stop: f32,
-    /// `compressionForceCurve` (Class)
-    pub compression_force_curve: Option<Handle<BezierCurve>>,
-}
-
-impl Pooled for SuspensionSprings {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_scitem_ships.suspension_springs
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_scitem_ships.suspension_springs
-    }
-}
-
-impl<'a> Extract<'a> for SuspensionSprings {
-    const TYPE_NAME: &'static str = "SuspensionSprings";
-    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
-        Self {
-            undamped_frequency: inst.get_f32("undampedFrequency").unwrap_or_default(),
-            damping_ratio: inst.get_f32("dampingRatio").unwrap_or_default(),
-            force_blend_out_delay: inst.get_f32("forceBlendOutDelay").unwrap_or_default(),
-            force_blend_in_rate: inst.get_f32("forceBlendInRate").unwrap_or_default(),
-            force_blend_out_rate: inst.get_f32("forceBlendOutRate").unwrap_or_default(),
-            bump_stop: inst.get_f32("bumpStop").unwrap_or_default(),
-            compression_force_curve: match inst.get("compressionForceCurve") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BezierCurve>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
-                _ => None,
-            },
-        }
-    }
-}
-
-/// DCB type: `HoverHeight`
-pub struct HoverHeight {
-    /// `desiredHoverHeight` (Single)
-    pub desired_hover_height: f32,
-    /// `hoverHeightOffsetRange` (Class)
-    pub hover_height_offset_range: Option<Handle<Range>>,
-    /// `hoverHeightOffsetAcceleration` (Single)
-    pub hover_height_offset_acceleration: f32,
-    /// `hoverHeightOffsetMaxSpeed` (Single)
-    pub hover_height_offset_max_speed: f32,
-    /// `speedRangeForExtraHeight` (Class)
-    pub speed_range_for_extra_height: Option<Handle<Range>>,
-    /// `maxExtraHoverHeight` (Single)
-    pub max_extra_hover_height: f32,
-}
-
-impl Pooled for HoverHeight {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_scitem_ships.hover_height
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_scitem_ships.hover_height
-    }
-}
-
-impl<'a> Extract<'a> for HoverHeight {
-    const TYPE_NAME: &'static str = "HoverHeight";
-    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
-        Self {
-            desired_hover_height: inst.get_f32("desiredHoverHeight").unwrap_or_default(),
-            hover_height_offset_range: match inst.get("hoverHeightOffsetRange") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
-                _ => None,
-            },
-            hover_height_offset_acceleration: inst
-                .get_f32("hoverHeightOffsetAcceleration")
-                .unwrap_or_default(),
-            hover_height_offset_max_speed: inst
-                .get_f32("hoverHeightOffsetMaxSpeed")
-                .unwrap_or_default(),
-            speed_range_for_extra_height: match inst.get("speedRangeForExtraHeight") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<Range>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
-                _ => None,
-            },
-            max_extra_hover_height: inst.get_f32("maxExtraHoverHeight").unwrap_or_default(),
-        }
-    }
-}
-
-/// DCB type: `HoverTilting`
-pub struct HoverTilting {
-    /// `strafeBankFactor` (Single)
-    pub strafe_bank_factor: f32,
-    /// `forwardBackTiltFactor` (Single)
-    pub forward_back_tilt_factor: f32,
-    /// `turnBankFactor` (Single)
-    pub turn_bank_factor: f32,
-    /// `bankPerSpeedCurve` (Class)
-    pub bank_per_speed_curve: Option<Handle<BezierCurve>>,
-}
-
-impl Pooled for HoverTilting {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_scitem_ships.hover_tilting
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_scitem_ships.hover_tilting
-    }
-}
-
-impl<'a> Extract<'a> for HoverTilting {
-    const TYPE_NAME: &'static str = "HoverTilting";
-    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
-        Self {
-            strafe_bank_factor: inst.get_f32("strafeBankFactor").unwrap_or_default(),
-            forward_back_tilt_factor: inst.get_f32("forwardBackTiltFactor").unwrap_or_default(),
-            turn_bank_factor: inst.get_f32("turnBankFactor").unwrap_or_default(),
-            bank_per_speed_curve: match inst.get("bankPerSpeedCurve") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BezierCurve>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
-                _ => None,
-            },
-        }
-    }
-}
-
-/// DCB type: `HoverCollisions`
-pub struct HoverCollisions {
-    /// `antiSpinThreshold` (Single)
-    pub anti_spin_threshold: f32,
-    /// `linearCollisionDamp` (Single)
-    pub linear_collision_damp: f32,
-    /// `angularCollisionDamp` (Single)
-    pub angular_collision_damp: f32,
-}
-
-impl Pooled for HoverCollisions {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_scitem_ships.hover_collisions
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_scitem_ships.hover_collisions
-    }
-}
-
-impl<'a> Extract<'a> for HoverCollisions {
-    const TYPE_NAME: &'static str = "HoverCollisions";
-    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
-            anti_spin_threshold: inst.get_f32("antiSpinThreshold").unwrap_or_default(),
-            linear_collision_damp: inst.get_f32("linearCollisionDamp").unwrap_or_default(),
-            angular_collision_damp: inst.get_f32("angularCollisionDamp").unwrap_or_default(),
-        }
-    }
-}
-
-/// DCB type: `HoverHandling`
-pub struct HoverHandling {
-    /// `turnFriction` (Single)
-    pub turn_friction: f32,
-    /// `selfRightingAccelBoost` (Single)
-    pub self_righting_accel_boost: f32,
-    /// `hoverMaxSpeed` (Single)
-    pub hover_max_speed: f32,
-    /// `airControlMultiplier` (Single)
-    pub air_control_multiplier: f32,
-    /// `antiFallMultiplier` (Single)
-    pub anti_fall_multiplier: f32,
-    /// `lateralStrafeMultiplier` (Single)
-    pub lateral_strafe_multiplier: f32,
-    /// `maxSpeedMultiplierByHeight` (Class)
-    pub max_speed_multiplier_by_height: Option<Handle<BezierCurve>>,
-    /// `turnFrictionMultiplierByHeight` (Class)
-    pub turn_friction_multiplier_by_height: Option<Handle<BezierCurve>>,
-}
-
-impl Pooled for HoverHandling {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_scitem_ships.hover_handling
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_scitem_ships.hover_handling
-    }
-}
-
-impl<'a> Extract<'a> for HoverHandling {
-    const TYPE_NAME: &'static str = "HoverHandling";
-    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
-        Self {
-            turn_friction: inst.get_f32("turnFriction").unwrap_or_default(),
-            self_righting_accel_boost: inst.get_f32("selfRightingAccelBoost").unwrap_or_default(),
-            hover_max_speed: inst.get_f32("hoverMaxSpeed").unwrap_or_default(),
-            air_control_multiplier: inst.get_f32("airControlMultiplier").unwrap_or_default(),
-            anti_fall_multiplier: inst.get_f32("antiFallMultiplier").unwrap_or_default(),
-            lateral_strafe_multiplier: inst.get_f32("lateralStrafeMultiplier").unwrap_or_default(),
-            max_speed_multiplier_by_height: match inst.get("maxSpeedMultiplierByHeight") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BezierCurve>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
-                _ => None,
-            },
-            turn_friction_multiplier_by_height: match inst.get("turnFrictionMultiplierByHeight") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<BezierCurve>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
-                _ => None,
-            },
-        }
-    }
-}
-
-/// DCB type: `GravlevParams`
-/// Inherits from: `DataForgeComponentParams`
-pub struct GravlevParams {
-    /// `hoverPlane` (Class)
-    pub hover_plane: Option<Handle<HoverPlane>>,
-    /// `springs` (Class)
-    pub springs: Option<Handle<SuspensionSprings>>,
-    /// `height` (Class)
-    pub height: Option<Handle<HoverHeight>>,
-    /// `tilting` (Class)
-    pub tilting: Option<Handle<HoverTilting>>,
-    /// `collisions` (Class)
-    pub collisions: Option<Handle<HoverCollisions>>,
-    /// `handling` (Class)
-    pub handling: Option<Handle<HoverHandling>>,
-    /// `hoverHeightRtpc` (Class)
-    pub hover_height_rtpc: Option<Handle<AudioRtpc>>,
-    /// `hoverHeightDifferentialRtpc` (Class)
-    pub hover_height_differential_rtpc: Option<Handle<AudioRtpc>>,
-}
-
-impl Pooled for GravlevParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_scitem_ships.gravlev_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_scitem_ships.gravlev_params
-    }
-}
-
-impl<'a> Extract<'a> for GravlevParams {
-    const TYPE_NAME: &'static str = "GravlevParams";
-    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
-        Self {
-            hover_plane: match inst.get("hoverPlane") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<HoverPlane>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
-                _ => None,
-            },
-            springs: match inst.get("springs") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<SuspensionSprings>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
-                _ => None,
-            },
-            height: match inst.get("height") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<HoverHeight>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
-                _ => None,
-            },
-            tilting: match inst.get("tilting") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<HoverTilting>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
-                _ => None,
-            },
-            collisions: match inst.get("collisions") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<HoverCollisions>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
-                _ => None,
-            },
-            handling: match inst.get("handling") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<HoverHandling>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
-                _ => None,
-            },
-            hover_height_rtpc: match inst.get("hoverHeightRtpc") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
-                _ => None,
-            },
-            hover_height_differential_rtpc: match inst.get("hoverHeightDifferentialRtpc") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
-                _ => None,
-            },
-        }
-    }
-}
-
 /// DCB type: `SIFCSModifierNumber`
 pub struct SIFCSModifierNumber {
     /// `value` (Single)
@@ -552,10 +189,10 @@ impl<'a> Extract<'a> for SIFCSModifierVector {
 
 /// DCB type: `SIFCSModifiersLegacy`
 pub struct SIFCSModifiersLegacy {
-    /// `numbers` (Class)
-    pub numbers: Option<Handle<SIFCSModifierNumber>>,
-    /// `vectors` (Class)
-    pub vectors: Option<Handle<SIFCSModifierVector>>,
+    /// `numbers` (Class (array))
+    pub numbers: Vec<Handle<SIFCSModifierNumber>>,
+    /// `vectors` (Class (array))
+    pub vectors: Vec<Handle<SIFCSModifierVector>>,
 }
 
 impl Pooled for SIFCSModifiersLegacy {
@@ -571,49 +208,44 @@ impl<'a> Extract<'a> for SIFCSModifiersLegacy {
     const TYPE_NAME: &'static str = "SIFCSModifiersLegacy";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            numbers: match inst.get("numbers") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<SIFCSModifierNumber>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
-                _ => None,
-            },
-            vectors: match inst.get("vectors") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<SIFCSModifierVector>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
-                _ => None,
-            },
-        }
-    }
-}
-
-/// DCB type: `SendDockingEnableEvent`
-/// Inherits from: `EventDispatcher`
-pub struct SendDockingEnableEvent {
-    /// `enabled` (Boolean)
-    pub enabled: bool,
-}
-
-impl Pooled for SendDockingEnableEvent {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_scitem_ships.send_docking_enable_event
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_scitem_ships.send_docking_enable_event
-    }
-}
-
-impl<'a> Extract<'a> for SendDockingEnableEvent {
-    const TYPE_NAME: &'static str = "SendDockingEnableEvent";
-    fn extract(inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {
-            enabled: inst.get_bool("enabled").unwrap_or_default(),
+            numbers: inst
+                .get_array("numbers")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<SIFCSModifierNumber>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => Some(b.alloc_nested::<SIFCSModifierNumber>(
+                            b.db.instance(r.struct_index, r.instance_index),
+                            true,
+                        )),
+                        _ => None,
+                    })
+                    .collect()
+                })
+                .unwrap_or_default(),
+            vectors: inst
+                .get_array("vectors")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<SIFCSModifierVector>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => Some(b.alloc_nested::<SIFCSModifierVector>(
+                            b.db.instance(r.struct_index, r.instance_index),
+                            true,
+                        )),
+                        _ => None,
+                    })
+                    .collect()
+                })
+                .unwrap_or_default(),
         }
     }
 }
@@ -689,30 +321,6 @@ impl<'a> Extract<'a> for SelfDestructStateModifier {
                 _ => None,
             },
         }
-    }
-}
-
-/// DCB type: `ItemResourceDynamicAmountFuelNozzleFuel`
-/// Inherits from: `ItemResourceDynamicAmountBase`
-pub struct ItemResourceDynamicAmountFuelNozzleFuel {}
-
-impl Pooled for ItemResourceDynamicAmountFuelNozzleFuel {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools
-            .entities_scitem_ships
-            .item_resource_dynamic_amount_fuel_nozzle_fuel
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools
-            .entities_scitem_ships
-            .item_resource_dynamic_amount_fuel_nozzle_fuel
-    }
-}
-
-impl<'a> Extract<'a> for ItemResourceDynamicAmountFuelNozzleFuel {
-    const TYPE_NAME: &'static str = "ItemResourceDynamicAmountFuelNozzleFuel";
-    fn extract(_inst: &Instance<'a>, _b: &mut Builder<'a>) -> Self {
-        Self {}
     }
 }
 
@@ -879,121 +487,6 @@ impl<'a> Extract<'a> for SCItemEMPParams {
     }
 }
 
-/// DCB type: `SCItemFuelNozzleParams`
-/// Inherits from: `DataForgeComponentParams`
-pub struct SCItemFuelNozzleParams {
-    /// `fuelMaxFlowMultiplier` (Single)
-    pub fuel_max_flow_multiplier: f32,
-    /// `fuelTankCapacityMultiplier` (Single)
-    pub fuel_tank_capacity_multiplier: f32,
-    /// `fuelSafeSpeed` (Single)
-    pub fuel_safe_speed: f32,
-    /// `fuelSafeSpeedRN` (Single)
-    pub fuel_safe_speed_rn: f32,
-    /// `fuelDamageMultiplier` (Single)
-    pub fuel_damage_multiplier: f32,
-    /// `waveModifier` (Single)
-    pub wave_modifier: f32,
-    /// `waveModifierRN` (Single)
-    pub wave_modifier_rn: f32,
-    /// `frequency` (Single)
-    pub frequency: f32,
-    /// `flowSpeedModifier` (Single)
-    pub flow_speed_modifier: f32,
-    /// `fuelPodMultiplier` (Single)
-    pub fuel_pod_multiplier: f32,
-    /// `fuelFlowLoopStartAudioTrigger` (Class)
-    pub fuel_flow_loop_start_audio_trigger: Option<Handle<GlobalResourceAudio>>,
-    /// `fuelFlowLoopStopAudioTrigger` (Class)
-    pub fuel_flow_loop_stop_audio_trigger: Option<Handle<GlobalResourceAudio>>,
-    /// `fuelFlowRateAudioRtpcs` (Class (array))
-    pub fuel_flow_rate_audio_rtpcs: Vec<Handle<AudioRtpc>>,
-    /// `fuelSpillAudioRtpc` (Class)
-    pub fuel_spill_audio_rtpc: Option<Handle<AudioRtpc>>,
-    /// `stateToPowerOff` (WeakPointer)
-    pub state_to_power_off: Option<Handle<SInteractionState>>,
-}
-
-impl Pooled for SCItemFuelNozzleParams {
-    fn pool(pools: &DataPools) -> &Vec<Option<Self>> {
-        &pools.entities_scitem_ships.scitem_fuel_nozzle_params
-    }
-    fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>> {
-        &mut pools.entities_scitem_ships.scitem_fuel_nozzle_params
-    }
-}
-
-impl<'a> Extract<'a> for SCItemFuelNozzleParams {
-    const TYPE_NAME: &'static str = "SCItemFuelNozzleParams";
-    fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
-        Self {
-            fuel_max_flow_multiplier: inst.get_f32("fuelMaxFlowMultiplier").unwrap_or_default(),
-            fuel_tank_capacity_multiplier: inst
-                .get_f32("fuelTankCapacityMultiplier")
-                .unwrap_or_default(),
-            fuel_safe_speed: inst.get_f32("fuelSafeSpeed").unwrap_or_default(),
-            fuel_safe_speed_rn: inst.get_f32("fuelSafeSpeedRN").unwrap_or_default(),
-            fuel_damage_multiplier: inst.get_f32("fuelDamageMultiplier").unwrap_or_default(),
-            wave_modifier: inst.get_f32("waveModifier").unwrap_or_default(),
-            wave_modifier_rn: inst.get_f32("waveModifierRN").unwrap_or_default(),
-            frequency: inst.get_f32("frequency").unwrap_or_default(),
-            flow_speed_modifier: inst.get_f32("flowSpeedModifier").unwrap_or_default(),
-            fuel_pod_multiplier: inst.get_f32("fuelPodMultiplier").unwrap_or_default(),
-            fuel_flow_loop_start_audio_trigger: match inst.get("fuelFlowLoopStartAudioTrigger") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<GlobalResourceAudio>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
-                _ => None,
-            },
-            fuel_flow_loop_stop_audio_trigger: match inst.get("fuelFlowLoopStopAudioTrigger") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<GlobalResourceAudio>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
-                _ => None,
-            },
-            fuel_flow_rate_audio_rtpcs: inst
-                .get_array("fuelFlowRateAudioRtpcs")
-                .map(|arr| {
-                    arr.filter_map(|v| match v {
-                        Value::Class { struct_index, data } => Some(b.alloc_nested::<AudioRtpc>(
-                            Instance::from_inline_data(b.db, struct_index, data),
-                            false,
-                        )),
-                        Value::ClassRef(r) => Some(b.alloc_nested::<AudioRtpc>(
-                            b.db.instance(r.struct_index, r.instance_index),
-                            true,
-                        )),
-                        _ => None,
-                    })
-                    .collect()
-                })
-                .unwrap_or_default(),
-            fuel_spill_audio_rtpc: match inst.get("fuelSpillAudioRtpc") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
-                _ => None,
-            },
-            state_to_power_off: match inst.get("stateToPowerOff") {
-                Some(Value::StrongPointer(Some(r))) | Some(Value::WeakPointer(Some(r))) => {
-                    Some(b.alloc_nested::<SInteractionState>(
-                        b.db.instance(r.struct_index, r.instance_index),
-                        true,
-                    ))
-                }
-                _ => None,
-            },
-        }
-    }
-}
-
 /// DCB type: `SCItemSpaceMineParams`
 /// Inherits from: `SExplosiveOrdnanceParams`
 pub struct SCItemSpaceMineParams {
@@ -1021,8 +514,8 @@ pub struct SCItemSpaceMineParams {
     pub explosion_params: Option<Handle<ExplosionParams>>,
     /// `clusterParams` (StrongPointer)
     pub cluster_params: Option<Handle<SOrdnanceClusterParams>>,
-    /// `emissionsParams` (Class)
-    pub emissions_params: Option<Handle<SOrdnanceEmissionsParams>>,
+    /// `emissionsParams` (Class (array))
+    pub emissions_params: Vec<Handle<SOrdnanceEmissionsParams>>,
 }
 
 impl Pooled for SCItemSpaceMineParams {
@@ -1074,15 +567,25 @@ impl<'a> Extract<'a> for SCItemSpaceMineParams {
                 }
                 _ => None,
             },
-            emissions_params: match inst.get("emissionsParams") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<SOrdnanceEmissionsParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
-                _ => None,
-            },
+            emissions_params: inst
+                .get_array("emissionsParams")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<SOrdnanceEmissionsParams>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => Some(b.alloc_nested::<SOrdnanceEmissionsParams>(
+                            b.db.instance(r.struct_index, r.instance_index),
+                            true,
+                        )),
+                        _ => None,
+                    })
+                    .collect()
+                })
+                .unwrap_or_default(),
         }
     }
 }
@@ -1097,8 +600,8 @@ pub struct SMFDParamsDiagnostics {
     pub excluded_item_types: Vec<Handle<SItemPortDefTypes>>,
     /// `includedItemTypes` (Class (array))
     pub included_item_types: Vec<Handle<SItemPortDefTypes>>,
-    /// `typeIcons` (String)
-    pub type_icons: String,
+    /// `typeIcons` (String (array))
+    pub type_icons: Vec<String>,
 }
 
 impl Pooled for SMFDParamsDiagnostics {
@@ -1155,8 +658,8 @@ impl<'a> Extract<'a> for SMFDParamsDiagnostics {
                 })
                 .unwrap_or_default(),
             type_icons: inst
-                .get_str("typeIcons")
-                .map(String::from)
+                .get_array("typeIcons")
+                .map(|arr| arr.filter_map(|v| v.as_str().map(String::from)).collect())
                 .unwrap_or_default(),
         }
     }

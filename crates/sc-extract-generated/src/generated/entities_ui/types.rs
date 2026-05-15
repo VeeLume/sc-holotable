@@ -404,16 +404,16 @@ pub struct SEntityComponentFrontendEAUIProviderParams {
     pub loc_error_min_players: LocaleKey,
     /// `featuredGameMode` (EnumChoice)
     pub featured_game_mode: EGameModeId,
-    /// `popupParams` (Class)
-    pub popup_params: Option<Handle<PopupParams>>,
+    /// `popupParams` (Class (array))
+    pub popup_params: Vec<Handle<PopupParams>>,
     /// `patchNoteCategories` (Class (array))
     pub patch_note_categories: Vec<Handle<EAPatchNoteCategoryParams>>,
     /// `socialTabs` (Class (array))
     pub social_tabs: Vec<Handle<SocialTab>>,
     /// `experimentalModeResetTime` (Class)
     pub experimental_mode_reset_time: Option<Handle<EAExperimentalModeResetTimeParams>>,
-    /// `specialEventInformation` (Class)
-    pub special_event_information: Option<Handle<EASpecialEventInformationParams>>,
+    /// `specialEventInformation` (Class (array))
+    pub special_event_information: Vec<Handle<EASpecialEventInformationParams>>,
 }
 
 impl Pooled for SEntityComponentFrontendEAUIProviderParams {
@@ -495,13 +495,23 @@ impl<'a> Extract<'a> for SEntityComponentFrontendEAUIProviderParams {
             featured_game_mode: EGameModeId::from_dcb_str(
                 inst.get_str("featuredGameMode").unwrap_or(""),
             ),
-            popup_params: match inst.get("popupParams") {
-                Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<PopupParams>(
-                    Instance::from_inline_data(b.db, struct_index, data),
-                    false,
-                )),
-                _ => None,
-            },
+            popup_params: inst
+                .get_array("popupParams")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => Some(b.alloc_nested::<PopupParams>(
+                            Instance::from_inline_data(b.db, struct_index, data),
+                            false,
+                        )),
+                        Value::ClassRef(r) => Some(b.alloc_nested::<PopupParams>(
+                            b.db.instance(r.struct_index, r.instance_index),
+                            true,
+                        )),
+                        _ => None,
+                    })
+                    .collect()
+                })
+                .unwrap_or_default(),
             patch_note_categories: inst
                 .get_array("patchNoteCategories")
                 .map(|arr| {
@@ -547,15 +557,27 @@ impl<'a> Extract<'a> for SEntityComponentFrontendEAUIProviderParams {
                 }
                 _ => None,
             },
-            special_event_information: match inst.get("specialEventInformation") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<EASpecialEventInformationParams>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
-                _ => None,
-            },
+            special_event_information: inst
+                .get_array("specialEventInformation")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<EASpecialEventInformationParams>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => {
+                            Some(b.alloc_nested::<EASpecialEventInformationParams>(
+                                b.db.instance(r.struct_index, r.instance_index),
+                                true,
+                            ))
+                        }
+                        _ => None,
+                    })
+                    .collect()
+                })
+                .unwrap_or_default(),
         }
     }
 }

@@ -1911,8 +1911,8 @@ impl<'a> Extract<'a> for JumpDriveAudioMovementParams {
 
 /// DCB type: `JumpDriveAudioParams`
 pub struct JumpDriveAudioParams {
-    /// `stateMap` (Class)
-    pub state_map: Option<Handle<JumpDriveStateAudioMap>>,
+    /// `stateMap` (Class (array))
+    pub state_map: Vec<Handle<JumpDriveStateAudioMap>>,
     /// `tunnelProgressRtpc` (Class)
     pub tunnel_progress_rtpc: Option<Handle<AudioRtpc>>,
     /// `inJumpTunnelRtpc` (Class)
@@ -1966,15 +1966,25 @@ impl<'a> Extract<'a> for JumpDriveAudioParams {
     const TYPE_NAME: &'static str = "JumpDriveAudioParams";
     fn extract(inst: &Instance<'a>, b: &mut Builder<'a>) -> Self {
         Self {
-            state_map: match inst.get("stateMap") {
-                Some(Value::Class { struct_index, data }) => {
-                    Some(b.alloc_nested::<JumpDriveStateAudioMap>(
-                        Instance::from_inline_data(b.db, struct_index, data),
-                        false,
-                    ))
-                }
-                _ => None,
-            },
+            state_map: inst
+                .get_array("stateMap")
+                .map(|arr| {
+                    arr.filter_map(|v| match v {
+                        Value::Class { struct_index, data } => {
+                            Some(b.alloc_nested::<JumpDriveStateAudioMap>(
+                                Instance::from_inline_data(b.db, struct_index, data),
+                                false,
+                            ))
+                        }
+                        Value::ClassRef(r) => Some(b.alloc_nested::<JumpDriveStateAudioMap>(
+                            b.db.instance(r.struct_index, r.instance_index),
+                            true,
+                        )),
+                        _ => None,
+                    })
+                    .collect()
+                })
+                .unwrap_or_default(),
             tunnel_progress_rtpc: match inst.get("tunnelProgressRtpc") {
                 Some(Value::Class { struct_index, data }) => Some(b.alloc_nested::<AudioRtpc>(
                     Instance::from_inline_data(b.db, struct_index, data),
