@@ -14,6 +14,52 @@ separate commits and advance independently.
 
 ## [Unreleased]
 
+### Added
+
+- **`sc-contracts`: tag-axis classifier.** New `axes` module exposes
+  `AxisKind`, `AxisValues`, `AxisDiff`, `SharedTag`. Classifies tags
+  by their position in the `TagTree` (`AI/Ship/CombatClass/*`,
+  `AI/SkillDefinitions/*`, `Missions/VehicleType/Ship/*`,
+  `Ship/Model/*`, `EntityEffectSystem/Tags/*`, etc.) into a small
+  set of player-meaningful families. Renderers use this to decide
+  which axes to collapse silently (skill, combat-class agreement)
+  vs surface as per-alternative variance (hull, ship class, effects
+  like Distortion).
+
+- **`Mission::combat_class()` / `Mission::ship_count_range()`.**
+  `combat_class` returns the CombatClass tag shared by every ship-spawn
+  alternative across the mission (e.g. `"VeryEasy"`), or `None` when
+  groups disagree or have no CombatClass tag. `ship_count_range`
+  returns the `(min, max)` total ship count summed across all
+  ship/entity slot groups — honest min from picking the smallest
+  alternative in each group, honest max from the largest.
+
+### Changed (breaking)
+
+- **`sc-contracts`: `EncounterPhase` reshaped to preserve
+  `ShipOptions` alternatives.** Old shape `EncounterPhase { name,
+  slots: Vec<S> }` flattened the three-level DCB nesting
+  (`ShipGroup → ShipOptions → Ship`) and lost the boundary between
+  "concurrent slot groups" (all fire) and "weighted alternatives
+  inside one group" (engine picks one). New shape:
+  `EncounterPhase { name, groups: Vec<SlotGroup<S>> }`, with
+  `SlotGroup { options, concurrent_range, weight_uniform, axes,
+  shared_tags }`. Each `SlotGroup` corresponds to one
+  `SpawnDescription_ShipOptions` and carries pre-computed
+  `AxisDiff` + `shared_tags` (with cached `AxisKind`) so consumers
+  don't have to re-walk the tag tree.
+  - Fixes ~14% of ship-spawn `MissionProperty` displays that were
+    over-counting by summing concurrent across alternatives (the
+    "Settle a Score shows 6× Scythe instead of 1-3" pattern). See
+    the investigation thread in chat history for the full census.
+  - **Migration:** read access patterns like `phase.slots.iter()` /
+    `phase.slots.len()` become `phase.all_options()` /
+    `phase.option_count()` for "flatten everything" consumers, or
+    `phase.groups.iter().flat_map(|g| g.options.iter())` for
+    consumers that want the explicit grouping. Renderers should
+    iterate `phase.groups` directly to respect the alternatives
+    boundary.
+
 ## [v0.3.0] - 2026-05-03
 
 ### Added

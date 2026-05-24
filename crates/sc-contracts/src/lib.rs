@@ -41,6 +41,7 @@
 //! motivated the crate. The full design is at `docs/sc-contracts.md`;
 //! `docs/sc-contracts-v2.md` documents the in-flight v2 redesign.
 
+mod axes;
 mod blueprints;
 mod classify;
 mod currency;
@@ -54,6 +55,7 @@ mod titles;
 #[cfg(feature = "tui")]
 pub mod tui;
 
+pub use axes::{AxisDiff, AxisKind, AxisValues, SharedTag};
 pub use blueprints::{BlueprintItem, BlueprintPool, BlueprintPoolRegistry};
 pub use classify::{TagBag, parse_ai_skill};
 pub use currency::{CurrencyInfo, RewardCurrencyCatalog};
@@ -61,7 +63,7 @@ pub use expand::{
     Availability, BlueprintReward, Cooldowns, DurationRange, Encounter, EncounterPhase,
     EntityEncounter, EntitySlot, HandlerKind, ItemReward, Mission, MissionOrigin, MissionRewards,
     NpcEncounter, NpcSlot, OtherReward, PrereqView, RepReward, RewardAmount, ScripReward,
-    ShipEncounter, ShipSlot, expand_all,
+    ShipEncounter, ShipSlot, SlotGroup, expand_all,
 };
 pub use index::MissionIndex;
 pub use locality::{LocalityRegistry, LocalityView, LocationRef, LocationRegistry, SystemKey};

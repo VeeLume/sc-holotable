@@ -82,7 +82,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         for enc in &c.encounters {
             let Encounter::Ships(s) = enc else { continue };
             for phase in &s.phases {
-                for slot in &phase.slots {
+                for slot in phase.all_options() {
                     let to_owned = |it: &mut dyn Iterator<Item = &str>| -> Vec<String> {
                         it.map(String::from).collect()
                     };

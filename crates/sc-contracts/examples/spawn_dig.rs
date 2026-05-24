@@ -191,7 +191,7 @@ fn section_2_f7c_hornet_trace(index: &MissionIndex) {
         for enc in &c.encounters {
             if let Encounter::Ships(s) = enc {
                 for phase in &s.phases {
-                    for (slot_idx, slot) in phase.slots.iter().enumerate() {
+                    for (slot_idx, slot) in phase.all_options().enumerate() {
                         for (bag_label, bag) in [
                             ("positive", &slot.positive),
                             ("negative", &slot.negative),
@@ -241,7 +241,7 @@ fn section_3_empty_candidate_census(index: &MissionIndex) {
         for enc in &c.encounters {
             if let Encounter::Ships(s) = enc {
                 for phase in &s.phases {
-                    for slot in &phase.slots {
+                    for slot in phase.all_options() {
                         total_slots += 1;
                         if slot.candidates.is_empty() {
                             empty_slots += 1;

@@ -35,7 +35,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         for enc in &c.encounters {
             if let Encounter::Ships(s) = enc {
                 for phase in &s.phases {
-                    for slot in &phase.slots {
+                    for slot in phase.all_options() {
                         if let Some(g) = slot.initial_damage_settings {
                             by_guid.entry(g).or_default().push((
                                 family_prefix(&c.debug_name),

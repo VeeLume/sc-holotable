@@ -274,15 +274,15 @@ fn print_expansion(
                 .fold((0usize, 0usize), |(w, s), enc| match enc {
                     sc_contracts::Encounter::Ships(x) => (
                         w + x.phases.len(),
-                        s + x.phases.iter().map(|p| p.slots.len()).sum::<usize>(),
+                        s + x.phases.iter().map(|p| p.option_count()).sum::<usize>(),
                     ),
                     sc_contracts::Encounter::Npcs(x) => (
                         w + x.phases.len(),
-                        s + x.phases.iter().map(|p| p.slots.len()).sum::<usize>(),
+                        s + x.phases.iter().map(|p| p.option_count()).sum::<usize>(),
                     ),
                     sc_contracts::Encounter::Entities(x) => (
                         w + x.phases.len(),
-                        s + x.phases.iter().map(|p| p.slots.len()).sum::<usize>(),
+                        s + x.phases.iter().map(|p| p.option_count()).sum::<usize>(),
                     ),
                     sc_contracts::Encounter::Unknown { .. } => (w, s),
                 });
@@ -298,7 +298,7 @@ fn print_expansion(
                 }
             })
             .flat_map(|x| x.phases.iter())
-            .flat_map(|p| p.slots.iter())
+            .flat_map(|p| p.all_options())
             .flat_map(|s| s.candidates.iter())
             .filter_map(|c| {
                 cache

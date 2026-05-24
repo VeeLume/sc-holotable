@@ -26,6 +26,7 @@ use sc_extract::generated::{
 };
 use sc_extract::{Datacore, Guid, LocaleKey, LocaleMap};
 
+use crate::axes::{AxisDiff, SharedTag};
 use crate::blueprints::BlueprintPoolRegistry;
 use crate::classify::TagBag;
 use crate::currency::RewardCurrencyCatalog;
@@ -76,8 +77,8 @@ pub struct Mission {
     /// sub-contract inheritance (bool + int param overrides).
     pub availability: Availability,
 
-    /// All reward outputs grouped together — UEC + scrip + reputation
-    /// + items + blueprint pool + miscellaneous. See [`MissionRewards`]
+    /// All reward outputs grouped together: UEC, scrip, reputation,
+    /// items, blueprint pool, miscellaneous. See [`MissionRewards`]
     /// for per-axis details.
     pub rewards: MissionRewards,
 
@@ -133,6 +134,88 @@ impl Mission {
     pub fn has_runtime_substitution(&self, locale: &LocaleMap) -> bool {
         let has = |s: Option<&str>| s.map(|t| t.contains("~mission(")).unwrap_or(false);
         has(self.title(locale)) || has(self.description(locale))
+    }
+
+    /// `(min, max)` ship count summed across every ship-spawn slot
+    /// group on the mission. Per-group min = smallest option's
+    /// `concurrent`; per-group max = largest option's `concurrent`.
+    /// Entity groups contribute their `amount` range. NPC counts are
+    /// not included (they're surfaced separately by consumers).
+    ///
+    /// Returns `(0, 0)` when the mission has no ship or entity
+    /// encounters.
+    pub fn ship_count_range(&self) -> (i32, i32) {
+        let mut min = 0i32;
+        let mut max = 0i32;
+        for enc in &self.encounters {
+            match enc {
+                Encounter::Ships(s) => {
+                    for phase in &s.phases {
+                        for group in &phase.groups {
+                            min += group.concurrent_range.0;
+                            max += group.concurrent_range.1;
+                        }
+                    }
+                }
+                Encounter::Entities(s) => {
+                    for phase in &s.phases {
+                        for group in &phase.groups {
+                            min += group.concurrent_range.0;
+                            max += group.concurrent_range.1;
+                        }
+                    }
+                }
+                Encounter::Npcs(_) | Encounter::Unknown { .. } => {}
+            }
+        }
+        (min, max)
+    }
+
+    /// CombatClass tag shared by every alternative across every
+    /// ship-encounter slot group on this mission. `Some("VeryEasy")`
+    /// for a mission whose every spawn alternative carries that
+    /// CombatClass tag. `None` when the mission spans multiple
+    /// CombatClasses or has no CombatClass tags on its alternatives.
+    ///
+    /// Renderers use this for a one-line difficulty banner
+    /// (`"Encounters · 2-4 ships · VeryEasy"`) and to suppress
+    /// per-group CombatClass annotations when redundant.
+    ///
+    /// Walks every ship-encounter [`SlotGroup`]'s `shared_tags`
+    /// (which carry their [`crate::AxisKind`] classification). When
+    /// every group's CombatClass shared-tag name agrees, returns
+    /// that. When groups disagree or some groups have no CombatClass
+    /// shared tag at all, returns `None`.
+    pub fn combat_class(&self) -> Option<&str> {
+        use crate::AxisKind;
+        let mut seen: Option<&str> = None;
+        for enc in &self.encounters {
+            let Encounter::Ships(s) = enc else { continue };
+            for phase in &s.phases {
+                for group in &phase.groups {
+                    // Groups without any CombatClass tag don't vote on
+                    // the mission tier — many "Target" / "Allied" slot
+                    // groups carry only faction + hull tags and no
+                    // difficulty marker. Only groups whose shared
+                    // alternatives explicitly carry a CombatClass tag
+                    // contribute to the consensus.
+                    let Some(class) = group
+                        .shared_tags
+                        .iter()
+                        .find(|t| t.kind == AxisKind::CombatClass)
+                        .map(|t| t.name.as_str())
+                    else {
+                        continue;
+                    };
+                    match seen {
+                        None => seen = Some(class),
+                        Some(prev) if prev == class => {}
+                        Some(_) => return None,
+                    }
+                }
+            }
+        }
+        seen
     }
 }
 
@@ -464,12 +547,18 @@ pub struct EntityEncounter {
     pub phases: Vec<EncounterPhase<EntitySlot>>,
 }
 
-/// One named phase inside an encounter, plus its slots. Generic over
-/// the slot type so all three encounter kinds share the same shape.
+/// One named phase inside an encounter, plus its slot groups. Generic
+/// over the slot type so all three encounter kinds share the same shape.
 ///
 /// Names like `Wave1` / `Reinforcements` / `SalvageableShip` come
 /// from `SpawnDescription_*Group.Name` directly — see
 /// [`crate::Mission`] doc for the wave-name reliability caveat.
+///
+/// Each phase contains one or more [`SlotGroup`]s. All groups in a
+/// phase fire **concurrently** when the phase triggers. Inside a
+/// single group the engine picks **one** of the `options` based on
+/// runtime state (player profile / weight RNG / party size). See the
+/// [`SlotGroup`] doc for the full rationale.
 #[derive(Debug, Clone)]
 pub struct EncounterPhase<S> {
     /// `SpawnDescription_*Group.Name` — sometimes empty, sometimes
@@ -478,10 +567,83 @@ pub struct EncounterPhase<S> {
     /// Ambush missions are flagged as `Allies` despite not being
     /// combat allies).
     pub name: String,
-    /// Slots in this phase. For ships, multiple slots = multiple
-    /// concurrent picks; for NPCs / entities the semantics depend on
-    /// the spawn-system that consumes them at runtime.
-    pub slots: Vec<S>,
+    /// Groups in this phase. Each group fires concurrently with the
+    /// others when the phase triggers. Within a single group the
+    /// engine picks one of the inner [`SlotGroup::options`].
+    pub groups: Vec<SlotGroup<S>>,
+}
+
+/// A set of weighted alternatives for a single concurrent slot — the
+/// engine picks **one** option per spawn.
+///
+/// Maps directly to `SpawnDescription_ShipOptions` (and the analogous
+/// `SpawnDescription_EntityOptions`) in the DCB. The
+/// `SpawnDescription_NPCGroup` shape doesn't have this nested
+/// alternatives layer, so NPC `SlotGroup`s always have exactly one
+/// option. For ships, ~14% of groups have more than one option in
+/// the LIVE DCB (see `docs/feature-request-encounter-alternatives.md`
+/// for the full census).
+///
+/// When `options.len() == 1`, the group is a "pure concurrent slot"
+/// and the option's `concurrent` / `amount` is exactly what fires.
+/// When `options.len() > 1`, the engine picks one option — display
+/// code should render alternatives as a range or surface meaningful
+/// variance axes (see [`AxisDiff`] and [`Self::axes`]).
+///
+/// # Selection rule
+///
+/// The picker is opaque to static analysis. Observed behaviour:
+/// `weight` biases the pick (skewed weights like 5:1 imply
+/// percentage-based selection); uniform weights with concurrent
+/// scaling (1,2,3 ships) imply selection by player skill rating;
+/// alternatives that differ only on hull pick by RNG. Display code
+/// should NEVER pretend it knows which option fires — render the
+/// range or the alternatives honestly.
+#[derive(Debug, Clone)]
+pub struct SlotGroup<S> {
+    /// The weighted alternatives. Engine picks one per spawn.
+    pub options: Vec<S>,
+    /// `(min, max)` of the count field across `options`. For ship
+    /// groups this is `concurrent`; for entity groups it's `amount`.
+    /// NPC groups always have one option so min == max.
+    pub concurrent_range: (i32, i32),
+    /// True when every option's `weight` is the same (within 1e-4).
+    /// Renderers showing percentages can skip them when this is true.
+    pub weight_uniform: bool,
+    /// Per-axis classification of how the `options`' tag sets vary.
+    /// Populated by [`AxisDiff::compute`] from each option's positive
+    /// tag list. Empty axes when `options.len() < 2`.
+    pub axes: AxisDiff,
+    /// Tags present on EVERY option's positive tag list — the
+    /// "implied context" for this group. Each entry carries its
+    /// [`crate::AxisKind`] classification so consumers can scan for
+    /// e.g. the CombatClass shared across alternatives without
+    /// re-walking the tag tree. Sorted by tag name for deterministic
+    /// display. Empty when `options.len() == 0`.
+    pub shared_tags: Vec<SharedTag>,
+}
+
+impl<S> SlotGroup<S> {
+    /// Convenience: true when there's only one option (no real choice
+    /// to display).
+    pub fn is_singleton(&self) -> bool {
+        self.options.len() <= 1
+    }
+}
+
+impl<S> EncounterPhase<S> {
+    /// Flat iterator over every option across every group in this
+    /// phase. **Loses the alternatives boundary** — only use this for
+    /// "give me everything" walks (debugging, census, raw dumps). For
+    /// any display or filtering work, walk [`Self::groups`] directly
+    /// so the engine's pick-one-per-group semantics stay visible.
+    pub fn all_options(&self) -> impl Iterator<Item = &S> {
+        self.groups.iter().flat_map(|g| g.options.iter())
+    }
+    /// Total option count across all groups in this phase.
+    pub fn option_count(&self) -> usize {
+        self.groups.iter().map(|g| g.options.len()).sum()
+    }
 }
 
 /// A single ship slot inside an encounter phase.
@@ -540,7 +702,7 @@ pub struct ShipSlot {
 /// A single NPC slot inside an encounter phase.
 ///
 /// Surfaces the high-value typed fields from `SpawnDescription_NPCOption`
-/// + `AutoSpawnSettings` — notably [`Self::mission_allied_marker`],
+/// and `AutoSpawnSettings` — notably [`Self::mission_allied_marker`],
 /// the typed Allied / Hostile signal v1 crimestat work needs. Detailed
 /// FPS scope tags (closet / room / defendArea / scheduleArea) are not
 /// surfaced yet — they belong in a future v3 follow-up driven by an
@@ -1779,12 +1941,13 @@ fn build_ship_encounter(
         };
         let mut phase = EncounterPhase {
             name: wave_group.name.clone(),
-            slots: Vec::new(),
+            groups: Vec::new(),
         };
         for options_h in &wave_group.ships {
             let Some(options) = options_h.get(pools) else {
                 continue;
             };
+            let mut group_options: Vec<ShipSlot> = Vec::new();
             for option_h in &options.options {
                 let Some(option) = option_h.get(pools) else {
                     continue;
@@ -1796,7 +1959,7 @@ fn build_ship_encounter(
                 let pos_set: HashSet<Guid> = positive.guids.iter().copied().collect();
                 let neg_set: HashSet<Guid> = negative.guids.iter().copied().collect();
                 let candidates = ships.resolve_spawn(&pos_set, &neg_set);
-                phase.slots.push(ShipSlot {
+                group_options.push(ShipSlot {
                     concurrent: option.concurrent_amount,
                     weight: option.weight,
                     candidates,
@@ -1808,8 +1971,11 @@ fn build_ship_encounter(
                     entity,
                 });
             }
+            if let Some(group) = build_ship_group(group_options, tree) {
+                phase.groups.push(group);
+            }
         }
-        if !phase.slots.is_empty() {
+        if !phase.groups.is_empty() {
             phases.push(phase);
         }
     }
@@ -1820,6 +1986,31 @@ fn build_ship_encounter(
         variable_name: var_name.to_string(),
         extended_text_token: ext_token.to_string(),
         phases,
+    })
+}
+
+/// Assemble a [`SlotGroup`] from a flat option list. Computes the
+/// per-axis [`AxisDiff`] and the convenience min/max ranges.
+fn build_ship_group(options: Vec<ShipSlot>, tree: &sc_extract::TagTree) -> Option<SlotGroup<ShipSlot>> {
+    if options.is_empty() {
+        return None;
+    }
+    let per_option_tags: Vec<Vec<Guid>> = options
+        .iter()
+        .map(|opt| opt.positive.guids.clone())
+        .collect();
+    let (axes, shared_tags) = AxisDiff::compute(&per_option_tags, tree);
+    let min = options.iter().map(|o| o.concurrent).min().unwrap_or(0);
+    let max = options.iter().map(|o| o.concurrent).max().unwrap_or(0);
+    let weight_uniform = options
+        .iter()
+        .all(|o| (o.weight - options[0].weight).abs() < 1e-4);
+    Some(SlotGroup {
+        options,
+        concurrent_range: (min, max),
+        weight_uniform,
+        axes,
+        shared_tags,
     })
 }
 
@@ -1838,8 +2029,13 @@ fn build_npc_encounter(
         };
         let mut phase = EncounterPhase {
             name: npc_group.name.clone(),
-            slots: Vec::new(),
+            groups: Vec::new(),
         };
+        // NPCs have no nested alternatives layer (no `options` inside
+        // each `option`) — every `SpawnDescription_NPCOption` becomes
+        // its own singleton SlotGroup. Keeping the shape uniform with
+        // ship/entity encounters means consumers don't have to special-
+        // case NPC encounters when walking groups.
         for option_h in &npc_group.options {
             let Some(option) = option_h.get(pools) else {
                 continue;
@@ -1852,7 +2048,7 @@ fn build_npc_encounter(
                 .map(|s| (s.mission_allied_marker, s.is_critical, s.faction_override))
                 .unwrap_or((false, false, None));
             let identifier_tags = TagBag::from_handle(pools, tree, option.identifier_tags.as_ref());
-            phase.slots.push(NpcSlot {
+            let slot = NpcSlot {
                 priority: option.priority,
                 weight: option.weight,
                 include_location_ai_spawn_tags: option.include_location_aispawn_tags,
@@ -1860,9 +2056,18 @@ fn build_npc_encounter(
                 is_critical,
                 faction_override,
                 identifier_tags,
+            };
+            let per_option_tags: Vec<Vec<Guid>> = vec![slot.identifier_tags.guids.clone()];
+            let (axes, shared_tags) = AxisDiff::compute(&per_option_tags, tree);
+            phase.groups.push(SlotGroup {
+                options: vec![slot],
+                concurrent_range: (1, 1),
+                weight_uniform: true,
+                axes,
+                shared_tags,
             });
         }
-        if !phase.slots.is_empty() {
+        if !phase.groups.is_empty() {
             phases.push(phase);
         }
     }
@@ -1891,17 +2096,18 @@ fn build_entity_encounter(
         };
         let mut phase = EncounterPhase {
             name: ent_group.name.clone(),
-            slots: Vec::new(),
+            groups: Vec::new(),
         };
         for options_h in &ent_group.entities {
             let Some(options) = options_h.get(pools) else {
                 continue;
             };
+            let mut group_options: Vec<EntitySlot> = Vec::new();
             for option_h in &options.options {
                 let Some(option) = option_h.get(pools) else {
                     continue;
                 };
-                phase.slots.push(EntitySlot {
+                group_options.push(EntitySlot {
                     amount: option.amount,
                     weight: option.weight,
                     positive: TagBag::from_handle(pools, tree, option.tags.as_ref()),
@@ -1910,8 +2116,11 @@ fn build_entity_encounter(
                     entity: TagBag::from_handle(pools, tree, option.entity_tags.as_ref()),
                 });
             }
+            if let Some(group) = build_entity_group(group_options, tree) {
+                phase.groups.push(group);
+            }
         }
-        if !phase.slots.is_empty() {
+        if !phase.groups.is_empty() {
             phases.push(phase);
         }
     }
@@ -1922,6 +2131,30 @@ fn build_entity_encounter(
         variable_name: var_name.to_string(),
         extended_text_token: ext_token.to_string(),
         phases,
+    })
+}
+
+fn build_entity_group(
+    options: Vec<EntitySlot>,
+    tree: &sc_extract::TagTree,
+) -> Option<SlotGroup<EntitySlot>> {
+    if options.is_empty() {
+        return None;
+    }
+    let per_option_tags: Vec<Vec<Guid>> =
+        options.iter().map(|o| o.positive.guids.clone()).collect();
+    let (axes, shared_tags) = AxisDiff::compute(&per_option_tags, tree);
+    let min = options.iter().map(|o| o.amount).min().unwrap_or(0);
+    let max = options.iter().map(|o| o.amount).max().unwrap_or(0);
+    let weight_uniform = options
+        .iter()
+        .all(|o| (o.weight - options[0].weight).abs() < 1e-4);
+    Some(SlotGroup {
+        options,
+        concurrent_range: (min, max),
+        weight_uniform,
+        axes,
+        shared_tags,
     })
 }
 

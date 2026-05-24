@@ -143,34 +143,43 @@ fn dump_encounter(
         Encounter::Ships(s) => {
             for phase in &s.phases {
                 println!(
-                    "      phase {:?}, {} slot(s)",
+                    "      phase {:?}, {} group(s), {} option(s) total",
                     phase.name,
-                    phase.slots.len()
+                    phase.groups.len(),
+                    phase.option_count(),
                 );
-                for (i, slot) in phase.slots.iter().enumerate() {
+                for (gi, group) in phase.groups.iter().enumerate() {
                     println!(
-                        "        slot {i}: concurrent={} weight={:.2} candidates={}",
-                        slot.concurrent,
-                        slot.weight,
-                        slot.candidates.len()
+                        "        group {gi}: options={} concurrent_range={:?} weight_uniform={}",
+                        group.options.len(),
+                        group.concurrent_range,
+                        group.weight_uniform,
                     );
-                    if slot.initial_damage_settings.is_some() {
-                        println!("          [pre-damaged]");
-                    }
-                    if slot.include_location_ai_spawn_tags {
-                        println!("          [+location-tags]");
-                    }
-                    dump_bag("positive", &slot.positive, tree);
-                    dump_bag("negative", &slot.negative, tree);
-                    dump_bag("markup", &slot.markup, tree);
-                    dump_bag("entity", &slot.entity, tree);
-                    let names: Vec<&str> = slot
-                        .candidates
-                        .iter()
-                        .filter_map(|c| ships.display_name(&c.entity_guid, cache, locale))
-                        .collect();
-                    if !names.is_empty() {
-                        println!("          ships:    {}", names.join(", "));
+                    for (i, slot) in group.options.iter().enumerate() {
+                        println!(
+                            "          opt {i}: concurrent={} weight={:.2} candidates={}",
+                            slot.concurrent,
+                            slot.weight,
+                            slot.candidates.len()
+                        );
+                        if slot.initial_damage_settings.is_some() {
+                            println!("            [pre-damaged]");
+                        }
+                        if slot.include_location_ai_spawn_tags {
+                            println!("            [+location-tags]");
+                        }
+                        dump_bag("positive", &slot.positive, tree);
+                        dump_bag("negative", &slot.negative, tree);
+                        dump_bag("markup", &slot.markup, tree);
+                        dump_bag("entity", &slot.entity, tree);
+                        let names: Vec<&str> = slot
+                            .candidates
+                            .iter()
+                            .filter_map(|c| ships.display_name(&c.entity_guid, cache, locale))
+                            .collect();
+                        if !names.is_empty() {
+                            println!("            ships:    {}", names.join(", "));
+                        }
                     }
                 }
             }
@@ -178,39 +187,44 @@ fn dump_encounter(
         Encounter::Npcs(s) => {
             for phase in &s.phases {
                 println!(
-                    "      phase {:?}, {} slot(s)",
+                    "      phase {:?}, {} group(s)",
                     phase.name,
-                    phase.slots.len()
+                    phase.groups.len(),
                 );
-                for (i, slot) in phase.slots.iter().enumerate() {
-                    println!(
-                        "        slot {i}: priority={} weight={:.2} allied_marker={} critical={} faction_override={:?}",
-                        slot.priority,
-                        slot.weight,
-                        slot.mission_allied_marker,
-                        slot.is_critical,
-                        slot.faction_override,
-                    );
-                    dump_bag("identifier", &slot.identifier_tags, tree);
+                for (gi, group) in phase.groups.iter().enumerate() {
+                    for (i, slot) in group.options.iter().enumerate() {
+                        println!(
+                            "        group {gi} opt {i}: priority={} weight={:.2} allied_marker={} critical={} faction_override={:?}",
+                            slot.priority,
+                            slot.weight,
+                            slot.mission_allied_marker,
+                            slot.is_critical,
+                            slot.faction_override,
+                        );
+                        dump_bag("identifier", &slot.identifier_tags, tree);
+                    }
                 }
             }
         }
         Encounter::Entities(s) => {
             for phase in &s.phases {
                 println!(
-                    "      phase {:?}, {} slot(s)",
+                    "      phase {:?}, {} group(s), {} option(s) total",
                     phase.name,
-                    phase.slots.len()
+                    phase.groups.len(),
+                    phase.option_count(),
                 );
-                for (i, slot) in phase.slots.iter().enumerate() {
-                    println!(
-                        "        slot {i}: amount={} weight={:.2}",
-                        slot.amount, slot.weight
-                    );
-                    dump_bag("positive", &slot.positive, tree);
-                    dump_bag("negative", &slot.negative, tree);
-                    dump_bag("markup", &slot.markup, tree);
-                    dump_bag("entity", &slot.entity, tree);
+                for (gi, group) in phase.groups.iter().enumerate() {
+                    for (i, slot) in group.options.iter().enumerate() {
+                        println!(
+                            "        group {gi} opt {i}: amount={} weight={:.2}",
+                            slot.amount, slot.weight
+                        );
+                        dump_bag("positive", &slot.positive, tree);
+                        dump_bag("negative", &slot.negative, tree);
+                        dump_bag("markup", &slot.markup, tree);
+                        dump_bag("entity", &slot.entity, tree);
+                    }
                 }
             }
         }

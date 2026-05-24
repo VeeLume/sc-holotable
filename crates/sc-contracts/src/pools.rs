@@ -97,18 +97,33 @@ pub(crate) fn encounters_shape_eq(
     if a.len() != b.len() {
         return false;
     }
+    // Same-shape predicate for the helper below: phases match when
+    // they share the same group count AND each pair of groups has the
+    // same option count. Two missions that flatten to the same option
+    // count but split across different group boundaries do NOT match,
+    // because the group boundary is semantically meaningful (engine
+    // picks one option per group).
+    fn groups_shape_eq<S>(
+        a: &[crate::expand::SlotGroup<S>],
+        b: &[crate::expand::SlotGroup<S>],
+    ) -> bool {
+        a.len() == b.len()
+            && a.iter()
+                .zip(b.iter())
+                .all(|(x, y)| x.options.len() == y.options.len())
+    }
     a.iter().zip(b.iter()).all(|(x, y)| match (x, y) {
         (crate::expand::Encounter::Ships(xs), crate::expand::Encounter::Ships(ys)) => {
             xs.variable_name == ys.variable_name
-                && phases_eq(&xs.phases, &ys.phases, |s1, s2| s1.len() == s2.len())
+                && phases_eq(&xs.phases, &ys.phases, groups_shape_eq)
         }
         (crate::expand::Encounter::Npcs(xs), crate::expand::Encounter::Npcs(ys)) => {
             xs.variable_name == ys.variable_name
-                && phases_eq(&xs.phases, &ys.phases, |s1, s2| s1.len() == s2.len())
+                && phases_eq(&xs.phases, &ys.phases, groups_shape_eq)
         }
         (crate::expand::Encounter::Entities(xs), crate::expand::Encounter::Entities(ys)) => {
             xs.variable_name == ys.variable_name
-                && phases_eq(&xs.phases, &ys.phases, |s1, s2| s1.len() == s2.len())
+                && phases_eq(&xs.phases, &ys.phases, groups_shape_eq)
         }
         (
             crate::expand::Encounter::Unknown {
@@ -125,10 +140,10 @@ pub(crate) fn encounters_shape_eq(
 fn phases_eq<S>(
     a: &[crate::expand::EncounterPhase<S>],
     b: &[crate::expand::EncounterPhase<S>],
-    slots_eq: impl Fn(&[S], &[S]) -> bool,
+    groups_eq: impl Fn(&[crate::expand::SlotGroup<S>], &[crate::expand::SlotGroup<S>]) -> bool,
 ) -> bool {
     a.len() == b.len()
         && a.iter()
             .zip(b.iter())
-            .all(|(x, y)| x.name == y.name && slots_eq(&x.slots, &y.slots))
+            .all(|(x, y)| x.name == y.name && groups_eq(&x.groups, &y.groups))
 }

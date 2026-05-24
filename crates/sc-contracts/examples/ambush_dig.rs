@@ -53,7 +53,7 @@ fn section_1_security_turret(index: &MissionIndex) {
         for enc in &c.encounters {
             if let Encounter::Ships(s) = enc {
                 for phase in &s.phases {
-                    for (i, slot) in phase.slots.iter().enumerate() {
+                    for (i, slot) in phase.all_options().enumerate() {
                         if slot.positive.contains_name(trait_name) {
                             hits.push((
                                 format!("{:?}", c.origin.kind),
@@ -117,7 +117,7 @@ fn section_2_not_wanted_during_combat(index: &MissionIndex) {
         for enc in &c.encounters {
             if let Encounter::Ships(s) = enc {
                 for phase in &s.phases {
-                    for slot in &phase.slots {
+                    for slot in phase.all_options() {
                         if slot.negative.contains_name(trait_name) {
                             hits += 1;
                             *by_var.entry(s.variable_name.clone()).or_default() += 1;

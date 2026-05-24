@@ -405,15 +405,34 @@ fn render_detail(
     });
 }
 
-/// Phase header: format the wave label + slot count.
+/// Phase header: format the wave label + group + option counts.
 fn render_phase_header<S>(ui: &mut Context, phase: &EncounterPhase<S>) {
     let label = if phase.name.is_empty() {
         "(unnamed phase)".to_string()
     } else {
         format!("phase \"{}\"", phase.name)
     };
-    ui.text(format!("      {label} — {} slot(s)", phase.slots.len()))
-        .dim();
+    let total_options: usize = phase.groups.iter().map(|g| g.options.len()).sum();
+    ui.text(format!(
+        "      {label} — {} group(s), {} option(s)",
+        phase.groups.len(),
+        total_options
+    ))
+    .dim();
+}
+
+/// Render the per-group banner (alternatives count, weight uniformity)
+/// so the TUI shows the grouping boundary the engine actually respects.
+fn render_group_header<S>(ui: &mut Context, gi: usize, group: &crate::SlotGroup<S>) {
+    if group.options.len() == 1 {
+        return;
+    }
+    let weight_note = if group.weight_uniform { "uniform" } else { "weighted" };
+    ui.text(format!(
+        "          ──── group[{gi}] alternatives × {} ({weight_note}) — engine picks 1 ────",
+        group.options.len()
+    ))
+    .dim();
 }
 
 fn render_ship_phases(
@@ -426,8 +445,11 @@ fn render_ship_phases(
 ) {
     for phase in phases {
         render_phase_header(ui, phase);
-        for (i, s) in phase.slots.iter().enumerate() {
-            render_ship_slot(ui, i, s, tree, ships, cache, locale);
+        for (gi, group) in phase.groups.iter().enumerate() {
+            render_group_header(ui, gi, group);
+            for (i, s) in group.options.iter().enumerate() {
+                render_ship_slot(ui, i, s, tree, ships, cache, locale);
+            }
         }
     }
 }
@@ -435,8 +457,11 @@ fn render_ship_phases(
 fn render_npc_phases(ui: &mut Context, phases: &[EncounterPhase<NpcSlot>], tree: &TagTree) {
     for phase in phases {
         render_phase_header(ui, phase);
-        for (i, s) in phase.slots.iter().enumerate() {
-            render_npc_slot(ui, i, s, tree);
+        for (gi, group) in phase.groups.iter().enumerate() {
+            render_group_header(ui, gi, group);
+            for (i, s) in group.options.iter().enumerate() {
+                render_npc_slot(ui, i, s, tree);
+            }
         }
     }
 }
@@ -444,8 +469,11 @@ fn render_npc_phases(ui: &mut Context, phases: &[EncounterPhase<NpcSlot>], tree:
 fn render_entity_phases(ui: &mut Context, phases: &[EncounterPhase<EntitySlot>], tree: &TagTree) {
     for phase in phases {
         render_phase_header(ui, phase);
-        for (i, s) in phase.slots.iter().enumerate() {
-            render_entity_slot(ui, i, s, tree);
+        for (gi, group) in phase.groups.iter().enumerate() {
+            render_group_header(ui, gi, group);
+            for (i, s) in group.options.iter().enumerate() {
+                render_entity_slot(ui, i, s, tree);
+            }
         }
     }
 }

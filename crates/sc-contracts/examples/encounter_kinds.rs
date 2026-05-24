@@ -39,8 +39,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                     npcs += 1;
                     npc_phases += s.phases.len();
                     for phase in &s.phases {
-                        npc_slots += phase.slots.len();
-                        for slot in &phase.slots {
+                        npc_slots += phase.option_count();
+                        for slot in phase.all_options() {
                             if slot.mission_allied_marker {
                                 npc_with_allied += 1;
                                 if sample_npc_allied.len() < 6 {
@@ -65,14 +65,15 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                     entities += 1;
                     entity_phases += s.phases.len();
                     for phase in &s.phases {
-                        entity_slots += phase.slots.len();
-                        if sample_entity.len() < 4 && !phase.slots.is_empty() {
+                        let phase_options = phase.option_count();
+                        entity_slots += phase_options;
+                        if sample_entity.len() < 4 && phase_options > 0 {
                             sample_entity.push(format!(
                                 "{} → {} (phase \"{}\", {} slot(s))",
                                 c.debug_name,
                                 s.variable_name,
                                 phase.name,
-                                phase.slots.len(),
+                                phase_options,
                             ));
                         }
                     }
