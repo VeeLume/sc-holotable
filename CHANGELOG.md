@@ -14,6 +14,8 @@ separate commits and advance independently.
 
 ## [Unreleased]
 
+## [v0.4.0] - 2026-05-24
+
 ### Added
 
 - **`sc-contracts`: tag-axis classifier.** New `axes` module exposes
