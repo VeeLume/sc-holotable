@@ -20,9 +20,7 @@ use std::collections::{BTreeMap, BTreeSet, HashSet};
 
 use sc_contracts::MissionIndex;
 use sc_extract::generated::{DataPools, SpawnDescription_ShipOptions};
-use sc_extract::{
-    AssetConfig, AssetData, AssetSource, Datacore, DatacoreConfig, Guid, TagTree,
-};
+use sc_extract::{AssetConfig, AssetData, AssetSource, Datacore, DatacoreConfig, Guid, TagTree};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let install = sc_installs::discover_primary()?;
@@ -50,7 +48,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut samples_by_discriminator: BTreeMap<String, Vec<String>> = BTreeMap::new();
     const SAMPLE_LIMIT: usize = 3;
 
-    for so in pools.multi_feature.spawn_description_ship_options.iter().flatten() {
+    for so in pools
+        .multi_feature
+        .spawn_description_ship_options
+        .iter()
+        .flatten()
+    {
         total += 1;
         let n = so.options.len();
         *size_hist.entry(n).or_default() += 1;
@@ -60,11 +63,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         }
 
         // Resolve options for analysis.
-        let opts: Vec<&_> = so
-            .options
-            .iter()
-            .filter_map(|h| h.get(pools))
-            .collect();
+        let opts: Vec<&_> = so.options.iter().filter_map(|h| h.get(pools)).collect();
         if opts.len() < 2 {
             continue;
         }
@@ -88,9 +87,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
         // Tag families that vary across siblings.
         let discriminator = classify_discriminator(so, pools, tree);
-        *discriminator_hist
-            .entry(discriminator.clone())
-            .or_default() += 1;
+        *discriminator_hist.entry(discriminator.clone()).or_default() += 1;
 
         // Keep a few samples per discriminator class for hand inspection.
         let bucket = samples_by_discriminator
@@ -104,8 +101,14 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // ── Report ────────────────────────────────────────────────────────────
     let alternatives = total - degenerate;
     println!("\n=== ShipOptions census ({} total instances) ===", total);
-    println!("  options == 1 (degenerate concurrent slot): {degenerate} ({:.1}%)", pct(degenerate, total));
-    println!("  options >= 2 (alternatives — engine picks one): {alternatives} ({:.1}%)", pct(alternatives, total));
+    println!(
+        "  options == 1 (degenerate concurrent slot): {degenerate} ({:.1}%)",
+        pct(degenerate, total)
+    );
+    println!(
+        "  options >= 2 (alternatives — engine picks one): {alternatives} ({:.1}%)",
+        pct(alternatives, total)
+    );
 
     println!("\n--- size histogram ---");
     for (n, count) in &size_hist {
@@ -114,11 +117,23 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     if alternatives > 0 {
         println!("\n=== Alternatives sub-census (n={alternatives}) ===");
-        println!("  weight uniform:    {weights_uniform} ({:.1}%)", pct(weights_uniform, alternatives));
-        println!("  weight non-uniform: {weights_nonuniform} ({:.1}%)", pct(weights_nonuniform, alternatives));
+        println!(
+            "  weight uniform:    {weights_uniform} ({:.1}%)",
+            pct(weights_uniform, alternatives)
+        );
+        println!(
+            "  weight non-uniform: {weights_nonuniform} ({:.1}%)",
+            pct(weights_nonuniform, alternatives)
+        );
         println!();
-        println!("  concurrent_amount all equal: {concurrents_uniform} ({:.1}%)", pct(concurrents_uniform, alternatives));
-        println!("  concurrent_amount varied:    {concurrents_varied} ({:.1}%)", pct(concurrents_varied, alternatives));
+        println!(
+            "  concurrent_amount all equal: {concurrents_uniform} ({:.1}%)",
+            pct(concurrents_uniform, alternatives)
+        );
+        println!(
+            "  concurrent_amount varied:    {concurrents_varied} ({:.1}%)",
+            pct(concurrents_varied, alternatives)
+        );
         println!();
         println!("  distinct concurrent values per ShipOptions:");
         for (k, v) in &concurrent_distinct_hist {
@@ -134,7 +149,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
         println!("\n--- samples per discriminator class (up to {SAMPLE_LIMIT} each) ---");
         let mut sample_keys: Vec<_> = samples_by_discriminator.keys().collect();
-        sample_keys.sort_by_key(|k| std::cmp::Reverse(discriminator_hist.get(*k).copied().unwrap_or(0)));
+        sample_keys
+            .sort_by_key(|k| std::cmp::Reverse(discriminator_hist.get(*k).copied().unwrap_or(0)));
         for key in sample_keys {
             println!("\n  «{key}»");
             for s in &samples_by_discriminator[key] {
@@ -147,7 +163,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 }
 
 fn pct(n: usize, d: usize) -> f64 {
-    if d == 0 { 0.0 } else { n as f64 * 100.0 / d as f64 }
+    if d == 0 {
+        0.0
+    } else {
+        n as f64 * 100.0 / d as f64
+    }
 }
 
 /// Compact classification of *which tag families* vary across the
@@ -226,13 +246,25 @@ fn family_of(name: &str) -> String {
         }
     }
     // VeryEasy / Easy / Medium / Hard / VeryHard
-    if matches!(trimmed, "VeryEasy" | "Easy" | "Medium" | "Hard" | "VeryHard") {
+    if matches!(
+        trimmed,
+        "VeryEasy" | "Easy" | "Medium" | "Hard" | "VeryHard"
+    ) {
         return "DifficultyTier".to_string();
     }
     // Faction-ish heuristic: well-known faction tag names.
     if matches!(
         trimmed,
-        "Criminal" | "Outlaw" | "Vanduul" | "UEE_Navy" | "Civilian" | "Pirate" | "XenoThreat" | "Headhunters" | "Nine Tails" | "Dusters"
+        "Criminal"
+            | "Outlaw"
+            | "Vanduul"
+            | "UEE_Navy"
+            | "Civilian"
+            | "Pirate"
+            | "XenoThreat"
+            | "Headhunters"
+            | "Nine Tails"
+            | "Dusters"
     ) {
         return "Faction".to_string();
     }
@@ -240,11 +272,7 @@ fn family_of(name: &str) -> String {
     name.to_string()
 }
 
-fn describe_sample(
-    so: &SpawnDescription_ShipOptions,
-    pools: &DataPools,
-    tree: &TagTree,
-) -> String {
+fn describe_sample(so: &SpawnDescription_ShipOptions, pools: &DataPools, tree: &TagTree) -> String {
     let mut parts: Vec<String> = Vec::new();
     for (oi, oh) in so.options.iter().enumerate() {
         let Some(opt) = oh.get(pools) else { continue };

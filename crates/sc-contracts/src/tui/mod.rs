@@ -206,7 +206,7 @@ fn format_list_item(c: &Mission, locale: &LocaleMap) -> String {
     } else {
         ' '
     };
-    let bp = if c.rewards.blueprint.is_some() {
+    let bp = if !c.rewards.blueprints.is_empty() {
         "[BP]"
     } else {
         "    "
@@ -302,7 +302,7 @@ fn render_detail(
                     continue;
                 }
                 if let Some(sib) = index.get(sib_id) {
-                    let bp = if sib.rewards.blueprint.is_some() {
+                    let bp = if !sib.rewards.blueprints.is_empty() {
                         "[BP] "
                     } else {
                         ""
@@ -386,12 +386,16 @@ fn render_detail(
                 .unwrap_or("(unknown)");
             ui.text(format!("  item: {} × {}", it.amount, name));
         }
-        if let Some(bp) = &c.rewards.blueprint {
+        for bp in &c.rewards.blueprints {
+            let (pool_name, item_count) = match index.blueprints.get(&bp.pool_guid) {
+                Some(pool) => (pool.name.as_str(), pool.items.len()),
+                None => ("(unknown pool)", 0),
+            };
             ui.text(format!(
                 "  bp pool: {} ({:.0}% chance, {} item(s))",
-                bp.pool_name,
+                pool_name,
                 bp.chance * 100.0,
-                bp.items.len()
+                item_count,
             ));
         }
         if !c.mission_span.is_empty() {
@@ -427,7 +431,11 @@ fn render_group_header<S>(ui: &mut Context, gi: usize, group: &crate::SlotGroup<
     if group.options.len() == 1 {
         return;
     }
-    let weight_note = if group.weight_uniform { "uniform" } else { "weighted" };
+    let weight_note = if group.weight_uniform {
+        "uniform"
+    } else {
+        "weighted"
+    };
     ui.text(format!(
         "          ──── group[{gi}] alternatives × {} ({weight_note}) — engine picks 1 ────",
         group.options.len()

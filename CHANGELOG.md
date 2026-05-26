@@ -14,6 +14,81 @@ separate commits and advance independently.
 
 ## [Unreleased]
 
+## [v0.5.0] - 2026-05-26
+
+### Changed (breaking)
+
+- **`sc-contracts`: `MissionRewards.blueprint: Option<BlueprintReward>` → `blueprints: Vec<BlueprintReward>`.**
+  Multi-pool missions in the DCB store multiple `BlueprintRewards`
+  entries side-by-side in their `contractResults`; the old `Option`
+  shape combined with an early `return` in `resolve_blueprint_reward`
+  silently dropped every pool past the first. The new `Vec` shape
+  preserves all entries. Field rename is intentional — every
+  consumer's call site breaks at compile time, making the migration
+  auditable rather than a silent semantic shift.
+- **`sc-contracts`: `BlueprintReward` slimmed to `{ chance, pool_guid }`.**
+  Dropped the duplicated `pool_name` and cloned `items: Vec<BlueprintItem>`
+  that previously lived on each reward. Consumers resolve the pool's
+  name and items via [`BlueprintPoolRegistry::get(pool_guid)`] at
+  render time. Single source of truth for pool contents; no more
+  silent drift between the registry and the mission's snapshot.
+- **`sc-contracts`: `expand_all` no longer takes `&BlueprintPoolRegistry`.**
+  Now that `materialise_blueprint` doesn't need to resolve items at
+  build time, the param is dropped from the entire `expand_all` /
+  `walk_handler` / `emit_*` / `build_expansion` chain. `MissionIndex::build`
+  populates the reverse index after expansion via the new
+  `link_missions` call.
+
+### Added
+
+- **`sc-contracts`: reverse-index lookups on `BlueprintPoolRegistry`.**
+  New methods unlock pool → missions and item → missions queries:
+  - `missions_for_pool(pool_guid) -> &[Guid]` — mission GUIDs that
+    award the given blueprint pool. Populated by `MissionIndex::build`
+    via the new `link_missions(&[Mission])` after `expand_all`.
+  - `pools_containing_item(blueprint_record_guid) -> Vec<&BlueprintPool>` —
+    every pool that contains the given blueprint record as one of
+    its items.
+  - `missions_for_item(blueprint_record_guid) -> Vec<Guid>` —
+    convenience composition of the above two, dedup'd. Powers
+    consumer queries like "missions that drop blueprint X" and
+    "missions that drop blueprints I don't own yet" (the cross-
+    domain query [`bulkhead`](https://github.com/VeeLume/bulkhead)
+    needs once an inventory tracker lands).
+- **`sc-extract`: `strip_locale_metadata` helper + universal normalization
+  at parse / set time.** CIG ships some entries with a `,P` metadata
+  suffix (probably *plural* or *pronoun-aware*) on weapon variant
+  names — observed on ~12,873 entries in the SC 4.8 LIVE locale:
+  ```
+  item_Nameutfl_crossbow_ballistic_01_tint01,P=Novian "Nighthunter" Crossbow
+  ```
+  DCB references use the bare key, so the suffix silently broke
+  lookup for every affected variant. Now stripped at every locale
+  construction point: `LocaleMap::parse`, `LocaleMap::parse_utf8_bom`,
+  `LocaleMap::set`. New `pub fn strip_locale_metadata(&str) -> &str`
+  exposed for downstream consumers (e.g. sc-langpatch's INI parsers)
+  so the same normalization can apply at their boundaries too.
+- **`sc-contracts`: `blueprint_item_probe` example.** Dumps every
+  `BlueprintItem` in a matching mission's blueprint pools with full
+  DCB metadata — record names, entity record + struct type,
+  `LocalizedItemCache` entries, every component on the crafted entity
+  + any `Localization` blocks they carry. Diagnostic tool for
+  investigating display-name resolution gaps. Built during the locale
+  `,P` investigation and kept around for future digging.
+
+### Fixed
+
+- **`sc-contracts`: `blueprint_pool_consistent` switched to per-set
+  equality.** With `MissionRewards.blueprints` now a `Vec`, the
+  old "all members agree on one pool guid" check needs to compare
+  the *set* of pool guids across members. Members A {X, Y} and B {X, Y}
+  are consistent; A {X, Y} and C {X, Z} are not.
+
+### Internal
+
+- `cargo fmt` pass across `crates/sc-contracts/src/axes.rs` and
+  ~8 example files. Pure whitespace reflow, no semantic change.
+
 ## [v0.4.0] - 2026-05-24
 
 ### Added

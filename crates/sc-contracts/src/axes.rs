@@ -204,10 +204,7 @@ impl AxisDiff {
     ///
     /// Tags whose GUID isn't in the [`TagTree`] are silently dropped
     /// (matching [`crate::TagBag::new`] semantics).
-    pub fn compute(
-        per_option_tags: &[Vec<Guid>],
-        tree: &TagTree,
-    ) -> (Self, Vec<SharedTag>) {
+    pub fn compute(per_option_tags: &[Vec<Guid>], tree: &TagTree) -> (Self, Vec<SharedTag>) {
         let n = per_option_tags.len();
         if n == 0 {
             return (Self::default(), Vec::new());
@@ -228,10 +225,7 @@ impl AxisDiff {
         // Shared = intersection across all options. CigGuid doesn't
         // implement Ord (only Hash + Eq), so use HashSet rather than
         // BTreeSet.
-        let mut shared: HashSet<Guid> = per_option_sets
-            .first()
-            .cloned()
-            .unwrap_or_default();
+        let mut shared: HashSet<Guid> = per_option_sets.first().cloned().unwrap_or_default();
         for s in per_option_sets.iter().skip(1) {
             shared.retain(|g| s.contains(g));
         }
@@ -246,7 +240,11 @@ impl AxisDiff {
                 let name = tree.get(g).map(|n| n.name.clone()).unwrap_or_default();
                 let path = tree.path(g);
                 let kind = AxisKind::for_path(&path);
-                SharedTag { guid: *g, name, kind }
+                SharedTag {
+                    guid: *g,
+                    name,
+                    kind,
+                }
             })
             .collect();
         shared_named.sort_by(|a, b| {
@@ -447,13 +445,7 @@ mod tests {
             AxisKind::CargoSize
         );
         assert_eq!(
-            AxisKind::for_path(&[
-                "AI",
-                "CargoManifest",
-                "General",
-                "Value",
-                "LowValue"
-            ]),
+            AxisKind::for_path(&["AI", "CargoManifest", "General", "Value", "LowValue"]),
             AxisKind::Value
         );
     }
@@ -474,17 +466,17 @@ mod tests {
         //   AI / Faction / Criminal                       (shared)
         //   AI / SkillDefinitions / Description / HumanPilot10 / 20 / 30  (varies)
         let tree = build_tree(&[
-            ("AI", None),                              // 0
-            ("Ship", Some(0)),                         // 1
-            ("CombatClass", Some(1)),                  // 2
-            ("VeryEasy", Some(2)),                     // 3   shared
-            ("Faction", Some(0)),                      // 4
-            ("Criminal", Some(4)),                     // 5   shared
-            ("SkillDefinitions", Some(0)),             // 6
-            ("Description", Some(6)),                  // 7
-            ("HumanPilot10", Some(7)),                 // 8   varies
-            ("HumanPilot20", Some(7)),                 // 9   varies
-            ("HumanPilot30", Some(7)),                 // 10  varies
+            ("AI", None),                  // 0
+            ("Ship", Some(0)),             // 1
+            ("CombatClass", Some(1)),      // 2
+            ("VeryEasy", Some(2)),         // 3   shared
+            ("Faction", Some(0)),          // 4
+            ("Criminal", Some(4)),         // 5   shared
+            ("SkillDefinitions", Some(0)), // 6
+            ("Description", Some(6)),      // 7
+            ("HumanPilot10", Some(7)),     // 8   varies
+            ("HumanPilot20", Some(7)),     // 9   varies
+            ("HumanPilot30", Some(7)),     // 10  varies
         ]);
 
         let very_easy = mk_guid(3);
@@ -531,15 +523,15 @@ mod tests {
         // Two options: one with Distortion (Effect + ShipClass), one without.
         // Mirrors the InterSec Nyx Hard pattern.
         let tree = build_tree(&[
-            ("Missions", None),                   // 0
-            ("VehicleType", Some(0)),             // 1
-            ("Ship", Some(1)),                    // 2
-            ("CombatShip", Some(2)),              // 3  shared
-            ("Distortion", Some(2)),              // 4  varies (ShipClass family)
-            ("AI", None),                         // 5
-            ("Ship", Some(5)),                    // 6
-            ("CombatClass", Some(6)),             // 7
-            ("Hard", Some(7)),                    // 8  shared
+            ("Missions", None),       // 0
+            ("VehicleType", Some(0)), // 1
+            ("Ship", Some(1)),        // 2
+            ("CombatShip", Some(2)),  // 3  shared
+            ("Distortion", Some(2)),  // 4  varies (ShipClass family)
+            ("AI", None),             // 5
+            ("Ship", Some(5)),        // 6
+            ("CombatClass", Some(6)), // 7
+            ("Hard", Some(7)),        // 8  shared
         ]);
         let combat_ship = mk_guid(3);
         let distortion_ship_class = mk_guid(4);
@@ -547,7 +539,7 @@ mod tests {
 
         let per_option = vec![
             vec![combat_ship, distortion_ship_class, hard], // with Distortion
-            vec![combat_ship, hard],                          // without
+            vec![combat_ship, hard],                        // without
         ];
         let (diff, shared) = AxisDiff::compute(&per_option, &tree);
 
@@ -566,11 +558,7 @@ mod tests {
 
     #[test]
     fn diff_one_option_yields_no_variance() {
-        let tree = build_tree(&[
-            ("AI", None),
-            ("Faction", Some(0)),
-            ("Criminal", Some(1)),
-        ]);
+        let tree = build_tree(&[("AI", None), ("Faction", Some(0)), ("Criminal", Some(1))]);
         let crim = mk_guid(2);
         let (diff, shared) = AxisDiff::compute(&[vec![crim]], &tree);
         assert_eq!(shared.len(), 1);

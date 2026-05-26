@@ -110,9 +110,20 @@ pub struct BlueprintPool {
 }
 
 /// Lookup from `BlueprintPoolRecord.guid` to resolved [`BlueprintPool`].
+///
+/// Also carries a reverse index from pool GUID to the mission GUIDs that
+/// award the pool, populated by [`crate::MissionIndex::build`] after
+/// contract expansion via [`Self::link_missions`]. Consumers building
+/// the registry standalone (without a `MissionIndex`) get an empty
+/// reverse index — the pools themselves are still fully populated.
 #[derive(Debug, Clone, Default)]
 pub struct BlueprintPoolRegistry {
     pools: HashMap<Guid, BlueprintPool>,
+    /// `BlueprintPoolRecord` GUID → mission GUIDs that award the pool.
+    /// Multi-pool missions appear in every pool's list. Populated by
+    /// [`Self::link_missions`]; empty when the registry was built
+    /// outside a [`crate::MissionIndex`] flow.
+    missions_by_pool: HashMap<Guid, Vec<Guid>>,
     /// Running count of unresolved blueprint records — diagnostic for
     /// when the `CraftingBlueprintRecord.blueprint` pointer doesn't
     /// point at anything we can resolve (feature-gated types or DCB
@@ -214,7 +225,27 @@ impl BlueprintPoolRegistry {
 
         Self {
             pools: out,
+            missions_by_pool: HashMap::new(),
             unresolved_blueprint_records,
+        }
+    }
+
+    /// Populate the pool → missions reverse index from an expanded
+    /// mission list. Called by [`crate::MissionIndex::build`] after
+    /// `expand_all` produces the mission list, so the registry held on
+    /// the index has both directions wired up.
+    ///
+    /// Idempotent — clearing and rebuilding. Safe to call again if
+    /// the mission list is regenerated.
+    pub fn link_missions(&mut self, missions: &[crate::Mission]) {
+        self.missions_by_pool.clear();
+        for mission in missions {
+            for reward in &mission.rewards.blueprints {
+                self.missions_by_pool
+                    .entry(reward.pool_guid)
+                    .or_default()
+                    .push(mission.id);
+            }
         }
     }
 
@@ -241,6 +272,64 @@ impl BlueprintPoolRegistry {
     /// missing, or its nested `blueprint` pointer landed on `Unknown`).
     pub fn unresolved_blueprint_records(&self) -> usize {
         self.unresolved_blueprint_records
+    }
+
+    /// Mission GUIDs that award the given blueprint pool. Empty slice
+    /// when the pool is unknown or the registry hasn't been linked via
+    /// [`Self::link_missions`] (e.g. built standalone).
+    ///
+    /// Order matches the order missions appeared in the input to
+    /// [`Self::link_missions`] — stable across rebuilds for a given
+    /// `MissionIndex`. Multi-pool missions appear in every entry whose
+    /// pool they reward.
+    pub fn missions_for_pool(&self, pool_guid: &Guid) -> &[Guid] {
+        self.missions_by_pool
+            .get(pool_guid)
+            .map(|v| v.as_slice())
+            .unwrap_or(&[])
+    }
+
+    /// Every pool that contains the given `CraftingBlueprintRecord`
+    /// GUID as one of its items. A single blueprint can appear in
+    /// multiple pools (e.g. shared loot tables).
+    ///
+    /// Iterates every pool — O(pools × items). Cheap on 4.7 LIVE scale
+    /// (~hundreds of pools, single-digit items each). If a consumer
+    /// makes this query in a hot loop, build a `HashMap<Guid, Vec<&BlueprintPool>>`
+    /// once and reuse it.
+    pub fn pools_containing_item(
+        &self,
+        blueprint_record_guid: &Guid,
+    ) -> Vec<&BlueprintPool> {
+        self.pools
+            .values()
+            .filter(|pool| {
+                pool.items
+                    .iter()
+                    .any(|item| item.blueprint_record_guid == *blueprint_record_guid)
+            })
+            .collect()
+    }
+
+    /// Convenience: every mission that awards a pool containing this
+    /// blueprint record. Dedup'd — a mission that rewards two pools
+    /// both containing the item appears once.
+    ///
+    /// Combines [`Self::pools_containing_item`] +
+    /// [`Self::missions_for_pool`]. Same scale caveat — fine for UI,
+    /// cache the result if used in a tight loop.
+    pub fn missions_for_item(&self, blueprint_record_guid: &Guid) -> Vec<Guid> {
+        let mut seen: std::collections::HashSet<Guid> =
+            std::collections::HashSet::new();
+        let mut out: Vec<Guid> = Vec::new();
+        for pool in self.pools_containing_item(blueprint_record_guid) {
+            for id in self.missions_for_pool(&pool.guid) {
+                if seen.insert(*id) {
+                    out.push(*id);
+                }
+            }
+        }
+        out
     }
 }
 

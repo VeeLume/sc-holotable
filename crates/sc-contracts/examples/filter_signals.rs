@@ -30,9 +30,7 @@ use sc_extract::generated::{
     BaseMissionPropertyValuePtr, ContractGeneratorHandlerBasePtr as H, ContractParamOverrides,
     DataPools, Handle, MissionProperty, SpawnDescription_ShipOptions, SubContract,
 };
-use sc_extract::{
-    AssetConfig, AssetData, AssetSource, Datacore, DatacoreConfig, Guid, TagTree,
-};
+use sc_extract::{AssetConfig, AssetData, AssetSource, Datacore, DatacoreConfig, Guid, TagTree};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut args: Vec<String> = std::env::args().skip(1).collect();
@@ -103,7 +101,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         // ── Signal 2: Contract/SubContract tags from raw record ──────
         let raw_tags = collect_record_tags(&datacore, c.id);
         let raw_tag_names: Vec<String> = tag_names_of(&raw_tags, tree);
-        println!("\n[Signal 2] Contract record tags (raw): {:?}", raw_tag_names);
+        println!(
+            "\n[Signal 2] Contract record tags (raw): {:?}",
+            raw_tag_names
+        );
 
         // ── Signal 3: Template tags ──────────────────────────────────
         let template_tags = c
@@ -142,16 +143,22 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         let _ = db;
         for ph in chain.props_iter(pools) {
             let Some(prop) = ph.get(pools) else { continue };
-            let Some(ptr) = prop.value.as_ref() else { continue };
+            let Some(ptr) = prop.value.as_ref() else {
+                continue;
+            };
             let BaseMissionPropertyValuePtr::MissionPropertyValue_ShipSpawnDescriptions(vh) = ptr
-            else { continue };
+            else {
+                continue;
+            };
             let Some(val) = vh.get(pools) else { continue };
 
             for (gi, gh) in val.spawn_descriptions.iter().enumerate() {
                 let Some(group) = gh.get(pools) else { continue };
                 for (si, sh) in group.ships.iter().enumerate() {
                     let Some(so) = sh.get(pools) else { continue };
-                    if so.options.len() < 2 { continue }
+                    if so.options.len() < 2 {
+                        continue;
+                    }
                     total += 1;
 
                     let outcome = try_filter(so, pools, tree, &signal_tags, &signal_name_strs);
@@ -166,7 +173,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                             .tags
                             .as_ref()
                             .and_then(|h| h.get(pools))
-                            .map(|tl| tl.tags.iter().map(|g| tree.get(g).map(|n| n.name.as_str()).unwrap_or("?")).collect())
+                            .map(|tl| {
+                                tl.tags
+                                    .iter()
+                                    .map(|g| tree.get(g).map(|n| n.name.as_str()).unwrap_or("?"))
+                                    .collect()
+                            })
                             .unwrap_or_default();
                         let matched = matches!(outcome, FilterOutcome::Single(idx) if idx == oi);
                         let marker = if matched { "→" } else { " " };
@@ -180,7 +192,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                     }
                     match outcome {
                         FilterOutcome::Single(idx) => {
-                            println!("    ✓ unique pick: opt[{idx}] (highest-scoring distinct match)");
+                            println!(
+                                "    ✓ unique pick: opt[{idx}] (highest-scoring distinct match)"
+                            );
                             unique_pick += 1;
                         }
                         FilterOutcome::Tied(idxs) => {
@@ -278,7 +292,9 @@ fn tokenize(name: &str) -> Vec<String> {
     // separate parts.
     let mut out: Vec<String> = Vec::new();
     for chunk in name.split(|c: char| c == '_' || c.is_ascii_digit()) {
-        if chunk.is_empty() { continue }
+        if chunk.is_empty() {
+            continue;
+        }
         out.push(chunk.to_string()); // preserve compound
         let mut buf = String::new();
         let chars: Vec<char> = chunk.chars().collect();
@@ -325,7 +341,10 @@ fn collect_record_tags(datacore: &sc_extract::Datacore, guid: Guid) -> Vec<Guid>
     out
 }
 
-fn collect_template_tags(datacore: &sc_extract::Datacore, contract_guid: Guid) -> Option<Vec<Guid>> {
+fn collect_template_tags(
+    datacore: &sc_extract::Datacore,
+    contract_guid: Guid,
+) -> Option<Vec<Guid>> {
     // Walk contract record → template field → tags.
     let db = datacore.db();
     let rec = db.record(&contract_guid)?;
@@ -380,7 +399,11 @@ fn dump_record_fields(datacore: &sc_extract::Datacore, guid: Guid, label: &str) 
 fn tag_names_of(guids: &[Guid], tree: &TagTree) -> Vec<String> {
     guids
         .iter()
-        .map(|g| tree.get(g).map(|n| n.name.clone()).unwrap_or_else(|| "?".into()))
+        .map(|g| {
+            tree.get(g)
+                .map(|n| n.name.clone())
+                .unwrap_or_else(|| "?".into())
+        })
         .collect()
 }
 
@@ -397,13 +420,19 @@ impl ParamChain {
         let mut out: Vec<&Handle<MissionProperty>> = Vec::new();
         if let Some(h) = self.handler_params.as_ref()
             && let Some(p) = h.get(pools)
-        { out.extend(p.property_overrides.iter()); }
+        {
+            out.extend(p.property_overrides.iter());
+        }
         if let Some(h) = self.contract_params.as_ref()
             && let Some(p) = h.get(pools)
-        { out.extend(p.property_overrides.iter()); }
+        {
+            out.extend(p.property_overrides.iter());
+        }
         if let Some(h) = self.sub_contract.as_ref()
             && let Some(s) = h.get(pools)
-        { out.extend(s.property_overrides.iter()); }
+        {
+            out.extend(s.property_overrides.iter());
+        }
         out
     }
 }
@@ -411,11 +440,15 @@ impl ParamChain {
 fn walk_all_handlers(datacore: &sc_extract::Datacore, out: &mut HashMap<Guid, ParamChain>) {
     let pools = &datacore.records().pools;
     for (_g, gh) in &datacore.records().records.multi_feature.contract_generator {
-        let Some(generator) = gh.get(pools) else { continue };
+        let Some(generator) = gh.get(pools) else {
+            continue;
+        };
         for handler_ptr in &generator.generators {
             match handler_ptr {
                 H::ContractGeneratorHandler_Legacy(h) => {
-                    let Some(handler) = h.get(pools) else { continue };
+                    let Some(handler) = h.get(pools) else {
+                        continue;
+                    };
                     let hp = handler.contract_params.clone();
                     for ch in &handler.legacy_contracts {
                         let Some(c) = ch.get(pools) else { continue };
@@ -435,7 +468,9 @@ fn walk_all_handlers(datacore: &sc_extract::Datacore, out: &mut HashMap<Guid, Pa
                     }
                 }
                 H::ContractGeneratorHandler_Career(h) => {
-                    let Some(handler) = h.get(pools) else { continue };
+                    let Some(handler) = h.get(pools) else {
+                        continue;
+                    };
                     let hp = handler.contract_params.clone();
                     for ch in &handler.contracts {
                         let Some(c) = ch.get(pools) else { continue };
@@ -454,9 +489,24 @@ fn walk_all_handlers(datacore: &sc_extract::Datacore, out: &mut HashMap<Guid, Pa
                         }
                     }
                 }
-                H::ContractGeneratorHandler_List(h) => walk_list_like(h.get(pools).map(|h| (h.contract_params.clone(), h.contracts.clone())), pools, out),
-                H::ContractGeneratorHandler_LinearSeries(h) => walk_list_like(h.get(pools).map(|h| (h.contract_params.clone(), h.contracts.clone())), pools, out),
-                H::ContractGeneratorHandler_TutorialSeriesDef(h) => walk_list_like(h.get(pools).map(|h| (h.contract_params.clone(), h.contracts.clone())), pools, out),
+                H::ContractGeneratorHandler_List(h) => walk_list_like(
+                    h.get(pools)
+                        .map(|h| (h.contract_params.clone(), h.contracts.clone())),
+                    pools,
+                    out,
+                ),
+                H::ContractGeneratorHandler_LinearSeries(h) => walk_list_like(
+                    h.get(pools)
+                        .map(|h| (h.contract_params.clone(), h.contracts.clone())),
+                    pools,
+                    out,
+                ),
+                H::ContractGeneratorHandler_TutorialSeriesDef(h) => walk_list_like(
+                    h.get(pools)
+                        .map(|h| (h.contract_params.clone(), h.contracts.clone())),
+                    pools,
+                    out,
+                ),
                 _ => {}
             }
         }
@@ -464,11 +514,16 @@ fn walk_all_handlers(datacore: &sc_extract::Datacore, out: &mut HashMap<Guid, Pa
 }
 
 fn walk_list_like(
-    handler: Option<(Option<Handle<ContractParamOverrides>>, Vec<Handle<sc_extract::generated::Contract>>)>,
+    handler: Option<(
+        Option<Handle<ContractParamOverrides>>,
+        Vec<Handle<sc_extract::generated::Contract>>,
+    )>,
     pools: &DataPools,
     out: &mut HashMap<Guid, ParamChain>,
 ) {
-    let Some((hp, contracts)) = handler else { return };
+    let Some((hp, contracts)) = handler else {
+        return;
+    };
     for ch in &contracts {
         let Some(c) = ch.get(pools) else { continue };
         out.entry(c.id).or_insert(ParamChain {

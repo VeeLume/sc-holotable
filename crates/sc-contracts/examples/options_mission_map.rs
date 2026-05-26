@@ -66,7 +66,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
             *bucket_counts.entry(disc.clone()).or_default() += 1;
             let bucket = bucket_samples.entry(disc.clone()).or_default();
-            if bucket.iter().all(|s| s.mission_label != mission_label) && bucket.len() < SAMPLE_LIMIT
+            if bucket.iter().all(|s| s.mission_label != mission_label)
+                && bucket.len() < SAMPLE_LIMIT
             {
                 bucket.push(MissionSample {
                     mission_label: mission_label.clone(),
@@ -229,7 +230,9 @@ fn walk_all_handlers(datacore: &Datacore, out: &mut HashMap<Guid, ParamChain>) {
         for handler_ptr in &generator.generators {
             match handler_ptr {
                 H::ContractGeneratorHandler_Legacy(h) => {
-                    let Some(handler) = h.get(pools) else { continue };
+                    let Some(handler) = h.get(pools) else {
+                        continue;
+                    };
                     let hp = handler.contract_params.clone();
                     for ch in &handler.legacy_contracts {
                         let Some(c) = ch.get(pools) else { continue };
@@ -249,7 +252,9 @@ fn walk_all_handlers(datacore: &Datacore, out: &mut HashMap<Guid, ParamChain>) {
                     }
                 }
                 H::ContractGeneratorHandler_Career(h) => {
-                    let Some(handler) = h.get(pools) else { continue };
+                    let Some(handler) = h.get(pools) else {
+                        continue;
+                    };
                     let hp = handler.contract_params.clone();
                     for ch in &handler.contracts {
                         let Some(c) = ch.get(pools) else { continue };
@@ -269,17 +274,20 @@ fn walk_all_handlers(datacore: &Datacore, out: &mut HashMap<Guid, ParamChain>) {
                     }
                 }
                 H::ContractGeneratorHandler_List(h) => walk_list_like(
-                    h.get(pools).map(|h| (h.contract_params.clone(), h.contracts.clone())),
+                    h.get(pools)
+                        .map(|h| (h.contract_params.clone(), h.contracts.clone())),
                     pools,
                     out,
                 ),
                 H::ContractGeneratorHandler_LinearSeries(h) => walk_list_like(
-                    h.get(pools).map(|h| (h.contract_params.clone(), h.contracts.clone())),
+                    h.get(pools)
+                        .map(|h| (h.contract_params.clone(), h.contracts.clone())),
                     pools,
                     out,
                 ),
                 H::ContractGeneratorHandler_TutorialSeriesDef(h) => walk_list_like(
-                    h.get(pools).map(|h| (h.contract_params.clone(), h.contracts.clone())),
+                    h.get(pools)
+                        .map(|h| (h.contract_params.clone(), h.contracts.clone())),
                     pools,
                     out,
                 ),
@@ -368,11 +376,7 @@ fn family_of(name: &str) -> String {
     name.to_string()
 }
 
-fn describe_sample(
-    so: &SpawnDescription_ShipOptions,
-    pools: &DataPools,
-    tree: &TagTree,
-) -> String {
+fn describe_sample(so: &SpawnDescription_ShipOptions, pools: &DataPools, tree: &TagTree) -> String {
     let mut parts: Vec<String> = Vec::new();
     for (oi, oh) in so.options.iter().enumerate() {
         let Some(opt) = oh.get(pools) else { continue };

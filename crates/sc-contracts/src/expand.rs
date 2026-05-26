@@ -27,7 +27,6 @@ use sc_extract::generated::{
 use sc_extract::{Datacore, Guid, LocaleKey, LocaleMap};
 
 use crate::axes::{AxisDiff, SharedTag};
-use crate::blueprints::BlueprintPoolRegistry;
 use crate::classify::TagBag;
 use crate::currency::RewardCurrencyCatalog;
 use crate::locality::LocalityRegistry;
@@ -304,9 +303,15 @@ pub struct MissionRewards {
     /// Item rewards — `ContractResult_Item` entries whose entity_class
     /// is **not** a currency (ship unlocks, collector items, …).
     pub items: Vec<ItemReward>,
-    /// Blueprint reward attached to this contract, if any. Items are
-    /// pre-resolved via [`crate::BlueprintPoolRegistry`].
-    pub blueprint: Option<BlueprintReward>,
+    /// Blueprint pool rewards attached to this contract. Each entry is
+    /// a thin reference (`{ chance, pool_guid }`) — resolve the pool's
+    /// name + items via [`crate::BlueprintPoolRegistry::get`] at the
+    /// call site.
+    ///
+    /// Empty when the contract awards no blueprints. Multiple entries
+    /// when the contract has multiple `BlueprintRewards` blocks in its
+    /// `contractResults` (multi-pool missions).
+    pub blueprints: Vec<BlueprintReward>,
     /// Other reward kinds (BadgeAward, ScenarioProgress, JournalEntry,
     /// CompletionTag(s), CompletionBounty, RefundBuyIn, ItemsWeighting,
     /// Reward). Detailed field modelling deferred until a consumer
@@ -321,7 +326,7 @@ impl MissionRewards {
             && self.scrip.is_empty()
             && self.reputation.is_empty()
             && self.items.is_empty()
-            && self.blueprint.is_none()
+            && self.blueprints.is_empty()
             && self.other.is_empty()
     }
 }
@@ -758,18 +763,24 @@ pub struct EntitySlot {
     pub entity: TagBag,
 }
 
-/// Materialised blueprint reward for a single contract.
-#[derive(Debug, Clone)]
+/// Reference to a blueprint pool awarded by a single contract.
+///
+/// Slim by design — only the chance and the pool GUID. Consumers
+/// resolve the pool's name and items via
+/// [`crate::BlueprintPoolRegistry::get`] at render time. Keeps the
+/// mission model decoupled from the (potentially large) item list and
+/// keeps one source of truth for pool contents.
+///
+/// A mission with multiple `BlueprintRewards` entries in its
+/// `contractResults` produces multiple `BlueprintReward` rows in
+/// [`MissionRewards::blueprints`].
+#[derive(Debug, Clone, PartialEq)]
 pub struct BlueprintReward {
     /// 0.0 – 1.0 chance the blueprint is awarded.
     pub chance: f32,
-    /// GUID of the `BlueprintPoolRecord`.
+    /// GUID of the `BlueprintPoolRecord`. Look up via
+    /// [`crate::BlueprintPoolRegistry::get`] for name + items.
     pub pool_guid: Guid,
-    /// Pool's human-readable name (`BP_MISSIONREWARD_*`).
-    pub pool_name: String,
-    /// Resolved pool items. Empty when the pool was missing from
-    /// [`BlueprintPoolRegistry`] (shouldn't happen on a clean DCB).
-    pub items: Vec<crate::BlueprintItem>,
 }
 
 // ── Entry point ─────────────────────────────────────────────────────────────
@@ -784,7 +795,6 @@ pub struct BlueprintReward {
 pub fn expand_all(
     datacore: &Datacore,
     ships: &ShipRegistry,
-    blueprints: &BlueprintPoolRegistry,
     currency: &RewardCurrencyCatalog,
     localities: &LocalityRegistry,
 ) -> Vec<Mission> {
@@ -800,7 +810,6 @@ pub fn expand_all(
             walk_handler(
                 datacore,
                 ships,
-                blueprints,
                 currency,
                 localities,
                 pools,
@@ -821,7 +830,6 @@ pub fn expand_all(
 fn walk_handler(
     datacore: &Datacore,
     ships: &ShipRegistry,
-    blueprints: &BlueprintPoolRegistry,
     currency: &RewardCurrencyCatalog,
     localities: &LocalityRegistry,
     pools: &DataPools,
@@ -845,7 +853,6 @@ fn walk_handler(
                     emit_from_legacy(
                         datacore,
                         ships,
-                        blueprints,
                         currency,
                         localities,
                         pools,
@@ -871,7 +878,6 @@ fn walk_handler(
                     emit_from_career(
                         datacore,
                         ships,
-                        blueprints,
                         currency,
                         localities,
                         pools,
@@ -888,7 +894,6 @@ fn walk_handler(
                     emit_from_contract(
                         datacore,
                         ships,
-                        blueprints,
                         currency,
                         localities,
                         pools,
@@ -904,7 +909,6 @@ fn walk_handler(
         H::ContractGeneratorHandler_List(h) => emit_list_like(
             datacore,
             ships,
-            blueprints,
             currency,
             localities,
             pools,
@@ -922,7 +926,6 @@ fn walk_handler(
         H::ContractGeneratorHandler_LinearSeries(h) => emit_list_like(
             datacore,
             ships,
-            blueprints,
             currency,
             localities,
             pools,
@@ -940,7 +943,6 @@ fn walk_handler(
         H::ContractGeneratorHandler_TutorialSeriesDef(h) => emit_list_like(
             datacore,
             ships,
-            blueprints,
             currency,
             localities,
             pools,
@@ -965,7 +967,6 @@ fn walk_handler(
 fn emit_list_like<'p>(
     datacore: &Datacore,
     ships: &ShipRegistry,
-    blueprints: &BlueprintPoolRegistry,
     currency: &RewardCurrencyCatalog,
     localities: &LocalityRegistry,
     pools: &DataPools,
@@ -995,7 +996,6 @@ fn emit_list_like<'p>(
             emit_from_contract(
                 datacore,
                 ships,
-                blueprints,
                 currency,
                 localities,
                 pools,
@@ -1032,7 +1032,6 @@ struct ListLikeHandler<'p> {
 fn emit_from_contract(
     datacore: &Datacore,
     ships: &ShipRegistry,
-    blueprints: &BlueprintPoolRegistry,
     currency: &RewardCurrencyCatalog,
     localities: &LocalityRegistry,
     pools: &DataPools,
@@ -1049,7 +1048,6 @@ fn emit_from_contract(
     out.push(build_expansion(
         datacore,
         ships,
-        blueprints,
         currency,
         localities,
         pools,
@@ -1071,7 +1069,6 @@ fn emit_from_contract(
             out.push(build_expansion(
                 datacore,
                 ships,
-                blueprints,
                 currency,
                 localities,
                 pools,
@@ -1096,7 +1093,6 @@ fn emit_from_contract(
 fn emit_from_legacy(
     datacore: &Datacore,
     ships: &ShipRegistry,
-    blueprints: &BlueprintPoolRegistry,
     currency: &RewardCurrencyCatalog,
     localities: &LocalityRegistry,
     pools: &DataPools,
@@ -1113,7 +1109,6 @@ fn emit_from_legacy(
     out.push(build_expansion(
         datacore,
         ships,
-        blueprints,
         currency,
         localities,
         pools,
@@ -1135,7 +1130,6 @@ fn emit_from_legacy(
             out.push(build_expansion(
                 datacore,
                 ships,
-                blueprints,
                 currency,
                 localities,
                 pools,
@@ -1160,7 +1154,6 @@ fn emit_from_legacy(
 fn emit_from_career(
     datacore: &Datacore,
     ships: &ShipRegistry,
-    blueprints: &BlueprintPoolRegistry,
     currency: &RewardCurrencyCatalog,
     localities: &LocalityRegistry,
     pools: &DataPools,
@@ -1177,7 +1170,6 @@ fn emit_from_career(
     out.push(build_expansion(
         datacore,
         ships,
-        blueprints,
         currency,
         localities,
         pools,
@@ -1199,7 +1191,6 @@ fn emit_from_career(
             out.push(build_expansion(
                 datacore,
                 ships,
-                blueprints,
                 currency,
                 localities,
                 pools,
@@ -1226,7 +1217,6 @@ fn emit_from_career(
 fn build_expansion(
     datacore: &Datacore,
     ships: &ShipRegistry,
-    blueprints: &BlueprintPoolRegistry,
     currency: &RewardCurrencyCatalog,
     localities: &LocalityRegistry,
     pools: &DataPools,
@@ -1258,7 +1248,7 @@ fn build_expansion(
         ctx.handler_availability,
     );
 
-    let blueprint = resolve_blueprint_reward(pools, blueprints, contract_results);
+    let blueprints = resolve_blueprint_rewards(pools, contract_results);
     let (uec, scrip, reputation, items, other) =
         resolve_rewards(pools, datacore, currency, contract_results);
     let rewards = MissionRewards {
@@ -1266,7 +1256,7 @@ fn build_expansion(
         scrip,
         reputation,
         items,
-        blueprint,
+        blueprints,
         other,
     };
 
@@ -1828,21 +1818,35 @@ fn classify_prereq(pools: &DataPools, p: &ContractPrerequisiteBasePtr) -> Prereq
 
 /// Scan `contractResults.contract_results[]` for a `BlueprintRewards`
 /// entry and resolve its pool through [`BlueprintPoolRegistry`].
-fn resolve_blueprint_reward(
+/// Collect every `BlueprintRewards` entry under this contract's
+/// `ContractResults`. Returns an empty vec when there are no blueprint
+/// rewards (or when `results` is `None`).
+///
+/// Multi-pool missions have multiple `BlueprintRewards` entries side
+/// by side in `contract_results`; previously this resolver returned on
+/// the first hit and silently dropped the rest. Now every entry that
+/// has a non-null `blueprint_pool` GUID becomes a [`BlueprintReward`].
+/// Entries with no pool GUID are skipped (the DCB does carry a few).
+fn resolve_blueprint_rewards(
     pools: &DataPools,
-    blueprints: &BlueprintPoolRegistry,
     results: Option<&Handle<ContractResults>>,
-) -> Option<BlueprintReward> {
-    let results_handle = results?;
-    let results = results_handle.get(pools)?;
+) -> Vec<BlueprintReward> {
+    let mut out: Vec<BlueprintReward> = Vec::new();
+    let Some(results_handle) = results else {
+        return out;
+    };
+    let Some(results) = results_handle.get(pools) else {
+        return out;
+    };
     for result_ptr in &results.contract_results {
         if let ContractResultBasePtr::BlueprintRewards(h) = result_ptr
             && let Some(br) = h.get(pools)
+            && let Some(reward) = materialise_blueprint(br)
         {
-            return materialise_blueprint(br, blueprints);
+            out.push(reward);
         }
     }
-    None
+    out
 }
 
 /// Walk every `MissionPropertyValue_ShipSpawnDescriptions` reachable
@@ -1991,7 +1995,10 @@ fn build_ship_encounter(
 
 /// Assemble a [`SlotGroup`] from a flat option list. Computes the
 /// per-axis [`AxisDiff`] and the convenience min/max ranges.
-fn build_ship_group(options: Vec<ShipSlot>, tree: &sc_extract::TagTree) -> Option<SlotGroup<ShipSlot>> {
+fn build_ship_group(
+    options: Vec<ShipSlot>,
+    tree: &sc_extract::TagTree,
+) -> Option<SlotGroup<ShipSlot>> {
     if options.is_empty() {
         return None;
     }
@@ -2158,24 +2165,17 @@ fn build_entity_group(
     })
 }
 
-fn materialise_blueprint(
-    br: &BlueprintRewards,
-    blueprints: &BlueprintPoolRegistry,
-) -> Option<BlueprintReward> {
+/// Lift a raw `BlueprintRewards` DCB entry into the slim
+/// [`BlueprintReward`] reference. Returns `None` when the entry has
+/// no `blueprint_pool` GUID set — those carry no actionable info.
+///
+/// The pool's name and items are not looked up here; consumers resolve
+/// them via [`crate::BlueprintPoolRegistry::get`] at render time.
+fn materialise_blueprint(br: &BlueprintRewards) -> Option<BlueprintReward> {
     let pool_guid = br.blueprint_pool?;
-    let Some(pool) = blueprints.get(&pool_guid) else {
-        return Some(BlueprintReward {
-            chance: br.chance,
-            pool_guid,
-            pool_name: String::new(),
-            items: Vec::new(),
-        });
-    };
     Some(BlueprintReward {
         chance: br.chance,
         pool_guid,
-        pool_name: pool.name.clone(),
-        items: pool.items.clone(),
     })
 }
 

@@ -111,12 +111,16 @@ impl MissionIndex {
     /// turns both on.
     pub fn build(datacore: &Datacore) -> Self {
         let ships = ShipRegistry::build(datacore);
-        let blueprints = BlueprintPoolRegistry::build(datacore);
+        let mut blueprints = BlueprintPoolRegistry::build(datacore);
         let currency = RewardCurrencyCatalog::build(datacore);
         let locations = LocationRegistry::build(datacore);
         let localities = LocalityRegistry::build(datacore, &locations);
 
-        let contracts = expand_all(datacore, &ships, &blueprints, &currency, &localities);
+        let contracts = expand_all(datacore, &ships, &currency, &localities);
+        // Now that missions are materialised, wire the pool → missions
+        // reverse index. Powers `BlueprintPoolRegistry::missions_for_pool`
+        // and friends.
+        blueprints.link_missions(&contracts);
 
         let by_id = contracts
             .iter()
@@ -177,31 +181,42 @@ impl MissionIndex {
     // `false` for `_mixed` and `true` for `_consistent` — vacuously
     // not-divergent.
 
-    /// True if some pool members carry a blueprint reward and others
+    /// True if some pool members carry blueprint rewards and others
     /// don't. Drives the `[BP*]` mixed-marker decision in title patchers.
     pub fn blueprint_mixed(&self, ids: &[Guid]) -> bool {
         let mut total = 0usize;
         let mut with_bp = 0usize;
         for c in self.iter_pool(ids) {
             total += 1;
-            if c.rewards.blueprint.is_some() {
+            if !c.rewards.blueprints.is_empty() {
                 with_bp += 1;
             }
         }
         with_bp > 0 && with_bp < total
     }
 
-    /// True if pool members disagree on the blueprint pool GUID. (When
-    /// every member carries a blueprint but the pool varies, the line
-    /// can't name a single pool.)
+    /// True if all pool members agree on the **set** of blueprint pool
+    /// GUIDs they award.
+    ///
+    /// Per-set equality: members A {X, Y} and B {X, Y} are consistent;
+    /// A {X, Y} and C {X, Z} are not. Order within a member's
+    /// `blueprints` vec is ignored. Empty pool sets are treated as a
+    /// distinct value — a member with no blueprints is inconsistent
+    /// with one that has blueprints (also see [`Self::blueprint_mixed`]
+    /// for the presence-only check).
     pub fn blueprint_pool_consistent(&self, ids: &[Guid]) -> bool {
-        let mut pools = std::collections::HashSet::new();
+        use std::collections::HashSet;
+        let mut first: Option<HashSet<Guid>> = None;
         for c in self.iter_pool(ids) {
-            if let Some(bp) = &c.rewards.blueprint {
-                pools.insert(bp.pool_guid);
+            let set: HashSet<Guid> =
+                c.rewards.blueprints.iter().map(|bp| bp.pool_guid).collect();
+            match &first {
+                None => first = Some(set),
+                Some(prev) if *prev != set => return false,
+                _ => {}
             }
         }
-        pools.len() <= 1
+        true
     }
 
     /// True if all pool members agree on the UEC reward shape (None /

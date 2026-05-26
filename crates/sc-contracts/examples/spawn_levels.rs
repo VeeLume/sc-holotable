@@ -184,7 +184,9 @@ fn find_mission_param_chain(mission_id: Guid, datacore: &Datacore) -> ParamChain
                 Vec<sc_extract::generated::Handle<sc_extract::generated::CareerContract>>,
             ) = match handler_ptr {
                 H::ContractGeneratorHandler_Legacy(h) => {
-                    let Some(handler) = h.get(pools) else { continue };
+                    let Some(handler) = h.get(pools) else {
+                        continue;
+                    };
                     (
                         handler.contract_params.clone(),
                         handler.legacy_contracts.clone(),
@@ -193,7 +195,9 @@ fn find_mission_param_chain(mission_id: Guid, datacore: &Datacore) -> ParamChain
                     )
                 }
                 H::ContractGeneratorHandler_Career(h) => {
-                    let Some(handler) = h.get(pools) else { continue };
+                    let Some(handler) = h.get(pools) else {
+                        continue;
+                    };
                     (
                         handler.contract_params.clone(),
                         Vec::new(),
@@ -202,7 +206,9 @@ fn find_mission_param_chain(mission_id: Guid, datacore: &Datacore) -> ParamChain
                     )
                 }
                 H::ContractGeneratorHandler_List(h) => {
-                    let Some(handler) = h.get(pools) else { continue };
+                    let Some(handler) = h.get(pools) else {
+                        continue;
+                    };
                     (
                         handler.contract_params.clone(),
                         Vec::new(),
@@ -211,7 +217,9 @@ fn find_mission_param_chain(mission_id: Guid, datacore: &Datacore) -> ParamChain
                     )
                 }
                 H::ContractGeneratorHandler_LinearSeries(h) => {
-                    let Some(handler) = h.get(pools) else { continue };
+                    let Some(handler) = h.get(pools) else {
+                        continue;
+                    };
                     (
                         handler.contract_params.clone(),
                         Vec::new(),
@@ -220,7 +228,9 @@ fn find_mission_param_chain(mission_id: Guid, datacore: &Datacore) -> ParamChain
                     )
                 }
                 H::ContractGeneratorHandler_TutorialSeriesDef(h) => {
-                    let Some(handler) = h.get(pools) else { continue };
+                    let Some(handler) = h.get(pools) else {
+                        continue;
+                    };
                     (
                         handler.contract_params.clone(),
                         Vec::new(),
@@ -408,7 +418,11 @@ fn print_ship(
     let cand = ships.resolve_spawn(&pos, &neg);
     let mut names: Vec<String> = cand
         .iter()
-        .filter_map(|c| ships.display_name(&c.entity_guid, cache, locale).map(String::from))
+        .filter_map(|c| {
+            ships
+                .display_name(&c.entity_guid, cache, locale)
+                .map(String::from)
+        })
         .collect();
     names.sort();
     names.dedup();
@@ -439,7 +453,12 @@ fn print_ship(
         .map(|tl| {
             tl.tags
                 .iter()
-                .map(|g| tree.get(g).map(|n| n.name.as_str()).unwrap_or("<?>").to_string())
+                .map(|g| {
+                    tree.get(g)
+                        .map(|n| n.name.as_str())
+                        .unwrap_or("<?>")
+                        .to_string()
+                })
                 .collect()
         })
         .unwrap_or_default();

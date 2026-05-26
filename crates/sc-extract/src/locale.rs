@@ -85,7 +85,7 @@ impl LocaleMap {
                     line: raw_line.to_string(),
                 });
             };
-            entries.insert(key.trim().to_string(), value.to_string());
+            entries.insert(strip_locale_metadata(key.trim()).to_string(), value.to_string());
         }
 
         Ok(Self { entries })
@@ -131,7 +131,7 @@ impl LocaleMap {
                     line: raw_line.to_string(),
                 });
             };
-            entries.insert(key.trim().to_string(), value.to_string());
+            entries.insert(strip_locale_metadata(key.trim()).to_string(), value.to_string());
         }
 
         Ok(Self { entries })
@@ -181,8 +181,21 @@ impl LocaleMap {
     // ── Mutation ────────────────────────────────────────────────────────
 
     /// Insert or replace an entry. Returns the previous value if any.
+    ///
+    /// The key is normalised through [`strip_locale_metadata`] so a
+    /// caller passing `"item_Namefoo,P"` stores under the bare
+    /// `"item_Namefoo"` form. This matches `parse`'s behaviour and
+    /// keeps every construction path (parse-from-bytes vs. manual
+    /// per-entry `set`) converging on the same key shape.
     pub fn set(&mut self, key: impl Into<String>, value: impl Into<String>) -> Option<String> {
-        self.entries.insert(key.into(), value.into())
+        let raw: String = key.into();
+        let stripped = strip_locale_metadata(&raw);
+        let normalized = if stripped.len() == raw.len() {
+            raw
+        } else {
+            stripped.to_string()
+        };
+        self.entries.insert(normalized, value.into())
     }
 
     /// Remove an entry. Returns the removed value if any.
@@ -214,6 +227,33 @@ impl LocaleMap {
         }
 
         output
+    }
+}
+
+/// Strip CIG localization metadata suffixes from an INI key.
+///
+/// Some entries in `global.ini` carry a trailing comma-delimited
+/// marker that flags how the value is meant to be rendered — observed
+/// forms include `,P` (likely *plural* or *pronoun-aware*) on weapon
+/// variant names:
+///
+/// ```text
+/// item_Nameutfl_crossbow_ballistic_01_tint01,P=Novian "Nighthunter" Crossbow
+/// ```
+///
+/// DCB-side references to these strings always use the bare key
+/// (`item_Nameutfl_crossbow_ballistic_01_tint01`), so the marker
+/// silently breaks lookup. We strip it at parse time — the metadata
+/// isn't modelled by any consumer today, and storing both bare and
+/// marker-suffixed forms separately would just leave half the keys
+/// unreachable.
+///
+/// Pass-through for any key that has no comma — the strip is a no-op
+/// on the overwhelming majority of entries.
+pub fn strip_locale_metadata(key: &str) -> &str {
+    match key.split_once(',') {
+        Some((stem, _marker)) => stem,
+        None => key,
     }
 }
 
@@ -268,6 +308,29 @@ mod tests {
         assert_eq!(map.len(), 2);
         assert_eq!(map.get("item_NameGATS"), Some("GATS Ballistic"));
         assert_eq!(map.get("item_NameKLWE"), Some("KLWE Laser"));
+    }
+
+    #[test]
+    fn parse_strips_comma_metadata_suffix() {
+        // CIG ships some entries with a `,P` (plural/pronoun) marker.
+        // DCB references use the bare key, so the marker must be
+        // stripped at parse time or every variant lookup fails.
+        let ini = "\
+item_Nameutfl_crossbow_ballistic_01_tint01,P=Novian \"Nighthunter\" Crossbow\r\n\
+item_Nameutfl_crossbow_ballistic_01=Novian Crossbow\r\n";
+        let map = LocaleMap::parse(&utf16_le_with_bom(ini)).unwrap();
+        assert_eq!(
+            map.get("item_Nameutfl_crossbow_ballistic_01_tint01"),
+            Some("Novian \"Nighthunter\" Crossbow"),
+            "bare-key lookup must hit the comma-suffixed entry",
+        );
+        // Bare entry untouched.
+        assert_eq!(
+            map.get("item_Nameutfl_crossbow_ballistic_01"),
+            Some("Novian Crossbow"),
+        );
+        // The literal `,P`-suffixed form is NOT a key after stripping.
+        assert!(map.get("item_Nameutfl_crossbow_ballistic_01_tint01,P").is_none());
     }
 
     #[test]

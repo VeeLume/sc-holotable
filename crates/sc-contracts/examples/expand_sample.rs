@@ -65,7 +65,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let t0 = Instant::now();
     let locale = &asset_data.locale;
     let cache = &datacore.snapshot().localized_items;
-    let expansions = expand_all(&datacore, &ships, &blueprints, &currency, &localities);
+    let expansions = expand_all(&datacore, &ships, &currency, &localities);
     println!(
         "expand_all: {} Mission(s) in {:.2}s\n",
         expansions.len(),
@@ -94,14 +94,14 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             expansions.len()
         );
         for e in matching.iter().take(25) {
-            print_expansion(e, locale, cache);
+            print_expansion(e, &blueprints, locale, cache);
             if detail {
                 print_detail(e, locale, cache);
                 print_locality_detail(e, &datacore, locale);
             }
         }
         if detail {
-            print_delta(&matching, locale);
+            print_delta(&matching, &blueprints, locale);
         }
     } else {
         println!("─── Sample expansions (first from each handler kind) ───");
@@ -113,7 +113,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             HandlerKind::Tutorial,
         ] {
             for e in expansions.iter().filter(|e| e.origin.kind == kind).take(2) {
-                print_expansion(e, locale, cache);
+                print_expansion(e, &blueprints, locale, cache);
             }
         }
 
@@ -122,10 +122,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         println!("─── Sample rows with blueprint rewards ───");
         for e in expansions
             .iter()
-            .filter(|e| e.rewards.blueprint.is_some())
+            .filter(|e| !e.rewards.blueprints.is_empty())
             .take(3)
         {
-            print_expansion(e, locale, cache);
+            print_expansion(e, &blueprints, locale, cache);
         }
     }
 
@@ -155,7 +155,7 @@ fn print_summary(expansions: &[Mission], locale: &sc_extract::LocaleMap) {
     let illegal = expansions.iter().filter(|e| e.illegal_flag).count();
     let with_bp = expansions
         .iter()
-        .filter(|e| e.rewards.blueprint.is_some())
+        .filter(|e| !e.rewards.blueprints.is_empty())
         .count();
     let uec_calc = expansions
         .iter()
@@ -214,6 +214,7 @@ fn print_summary(expansions: &[Mission], locale: &sc_extract::LocaleMap) {
 
 fn print_expansion(
     e: &Mission,
+    blueprints: &BlueprintPoolRegistry,
     locale: &sc_extract::LocaleMap,
     cache: &sc_extract::LocalizedItemCache,
 ) {
@@ -318,20 +319,23 @@ fn print_expansion(
             },
         );
     }
-    if let Some(bp) = &e.rewards.blueprint {
-        let first_items: Vec<&str> = bp
-            .items
+    for bp in &e.rewards.blueprints {
+        let pool = blueprints.get(&bp.pool_guid);
+        let pool_name = pool.map(|p| p.name.as_str()).unwrap_or("(unknown pool)");
+        let items: &[sc_contracts::BlueprintItem] =
+            pool.map(|p| p.items.as_slice()).unwrap_or(&[]);
+        let first_items: Vec<&str> = items
             .iter()
             .filter_map(|i| i.display_name(cache, locale))
             .take(4)
             .collect();
         println!(
             "      bp:       pool='{pool}' chance={c:.0}% items=[{items}{etc}]",
-            pool = bp.pool_name,
+            pool = pool_name,
             c = bp.chance * 100.0,
             items = first_items.join(", "),
-            etc = if bp.items.len() > 4 {
-                format!(", … +{} more", bp.items.len() - 4)
+            etc = if items.len() > 4 {
+                format!(", … +{} more", items.len() - 4)
             } else {
                 String::new()
             },
@@ -747,7 +751,11 @@ fn strip_noise(s: &str) -> String {
 /// For a list of matching expansions, find every field that differs across
 /// them. Prints a compact "what actually differs" report so the user can
 /// see sub-contract distinctions that the summary collapses.
-fn print_delta(matching: &[&Mission], locale: &sc_extract::LocaleMap) {
+fn print_delta(
+    matching: &[&Mission],
+    blueprints: &BlueprintPoolRegistry,
+    locale: &sc_extract::LocaleMap,
+) {
     if matching.len() < 2 {
         return;
     }
@@ -862,12 +870,18 @@ fn print_delta(matching: &[&Mission], locale: &sc_extract::LocaleMap) {
             .iter()
             .map(|s| format!("{}×{}", s.record_name, s.amount))
             .collect();
-        let bp_fp = e
+        let bp_names: Vec<&str> = e
             .rewards
-            .blueprint
-            .as_ref()
-            .map(|b| b.pool_name.as_str())
-            .unwrap_or("");
+            .blueprints
+            .iter()
+            .map(|b| {
+                blueprints
+                    .get(&b.pool_guid)
+                    .map(|p| p.name.as_str())
+                    .unwrap_or("?")
+            })
+            .collect();
+        let bp_fp = bp_names.join("+");
         println!(
             "    [{i}] uec={:?} scrip=[{}] rep=[{}] bp='{}'",
             e.rewards.uec,

@@ -97,7 +97,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         }
         let distinct_pools: HashSet<Guid> = index
             .iter_pool(ids)
-            .filter_map(|c| c.rewards.blueprint.as_ref().map(|bp| bp.pool_guid))
+            .flat_map(|c| c.rewards.blueprints.iter().map(|bp| bp.pool_guid))
             .collect();
         let mixed = if index.blueprint_mixed(ids) {
             " — MIXED PRESENCE"
@@ -110,20 +110,28 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             distinct_pools.len(),
         );
         for c in index.iter_pool(ids) {
-            let bp_label = match c.rewards.blueprint.as_ref() {
-                Some(bp) if !bp.items.is_empty() => {
-                    let sample =
-                        sample_items(c, &asset_data.locale, &datacore.snapshot().localized_items);
-                    format!(
-                        "  BP pool='{}' ({} items): {sample}",
-                        bp.pool_name,
-                        bp.items.len()
-                    )
-                }
-                _ => "  (no blueprint)".to_string(),
-            };
             println!("      [{:?}] {}", c.origin.kind, c.debug_name);
-            println!("        {bp_label}");
+            if c.rewards.blueprints.is_empty() {
+                println!("        (no blueprint)");
+            } else {
+                for bp in &c.rewards.blueprints {
+                    let pool = index.blueprints.get(&bp.pool_guid);
+                    let (name, item_count) = match pool {
+                        Some(p) => (p.name.as_str(), p.items.len()),
+                        None => ("(unknown)", 0),
+                    };
+                    let sample = sample_items(
+                        &bp.pool_guid,
+                        &index.blueprints,
+                        &asset_data.locale,
+                        &datacore.snapshot().localized_items,
+                    );
+                    println!(
+                        "        BP pool='{}' ({} items): {sample}",
+                        name, item_count,
+                    );
+                }
+            }
             let span = render_span(c, &index.localities, &asset_data.locale);
             if !span.is_empty() {
                 println!("        span: {span}");
@@ -169,14 +177,15 @@ fn render_span(
 
 /// First 4 BP item display names for an at-a-glance preview.
 fn sample_items(
-    c: &Mission,
+    pool_guid: &Guid,
+    blueprints: &sc_contracts::BlueprintPoolRegistry,
     locale: &sc_extract::LocaleMap,
     cache: &sc_extract::LocalizedItemCache,
 ) -> String {
-    let Some(bp) = &c.rewards.blueprint else {
+    let Some(pool) = blueprints.get(pool_guid) else {
         return "—".into();
     };
-    let names: Vec<&str> = bp
+    let names: Vec<&str> = pool
         .items
         .iter()
         .filter_map(|it| it.display_name(cache, locale))
@@ -184,8 +193,8 @@ fn sample_items(
         .collect();
     if names.is_empty() {
         "—".into()
-    } else if bp.items.len() > 4 {
-        format!("{}, … +{} more", names.join(", "), bp.items.len() - 4)
+    } else if pool.items.len() > 4 {
+        format!("{}, … +{} more", names.join(", "), pool.items.len() - 4)
     } else {
         names.join(", ")
     }

@@ -81,7 +81,7 @@ pub use datacore::{Datacore, DatacoreSnapshot};
 pub use error::{Error, Result};
 pub use filters::{is_playable_ship, is_playable_weapon};
 pub use graph::ReferenceGraph;
-pub use locale::{LocaleKey, LocaleMap};
+pub use locale::{LocaleKey, LocaleMap, strip_locale_metadata};
 pub use localized_items::{LocalizedItem, LocalizedItemCache, resolve_entity_localization};
 pub use manufacturers::{Manufacturer, ManufacturerRegistry};
 pub use sc_extract_generated::{Builder, DataPools, Extract, RecordIndex, RecordStore};

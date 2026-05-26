@@ -70,10 +70,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                         if sample_entity.len() < 4 && phase_options > 0 {
                             sample_entity.push(format!(
                                 "{} → {} (phase \"{}\", {} slot(s))",
-                                c.debug_name,
-                                s.variable_name,
-                                phase.name,
-                                phase_options,
+                                c.debug_name, s.variable_name, phase.name, phase_options,
                             ));
                         }
                     }

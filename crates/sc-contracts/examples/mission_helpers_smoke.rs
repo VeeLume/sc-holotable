@@ -21,17 +21,20 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Targeted samples — verify against the known-good values we
     // derived in the investigation phase.
     let probes = [
-        "EckhartSecurity_ShipAmbush_Nyx_VeryEasy",   // Settle a Score (Criminal)
+        "EckhartSecurity_ShipAmbush_Nyx_VeryEasy", // Settle a Score (Criminal)
         "EckhartSecurity_ShipAmbush_Nyx_VeryEasy_V", // Settle a Score (Vanduul)
-        "EckhartSecurity_ShipAmbush_Nyx_Easy",       // Time to Teach a Lesson
-        "EckhartSecurity_ShipAmbush_Nyx_VeryHard",   // Dangerous Ambush
-        "InterSec_Bounty_Nyx_Hard",                  // Distortion variant
-        "GillysPilotSchool_Mission05",               // pure concurrent (no alternatives)
-        "BountyHuntersGuild_Certification_Easy",     // mixed Easy + VeryEasy alt
+        "EckhartSecurity_ShipAmbush_Nyx_Easy",     // Time to Teach a Lesson
+        "EckhartSecurity_ShipAmbush_Nyx_VeryHard", // Dangerous Ambush
+        "InterSec_Bounty_Nyx_Hard",                // Distortion variant
+        "GillysPilotSchool_Mission05",             // pure concurrent (no alternatives)
+        "BountyHuntersGuild_Certification_Easy",   // mixed Easy + VeryEasy alt
     ];
 
     println!();
-    println!("{:>50}  {:>14}  {:>11}", "debug_name", "combat_class", "ships(range)");
+    println!(
+        "{:>50}  {:>14}  {:>11}",
+        "debug_name", "combat_class", "ships(range)"
+    );
     println!("{}", "─".repeat(80));
 
     for needle in probes {
