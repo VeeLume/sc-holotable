@@ -42,6 +42,7 @@
 //! `docs/sc-contracts-v2.md` documents the in-flight v2 redesign.
 
 mod axes;
+mod blueprint_pools;
 mod classify;
 mod currency;
 mod expand;
@@ -55,9 +56,11 @@ mod titles;
 pub mod tui;
 
 pub use axes::{AxisDiff, AxisKind, AxisValues, SharedTag};
-// Blueprint catalog moved to sc-crafting; re-exported so existing
-// `sc_contracts::Blueprint*` paths (and intra-doc links) keep resolving.
-pub use sc_crafting::{BlueprintItem, BlueprintPool, BlueprintPoolRegistry, all_blueprints};
+// Blueprint *pools* are a mission-reward mechanic — owned here.
+pub use blueprint_pools::{BlueprintPool, BlueprintPoolEntry, BlueprintPoolRegistry};
+// The blueprint *catalog* lives in sc-crafting; re-exported for convenience
+// (and so intra-doc links to `BlueprintItem` keep resolving).
+pub use sc_crafting::{BlueprintItem, all_blueprints};
 pub use classify::{TagBag, parse_ai_skill};
 pub use currency::{CurrencyInfo, RewardCurrencyCatalog};
 pub use expand::{

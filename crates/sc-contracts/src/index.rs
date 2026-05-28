@@ -26,11 +26,11 @@
 
 use std::collections::HashMap;
 
-use sc_crafting::BlueprintPoolRegistry;
 use sc_extract::{Datacore, Guid};
 use sc_items::ItemCache;
 use sc_tags::TagTree;
 
+use crate::blueprint_pools::BlueprintPoolRegistry;
 use crate::currency::RewardCurrencyCatalog;
 use crate::expand::{Mission, expand_all};
 use crate::locality::{LocalityRegistry, LocationRegistry};
