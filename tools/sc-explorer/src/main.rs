@@ -23,8 +23,7 @@ use std::time::Instant;
 
 use anyhow::{Context as _, Result};
 use sc_contracts::{
-    AssetConfig, AssetData, AssetSource, Datacore, DatacoreConfig, LocaleMap, LocalizedItemCache,
-    MissionIndex,
+    AssetConfig, AssetData, AssetSource, Datacore, ItemCache, LocaleMap, MissionIndex,
 };
 use slt::{
     Border, Color, Context, KeyCode, KeyModifiers, RunConfig, ScrollState, TabsState, Theme,
@@ -61,8 +60,7 @@ fn main() -> Result<()> {
 
     let parse_started = Instant::now();
     eprintln!("sc-explorer: parsing Datacore (~25s)...");
-    let datacore = Datacore::parse(&assets, &asset_data, &DatacoreConfig::standard())
-        .context("parse Datacore")?;
+    let datacore = Datacore::parse(&assets, &asset_data).context("parse Datacore")?;
     eprintln!(
         "sc-explorer: parsed {} record(s) in {:.1}s",
         datacore.records().len(),
@@ -79,7 +77,7 @@ fn main() -> Result<()> {
 
     let pool_checks = build_pool_checks(&datacore);
 
-    let localized_items = datacore.snapshot().localized_items.clone();
+    let localized_items = ItemCache::build(&datacore);
     let locale = asset_data.locale.clone();
 
     let mut app = AppState {
@@ -127,7 +125,7 @@ struct AppState {
     /// language packs, but threading it through here keeps the path
     /// open.
     locale: LocaleMap,
-    localized_items: LocalizedItemCache,
+    localized_items: ItemCache,
 }
 
 /// One row in the Pools tab. Aggregates the per-aggregation-crate

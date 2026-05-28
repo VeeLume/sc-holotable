@@ -3,8 +3,8 @@
 //! This module splits the parse-run state into two pieces:
 //!
 //! - [`DatacoreSnapshot`] — fully owned runtime bundle of every DCB-derived
-//!   value produced in one parse pass (records, graph, tag tree,
-//!   manufacturers, localized items). Not serialized — persistence
+//!   value produced in one parse pass (records, graph). Not
+//!   serialized — persistence
 //!   happens through [`crate::ExtractSnapshot`], which archives the raw
 //!   DCB bytes and re-parses on load.
 //! - [`Datacore`] — live session that **owns** a [`DataCoreDatabase`] so
@@ -14,16 +14,12 @@
 //! Constructed via [`Datacore::parse`]. See [`crate::asset_data::AssetData`]
 //! for the asset-sourced companion (currently just the locale map).
 
+use crate::Guid;
 use crate::asset_data::AssetData;
 use crate::assets::AssetSource;
-use crate::config::DatacoreConfig;
 use crate::error::{Error, Result};
-use crate::generated::{Builder, RecordStore};
-use crate::graph::ReferenceGraph;
-use crate::localized_items::LocalizedItemCache;
-use crate::manufacturers::ManufacturerRegistry;
+use crate::generated::{Builder, Handle, RecordLookup, RecordStore};
 use crate::svarog_datacore::DataCoreDatabase;
-use crate::tags::TagTree;
 
 /// Cooked bundle of every DCB-derived value from one parse pass.
 ///
@@ -44,23 +40,6 @@ use crate::tags::TagTree;
 pub struct DatacoreSnapshot {
     /// Every top-level DCB record, split by concrete Rust type.
     pub records: RecordStore,
-
-    /// Cross-record reference graph (forward + reverse edges). Empty if
-    /// [`DatacoreConfig::build_graph`] was false at parse time.
-    pub graph: ReferenceGraph,
-
-    /// Hierarchical tag tree.
-    pub tag_tree: TagTree,
-
-    /// Manufacturer lookup by GUID and ticker code.
-    pub manufacturers: ManufacturerRegistry,
-
-    /// Pre-computed localization-key cache for every entity record that
-    /// exposes a `SAttachableComponentParams.AttachDef.Localization`
-    /// block. Locale-independent — stores keys, not resolved strings.
-    /// Populated only when
-    /// [`DatacoreConfig::build_localized_items`] is true.
-    pub localized_items: LocalizedItemCache,
 }
 
 impl DatacoreSnapshot {
@@ -85,16 +64,14 @@ pub struct Datacore {
 }
 
 impl Datacore {
-    /// Parse the DCB from an open [`AssetSource`] and build every index
-    /// enabled by `config`. `asset_data` is currently retained for API
-    /// symmetry with the [`AssetSource`] / [`AssetData`] / [`Datacore`]
-    /// triple — DCB-derived indices are locale-independent post the
-    /// localization restructure (see `docs/localization.md`).
-    pub fn parse(
-        assets: &AssetSource,
-        asset_data: &AssetData,
-        config: &DatacoreConfig,
-    ) -> Result<Self> {
+    /// Parse the DCB from an open [`AssetSource`] into the record store.
+    ///
+    /// Cooked domain indices (items, tags, manufacturers, reference graph)
+    /// are no longer built here — each is an explicit `build(&datacore)` in
+    /// its owning crate (`sc-items`, `sc-tags`, `sc-manufacturers`, or
+    /// [`ReferenceGraph::from_database`]). `asset_data` is retained for API
+    /// symmetry; DCB-derived data is locale-independent.
+    pub fn parse(assets: &AssetSource, asset_data: &AssetData) -> Result<Self> {
         let _ = asset_data; // reserved for future asset-derived indices
         let start = std::time::Instant::now();
 
@@ -111,41 +88,7 @@ impl Datacore {
         let records = Builder::new(&db).consume_database().finish();
         tracing::info!(records = records.len(), "record store built");
 
-        let graph = if config.build_graph {
-            tracing::info!("building reference graph");
-            ReferenceGraph::from_database(&db)
-        } else {
-            ReferenceGraph::new()
-        };
-
-        let tag_tree = if config.build_tag_tree {
-            tracing::info!("building tag tree");
-            TagTree::from_database(&db)
-        } else {
-            TagTree::new()
-        };
-
-        let manufacturers = if config.build_manufacturers {
-            tracing::info!("building manufacturer registry");
-            ManufacturerRegistry::from_database(&db)
-        } else {
-            ManufacturerRegistry::new()
-        };
-
-        let localized_items = if config.build_localized_items {
-            tracing::info!("building localized-item cache");
-            LocalizedItemCache::from_database(&db)
-        } else {
-            LocalizedItemCache::new()
-        };
-
-        let snapshot = DatacoreSnapshot {
-            records,
-            graph,
-            tag_tree,
-            manufacturers,
-            localized_items,
-        };
+        let snapshot = DatacoreSnapshot { records };
 
         tracing::info!(
             records = snapshot.records.len(),
@@ -178,14 +121,37 @@ impl Datacore {
     pub fn records(&self) -> &RecordStore {
         &self.snapshot.records
     }
+
+    /// Resolve a record `Reference` GUID back onto the typed surface.
+    ///
+    /// Generated structs emit `DataType::Reference` fields as bare
+    /// `Option<Guid>` (cross-record pointers aren't followed into the
+    /// typed pool graph). This turns such a GUID into a typed `&T`, so a
+    /// consumer can stay on the typed API across reference hops instead of
+    /// dropping to [`Self::db`] and walking the raw instance by string
+    /// field name.
+    ///
+    /// `T` must be a *seeded record type* — the [`RecordLookup`] bound is a
+    /// compile-time guarantee that `T` is GUID-addressable. Returns `None`
+    /// if no record of type `T` carries `guid` (wrong type, dangling
+    /// reference, or a feature-gated-away record).
+    pub fn resolve<T: RecordLookup>(&self, guid: &Guid) -> Option<&T> {
+        let store = self.records();
+        T::lookup(&store.records, guid)?.get(&store.pools)
+    }
+
+    /// Like [`Self::resolve`] but returns the [`Handle`] rather than the
+    /// borrowed value — for when the handle must outlive a `pools` borrow
+    /// or be stored.
+    pub fn resolve_handle<T: RecordLookup>(&self, guid: &Guid) -> Option<Handle<T>> {
+        T::lookup(&self.records().records, guid)
+    }
 }
 
 impl std::fmt::Debug for Datacore {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         f.debug_struct("Datacore")
             .field("records", &self.snapshot.records.len())
-            .field("graph_edges", &self.snapshot.graph.edge_count())
-            .field("localized_items", &self.snapshot.localized_items.len())
             .finish()
     }
 }

@@ -23,7 +23,9 @@ use std::fmt;
 use std::hash::{Hash, Hasher};
 use std::marker::PhantomData;
 
-use crate::DataPools;
+use svarog_common::CigGuid;
+
+use crate::{DataPools, RecordIndex};
 
 /// Describes how to find a type's pool inside [`DataPools`].
 ///
@@ -37,6 +39,28 @@ pub trait Pooled: Sized {
 
     /// Mutably borrow the same slice.
     fn pool_mut(pools: &mut DataPools) -> &mut Vec<Option<Self>>;
+}
+
+/// Resolve a record's `CigGuid` to its typed [`Handle`] via the
+/// [`RecordIndex`].
+///
+/// One generated impl per *seeded record type* — the ~600 top-level DCB
+/// record types that get a `CigGuid -> Handle<T>` map in [`RecordIndex`].
+/// This is the typed counterpart to `db.record(guid)`: it turns a bare
+/// `Reference` GUID (emitted as `Option<CigGuid>` on generated structs)
+/// back into a pool handle, so consumers can stay on the typed surface
+/// across cross-record reference hops instead of dropping to the raw
+/// svarog layer.
+///
+/// Non-record struct types (reached through their parent's [`Handle`]) and
+/// record types the generator never seeded do **not** implement this — by
+/// design, those are the genuine raw-only frontier. The
+/// `T: RecordLookup` bound at a call site is therefore a compile-time
+/// guarantee that `T` is GUID-addressable.
+pub trait RecordLookup: Pooled {
+    /// The handle for the record of this type carrying `guid`, or `None`
+    /// if no such record exists.
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>>;
 }
 
 /// A typed slot index into [`DataPools`].

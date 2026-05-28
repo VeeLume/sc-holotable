@@ -18,7 +18,8 @@
 use std::collections::HashMap;
 
 use sc_extract::generated::*;
-use sc_extract::{DataPools, Guid, LocaleKey, LocaleMap, LocalizedItemCache};
+use sc_extract::{DataPools, Guid, LocaleKey, LocaleMap};
+use sc_items::ItemCache;
 
 use crate::classify::{WeaponCategory, classify};
 use crate::damage::{self, DamageSummary};
@@ -98,7 +99,7 @@ impl Missile {
         pools: &DataPools,
         ecd_map: &HashMap<Guid, Handle<EntityClassDefinition>>,
         record_names: &HashMap<Guid, &str>,
-        localized_items: &LocalizedItemCache,
+        localized_items: &ItemCache,
     ) -> Option<Self> {
         let _ = ecd_map; // reserved — mirrors ShipWeapon::try_new arg shape
 

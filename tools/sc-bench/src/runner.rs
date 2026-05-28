@@ -5,8 +5,8 @@ use std::path::PathBuf;
 use std::time::Instant;
 
 use sc_extract::{
-    AssetConfig, AssetData, AssetSource, Datacore, DatacoreConfig, ExtractSnapshot, Guid,
-    SnapshotCaptureConfig, SnapshotMeta,
+    AssetConfig, AssetData, AssetSource, Datacore, ExtractSnapshot, Guid, SnapshotCaptureConfig,
+    SnapshotMeta,
 };
 
 use crate::output::BenchResult;
@@ -41,36 +41,37 @@ pub fn run(config: &RunConfig) -> Result<BenchResult, Box<dyn std::error::Error>
     r.locale_entries = asset_data.locale.len();
 
     // ── Phase 3: datacore parse ──────────────────────────────────────
-    let dc_config = if config.include_graph {
-        DatacoreConfig::all()
-    } else {
-        DatacoreConfig::standard()
-    };
-
     let t = Instant::now();
-    let datacore = Datacore::parse(&assets, &asset_data, &dc_config)?;
+    let datacore = Datacore::parse(&assets, &asset_data)?;
     r.parse_time = t.elapsed().as_secs_f64();
 
     let snap = datacore.snapshot();
+    let items = sc_items::ItemCache::build(&datacore);
+    let mfrs = sc_manufacturers::ManufacturerRegistry::build(&datacore);
+    let tags = sc_tags::TagTree::build(&datacore);
+    // Graph is opt-in (expensive ~7s); build explicitly only when requested.
+    let graph = config
+        .include_graph
+        .then(|| sc_extract::ReferenceGraph::from_database(datacore.db()));
     r.records = snap.records.len();
-    r.manufacturers = snap.manufacturers.len();
-    r.display_names = snap.localized_items.len();
-    r.tag_nodes = snap.tag_tree.len();
-    r.graph_edges = snap.graph.edge_count();
+    r.manufacturers = mfrs.len();
+    r.display_names = items.len();
+    r.tag_nodes = tags.len();
+    r.graph_edges = graph.as_ref().map_or(0, |g| g.edge_count());
 
     // ── Phase 4: tag tree exercise ───────────────────────────────────
     let t = Instant::now();
-    exercise_tags(snap, &mut r);
+    exercise_tags(&tags, &mut r);
     r.tag_exercise_time = t.elapsed().as_secs_f64();
 
     // ── Phase 5: manufacturer exercise ───────────────────────────────
     let t = Instant::now();
-    exercise_manufacturers(snap, &mut r);
+    exercise_manufacturers(&mfrs, &mut r);
     r.manufacturer_exercise_time = t.elapsed().as_secs_f64();
 
     // ── Phase 6: display name exercise ───────────────────────────────
     let t = Instant::now();
-    exercise_display_names(snap, &mut r);
+    exercise_display_names(&items, &mut r);
     r.display_name_exercise_time = t.elapsed().as_secs_f64();
 
     // ── Phase 7: locale exercise ─────────────────────────────────────
@@ -79,15 +80,15 @@ pub fn run(config: &RunConfig) -> Result<BenchResult, Box<dyn std::error::Error>
     r.locale_exercise_time = t.elapsed().as_secs_f64();
 
     // ── Phase 8: graph exercise ──────────────────────────────────────
-    if config.include_graph {
+    if let Some(graph) = &graph {
         let t = Instant::now();
-        exercise_graph(snap, &mut r);
+        exercise_graph(graph, &items, &mut r);
         r.graph_exercise_time = t.elapsed().as_secs_f64();
     }
 
     // ── Phase 9: filter predicates ───────────────────────────────────
     let t = Instant::now();
-    exercise_filters(&datacore, &asset_data, &mut r);
+    exercise_filters(&datacore, &asset_data, &items, &mut r);
     r.filter_exercise_time = t.elapsed().as_secs_f64();
 
     // ── Phase 10: raw escape hatch ───────────────────────────────────
@@ -96,7 +97,7 @@ pub fn run(config: &RunConfig) -> Result<BenchResult, Box<dyn std::error::Error>
     r.raw_query_time = t.elapsed().as_secs_f64();
 
     // ── Phase 11: snapshot round-trip ─────────────────────────────────
-    exercise_snapshot(&assets, &meta, &dc_config, config, &mut r)?;
+    exercise_snapshot(&assets, &meta, config, &mut r)?;
 
     Ok(r)
 }
@@ -121,8 +122,7 @@ fn open_assets(
     }
 }
 
-fn exercise_tags(snap: &sc_extract::DatacoreSnapshot, r: &mut BenchResult) {
-    let tree = &snap.tag_tree;
+fn exercise_tags(tree: &sc_tags::TagTree, r: &mut BenchResult) {
 
     // Count root nodes.
     r.tag_roots = tree.roots().count();
@@ -152,9 +152,7 @@ fn exercise_tags(snap: &sc_extract::DatacoreSnapshot, r: &mut BenchResult) {
     }
 }
 
-fn exercise_manufacturers(snap: &sc_extract::DatacoreSnapshot, r: &mut BenchResult) {
-    let mfrs = &snap.manufacturers;
-
+fn exercise_manufacturers(mfrs: &sc_manufacturers::ManufacturerRegistry, r: &mut BenchResult) {
     // Count manufacturers with a name_key.
     r.manufacturers_with_name_key = mfrs.all().filter(|m| m.name_key.is_some()).count();
 
@@ -165,9 +163,8 @@ fn exercise_manufacturers(snap: &sc_extract::DatacoreSnapshot, r: &mut BenchResu
     let _drak = mfrs.by_code("DRAK");
 }
 
-fn exercise_display_names(snap: &sc_extract::DatacoreSnapshot, r: &mut BenchResult) {
-    r.display_names_non_empty = snap
-        .localized_items
+fn exercise_display_names(items: &sc_items::ItemCache, r: &mut BenchResult) {
+    r.display_names_non_empty = items
         .iter()
         .filter(|(_, item)| item.name_key.is_some())
         .count();
@@ -182,8 +179,11 @@ fn exercise_locale(asset_data: &AssetData, r: &mut BenchResult) {
     let _ = r;
 }
 
-fn exercise_graph(snap: &sc_extract::DatacoreSnapshot, r: &mut BenchResult) {
-    let graph = &snap.graph;
+fn exercise_graph(
+    graph: &sc_extract::ReferenceGraph,
+    items: &sc_items::ItemCache,
+    r: &mut BenchResult,
+) {
     r.graph_sources = graph.source_count();
     r.graph_targets = graph.target_count();
 
@@ -199,7 +199,7 @@ fn exercise_graph(snap: &sc_extract::DatacoreSnapshot, r: &mut BenchResult) {
     // Since we can't iterate the graph's source set directly, use an
     // approach that works: iterate localized_items keys (which are
     // entity record GUIDs) and check for outgoing edges.
-    for (guid, _) in snap.localized_items.iter() {
+    for (guid, _) in items.iter() {
         let outgoing = graph.outgoing(guid);
         if outgoing.is_empty() {
             continue;
@@ -217,7 +217,12 @@ fn exercise_graph(snap: &sc_extract::DatacoreSnapshot, r: &mut BenchResult) {
     r.graph_depth2_reachable = depth2.len();
 }
 
-fn exercise_filters(datacore: &Datacore, asset_data: &AssetData, r: &mut BenchResult) {
+fn exercise_filters(
+    datacore: &Datacore,
+    asset_data: &AssetData,
+    items: &sc_items::ItemCache,
+    r: &mut BenchResult,
+) {
     let db = datacore.db();
 
     let mut total_entities = 0usize;
@@ -231,9 +236,9 @@ fn exercise_filters(datacore: &Datacore, asset_data: &AssetData, r: &mut BenchRe
 
         // Resolve display name for this entity through the keys-only
         // cache + locale (see docs/localization.md).
-        let display_name = sc_extract::resolve_entity_localization(&inst, db)
-            .and_then(|item| item.name_key)
-            .and_then(|k| asset_data.locale.resolve(&k).map(|s| s.to_string()));
+        let display_name = items
+            .name_key(&record.id())
+            .and_then(|k| asset_data.locale.resolve(k).map(|s| s.to_string()));
 
         // Extract AttachDef fields for weapon filter.
         let (type_name, sub_type, size) = extract_attach_def_fields(&inst, db);
@@ -340,7 +345,6 @@ fn exercise_raw_queries(datacore: &Datacore, r: &mut BenchResult) {
 fn exercise_snapshot(
     assets: &AssetSource,
     meta: &SnapshotMeta,
-    dc_config: &DatacoreConfig,
     config: &RunConfig,
     r: &mut BenchResult,
 ) -> Result<(), Box<dyn std::error::Error>> {
@@ -373,7 +377,7 @@ fn exercise_snapshot(
     };
 
     let t = Instant::now();
-    let (_hydrated_assets, hydrated_dc) = loaded.hydrate(&hydrate_asset_config, dc_config)?;
+    let (_hydrated_assets, hydrated_dc) = loaded.hydrate(&hydrate_asset_config)?;
     r.snapshot_hydrate_time = t.elapsed().as_secs_f64();
     r.snapshot_hydrated_records = hydrated_dc.snapshot().records.len();
 

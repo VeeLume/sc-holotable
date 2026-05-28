@@ -16,9 +16,10 @@ use std::collections::HashSet;
 
 use sc_extract::generated::{
     BaseMissionPropertyValuePtr, BlueprintRewards, CareerContract, Contract, ContractAvailability,
-    ContractBoolParam, ContractBoolParamType, ContractClass_Contract,
+    ContractBoolParam, ContractBoolParamType, ContractClass_Contract, ContractClassBasePtr,
     ContractGeneratorHandlerBasePtr, ContractIntParam, ContractIntParamType, ContractLegacy,
     ContractParamOverrides, ContractPrerequisite_CompletedContractTags,
+    ContractTemplate,
     ContractPrerequisite_CrimeStat, ContractPrerequisite_Locality, ContractPrerequisite_Location,
     ContractPrerequisite_LocationProperty, ContractPrerequisite_Reputation,
     ContractPrerequisiteBasePtr, ContractResultBasePtr, ContractResults, DataPools,
@@ -373,7 +374,7 @@ pub struct RepReward {
 /// One non-currency item reward.
 ///
 /// Display name is intentionally absent — resolve through
-/// [`sc_extract::LocalizedItemCache`] keyed by `entity_class` and the
+/// [`sc_items::ItemCache`] keyed by `entity_class` and the
 /// active [`LocaleMap`].
 #[derive(Debug, Clone)]
 pub struct ItemReward {
@@ -797,9 +798,9 @@ pub fn expand_all(
     ships: &ShipRegistry,
     currency: &RewardCurrencyCatalog,
     localities: &LocalityRegistry,
+    tree: &sc_tags::TagTree,
 ) -> Vec<Mission> {
     let pools = &datacore.records().pools;
-    let tree = &datacore.snapshot().tag_tree;
     let mut out = Vec::new();
 
     for (gen_guid, gen_handle) in &datacore.records().records.multi_feature.contract_generator {
@@ -833,7 +834,7 @@ fn walk_handler(
     currency: &RewardCurrencyCatalog,
     localities: &LocalityRegistry,
     pools: &DataPools,
-    tree: &sc_extract::TagTree,
+    tree: &sc_tags::TagTree,
     generator_id: Guid,
     ptr: &ContractGeneratorHandlerBasePtr,
     out: &mut Vec<Mission>,
@@ -970,7 +971,7 @@ fn emit_list_like<'p>(
     currency: &RewardCurrencyCatalog,
     localities: &LocalityRegistry,
     pools: &DataPools,
-    tree: &sc_extract::TagTree,
+    tree: &sc_tags::TagTree,
     generator_id: Guid,
     kind: HandlerKind,
     handler: Option<ListLikeHandler<'p>>,
@@ -1035,7 +1036,7 @@ fn emit_from_contract(
     currency: &RewardCurrencyCatalog,
     localities: &LocalityRegistry,
     pools: &DataPools,
-    tree: &sc_extract::TagTree,
+    tree: &sc_tags::TagTree,
     generator_id: Guid,
     ctx: &HandlerCtx<'_>,
     c: &Contract,
@@ -1096,7 +1097,7 @@ fn emit_from_legacy(
     currency: &RewardCurrencyCatalog,
     localities: &LocalityRegistry,
     pools: &DataPools,
-    tree: &sc_extract::TagTree,
+    tree: &sc_tags::TagTree,
     generator_id: Guid,
     ctx: &HandlerCtx<'_>,
     c: &ContractLegacy,
@@ -1157,7 +1158,7 @@ fn emit_from_career(
     currency: &RewardCurrencyCatalog,
     localities: &LocalityRegistry,
     pools: &DataPools,
-    tree: &sc_extract::TagTree,
+    tree: &sc_tags::TagTree,
     generator_id: Guid,
     ctx: &HandlerCtx<'_>,
     c: &CareerContract,
@@ -1220,7 +1221,7 @@ fn build_expansion(
     currency: &RewardCurrencyCatalog,
     localities: &LocalityRegistry,
     pools: &DataPools,
-    tree: &sc_extract::TagTree,
+    tree: &sc_tags::TagTree,
     generator_id: Guid,
     ctx: &HandlerCtx<'_>,
     anchor: ContractAnchor<'_>,
@@ -1499,20 +1500,25 @@ fn resolve_shareable_from_template(template_guid: Option<Guid>, datacore: &Datac
     let Some(guid) = template_guid else {
         return false;
     };
-    let db = datacore.db();
-    let Some(record) = db.record(&guid) else {
+    // Typed walk: template (Reference) → contractClass poly → its
+    // additionalParams → canBeShared. `canBeShared` only exists on the
+    // ContractClass_Contract subclass; every other variant (ServiceBeacon,
+    // PVPBounty, GlobalEvent, base) lacks the field, so a non-match means
+    // "not shareable".
+    let pools = &datacore.records().pools;
+    let Some(template) = datacore.resolve::<ContractTemplate>(&guid) else {
         return false;
     };
-    let inst = record.as_instance();
-    let Some(cclass) = inst.get_instance("contractClass") else {
+    let Some(ContractClassBasePtr::ContractClass_Contract(cclass)) = &template.contract_class
+    else {
         return false;
     };
-    if let Some(additional) = cclass.get_instance("additionalParams")
-        && let Some(b) = additional.get_bool("canBeShared")
-    {
-        return b;
-    }
-    false
+    cclass
+        .get(pools)
+        .and_then(|cc| cc.additional_params)
+        .and_then(|ap| ap.get(pools))
+        .map(|settings| settings.can_be_shared)
+        .unwrap_or(false)
 }
 
 fn apply_bool_overrides(
@@ -1858,7 +1864,7 @@ fn resolve_blueprint_rewards(
 fn resolve_encounters(
     pools: &DataPools,
     ships: &ShipRegistry,
-    tree: &sc_extract::TagTree,
+    tree: &sc_tags::TagTree,
     sub: Option<&SubContract>,
     contract_params: Option<&Handle<ContractParamOverrides>>,
     handler_params: Option<&Handle<ContractParamOverrides>>,
@@ -1890,7 +1896,7 @@ fn resolve_encounters(
 fn collect_property_encounters(
     pools: &DataPools,
     ships: &ShipRegistry,
-    tree: &sc_extract::TagTree,
+    tree: &sc_tags::TagTree,
     props: &[Handle<MissionProperty>],
     out: &mut Vec<Encounter>,
 ) {
@@ -1932,7 +1938,7 @@ fn collect_property_encounters(
 fn build_ship_encounter(
     pools: &DataPools,
     ships: &ShipRegistry,
-    tree: &sc_extract::TagTree,
+    tree: &sc_tags::TagTree,
     val_h: &Handle<sc_extract::generated::MissionPropertyValue_ShipSpawnDescriptions>,
     var_name: &str,
     ext_token: &str,
@@ -1997,7 +2003,7 @@ fn build_ship_encounter(
 /// per-axis [`AxisDiff`] and the convenience min/max ranges.
 fn build_ship_group(
     options: Vec<ShipSlot>,
-    tree: &sc_extract::TagTree,
+    tree: &sc_tags::TagTree,
 ) -> Option<SlotGroup<ShipSlot>> {
     if options.is_empty() {
         return None;
@@ -2023,7 +2029,7 @@ fn build_ship_group(
 
 fn build_npc_encounter(
     pools: &DataPools,
-    tree: &sc_extract::TagTree,
+    tree: &sc_tags::TagTree,
     val_h: &Handle<sc_extract::generated::MissionPropertyValue_NPCSpawnDescriptions>,
     var_name: &str,
     ext_token: &str,
@@ -2090,7 +2096,7 @@ fn build_npc_encounter(
 
 fn build_entity_encounter(
     pools: &DataPools,
-    tree: &sc_extract::TagTree,
+    tree: &sc_tags::TagTree,
     val_h: &Handle<sc_extract::generated::MissionPropertyValue_EntitySpawnDescriptions>,
     var_name: &str,
     ext_token: &str,
@@ -2143,7 +2149,7 @@ fn build_entity_encounter(
 
 fn build_entity_group(
     options: Vec<EntitySlot>,
-    tree: &sc_extract::TagTree,
+    tree: &sc_tags::TagTree,
 ) -> Option<SlotGroup<EntitySlot>> {
     if options.is_empty() {
         return None;

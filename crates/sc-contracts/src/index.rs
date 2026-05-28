@@ -26,7 +26,8 @@
 
 use std::collections::HashMap;
 
-use sc_extract::{Datacore, Guid, TagTree};
+use sc_extract::{Datacore, Guid};
+use sc_tags::TagTree;
 
 use crate::blueprints::BlueprintPoolRegistry;
 use crate::currency::RewardCurrencyCatalog;
@@ -110,13 +111,15 @@ impl MissionIndex {
     /// features enabled — the default `sc-contracts` dependency
     /// turns both on.
     pub fn build(datacore: &Datacore) -> Self {
-        let ships = ShipRegistry::build(datacore);
+        // Build the tag tree once, share it across the whole pipeline.
+        let tag_tree = TagTree::build(datacore);
+        let ships = ShipRegistry::build(datacore, &tag_tree);
         let mut blueprints = BlueprintPoolRegistry::build(datacore);
         let currency = RewardCurrencyCatalog::build(datacore);
         let locations = LocationRegistry::build(datacore);
         let localities = LocalityRegistry::build(datacore, &locations);
 
-        let contracts = expand_all(datacore, &ships, &currency, &localities);
+        let contracts = expand_all(datacore, &ships, &currency, &localities, &tag_tree);
         // Now that missions are materialised, wire the pool → missions
         // reverse index. Powers `BlueprintPoolRegistry::missions_for_pool`
         // and friends.
@@ -127,8 +130,6 @@ impl MissionIndex {
             .enumerate()
             .map(|(i, c)| (c.id, i))
             .collect();
-
-        let tag_tree = datacore.snapshot().tag_tree.clone();
         let pools = MissionPools::build(&contracts);
 
         Self {
@@ -208,8 +209,7 @@ impl MissionIndex {
         use std::collections::HashSet;
         let mut first: Option<HashSet<Guid>> = None;
         for c in self.iter_pool(ids) {
-            let set: HashSet<Guid> =
-                c.rewards.blueprints.iter().map(|bp| bp.pool_guid).collect();
+            let set: HashSet<Guid> = c.rewards.blueprints.iter().map(|bp| bp.pool_guid).collect();
             match &first {
                 None => first = Some(set),
                 Some(prev) if *prev != set => return false,

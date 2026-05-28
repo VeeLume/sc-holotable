@@ -26,7 +26,8 @@
 //! want the raw Ship-rooted tag GUIDs use [`TagBag::guids`].
 
 use sc_extract::generated::{Handle, TagList};
-use sc_extract::{DataPools, Guid, TagTree};
+use sc_extract::{DataPools, Guid};
+use sc_tags::TagTree;
 
 /// One resolved tag list — the canonical shape exposed for each of the
 /// four `SpawnDescription_Ship` tag slots (positive / negative / markup

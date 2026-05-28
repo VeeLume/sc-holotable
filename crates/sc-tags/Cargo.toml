@@ -1,0 +1,17 @@
+[package]
+name = "sc-tags"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+
+[dependencies]
+# Typed walk over the `Tag` pool (`tagdatabase` feature). A Tag is just
+# tagName + children + legacyGUID; its meaning is the path, derived from
+# the children graph.
+sc-extract = { workspace = true, features = ["tagdatabase"] }
+serde = { workspace = true }
+tracing = { workspace = true }
+
+[dev-dependencies]
+serde_json = { workspace = true }
+sc-installs = { workspace = true }

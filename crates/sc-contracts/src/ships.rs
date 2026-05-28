@@ -30,7 +30,9 @@ use std::collections::{HashMap, HashSet};
 use sc_extract::generated::{
     DataForgeComponentParamsPtr, DataPools, EntityClassDefinition, TagList,
 };
-use sc_extract::{Datacore, Guid, LocaleMap, LocalizedItemCache};
+use sc_extract::{Datacore, Guid, LocaleMap};
+use sc_items::ItemCache;
+use sc_tags::TagTree;
 
 /// An AI ship entity indexed for tag-query spawn resolution.
 ///
@@ -113,9 +115,8 @@ impl ShipRegistry {
     /// Walks every materialized `MissionPropertyValue_ShipSpawnDescriptions`
     /// to collect spawn-referenced tags, then every `EntityClassDefinition`
     /// to include entities whose tag set intersects those tags.
-    pub fn build(datacore: &Datacore) -> Self {
+    pub fn build(datacore: &Datacore, tag_tree: &TagTree) -> Self {
         let pools = &datacore.records().pools;
-        let tag_tree = &datacore.snapshot().tag_tree;
 
         // Pass 1 — collect every tag referenced in ship-spawn queries.
         let mut spawn_referenced_tags: HashSet<Guid> = HashSet::new();
@@ -393,7 +394,7 @@ impl ShipRegistry {
     pub fn display_name<'a>(
         &self,
         guid: &Guid,
-        cache: &LocalizedItemCache,
+        cache: &ItemCache,
         locale: &'a LocaleMap,
     ) -> Option<&'a str> {
         cache.name_key(guid).and_then(|k| locale.resolve(k))

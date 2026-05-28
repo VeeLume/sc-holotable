@@ -85,7 +85,10 @@ impl LocaleMap {
                     line: raw_line.to_string(),
                 });
             };
-            entries.insert(strip_locale_metadata(key.trim()).to_string(), value.to_string());
+            entries.insert(
+                strip_locale_metadata(key.trim()).to_string(),
+                value.to_string(),
+            );
         }
 
         Ok(Self { entries })
@@ -131,7 +134,10 @@ impl LocaleMap {
                     line: raw_line.to_string(),
                 });
             };
-            entries.insert(strip_locale_metadata(key.trim()).to_string(), value.to_string());
+            entries.insert(
+                strip_locale_metadata(key.trim()).to_string(),
+                value.to_string(),
+            );
         }
 
         Ok(Self { entries })
@@ -330,7 +336,10 @@ item_Nameutfl_crossbow_ballistic_01=Novian Crossbow\r\n";
             Some("Novian Crossbow"),
         );
         // The literal `,P`-suffixed form is NOT a key after stripping.
-        assert!(map.get("item_Nameutfl_crossbow_ballistic_01_tint01,P").is_none());
+        assert!(
+            map.get("item_Nameutfl_crossbow_ballistic_01_tint01,P")
+                .is_none()
+        );
     }
 
     #[test]

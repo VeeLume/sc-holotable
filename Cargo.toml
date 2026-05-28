@@ -4,6 +4,9 @@ members = [
     "crates/sc-installs",
     "crates/sc-extract",
     "crates/sc-extract-generated",
+    "crates/sc-items",
+    "crates/sc-manufacturers",
+    "crates/sc-tags",
     "crates/sc-weapons",
     "crates/sc-contracts",
     "tools/sc-generator",
@@ -21,6 +24,9 @@ rust-version = "1.94.1"
 sc-installs = { path = "crates/sc-installs" }
 sc-extract = { path = "crates/sc-extract" }
 sc-extract-generated = { path = "crates/sc-extract-generated" }
+sc-items = { path = "crates/sc-items" }
+sc-manufacturers = { path = "crates/sc-manufacturers" }
+sc-tags = { path = "crates/sc-tags" }
 sc-weapons = { path = "crates/sc-weapons" }
 sc-contracts = { path = "crates/sc-contracts" }
 

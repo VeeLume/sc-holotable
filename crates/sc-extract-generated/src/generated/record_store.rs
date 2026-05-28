@@ -17771,6 +17771,16480 @@ fn extract_record_mobi_glas_app_data<'a>(b: &mut Builder<'a>, guid: CigGuid, ins
     b.records.multi_feature.mobi_glas_app_data.insert(guid, id);
 }
 
+#[cfg(any(feature = "actor-actors", feature = "aiprofile"))]
+impl crate::RecordLookup for ActivityData {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.activity_data.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "aiprofile",
+    feature = "aiwavecollection",
+    feature = "commsnotifications",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-audio",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-weapons",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entitlementpolicies",
+    feature = "globalcommsnotificationparams",
+    feature = "missionbroker",
+    feature = "missiongiver",
+    feature = "ui-buildingblocks"
+))]
+impl crate::RecordLookup for AIPerceptionProfile {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.aiperception_profile.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "aiprofile")]
+impl crate::RecordLookup for AIMercyTimerSettings {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.aiprofile.aimercy_timer_settings.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "aiprofile",
+    feature = "aiwavecollection",
+    feature = "commsnotifications",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-audio",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-weapons",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entitlementpolicies",
+    feature = "globalcommsnotificationparams",
+    feature = "missionbroker",
+    feature = "missiongiver",
+    feature = "ui-buildingblocks"
+))]
+impl crate::RecordLookup for AIVisualFieldParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.aivisual_field_params.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "aiprofile",
+    feature = "aiwavecollection",
+    feature = "commsnotifications",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-audio",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-weapons",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entitlementpolicies",
+    feature = "globalcommsnotificationparams",
+    feature = "missionbroker",
+    feature = "missiongiver",
+    feature = "ui-buildingblocks"
+))]
+impl crate::RecordLookup for AIVisualFieldProfile {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .aivisual_field_profile
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "aiprofile",
+    feature = "aiwavecollection",
+    feature = "commsnotifications",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-audio",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-weapons",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entitlementpolicies",
+    feature = "globalcommsnotificationparams",
+    feature = "missionbroker",
+    feature = "missiongiver",
+    feature = "ui-buildingblocks"
+))]
+impl crate::RecordLookup for AIObservableFilterFlags {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .aiobservable_filter_flags
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "aiprofile",
+    feature = "aiwavecollection",
+    feature = "commsnotifications",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-audio",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-weapons",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entitlementpolicies",
+    feature = "globalcommsnotificationparams",
+    feature = "missionbroker",
+    feature = "missiongiver",
+    feature = "ui-buildingblocks"
+))]
+impl crate::RecordLookup for AIObservableFiltersProfile {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .aiobservable_filters_profile
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(feature = "actor-actors", feature = "aiprofile"))]
+impl crate::RecordLookup for MovementSystemAdditionalParamsRecord {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .movement_system_additional_params_record
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actorstatuscomponent",
+    feature = "actorstatuscomponent-globalactorstatusparams",
+    feature = "actorstatuscomponent-medicaltieritemconfig",
+    feature = "actorstatuscomponent-playerstatus",
+    feature = "actorstatuscomponent-playerstatus_aiboss",
+    feature = "actorstatuscomponent-playerstatus_aibosssuper",
+    feature = "actorstatuscomponent-playerstatusai",
+    feature = "actorstatuscomponent-playerstatusai_captain",
+    feature = "actorstatuscomponent-playerstatusai_elite",
+    feature = "actorstatuscomponent-playerstatusai_juggernaut",
+    feature = "actorstatuscomponent-playerstatusai_unconscious_rescuemission",
+    feature = "actorstatuscomponent-playerstatusai_vanduul",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_stormbreaker",
+    feature = "actorstatuscomponent-playerstatusai_yormandi",
+    feature = "actorstatuscomponent-playerstatuscorpse",
+    feature = "actorstatuscomponent-playerstatuscreature",
+    feature = "actorstatuscomponent-playerstatusea",
+    feature = "actorstatuscomponent-playerstatuspu",
+    feature = "actorstatuscomponent-powersuitstatus",
+    feature = "actorstatuscomponent-powersuitstatus_combat",
+    feature = "actorstatuscomponent-transportstatus",
+    feature = "aiprofile",
+    feature = "aitargetablesettings",
+    feature = "aiwavecollection",
+    feature = "ammoparams",
+    feature = "areaservices",
+    feature = "cargomanifest",
+    feature = "commsnotifications",
+    feature = "communicationsystem",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-area",
+    feature = "entities-audio",
+    feature = "entities-cinematiclabelwithvehicle",
+    feature = "entities-commodities",
+    feature = "entities-destruction",
+    feature = "entities-dev",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-haulingentityclass",
+    feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-scitem-atc",
+    feature = "entities-scitem-cargo",
+    feature = "entities-scitem-carryables",
+    feature = "entities-scitem-characters",
+    feature = "entities-scitem-default_lensdisplay",
+    feature = "entities-scitem-default_lensdisplay_pu",
+    feature = "entities-scitem-doors",
+    feature = "entities-scitem-environments",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-human",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-missionstorage",
+    feature = "entities-scitem-orbgn",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-shopdisplays",
+    feature = "entities-scitem-spawers",
+    feature = "entities-scitem-suit",
+    feature = "entities-scitem-usables",
+    feature = "entities-scitem-weapons",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entities-ui",
+    feature = "entitlementpolicies",
+    feature = "factions",
+    feature = "fuelparams",
+    feature = "gamemode",
+    feature = "globalcommsnotificationparams",
+    feature = "globalshopparams",
+    feature = "harvestable",
+    feature = "instancedinterior",
+    feature = "inventorycontainers",
+    feature = "item",
+    feature = "itemresourcenetwork",
+    feature = "journalentry",
+    feature = "lawsystem",
+    feature = "level",
+    feature = "loadoutkits",
+    feature = "megamap",
+    feature = "missionbroker",
+    feature = "missiondata",
+    feature = "missiongiver",
+    feature = "player",
+    feature = "reputation",
+    feature = "resourcetypedatabase",
+    feature = "rsi_polaris_kaboos_exterior",
+    feature = "sglobalsalvagerepairbeamparams",
+    feature = "ssolarsystem",
+    feature = "starmap",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs",
+    feature = "ui-mobiglas"
+))]
+impl crate::RecordLookup for AITargetableSettings {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.aitargetable_settings.get(guid).copied()
+    }
+}
+
+#[cfg(any(feature = "actor-actors", feature = "aiprofile"))]
+impl crate::RecordLookup for AISpecialRangedAttackConfig {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .aispecial_ranged_attack_config
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(feature = "actor-actors", feature = "aiprofile"))]
+impl crate::RecordLookup for AIAvailableSpecialRangedAttacksConfig {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .aiavailable_special_ranged_attacks_config
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "entities-area",
+    feature = "entities-roomsystem",
+    feature = "entities-scitem-cargo",
+    feature = "traversalcostconfig"
+))]
+impl crate::RecordLookup for TraversalCostConfig {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.traversal_cost_config.get(guid).copied()
+    }
+}
+
+#[cfg(any(feature = "aifiredisciplinesettings", feature = "aiglobalsettings"))]
+impl crate::RecordLookup for AIFireDisciplineSettings {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .aifire_discipline_settings
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(feature = "actor-actors", feature = "aimotive"))]
+impl crate::RecordLookup for AIMotiveList {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.aimotive_list.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "aiprofile",
+    feature = "aiwavecollection",
+    feature = "commsnotifications",
+    feature = "contracts",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-audio",
+    feature = "entities-dev",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-scitem-missionstorage",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-spawers",
+    feature = "entities-scitem-weapons",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entitlementpolicies",
+    feature = "globalcommsnotificationparams",
+    feature = "missionbroker",
+    feature = "missiongiver",
+    feature = "ui-buildingblocks"
+))]
+impl crate::RecordLookup for AIProfile {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.aiprofile.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "aiprofile",
+    feature = "aiwavecollection",
+    feature = "commsnotifications",
+    feature = "contracts",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-audio",
+    feature = "entities-dev",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-scitem-missionstorage",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-spawers",
+    feature = "entities-scitem-weapons",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entitlementpolicies",
+    feature = "globalcommsnotificationparams",
+    feature = "missionbroker",
+    feature = "missiongiver",
+    feature = "ui-buildingblocks"
+))]
+impl crate::RecordLookup for SkillDefinitions {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.skill_definitions.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "aiprofile")]
+impl crate::RecordLookup for StatDefinitions {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.aiprofile.stat_definitions.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "aiglobalsettings")]
+impl crate::RecordLookup for AITargetingFormulaSettings {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .aiglobalsettings
+            .aitargeting_formula_settings
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "aiwavecollection")]
+impl crate::RecordLookup for AIWaveCollection {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.aiwavecollection.aiwave_collection.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "globalarmarkerparams")]
+impl crate::RecordLookup for ARMarkerGlobalParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .globalarmarkerparams
+            .armarker_global_params
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actorabilitycomponent",
+    feature = "actorabilitycomponent-actorabilitycomponent_playerabilities",
+    feature = "actorabilitycomponent-npcabilities",
+    feature = "actorabilitycomponent-transportabilities",
+    feature = "aiwavecollection",
+    feature = "commsnotifications",
+    feature = "contracts",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-audio",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entitlementpolicies",
+    feature = "globalcommsnotificationparams",
+    feature = "harvestable",
+    feature = "missionbroker",
+    feature = "missiongiver",
+    feature = "ui-buildingblocks"
+))]
+impl crate::RecordLookup for ActorAbilityComponent {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .actor_ability_component
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actorduckingparams",
+    feature = "actorduckingparams-maleduckingparams",
+    feature = "aiwavecollection",
+    feature = "commsnotifications",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-audio",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entitlementpolicies",
+    feature = "globalcommsnotificationparams",
+    feature = "missionbroker",
+    feature = "missiongiver",
+    feature = "ui-buildingblocks"
+))]
+impl crate::RecordLookup for ActorDuckingParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.actor_ducking_params.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "evagraph")]
+impl crate::RecordLookup for EVAGraph {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.evagraph.evagraph.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actorenvironmentcomponent",
+    feature = "actorenvironmentcomponent-actorenvironment",
+    feature = "entitlementpolicies"
+))]
+impl crate::RecordLookup for ActorEnvironmentComponent {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .actor_environment_component
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actor-externalforceresponse",
+    feature = "aiwavecollection",
+    feature = "commsnotifications",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-audio",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entitlementpolicies",
+    feature = "globalcommsnotificationparams",
+    feature = "missionbroker",
+    feature = "missiongiver",
+    feature = "ui-buildingblocks"
+))]
+impl crate::RecordLookup for SActorForceReactionsDef {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .sactor_force_reactions_def
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actor-externalforceresponse",
+    feature = "aiwavecollection",
+    feature = "commsnotifications",
+    feature = "contracts",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-audio",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entitlementpolicies",
+    feature = "globalcommsnotificationparams",
+    feature = "harvestable",
+    feature = "missionbroker",
+    feature = "missiongiver",
+    feature = "ui-buildingblocks"
+))]
+impl crate::RecordLookup for SActorHitReactionsDef {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .sactor_hit_reactions_def
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actor-externalforceresponse",
+    feature = "entitlementpolicies"
+))]
+impl crate::RecordLookup for SActorExternalForceResponseCameraShakeDef {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .sactor_external_force_response_camera_shake_def
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "actor-externalforceresponse")]
+impl crate::RecordLookup for SActorForceReactionsPresetRecord {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .actor_externalforceresponse
+            .sactor_force_reactions_preset_record
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actorgforcecomponent",
+    feature = "actorgforcecomponent-actorgforcecomponent_playergforce",
+    feature = "actorgforcecomponent-npcgforce",
+    feature = "actorgforcecomponent-playergforce_mm",
+    feature = "aiwavecollection",
+    feature = "commsnotifications",
+    feature = "contracts",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-audio",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entitlementpolicies",
+    feature = "globalcommsnotificationparams",
+    feature = "harvestable",
+    feature = "missionbroker",
+    feature = "missiongiver",
+    feature = "ui-buildingblocks"
+))]
+impl crate::RecordLookup for ActorGForceComponent {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .actor_gforce_component
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actor-gforce",
+    feature = "entities-scitem-ships",
+    feature = "entitlementpolicies"
+))]
+impl crate::RecordLookup for ActorGForceHeadBob {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.actor_gforce_head_bob.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "actor-gforce")]
+impl crate::RecordLookup for ActorGForceCameraEffects {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .actor_gforce
+            .actor_gforce_camera_effects
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "leangraph")]
+impl crate::RecordLookup for LeanGraph {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.leangraph.lean_graph.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actor-locomotionpersonality",
+    feature = "aiwavecollection",
+    feature = "commsnotifications",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-audio",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entitlementpolicies",
+    feature = "globalcommsnotificationparams",
+    feature = "missionbroker",
+    feature = "missiongiver",
+    feature = "ui-buildingblocks"
+))]
+impl crate::RecordLookup for SActorLocomotionFidgetStateFilteredDef {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .sactor_locomotion_fidget_state_filtered_def
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actor-locomotionpersonality",
+    feature = "aiwavecollection",
+    feature = "commsnotifications",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-audio",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entitlementpolicies",
+    feature = "globalcommsnotificationparams",
+    feature = "missionbroker",
+    feature = "missiongiver",
+    feature = "ui-buildingblocks"
+))]
+impl crate::RecordLookup for SActorLocomotionFidgetDef {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .sactor_locomotion_fidget_def
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actor-locomotionpersonality",
+    feature = "aiwavecollection",
+    feature = "commsnotifications",
+    feature = "contracts",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-audio",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entitlementpolicies",
+    feature = "globalcommsnotificationparams",
+    feature = "harvestable",
+    feature = "missionbroker",
+    feature = "missiongiver",
+    feature = "ui-buildingblocks"
+))]
+impl crate::RecordLookup for ActorLocomotionPersonality {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .actor_locomotion_personality
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "motionstatemachine")]
+impl crate::RecordLookup for MotionGraph {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.motionstatemachine.motion_graph.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "motionstatemachine")]
+impl crate::RecordLookup for SCProneMotionGraphDef {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .motionstatemachine
+            .scprone_motion_graph_def
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actor-locomotionpersonality",
+    feature = "contracts",
+    feature = "harvestable",
+    feature = "motionstatemachine"
+))]
+impl crate::RecordLookup for SMannequinActionDefRecord {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .smannequin_action_def_record
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actormovementmodifiers_powersuit",
+    feature = "actor-actors",
+    feature = "actor-playermovementmodifiers",
+    feature = "contracts",
+    feature = "entitlementpolicies",
+    feature = "harvestable"
+))]
+impl crate::RecordLookup for ActorMovementModifiers {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .actor_movement_modifiers
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actormovementsets",
+    feature = "actor-actors",
+    feature = "actormovementsetsconfig",
+    feature = "actormovementsetsconfig-actormovementsetconfig",
+    feature = "entitlementpolicies"
+))]
+impl crate::RecordLookup for ActorMovementSetsConfig {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .actor_movement_sets_config
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actorproceduralrecoil",
+    feature = "actorproceduralrecoil-actorproceduralrecoilconfig",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "entities-entityspawners",
+    feature = "entities-scitem-human",
+    feature = "entities-scitem-starmarine",
+    feature = "entities-scitem-usables",
+    feature = "entities-scitem-weapons",
+    feature = "entitlementpolicies",
+    feature = "factions",
+    feature = "gamemode",
+    feature = "harvestable",
+    feature = "journalentry",
+    feature = "level",
+    feature = "loadoutkits",
+    feature = "megamap",
+    feature = "player",
+    feature = "reputation",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs"
+))]
+impl crate::RecordLookup for ActorProceduralRecoilConfig {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .actor_procedural_recoil_config
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actorproceduralrecoil",
+    feature = "actorproceduralrecoil-actorproceduralrecoilconfig",
+    feature = "actorproceduralrecoil-actorproceduralrecoilmodifiers",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "entities-entityspawners",
+    feature = "entities-scitem-human",
+    feature = "entities-scitem-starmarine",
+    feature = "entities-scitem-usables",
+    feature = "entities-scitem-weapons",
+    feature = "entitlementpolicies",
+    feature = "factions",
+    feature = "gamemode",
+    feature = "harvestable",
+    feature = "journalentry",
+    feature = "level",
+    feature = "loadoutkits",
+    feature = "megamap",
+    feature = "player",
+    feature = "reputation",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs"
+))]
+impl crate::RecordLookup for ActorProceduralRecoilModifiers {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .actor_procedural_recoil_modifiers
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actor-skeletonconfigs",
+    feature = "aiwavecollection",
+    feature = "commsnotifications",
+    feature = "contracts",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-audio",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-scitem-vehicles",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entitlementpolicies",
+    feature = "globalcommsnotificationparams",
+    feature = "harvestable",
+    feature = "missionbroker",
+    feature = "missiongiver",
+    feature = "seatcdikconfigs",
+    feature = "ui-buildingblocks"
+))]
+impl crate::RecordLookup for ActorSkeletonConfig {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.actor_skeleton_config.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actor-actorslidingparam",
+    feature = "entitlementpolicies"
+))]
+impl crate::RecordLookup for ActorSlidingParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.actor_sliding_params.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actor-actorslidingparam",
+    feature = "actor-actorspeedcameraeffect_slide",
+    feature = "entitlementpolicies"
+))]
+impl crate::RecordLookup for ActorSpeedCameraEffects {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .actor_speed_camera_effects
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actorstaminacomponent",
+    feature = "actorstaminacomponent-actorstaminacomponent_playerstamina",
+    feature = "entitlementpolicies"
+))]
+impl crate::RecordLookup for ActorStaminaComponent {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .actor_stamina_component
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actor-actorstanceconfig",
+    feature = "actor-actorstanceconfig_npc_human",
+    feature = "actor-actorstanceconfig_npc_kopion",
+    feature = "actor-actorstanceconfig_npc_quasigrazer",
+    feature = "actor-actorstanceconfig_npc_vanduul",
+    feature = "actor-actorstanceconfig_npc_vlk",
+    feature = "actor-actorstanceconfig_npc_vlkadult",
+    feature = "actor-actorstanceconfig_npc_vlkapex",
+    feature = "actor-actorstanceconfig_npc_vlkjuvenile",
+    feature = "actor-actorstanceconfig_npc_webhound",
+    feature = "actor-actorstanceconfig_transport_powersuit",
+    feature = "actor-actorstanceconfig_transport_powersuit_argo_atls",
+    feature = "actor-stanceinfo",
+    feature = "aiwavecollection",
+    feature = "commsnotifications",
+    feature = "contracts",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-audio",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entitlementpolicies",
+    feature = "globalcommsnotificationparams",
+    feature = "harvestable",
+    feature = "missionbroker",
+    feature = "missiongiver",
+    feature = "ui-buildingblocks"
+))]
+impl crate::RecordLookup for ActorStanceSpeedsInfo {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .actor_stance_speeds_info
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actor-actorstanceconfig",
+    feature = "actor-actorstanceconfig_npc_human",
+    feature = "actor-actorstanceconfig_npc_kopion",
+    feature = "actor-actorstanceconfig_npc_quasigrazer",
+    feature = "actor-actorstanceconfig_npc_vanduul",
+    feature = "actor-actorstanceconfig_npc_vlk",
+    feature = "actor-actorstanceconfig_npc_vlkadult",
+    feature = "actor-actorstanceconfig_npc_vlkapex",
+    feature = "actor-actorstanceconfig_npc_vlkjuvenile",
+    feature = "actor-actorstanceconfig_npc_webhound",
+    feature = "actor-actorstanceconfig_transport_powersuit",
+    feature = "actor-actorstanceconfig_transport_powersuit_argo_atls",
+    feature = "actor-stanceinfo",
+    feature = "aiwavecollection",
+    feature = "commsnotifications",
+    feature = "contracts",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-audio",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entitlementpolicies",
+    feature = "globalcommsnotificationparams",
+    feature = "harvestable",
+    feature = "missionbroker",
+    feature = "missiongiver",
+    feature = "ui-buildingblocks"
+))]
+impl crate::RecordLookup for ActorStanceDimensionsInfo {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .actor_stance_dimensions_info
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(feature = "actor-actors", feature = "actor-actorstatevalidation"))]
+impl crate::RecordLookup for ActorStateValidation {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .actor_state_validation
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actorstatuscomponent",
+    feature = "actorstatuscomponent-globalactorstatusparams",
+    feature = "actorstatuscomponent-playerstatus",
+    feature = "actorstatuscomponent-playerstatus_aiboss",
+    feature = "actorstatuscomponent-playerstatus_aibosssuper",
+    feature = "actorstatuscomponent-playerstatusai",
+    feature = "actorstatuscomponent-playerstatusai_captain",
+    feature = "actorstatuscomponent-playerstatusai_elite",
+    feature = "actorstatuscomponent-playerstatusai_juggernaut",
+    feature = "actorstatuscomponent-playerstatusai_unconscious_rescuemission",
+    feature = "actorstatuscomponent-playerstatusai_vanduul",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_stormbreaker",
+    feature = "actorstatuscomponent-playerstatusai_yormandi",
+    feature = "actorstatuscomponent-playerstatuscorpse",
+    feature = "actorstatuscomponent-playerstatuscreature",
+    feature = "actorstatuscomponent-playerstatusea",
+    feature = "actorstatuscomponent-playerstatuspu",
+    feature = "actorstatuscomponent-powersuitstatus",
+    feature = "actorstatuscomponent-powersuitstatus_combat",
+    feature = "actorstatuscomponent-transportstatus",
+    feature = "aiwavecollection",
+    feature = "commsnotifications",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-audio",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-scitem-carryables",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-weapons",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entitlementpolicies",
+    feature = "gamemode",
+    feature = "globalcommsnotificationparams",
+    feature = "harvestable",
+    feature = "loadoutkits",
+    feature = "missionbroker",
+    feature = "missiongiver",
+    feature = "ui-buildingblocks"
+))]
+impl crate::RecordLookup for ActorStatusGlobalParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .actor_status_global_params
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actorstatuscomponent",
+    feature = "actorstatuscomponent-playerstatus",
+    feature = "actorstatuscomponent-playerstatus_aiboss",
+    feature = "actorstatuscomponent-playerstatus_aibosssuper",
+    feature = "actorstatuscomponent-playerstatusai",
+    feature = "actorstatuscomponent-playerstatusai_captain",
+    feature = "actorstatuscomponent-playerstatusai_elite",
+    feature = "actorstatuscomponent-playerstatusai_juggernaut",
+    feature = "actorstatuscomponent-playerstatusai_unconscious_rescuemission",
+    feature = "actorstatuscomponent-playerstatusai_vanduul",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_stormbreaker",
+    feature = "actorstatuscomponent-playerstatusai_yormandi",
+    feature = "actorstatuscomponent-playerstatuscorpse",
+    feature = "actorstatuscomponent-playerstatuscreature",
+    feature = "actorstatuscomponent-playerstatusea",
+    feature = "actorstatuscomponent-playerstatuspu",
+    feature = "actorstatuscomponent-powersuitstatus",
+    feature = "actorstatuscomponent-powersuitstatus_combat",
+    feature = "actorstatuscomponent-transportstatus",
+    feature = "aiwavecollection",
+    feature = "commsnotifications",
+    feature = "contracts",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-audio",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entitlementpolicies",
+    feature = "globalcommsnotificationparams",
+    feature = "harvestable",
+    feature = "missionbroker",
+    feature = "missiongiver",
+    feature = "ui-buildingblocks"
+))]
+impl crate::RecordLookup for ActorStatusComponent {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .actor_status_component
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actor-actorzerogtraversalparams",
+    feature = "entitlementpolicies"
+))]
+impl crate::RecordLookup for ActorZeroGTraversalParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .actor_zero_gtraversal_params
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "zerogtraversalgraph")]
+impl crate::RecordLookup for ZeroGTraversalGraph {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .zerogtraversalgraph
+            .zero_gtraversal_graph
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actorstatuscomponent",
+    feature = "actorstatuscomponent-globalactorstatusparams",
+    feature = "actorstatuscomponent-medicaltieritemconfig",
+    feature = "actorstatuscomponent-playerstatus",
+    feature = "actorstatuscomponent-playerstatus_aiboss",
+    feature = "actorstatuscomponent-playerstatus_aibosssuper",
+    feature = "actorstatuscomponent-playerstatusai",
+    feature = "actorstatuscomponent-playerstatusai_captain",
+    feature = "actorstatuscomponent-playerstatusai_elite",
+    feature = "actorstatuscomponent-playerstatusai_juggernaut",
+    feature = "actorstatuscomponent-playerstatusai_unconscious_rescuemission",
+    feature = "actorstatuscomponent-playerstatusai_vanduul",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_stormbreaker",
+    feature = "actorstatuscomponent-playerstatusai_yormandi",
+    feature = "actorstatuscomponent-playerstatuscorpse",
+    feature = "actorstatuscomponent-playerstatuscreature",
+    feature = "actorstatuscomponent-playerstatusea",
+    feature = "actorstatuscomponent-playerstatuspu",
+    feature = "actorstatuscomponent-powersuitstatus",
+    feature = "actorstatuscomponent-powersuitstatus_combat",
+    feature = "actorstatuscomponent-transportstatus",
+    feature = "aiwavecollection",
+    feature = "ammoparams",
+    feature = "areaservices",
+    feature = "cargomanifest",
+    feature = "commsnotifications",
+    feature = "communicationsystem",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-area",
+    feature = "entities-audio",
+    feature = "entities-cinematiclabelwithvehicle",
+    feature = "entities-commodities",
+    feature = "entities-dev",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-haulingentityclass",
+    feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-scitem-atc",
+    feature = "entities-scitem-cargo",
+    feature = "entities-scitem-carryables",
+    feature = "entities-scitem-characters",
+    feature = "entities-scitem-default_lensdisplay",
+    feature = "entities-scitem-default_lensdisplay_pu",
+    feature = "entities-scitem-doors",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-human",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-missionstorage",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-shopdisplays",
+    feature = "entities-scitem-spawers",
+    feature = "entities-scitem-starmarine",
+    feature = "entities-scitem-suit",
+    feature = "entities-scitem-usables",
+    feature = "entities-scitem-weapons",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entities-ui",
+    feature = "entitlementpolicies",
+    feature = "factions",
+    feature = "fuelparams",
+    feature = "gamemode",
+    feature = "globalcommsnotificationparams",
+    feature = "globalshopparams",
+    feature = "harvestable",
+    feature = "instancedinterior",
+    feature = "inventorycontainers",
+    feature = "item",
+    feature = "itemresourcenetwork",
+    feature = "journalentry",
+    feature = "lawsystem",
+    feature = "level",
+    feature = "loadoutkits",
+    feature = "megamap",
+    feature = "missionbroker",
+    feature = "missiondata",
+    feature = "missiongiver",
+    feature = "player",
+    feature = "reputation",
+    feature = "resourcetypedatabase",
+    feature = "sglobalsalvagerepairbeamparams",
+    feature = "ssolarsystem",
+    feature = "starmap",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs",
+    feature = "ui-mobiglas"
+))]
+impl crate::RecordLookup for AmmoParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.ammo_params.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "ui-animatedmarkers")]
+impl crate::RecordLookup for AnimatedMarker {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.ui_animatedmarkers.animated_marker.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "ui-animatedmarkers")]
+impl crate::RecordLookup for CombatMarker {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.ui_animatedmarkers.combat_marker.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "announcer",
+    feature = "gamemode",
+    feature = "level",
+    feature = "megamap"
+))]
+impl crate::RecordLookup for Announcer {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.announcer.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "environments")]
+impl crate::RecordLookup for AsteroidFieldComposition {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .environments
+            .asteroid_field_composition
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "vfx")]
+impl crate::RecordLookup for AtmosphericFlightEffects {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.vfx.atmospheric_flight_effects.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "audio",
+    feature = "entitlementpolicies"
+))]
+impl crate::RecordLookup for AudioBreathStyleCondition {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .audio_breath_style_condition
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "audio")]
+impl crate::RecordLookup for AudioBreathStyleConditionList {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .audio
+            .audio_breath_style_condition_list
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "audio",
+    feature = "entitlementpolicies"
+))]
+impl crate::RecordLookup for AudioBreathStyle {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.audio_breath_style.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "audio",
+    feature = "entitlementpolicies"
+))]
+impl crate::RecordLookup for AudioBreathStyleSuite {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .audio_breath_style_suite
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "audio",
+    feature = "entitlementpolicies"
+))]
+impl crate::RecordLookup for AudioBreathDefinition {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .audio_breath_definition
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actorabilitycomponent",
+    feature = "actorabilitycomponent-actorabilitycomponent_playerabilities",
+    feature = "actorstatuscomponent",
+    feature = "actorstatuscomponent-playerstatus",
+    feature = "actorstatuscomponent-playerstatus_aiboss",
+    feature = "actorstatuscomponent-playerstatus_aibosssuper",
+    feature = "actorstatuscomponent-playerstatusai",
+    feature = "actorstatuscomponent-playerstatusai_captain",
+    feature = "actorstatuscomponent-playerstatusai_elite",
+    feature = "actorstatuscomponent-playerstatusai_juggernaut",
+    feature = "actorstatuscomponent-playerstatusai_unconscious_rescuemission",
+    feature = "actorstatuscomponent-playerstatusai_vanduul",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_stormbreaker",
+    feature = "actorstatuscomponent-playerstatusai_yormandi",
+    feature = "actorstatuscomponent-playerstatuscorpse",
+    feature = "actorstatuscomponent-playerstatuscreature",
+    feature = "actorstatuscomponent-playerstatusea",
+    feature = "actorstatuscomponent-playerstatuspu",
+    feature = "aiwavecollection",
+    feature = "audio",
+    feature = "commsnotifications",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-audio",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entitlementpolicies",
+    feature = "globalcommsnotificationparams",
+    feature = "missionbroker",
+    feature = "missiongiver",
+    feature = "ui-buildingblocks"
+))]
+impl crate::RecordLookup for AudioBreathInterrupt {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .audio_breath_interrupt
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actorstatuscomponent",
+    feature = "actorstatuscomponent-playerstatus",
+    feature = "actorstatuscomponent-playerstatus_aiboss",
+    feature = "actorstatuscomponent-playerstatus_aibosssuper",
+    feature = "actorstatuscomponent-playerstatusai",
+    feature = "actorstatuscomponent-playerstatusai_captain",
+    feature = "actorstatuscomponent-playerstatusai_elite",
+    feature = "actorstatuscomponent-playerstatusai_juggernaut",
+    feature = "actorstatuscomponent-playerstatusai_unconscious_rescuemission",
+    feature = "actorstatuscomponent-playerstatusai_vanduul",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_stormbreaker",
+    feature = "actorstatuscomponent-playerstatusai_yormandi",
+    feature = "actorstatuscomponent-playerstatuscorpse",
+    feature = "actorstatuscomponent-playerstatuscreature",
+    feature = "actorstatuscomponent-playerstatusea",
+    feature = "actorstatuscomponent-playerstatuspu",
+    feature = "aiwavecollection",
+    feature = "audio",
+    feature = "commsnotifications",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-audio",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entitlementpolicies",
+    feature = "globalcommsnotificationparams",
+    feature = "missionbroker",
+    feature = "missiongiver",
+    feature = "ui-buildingblocks"
+))]
+impl crate::RecordLookup for BreathingTriggerDef {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.breathing_trigger_def.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "audio")]
+impl crate::RecordLookup for EntityAudioControllerTypeParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .audio
+            .entity_audio_controller_type_params
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "audio")]
+impl crate::RecordLookup for EntityAudioControllerManagerParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .audio
+            .entity_audio_controller_manager_params
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "audio")]
+impl crate::RecordLookup for AudioWhitelist {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.audio.audio_whitelist.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "audio")]
+impl crate::RecordLookup for AudioEnvironment {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.audio.audio_environment.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "audio")]
+impl crate::RecordLookup for AudioBudgetDefinition {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.audio.audio_budget_definition.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "audio")]
+impl crate::RecordLookup for AudioGameContextGlobals {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.audio.audio_game_context_globals.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "audio")]
+impl crate::RecordLookup for AudioGameContextSetup {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.audio.audio_game_context_setup.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "audio")]
+impl crate::RecordLookup for SurfaceAudioPropertiesDefinition {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .audio
+            .surface_audio_properties_definition
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "audio")]
+impl crate::RecordLookup for GlobalAudioSettings {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.audio.global_audio_settings.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "audio")]
+impl crate::RecordLookup for AudioTagActionList {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.audio.audio_tag_action_list.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "audio")]
+impl crate::RecordLookup for AudioValueOutputSetup {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.audio.audio_value_output_setup.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "awardservice")]
+impl crate::RecordLookup for AwardService_Config {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.awardservice.award_service_config.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actorstatuscomponent",
+    feature = "actorstatuscomponent-globalactorstatusparams",
+    feature = "actorstatuscomponent-medicaltieritemconfig",
+    feature = "actorstatuscomponent-playerstatus",
+    feature = "actorstatuscomponent-playerstatus_aiboss",
+    feature = "actorstatuscomponent-playerstatus_aibosssuper",
+    feature = "actorstatuscomponent-playerstatusai",
+    feature = "actorstatuscomponent-playerstatusai_captain",
+    feature = "actorstatuscomponent-playerstatusai_elite",
+    feature = "actorstatuscomponent-playerstatusai_juggernaut",
+    feature = "actorstatuscomponent-playerstatusai_unconscious_rescuemission",
+    feature = "actorstatuscomponent-playerstatusai_vanduul",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_stormbreaker",
+    feature = "actorstatuscomponent-playerstatusai_yormandi",
+    feature = "actorstatuscomponent-playerstatuscorpse",
+    feature = "actorstatuscomponent-playerstatuscreature",
+    feature = "actorstatuscomponent-playerstatusea",
+    feature = "actorstatuscomponent-playerstatuspu",
+    feature = "actorstatuscomponent-powersuitstatus",
+    feature = "actorstatuscomponent-powersuitstatus_combat",
+    feature = "actorstatuscomponent-transportstatus",
+    feature = "aiwavecollection",
+    feature = "ammoparams",
+    feature = "areaservices",
+    feature = "cargomanifest",
+    feature = "commsnotifications",
+    feature = "communicationsystem",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-area",
+    feature = "entities-audio",
+    feature = "entities-basebuilding",
+    feature = "entities-charactercustomizer",
+    feature = "entities-commodities",
+    feature = "entities-displayscreens",
+    feature = "entities-entityspawners",
+    feature = "entities-environment",
+    feature = "entities-environmentscreen",
+    feature = "entities-fuel_nozzle_grin_nozzlefast",
+    feature = "entities-fuel_nozzle_grin_nozzlesecure",
+    feature = "entities-fuel_nozzle_grin_nozzleveryfast",
+    feature = "entities-fuel_nozzle_grin_nozzleverysecure",
+    feature = "entities-groundvehicles",
+    feature = "entities-haulingentityclass",
+    feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-physicalizedjobboard",
+    feature = "entities-scitem-airlocks",
+    feature = "entities-scitem-atc",
+    feature = "entities-scitem-cargo",
+    feature = "entities-scitem-carryables",
+    feature = "entities-scitem-characters",
+    feature = "entities-scitem-controlpanels",
+    feature = "entities-scitem-default_lensdisplay",
+    feature = "entities-scitem-default_lensdisplay_pu",
+    feature = "entities-scitem-doors",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-human",
+    feature = "entities-scitem-itembanks",
+    feature = "entities-scitem-lootables",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-missionstorage",
+    feature = "entities-scitem-nonusables",
+    feature = "entities-scitem-scitemdisplayscreen",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-shopdisplays",
+    feature = "entities-scitem-starmarine",
+    feature = "entities-scitem-suit",
+    feature = "entities-scitem-usables",
+    feature = "entities-scitem-vehicles",
+    feature = "entities-scitem-weapons",
+    feature = "entities-shipselectorkiosk",
+    feature = "entities-shipselectorkiosk_genatc02",
+    feature = "entities-shipselectorkiosk_grimhex",
+    feature = "entities-shipselectorkiosk_groundvehiclesonly",
+    feature = "entities-shipselectorkiosk_hangar_hightech_1_a",
+    feature = "entities-shipselectorkiosk_hangar_lowtech_1_a",
+    feature = "entities-shipselectorkiosk_hangar_lowtech_1_b",
+    feature = "entities-shipselectorkiosk_hangar_lowtech_2_a",
+    feature = "entities-shipselectorkiosk_hangar_lowtech_2_b",
+    feature = "entities-shipselectorkiosk_levski",
+    feature = "entities-shipselectorkiosk_levskiground",
+    feature = "entities-shipselectorkiosk_levskiships",
+    feature = "entities-shipselectorkiosk_lorville",
+    feature = "entities-shipselectorkiosk_lorvilleground",
+    feature = "entities-shipselectorkiosk_newbab",
+    feature = "entities-shipselectorkiosk_outpostground",
+    feature = "entities-shipselectorkiosk_pyro",
+    feature = "entities-shipselectorkiosk_shipsonly",
+    feature = "entities-shipselectorkiosk_shipsonly_area18",
+    feature = "entities-shipselectorkiosk_shipsonly_orison",
+    feature = "entities-shipselectorkiosk_shipsonly_reststop",
+    feature = "entities-shipselectorkiosk_test",
+    feature = "entities-shipselectorkiosk_v001",
+    feature = "entities-shipselectorkiosk_v002",
+    feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a_extractonly",
+    feature = "entities-spaceships",
+    feature = "entities-stormbreaker_pylon_hatch",
+    feature = "entities-test",
+    feature = "entities-ui",
+    feature = "entitlementpolicies",
+    feature = "factions",
+    feature = "fuelparams",
+    feature = "gamemode",
+    feature = "genericmobiterminals",
+    feature = "globalcommsnotificationparams",
+    feature = "globalshopparams",
+    feature = "harvestable",
+    feature = "instancedinterior",
+    feature = "inventorycontainers",
+    feature = "item",
+    feature = "itemresourcenetwork",
+    feature = "journalentry",
+    feature = "lawsystem",
+    feature = "level",
+    feature = "loadoutkits",
+    feature = "megamap",
+    feature = "missionbroker",
+    feature = "missiondata",
+    feature = "missiongiver",
+    feature = "player",
+    feature = "playernotificationsystem",
+    feature = "reputation",
+    feature = "resourcetypedatabase",
+    feature = "scitemmanufacturer",
+    feature = "sglobalsalvagerepairbeamparams",
+    feature = "ssolarsystem",
+    feature = "starmap",
+    feature = "transitsystem",
+    feature = "transportsystem",
+    feature = "ui-armarkerconfiguration",
+    feature = "ui-buildingblocks",
+    feature = "ui-digitalsignage",
+    feature = "ui-graphs",
+    feature = "ui-mobiglas"
+))]
+impl crate::RecordLookup for BuildingBlocks_Timeline {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .building_blocks_timeline
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "ui-buildingblocks")]
+impl crate::RecordLookup for GrabCameraControlParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .ui_buildingblocks
+            .grab_camera_control_params
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actorstatuscomponent",
+    feature = "actorstatuscomponent-globalactorstatusparams",
+    feature = "actorstatuscomponent-medicaltieritemconfig",
+    feature = "actorstatuscomponent-playerstatus",
+    feature = "actorstatuscomponent-playerstatus_aiboss",
+    feature = "actorstatuscomponent-playerstatus_aibosssuper",
+    feature = "actorstatuscomponent-playerstatusai",
+    feature = "actorstatuscomponent-playerstatusai_captain",
+    feature = "actorstatuscomponent-playerstatusai_elite",
+    feature = "actorstatuscomponent-playerstatusai_juggernaut",
+    feature = "actorstatuscomponent-playerstatusai_unconscious_rescuemission",
+    feature = "actorstatuscomponent-playerstatusai_vanduul",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_stormbreaker",
+    feature = "actorstatuscomponent-playerstatusai_yormandi",
+    feature = "actorstatuscomponent-playerstatuscorpse",
+    feature = "actorstatuscomponent-playerstatuscreature",
+    feature = "actorstatuscomponent-playerstatusea",
+    feature = "actorstatuscomponent-playerstatuspu",
+    feature = "actorstatuscomponent-powersuitstatus",
+    feature = "actorstatuscomponent-powersuitstatus_combat",
+    feature = "actorstatuscomponent-transportstatus",
+    feature = "aiwavecollection",
+    feature = "ammoparams",
+    feature = "areaservices",
+    feature = "cargomanifest",
+    feature = "commsnotifications",
+    feature = "commsnotificationstages",
+    feature = "communicationsystem",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "creatures",
+    feature = "crewmanifest",
+    feature = "dev",
+    feature = "entities-animatedcharacterstatue_kopion",
+    feature = "entities-animatedcharacterstatue_marok",
+    feature = "entities-animentity_character",
+    feature = "entities-area",
+    feature = "entities-audio",
+    feature = "entities-basebuilding",
+    feature = "entities-buildingblocksscreens",
+    feature = "entities-canvasgeoment",
+    feature = "entities-charactercustomizer",
+    feature = "entities-cinematiclabel",
+    feature = "entities-cinematiclabelwithvehicle",
+    feature = "entities-cinematictitling_base",
+    feature = "entities-cinematictitling_standard",
+    feature = "entities-commodities",
+    feature = "entities-corpsemarker",
+    feature = "entities-decorations",
+    feature = "entities-destruction",
+    feature = "entities-dev",
+    feature = "entities-displayscreens",
+    feature = "entities-entityspawners",
+    feature = "entities-environment",
+    feature = "entities-environmentscreen",
+    feature = "entities-fronthud_center",
+    feature = "entities-fronthud_displaymanager",
+    feature = "entities-fronthud_left",
+    feature = "entities-fronthud_right",
+    feature = "entities-fronthud_top",
+    feature = "entities-fuel_nozzle_grin_nozzlefast",
+    feature = "entities-fuel_nozzle_grin_nozzlesecure",
+    feature = "entities-fuel_nozzle_grin_nozzleveryfast",
+    feature = "entities-fuel_nozzle_grin_nozzleverysecure",
+    feature = "entities-fuel_nozzle_misc_nozzlestandard",
+    feature = "entities-geomentity_repairable",
+    feature = "entities-groundvehicles",
+    feature = "entities-hackable",
+    feature = "entities-haulingentityclass",
+    feature = "entities-jumppoints",
+    feature = "entities-kiosk_mercury_anniversary_slides_16x9",
+    feature = "entities-mineable",
+    feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-navpoint_interdictedentity",
+    feature = "entities-navpoint_subpoint",
+    feature = "entities-navpoint_subpoint_routeonly",
+    feature = "entities-others",
+    feature = "entities-partymembermarker",
+    feature = "entities-physicalizedjobboard",
+    feature = "entities-prop_digitalclock",
+    feature = "entities-radarscanning",
+    feature = "entities-rastar",
+    feature = "entities-roomsystem",
+    feature = "entities-salvagable",
+    feature = "entities-scitem-access",
+    feature = "entities-scitem-actormovables",
+    feature = "entities-scitem-airlocks",
+    feature = "entities-scitem-atc",
+    feature = "entities-scitem-cargo",
+    feature = "entities-scitem-carryables",
+    feature = "entities-scitem-characters",
+    feature = "entities-scitem-commsreceiver",
+    feature = "entities-scitem-consumables",
+    feature = "entities-scitem-controlpanels",
+    feature = "entities-scitem-decals",
+    feature = "entities-scitem-default_lensdisplay",
+    feature = "entities-scitem-default_lensdisplay_pu",
+    feature = "entities-scitem-doors",
+    feature = "entities-scitem-environments",
+    feature = "entities-scitem-externalinventory",
+    feature = "entities-scitem-flair",
+    feature = "entities-scitem-fps_devices",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-harvestables",
+    feature = "entities-scitem-human",
+    feature = "entities-scitem-itembanks",
+    feature = "entities-scitem-locations",
+    feature = "entities-scitem-lootables",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-missionstorage",
+    feature = "entities-scitem-nonusables",
+    feature = "entities-scitem-placeholder",
+    feature = "entities-scitem-prop",
+    feature = "entities-scitem-prototypeentities",
+    feature = "entities-scitem-salvageablerepairable",
+    feature = "entities-scitem-scitemdisplayscreen",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-shopdisplays",
+    feature = "entities-scitem-spawers",
+    feature = "entities-scitem-starmarine",
+    feature = "entities-scitem-storage",
+    feature = "entities-scitem-suit",
+    feature = "entities-scitem-test_gadget",
+    feature = "entities-scitem-usables",
+    feature = "entities-scitem-vehicles",
+    feature = "entities-scitem-weapons",
+    feature = "entities-servicebeaconnavpoint",
+    feature = "entities-shipselectorkiosk",
+    feature = "entities-shipselectorkiosk_genatc02",
+    feature = "entities-shipselectorkiosk_grimhex",
+    feature = "entities-shipselectorkiosk_groundvehiclesonly",
+    feature = "entities-shipselectorkiosk_hangar_hightech_1_a",
+    feature = "entities-shipselectorkiosk_hangar_lowtech_1_a",
+    feature = "entities-shipselectorkiosk_hangar_lowtech_1_b",
+    feature = "entities-shipselectorkiosk_hangar_lowtech_2_a",
+    feature = "entities-shipselectorkiosk_hangar_lowtech_2_b",
+    feature = "entities-shipselectorkiosk_levski",
+    feature = "entities-shipselectorkiosk_levskiground",
+    feature = "entities-shipselectorkiosk_levskiships",
+    feature = "entities-shipselectorkiosk_lorville",
+    feature = "entities-shipselectorkiosk_lorvilleground",
+    feature = "entities-shipselectorkiosk_newbab",
+    feature = "entities-shipselectorkiosk_outpostground",
+    feature = "entities-shipselectorkiosk_pyro",
+    feature = "entities-shipselectorkiosk_shipsonly",
+    feature = "entities-shipselectorkiosk_shipsonly_area18",
+    feature = "entities-shipselectorkiosk_shipsonly_orison",
+    feature = "entities-shipselectorkiosk_shipsonly_reststop",
+    feature = "entities-shipselectorkiosk_test",
+    feature = "entities-shipselectorkiosk_v001",
+    feature = "entities-shipselectorkiosk_v002",
+    feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a_extractonly",
+    feature = "entities-spaceships",
+    feature = "entities-stormbreaker_pylon_hatch",
+    feature = "entities-terminal_boarding_1_a",
+    feature = "entities-test",
+    feature = "entities-ui",
+    feature = "entities-unattendedvehiclemarker",
+    feature = "entitlementpolicies",
+    feature = "factions",
+    feature = "fuelparams",
+    feature = "gamemode",
+    feature = "genericmobiterminals",
+    feature = "globalcommsnotificationparams",
+    feature = "globalquantumdriveparams",
+    feature = "globalshopparams",
+    feature = "harvestable",
+    feature = "instancedinterior",
+    feature = "inventorycontainers",
+    feature = "item",
+    feature = "itemresourcenetwork",
+    feature = "journalentry",
+    feature = "kaboos_derelictships",
+    feature = "lawsystem",
+    feature = "level",
+    feature = "loadoutkits",
+    feature = "lootgeneration",
+    feature = "megamap",
+    feature = "mining",
+    feature = "missionbroker",
+    feature = "missiondata",
+    feature = "missiongiver",
+    feature = "missionscenarios",
+    feature = "player",
+    feature = "playernotificationsystem",
+    feature = "radarsystem",
+    feature = "rastar",
+    feature = "reputation",
+    feature = "resourcetypedatabase",
+    feature = "rsi_polaris_kaboos_exterior",
+    feature = "scitemmanufacturer",
+    feature = "servicebeacon",
+    feature = "sglobalsalvagerepairbeamparams",
+    feature = "ssolarsystem",
+    feature = "starmap",
+    feature = "transitsystem",
+    feature = "transportsystem",
+    feature = "ui-armarkerconfiguration",
+    feature = "ui-buildingblocks",
+    feature = "ui-digitalsignage",
+    feature = "ui-graphs",
+    feature = "ui-mobiglas"
+))]
+impl crate::RecordLookup for BuildingBlocks_Canvas {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .building_blocks_canvas
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actorstatuscomponent",
+    feature = "actorstatuscomponent-globalactorstatusparams",
+    feature = "actorstatuscomponent-medicaltieritemconfig",
+    feature = "actorstatuscomponent-playerstatus",
+    feature = "actorstatuscomponent-playerstatus_aiboss",
+    feature = "actorstatuscomponent-playerstatus_aibosssuper",
+    feature = "actorstatuscomponent-playerstatusai",
+    feature = "actorstatuscomponent-playerstatusai_captain",
+    feature = "actorstatuscomponent-playerstatusai_elite",
+    feature = "actorstatuscomponent-playerstatusai_juggernaut",
+    feature = "actorstatuscomponent-playerstatusai_unconscious_rescuemission",
+    feature = "actorstatuscomponent-playerstatusai_vanduul",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_stormbreaker",
+    feature = "actorstatuscomponent-playerstatusai_yormandi",
+    feature = "actorstatuscomponent-playerstatuscorpse",
+    feature = "actorstatuscomponent-playerstatuscreature",
+    feature = "actorstatuscomponent-playerstatusea",
+    feature = "actorstatuscomponent-playerstatuspu",
+    feature = "actorstatuscomponent-powersuitstatus",
+    feature = "actorstatuscomponent-powersuitstatus_combat",
+    feature = "actorstatuscomponent-transportstatus",
+    feature = "aiwavecollection",
+    feature = "ammoparams",
+    feature = "areaservices",
+    feature = "cargomanifest",
+    feature = "commsnotifications",
+    feature = "commsnotificationstages",
+    feature = "communicationsystem",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "creatures",
+    feature = "crewmanifest",
+    feature = "dev",
+    feature = "entities-animatedcharacterstatue_kopion",
+    feature = "entities-animatedcharacterstatue_marok",
+    feature = "entities-animentity_character",
+    feature = "entities-area",
+    feature = "entities-audio",
+    feature = "entities-basebuilding",
+    feature = "entities-buildingblocksscreens",
+    feature = "entities-canvasgeoment",
+    feature = "entities-charactercustomizer",
+    feature = "entities-cinematiclabel",
+    feature = "entities-cinematiclabelwithvehicle",
+    feature = "entities-commodities",
+    feature = "entities-corpsemarker",
+    feature = "entities-destruction",
+    feature = "entities-dev",
+    feature = "entities-displayscreens",
+    feature = "entities-entityspawners",
+    feature = "entities-environment",
+    feature = "entities-environmentscreen",
+    feature = "entities-fronthud_center",
+    feature = "entities-fronthud_displaymanager",
+    feature = "entities-fronthud_left",
+    feature = "entities-fronthud_right",
+    feature = "entities-fronthud_top",
+    feature = "entities-fuel_nozzle_grin_nozzlefast",
+    feature = "entities-fuel_nozzle_grin_nozzlesecure",
+    feature = "entities-fuel_nozzle_grin_nozzleveryfast",
+    feature = "entities-fuel_nozzle_grin_nozzleverysecure",
+    feature = "entities-fuel_nozzle_misc_nozzlestandard",
+    feature = "entities-geomentity_repairable",
+    feature = "entities-groundvehicles",
+    feature = "entities-hackable",
+    feature = "entities-haulingentityclass",
+    feature = "entities-jumppoints",
+    feature = "entities-mineable",
+    feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-navpoint_interdictedentity",
+    feature = "entities-navpoint_subpoint",
+    feature = "entities-navpoint_subpoint_routeonly",
+    feature = "entities-partymembermarker",
+    feature = "entities-physicalizedjobboard",
+    feature = "entities-prop_digitalclock",
+    feature = "entities-radarscanning",
+    feature = "entities-rastar",
+    feature = "entities-roomsystem",
+    feature = "entities-salvagable",
+    feature = "entities-scitem-actormovables",
+    feature = "entities-scitem-airlocks",
+    feature = "entities-scitem-atc",
+    feature = "entities-scitem-cargo",
+    feature = "entities-scitem-carryables",
+    feature = "entities-scitem-characters",
+    feature = "entities-scitem-consumables",
+    feature = "entities-scitem-controlpanels",
+    feature = "entities-scitem-decals",
+    feature = "entities-scitem-default_lensdisplay",
+    feature = "entities-scitem-default_lensdisplay_pu",
+    feature = "entities-scitem-doors",
+    feature = "entities-scitem-environments",
+    feature = "entities-scitem-externalinventory",
+    feature = "entities-scitem-flair",
+    feature = "entities-scitem-fps_devices",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-harvestables",
+    feature = "entities-scitem-human",
+    feature = "entities-scitem-itembanks",
+    feature = "entities-scitem-locations",
+    feature = "entities-scitem-lootables",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-missionstorage",
+    feature = "entities-scitem-placeholder",
+    feature = "entities-scitem-prop",
+    feature = "entities-scitem-prototypeentities",
+    feature = "entities-scitem-salvageablerepairable",
+    feature = "entities-scitem-scitemdisplayscreen",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-shopdisplays",
+    feature = "entities-scitem-spawers",
+    feature = "entities-scitem-starmarine",
+    feature = "entities-scitem-storage",
+    feature = "entities-scitem-suit",
+    feature = "entities-scitem-usables",
+    feature = "entities-scitem-vehicles",
+    feature = "entities-scitem-weapons",
+    feature = "entities-servicebeaconnavpoint",
+    feature = "entities-shipselectorkiosk",
+    feature = "entities-shipselectorkiosk_genatc02",
+    feature = "entities-shipselectorkiosk_grimhex",
+    feature = "entities-shipselectorkiosk_groundvehiclesonly",
+    feature = "entities-shipselectorkiosk_hangar_hightech_1_a",
+    feature = "entities-shipselectorkiosk_hangar_lowtech_1_a",
+    feature = "entities-shipselectorkiosk_hangar_lowtech_1_b",
+    feature = "entities-shipselectorkiosk_hangar_lowtech_2_a",
+    feature = "entities-shipselectorkiosk_hangar_lowtech_2_b",
+    feature = "entities-shipselectorkiosk_levski",
+    feature = "entities-shipselectorkiosk_levskiground",
+    feature = "entities-shipselectorkiosk_levskiships",
+    feature = "entities-shipselectorkiosk_lorville",
+    feature = "entities-shipselectorkiosk_lorvilleground",
+    feature = "entities-shipselectorkiosk_newbab",
+    feature = "entities-shipselectorkiosk_outpostground",
+    feature = "entities-shipselectorkiosk_pyro",
+    feature = "entities-shipselectorkiosk_shipsonly",
+    feature = "entities-shipselectorkiosk_shipsonly_area18",
+    feature = "entities-shipselectorkiosk_shipsonly_orison",
+    feature = "entities-shipselectorkiosk_shipsonly_reststop",
+    feature = "entities-shipselectorkiosk_test",
+    feature = "entities-shipselectorkiosk_v001",
+    feature = "entities-shipselectorkiosk_v002",
+    feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a_extractonly",
+    feature = "entities-spaceships",
+    feature = "entities-stormbreaker_pylon_hatch",
+    feature = "entities-terminal_boarding_1_a",
+    feature = "entities-test",
+    feature = "entities-ui",
+    feature = "entities-unattendedvehiclemarker",
+    feature = "entitlementpolicies",
+    feature = "factions",
+    feature = "fuelparams",
+    feature = "gamemode",
+    feature = "genericmobiterminals",
+    feature = "globalcommsnotificationparams",
+    feature = "globalquantumdriveparams",
+    feature = "globalshopparams",
+    feature = "harvestable",
+    feature = "instancedinterior",
+    feature = "inventorycontainers",
+    feature = "item",
+    feature = "itemresourcenetwork",
+    feature = "journalentry",
+    feature = "kaboos_derelictships",
+    feature = "lawsystem",
+    feature = "level",
+    feature = "loadoutkits",
+    feature = "lootgeneration",
+    feature = "megamap",
+    feature = "mining",
+    feature = "missionbroker",
+    feature = "missiondata",
+    feature = "missiongiver",
+    feature = "missionscenarios",
+    feature = "player",
+    feature = "radarsystem",
+    feature = "rastar",
+    feature = "reputation",
+    feature = "resourcetypedatabase",
+    feature = "rsi_polaris_kaboos_exterior",
+    feature = "scitemmanufacturer",
+    feature = "servicebeacon",
+    feature = "sglobalsalvagerepairbeamparams",
+    feature = "ssolarsystem",
+    feature = "starmap",
+    feature = "transitsystem",
+    feature = "transportsystem",
+    feature = "ui-armarkerconfiguration",
+    feature = "ui-buildingblocks",
+    feature = "ui-digitalsignage",
+    feature = "ui-graphs",
+    feature = "ui-mobiglas"
+))]
+impl crate::RecordLookup for BuildingBlocks_FontStyle {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .building_blocks_font_style
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "ui-buildingblocks")]
+impl crate::RecordLookup for BuildingBlocks_LanguageSpecificFontReplacement {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .ui_buildingblocks
+            .building_blocks_language_specific_font_replacement
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actorstatuscomponent",
+    feature = "actorstatuscomponent-globalactorstatusparams",
+    feature = "actorstatuscomponent-medicaltieritemconfig",
+    feature = "actorstatuscomponent-playerstatus",
+    feature = "actorstatuscomponent-playerstatus_aiboss",
+    feature = "actorstatuscomponent-playerstatus_aibosssuper",
+    feature = "actorstatuscomponent-playerstatusai",
+    feature = "actorstatuscomponent-playerstatusai_captain",
+    feature = "actorstatuscomponent-playerstatusai_elite",
+    feature = "actorstatuscomponent-playerstatusai_juggernaut",
+    feature = "actorstatuscomponent-playerstatusai_unconscious_rescuemission",
+    feature = "actorstatuscomponent-playerstatusai_vanduul",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_stormbreaker",
+    feature = "actorstatuscomponent-playerstatusai_yormandi",
+    feature = "actorstatuscomponent-playerstatuscorpse",
+    feature = "actorstatuscomponent-playerstatuscreature",
+    feature = "actorstatuscomponent-playerstatusea",
+    feature = "actorstatuscomponent-playerstatuspu",
+    feature = "actorstatuscomponent-powersuitstatus",
+    feature = "actorstatuscomponent-powersuitstatus_combat",
+    feature = "actorstatuscomponent-transportstatus",
+    feature = "aiwavecollection",
+    feature = "ammoparams",
+    feature = "areaservices",
+    feature = "cargomanifest",
+    feature = "commsnotifications",
+    feature = "communicationsystem",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "crewmanifest",
+    feature = "entities-animatedcharacterstatue_kopion",
+    feature = "entities-animatedcharacterstatue_marok",
+    feature = "entities-animentity_character",
+    feature = "entities-area",
+    feature = "entities-audio",
+    feature = "entities-basebuilding",
+    feature = "entities-buildingblocksscreens",
+    feature = "entities-charactercustomizer",
+    feature = "entities-cinematiclabel",
+    feature = "entities-cinematiclabelwithvehicle",
+    feature = "entities-commodities",
+    feature = "entities-decorations",
+    feature = "entities-destruction",
+    feature = "entities-dev",
+    feature = "entities-displayscreens",
+    feature = "entities-entityspawners",
+    feature = "entities-environment",
+    feature = "entities-environmentscreen",
+    feature = "entities-fuel_nozzle_grin_nozzlefast",
+    feature = "entities-fuel_nozzle_grin_nozzlesecure",
+    feature = "entities-fuel_nozzle_grin_nozzleveryfast",
+    feature = "entities-fuel_nozzle_grin_nozzleverysecure",
+    feature = "entities-fuel_nozzle_misc_nozzlestandard",
+    feature = "entities-fuel_nozzle_shin_nozzleexpensivefast",
+    feature = "entities-fuel_nozzle_shin_nozzleexpensivesecure",
+    feature = "entities-fuel_nozzle_shin_nozzlemostexpensive",
+    feature = "entities-groundvehicles",
+    feature = "entities-haulingentityclass",
+    feature = "entities-mineable",
+    feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-navpoint_subpoint",
+    feature = "entities-navpoint_subpoint_routeonly",
+    feature = "entities-others",
+    feature = "entities-partymembermarker",
+    feature = "entities-physicalizedjobboard",
+    feature = "entities-radarscanning",
+    feature = "entities-rastar",
+    feature = "entities-salvagable",
+    feature = "entities-scitem-access",
+    feature = "entities-scitem-airlocks",
+    feature = "entities-scitem-atc",
+    feature = "entities-scitem-cargo",
+    feature = "entities-scitem-carryables",
+    feature = "entities-scitem-characters",
+    feature = "entities-scitem-consumables",
+    feature = "entities-scitem-controlpanels",
+    feature = "entities-scitem-decals",
+    feature = "entities-scitem-default_lensdisplay",
+    feature = "entities-scitem-default_lensdisplay_pu",
+    feature = "entities-scitem-doors",
+    feature = "entities-scitem-flair",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-harvestables",
+    feature = "entities-scitem-human",
+    feature = "entities-scitem-itembanks",
+    feature = "entities-scitem-lootables",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-missionstorage",
+    feature = "entities-scitem-nonusables",
+    feature = "entities-scitem-prop",
+    feature = "entities-scitem-prototypeentities",
+    feature = "entities-scitem-scitemdisplayscreen",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-shopdisplays",
+    feature = "entities-scitem-spawers",
+    feature = "entities-scitem-starmarine",
+    feature = "entities-scitem-storage",
+    feature = "entities-scitem-suit",
+    feature = "entities-scitem-test_gadget",
+    feature = "entities-scitem-usables",
+    feature = "entities-scitem-vehicles",
+    feature = "entities-scitem-weapons",
+    feature = "entities-servicebeaconnavpoint",
+    feature = "entities-shipselectorkiosk",
+    feature = "entities-shipselectorkiosk_genatc02",
+    feature = "entities-shipselectorkiosk_grimhex",
+    feature = "entities-shipselectorkiosk_groundvehiclesonly",
+    feature = "entities-shipselectorkiosk_hangar_hightech_1_a",
+    feature = "entities-shipselectorkiosk_hangar_lowtech_1_a",
+    feature = "entities-shipselectorkiosk_hangar_lowtech_1_b",
+    feature = "entities-shipselectorkiosk_hangar_lowtech_2_a",
+    feature = "entities-shipselectorkiosk_hangar_lowtech_2_b",
+    feature = "entities-shipselectorkiosk_levski",
+    feature = "entities-shipselectorkiosk_levskiground",
+    feature = "entities-shipselectorkiosk_levskiships",
+    feature = "entities-shipselectorkiosk_lorville",
+    feature = "entities-shipselectorkiosk_lorvilleground",
+    feature = "entities-shipselectorkiosk_newbab",
+    feature = "entities-shipselectorkiosk_outpostground",
+    feature = "entities-shipselectorkiosk_pyro",
+    feature = "entities-shipselectorkiosk_shipsonly",
+    feature = "entities-shipselectorkiosk_shipsonly_area18",
+    feature = "entities-shipselectorkiosk_shipsonly_orison",
+    feature = "entities-shipselectorkiosk_shipsonly_reststop",
+    feature = "entities-shipselectorkiosk_test",
+    feature = "entities-shipselectorkiosk_v001",
+    feature = "entities-shipselectorkiosk_v002",
+    feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a_extractonly",
+    feature = "entities-spaceships",
+    feature = "entities-stormbreaker_pylon_hatch",
+    feature = "entities-terminal_boarding_1_a",
+    feature = "entities-test",
+    feature = "entities-ui",
+    feature = "entities-unattendedvehiclemarker",
+    feature = "entitlementpolicies",
+    feature = "factions",
+    feature = "fuelparams",
+    feature = "gamemode",
+    feature = "genericmobiterminals",
+    feature = "globalcommsnotificationparams",
+    feature = "globalquantumdriveparams",
+    feature = "globalshopparams",
+    feature = "harvestable",
+    feature = "instancedinterior",
+    feature = "inventorycontainers",
+    feature = "item",
+    feature = "itemresourcenetwork",
+    feature = "journalentry",
+    feature = "kaboos_derelictships",
+    feature = "lawsystem",
+    feature = "level",
+    feature = "loadoutkits",
+    feature = "lootgeneration",
+    feature = "megamap",
+    feature = "mining",
+    feature = "missionbroker",
+    feature = "missiondata",
+    feature = "missiongiver",
+    feature = "missionscenarios",
+    feature = "player",
+    feature = "playernotificationsystem",
+    feature = "radarsystem",
+    feature = "rastar",
+    feature = "reputation",
+    feature = "resourcetypedatabase",
+    feature = "scitemmanufacturer",
+    feature = "servicebeacon",
+    feature = "sglobalsalvagerepairbeamparams",
+    feature = "ssolarsystem",
+    feature = "starmap",
+    feature = "transitsystem",
+    feature = "transportsystem",
+    feature = "ui-armarkerconfiguration",
+    feature = "ui-buildingblocks",
+    feature = "ui-digitalsignage",
+    feature = "ui-graphs",
+    feature = "ui-mobiglas"
+))]
+impl crate::RecordLookup for BuildingBlocks_Style {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.building_blocks_style.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actorstatuscomponent",
+    feature = "actorstatuscomponent-globalactorstatusparams",
+    feature = "actorstatuscomponent-medicaltieritemconfig",
+    feature = "actorstatuscomponent-playerstatus",
+    feature = "actorstatuscomponent-playerstatus_aiboss",
+    feature = "actorstatuscomponent-playerstatus_aibosssuper",
+    feature = "actorstatuscomponent-playerstatusai",
+    feature = "actorstatuscomponent-playerstatusai_captain",
+    feature = "actorstatuscomponent-playerstatusai_elite",
+    feature = "actorstatuscomponent-playerstatusai_juggernaut",
+    feature = "actorstatuscomponent-playerstatusai_unconscious_rescuemission",
+    feature = "actorstatuscomponent-playerstatusai_vanduul",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_stormbreaker",
+    feature = "actorstatuscomponent-playerstatusai_yormandi",
+    feature = "actorstatuscomponent-playerstatuscorpse",
+    feature = "actorstatuscomponent-playerstatuscreature",
+    feature = "actorstatuscomponent-playerstatusea",
+    feature = "actorstatuscomponent-playerstatuspu",
+    feature = "actorstatuscomponent-powersuitstatus",
+    feature = "actorstatuscomponent-powersuitstatus_combat",
+    feature = "actorstatuscomponent-transportstatus",
+    feature = "aiwavecollection",
+    feature = "ammoparams",
+    feature = "areaservices",
+    feature = "cargomanifest",
+    feature = "commsnotifications",
+    feature = "communicationsystem",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "crewmanifest",
+    feature = "entities-animatedcharacterstatue_kopion",
+    feature = "entities-animatedcharacterstatue_marok",
+    feature = "entities-animentity_character",
+    feature = "entities-area",
+    feature = "entities-audio",
+    feature = "entities-basebuilding",
+    feature = "entities-charactercustomizer",
+    feature = "entities-cinematiclabelwithvehicle",
+    feature = "entities-commodities",
+    feature = "entities-decorations",
+    feature = "entities-destruction",
+    feature = "entities-dev",
+    feature = "entities-displayscreens",
+    feature = "entities-entityspawners",
+    feature = "entities-environment",
+    feature = "entities-environmentscreen",
+    feature = "entities-groundvehicles",
+    feature = "entities-haulingentityclass",
+    feature = "entities-mineable",
+    feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-navpoint_subpoint",
+    feature = "entities-navpoint_subpoint_routeonly",
+    feature = "entities-others",
+    feature = "entities-partymembermarker",
+    feature = "entities-radarscanning",
+    feature = "entities-salvagable",
+    feature = "entities-scitem-atc",
+    feature = "entities-scitem-cargo",
+    feature = "entities-scitem-carryables",
+    feature = "entities-scitem-characters",
+    feature = "entities-scitem-controlpanels",
+    feature = "entities-scitem-decals",
+    feature = "entities-scitem-default_lensdisplay",
+    feature = "entities-scitem-default_lensdisplay_pu",
+    feature = "entities-scitem-doors",
+    feature = "entities-scitem-flair",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-harvestables",
+    feature = "entities-scitem-human",
+    feature = "entities-scitem-itembanks",
+    feature = "entities-scitem-lootables",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-missionstorage",
+    feature = "entities-scitem-scitemdisplayscreen",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-shopdisplays",
+    feature = "entities-scitem-spawers",
+    feature = "entities-scitem-suit",
+    feature = "entities-scitem-usables",
+    feature = "entities-scitem-vehicles",
+    feature = "entities-scitem-weapons",
+    feature = "entities-servicebeaconnavpoint",
+    feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a_extractonly",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entities-ui",
+    feature = "entities-unattendedvehiclemarker",
+    feature = "entitlementpolicies",
+    feature = "factions",
+    feature = "fuelparams",
+    feature = "gamemode",
+    feature = "genericmobiterminals",
+    feature = "globalcommsnotificationparams",
+    feature = "globalquantumdriveparams",
+    feature = "globalshopparams",
+    feature = "harvestable",
+    feature = "instancedinterior",
+    feature = "inventorycontainers",
+    feature = "item",
+    feature = "itemresourcenetwork",
+    feature = "journalentry",
+    feature = "kaboos_derelictships",
+    feature = "lawsystem",
+    feature = "level",
+    feature = "loadoutkits",
+    feature = "lootgeneration",
+    feature = "megamap",
+    feature = "mining",
+    feature = "missionbroker",
+    feature = "missiondata",
+    feature = "missiongiver",
+    feature = "missionscenarios",
+    feature = "player",
+    feature = "radarsystem",
+    feature = "reputation",
+    feature = "resourcetypedatabase",
+    feature = "scitemmanufacturer",
+    feature = "servicebeacon",
+    feature = "sglobalsalvagerepairbeamparams",
+    feature = "ssolarsystem",
+    feature = "starmap",
+    feature = "transitsystem",
+    feature = "transportsystem",
+    feature = "ui-armarkerconfiguration",
+    feature = "ui-buildingblocks",
+    feature = "ui-digitalsignage",
+    feature = "ui-graphs",
+    feature = "ui-mobiglas"
+))]
+impl crate::RecordLookup for BuildingBlocks_ExternalColorReference {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .building_blocks_external_color_reference
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "aiwavecollection",
+    feature = "contracts",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-ships",
+    feature = "entities-spaceships",
+    feature = "entities-ui",
+    feature = "entitlementpolicies",
+    feature = "player",
+    feature = "ui-aspectratiototag_mfd",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs"
+))]
+impl crate::RecordLookup for BuildingBlocks_AspectRatioLibrary {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .building_blocks_aspect_ratio_library
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(feature = "jumppoints", feature = "rendererpresets"))]
+impl crate::RecordLookup for CameraLensParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.camera_lens_params.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actorstatuscomponent",
+    feature = "actorstatuscomponent-globalactorstatusparams",
+    feature = "actorstatuscomponent-medicaltieritemconfig",
+    feature = "actorstatuscomponent-playerstatus",
+    feature = "actorstatuscomponent-playerstatus_aiboss",
+    feature = "actorstatuscomponent-playerstatus_aibosssuper",
+    feature = "actorstatuscomponent-playerstatusai",
+    feature = "actorstatuscomponent-playerstatusai_captain",
+    feature = "actorstatuscomponent-playerstatusai_elite",
+    feature = "actorstatuscomponent-playerstatusai_juggernaut",
+    feature = "actorstatuscomponent-playerstatusai_unconscious_rescuemission",
+    feature = "actorstatuscomponent-playerstatusai_vanduul",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_stormbreaker",
+    feature = "actorstatuscomponent-playerstatusai_yormandi",
+    feature = "actorstatuscomponent-playerstatuscorpse",
+    feature = "actorstatuscomponent-playerstatuscreature",
+    feature = "actorstatuscomponent-playerstatusea",
+    feature = "actorstatuscomponent-playerstatuspu",
+    feature = "actorstatuscomponent-powersuitstatus",
+    feature = "actorstatuscomponent-powersuitstatus_combat",
+    feature = "actorstatuscomponent-transportstatus",
+    feature = "aiwavecollection",
+    feature = "ammoparams",
+    feature = "areaservices",
+    feature = "cameras",
+    feature = "cargomanifest",
+    feature = "commsnotifications",
+    feature = "communicationsystem",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-area",
+    feature = "entities-audio",
+    feature = "entities-commodities",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-haulingentityclass",
+    feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-scitem-atc",
+    feature = "entities-scitem-cargo",
+    feature = "entities-scitem-carryables",
+    feature = "entities-scitem-characters",
+    feature = "entities-scitem-doors",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-human",
+    feature = "entities-scitem-itembanks",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-missionstorage",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-shopdisplays",
+    feature = "entities-scitem-suit",
+    feature = "entities-scitem-usables",
+    feature = "entities-scitem-vehicles",
+    feature = "entities-scitem-weapons",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entities-ui",
+    feature = "entitlementpolicies",
+    feature = "factions",
+    feature = "fuelparams",
+    feature = "gamemode",
+    feature = "globalcommsnotificationparams",
+    feature = "globalshopparams",
+    feature = "harvestable",
+    feature = "instancedinterior",
+    feature = "inventorycontainers",
+    feature = "item",
+    feature = "itemresourcenetwork",
+    feature = "journalentry",
+    feature = "lawsystem",
+    feature = "level",
+    feature = "loadoutkits",
+    feature = "megamap",
+    feature = "missionbroker",
+    feature = "missiondata",
+    feature = "missiongiver",
+    feature = "player",
+    feature = "reputation",
+    feature = "resourcetypedatabase",
+    feature = "sglobalsalvagerepairbeamparams",
+    feature = "ssolarsystem",
+    feature = "starmap",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs",
+    feature = "ui-mobiglas",
+    feature = "ui-playerchoice_pitconfig_playerchoicepersonalthought",
+    feature = "ui-uiconfig_starcitizen"
+))]
+impl crate::RecordLookup for Camera {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.camera.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "entities-scitem-toggleableentities",
+    feature = "unifiedshakeparams"
+))]
+impl crate::RecordLookup for SUnifiedShakeParamsRecord {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .sunified_shake_params_record
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "cameras")]
+impl crate::RecordLookup for CameraShopConfig {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.cameras.camera_shop_config.get(guid).copied()
+    }
+}
+
+#[cfg(any(feature = "cameras", feature = "fovaspectratiorangetables"))]
+impl crate::RecordLookup for ActorFOVViewParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.actor_fovview_params.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "aiwavecollection",
+    feature = "cameras",
+    feature = "contracts",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-scitem-atc",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-suit",
+    feature = "entities-scitem-vehicles",
+    feature = "entities-spaceships",
+    feature = "entities-ui",
+    feature = "entitlementpolicies",
+    feature = "player",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs",
+    feature = "ui-mobiglas"
+))]
+impl crate::RecordLookup for SuggestedFOVSetup {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.suggested_fovsetup.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "cameras")]
+impl crate::RecordLookup for CinematicCameraControllerSetup {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .cameras
+            .cinematic_camera_controller_setup
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "cameras")]
+impl crate::RecordLookup for CameraFOVChangeData {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.cameras.camera_fovchange_data.get(guid).copied()
+    }
+}
+
+#[cfg(any(feature = "aiwavecollection", feature = "cargomanifest"))]
+impl crate::RecordLookup for CargoManifest {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.cargo_manifest.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actor-playercarryconfig",
+    feature = "actor-valakkarcarryconfig",
+    feature = "aiwavecollection",
+    feature = "commsnotifications",
+    feature = "contracts",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-audio",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entitlementpolicies",
+    feature = "globalcommsnotificationparams",
+    feature = "harvestable",
+    feature = "missionbroker",
+    feature = "missiongiver",
+    feature = "ui-buildingblocks"
+))]
+impl crate::RecordLookup for CarryConfig {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.carry_config.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "aiwavecollection",
+    feature = "announcer",
+    feature = "character",
+    feature = "commsnotifications",
+    feature = "communicationconfig",
+    feature = "contracts",
+    feature = "conversation",
+    feature = "conversationbank",
+    feature = "crewmanifest",
+    feature = "dialoguecontentbank",
+    feature = "dialoguecontext",
+    feature = "dialoguecontextbank",
+    feature = "entities-audio",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-spaceships",
+    feature = "entitlementpolicies",
+    feature = "gamemode",
+    feature = "globalcommsnotificationparams",
+    feature = "journalentry",
+    feature = "level",
+    feature = "megamap",
+    feature = "missionbroker",
+    feature = "missiongiver",
+    feature = "missionscenarios",
+    feature = "ui-buildingblocks"
+))]
+impl crate::RecordLookup for Character {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.character.get(guid).copied()
+    }
+}
+
+#[cfg(any(feature = "gamemode", feature = "level", feature = "megamap"))]
+impl crate::RecordLookup for SCharacterGenerationParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .scharacter_generation_params
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "character",
+    feature = "characterserializationpresets",
+    feature = "gamemode",
+    feature = "level",
+    feature = "megamap"
+))]
+impl crate::RecordLookup for CharacterSerializationSettingsPreset {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .character_serialization_settings_preset
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "aiwavecollection",
+    feature = "character",
+    feature = "characternamedata",
+    feature = "commsnotifications",
+    feature = "contracts",
+    feature = "crewmanifest",
+    feature = "dialoguecontext",
+    feature = "dialoguecontextbank",
+    feature = "entities-audio",
+    feature = "entities-groundvehicles",
+    feature = "entities-spaceships",
+    feature = "globalcommsnotificationparams",
+    feature = "missionbroker",
+    feature = "servicebeacon",
+    feature = "ui-buildingblocks"
+))]
+impl crate::RecordLookup for CharacterRandomNameParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .character_random_name_params
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "chatemoterecord")]
+impl crate::RecordLookup for ChatEmoteRecord {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.chatemoterecord.chat_emote_record.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "chatcommandfastaccess")]
+impl crate::RecordLookup for ChatCommandFastAccess {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .chatcommandfastaccess
+            .chat_command_fast_access
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "chatfilteroptions")]
+impl crate::RecordLookup for ChatFilterOptions {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .chatfilteroptions
+            .chat_filter_options
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "chatmanager")]
+impl crate::RecordLookup for ChatManagerGlobalParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .chatmanager
+            .chat_manager_global_params
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "audio")]
+impl crate::RecordLookup for CockpitResponse {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.audio.cockpit_response.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "audio")]
+impl crate::RecordLookup for CockpitResponses {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.audio.cockpit_responses.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "aiwavecollection",
+    feature = "audio",
+    feature = "commsnotifications",
+    feature = "communicationconfig",
+    feature = "contracts",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-audio",
+    feature = "entities-entityspawners",
+    feature = "entities-environment",
+    feature = "entities-environmentscreen",
+    feature = "entities-groundvehicles",
+    feature = "entities-scitem-aimodule_atc",
+    feature = "entities-scitem-aimodule_atc_grimhex",
+    feature = "entities-scitem-aimodule_atc_levskiatc01",
+    feature = "entities-scitem-aimodule_atc_lorvilleatc01",
+    feature = "entities-scitem-aimodule_atc_newbabbageatc01",
+    feature = "entities-scitem-aimodule_atc_orisonatc01",
+    feature = "entities-scitem-aimodule_atc_systematc01",
+    feature = "entities-scitem-aimodule_cargo",
+    feature = "entities-scitem-aimodule_collector",
+    feature = "entities-scitem-aimodule_genatc02",
+    feature = "entities-scitem-aimodule_pyro",
+    feature = "entities-scitem-atc",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-suit",
+    feature = "entities-scitem-vehicles",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entities-ui",
+    feature = "entitlementpolicies",
+    feature = "globalcommsnotificationparams",
+    feature = "journalentry",
+    feature = "missionbroker",
+    feature = "missiongiver",
+    feature = "missionscenarios",
+    feature = "player",
+    feature = "transitsystem",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs",
+    feature = "ui-mobiglas"
+))]
+impl crate::RecordLookup for CommunicationConfig {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.communication_config.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "communicationsystem")]
+impl crate::RecordLookup for CommunicationChannelConfig {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .communicationsystem
+            .communication_channel_config
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "communicationvariableconfig")]
+impl crate::RecordLookup for CommunicationVariableConfig {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .communicationvariableconfig
+            .communication_variable_config
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "communicationatlconfig")]
+impl crate::RecordLookup for CommunicationATLConfig {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .communicationatlconfig
+            .communication_atlconfig
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "communicationsystem")]
+impl crate::RecordLookup for CommunicationAutoMannequinTagsConfig {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .communicationsystem
+            .communication_auto_mannequin_tags_config
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "contextualcommunicationconfig")]
+impl crate::RecordLookup for ContextualCommunicationConfig {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .contextualcommunicationconfig
+            .contextual_communication_config
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "aiwavecollection",
+    feature = "audio",
+    feature = "commsnotifications",
+    feature = "communicationconfig",
+    feature = "communicationname",
+    feature = "contextualcommunicationconfig",
+    feature = "contracts",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-audio",
+    feature = "entities-entityspawners",
+    feature = "entities-environment",
+    feature = "entities-environmentscreen",
+    feature = "entities-groundvehicles",
+    feature = "entities-scitem-aimodule_atc",
+    feature = "entities-scitem-aimodule_atc_grimhex",
+    feature = "entities-scitem-aimodule_atc_levskiatc01",
+    feature = "entities-scitem-aimodule_atc_lorvilleatc01",
+    feature = "entities-scitem-aimodule_atc_newbabbageatc01",
+    feature = "entities-scitem-aimodule_atc_orisonatc01",
+    feature = "entities-scitem-aimodule_atc_systematc01",
+    feature = "entities-scitem-aimodule_cargo",
+    feature = "entities-scitem-aimodule_collector",
+    feature = "entities-scitem-aimodule_genatc02",
+    feature = "entities-scitem-aimodule_pyro",
+    feature = "entities-scitem-atc",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-suit",
+    feature = "entities-scitem-vehicles",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entities-ui",
+    feature = "entitlementpolicies",
+    feature = "globalcommsnotificationparams",
+    feature = "journalentry",
+    feature = "missionbroker",
+    feature = "missiongiver",
+    feature = "missionscenarios",
+    feature = "player",
+    feature = "transitsystem",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs",
+    feature = "ui-mobiglas"
+))]
+impl crate::RecordLookup for CommunicationName {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.communication_name.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "aiwavecollection",
+    feature = "audio",
+    feature = "commsnotifications",
+    feature = "communicationchannelname",
+    feature = "communicationconfig",
+    feature = "communicationname",
+    feature = "communicationsystem",
+    feature = "contextualcommunicationconfig",
+    feature = "contracts",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-audio",
+    feature = "entities-entityspawners",
+    feature = "entities-environment",
+    feature = "entities-environmentscreen",
+    feature = "entities-groundvehicles",
+    feature = "entities-scitem-aimodule_atc",
+    feature = "entities-scitem-aimodule_atc_grimhex",
+    feature = "entities-scitem-aimodule_atc_levskiatc01",
+    feature = "entities-scitem-aimodule_atc_lorvilleatc01",
+    feature = "entities-scitem-aimodule_atc_newbabbageatc01",
+    feature = "entities-scitem-aimodule_atc_orisonatc01",
+    feature = "entities-scitem-aimodule_atc_systematc01",
+    feature = "entities-scitem-aimodule_cargo",
+    feature = "entities-scitem-aimodule_collector",
+    feature = "entities-scitem-aimodule_genatc02",
+    feature = "entities-scitem-aimodule_pyro",
+    feature = "entities-scitem-atc",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-suit",
+    feature = "entities-scitem-vehicles",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entities-ui",
+    feature = "entitlementpolicies",
+    feature = "globalcommsnotificationparams",
+    feature = "journalentry",
+    feature = "missionbroker",
+    feature = "missiongiver",
+    feature = "missionscenarios",
+    feature = "player",
+    feature = "transitsystem",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs",
+    feature = "ui-mobiglas"
+))]
+impl crate::RecordLookup for CommunicationChannelName {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .communication_channel_name
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actor-lookahead",
+    feature = "entities-scitem-ships",
+    feature = "entitlementpolicies"
+))]
+impl crate::RecordLookup for ActorLookAheadVehicle {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .actor_look_ahead_vehicle
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "actor-inputdeflectiontime")]
+impl crate::RecordLookup for IfcsInputDeflectionTimeParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .actor_inputdeflectiontime
+            .ifcs_input_deflection_time_params
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "actor-inputdeflectiontime")]
+impl crate::RecordLookup for TurretInputDeflectionTimeParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .actor_inputdeflectiontime
+            .turret_input_deflection_time_params
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "aiwavecollection",
+    feature = "contracts",
+    feature = "entities-entityspawners",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-ships",
+    feature = "entities-spaceships",
+    feature = "entities-ui",
+    feature = "entitlementpolicies",
+    feature = "intoxication",
+    feature = "player",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs"
+))]
+impl crate::RecordLookup for IntoxicationIFCSModifierParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .intoxication_ifcsmodifier_params
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actorstatuscomponent",
+    feature = "actorstatuscomponent-globalactorstatusparams",
+    feature = "actorstatuscomponent-medicaltieritemconfig",
+    feature = "actorstatuscomponent-playerstatus",
+    feature = "actorstatuscomponent-playerstatus_aiboss",
+    feature = "actorstatuscomponent-playerstatus_aibosssuper",
+    feature = "actorstatuscomponent-playerstatusai",
+    feature = "actorstatuscomponent-playerstatusai_captain",
+    feature = "actorstatuscomponent-playerstatusai_elite",
+    feature = "actorstatuscomponent-playerstatusai_juggernaut",
+    feature = "actorstatuscomponent-playerstatusai_unconscious_rescuemission",
+    feature = "actorstatuscomponent-playerstatusai_vanduul",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_stormbreaker",
+    feature = "actorstatuscomponent-playerstatusai_yormandi",
+    feature = "actorstatuscomponent-playerstatuscorpse",
+    feature = "actorstatuscomponent-playerstatuscreature",
+    feature = "actorstatuscomponent-playerstatusea",
+    feature = "actorstatuscomponent-playerstatuspu",
+    feature = "actorstatuscomponent-powersuitstatus",
+    feature = "actorstatuscomponent-powersuitstatus_combat",
+    feature = "actorstatuscomponent-transportstatus",
+    feature = "aiwavecollection",
+    feature = "ammoparams",
+    feature = "areaservices",
+    feature = "cargomanifest",
+    feature = "commsnotifications",
+    feature = "communicationsystem",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-area",
+    feature = "entities-audio",
+    feature = "entities-cinematiclabelwithvehicle",
+    feature = "entities-commodities",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-haulingentityclass",
+    feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-scitem-atc",
+    feature = "entities-scitem-cargo",
+    feature = "entities-scitem-carryables",
+    feature = "entities-scitem-characters",
+    feature = "entities-scitem-default_lensdisplay",
+    feature = "entities-scitem-default_lensdisplay_pu",
+    feature = "entities-scitem-doors",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-human",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-missionstorage",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-shopdisplays",
+    feature = "entities-scitem-suit",
+    feature = "entities-scitem-usables",
+    feature = "entities-scitem-vehicles",
+    feature = "entities-scitem-weapons",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entities-ui",
+    feature = "entitlementpolicies",
+    feature = "factions",
+    feature = "fuelparams",
+    feature = "gamemode",
+    feature = "globalcommsnotificationparams",
+    feature = "globalshopparams",
+    feature = "harvestable",
+    feature = "instancedinterior",
+    feature = "intoxication",
+    feature = "inventorycontainers",
+    feature = "item",
+    feature = "itemresourcenetwork",
+    feature = "journalentry",
+    feature = "lawsystem",
+    feature = "level",
+    feature = "loadoutkits",
+    feature = "megamap",
+    feature = "missionbroker",
+    feature = "missiondata",
+    feature = "missiongiver",
+    feature = "player",
+    feature = "reputation",
+    feature = "resourcetypedatabase",
+    feature = "sglobalsalvagerepairbeamparams",
+    feature = "ssolarsystem",
+    feature = "starmap",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs",
+    feature = "ui-mobiglas"
+))]
+impl crate::RecordLookup for IntoxicationTurretModifierParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .intoxication_turret_modifier_params
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "entities-groundvehicles",
+    feature = "entities-scitem-ships",
+    feature = "intoxication"
+))]
+impl crate::RecordLookup for IntoxicationWheeledModifierParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .intoxication_wheeled_modifier_params
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actor-targettrackingautozoom",
+    feature = "entitlementpolicies",
+    feature = "player"
+))]
+impl crate::RecordLookup for TargetTrackingAutoZoomDef {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .target_tracking_auto_zoom_def
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "audio")]
+impl crate::RecordLookup for AudioAllegianceSwitches {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.audio.audio_allegiance_switches.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "aiwavecollection",
+    feature = "commsnotifications",
+    feature = "crewmanifest",
+    feature = "dynamiclightingrig",
+    feature = "entities-animentity_character",
+    feature = "entities-audio",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "globalcommsnotificationparams",
+    feature = "missionbroker",
+    feature = "missiongiver",
+    feature = "ui-buildingblocks"
+))]
+impl crate::RecordLookup for SCDynamicLightingRigGlobalParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .scdynamic_lighting_rig_global_params
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "audio",
+    feature = "entityaudiocontrollerrtpcsubscriberlistdef"
+))]
+impl crate::RecordLookup for EntityAudioControllerRtpcSubscriberListDef {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .entity_audio_controller_rtpc_subscriber_list_def
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "aiwavecollection",
+    feature = "audio",
+    feature = "contracts",
+    feature = "entities-cinematiclabelwithvehicle",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-scitem-default_lensdisplay",
+    feature = "entities-scitem-default_lensdisplay_pu",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-missionstorage",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-spawers",
+    feature = "entities-scitem-suit",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entities-ui",
+    feature = "entitlementpolicies",
+    feature = "missionbroker",
+    feature = "player",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs",
+    feature = "ui-mobiglas"
+))]
+impl crate::RecordLookup for AudioEnvironmentFeedbackZoneSetup {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .audio_environment_feedback_zone_setup
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "aiwavecollection",
+    feature = "audio",
+    feature = "contracts",
+    feature = "entities-audio",
+    feature = "entities-spaceships",
+    feature = "entitlementpolicies"
+))]
+impl crate::RecordLookup for AudioEnvironmentFeedbackPointDef {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .audio_environment_feedback_point_def
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actorstatuscomponent",
+    feature = "actorstatuscomponent-globalactorstatusparams",
+    feature = "actorstatuscomponent-medicaltieritemconfig",
+    feature = "actorstatuscomponent-playerstatus",
+    feature = "actorstatuscomponent-playerstatus_aiboss",
+    feature = "actorstatuscomponent-playerstatus_aibosssuper",
+    feature = "actorstatuscomponent-playerstatusai",
+    feature = "actorstatuscomponent-playerstatusai_captain",
+    feature = "actorstatuscomponent-playerstatusai_elite",
+    feature = "actorstatuscomponent-playerstatusai_juggernaut",
+    feature = "actorstatuscomponent-playerstatusai_unconscious_rescuemission",
+    feature = "actorstatuscomponent-playerstatusai_vanduul",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_stormbreaker",
+    feature = "actorstatuscomponent-playerstatusai_yormandi",
+    feature = "actorstatuscomponent-playerstatuscorpse",
+    feature = "actorstatuscomponent-playerstatuscreature",
+    feature = "actorstatuscomponent-playerstatusea",
+    feature = "actorstatuscomponent-playerstatuspu",
+    feature = "actorstatuscomponent-powersuitstatus",
+    feature = "actorstatuscomponent-powersuitstatus_combat",
+    feature = "actorstatuscomponent-transportstatus",
+    feature = "aiwavecollection",
+    feature = "ammoparams",
+    feature = "areaservices",
+    feature = "audio",
+    feature = "cargomanifest",
+    feature = "commsnotifications",
+    feature = "communicationsystem",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-area",
+    feature = "entities-audio",
+    feature = "entities-cinematiclabelwithvehicle",
+    feature = "entities-commodities",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-haulingentityclass",
+    feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-scitem-atc",
+    feature = "entities-scitem-cargo",
+    feature = "entities-scitem-carryables",
+    feature = "entities-scitem-characters",
+    feature = "entities-scitem-default_lensdisplay",
+    feature = "entities-scitem-default_lensdisplay_pu",
+    feature = "entities-scitem-doors",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-human",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-missionstorage",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-shopdisplays",
+    feature = "entities-scitem-spawers",
+    feature = "entities-scitem-suit",
+    feature = "entities-scitem-usables",
+    feature = "entities-scitem-weapons",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entities-ui",
+    feature = "entitlementpolicies",
+    feature = "factions",
+    feature = "fuelparams",
+    feature = "gamemode",
+    feature = "globalcommsnotificationparams",
+    feature = "globalshopparams",
+    feature = "harvestable",
+    feature = "instancedinterior",
+    feature = "inventorycontainers",
+    feature = "item",
+    feature = "itemresourcenetwork",
+    feature = "journalentry",
+    feature = "lawsystem",
+    feature = "level",
+    feature = "loadoutkits",
+    feature = "megamap",
+    feature = "missionbroker",
+    feature = "missiondata",
+    feature = "missiongiver",
+    feature = "player",
+    feature = "reputation",
+    feature = "resourcetypedatabase",
+    feature = "sglobalsalvagerepairbeamparams",
+    feature = "ssolarsystem",
+    feature = "starmap",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs",
+    feature = "ui-mobiglas"
+))]
+impl crate::RecordLookup for AudioHitListenerDefinition {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .audio_hit_listener_definition
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "aiwavecollection",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "entities-scitem-ships",
+    feature = "entities-spaceships",
+    feature = "entitlementpolicies"
+))]
+impl crate::RecordLookup for LegacyCraftingRecipeDefRecord {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .legacy_crafting_recipe_def_record
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "aiwavecollection",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "entities-scitem-ships",
+    feature = "entities-spaceships",
+    feature = "entitlementpolicies"
+))]
+impl crate::RecordLookup for LegacyCraftingRecipeListRecord {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .legacy_crafting_recipe_list_record
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actorstatuscomponent",
+    feature = "actorstatuscomponent-globalactorstatusparams",
+    feature = "actorstatuscomponent-medicaltieritemconfig",
+    feature = "actorstatuscomponent-playerstatus",
+    feature = "actorstatuscomponent-playerstatus_aiboss",
+    feature = "actorstatuscomponent-playerstatus_aibosssuper",
+    feature = "actorstatuscomponent-playerstatusai",
+    feature = "actorstatuscomponent-playerstatusai_captain",
+    feature = "actorstatuscomponent-playerstatusai_elite",
+    feature = "actorstatuscomponent-playerstatusai_juggernaut",
+    feature = "actorstatuscomponent-playerstatusai_unconscious_rescuemission",
+    feature = "actorstatuscomponent-playerstatusai_vanduul",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_stormbreaker",
+    feature = "actorstatuscomponent-playerstatusai_yormandi",
+    feature = "actorstatuscomponent-playerstatuscorpse",
+    feature = "actorstatuscomponent-playerstatuscreature",
+    feature = "actorstatuscomponent-playerstatusea",
+    feature = "actorstatuscomponent-playerstatuspu",
+    feature = "actorstatuscomponent-powersuitstatus",
+    feature = "actorstatuscomponent-powersuitstatus_combat",
+    feature = "actorstatuscomponent-transportstatus",
+    feature = "aiwavecollection",
+    feature = "ammoparams",
+    feature = "areaservices",
+    feature = "audio",
+    feature = "cargomanifest",
+    feature = "commsnotifications",
+    feature = "communicationsystem",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-area",
+    feature = "entities-audio",
+    feature = "entities-commodities",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-haulingentityclass",
+    feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-scitem-atc",
+    feature = "entities-scitem-cargo",
+    feature = "entities-scitem-carryables",
+    feature = "entities-scitem-characters",
+    feature = "entities-scitem-doors",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-human",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-missionstorage",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-shopdisplays",
+    feature = "entities-scitem-suit",
+    feature = "entities-scitem-usables",
+    feature = "entities-scitem-weapons",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entities-ui",
+    feature = "entitlementpolicies",
+    feature = "factions",
+    feature = "fuelparams",
+    feature = "gamemode",
+    feature = "globalcommsnotificationparams",
+    feature = "globalshopparams",
+    feature = "harvestable",
+    feature = "instancedinterior",
+    feature = "inventorycontainers",
+    feature = "item",
+    feature = "itemresourcenetwork",
+    feature = "journalentry",
+    feature = "lawsystem",
+    feature = "level",
+    feature = "loadoutkits",
+    feature = "megamap",
+    feature = "missionbroker",
+    feature = "missiondata",
+    feature = "missiongiver",
+    feature = "player",
+    feature = "reputation",
+    feature = "resourcetypedatabase",
+    feature = "sglobalsalvagerepairbeamparams",
+    feature = "ssolarsystem",
+    feature = "starmap",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs"
+))]
+impl crate::RecordLookup for WheelAudioSurfaceMap {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .wheel_audio_surface_map
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "entities-handholdobject",
+    feature = "entities-handholdobject_linkable",
+    feature = "handholdgripdatabase"
+))]
+impl crate::RecordLookup for HandholdGripType {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.handhold_grip_type.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "handholdgripdatabase")]
+impl crate::RecordLookup for HandholdGripDatabase {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .handholdgripdatabase
+            .handhold_grip_database
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(feature = "entities-scitem-missionstorage", feature = "harvestable"))]
+impl crate::RecordLookup for SubHarvestableConfigRecord {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .sub_harvestable_config_record
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "harvestable")]
+impl crate::RecordLookup for SubHarvestableMultiConfigRecord {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .harvestable
+            .sub_harvestable_multi_config_record
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "entities-mineable",
+    feature = "entities-scitem-carryables",
+    feature = "entities-scitem-harvestables",
+    feature = "entities-scitem-missionstorage",
+    feature = "harvestable"
+))]
+impl crate::RecordLookup for HarvestablePreset {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.harvestable_preset.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "harvestable")]
+impl crate::RecordLookup for HarvestableSetup {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.harvestable.harvestable_setup.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "harvestable")]
+impl crate::RecordLookup for HarvestableClusterPreset {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .harvestable
+            .harvestable_cluster_preset
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "harvestable")]
+impl crate::RecordLookup for HarvestableProviderPreset {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .harvestable
+            .harvestable_provider_preset
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "aiwavecollection",
+    feature = "contracts",
+    feature = "entities-dev",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-scitem-aimodule_atc",
+    feature = "entities-scitem-aimodule_atc_grimhex",
+    feature = "entities-scitem-aimodule_atc_levskiatc01",
+    feature = "entities-scitem-aimodule_atc_lorvilleatc01",
+    feature = "entities-scitem-aimodule_atc_newbabbage",
+    feature = "entities-scitem-aimodule_atc_newbabbageatc01",
+    feature = "entities-scitem-aimodule_atc_orisonatc01",
+    feature = "entities-scitem-aimodule_atc_systematc01",
+    feature = "entities-scitem-aimodule_cargo",
+    feature = "entities-scitem-aimodule_collector",
+    feature = "entities-scitem-aimodule_genatc02",
+    feature = "entities-scitem-aimodule_pyro",
+    feature = "entities-scitem-aimodule_silent_atc",
+    feature = "entities-scitem-atc",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-missionstorage",
+    feature = "entities-scitem-operatormoderecords",
+    feature = "entities-scitem-remoteconnectionreceiver",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-spawers",
+    feature = "entities-scitem-suit",
+    feature = "entities-scitem-vehicles",
+    feature = "entities-scitem-weapons",
+    feature = "entities-spaceships",
+    feature = "entities-ui",
+    feature = "entitlementpolicies",
+    feature = "harvestable",
+    feature = "player",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs",
+    feature = "ui-mobiglas"
+))]
+impl crate::RecordLookup for OperatorModeAvailabilityParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .operator_mode_availability_params
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "entities-scitem-operatormoderecords",
+    feature = "entities-scitem-remoteconnectionreceiver"
+))]
+impl crate::RecordLookup for OperatorModeDefinitionParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .operator_mode_definition_params
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "entities-scitem-mastermodeexclusionglobalparams")]
+impl crate::RecordLookup for MasterModeExclusionGlobalParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .entities_scitem_mastermodeexclusionglobalparams
+            .master_mode_exclusion_global_params
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actorladderconfig",
+    feature = "actor-actorladderconfig_v2",
+    feature = "actor-actors",
+    feature = "aiwavecollection",
+    feature = "commsnotifications",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-audio",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entitlementpolicies",
+    feature = "globalcommsnotificationparams",
+    feature = "missionbroker",
+    feature = "missiongiver",
+    feature = "ui-buildingblocks"
+))]
+impl crate::RecordLookup for LadderConfig {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.ladder_config.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "entities-destruction",
+    feature = "entities-entityspawners",
+    feature = "entities-mineable",
+    feature = "entities-scitem-harvestables",
+    feature = "entities-scitem-itembanks",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a_extractonly",
+    feature = "entitlementpolicies",
+    feature = "harvestable",
+    feature = "mining",
+    feature = "player",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs"
+))]
+impl crate::RecordLookup for MiningGlobalParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.mining_global_params.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "entities-destruction",
+    feature = "entities-entityspawners",
+    feature = "entities-mineable",
+    feature = "entities-scitem-harvestables",
+    feature = "entities-scitem-itembanks",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a_extractonly",
+    feature = "entitlementpolicies",
+    feature = "harvestable",
+    feature = "mining",
+    feature = "miningaudioparams",
+    feature = "player",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs"
+))]
+impl crate::RecordLookup for MiningAudioParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.mining_audio_params.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "entities-destruction",
+    feature = "entities-entityspawners",
+    feature = "entities-mineable",
+    feature = "entities-scitem-harvestables",
+    feature = "entities-scitem-itembanks",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a_extractonly",
+    feature = "entitlementpolicies",
+    feature = "harvestable",
+    feature = "mining",
+    feature = "player",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs"
+))]
+impl crate::RecordLookup for MineableElement {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.mineable_element.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "entities-destruction",
+    feature = "entities-entityspawners",
+    feature = "entities-mineable",
+    feature = "entities-scitem-harvestables",
+    feature = "entities-scitem-itembanks",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a_extractonly",
+    feature = "entitlementpolicies",
+    feature = "harvestable",
+    feature = "mining",
+    feature = "player",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs"
+))]
+impl crate::RecordLookup for MineableComposition {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.mineable_composition.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "aiwavecollection",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-haulingentityclass",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-weapons",
+    feature = "entities-spaceships",
+    feature = "entitlementpolicies",
+    feature = "gamemode",
+    feature = "loadoutkits",
+    feature = "mining",
+    feature = "missionbroker"
+))]
+impl crate::RecordLookup for MiningLaserGlobalParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .mining_laser_global_params
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "entities-vfx")]
+impl crate::RecordLookup for PlacedSurfaceEffects_Emitter {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .entities_vfx
+            .placed_surface_effects_emitter
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(feature = "audio", feature = "entities-environment"))]
+impl crate::RecordLookup for ProceduralPlanetAudioTagAndEventsDef {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .procedural_planet_audio_tag_and_events_def
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(feature = "audio", feature = "entities-environment"))]
+impl crate::RecordLookup for ProceduralPlanetAudioData {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .procedural_planet_audio_data
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(feature = "audio", feature = "entities-environment"))]
+impl crate::RecordLookup for ProceduralPlanetAudioRiverData {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .procedural_planet_audio_river_data
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(feature = "audio", feature = "entities-environment"))]
+impl crate::RecordLookup for PlanetOceanAudioData {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .planet_ocean_audio_data
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "aiwavecollection",
+    feature = "contracts",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-suit",
+    feature = "entities-scitem-vehicles",
+    feature = "entities-scitem-weapons",
+    feature = "entities-spaceships",
+    feature = "entities-ui",
+    feature = "entitlementpolicies",
+    feature = "player",
+    feature = "targetselector",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs",
+    feature = "ui-mobiglas"
+))]
+impl crate::RecordLookup for STargetingMethodRecord {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .stargeting_method_record
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "aiwavecollection",
+    feature = "contracts",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-suit",
+    feature = "entities-scitem-vehicles",
+    feature = "entities-scitem-weapons",
+    feature = "entities-spaceships",
+    feature = "entities-ui",
+    feature = "entitlementpolicies",
+    feature = "player",
+    feature = "targetselector",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs",
+    feature = "ui-mobiglas"
+))]
+impl crate::RecordLookup for STargetableItemTypesRecord {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .stargetable_item_types_record
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "hudparams")]
+impl crate::RecordLookup for STargetSelectorHudParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .hudparams
+            .starget_selector_hud_params
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "aiwavecollection",
+    feature = "contracts",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-suit",
+    feature = "entities-scitem-vehicles",
+    feature = "entities-scitem-weapons",
+    feature = "entities-spaceships",
+    feature = "entities-ui",
+    feature = "entitlementpolicies",
+    feature = "player",
+    feature = "targetselector",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs",
+    feature = "ui-mobiglas"
+))]
+impl crate::RecordLookup for STargetSelectorGlobalTargetingParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .starget_selector_global_targeting_params
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "entities-basebuilding",
+    feature = "entities-buildingblocksscreens",
+    feature = "entities-fronthud_center",
+    feature = "entities-fronthud_displaymanager",
+    feature = "entities-fronthud_left",
+    feature = "entities-fronthud_right",
+    feature = "entities-fronthud_top",
+    feature = "entities-scitem-characters",
+    feature = "entities-scitem-default_lensdisplay",
+    feature = "entities-scitem-default_lensdisplay_pu",
+    feature = "entities-scitem-doors",
+    feature = "entities-scitem-human",
+    feature = "entities-scitem-itembanks",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-shopdisplays",
+    feature = "entities-scitem-suit",
+    feature = "entities-scitem-usables",
+    feature = "entities-shopkiosk",
+    feature = "entities-shoppingkiosk",
+    feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a_extractonly",
+    feature = "entities-ui",
+    feature = "entitlementpolicies",
+    feature = "factions",
+    feature = "gamemode",
+    feature = "harvestable",
+    feature = "journalentry",
+    feature = "level",
+    feature = "loadoutkits",
+    feature = "megamap",
+    feature = "player",
+    feature = "reputation",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs"
+))]
+impl crate::RecordLookup for CtxGraph {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.ctx_graph.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "vehicle")]
+impl crate::RecordLookup for SOperatorModeLabels {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.vehicle.soperator_mode_labels.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "vehicle")]
+impl crate::RecordLookup for SMasterModeLabels {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.vehicle.smaster_mode_labels.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "conversation")]
+impl crate::RecordLookup for ConversationStickyFilter {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .conversation
+            .conversation_sticky_filter
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "conversation")]
+impl crate::RecordLookup for CinematicConversationSettings {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .conversation
+            .cinematic_conversation_settings
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "announcer",
+    feature = "conversation",
+    feature = "conversationbank",
+    feature = "gamemode",
+    feature = "level",
+    feature = "megamap"
+))]
+impl crate::RecordLookup for Conversation {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.conversation.get(guid).copied()
+    }
+}
+
+#[cfg(any(feature = "conversation", feature = "conversationbank"))]
+impl crate::RecordLookup for ConversationBank {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.conversation_bank.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actor-locomotionpersonality",
+    feature = "aiwavecollection",
+    feature = "commsnotifications",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "crewmanifest",
+    feature = "curves",
+    feature = "entities-animentity_character",
+    feature = "entities-audio",
+    feature = "entities-entityspawners",
+    feature = "entities-environment",
+    feature = "entities-groundvehicles",
+    feature = "entities-scitem-default_lensdisplay",
+    feature = "entities-scitem-default_lensdisplay_pu",
+    feature = "entities-scitem-flair",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-human",
+    feature = "entities-scitem-starmarine",
+    feature = "entities-scitem-toggleableentities",
+    feature = "entities-scitem-usables",
+    feature = "entities-scitem-weapons",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entitlementpolicies",
+    feature = "factions",
+    feature = "gamemode",
+    feature = "globalcommsnotificationparams",
+    feature = "harvestable",
+    feature = "journalentry",
+    feature = "level",
+    feature = "loadoutkits",
+    feature = "megamap",
+    feature = "missionbroker",
+    feature = "missiongiver",
+    feature = "player",
+    feature = "reputation",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs"
+))]
+impl crate::RecordLookup for SBezierCurveRecord {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.sbezier_curve_record.get(guid).copied()
+    }
+}
+
+#[cfg(any(feature = "contracts", feature = "crafting", feature = "journalentry"))]
+impl crate::RecordLookup for CraftingGameplayPropertyDef {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .crafting_gameplay_property_def
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "contracts",
+    feature = "crafting",
+    feature = "entities-basebuilding",
+    feature = "journalentry"
+))]
+impl crate::RecordLookup for BlueprintCategoryRecord {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .blueprint_category_record
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "crafting")]
+impl crate::RecordLookup for BlueprintCategoryDatabaseRecord {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .crafting
+            .blueprint_category_database_record
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(feature = "contracts", feature = "crafting", feature = "journalentry"))]
+impl crate::RecordLookup for CraftingBlueprintRecord {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .crafting_blueprint_record
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "aiwavecollection",
+    feature = "cargomanifest",
+    feature = "communicationsystem",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "entities-animatedcharacterstatue_kopion",
+    feature = "entities-animatedcharacterstatue_marok",
+    feature = "entities-basebuilding",
+    feature = "entities-commodities",
+    feature = "entities-destruction",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-haulingentityclass",
+    feature = "entities-mineable",
+    feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-scitem-carryables",
+    feature = "entities-scitem-harvestables",
+    feature = "entities-scitem-itembanks",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-ships",
+    feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a_extractonly",
+    feature = "entities-spaceships",
+    feature = "entitlementpolicies",
+    feature = "gamemode",
+    feature = "harvestable",
+    feature = "instancedinterior",
+    feature = "inventorycontainers",
+    feature = "journalentry",
+    feature = "lawsystem",
+    feature = "level",
+    feature = "lootgeneration",
+    feature = "megamap",
+    feature = "mining",
+    feature = "missionbroker",
+    feature = "missiondata",
+    feature = "missionscenarios",
+    feature = "player",
+    feature = "resourcetypedatabase",
+    feature = "ssolarsystem",
+    feature = "starmap",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs"
+))]
+impl crate::RecordLookup for CraftingQualityDistributionRecord {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .crafting_quality_distribution_record
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "aiwavecollection",
+    feature = "cargomanifest",
+    feature = "communicationsystem",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "entities-animatedcharacterstatue_kopion",
+    feature = "entities-animatedcharacterstatue_marok",
+    feature = "entities-basebuilding",
+    feature = "entities-commodities",
+    feature = "entities-destruction",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-haulingentityclass",
+    feature = "entities-mineable",
+    feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-scitem-carryables",
+    feature = "entities-scitem-harvestables",
+    feature = "entities-scitem-itembanks",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-ships",
+    feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a_extractonly",
+    feature = "entities-spaceships",
+    feature = "entitlementpolicies",
+    feature = "gamemode",
+    feature = "harvestable",
+    feature = "instancedinterior",
+    feature = "inventorycontainers",
+    feature = "journalentry",
+    feature = "lawsystem",
+    feature = "level",
+    feature = "lootgeneration",
+    feature = "megamap",
+    feature = "mining",
+    feature = "missionbroker",
+    feature = "missiondata",
+    feature = "missionscenarios",
+    feature = "player",
+    feature = "resourcetypedatabase",
+    feature = "ssolarsystem",
+    feature = "starmap",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs"
+))]
+impl crate::RecordLookup for CraftingQualityLocationOverrideRecord {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .crafting_quality_location_override_record
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "aiwavecollection",
+    feature = "cargomanifest",
+    feature = "communicationsystem",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "entities-animatedcharacterstatue_kopion",
+    feature = "entities-animatedcharacterstatue_marok",
+    feature = "entities-basebuilding",
+    feature = "entities-commodities",
+    feature = "entities-destruction",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-haulingentityclass",
+    feature = "entities-mineable",
+    feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-scitem-carryables",
+    feature = "entities-scitem-harvestables",
+    feature = "entities-scitem-itembanks",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-ships",
+    feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a_extractonly",
+    feature = "entities-spaceships",
+    feature = "entitlementpolicies",
+    feature = "gamemode",
+    feature = "harvestable",
+    feature = "instancedinterior",
+    feature = "inventorycontainers",
+    feature = "journalentry",
+    feature = "lawsystem",
+    feature = "level",
+    feature = "lootgeneration",
+    feature = "megamap",
+    feature = "mining",
+    feature = "missionbroker",
+    feature = "missiondata",
+    feature = "missionscenarios",
+    feature = "player",
+    feature = "resourcetypedatabase",
+    feature = "ssolarsystem",
+    feature = "starmap",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs"
+))]
+impl crate::RecordLookup for CraftingQualityQuantizationRecord {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .crafting_quality_quantization_record
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "crafting")]
+impl crate::RecordLookup for CraftingGlobalParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.crafting.crafting_global_params.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "aiwavecollection",
+    feature = "contracts",
+    feature = "crewmanifest",
+    feature = "entities-groundvehicles",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-spaceships",
+    feature = "entitlementpolicies"
+))]
+impl crate::RecordLookup for CrewManifest {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.crew_manifest.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "ammoparams",
+    feature = "commodityconfiguration",
+    feature = "contracts",
+    feature = "damage",
+    feature = "entities-salvagable",
+    feature = "entities-scitem-environments",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-weapons",
+    feature = "entities-spaceships",
+    feature = "entitlementpolicies",
+    feature = "harvestable",
+    feature = "initialdamageoverrides",
+    feature = "missionbroker"
+))]
+impl crate::RecordLookup for DamageMacro {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.damage_macro.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "damage",
+    feature = "entities-basebuilding",
+    feature = "entities-scitem-characters",
+    feature = "entities-scitem-doors",
+    feature = "entities-scitem-itembanks",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-shopdisplays",
+    feature = "entities-scitem-usables",
+    feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a_extractonly",
+    feature = "entitlementpolicies",
+    feature = "factions",
+    feature = "gamemode",
+    feature = "harvestable",
+    feature = "journalentry",
+    feature = "level",
+    feature = "loadoutkits",
+    feature = "megamap",
+    feature = "player",
+    feature = "reputation",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs"
+))]
+impl crate::RecordLookup for DamageResistanceMacro {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .damage_resistance_macro
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "vfx")]
+impl crate::RecordLookup for DamageMapGlobalParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.vfx.damage_map_global_params.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "actor-playerdefaultactionsconfig")]
+impl crate::RecordLookup for ActorDefaultActionsConfig {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .actor_playerdefaultactionsconfig
+            .actor_default_actions_config
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actorstatuscomponent",
+    feature = "actorstatuscomponent-globalactorstatusparams",
+    feature = "actorstatuscomponent-medicaltieritemconfig",
+    feature = "actorstatuscomponent-playerstatus",
+    feature = "actorstatuscomponent-playerstatus_aiboss",
+    feature = "actorstatuscomponent-playerstatus_aibosssuper",
+    feature = "actorstatuscomponent-playerstatusai",
+    feature = "actorstatuscomponent-playerstatusai_captain",
+    feature = "actorstatuscomponent-playerstatusai_elite",
+    feature = "actorstatuscomponent-playerstatusai_juggernaut",
+    feature = "actorstatuscomponent-playerstatusai_unconscious_rescuemission",
+    feature = "actorstatuscomponent-playerstatusai_vanduul",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_stormbreaker",
+    feature = "actorstatuscomponent-playerstatusai_yormandi",
+    feature = "actorstatuscomponent-playerstatuscorpse",
+    feature = "actorstatuscomponent-playerstatuscreature",
+    feature = "actorstatuscomponent-playerstatusea",
+    feature = "actorstatuscomponent-playerstatuspu",
+    feature = "actorstatuscomponent-powersuitstatus",
+    feature = "actorstatuscomponent-powersuitstatus_combat",
+    feature = "actorstatuscomponent-transportstatus",
+    feature = "aiwavecollection",
+    feature = "ammoparams",
+    feature = "areaservices",
+    feature = "cargomanifest",
+    feature = "commsnotifications",
+    feature = "communicationsystem",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-area",
+    feature = "entities-audio",
+    feature = "entities-basebuilding",
+    feature = "entities-charactercustomizer",
+    feature = "entities-cinematiclabelwithvehicle",
+    feature = "entities-commodities",
+    feature = "entities-dev",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-haulingentityclass",
+    feature = "entities-legacyitems",
+    feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-scitem-atc",
+    feature = "entities-scitem-cargo",
+    feature = "entities-scitem-carryables",
+    feature = "entities-scitem-characters",
+    feature = "entities-scitem-consumables",
+    feature = "entities-scitem-default_lensdisplay",
+    feature = "entities-scitem-default_lensdisplay_pu",
+    feature = "entities-scitem-doors",
+    feature = "entities-scitem-flair",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-human",
+    feature = "entities-scitem-itembanks",
+    feature = "entities-scitem-lootables",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-missionstorage",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-shopdisplays",
+    feature = "entities-scitem-spawers",
+    feature = "entities-scitem-spawning",
+    feature = "entities-scitem-starmarine",
+    feature = "entities-scitem-suit",
+    feature = "entities-scitem-usables",
+    feature = "entities-scitem-weapons",
+    feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a_extractonly",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entities-ui",
+    feature = "entitlementpolicies",
+    feature = "factions",
+    feature = "fuelparams",
+    feature = "gamemode",
+    feature = "globalcommsnotificationparams",
+    feature = "globalshopparams",
+    feature = "harvestable",
+    feature = "instancedinterior",
+    feature = "inventorycontainers",
+    feature = "item",
+    feature = "itemresourcenetwork",
+    feature = "journalentry",
+    feature = "lawsystem",
+    feature = "level",
+    feature = "loadoutkits",
+    feature = "lootgeneration",
+    feature = "megamap",
+    feature = "missionbroker",
+    feature = "missiondata",
+    feature = "missiongiver",
+    feature = "player",
+    feature = "reputation",
+    feature = "resourcetypedatabase",
+    feature = "sglobalsalvagerepairbeamparams",
+    feature = "ssolarsystem",
+    feature = "starmap",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs",
+    feature = "ui-mobiglas"
+))]
+impl crate::RecordLookup for DefaultEntitlementRecord {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .default_entitlement_record
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "character")]
+impl crate::RecordLookup for DefaultPlayerLoadoutEntitlementRecord {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .character
+            .default_player_loadout_entitlement_record
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "vfx")]
+impl crate::RecordLookup for DematerializeAnimation {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.vfx.dematerialize_animation.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "contracts",
+    feature = "dev",
+    feature = "devowners",
+    feature = "gamemode",
+    feature = "level",
+    feature = "megamap",
+    feature = "missionbroker",
+    feature = "servicebeacon"
+))]
+impl crate::RecordLookup for DevOwner {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.dev_owner.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "aiwavecollection",
+    feature = "audio",
+    feature = "communicationconfig",
+    feature = "contracts",
+    feature = "dialoguecontentbank",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-scitem-atc",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-suit",
+    feature = "entities-scitem-vehicles",
+    feature = "entities-spaceships",
+    feature = "entities-ui",
+    feature = "entitlementpolicies",
+    feature = "player",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs",
+    feature = "ui-mobiglas"
+))]
+impl crate::RecordLookup for DialogueExternalSource {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .dialogue_external_source
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "dialoguecontentbank")]
+impl crate::RecordLookup for DialogueContent {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .dialoguecontentbank
+            .dialogue_content
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "dialoguecontentbank")]
+impl crate::RecordLookup for DialogueContentBank {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .dialoguecontentbank
+            .dialogue_content_bank
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "announcer",
+    feature = "commsnotifications",
+    feature = "communicationconfig",
+    feature = "contracts",
+    feature = "conversation",
+    feature = "conversationbank",
+    feature = "dialoguecontext",
+    feature = "dialoguecontextbank",
+    feature = "entities-audio",
+    feature = "gamemode",
+    feature = "globalcommsnotificationparams",
+    feature = "journalentry",
+    feature = "level",
+    feature = "megamap",
+    feature = "missionbroker",
+    feature = "missiongiver",
+    feature = "missionscenarios"
+))]
+impl crate::RecordLookup for DialogueContext {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.dialogue_context.get(guid).copied()
+    }
+}
+
+#[cfg(any(feature = "dialoguecontext", feature = "dialoguecontextbank"))]
+impl crate::RecordLookup for DialogueContextBank {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.dialogue_context_bank.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "dialoguecontentbank",
+    feature = "dialoguecontext",
+    feature = "dialoguecontextbank",
+    feature = "dialoguerealm"
+))]
+impl crate::RecordLookup for DialogueRealm {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.dialogue_realm.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "ui-digitalsignage")]
+impl crate::RecordLookup for DigitalSignageContentSet {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .ui_digitalsignage
+            .digital_signage_content_set
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "ui-directrtt")]
+impl crate::RecordLookup for DirectRTT_AfterTonemappingParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .ui_directrtt
+            .direct_rtt_after_tonemapping_params
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "ui-dockingslotvisibility")]
+impl crate::RecordLookup for DockingSlotVisibility {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .ui_dockingslotvisibility
+            .docking_slot_visibility
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "conversation",
+    feature = "dynamiccameraeffects",
+    feature = "ui-playerchoice_pitconfig_playerchoicepersonalthought",
+    feature = "ui-uiconfig_starcitizen"
+))]
+impl crate::RecordLookup for DynamicCameraEffects {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .dynamic_camera_effects
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "dynamiccameraeffects")]
+impl crate::RecordLookup for DynamicCameraEffectsList {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .dynamiccameraeffects
+            .dynamic_camera_effects_list
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "dynamiccameraeffects")]
+impl crate::RecordLookup for ConstantDOFGlobalData {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .dynamiccameraeffects
+            .constant_dofglobal_data
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "gamemode")]
+impl crate::RecordLookup for SEAPlayerLoadoutSnapshots {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .gamemode
+            .seaplayer_loadout_snapshots
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(feature = "gamemode", feature = "level", feature = "megamap"))]
+impl crate::RecordLookup for SEAGlobalSpecialLoadout {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .seaglobal_special_loadout
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(feature = "gamemode", feature = "level", feature = "megamap"))]
+impl crate::RecordLookup for SEAGlobalEventLoadouts {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .seaglobal_event_loadouts
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "emotions")]
+impl crate::RecordLookup for EmotionList {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.emotions.emotion_list.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "entitlementpolicies")]
+impl crate::RecordLookup for EntitlementAccountItemGlobalParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .entitlementpolicies
+            .entitlement_account_item_global_params
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "entitlementpolicies")]
+impl crate::RecordLookup for EntitlementNonInventoryStorableItemGlobalParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .entitlementpolicies
+            .entitlement_non_inventory_storable_item_global_params
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actorblockhelper",
+    feature = "actor-actors",
+    feature = "actorstaminacomponent",
+    feature = "actorstaminacomponent-actorbreathinghelper",
+    feature = "actorstatuscomponent",
+    feature = "actorstatuscomponent-globalactorstatusparams",
+    feature = "actorstatuscomponent-medicaltieritemconfig",
+    feature = "actorstatuscomponent-playerstatus",
+    feature = "actorstatuscomponent-playerstatus_aiboss",
+    feature = "actorstatuscomponent-playerstatus_aibosssuper",
+    feature = "actorstatuscomponent-playerstatusai",
+    feature = "actorstatuscomponent-playerstatusai_captain",
+    feature = "actorstatuscomponent-playerstatusai_elite",
+    feature = "actorstatuscomponent-playerstatusai_juggernaut",
+    feature = "actorstatuscomponent-playerstatusai_unconscious_rescuemission",
+    feature = "actorstatuscomponent-playerstatusai_vanduul",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_stormbreaker",
+    feature = "actorstatuscomponent-playerstatusai_yormandi",
+    feature = "actorstatuscomponent-playerstatuscorpse",
+    feature = "actorstatuscomponent-playerstatuscreature",
+    feature = "actorstatuscomponent-playerstatusea",
+    feature = "actorstatuscomponent-playerstatuspu",
+    feature = "actorstatuscomponent-powersuitstatus",
+    feature = "actorstatuscomponent-powersuitstatus_combat",
+    feature = "actorstatuscomponent-transportstatus",
+    feature = "aiwavecollection",
+    feature = "ammobox",
+    feature = "ammoparams",
+    feature = "areaservices",
+    feature = "cargomanifest",
+    feature = "character",
+    feature = "commsnotifications",
+    feature = "commsnotificationstages",
+    feature = "communicationsystem",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "creatures",
+    feature = "crewmanifest",
+    feature = "dev",
+    feature = "elevatorbase_teleportnode",
+    feature = "entities-actionarea",
+    feature = "entities-aft",
+    feature = "entities-aicoversurface",
+    feature = "entities-aigroupentity",
+    feature = "entities-ainavigationobstacle",
+    feature = "entities-aipath",
+    feature = "entities-analyticshadow",
+    feature = "entities-animatedcharacterstatue_aloprat",
+    feature = "entities-animatedcharacterstatue_kopion",
+    feature = "entities-animatedcharacterstatue_marok",
+    feature = "entities-animatedcharacterstatue_quasigrazer",
+    feature = "entities-animatedcharacterstatue_template",
+    feature = "entities-animentity",
+    feature = "entities-animentity_attachable",
+    feature = "entities-animentity_attachable_espr_prowler_glass",
+    feature = "entities-animentity_attachable_espr_prowler_glass_copilot",
+    feature = "entities-animentity_attachable_espr_talon_glass",
+    feature = "entities-animentity_character",
+    feature = "entities-animentity_floatinghead_01",
+    feature = "entities-animentity_floatinghead_charactercustomizer",
+    feature = "entities-animentity_floatinghead_charactercustomizer_dnalib",
+    feature = "entities-animentity_floatinghead_charactercustomizer_featurelib",
+    feature = "entities-animentity_human",
+    feature = "entities-animentity_human_female",
+    feature = "entities-animentity_toggleable",
+    feature = "entities-area",
+    feature = "entities-asd",
+    feature = "entities-attachableobjectcontainer",
+    feature = "entities-attachableobjectcontainerspawner",
+    feature = "entities-attackarea",
+    feature = "entities-audio",
+    feature = "entities-basebuilding",
+    feature = "entities-baselocationtemplate",
+    feature = "entities-booth_table_centered_seats",
+    feature = "entities-breakablerock",
+    feature = "entities-buildingblocksscreens",
+    feature = "entities-cameralens",
+    feature = "entities-camerarttview",
+    feature = "entities-camerasource",
+    feature = "entities-camerasourcefuelnozzle",
+    feature = "entities-cameratarget",
+    feature = "entities-canvasgeoment",
+    feature = "entities-canvasgeoment_vars",
+    feature = "entities-capturearea",
+    feature = "entities-carryable_damage_sensitive_canister",
+    feature = "entities-carryabletemplate",
+    feature = "entities-charactercustomizer",
+    feature = "entities-cinematiclabel",
+    feature = "entities-cinematiclabelwithvehicle",
+    feature = "entities-cinematictitling_base",
+    feature = "entities-cinematictitling_standard",
+    feature = "entities-cinematictrigger",
+    feature = "entities-cinematictrigger_sticky",
+    feature = "entities-colorgradient",
+    feature = "entities-commententity",
+    feature = "entities-commententity_quickfade",
+    feature = "entities-commodities",
+    feature = "entities-contactblobentity",
+    feature = "entities-corpsemarker",
+    feature = "entities-cuttableshape",
+    feature = "entities-debris_1_floor_a",
+    feature = "entities-debris_1_floor_b",
+    feature = "entities-debris_1_floor_c",
+    feature = "entities-debris_1_floor_d",
+    feature = "entities-debris_1_floor_e",
+    feature = "entities-debris_1_floor_f",
+    feature = "entities-decorations",
+    feature = "entities-default",
+    feature = "entities-defaultwithaudio",
+    feature = "entities-defendarea",
+    feature = "entities-destruction",
+    feature = "entities-dev",
+    feature = "entities-displayscreens",
+    feature = "entities-ea",
+    feature = "entities-eaphasepropentity",
+    feature = "entities-editorcamera",
+    feature = "entities-energysource",
+    feature = "entities-entityealockedspawnlocation",
+    feature = "entities-entityeaspawnlocation",
+    feature = "entities-entityspawncameracontroller",
+    feature = "entities-entityspawners",
+    feature = "entities-environment",
+    feature = "entities-environmentscreen",
+    feature = "entities-explosion",
+    feature = "entities-fan_prisonbroken",
+    feature = "entities-flair_radegast_whiskey_concierge",
+    feature = "entities-fronthud_center",
+    feature = "entities-fronthud_displaymanager",
+    feature = "entities-fronthud_left",
+    feature = "entities-fronthud_right",
+    feature = "entities-fronthud_top",
+    feature = "entities-fuel_nozzle_grin_nozzlefast",
+    feature = "entities-fuel_nozzle_grin_nozzlesecure",
+    feature = "entities-fuel_nozzle_grin_nozzleveryfast",
+    feature = "entities-fuel_nozzle_grin_nozzleverysecure",
+    feature = "entities-fuel_nozzle_misc_nozzlestandard",
+    feature = "entities-fuel_nozzle_shin_nozzleexpensivefast",
+    feature = "entities-fuel_nozzle_shin_nozzleexpensivesecure",
+    feature = "entities-fuel_nozzle_shin_nozzlemostexpensive",
+    feature = "entities-gamerulessingleton",
+    feature = "entities-gamevolumecomponent",
+    feature = "entities-gascloud",
+    feature = "entities-geomentity",
+    feature = "entities-geomentity_areatrigger",
+    feature = "entities-geomentity_dynamicobstacle",
+    feature = "entities-geomentity_interactablelinked",
+    feature = "entities-geomentity_nophysics",
+    feature = "entities-geomentity_repairable",
+    feature = "entities-geomentity_rttui",
+    feature = "entities-geomentity_rttuiwithaudio",
+    feature = "entities-geomentity_static",
+    feature = "entities-geometryinstancer",
+    feature = "entities-gotopointentity",
+    feature = "entities-groundvehicles",
+    feature = "entities-hackable",
+    feature = "entities-handholdobject",
+    feature = "entities-handholdobject_linkable",
+    feature = "entities-harvestabletagpoint",
+    feature = "entities-haulingentityclass",
+    feature = "entities-hazardzones",
+    feature = "entities-hearingperceptionarea",
+    feature = "entities-helpers",
+    feature = "entities-hint",
+    feature = "entities-holofield",
+    feature = "entities-holographicvolume",
+    feature = "entities-ht_table_bar_1_a",
+    feature = "entities-impactcrater",
+    feature = "entities-instancedinteriormanager",
+    feature = "entities-inventoryplaceholder",
+    feature = "entities-invisibleitemport",
+    feature = "entities-invisibleitemport_rockcracker_powercellslot",
+    feature = "entities-irradiatedhazardzone",
+    feature = "entities-it_container_vehicle_1_a",
+    feature = "entities-itemport3drepresentation",
+    feature = "entities-jumppoints",
+    feature = "entities-kegr_roomhelper",
+    feature = "entities-kiosk_mercury_anniversary_slides_16x9",
+    feature = "entities-ladder",
+    feature = "entities-landinguientity",
+    feature = "entities-ledgeobject",
+    feature = "entities-ledgeobjectusable",
+    feature = "entities-legacyitems",
+    feature = "entities-lights",
+    feature = "entities-loadingplatformmanager",
+    feature = "entities-localmissionsession",
+    feature = "entities-locationmanager",
+    feature = "entities-locationtemplate",
+    feature = "entities-lt_hab_bathroom_1_a",
+    feature = "entities-maglaunch",
+    feature = "entities-mastercontrollerentities",
+    feature = "entities-mineable",
+    feature = "entities-missionentity",
+    feature = "entities-missionlocationmanager",
+    feature = "entities-missionlocationtemplate",
+    feature = "entities-missionobjectivemarker",
+    feature = "entities-missionsystem",
+    feature = "entities-monitoredzone",
+    feature = "entities-navpoint_dynamic",
+    feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-navpoint_general",
+    feature = "entities-navpoint_interdictedentity",
+    feature = "entities-navpoint_subpoint",
+    feature = "entities-navpoint_subpoint_routeonly",
+    feature = "entities-objectcontainerrotating",
+    feature = "entities-objectcontainers",
+    feature = "entities-oscillationsimple",
+    feature = "entities-others",
+    feature = "entities-parkingroute",
+    feature = "entities-partymembermarker",
+    feature = "entities-patrolgraph",
+    feature = "entities-patrolgraphlink",
+    feature = "entities-patrolpoint",
+    feature = "entities-perceptionmodifierarea",
+    feature = "entities-physicalizedjobboard",
+    feature = "entities-physics",
+    feature = "entities-planeteffecttest",
+    feature = "entities-planetkillvolume",
+    feature = "entities-playerscoresmanager",
+    feature = "entities-pointofinterestprovider",
+    feature = "entities-precachecamera",
+    feature = "entities-proceduralpointofinterestproxy",
+    feature = "entities-projectilespawnerentity",
+    feature = "entities-prop_digitalclock",
+    feature = "entities-proximityassistmodifier",
+    feature = "entities-quantumcolorshift",
+    feature = "entities-quantumtrail",
+    feature = "entities-racecheckpoint",
+    feature = "entities-racering",
+    feature = "entities-radarscanning",
+    feature = "entities-rastar",
+    feature = "entities-refinery",
+    feature = "entities-refuelatmospheres",
+    feature = "entities-render",
+    feature = "entities-rendertotextureareamaphelperview",
+    feature = "entities-rendertotextureview",
+    feature = "entities-restricted_areas",
+    feature = "entities-restrictedareaboundarymesh",
+    feature = "entities-restrictedareavisibleboundarymesh",
+    feature = "entities-roomsystem",
+    feature = "entities-rotationsimple",
+    feature = "entities-safeteleportpoint",
+    feature = "entities-safeteleportpoint_npc",
+    feature = "entities-salvagable",
+    feature = "entities-scarmorymanager",
+    feature = "entities-schedulearea",
+    feature = "entities-scitem-access",
+    feature = "entities-scitem-actormovables",
+    feature = "entities-scitem-aimodule_atc",
+    feature = "entities-scitem-aimodule_atc_grimhex",
+    feature = "entities-scitem-aimodule_atc_levskiatc01",
+    feature = "entities-scitem-aimodule_atc_lorvilleatc01",
+    feature = "entities-scitem-aimodule_atc_newbabbage",
+    feature = "entities-scitem-aimodule_atc_newbabbageatc01",
+    feature = "entities-scitem-aimodule_atc_orisonatc01",
+    feature = "entities-scitem-aimodule_atc_systematc01",
+    feature = "entities-scitem-aimodule_cargo",
+    feature = "entities-scitem-aimodule_collector",
+    feature = "entities-scitem-aimodule_genatc02",
+    feature = "entities-scitem-aimodule_pyro",
+    feature = "entities-scitem-aimodule_silent_atc",
+    feature = "entities-scitem-airlocks",
+    feature = "entities-scitem-ammocrates",
+    feature = "entities-scitem-arenacommander",
+    feature = "entities-scitem-atc",
+    feature = "entities-scitem-atc_datamanager",
+    feature = "entities-scitem-atc_datamanager_outpostplatinumbay",
+    feature = "entities-scitem-atc_datamanager_port_lawful",
+    feature = "entities-scitem-atc_datamanager_port_semilawful",
+    feature = "entities-scitem-atc_datamanager_port_unlawful",
+    feature = "entities-scitem-atc_operatoraimodule",
+    feature = "entities-scitem-audiolog",
+    feature = "entities-scitem-bar_mmhc_glass_coke_empty",
+    feature = "entities-scitem-beer_can",
+    feature = "entities-scitem-bottle_liquor",
+    feature = "entities-scitem-cargo",
+    feature = "entities-scitem-carryables",
+    feature = "entities-scitem-characters",
+    feature = "entities-scitem-chipsets",
+    feature = "entities-scitem-commsreceiver",
+    feature = "entities-scitem-commsspeaker",
+    feature = "entities-scitem-consumables",
+    feature = "entities-scitem-controlpanels",
+    feature = "entities-scitem-counter_shop_2m_casaba_b",
+    feature = "entities-scitem-counter_shop_2m_casaba_c",
+    feature = "entities-scitem-counter_shop_2m_casaba_d",
+    feature = "entities-scitem-decals",
+    feature = "entities-scitem-default_lensdisplay",
+    feature = "entities-scitem-default_lensdisplay_pu",
+    feature = "entities-scitem-deliveryitemportmanager",
+    feature = "entities-scitem-doors",
+    feature = "entities-scitem-energy",
+    feature = "entities-scitem-environments",
+    feature = "entities-scitem-externalinventory",
+    feature = "entities-scitem-fauna",
+    feature = "entities-scitem-flair",
+    feature = "entities-scitem-fps_devices",
+    feature = "entities-scitem-freightelevators",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-geom_entity_template",
+    feature = "entities-scitem-glass_alcohol",
+    feature = "entities-scitem-glass_tumbler_1_a",
+    feature = "entities-scitem-glass_tumbler_2_a",
+    feature = "entities-scitem-handcuffs",
+    feature = "entities-scitem-harvestables",
+    feature = "entities-scitem-holoui",
+    feature = "entities-scitem-human",
+    feature = "entities-scitem-innerthought_dummies",
+    feature = "entities-scitem-itembanks",
+    feature = "entities-scitem-janitormob",
+    feature = "entities-scitem-lerpmoveentity",
+    feature = "entities-scitem-lifesupport",
+    feature = "entities-scitem-lightgroupitem",
+    feature = "entities-scitem-lightgrouppowereditem",
+    feature = "entities-scitem-locations",
+    feature = "entities-scitem-lootables",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-missionstorage",
+    feature = "entities-scitem-morrowtour",
+    feature = "entities-scitem-movable_bridge",
+    feature = "entities-scitem-movable_bridge_plank",
+    feature = "entities-scitem-movable_plank_pallet_0250x0125x00125",
+    feature = "entities-scitem-movable_plank_pallet_0350x0125x00125",
+    feature = "entities-scitem-movable_plank_pallet_0450x0125x00125",
+    feature = "entities-scitem-navigationlinks",
+    feature = "entities-scitem-nonusables",
+    feature = "entities-scitem-openableobject",
+    feature = "entities-scitem-orbgn",
+    feature = "entities-scitem-orcaobstacle",
+    feature = "entities-scitem-placeholder",
+    feature = "entities-scitem-prop",
+    feature = "entities-scitem-prototypeentities",
+    feature = "entities-scitem-proximityvolumes",
+    feature = "entities-scitem-remoteconnectionreceiver",
+    feature = "entities-scitem-rotationsimple",
+    feature = "entities-scitem-salvageablerepairable",
+    feature = "entities-scitem-satellite_power_plant_test",
+    feature = "entities-scitem-scitem_debris",
+    feature = "entities-scitem-scitemdisplayscreen",
+    feature = "entities-scitem-sequenceobjectitem",
+    feature = "entities-scitem-shelve_invisible_4x4",
+    feature = "entities-scitem-ship_weapon_ammo_racks",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-shopdisplays",
+    feature = "entities-scitem-simpleanimators",
+    feature = "entities-scitem-simpleopenableobject_ammo_box_generic",
+    feature = "entities-scitem-simpleopenableobject_bathroom_shower",
+    feature = "entities-scitem-simpleopenableobject_bathroom_sink",
+    feature = "entities-scitem-simpleopenableobject_bathroom_storage",
+    feature = "entities-scitem-simpleopenableobject_bathroom_toilet",
+    feature = "entities-scitem-simpleopenableobject_cnou_mustang_cargobox_door",
+    feature = "entities-scitem-simpleopenableobject_col_a_radial_kitchen_counter_set_a_cupboard_doors_a",
+    feature = "entities-scitem-simpleopenableobject_col_a_radial_kitchen_counter_set_a_cupboard_drawers_a",
+    feature = "entities-scitem-simpleopenableobject_col_a_radial_kitchen_counter_set_a_oven_a",
+    feature = "entities-scitem-simpleopenableobject_col_a_radial_kitchen_counter_set_a_oven_a_lid_a",
+    feature = "entities-scitem-simpleopenableobject_col_a_shutters_a",
+    feature = "entities-scitem-simpleopenableobject_col_a_shutters_b",
+    feature = "entities-scitem-simpleopenableobject_col_a_shutters_c",
+    feature = "entities-scitem-simpleopenableobject_col_a_shutters_d",
+    feature = "entities-scitem-simpleopenableobject_habmodule_foldingtable",
+    feature = "entities-scitem-simpleopenableobject_habmodule_kitchendoor",
+    feature = "entities-scitem-simpleopenableobject_habmodule_storagedoor",
+    feature = "entities-scitem-simpleopenableobject_habmodule_storagetray",
+    feature = "entities-scitem-simpleopenableobject_habmodule_toiletdoor",
+    feature = "entities-scitem-simpleopenableobject_screenarticulated",
+    feature = "entities-scitem-simpleopenableobject_template",
+    feature = "entities-scitem-simplestool",
+    feature = "entities-scitem-simpletoilet",
+    feature = "entities-scitem-spawers",
+    feature = "entities-scitem-spawning",
+    feature = "entities-scitem-starmarine",
+    feature = "entities-scitem-stool_template",
+    feature = "entities-scitem-storage",
+    feature = "entities-scitem-storagecage",
+    feature = "entities-scitem-suit",
+    feature = "entities-scitem-tablet",
+    feature = "entities-scitem-tablet_small",
+    feature = "entities-scitem-template",
+    feature = "entities-scitem-template_cuttableinteractable",
+    feature = "entities-scitem-template_cuttableinteractable_surfacerelay",
+    feature = "entities-scitem-test_gadget",
+    feature = "entities-scitem-test_mug",
+    feature = "entities-scitem-test_mug_carryable",
+    feature = "entities-scitem-test_ruto_projector",
+    feature = "entities-scitem-test_shelf",
+    feature = "entities-scitem-test_shelf_missionblackboxdropoff",
+    feature = "entities-scitem-test_station_power_plant",
+    feature = "entities-scitem-testinteractionstatemachine",
+    feature = "entities-scitem-toggleableentities",
+    feature = "entities-scitem-ui_environmentscreen_phoenix_attractanim",
+    feature = "entities-scitem-ui_environmentscreen_phoenix_attractanim_small",
+    feature = "entities-scitem-ui_environmentscreen_phoenix_elevatorpanel_bottom",
+    feature = "entities-scitem-ui_environmentscreen_phoenix_elevatorpanel_top",
+    feature = "entities-scitem-ui_environmentscreen_phoenix_interactionpanel",
+    feature = "entities-scitem-ui_flash_screen",
+    feature = "entities-scitem-usables",
+    feature = "entities-scitem-vehicles",
+    feature = "entities-scitem-weaponmounts",
+    feature = "entities-scitem-weapons",
+    feature = "entities-screen_9x16_1_a",
+    feature = "entities-screenattachment",
+    feature = "entities-scshop",
+    feature = "entities-servicebeaconnavpoint",
+    feature = "entities-shadowregionentity",
+    feature = "entities-shipselectorkiosk",
+    feature = "entities-shipselectorkiosk_genatc02",
+    feature = "entities-shipselectorkiosk_grimhex",
+    feature = "entities-shipselectorkiosk_groundvehiclesonly",
+    feature = "entities-shipselectorkiosk_hangar_hightech_1_a",
+    feature = "entities-shipselectorkiosk_hangar_lowtech_1_a",
+    feature = "entities-shipselectorkiosk_hangar_lowtech_1_b",
+    feature = "entities-shipselectorkiosk_hangar_lowtech_2_a",
+    feature = "entities-shipselectorkiosk_hangar_lowtech_2_b",
+    feature = "entities-shipselectorkiosk_levski",
+    feature = "entities-shipselectorkiosk_levskiground",
+    feature = "entities-shipselectorkiosk_levskiships",
+    feature = "entities-shipselectorkiosk_lorville",
+    feature = "entities-shipselectorkiosk_lorvilleground",
+    feature = "entities-shipselectorkiosk_newbab",
+    feature = "entities-shipselectorkiosk_outpostground",
+    feature = "entities-shipselectorkiosk_pyro",
+    feature = "entities-shipselectorkiosk_shipsonly",
+    feature = "entities-shipselectorkiosk_shipsonly_area18",
+    feature = "entities-shipselectorkiosk_shipsonly_orison",
+    feature = "entities-shipselectorkiosk_shipsonly_reststop",
+    feature = "entities-shipselectorkiosk_test",
+    feature = "entities-shipselectorkiosk_v001",
+    feature = "entities-shipselectorkiosk_v002",
+    feature = "entities-shopkiosk",
+    feature = "entities-shoppingkiosk",
+    feature = "entities-simpleobjectcontainer",
+    feature = "entities-slotspawnpoint",
+    feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a_extractonly",
+    feature = "entities-spaceships",
+    feature = "entities-spawncloset",
+    feature = "entities-spawncloset_ships",
+    feature = "entities-spawncloset_ships_javelin",
+    feature = "entities-spawnclosetmanager",
+    feature = "entities-spawnedactionarea",
+    feature = "entities-spawnhelper",
+    feature = "entities-spawnpoint",
+    feature = "entities-spawnprotectionbarrier",
+    feature = "entities-spectatorpoint",
+    feature = "entities-starfield",
+    feature = "entities-stormbreaker_pylon_hatch",
+    feature = "entities-streamingobjectcontainer",
+    feature = "entities-sunlight",
+    feature = "entities-table_booth_circularbar_direct_8_seat",
+    feature = "entities-table_booth_utilitarian_4_seat",
+    feature = "entities-tagpoint",
+    feature = "entities-terminal_boarding_1_a",
+    feature = "entities-test",
+    feature = "entities-tilesocket",
+    feature = "entities-tinymachine",
+    feature = "entities-trackview",
+    feature = "entities-trackviewuser",
+    feature = "entities-ui",
+    feature = "entities-unattendedvehiclemarker",
+    feature = "entities-uniqueplayercamera",
+    feature = "entities-usablegroup",
+    feature = "entities-usablegroupcoordinator",
+    feature = "entities-vehicleobjectcontainer",
+    feature = "entities-vfx",
+    feature = "entities-vlk_adult_body",
+    feature = "entities-vlk_apex_body",
+    feature = "entities-vlk_apex_irradiated_body",
+    feature = "entities-vlk_juvenile_body",
+    feature = "entities-watervolume",
+    feature = "entities-worlddisplay",
+    feature = "entities-yormandi_apex_body",
+    feature = "entitlementpolicies",
+    feature = "factions",
+    feature = "fuelparams",
+    feature = "gamemode",
+    feature = "genericmobiterminals",
+    feature = "globalcommsnotificationparams",
+    feature = "globalquantumdriveparams",
+    feature = "globalshopparams",
+    feature = "harvestable",
+    feature = "instancedinterior",
+    feature = "inventorycontainers",
+    feature = "item",
+    feature = "itemresourcenetwork",
+    feature = "journalentry",
+    feature = "lawsystem",
+    feature = "level",
+    feature = "loadoutkits",
+    feature = "lootgeneration",
+    feature = "megamap",
+    feature = "mining",
+    feature = "missionbroker",
+    feature = "missiondata",
+    feature = "missiongiver",
+    feature = "missionscenarios",
+    feature = "player",
+    feature = "playerchoicemenuitems",
+    feature = "playerchoicemenutypes",
+    feature = "prop",
+    feature = "reputation",
+    feature = "resourcetypedatabase",
+    feature = "rsi_polaris_kaboos_exterior",
+    feature = "servicebeacon",
+    feature = "sglobalsalvagerepairbeamparams",
+    feature = "ssolarsystem",
+    feature = "starmap",
+    feature = "transitsystem",
+    feature = "transponder",
+    feature = "transportsystem",
+    feature = "ui-areamap",
+    feature = "ui-buildingblocks",
+    feature = "ui-frontend",
+    feature = "ui-graphs",
+    feature = "ui-innerthought",
+    feature = "ui-innerthoughtentity",
+    feature = "ui-innerthoughtentitydepth",
+    feature = "ui-itemkiosk",
+    feature = "ui-itempreview_config",
+    feature = "ui-mobiglas",
+    feature = "ui-playerchoice_pitconfig_playerchoicepersonalthought",
+    feature = "ui-uiconfig_starcitizen",
+    feature = "vendingmachine_2"
+))]
+impl crate::RecordLookup for EntityClassDefinition {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .entity_class_definition
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "commoditytypedatabase",
+    feature = "communicationsystem",
+    feature = "contracts",
+    feature = "entities-commodities",
+    feature = "entities-entityspawners",
+    feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-scitem-cargo",
+    feature = "entities-scitem-carryables",
+    feature = "entities-scitem-consumables",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-human",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-usables",
+    feature = "entitlementpolicies",
+    feature = "gamemode",
+    feature = "harvestable",
+    feature = "instancedinterior",
+    feature = "inventorycontainers",
+    feature = "journalentry",
+    feature = "lawsystem",
+    feature = "level",
+    feature = "loadoutkits",
+    feature = "lootgeneration",
+    feature = "megamap",
+    feature = "missionbroker",
+    feature = "missiondata",
+    feature = "player",
+    feature = "playerchoicemenuitems",
+    feature = "playerchoicemenutypes",
+    feature = "ssolarsystem",
+    feature = "starmap",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs"
+))]
+impl crate::RecordLookup for CommodityType {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.commodity_type.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "commoditytypedatabase",
+    feature = "communicationsystem",
+    feature = "contracts",
+    feature = "entities-commodities",
+    feature = "entities-entityspawners",
+    feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-scitem-cargo",
+    feature = "entities-scitem-carryables",
+    feature = "entities-scitem-consumables",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-human",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-usables",
+    feature = "entitlementpolicies",
+    feature = "gamemode",
+    feature = "harvestable",
+    feature = "instancedinterior",
+    feature = "inventorycontainers",
+    feature = "journalentry",
+    feature = "lawsystem",
+    feature = "level",
+    feature = "lootgeneration",
+    feature = "megamap",
+    feature = "missionbroker",
+    feature = "missiondata",
+    feature = "player",
+    feature = "playerchoicemenuitems",
+    feature = "playerchoicemenutypes",
+    feature = "ssolarsystem",
+    feature = "starmap",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs"
+))]
+impl crate::RecordLookup for CommoditySubtype {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.commodity_subtype.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "commoditytypedatabase")]
+impl crate::RecordLookup for CommodityTypeDatabase {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .commoditytypedatabase
+            .commodity_type_database
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "commodityconfiguration")]
+impl crate::RecordLookup for CommodityDamageConfiguration {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .commodityconfiguration
+            .commodity_damage_configuration
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actorstatuscomponent",
+    feature = "actorstatuscomponent-globalactorstatusparams",
+    feature = "actorstatuscomponent-medicaltieritemconfig",
+    feature = "actorstatuscomponent-playerstatus",
+    feature = "actorstatuscomponent-playerstatus_aiboss",
+    feature = "actorstatuscomponent-playerstatus_aibosssuper",
+    feature = "actorstatuscomponent-playerstatusai",
+    feature = "actorstatuscomponent-playerstatusai_captain",
+    feature = "actorstatuscomponent-playerstatusai_elite",
+    feature = "actorstatuscomponent-playerstatusai_juggernaut",
+    feature = "actorstatuscomponent-playerstatusai_unconscious_rescuemission",
+    feature = "actorstatuscomponent-playerstatusai_vanduul",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_stormbreaker",
+    feature = "actorstatuscomponent-playerstatusai_yormandi",
+    feature = "actorstatuscomponent-playerstatuscorpse",
+    feature = "actorstatuscomponent-playerstatuscreature",
+    feature = "actorstatuscomponent-playerstatusea",
+    feature = "actorstatuscomponent-playerstatuspu",
+    feature = "actorstatuscomponent-powersuitstatus",
+    feature = "actorstatuscomponent-powersuitstatus_combat",
+    feature = "actorstatuscomponent-transportstatus",
+    feature = "aiwavecollection",
+    feature = "ammoparams",
+    feature = "areaservices",
+    feature = "cargomanifest",
+    feature = "commsnotifications",
+    feature = "communicationsystem",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-area",
+    feature = "entities-audio",
+    feature = "entities-cinematiclabelwithvehicle",
+    feature = "entities-commodities",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-haulingentityclass",
+    feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-scitem-atc",
+    feature = "entities-scitem-cargo",
+    feature = "entities-scitem-carryables",
+    feature = "entities-scitem-characters",
+    feature = "entities-scitem-default_lensdisplay",
+    feature = "entities-scitem-default_lensdisplay_pu",
+    feature = "entities-scitem-doors",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-human",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-missionstorage",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-shopdisplays",
+    feature = "entities-scitem-suit",
+    feature = "entities-scitem-usables",
+    feature = "entities-scitem-weapons",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entities-ui",
+    feature = "entitlementpolicies",
+    feature = "factions",
+    feature = "fuelparams",
+    feature = "gamemode",
+    feature = "globalcommsnotificationparams",
+    feature = "globalshopparams",
+    feature = "harvestable",
+    feature = "instancedinterior",
+    feature = "inventorycontainers",
+    feature = "item",
+    feature = "itemresourcenetwork",
+    feature = "journalentry",
+    feature = "lawsystem",
+    feature = "level",
+    feature = "loadoutkits",
+    feature = "megamap",
+    feature = "missionbroker",
+    feature = "missiondata",
+    feature = "missiongiver",
+    feature = "player",
+    feature = "reputation",
+    feature = "resourcetypedatabase",
+    feature = "sglobalsalvagerepairbeamparams",
+    feature = "ssolarsystem",
+    feature = "starmap",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs",
+    feature = "ui-mobiglas",
+    feature = "ui-vehicleentrance"
+))]
+impl crate::RecordLookup for SEntrancesDef {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.sentrances_def.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "aiwavecollection",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "entities-entityspawners",
+    feature = "entities-scitem-carryables",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-human",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-starmarine",
+    feature = "entities-scitem-usables",
+    feature = "entities-scitem-weapons",
+    feature = "entities-spaceships",
+    feature = "entitlementpolicies",
+    feature = "factions",
+    feature = "gamemode",
+    feature = "harvestable",
+    feature = "journalentry",
+    feature = "level",
+    feature = "loadoutkits",
+    feature = "megamap",
+    feature = "missionbroker",
+    feature = "player",
+    feature = "reputation",
+    feature = "scarryableikinteractionlist",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs"
+))]
+impl crate::RecordLookup for SCarryableIKInteractionList {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .scarryable_ikinteraction_list
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "aiwavecollection",
+    feature = "ammobox",
+    feature = "cargomanifest",
+    feature = "communicationsystem",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "crewmanifest",
+    feature = "entities-animatedcharacterstatue_kopion",
+    feature = "entities-animatedcharacterstatue_marok",
+    feature = "entities-basebuilding",
+    feature = "entities-carryable_damage_sensitive_canister",
+    feature = "entities-carryabletemplate",
+    feature = "entities-commodities",
+    feature = "entities-decorations",
+    feature = "entities-destruction",
+    feature = "entities-energysource",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-haulingentityclass",
+    feature = "entities-mineable",
+    feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-scitem-bar_mmhc_glass_coke_empty",
+    feature = "entities-scitem-beer_can",
+    feature = "entities-scitem-bottle_liquor",
+    feature = "entities-scitem-cargo",
+    feature = "entities-scitem-carryables",
+    feature = "entities-scitem-characters",
+    feature = "entities-scitem-consumables",
+    feature = "entities-scitem-doors",
+    feature = "entities-scitem-energy",
+    feature = "entities-scitem-fauna",
+    feature = "entities-scitem-flair",
+    feature = "entities-scitem-fps_devices",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-glass_alcohol",
+    feature = "entities-scitem-glass_tumbler_1_a",
+    feature = "entities-scitem-glass_tumbler_2_a",
+    feature = "entities-scitem-harvestables",
+    feature = "entities-scitem-human",
+    feature = "entities-scitem-itembanks",
+    feature = "entities-scitem-janitormob",
+    feature = "entities-scitem-lootables",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-prop",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-shopdisplays",
+    feature = "entities-scitem-starmarine",
+    feature = "entities-scitem-suit",
+    feature = "entities-scitem-tablet",
+    feature = "entities-scitem-tablet_small",
+    feature = "entities-scitem-template",
+    feature = "entities-scitem-test_gadget",
+    feature = "entities-scitem-test_mug",
+    feature = "entities-scitem-test_mug_carryable",
+    feature = "entities-scitem-usables",
+    feature = "entities-scitem-weapons",
+    feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a_extractonly",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entities-ui",
+    feature = "entitlementpolicies",
+    feature = "factions",
+    feature = "gamemode",
+    feature = "globalinteractionparams",
+    feature = "globalshopparams",
+    feature = "harvestable",
+    feature = "instancedinterior",
+    feature = "inventorycontainers",
+    feature = "journalentry",
+    feature = "lawsystem",
+    feature = "level",
+    feature = "loadoutkits",
+    feature = "lootgeneration",
+    feature = "megamap",
+    feature = "mining",
+    feature = "missionbroker",
+    feature = "missiondata",
+    feature = "missionscenarios",
+    feature = "player",
+    feature = "playerchoicemenuitems",
+    feature = "playerchoicemenutypes",
+    feature = "reputation",
+    feature = "resourcetypedatabase",
+    feature = "ssolarsystem",
+    feature = "starmap",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs",
+    feature = "ui-mobiglas"
+))]
+impl crate::RecordLookup for CarryableInteractionsMetadataConfigDef {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .carryable_interactions_metadata_config_def
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "gamemode")]
+impl crate::RecordLookup for EntityDefaultLoadoutParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .gamemode
+            .entity_default_loadout_params
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "commsnotifications",
+    feature = "crewmanifest",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-spaceships",
+    feature = "loadoutkits",
+    feature = "sloadoutassortment"
+))]
+impl crate::RecordLookup for SLoadoutAssortment {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.sloadout_assortment.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "entities-scitem-ships")]
+impl crate::RecordLookup for SIFCSModifiersLegacy {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .entities_scitem_ships
+            .sifcsmodifiers_legacy
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "ifcs")]
+impl crate::RecordLookup for ESPParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.ifcs.espparams.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "ifcs")]
+impl crate::RecordLookup for SIFCSEsp {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.ifcs.sifcsesp.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "ifcs")]
+impl crate::RecordLookup for SIFCSGameModeParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.ifcs.sifcsgame_mode_params.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actorstatuscomponent",
+    feature = "actorstatuscomponent-globalactorstatusparams",
+    feature = "actorstatuscomponent-medicaltieritemconfig",
+    feature = "actorstatuscomponent-playerstatus",
+    feature = "actorstatuscomponent-playerstatus_aiboss",
+    feature = "actorstatuscomponent-playerstatus_aibosssuper",
+    feature = "actorstatuscomponent-playerstatusai",
+    feature = "actorstatuscomponent-playerstatusai_captain",
+    feature = "actorstatuscomponent-playerstatusai_elite",
+    feature = "actorstatuscomponent-playerstatusai_juggernaut",
+    feature = "actorstatuscomponent-playerstatusai_unconscious_rescuemission",
+    feature = "actorstatuscomponent-playerstatusai_vanduul",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_stormbreaker",
+    feature = "actorstatuscomponent-playerstatusai_yormandi",
+    feature = "actorstatuscomponent-playerstatuscorpse",
+    feature = "actorstatuscomponent-playerstatuscreature",
+    feature = "actorstatuscomponent-playerstatusea",
+    feature = "actorstatuscomponent-playerstatuspu",
+    feature = "actorstatuscomponent-powersuitstatus",
+    feature = "actorstatuscomponent-powersuitstatus_combat",
+    feature = "actorstatuscomponent-transportstatus",
+    feature = "aiwavecollection",
+    feature = "ammoparams",
+    feature = "areaservices",
+    feature = "cargomanifest",
+    feature = "commsnotifications",
+    feature = "communicationsystem",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-area",
+    feature = "entities-audio",
+    feature = "entities-cinematiclabelwithvehicle",
+    feature = "entities-commodities",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-haulingentityclass",
+    feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-scitem-atc",
+    feature = "entities-scitem-cargo",
+    feature = "entities-scitem-carryables",
+    feature = "entities-scitem-characters",
+    feature = "entities-scitem-default_lensdisplay",
+    feature = "entities-scitem-default_lensdisplay_pu",
+    feature = "entities-scitem-doors",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-human",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-missionstorage",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-shopdisplays",
+    feature = "entities-scitem-spawers",
+    feature = "entities-scitem-suit",
+    feature = "entities-scitem-usables",
+    feature = "entities-scitem-weapons",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entities-ui",
+    feature = "entitlementpolicies",
+    feature = "factions",
+    feature = "fuelparams",
+    feature = "gamemode",
+    feature = "globalcommsnotificationparams",
+    feature = "globalshopparams",
+    feature = "harvestable",
+    feature = "instancedinterior",
+    feature = "inventorycontainers",
+    feature = "item",
+    feature = "itemresourcenetwork",
+    feature = "journalentry",
+    feature = "lawsystem",
+    feature = "level",
+    feature = "loadoutkits",
+    feature = "megamap",
+    feature = "missionbroker",
+    feature = "missiondata",
+    feature = "missiongiver",
+    feature = "player",
+    feature = "reputation",
+    feature = "resourcetypedatabase",
+    feature = "sglobalsalvagerepairbeamparams",
+    feature = "ssolarsystem",
+    feature = "starmap",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs",
+    feature = "ui-mobiglas",
+    feature = "vibrations"
+))]
+impl crate::RecordLookup for SVibrationDef {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.svibration_def.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actorstatuscomponent",
+    feature = "actorstatuscomponent-globalactorstatusparams",
+    feature = "actorstatuscomponent-medicaltieritemconfig",
+    feature = "actorstatuscomponent-playerstatus",
+    feature = "actorstatuscomponent-playerstatus_aiboss",
+    feature = "actorstatuscomponent-playerstatus_aibosssuper",
+    feature = "actorstatuscomponent-playerstatusai",
+    feature = "actorstatuscomponent-playerstatusai_captain",
+    feature = "actorstatuscomponent-playerstatusai_elite",
+    feature = "actorstatuscomponent-playerstatusai_juggernaut",
+    feature = "actorstatuscomponent-playerstatusai_unconscious_rescuemission",
+    feature = "actorstatuscomponent-playerstatusai_vanduul",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_stormbreaker",
+    feature = "actorstatuscomponent-playerstatusai_yormandi",
+    feature = "actorstatuscomponent-playerstatuscorpse",
+    feature = "actorstatuscomponent-playerstatuscreature",
+    feature = "actorstatuscomponent-playerstatusea",
+    feature = "actorstatuscomponent-playerstatuspu",
+    feature = "actorstatuscomponent-powersuitstatus",
+    feature = "actorstatuscomponent-powersuitstatus_combat",
+    feature = "actorstatuscomponent-transportstatus",
+    feature = "aiwavecollection",
+    feature = "ammoparams",
+    feature = "areaservices",
+    feature = "cargomanifest",
+    feature = "commsnotifications",
+    feature = "communicationsystem",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-area",
+    feature = "entities-audio",
+    feature = "entities-cinematiclabelwithvehicle",
+    feature = "entities-commodities",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-haulingentityclass",
+    feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-scitem-atc",
+    feature = "entities-scitem-cargo",
+    feature = "entities-scitem-carryables",
+    feature = "entities-scitem-characters",
+    feature = "entities-scitem-default_lensdisplay",
+    feature = "entities-scitem-default_lensdisplay_pu",
+    feature = "entities-scitem-doors",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-human",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-missionstorage",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-shopdisplays",
+    feature = "entities-scitem-spawers",
+    feature = "entities-scitem-suit",
+    feature = "entities-scitem-usables",
+    feature = "entities-scitem-weapons",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entities-ui",
+    feature = "entitlementpolicies",
+    feature = "factions",
+    feature = "fuelparams",
+    feature = "gamemode",
+    feature = "globalcommsnotificationparams",
+    feature = "globalshopparams",
+    feature = "harvestable",
+    feature = "instancedinterior",
+    feature = "inventorycontainers",
+    feature = "item",
+    feature = "itemresourcenetwork",
+    feature = "journalentry",
+    feature = "lawsystem",
+    feature = "level",
+    feature = "loadoutkits",
+    feature = "megamap",
+    feature = "missionbroker",
+    feature = "missiondata",
+    feature = "missiongiver",
+    feature = "player",
+    feature = "reputation",
+    feature = "resourcetypedatabase",
+    feature = "sglobalsalvagerepairbeamparams",
+    feature = "ssolarsystem",
+    feature = "starmap",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs",
+    feature = "ui-mobiglas",
+    feature = "vibrations"
+))]
+impl crate::RecordLookup for SVibrationVehicleDef {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .svibration_vehicle_def
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(feature = "audio", feature = "entities-audio"))]
+impl crate::RecordLookup for VibrationAudioPointDef {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .vibration_audio_point_def
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "vfx")]
+impl crate::RecordLookup for GlobalGasCloudVDBParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.vfx.global_gas_cloud_vdbparams.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actorstatuscomponent",
+    feature = "actorstatuscomponent-globalactorstatusparams",
+    feature = "actorstatuscomponent-medicaltieritemconfig",
+    feature = "actorstatuscomponent-playerstatus",
+    feature = "actorstatuscomponent-playerstatus_aiboss",
+    feature = "actorstatuscomponent-playerstatus_aibosssuper",
+    feature = "actorstatuscomponent-playerstatusai",
+    feature = "actorstatuscomponent-playerstatusai_captain",
+    feature = "actorstatuscomponent-playerstatusai_elite",
+    feature = "actorstatuscomponent-playerstatusai_juggernaut",
+    feature = "actorstatuscomponent-playerstatusai_unconscious_rescuemission",
+    feature = "actorstatuscomponent-playerstatusai_vanduul",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_stormbreaker",
+    feature = "actorstatuscomponent-playerstatusai_yormandi",
+    feature = "actorstatuscomponent-playerstatuscorpse",
+    feature = "actorstatuscomponent-playerstatuscreature",
+    feature = "actorstatuscomponent-playerstatusea",
+    feature = "actorstatuscomponent-playerstatuspu",
+    feature = "actorstatuscomponent-powersuitstatus",
+    feature = "actorstatuscomponent-powersuitstatus_combat",
+    feature = "actorstatuscomponent-transportstatus",
+    feature = "aiwavecollection",
+    feature = "ammoparams",
+    feature = "areaservices",
+    feature = "cargomanifest",
+    feature = "commsnotifications",
+    feature = "communicationsystem",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "creatures",
+    feature = "crewmanifest",
+    feature = "densityclasses",
+    feature = "entities-animatedcharacterstatue_kopion",
+    feature = "entities-animatedcharacterstatue_marok",
+    feature = "entities-animentity_character",
+    feature = "entities-area",
+    feature = "entities-audio",
+    feature = "entities-basebuilding",
+    feature = "entities-cinematiclabelwithvehicle",
+    feature = "entities-commodities",
+    feature = "entities-decorations",
+    feature = "entities-default",
+    feature = "entities-defaultwithaudio",
+    feature = "entities-destruction",
+    feature = "entities-dev",
+    feature = "entities-entityspawners",
+    feature = "entities-flair_radegast_whiskey_concierge",
+    feature = "entities-fuel_nozzle_grin_nozzlefast",
+    feature = "entities-fuel_nozzle_grin_nozzlesecure",
+    feature = "entities-fuel_nozzle_grin_nozzleveryfast",
+    feature = "entities-fuel_nozzle_grin_nozzleverysecure",
+    feature = "entities-fuel_nozzle_misc_nozzlestandard",
+    feature = "entities-fuel_nozzle_shin_nozzleexpensivefast",
+    feature = "entities-fuel_nozzle_shin_nozzleexpensivesecure",
+    feature = "entities-fuel_nozzle_shin_nozzlemostexpensive",
+    feature = "entities-groundvehicles",
+    feature = "entities-haulingentityclass",
+    feature = "entities-legacyitems",
+    feature = "entities-mineable",
+    feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-navpoint_interdictedentity",
+    feature = "entities-objectcontainers",
+    feature = "entities-salvagable",
+    feature = "entities-scitem-actormovables",
+    feature = "entities-scitem-atc",
+    feature = "entities-scitem-cargo",
+    feature = "entities-scitem-carryables",
+    feature = "entities-scitem-characters",
+    feature = "entities-scitem-consumables",
+    feature = "entities-scitem-default_lensdisplay",
+    feature = "entities-scitem-default_lensdisplay_pu",
+    feature = "entities-scitem-doors",
+    feature = "entities-scitem-fauna",
+    feature = "entities-scitem-flair",
+    feature = "entities-scitem-fps_devices",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-harvestables",
+    feature = "entities-scitem-human",
+    feature = "entities-scitem-itembanks",
+    feature = "entities-scitem-locations",
+    feature = "entities-scitem-lootables",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-missionstorage",
+    feature = "entities-scitem-movable_bridge_plank",
+    feature = "entities-scitem-movable_plank_pallet_0250x0125x00125",
+    feature = "entities-scitem-movable_plank_pallet_0350x0125x00125",
+    feature = "entities-scitem-movable_plank_pallet_0450x0125x00125",
+    feature = "entities-scitem-prop",
+    feature = "entities-scitem-rotationsimple",
+    feature = "entities-scitem-salvageablerepairable",
+    feature = "entities-scitem-scitem_debris",
+    feature = "entities-scitem-ship_weapon_ammo_racks",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-shopdisplays",
+    feature = "entities-scitem-spawers",
+    feature = "entities-scitem-starmarine",
+    feature = "entities-scitem-storage",
+    feature = "entities-scitem-suit",
+    feature = "entities-scitem-template",
+    feature = "entities-scitem-usables",
+    feature = "entities-scitem-weapons",
+    feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a_extractonly",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entities-ui",
+    feature = "entitlementpolicies",
+    feature = "factions",
+    feature = "fuelparams",
+    feature = "gamemode",
+    feature = "globalcommsnotificationparams",
+    feature = "globalquantumdriveparams",
+    feature = "globalshopparams",
+    feature = "harvestable",
+    feature = "instancedinterior",
+    feature = "inventorycontainers",
+    feature = "item",
+    feature = "itemresourcenetwork",
+    feature = "journalentry",
+    feature = "lawsystem",
+    feature = "level",
+    feature = "loadoutkits",
+    feature = "lootgeneration",
+    feature = "megamap",
+    feature = "mining",
+    feature = "missionbroker",
+    feature = "missiondata",
+    feature = "missiongiver",
+    feature = "missionscenarios",
+    feature = "player",
+    feature = "playerchoicemenuitems",
+    feature = "playerchoicemenutypes",
+    feature = "reputation",
+    feature = "resourcetypedatabase",
+    feature = "sglobalsalvagerepairbeamparams",
+    feature = "ssolarsystem",
+    feature = "starmap",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs",
+    feature = "ui-mobiglas"
+))]
+impl crate::RecordLookup for SEntityDensityClass {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.sentity_density_class.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "densityclasses")]
+impl crate::RecordLookup for SEntityDensityClassOverridesRecord {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .densityclasses
+            .sentity_density_class_overrides_record
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actorstatuscomponent",
+    feature = "actorstatuscomponent-globalactorstatusparams",
+    feature = "actorstatuscomponent-medicaltieritemconfig",
+    feature = "actorstatuscomponent-playerstatus",
+    feature = "actorstatuscomponent-playerstatus_aiboss",
+    feature = "actorstatuscomponent-playerstatus_aibosssuper",
+    feature = "actorstatuscomponent-playerstatusai",
+    feature = "actorstatuscomponent-playerstatusai_captain",
+    feature = "actorstatuscomponent-playerstatusai_elite",
+    feature = "actorstatuscomponent-playerstatusai_juggernaut",
+    feature = "actorstatuscomponent-playerstatusai_unconscious_rescuemission",
+    feature = "actorstatuscomponent-playerstatusai_vanduul",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_stormbreaker",
+    feature = "actorstatuscomponent-playerstatusai_yormandi",
+    feature = "actorstatuscomponent-playerstatuscorpse",
+    feature = "actorstatuscomponent-playerstatuscreature",
+    feature = "actorstatuscomponent-playerstatusea",
+    feature = "actorstatuscomponent-playerstatuspu",
+    feature = "actorstatuscomponent-powersuitstatus",
+    feature = "actorstatuscomponent-powersuitstatus_combat",
+    feature = "actorstatuscomponent-transportstatus",
+    feature = "aiwavecollection",
+    feature = "ammoparams",
+    feature = "areaservices",
+    feature = "cargomanifest",
+    feature = "commsnotifications",
+    feature = "communicationsystem",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-area",
+    feature = "entities-audio",
+    feature = "entities-commodities",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-haulingentityclass",
+    feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-scitem-atc",
+    feature = "entities-scitem-cargo",
+    feature = "entities-scitem-carryables",
+    feature = "entities-scitem-chipsets",
+    feature = "entities-scitem-doors",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-human",
+    feature = "entities-scitem-lootables",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-suit",
+    feature = "entities-scitem-usables",
+    feature = "entities-scitem-weapons",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entities-ui",
+    feature = "entitlementpolicies",
+    feature = "gamemode",
+    feature = "globalcommsnotificationparams",
+    feature = "globalshopparams",
+    feature = "harvestable",
+    feature = "instancedinterior",
+    feature = "inventorycontainers",
+    feature = "item",
+    feature = "itemresourcenetwork",
+    feature = "journalentry",
+    feature = "lawsystem",
+    feature = "level",
+    feature = "loadoutkits",
+    feature = "megamap",
+    feature = "missionbroker",
+    feature = "missiondata",
+    feature = "missiongiver",
+    feature = "player",
+    feature = "resourcetypedatabase",
+    feature = "sglobalsalvagerepairbeamparams",
+    feature = "ssolarsystem",
+    feature = "starmap",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs",
+    feature = "ui-mobiglas"
+))]
+impl crate::RecordLookup for SEntityTraversingNodeId {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .sentity_traversing_node_id
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "aiwavecollection",
+    feature = "commsnotifications",
+    feature = "contracts",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-audio",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-spawers",
+    feature = "entities-scitem-weapons",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entitlementpolicies",
+    feature = "factions",
+    feature = "globalcommsnotificationparams",
+    feature = "journalentry",
+    feature = "lawsystem",
+    feature = "missionbroker",
+    feature = "missiondata",
+    feature = "missiongiver",
+    feature = "missionscenarios",
+    feature = "ui-buildingblocks"
+))]
+impl crate::RecordLookup for Faction {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.faction.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "procedurallayout")]
+impl crate::RecordLookup for FactionPalettes {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.procedurallayout.faction_palettes.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "procedurallayout")]
+impl crate::RecordLookup for FactionPalette {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.procedurallayout.faction_palette.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "aiwavecollection",
+    feature = "commsnotifications",
+    feature = "contracts",
+    feature = "crewmanifest",
+    feature = "entities-spaceships",
+    feature = "factions",
+    feature = "gamemode",
+    feature = "journalentry",
+    feature = "lawsystem",
+    feature = "level",
+    feature = "megamap",
+    feature = "missionbroker",
+    feature = "missiondata",
+    feature = "missiongiver",
+    feature = "missionscenarios",
+    feature = "reputation"
+))]
+impl crate::RecordLookup for FactionReputation {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.faction_reputation.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "aiwavecollection",
+    feature = "commsnotifications",
+    feature = "contracts",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-audio",
+    feature = "entities-destruction",
+    feature = "entities-entityealockedspawnlocation",
+    feature = "entities-entityeaspawnlocation",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-spawers",
+    feature = "entities-scitem-weapons",
+    feature = "entities-spaceships",
+    feature = "entities-spawnprotectionbarrier",
+    feature = "entities-test",
+    feature = "entitlementpolicies",
+    feature = "factions",
+    feature = "factions_legacy",
+    feature = "gamemode",
+    feature = "globalcommsnotificationparams",
+    feature = "inventorycontainers",
+    feature = "lawsystem",
+    feature = "level",
+    feature = "megamap",
+    feature = "missionbroker",
+    feature = "missiondata",
+    feature = "missiongiver",
+    feature = "player",
+    feature = "ssolarsystem",
+    feature = "starmap",
+    feature = "ui-buildingblocks"
+))]
+impl crate::RecordLookup for Faction_LEGACY {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.faction_legacy.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "fidgetconfig")]
+impl crate::RecordLookup for FidgetConfig {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.fidgetconfig.fidget_config.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "roomsystem")]
+impl crate::RecordLookup for FireHazardGlobalParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .roomsystem
+            .fire_hazard_global_params
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "ui-flashobjectbindinggroups")]
+impl crate::RecordLookup for FlashObjectBindingGroup {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .ui_flashobjectbindinggroups
+            .flash_object_binding_group
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "entities-basebuilding",
+    feature = "entities-scitem-characters",
+    feature = "entities-scitem-doors",
+    feature = "entities-scitem-itembanks",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-shopdisplays",
+    feature = "entities-scitem-usables",
+    feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a_extractonly",
+    feature = "entities-test",
+    feature = "entitlementpolicies",
+    feature = "factions",
+    feature = "foley",
+    feature = "gamemode",
+    feature = "harvestable",
+    feature = "journalentry",
+    feature = "level",
+    feature = "loadoutkits",
+    feature = "megamap",
+    feature = "player",
+    feature = "reputation",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs"
+))]
+impl crate::RecordLookup for FoleyDefinition {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.foley_definition.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "entities-basebuilding",
+    feature = "entities-scitem-characters",
+    feature = "entities-scitem-doors",
+    feature = "entities-scitem-itembanks",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-shopdisplays",
+    feature = "entities-scitem-suit",
+    feature = "entities-scitem-usables",
+    feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a_extractonly",
+    feature = "entities-test",
+    feature = "entitlementpolicies",
+    feature = "factions",
+    feature = "foley",
+    feature = "gamemode",
+    feature = "harvestable",
+    feature = "journalentry",
+    feature = "level",
+    feature = "loadoutkits",
+    feature = "megamap",
+    feature = "player",
+    feature = "reputation",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs"
+))]
+impl crate::RecordLookup for FoleyBone {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.foley_bone.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "entities-scitem-characters",
+    feature = "entities-scitem-doors",
+    feature = "entities-scitem-shopdisplays",
+    feature = "entities-scitem-usables",
+    feature = "entities-test",
+    feature = "factions",
+    feature = "foley",
+    feature = "gamemode",
+    feature = "harvestable",
+    feature = "journalentry",
+    feature = "level",
+    feature = "loadoutkits",
+    feature = "megamap",
+    feature = "reputation",
+    feature = "ui-buildingblocks"
+))]
+impl crate::RecordLookup for FoleyAxis {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.foley_axis.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "entities-basebuilding",
+    feature = "entities-scitem-characters",
+    feature = "entities-scitem-doors",
+    feature = "entities-scitem-itembanks",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-shopdisplays",
+    feature = "entities-scitem-suit",
+    feature = "entities-scitem-usables",
+    feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a_extractonly",
+    feature = "entities-test",
+    feature = "entitlementpolicies",
+    feature = "factions",
+    feature = "foley",
+    feature = "gamemode",
+    feature = "harvestable",
+    feature = "journalentry",
+    feature = "level",
+    feature = "loadoutkits",
+    feature = "megamap",
+    feature = "player",
+    feature = "reputation",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs"
+))]
+impl crate::RecordLookup for FoleyFootstepDefinition {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .foley_footstep_definition
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "aiwavecollection",
+    feature = "commsnotifications",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-audio",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entitlementpolicies",
+    feature = "formation",
+    feature = "globalcommsnotificationparams",
+    feature = "missionbroker",
+    feature = "missiongiver",
+    feature = "ui-buildingblocks"
+))]
+impl crate::RecordLookup for Formation {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.formation.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "friendmanager")]
+impl crate::RecordLookup for FriendManagerGlobalParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .friendmanager
+            .friend_manager_global_params
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "entities-ui")]
+impl crate::RecordLookup for FrontendOverrideParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .entities_ui
+            .frontend_override_params
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "audio")]
+impl crate::RecordLookup for AudioSignalList {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.audio.audio_signal_list.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "audio")]
+impl crate::RecordLookup for TagToAudioRtpcList {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.audio.tag_to_audio_rtpc_list.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "forcefeedback_forcefeedbackeffects")]
+impl crate::RecordLookup for ForceFeedback {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .forcefeedback_forcefeedbackeffects
+            .force_feedback
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "gamemode",
+    feature = "gamemodule",
+    feature = "level",
+    feature = "megamap"
+))]
+impl crate::RecordLookup for GameModule {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.game_module.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "chatchannelfilters",
+    feature = "gamemode",
+    feature = "level",
+    feature = "megamap"
+))]
+impl crate::RecordLookup for ChatChannelFilterRecord {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .chat_channel_filter_record
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "gamemode",
+    feature = "level",
+    feature = "megamap",
+    feature = "voicechannelsettingsrecord"
+))]
+impl crate::RecordLookup for VoiceChannelSettingsRecord {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .voice_channel_settings_record
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(feature = "gamemode", feature = "level", feature = "megamap"))]
+impl crate::RecordLookup for GameMode {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.game_mode.get(guid).copied()
+    }
+}
+
+#[cfg(any(feature = "gamemode", feature = "level", feature = "megamap"))]
+impl crate::RecordLookup for GameDifficultyModifiers {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .game_difficulty_modifiers
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actorstatuscomponent",
+    feature = "actorstatuscomponent-globalactorstatusparams",
+    feature = "actorstatuscomponent-medicaltieritemconfig",
+    feature = "actorstatuscomponent-playerstatus",
+    feature = "actorstatuscomponent-playerstatus_aiboss",
+    feature = "actorstatuscomponent-playerstatus_aibosssuper",
+    feature = "actorstatuscomponent-playerstatusai",
+    feature = "actorstatuscomponent-playerstatusai_captain",
+    feature = "actorstatuscomponent-playerstatusai_elite",
+    feature = "actorstatuscomponent-playerstatusai_juggernaut",
+    feature = "actorstatuscomponent-playerstatusai_unconscious_rescuemission",
+    feature = "actorstatuscomponent-playerstatusai_vanduul",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_stormbreaker",
+    feature = "actorstatuscomponent-playerstatusai_yormandi",
+    feature = "actorstatuscomponent-playerstatuscorpse",
+    feature = "actorstatuscomponent-playerstatuscreature",
+    feature = "actorstatuscomponent-playerstatusea",
+    feature = "actorstatuscomponent-playerstatuspu",
+    feature = "actorstatuscomponent-powersuitstatus",
+    feature = "actorstatuscomponent-powersuitstatus_combat",
+    feature = "actorstatuscomponent-transportstatus",
+    feature = "aiwavecollection",
+    feature = "ammoparams",
+    feature = "areaservices",
+    feature = "cargomanifest",
+    feature = "commsnotifications",
+    feature = "communicationsystem",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "crewmanifest",
+    feature = "entities-animatedcharacterstatue_kopion",
+    feature = "entities-animatedcharacterstatue_marok",
+    feature = "entities-animentity_character",
+    feature = "entities-area",
+    feature = "entities-audio",
+    feature = "entities-basebuilding",
+    feature = "entities-cinematiclabelwithvehicle",
+    feature = "entities-commodities",
+    feature = "entities-destruction",
+    feature = "entities-dev",
+    feature = "entities-entityspawners",
+    feature = "entities-environment",
+    feature = "entities-groundvehicles",
+    feature = "entities-haulingentityclass",
+    feature = "entities-mineable",
+    feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-scitem-atc",
+    feature = "entities-scitem-cargo",
+    feature = "entities-scitem-carryables",
+    feature = "entities-scitem-characters",
+    feature = "entities-scitem-default_lensdisplay",
+    feature = "entities-scitem-default_lensdisplay_pu",
+    feature = "entities-scitem-doors",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-harvestables",
+    feature = "entities-scitem-human",
+    feature = "entities-scitem-itembanks",
+    feature = "entities-scitem-locations",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-missionstorage",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-shopdisplays",
+    feature = "entities-scitem-spawers",
+    feature = "entities-scitem-suit",
+    feature = "entities-scitem-usables",
+    feature = "entities-scitem-weapons",
+    feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a_extractonly",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entities-ui",
+    feature = "entitlementpolicies",
+    feature = "factions",
+    feature = "fuelparams",
+    feature = "gamemode",
+    feature = "globalcommsnotificationparams",
+    feature = "globalshopparams",
+    feature = "harvestable",
+    feature = "instancedinterior",
+    feature = "inventorycontainers",
+    feature = "item",
+    feature = "itemresourcenetwork",
+    feature = "journalentry",
+    feature = "lawsystem",
+    feature = "level",
+    feature = "loadoutkits",
+    feature = "lootgeneration",
+    feature = "megamap",
+    feature = "mining",
+    feature = "missionbroker",
+    feature = "missiondata",
+    feature = "missiongiver",
+    feature = "missionscenarios",
+    feature = "player",
+    feature = "reputation",
+    feature = "resourcetypedatabase",
+    feature = "sgeometryviewdistanceratiocategories",
+    feature = "sglobalsalvagerepairbeamparams",
+    feature = "ssolarsystem",
+    feature = "starmap",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs",
+    feature = "ui-mobiglas"
+))]
+impl crate::RecordLookup for SViewDistanceRatioParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .sview_distance_ratio_params
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "sgeometryviewdistanceratiocategories")]
+impl crate::RecordLookup for SGeometryViewDistanceRatioCategories {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .sgeometryviewdistanceratiocategories
+            .sgeometry_view_distance_ratio_categories
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "sglobalchargedrainbeamparams")]
+impl crate::RecordLookup for SGlobalChargeDrainBeamParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .sglobalchargedrainbeamparams
+            .sglobal_charge_drain_beam_params
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "sglobalcrosshairparams")]
+impl crate::RecordLookup for SGlobalCrosshairParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .sglobalcrosshairparams
+            .sglobal_crosshair_params
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "globalcuttableshapeparams")]
+impl crate::RecordLookup for SGlobalCuttableShapeParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .globalcuttableshapeparams
+            .sglobal_cuttable_shape_params
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "scuttableshapedefinition")]
+impl crate::RecordLookup for SCuttableShapeDefinition {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .scuttableshapedefinition
+            .scuttable_shape_definition
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "sglobalelectronparams")]
+impl crate::RecordLookup for SGlobalElectronParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .sglobalelectronparams
+            .sglobal_electron_params
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "sglobalhealingbeamparams")]
+impl crate::RecordLookup for SGlobalHealingBeamParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .sglobalhealingbeamparams
+            .sglobal_healing_beam_params
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "sglobalsalvagerepairbeamparams")]
+impl crate::RecordLookup for SGlobalSalvageRepairBeamParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .sglobalsalvagerepairbeamparams
+            .sglobal_salvage_repair_beam_params
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "globalshopparams")]
+impl crate::RecordLookup for GlobalShopCommodityParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .globalshopparams
+            .global_shop_commodity_params
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "globalshopparams")]
+impl crate::RecordLookup for GlobalShopTerminalParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .globalshopparams
+            .global_shop_terminal_params
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "globalshopparams")]
+impl crate::RecordLookup for GlobalShopSellingParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .globalshopparams
+            .global_shop_selling_params
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "globalshopparams")]
+impl crate::RecordLookup for GlobalShopBuyingParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .globalshopparams
+            .global_shop_buying_params
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "sglobaltractorbeamparams")]
+impl crate::RecordLookup for SGlobalTractorBeamParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .sglobaltractorbeamparams
+            .sglobal_tractor_beam_params
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "aiwavecollection",
+    feature = "commsnotifications",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-audio",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entitlementpolicies",
+    feature = "globalcommsnotificationparams",
+    feature = "grips",
+    feature = "missionbroker",
+    feature = "missiongiver",
+    feature = "ui-buildingblocks"
+))]
+impl crate::RecordLookup for Grip {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.grip.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "hardwaremouse")]
+impl crate::RecordLookup for HardwareMouseParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.hardwaremouse.hardware_mouse_params.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "contracts",
+    feature = "initialdamageoverrides",
+    feature = "missionbroker"
+))]
+impl crate::RecordLookup for InitialDamageOverride {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .initial_damage_override
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actorhealthcomponent",
+    feature = "actorhealthcomponent-bodymapping",
+    feature = "actorhealthcomponent-healthconfig",
+    feature = "actorhealthcomponent-healthtemplate_ai",
+    feature = "actorhealthcomponent-healthtemplate_ai_juggernaut",
+    feature = "actorhealthcomponent-healthtemplate_invulnerable",
+    feature = "actorhealthcomponent-healthtemplate_kopion",
+    feature = "actorhealthcomponent-healthtemplate_player",
+    feature = "actorhealthcomponent-healthtemplate_powersuit",
+    feature = "actorhealthcomponent-healthtemplate_powersuit_combat",
+    feature = "actorhealthcomponent-healthtemplate_quasigrazer",
+    feature = "actorhealthcomponent-healthtemplate_stunonly",
+    feature = "actorhealthcomponent-healthtemplate_vanduul",
+    feature = "actorhealthcomponent-healthtemplate_vlk",
+    feature = "actorhealthcomponent-healthtemplate_vlk_irridiatated",
+    feature = "actorhealthcomponent-healthtemplate_vlk_irridiatated_apex",
+    feature = "actorhealthcomponent-healthtemplate_vlk_nonapex",
+    feature = "actorhealthcomponent-healthtemplate_yormandi",
+    feature = "actorstatuscomponent",
+    feature = "actorstatuscomponent-playerstatusai_unconscious_rescuemission",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_irridatated",
+    feature = "actorstatuscomponent-playerstatuspu",
+    feature = "aiwavecollection",
+    feature = "commsnotifications",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-audio",
+    feature = "entities-basebuilding",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-scitem-characters",
+    feature = "entities-scitem-doors",
+    feature = "entities-scitem-itembanks",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-shopdisplays",
+    feature = "entities-scitem-usables",
+    feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a_extractonly",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entitlementpolicies",
+    feature = "factions",
+    feature = "gamemode",
+    feature = "globalcommsnotificationparams",
+    feature = "harvestable",
+    feature = "journalentry",
+    feature = "level",
+    feature = "loadoutkits",
+    feature = "megamap",
+    feature = "missionbroker",
+    feature = "missiongiver",
+    feature = "player",
+    feature = "reputation",
+    feature = "sglobalhealingbeamparams",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs"
+))]
+impl crate::RecordLookup for BodyPart {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.body_part.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actorhealthcomponent",
+    feature = "actorhealthcomponent-bodymapping",
+    feature = "actorhealthcomponent-healthtemplate_ai",
+    feature = "actorhealthcomponent-healthtemplate_ai_juggernaut",
+    feature = "actorhealthcomponent-healthtemplate_invulnerable",
+    feature = "actorhealthcomponent-healthtemplate_kopion",
+    feature = "actorhealthcomponent-healthtemplate_player",
+    feature = "actorhealthcomponent-healthtemplate_powersuit",
+    feature = "actorhealthcomponent-healthtemplate_powersuit_combat",
+    feature = "actorhealthcomponent-healthtemplate_quasigrazer",
+    feature = "actorhealthcomponent-healthtemplate_stunonly",
+    feature = "actorhealthcomponent-healthtemplate_vanduul",
+    feature = "actorhealthcomponent-healthtemplate_vlk",
+    feature = "actorhealthcomponent-healthtemplate_vlk_irridiatated",
+    feature = "actorhealthcomponent-healthtemplate_vlk_irridiatated_apex",
+    feature = "actorhealthcomponent-healthtemplate_vlk_nonapex",
+    feature = "actorhealthcomponent-healthtemplate_yormandi",
+    feature = "aiwavecollection",
+    feature = "commsnotifications",
+    feature = "contracts",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-audio",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entitlementpolicies",
+    feature = "globalcommsnotificationparams",
+    feature = "harvestable",
+    feature = "missionbroker",
+    feature = "missiongiver",
+    feature = "ui-buildingblocks"
+))]
+impl crate::RecordLookup for BodyMapping {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.body_mapping.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actorhealthcomponent",
+    feature = "actorhealthcomponent-healthconfig",
+    feature = "actorhealthcomponent-healthtemplate_ai",
+    feature = "actorhealthcomponent-healthtemplate_ai_juggernaut",
+    feature = "actorhealthcomponent-healthtemplate_invulnerable",
+    feature = "actorhealthcomponent-healthtemplate_kopion",
+    feature = "actorhealthcomponent-healthtemplate_player",
+    feature = "actorhealthcomponent-healthtemplate_powersuit",
+    feature = "actorhealthcomponent-healthtemplate_powersuit_combat",
+    feature = "actorhealthcomponent-healthtemplate_quasigrazer",
+    feature = "actorhealthcomponent-healthtemplate_stunonly",
+    feature = "actorhealthcomponent-healthtemplate_vanduul",
+    feature = "actorhealthcomponent-healthtemplate_vlk",
+    feature = "actorhealthcomponent-healthtemplate_vlk_irridiatated",
+    feature = "actorhealthcomponent-healthtemplate_vlk_irridiatated_apex",
+    feature = "actorhealthcomponent-healthtemplate_vlk_nonapex",
+    feature = "actorhealthcomponent-healthtemplate_yormandi",
+    feature = "aiwavecollection",
+    feature = "commsnotifications",
+    feature = "contracts",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-audio",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entitlementpolicies",
+    feature = "globalcommsnotificationparams",
+    feature = "harvestable",
+    feature = "missionbroker",
+    feature = "missiongiver",
+    feature = "ui-buildingblocks"
+))]
+impl crate::RecordLookup for BodyHealthConfig {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.body_health_config.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actorhealthcomponent",
+    feature = "actorhealthcomponent-healthtemplate_ai",
+    feature = "actorhealthcomponent-healthtemplate_ai_juggernaut",
+    feature = "actorhealthcomponent-healthtemplate_invulnerable",
+    feature = "actorhealthcomponent-healthtemplate_kopion",
+    feature = "actorhealthcomponent-healthtemplate_player",
+    feature = "actorhealthcomponent-healthtemplate_powersuit",
+    feature = "actorhealthcomponent-healthtemplate_powersuit_combat",
+    feature = "actorhealthcomponent-healthtemplate_quasigrazer",
+    feature = "actorhealthcomponent-healthtemplate_stunonly",
+    feature = "actorhealthcomponent-healthtemplate_vanduul",
+    feature = "actorhealthcomponent-healthtemplate_vlk",
+    feature = "actorhealthcomponent-healthtemplate_vlk_irridiatated",
+    feature = "actorhealthcomponent-healthtemplate_vlk_irridiatated_apex",
+    feature = "actorhealthcomponent-healthtemplate_vlk_nonapex",
+    feature = "actorhealthcomponent-healthtemplate_yormandi",
+    feature = "aiwavecollection",
+    feature = "commsnotifications",
+    feature = "contracts",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-audio",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entitlementpolicies",
+    feature = "globalcommsnotificationparams",
+    feature = "harvestable",
+    feature = "missionbroker",
+    feature = "missiongiver",
+    feature = "ui-buildingblocks"
+))]
+impl crate::RecordLookup for HealthTemplate {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.health_template.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "entities-hint",
+    feature = "entities-scitem-atc",
+    feature = "entities-scitem-atc_datamanager",
+    feature = "entities-scitem-atc_datamanager_outpostplatinumbay",
+    feature = "entities-scitem-atc_datamanager_port_lawful",
+    feature = "entities-scitem-atc_datamanager_port_semilawful",
+    feature = "entities-scitem-atc_datamanager_port_unlawful",
+    feature = "entities-scitem-human",
+    feature = "hints"
+))]
+impl crate::RecordLookup for HintUIData {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.hint_uidata.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "entities-hint",
+    feature = "entities-scitem-atc",
+    feature = "entities-scitem-atc_datamanager",
+    feature = "entities-scitem-atc_datamanager_outpostplatinumbay",
+    feature = "entities-scitem-atc_datamanager_port_lawful",
+    feature = "entities-scitem-atc_datamanager_port_semilawful",
+    feature = "entities-scitem-atc_datamanager_port_unlawful",
+    feature = "entities-scitem-human",
+    feature = "hints"
+))]
+impl crate::RecordLookup for HintTriggerData {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.hint_trigger_data.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "sglobalhitbehaviorparams")]
+impl crate::RecordLookup for SGlobalHitBehaviorParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .sglobalhitbehaviorparams
+            .sglobal_hit_behavior_params
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "rastar")]
+impl crate::RecordLookup for HologramParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.rastar.hologram_params.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "ui-innerthought",
+    feature = "ui-playerchoice_imconfig_playerchoiceim",
+    feature = "ui-uiconfig_starcitizen"
+))]
+impl crate::RecordLookup for InnerThought_Anim {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.inner_thought_anim.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actorstatuscomponent",
+    feature = "actorstatuscomponent-globalactorstatusparams",
+    feature = "actorstatuscomponent-medicaltieritemconfig",
+    feature = "actorstatuscomponent-playerstatus",
+    feature = "actorstatuscomponent-playerstatus_aiboss",
+    feature = "actorstatuscomponent-playerstatus_aibosssuper",
+    feature = "actorstatuscomponent-playerstatusai",
+    feature = "actorstatuscomponent-playerstatusai_captain",
+    feature = "actorstatuscomponent-playerstatusai_elite",
+    feature = "actorstatuscomponent-playerstatusai_juggernaut",
+    feature = "actorstatuscomponent-playerstatusai_unconscious_rescuemission",
+    feature = "actorstatuscomponent-playerstatusai_vanduul",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_stormbreaker",
+    feature = "actorstatuscomponent-playerstatusai_yormandi",
+    feature = "actorstatuscomponent-playerstatuscorpse",
+    feature = "actorstatuscomponent-playerstatuscreature",
+    feature = "actorstatuscomponent-playerstatusea",
+    feature = "actorstatuscomponent-playerstatuspu",
+    feature = "actorstatuscomponent-powersuitstatus",
+    feature = "actorstatuscomponent-powersuitstatus_combat",
+    feature = "actorstatuscomponent-transportstatus",
+    feature = "aiwavecollection",
+    feature = "ammobox",
+    feature = "ammoparams",
+    feature = "areaservices",
+    feature = "cargomanifest",
+    feature = "commsnotifications",
+    feature = "commsnotificationstages",
+    feature = "communicationsystem",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "crewmanifest",
+    feature = "entities-animatedcharacterstatue_kopion",
+    feature = "entities-animatedcharacterstatue_marok",
+    feature = "entities-animentity_character",
+    feature = "entities-area",
+    feature = "entities-audio",
+    feature = "entities-basebuilding",
+    feature = "entities-booth_table_centered_seats",
+    feature = "entities-carryable_damage_sensitive_canister",
+    feature = "entities-cinematiclabelwithvehicle",
+    feature = "entities-commodities",
+    feature = "entities-decorations",
+    feature = "entities-destruction",
+    feature = "entities-dev",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-haulingentityclass",
+    feature = "entities-ht_table_bar_1_a",
+    feature = "entities-mineable",
+    feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-scitem-actormovables",
+    feature = "entities-scitem-atc",
+    feature = "entities-scitem-cargo",
+    feature = "entities-scitem-carryables",
+    feature = "entities-scitem-characters",
+    feature = "entities-scitem-consumables",
+    feature = "entities-scitem-default_lensdisplay",
+    feature = "entities-scitem-default_lensdisplay_pu",
+    feature = "entities-scitem-doors",
+    feature = "entities-scitem-externalinventory",
+    feature = "entities-scitem-fauna",
+    feature = "entities-scitem-flair",
+    feature = "entities-scitem-fps_devices",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-harvestables",
+    feature = "entities-scitem-human",
+    feature = "entities-scitem-itembanks",
+    feature = "entities-scitem-locations",
+    feature = "entities-scitem-lootables",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-missionstorage",
+    feature = "entities-scitem-orbgn",
+    feature = "entities-scitem-prop",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-shopdisplays",
+    feature = "entities-scitem-spawers",
+    feature = "entities-scitem-starmarine",
+    feature = "entities-scitem-storage",
+    feature = "entities-scitem-suit",
+    feature = "entities-scitem-template",
+    feature = "entities-scitem-usables",
+    feature = "entities-scitem-vehicles",
+    feature = "entities-scitem-weaponmounts",
+    feature = "entities-scitem-weapons",
+    feature = "entities-slotspawnpoint",
+    feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a_extractonly",
+    feature = "entities-spaceships",
+    feature = "entities-table_booth_circularbar_direct_8_seat",
+    feature = "entities-table_booth_utilitarian_4_seat",
+    feature = "entities-test",
+    feature = "entities-ui",
+    feature = "entitlementpolicies",
+    feature = "factions",
+    feature = "fuelparams",
+    feature = "gamemode",
+    feature = "globalcommsnotificationparams",
+    feature = "globalshopparams",
+    feature = "harvestable",
+    feature = "instancedinterior",
+    feature = "interactionconditions",
+    feature = "inventorycontainers",
+    feature = "item",
+    feature = "itemresourcenetwork",
+    feature = "journalentry",
+    feature = "lawsystem",
+    feature = "level",
+    feature = "loadoutkits",
+    feature = "lootgeneration",
+    feature = "megamap",
+    feature = "mining",
+    feature = "missionbroker",
+    feature = "missiondata",
+    feature = "missiongiver",
+    feature = "missionscenarios",
+    feature = "player",
+    feature = "playerchoicemenuitems",
+    feature = "playerchoicemenutypes",
+    feature = "reputation",
+    feature = "resourcetypedatabase",
+    feature = "sglobalsalvagerepairbeamparams",
+    feature = "ssolarsystem",
+    feature = "starmap",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs",
+    feature = "ui-innerthought",
+    feature = "ui-mobiglas",
+    feature = "ui-playerchoice_imconfig_playerchoiceim",
+    feature = "ui-playerchoice_pitconfig_playerchoicepersonalthought",
+    feature = "ui-uiconfig_starcitizen"
+))]
+impl crate::RecordLookup for InnerThought_ColorParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .inner_thought_color_params
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "ui-areamap",
+    feature = "ui-buildingblocks",
+    feature = "ui-uiconfig_starcitizen"
+))]
+impl crate::RecordLookup for GeomFont_Config {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.geom_font_config.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "ui-innerthought",
+    feature = "ui-playerchoice_imconfig_playerchoiceim",
+    feature = "ui-uiconfig_starcitizen"
+))]
+impl crate::RecordLookup for InnerThought_Params {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.inner_thought_params.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "ui-innerthought",
+    feature = "ui-playerchoice_imconfig_playerchoiceim",
+    feature = "ui-uiconfig_starcitizen"
+))]
+impl crate::RecordLookup for InnerThought_ConversationSystemConfig {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .inner_thought_conversation_system_config
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "ui-innerthought",
+    feature = "ui-playerchoice_imconfig_playerchoiceim",
+    feature = "ui-uiconfig_starcitizen"
+))]
+impl crate::RecordLookup for InnerThought_InteractionSystemConfig {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .inner_thought_interaction_system_config
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "ui-innerthought")]
+impl crate::RecordLookup for InnerThought_LegacyUseSystemConfig {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .ui_innerthought
+            .inner_thought_legacy_use_system_config
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(feature = "inputpromptconfig", feature = "qteconfigs"))]
+impl crate::RecordLookup for InputPromptConfig {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.input_prompt_config.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "qteconfigs")]
+impl crate::RecordLookup for QTERequestConfig {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.qteconfigs.qterequest_config.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "instancedinterior")]
+impl crate::RecordLookup for InstancedInteriorLocationParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .instancedinterior
+            .instanced_interior_location_params
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "instancedinterior")]
+impl crate::RecordLookup for InstancedInteriorLocationMap {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .instancedinterior
+            .instanced_interior_location_map
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "globalinteractionparams")]
+impl crate::RecordLookup for SkinInteractableTemplates {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .globalinteractionparams
+            .skin_interactable_templates
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actorstatuscomponent",
+    feature = "actorstatuscomponent-globalactorstatusparams",
+    feature = "actorstatuscomponent-medicaltieritemconfig",
+    feature = "actorstatuscomponent-playerstatus",
+    feature = "actorstatuscomponent-playerstatus_aiboss",
+    feature = "actorstatuscomponent-playerstatus_aibosssuper",
+    feature = "actorstatuscomponent-playerstatusai",
+    feature = "actorstatuscomponent-playerstatusai_captain",
+    feature = "actorstatuscomponent-playerstatusai_elite",
+    feature = "actorstatuscomponent-playerstatusai_juggernaut",
+    feature = "actorstatuscomponent-playerstatusai_unconscious_rescuemission",
+    feature = "actorstatuscomponent-playerstatusai_vanduul",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_stormbreaker",
+    feature = "actorstatuscomponent-playerstatusai_yormandi",
+    feature = "actorstatuscomponent-playerstatuscorpse",
+    feature = "actorstatuscomponent-playerstatuscreature",
+    feature = "actorstatuscomponent-playerstatusea",
+    feature = "actorstatuscomponent-playerstatuspu",
+    feature = "actorstatuscomponent-powersuitstatus",
+    feature = "actorstatuscomponent-powersuitstatus_combat",
+    feature = "actorstatuscomponent-transportstatus",
+    feature = "aiwavecollection",
+    feature = "ammobox",
+    feature = "ammoparams",
+    feature = "areaservices",
+    feature = "cargomanifest",
+    feature = "commsnotifications",
+    feature = "commsnotificationstages",
+    feature = "communicationsystem",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "crewmanifest",
+    feature = "entities-animatedcharacterstatue_kopion",
+    feature = "entities-animatedcharacterstatue_marok",
+    feature = "entities-animentity_character",
+    feature = "entities-area",
+    feature = "entities-audio",
+    feature = "entities-basebuilding",
+    feature = "entities-booth_table_centered_seats",
+    feature = "entities-carryable_damage_sensitive_canister",
+    feature = "entities-cinematiclabelwithvehicle",
+    feature = "entities-commodities",
+    feature = "entities-decorations",
+    feature = "entities-destruction",
+    feature = "entities-dev",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-haulingentityclass",
+    feature = "entities-ht_table_bar_1_a",
+    feature = "entities-mineable",
+    feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-scitem-actormovables",
+    feature = "entities-scitem-atc",
+    feature = "entities-scitem-cargo",
+    feature = "entities-scitem-carryables",
+    feature = "entities-scitem-characters",
+    feature = "entities-scitem-consumables",
+    feature = "entities-scitem-default_lensdisplay",
+    feature = "entities-scitem-default_lensdisplay_pu",
+    feature = "entities-scitem-doors",
+    feature = "entities-scitem-externalinventory",
+    feature = "entities-scitem-fauna",
+    feature = "entities-scitem-flair",
+    feature = "entities-scitem-fps_devices",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-harvestables",
+    feature = "entities-scitem-human",
+    feature = "entities-scitem-itembanks",
+    feature = "entities-scitem-locations",
+    feature = "entities-scitem-lootables",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-missionstorage",
+    feature = "entities-scitem-prop",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-shopdisplays",
+    feature = "entities-scitem-spawers",
+    feature = "entities-scitem-starmarine",
+    feature = "entities-scitem-suit",
+    feature = "entities-scitem-template",
+    feature = "entities-scitem-usables",
+    feature = "entities-scitem-vehicles",
+    feature = "entities-scitem-weaponmounts",
+    feature = "entities-scitem-weapons",
+    feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a_extractonly",
+    feature = "entities-spaceships",
+    feature = "entities-table_booth_circularbar_direct_8_seat",
+    feature = "entities-table_booth_utilitarian_4_seat",
+    feature = "entities-test",
+    feature = "entities-ui",
+    feature = "entitlementpolicies",
+    feature = "factions",
+    feature = "fuelparams",
+    feature = "gamemode",
+    feature = "globalcommsnotificationparams",
+    feature = "globalshopparams",
+    feature = "harvestable",
+    feature = "instancedinterior",
+    feature = "interactionconditions",
+    feature = "inventorycontainers",
+    feature = "item",
+    feature = "itemresourcenetwork",
+    feature = "journalentry",
+    feature = "lawsystem",
+    feature = "level",
+    feature = "loadoutkits",
+    feature = "lootgeneration",
+    feature = "megamap",
+    feature = "mining",
+    feature = "missionbroker",
+    feature = "missiondata",
+    feature = "missiongiver",
+    feature = "missionscenarios",
+    feature = "player",
+    feature = "playerchoicemenuitems",
+    feature = "playerchoicemenutypes",
+    feature = "reputation",
+    feature = "resourcetypedatabase",
+    feature = "sglobalsalvagerepairbeamparams",
+    feature = "ssolarsystem",
+    feature = "starmap",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs",
+    feature = "ui-mobiglas",
+    feature = "ui-playerchoice_pitconfig_playerchoicepersonalthought",
+    feature = "ui-uiconfig_starcitizen"
+))]
+impl crate::RecordLookup for InteractionConditionPreset {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .interaction_condition_preset
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actorstatuscomponent",
+    feature = "actorstatuscomponent-globalactorstatusparams",
+    feature = "actorstatuscomponent-medicaltieritemconfig",
+    feature = "actorstatuscomponent-playerstatus",
+    feature = "actorstatuscomponent-playerstatus_aiboss",
+    feature = "actorstatuscomponent-playerstatus_aibosssuper",
+    feature = "actorstatuscomponent-playerstatusai",
+    feature = "actorstatuscomponent-playerstatusai_captain",
+    feature = "actorstatuscomponent-playerstatusai_elite",
+    feature = "actorstatuscomponent-playerstatusai_juggernaut",
+    feature = "actorstatuscomponent-playerstatusai_unconscious_rescuemission",
+    feature = "actorstatuscomponent-playerstatusai_vanduul",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_stormbreaker",
+    feature = "actorstatuscomponent-playerstatusai_yormandi",
+    feature = "actorstatuscomponent-playerstatuscorpse",
+    feature = "actorstatuscomponent-playerstatuscreature",
+    feature = "actorstatuscomponent-playerstatusea",
+    feature = "actorstatuscomponent-playerstatuspu",
+    feature = "actorstatuscomponent-powersuitstatus",
+    feature = "actorstatuscomponent-powersuitstatus_combat",
+    feature = "actorstatuscomponent-transportstatus",
+    feature = "aiwavecollection",
+    feature = "ammoparams",
+    feature = "areaservices",
+    feature = "cargomanifest",
+    feature = "commsnotifications",
+    feature = "communicationsystem",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-area",
+    feature = "entities-audio",
+    feature = "entities-cinematiclabelwithvehicle",
+    feature = "entities-commodities",
+    feature = "entities-dev",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-haulingentityclass",
+    feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-scitem-atc",
+    feature = "entities-scitem-cargo",
+    feature = "entities-scitem-carryables",
+    feature = "entities-scitem-characters",
+    feature = "entities-scitem-default_lensdisplay",
+    feature = "entities-scitem-default_lensdisplay_pu",
+    feature = "entities-scitem-doors",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-human",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-missionstorage",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-shopdisplays",
+    feature = "entities-scitem-spawers",
+    feature = "entities-scitem-suit",
+    feature = "entities-scitem-usables",
+    feature = "entities-scitem-weapons",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entities-ui",
+    feature = "entitlementpolicies",
+    feature = "factions",
+    feature = "fuelparams",
+    feature = "gamemode",
+    feature = "globalcommsnotificationparams",
+    feature = "globalinventoryparams",
+    feature = "globalshopparams",
+    feature = "harvestable",
+    feature = "instancedinterior",
+    feature = "inventorycontainers",
+    feature = "item",
+    feature = "itemresourcenetwork",
+    feature = "journalentry",
+    feature = "lawsystem",
+    feature = "level",
+    feature = "loadoutkits",
+    feature = "megamap",
+    feature = "missionbroker",
+    feature = "missiondata",
+    feature = "missiongiver",
+    feature = "player",
+    feature = "reputation",
+    feature = "resourcetypedatabase",
+    feature = "sglobalsalvagerepairbeamparams",
+    feature = "ssolarsystem",
+    feature = "starmap",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs",
+    feature = "ui-mobiglas"
+))]
+impl crate::RecordLookup for InteractionPointTemplate {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .interaction_point_template
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "inventorycontainers")]
+impl crate::RecordLookup for InventoryContainerManager {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .inventorycontainers
+            .inventory_container_manager
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actorstatuscomponent",
+    feature = "actorstatuscomponent-globalactorstatusparams",
+    feature = "actorstatuscomponent-medicaltieritemconfig",
+    feature = "actorstatuscomponent-playerstatus",
+    feature = "actorstatuscomponent-playerstatus_aiboss",
+    feature = "actorstatuscomponent-playerstatus_aibosssuper",
+    feature = "actorstatuscomponent-playerstatusai",
+    feature = "actorstatuscomponent-playerstatusai_captain",
+    feature = "actorstatuscomponent-playerstatusai_elite",
+    feature = "actorstatuscomponent-playerstatusai_juggernaut",
+    feature = "actorstatuscomponent-playerstatusai_unconscious_rescuemission",
+    feature = "actorstatuscomponent-playerstatusai_vanduul",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_stormbreaker",
+    feature = "actorstatuscomponent-playerstatusai_yormandi",
+    feature = "actorstatuscomponent-playerstatuscorpse",
+    feature = "actorstatuscomponent-playerstatuscreature",
+    feature = "actorstatuscomponent-playerstatusea",
+    feature = "actorstatuscomponent-playerstatuspu",
+    feature = "actorstatuscomponent-powersuitstatus",
+    feature = "actorstatuscomponent-powersuitstatus_combat",
+    feature = "actorstatuscomponent-transportstatus",
+    feature = "aiwavecollection",
+    feature = "ammoparams",
+    feature = "areaservices",
+    feature = "cargomanifest",
+    feature = "commsnotifications",
+    feature = "communicationsystem",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-area",
+    feature = "entities-audio",
+    feature = "entities-basebuilding",
+    feature = "entities-cinematiclabelwithvehicle",
+    feature = "entities-commodities",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-haulingentityclass",
+    feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-salvagable",
+    feature = "entities-scarmorymanager",
+    feature = "entities-scitem-actormovables",
+    feature = "entities-scitem-atc",
+    feature = "entities-scitem-cargo",
+    feature = "entities-scitem-carryables",
+    feature = "entities-scitem-characters",
+    feature = "entities-scitem-default_lensdisplay",
+    feature = "entities-scitem-default_lensdisplay_pu",
+    feature = "entities-scitem-doors",
+    feature = "entities-scitem-externalinventory",
+    feature = "entities-scitem-freightelevators",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-human",
+    feature = "entities-scitem-itembanks",
+    feature = "entities-scitem-lootables",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-missionstorage",
+    feature = "entities-scitem-prop",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-shopdisplays",
+    feature = "entities-scitem-spawers",
+    feature = "entities-scitem-storage",
+    feature = "entities-scitem-suit",
+    feature = "entities-scitem-usables",
+    feature = "entities-scitem-vehicles",
+    feature = "entities-scitem-weapons",
+    feature = "entities-slotspawnpoint",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entities-ui",
+    feature = "entitlementpolicies",
+    feature = "factions",
+    feature = "fuelparams",
+    feature = "gamemode",
+    feature = "globalcommsnotificationparams",
+    feature = "globalshopparams",
+    feature = "harvestable",
+    feature = "instancedinterior",
+    feature = "inventorycontainers",
+    feature = "item",
+    feature = "itemresourcenetwork",
+    feature = "journalentry",
+    feature = "lawsystem",
+    feature = "level",
+    feature = "loadoutkits",
+    feature = "megamap",
+    feature = "missionbroker",
+    feature = "missiondata",
+    feature = "missiongiver",
+    feature = "player",
+    feature = "reputation",
+    feature = "resourcetypedatabase",
+    feature = "sglobalsalvagerepairbeamparams",
+    feature = "ssolarsystem",
+    feature = "starmap",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs",
+    feature = "ui-mobiglas"
+))]
+impl crate::RecordLookup for InventoryContainer {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.inventory_container.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "entitlementpolicies",
+    feature = "inventorycontainers",
+    feature = "megamap",
+    feature = "player",
+    feature = "ssolarsystem"
+))]
+impl crate::RecordLookup for LandingZoneInventory {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .landing_zone_inventory
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "item")]
+impl crate::RecordLookup for Item {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.item.item.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "entities-scitem-human",
+    feature = "entities-shopkiosk",
+    feature = "ui-itemkiosk"
+))]
+impl crate::RecordLookup for ItemKioskBrand {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.item_kiosk_brand.get(guid).copied()
+    }
+}
+
+#[cfg(any(feature = "item", feature = "itemporttagsdictionary"))]
+impl crate::RecordLookup for ItemPortTagsDictionary {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .item_port_tags_dictionary
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(feature = "item", feature = "itemresourcenetwork"))]
+impl crate::RecordLookup for ItemResourceNetworkGlobal {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .item_resource_network_global
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "communicationsystem",
+    feature = "contracts",
+    feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-scitem-human",
+    feature = "entities-scitem-mission_entities",
+    feature = "entitlementpolicies",
+    feature = "gamemode",
+    feature = "instancedinterior",
+    feature = "inventorycontainers",
+    feature = "journalentry",
+    feature = "journalentrytype",
+    feature = "lawsystem",
+    feature = "level",
+    feature = "megamap",
+    feature = "missionbroker",
+    feature = "missiondata",
+    feature = "player",
+    feature = "ssolarsystem",
+    feature = "starmap"
+))]
+impl crate::RecordLookup for JournalEntryType {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.journal_entry_type.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "communicationsystem",
+    feature = "contracts",
+    feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-scitem-human",
+    feature = "entities-scitem-mission_entities",
+    feature = "entitlementpolicies",
+    feature = "gamemode",
+    feature = "instancedinterior",
+    feature = "inventorycontainers",
+    feature = "journalentry",
+    feature = "lawsystem",
+    feature = "level",
+    feature = "megamap",
+    feature = "missionbroker",
+    feature = "missiondata",
+    feature = "player",
+    feature = "ssolarsystem",
+    feature = "starmap"
+))]
+impl crate::RecordLookup for JournalEntry {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.journal_entry.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actor-creaturejumpfalllandflow",
+    feature = "actor-npcjumpfalllandflow",
+    feature = "actor-playerjumpfallandflow",
+    feature = "actor-transportjumpfallandflow",
+    feature = "aiwavecollection",
+    feature = "commsnotifications",
+    feature = "contracts",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-audio",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entitlementpolicies",
+    feature = "globalcommsnotificationparams",
+    feature = "harvestable",
+    feature = "missionbroker",
+    feature = "missiongiver",
+    feature = "ui-buildingblocks"
+))]
+impl crate::RecordLookup for JumpFallLandConfig {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.jump_fall_land_config.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "jumppoints")]
+impl crate::RecordLookup for GlobalJumpPointParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.jumppoints.global_jump_point_params.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "jumppoints")]
+impl crate::RecordLookup for GlobalJumpTunnelHostParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .jumppoints
+            .global_jump_tunnel_host_params
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "aiwavecollection",
+    feature = "contracts",
+    feature = "entities-cinematiclabelwithvehicle",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-haulingentityclass",
+    feature = "entities-scitem-default_lensdisplay",
+    feature = "entities-scitem-default_lensdisplay_pu",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-missionstorage",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-suit",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entities-ui",
+    feature = "entitlementpolicies",
+    feature = "missionbroker",
+    feature = "player",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs",
+    feature = "ui-mobiglas"
+))]
+impl crate::RecordLookup for JumpDriveFlightParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .jump_drive_flight_params
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "aiwavecollection",
+    feature = "contracts",
+    feature = "entities-cinematiclabelwithvehicle",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-haulingentityclass",
+    feature = "entities-scitem-default_lensdisplay",
+    feature = "entities-scitem-default_lensdisplay_pu",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-missionstorage",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-suit",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entities-ui",
+    feature = "entitlementpolicies",
+    feature = "missionbroker",
+    feature = "player",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs",
+    feature = "ui-mobiglas"
+))]
+impl crate::RecordLookup for JumpTunnelForcesParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .jump_tunnel_forces_params
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "jumppoints")]
+impl crate::RecordLookup for GlobalJumpDriveParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.jumppoints.global_jump_drive_params.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "jumppoints")]
+impl crate::RecordLookup for JumpTravelCameraParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .jumppoints
+            .jump_travel_camera_params
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "aiwavecollection",
+    feature = "areaservices",
+    feature = "contracts",
+    feature = "entities-area",
+    feature = "entities-scitem-atc",
+    feature = "entities-spaceships",
+    feature = "entitlementpolicies"
+))]
+impl crate::RecordLookup for AreaServices {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.area_services.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "globalcargoloadingparams")]
+impl crate::RecordLookup for GlobalCargoLoadingParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .globalcargoloadingparams
+            .global_cargo_loading_params
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "entities-jumppoints",
+    feature = "entities-scitem-atc",
+    feature = "entities-scitem-atc_datamanager",
+    feature = "landingpadsize"
+))]
+impl crate::RecordLookup for LandingPadSize {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.landing_pad_size.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "communicationsystem",
+    feature = "contracts",
+    feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-usables",
+    feature = "entitlementpolicies",
+    feature = "gamemode",
+    feature = "instancedinterior",
+    feature = "inventorycontainers",
+    feature = "journalentry",
+    feature = "lawsystem",
+    feature = "level",
+    feature = "megamap",
+    feature = "missionbroker",
+    feature = "missiondata",
+    feature = "player",
+    feature = "reputation",
+    feature = "ssolarsystem",
+    feature = "starmap"
+))]
+impl crate::RecordLookup for InfractionDefinition {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.infraction_definition.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "aiwavecollection",
+    feature = "cargomanifest",
+    feature = "communicationsystem",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "entities-destruction",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-haulingentityclass",
+    feature = "entities-mineable",
+    feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-scitem-carryables",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-ships",
+    feature = "entities-spaceships",
+    feature = "entitlementpolicies",
+    feature = "gamemode",
+    feature = "harvestable",
+    feature = "instancedinterior",
+    feature = "inventorycontainers",
+    feature = "journalentry",
+    feature = "lawsystem",
+    feature = "level",
+    feature = "megamap",
+    feature = "mining",
+    feature = "missionbroker",
+    feature = "missiondata",
+    feature = "missionscenarios",
+    feature = "player",
+    feature = "resourcetypedatabase",
+    feature = "ssolarsystem",
+    feature = "starmap"
+))]
+impl crate::RecordLookup for Jurisdiction {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.jurisdiction.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actorstatuscomponent",
+    feature = "actorstatuscomponent-globalactorstatusparams",
+    feature = "actorstatuscomponent-medicaltieritemconfig",
+    feature = "actorstatuscomponent-playerstatus",
+    feature = "actorstatuscomponent-playerstatus_aiboss",
+    feature = "actorstatuscomponent-playerstatus_aibosssuper",
+    feature = "actorstatuscomponent-playerstatusai",
+    feature = "actorstatuscomponent-playerstatusai_captain",
+    feature = "actorstatuscomponent-playerstatusai_elite",
+    feature = "actorstatuscomponent-playerstatusai_juggernaut",
+    feature = "actorstatuscomponent-playerstatusai_unconscious_rescuemission",
+    feature = "actorstatuscomponent-playerstatusai_vanduul",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_stormbreaker",
+    feature = "actorstatuscomponent-playerstatusai_yormandi",
+    feature = "actorstatuscomponent-playerstatuscorpse",
+    feature = "actorstatuscomponent-playerstatuscreature",
+    feature = "actorstatuscomponent-playerstatusea",
+    feature = "actorstatuscomponent-playerstatuspu",
+    feature = "actorstatuscomponent-powersuitstatus",
+    feature = "actorstatuscomponent-powersuitstatus_combat",
+    feature = "actorstatuscomponent-transportstatus",
+    feature = "aiwavecollection",
+    feature = "ammoparams",
+    feature = "areaservices",
+    feature = "cargomanifest",
+    feature = "commsnotifications",
+    feature = "communicationsystem",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-area",
+    feature = "entities-audio",
+    feature = "entities-cinematiclabelwithvehicle",
+    feature = "entities-commodities",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-haulingentityclass",
+    feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-scitem-atc",
+    feature = "entities-scitem-cargo",
+    feature = "entities-scitem-carryables",
+    feature = "entities-scitem-characters",
+    feature = "entities-scitem-default_lensdisplay",
+    feature = "entities-scitem-default_lensdisplay_pu",
+    feature = "entities-scitem-doors",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-human",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-missionstorage",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-shopdisplays",
+    feature = "entities-scitem-spawers",
+    feature = "entities-scitem-suit",
+    feature = "entities-scitem-usables",
+    feature = "entities-scitem-weapons",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entities-ui",
+    feature = "entitlementpolicies",
+    feature = "factions",
+    feature = "fuelparams",
+    feature = "gamemode",
+    feature = "globalcommsnotificationparams",
+    feature = "globalshopparams",
+    feature = "harvestable",
+    feature = "instancedinterior",
+    feature = "inventorycontainers",
+    feature = "item",
+    feature = "itemresourcenetwork",
+    feature = "journalentry",
+    feature = "lawsystem",
+    feature = "level",
+    feature = "loadoutkits",
+    feature = "megamap",
+    feature = "missionbroker",
+    feature = "missiondata",
+    feature = "missiongiver",
+    feature = "player",
+    feature = "reputation",
+    feature = "resourcetypedatabase",
+    feature = "sglobalsalvagerepairbeamparams",
+    feature = "ssolarsystem",
+    feature = "starmap",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs",
+    feature = "ui-mobiglas",
+    feature = "vehicle"
+))]
+impl crate::RecordLookup for VehicleSerialNumberCharacterType {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .vehicle_serial_number_character_type
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actorstatuscomponent",
+    feature = "actorstatuscomponent-globalactorstatusparams",
+    feature = "actorstatuscomponent-medicaltieritemconfig",
+    feature = "actorstatuscomponent-playerstatus",
+    feature = "actorstatuscomponent-playerstatus_aiboss",
+    feature = "actorstatuscomponent-playerstatus_aibosssuper",
+    feature = "actorstatuscomponent-playerstatusai",
+    feature = "actorstatuscomponent-playerstatusai_captain",
+    feature = "actorstatuscomponent-playerstatusai_elite",
+    feature = "actorstatuscomponent-playerstatusai_juggernaut",
+    feature = "actorstatuscomponent-playerstatusai_unconscious_rescuemission",
+    feature = "actorstatuscomponent-playerstatusai_vanduul",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_stormbreaker",
+    feature = "actorstatuscomponent-playerstatusai_yormandi",
+    feature = "actorstatuscomponent-playerstatuscorpse",
+    feature = "actorstatuscomponent-playerstatuscreature",
+    feature = "actorstatuscomponent-playerstatusea",
+    feature = "actorstatuscomponent-playerstatuspu",
+    feature = "actorstatuscomponent-powersuitstatus",
+    feature = "actorstatuscomponent-powersuitstatus_combat",
+    feature = "actorstatuscomponent-transportstatus",
+    feature = "aiwavecollection",
+    feature = "ammoparams",
+    feature = "areaservices",
+    feature = "cargomanifest",
+    feature = "commsnotifications",
+    feature = "communicationsystem",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-area",
+    feature = "entities-audio",
+    feature = "entities-cinematiclabelwithvehicle",
+    feature = "entities-commodities",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-haulingentityclass",
+    feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-scitem-atc",
+    feature = "entities-scitem-cargo",
+    feature = "entities-scitem-carryables",
+    feature = "entities-scitem-characters",
+    feature = "entities-scitem-default_lensdisplay",
+    feature = "entities-scitem-default_lensdisplay_pu",
+    feature = "entities-scitem-doors",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-human",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-missionstorage",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-shopdisplays",
+    feature = "entities-scitem-spawers",
+    feature = "entities-scitem-suit",
+    feature = "entities-scitem-usables",
+    feature = "entities-scitem-weapons",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entities-ui",
+    feature = "entitlementpolicies",
+    feature = "factions",
+    feature = "fuelparams",
+    feature = "gamemode",
+    feature = "globalcommsnotificationparams",
+    feature = "globalshopparams",
+    feature = "harvestable",
+    feature = "instancedinterior",
+    feature = "inventorycontainers",
+    feature = "item",
+    feature = "itemresourcenetwork",
+    feature = "journalentry",
+    feature = "lawsystem",
+    feature = "level",
+    feature = "loadoutkits",
+    feature = "megamap",
+    feature = "missionbroker",
+    feature = "missiondata",
+    feature = "missiongiver",
+    feature = "player",
+    feature = "reputation",
+    feature = "resourcetypedatabase",
+    feature = "sglobalsalvagerepairbeamparams",
+    feature = "ssolarsystem",
+    feature = "starmap",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs",
+    feature = "ui-mobiglas",
+    feature = "vehicle"
+))]
+impl crate::RecordLookup for VehicleSerialNumberFormat {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .vehicle_serial_number_format
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(feature = "gamemode", feature = "level", feature = "megamap"))]
+impl crate::RecordLookup for Level {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.level.get(guid).copied()
+    }
+}
+
+#[cfg(any(feature = "ui-uiconfig_starcitizen", feature = "ui-visor"))]
+impl crate::RecordLookup for VisorHUD_Config {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.visor_hud_config.get(guid).copied()
+    }
+}
+
+#[cfg(any(feature = "ui-uiconfig_starcitizen", feature = "ui-visor"))]
+impl crate::RecordLookup for Visor_ControlHintsConfig {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .visor_control_hints_config
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(feature = "ui-uiconfig_starcitizen", feature = "ui-visor"))]
+impl crate::RecordLookup for ControlHints_Preset {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.control_hints_preset.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "entitlementpolicies",
+    feature = "player",
+    feature = "playerspeedthrottle"
+))]
+impl crate::RecordLookup for LocalPlayerSpeedThrottleComponent {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .local_player_speed_throttle_component
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "longtermpersistence")]
+impl crate::RecordLookup for LongTermPersistenceGlobalParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .longtermpersistence
+            .long_term_persistence_global_params
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "aiwavecollection",
+    feature = "cargomanifest",
+    feature = "contracts",
+    feature = "crewmanifest",
+    feature = "entities-scitem-carryables",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-missionstorage",
+    feature = "entities-spaceships",
+    feature = "harvestable",
+    feature = "lootgeneration",
+    feature = "missiondata",
+    feature = "resourcetypedatabase"
+))]
+impl crate::RecordLookup for LootArchetype {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.loot_archetype.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "aiwavecollection",
+    feature = "cargomanifest",
+    feature = "contracts",
+    feature = "crewmanifest",
+    feature = "entities-scitem-carryables",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-missionstorage",
+    feature = "entities-spaceships",
+    feature = "harvestable",
+    feature = "lootgeneration",
+    feature = "missiondata",
+    feature = "resourcetypedatabase"
+))]
+impl crate::RecordLookup for LootTable {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.loot_table.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "harvestable",
+    feature = "lootgeneration"
+))]
+impl crate::RecordLookup for PoolFilterRecord {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.pool_filter_record.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "aiwavecollection",
+    feature = "crewmanifest",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-spaceships",
+    feature = "harvestable",
+    feature = "lootgeneration"
+))]
+impl crate::RecordLookup for LootTableV3Record {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.loot_table_v3_record.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "entities-scitem-mission_entities",
+    feature = "harvestable",
+    feature = "lootgeneration"
+))]
+impl crate::RecordLookup for LootArchetypeV3Record {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .loot_archetype_v3_record
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "entities-scitem-mission_entities",
+    feature = "harvestable",
+    feature = "lootgeneration"
+))]
+impl crate::RecordLookup for LootV3SecondaryChoicesSingleLayerRecord {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .loot_v3_secondary_choices_single_layer_record
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "harvestable",
+    feature = "lootgeneration"
+))]
+impl crate::RecordLookup for LootV3SecondaryChoicesMultiLayerRecord {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .loot_v3_secondary_choices_multi_layer_record
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "lootgeneration")]
+impl crate::RecordLookup for LootGenerationGlobalParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .lootgeneration
+            .loot_generation_global_params
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(feature = "ui-areamap", feature = "ui-map"))]
+impl crate::RecordLookup for InteriorMapSectionDefinition {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .interior_map_section_definition
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "aiwavecollection",
+    feature = "contracts",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-suit",
+    feature = "entities-spaceships",
+    feature = "entities-ui",
+    feature = "entitlementpolicies",
+    feature = "player",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs",
+    feature = "ui-markertrackingvolumeconfig"
+))]
+impl crate::RecordLookup for MarkerTrackingViewModeParameters {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .marker_tracking_view_mode_parameters
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "ui-markertrackingvolumeconfig")]
+impl crate::RecordLookup for MarkerTrackingCommonMapParameters {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .ui_markertrackingvolumeconfig
+            .marker_tracking_common_map_parameters
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "aiwavecollection",
+    feature = "contracts",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-scitem-default_lensdisplay",
+    feature = "entities-scitem-default_lensdisplay_pu",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-suit",
+    feature = "entities-spaceships",
+    feature = "entities-ui",
+    feature = "entitlementpolicies",
+    feature = "player",
+    feature = "ui-armarkerconfiguration",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs"
+))]
+impl crate::RecordLookup for MarkerDeclutteringCullingOrder {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .marker_decluttering_culling_order
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "ui-armarkerconfiguration")]
+impl crate::RecordLookup for GlobalMarkerConfigs {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .ui_armarkerconfiguration
+            .global_marker_configs
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actorstatuscomponent",
+    feature = "actorstatuscomponent-globalactorstatusparams",
+    feature = "actorstatuscomponent-medicaltieritemconfig",
+    feature = "actorstatuscomponent-playerstatus",
+    feature = "actorstatuscomponent-playerstatus_aiboss",
+    feature = "actorstatuscomponent-playerstatus_aibosssuper",
+    feature = "actorstatuscomponent-playerstatusai",
+    feature = "actorstatuscomponent-playerstatusai_captain",
+    feature = "actorstatuscomponent-playerstatusai_elite",
+    feature = "actorstatuscomponent-playerstatusai_juggernaut",
+    feature = "actorstatuscomponent-playerstatusai_unconscious_rescuemission",
+    feature = "actorstatuscomponent-playerstatusai_vanduul",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_stormbreaker",
+    feature = "actorstatuscomponent-playerstatusai_yormandi",
+    feature = "actorstatuscomponent-playerstatuscorpse",
+    feature = "actorstatuscomponent-playerstatuscreature",
+    feature = "actorstatuscomponent-playerstatusea",
+    feature = "actorstatuscomponent-playerstatuspu",
+    feature = "actorstatuscomponent-powersuitstatus",
+    feature = "actorstatuscomponent-powersuitstatus_combat",
+    feature = "actorstatuscomponent-transportstatus",
+    feature = "aiwavecollection",
+    feature = "ammoparams",
+    feature = "areaservices",
+    feature = "cargomanifest",
+    feature = "commsnotifications",
+    feature = "commsnotificationstages",
+    feature = "communicationsystem",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "creatures",
+    feature = "crewmanifest",
+    feature = "dev",
+    feature = "entities-animatedcharacterstatue_kopion",
+    feature = "entities-animatedcharacterstatue_marok",
+    feature = "entities-animentity_character",
+    feature = "entities-area",
+    feature = "entities-audio",
+    feature = "entities-basebuilding",
+    feature = "entities-cinematiclabelwithvehicle",
+    feature = "entities-commodities",
+    feature = "entities-corpsemarker",
+    feature = "entities-destruction",
+    feature = "entities-dev",
+    feature = "entities-entityspawners",
+    feature = "entities-environment",
+    feature = "entities-environmentscreen",
+    feature = "entities-geomentity_repairable",
+    feature = "entities-groundvehicles",
+    feature = "entities-hackable",
+    feature = "entities-haulingentityclass",
+    feature = "entities-jumppoints",
+    feature = "entities-mineable",
+    feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-navpoint_interdictedentity",
+    feature = "entities-navpoint_subpoint",
+    feature = "entities-navpoint_subpoint_routeonly",
+    feature = "entities-partymembermarker",
+    feature = "entities-physicalizedjobboard",
+    feature = "entities-radarscanning",
+    feature = "entities-roomsystem",
+    feature = "entities-salvagable",
+    feature = "entities-scitem-actormovables",
+    feature = "entities-scitem-atc",
+    feature = "entities-scitem-cargo",
+    feature = "entities-scitem-carryables",
+    feature = "entities-scitem-characters",
+    feature = "entities-scitem-consumables",
+    feature = "entities-scitem-controlpanels",
+    feature = "entities-scitem-default_lensdisplay",
+    feature = "entities-scitem-default_lensdisplay_pu",
+    feature = "entities-scitem-doors",
+    feature = "entities-scitem-environments",
+    feature = "entities-scitem-externalinventory",
+    feature = "entities-scitem-fps_devices",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-harvestables",
+    feature = "entities-scitem-human",
+    feature = "entities-scitem-itembanks",
+    feature = "entities-scitem-locations",
+    feature = "entities-scitem-lootables",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-missionstorage",
+    feature = "entities-scitem-placeholder",
+    feature = "entities-scitem-prototypeentities",
+    feature = "entities-scitem-salvageablerepairable",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-shopdisplays",
+    feature = "entities-scitem-spawers",
+    feature = "entities-scitem-starmarine",
+    feature = "entities-scitem-storage",
+    feature = "entities-scitem-suit",
+    feature = "entities-scitem-usables",
+    feature = "entities-scitem-weapons",
+    feature = "entities-servicebeaconnavpoint",
+    feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a_extractonly",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entities-ui",
+    feature = "entities-unattendedvehiclemarker",
+    feature = "entitlementpolicies",
+    feature = "factions",
+    feature = "fuelparams",
+    feature = "gamemode",
+    feature = "globalcommsnotificationparams",
+    feature = "globalquantumdriveparams",
+    feature = "globalshopparams",
+    feature = "harvestable",
+    feature = "instancedinterior",
+    feature = "inventorycontainers",
+    feature = "item",
+    feature = "itemresourcenetwork",
+    feature = "journalentry",
+    feature = "kaboos_derelictships",
+    feature = "lawsystem",
+    feature = "level",
+    feature = "loadoutkits",
+    feature = "lootgeneration",
+    feature = "megamap",
+    feature = "mining",
+    feature = "missionbroker",
+    feature = "missiondata",
+    feature = "missiongiver",
+    feature = "missionscenarios",
+    feature = "player",
+    feature = "radarsystem",
+    feature = "reputation",
+    feature = "resourcetypedatabase",
+    feature = "rsi_polaris_kaboos_exterior",
+    feature = "servicebeacon",
+    feature = "sglobalsalvagerepairbeamparams",
+    feature = "ssolarsystem",
+    feature = "starmap",
+    feature = "transitsystem",
+    feature = "ui-armarkerconfiguration",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs",
+    feature = "ui-mobiglas"
+))]
+impl crate::RecordLookup for Marker_Configuration {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.marker_configuration.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actorstatuscomponent",
+    feature = "actorstatuscomponent-globalactorstatusparams",
+    feature = "actorstatuscomponent-medicaltieritemconfig",
+    feature = "actorstatuscomponent-playerstatus",
+    feature = "actorstatuscomponent-playerstatus_aiboss",
+    feature = "actorstatuscomponent-playerstatus_aibosssuper",
+    feature = "actorstatuscomponent-playerstatusai",
+    feature = "actorstatuscomponent-playerstatusai_captain",
+    feature = "actorstatuscomponent-playerstatusai_elite",
+    feature = "actorstatuscomponent-playerstatusai_juggernaut",
+    feature = "actorstatuscomponent-playerstatusai_unconscious_rescuemission",
+    feature = "actorstatuscomponent-playerstatusai_vanduul",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_stormbreaker",
+    feature = "actorstatuscomponent-playerstatusai_yormandi",
+    feature = "actorstatuscomponent-playerstatuscorpse",
+    feature = "actorstatuscomponent-playerstatuscreature",
+    feature = "actorstatuscomponent-playerstatusea",
+    feature = "actorstatuscomponent-playerstatuspu",
+    feature = "actorstatuscomponent-powersuitstatus",
+    feature = "actorstatuscomponent-powersuitstatus_combat",
+    feature = "actorstatuscomponent-transportstatus",
+    feature = "aiwavecollection",
+    feature = "commsnotifications",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-audio",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-scitem-carryables",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
+    feature = "entities-scitem-weapons",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entitlementpolicies",
+    feature = "gamemode",
+    feature = "globalcommsnotificationparams",
+    feature = "harvestable",
+    feature = "loadoutkits",
+    feature = "missionbroker",
+    feature = "missiongiver",
+    feature = "ui-buildingblocks"
+))]
+impl crate::RecordLookup for MedicalItemTierConfig {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .medical_item_tier_config
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "megamap")]
+impl crate::RecordLookup for MegaMap {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.megamap.mega_map.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actormeleecombat",
+    feature = "actor-actors",
+    feature = "aiwavecollection",
+    feature = "crewmanifest",
+    feature = "entities-entityspawners",
+    feature = "entities-scitem-consumables",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-weapons",
+    feature = "entities-spaceships",
+    feature = "entitlementpolicies",
+    feature = "gamemode",
+    feature = "harvestable",
+    feature = "level",
+    feature = "loadoutkits",
+    feature = "lootgeneration",
+    feature = "megamap",
+    feature = "player",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs"
+))]
+impl crate::RecordLookup for MeleeCombatConfig {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.melee_combat_config.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "aianimationdata",
+    feature = "aiwavecollection",
+    feature = "commsnotifications",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-audio",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entitlementpolicies",
+    feature = "globalcommsnotificationparams",
+    feature = "missionbroker",
+    feature = "missiongiver",
+    feature = "ui-buildingblocks"
+))]
+impl crate::RecordLookup for AIMeleeCombatConfig {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.aimelee_combat_config.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "missiondata")]
+impl crate::RecordLookup for MissionLocationTemplate {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .missiondata
+            .mission_location_template
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "contracts",
+    feature = "missionbroker",
+    feature = "missiondata"
+))]
+impl crate::RecordLookup for MissionItem {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.mission_item.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "contracts",
+    feature = "gamemode",
+    feature = "level",
+    feature = "megamap",
+    feature = "missionbroker",
+    feature = "missiondata"
+))]
+impl crate::RecordLookup for MissionOrganization {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.mission_organization.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "missionfailureconditions")]
+impl crate::RecordLookup for MissionFailConditionsList {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .missionfailureconditions
+            .mission_fail_conditions_list
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(feature = "contracts", feature = "servicebeacon"))]
+impl crate::RecordLookup for ContractGenerator {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.contract_generator.get(guid).copied()
+    }
+}
+
+#[cfg(any(feature = "contracts", feature = "servicebeacon"))]
+impl crate::RecordLookup for ContractDifficultyProfile {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .contract_difficulty_profile
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(feature = "contractawardconfig", feature = "contracts"))]
+impl crate::RecordLookup for ItemAwardWeightingsRecord {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .item_award_weightings_record
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(feature = "contracts", feature = "crafting", feature = "journalentry"))]
+impl crate::RecordLookup for BlueprintPoolRecord {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.blueprint_pool_record.get(guid).copied()
+    }
+}
+
+#[cfg(any(feature = "contracts", feature = "servicebeacon"))]
+impl crate::RecordLookup for ContractTemplate {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.contract_template.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "missiondata")]
+impl crate::RecordLookup for EntityClusterId {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.missiondata.entity_cluster_id.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "missiondata")]
+impl crate::RecordLookup for EntityClusterMember {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.missiondata.entity_cluster_member.get(guid).copied()
+    }
+}
+
+#[cfg(any(feature = "contracts", feature = "entities-haulingentityclass"))]
+impl crate::RecordLookup for Hauling_EntityClasses {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .hauling_entity_classes
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "missiondata")]
+impl crate::RecordLookup for LocationResourceSlot {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.missiondata.location_resource_slot.get(guid).copied()
+    }
+}
+
+#[cfg(any(feature = "contracts", feature = "missiondata"))]
+impl crate::RecordLookup for LocationEntityDeclaration {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .location_entity_declaration
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "contracts",
+    feature = "missiondata",
+    feature = "servicebeacon"
+))]
+impl crate::RecordLookup for ModuleDeclaration {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.module_declaration.get(guid).copied()
+    }
+}
+
+#[cfg(any(feature = "assistshipincombat_mmh", feature = "contracts"))]
+impl crate::RecordLookup for MissionModuleHierarchy {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .mission_module_hierarchy
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "contracts",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "journalentry",
+    feature = "missionscenarios"
+))]
+impl crate::RecordLookup for MissionScenario {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.mission_scenario.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "servicebeacon")]
+impl crate::RecordLookup for BeaconsContracts {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.servicebeacon.beacons_contracts.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "contracts",
+    feature = "gamemode",
+    feature = "level",
+    feature = "megamap",
+    feature = "missionbroker",
+    feature = "missiontype",
+    feature = "servicebeacon"
+))]
+impl crate::RecordLookup for MissionType {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.mission_type.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "contracts",
+    feature = "missionbroker",
+    feature = "missiondata"
+))]
+impl crate::RecordLookup for MissionLocality {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.mission_locality.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "contracts",
+    feature = "gamemode",
+    feature = "level",
+    feature = "megamap",
+    feature = "missionbroker",
+    feature = "servicebeacon"
+))]
+impl crate::RecordLookup for MissionBrokerEntry {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.mission_broker_entry.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "contracts")]
+impl crate::RecordLookup for GlobalMissionSettings {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.contracts.global_mission_settings.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "commsnotifications",
+    feature = "contracts",
+    feature = "gamemode",
+    feature = "level",
+    feature = "megamap",
+    feature = "missionbroker",
+    feature = "missiongiver"
+))]
+impl crate::RecordLookup for MissionGiver {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.mission_giver.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "gamemode",
+    feature = "level",
+    feature = "megamap",
+    feature = "ui-mobiglas"
+))]
+impl crate::RecordLookup for ARModeSettings {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.armode_settings.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "contracts",
+    feature = "entities-environment",
+    feature = "entities-environmentscreen",
+    feature = "entities-haulingentityclass",
+    feature = "entities-scitem-carryables",
+    feature = "entities-scitem-suit",
+    feature = "genericmobiterminals",
+    feature = "harvestable",
+    feature = "ui-mobiglas"
+))]
+impl crate::RecordLookup for mobiGlasApp {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.mobi_glas_app.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "musiclogic")]
+impl crate::RecordLookup for MusicLogicConfig {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.musiclogic.music_logic_config.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "entitlementpolicies",
+    feature = "gamemode",
+    feature = "level",
+    feature = "megamap",
+    feature = "musiclogic"
+))]
+impl crate::RecordLookup for MusicLogicParameter {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.music_logic_parameter.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "gamemode",
+    feature = "level",
+    feature = "megamap",
+    feature = "musiclogic"
+))]
+impl crate::RecordLookup for MusicLogicEvent {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.music_logic_event.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "musiclogic")]
+impl crate::RecordLookup for MusicLogicEventList {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.musiclogic.music_logic_event_list.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "musiclogic")]
+impl crate::RecordLookup for MusicLogicSwitchValue {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.musiclogic.music_logic_switch_value.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "gamemode",
+    feature = "level",
+    feature = "megamap",
+    feature = "musiclogic"
+))]
+impl crate::RecordLookup for MusicLogicSuite {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.music_logic_suite.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "entities-physicalizedjobboard",
+    feature = "entities-scitem-mission_entities",
+    feature = "harvestable",
+    feature = "player",
+    feature = "playernotificationsystem",
+    feature = "ui-mobiglas"
+))]
+impl crate::RecordLookup for NotificationDef {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.notification_def.get(guid).copied()
+    }
+}
+
+#[cfg(any(feature = "commsnotifications", feature = "commsnotificationstages"))]
+impl crate::RecordLookup for CommsNotificationStage {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .comms_notification_stage
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "commsnotifications",
+    feature = "contracts",
+    feature = "journalentry",
+    feature = "missionscenarios"
+))]
+impl crate::RecordLookup for CommsNotification {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.comms_notification.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "globalcommsnotificationparams")]
+impl crate::RecordLookup for CommsNotificationsGlobalParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .globalcommsnotificationparams
+            .comms_notifications_global_params
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "player",
+    feature = "playerdockcontextcomponent",
+    feature = "servicebeacon"
+))]
+impl crate::RecordLookup for GameNotificationDockItemParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .game_notification_dock_item_params
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "aiwavecollection",
+    feature = "commsnotifications",
+    feature = "contracts",
+    feature = "crewmanifest",
+    feature = "entities-audio",
+    feature = "entities-groundvehicles",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "factions",
+    feature = "gamemode",
+    feature = "globalcommsnotificationparams",
+    feature = "journalentry",
+    feature = "lawsystem",
+    feature = "level",
+    feature = "megamap",
+    feature = "missionbroker",
+    feature = "missiondata",
+    feature = "missiongiver",
+    feature = "missionscenarios",
+    feature = "reputation",
+    feature = "ui-buildingblocks"
+))]
+impl crate::RecordLookup for SandboxTriggerRecord {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .sandbox_trigger_record
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "audio",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "entities-groundvehicles",
+    feature = "entities-haulingentityclass",
+    feature = "entities-scitem-ships",
+    feature = "gpuparticleaudio"
+))]
+impl crate::RecordLookup for GPUParticleAudio {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.gpuparticle_audio.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "audio")]
+impl crate::RecordLookup for GPUParticleAudioList {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.audio.gpuparticle_audio_list.get(guid).copied()
+    }
+}
+
+#[cfg(any(feature = "contracts", feature = "factions", feature = "reputation"))]
+impl crate::RecordLookup for SPerkReputationListParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .sperk_reputation_list_params
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "vfx")]
+impl crate::RecordLookup for PlanetEffectLOD {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.vfx.planet_effect_lod.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "entities-scitem-doors",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-orbgn",
+    feature = "entities-scitem-storage",
+    feature = "player",
+    feature = "playeranimatedinteractiontemplates"
+))]
+impl crate::RecordLookup for PlayerAnimatedInteractionTemplate {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .player_animated_interaction_template
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actor-playeranimatedinteractionconfig",
+    feature = "entitlementpolicies"
+))]
+impl crate::RecordLookup for PlayerAnimatedInteractionConfig {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .player_animated_interaction_config
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "ui-playerchoice_imconfig_playerchoiceim",
+    feature = "ui-playerchoice_signalconfig_interactorsignalconfig",
+    feature = "ui-uiconfig_starcitizen"
+))]
+impl crate::RecordLookup for PlayerChoice_SignalConfig {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .player_choice_signal_config
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "ui-playerchoice_library_playerchoicelibrary")]
+impl crate::RecordLookup for PlayerChoice_Library {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .ui_playerchoice_library_playerchoicelibrary
+            .player_choice_library
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "ui-playerchoice_imconfig_playerchoiceim",
+    feature = "ui-uiconfig_starcitizen"
+))]
+impl crate::RecordLookup for PlayerChoice_IMConfig {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .player_choice_imconfig
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "player",
+    feature = "playerchoicemenuitems",
+    feature = "playerchoicemenutypes"
+))]
+impl crate::RecordLookup for PlayerChoiceMenuItem {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .player_choice_menu_item
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(feature = "player", feature = "playerchoicemenuitems"))]
+impl crate::RecordLookup for PlayerChoiceMenuItems {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .player_choice_menu_items
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(feature = "player", feature = "playerchoicemenutypes"))]
+impl crate::RecordLookup for PlayerChoiceMenu {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.player_choice_menu.get(guid).copied()
+    }
+}
+
+#[cfg(any(feature = "player", feature = "playerchoicemenutypes"))]
+impl crate::RecordLookup for PlayerChoiceMenuType {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .player_choice_menu_type
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actorledgegrabbing",
+    feature = "actor-actors",
+    feature = "aiwavecollection",
+    feature = "commsnotifications",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-audio",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entitlementpolicies",
+    feature = "globalcommsnotificationparams",
+    feature = "missionbroker",
+    feature = "missiongiver",
+    feature = "ui-buildingblocks"
+))]
+impl crate::RecordLookup for LedgeGrabbingParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.ledge_grabbing_params.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actor-actortargetedparams",
+    feature = "entitlementpolicies"
+))]
+impl crate::RecordLookup for ActorTargetedParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.actor_targeted_params.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actor-actorstanceconfig",
+    feature = "actor-actorstanceconfig_npc_human",
+    feature = "actor-actorstanceconfig_npc_kopion",
+    feature = "actor-actorstanceconfig_npc_quasigrazer",
+    feature = "actor-actorstanceconfig_npc_vanduul",
+    feature = "actor-actorstanceconfig_npc_vlk",
+    feature = "actor-actorstanceconfig_npc_vlkadult",
+    feature = "actor-actorstanceconfig_npc_vlkapex",
+    feature = "actor-actorstanceconfig_npc_vlkjuvenile",
+    feature = "actor-actorstanceconfig_npc_webhound",
+    feature = "actor-actorstanceconfig_transport_powersuit",
+    feature = "actor-actorstanceconfig_transport_powersuit_argo_atls",
+    feature = "aiwavecollection",
+    feature = "commsnotifications",
+    feature = "contracts",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-audio",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entitlementpolicies",
+    feature = "globalcommsnotificationparams",
+    feature = "harvestable",
+    feature = "missionbroker",
+    feature = "missiongiver",
+    feature = "ui-buildingblocks"
+))]
+impl crate::RecordLookup for ActorStanceConfig {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.actor_stance_config.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actorjumpfalllandatlsgeoparams",
+    feature = "actor-actorjumpfalllandatlsparams",
+    feature = "actor-actorjumpfalllanddefaultparams",
+    feature = "actor-actorjumpfalllandplayerparams",
+    feature = "actor-actors",
+    feature = "aiwavecollection",
+    feature = "commsnotifications",
+    feature = "contracts",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-audio",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entitlementpolicies",
+    feature = "globalcommsnotificationparams",
+    feature = "harvestable",
+    feature = "missionbroker",
+    feature = "missiongiver",
+    feature = "ui-buildingblocks"
+))]
+impl crate::RecordLookup for JumpFallLandParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.jump_fall_land_params.get(guid).copied()
+    }
+}
+
+#[cfg(any(feature = "player", feature = "playerdockcontextcomponent"))]
+impl crate::RecordLookup for PlayerDockContextComponentGlobalParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .player_dock_context_component_global_params
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(feature = "player", feature = "playergroupmanager"))]
+impl crate::RecordLookup for PlayerGroupManagerGlobalParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .player_group_manager_global_params
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actorabilitycomponent",
+    feature = "actorabilitycomponent-playerlimitations"
+))]
+impl crate::RecordLookup for PlayerLimitationsProfile {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .player_limitations_profile
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(feature = "player", feature = "playernotificationsystem"))]
+impl crate::RecordLookup for PlayerNotificationBannerManagerGlobalParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .player_notification_banner_manager_global_params
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "gamemode")]
+impl crate::RecordLookup for PlayerShipRespawn {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.gamemode.player_ship_respawn.get(guid).copied()
+    }
+}
+
+#[cfg(any(feature = "player", feature = "playertrade"))]
+impl crate::RecordLookup for PlayerTradeGlobalParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .player_trade_global_params
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "entities-pointofinterestprovider",
+    feature = "ui-pointofinterestdata"
+))]
+impl crate::RecordLookup for PointOfInterestList {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .point_of_interest_list
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "aiwavecollection",
+    feature = "commsnotifications",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-audio",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entitlementpolicies",
+    feature = "globalcommsnotificationparams",
+    feature = "missionbroker",
+    feature = "missiongiver",
+    feature = "posturedatabase",
+    feature = "ui-buildingblocks"
+))]
+impl crate::RecordLookup for PostureDatabase {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.posture_database.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "aiwavecollection",
+    feature = "audio",
+    feature = "contracts",
+    feature = "entities-groundvehicles",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-suit",
+    feature = "entities-spaceships",
+    feature = "entitlementpolicies",
+    feature = "procbreathing",
+    feature = "ui-buildingblocks",
+    feature = "ui-playerchoice_imconfig_playerchoiceim",
+    feature = "ui-uiconfig_starcitizen"
+))]
+impl crate::RecordLookup for ProcBreathingCurve {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.proc_breathing_curve.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "procbreathing")]
+impl crate::RecordLookup for ProcBreathingCurveDatabase {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .procbreathing
+            .proc_breathing_curve_database
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "aiwavecollection",
+    feature = "audio",
+    feature = "contracts",
+    feature = "entities-groundvehicles",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-suit",
+    feature = "entities-spaceships",
+    feature = "entitlementpolicies",
+    feature = "procbreathing",
+    feature = "ui-buildingblocks",
+    feature = "ui-playerchoice_imconfig_playerchoiceim",
+    feature = "ui-uiconfig_starcitizen"
+))]
+impl crate::RecordLookup for ProcBreathingSetup {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.proc_breathing_setup.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "contracts",
+    feature = "harvestable",
+    feature = "proceduralaimrigrecord"
+))]
+impl crate::RecordLookup for ProceduralAimRigRecord {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .procedural_aim_rig_record
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actormeleecombat",
+    feature = "actor-actors",
+    feature = "actor-creaturejumpfalllandflow",
+    feature = "actor-playerjumpfallandflow",
+    feature = "actor-transportjumpfallandflow",
+    feature = "aianimationdata",
+    feature = "aiwavecollection",
+    feature = "commsnotifications",
+    feature = "contracts",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-audio",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entitlementpolicies",
+    feature = "globalcommsnotificationparams",
+    feature = "harvestable",
+    feature = "missionbroker",
+    feature = "missiongiver",
+    feature = "proceduralanimations",
+    feature = "procedurallandingsetup",
+    feature = "ui-buildingblocks"
+))]
+impl crate::RecordLookup for ProceduralAnimation {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.procedural_animation.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "planetdaynighttemperatureparams")]
+impl crate::RecordLookup for PlanetDayNightTemperatureTemplate {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .planetdaynighttemperatureparams
+            .planet_day_night_temperature_template
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actor-creaturejumpfalllandflow",
+    feature = "actor-playerjumpfallandflow",
+    feature = "actor-transportjumpfallandflow",
+    feature = "contracts",
+    feature = "entitlementpolicies",
+    feature = "harvestable",
+    feature = "procedurallandingsetup"
+))]
+impl crate::RecordLookup for ProceduralLandingSetup {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .procedural_landing_setup
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "procedurallayout")]
+impl crate::RecordLookup for ProceduralLayoutGraph {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .procedurallayout
+            .procedural_layout_graph
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "hudparams")]
+impl crate::RecordLookup for SProjectedHudParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.hudparams.sprojected_hud_params.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "hudparams")]
+impl crate::RecordLookup for SVehicleHudParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.hudparams.svehicle_hud_params.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "gamemode",
+    feature = "globalquantumdriveparams",
+    feature = "level",
+    feature = "megamap"
+))]
+impl crate::RecordLookup for QuantumDriveGlobalParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .quantum_drive_global_params
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "aiwavecollection",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "entities-entityspawners",
+    feature = "entities-haulingentityclass",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-ships",
+    feature = "entities-spaceships",
+    feature = "entities-ui",
+    feature = "entitlementpolicies",
+    feature = "harvestable",
+    feature = "player",
+    feature = "squantumdriveeffecttagstemplate",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs"
+))]
+impl crate::RecordLookup for SQuantumDriveEffectTemplate {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .squantum_drive_effect_template
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "vfx")]
+impl crate::RecordLookup for QuantumDriveEffectSettings {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.vfx.quantum_drive_effect_settings.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "actor-quantumtravelcameraeffects")]
+impl crate::RecordLookup for SQuantumCameraEffectsDef {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .actor_quantumtravelcameraeffects
+            .squantum_camera_effects_def
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "rastar")]
+impl crate::RecordLookup for RaSTaRLibraryElement {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.rastar.ra_sta_rlibrary_element.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "rastar")]
+impl crate::RecordLookup for RaSTaRLibrary {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.rastar.ra_sta_rlibrary.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "entities-basebuilding",
+    feature = "entities-scitem-characters",
+    feature = "entities-scitem-default_lensdisplay",
+    feature = "entities-scitem-default_lensdisplay_pu",
+    feature = "entities-scitem-doors",
+    feature = "entities-scitem-holoui",
+    feature = "entities-scitem-itembanks",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-shopdisplays",
+    feature = "entities-scitem-usables",
+    feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a_extractonly",
+    feature = "entities-spaceships",
+    feature = "entitlementpolicies",
+    feature = "factions",
+    feature = "gamemode",
+    feature = "harvestable",
+    feature = "journalentry",
+    feature = "level",
+    feature = "loadoutkits",
+    feature = "megamap",
+    feature = "player",
+    feature = "reputation",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs",
+    feature = "ui-worlddisplay"
+))]
+impl crate::RecordLookup for WorldDisplayRadar {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.world_display_radar.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "ui-radardisplay_config_radar")]
+impl crate::RecordLookup for RadarDisplay_Config {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .ui_radardisplay_config_radar
+            .radar_display_config
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "radarsystem")]
+impl crate::RecordLookup for RadarSystemGlobalParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .radarsystem
+            .radar_system_global_params
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "aiwavecollection",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-scitem-characters",
+    feature = "entities-scitem-default_lensdisplay_pu",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-missionstorage",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-spawers",
+    feature = "entities-scitem-suit",
+    feature = "entities-scitem-weapons",
+    feature = "entities-spaceships",
+    feature = "entities-ui",
+    feature = "entitlementpolicies",
+    feature = "gamemode",
+    feature = "harvestable",
+    feature = "level",
+    feature = "loadoutkits",
+    feature = "megamap",
+    feature = "missionbroker",
+    feature = "player",
+    feature = "radarsystem",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs"
+))]
+impl crate::RecordLookup for RadarSystemSharedParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .radar_system_shared_params
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actorstatuscomponent",
+    feature = "actorstatuscomponent-globalactorstatusparams",
+    feature = "actorstatuscomponent-medicaltieritemconfig",
+    feature = "actorstatuscomponent-playerstatus",
+    feature = "actorstatuscomponent-playerstatus_aiboss",
+    feature = "actorstatuscomponent-playerstatus_aibosssuper",
+    feature = "actorstatuscomponent-playerstatusai",
+    feature = "actorstatuscomponent-playerstatusai_captain",
+    feature = "actorstatuscomponent-playerstatusai_elite",
+    feature = "actorstatuscomponent-playerstatusai_juggernaut",
+    feature = "actorstatuscomponent-playerstatusai_unconscious_rescuemission",
+    feature = "actorstatuscomponent-playerstatusai_vanduul",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_stormbreaker",
+    feature = "actorstatuscomponent-playerstatusai_yormandi",
+    feature = "actorstatuscomponent-playerstatuscorpse",
+    feature = "actorstatuscomponent-playerstatuscreature",
+    feature = "actorstatuscomponent-playerstatusea",
+    feature = "actorstatuscomponent-playerstatuspu",
+    feature = "actorstatuscomponent-powersuitstatus",
+    feature = "actorstatuscomponent-powersuitstatus_combat",
+    feature = "actorstatuscomponent-transportstatus",
+    feature = "aiwavecollection",
+    feature = "ammoparams",
+    feature = "areaservices",
+    feature = "cargomanifest",
+    feature = "commsnotifications",
+    feature = "commsnotificationstages",
+    feature = "communicationsystem",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "creatures",
+    feature = "crewmanifest",
+    feature = "dev",
+    feature = "entities-animatedcharacterstatue_kopion",
+    feature = "entities-animatedcharacterstatue_marok",
+    feature = "entities-animentity_character",
+    feature = "entities-area",
+    feature = "entities-audio",
+    feature = "entities-basebuilding",
+    feature = "entities-cinematiclabelwithvehicle",
+    feature = "entities-commodities",
+    feature = "entities-destruction",
+    feature = "entities-dev",
+    feature = "entities-entityspawners",
+    feature = "entities-environment",
+    feature = "entities-environmentscreen",
+    feature = "entities-geomentity_repairable",
+    feature = "entities-groundvehicles",
+    feature = "entities-hackable",
+    feature = "entities-haulingentityclass",
+    feature = "entities-jumppoints",
+    feature = "entities-mineable",
+    feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-physicalizedjobboard",
+    feature = "entities-radarscanning",
+    feature = "entities-roomsystem",
+    feature = "entities-salvagable",
+    feature = "entities-scitem-actormovables",
+    feature = "entities-scitem-atc",
+    feature = "entities-scitem-cargo",
+    feature = "entities-scitem-carryables",
+    feature = "entities-scitem-characters",
+    feature = "entities-scitem-consumables",
+    feature = "entities-scitem-controlpanels",
+    feature = "entities-scitem-default_lensdisplay",
+    feature = "entities-scitem-default_lensdisplay_pu",
+    feature = "entities-scitem-doors",
+    feature = "entities-scitem-environments",
+    feature = "entities-scitem-externalinventory",
+    feature = "entities-scitem-fps_devices",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-harvestables",
+    feature = "entities-scitem-human",
+    feature = "entities-scitem-itembanks",
+    feature = "entities-scitem-locations",
+    feature = "entities-scitem-lootables",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-missionstorage",
+    feature = "entities-scitem-placeholder",
+    feature = "entities-scitem-prototypeentities",
+    feature = "entities-scitem-salvageablerepairable",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-shopdisplays",
+    feature = "entities-scitem-spawers",
+    feature = "entities-scitem-starmarine",
+    feature = "entities-scitem-storage",
+    feature = "entities-scitem-suit",
+    feature = "entities-scitem-usables",
+    feature = "entities-scitem-weapons",
+    feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a_extractonly",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entities-ui",
+    feature = "entitlementpolicies",
+    feature = "factions",
+    feature = "fuelparams",
+    feature = "gamemode",
+    feature = "globalcommsnotificationparams",
+    feature = "globalshopparams",
+    feature = "harvestable",
+    feature = "instancedinterior",
+    feature = "inventorycontainers",
+    feature = "item",
+    feature = "itemresourcenetwork",
+    feature = "journalentry",
+    feature = "lawsystem",
+    feature = "level",
+    feature = "loadoutkits",
+    feature = "lootgeneration",
+    feature = "megamap",
+    feature = "mining",
+    feature = "missionbroker",
+    feature = "missiondata",
+    feature = "missiongiver",
+    feature = "missionscenarios",
+    feature = "player",
+    feature = "radarsystem",
+    feature = "reputation",
+    feature = "resourcetypedatabase",
+    feature = "rsi_polaris_kaboos_exterior",
+    feature = "sglobalsalvagerepairbeamparams",
+    feature = "ssolarsystem",
+    feature = "starmap",
+    feature = "transitsystem",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs",
+    feature = "ui-mobiglas"
+))]
+impl crate::RecordLookup for ScanInformationDef {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.scan_information_def.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "radarsystem")]
+impl crate::RecordLookup for ScanInformationTable {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.radarsystem.scan_information_table.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "aiwavecollection",
+    feature = "contracts",
+    feature = "entities-radarscanning",
+    feature = "entities-scitem-controlpanels",
+    feature = "entities-scitem-doors",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-lootables",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-storage",
+    feature = "entities-spaceships",
+    feature = "entitlementpolicies",
+    feature = "harvestable",
+    feature = "radarsystem"
+))]
+impl crate::RecordLookup for ScanCustomDataDef {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.scan_custom_data_def.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actorstatuscomponent",
+    feature = "actorstatuscomponent-globalactorstatusparams",
+    feature = "actorstatuscomponent-medicaltieritemconfig",
+    feature = "actorstatuscomponent-playerstatus",
+    feature = "actorstatuscomponent-playerstatus_aiboss",
+    feature = "actorstatuscomponent-playerstatus_aibosssuper",
+    feature = "actorstatuscomponent-playerstatusai",
+    feature = "actorstatuscomponent-playerstatusai_captain",
+    feature = "actorstatuscomponent-playerstatusai_elite",
+    feature = "actorstatuscomponent-playerstatusai_juggernaut",
+    feature = "actorstatuscomponent-playerstatusai_unconscious_rescuemission",
+    feature = "actorstatuscomponent-playerstatusai_vanduul",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_stormbreaker",
+    feature = "actorstatuscomponent-playerstatusai_yormandi",
+    feature = "actorstatuscomponent-playerstatuscorpse",
+    feature = "actorstatuscomponent-playerstatuscreature",
+    feature = "actorstatuscomponent-playerstatusea",
+    feature = "actorstatuscomponent-playerstatuspu",
+    feature = "actorstatuscomponent-powersuitstatus",
+    feature = "actorstatuscomponent-powersuitstatus_combat",
+    feature = "actorstatuscomponent-transportstatus",
+    feature = "aiwavecollection",
+    feature = "ammoparams",
+    feature = "areaservices",
+    feature = "cargomanifest",
+    feature = "commsnotifications",
+    feature = "commsnotificationstages",
+    feature = "communicationsystem",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "creatures",
+    feature = "crewmanifest",
+    feature = "dev",
+    feature = "entities-animatedcharacterstatue_kopion",
+    feature = "entities-animatedcharacterstatue_marok",
+    feature = "entities-animentity_character",
+    feature = "entities-area",
+    feature = "entities-audio",
+    feature = "entities-basebuilding",
+    feature = "entities-cinematiclabelwithvehicle",
+    feature = "entities-commodities",
+    feature = "entities-destruction",
+    feature = "entities-dev",
+    feature = "entities-entityspawners",
+    feature = "entities-environment",
+    feature = "entities-environmentscreen",
+    feature = "entities-geomentity_repairable",
+    feature = "entities-groundvehicles",
+    feature = "entities-hackable",
+    feature = "entities-haulingentityclass",
+    feature = "entities-jumppoints",
+    feature = "entities-mineable",
+    feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-physicalizedjobboard",
+    feature = "entities-radarscanning",
+    feature = "entities-roomsystem",
+    feature = "entities-salvagable",
+    feature = "entities-scitem-actormovables",
+    feature = "entities-scitem-atc",
+    feature = "entities-scitem-cargo",
+    feature = "entities-scitem-carryables",
+    feature = "entities-scitem-characters",
+    feature = "entities-scitem-consumables",
+    feature = "entities-scitem-controlpanels",
+    feature = "entities-scitem-default_lensdisplay",
+    feature = "entities-scitem-default_lensdisplay_pu",
+    feature = "entities-scitem-doors",
+    feature = "entities-scitem-environments",
+    feature = "entities-scitem-externalinventory",
+    feature = "entities-scitem-fps_devices",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-harvestables",
+    feature = "entities-scitem-human",
+    feature = "entities-scitem-itembanks",
+    feature = "entities-scitem-locations",
+    feature = "entities-scitem-lootables",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-missionstorage",
+    feature = "entities-scitem-placeholder",
+    feature = "entities-scitem-prototypeentities",
+    feature = "entities-scitem-salvageablerepairable",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-shopdisplays",
+    feature = "entities-scitem-spawers",
+    feature = "entities-scitem-starmarine",
+    feature = "entities-scitem-storage",
+    feature = "entities-scitem-suit",
+    feature = "entities-scitem-usables",
+    feature = "entities-scitem-weapons",
+    feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a_extractonly",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entities-ui",
+    feature = "entitlementpolicies",
+    feature = "factions",
+    feature = "fuelparams",
+    feature = "gamemode",
+    feature = "globalcommsnotificationparams",
+    feature = "globalshopparams",
+    feature = "harvestable",
+    feature = "instancedinterior",
+    feature = "inventorycontainers",
+    feature = "item",
+    feature = "itemresourcenetwork",
+    feature = "journalentry",
+    feature = "lawsystem",
+    feature = "level",
+    feature = "loadoutkits",
+    feature = "lootgeneration",
+    feature = "megamap",
+    feature = "mining",
+    feature = "missionbroker",
+    feature = "missiondata",
+    feature = "missiongiver",
+    feature = "missionscenarios",
+    feature = "player",
+    feature = "radarsystem",
+    feature = "reputation",
+    feature = "resourcetypedatabase",
+    feature = "rsi_polaris_kaboos_exterior",
+    feature = "scandisplayinstanceparams",
+    feature = "sglobalsalvagerepairbeamparams",
+    feature = "ssolarsystem",
+    feature = "starmap",
+    feature = "transitsystem",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs",
+    feature = "ui-mobiglas"
+))]
+impl crate::RecordLookup for ScanDisplayInstanceParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .scan_display_instance_params
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actorstatuscomponent",
+    feature = "actorstatuscomponent-globalactorstatusparams",
+    feature = "actorstatuscomponent-medicaltieritemconfig",
+    feature = "actorstatuscomponent-playerstatus",
+    feature = "actorstatuscomponent-playerstatus_aiboss",
+    feature = "actorstatuscomponent-playerstatus_aibosssuper",
+    feature = "actorstatuscomponent-playerstatusai",
+    feature = "actorstatuscomponent-playerstatusai_captain",
+    feature = "actorstatuscomponent-playerstatusai_elite",
+    feature = "actorstatuscomponent-playerstatusai_juggernaut",
+    feature = "actorstatuscomponent-playerstatusai_unconscious_rescuemission",
+    feature = "actorstatuscomponent-playerstatusai_vanduul",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_stormbreaker",
+    feature = "actorstatuscomponent-playerstatusai_yormandi",
+    feature = "actorstatuscomponent-playerstatuscorpse",
+    feature = "actorstatuscomponent-playerstatuscreature",
+    feature = "actorstatuscomponent-playerstatusea",
+    feature = "actorstatuscomponent-playerstatuspu",
+    feature = "actorstatuscomponent-powersuitstatus",
+    feature = "actorstatuscomponent-powersuitstatus_combat",
+    feature = "actorstatuscomponent-transportstatus",
+    feature = "aiwavecollection",
+    feature = "ammoparams",
+    feature = "areaservices",
+    feature = "cargomanifest",
+    feature = "commsnotifications",
+    feature = "commsnotificationstages",
+    feature = "communicationsystem",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "creatures",
+    feature = "crewmanifest",
+    feature = "dev",
+    feature = "entities-animatedcharacterstatue_kopion",
+    feature = "entities-animatedcharacterstatue_marok",
+    feature = "entities-animentity_character",
+    feature = "entities-area",
+    feature = "entities-audio",
+    feature = "entities-basebuilding",
+    feature = "entities-cinematiclabelwithvehicle",
+    feature = "entities-commodities",
+    feature = "entities-destruction",
+    feature = "entities-dev",
+    feature = "entities-entityspawners",
+    feature = "entities-environment",
+    feature = "entities-environmentscreen",
+    feature = "entities-geomentity_repairable",
+    feature = "entities-groundvehicles",
+    feature = "entities-hackable",
+    feature = "entities-haulingentityclass",
+    feature = "entities-jumppoints",
+    feature = "entities-mineable",
+    feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-physicalizedjobboard",
+    feature = "entities-radarscanning",
+    feature = "entities-roomsystem",
+    feature = "entities-salvagable",
+    feature = "entities-scitem-actormovables",
+    feature = "entities-scitem-atc",
+    feature = "entities-scitem-cargo",
+    feature = "entities-scitem-carryables",
+    feature = "entities-scitem-characters",
+    feature = "entities-scitem-consumables",
+    feature = "entities-scitem-controlpanels",
+    feature = "entities-scitem-default_lensdisplay",
+    feature = "entities-scitem-default_lensdisplay_pu",
+    feature = "entities-scitem-doors",
+    feature = "entities-scitem-environments",
+    feature = "entities-scitem-externalinventory",
+    feature = "entities-scitem-fps_devices",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-harvestables",
+    feature = "entities-scitem-human",
+    feature = "entities-scitem-itembanks",
+    feature = "entities-scitem-locations",
+    feature = "entities-scitem-lootables",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-missionstorage",
+    feature = "entities-scitem-placeholder",
+    feature = "entities-scitem-prototypeentities",
+    feature = "entities-scitem-salvageablerepairable",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-shopdisplays",
+    feature = "entities-scitem-spawers",
+    feature = "entities-scitem-starmarine",
+    feature = "entities-scitem-storage",
+    feature = "entities-scitem-suit",
+    feature = "entities-scitem-usables",
+    feature = "entities-scitem-weapons",
+    feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a_extractonly",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entities-ui",
+    feature = "entitlementpolicies",
+    feature = "factions",
+    feature = "fuelparams",
+    feature = "gamemode",
+    feature = "globalcommsnotificationparams",
+    feature = "globalshopparams",
+    feature = "harvestable",
+    feature = "instancedinterior",
+    feature = "inventorycontainers",
+    feature = "item",
+    feature = "itemresourcenetwork",
+    feature = "journalentry",
+    feature = "lawsystem",
+    feature = "level",
+    feature = "loadoutkits",
+    feature = "lootgeneration",
+    feature = "megamap",
+    feature = "mining",
+    feature = "missionbroker",
+    feature = "missiondata",
+    feature = "missiongiver",
+    feature = "missionscenarios",
+    feature = "player",
+    feature = "radarsystem",
+    feature = "reputation",
+    feature = "resourcetypedatabase",
+    feature = "rsi_polaris_kaboos_exterior",
+    feature = "sglobalsalvagerepairbeamparams",
+    feature = "ssolarsystem",
+    feature = "starmap",
+    feature = "transitsystem",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs",
+    feature = "ui-mobiglas"
+))]
+impl crate::RecordLookup for ScanDisplayLayoutParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .scan_display_layout_params
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "radarsystem")]
+impl crate::RecordLookup for RadarSignatureCategoryDefinition {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .radarsystem
+            .radar_signature_category_definition
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "radarsystem")]
+impl crate::RecordLookup for RadarSignatureCategoryEntry {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .radarsystem
+            .radar_signature_category_entry
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "radarsystem")]
+impl crate::RecordLookup for RadarContactTypeDefinition {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .radarsystem
+            .radar_contact_type_definition
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actorstatuscomponent",
+    feature = "actorstatuscomponent-globalactorstatusparams",
+    feature = "actorstatuscomponent-medicaltieritemconfig",
+    feature = "actorstatuscomponent-playerstatus",
+    feature = "actorstatuscomponent-playerstatus_aiboss",
+    feature = "actorstatuscomponent-playerstatus_aibosssuper",
+    feature = "actorstatuscomponent-playerstatusai",
+    feature = "actorstatuscomponent-playerstatusai_captain",
+    feature = "actorstatuscomponent-playerstatusai_elite",
+    feature = "actorstatuscomponent-playerstatusai_juggernaut",
+    feature = "actorstatuscomponent-playerstatusai_unconscious_rescuemission",
+    feature = "actorstatuscomponent-playerstatusai_vanduul",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_stormbreaker",
+    feature = "actorstatuscomponent-playerstatusai_yormandi",
+    feature = "actorstatuscomponent-playerstatuscorpse",
+    feature = "actorstatuscomponent-playerstatuscreature",
+    feature = "actorstatuscomponent-playerstatusea",
+    feature = "actorstatuscomponent-playerstatuspu",
+    feature = "actorstatuscomponent-powersuitstatus",
+    feature = "actorstatuscomponent-powersuitstatus_combat",
+    feature = "actorstatuscomponent-transportstatus",
+    feature = "aiwavecollection",
+    feature = "ammoparams",
+    feature = "areaservices",
+    feature = "cargomanifest",
+    feature = "commsnotifications",
+    feature = "commsnotificationstages",
+    feature = "communicationsystem",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "creatures",
+    feature = "crewmanifest",
+    feature = "dev",
+    feature = "entities-animatedcharacterstatue_kopion",
+    feature = "entities-animatedcharacterstatue_marok",
+    feature = "entities-animentity_character",
+    feature = "entities-area",
+    feature = "entities-audio",
+    feature = "entities-basebuilding",
+    feature = "entities-cinematiclabelwithvehicle",
+    feature = "entities-commodities",
+    feature = "entities-destruction",
+    feature = "entities-dev",
+    feature = "entities-entityspawners",
+    feature = "entities-environment",
+    feature = "entities-environmentscreen",
+    feature = "entities-geomentity_repairable",
+    feature = "entities-groundvehicles",
+    feature = "entities-hackable",
+    feature = "entities-haulingentityclass",
+    feature = "entities-jumppoints",
+    feature = "entities-mineable",
+    feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-physicalizedjobboard",
+    feature = "entities-radarscanning",
+    feature = "entities-roomsystem",
+    feature = "entities-salvagable",
+    feature = "entities-scitem-actormovables",
+    feature = "entities-scitem-atc",
+    feature = "entities-scitem-cargo",
+    feature = "entities-scitem-carryables",
+    feature = "entities-scitem-characters",
+    feature = "entities-scitem-consumables",
+    feature = "entities-scitem-controlpanels",
+    feature = "entities-scitem-default_lensdisplay",
+    feature = "entities-scitem-default_lensdisplay_pu",
+    feature = "entities-scitem-doors",
+    feature = "entities-scitem-environments",
+    feature = "entities-scitem-externalinventory",
+    feature = "entities-scitem-fps_devices",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-harvestables",
+    feature = "entities-scitem-human",
+    feature = "entities-scitem-itembanks",
+    feature = "entities-scitem-locations",
+    feature = "entities-scitem-lootables",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-missionstorage",
+    feature = "entities-scitem-placeholder",
+    feature = "entities-scitem-prototypeentities",
+    feature = "entities-scitem-salvageablerepairable",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-shopdisplays",
+    feature = "entities-scitem-spawers",
+    feature = "entities-scitem-starmarine",
+    feature = "entities-scitem-storage",
+    feature = "entities-scitem-suit",
+    feature = "entities-scitem-usables",
+    feature = "entities-scitem-weapons",
+    feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a_extractonly",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entities-ui",
+    feature = "entitlementpolicies",
+    feature = "factions",
+    feature = "fuelparams",
+    feature = "gamemode",
+    feature = "globalcommsnotificationparams",
+    feature = "globalshopparams",
+    feature = "harvestable",
+    feature = "instancedinterior",
+    feature = "inventorycontainers",
+    feature = "item",
+    feature = "itemresourcenetwork",
+    feature = "journalentry",
+    feature = "kaboos_derelictships",
+    feature = "lawsystem",
+    feature = "level",
+    feature = "loadoutkits",
+    feature = "lootgeneration",
+    feature = "megamap",
+    feature = "mining",
+    feature = "missionbroker",
+    feature = "missiondata",
+    feature = "missiongiver",
+    feature = "missionscenarios",
+    feature = "player",
+    feature = "radarsystem",
+    feature = "reputation",
+    feature = "resourcetypedatabase",
+    feature = "rsi_polaris_kaboos_exterior",
+    feature = "sglobalsalvagerepairbeamparams",
+    feature = "ssolarsystem",
+    feature = "starmap",
+    feature = "transitsystem",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs",
+    feature = "ui-mobiglas"
+))]
+impl crate::RecordLookup for RadarContactTypeEntry {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .radar_contact_type_entry
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "radarsystem")]
+impl crate::RecordLookup for RadarContactGroupDefinition {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .radarsystem
+            .radar_contact_group_definition
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "aiwavecollection",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-scitem-characters",
+    feature = "entities-scitem-default_lensdisplay_pu",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-missionstorage",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-spawers",
+    feature = "entities-scitem-suit",
+    feature = "entities-scitem-weapons",
+    feature = "entities-spaceships",
+    feature = "entities-ui",
+    feature = "entitlementpolicies",
+    feature = "gamemode",
+    feature = "harvestable",
+    feature = "level",
+    feature = "loadoutkits",
+    feature = "megamap",
+    feature = "missionbroker",
+    feature = "player",
+    feature = "radarsystem",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs"
+))]
+impl crate::RecordLookup for RadarContactGroupEntry {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .radar_contact_group_entry
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "radarsystem")]
+impl crate::RecordLookup for RadarDeltaSignatureDefinition {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .radarsystem
+            .radar_delta_signature_definition
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "entities-scitem-characters",
+    feature = "entities-scitem-suit",
+    feature = "gamemode",
+    feature = "level",
+    feature = "megamap",
+    feature = "radarsystem"
+))]
+impl crate::RecordLookup for RadarDeltaSignatureEntry {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .radar_delta_signature_entry
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "refiningprocess")]
+impl crate::RecordLookup for RefiningProcess {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.refiningprocess.refining_process.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "refinerynotificationconfiguration")]
+impl crate::RecordLookup for RefineryNotificationConfiguration {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .refinerynotificationconfiguration
+            .refinery_notification_configuration
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "rentalnotificationparams")]
+impl crate::RecordLookup for RentalNotificationParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .rentalnotificationparams
+            .rental_notification_params
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "aiwavecollection",
+    feature = "commsnotifications",
+    feature = "contracts",
+    feature = "crewmanifest",
+    feature = "entities-audio",
+    feature = "entities-groundvehicles",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "factions",
+    feature = "gamemode",
+    feature = "globalcommsnotificationparams",
+    feature = "journalentry",
+    feature = "lawsystem",
+    feature = "level",
+    feature = "megamap",
+    feature = "missionbroker",
+    feature = "missiondata",
+    feature = "missiongiver",
+    feature = "missionscenarios",
+    feature = "reputation",
+    feature = "ui-buildingblocks"
+))]
+impl crate::RecordLookup for SReputationStandingParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .sreputation_standing_params
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "aiwavecollection",
+    feature = "commsnotifications",
+    feature = "contracts",
+    feature = "crewmanifest",
+    feature = "entities-groundvehicles",
+    feature = "entities-spaceships",
+    feature = "factions",
+    feature = "gamemode",
+    feature = "journalentry",
+    feature = "lawsystem",
+    feature = "level",
+    feature = "megamap",
+    feature = "missionbroker",
+    feature = "missiondata",
+    feature = "missiongiver",
+    feature = "missionscenarios",
+    feature = "reputation"
+))]
+impl crate::RecordLookup for SReputationContextUI {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .sreputation_context_ui
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "sreputationglobalcontextbbparams")]
+impl crate::RecordLookup for SReputationGlobalContextBBParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .sreputationglobalcontextbbparams
+            .sreputation_global_context_bbparams
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "reputation")]
+impl crate::RecordLookup for SReputationStateParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.reputation.sreputation_state_params.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "reputation")]
+impl crate::RecordLookup for SReputationStateMissionResultModifierParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .reputation
+            .sreputation_state_mission_result_modifier_params
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "aiwavecollection",
+    feature = "commsnotifications",
+    feature = "contracts",
+    feature = "crewmanifest",
+    feature = "entities-audio",
+    feature = "entities-groundvehicles",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "factions",
+    feature = "gamemode",
+    feature = "globalcommsnotificationparams",
+    feature = "journalentry",
+    feature = "lawsystem",
+    feature = "level",
+    feature = "megamap",
+    feature = "missionbroker",
+    feature = "missiondata",
+    feature = "missiongiver",
+    feature = "missionscenarios",
+    feature = "reputation",
+    feature = "ui-buildingblocks"
+))]
+impl crate::RecordLookup for SReputationScopeParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .sreputation_scope_params
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "aiwavecollection",
+    feature = "commsnotifications",
+    feature = "contracts",
+    feature = "crewmanifest",
+    feature = "entities-audio",
+    feature = "entities-groundvehicles",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "factions",
+    feature = "gamemode",
+    feature = "globalcommsnotificationparams",
+    feature = "journalentry",
+    feature = "lawsystem",
+    feature = "level",
+    feature = "megamap",
+    feature = "missionbroker",
+    feature = "missiondata",
+    feature = "missiongiver",
+    feature = "missionscenarios",
+    feature = "reputation",
+    feature = "ui-buildingblocks"
+))]
+impl crate::RecordLookup for SReputationRewardAmount {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .sreputation_reward_amount
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "gamemode",
+    feature = "level",
+    feature = "megamap",
+    feature = "missionbroker",
+    feature = "reputation"
+))]
+impl crate::RecordLookup for SReputationMissionRewardBonusParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .sreputation_mission_reward_bonus_params
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "journalentry")]
+impl crate::RecordLookup for SReputationJournalEntryHandlerParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .journalentry
+            .sreputation_journal_entry_handler_params
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(feature = "reputation", feature = "reputationvaluesettings"))]
+impl crate::RecordLookup for ReputationValueSetting {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .reputation_value_setting
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(feature = "reputation", feature = "reputationvaluesettings"))]
+impl crate::RecordLookup for ReputationValueSettings {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .reputation_value_settings
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actorstatuscomponent",
+    feature = "actorstatuscomponent-globalactorstatusparams",
+    feature = "actorstatuscomponent-medicaltieritemconfig",
+    feature = "actorstatuscomponent-playerstatus",
+    feature = "actorstatuscomponent-playerstatus_aiboss",
+    feature = "actorstatuscomponent-playerstatus_aibosssuper",
+    feature = "actorstatuscomponent-playerstatusai",
+    feature = "actorstatuscomponent-playerstatusai_captain",
+    feature = "actorstatuscomponent-playerstatusai_elite",
+    feature = "actorstatuscomponent-playerstatusai_juggernaut",
+    feature = "actorstatuscomponent-playerstatusai_unconscious_rescuemission",
+    feature = "actorstatuscomponent-playerstatusai_vanduul",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_stormbreaker",
+    feature = "actorstatuscomponent-playerstatusai_yormandi",
+    feature = "actorstatuscomponent-playerstatuscorpse",
+    feature = "actorstatuscomponent-playerstatuscreature",
+    feature = "actorstatuscomponent-playerstatusea",
+    feature = "actorstatuscomponent-playerstatuspu",
+    feature = "actorstatuscomponent-powersuitstatus",
+    feature = "actorstatuscomponent-powersuitstatus_combat",
+    feature = "actorstatuscomponent-transportstatus",
+    feature = "aiwavecollection",
+    feature = "ammoparams",
+    feature = "areaservices",
+    feature = "cargomanifest",
+    feature = "commsnotifications",
+    feature = "communicationsystem",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "crewmanifest",
+    feature = "entities-animatedcharacterstatue_kopion",
+    feature = "entities-animatedcharacterstatue_marok",
+    feature = "entities-animentity_character",
+    feature = "entities-area",
+    feature = "entities-audio",
+    feature = "entities-basebuilding",
+    feature = "entities-cinematiclabelwithvehicle",
+    feature = "entities-commodities",
+    feature = "entities-destruction",
+    feature = "entities-dev",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-haulingentityclass",
+    feature = "entities-mineable",
+    feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-roomsystem",
+    feature = "entities-scitem-atc",
+    feature = "entities-scitem-cargo",
+    feature = "entities-scitem-carryables",
+    feature = "entities-scitem-characters",
+    feature = "entities-scitem-default_lensdisplay",
+    feature = "entities-scitem-default_lensdisplay_pu",
+    feature = "entities-scitem-doors",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-harvestables",
+    feature = "entities-scitem-human",
+    feature = "entities-scitem-itembanks",
+    feature = "entities-scitem-locations",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-missionstorage",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-shopdisplays",
+    feature = "entities-scitem-spawers",
+    feature = "entities-scitem-suit",
+    feature = "entities-scitem-usables",
+    feature = "entities-scitem-weapons",
+    feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a_extractonly",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entities-ui",
+    feature = "entitlementpolicies",
+    feature = "factions",
+    feature = "fuelparams",
+    feature = "gamemode",
+    feature = "globalcommsnotificationparams",
+    feature = "globalshopparams",
+    feature = "harvestable",
+    feature = "instancedinterior",
+    feature = "inventorycontainers",
+    feature = "item",
+    feature = "itemresourcenetwork",
+    feature = "journalentry",
+    feature = "lawsystem",
+    feature = "level",
+    feature = "loadoutkits",
+    feature = "lootgeneration",
+    feature = "megamap",
+    feature = "mining",
+    feature = "missionbroker",
+    feature = "missiondata",
+    feature = "missiongiver",
+    feature = "missionscenarios",
+    feature = "player",
+    feature = "reputation",
+    feature = "resourcetypedatabase",
+    feature = "sglobalsalvagerepairbeamparams",
+    feature = "ssolarsystem",
+    feature = "starmap",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs",
+    feature = "ui-mobiglas"
+))]
+impl crate::RecordLookup for ResourceType {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.resource_type.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actorstatuscomponent",
+    feature = "actorstatuscomponent-globalactorstatusparams",
+    feature = "actorstatuscomponent-medicaltieritemconfig",
+    feature = "actorstatuscomponent-playerstatus",
+    feature = "actorstatuscomponent-playerstatus_aiboss",
+    feature = "actorstatuscomponent-playerstatus_aibosssuper",
+    feature = "actorstatuscomponent-playerstatusai",
+    feature = "actorstatuscomponent-playerstatusai_captain",
+    feature = "actorstatuscomponent-playerstatusai_elite",
+    feature = "actorstatuscomponent-playerstatusai_juggernaut",
+    feature = "actorstatuscomponent-playerstatusai_unconscious_rescuemission",
+    feature = "actorstatuscomponent-playerstatusai_vanduul",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_stormbreaker",
+    feature = "actorstatuscomponent-playerstatusai_yormandi",
+    feature = "actorstatuscomponent-playerstatuscorpse",
+    feature = "actorstatuscomponent-playerstatuscreature",
+    feature = "actorstatuscomponent-playerstatusea",
+    feature = "actorstatuscomponent-playerstatuspu",
+    feature = "actorstatuscomponent-powersuitstatus",
+    feature = "actorstatuscomponent-powersuitstatus_combat",
+    feature = "actorstatuscomponent-transportstatus",
+    feature = "aiwavecollection",
+    feature = "ammoparams",
+    feature = "areaservices",
+    feature = "cargomanifest",
+    feature = "commsnotifications",
+    feature = "communicationsystem",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "crewmanifest",
+    feature = "entities-animatedcharacterstatue_kopion",
+    feature = "entities-animatedcharacterstatue_marok",
+    feature = "entities-animentity_character",
+    feature = "entities-area",
+    feature = "entities-audio",
+    feature = "entities-basebuilding",
+    feature = "entities-commodities",
+    feature = "entities-destruction",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-haulingentityclass",
+    feature = "entities-mineable",
+    feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-scitem-atc",
+    feature = "entities-scitem-cargo",
+    feature = "entities-scitem-carryables",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-harvestables",
+    feature = "entities-scitem-human",
+    feature = "entities-scitem-itembanks",
+    feature = "entities-scitem-locations",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
+    feature = "entities-scitem-weapons",
+    feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a_extractonly",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entities-ui",
+    feature = "entitlementpolicies",
+    feature = "gamemode",
+    feature = "globalcommsnotificationparams",
+    feature = "globalshopparams",
+    feature = "harvestable",
+    feature = "instancedinterior",
+    feature = "inventorycontainers",
+    feature = "item",
+    feature = "itemresourcenetwork",
+    feature = "journalentry",
+    feature = "lawsystem",
+    feature = "level",
+    feature = "loadoutkits",
+    feature = "lootgeneration",
+    feature = "megamap",
+    feature = "mining",
+    feature = "missionbroker",
+    feature = "missiondata",
+    feature = "missiongiver",
+    feature = "missionscenarios",
+    feature = "player",
+    feature = "resourcetypedatabase",
+    feature = "sglobalsalvagerepairbeamparams",
+    feature = "ssolarsystem",
+    feature = "starmap",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs"
+))]
+impl crate::RecordLookup for ResourceTypeGroup {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.resource_type_group.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "resourcetypedatabase")]
+impl crate::RecordLookup for ResourceTypeDatabase {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .resourcetypedatabase
+            .resource_type_database
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "aiwavecollection",
+    feature = "closecombat",
+    feature = "commsnotifications",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-audio",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entitlementpolicies",
+    feature = "globalcommsnotificationparams",
+    feature = "missionbroker",
+    feature = "missiongiver",
+    feature = "ui-buildingblocks"
+))]
+impl crate::RecordLookup for ActorRestrainConfig {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.actor_restrain_config.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actorstaminacomponent",
+    feature = "actorstaminacomponent-actorstaminacomponent_playerstamina",
+    feature = "actorstatuscomponent",
+    feature = "actorstatuscomponent-globalactorstatusparams",
+    feature = "actorstatuscomponent-medicaltieritemconfig",
+    feature = "actorstatuscomponent-playerstatus",
+    feature = "actorstatuscomponent-playerstatus_aiboss",
+    feature = "actorstatuscomponent-playerstatus_aibosssuper",
+    feature = "actorstatuscomponent-playerstatusai",
+    feature = "actorstatuscomponent-playerstatusai_captain",
+    feature = "actorstatuscomponent-playerstatusai_elite",
+    feature = "actorstatuscomponent-playerstatusai_juggernaut",
+    feature = "actorstatuscomponent-playerstatusai_unconscious_rescuemission",
+    feature = "actorstatuscomponent-playerstatusai_vanduul",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_stormbreaker",
+    feature = "actorstatuscomponent-playerstatusai_yormandi",
+    feature = "actorstatuscomponent-playerstatuscorpse",
+    feature = "actorstatuscomponent-playerstatuscreature",
+    feature = "actorstatuscomponent-playerstatusea",
+    feature = "actorstatuscomponent-playerstatuspu",
+    feature = "actorstatuscomponent-powersuitstatus",
+    feature = "actorstatuscomponent-powersuitstatus_combat",
+    feature = "actorstatuscomponent-transportstatus",
+    feature = "aiwavecollection",
+    feature = "commsnotifications",
+    feature = "consumabletypesdatabase",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-audio",
+    feature = "entities-basebuilding",
+    feature = "entities-carryable_damage_sensitive_canister",
+    feature = "entities-entityspawners",
+    feature = "entities-environment",
+    feature = "entities-groundvehicles",
+    feature = "entities-mineable",
+    feature = "entities-roomsystem",
+    feature = "entities-scitem-carryables",
+    feature = "entities-scitem-characters",
+    feature = "entities-scitem-consumables",
+    feature = "entities-scitem-doors",
+    feature = "entities-scitem-environments",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-human",
+    feature = "entities-scitem-itembanks",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-shopdisplays",
+    feature = "entities-scitem-usables",
+    feature = "entities-scitem-weapons",
+    feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a_extractonly",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entitlementpolicies",
+    feature = "factions",
+    feature = "fuelparams",
+    feature = "gamemode",
+    feature = "globalcommsnotificationparams",
+    feature = "harvestable",
+    feature = "item",
+    feature = "itemresourcenetwork",
+    feature = "journalentry",
+    feature = "level",
+    feature = "loadoutkits",
+    feature = "lootgeneration",
+    feature = "megamap",
+    feature = "missionbroker",
+    feature = "missiongiver",
+    feature = "player",
+    feature = "reputation",
+    feature = "roomsystem",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs"
+))]
+impl crate::RecordLookup for GasParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.gas_params.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "entities-environment",
+    feature = "entities-roomsystem",
+    feature = "roomsystem"
+))]
+impl crate::RecordLookup for AtmosphericCompositionTemplate {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .atmospheric_composition_template
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "roomsystem")]
+impl crate::RecordLookup for GlobalGasParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.roomsystem.global_gas_params.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "roomsystem")]
+impl crate::RecordLookup for GlobalRoomStateParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.roomsystem.global_room_state_params.get(guid).copied()
+    }
+}
+
+#[cfg(any(feature = "entities-environment", feature = "roomsystem"))]
+impl crate::RecordLookup for AsteroidStateTemplate {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .asteroid_state_template
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "entities-environment",
+    feature = "entities-roomsystem",
+    feature = "roomsystem"
+))]
+impl crate::RecordLookup for AsteroidBehavior {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.asteroid_behavior.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "entities-basebuilding",
+    feature = "entities-environment",
+    feature = "entities-roomsystem",
+    feature = "entities-scitem-airlocks",
+    feature = "entities-scitem-characters",
+    feature = "entities-scitem-doors",
+    feature = "entities-scitem-itembanks",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-shopdisplays",
+    feature = "entities-scitem-usables",
+    feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a_extractonly",
+    feature = "entitlementpolicies",
+    feature = "factions",
+    feature = "gamemode",
+    feature = "harvestable",
+    feature = "journalentry",
+    feature = "level",
+    feature = "loadoutkits",
+    feature = "megamap",
+    feature = "player",
+    feature = "reputation",
+    feature = "roomsystem",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs"
+))]
+impl crate::RecordLookup for AtmosphereStateTemplate {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .atmosphere_state_template
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(feature = "entities-environment", feature = "roomsystem"))]
+impl crate::RecordLookup for AtmosphereStatePressureTemplate {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .atmosphere_state_pressure_template
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(feature = "entities-environment", feature = "roomsystem"))]
+impl crate::RecordLookup for AtmosphereStateTemperatureTemplate {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .atmosphere_state_temperature_template
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(feature = "entities-environment", feature = "roomsystem"))]
+impl crate::RecordLookup for AtmosphereStateHumidityTemplate {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .atmosphere_state_humidity_template
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "entities-basebuilding",
+    feature = "entities-environment",
+    feature = "entities-roomsystem",
+    feature = "entities-scitem-airlocks",
+    feature = "entities-scitem-characters",
+    feature = "entities-scitem-doors",
+    feature = "entities-scitem-itembanks",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-shopdisplays",
+    feature = "entities-scitem-usables",
+    feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a_extractonly",
+    feature = "entitlementpolicies",
+    feature = "factions",
+    feature = "gamemode",
+    feature = "harvestable",
+    feature = "journalentry",
+    feature = "level",
+    feature = "loadoutkits",
+    feature = "megamap",
+    feature = "player",
+    feature = "reputation",
+    feature = "roomsystem",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs"
+))]
+impl crate::RecordLookup for AtmosphereBehavior {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.atmosphere_behavior.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "roomsystem")]
+impl crate::RecordLookup for ElectricalStateTemplate {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .roomsystem
+            .electrical_state_template
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "roomsystem")]
+impl crate::RecordLookup for ElectricalBehavior {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.roomsystem.electrical_behavior.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "entities-environment",
+    feature = "entities-rastar",
+    feature = "entities-roomsystem",
+    feature = "roomsystem"
+))]
+impl crate::RecordLookup for RadiationStateTemplate {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .radiation_state_template
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "entities-environment",
+    feature = "entities-roomsystem",
+    feature = "roomsystem"
+))]
+impl crate::RecordLookup for RadiationBehavior {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.radiation_behavior.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actorviewlimitpresetdatabase",
+    feature = "actorviewlimitpresetdatabase-viewlimitpresetdatabase"
+))]
+impl crate::RecordLookup for ActorViewLimitPresetDatabase {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .actor_view_limit_preset_database
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actor-actorviewlimits",
+    feature = "aiwavecollection",
+    feature = "commsnotifications",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-audio",
+    feature = "entities-basebuilding",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-scitem-characters",
+    feature = "entities-scitem-doors",
+    feature = "entities-scitem-itembanks",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-shopdisplays",
+    feature = "entities-scitem-suit",
+    feature = "entities-scitem-usables",
+    feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a_extractonly",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entitlementpolicies",
+    feature = "factions",
+    feature = "gamemode",
+    feature = "globalcommsnotificationparams",
+    feature = "harvestable",
+    feature = "journalentry",
+    feature = "level",
+    feature = "loadoutkits",
+    feature = "megamap",
+    feature = "missionbroker",
+    feature = "missiongiver",
+    feature = "player",
+    feature = "reputation",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs"
+))]
+impl crate::RecordLookup for ActorLookLimits {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.actor_look_limits.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actor-actorviewlimits",
+    feature = "aiwavecollection",
+    feature = "commsnotifications",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-audio",
+    feature = "entities-basebuilding",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-scitem-characters",
+    feature = "entities-scitem-doors",
+    feature = "entities-scitem-itembanks",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-shopdisplays",
+    feature = "entities-scitem-suit",
+    feature = "entities-scitem-usables",
+    feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a_extractonly",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entitlementpolicies",
+    feature = "factions",
+    feature = "gamemode",
+    feature = "globalcommsnotificationparams",
+    feature = "harvestable",
+    feature = "journalentry",
+    feature = "level",
+    feature = "loadoutkits",
+    feature = "megamap",
+    feature = "missionbroker",
+    feature = "missiongiver",
+    feature = "player",
+    feature = "reputation",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs"
+))]
+impl crate::RecordLookup for ActorAimLimits {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.actor_aim_limits.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "entitlementpolicies",
+    feature = "hazardawarenessparams"
+))]
+impl crate::RecordLookup for HazardAwarenessParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .hazard_awareness_params
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "analytics",
+    feature = "entities-scitem-doors",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-stormbreaker_pylon_hatch"
+))]
+impl crate::RecordLookup for SAnalyticsEvent {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.sanalytics_event.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "analytics")]
+impl crate::RecordLookup for SAnalyticsEventDatabase {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.analytics.sanalytics_event_database.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actorstatuscomponent",
+    feature = "actorstatuscomponent-globalactorstatusparams",
+    feature = "actorstatuscomponent-medicaltieritemconfig",
+    feature = "actorstatuscomponent-playerstatus",
+    feature = "actorstatuscomponent-playerstatus_aiboss",
+    feature = "actorstatuscomponent-playerstatus_aibosssuper",
+    feature = "actorstatuscomponent-playerstatusai",
+    feature = "actorstatuscomponent-playerstatusai_captain",
+    feature = "actorstatuscomponent-playerstatusai_elite",
+    feature = "actorstatuscomponent-playerstatusai_juggernaut",
+    feature = "actorstatuscomponent-playerstatusai_unconscious_rescuemission",
+    feature = "actorstatuscomponent-playerstatusai_vanduul",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_stormbreaker",
+    feature = "actorstatuscomponent-playerstatusai_yormandi",
+    feature = "actorstatuscomponent-playerstatuscorpse",
+    feature = "actorstatuscomponent-playerstatuscreature",
+    feature = "actorstatuscomponent-playerstatusea",
+    feature = "actorstatuscomponent-playerstatuspu",
+    feature = "actorstatuscomponent-powersuitstatus",
+    feature = "actorstatuscomponent-powersuitstatus_combat",
+    feature = "actorstatuscomponent-transportstatus",
+    feature = "aiwavecollection",
+    feature = "ammoparams",
+    feature = "areaservices",
+    feature = "cargomanifest",
+    feature = "commsnotifications",
+    feature = "communicationsystem",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-area",
+    feature = "entities-audio",
+    feature = "entities-cinematiclabelwithvehicle",
+    feature = "entities-commodities",
+    feature = "entities-decorations",
+    feature = "entities-dev",
+    feature = "entities-entityspawners",
+    feature = "entities-fuel_nozzle_misc_nozzlestandard",
+    feature = "entities-groundvehicles",
+    feature = "entities-haulingentityclass",
+    feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-salvagable",
+    feature = "entities-scitem-access",
+    feature = "entities-scitem-atc",
+    feature = "entities-scitem-cargo",
+    feature = "entities-scitem-carryables",
+    feature = "entities-scitem-characters",
+    feature = "entities-scitem-decals",
+    feature = "entities-scitem-default_lensdisplay",
+    feature = "entities-scitem-default_lensdisplay_pu",
+    feature = "entities-scitem-doors",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-human",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-missionstorage",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-shopdisplays",
+    feature = "entities-scitem-spawers",
+    feature = "entities-scitem-storage",
+    feature = "entities-scitem-suit",
+    feature = "entities-scitem-test_gadget",
+    feature = "entities-scitem-usables",
+    feature = "entities-scitem-vehicles",
+    feature = "entities-scitem-weapons",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entities-ui",
+    feature = "entitlementpolicies",
+    feature = "factions",
+    feature = "fuelparams",
+    feature = "gamemode",
+    feature = "globalcommsnotificationparams",
+    feature = "globalshopparams",
+    feature = "harvestable",
+    feature = "instancedinterior",
+    feature = "inventorycontainers",
+    feature = "item",
+    feature = "itemresourcenetwork",
+    feature = "journalentry",
+    feature = "lawsystem",
+    feature = "level",
+    feature = "lightamplification_aegs",
+    feature = "lightamplification_anvl",
+    feature = "lightamplification_argo",
+    feature = "lightamplification_banu",
+    feature = "lightamplification_cnou",
+    feature = "lightamplification_crus",
+    feature = "lightamplification_drak",
+    feature = "lightamplification_espr",
+    feature = "lightamplification_gama",
+    feature = "lightamplification_grey",
+    feature = "lightamplification_krig",
+    feature = "lightamplification_misc",
+    feature = "lightamplification_orig",
+    feature = "lightamplification_rsi",
+    feature = "lightamplification_vncl",
+    feature = "lightamplification_xnaa",
+    feature = "loadoutkits",
+    feature = "megamap",
+    feature = "missionbroker",
+    feature = "missiondata",
+    feature = "missiongiver",
+    feature = "player",
+    feature = "reputation",
+    feature = "resourcetypedatabase",
+    feature = "scitemmanufacturer",
+    feature = "sglobalsalvagerepairbeamparams",
+    feature = "ssolarsystem",
+    feature = "starmap",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs",
+    feature = "ui-mobiglas"
+))]
+impl crate::RecordLookup for SCItemLightAmplification {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .scitem_light_amplification
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actorstatuscomponent",
+    feature = "actorstatuscomponent-globalactorstatusparams",
+    feature = "actorstatuscomponent-medicaltieritemconfig",
+    feature = "actorstatuscomponent-playerstatus",
+    feature = "actorstatuscomponent-playerstatus_aiboss",
+    feature = "actorstatuscomponent-playerstatus_aibosssuper",
+    feature = "actorstatuscomponent-playerstatusai",
+    feature = "actorstatuscomponent-playerstatusai_captain",
+    feature = "actorstatuscomponent-playerstatusai_elite",
+    feature = "actorstatuscomponent-playerstatusai_juggernaut",
+    feature = "actorstatuscomponent-playerstatusai_unconscious_rescuemission",
+    feature = "actorstatuscomponent-playerstatusai_vanduul",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_stormbreaker",
+    feature = "actorstatuscomponent-playerstatusai_yormandi",
+    feature = "actorstatuscomponent-playerstatuscorpse",
+    feature = "actorstatuscomponent-playerstatuscreature",
+    feature = "actorstatuscomponent-playerstatusea",
+    feature = "actorstatuscomponent-playerstatuspu",
+    feature = "actorstatuscomponent-powersuitstatus",
+    feature = "actorstatuscomponent-powersuitstatus_combat",
+    feature = "actorstatuscomponent-transportstatus",
+    feature = "aiwavecollection",
+    feature = "ammoparams",
+    feature = "areaservices",
+    feature = "cargomanifest",
+    feature = "commsnotifications",
+    feature = "communicationsystem",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-area",
+    feature = "entities-audio",
+    feature = "entities-basebuilding",
+    feature = "entities-cinematiclabelwithvehicle",
+    feature = "entities-commodities",
+    feature = "entities-decorations",
+    feature = "entities-dev",
+    feature = "entities-entityspawners",
+    feature = "entities-fuel_nozzle_grin_nozzlefast",
+    feature = "entities-fuel_nozzle_grin_nozzlesecure",
+    feature = "entities-fuel_nozzle_grin_nozzleveryfast",
+    feature = "entities-fuel_nozzle_grin_nozzleverysecure",
+    feature = "entities-fuel_nozzle_misc_nozzlestandard",
+    feature = "entities-fuel_nozzle_shin_nozzleexpensivefast",
+    feature = "entities-fuel_nozzle_shin_nozzleexpensivesecure",
+    feature = "entities-fuel_nozzle_shin_nozzlemostexpensive",
+    feature = "entities-groundvehicles",
+    feature = "entities-haulingentityclass",
+    feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-salvagable",
+    feature = "entities-scitem-access",
+    feature = "entities-scitem-airlocks",
+    feature = "entities-scitem-atc",
+    feature = "entities-scitem-cargo",
+    feature = "entities-scitem-carryables",
+    feature = "entities-scitem-characters",
+    feature = "entities-scitem-consumables",
+    feature = "entities-scitem-decals",
+    feature = "entities-scitem-default_lensdisplay",
+    feature = "entities-scitem-default_lensdisplay_pu",
+    feature = "entities-scitem-doors",
+    feature = "entities-scitem-flair",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-harvestables",
+    feature = "entities-scitem-holoui",
+    feature = "entities-scitem-human",
+    feature = "entities-scitem-itembanks",
+    feature = "entities-scitem-lootables",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-missionstorage",
+    feature = "entities-scitem-prop",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-shopdisplays",
+    feature = "entities-scitem-spawers",
+    feature = "entities-scitem-starmarine",
+    feature = "entities-scitem-storage",
+    feature = "entities-scitem-suit",
+    feature = "entities-scitem-test_gadget",
+    feature = "entities-scitem-usables",
+    feature = "entities-scitem-vehicles",
+    feature = "entities-scitem-weapons",
+    feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a_extractonly",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entities-ui",
+    feature = "entitlementpolicies",
+    feature = "factions",
+    feature = "fuelparams",
+    feature = "gamemode",
+    feature = "globalcommsnotificationparams",
+    feature = "globalshopparams",
+    feature = "harvestable",
+    feature = "instancedinterior",
+    feature = "inventorycontainers",
+    feature = "item",
+    feature = "itemresourcenetwork",
+    feature = "journalentry",
+    feature = "lawsystem",
+    feature = "level",
+    feature = "loadoutkits",
+    feature = "lootgeneration",
+    feature = "megamap",
+    feature = "missionbroker",
+    feature = "missiondata",
+    feature = "missiongiver",
+    feature = "player",
+    feature = "playerchoicemenuitems",
+    feature = "playerchoicemenutypes",
+    feature = "reputation",
+    feature = "resourcetypedatabase",
+    feature = "scitemmanufacturer",
+    feature = "sglobalsalvagerepairbeamparams",
+    feature = "ssolarsystem",
+    feature = "starmap",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs",
+    feature = "ui-mobiglas"
+))]
+impl crate::RecordLookup for SCItemManufacturer {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.scitem_manufacturer.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "hudparams")]
+impl crate::RecordLookup for SAimableGimbalModeLabels {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .hudparams
+            .saimable_gimbal_mode_labels
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "gamemode",
+    feature = "level",
+    feature = "megamap",
+    feature = "vehicle",
+    feature = "vehiclecombat"
+))]
+impl crate::RecordLookup for SAimableGameModeParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .saimable_game_mode_params
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "hudparams")]
+impl crate::RecordLookup for SAimableControllerHudParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .hudparams
+            .saimable_controller_hud_params
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "aiwavecollection",
+    feature = "capacitorassignment",
+    feature = "contracts",
+    feature = "entities-entityspawners",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-ships",
+    feature = "entities-spaceships",
+    feature = "entities-ui",
+    feature = "entitlementpolicies",
+    feature = "player",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs"
+))]
+impl crate::RecordLookup for CapacitorAssignmentInputOutputDef {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .capacitor_assignment_input_output_def
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "entities-basebuilding",
+    feature = "entities-scitem-characters",
+    feature = "entities-scitem-doors",
+    feature = "entities-scitem-itembanks",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-shopdisplays",
+    feature = "entities-scitem-usables",
+    feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a_extractonly",
+    feature = "entitlementpolicies",
+    feature = "factions",
+    feature = "gamemode",
+    feature = "harvestable",
+    feature = "journalentry",
+    feature = "level",
+    feature = "loadoutkits",
+    feature = "megamap",
+    feature = "player",
+    feature = "reputation",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs",
+    feature = "ui-visor",
+    feature = "ui-visorscreenconfig"
+))]
+impl crate::RecordLookup for SCItemVisorDashboardConfig {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .scitem_visor_dashboard_config
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "entities-scitem-characters",
+    feature = "entities-scitem-doors",
+    feature = "entities-scitem-shopdisplays",
+    feature = "entities-scitem-usables",
+    feature = "factions",
+    feature = "fuelparams",
+    feature = "gamemode",
+    feature = "harvestable",
+    feature = "journalentry",
+    feature = "level",
+    feature = "loadoutkits",
+    feature = "megamap",
+    feature = "reputation"
+))]
+impl crate::RecordLookup for SCItemSuitFuelParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .scitem_suit_fuel_params
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "explosiveordnance")]
+impl crate::RecordLookup for ExplosiveOrdnancePingGlobalParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .explosiveordnance
+            .explosive_ordnance_ping_global_params
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "entities-basebuilding",
+    feature = "entities-scitem-characters",
+    feature = "entities-scitem-doors",
+    feature = "entities-scitem-itembanks",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-shopdisplays",
+    feature = "entities-scitem-usables",
+    feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a_extractonly",
+    feature = "entitlementpolicies",
+    feature = "factions",
+    feature = "gamemode",
+    feature = "harvestable",
+    feature = "journalentry",
+    feature = "level",
+    feature = "loadoutkits",
+    feature = "megamap",
+    feature = "moveviewrestrictionpenalties",
+    feature = "player",
+    feature = "reputation",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs"
+))]
+impl crate::RecordLookup for MoveViewRestrictionPenalty {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .move_view_restriction_penalty
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actorstatuscomponent",
+    feature = "actorstatuscomponent-globalactorstatusparams",
+    feature = "actorstatuscomponent-playerstatus",
+    feature = "actorstatuscomponent-playerstatus_aiboss",
+    feature = "actorstatuscomponent-playerstatus_aibosssuper",
+    feature = "actorstatuscomponent-playerstatusai",
+    feature = "actorstatuscomponent-playerstatusai_captain",
+    feature = "actorstatuscomponent-playerstatusai_elite",
+    feature = "actorstatuscomponent-playerstatusai_juggernaut",
+    feature = "actorstatuscomponent-playerstatusai_unconscious_rescuemission",
+    feature = "actorstatuscomponent-playerstatusai_vanduul",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_stormbreaker",
+    feature = "actorstatuscomponent-playerstatusai_yormandi",
+    feature = "actorstatuscomponent-playerstatuscorpse",
+    feature = "actorstatuscomponent-playerstatuscreature",
+    feature = "actorstatuscomponent-playerstatusea",
+    feature = "actorstatuscomponent-playerstatuspu",
+    feature = "actorstatuscomponent-powersuitstatus",
+    feature = "actorstatuscomponent-powersuitstatus_combat",
+    feature = "actorstatuscomponent-transportstatus",
+    feature = "aiwavecollection",
+    feature = "commsnotifications",
+    feature = "consumabletypesdatabase",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-audio",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-scitem-carryables",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-weapons",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entitlementpolicies",
+    feature = "gamemode",
+    feature = "globalcommsnotificationparams",
+    feature = "harvestable",
+    feature = "loadoutkits",
+    feature = "missionbroker",
+    feature = "missiongiver",
+    feature = "ui-buildingblocks"
+))]
+impl crate::RecordLookup for ConsumableType {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.consumable_type.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actorstatuscomponent",
+    feature = "actorstatuscomponent-globalactorstatusparams",
+    feature = "actorstatuscomponent-medicaltieritemconfig",
+    feature = "actorstatuscomponent-playerstatus",
+    feature = "actorstatuscomponent-playerstatus_aiboss",
+    feature = "actorstatuscomponent-playerstatus_aibosssuper",
+    feature = "actorstatuscomponent-playerstatusai",
+    feature = "actorstatuscomponent-playerstatusai_captain",
+    feature = "actorstatuscomponent-playerstatusai_elite",
+    feature = "actorstatuscomponent-playerstatusai_juggernaut",
+    feature = "actorstatuscomponent-playerstatusai_unconscious_rescuemission",
+    feature = "actorstatuscomponent-playerstatusai_vanduul",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_stormbreaker",
+    feature = "actorstatuscomponent-playerstatusai_yormandi",
+    feature = "actorstatuscomponent-playerstatuscorpse",
+    feature = "actorstatuscomponent-playerstatuscreature",
+    feature = "actorstatuscomponent-playerstatusea",
+    feature = "actorstatuscomponent-playerstatuspu",
+    feature = "actorstatuscomponent-powersuitstatus",
+    feature = "actorstatuscomponent-powersuitstatus_combat",
+    feature = "actorstatuscomponent-transportstatus",
+    feature = "aiwavecollection",
+    feature = "commsnotifications",
+    feature = "consumabletypesdatabase",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-audio",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-scitem-carryables",
+    feature = "entities-scitem-consumables",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-harvestables",
+    feature = "entities-scitem-human",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-usables",
+    feature = "entities-scitem-weapons",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entitlementpolicies",
+    feature = "gamemode",
+    feature = "globalcommsnotificationparams",
+    feature = "harvestable",
+    feature = "level",
+    feature = "loadoutkits",
+    feature = "lootgeneration",
+    feature = "megamap",
+    feature = "missionbroker",
+    feature = "missiongiver",
+    feature = "player",
+    feature = "playerchoicemenuitems",
+    feature = "playerchoicemenutypes",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs"
+))]
+impl crate::RecordLookup for ConsumableSubtype {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.consumable_subtype.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "consumabletypesdatabase")]
+impl crate::RecordLookup for ConsumableTypeDatabase {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .consumabletypesdatabase
+            .consumable_type_database
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "audio")]
+impl crate::RecordLookup for CommsAudioEffect {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.audio.comms_audio_effect.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "aiwavecollection",
+    feature = "commsnotifications",
+    feature = "contracts",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-audio",
+    feature = "entities-dev",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-jumppoints",
+    feature = "entities-scitem-aimodule_atc",
+    feature = "entities-scitem-aimodule_atc_grimhex",
+    feature = "entities-scitem-aimodule_atc_levskiatc01",
+    feature = "entities-scitem-aimodule_atc_lorvilleatc01",
+    feature = "entities-scitem-aimodule_atc_newbabbage",
+    feature = "entities-scitem-aimodule_atc_newbabbageatc01",
+    feature = "entities-scitem-aimodule_atc_orisonatc01",
+    feature = "entities-scitem-aimodule_atc_systematc01",
+    feature = "entities-scitem-aimodule_cargo",
+    feature = "entities-scitem-aimodule_collector",
+    feature = "entities-scitem-aimodule_genatc02",
+    feature = "entities-scitem-aimodule_pyro",
+    feature = "entities-scitem-aimodule_silent_atc",
+    feature = "entities-scitem-atc",
+    feature = "entities-scitem-atc_datamanager",
+    feature = "entities-scitem-atc_datamanager_outpostplatinumbay",
+    feature = "entities-scitem-atc_datamanager_port_lawful",
+    feature = "entities-scitem-atc_datamanager_port_semilawful",
+    feature = "entities-scitem-atc_datamanager_port_unlawful",
+    feature = "entities-scitem-commsreceiver",
+    feature = "entities-scitem-missionstorage",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-spawers",
+    feature = "entities-scitem-weapons",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entitlementpolicies",
+    feature = "globalcommsnotificationparams",
+    feature = "journalentry",
+    feature = "missionbroker",
+    feature = "missiongiver",
+    feature = "missionscenarios",
+    feature = "scitemcommscomponentsetup",
+    feature = "ui-buildingblocks"
+))]
+impl crate::RecordLookup for SCItemCommsComponentSetup {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .scitem_comms_component_setup
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "aiwavecollection",
+    feature = "audio",
+    feature = "contracts",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-scitem-atc",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-suit",
+    feature = "entities-scitem-vehicles",
+    feature = "entities-spaceships",
+    feature = "entities-ui",
+    feature = "entitlementpolicies",
+    feature = "player",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs",
+    feature = "ui-mobiglas"
+))]
+impl crate::RecordLookup for ShipComputerDefinition {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .ship_computer_definition
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "entities-entityspawners",
+    feature = "entities-scitem-actormovables",
+    feature = "entities-scitem-usables"
+))]
+impl crate::RecordLookup for SMovableLimits {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.smovable_limits.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actor-atls_geo_jumppackconfig",
+    feature = "contracts",
+    feature = "entities-scitem-storage"
+))]
+impl crate::RecordLookup for JumpThrusterPackConfig {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .jump_thruster_pack_config
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "entities-scitem-scitemdisplayscreen",
+    feature = "scitemdisplayscreenpreset"
+))]
+impl crate::RecordLookup for SCItemDisplayScreenPreset {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .scitem_display_screen_preset
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "ui-buildingblocks")]
+impl crate::RecordLookup for DockingSensitivity {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .ui_buildingblocks
+            .docking_sensitivity
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "entities-basebuilding",
+    feature = "entities-scitem-characters",
+    feature = "entities-scitem-default_lensdisplay",
+    feature = "entities-scitem-default_lensdisplay_pu",
+    feature = "entities-scitem-doors",
+    feature = "entities-scitem-holoui",
+    feature = "entities-scitem-itembanks",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-shopdisplays",
+    feature = "entities-scitem-usables",
+    feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a_extractonly",
+    feature = "entities-spaceships",
+    feature = "entitlementpolicies",
+    feature = "factions",
+    feature = "gamemode",
+    feature = "harvestable",
+    feature = "journalentry",
+    feature = "level",
+    feature = "loadoutkits",
+    feature = "megamap",
+    feature = "player",
+    feature = "reputation",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs",
+    feature = "ui-worlddisplay"
+))]
+impl crate::RecordLookup for WorldDisplayEnvironment {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .world_display_environment
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "aiwavecollection",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "entities-groundvehicles",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-weapons",
+    feature = "entities-spaceships",
+    feature = "entitlementpolicies",
+    feature = "gamemode",
+    feature = "loadoutkits",
+    feature = "mining",
+    feature = "missionbroker"
+))]
+impl crate::RecordLookup for MiningControllerGlobalParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .mining_controller_global_params
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(feature = "vehicle", feature = "vehiclesalvageglobalparams"))]
+impl crate::RecordLookup for VehicleSalvageGlobalParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .vehicle_salvage_global_params
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "ui-seatreticlearchetype")]
+impl crate::RecordLookup for SeatReticleArchetype {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .ui_seatreticlearchetype
+            .seat_reticle_archetype
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "entities-scitem-ships",
+    feature = "entities-spaceships",
+    feature = "entitlementpolicies"
+))]
+impl crate::RecordLookup for SCSeatHeadPosAdjustSetup {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .scseat_head_pos_adjust_setup
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-headtrackinglimits",
+    feature = "entities-scitem-ships"
+))]
+impl crate::RecordLookup for SCItemSeatHeadTrackingPositionLimitParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .scitem_seat_head_tracking_position_limit_params
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "aiwavecollection",
+    feature = "contracts",
+    feature = "entities-scitem-ships",
+    feature = "entities-spaceships",
+    feature = "entitlementpolicies",
+    feature = "moveviewrestrictionpenalties"
+))]
+impl crate::RecordLookup for ArmorMoveViewRestrictions {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .armor_move_view_restrictions
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "ads",
+    feature = "aiwavecollection",
+    feature = "contracts",
+    feature = "entities-groundvehicles",
+    feature = "entities-scitem-ships",
+    feature = "entities-spaceships",
+    feature = "entitlementpolicies"
+))]
+impl crate::RecordLookup for SeatAdsDef {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.seat_ads_def.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "contracts",
+    feature = "entities-scitem-vehicles",
+    feature = "harvestable",
+    feature = "seatcdikconfigs"
+))]
+impl crate::RecordLookup for SeatUserActorCDIKRecord {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .seat_user_actor_cdikrecord
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actorstatuscomponent",
+    feature = "actorstatuscomponent-globalactorstatusparams",
+    feature = "actorstatuscomponent-medicaltieritemconfig",
+    feature = "actorstatuscomponent-playerstatus",
+    feature = "actorstatuscomponent-playerstatus_aiboss",
+    feature = "actorstatuscomponent-playerstatus_aibosssuper",
+    feature = "actorstatuscomponent-playerstatusai",
+    feature = "actorstatuscomponent-playerstatusai_captain",
+    feature = "actorstatuscomponent-playerstatusai_elite",
+    feature = "actorstatuscomponent-playerstatusai_juggernaut",
+    feature = "actorstatuscomponent-playerstatusai_unconscious_rescuemission",
+    feature = "actorstatuscomponent-playerstatusai_vanduul",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_stormbreaker",
+    feature = "actorstatuscomponent-playerstatusai_yormandi",
+    feature = "actorstatuscomponent-playerstatuscorpse",
+    feature = "actorstatuscomponent-playerstatuscreature",
+    feature = "actorstatuscomponent-playerstatusea",
+    feature = "actorstatuscomponent-playerstatuspu",
+    feature = "actorstatuscomponent-powersuitstatus",
+    feature = "actorstatuscomponent-powersuitstatus_combat",
+    feature = "actorstatuscomponent-transportstatus",
+    feature = "aiwavecollection",
+    feature = "ammoparams",
+    feature = "areaservices",
+    feature = "cargomanifest",
+    feature = "commsnotifications",
+    feature = "communicationsystem",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-area",
+    feature = "entities-audio",
+    feature = "entities-commodities",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-haulingentityclass",
+    feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-scitem-atc",
+    feature = "entities-scitem-cargo",
+    feature = "entities-scitem-carryables",
+    feature = "entities-scitem-characters",
+    feature = "entities-scitem-doors",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-human",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-missionstorage",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-shopdisplays",
+    feature = "entities-scitem-suit",
+    feature = "entities-scitem-usables",
+    feature = "entities-scitem-vehicles",
+    feature = "entities-scitem-weapons",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entities-ui",
+    feature = "entitlementpolicies",
+    feature = "factions",
+    feature = "fuelparams",
+    feature = "gamemode",
+    feature = "globalcommsnotificationparams",
+    feature = "globalshopparams",
+    feature = "harvestable",
+    feature = "instancedinterior",
+    feature = "inventorycontainers",
+    feature = "item",
+    feature = "itemresourcenetwork",
+    feature = "journalentry",
+    feature = "lawsystem",
+    feature = "level",
+    feature = "loadoutkits",
+    feature = "megamap",
+    feature = "missionbroker",
+    feature = "missiondata",
+    feature = "missiongiver",
+    feature = "player",
+    feature = "reputation",
+    feature = "resourcetypedatabase",
+    feature = "sglobalsalvagerepairbeamparams",
+    feature = "ssolarsystem",
+    feature = "starmap",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs",
+    feature = "ui-mobiglas"
+))]
+impl crate::RecordLookup for SMFDModeConfig {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.smfdmode_config.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actorstatuscomponent",
+    feature = "actorstatuscomponent-globalactorstatusparams",
+    feature = "actorstatuscomponent-medicaltieritemconfig",
+    feature = "actorstatuscomponent-playerstatus",
+    feature = "actorstatuscomponent-playerstatus_aiboss",
+    feature = "actorstatuscomponent-playerstatus_aibosssuper",
+    feature = "actorstatuscomponent-playerstatusai",
+    feature = "actorstatuscomponent-playerstatusai_captain",
+    feature = "actorstatuscomponent-playerstatusai_elite",
+    feature = "actorstatuscomponent-playerstatusai_juggernaut",
+    feature = "actorstatuscomponent-playerstatusai_unconscious_rescuemission",
+    feature = "actorstatuscomponent-playerstatusai_vanduul",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_stormbreaker",
+    feature = "actorstatuscomponent-playerstatusai_yormandi",
+    feature = "actorstatuscomponent-playerstatuscorpse",
+    feature = "actorstatuscomponent-playerstatuscreature",
+    feature = "actorstatuscomponent-playerstatusea",
+    feature = "actorstatuscomponent-playerstatuspu",
+    feature = "actorstatuscomponent-powersuitstatus",
+    feature = "actorstatuscomponent-powersuitstatus_combat",
+    feature = "actorstatuscomponent-transportstatus",
+    feature = "aiwavecollection",
+    feature = "ammoparams",
+    feature = "areaservices",
+    feature = "cargomanifest",
+    feature = "commsnotifications",
+    feature = "communicationsystem",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-area",
+    feature = "entities-audio",
+    feature = "entities-commodities",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-haulingentityclass",
+    feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-scitem-atc",
+    feature = "entities-scitem-cargo",
+    feature = "entities-scitem-carryables",
+    feature = "entities-scitem-characters",
+    feature = "entities-scitem-doors",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-human",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-missionstorage",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-shopdisplays",
+    feature = "entities-scitem-suit",
+    feature = "entities-scitem-usables",
+    feature = "entities-scitem-vehicles",
+    feature = "entities-scitem-weapons",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entities-ui",
+    feature = "entitlementpolicies",
+    feature = "factions",
+    feature = "fuelparams",
+    feature = "gamemode",
+    feature = "globalcommsnotificationparams",
+    feature = "globalshopparams",
+    feature = "harvestable",
+    feature = "instancedinterior",
+    feature = "inventorycontainers",
+    feature = "item",
+    feature = "itemresourcenetwork",
+    feature = "journalentry",
+    feature = "lawsystem",
+    feature = "level",
+    feature = "loadoutkits",
+    feature = "megamap",
+    feature = "missionbroker",
+    feature = "missiondata",
+    feature = "missiongiver",
+    feature = "player",
+    feature = "reputation",
+    feature = "resourcetypedatabase",
+    feature = "sglobalsalvagerepairbeamparams",
+    feature = "ssolarsystem",
+    feature = "starmap",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs",
+    feature = "ui-mobiglas"
+))]
+impl crate::RecordLookup for SMFDView {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.smfdview.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actorstatuscomponent",
+    feature = "actorstatuscomponent-globalactorstatusparams",
+    feature = "actorstatuscomponent-medicaltieritemconfig",
+    feature = "actorstatuscomponent-playerstatus",
+    feature = "actorstatuscomponent-playerstatus_aiboss",
+    feature = "actorstatuscomponent-playerstatus_aibosssuper",
+    feature = "actorstatuscomponent-playerstatusai",
+    feature = "actorstatuscomponent-playerstatusai_captain",
+    feature = "actorstatuscomponent-playerstatusai_elite",
+    feature = "actorstatuscomponent-playerstatusai_juggernaut",
+    feature = "actorstatuscomponent-playerstatusai_unconscious_rescuemission",
+    feature = "actorstatuscomponent-playerstatusai_vanduul",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_stormbreaker",
+    feature = "actorstatuscomponent-playerstatusai_yormandi",
+    feature = "actorstatuscomponent-playerstatuscorpse",
+    feature = "actorstatuscomponent-playerstatuscreature",
+    feature = "actorstatuscomponent-playerstatusea",
+    feature = "actorstatuscomponent-playerstatuspu",
+    feature = "actorstatuscomponent-powersuitstatus",
+    feature = "actorstatuscomponent-powersuitstatus_combat",
+    feature = "actorstatuscomponent-transportstatus",
+    feature = "aiwavecollection",
+    feature = "ammoparams",
+    feature = "areaservices",
+    feature = "cargomanifest",
+    feature = "commsnotifications",
+    feature = "communicationsystem",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-area",
+    feature = "entities-audio",
+    feature = "entities-commodities",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-haulingentityclass",
+    feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-scitem-atc",
+    feature = "entities-scitem-cargo",
+    feature = "entities-scitem-carryables",
+    feature = "entities-scitem-characters",
+    feature = "entities-scitem-doors",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-human",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-missionstorage",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-shopdisplays",
+    feature = "entities-scitem-suit",
+    feature = "entities-scitem-usables",
+    feature = "entities-scitem-vehicles",
+    feature = "entities-scitem-weapons",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entities-ui",
+    feature = "entitlementpolicies",
+    feature = "factions",
+    feature = "fuelparams",
+    feature = "gamemode",
+    feature = "globalcommsnotificationparams",
+    feature = "globalshopparams",
+    feature = "harvestable",
+    feature = "instancedinterior",
+    feature = "inventorycontainers",
+    feature = "item",
+    feature = "itemresourcenetwork",
+    feature = "journalentry",
+    feature = "lawsystem",
+    feature = "level",
+    feature = "loadoutkits",
+    feature = "megamap",
+    feature = "missionbroker",
+    feature = "missiondata",
+    feature = "missiongiver",
+    feature = "player",
+    feature = "reputation",
+    feature = "resourcetypedatabase",
+    feature = "sglobalsalvagerepairbeamparams",
+    feature = "ssolarsystem",
+    feature = "starmap",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs",
+    feature = "ui-mobiglas"
+))]
+impl crate::RecordLookup for SMFDViewList {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.smfdview_list.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "entities-scitem-ships")]
+impl crate::RecordLookup for SMFDParamsDiagnostics {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .entities_scitem_ships
+            .smfdparams_diagnostics
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "item")]
+impl crate::RecordLookup for AnimatedHelmetParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.item.animated_helmet_params.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "turret")]
+impl crate::RecordLookup for STurretHealthModifierDef {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.turret.sturret_health_modifier_def.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "turret")]
+impl crate::RecordLookup for STurretESP {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.turret.sturret_esp.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "turret")]
+impl crate::RecordLookup for STurretGlobalParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.turret.sturret_global_params.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actorstatuscomponent",
+    feature = "actorstatuscomponent-globalactorstatusparams",
+    feature = "actorstatuscomponent-medicaltieritemconfig",
+    feature = "actorstatuscomponent-playerstatus",
+    feature = "actorstatuscomponent-playerstatus_aiboss",
+    feature = "actorstatuscomponent-playerstatus_aibosssuper",
+    feature = "actorstatuscomponent-playerstatusai",
+    feature = "actorstatuscomponent-playerstatusai_captain",
+    feature = "actorstatuscomponent-playerstatusai_elite",
+    feature = "actorstatuscomponent-playerstatusai_juggernaut",
+    feature = "actorstatuscomponent-playerstatusai_unconscious_rescuemission",
+    feature = "actorstatuscomponent-playerstatusai_vanduul",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_stormbreaker",
+    feature = "actorstatuscomponent-playerstatusai_yormandi",
+    feature = "actorstatuscomponent-playerstatuscorpse",
+    feature = "actorstatuscomponent-playerstatuscreature",
+    feature = "actorstatuscomponent-playerstatusea",
+    feature = "actorstatuscomponent-playerstatuspu",
+    feature = "actorstatuscomponent-powersuitstatus",
+    feature = "actorstatuscomponent-powersuitstatus_combat",
+    feature = "actorstatuscomponent-transportstatus",
+    feature = "aiwavecollection",
+    feature = "ammoparams",
+    feature = "areaservices",
+    feature = "cargomanifest",
+    feature = "commsnotifications",
+    feature = "communicationsystem",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-area",
+    feature = "entities-audio",
+    feature = "entities-cinematiclabelwithvehicle",
+    feature = "entities-commodities",
+    feature = "entities-dev",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-haulingentityclass",
+    feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-scitem-atc",
+    feature = "entities-scitem-cargo",
+    feature = "entities-scitem-carryables",
+    feature = "entities-scitem-characters",
+    feature = "entities-scitem-default_lensdisplay",
+    feature = "entities-scitem-default_lensdisplay_pu",
+    feature = "entities-scitem-doors",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-human",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-missionstorage",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-shopdisplays",
+    feature = "entities-scitem-spawers",
+    feature = "entities-scitem-suit",
+    feature = "entities-scitem-usables",
+    feature = "entities-scitem-weapons",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entities-ui",
+    feature = "entitlementpolicies",
+    feature = "factions",
+    feature = "fuelparams",
+    feature = "gamemode",
+    feature = "globalcommsnotificationparams",
+    feature = "globalshopparams",
+    feature = "harvestable",
+    feature = "instancedinterior",
+    feature = "inventorycontainers",
+    feature = "item",
+    feature = "itemresourcenetwork",
+    feature = "journalentry",
+    feature = "lawsystem",
+    feature = "level",
+    feature = "loadoutkits",
+    feature = "megamap",
+    feature = "missionbroker",
+    feature = "missiondata",
+    feature = "missiongiver",
+    feature = "player",
+    feature = "reputation",
+    feature = "resourcetypedatabase",
+    feature = "sglobalsalvagerepairbeamparams",
+    feature = "ssolarsystem",
+    feature = "starmap",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs",
+    feature = "ui-mobiglas"
+))]
+impl crate::RecordLookup for WeaponAimableAnglesDef {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .weapon_aimable_angles_def
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actorstatuscomponent",
+    feature = "actorstatuscomponent-globalactorstatusparams",
+    feature = "actorstatuscomponent-medicaltieritemconfig",
+    feature = "actorstatuscomponent-playerstatus",
+    feature = "actorstatuscomponent-playerstatus_aiboss",
+    feature = "actorstatuscomponent-playerstatus_aibosssuper",
+    feature = "actorstatuscomponent-playerstatusai",
+    feature = "actorstatuscomponent-playerstatusai_captain",
+    feature = "actorstatuscomponent-playerstatusai_elite",
+    feature = "actorstatuscomponent-playerstatusai_juggernaut",
+    feature = "actorstatuscomponent-playerstatusai_unconscious_rescuemission",
+    feature = "actorstatuscomponent-playerstatusai_vanduul",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_stormbreaker",
+    feature = "actorstatuscomponent-playerstatusai_yormandi",
+    feature = "actorstatuscomponent-playerstatuscorpse",
+    feature = "actorstatuscomponent-playerstatuscreature",
+    feature = "actorstatuscomponent-playerstatusea",
+    feature = "actorstatuscomponent-playerstatuspu",
+    feature = "actorstatuscomponent-powersuitstatus",
+    feature = "actorstatuscomponent-powersuitstatus_combat",
+    feature = "actorstatuscomponent-transportstatus",
+    feature = "aiwavecollection",
+    feature = "ammoparams",
+    feature = "areaservices",
+    feature = "cargomanifest",
+    feature = "commsnotifications",
+    feature = "communicationsystem",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-area",
+    feature = "entities-audio",
+    feature = "entities-cinematiclabelwithvehicle",
+    feature = "entities-commodities",
+    feature = "entities-dev",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-haulingentityclass",
+    feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-scitem-atc",
+    feature = "entities-scitem-cargo",
+    feature = "entities-scitem-carryables",
+    feature = "entities-scitem-characters",
+    feature = "entities-scitem-default_lensdisplay",
+    feature = "entities-scitem-default_lensdisplay_pu",
+    feature = "entities-scitem-doors",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-human",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-missionstorage",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-shopdisplays",
+    feature = "entities-scitem-spawers",
+    feature = "entities-scitem-suit",
+    feature = "entities-scitem-usables",
+    feature = "entities-scitem-weapons",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entities-ui",
+    feature = "entitlementpolicies",
+    feature = "factions",
+    feature = "fuelparams",
+    feature = "gamemode",
+    feature = "globalcommsnotificationparams",
+    feature = "globalshopparams",
+    feature = "harvestable",
+    feature = "instancedinterior",
+    feature = "inventorycontainers",
+    feature = "item",
+    feature = "itemresourcenetwork",
+    feature = "journalentry",
+    feature = "lawsystem",
+    feature = "level",
+    feature = "loadoutkits",
+    feature = "megamap",
+    feature = "missionbroker",
+    feature = "missiondata",
+    feature = "missiongiver",
+    feature = "player",
+    feature = "reputation",
+    feature = "resourcetypedatabase",
+    feature = "sglobalsalvagerepairbeamparams",
+    feature = "ssolarsystem",
+    feature = "starmap",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs",
+    feature = "ui-mobiglas"
+))]
+impl crate::RecordLookup for WeaponGimbalModeModifierDef {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .weapon_gimbal_mode_modifier_def
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "entities-entityspawners",
+    feature = "entities-scitem-human",
+    feature = "entities-scitem-starmarine",
+    feature = "entities-scitem-usables",
+    feature = "entities-scitem-weapons",
+    feature = "entitlementpolicies",
+    feature = "factions",
+    feature = "gamemode",
+    feature = "harvestable",
+    feature = "journalentry",
+    feature = "level",
+    feature = "loadoutkits",
+    feature = "megamap",
+    feature = "player",
+    feature = "reputation",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs",
+    feature = "weaponmisfiredef"
+))]
+impl crate::RecordLookup for WeaponMisfireDef {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.weapon_misfire_def.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actorstatuscomponent",
+    feature = "actorstatuscomponent-globalactorstatusparams",
+    feature = "actorstatuscomponent-medicaltieritemconfig",
+    feature = "actorstatuscomponent-playerstatus",
+    feature = "actorstatuscomponent-playerstatus_aiboss",
+    feature = "actorstatuscomponent-playerstatus_aibosssuper",
+    feature = "actorstatuscomponent-playerstatusai",
+    feature = "actorstatuscomponent-playerstatusai_captain",
+    feature = "actorstatuscomponent-playerstatusai_elite",
+    feature = "actorstatuscomponent-playerstatusai_juggernaut",
+    feature = "actorstatuscomponent-playerstatusai_unconscious_rescuemission",
+    feature = "actorstatuscomponent-playerstatusai_vanduul",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_stormbreaker",
+    feature = "actorstatuscomponent-playerstatusai_yormandi",
+    feature = "actorstatuscomponent-playerstatuscorpse",
+    feature = "actorstatuscomponent-playerstatuscreature",
+    feature = "actorstatuscomponent-playerstatusea",
+    feature = "actorstatuscomponent-playerstatuspu",
+    feature = "actorstatuscomponent-powersuitstatus",
+    feature = "actorstatuscomponent-powersuitstatus_combat",
+    feature = "actorstatuscomponent-transportstatus",
+    feature = "aiwavecollection",
+    feature = "ammoparams",
+    feature = "areaservices",
+    feature = "cargomanifest",
+    feature = "commsnotifications",
+    feature = "communicationsystem",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-area",
+    feature = "entities-audio",
+    feature = "entities-cinematiclabelwithvehicle",
+    feature = "entities-commodities",
+    feature = "entities-dev",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-haulingentityclass",
+    feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-scitem-atc",
+    feature = "entities-scitem-cargo",
+    feature = "entities-scitem-carryables",
+    feature = "entities-scitem-characters",
+    feature = "entities-scitem-default_lensdisplay",
+    feature = "entities-scitem-default_lensdisplay_pu",
+    feature = "entities-scitem-doors",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-human",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-missionstorage",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-shopdisplays",
+    feature = "entities-scitem-spawers",
+    feature = "entities-scitem-starmarine",
+    feature = "entities-scitem-suit",
+    feature = "entities-scitem-usables",
+    feature = "entities-scitem-weapons",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entities-ui",
+    feature = "entitlementpolicies",
+    feature = "factions",
+    feature = "fuelparams",
+    feature = "gamemode",
+    feature = "globalcommsnotificationparams",
+    feature = "globalshopparams",
+    feature = "harvestable",
+    feature = "instancedinterior",
+    feature = "inventorycontainers",
+    feature = "item",
+    feature = "itemresourcenetwork",
+    feature = "journalentry",
+    feature = "lawsystem",
+    feature = "level",
+    feature = "loadoutkits",
+    feature = "megamap",
+    feature = "missionbroker",
+    feature = "missiondata",
+    feature = "missiongiver",
+    feature = "player",
+    feature = "reputation",
+    feature = "resourcetypedatabase",
+    feature = "sglobalsalvagerepairbeamparams",
+    feature = "ssolarsystem",
+    feature = "starmap",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs",
+    feature = "ui-mobiglas",
+    feature = "weaponarmodifiers"
+))]
+impl crate::RecordLookup for WeaponARModifier {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.weapon_armodifier.get(guid).copied()
+    }
+}
+
+#[cfg(any(feature = "player", feature = "playertoplayercommscallglobalparams"))]
+impl crate::RecordLookup for PlayerToPlayerCommsCallGlobalParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .player_to_player_comms_call_global_params
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "personalinnerthoughtrules",
+    feature = "ui-playerchoice_pitconfig_playerchoicepersonalthought",
+    feature = "ui-uiconfig_starcitizen"
+))]
+impl crate::RecordLookup for PersonalInnerThoughtActionRulePreset {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .personal_inner_thought_action_rule_preset
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "entitlementpolicies")]
+impl crate::RecordLookup for CorpseInteractionParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .entitlementpolicies
+            .corpse_interaction_params
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "entitlementpolicies")]
+impl crate::RecordLookup for ItemRecoveryConfigurationParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .entitlementpolicies
+            .item_recovery_configuration_params
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "ui-playerchoice_pitconfig_playerchoicepersonalthought",
+    feature = "ui-uiconfig_starcitizen"
+))]
+impl crate::RecordLookup for PlayerChoice_PITConfig {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .player_choice_pitconfig
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "entitlementpolicies",
+    feature = "player",
+    feature = "ui-localplayershoppingdata"
+))]
+impl crate::RecordLookup for SLocalPlayerShoppingData {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .slocal_player_shopping_data
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "interactionconditions")]
+impl crate::RecordLookup for ShopInteractionData {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .interactionconditions
+            .shop_interaction_data
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "entities-scshop",
+    feature = "franchises",
+    feature = "scitemmanufacturer"
+))]
+impl crate::RecordLookup for ShopFranchise {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.shop_franchise.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actorstatuscomponent",
+    feature = "actorstatuscomponent-globalactorstatusparams",
+    feature = "actorstatuscomponent-medicaltieritemconfig",
+    feature = "actorstatuscomponent-playerstatus",
+    feature = "actorstatuscomponent-playerstatus_aiboss",
+    feature = "actorstatuscomponent-playerstatus_aibosssuper",
+    feature = "actorstatuscomponent-playerstatusai",
+    feature = "actorstatuscomponent-playerstatusai_captain",
+    feature = "actorstatuscomponent-playerstatusai_elite",
+    feature = "actorstatuscomponent-playerstatusai_juggernaut",
+    feature = "actorstatuscomponent-playerstatusai_unconscious_rescuemission",
+    feature = "actorstatuscomponent-playerstatusai_vanduul",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_stormbreaker",
+    feature = "actorstatuscomponent-playerstatusai_yormandi",
+    feature = "actorstatuscomponent-playerstatuscorpse",
+    feature = "actorstatuscomponent-playerstatuscreature",
+    feature = "actorstatuscomponent-playerstatusea",
+    feature = "actorstatuscomponent-playerstatuspu",
+    feature = "actorstatuscomponent-powersuitstatus",
+    feature = "actorstatuscomponent-powersuitstatus_combat",
+    feature = "actorstatuscomponent-transportstatus",
+    feature = "aiwavecollection",
+    feature = "ammoparams",
+    feature = "areaservices",
+    feature = "audio",
+    feature = "cargomanifest",
+    feature = "commsnotifications",
+    feature = "communicationsystem",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "creatures",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-area",
+    feature = "entities-audio",
+    feature = "entities-commodities",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-haulingentityclass",
+    feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-scitem-atc",
+    feature = "entities-scitem-cargo",
+    feature = "entities-scitem-carryables",
+    feature = "entities-scitem-characters",
+    feature = "entities-scitem-doors",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-human",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-missionstorage",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-shopdisplays",
+    feature = "entities-scitem-suit",
+    feature = "entities-scitem-usables",
+    feature = "entities-scitem-weapons",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entities-ui",
+    feature = "entitlementpolicies",
+    feature = "factions",
+    feature = "fuelparams",
+    feature = "gamemode",
+    feature = "globalcommsnotificationparams",
+    feature = "globalshopparams",
+    feature = "harvestable",
+    feature = "instancedinterior",
+    feature = "inventorycontainers",
+    feature = "item",
+    feature = "itemresourcenetwork",
+    feature = "journalentry",
+    feature = "lawsystem",
+    feature = "level",
+    feature = "loadoutkits",
+    feature = "megamap",
+    feature = "missionbroker",
+    feature = "missiondata",
+    feature = "missiongiver",
+    feature = "player",
+    feature = "reputation",
+    feature = "resourcetypedatabase",
+    feature = "sglobalsalvagerepairbeamparams",
+    feature = "ssolarsystem",
+    feature = "starmap",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs"
+))]
+impl crate::RecordLookup for SSCSignatureSystemAudioRuleset {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .sscsignature_system_audio_ruleset
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "contracts",
+    feature = "journalentry",
+    feature = "missionscenarios"
+))]
+impl crate::RecordLookup for ScenarioProgress {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.scenario_progress.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "vfx")]
+impl crate::RecordLookup for ScreenEffects_Library {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.vfx.screen_effects_library.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "vfx")]
+impl crate::RecordLookup for ScreenEffects_Effect {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.vfx.screen_effects_effect.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "vfx")]
+impl crate::RecordLookup for ScreenEffects_Debug {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.vfx.screen_effects_debug.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "contracts",
+    feature = "entities-scitem-doors",
+    feature = "gamemode",
+    feature = "instancedinterior",
+    feature = "lawsystem",
+    feature = "level",
+    feature = "megamap",
+    feature = "missionbroker",
+    feature = "missiondata",
+    feature = "transitsystem",
+    feature = "transportsystem"
+))]
+impl crate::RecordLookup for SecurityClearanceToken {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .security_clearance_token
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "lawsystem")]
+impl crate::RecordLookup for SecurityNetworkRoomSettings {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .lawsystem
+            .security_network_room_settings
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "contracts",
+    feature = "entities-scitem-doors",
+    feature = "gamemode",
+    feature = "instancedinterior",
+    feature = "lawsystem",
+    feature = "level",
+    feature = "megamap",
+    feature = "missiondata"
+))]
+impl crate::RecordLookup for SecurityNetworkManifest {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .security_network_manifest
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "servicebeacon")]
+impl crate::RecordLookup for ServiceBeaconParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.servicebeacon.service_beacon_params.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "servicebeacon")]
+impl crate::RecordLookup for ServiceBeaconGlobalParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .servicebeacon
+            .service_beacon_global_params
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "aiwavecollection",
+    feature = "contracts",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-ships",
+    feature = "entities-spaceships",
+    feature = "entities-ui",
+    feature = "entitlementpolicies",
+    feature = "player",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs",
+    feature = "vfx"
+))]
+impl crate::RecordLookup for ShieldTypeParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.shield_type_params.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "audio")]
+impl crate::RecordLookup for ShipComputerPresetList {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.audio.ship_computer_preset_list.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "audio")]
+impl crate::RecordLookup for ShipComputerPreset {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.audio.ship_computer_preset.get(guid).copied()
+    }
+}
+
+#[cfg(any(feature = "megamap", feature = "ssolarsystem"))]
+impl crate::RecordLookup for SSolarSystem {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.ssolar_system.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "missiondata")]
+impl crate::RecordLookup for SpawnDescriptions {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.missiondata.spawn_descriptions.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "specialeventdatabase")]
+impl crate::RecordLookup for SpecialEventManufacturer {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .specialeventdatabase
+            .special_event_manufacturer
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "specialeventdatabase")]
+impl crate::RecordLookup for SpecialEventDay {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .specialeventdatabase
+            .special_event_day
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "specialeventdatabase")]
+impl crate::RecordLookup for SpecialEventDatabase {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .specialeventdatabase
+            .special_event_database
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "aiwavecollection",
+    feature = "cargomanifest",
+    feature = "communicationsystem",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "entities-animatedcharacterstatue_kopion",
+    feature = "entities-animatedcharacterstatue_marok",
+    feature = "entities-basebuilding",
+    feature = "entities-commodities",
+    feature = "entities-destruction",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-haulingentityclass",
+    feature = "entities-mineable",
+    feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-navpoint_interdictedentity",
+    feature = "entities-navpoint_subpoint",
+    feature = "entities-navpoint_subpoint_routeonly",
+    feature = "entities-partymembermarker",
+    feature = "entities-scitem-carryables",
+    feature = "entities-scitem-harvestables",
+    feature = "entities-scitem-itembanks",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-ships",
+    feature = "entities-servicebeaconnavpoint",
+    feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a_extractonly",
+    feature = "entities-spaceships",
+    feature = "entities-unattendedvehiclemarker",
+    feature = "entitlementpolicies",
+    feature = "gamemode",
+    feature = "globalquantumdriveparams",
+    feature = "harvestable",
+    feature = "instancedinterior",
+    feature = "inventorycontainers",
+    feature = "journalentry",
+    feature = "kaboos_derelictships",
+    feature = "lawsystem",
+    feature = "level",
+    feature = "lootgeneration",
+    feature = "megamap",
+    feature = "mining",
+    feature = "missionbroker",
+    feature = "missiondata",
+    feature = "missionscenarios",
+    feature = "player",
+    feature = "resourcetypedatabase",
+    feature = "servicebeacon",
+    feature = "ssolarsystem",
+    feature = "starmap",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs"
+))]
+impl crate::RecordLookup for StarMapObjectType {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.star_map_object_type.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "starmap")]
+impl crate::RecordLookup for StarMapObjectTypes {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.starmap.star_map_object_types.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "communicationsystem",
+    feature = "contracts",
+    feature = "entitlementpolicies",
+    feature = "gamemode",
+    feature = "instancedinterior",
+    feature = "inventorycontainers",
+    feature = "level",
+    feature = "megamap",
+    feature = "missionbroker",
+    feature = "missiondata",
+    feature = "player",
+    feature = "ssolarsystem",
+    feature = "starmap",
+    feature = "starmapamenitytypes"
+))]
+impl crate::RecordLookup for StarMapAmenityTypeEntry {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .star_map_amenity_type_entry
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(feature = "starmap", feature = "starmapamenitytypes"))]
+impl crate::RecordLookup for StarMapAmenityTypes {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .star_map_amenity_types
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "aiwavecollection",
+    feature = "cargomanifest",
+    feature = "communicationsystem",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "entities-animatedcharacterstatue_kopion",
+    feature = "entities-animatedcharacterstatue_marok",
+    feature = "entities-basebuilding",
+    feature = "entities-commodities",
+    feature = "entities-destruction",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-haulingentityclass",
+    feature = "entities-mineable",
+    feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-navpoint_interdictedentity",
+    feature = "entities-navpoint_subpoint",
+    feature = "entities-navpoint_subpoint_routeonly",
+    feature = "entities-partymembermarker",
+    feature = "entities-scitem-carryables",
+    feature = "entities-scitem-harvestables",
+    feature = "entities-scitem-itembanks",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-ships",
+    feature = "entities-servicebeaconnavpoint",
+    feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a_extractonly",
+    feature = "entities-spaceships",
+    feature = "entities-unattendedvehiclemarker",
+    feature = "entitlementpolicies",
+    feature = "gamemode",
+    feature = "globalquantumdriveparams",
+    feature = "harvestable",
+    feature = "instancedinterior",
+    feature = "inventorycontainers",
+    feature = "journalentry",
+    feature = "kaboos_derelictships",
+    feature = "lawsystem",
+    feature = "level",
+    feature = "lootgeneration",
+    feature = "megamap",
+    feature = "mining",
+    feature = "missionbroker",
+    feature = "missiondata",
+    feature = "missionscenarios",
+    feature = "player",
+    feature = "resourcetypedatabase",
+    feature = "servicebeacon",
+    feature = "ssolarsystem",
+    feature = "starmap",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs"
+))]
+impl crate::RecordLookup for StarMapObject {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.star_map_object.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "starmap")]
+impl crate::RecordLookup for StarMapMissionObject {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.starmap.star_map_mission_object.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "starmap")]
+impl crate::RecordLookup for StarMapPartyMemberObject {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .starmap
+            .star_map_party_member_object
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "ui-buildingblocks")]
+impl crate::RecordLookup for StatusWidgetDisplayPreset {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .ui_buildingblocks
+            .status_widget_display_preset
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "aimotive",
+    feature = "aiprofile",
+    feature = "tacticalquery"
+))]
+impl crate::RecordLookup for TacticalQuery {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.tactical_query.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "aimotive",
+    feature = "tacticalquery"
+))]
+impl crate::RecordLookup for TQSOptionContentRecord {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .tqsoption_content_record
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actor-actorzerogtraversalparams",
+    feature = "actor-playercarryconfig",
+    feature = "actor-playerdefaultactionsconfig",
+    feature = "actorstatuscomponent",
+    feature = "actorstatuscomponent-globalactorstatusparams",
+    feature = "actorstatuscomponent-medicaltieritemconfig",
+    feature = "actorstatuscomponent-playerstatus",
+    feature = "actorstatuscomponent-playerstatus_aiboss",
+    feature = "actorstatuscomponent-playerstatus_aibosssuper",
+    feature = "actorstatuscomponent-playerstatusai",
+    feature = "actorstatuscomponent-playerstatusai_captain",
+    feature = "actorstatuscomponent-playerstatusai_elite",
+    feature = "actorstatuscomponent-playerstatusai_juggernaut",
+    feature = "actorstatuscomponent-playerstatusai_unconscious_rescuemission",
+    feature = "actorstatuscomponent-playerstatusai_vanduul",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_stormbreaker",
+    feature = "actorstatuscomponent-playerstatusai_yormandi",
+    feature = "actorstatuscomponent-playerstatuscorpse",
+    feature = "actorstatuscomponent-playerstatuscreature",
+    feature = "actorstatuscomponent-playerstatusea",
+    feature = "actorstatuscomponent-playerstatuspu",
+    feature = "actorstatuscomponent-powersuitstatus",
+    feature = "actorstatuscomponent-powersuitstatus_combat",
+    feature = "actorstatuscomponent-transportstatus",
+    feature = "aimotive",
+    feature = "aiprofile",
+    feature = "aiwavecollection",
+    feature = "ammobox",
+    feature = "ammoparams",
+    feature = "areaservices",
+    feature = "audio",
+    feature = "cargomanifest",
+    feature = "character",
+    feature = "commsnotifications",
+    feature = "commsnotificationstages",
+    feature = "communicationconfig",
+    feature = "communicationsystem",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "creatures",
+    feature = "crewmanifest",
+    feature = "dev",
+    feature = "entities-actionarea",
+    feature = "entities-aigroupentity",
+    feature = "entities-aipath",
+    feature = "entities-animatedcharacterstatue_aloprat",
+    feature = "entities-animatedcharacterstatue_kopion",
+    feature = "entities-animatedcharacterstatue_marok",
+    feature = "entities-animatedcharacterstatue_quasigrazer",
+    feature = "entities-animatedcharacterstatue_template",
+    feature = "entities-animentity_character",
+    feature = "entities-animentity_floatinghead_01",
+    feature = "entities-animentity_floatinghead_charactercustomizer",
+    feature = "entities-animentity_floatinghead_charactercustomizer_dnalib",
+    feature = "entities-animentity_floatinghead_charactercustomizer_featurelib",
+    feature = "entities-animentity_human",
+    feature = "entities-animentity_human_female",
+    feature = "entities-area",
+    feature = "entities-asd",
+    feature = "entities-attackarea",
+    feature = "entities-audio",
+    feature = "entities-basebuilding",
+    feature = "entities-booth_table_centered_seats",
+    feature = "entities-breakablerock",
+    feature = "entities-buildingblocksscreens",
+    feature = "entities-carryable_damage_sensitive_canister",
+    feature = "entities-charactercustomizer",
+    feature = "entities-cinematiclabel",
+    feature = "entities-cinematiclabelwithvehicle",
+    feature = "entities-commodities",
+    feature = "entities-corpsemarker",
+    feature = "entities-decorations",
+    feature = "entities-defendarea",
+    feature = "entities-destruction",
+    feature = "entities-dev",
+    feature = "entities-displayscreens",
+    feature = "entities-entityealockedspawnlocation",
+    feature = "entities-entityeaspawnlocation",
+    feature = "entities-entityspawners",
+    feature = "entities-environment",
+    feature = "entities-environmentscreen",
+    feature = "entities-fan_prisonbroken",
+    feature = "entities-fronthud_center",
+    feature = "entities-fronthud_displaymanager",
+    feature = "entities-fronthud_left",
+    feature = "entities-fronthud_right",
+    feature = "entities-fronthud_top",
+    feature = "entities-fuel_nozzle_grin_nozzlefast",
+    feature = "entities-fuel_nozzle_grin_nozzlesecure",
+    feature = "entities-fuel_nozzle_grin_nozzleveryfast",
+    feature = "entities-fuel_nozzle_grin_nozzleverysecure",
+    feature = "entities-fuel_nozzle_misc_nozzlestandard",
+    feature = "entities-fuel_nozzle_shin_nozzleexpensivefast",
+    feature = "entities-fuel_nozzle_shin_nozzleexpensivesecure",
+    feature = "entities-fuel_nozzle_shin_nozzlemostexpensive",
+    feature = "entities-geomentity_areatrigger",
+    feature = "entities-geomentity_repairable",
+    feature = "entities-geomentity_rttuiwithaudio",
+    feature = "entities-groundvehicles",
+    feature = "entities-hackable",
+    feature = "entities-harvestabletagpoint",
+    feature = "entities-haulingentityclass",
+    feature = "entities-hazardzones",
+    feature = "entities-hearingperceptionarea",
+    feature = "entities-holographicvolume",
+    feature = "entities-ht_table_bar_1_a",
+    feature = "entities-irradiatedhazardzone",
+    feature = "entities-jumppoints",
+    feature = "entities-ladder",
+    feature = "entities-ledgeobject",
+    feature = "entities-ledgeobjectusable",
+    feature = "entities-lights",
+    feature = "entities-loadingplatformmanager",
+    feature = "entities-maglaunch",
+    feature = "entities-mastercontrollerentities",
+    feature = "entities-mineable",
+    feature = "entities-navpoint_dynamic",
+    feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-navpoint_general",
+    feature = "entities-navpoint_interdictedentity",
+    feature = "entities-navpoint_subpoint",
+    feature = "entities-navpoint_subpoint_routeonly",
+    feature = "entities-others",
+    feature = "entities-parkingroute",
+    feature = "entities-partymembermarker",
+    feature = "entities-perceptionmodifierarea",
+    feature = "entities-physicalizedjobboard",
+    feature = "entities-physics",
+    feature = "entities-proceduralpointofinterestproxy",
+    feature = "entities-radarscanning",
+    feature = "entities-rastar",
+    feature = "entities-roomsystem",
+    feature = "entities-salvagable",
+    feature = "entities-schedulearea",
+    feature = "entities-scitem-access",
+    feature = "entities-scitem-actormovables",
+    feature = "entities-scitem-aimodule_atc_systematc01",
+    feature = "entities-scitem-aimodule_collector",
+    feature = "entities-scitem-airlocks",
+    feature = "entities-scitem-ammocrates",
+    feature = "entities-scitem-arenacommander",
+    feature = "entities-scitem-atc",
+    feature = "entities-scitem-atc_datamanager",
+    feature = "entities-scitem-atc_datamanager_outpostplatinumbay",
+    feature = "entities-scitem-atc_datamanager_port_lawful",
+    feature = "entities-scitem-atc_datamanager_port_semilawful",
+    feature = "entities-scitem-atc_datamanager_port_unlawful",
+    feature = "entities-scitem-audiolog",
+    feature = "entities-scitem-cargo",
+    feature = "entities-scitem-carryables",
+    feature = "entities-scitem-characters",
+    feature = "entities-scitem-chipsets",
+    feature = "entities-scitem-commsreceiver",
+    feature = "entities-scitem-consumables",
+    feature = "entities-scitem-controlpanels",
+    feature = "entities-scitem-counter_shop_2m_casaba_b",
+    feature = "entities-scitem-counter_shop_2m_casaba_c",
+    feature = "entities-scitem-counter_shop_2m_casaba_d",
+    feature = "entities-scitem-decals",
+    feature = "entities-scitem-default_lensdisplay",
+    feature = "entities-scitem-default_lensdisplay_pu",
+    feature = "entities-scitem-doors",
+    feature = "entities-scitem-energy",
+    feature = "entities-scitem-environments",
+    feature = "entities-scitem-externalinventory",
+    feature = "entities-scitem-fauna",
+    feature = "entities-scitem-flair",
+    feature = "entities-scitem-fps_devices",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-harvestables",
+    feature = "entities-scitem-holoui",
+    feature = "entities-scitem-human",
+    feature = "entities-scitem-itembanks",
+    feature = "entities-scitem-locations",
+    feature = "entities-scitem-lootables",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-missionstorage",
+    feature = "entities-scitem-navigationlinks",
+    feature = "entities-scitem-nonusables",
+    feature = "entities-scitem-openableobject",
+    feature = "entities-scitem-orbgn",
+    feature = "entities-scitem-placeholder",
+    feature = "entities-scitem-prop",
+    feature = "entities-scitem-prototypeentities",
+    feature = "entities-scitem-proximityvolumes",
+    feature = "entities-scitem-rotationsimple",
+    feature = "entities-scitem-salvageablerepairable",
+    feature = "entities-scitem-scitem_debris",
+    feature = "entities-scitem-scitemdisplayscreen",
+    feature = "entities-scitem-shelve_invisible_4x4",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-shopdisplays",
+    feature = "entities-scitem-simpleanimators",
+    feature = "entities-scitem-simpleopenableobject_bathroom_shower",
+    feature = "entities-scitem-simpleopenableobject_bathroom_sink",
+    feature = "entities-scitem-simpleopenableobject_bathroom_storage",
+    feature = "entities-scitem-simpleopenableobject_habmodule_foldingtable",
+    feature = "entities-scitem-simpleopenableobject_habmodule_kitchendoor",
+    feature = "entities-scitem-simpleopenableobject_habmodule_storagedoor",
+    feature = "entities-scitem-simpleopenableobject_habmodule_storagetray",
+    feature = "entities-scitem-simpleopenableobject_habmodule_toiletdoor",
+    feature = "entities-scitem-simpleopenableobject_screenarticulated",
+    feature = "entities-scitem-spawers",
+    feature = "entities-scitem-spawning",
+    feature = "entities-scitem-starmarine",
+    feature = "entities-scitem-storage",
+    feature = "entities-scitem-storagecage",
+    feature = "entities-scitem-suit",
+    feature = "entities-scitem-tablet",
+    feature = "entities-scitem-tablet_small",
+    feature = "entities-scitem-template",
+    feature = "entities-scitem-template_cuttableinteractable",
+    feature = "entities-scitem-template_cuttableinteractable_surfacerelay",
+    feature = "entities-scitem-test_gadget",
+    feature = "entities-scitem-test_ruto_projector",
+    feature = "entities-scitem-testinteractionstatemachine",
+    feature = "entities-scitem-toggleableentities",
+    feature = "entities-scitem-usables",
+    feature = "entities-scitem-vehicles",
+    feature = "entities-scitem-weaponmounts",
+    feature = "entities-scitem-weapons",
+    feature = "entities-screenattachment",
+    feature = "entities-servicebeaconnavpoint",
+    feature = "entities-shipselectorkiosk",
+    feature = "entities-shipselectorkiosk_genatc02",
+    feature = "entities-shipselectorkiosk_grimhex",
+    feature = "entities-shipselectorkiosk_groundvehiclesonly",
+    feature = "entities-shipselectorkiosk_hangar_hightech_1_a",
+    feature = "entities-shipselectorkiosk_hangar_lowtech_1_a",
+    feature = "entities-shipselectorkiosk_hangar_lowtech_1_b",
+    feature = "entities-shipselectorkiosk_hangar_lowtech_2_a",
+    feature = "entities-shipselectorkiosk_hangar_lowtech_2_b",
+    feature = "entities-shipselectorkiosk_levski",
+    feature = "entities-shipselectorkiosk_levskiground",
+    feature = "entities-shipselectorkiosk_levskiships",
+    feature = "entities-shipselectorkiosk_lorville",
+    feature = "entities-shipselectorkiosk_lorvilleground",
+    feature = "entities-shipselectorkiosk_newbab",
+    feature = "entities-shipselectorkiosk_outpostground",
+    feature = "entities-shipselectorkiosk_pyro",
+    feature = "entities-shipselectorkiosk_shipsonly",
+    feature = "entities-shipselectorkiosk_shipsonly_area18",
+    feature = "entities-shipselectorkiosk_shipsonly_orison",
+    feature = "entities-shipselectorkiosk_shipsonly_reststop",
+    feature = "entities-shipselectorkiosk_test",
+    feature = "entities-shipselectorkiosk_v001",
+    feature = "entities-shipselectorkiosk_v002",
+    feature = "entities-shopkiosk",
+    feature = "entities-shoppingkiosk",
+    feature = "entities-slotspawnpoint",
+    feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a_extractonly",
+    feature = "entities-spaceships",
+    feature = "entities-spawncloset",
+    feature = "entities-spawncloset_ships",
+    feature = "entities-spawncloset_ships_javelin",
+    feature = "entities-spawnclosetmanager",
+    feature = "entities-spawnedactionarea",
+    feature = "entities-spawnhelper",
+    feature = "entities-spawnprotectionbarrier",
+    feature = "entities-stormbreaker_pylon_hatch",
+    feature = "entities-table_booth_circularbar_direct_8_seat",
+    feature = "entities-table_booth_utilitarian_4_seat",
+    feature = "entities-tagpoint",
+    feature = "entities-terminal_boarding_1_a",
+    feature = "entities-test",
+    feature = "entities-tilesocket",
+    feature = "entities-trackview",
+    feature = "entities-ui",
+    feature = "entities-unattendedvehiclemarker",
+    feature = "entities-usablegroupcoordinator",
+    feature = "entities-vfx",
+    feature = "entitlementpolicies",
+    feature = "factions",
+    feature = "factions_legacy",
+    feature = "formation",
+    feature = "fuelparams",
+    feature = "gamemode",
+    feature = "genericmobiterminals",
+    feature = "globalcommsnotificationparams",
+    feature = "globalquantumdriveparams",
+    feature = "globalshopparams",
+    feature = "grips",
+    feature = "harvestable",
+    feature = "instancedinterior",
+    feature = "interactionconditions",
+    feature = "inventorycontainers",
+    feature = "item",
+    feature = "itemporttagsdictionary",
+    feature = "itemresourcenetwork",
+    feature = "journalentry",
+    feature = "kaboos_derelictships",
+    feature = "lawsystem",
+    feature = "level",
+    feature = "loadoutkits",
+    feature = "lootgeneration",
+    feature = "megamap",
+    feature = "mining",
+    feature = "missionbroker",
+    feature = "missiondata",
+    feature = "missiongiver",
+    feature = "missionscenarios",
+    feature = "player",
+    feature = "playerchoicemenuitems",
+    feature = "playerchoicemenutypes",
+    feature = "playernotificationsystem",
+    feature = "procedurallayout",
+    feature = "radarsystem",
+    feature = "rastar",
+    feature = "reputation",
+    feature = "resourcetypedatabase",
+    feature = "roomsystem",
+    feature = "rsi_polaris_kaboos_exterior",
+    feature = "scitemmanufacturer",
+    feature = "servicebeacon",
+    feature = "sglobalcrosshairparams",
+    feature = "sglobalelectronparams",
+    feature = "sglobalhealingbeamparams",
+    feature = "sglobalsalvagerepairbeamparams",
+    feature = "sglobaltractorbeamparams",
+    feature = "squantumdriveeffecttagstemplate",
+    feature = "ssolarsystem",
+    feature = "starmap",
+    feature = "tacticalquery",
+    feature = "tagdatabase",
+    feature = "transitsystem",
+    feature = "transponder",
+    feature = "transportsystem",
+    feature = "traversalcostconfig",
+    feature = "ui-areamap",
+    feature = "ui-armarkerconfiguration",
+    feature = "ui-aspectratiototag_mfd",
+    feature = "ui-buildingblocks",
+    feature = "ui-digitalsignage",
+    feature = "ui-frontend",
+    feature = "ui-graphs",
+    feature = "ui-itemkiosk",
+    feature = "ui-itempreview_config",
+    feature = "ui-mobiglas",
+    feature = "ui-playerchoice_pitconfig_playerchoicepersonalthought",
+    feature = "ui-radar3dpresets",
+    feature = "ui-uiconfig_starcitizen",
+    feature = "ui-visor",
+    feature = "vehicle",
+    feature = "vehiclesalvageglobalparams",
+    feature = "vendingmachine_2",
+    feature = "vfx",
+    feature = "weaponarmodifiers"
+))]
+impl crate::RecordLookup for Tag {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.tag.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "tagdatabase")]
+impl crate::RecordLookup for TagDatabase {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.tagdatabase.tag_database.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "aiwavecollection",
+    feature = "closecombat",
+    feature = "commsnotifications",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-audio",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entitlementpolicies",
+    feature = "globalcommsnotificationparams",
+    feature = "missionbroker",
+    feature = "missiongiver",
+    feature = "ui-buildingblocks"
+))]
+impl crate::RecordLookup for TakeDownConfig {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.take_down_config.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actorstatuscomponent",
+    feature = "actorstatuscomponent-globalactorstatusparams",
+    feature = "actorstatuscomponent-medicaltieritemconfig",
+    feature = "actorstatuscomponent-playerstatus",
+    feature = "actorstatuscomponent-playerstatus_aiboss",
+    feature = "actorstatuscomponent-playerstatus_aibosssuper",
+    feature = "actorstatuscomponent-playerstatusai",
+    feature = "actorstatuscomponent-playerstatusai_captain",
+    feature = "actorstatuscomponent-playerstatusai_elite",
+    feature = "actorstatuscomponent-playerstatusai_juggernaut",
+    feature = "actorstatuscomponent-playerstatusai_unconscious_rescuemission",
+    feature = "actorstatuscomponent-playerstatusai_vanduul",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_stormbreaker",
+    feature = "actorstatuscomponent-playerstatusai_yormandi",
+    feature = "actorstatuscomponent-playerstatuscorpse",
+    feature = "actorstatuscomponent-playerstatuscreature",
+    feature = "actorstatuscomponent-playerstatusea",
+    feature = "actorstatuscomponent-playerstatuspu",
+    feature = "actorstatuscomponent-powersuitstatus",
+    feature = "actorstatuscomponent-powersuitstatus_combat",
+    feature = "actorstatuscomponent-transportstatus",
+    feature = "aiwavecollection",
+    feature = "ammoparams",
+    feature = "areaservices",
+    feature = "cargomanifest",
+    feature = "commsnotifications",
+    feature = "communicationsystem",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "crewmanifest",
+    feature = "entities-animatedcharacterstatue_kopion",
+    feature = "entities-animatedcharacterstatue_marok",
+    feature = "entities-animentity_character",
+    feature = "entities-area",
+    feature = "entities-audio",
+    feature = "entities-basebuilding",
+    feature = "entities-cinematiclabelwithvehicle",
+    feature = "entities-commodities",
+    feature = "entities-decorations",
+    feature = "entities-destruction",
+    feature = "entities-dev",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-haulingentityclass",
+    feature = "entities-mineable",
+    feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-salvagable",
+    feature = "entities-scitem-airlocks",
+    feature = "entities-scitem-atc",
+    feature = "entities-scitem-cargo",
+    feature = "entities-scitem-carryables",
+    feature = "entities-scitem-characters",
+    feature = "entities-scitem-consumables",
+    feature = "entities-scitem-default_lensdisplay",
+    feature = "entities-scitem-default_lensdisplay_pu",
+    feature = "entities-scitem-doors",
+    feature = "entities-scitem-environments",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-harvestables",
+    feature = "entities-scitem-human",
+    feature = "entities-scitem-itembanks",
+    feature = "entities-scitem-locations",
+    feature = "entities-scitem-lootables",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-missionstorage",
+    feature = "entities-scitem-orbgn",
+    feature = "entities-scitem-prop",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-shopdisplays",
+    feature = "entities-scitem-spawers",
+    feature = "entities-scitem-starmarine",
+    feature = "entities-scitem-storage",
+    feature = "entities-scitem-suit",
+    feature = "entities-scitem-usables",
+    feature = "entities-scitem-vehicles",
+    feature = "entities-scitem-weaponmounts",
+    feature = "entities-scitem-weapons",
+    feature = "entities-slotspawnpoint",
+    feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a_extractonly",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entities-ui",
+    feature = "entitlementpolicies",
+    feature = "factions",
+    feature = "fuelparams",
+    feature = "gamemode",
+    feature = "globalcommsnotificationparams",
+    feature = "globalshopparams",
+    feature = "harvestable",
+    feature = "instancedinterior",
+    feature = "inventorycontainers",
+    feature = "item",
+    feature = "itemresourcenetwork",
+    feature = "journalentry",
+    feature = "lawsystem",
+    feature = "level",
+    feature = "loadoutkits",
+    feature = "lootgeneration",
+    feature = "megamap",
+    feature = "mining",
+    feature = "missionbroker",
+    feature = "missiondata",
+    feature = "missiongiver",
+    feature = "missionscenarios",
+    feature = "player",
+    feature = "reputation",
+    feature = "resourcetypedatabase",
+    feature = "rsi_polaris_kaboos_exterior",
+    feature = "sglobalsalvagerepairbeamparams",
+    feature = "ssolarsystem",
+    feature = "starmap",
+    feature = "tintpalettes",
+    feature = "transitsystem",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs",
+    feature = "ui-mobiglas"
+))]
+impl crate::RecordLookup for TintPaletteTree {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.tint_palette_tree.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "entities-scitem-default_lensdisplay",
+    feature = "entities-scitem-default_lensdisplay_pu",
+    feature = "entities-scitem-suit",
+    feature = "ui-graphs",
+    feature = "ui-transformationinterpolatorrecords"
+))]
+impl crate::RecordLookup for MovieClipTransformationInterpolator {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .movie_clip_transformation_interpolator
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "ui-transformationinterpolatorrecords")]
+impl crate::RecordLookup for TransformationInterpolator {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .ui_transformationinterpolatorrecords
+            .transformation_interpolator
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(feature = "audio", feature = "transitsystem"))]
+impl crate::RecordLookup for TransitStationAnnouncements {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .transit_station_announcements
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "transportsystem")]
+impl crate::RecordLookup for TransportDestinationCategory {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .transportsystem
+            .transport_destination_category
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "transportsystem")]
+impl crate::RecordLookup for TransportDestinationCategories {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .transportsystem
+            .transport_destination_categories
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "transportsystem")]
+impl crate::RecordLookup for TransportIconType {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.transportsystem.transport_icon_type.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "transportsystem")]
+impl crate::RecordLookup for TransportIconTypes {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .transportsystem
+            .transport_icon_types
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "transportsystem")]
+impl crate::RecordLookup for TransportCarriageAnnouncements {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .transportsystem
+            .transport_carriage_announcements
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "conversation")]
+impl crate::RecordLookup for SScenePlayerChoiceSettings {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .conversation
+            .sscene_player_choice_settings
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "globaltutorialparams")]
+impl crate::RecordLookup for GlobalTutorialParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .globaltutorialparams
+            .global_tutorial_params
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "entities-test",
+    feature = "ui-buildingblocks",
+    feature = "ui-itempreview_config"
+))]
+impl crate::RecordLookup for ItemPreview_Config {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.item_preview_config.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "ui-objectdatabankentrymarkerconfig")]
+impl crate::RecordLookup for SCObjectDataBankEntryMarkerConfig {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .ui_objectdatabankentrymarkerconfig
+            .scobject_data_bank_entry_marker_config
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "ui-holovehicleconfig")]
+impl crate::RecordLookup for UIHoloVehicle_Config {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .ui_holovehicleconfig
+            .uiholo_vehicle_config
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "entities-entityealockedspawnlocation",
+    feature = "entities-entityeaspawnlocation",
+    feature = "entities-scitem-ships",
+    feature = "entitlementpolicies",
+    feature = "player",
+    feature = "ui-marker_config"
+))]
+impl crate::RecordLookup for MarkerAR_ConfigDef {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.marker_ar_config_def.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "ui-uiconfig_starcitizen")]
+impl crate::RecordLookup for UIConfig {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.ui_uiconfig_starcitizen.uiconfig.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "entities-basebuilding",
+    feature = "entities-scitem-characters",
+    feature = "entities-scitem-default_lensdisplay",
+    feature = "entities-scitem-default_lensdisplay_pu",
+    feature = "entities-scitem-doors",
+    feature = "entities-scitem-holoui",
+    feature = "entities-scitem-itembanks",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-shopdisplays",
+    feature = "entities-scitem-usables",
+    feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a_extractonly",
+    feature = "entities-spaceships",
+    feature = "entitlementpolicies",
+    feature = "factions",
+    feature = "gamemode",
+    feature = "harvestable",
+    feature = "journalentry",
+    feature = "level",
+    feature = "loadoutkits",
+    feature = "megamap",
+    feature = "player",
+    feature = "reputation",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs",
+    feature = "ui-mobiglas",
+    feature = "ui-radardisplay_config_radar",
+    feature = "ui-simplespritesheet_holodisplaysprites",
+    feature = "ui-simplespritesheet_innerthoughtsprites",
+    feature = "ui-worlddisplay"
+))]
+impl crate::RecordLookup for SimpleSpriteSheet {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.simple_sprite_sheet.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "ui-hudcolors_shipcolorpalettes")]
+impl crate::RecordLookup for HudColors {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .ui_hudcolors_shipcolorpalettes
+            .hud_colors
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "ui-videocomms")]
+impl crate::RecordLookup for VideoComms {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.ui_videocomms.video_comms.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "ui-uimodes")]
+impl crate::RecordLookup for UIModeVisibilitySettings {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .ui_uimodes
+            .uimode_visibility_settings
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "ui-frontend")]
+impl crate::RecordLookup for LoadoutDummyComponentParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .ui_frontend
+            .loadout_dummy_component_params
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "ui-uistatedisplay")]
+impl crate::RecordLookup for UIStateDisplay {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.ui_uistatedisplay.uistate_display.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "ui-popups")]
+impl crate::RecordLookup for PopupDef {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.ui_popups.popup_def.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "ui-playerecggraph_config_playerecggraphconfig")]
+impl crate::RecordLookup for PlayerECGGraph_Config {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .ui_playerecggraph_config_playerecggraphconfig
+            .player_ecggraph_config
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "ui-itemtypedefinition")]
+impl crate::RecordLookup for ItemTypeDefinition {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .ui_itemtypedefinition
+            .item_type_definition
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(feature = "ui-flighthudmessages", feature = "ui-uiconfig_starcitizen"))]
+impl crate::RecordLookup for FlightHUDUIView_Config {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .flight_huduiview_config
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "aiwavecollection",
+    feature = "commsnotifications",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "entities-audio",
+    feature = "entities-basebuilding",
+    feature = "entities-buildingblocksscreens",
+    feature = "entities-canvasgeoment",
+    feature = "entities-canvasgeoment_vars",
+    feature = "entities-charactercustomizer",
+    feature = "entities-cinematiclabel",
+    feature = "entities-cinematiclabelwithvehicle",
+    feature = "entities-cinematictitling_base",
+    feature = "entities-cinematictitling_standard",
+    feature = "entities-dev",
+    feature = "entities-displayscreens",
+    feature = "entities-entityspawners",
+    feature = "entities-environment",
+    feature = "entities-environmentscreen",
+    feature = "entities-fronthud_center",
+    feature = "entities-fronthud_displaymanager",
+    feature = "entities-fronthud_left",
+    feature = "entities-fronthud_right",
+    feature = "entities-fronthud_top",
+    feature = "entities-geomentity_rttui",
+    feature = "entities-geomentity_rttuiwithaudio",
+    feature = "entities-groundvehicles",
+    feature = "entities-haulingentityclass",
+    feature = "entities-kiosk_mercury_anniversary_slides_16x9",
+    feature = "entities-prop_digitalclock",
+    feature = "entities-rastar",
+    feature = "entities-scitem-actormovables",
+    feature = "entities-scitem-airlocks",
+    feature = "entities-scitem-arenacommander",
+    feature = "entities-scitem-atc",
+    feature = "entities-scitem-carryables",
+    feature = "entities-scitem-characters",
+    feature = "entities-scitem-commsreceiver",
+    feature = "entities-scitem-consumables",
+    feature = "entities-scitem-controlpanels",
+    feature = "entities-scitem-default_lensdisplay",
+    feature = "entities-scitem-default_lensdisplay_pu",
+    feature = "entities-scitem-doors",
+    feature = "entities-scitem-energy",
+    feature = "entities-scitem-environments",
+    feature = "entities-scitem-flair",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-human",
+    feature = "entities-scitem-itembanks",
+    feature = "entities-scitem-lootables",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-nonusables",
+    feature = "entities-scitem-prop",
+    feature = "entities-scitem-prototypeentities",
+    feature = "entities-scitem-scitemdisplayscreen",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-shopdisplays",
+    feature = "entities-scitem-simpleopenableobject_screenarticulated",
+    feature = "entities-scitem-starmarine",
+    feature = "entities-scitem-storage",
+    feature = "entities-scitem-suit",
+    feature = "entities-scitem-ui_environmentscreen_phoenix_attractanim",
+    feature = "entities-scitem-ui_environmentscreen_phoenix_attractanim_small",
+    feature = "entities-scitem-ui_environmentscreen_phoenix_elevatorpanel_bottom",
+    feature = "entities-scitem-ui_environmentscreen_phoenix_elevatorpanel_top",
+    feature = "entities-scitem-ui_environmentscreen_phoenix_interactionpanel",
+    feature = "entities-scitem-usables",
+    feature = "entities-scitem-vehicles",
+    feature = "entities-scitem-weapons",
+    feature = "entities-shipselectorkiosk",
+    feature = "entities-shipselectorkiosk_genatc02",
+    feature = "entities-shipselectorkiosk_grimhex",
+    feature = "entities-shipselectorkiosk_groundvehiclesonly",
+    feature = "entities-shipselectorkiosk_hangar_hightech_1_a",
+    feature = "entities-shipselectorkiosk_hangar_lowtech_1_a",
+    feature = "entities-shipselectorkiosk_hangar_lowtech_1_b",
+    feature = "entities-shipselectorkiosk_hangar_lowtech_2_a",
+    feature = "entities-shipselectorkiosk_hangar_lowtech_2_b",
+    feature = "entities-shipselectorkiosk_levski",
+    feature = "entities-shipselectorkiosk_levskiground",
+    feature = "entities-shipselectorkiosk_levskiships",
+    feature = "entities-shipselectorkiosk_lorville",
+    feature = "entities-shipselectorkiosk_lorvilleground",
+    feature = "entities-shipselectorkiosk_newbab",
+    feature = "entities-shipselectorkiosk_outpostground",
+    feature = "entities-shipselectorkiosk_pyro",
+    feature = "entities-shipselectorkiosk_shipsonly",
+    feature = "entities-shipselectorkiosk_shipsonly_area18",
+    feature = "entities-shipselectorkiosk_shipsonly_orison",
+    feature = "entities-shipselectorkiosk_shipsonly_reststop",
+    feature = "entities-shipselectorkiosk_test",
+    feature = "entities-shipselectorkiosk_v001",
+    feature = "entities-shipselectorkiosk_v002",
+    feature = "entities-shopkiosk",
+    feature = "entities-shoppingkiosk",
+    feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a_extractonly",
+    feature = "entities-spaceships",
+    feature = "entities-stormbreaker_pylon_hatch",
+    feature = "entities-terminal_boarding_1_a",
+    feature = "entities-test",
+    feature = "entities-ui",
+    feature = "entitlementpolicies",
+    feature = "factions",
+    feature = "gamemode",
+    feature = "genericmobiterminals",
+    feature = "harvestable",
+    feature = "journalentry",
+    feature = "level",
+    feature = "loadoutkits",
+    feature = "megamap",
+    feature = "missionbroker",
+    feature = "missiondata",
+    feature = "missionscenarios",
+    feature = "player",
+    feature = "reputation",
+    feature = "transitsystem",
+    feature = "transportsystem",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs",
+    feature = "ui-uielements"
+))]
+impl crate::RecordLookup for UIElement {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.uielement.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actorstatuscomponent",
+    feature = "actorstatuscomponent-globalactorstatusparams",
+    feature = "actorstatuscomponent-medicaltieritemconfig",
+    feature = "actorstatuscomponent-playerstatus",
+    feature = "actorstatuscomponent-playerstatus_aiboss",
+    feature = "actorstatuscomponent-playerstatus_aibosssuper",
+    feature = "actorstatuscomponent-playerstatusai",
+    feature = "actorstatuscomponent-playerstatusai_captain",
+    feature = "actorstatuscomponent-playerstatusai_elite",
+    feature = "actorstatuscomponent-playerstatusai_juggernaut",
+    feature = "actorstatuscomponent-playerstatusai_unconscious_rescuemission",
+    feature = "actorstatuscomponent-playerstatusai_vanduul",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_stormbreaker",
+    feature = "actorstatuscomponent-playerstatusai_yormandi",
+    feature = "actorstatuscomponent-playerstatuscorpse",
+    feature = "actorstatuscomponent-playerstatuscreature",
+    feature = "actorstatuscomponent-playerstatusea",
+    feature = "actorstatuscomponent-playerstatuspu",
+    feature = "actorstatuscomponent-powersuitstatus",
+    feature = "actorstatuscomponent-powersuitstatus_combat",
+    feature = "actorstatuscomponent-transportstatus",
+    feature = "aiwavecollection",
+    feature = "ammoparams",
+    feature = "areaservices",
+    feature = "cargomanifest",
+    feature = "commsnotifications",
+    feature = "communicationsystem",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-area",
+    feature = "entities-audio",
+    feature = "entities-cinematiclabelwithvehicle",
+    feature = "entities-commodities",
+    feature = "entities-decorations",
+    feature = "entities-dev",
+    feature = "entities-entityspawners",
+    feature = "entities-fuel_nozzle_grin_nozzlefast",
+    feature = "entities-fuel_nozzle_grin_nozzlesecure",
+    feature = "entities-fuel_nozzle_grin_nozzleveryfast",
+    feature = "entities-fuel_nozzle_grin_nozzleverysecure",
+    feature = "entities-fuel_nozzle_misc_nozzlestandard",
+    feature = "entities-groundvehicles",
+    feature = "entities-haulingentityclass",
+    feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-salvagable",
+    feature = "entities-scitem-access",
+    feature = "entities-scitem-atc",
+    feature = "entities-scitem-cargo",
+    feature = "entities-scitem-carryables",
+    feature = "entities-scitem-characters",
+    feature = "entities-scitem-decals",
+    feature = "entities-scitem-default_lensdisplay",
+    feature = "entities-scitem-default_lensdisplay_pu",
+    feature = "entities-scitem-doors",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-human",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-missionstorage",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-shopdisplays",
+    feature = "entities-scitem-spawers",
+    feature = "entities-scitem-storage",
+    feature = "entities-scitem-suit",
+    feature = "entities-scitem-test_gadget",
+    feature = "entities-scitem-usables",
+    feature = "entities-scitem-vehicles",
+    feature = "entities-scitem-weapons",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entities-ui",
+    feature = "entitlementpolicies",
+    feature = "factions",
+    feature = "fuelparams",
+    feature = "gamemode",
+    feature = "globalcommsnotificationparams",
+    feature = "globalshopparams",
+    feature = "harvestable",
+    feature = "instancedinterior",
+    feature = "inventorycontainers",
+    feature = "item",
+    feature = "itemresourcenetwork",
+    feature = "journalentry",
+    feature = "lawsystem",
+    feature = "level",
+    feature = "loadoutkits",
+    feature = "megamap",
+    feature = "missionbroker",
+    feature = "missiondata",
+    feature = "missiongiver",
+    feature = "player",
+    feature = "reputation",
+    feature = "resourcetypedatabase",
+    feature = "scitemmanufacturer",
+    feature = "sglobalsalvagerepairbeamparams",
+    feature = "ssolarsystem",
+    feature = "starmap",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs",
+    feature = "ui-mobiglas"
+))]
+impl crate::RecordLookup for SCItemUIView_DashboardCanvasDef {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .scitem_uiview_dashboard_canvas_def
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "ui-missilelockreticleconfig")]
+impl crate::RecordLookup for MissileLockReticle_Config {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .ui_missilelockreticleconfig
+            .missile_lock_reticle_config
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "entities-basebuilding",
+    feature = "entities-scitem-characters",
+    feature = "entities-scitem-default_lensdisplay",
+    feature = "entities-scitem-default_lensdisplay_pu",
+    feature = "entities-scitem-doors",
+    feature = "entities-scitem-itembanks",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-shopdisplays",
+    feature = "entities-scitem-usables",
+    feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a_extractonly",
+    feature = "entitlementpolicies",
+    feature = "factions",
+    feature = "gamemode",
+    feature = "harvestable",
+    feature = "journalentry",
+    feature = "level",
+    feature = "loadoutkits",
+    feature = "megamap",
+    feature = "player",
+    feature = "reputation",
+    feature = "ui-buildingblocks",
+    feature = "ui-elementsounds_deprecated",
+    feature = "ui-graphs",
+    feature = "ui-playerchoice_imconfig_playerchoiceim",
+    feature = "ui-uiconfig_starcitizen",
+    feature = "ui-uielements"
+))]
+impl crate::RecordLookup for UIElementSoundsRecord {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .uielement_sounds_record
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actorstatuscomponent",
+    feature = "actorstatuscomponent-globalactorstatusparams",
+    feature = "actorstatuscomponent-medicaltieritemconfig",
+    feature = "actorstatuscomponent-playerstatus",
+    feature = "actorstatuscomponent-playerstatus_aiboss",
+    feature = "actorstatuscomponent-playerstatus_aibosssuper",
+    feature = "actorstatuscomponent-playerstatusai",
+    feature = "actorstatuscomponent-playerstatusai_captain",
+    feature = "actorstatuscomponent-playerstatusai_elite",
+    feature = "actorstatuscomponent-playerstatusai_juggernaut",
+    feature = "actorstatuscomponent-playerstatusai_unconscious_rescuemission",
+    feature = "actorstatuscomponent-playerstatusai_vanduul",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_stormbreaker",
+    feature = "actorstatuscomponent-playerstatusai_yormandi",
+    feature = "actorstatuscomponent-playerstatuscorpse",
+    feature = "actorstatuscomponent-playerstatuscreature",
+    feature = "actorstatuscomponent-playerstatusea",
+    feature = "actorstatuscomponent-playerstatuspu",
+    feature = "actorstatuscomponent-powersuitstatus",
+    feature = "actorstatuscomponent-powersuitstatus_combat",
+    feature = "actorstatuscomponent-transportstatus",
+    feature = "aiwavecollection",
+    feature = "ammoparams",
+    feature = "areaservices",
+    feature = "audio",
+    feature = "cargomanifest",
+    feature = "commsnotifications",
+    feature = "communicationsystem",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-area",
+    feature = "entities-audio",
+    feature = "entities-basebuilding",
+    feature = "entities-charactercustomizer",
+    feature = "entities-commodities",
+    feature = "entities-dev",
+    feature = "entities-displayscreens",
+    feature = "entities-entityspawners",
+    feature = "entities-environment",
+    feature = "entities-environmentscreen",
+    feature = "entities-geomentity_rttuiwithaudio",
+    feature = "entities-groundvehicles",
+    feature = "entities-haulingentityclass",
+    feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-scitem-airlocks",
+    feature = "entities-scitem-atc",
+    feature = "entities-scitem-cargo",
+    feature = "entities-scitem-carryables",
+    feature = "entities-scitem-characters",
+    feature = "entities-scitem-commsreceiver",
+    feature = "entities-scitem-controlpanels",
+    feature = "entities-scitem-default_lensdisplay",
+    feature = "entities-scitem-default_lensdisplay_pu",
+    feature = "entities-scitem-doors",
+    feature = "entities-scitem-flair",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-human",
+    feature = "entities-scitem-itembanks",
+    feature = "entities-scitem-lootables",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-missionstorage",
+    feature = "entities-scitem-prototypeentities",
+    feature = "entities-scitem-scitemdisplayscreen",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-shopdisplays",
+    feature = "entities-scitem-storage",
+    feature = "entities-scitem-suit",
+    feature = "entities-scitem-usables",
+    feature = "entities-scitem-vehicles",
+    feature = "entities-scitem-weapons",
+    feature = "entities-shipselectorkiosk",
+    feature = "entities-shipselectorkiosk_genatc02",
+    feature = "entities-shipselectorkiosk_grimhex",
+    feature = "entities-shipselectorkiosk_groundvehiclesonly",
+    feature = "entities-shipselectorkiosk_hangar_hightech_1_a",
+    feature = "entities-shipselectorkiosk_hangar_lowtech_1_a",
+    feature = "entities-shipselectorkiosk_hangar_lowtech_1_b",
+    feature = "entities-shipselectorkiosk_hangar_lowtech_2_a",
+    feature = "entities-shipselectorkiosk_hangar_lowtech_2_b",
+    feature = "entities-shipselectorkiosk_levski",
+    feature = "entities-shipselectorkiosk_levskiground",
+    feature = "entities-shipselectorkiosk_levskiships",
+    feature = "entities-shipselectorkiosk_lorville",
+    feature = "entities-shipselectorkiosk_lorvilleground",
+    feature = "entities-shipselectorkiosk_newbab",
+    feature = "entities-shipselectorkiosk_outpostground",
+    feature = "entities-shipselectorkiosk_pyro",
+    feature = "entities-shipselectorkiosk_shipsonly",
+    feature = "entities-shipselectorkiosk_shipsonly_area18",
+    feature = "entities-shipselectorkiosk_shipsonly_orison",
+    feature = "entities-shipselectorkiosk_shipsonly_reststop",
+    feature = "entities-shipselectorkiosk_test",
+    feature = "entities-shipselectorkiosk_v001",
+    feature = "entities-shipselectorkiosk_v002",
+    feature = "entities-shopkiosk",
+    feature = "entities-shoppingkiosk",
+    feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a_extractonly",
+    feature = "entities-spaceships",
+    feature = "entities-terminal_boarding_1_a",
+    feature = "entities-test",
+    feature = "entities-ui",
+    feature = "entitlementpolicies",
+    feature = "factions",
+    feature = "fuelparams",
+    feature = "gamemode",
+    feature = "globalcommsnotificationparams",
+    feature = "globalshopparams",
+    feature = "harvestable",
+    feature = "instancedinterior",
+    feature = "inventorycontainers",
+    feature = "item",
+    feature = "itemresourcenetwork",
+    feature = "journalentry",
+    feature = "lawsystem",
+    feature = "level",
+    feature = "loadoutkits",
+    feature = "megamap",
+    feature = "missionbroker",
+    feature = "missiondata",
+    feature = "missiongiver",
+    feature = "player",
+    feature = "reputation",
+    feature = "resourcetypedatabase",
+    feature = "sglobalsalvagerepairbeamparams",
+    feature = "ssolarsystem",
+    feature = "starmap",
+    feature = "transitsystem",
+    feature = "transportsystem",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs",
+    feature = "ui-mobiglas"
+))]
+impl crate::RecordLookup for UIAudioDefinition {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.uiaudio_definition.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "entities-scitem-human",
+    feature = "entities-scitem-suit",
+    feature = "entities-shopkiosk",
+    feature = "entities-shoppingkiosk",
+    feature = "entities-ui",
+    feature = "ui-frontend",
+    feature = "ui-graphs",
+    feature = "ui-itemkiosk",
+    feature = "ui-mobiglas"
+))]
+impl crate::RecordLookup for LoadoutEditorComponentParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .loadout_editor_component_params
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "entities-basebuilding",
+    feature = "entities-scitem-characters",
+    feature = "entities-scitem-default_lensdisplay",
+    feature = "entities-scitem-default_lensdisplay_pu",
+    feature = "entities-scitem-doors",
+    feature = "entities-scitem-holoui",
+    feature = "entities-scitem-itembanks",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-shopdisplays",
+    feature = "entities-scitem-usables",
+    feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a_extractonly",
+    feature = "entities-spaceships",
+    feature = "entitlementpolicies",
+    feature = "factions",
+    feature = "gamemode",
+    feature = "harvestable",
+    feature = "journalentry",
+    feature = "level",
+    feature = "loadoutkits",
+    feature = "megamap",
+    feature = "player",
+    feature = "reputation",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs",
+    feature = "ui-mobiglas",
+    feature = "ui-radar3dpresets"
+))]
+impl crate::RecordLookup for RadarDisplay3DPreset {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .radar_display3_dpreset
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "unittest_unittestb")]
+impl crate::RecordLookup for UnitTestSubRecord {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .unittest_unittestb
+            .unit_test_sub_record
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(feature = "unittest_unittesta", feature = "unittest_unittestb"))]
+impl crate::RecordLookup for UnitTest {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.unit_test.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "aiwavecollection",
+    feature = "commsnotifications",
+    feature = "commsnotificationstages",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-audio",
+    feature = "entities-basebuilding",
+    feature = "entities-booth_table_centered_seats",
+    feature = "entities-charactercustomizer",
+    feature = "entities-decorations",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-haulingentityclass",
+    feature = "entities-ht_table_bar_1_a",
+    feature = "entities-ladder",
+    feature = "entities-ledgeobjectusable",
+    feature = "entities-scitem-actormovables",
+    feature = "entities-scitem-atc",
+    feature = "entities-scitem-cargo",
+    feature = "entities-scitem-carryables",
+    feature = "entities-scitem-characters",
+    feature = "entities-scitem-chipsets",
+    feature = "entities-scitem-controlpanels",
+    feature = "entities-scitem-counter_shop_2m_casaba_b",
+    feature = "entities-scitem-counter_shop_2m_casaba_c",
+    feature = "entities-scitem-counter_shop_2m_casaba_d",
+    feature = "entities-scitem-default_lensdisplay",
+    feature = "entities-scitem-default_lensdisplay_pu",
+    feature = "entities-scitem-doors",
+    feature = "entities-scitem-environments",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-human",
+    feature = "entities-scitem-itembanks",
+    feature = "entities-scitem-lootables",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-missionstorage",
+    feature = "entities-scitem-navigationlinks",
+    feature = "entities-scitem-prop",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-shopdisplays",
+    feature = "entities-scitem-starmarine",
+    feature = "entities-scitem-storage",
+    feature = "entities-scitem-suit",
+    feature = "entities-scitem-usables",
+    feature = "entities-scitem-vehicles",
+    feature = "entities-scitem-weaponmounts",
+    feature = "entities-scitem-weapons",
+    feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a_extractonly",
+    feature = "entities-spaceships",
+    feature = "entities-table_booth_circularbar_direct_8_seat",
+    feature = "entities-table_booth_utilitarian_4_seat",
+    feature = "entities-test",
+    feature = "entities-ui",
+    feature = "entitlementpolicies",
+    feature = "factions",
+    feature = "gamemode",
+    feature = "globalcommsnotificationparams",
+    feature = "globalshopparams",
+    feature = "harvestable",
+    feature = "journalentry",
+    feature = "level",
+    feature = "loadoutkits",
+    feature = "lootgeneration",
+    feature = "megamap",
+    feature = "missionbroker",
+    feature = "missiongiver",
+    feature = "player",
+    feature = "playerchoicemenuitems",
+    feature = "playerchoicemenutypes",
+    feature = "reputation",
+    feature = "transitsystem",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs",
+    feature = "ui-mobiglas",
+    feature = "vendingmachine_2"
+))]
+impl crate::RecordLookup for UsableArchetype {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.usable_archetype.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "aiwavecollection",
+    feature = "commsnotifications",
+    feature = "commsnotificationstages",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-audio",
+    feature = "entities-basebuilding",
+    feature = "entities-booth_table_centered_seats",
+    feature = "entities-charactercustomizer",
+    feature = "entities-decorations",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-haulingentityclass",
+    feature = "entities-ht_table_bar_1_a",
+    feature = "entities-ladder",
+    feature = "entities-ledgeobjectusable",
+    feature = "entities-scitem-actormovables",
+    feature = "entities-scitem-atc",
+    feature = "entities-scitem-cargo",
+    feature = "entities-scitem-carryables",
+    feature = "entities-scitem-characters",
+    feature = "entities-scitem-chipsets",
+    feature = "entities-scitem-controlpanels",
+    feature = "entities-scitem-counter_shop_2m_casaba_b",
+    feature = "entities-scitem-counter_shop_2m_casaba_c",
+    feature = "entities-scitem-counter_shop_2m_casaba_d",
+    feature = "entities-scitem-default_lensdisplay",
+    feature = "entities-scitem-default_lensdisplay_pu",
+    feature = "entities-scitem-doors",
+    feature = "entities-scitem-environments",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-human",
+    feature = "entities-scitem-itembanks",
+    feature = "entities-scitem-lootables",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-missionstorage",
+    feature = "entities-scitem-navigationlinks",
+    feature = "entities-scitem-prop",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-shopdisplays",
+    feature = "entities-scitem-starmarine",
+    feature = "entities-scitem-storage",
+    feature = "entities-scitem-suit",
+    feature = "entities-scitem-usables",
+    feature = "entities-scitem-vehicles",
+    feature = "entities-scitem-weaponmounts",
+    feature = "entities-scitem-weapons",
+    feature = "entities-softlock_terminal_standard_hightech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a",
+    feature = "entities-softlock_terminal_standard_lowtech_freightelevatorkiosk_1_a_extractonly",
+    feature = "entities-spaceships",
+    feature = "entities-table_booth_circularbar_direct_8_seat",
+    feature = "entities-table_booth_utilitarian_4_seat",
+    feature = "entities-test",
+    feature = "entities-ui",
+    feature = "entitlementpolicies",
+    feature = "factions",
+    feature = "gamemode",
+    feature = "globalcommsnotificationparams",
+    feature = "globalshopparams",
+    feature = "harvestable",
+    feature = "journalentry",
+    feature = "level",
+    feature = "loadoutkits",
+    feature = "lootgeneration",
+    feature = "megamap",
+    feature = "missionbroker",
+    feature = "missiongiver",
+    feature = "player",
+    feature = "playerchoicemenuitems",
+    feature = "playerchoicemenutypes",
+    feature = "reputation",
+    feature = "transitsystem",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs",
+    feature = "ui-mobiglas",
+    feature = "vendingmachine_2"
+))]
+impl crate::RecordLookup for UseChannelArchetype {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.use_channel_archetype.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "entities-scitem-usables")]
+impl crate::RecordLookup for UsableArchetypes {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .entities_scitem_usables
+            .usable_archetypes
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actorstatuscomponent",
+    feature = "actorstatuscomponent-globalactorstatusparams",
+    feature = "actorstatuscomponent-medicaltieritemconfig",
+    feature = "actorstatuscomponent-playerstatus",
+    feature = "actorstatuscomponent-playerstatus_aiboss",
+    feature = "actorstatuscomponent-playerstatus_aibosssuper",
+    feature = "actorstatuscomponent-playerstatusai",
+    feature = "actorstatuscomponent-playerstatusai_captain",
+    feature = "actorstatuscomponent-playerstatusai_elite",
+    feature = "actorstatuscomponent-playerstatusai_juggernaut",
+    feature = "actorstatuscomponent-playerstatusai_unconscious_rescuemission",
+    feature = "actorstatuscomponent-playerstatusai_vanduul",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_stormbreaker",
+    feature = "actorstatuscomponent-playerstatusai_yormandi",
+    feature = "actorstatuscomponent-playerstatuscorpse",
+    feature = "actorstatuscomponent-playerstatuscreature",
+    feature = "actorstatuscomponent-playerstatusea",
+    feature = "actorstatuscomponent-playerstatuspu",
+    feature = "actorstatuscomponent-powersuitstatus",
+    feature = "actorstatuscomponent-powersuitstatus_combat",
+    feature = "actorstatuscomponent-transportstatus",
+    feature = "aiwavecollection",
+    feature = "ammoparams",
+    feature = "areaservices",
+    feature = "cargomanifest",
+    feature = "commsnotifications",
+    feature = "communicationsystem",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-area",
+    feature = "entities-audio",
+    feature = "entities-cinematiclabelwithvehicle",
+    feature = "entities-commodities",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-haulingentityclass",
+    feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-salvagable",
+    feature = "entities-scitem-atc",
+    feature = "entities-scitem-cargo",
+    feature = "entities-scitem-carryables",
+    feature = "entities-scitem-characters",
+    feature = "entities-scitem-default_lensdisplay",
+    feature = "entities-scitem-default_lensdisplay_pu",
+    feature = "entities-scitem-doors",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-human",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-missionstorage",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-shopdisplays",
+    feature = "entities-scitem-spawers",
+    feature = "entities-scitem-suit",
+    feature = "entities-scitem-usables",
+    feature = "entities-scitem-weapons",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entities-ui",
+    feature = "entitlementpolicies",
+    feature = "factions",
+    feature = "fuelparams",
+    feature = "gamemode",
+    feature = "globalcommsnotificationparams",
+    feature = "globalshopparams",
+    feature = "harvestable",
+    feature = "instancedinterior",
+    feature = "inventorycontainers",
+    feature = "item",
+    feature = "itemresourcenetwork",
+    feature = "journalentry",
+    feature = "lawsystem",
+    feature = "level",
+    feature = "loadoutkits",
+    feature = "megamap",
+    feature = "missionbroker",
+    feature = "missiondata",
+    feature = "missiongiver",
+    feature = "player",
+    feature = "reputation",
+    feature = "resourcetypedatabase",
+    feature = "sglobalsalvagerepairbeamparams",
+    feature = "ssolarsystem",
+    feature = "starmap",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs",
+    feature = "ui-mobiglas",
+    feature = "vehicle",
+    feature = "vehiclecombat"
+))]
+impl crate::RecordLookup for SVehicleAiDamageModifiers {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .svehicle_ai_damage_modifiers
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "aiwavecollection",
+    feature = "contracts",
+    feature = "entities-cinematiclabelwithvehicle",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-salvagable",
+    feature = "entities-scitem-default_lensdisplay",
+    feature = "entities-scitem-default_lensdisplay_pu",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-missionstorage",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-suit",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entities-ui",
+    feature = "entitlementpolicies",
+    feature = "harvestable",
+    feature = "missionbroker",
+    feature = "player",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs",
+    feature = "ui-mobiglas"
+))]
+impl crate::RecordLookup for VehicleLandingGearSystem {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .vehicle_landing_gear_system
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actorstatuscomponent",
+    feature = "actorstatuscomponent-globalactorstatusparams",
+    feature = "actorstatuscomponent-medicaltieritemconfig",
+    feature = "actorstatuscomponent-playerstatus",
+    feature = "actorstatuscomponent-playerstatus_aiboss",
+    feature = "actorstatuscomponent-playerstatus_aibosssuper",
+    feature = "actorstatuscomponent-playerstatusai",
+    feature = "actorstatuscomponent-playerstatusai_captain",
+    feature = "actorstatuscomponent-playerstatusai_elite",
+    feature = "actorstatuscomponent-playerstatusai_juggernaut",
+    feature = "actorstatuscomponent-playerstatusai_unconscious_rescuemission",
+    feature = "actorstatuscomponent-playerstatusai_vanduul",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_stormbreaker",
+    feature = "actorstatuscomponent-playerstatusai_yormandi",
+    feature = "actorstatuscomponent-playerstatuscorpse",
+    feature = "actorstatuscomponent-playerstatuscreature",
+    feature = "actorstatuscomponent-playerstatusea",
+    feature = "actorstatuscomponent-playerstatuspu",
+    feature = "actorstatuscomponent-powersuitstatus",
+    feature = "actorstatuscomponent-powersuitstatus_combat",
+    feature = "actorstatuscomponent-transportstatus",
+    feature = "aiwavecollection",
+    feature = "ammoparams",
+    feature = "areaservices",
+    feature = "cargomanifest",
+    feature = "commsnotifications",
+    feature = "communicationsystem",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-area",
+    feature = "entities-audio",
+    feature = "entities-cinematiclabelwithvehicle",
+    feature = "entities-commodities",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-haulingentityclass",
+    feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-salvagable",
+    feature = "entities-scitem-atc",
+    feature = "entities-scitem-cargo",
+    feature = "entities-scitem-carryables",
+    feature = "entities-scitem-characters",
+    feature = "entities-scitem-default_lensdisplay",
+    feature = "entities-scitem-default_lensdisplay_pu",
+    feature = "entities-scitem-doors",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-human",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-missionstorage",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-shopdisplays",
+    feature = "entities-scitem-spawers",
+    feature = "entities-scitem-suit",
+    feature = "entities-scitem-usables",
+    feature = "entities-scitem-weapons",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entities-ui",
+    feature = "entitlementpolicies",
+    feature = "factions",
+    feature = "fuelparams",
+    feature = "gamemode",
+    feature = "globalcommsnotificationparams",
+    feature = "globalshopparams",
+    feature = "harvestable",
+    feature = "instancedinterior",
+    feature = "inventorycontainers",
+    feature = "item",
+    feature = "itemresourcenetwork",
+    feature = "journalentry",
+    feature = "lawsystem",
+    feature = "level",
+    feature = "loadoutkits",
+    feature = "megamap",
+    feature = "missionbroker",
+    feature = "missiondata",
+    feature = "missiongiver",
+    feature = "player",
+    feature = "reputation",
+    feature = "resourcetypedatabase",
+    feature = "sglobalsalvagerepairbeamparams",
+    feature = "ssolarsystem",
+    feature = "starmap",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs",
+    feature = "ui-mobiglas",
+    feature = "vehicle"
+))]
+impl crate::RecordLookup for VehicleRole {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.vehicle_role.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actorstatuscomponent",
+    feature = "actorstatuscomponent-globalactorstatusparams",
+    feature = "actorstatuscomponent-medicaltieritemconfig",
+    feature = "actorstatuscomponent-playerstatus",
+    feature = "actorstatuscomponent-playerstatus_aiboss",
+    feature = "actorstatuscomponent-playerstatus_aibosssuper",
+    feature = "actorstatuscomponent-playerstatusai",
+    feature = "actorstatuscomponent-playerstatusai_captain",
+    feature = "actorstatuscomponent-playerstatusai_elite",
+    feature = "actorstatuscomponent-playerstatusai_juggernaut",
+    feature = "actorstatuscomponent-playerstatusai_unconscious_rescuemission",
+    feature = "actorstatuscomponent-playerstatusai_vanduul",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_stormbreaker",
+    feature = "actorstatuscomponent-playerstatusai_yormandi",
+    feature = "actorstatuscomponent-playerstatuscorpse",
+    feature = "actorstatuscomponent-playerstatuscreature",
+    feature = "actorstatuscomponent-playerstatusea",
+    feature = "actorstatuscomponent-playerstatuspu",
+    feature = "actorstatuscomponent-powersuitstatus",
+    feature = "actorstatuscomponent-powersuitstatus_combat",
+    feature = "actorstatuscomponent-transportstatus",
+    feature = "aiwavecollection",
+    feature = "ammoparams",
+    feature = "areaservices",
+    feature = "cargomanifest",
+    feature = "commsnotifications",
+    feature = "communicationsystem",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-area",
+    feature = "entities-audio",
+    feature = "entities-cinematiclabelwithvehicle",
+    feature = "entities-commodities",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-haulingentityclass",
+    feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-salvagable",
+    feature = "entities-scitem-atc",
+    feature = "entities-scitem-cargo",
+    feature = "entities-scitem-carryables",
+    feature = "entities-scitem-characters",
+    feature = "entities-scitem-default_lensdisplay",
+    feature = "entities-scitem-default_lensdisplay_pu",
+    feature = "entities-scitem-doors",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-human",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-missionstorage",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-shopdisplays",
+    feature = "entities-scitem-spawers",
+    feature = "entities-scitem-suit",
+    feature = "entities-scitem-usables",
+    feature = "entities-scitem-weapons",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entities-ui",
+    feature = "entitlementpolicies",
+    feature = "factions",
+    feature = "fuelparams",
+    feature = "gamemode",
+    feature = "globalcommsnotificationparams",
+    feature = "globalshopparams",
+    feature = "harvestable",
+    feature = "instancedinterior",
+    feature = "inventorycontainers",
+    feature = "item",
+    feature = "itemresourcenetwork",
+    feature = "journalentry",
+    feature = "lawsystem",
+    feature = "level",
+    feature = "loadoutkits",
+    feature = "megamap",
+    feature = "missionbroker",
+    feature = "missiondata",
+    feature = "missiongiver",
+    feature = "player",
+    feature = "reputation",
+    feature = "resourcetypedatabase",
+    feature = "sglobalsalvagerepairbeamparams",
+    feature = "ssolarsystem",
+    feature = "starmap",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs",
+    feature = "ui-mobiglas",
+    feature = "vehicle"
+))]
+impl crate::RecordLookup for VehicleCareer {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.vehicle_career.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "vehicle")]
+impl crate::RecordLookup for VehicleCareerList {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.vehicle.vehicle_career_list.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "entities-scitem-atc",
+    feature = "entities-scitem-atc_datamanager",
+    feature = "entities-scitem-atc_datamanager_outpostplatinumbay",
+    feature = "entities-scitem-atc_datamanager_port_lawful",
+    feature = "entities-scitem-atc_datamanager_port_semilawful",
+    feature = "entities-scitem-atc_datamanager_port_unlawful",
+    feature = "entities-scitem-human",
+    feature = "entities-scitem-scitemdisplayscreen",
+    feature = "videocommschannels"
+))]
+impl crate::RecordLookup for CommsChannelDef {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.comms_channel_def.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "vfx")]
+impl crate::RecordLookup for VideoCommsShaderParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.vfx.video_comms_shader_params.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "audio")]
+impl crate::RecordLookup for VideoCommsAudioParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.audio.video_comms_audio_params.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "trackview")]
+impl crate::RecordLookup for CameraTransitionInterpolationCurveRecord {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .trackview
+            .camera_transition_interpolation_curve_record
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "trackview")]
+impl crate::RecordLookup for CinematicFlightPointsRecord {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .trackview
+            .cinematic_flight_points_record
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "ui-buildingblocks")]
+impl crate::RecordLookup for VisorLens_Layout {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.ui_buildingblocks.visor_lens_layout.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "ui-buildingblocks")]
+impl crate::RecordLookup for VisorLens_Region {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.ui_buildingblocks.visor_lens_region.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "aiwavecollection",
+    feature = "commsnotifications",
+    feature = "contracts",
+    feature = "crewmanifest",
+    feature = "entities-audio",
+    feature = "entities-groundvehicles",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "globalcommsnotificationparams",
+    feature = "journalentry",
+    feature = "missionbroker",
+    feature = "missiongiver",
+    feature = "missionscenarios",
+    feature = "ui-buildingblocks",
+    feature = "voicebundle",
+    feature = "voicesingle"
+))]
+impl crate::RecordLookup for VoiceSingle {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.voice_single.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "aiwavecollection",
+    feature = "commsnotifications",
+    feature = "crewmanifest",
+    feature = "entities-audio",
+    feature = "entities-groundvehicles",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "globalcommsnotificationparams",
+    feature = "ui-buildingblocks",
+    feature = "voicebundle"
+))]
+impl crate::RecordLookup for VoiceBundle {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.voice_bundle.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "vfx")]
+impl crate::RecordLookup for WaterEffectsGlobalParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.vfx.water_effects_global_params.get(guid).copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "aiwavecollection",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "entities-entityspawners",
+    feature = "entities-scitem-carryables",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-human",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-starmarine",
+    feature = "entities-scitem-usables",
+    feature = "entities-scitem-weapons",
+    feature = "entities-spaceships",
+    feature = "entitlementpolicies",
+    feature = "factions",
+    feature = "gamemode",
+    feature = "harvestable",
+    feature = "journalentry",
+    feature = "level",
+    feature = "loadoutkits",
+    feature = "megamap",
+    feature = "missionbroker",
+    feature = "player",
+    feature = "reputation",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs",
+    feature = "weaponproceduralanimation"
+))]
+impl crate::RecordLookup for WeaponProceduralAnimation {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .weapon_procedural_animation
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "aiwavecollection",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "entities-entityspawners",
+    feature = "entities-scitem-carryables",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-human",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-starmarine",
+    feature = "entities-scitem-usables",
+    feature = "entities-scitem-weapons",
+    feature = "entities-spaceships",
+    feature = "entitlementpolicies",
+    feature = "factions",
+    feature = "gamemode",
+    feature = "harvestable",
+    feature = "journalentry",
+    feature = "level",
+    feature = "loadoutkits",
+    feature = "megamap",
+    feature = "missionbroker",
+    feature = "player",
+    feature = "reputation",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs",
+    feature = "weaponproceduralanimation",
+    feature = "weaponproceduralclip"
+))]
+impl crate::RecordLookup for WeaponProceduralClip {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .weapon_procedural_clip
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "actor-actors",
+    feature = "actorstatuscomponent",
+    feature = "actorstatuscomponent-globalactorstatusparams",
+    feature = "actorstatuscomponent-medicaltieritemconfig",
+    feature = "actorstatuscomponent-playerstatus",
+    feature = "actorstatuscomponent-playerstatus_aiboss",
+    feature = "actorstatuscomponent-playerstatus_aibosssuper",
+    feature = "actorstatuscomponent-playerstatusai",
+    feature = "actorstatuscomponent-playerstatusai_captain",
+    feature = "actorstatuscomponent-playerstatusai_elite",
+    feature = "actorstatuscomponent-playerstatusai_juggernaut",
+    feature = "actorstatuscomponent-playerstatusai_unconscious_rescuemission",
+    feature = "actorstatuscomponent-playerstatusai_vanduul",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult",
+    feature = "actorstatuscomponent-playerstatusai_vlk_adult_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi",
+    feature = "actorstatuscomponent-playerstatusai_vlk_juvi_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_irridatated",
+    feature = "actorstatuscomponent-playerstatusai_vlkapex_stormbreaker",
+    feature = "actorstatuscomponent-playerstatusai_yormandi",
+    feature = "actorstatuscomponent-playerstatuscorpse",
+    feature = "actorstatuscomponent-playerstatuscreature",
+    feature = "actorstatuscomponent-playerstatusea",
+    feature = "actorstatuscomponent-playerstatuspu",
+    feature = "actorstatuscomponent-powersuitstatus",
+    feature = "actorstatuscomponent-powersuitstatus_combat",
+    feature = "actorstatuscomponent-transportstatus",
+    feature = "aiwavecollection",
+    feature = "ammoparams",
+    feature = "areaservices",
+    feature = "cargomanifest",
+    feature = "commsnotifications",
+    feature = "communicationsystem",
+    feature = "contracts",
+    feature = "crafting",
+    feature = "crewmanifest",
+    feature = "entities-animentity_character",
+    feature = "entities-area",
+    feature = "entities-audio",
+    feature = "entities-cinematiclabelwithvehicle",
+    feature = "entities-commodities",
+    feature = "entities-dev",
+    feature = "entities-entityspawners",
+    feature = "entities-groundvehicles",
+    feature = "entities-haulingentityclass",
+    feature = "entities-navpoint_dynamic_spawnedbarge",
+    feature = "entities-scitem-atc",
+    feature = "entities-scitem-cargo",
+    feature = "entities-scitem-carryables",
+    feature = "entities-scitem-characters",
+    feature = "entities-scitem-default_lensdisplay",
+    feature = "entities-scitem-default_lensdisplay_pu",
+    feature = "entities-scitem-doors",
+    feature = "entities-scitem-gameplayinteractables",
+    feature = "entities-scitem-human",
+    feature = "entities-scitem-mission_entities",
+    feature = "entities-scitem-missionstorage",
+    feature = "entities-scitem-ships",
+    feature = "entities-scitem-shopdisplays",
+    feature = "entities-scitem-spawers",
+    feature = "entities-scitem-starmarine",
+    feature = "entities-scitem-suit",
+    feature = "entities-scitem-usables",
+    feature = "entities-scitem-weapons",
+    feature = "entities-spaceships",
+    feature = "entities-test",
+    feature = "entities-ui",
+    feature = "entitlementpolicies",
+    feature = "factions",
+    feature = "fuelparams",
+    feature = "gamemode",
+    feature = "globalcommsnotificationparams",
+    feature = "globalshopparams",
+    feature = "harvestable",
+    feature = "instancedinterior",
+    feature = "inventorycontainers",
+    feature = "item",
+    feature = "itemresourcenetwork",
+    feature = "journalentry",
+    feature = "lawsystem",
+    feature = "level",
+    feature = "loadoutkits",
+    feature = "megamap",
+    feature = "missionbroker",
+    feature = "missiondata",
+    feature = "missiongiver",
+    feature = "player",
+    feature = "reputation",
+    feature = "resourcetypedatabase",
+    feature = "sglobalsalvagerepairbeamparams",
+    feature = "ssolarsystem",
+    feature = "starmap",
+    feature = "ui-buildingblocks",
+    feature = "ui-graphs",
+    feature = "ui-mobiglas",
+    feature = "weaponproceduralrecoil"
+))]
+impl crate::RecordLookup for WeaponProceduralRecoilConfigDef {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .multi_feature
+            .weapon_procedural_recoil_config_def
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "entities-spaceships",
+    feature = "entitlementpolicies",
+    feature = "loadoutkits",
+    feature = "ui-buildingblocks"
+))]
+impl crate::RecordLookup for LoadoutKit {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.loadout_kit.get(guid).copied()
+    }
+}
+
+#[cfg(feature = "entitlementpolicies")]
+impl crate::RecordLookup for WebCustomizationDebug {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .entitlementpolicies
+            .web_customization_debug
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(feature = "entitlementpolicies")]
+impl crate::RecordLookup for WebCustomizationGlobalParams {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index
+            .entitlementpolicies
+            .web_customization_global_params
+            .get(guid)
+            .copied()
+    }
+}
+
+#[cfg(any(
+    feature = "contracts",
+    feature = "entities-haulingentityclass",
+    feature = "entities-scitem-carryables",
+    feature = "genericmobiterminals",
+    feature = "harvestable",
+    feature = "ui-mobiglas"
+))]
+impl crate::RecordLookup for MobiGlasAppData {
+    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {
+        index.multi_feature.mobi_glas_app_data.get(guid).copied()
+    }
+}
+
 impl<'a> Builder<'a> {
     #[allow(
         unused_variables,

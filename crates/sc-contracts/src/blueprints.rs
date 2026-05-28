@@ -30,7 +30,8 @@ use sc_extract::generated::{
     RecordIndex,
 };
 use sc_extract::svarog_datacore::DataCoreDatabase;
-use sc_extract::{Datacore, Guid, LocaleKey, LocaleMap, LocalizedItemCache};
+use sc_extract::{Datacore, Guid, LocaleKey, LocaleMap};
+use sc_items::ItemCache;
 
 /// A resolved blueprint item — what a contract can award.
 ///
@@ -57,8 +58,8 @@ pub struct BlueprintItem {
 }
 
 impl BlueprintItem {
-    /// Resolve the player-facing display name through a
-    /// [`LocalizedItemCache`] (for the crafted-entity path) and a
+    /// Resolve the player-facing display name through an
+    /// [`ItemCache`] (for the crafted-entity path) and a
     /// [`LocaleMap`] (for the fallback `blueprintName` key).
     ///
     /// Tries two sources in order:
@@ -74,7 +75,7 @@ impl BlueprintItem {
     /// source. Returns `None` when neither path produces real text.
     pub fn display_name<'a>(
         &self,
-        cache: &LocalizedItemCache,
+        cache: &ItemCache,
         locale: &'a LocaleMap,
     ) -> Option<&'a str> {
         if let Some(entity_guid) = self.crafted_entity_guid
@@ -297,10 +298,7 @@ impl BlueprintPoolRegistry {
     /// (~hundreds of pools, single-digit items each). If a consumer
     /// makes this query in a hot loop, build a `HashMap<Guid, Vec<&BlueprintPool>>`
     /// once and reuse it.
-    pub fn pools_containing_item(
-        &self,
-        blueprint_record_guid: &Guid,
-    ) -> Vec<&BlueprintPool> {
+    pub fn pools_containing_item(&self, blueprint_record_guid: &Guid) -> Vec<&BlueprintPool> {
         self.pools
             .values()
             .filter(|pool| {
@@ -319,8 +317,7 @@ impl BlueprintPoolRegistry {
     /// [`Self::missions_for_pool`]. Same scale caveat — fine for UI,
     /// cache the result if used in a tight loop.
     pub fn missions_for_item(&self, blueprint_record_guid: &Guid) -> Vec<Guid> {
-        let mut seen: std::collections::HashSet<Guid> =
-            std::collections::HashSet::new();
+        let mut seen: std::collections::HashSet<Guid> = std::collections::HashSet::new();
         let mut out: Vec<Guid> = Vec::new();
         for pool in self.pools_containing_item(blueprint_record_guid) {
             for id in self.missions_for_pool(&pool.guid) {

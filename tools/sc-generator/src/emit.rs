@@ -895,6 +895,29 @@ pub fn emit_record_store(
         let _ = writeln!(out, "}}\n");
     }
 
+    // Typed GUID -> Handle resolution. One impl per record type, gated by
+    // the same cfg as the type's index field, delegating to the
+    // `CigGuid -> Handle<T>` map populated by the extractor above. This is
+    // the data behind `Datacore::resolve`, letting consumers re-enter the
+    // typed surface after following a cross-record `Reference` instead of
+    // dropping to the raw svarog layer.
+    for (_idx, type_name, field, feature, cfg_attr) in &entries {
+        let feature_field = feature_to_field_name(feature);
+        if !cfg_attr.is_empty() {
+            let _ = writeln!(out, "{cfg_attr}");
+        }
+        let _ = writeln!(out, "impl crate::RecordLookup for {type_name} {{");
+        let _ = writeln!(
+            out,
+            "    fn lookup(index: &RecordIndex, guid: &CigGuid) -> Option<Handle<Self>> {{"
+        );
+        let _ = writeln!(
+            out,
+            "        index.{feature_field}.{field}.get(guid).copied()"
+        );
+        out.push_str("    }\n}\n\n");
+    }
+
     // seed_database
     out.push_str("impl<'a> Builder<'a> {\n");
     // Core-only / narrow-feature builds may have zero record extractors,

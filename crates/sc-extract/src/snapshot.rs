@@ -69,7 +69,6 @@ use serde::{Deserialize, Serialize};
 
 use crate::asset_data::{AssetConfig, AssetData};
 use crate::assets::AssetSource;
-use crate::config::DatacoreConfig;
 use crate::datacore::Datacore;
 use crate::error::{Error, Result};
 
@@ -378,11 +377,7 @@ impl ExtractSnapshot {
     /// has no entry ending in `game2.dcb`. Missing `global.ini` is not
     /// fatal — [`AssetData::extract`] falls back to an empty locale map
     /// with a warning.
-    pub fn hydrate(
-        &self,
-        asset_config: &AssetConfig,
-        dc_config: &DatacoreConfig,
-    ) -> Result<(AssetData, Datacore)> {
+    pub fn hydrate(&self, asset_config: &AssetConfig) -> Result<(AssetData, Datacore)> {
         let has_dcb = self
             .files
             .keys()
@@ -398,7 +393,7 @@ impl ExtractSnapshot {
         let source = AssetSource::from_snapshot(self.files.clone(), label);
 
         let asset_data = AssetData::extract(&source, asset_config)?;
-        let datacore = Datacore::parse(&source, &asset_data, dc_config)?;
+        let datacore = Datacore::parse(&source, &asset_data)?;
 
         Ok((asset_data, datacore))
     }
@@ -573,7 +568,7 @@ mod tests {
         // hydrate fails fast with SnapshotMissingDcb instead of letting
         // Datacore::parse surface a confusing downstream error.
         let snap = ExtractSnapshot::new();
-        let result = snap.hydrate(&AssetConfig::standard(), &DatacoreConfig::standard());
+        let result = snap.hydrate(&AssetConfig::standard());
         assert!(
             matches!(result, Err(Error::SnapshotMissingDcb)),
             "expected SnapshotMissingDcb, got {result:?}"

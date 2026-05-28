@@ -11,6 +11,9 @@ path = "src/main.rs"
 [dependencies]
 sc-installs = { workspace = true }
 sc-extract = { workspace = true }
+sc-items = { workspace = true }
+sc-manufacturers = { workspace = true }
+sc-tags = { workspace = true }
 serde = { workspace = true }
 serde_json = { workspace = true }
 tracing = { workspace = true }

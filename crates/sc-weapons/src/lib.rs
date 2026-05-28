@@ -8,10 +8,11 @@
 //! # Quick start
 //!
 //! ```rust,ignore
-//! use sc_weapons::iter_ship_weapons;
+//! use sc_weapons::{iter_ship_weapons, ItemCache};
 //!
 //! let datacore: sc_extract::Datacore = /* ... */;
-//! for weapon in iter_ship_weapons(&datacore) {
+//! let items = ItemCache::build(&datacore);   // build once, share by reference
+//! for weapon in iter_ship_weapons(&datacore, &items) {
 //!     println!("{}: S{} {:?}", weapon.record_name, weapon.size, weapon.primary_fire_action);
 //! }
 //! ```
@@ -52,9 +53,12 @@ pub use sustain::{EnergyModel, HeatModel, SustainKind};
 // `sc-extract` dep. Type identity is preserved because every aggregation
 // crate pulls the same `sc-extract` rev.
 pub use sc_extract::{
-    AssetConfig, AssetData, AssetSource, Datacore, DatacoreConfig, ExtractSnapshot, Guid,
-    LocaleKey, LocaleMap, LocalizedItem, LocalizedItemCache, SnapshotMeta,
+    AssetConfig, AssetData, AssetSource, Datacore, ExtractSnapshot, Guid, LocaleKey, LocaleMap,
+    SnapshotMeta,
 };
+// Item envelope now lives in sc-items; re-export so single-crate consumers
+// can name the cache type without a direct sc-items dep.
+pub use sc_items::{Item, ItemCache};
 
 /// Escape hatch for raw DCB queries when the typed model doesn't cover
 /// a case. Reach for these only as a last resort.
@@ -70,13 +74,15 @@ use std::collections::HashMap;
 /// Walks every `EntityClassDefinition` record, attempts to construct a
 /// [`ShipWeapon`], and yields those that succeed. Records that aren't ship
 /// weapons (FPS, CMLs, mining, creatures) are silently skipped.
-pub fn iter_ship_weapons(datacore: &Datacore) -> impl Iterator<Item = ShipWeapon> + '_ {
+pub fn iter_ship_weapons<'a>(
+    datacore: &'a Datacore,
+    items: &'a ItemCache,
+) -> impl Iterator<Item = ShipWeapon> + 'a {
     let snap = datacore.snapshot();
     let db = datacore.db();
     let pools = &snap.records.pools;
     let ecd_map = &snap.records.records.multi_feature.entity_class_definition;
     let ammo_map = &snap.records.records.multi_feature.ammo_params;
-    let localized_items = &snap.localized_items;
 
     // Pre-build GUID → record name map
     let record_names: HashMap<Guid, &str> = db
@@ -86,15 +92,7 @@ pub fn iter_ship_weapons(datacore: &Datacore) -> impl Iterator<Item = ShipWeapon
         .collect();
 
     ecd_map.iter().filter_map(move |(&guid, &handle)| {
-        ShipWeapon::try_new(
-            handle,
-            guid,
-            pools,
-            ecd_map,
-            ammo_map,
-            &record_names,
-            localized_items,
-        )
+        ShipWeapon::try_new(handle, guid, pools, ecd_map, ammo_map, &record_names, items)
     })
 }
 
@@ -106,9 +104,12 @@ pub fn iter_ship_weapons(datacore: &Datacore) -> impl Iterator<Item = ShipWeapon
 pub fn build_weapon_pools(
     datacore: &Datacore,
 ) -> (Vec<ShipWeapon>, Vec<FpsWeapon>, Vec<Missile>, WeaponPools) {
-    let ships: Vec<ShipWeapon> = iter_ship_weapons(datacore).collect();
-    let fps: Vec<FpsWeapon> = iter_fps_weapons(datacore).collect();
-    let missiles: Vec<Missile> = iter_missiles(datacore).collect();
+    // Build the item cache once and share it across all three families
+    // (each iterator would otherwise re-walk every EntityClassDefinition).
+    let items = ItemCache::build(datacore);
+    let ships: Vec<ShipWeapon> = iter_ship_weapons(datacore, &items).collect();
+    let fps: Vec<FpsWeapon> = iter_fps_weapons(datacore, &items).collect();
+    let missiles: Vec<Missile> = iter_missiles(datacore, &items).collect();
     let pools = WeaponPools::build(&ships, &fps, &missiles);
     (ships, fps, missiles, pools)
 }
@@ -116,13 +117,15 @@ pub fn build_weapon_pools(
 /// Iterate over all FPS weapons in the datacore.
 ///
 /// Same pattern as [`iter_ship_weapons`] but yields [`FpsWeapon`] instead.
-pub fn iter_fps_weapons(datacore: &Datacore) -> impl Iterator<Item = FpsWeapon> + '_ {
+pub fn iter_fps_weapons<'a>(
+    datacore: &'a Datacore,
+    items: &'a ItemCache,
+) -> impl Iterator<Item = FpsWeapon> + 'a {
     let snap = datacore.snapshot();
     let db = datacore.db();
     let pools = &snap.records.pools;
     let ecd_map = &snap.records.records.multi_feature.entity_class_definition;
     let ammo_map = &snap.records.records.multi_feature.ammo_params;
-    let localized_items = &snap.localized_items;
 
     let record_names: HashMap<Guid, &str> = db
         .records()
@@ -131,15 +134,7 @@ pub fn iter_fps_weapons(datacore: &Datacore) -> impl Iterator<Item = FpsWeapon> 
         .collect();
 
     ecd_map.iter().filter_map(move |(&guid, &handle)| {
-        FpsWeapon::try_new(
-            handle,
-            guid,
-            pools,
-            ecd_map,
-            ammo_map,
-            &record_names,
-            localized_items,
-        )
+        FpsWeapon::try_new(handle, guid, pools, ecd_map, ammo_map, &record_names, items)
     })
 }
 
@@ -148,12 +143,14 @@ pub fn iter_fps_weapons(datacore: &Datacore) -> impl Iterator<Item = FpsWeapon> 
 /// Walks every `EntityClassDefinition`, attempts to construct a
 /// [`Missile`], and yields those that succeed. Records that aren't
 /// missile/torpedo-classified ordnance are silently skipped.
-pub fn iter_missiles(datacore: &Datacore) -> impl Iterator<Item = Missile> + '_ {
+pub fn iter_missiles<'a>(
+    datacore: &'a Datacore,
+    items: &'a ItemCache,
+) -> impl Iterator<Item = Missile> + 'a {
     let snap = datacore.snapshot();
     let db = datacore.db();
     let pools = &snap.records.pools;
     let ecd_map = &snap.records.records.multi_feature.entity_class_definition;
-    let localized_items = &snap.localized_items;
 
     let record_names: HashMap<Guid, &str> = db
         .records()
@@ -162,6 +159,6 @@ pub fn iter_missiles(datacore: &Datacore) -> impl Iterator<Item = Missile> + '_ 
         .collect();
 
     ecd_map.iter().filter_map(move |(&guid, &handle)| {
-        Missile::try_new(handle, guid, pools, ecd_map, &record_names, localized_items)
+        Missile::try_new(handle, guid, pools, ecd_map, &record_names, items)
     })
 }

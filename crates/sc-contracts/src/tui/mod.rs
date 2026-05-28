@@ -10,7 +10,9 @@
 //! browsing (title key / description key) using the precomputed
 //! [`crate::MissionPools`] + divergence helpers on [`MissionIndex`].
 
-use sc_extract::{Datacore, LocaleMap, LocalizedItemCache, TagTree};
+use sc_extract::{Datacore, LocaleMap};
+use sc_items::ItemCache;
+use sc_tags::TagTree;
 use slt::{Border, Color, Context, KeyCode, ListState, ScrollState, TextInputState};
 
 use crate::expand::{
@@ -108,7 +110,7 @@ pub fn render(
     state: &mut ExplorerState,
     index: &MissionIndex,
     locale: &LocaleMap,
-    cache: &LocalizedItemCache,
+    cache: &ItemCache,
 ) {
     let filter = state.filter.value.to_lowercase();
     let filtered: Vec<usize> = index
@@ -220,7 +222,7 @@ fn render_detail(
     index: &MissionIndex,
     idx: usize,
     locale: &LocaleMap,
-    cache: &LocalizedItemCache,
+    cache: &ItemCache,
 ) {
     let c = &index.contracts[idx];
     let tree = &index.tag_tree;
@@ -448,7 +450,7 @@ fn render_ship_phases(
     phases: &[EncounterPhase<ShipSlot>],
     tree: &TagTree,
     ships: &ShipRegistry,
-    cache: &LocalizedItemCache,
+    cache: &ItemCache,
     locale: &LocaleMap,
 ) {
     for phase in phases {
@@ -494,7 +496,7 @@ fn render_ship_slot(
     s: &ShipSlot,
     tree: &TagTree,
     ships: &ShipRegistry,
-    cache: &LocalizedItemCache,
+    cache: &ItemCache,
     locale: &LocaleMap,
 ) {
     // Slot header: concurrency / weight / candidate count + flag markers.

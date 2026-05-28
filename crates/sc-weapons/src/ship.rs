@@ -1,7 +1,8 @@
 use std::collections::HashMap;
 
 use sc_extract::generated::*;
-use sc_extract::{DataPools, Guid, LocaleKey, LocaleMap, LocalizedItemCache};
+use sc_extract::{DataPools, Guid, LocaleKey, LocaleMap};
+use sc_items::ItemCache;
 
 use crate::classify::{WeaponCategory, classify};
 use crate::damage::{self, DamageSummary};
@@ -88,7 +89,7 @@ impl ShipWeapon {
         ecd_map: &HashMap<Guid, Handle<EntityClassDefinition>>,
         ammo_map: &HashMap<Guid, Handle<AmmoParams>>,
         record_names: &HashMap<Guid, &str>,
-        localized_items: &LocalizedItemCache,
+        localized_items: &ItemCache,
     ) -> Option<Self> {
         let ecd = handle.get(pools)?;
 

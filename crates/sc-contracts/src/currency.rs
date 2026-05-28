@@ -96,7 +96,7 @@ impl RewardCurrencyCatalog {
     pub fn display_name<'a>(
         &self,
         guid: &Guid,
-        cache: &sc_extract::LocalizedItemCache,
+        cache: &sc_items::ItemCache,
         locale: &'a LocaleMap,
     ) -> Option<&'a str> {
         if !self.by_guid.contains_key(guid) {

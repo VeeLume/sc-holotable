@@ -29,7 +29,8 @@
 
 use std::collections::{BTreeMap, HashSet};
 
-use sc_extract::{Guid, TagTree};
+use sc_extract::Guid;
+use sc_tags::TagTree;
 
 /// Classification of a single tag by the tag-tree family it lives in.
 ///
@@ -352,7 +353,7 @@ impl AxisDiff {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use sc_extract::TagNode;
+    use sc_tags::TagNode;
 
     fn mk_guid(n: u8) -> Guid {
         // Deterministic test guids — bytes[0] is unique per test tag.

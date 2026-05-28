@@ -151,9 +151,7 @@ fn probe_pool(
                     .as_ref()
                     .and_then(|r| r.type_name())
                     .unwrap_or("<unknown>");
-                println!(
-                    "        record name:          {entity_name}   (type: {entity_type})"
-                );
+                println!("        record name:          {entity_name}   (type: {entity_type})");
 
                 // What does the cache hold for this entity?
                 match cache.get(g) {

@@ -825,6 +825,9 @@ version = "0.0.0"
 dependencies = [
  "sc-extract",
  "sc-installs",
+ "sc-items",
+ "sc-manufacturers",
+ "sc-tags",
  "serde",
  "serde_json",
  "tracing",
@@ -837,6 +840,8 @@ version = "0.0.0"
 dependencies = [
  "sc-extract",
  "sc-installs",
+ "sc-items",
+ "sc-tags",
  "superlighttui",
  "svarog-common",
  "thiserror 2.0.18",
@@ -917,11 +922,45 @@ dependencies = [
 ]
 
 [[package]]
+name = "sc-items"
+version = "0.0.0"
+dependencies = [
+ "sc-extract",
+ "sc-installs",
+ "tracing",
+ "tracing-subscriber",
+]
+
+[[package]]
+name = "sc-manufacturers"
+version = "0.0.0"
+dependencies = [
+ "sc-extract",
+ "sc-installs",
+ "serde",
+ "serde_json",
+ "tracing",
+ "tracing-subscriber",
+]
+
+[[package]]
+name = "sc-tags"
+version = "0.0.0"
+dependencies = [
+ "sc-extract",
+ "sc-installs",
+ "serde",
+ "serde_json",
+ "tracing",
+]
+
+[[package]]
 name = "sc-weapons"
 version = "0.0.0"
 dependencies = [
  "sc-extract",
  "sc-installs",
+ "sc-items",
  "superlighttui",
  "svarog-common",
  "thiserror 2.0.18",

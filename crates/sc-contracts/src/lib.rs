@@ -78,9 +78,11 @@ pub use titles::{ContractAnchor, ResolvedKeys, resolve_contract_keys};
 // `sc-extract` dep. Type identity is preserved across re-exports because
 // every aggregation crate pulls the same `sc-extract` rev.
 pub use sc_extract::{
-    AssetConfig, AssetData, AssetSource, Datacore, DatacoreConfig, ExtractSnapshot, Guid,
-    LocaleKey, LocaleMap, LocalizedItem, LocalizedItemCache, SnapshotMeta,
+    AssetConfig, AssetData, AssetSource, Datacore, ExtractSnapshot, Guid, LocaleKey, LocaleMap,
+    SnapshotMeta,
 };
+// Item envelope now lives in sc-items; re-export for single-crate consumers.
+pub use sc_items::{Item, ItemCache};
 
 /// Escape hatch for raw DCB queries when the typed model doesn't cover
 /// a case. Reach for these only as a last resort; if you find yourself

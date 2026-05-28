@@ -47,8 +47,9 @@ pub struct WeaponSet {
 
 impl WeaponSet {
     pub fn build(datacore: &Datacore) -> Self {
+        let items = crate::ItemCache::build(datacore);
         Self {
-            ships: crate::iter_ship_weapons(datacore).collect(),
+            ships: crate::iter_ship_weapons(datacore, &items).collect(),
         }
     }
 }

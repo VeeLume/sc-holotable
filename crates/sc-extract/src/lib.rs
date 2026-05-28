@@ -58,16 +58,12 @@
 
 mod asset_data;
 mod assets;
-mod config;
 mod datacore;
 mod error;
 mod filters;
 mod graph;
 mod locale;
-mod localized_items;
-mod manufacturers;
 mod snapshot;
-mod tags;
 
 /// Machine-generated DataCore schema bindings — workspace-internal escape
 /// hatch. Every type in this module mirrors a DCB struct or enum and
@@ -76,17 +72,15 @@ pub use sc_extract_generated as generated;
 
 pub use asset_data::{AssetConfig, AssetData};
 pub use assets::AssetSource;
-pub use config::{DatacoreConfig, DatacoreConfigBuilder};
 pub use datacore::{Datacore, DatacoreSnapshot};
 pub use error::{Error, Result};
 pub use filters::{is_playable_ship, is_playable_weapon};
 pub use graph::ReferenceGraph;
 pub use locale::{LocaleKey, LocaleMap, strip_locale_metadata};
-pub use localized_items::{LocalizedItem, LocalizedItemCache, resolve_entity_localization};
-pub use manufacturers::{Manufacturer, ManufacturerRegistry};
-pub use sc_extract_generated::{Builder, DataPools, Extract, RecordIndex, RecordStore};
+pub use sc_extract_generated::{
+    Builder, DataPools, Extract, Handle, Pooled, RecordIndex, RecordLookup, RecordStore,
+};
 pub use snapshot::{ExtractSnapshot, SnapshotCaptureConfig, SnapshotMeta};
-pub use tags::{TagNode, TagTree};
 
 // ── svarog re-exports ──────────────────────────────────────────────────────
 

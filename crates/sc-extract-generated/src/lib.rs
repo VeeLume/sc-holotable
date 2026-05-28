@@ -42,7 +42,7 @@ mod locale_key;
 
 pub use builder::Builder;
 pub use extract::Extract;
-pub use handle::{Handle, Pooled};
+pub use handle::{Handle, Pooled, RecordLookup};
 pub use locale_key::LocaleKey;
 
 // Flat re-exports of every generated type, so `sc_extract_generated::Foo`

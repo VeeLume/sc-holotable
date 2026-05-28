@@ -322,8 +322,7 @@ fn print_expansion(
     for bp in &e.rewards.blueprints {
         let pool = blueprints.get(&bp.pool_guid);
         let pool_name = pool.map(|p| p.name.as_str()).unwrap_or("(unknown pool)");
-        let items: &[sc_contracts::BlueprintItem] =
-            pool.map(|p| p.items.as_slice()).unwrap_or(&[]);
+        let items: &[sc_contracts::BlueprintItem] = pool.map(|p| p.items.as_slice()).unwrap_or(&[]);
         let first_items: Vec<&str> = items
             .iter()
             .filter_map(|i| i.display_name(cache, locale))

@@ -1,0 +1,18 @@
+[package]
+name = "sc-items"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+
+[dependencies]
+# Foundation: typed record pools (EntityClassDefinition, SItemDefinition,
+# SAttachableComponentParams, SCItemLocalization) + generated enums + locale
+# primitives. `entities-scitem` decodes the scitem item-entity family this
+# crate's typed walk reaches — sc-items owns its feature closure so consumers
+# depend on it alone and get a populated cache.
+sc-extract = { workspace = true, features = ["entities-scitem"] }
+tracing = { workspace = true }
+
+[dev-dependencies]
+sc-installs = { workspace = true }
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
