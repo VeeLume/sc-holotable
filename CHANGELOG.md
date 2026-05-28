@@ -14,6 +14,24 @@ separate commits and advance independently.
 
 ## [Unreleased]
 
+## [v0.7.0] - 2026-05-28
+
+### Added
+
+- **`sc-extract`: item classification on `LocalizedItem` / `LocalizedItemCache`.**
+  The per-entity cache now also captures the raw `AttachDef.Type` and
+  `AttachDef.SubType` strings (e.g. `"Char_Armor_Helmet"`, `"WeaponPersonal"`)
+  alongside the existing locale keys — they come from the same
+  `SAttachableComponentParams.AttachDef` (`SItemDefinition`) walk, so no extra
+  pass. New `LocalizedItem.item_type` / `.item_sub_type` fields and
+  `LocalizedItemCache::item_type(guid)` / `::item_sub_type(guid)` accessors.
+  Values are the DCB enum-value names verbatim, leaving category mapping to
+  consumers. Hearth uses this to group its blueprint catalog by item type.
+- The localization walk now tolerates a missing `Localization` block: an
+  entity with a `Type` but no localized name is still cached (previously it
+  was skipped entirely). Existing name-resolution behaviour is unchanged for
+  entities that do have `Localization`.
+
 ## [v0.6.0] - 2026-05-28
 
 ### Added
