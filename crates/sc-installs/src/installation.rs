@@ -37,6 +37,22 @@ pub struct Installation {
     /// [`Installation::launcher_version_string_derived`] and accept the
     /// staleness caveat documented there.
     pub launcher_version_label: Option<String>,
+
+    /// Auth/services platform tag from the launcher store: `"prod"` for
+    /// LIVE / Hotfix, `"ptu"` for PTU / EPTU / TECH-PREVIEW. Useful for
+    /// routing requests to the right CIG services endpoint without
+    /// re-mapping the channel id, and for downstream consumers that key
+    /// personal state by environment (e.g. keeping test-shard progress
+    /// out of persistent-universe tables).
+    ///
+    /// Set when discovery used the launcher store. `None` when discovery
+    /// fell back to log parsing (the log doesn't carry this field), or
+    /// when the install was constructed via [`Installation::from_root`]
+    /// / [`Installation::from_parts`]. Callers that need a fallback can
+    /// derive it from [`Self::channel`] — LIVE / Hotfix → `"prod"`,
+    /// PTU / EPTU / TECH-PREVIEW → `"ptu"` — but the launcher store
+    /// value is authoritative.
+    pub platform_id: Option<String>,
 }
 
 impl Installation {
@@ -59,6 +75,7 @@ impl Installation {
             root,
             manifest,
             launcher_version_label: None,
+            platform_id: None,
         })
     }
 
@@ -74,6 +91,7 @@ impl Installation {
             root,
             manifest,
             launcher_version_label: None,
+            platform_id: None,
         })
     }
 
@@ -193,6 +211,7 @@ mod tests {
             root: PathBuf::from("C:\\SC\\LIVE"),
             manifest: make_manifest(version, changelist),
             launcher_version_label: None,
+            platform_id: None,
         }
     }
 
@@ -260,11 +279,21 @@ mod tests {
                 changelist: Some("99".to_string()),
             },
             launcher_version_label: None,
+            platform_id: None,
         };
         assert_eq!(
             inst.launcher_version_string_derived().as_deref(),
             Some("4.6.1-release-live.99")
         );
+    }
+
+    #[test]
+    fn platform_id_defaults_to_none_when_constructed_explicitly() {
+        // from_parts / from_root don't have a launcher-store value to
+        // populate platform_id with; it stays None and the discovery
+        // path sets it later.
+        let inst = make_install(Channel::Live, "4.6.1.0", Some("1"));
+        assert_eq!(inst.platform_id, None);
     }
 
     #[test]

@@ -48,6 +48,7 @@ pub fn discover() -> Result<Vec<Installation>> {
             for s in store_installs {
                 if let Some(mut install) = validate_install(s.channel, &s.root) {
                     install.launcher_version_label = s.version_label;
+                    install.platform_id = s.platform_id;
                     installations.push(install);
                 }
             }
@@ -142,6 +143,7 @@ pub fn discover_default() -> Result<Installation> {
         && let Some(mut install) = validate_install(s.channel, &s.root)
     {
         install.launcher_version_label = s.version_label;
+        install.platform_id = s.platform_id;
         return Ok(install);
     }
     discover_primary()

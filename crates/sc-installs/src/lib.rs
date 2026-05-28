@@ -75,8 +75,9 @@ pub use error::{Error, Result};
 pub use installation::Installation;
 pub use language::Language;
 pub use launcher_store::{
-    StoreInstall, StoreSnapshot, launcher_store_path, read_launcher_snapshot,
-    read_launcher_snapshot_from, read_launcher_store, read_launcher_store_from,
+    LauncherIdentity, StoreInstall, StoreSnapshot, launcher_store_path, read_identity,
+    read_identity_from, read_launcher_snapshot, read_launcher_snapshot_from, read_launcher_store,
+    read_launcher_store_from,
 };
 pub use log_parser::{
     LogEntry, LogEntryKind, detect_channel_from_process, launcher_log_path,

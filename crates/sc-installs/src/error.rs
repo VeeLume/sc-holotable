@@ -98,4 +98,12 @@ pub enum Error {
         #[source]
         source: serde_json::Error,
     },
+
+    /// The launcher store decrypted cleanly but carries no usable RSI
+    /// identity. Typical causes: the user has never signed into the
+    /// launcher, or the identity block was rotated by a launcher
+    /// migration. Callers can fall back to log parsing for the handle
+    /// (`Handle[<name>]` in `Legacy login response` lines).
+    #[error("launcher store contains no RSI identity (user never signed in?)")]
+    LauncherIdentityMissing,
 }

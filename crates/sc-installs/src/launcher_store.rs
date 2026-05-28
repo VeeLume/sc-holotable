@@ -77,6 +77,30 @@ pub struct StoreInstall {
     pub platform_id: Option<String>,
 }
 
+/// Currently-logged-in RSI identity, as the launcher records it.
+///
+/// Currently surfaces only the RSI handle (`nickname`). Other identity
+/// fields exist in the store — email (`username`), display name,
+/// avatar, Heap analytics ID, tracking UUID — but are not exposed:
+/// they're either PII (email, tracking IDs) or already derivable from
+/// the handle (display name + avatar via `/citizens/<handle>` on the
+/// public profile).
+///
+/// **Stability caveat.** The launcher only ever records *one* identity:
+/// whoever is currently logged in. Switching accounts overwrites this
+/// block. There is no on-disk history of past logins — multi-account
+/// discovery is fundamentally log-based (each `Game.log` records its
+/// session's account in the `<Legacy login response>` line).
+#[derive(Debug, Clone, PartialEq, Eq)]
+#[cfg_attr(feature = "specta", derive(specta::Type))]
+pub struct LauncherIdentity {
+    /// RSI handle ("nickname" in the launcher's JSON), e.g.
+    /// `"VeeLume"`. Same value as the public profile URL slug
+    /// (`/citizens/<handle>`) and the login-line `Handle[…]` in
+    /// `Game.log`. Public, not PII.
+    pub handle: String,
+}
+
 /// Combined view of what the launcher's persistent store advertises:
 /// every installed channel plus the launcher's own default-channel pick.
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -122,6 +146,39 @@ pub fn read_launcher_snapshot() -> Result<StoreSnapshot> {
 /// non-default installs.
 pub fn read_launcher_store_from(store_path: &Path, asar_path: &Path) -> Result<Vec<StoreInstall>> {
     Ok(read_launcher_snapshot_from(store_path, asar_path)?.installs)
+}
+
+/// Read the currently-logged-in RSI identity from the launcher store.
+///
+/// Auto-locates the launcher install directory (for the asar key) and
+/// the store file. Returns [`Error::LauncherIdentityMissing`] if the
+/// store decrypts cleanly but carries no usable identity (e.g. the
+/// user has never signed in).
+///
+/// Currently exposes only the RSI handle. See [`LauncherIdentity`] for
+/// the PII rationale and the "single point in time" caveat.
+pub fn read_identity() -> Result<LauncherIdentity> {
+    let asar = locate_app_asar()?;
+    read_identity_from(&launcher_store_path(), &asar)
+}
+
+/// Like [`read_identity`] but with explicit paths to the store file
+/// and the launcher's `app.asar`. Useful for tests and for users with
+/// non-default launcher installs.
+pub fn read_identity_from(store_path: &Path, asar_path: &Path) -> Result<LauncherIdentity> {
+    let store_bytes = std::fs::read(store_path).map_err(|source| {
+        if source.kind() == std::io::ErrorKind::NotFound {
+            Error::LauncherStoreNotFound(store_path.to_path_buf())
+        } else {
+            Error::LauncherStoreUnreadable {
+                path: store_path.to_path_buf(),
+                source,
+            }
+        }
+    })?;
+    let key_b64 = extract_encryption_key(asar_path)?;
+    let plaintext = decrypt_store(&store_bytes, &key_b64)?;
+    parse_identity_json(&plaintext)
 }
 
 /// Like [`read_launcher_snapshot`] but with explicit paths.
@@ -347,6 +404,26 @@ fn parse_store_json(plaintext: &[u8]) -> Result<StoreSnapshot> {
     })
 }
 
+/// Parse a decrypted launcher store and extract the current identity.
+///
+/// Independent of [`parse_store_json`] so identity reads don't depend on
+/// the library block parsing correctly. Uses a permissive `serde_json::Value`
+/// path so future identity-block reshufflings (CIG has done at least one
+/// in the past) don't break this code as long as `identity.nickname`
+/// stays the field name for the handle.
+fn parse_identity_json(plaintext: &[u8]) -> Result<LauncherIdentity> {
+    let value: serde_json::Value = serde_json::from_slice(plaintext)
+        .map_err(|source| Error::LauncherStoreInvalidJson { source })?;
+    let handle = value
+        .get("identity")
+        .and_then(|id| id.get("nickname"))
+        .and_then(|n| n.as_str())
+        .filter(|s| !s.is_empty())
+        .map(str::to_string)
+        .ok_or(Error::LauncherIdentityMissing)?;
+    Ok(LauncherIdentity { handle })
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -399,6 +476,59 @@ mod tests {
             PathBuf::from("D:\\Games\\StarCitizen\\TECH-PREVIEW")
         );
         assert_eq!(tp.platform_id.as_deref(), Some("ptu"));
+    }
+
+    #[test]
+    fn parse_identity_json_extracts_nickname() {
+        let json = br#"{
+            "identity": {
+                "username": "user@example.com",
+                "displayName": "Vee",
+                "nickname": "VeeLume",
+                "privileged": false
+            },
+            "library": { "installed": [] }
+        }"#;
+        let id = parse_identity_json(json).unwrap();
+        assert_eq!(id.handle, "VeeLume");
+    }
+
+    #[test]
+    fn parse_identity_json_works_without_library() {
+        // Identity parsing is independent of library parsing — a corrupt
+        // library block must not block identity reads.
+        let json = br#"{
+            "identity": { "nickname": "Solo" }
+        }"#;
+        let id = parse_identity_json(json).unwrap();
+        assert_eq!(id.handle, "Solo");
+    }
+
+    #[test]
+    fn parse_identity_json_missing_identity_block_errors() {
+        let json = br#"{ "library": { "installed": [] } }"#;
+        let err = parse_identity_json(json).unwrap_err();
+        assert!(matches!(err, Error::LauncherIdentityMissing));
+    }
+
+    #[test]
+    fn parse_identity_json_missing_nickname_errors() {
+        let json = br#"{ "identity": { "displayName": "Vee" } }"#;
+        let err = parse_identity_json(json).unwrap_err();
+        assert!(matches!(err, Error::LauncherIdentityMissing));
+    }
+
+    #[test]
+    fn parse_identity_json_empty_nickname_errors() {
+        let json = br#"{ "identity": { "nickname": "" } }"#;
+        let err = parse_identity_json(json).unwrap_err();
+        assert!(matches!(err, Error::LauncherIdentityMissing));
+    }
+
+    #[test]
+    fn parse_identity_json_invalid_json_errors() {
+        let err = parse_identity_json(b"not json").unwrap_err();
+        assert!(matches!(err, Error::LauncherStoreInvalidJson { .. }));
     }
 
     #[test]

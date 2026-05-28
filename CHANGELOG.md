@@ -14,6 +14,31 @@ separate commits and advance independently.
 
 ## [Unreleased]
 
+### Added
+
+- **`sc-installs`: `Installation::platform_id: Option<String>`.** Authoritative
+  `'prod'` / `'ptu'` tag from the launcher store, populated during
+  `discover()` and `discover_default()`. Lets consumers route to the right
+  services endpoint or scope personal state by environment without re-mapping
+  from `Channel`. `None` when discovery fell back to log parsing (the log
+  doesn't carry this field) or when the install was constructed via
+  `Installation::from_root` / `from_parts`. Hearth uses this to keep
+  PTU progress out of PU tables; downstream consumers may find it useful
+  for any prod-vs-test split. Already exposed on the lower-level
+  `StoreInstall`; this just plumbs it to the public `Installation`.
+
+- **`sc-installs`: `read_identity()` / `read_identity_from()`.** Opt-in API
+  exposing the currently-logged-in RSI handle from the launcher store's
+  `identity` block. New type: `LauncherIdentity { handle: String }`.
+  Only the handle is exposed — other identity fields (email, Heap account
+  ID, tracking UUIDs) are either PII or already derivable elsewhere, and
+  stay internal. New error variant `Error::LauncherIdentityMissing`
+  covers the "store decrypted but no nickname" case; callers can fall
+  back to log parsing (`Handle[…]` in `<Legacy login response>` lines).
+  Consumers should treat the value as a single-point-in-time snapshot:
+  switching RSI accounts in the launcher overwrites it, so multi-account
+  discovery is fundamentally log-based.
+
 ## [v0.5.0] - 2026-05-26
 
 ### Changed (breaking)
