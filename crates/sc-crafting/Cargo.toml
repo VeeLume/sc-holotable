@@ -1,0 +1,16 @@
+[package]
+name = "sc-crafting"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+
+[dependencies]
+# `crafting` decodes the BlueprintPoolRecord / CraftingBlueprintRecord /
+# CraftingProcess record types this crate walks. sc-items resolves the
+# crafted entity's display name (its feature flows in transitively).
+sc-extract = { workspace = true, features = ["crafting"] }
+sc-items = { workspace = true }
+tracing = { workspace = true }
+
+[dev-dependencies]
+sc-installs = { workspace = true }

@@ -838,6 +838,7 @@ dependencies = [
 name = "sc-contracts"
 version = "0.0.0"
 dependencies = [
+ "sc-crafting",
  "sc-extract",
  "sc-installs",
  "sc-items",
@@ -847,6 +848,16 @@ dependencies = [
  "thiserror 2.0.18",
  "tracing",
  "tracing-subscriber",
+]
+
+[[package]]
+name = "sc-crafting"
+version = "0.0.0"
+dependencies = [
+ "sc-extract",
+ "sc-installs",
+ "sc-items",
+ "tracing",
 ]
 
 [[package]]

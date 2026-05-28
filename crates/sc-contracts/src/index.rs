@@ -26,10 +26,11 @@
 
 use std::collections::HashMap;
 
+use sc_crafting::BlueprintPoolRegistry;
 use sc_extract::{Datacore, Guid};
+use sc_items::ItemCache;
 use sc_tags::TagTree;
 
-use crate::blueprints::BlueprintPoolRegistry;
 use crate::currency::RewardCurrencyCatalog;
 use crate::expand::{Mission, expand_all};
 use crate::locality::{LocalityRegistry, LocationRegistry};
@@ -98,6 +99,12 @@ pub struct MissionIndex {
     /// construction; stays in sync with `contracts` because
     /// `MissionIndex` is immutable after `build`.
     by_id: HashMap<Guid, usize>,
+
+    /// Reverse index: `BlueprintPoolRecord` GUID → mission GUIDs that award
+    /// it — the missions×crafting join (the catalog itself lives in
+    /// [`sc_crafting`]). Powers [`Self::missions_for_pool`] /
+    /// [`Self::missions_for_item`].
+    missions_by_pool: HashMap<Guid, Vec<Guid>>,
 }
 
 impl MissionIndex {
@@ -111,19 +118,29 @@ impl MissionIndex {
     /// features enabled — the default `sc-contracts` dependency
     /// turns both on.
     pub fn build(datacore: &Datacore) -> Self {
-        // Build the tag tree once, share it across the whole pipeline.
+        // Build the shared indices once, thread them through the pipeline.
         let tag_tree = TagTree::build(datacore);
+        let items = ItemCache::build(datacore);
         let ships = ShipRegistry::build(datacore, &tag_tree);
-        let mut blueprints = BlueprintPoolRegistry::build(datacore);
+        let blueprints = BlueprintPoolRegistry::build(datacore, &items);
         let currency = RewardCurrencyCatalog::build(datacore);
         let locations = LocationRegistry::build(datacore);
         let localities = LocalityRegistry::build(datacore, &locations);
 
         let contracts = expand_all(datacore, &ships, &currency, &localities, &tag_tree);
-        // Now that missions are materialised, wire the pool → missions
-        // reverse index. Powers `BlueprintPoolRegistry::missions_for_pool`
-        // and friends.
-        blueprints.link_missions(&contracts);
+
+        // Reverse index: which missions award which blueprint pool. The
+        // catalog (pools/items) lives in sc-crafting; this join is the
+        // missions side.
+        let mut missions_by_pool: HashMap<Guid, Vec<Guid>> = HashMap::new();
+        for mission in &contracts {
+            for reward in &mission.rewards.blueprints {
+                missions_by_pool
+                    .entry(reward.pool_guid)
+                    .or_default()
+                    .push(mission.id);
+            }
+        }
 
         let by_id = contracts
             .iter()
@@ -142,7 +159,34 @@ impl MissionIndex {
             tag_tree,
             pools,
             by_id,
+            missions_by_pool,
         }
+    }
+
+    /// Mission GUIDs that award the given blueprint pool. Empty when no
+    /// mission awards it. Order matches contract iteration order.
+    pub fn missions_for_pool(&self, pool_guid: &Guid) -> &[Guid] {
+        self.missions_by_pool
+            .get(pool_guid)
+            .map(Vec::as_slice)
+            .unwrap_or(&[])
+    }
+
+    /// Every mission awarding a pool that contains this blueprint record,
+    /// dedup'd. Combines
+    /// [`sc_crafting::BlueprintPoolRegistry::pools_containing_item`] with
+    /// [`Self::missions_for_pool`].
+    pub fn missions_for_item(&self, blueprint_record_guid: &Guid) -> Vec<Guid> {
+        let mut seen = std::collections::HashSet::new();
+        let mut out = Vec::new();
+        for pool in self.blueprints.pools_containing_item(blueprint_record_guid) {
+            for id in self.missions_for_pool(&pool.guid) {
+                if seen.insert(*id) {
+                    out.push(*id);
+                }
+            }
+        }
+        out
     }
 
     /// Look up a contract by GUID. Each `Mission` has a
@@ -334,6 +378,7 @@ mod tests {
             tag_tree: TagTree::default(),
             pools: MissionPools::default(),
             by_id: HashMap::new(),
+            missions_by_pool: HashMap::new(),
         };
         assert_eq!(idx.len(), 0);
         assert!(idx.is_empty());
