@@ -356,16 +356,34 @@ fn resolve_blueprint_reward(
     reward: &BlueprintReward,
     unresolved: &mut usize,
 ) -> BlueprintItem {
-    let mut item = BlueprintItem {
-        blueprint_record_guid: reward.blueprint_record.unwrap_or_default(),
-        crafted_entity_guid: None,
-        blueprint_name_key: None,
-        weight: reward.weight,
-    };
-
     let Some(record_guid) = reward.blueprint_record else {
         *unresolved += 1;
-        return item;
+        return BlueprintItem {
+            blueprint_record_guid: Default::default(),
+            crafted_entity_guid: None,
+            blueprint_name_key: None,
+            weight: reward.weight,
+        };
+    };
+    resolve_blueprint_record(records, pools, record_guid, reward.weight, unresolved)
+}
+
+/// Resolve a single `CraftingBlueprintRecord` GUID to a [`BlueprintItem`],
+/// independent of any reward pool. `weight` is supplied by the caller
+/// (1.0 for pool-less enumeration; the reward weight when called from a
+/// pool). Shared by the pool builder and [`all_blueprints`].
+fn resolve_blueprint_record(
+    records: &RecordIndex,
+    pools: &DataPools,
+    record_guid: Guid,
+    weight: f32,
+    unresolved: &mut usize,
+) -> BlueprintItem {
+    let mut item = BlueprintItem {
+        blueprint_record_guid: record_guid,
+        crafted_entity_guid: None,
+        blueprint_name_key: None,
+        weight,
     };
 
     let Some(bp_record_handle) = records
@@ -398,6 +416,33 @@ fn resolve_blueprint_reward(
     }
 
     item
+}
+
+/// Every `CraftingBlueprintRecord` in the datacore, resolved to a
+/// [`BlueprintItem`] — independent of mission reward pools.
+///
+/// This is the **full craftable catalog**. The [`BlueprintPoolRegistry`]
+/// only covers blueprints awarded by missions; default-unlocked or
+/// otherwise-acquired blueprints (e.g. the P4-AR) appear in no pool and
+/// are absent there. Use this when listing "everything that has a
+/// blueprint," and the registry when answering "which missions award
+/// this."
+///
+/// `weight` is 1.0 for every item (weight is a pool-reward concept).
+/// Items with no `crafted_entity_guid` are still returned (non-Creation
+/// processes like refining/repair, or unresolved records); callers that
+/// only want craftable items should filter on `crafted_entity_guid`.
+/// Order is unspecified (HashMap iteration); callers re-sort.
+pub fn all_blueprints(datacore: &Datacore) -> Vec<BlueprintItem> {
+    let records = &datacore.records().records;
+    let pools = &datacore.records().pools;
+    let mut unresolved = 0usize;
+    records
+        .multi_feature
+        .crafting_blueprint_record
+        .keys()
+        .map(|guid| resolve_blueprint_record(records, pools, *guid, 1.0, &mut unresolved))
+        .collect()
 }
 
 /// Pull the crafted-entity GUID out of a `CraftingProcess_*` variant.
