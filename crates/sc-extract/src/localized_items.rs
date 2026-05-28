@@ -1,9 +1,12 @@
-//! Pre-computed localization-key cache for entity records.
+//! Pre-computed per-entity item-metadata cache for entity records.
 //!
 //! Every `EntityClassDefinition` carries `Components →
-//! SAttachableComponentParams.AttachDef.Localization` with three locale
-//! fields: `Name`, `ShortName`, `Description`. The cache walks the chain
-//! once at parse time and stores the keys, indexed by entity GUID:
+//! SAttachableComponentParams.AttachDef` (`SItemDefinition`). The cache
+//! walks the chain once at parse time and stores, indexed by entity GUID:
+//!   - the three `Localization` locale keys (`Name`, `ShortName`,
+//!     `Description`), and
+//!   - the raw `Type` / `SubType` classification strings (e.g.
+//!     `"Char_Armor_Helmet"`), so consumers can bucket items by category.
 //!
 //! ```text
 //! EntityClassDefinition.Components
@@ -26,11 +29,19 @@ use crate::Guid;
 use crate::locale::LocaleKey;
 use crate::svarog_datacore::{DataCoreDatabase, Instance, Value};
 
-/// The three [`LocaleKey`]s every localized item exposes.
+/// Per-entity item metadata pulled from the
+/// `SAttachableComponentParams.AttachDef` (`SItemDefinition`) block.
 ///
-/// All fields keep the leading `@` that the DCB carries — the workspace
-/// rule is "keys are raw, resolution happens at the call site". A `None`
-/// means the underlying DCB field was empty.
+/// The three [`LocaleKey`]s keep the leading `@` that the DCB carries —
+/// the workspace rule is "keys are raw, resolution happens at the call
+/// site". A `None` locale key means the underlying DCB field was empty.
+///
+/// `item_type` / `item_sub_type` are the raw CIG classification strings
+/// from `AttachDef.Type` / `AttachDef.SubType` (e.g. `"Char_Armor_Helmet"`,
+/// `"WeaponPersonal"`). They are the DCB enum-value names verbatim — the
+/// `EItemType` / `EItemSubType` variants without the Rust-side mapping —
+/// so consumers can bucket items into their own categories. `None` when
+/// the field was absent or empty.
 #[derive(Debug, Clone, Default, PartialEq, Eq)]
 pub struct LocalizedItem {
     /// `Localization.Name` — the primary display name key.
@@ -40,6 +51,12 @@ pub struct LocalizedItem {
     pub short_name_key: Option<LocaleKey>,
     /// `Localization.Description` — the long-form item description key.
     pub desc_key: Option<LocaleKey>,
+    /// `AttachDef.Type` — raw CIG item-type string, e.g.
+    /// `"Char_Armor_Helmet"`. `None` if absent/empty.
+    pub item_type: Option<String>,
+    /// `AttachDef.SubType` — raw CIG item-subtype string. `None` if
+    /// absent/empty (many items only set `Type`).
+    pub item_sub_type: Option<String>,
 }
 
 /// Pre-computed localization keys for every entity record that exposes a
@@ -84,6 +101,22 @@ impl LocalizedItemCache {
         self.by_record
             .get(guid)
             .and_then(|i| i.short_name_key.as_ref())
+    }
+
+    /// Convenience: the raw `AttachDef.Type` classification string for a
+    /// record (e.g. `"Char_Armor_Helmet"`). `None` if the record isn't
+    /// cached or had no type.
+    pub fn item_type(&self, guid: &Guid) -> Option<&str> {
+        self.by_record
+            .get(guid)
+            .and_then(|i| i.item_type.as_deref())
+    }
+
+    /// Convenience: the raw `AttachDef.SubType` classification string.
+    pub fn item_sub_type(&self, guid: &Guid) -> Option<&str> {
+        self.by_record
+            .get(guid)
+            .and_then(|i| i.item_sub_type.as_deref())
     }
 
     /// Number of records with cached localization keys.
@@ -146,16 +179,45 @@ pub fn resolve_entity_localization(
         }
 
         let attach_def = component.get_instance("AttachDef")?;
-        let localization = attach_def.get_instance("Localization")?;
+
+        // Type / SubType live directly on the AttachDef (SItemDefinition);
+        // Localization is a nested block. Capture the classification even
+        // when the Localization block is absent — some entities carry a
+        // Type but no localized name.
+        let item_type = type_field(&attach_def, "Type");
+        let item_sub_type = type_field(&attach_def, "SubType");
+
+        let (name_key, short_name_key, desc_key) =
+            match attach_def.get_instance("Localization") {
+                Some(loc) => (
+                    locale_field(&loc, "Name"),
+                    locale_field(&loc, "ShortName"),
+                    locale_field(&loc, "Description"),
+                ),
+                None => (None, None, None),
+            };
 
         return Some(LocalizedItem {
-            name_key: locale_field(&localization, "Name"),
-            short_name_key: locale_field(&localization, "ShortName"),
-            desc_key: locale_field(&localization, "Description"),
+            name_key,
+            short_name_key,
+            desc_key,
+            item_type,
+            item_sub_type,
         });
     }
 
     None
+}
+
+/// Pull an `AttachDef` enum-choice field (`Type` / `SubType`) as its raw
+/// DCB string. `None` when missing or empty.
+fn type_field(inst: &Instance<'_>, name: &str) -> Option<String> {
+    let raw = inst.get_str(name)?;
+    if raw.is_empty() {
+        None
+    } else {
+        Some(raw.to_string())
+    }
 }
 
 /// Pull a `Locale` field out of an `Instance` as a `LocaleKey`. Returns
@@ -202,6 +264,8 @@ mod tests {
             name_key: Some(LocaleKey::new("@item_NameTest")),
             short_name_key: None,
             desc_key: Some(LocaleKey::new("@item_DescTest")),
+            item_type: Some("Char_Armor_Helmet".to_string()),
+            item_sub_type: None,
         };
         cache.insert(guid, item.clone());
 
@@ -210,6 +274,8 @@ mod tests {
         assert_eq!(cache.name_key(&guid).unwrap().as_str(), "@item_NameTest");
         assert_eq!(cache.desc_key(&guid).unwrap().as_str(), "@item_DescTest");
         assert!(cache.short_name_key(&guid).is_none());
+        assert_eq!(cache.item_type(&guid), Some("Char_Armor_Helmet"));
+        assert_eq!(cache.item_sub_type(&guid), None);
     }
 
     #[test]
@@ -229,6 +295,8 @@ mod tests {
                 name_key: Some(LocaleKey::new("@item_NameRaw")),
                 short_name_key: None,
                 desc_key: None,
+                item_type: None,
+                item_sub_type: None,
             },
         );
         // Stored key keeps the '@'; consumers strip at call time if needed.
