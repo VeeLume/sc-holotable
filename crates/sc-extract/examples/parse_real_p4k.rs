@@ -24,7 +24,7 @@ use std::path::PathBuf;
 use std::time::Instant;
 
 use sc_extract::{
-    AssetConfig, AssetData, AssetSource, DatacoreConfig, ExtractSnapshot, SnapshotCaptureConfig,
+    AssetConfig, AssetData, AssetSource, ExtractSnapshot, ReferenceGraph, SnapshotCaptureConfig,
     SnapshotMeta,
 };
 
@@ -40,14 +40,6 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let use_all = args.iter().any(|a| a == "--all");
     let skip_assets = args.iter().any(|a| a == "--no-assets");
     let explicit_path: Option<PathBuf> = args.iter().find(|a| !a.starts_with('-')).map(Into::into);
-
-    let dc_config = if use_all {
-        println!("-> using DatacoreConfig::all() (includes reference graph)");
-        DatacoreConfig::all()
-    } else {
-        println!("-> using DatacoreConfig::standard() (graph skipped)");
-        DatacoreConfig::standard()
-    };
 
     // ── Step 1: open assets (always needed — DCB lives inside the P4K) ────
     let t0 = Instant::now();
@@ -85,7 +77,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     // ── Step 3: datacore parse ────────────────────────────────────────────
     println!("-> parsing datacore");
-    let datacore = sc_extract::Datacore::parse(&assets, &asset_data, &dc_config)?;
+    let datacore = sc_extract::Datacore::parse(&assets, &asset_data)?;
 
     let parse_secs = t0.elapsed().as_secs_f64();
 
@@ -99,11 +91,13 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("  extracted_at   : {}", meta.extracted_at);
     println!("  records        : {}", snap_view.records.len());
     println!("  locale entries : {}", asset_data.locale.len());
-    println!("  manufacturers  : {}", snap_view.manufacturers.len());
-    println!("  display names  : {}", snap_view.localized_items.len());
-    println!("  tag nodes      : {}", snap_view.tag_tree.len());
-    println!("  graph edges    : {}", snap_view.graph.edge_count());
+    if use_all {
+        // Graph is no longer auto-built; build it explicitly on request.
+        let graph = ReferenceGraph::from_database(datacore.db());
+        println!("  graph edges    : {}", graph.edge_count());
+    }
     println!("  parse time     : {parse_secs:.2}s");
+    println!("  (cooked indices now live in sc-items / sc-tags / sc-manufacturers)");
 
     // ── Raw escape hatch: db() still works after parse ────────────────────
     println!();
@@ -161,7 +155,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         AssetConfig::standard()
     };
     let t4 = Instant::now();
-    let (hydrated_assets, hydrated_dc) = loaded.hydrate(&hydrate_asset_config, &dc_config)?;
+    let (hydrated_assets, hydrated_dc) = loaded.hydrate(&hydrate_asset_config)?;
     let hydrate_secs = t4.elapsed().as_secs_f64();
     let hydrated_records = hydrated_dc.snapshot().records.len();
     println!("  hydrate time   : {hydrate_secs:.2}s  (svarog + builder + indices)");

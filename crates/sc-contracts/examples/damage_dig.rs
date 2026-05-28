@@ -17,14 +17,14 @@
 use std::collections::{BTreeMap, HashMap};
 
 use sc_contracts::{Encounter, MissionIndex};
-use sc_extract::{AssetConfig, AssetData, AssetSource, Datacore, DatacoreConfig, Guid};
+use sc_extract::{AssetConfig, AssetData, AssetSource, Datacore, Guid};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let install = sc_installs::discover_primary()?;
     eprintln!("[install] {} v{}", install.channel, install.short_version());
     let assets = AssetSource::from_install(&install)?;
     let asset_data = AssetData::extract(&assets, &AssetConfig::standard())?;
-    let datacore = Datacore::parse(&assets, &asset_data, &DatacoreConfig::standard())?;
+    let datacore = Datacore::parse(&assets, &asset_data)?;
     let index = MissionIndex::build(&datacore);
     let db = datacore.db();
 

@@ -30,6 +30,7 @@ superlighttui = { workspace = true, optional = true }
 
 [dev-dependencies]
 sc-installs = { workspace = true }
+sc-manufacturers = { workspace = true }
 tracing-subscriber = { version = "0.3", features = ["env-filter"] }
 
 [features]

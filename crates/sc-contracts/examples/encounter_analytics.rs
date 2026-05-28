@@ -26,7 +26,7 @@
 use std::collections::{BTreeMap, BTreeSet, HashMap};
 
 use sc_contracts::{Encounter, MissionIndex, ShipSlot};
-use sc_extract::{AssetConfig, AssetData, AssetSource, Datacore, DatacoreConfig};
+use sc_extract::{AssetConfig, AssetData, AssetSource, Datacore};
 
 /// One row in the analytics worklist — flatten contract → group →
 /// wave → slot into a single record so every section can iterate
@@ -66,7 +66,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     eprintln!("[install] {} v{}", install.channel, install.short_version());
     let assets = AssetSource::from_install(&install)?;
     let asset_data = AssetData::extract(&assets, &AssetConfig::standard())?;
-    let datacore = Datacore::parse(&assets, &asset_data, &DatacoreConfig::standard())?;
+    let datacore = Datacore::parse(&assets, &asset_data)?;
     let index = MissionIndex::build(&datacore);
 
     // Flatten everything into a single Row vec for cheap multi-pass

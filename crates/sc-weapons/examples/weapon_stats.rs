@@ -13,7 +13,8 @@
 
 use std::time::Instant;
 
-use sc_extract::{AssetConfig, AssetData, AssetSource, DatacoreConfig};
+use sc_extract::{AssetConfig, AssetData, AssetSource};
+use sc_manufacturers::ManufacturerRegistry;
 use sc_weapons::*;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -49,10 +50,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let assets = AssetSource::from_install(&install)?;
     let asset_data = AssetData::extract(&assets, &AssetConfig::standard())?;
-    let datacore = sc_extract::Datacore::parse(&assets, &asset_data, &DatacoreConfig::standard())?;
+    let datacore = sc_extract::Datacore::parse(&assets, &asset_data)?;
     let parse_secs = t0.elapsed().as_secs_f64();
 
-    let snap = datacore.snapshot();
+    let items = ItemCache::build(&datacore);
+    let mfrs = ManufacturerRegistry::build(&datacore);
 
     println!(
         "\nLoadoutContext: window={}s, power_per_slot={}",
@@ -63,7 +65,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     );
 
     if show_fps {
-        let weapons: Vec<FpsWeapon> = iter_fps_weapons(&datacore).collect();
+        let weapons: Vec<FpsWeapon> = iter_fps_weapons(&datacore, &items).collect();
         println!(
             "\nFPS weapons: {} (parsed in {parse_secs:.1}s)\n",
             weapons.len()
@@ -71,8 +73,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         for w in &weapons {
             if let Some(f) = filter
                 && !w.record_name.contains(f)
-                && !snap
-                    .localized_items
+                && !items
                     .name_key(&w.guid)
                     .and_then(|k| asset_data.locale.resolve(k))
                     .unwrap_or("")
@@ -80,13 +81,13 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             {
                 continue;
             }
-            print_fps_weapon(w, snap, &asset_data.locale);
+            print_fps_weapon(w, &items, &mfrs, &asset_data.locale);
         }
         if filter.is_none() {
             println!("\nTotal: {} FPS weapons", weapons.len());
         }
     } else {
-        let mut weapons: Vec<ShipWeapon> = iter_ship_weapons(&datacore).collect();
+        let mut weapons: Vec<ShipWeapon> = iter_ship_weapons(&datacore, &items).collect();
         if sort_by_effective {
             weapons.sort_by(|a, b| {
                 let ea = a.effective_dps(&ctx).unwrap_or(0.0);
@@ -101,8 +102,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         for w in &weapons {
             if let Some(f) = filter
                 && !w.record_name.contains(f)
-                && !snap
-                    .localized_items
+                && !items
                     .name_key(&w.guid)
                     .and_then(|k| asset_data.locale.resolve(k))
                     .unwrap_or("")
@@ -111,9 +111,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 continue;
             }
             if sort_by_effective {
-                print_ship_weapon_summary(w, snap, &asset_data.locale, &ctx);
+                print_ship_weapon_summary(w, &items, &asset_data.locale, &ctx);
             } else {
-                print_ship_weapon(w, snap, &asset_data.locale, &ctx);
+                print_ship_weapon(w, &items, &mfrs, &asset_data.locale, &ctx);
             }
         }
         if filter.is_none() {
@@ -134,12 +134,11 @@ fn arg_value<'a>(args: &'a [String], flag: &str) -> Option<&'a str> {
 /// One-line summary used by the `--sort` ranked view.
 fn print_ship_weapon_summary(
     w: &ShipWeapon,
-    snap: &sc_extract::DatacoreSnapshot,
+    items: &ItemCache,
     locale: &sc_extract::LocaleMap,
     ctx: &LoadoutContext,
 ) {
-    let display = snap
-        .localized_items
+    let display = items
         .name_key(&w.guid)
         .and_then(|k| locale.resolve(k))
         .unwrap_or("");
@@ -155,18 +154,18 @@ fn print_ship_weapon_summary(
 
 fn print_ship_weapon(
     w: &ShipWeapon,
-    snap: &sc_extract::DatacoreSnapshot,
+    items: &ItemCache,
+    mfrs: &ManufacturerRegistry,
     locale: &sc_extract::LocaleMap,
     ctx: &LoadoutContext,
 ) {
-    let display = snap
-        .localized_items
+    let display = items
         .name_key(&w.guid)
         .and_then(|k| locale.resolve(k))
         .unwrap_or("");
     let mfg = w
         .manufacturer_guid
-        .and_then(|g| snap.manufacturers.get(&g))
+        .and_then(|g| mfrs.get(&g))
         .map(|m| m.code.as_str())
         .unwrap_or("");
 
@@ -315,17 +314,17 @@ fn print_ship_weapon(
 
 fn print_fps_weapon(
     w: &FpsWeapon,
-    snap: &sc_extract::DatacoreSnapshot,
+    items: &ItemCache,
+    mfrs: &ManufacturerRegistry,
     locale: &sc_extract::LocaleMap,
 ) {
-    let display = snap
-        .localized_items
+    let display = items
         .name_key(&w.guid)
         .and_then(|k| locale.resolve(k))
         .unwrap_or("");
     let mfg = w
         .manufacturer_guid
-        .and_then(|g| snap.manufacturers.get(&g))
+        .and_then(|g| mfrs.get(&g))
         .map(|m| m.code.as_str())
         .unwrap_or("");
 

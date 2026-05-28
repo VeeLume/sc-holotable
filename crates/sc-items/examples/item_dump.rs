@@ -6,7 +6,7 @@
 //! cargo run -p sc-items --release --example item_dump
 //! ```
 
-use sc_extract::{AssetConfig, AssetData, AssetSource, DatacoreConfig};
+use sc_extract::{AssetConfig, AssetData, AssetSource};
 use sc_items::ItemCache;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -15,7 +15,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let assets = AssetSource::from_install(&install)?;
     let asset_data = AssetData::extract(&assets, &AssetConfig::standard())?;
-    let datacore = sc_extract::Datacore::parse(&assets, &asset_data, &DatacoreConfig::standard())?;
+    let datacore = sc_extract::Datacore::parse(&assets, &asset_data)?;
 
     let items = ItemCache::build(&datacore);
     let inv = items.iter().filter(|(_, it)| it.is_inventory_item()).count();

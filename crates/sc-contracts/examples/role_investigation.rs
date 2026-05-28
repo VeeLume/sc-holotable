@@ -37,7 +37,7 @@ use sc_extract::generated::{
     BaseMissionPropertyValuePtr, MissionPropertyValue_ShipSpawnDescriptions, SpawnDescription_Ship,
     SpawnDescription_ShipOptions, TagList,
 };
-use sc_extract::{AssetConfig, AssetData, AssetSource, Datacore, DatacoreConfig, Guid};
+use sc_extract::{AssetConfig, AssetData, AssetSource, Datacore, Guid};
 
 /// Sub-string classifier matching sc-langpatch's current logic. Returns
 /// the role label, or "Unknown" for anything that doesn't match. We
@@ -99,10 +99,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     eprintln!("[install] {} v{}", install.channel, install.short_version());
     let assets = AssetSource::from_install(&install)?;
     let asset_data = AssetData::extract(&assets, &AssetConfig::standard())?;
-    let datacore = Datacore::parse(&assets, &asset_data, &DatacoreConfig::standard())?;
+    let datacore = Datacore::parse(&assets, &asset_data)?;
     let pools = &datacore.records().pools;
-    let snap = datacore.snapshot();
-    let tag_tree = &snap.tag_tree;
+    let tt = sc_tags::TagTree::build(&datacore);
+    let tag_tree = &tt;
 
     // ── Section 1: spawn-variant coverage ────────────────────────────────
     println!("=== Section 1: MissionProperty.value variant coverage ===");

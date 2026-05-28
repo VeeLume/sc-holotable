@@ -29,7 +29,7 @@ use sc_extract::generated::{
     EDifficultyRange_MechanicalSkill, EDifficultyRange_MentalLoad, EDifficultyRange_RiskOfLoss,
     Handle,
 };
-use sc_extract::{AssetConfig, AssetData, AssetSource, Datacore, DatacoreConfig, Guid};
+use sc_extract::{AssetConfig, AssetData, AssetSource, Datacore, Guid};
 
 #[derive(Default)]
 struct DiffStats {
@@ -47,10 +47,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     eprintln!("[install] {} v{}", install.channel, install.short_version());
     let assets = AssetSource::from_install(&install)?;
     let asset_data = AssetData::extract(&assets, &AssetConfig::standard())?;
-    let datacore = Datacore::parse(&assets, &asset_data, &DatacoreConfig::standard())?;
+    let datacore = Datacore::parse(&assets, &asset_data)?;
     let pools = &datacore.records().pools;
-    let snap = datacore.snapshot();
-    let tag_tree = &snap.tag_tree;
+    let tt = sc_tags::TagTree::build(&datacore);
+    let tag_tree = &tt;
 
     // ── Section 1: ContractResults.difficulty coverage ───────────────────
     let mut contract_stats = DiffStats::default();

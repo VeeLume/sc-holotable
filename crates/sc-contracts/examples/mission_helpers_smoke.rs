@@ -7,14 +7,14 @@
 //! ```
 
 use sc_contracts::MissionIndex;
-use sc_extract::{AssetConfig, AssetData, AssetSource, Datacore, DatacoreConfig};
+use sc_extract::{AssetConfig, AssetData, AssetSource, Datacore};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let install = sc_installs::discover_primary()?;
     eprintln!("[install] {} v{}", install.channel, install.short_version());
     let assets = AssetSource::from_install(&install)?;
     let asset_data = AssetData::extract(&assets, &AssetConfig::standard())?;
-    let datacore = Datacore::parse(&assets, &asset_data, &DatacoreConfig::standard())?;
+    let datacore = Datacore::parse(&assets, &asset_data)?;
     let index = MissionIndex::build(&datacore);
     let locale = &asset_data.locale;
 

@@ -14,18 +14,18 @@
 //! 2. `save` → `load` round-trips the byte map losslessly.
 //! 3. `hydrate` re-parses the captured DCB + locale bytes into a live
 //!    `Datacore` + `AssetData`.
-//! 4. The hydrated live session produces the same record / graph / tag /
-//!    manufacturer / display-name counts as the original live parse of
-//!    the same install. This is the actual correctness proof that the
-//!    byte-bundle format doesn't lose information relative to the old
-//!    cooked-snapshot format.
+//! 4. The hydrated live session produces the same record / graph-edge /
+//!    locale counts as the original live parse of the same install. This is
+//!    the correctness proof that the byte-bundle format doesn't lose
+//!    information. (Domain indices — tags / manufacturers / items — now
+//!    live in their own crates and are out of scope for this test.)
 //!
 //! This is the canonical "does the whole thing work?" test for the
 //! snapshot rework. Skip in CI (no SC install available); run locally
 //! after generator regens, dependency bumps, or snapshot-format changes.
 
 use sc_extract::{
-    AssetConfig, AssetData, AssetSource, Datacore, DatacoreConfig, ExtractSnapshot,
+    AssetConfig, AssetData, AssetSource, Datacore, ExtractSnapshot, ReferenceGraph,
     SnapshotCaptureConfig,
 };
 
@@ -47,10 +47,9 @@ fn snapshot_live_roundtrip() {
 
     let assets = AssetSource::from_install(&install).expect("open assets");
     let asset_config = AssetConfig::standard();
-    let dc_config = DatacoreConfig::standard();
 
     let asset_data = AssetData::extract(&assets, &asset_config).expect("live asset extract");
-    let datacore = Datacore::parse(&assets, &asset_data, &dc_config).expect("live datacore parse");
+    let datacore = Datacore::parse(&assets, &asset_data).expect("live datacore parse");
 
     let original = Counts::from(&datacore, &asset_data);
     println!("live parse summary: {original:?}");
@@ -89,8 +88,7 @@ fn snapshot_live_roundtrip() {
     assert_eq!(loaded.meta.schema_version, ExtractSnapshot::SCHEMA_VERSION);
     assert_eq!(loaded.files.len(), snapshot.files.len());
 
-    let (hydrated_assets, hydrated_dc) =
-        loaded.hydrate(&asset_config, &dc_config).expect("hydrate");
+    let (hydrated_assets, hydrated_dc) = loaded.hydrate(&asset_config).expect("hydrate");
     let hydrated = Counts::from(&hydrated_dc, &hydrated_assets);
     println!("hydrated summary: {hydrated:?}");
 
@@ -109,21 +107,19 @@ fn snapshot_live_roundtrip() {
 struct Counts {
     records: usize,
     graph_edges: usize,
-    tag_nodes: usize,
-    manufacturers: usize,
-    localized_items: usize,
     locale_entries: usize,
 }
 
 impl Counts {
     fn from(dc: &Datacore, assets: &AssetData) -> Self {
-        let snap = dc.snapshot();
         Self {
-            records: snap.records.len(),
-            graph_edges: snap.graph.edge_count(),
-            tag_nodes: snap.tag_tree.len(),
-            manufacturers: snap.manufacturers.len(),
-            localized_items: snap.localized_items.len(),
+            records: dc.snapshot().records.len(),
+            // Cooked indices (tags / manufacturers / items) moved to their
+            // own crates — testing them here would need dev-dep cycles and
+            // isn't sc-extract's job. The record store proves the DCB bytes
+            // round-tripped; the graph (still built here) is the structural
+            // cross-check; locale proves the locale bytes round-tripped.
+            graph_edges: ReferenceGraph::from_database(dc.db()).edge_count(),
             locale_entries: assets.locale.len(),
         }
     }
