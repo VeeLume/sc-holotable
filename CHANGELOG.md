@@ -14,6 +14,8 @@ separate commits and advance independently.
 
 ## [Unreleased]
 
+## [v0.6.0] - 2026-05-28
+
 ### Added
 
 - **`sc-installs`: `Installation::platform_id: Option<String>`.** Authoritative
