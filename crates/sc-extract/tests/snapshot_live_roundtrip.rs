@@ -38,7 +38,7 @@ fn snapshot_live_roundtrip() {
     let _ = tracing_subscriber::fmt::try_init();
 
     // ── Step 1: live parse (the reference run) ───────────────────────
-    let install = sc_installs::discover_primary().expect("discover SC install");
+    let install = sc_discovery::discover_primary().expect("discover SC install");
     println!(
         "using install: channel={} root={}",
         install.channel,

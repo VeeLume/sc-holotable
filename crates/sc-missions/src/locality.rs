@@ -12,7 +12,7 @@
 //!   classified through its parent chain.
 //! - [`LocalityView`] — one `MissionLocality` resolved to a list of
 //!   [`LocationRef`] and the distinct systems it touches.
-//! - [`LocationRegistry`] / [`LocalityRegistry`] — walk-once lookups
+//! - [`Locations`] / [`Localities`] — walk-once lookups
 //!   used by [`crate::expand_all`] to populate
 //!   [`crate::Mission::mission_span`].
 //!
@@ -169,7 +169,7 @@ pub struct LocalityView {
     /// summary.
     pub name: String,
     /// Every location this locality points at, resolved through
-    /// [`LocationRegistry`]. GUIDs the registry couldn't resolve are
+    /// [`Locations`]. GUIDs the registry couldn't resolve are
     /// dropped silently (feature-gated types or DCB breakage are the
     /// only causes — the default crate build has `contracts`
     /// feature so all observed data resolves).
@@ -207,11 +207,11 @@ impl LocalityView {
 /// [`LocationRef`] with its parent chain walked to classify the
 /// system + body.
 #[derive(Debug, Clone, Default)]
-pub struct LocationRegistry {
+pub struct Locations {
     by_guid: HashMap<Guid, LocationRef>,
 }
 
-impl LocationRegistry {
+impl Locations {
     /// Walk every `StarMapObject` record in the DCB, resolve its
     /// parent chain, and cache a [`LocationRef`].
     ///
@@ -306,19 +306,19 @@ impl LocationRegistry {
 }
 
 /// Resolves `MissionLocality` GUIDs into [`LocalityView`]s with each
-/// referenced location already classified via [`LocationRegistry`].
+/// referenced location already classified via [`Locations`].
 #[derive(Debug, Clone, Default)]
-pub struct LocalityRegistry {
+pub struct Localities {
     by_guid: HashMap<Guid, LocalityView>,
     /// Running count of locality entries whose `available_locations`
-    /// array held a GUID the `LocationRegistry` couldn't resolve.
+    /// array held a GUID the `Locations` couldn't resolve.
     /// Exposed for diagnostics; typically zero on clean DCBs.
     unresolved_location_refs: usize,
 }
 
-impl LocalityRegistry {
-    /// Build from a pre-built [`LocationRegistry`].
-    pub fn build(datacore: &Datacore, locations: &LocationRegistry) -> Self {
+impl Localities {
+    /// Build from a pre-built [`Locations`].
+    pub fn build(datacore: &Datacore, locations: &Locations) -> Self {
         let pools = &datacore.records().pools;
         let records = &datacore.records().records;
         let db = datacore.db();
@@ -386,7 +386,7 @@ impl LocalityRegistry {
     }
 
     /// Number of location GUIDs across all localities that the
-    /// [`LocationRegistry`] couldn't resolve. Non-zero means either
+    /// [`Locations`] couldn't resolve. Non-zero means either
     /// the DCB has a dangling reference, or a `StarMapObject`
     /// subtype is behind a feature gate we don't have enabled.
     pub fn unresolved_location_refs(&self) -> usize {
@@ -576,8 +576,8 @@ mod tests {
 
     #[test]
     fn empty_registries_are_empty() {
-        assert!(LocationRegistry::default().is_empty());
-        assert!(LocalityRegistry::default().is_empty());
+        assert!(Locations::default().is_empty());
+        assert!(Localities::default().is_empty());
     }
 
     #[test]

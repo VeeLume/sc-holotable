@@ -8,16 +8,16 @@
 
 use sc_crafting::all_blueprints;
 use sc_extract::{AssetConfig, AssetData, AssetSource};
-use sc_items::ItemCache;
+use sc_items::Items;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let install = sc_installs::discover_primary()?;
+    let install = sc_discovery::discover_primary()?;
     println!("{} v{}", install.channel, install.short_version());
 
     let assets = AssetSource::from_install(&install)?;
     let asset_data = AssetData::extract(&assets, &AssetConfig::standard())?;
     let datacore = sc_extract::Datacore::parse(&assets, &asset_data)?;
-    let items = ItemCache::build(datacore.records());
+    let items = Items::build(datacore.records());
 
     let catalog = all_blueprints(&datacore, &items);
     let craftable = catalog

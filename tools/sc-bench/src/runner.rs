@@ -46,9 +46,9 @@ pub fn run(config: &RunConfig) -> Result<BenchResult, Box<dyn std::error::Error>
     r.parse_time = t.elapsed().as_secs_f64();
 
     let store = datacore.records();
-    let items = sc_items::ItemCache::build(store);
-    let mfrs = sc_manufacturers::ManufacturerRegistry::build(store);
-    let tags = sc_tags::TagTree::build(store);
+    let items = sc_items::Items::build(store);
+    let mfrs = sc_manufacturers::Manufacturers::build(store);
+    let tags = sc_tags::Tags::build(store);
     // Graph is opt-in (expensive ~7s); build explicitly only when requested.
     let graph = config
         .include_graph
@@ -115,14 +115,14 @@ fn open_assets(
         };
         Ok((assets, meta))
     } else {
-        let install = sc_installs::discover_primary()?;
+        let install = sc_discovery::discover_primary()?;
         let assets = AssetSource::from_install(&install)?;
         let meta = sc_extract::snapshot_meta_from_install(&install);
         Ok((assets, meta))
     }
 }
 
-fn exercise_tags(tree: &sc_tags::TagTree, r: &mut BenchResult) {
+fn exercise_tags(tree: &sc_tags::Tags, r: &mut BenchResult) {
     // Count root nodes.
     r.tag_roots = tree.roots().count();
 
@@ -151,7 +151,7 @@ fn exercise_tags(tree: &sc_tags::TagTree, r: &mut BenchResult) {
     }
 }
 
-fn exercise_manufacturers(mfrs: &sc_manufacturers::ManufacturerRegistry, r: &mut BenchResult) {
+fn exercise_manufacturers(mfrs: &sc_manufacturers::Manufacturers, r: &mut BenchResult) {
     // Count manufacturers with a name_key.
     r.manufacturers_with_name_key = mfrs.all().filter(|m| m.name_key.is_some()).count();
 
@@ -162,7 +162,7 @@ fn exercise_manufacturers(mfrs: &sc_manufacturers::ManufacturerRegistry, r: &mut
     let _drak = mfrs.by_code("DRAK");
 }
 
-fn exercise_display_names(items: &sc_items::ItemCache, r: &mut BenchResult) {
+fn exercise_display_names(items: &sc_items::Items, r: &mut BenchResult) {
     r.display_names_non_empty = items
         .iter()
         .filter(|(_, item)| item.name_key.is_some())
@@ -180,7 +180,7 @@ fn exercise_locale(asset_data: &AssetData, r: &mut BenchResult) {
 
 fn exercise_graph(
     graph: &sc_extract::ReferenceGraph,
-    items: &sc_items::ItemCache,
+    items: &sc_items::Items,
     r: &mut BenchResult,
 ) {
     r.graph_sources = graph.source_count();
@@ -219,7 +219,7 @@ fn exercise_graph(
 fn exercise_filters(
     datacore: &Datacore,
     asset_data: &AssetData,
-    items: &sc_items::ItemCache,
+    items: &sc_items::Items,
     r: &mut BenchResult,
 ) {
     let db = datacore.db();

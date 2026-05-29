@@ -1,9 +1,9 @@
 //! Manufacturer registry over the DCB's `SCItemManufacturer` records.
 //!
 //! The DCB contains ~100 manufacturer records referenced from thousands of
-//! item/ship/weapon records. [`ManufacturerRegistry`] provides GUID-keyed
+//! item/ship/weapon records. [`Manufacturers`] provides GUID-keyed
 //! and code-keyed lookup. Moved out of `sc-extract` (it's domain data, not
-//! a generic DCB primitive); build it explicitly via [`ManufacturerRegistry::build`].
+//! a generic DCB primitive); build it explicitly via [`Manufacturers::build`].
 //!
 //! # Walk
 //!
@@ -47,12 +47,12 @@ pub struct Manufacturer {
 
 /// Flat lookup over every `SCItemManufacturer` record in the DCB.
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
-pub struct ManufacturerRegistry {
+pub struct Manufacturers {
     by_guid: HashMap<Guid, Manufacturer>,
     by_code: HashMap<String, Guid>,
 }
 
-impl ManufacturerRegistry {
+impl Manufacturers {
     /// Construct an empty registry.
     pub fn new() -> Self {
         Self::default()
@@ -110,7 +110,7 @@ impl ManufacturerRegistry {
 }
 
 /// Project one typed `SCItemManufacturer` into a [`Manufacturer`]. Shared by
-/// [`ManufacturerRegistry::build`] and [`ManufacturerRegistryBuilder`].
+/// [`Manufacturers::build`] and [`ManufacturersBuilder`].
 fn manufacturer_for(guid: Guid, m: &SCItemManufacturer, pools: &DataPools) -> Manufacturer {
     let (name_key, description_key) = match m.localization.and_then(|h| h.get(pools)) {
         Some(loc) => (
@@ -132,16 +132,16 @@ fn non_empty(s: &str) -> Option<String> {
     (!s.is_empty()).then(|| s.to_string())
 }
 
-/// [`sc_extract::RecordVisitor`] that builds a [`ManufacturerRegistry`] in a
+/// [`sc_extract::RecordVisitor`] that builds a [`Manufacturers`] in a
 /// bundled walk. Declares interest in `SCItemManufacturer` records. Equivalent
-/// to [`ManufacturerRegistry::build`] but fusible with other visitors.
+/// to [`Manufacturers::build`] but fusible with other visitors.
 #[derive(Default)]
-pub struct ManufacturerRegistryBuilder {
-    inner: ManufacturerRegistry,
+pub struct ManufacturersBuilder {
+    inner: Manufacturers,
 }
 
-impl sc_extract::RecordVisitor for ManufacturerRegistryBuilder {
-    type Output = ManufacturerRegistry;
+impl sc_extract::RecordVisitor for ManufacturersBuilder {
+    type Output = Manufacturers;
 
     fn interest(&self) -> sc_extract::Interest {
         sc_extract::Interest::Types(&["SCItemManufacturer"])
@@ -159,7 +159,7 @@ impl sc_extract::RecordVisitor for ManufacturerRegistryBuilder {
             .insert(manufacturer_for(item.guid, m, &store.pools));
     }
 
-    fn finish(self) -> ManufacturerRegistry {
+    fn finish(self) -> Manufacturers {
         self.inner
     }
 }
@@ -183,14 +183,14 @@ mod tests {
 
     #[test]
     fn new_registry_is_empty() {
-        let reg = ManufacturerRegistry::new();
+        let reg = Manufacturers::new();
         assert!(reg.is_empty());
         assert_eq!(reg.len(), 0);
     }
 
     #[test]
     fn insert_and_lookup() {
-        let mut reg = ManufacturerRegistry::new();
+        let mut reg = Manufacturers::new();
         reg.insert(make(g(1), "GATS"));
         reg.insert(make(g(2), "AEGS"));
         assert_eq!(reg.get(&g(1)).map(|m| m.code.as_str()), Some("GATS"));
@@ -201,7 +201,7 @@ mod tests {
 
     #[test]
     fn insert_replaces_and_updates_code_index() {
-        let mut reg = ManufacturerRegistry::new();
+        let mut reg = Manufacturers::new();
         reg.insert(make(g(1), "OldCode"));
         reg.insert(make(g(1), "NewCode"));
         assert_eq!(reg.len(), 1);
@@ -211,10 +211,10 @@ mod tests {
 
     #[test]
     fn serde_round_trip() {
-        let mut reg = ManufacturerRegistry::new();
+        let mut reg = Manufacturers::new();
         reg.insert(make(g(1), "GATS"));
         let json = serde_json::to_string(&reg).unwrap();
-        let decoded: ManufacturerRegistry = serde_json::from_str(&json).unwrap();
+        let decoded: Manufacturers = serde_json::from_str(&json).unwrap();
         assert_eq!(decoded.by_code("GATS").map(|m| m.guid), Some(g(1)));
     }
 }

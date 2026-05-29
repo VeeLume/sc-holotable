@@ -13,14 +13,14 @@
 //! # Display names are baked
 //!
 //! Each [`BlueprintItem`] bakes the crafted entity's name key (from an
-//! [`ItemCache`]) at build time, so [`BlueprintItem::display_name`] needs
+//! [`Items`]) at build time, so [`BlueprintItem::display_name`] needs
 //! only a [`LocaleMap`] — consumers never thread the item cache.
 
 use sc_extract::generated::{
     CraftingBlueprint_Base_NonRefPtr, CraftingProcess_BasePtr, DataPools, RecordIndex,
 };
 use sc_extract::{Datacore, Guid, LocaleKey, LocaleMap};
-use sc_items::ItemCache;
+use sc_items::Items;
 
 /// A resolved blueprint: the crafted item's identity + display-name keys.
 ///
@@ -34,7 +34,7 @@ pub struct BlueprintItem {
     /// the player receives. `None` for non-Creation processes (refining,
     /// repair) or an unresolved reference.
     pub crafted_entity_guid: Option<Guid>,
-    /// Crafted entity's display-name key, baked from the [`ItemCache`] at
+    /// Crafted entity's display-name key, baked from the [`Items`] at
     /// build time. Preferred name source. Raw (`@`-prefixed).
     pub entity_name_key: Option<LocaleKey>,
     /// Fallback `CraftingBlueprint.blueprintName` key — used when the
@@ -73,7 +73,7 @@ impl BlueprintItem {
 /// Items with no `crafted_entity_guid` (non-Creation processes /
 /// unresolved) are still returned; catalog callers filter on
 /// `crafted_entity_guid`. Order is unspecified.
-pub fn all_blueprints(datacore: &Datacore, items: &ItemCache) -> Vec<BlueprintItem> {
+pub fn all_blueprints(datacore: &Datacore, items: &Items) -> Vec<BlueprintItem> {
     let records = &datacore.records().records;
     let pools = &datacore.records().pools;
     records
@@ -91,7 +91,7 @@ pub fn all_blueprints(datacore: &Datacore, items: &ItemCache) -> Vec<BlueprintIt
 /// unresolved record rather than dropping it.
 pub fn resolve_blueprint(
     datacore: &Datacore,
-    items: &ItemCache,
+    items: &Items,
     record_guid: Guid,
 ) -> BlueprintItem {
     let records = &datacore.records().records;
@@ -103,7 +103,7 @@ pub fn resolve_blueprint(
 fn resolve_record(
     records: &RecordIndex,
     pools: &DataPools,
-    items: &ItemCache,
+    items: &Items,
     record_guid: Guid,
 ) -> BlueprintItem {
     let mut item = BlueprintItem {

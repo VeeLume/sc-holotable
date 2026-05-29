@@ -8,18 +8,18 @@
 //! The crate-level [`render`]/[`ExplorerState`] below is the contracts
 //! list-detail view; the [`clusters`] sub-module renders pool-keyed
 //! browsing (title key / description key) using the precomputed
-//! [`crate::MissionPools`] + divergence helpers on [`MissionIndex`].
+//! [`crate::MissionPools`] + divergence helpers on [`Missions`].
 
 use sc_extract::{Datacore, LocaleMap};
-use sc_items::ItemCache;
-use sc_tags::TagTree;
+use sc_items::Items;
+use sc_tags::Tags;
 use slt::{Border, Color, Context, KeyCode, ListState, ScrollState, TextInputState};
 
 use crate::expand::{
     Encounter, EncounterPhase, EntitySlot, Mission, NpcSlot, RewardAmount, ShipSlot,
 };
-use crate::index::MissionIndex;
-use crate::ships::ShipRegistry;
+use crate::index::Missions;
+use crate::ships::Ships;
 
 /// Persistent state for the contracts explorer view.
 ///
@@ -108,9 +108,9 @@ pub fn pool_checks(datacore: &Datacore) -> Vec<PoolCheck> {
 pub fn render(
     ui: &mut Context,
     state: &mut ExplorerState,
-    index: &MissionIndex,
+    index: &Missions,
     locale: &LocaleMap,
-    cache: &ItemCache,
+    cache: &Items,
 ) {
     let filter = state.filter.value.to_lowercase();
     let filtered: Vec<usize> = index
@@ -219,10 +219,10 @@ fn format_list_item(c: &Mission, locale: &LocaleMap) -> String {
 fn render_detail(
     ui: &mut Context,
     scroll: &mut ScrollState,
-    index: &MissionIndex,
+    index: &Missions,
     idx: usize,
     locale: &LocaleMap,
-    cache: &ItemCache,
+    cache: &Items,
 ) {
     let c = &index.contracts[idx];
     let tree = &index.tag_tree;
@@ -448,9 +448,9 @@ fn render_group_header<S>(ui: &mut Context, gi: usize, group: &crate::SlotGroup<
 fn render_ship_phases(
     ui: &mut Context,
     phases: &[EncounterPhase<ShipSlot>],
-    tree: &TagTree,
-    ships: &ShipRegistry,
-    cache: &ItemCache,
+    tree: &Tags,
+    ships: &Ships,
+    cache: &Items,
     locale: &LocaleMap,
 ) {
     for phase in phases {
@@ -464,7 +464,7 @@ fn render_ship_phases(
     }
 }
 
-fn render_npc_phases(ui: &mut Context, phases: &[EncounterPhase<NpcSlot>], tree: &TagTree) {
+fn render_npc_phases(ui: &mut Context, phases: &[EncounterPhase<NpcSlot>], tree: &Tags) {
     for phase in phases {
         render_phase_header(ui, phase);
         for (gi, group) in phase.groups.iter().enumerate() {
@@ -476,7 +476,7 @@ fn render_npc_phases(ui: &mut Context, phases: &[EncounterPhase<NpcSlot>], tree:
     }
 }
 
-fn render_entity_phases(ui: &mut Context, phases: &[EncounterPhase<EntitySlot>], tree: &TagTree) {
+fn render_entity_phases(ui: &mut Context, phases: &[EncounterPhase<EntitySlot>], tree: &Tags) {
     for phase in phases {
         render_phase_header(ui, phase);
         for (gi, group) in phase.groups.iter().enumerate() {
@@ -494,9 +494,9 @@ fn render_ship_slot(
     ui: &mut Context,
     i: usize,
     s: &ShipSlot,
-    tree: &TagTree,
-    ships: &ShipRegistry,
-    cache: &ItemCache,
+    tree: &Tags,
+    ships: &Ships,
+    cache: &Items,
     locale: &LocaleMap,
 ) {
     // Slot header: concurrency / weight / candidate count + flag markers.
@@ -620,7 +620,7 @@ fn render_ship_slot(
 /// Render one NPC slot. Surfaces the typed `mission_allied_marker` /
 /// `is_critical` / `faction_override` flags from `AutoSpawnSettings`
 /// plus the identifier-tag bag classifications.
-fn render_npc_slot(ui: &mut Context, i: usize, s: &NpcSlot, tree: &TagTree) {
+fn render_npc_slot(ui: &mut Context, i: usize, s: &NpcSlot, tree: &Tags) {
     let allied_marker = if s.mission_allied_marker {
         " [allied-marker]"
     } else {
@@ -670,7 +670,7 @@ fn render_npc_slot(ui: &mut Context, i: usize, s: &NpcSlot, tree: &TagTree) {
 }
 
 /// Render one generic-entity slot.
-fn render_entity_slot(ui: &mut Context, i: usize, s: &EntitySlot, tree: &TagTree) {
+fn render_entity_slot(ui: &mut Context, i: usize, s: &EntitySlot, tree: &Tags) {
     ui.text(format!(
         "        slot {i}: amount={} w={:.2} pos={} neg={}",
         s.amount,

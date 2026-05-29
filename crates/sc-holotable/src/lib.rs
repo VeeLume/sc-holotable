@@ -24,8 +24,8 @@
 
 #[cfg(feature = "installs")]
 pub mod install {
-    //! Install discovery ([`sc_installs`]).
-    pub use sc_installs::*;
+    //! Install discovery ([`sc_discovery`]).
+    pub use sc_discovery::*;
 }
 
 #[cfg(feature = "extract")]
@@ -85,15 +85,15 @@ pub mod prelude {
         ProcessedSnapshot, RecordPath, RecordPaths, SnapshotMeta,
     };
     #[cfg(feature = "items")]
-    pub use sc_items::{Item, ItemCache};
+    pub use sc_items::{Item, Items};
     #[cfg(feature = "manufacturers")]
-    pub use sc_manufacturers::{Manufacturer, ManufacturerRegistry};
+    pub use sc_manufacturers::{Manufacturer, Manufacturers};
     #[cfg(feature = "missions")]
-    pub use sc_missions::MissionIndex;
+    pub use sc_missions::Missions;
     #[cfg(feature = "tags")]
-    pub use sc_tags::TagTree;
+    pub use sc_tags::Tags;
     #[cfg(feature = "weapons")]
-    pub use sc_weapons::{FpsWeapon, Missile, ShipWeapon, WeaponPools};
+    pub use sc_weapons::{FpsWeapon, Missile, ShipWeapon, WeaponPools, Weapons};
 
     #[cfg(feature = "foundations")]
     pub use crate::{Foundations, HolotableSnapshot, build_foundations};

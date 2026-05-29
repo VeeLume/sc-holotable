@@ -6,13 +6,13 @@
 //! [`sc_crafting`]. This module is the join: it resolves each pool's reward
 //! entries against [`sc_crafting::all_blueprints`] and pairs them with their
 //! pool weight. The pool→missions reverse index lives on
-//! [`crate::MissionIndex`].
+//! [`crate::Missions`].
 
 use std::collections::HashMap;
 
 use sc_crafting::{BlueprintItem, all_blueprints};
 use sc_extract::{Datacore, Guid};
-use sc_items::ItemCache;
+use sc_items::Items;
 
 /// One weighted entry in a [`BlueprintPool`].
 #[derive(Debug, Clone)]
@@ -38,15 +38,15 @@ pub struct BlueprintPool {
 
 /// Lookup from `BlueprintPoolRecord.guid` to resolved [`BlueprintPool`].
 #[derive(Debug, Clone, Default)]
-pub struct BlueprintPoolRegistry {
+pub struct BlueprintPools {
     pools: HashMap<Guid, BlueprintPool>,
 }
 
-impl BlueprintPoolRegistry {
-    /// Build from a [`Datacore`] + [`ItemCache`]: resolve the catalog once
+impl BlueprintPools {
+    /// Build from a [`Datacore`] + [`Items`]: resolve the catalog once
     /// via [`sc_crafting::all_blueprints`], then join each pool's reward
     /// entries against it (attaching the pool weight).
-    pub fn build(datacore: &Datacore, items: &ItemCache) -> Self {
+    pub fn build(datacore: &Datacore, items: &Items) -> Self {
         let catalog: HashMap<Guid, BlueprintItem> = all_blueprints(datacore, items)
             .into_iter()
             .map(|b| (b.blueprint_record_guid, b))
@@ -155,7 +155,7 @@ mod tests {
 
     #[test]
     fn empty_registry() {
-        let reg = BlueprintPoolRegistry::default();
+        let reg = BlueprintPools::default();
         assert_eq!(reg.len(), 0);
         assert!(reg.is_empty());
         assert!(reg.get(&Guid::default()).is_none());

@@ -64,7 +64,7 @@ T0 is reserved for crates with no DCB / svarog dependency at all (`sc-installs`,
 
 ## Per-crate conventions
 
-These are not new rules — they're extracted from how `sc-weapons` is already written. New T1 crates should follow them so the workspace API stays consistent.
+Most are extracted from how `sc-weapons` is already written. New T1 crates follow them so the workspace API stays consistent. **Rule 6 (domain-noun cooked index) is the one that the older, quickly-evolved crates — `sc-weapons` and `sc-missions` — are migrating *toward*, not yet examples of; see the migration map in the project note.**
 
 ### 1. Foreign refs as `Guid`, never flattened strings
 
@@ -132,34 +132,85 @@ pub use sc_extract::{
 
 Type identity is preserved because every crate in the workspace pins the same `sc-extract` rev.
 
-### 6. Materialized construction
+### 6. Cooked index: one domain-noun type, built uniformly
 
-Typed records own all their data after construction. No `&DataPools` borrow lives in the struct.
+Each data crate exposes its materialized data as **one primary type named for
+its domain** — a plural noun, **no structural suffix**:
+
+| Crate            | Type            | not                              |
+|------------------|-----------------|----------------------------------|
+| sc-items         | `Items`         | ~~ItemCache~~                    |
+| sc-tags          | `Tags`          | ~~TagTree~~                      |
+| sc-manufacturers | `Manufacturers` | ~~ManufacturerRegistry~~         |
+| sc-missions      | `Missions`      | ~~MissionIndex~~                 |
+| sc-weapons       | `Weapons`       | ~~`iter_*` + `WeaponPools` tuple~~ |
+
+The data *shape* — flat lookup, hierarchy, grouping — is expressed through
+**methods, not the name**: `Tags` still has `.ancestors()`/`.children()`,
+`Weapons` still exposes its collision pools. A consumer never has to guess
+whether a crate calls its entry point a `Cache`, `Registry`, `Index`, `Tree`,
+or `Catalog` — it is the domain noun. Singular record types stay singular
+(`Item`, `Mission`, `ShipWeapon`), so `Missions` (the index) vs `Mission`
+(the record) reads naturally. The one sanctioned non-noun is
+`sc_extract::RecordPaths` — a foundational index named for *what* it indexes
+rather than a domain.
+
+**Construction is always `Type::build`:**
 
 ```rust
-// Construction does all the resolution
+let items = Items::build(store);             // &RecordStore — reads typed pools only
+let paths = RecordPaths::build(&datacore);   // &Datacore — needs raw db()
+let ships = Ships::build(&datacore, &tags);  // dependency indices appended by ref
+```
+
+- **Input is the narrowest sufficient** — `&RecordStore` when the build only
+  reads the typed pools; `&Datacore` only when it needs `db()` (raw strings /
+  file paths) or asset data. Dependency indices follow the source, by reference.
+- **Returns owned `Self`** — no `&DataPools` borrow survives into the value
+  (see rule 7).
+
+**Every index also has a `{Type}Builder`** for bundled walks —
+`#[derive(Default)]` + `impl RecordVisitor<Output = {Type}>`. `Type::build` may
+delegate to it or stand alone; either way a consumer building several indices
+fuses them into one `all_records` pass via `BundledWalk`
+([`crates/sc-extract/src/bundled_walk.rs`](../crates/sc-extract/src/bundled_walk.rs)).
+
+### 7. Owned data; grouping & streaming as members, not new top-level types
+
+Typed records own all their data after construction — no `&DataPools` borrow
+lives in the struct:
+
+```rust
 let weapon = ShipWeapon::try_new(handle, guid, pools, ...)?;
-// Accessors are plain field reads — no &DataPools needed
-weapon.burst_dps()?;
+weapon.burst_dps()?;                 // plain field reads, no &DataPools
 weapon.display_name(&locale)?;
 ```
 
-Construction pattern is uniform: `try_new -> Option<Self>` for filtered records (skips records that don't fit the typed contract), `iter_*` for filtered iteration over a `Datacore`.
+Two uniform building blocks the domain index (rule 6) is assembled from:
 
-### 7. Registry / pools structs as open structs with extensible axes
+- **`try_new -> Option<Self>`** for a single record that may not fit the typed
+  contract (returns `None` instead of a half-built value).
+- **`iter_*(&Datacore, &deps) -> impl Iterator`** for streaming a large record
+  family without materializing an index — the lazy counterpart to `build`.
+
+Secondary structures — collision pools (`LocaleKey -> Vec<Guid>`), by-axis
+groupings — are **fields or methods on the domain index, never standalone
+top-level types** a consumer must discover separately:
 
 ```rust
-pub struct WeaponPools {
-    pub name_key: HashMap<LocaleKey, Vec<Guid>>,
-    pub desc_key: HashMap<LocaleKey, Vec<Guid>>,
-    // Future axes (by manufacturer, by size, by tag) land as sibling
-    // fields. Non-breaking addition.
+pub struct Weapons {
+    pub ships: Vec<ShipWeapon>,
+    pub fps: Vec<FpsWeapon>,
+    pub missiles: Vec<Missile>,
+    /// Collision index over all families (the former standalone `WeaponPools`,
+    /// now a field). More axes (by manufacturer, size, tag) land as
+    /// non-breaking sibling fields.
+    pub pools: WeaponPools,
 }
 ```
 
-Doc: *"More axes are non-breaking additions — a future grouping (by manufacturer, by size, by tag) lands as a sibling field without disturbing the existing ones."*
-
-Canonical examples: [`sc-weapons/src/pools.rs`](../crates/sc-weapons/src/pools.rs), `sc-contracts::MissionPools`.
+The grouping type stays an open struct with extensible axes (a new grouping is
+a non-breaking sibling field) — it simply isn't an entry point of its own.
 
 ## Cross-crate conventions
 

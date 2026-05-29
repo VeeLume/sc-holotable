@@ -23,7 +23,7 @@ use std::time::Instant;
 
 use anyhow::{Context as _, Result};
 use sc_missions::{
-    AssetConfig, AssetData, AssetSource, Datacore, ItemCache, LocaleMap, MissionIndex,
+    AssetConfig, AssetData, AssetSource, Datacore, Items, LocaleMap, Missions,
 };
 use slt::{
     Border, Color, Context, KeyCode, KeyModifiers, RunConfig, ScrollState, TabsState, Theme,
@@ -43,7 +43,7 @@ fn main() -> Result<()> {
         .init();
 
     eprintln!("sc-explorer: discovering primary install...");
-    let install = sc_installs::discover_primary().context("discover SC install")?;
+    let install = sc_discovery::discover_primary().context("discover SC install")?;
     eprintln!(
         "  {} v{} at {}",
         install.channel,
@@ -67,8 +67,8 @@ fn main() -> Result<()> {
         parse_started.elapsed().as_secs_f32()
     );
 
-    eprintln!("sc-explorer: building MissionIndex...");
-    let index = MissionIndex::build(&datacore);
+    eprintln!("sc-explorer: building Missions...");
+    let index = Missions::build(&datacore);
     eprintln!("  {} contract(s)", index.contracts.len());
 
     eprintln!("sc-explorer: materialising weapon set...");
@@ -77,7 +77,7 @@ fn main() -> Result<()> {
 
     let pool_checks = build_pool_checks(&datacore);
 
-    let localized_items = ItemCache::build(datacore.records());
+    let localized_items = Items::build(datacore.records());
     let locale = asset_data.locale.clone();
 
     let mut app = AppState {
@@ -110,7 +110,7 @@ fn main() -> Result<()> {
 }
 
 struct AppState {
-    index: MissionIndex,
+    index: Missions,
     weapon_set: sc_weapons::tui::WeaponSet,
     pool_checks: Vec<PoolRow>,
     tabs: TabsState,
@@ -125,7 +125,7 @@ struct AppState {
     /// language packs, but threading it through here keeps the path
     /// open.
     locale: LocaleMap,
-    localized_items: ItemCache,
+    localized_items: Items,
 }
 
 /// One row in the Pools tab. Aggregates the per-aggregation-crate

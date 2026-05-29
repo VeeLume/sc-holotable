@@ -17,15 +17,15 @@
 use std::collections::{BTreeMap, HashMap};
 
 use sc_extract::{AssetConfig, AssetData, AssetSource, Datacore, Guid};
-use sc_missions::{Encounter, MissionIndex};
+use sc_missions::{Encounter, Missions};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let install = sc_installs::discover_primary()?;
+    let install = sc_discovery::discover_primary()?;
     eprintln!("[install] {} v{}", install.channel, install.short_version());
     let assets = AssetSource::from_install(&install)?;
     let asset_data = AssetData::extract(&assets, &AssetConfig::standard())?;
     let datacore = Datacore::parse(&assets, &asset_data)?;
-    let index = MissionIndex::build(&datacore);
+    let index = Missions::build(&datacore);
     let db = datacore.db();
 
     // Collect every distinct initial_damage_settings GUID + which

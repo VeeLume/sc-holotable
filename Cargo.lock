@@ -823,8 +823,8 @@ checksum = "9774ba4a74de5f7b1c1451ed6cd5285a32eddb5cccb8cc655a4e50009e06477f"
 name = "sc-bench"
 version = "0.0.0"
 dependencies = [
+ "sc-discovery",
  "sc-extract",
- "sc-installs",
  "sc-items",
  "sc-manufacturers",
  "sc-tags",
@@ -838,9 +838,26 @@ dependencies = [
 name = "sc-crafting"
 version = "0.0.0"
 dependencies = [
+ "sc-discovery",
  "sc-extract",
- "sc-installs",
  "sc-items",
+ "tracing",
+]
+
+[[package]]
+name = "sc-discovery"
+version = "0.0.0"
+dependencies = [
+ "aes",
+ "cbc",
+ "pbkdf2",
+ "regex",
+ "serde",
+ "serde_json",
+ "sha2",
+ "specta",
+ "tempfile",
+ "thiserror 2.0.18",
  "tracing",
 ]
 
@@ -849,7 +866,7 @@ name = "sc-explorer"
 version = "0.0.0"
 dependencies = [
  "anyhow",
- "sc-installs",
+ "sc-discovery",
  "sc-missions",
  "sc-weapons",
  "superlighttui",
@@ -864,8 +881,8 @@ dependencies = [
  "chrono",
  "encoding_rs",
  "rmp-serde",
+ "sc-discovery",
  "sc-extract-generated",
- "sc-installs",
  "serde",
  "serde_json",
  "svarog-common",
@@ -891,7 +908,7 @@ dependencies = [
 name = "sc-generator"
 version = "0.0.0"
 dependencies = [
- "sc-installs",
+ "sc-discovery",
  "svarog-common",
  "svarog-datacore",
  "svarog-p4k",
@@ -905,8 +922,8 @@ name = "sc-holotable"
 version = "0.0.0"
 dependencies = [
  "sc-crafting",
+ "sc-discovery",
  "sc-extract",
- "sc-installs",
  "sc-items",
  "sc-manufacturers",
  "sc-missions",
@@ -917,28 +934,11 @@ dependencies = [
 ]
 
 [[package]]
-name = "sc-installs"
-version = "0.0.0"
-dependencies = [
- "aes",
- "cbc",
- "pbkdf2",
- "regex",
- "serde",
- "serde_json",
- "sha2",
- "specta",
- "tempfile",
- "thiserror 2.0.18",
- "tracing",
-]
-
-[[package]]
 name = "sc-items"
 version = "0.0.0"
 dependencies = [
+ "sc-discovery",
  "sc-extract",
- "sc-installs",
  "serde",
  "serde_json",
  "tracing",
@@ -949,8 +949,8 @@ dependencies = [
 name = "sc-manufacturers"
 version = "0.0.0"
 dependencies = [
+ "sc-discovery",
  "sc-extract",
- "sc-installs",
  "serde",
  "serde_json",
  "tracing",
@@ -962,8 +962,8 @@ name = "sc-missions"
 version = "0.0.0"
 dependencies = [
  "sc-crafting",
+ "sc-discovery",
  "sc-extract",
- "sc-installs",
  "sc-items",
  "sc-tags",
  "superlighttui",
@@ -977,8 +977,8 @@ dependencies = [
 name = "sc-tags"
 version = "0.0.0"
 dependencies = [
+ "sc-discovery",
  "sc-extract",
- "sc-installs",
  "serde",
  "serde_json",
  "tracing",
@@ -988,8 +988,8 @@ dependencies = [
 name = "sc-weapons"
 version = "0.0.0"
 dependencies = [
+ "sc-discovery",
  "sc-extract",
- "sc-installs",
  "sc-items",
  "sc-manufacturers",
  "superlighttui",

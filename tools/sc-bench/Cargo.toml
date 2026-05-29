@@ -9,7 +9,7 @@ name = "sc-bench"
 path = "src/main.rs"
 
 [dependencies]
-sc-installs = { workspace = true }
+sc-discovery = { workspace = true }
 sc-extract = { workspace = true }
 sc-items = { workspace = true }
 sc-manufacturers = { workspace = true }

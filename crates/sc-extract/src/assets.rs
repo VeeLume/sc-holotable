@@ -89,11 +89,11 @@ impl AssetSource {
     /// Convenience: open the `Data.p4k` from a discovered installation.
     ///
     /// ```no_run
-    /// let install = sc_installs::discover_primary()?;
+    /// let install = sc_discovery::discover_primary()?;
     /// let assets = sc_extract::AssetSource::from_install(&install)?;
     /// # Ok::<(), Box<dyn std::error::Error>>(())
     /// ```
-    pub fn from_install(install: &sc_installs::Installation) -> Result<Self> {
+    pub fn from_install(install: &sc_discovery::Installation) -> Result<Self> {
         Self::open(&install.data_p4k())
     }
 

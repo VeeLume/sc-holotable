@@ -28,9 +28,9 @@ use sc_extract::{Datacore, Guid, LocaleKey, LocaleMap};
 
 use crate::axes::{AxisDiff, SharedTag};
 use crate::classify::TagBag;
-use crate::currency::RewardCurrencyCatalog;
-use crate::locality::LocalityRegistry;
-use crate::ships::{ShipCandidate, ShipRegistry};
+use crate::currency::RewardCurrencies;
+use crate::locality::Localities;
+use crate::ships::{ShipCandidate, Ships};
 use crate::titles::{ContractAnchor, ResolvedKeys, resolve_contract_keys};
 
 /// One concrete contract node in the expanded generator graph.
@@ -101,7 +101,7 @@ pub struct Mission {
     /// prereq in the expansion's inheritance chain (handler +
     /// contract + sub-contract) produces one entry, deduplicated by
     /// `locality_guid` and resolved through
-    /// [`LocalityRegistry`]. Unresolvable GUIDs are dropped.
+    /// [`Localities`]. Unresolvable GUIDs are dropped.
     ///
     /// Order follows prereq walking order: handler first (inherited),
     /// then contract, then sub-contract (most-specific last), with
@@ -294,7 +294,7 @@ pub struct MissionRewards {
     /// [`RewardAmount::Fixed`] aUEC amount directly.
     pub uec: RewardAmount,
     /// Scrip rewards — `ContractResult_Item` entries whose entity_class
-    /// is in [`crate::RewardCurrencyCatalog`].
+    /// is in [`crate::RewardCurrencies`].
     pub scrip: Vec<ScripReward>,
     /// Reputation rewards. Amount is [`None`] for
     /// `ContractResult_CalculatedReputation` (engine-computed) and
@@ -305,7 +305,7 @@ pub struct MissionRewards {
     pub items: Vec<ItemReward>,
     /// Blueprint pool rewards attached to this contract. Each entry is
     /// a thin reference (`{ chance, pool_guid }`) — resolve the pool's
-    /// name + items via [`crate::BlueprintPoolRegistry::get`] at the
+    /// name + items via [`crate::BlueprintPools::get`] at the
     /// call site.
     ///
     /// Empty when the contract awards no blueprints. Multiple entries
@@ -349,7 +349,7 @@ pub enum RewardAmount {
 /// One scrip / typed-currency reward.
 ///
 /// Display name is intentionally absent — resolve via
-/// [`crate::RewardCurrencyCatalog::display_name`] at the call site.
+/// [`crate::RewardCurrencies::display_name`] at the call site.
 #[derive(Debug, Clone)]
 pub struct ScripReward {
     pub currency_guid: Guid,
@@ -373,7 +373,7 @@ pub struct RepReward {
 /// One non-currency item reward.
 ///
 /// Display name is intentionally absent — resolve through
-/// [`sc_items::ItemCache`] keyed by `entity_class` and the
+/// [`sc_items::Items`] keyed by `entity_class` and the
 /// active [`LocaleMap`].
 #[derive(Debug, Clone)]
 pub struct ItemReward {
@@ -665,7 +665,7 @@ pub struct ShipSlot {
     /// Pick weight relative to other options in the same slot.
     pub weight: f32,
     /// Ship candidates the slot can spawn, resolved via
-    /// [`ShipRegistry::resolve_spawn`] with the intent-based filter.
+    /// [`Ships::resolve_spawn`] with the intent-based filter.
     /// Empty when the query is broken (e.g. Gilly Mission01 Wave3's
     /// typo'd `Relient_Tana` tag) or awaits runtime location context.
     pub candidates: Vec<ShipCandidate>,
@@ -690,7 +690,7 @@ pub struct ShipSlot {
     /// `is_salvage_target`).
     pub positive: TagBag,
     /// `SpawnDescription_Ship.negativeTags` — tags that *exclude*
-    /// matches. Newly visible in v2; consumed by [`ShipRegistry`]
+    /// matches. Newly visible in v2; consumed by [`Ships`]
     /// during resolution but kept here so consumers can audit what
     /// the slot explicitly rejected.
     pub negative: TagBag,
@@ -767,7 +767,7 @@ pub struct EntitySlot {
 ///
 /// Slim by design — only the chance and the pool GUID. Consumers
 /// resolve the pool's name and items via
-/// [`crate::BlueprintPoolRegistry::get`] at render time. Keeps the
+/// [`crate::BlueprintPools::get`] at render time. Keeps the
 /// mission model decoupled from the (potentially large) item list and
 /// keeps one source of truth for pool contents.
 ///
@@ -779,7 +779,7 @@ pub struct BlueprintReward {
     /// 0.0 – 1.0 chance the blueprint is awarded.
     pub chance: f32,
     /// GUID of the `BlueprintPoolRecord`. Look up via
-    /// [`crate::BlueprintPoolRegistry::get`] for name + items.
+    /// [`crate::BlueprintPools::get`] for name + items.
     pub pool_guid: Guid,
 }
 
@@ -794,10 +794,10 @@ pub struct BlueprintReward {
 /// contracts in declaration order, sub-contracts in declaration order.
 pub fn expand_all(
     datacore: &Datacore,
-    ships: &ShipRegistry,
-    currency: &RewardCurrencyCatalog,
-    localities: &LocalityRegistry,
-    tree: &sc_tags::TagTree,
+    ships: &Ships,
+    currency: &RewardCurrencies,
+    localities: &Localities,
+    tree: &sc_tags::Tags,
 ) -> Vec<Mission> {
     let pools = &datacore.records().pools;
     let mut out = Vec::new();
@@ -829,11 +829,11 @@ pub fn expand_all(
 #[allow(clippy::too_many_arguments)]
 fn walk_handler(
     datacore: &Datacore,
-    ships: &ShipRegistry,
-    currency: &RewardCurrencyCatalog,
-    localities: &LocalityRegistry,
+    ships: &Ships,
+    currency: &RewardCurrencies,
+    localities: &Localities,
     pools: &DataPools,
-    tree: &sc_tags::TagTree,
+    tree: &sc_tags::Tags,
     generator_id: Guid,
     ptr: &ContractGeneratorHandlerBasePtr,
     out: &mut Vec<Mission>,
@@ -966,11 +966,11 @@ fn walk_handler(
 #[allow(clippy::too_many_arguments)]
 fn emit_list_like<'p>(
     datacore: &Datacore,
-    ships: &ShipRegistry,
-    currency: &RewardCurrencyCatalog,
-    localities: &LocalityRegistry,
+    ships: &Ships,
+    currency: &RewardCurrencies,
+    localities: &Localities,
     pools: &DataPools,
-    tree: &sc_tags::TagTree,
+    tree: &sc_tags::Tags,
     generator_id: Guid,
     kind: HandlerKind,
     handler: Option<ListLikeHandler<'p>>,
@@ -1031,11 +1031,11 @@ struct ListLikeHandler<'p> {
 #[allow(clippy::too_many_arguments)]
 fn emit_from_contract(
     datacore: &Datacore,
-    ships: &ShipRegistry,
-    currency: &RewardCurrencyCatalog,
-    localities: &LocalityRegistry,
+    ships: &Ships,
+    currency: &RewardCurrencies,
+    localities: &Localities,
     pools: &DataPools,
-    tree: &sc_tags::TagTree,
+    tree: &sc_tags::Tags,
     generator_id: Guid,
     ctx: &HandlerCtx<'_>,
     c: &Contract,
@@ -1092,11 +1092,11 @@ fn emit_from_contract(
 #[allow(clippy::too_many_arguments)]
 fn emit_from_legacy(
     datacore: &Datacore,
-    ships: &ShipRegistry,
-    currency: &RewardCurrencyCatalog,
-    localities: &LocalityRegistry,
+    ships: &Ships,
+    currency: &RewardCurrencies,
+    localities: &Localities,
     pools: &DataPools,
-    tree: &sc_tags::TagTree,
+    tree: &sc_tags::Tags,
     generator_id: Guid,
     ctx: &HandlerCtx<'_>,
     c: &ContractLegacy,
@@ -1153,11 +1153,11 @@ fn emit_from_legacy(
 #[allow(clippy::too_many_arguments)]
 fn emit_from_career(
     datacore: &Datacore,
-    ships: &ShipRegistry,
-    currency: &RewardCurrencyCatalog,
-    localities: &LocalityRegistry,
+    ships: &Ships,
+    currency: &RewardCurrencies,
+    localities: &Localities,
     pools: &DataPools,
-    tree: &sc_tags::TagTree,
+    tree: &sc_tags::Tags,
     generator_id: Guid,
     ctx: &HandlerCtx<'_>,
     c: &CareerContract,
@@ -1216,11 +1216,11 @@ fn emit_from_career(
 #[allow(clippy::too_many_arguments)]
 fn build_expansion(
     datacore: &Datacore,
-    ships: &ShipRegistry,
-    currency: &RewardCurrencyCatalog,
-    localities: &LocalityRegistry,
+    ships: &Ships,
+    currency: &RewardCurrencies,
+    localities: &Localities,
     pools: &DataPools,
-    tree: &sc_tags::TagTree,
+    tree: &sc_tags::Tags,
     generator_id: Guid,
     ctx: &HandlerCtx<'_>,
     anchor: ContractAnchor<'_>,
@@ -1303,7 +1303,7 @@ fn build_expansion(
 /// Extract the unique Locality GUIDs from a prerequisite list (the
 /// handler / contract / sub-contract chain), keeping only those the
 /// registry resolved. First-seen-wins deduplication preserves prereq order.
-fn collect_mission_span(prereqs: &[PrereqView], localities: &LocalityRegistry) -> Vec<Guid> {
+fn collect_mission_span(prereqs: &[PrereqView], localities: &Localities) -> Vec<Guid> {
     let mut seen: HashSet<Guid> = HashSet::new();
     let mut out: Vec<Guid> = Vec::new();
     for p in prereqs {
@@ -1562,7 +1562,7 @@ fn apply_int_overrides(
 fn resolve_rewards(
     pools: &DataPools,
     datacore: &Datacore,
-    currency: &RewardCurrencyCatalog,
+    currency: &RewardCurrencies,
     results: Option<&Handle<ContractResults>>,
 ) -> (
     RewardAmount,
@@ -1822,7 +1822,7 @@ fn classify_prereq(pools: &DataPools, p: &ContractPrerequisiteBasePtr) -> Prereq
 }
 
 /// Scan `contractResults.contract_results[]` for a `BlueprintRewards`
-/// entry and resolve its pool through [`BlueprintPoolRegistry`].
+/// entry and resolve its pool through [`BlueprintPools`].
 /// Collect every `BlueprintRewards` entry under this contract's
 /// `ContractResults`. Returns an empty vec when there are no blueprint
 /// rewards (or when `results` is `None`).
@@ -1862,8 +1862,8 @@ fn resolve_blueprint_rewards(
 /// DCB appears to allow multiple spawn groups in a single contract).
 fn resolve_encounters(
     pools: &DataPools,
-    ships: &ShipRegistry,
-    tree: &sc_tags::TagTree,
+    ships: &Ships,
+    tree: &sc_tags::Tags,
     sub: Option<&SubContract>,
     contract_params: Option<&Handle<ContractParamOverrides>>,
     handler_params: Option<&Handle<ContractParamOverrides>>,
@@ -1894,8 +1894,8 @@ fn resolve_encounters(
 
 fn collect_property_encounters(
     pools: &DataPools,
-    ships: &ShipRegistry,
-    tree: &sc_tags::TagTree,
+    ships: &Ships,
+    tree: &sc_tags::Tags,
     props: &[Handle<MissionProperty>],
     out: &mut Vec<Encounter>,
 ) {
@@ -1936,8 +1936,8 @@ fn collect_property_encounters(
 
 fn build_ship_encounter(
     pools: &DataPools,
-    ships: &ShipRegistry,
-    tree: &sc_tags::TagTree,
+    ships: &Ships,
+    tree: &sc_tags::Tags,
     val_h: &Handle<sc_extract::generated::MissionPropertyValue_ShipSpawnDescriptions>,
     var_name: &str,
     ext_token: &str,
@@ -2002,7 +2002,7 @@ fn build_ship_encounter(
 /// per-axis [`AxisDiff`] and the convenience min/max ranges.
 fn build_ship_group(
     options: Vec<ShipSlot>,
-    tree: &sc_tags::TagTree,
+    tree: &sc_tags::Tags,
 ) -> Option<SlotGroup<ShipSlot>> {
     if options.is_empty() {
         return None;
@@ -2028,7 +2028,7 @@ fn build_ship_group(
 
 fn build_npc_encounter(
     pools: &DataPools,
-    tree: &sc_tags::TagTree,
+    tree: &sc_tags::Tags,
     val_h: &Handle<sc_extract::generated::MissionPropertyValue_NPCSpawnDescriptions>,
     var_name: &str,
     ext_token: &str,
@@ -2095,7 +2095,7 @@ fn build_npc_encounter(
 
 fn build_entity_encounter(
     pools: &DataPools,
-    tree: &sc_tags::TagTree,
+    tree: &sc_tags::Tags,
     val_h: &Handle<sc_extract::generated::MissionPropertyValue_EntitySpawnDescriptions>,
     var_name: &str,
     ext_token: &str,
@@ -2148,7 +2148,7 @@ fn build_entity_encounter(
 
 fn build_entity_group(
     options: Vec<EntitySlot>,
-    tree: &sc_tags::TagTree,
+    tree: &sc_tags::Tags,
 ) -> Option<SlotGroup<EntitySlot>> {
     if options.is_empty() {
         return None;
@@ -2175,7 +2175,7 @@ fn build_entity_group(
 /// no `blueprint_pool` GUID set — those carry no actionable info.
 ///
 /// The pool's name and items are not looked up here; consumers resolve
-/// them via [`crate::BlueprintPoolRegistry::get`] at render time.
+/// them via [`crate::BlueprintPools::get`] at render time.
 fn materialise_blueprint(br: &BlueprintRewards) -> Option<BlueprintReward> {
     let pool_guid = br.blueprint_pool?;
     Some(BlueprintReward {

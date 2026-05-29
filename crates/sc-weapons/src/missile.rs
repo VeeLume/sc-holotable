@@ -19,7 +19,7 @@ use std::collections::HashMap;
 
 use sc_extract::generated::*;
 use sc_extract::{DataPools, Guid, LocaleKey, LocaleMap};
-use sc_items::ItemCache;
+use sc_items::Items;
 
 use crate::classify::{WeaponCategory, classify};
 use crate::damage::{self, DamageSummary};
@@ -59,7 +59,7 @@ pub struct Missile {
     pub size: i32,
     /// Item subtype (`Missile` or `Torpedo`).
     pub item_sub_type: EItemSubType,
-    /// Manufacturer GUID — look up via [`sc_extract::ManufacturerRegistry`].
+    /// Manufacturer GUID — look up via [`sc_extract::Manufacturers`].
     pub manufacturer_guid: Option<Guid>,
     /// Per-shot explosion damage across all 6 types. `None` when the
     /// `SCItemMissileParams.explosion_params → DamageInfo` chain
@@ -99,7 +99,7 @@ impl Missile {
         pools: &DataPools,
         ecd_map: &HashMap<Guid, Handle<EntityClassDefinition>>,
         record_names: &HashMap<Guid, &str>,
-        localized_items: &ItemCache,
+        localized_items: &Items,
     ) -> Option<Self> {
         let _ = ecd_map; // reserved — mirrors ShipWeapon::try_new arg shape
 

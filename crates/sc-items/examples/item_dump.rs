@@ -1,4 +1,4 @@
-//! Validate the typed `ItemCache` against the live DCB: total count,
+//! Validate the typed `Items` against the live DCB: total count,
 //! inventory-item count, and a P4-AR spot check (confirms the typed walk
 //! covers the same ground the old raw `localized_items` walk did).
 //!
@@ -7,22 +7,22 @@
 //! ```
 
 use sc_extract::{AssetConfig, AssetData, AssetSource};
-use sc_items::ItemCache;
+use sc_items::Items;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let install = sc_installs::discover_primary()?;
+    let install = sc_discovery::discover_primary()?;
     println!("{} v{}", install.channel, install.short_version());
 
     let assets = AssetSource::from_install(&install)?;
     let asset_data = AssetData::extract(&assets, &AssetConfig::standard())?;
     let datacore = sc_extract::Datacore::parse(&assets, &asset_data)?;
 
-    let items = ItemCache::build(datacore.records());
+    let items = Items::build(datacore.records());
     let inv = items
         .iter()
         .filter(|(_, it)| it.is_inventory_item())
         .count();
-    println!("ItemCache entries : {}", items.len());
+    println!("Items entries : {}", items.len());
     println!("inventory items   : {inv}");
 
     // Typed Type distribution (top 30 by count) — confirm how NOITEM/UNDEFINED decode.

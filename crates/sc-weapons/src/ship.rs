@@ -2,7 +2,7 @@ use std::collections::HashMap;
 
 use sc_extract::generated::*;
 use sc_extract::{DataPools, Guid, LocaleKey, LocaleMap};
-use sc_items::ItemCache;
+use sc_items::Items;
 
 use crate::classify::{WeaponCategory, classify};
 use crate::damage::{self, DamageSummary};
@@ -27,7 +27,7 @@ pub struct ShipWeapon {
     pub item_type: EItemType,
     /// Item subtype enum (`Gun`, `Rocket`, `NoseMounted`).
     pub item_sub_type: EItemSubType,
-    /// Manufacturer GUID — look up via `ManufacturerRegistry::get`.
+    /// Manufacturer GUID — look up via `Manufacturers::get`.
     pub manufacturer_guid: Option<Guid>,
     /// All fire actions in declaration order. `fire_actions[0]` is the
     /// primary mode; later entries are alternate modes. Ship weapons in
@@ -89,7 +89,7 @@ impl ShipWeapon {
         ecd_map: &HashMap<Guid, Handle<EntityClassDefinition>>,
         ammo_map: &HashMap<Guid, Handle<AmmoParams>>,
         record_names: &HashMap<Guid, &str>,
-        localized_items: &ItemCache,
+        localized_items: &Items,
     ) -> Option<Self> {
         let ecd = handle.get(pools)?;
 

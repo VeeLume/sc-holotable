@@ -13,4 +13,4 @@ sc-items = { workspace = true }
 tracing = { workspace = true }
 
 [dev-dependencies]
-sc-installs = { workspace = true }
+sc-discovery = { workspace = true }

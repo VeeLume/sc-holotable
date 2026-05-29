@@ -3,8 +3,8 @@
 //!
 //! # Why
 //!
-//! Each cooked index ([`crate::RecordPaths`], `sc-items`' `ItemCache`,
-//! `sc-tags`' `TagTree`, …) is normally built by its own `X::build` call. When
+//! Each cooked index ([`crate::RecordPaths`], `sc-items`' `Items`,
+//! `sc-tags`' `Tags`, …) is normally built by its own `X::build` call. When
 //! a consumer needs several at once — and especially when one of them is an
 //! all-records walker (paths, the reference graph) — running them separately
 //! repeats work. A *bundled walk* fuses them: one `db.all_records()` pass
@@ -37,7 +37,7 @@
 //!
 //! ```ignore
 //! let (items, tags, paths) = BundledWalk::new(&datacore)
-//!     .run((ItemCacheBuilder::default(), TagTreeBuilder::default(), RecordPathsBuilder::default()));
+//!     .run((ItemsBuilder::default(), TagsBuilder::default(), RecordPathsBuilder::default()));
 //! ```
 
 use crate::svarog_datacore::{DataCoreDatabase, Record};
@@ -75,7 +75,7 @@ pub struct VisitItem<'a> {
 
 /// A unit that accumulates over a record walk and produces one index.
 ///
-/// Implemented by each builder (e.g. `ItemCacheBuilder`) in its owning crate.
+/// Implemented by each builder (e.g. `ItemsBuilder`) in its owning crate.
 /// Not object-safe (associated `Output` + by-value `finish`); use the tuple
 /// [`VisitorSet`] form for static bundles.
 pub trait RecordVisitor {

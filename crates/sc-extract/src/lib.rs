@@ -14,7 +14,7 @@
 //!
 //! ```no_run
 //! // 1. install only — use sc-installs, don't touch sc-extract
-//! let install = sc_installs::discover_primary()?;
+//! let install = sc_discovery::discover_primary()?;
 //!
 //! // 2. install + assets — open the archive, read files directly
 //! let assets = sc_extract::AssetSource::from_install(&install)?;
@@ -27,7 +27,7 @@
 //! )?;
 //! let datacore = sc_extract::Datacore::parse(&assets, &asset_data)?;
 //! // Cooked indices are now explicit builders in their own crates, e.g.:
-//! //   let items = sc_items::ItemCache::build(datacore.records());
+//! //   let items = sc_items::Items::build(datacore.records());
 //! # Ok::<(), Box<dyn std::error::Error>>(())
 //! ```
 //!
@@ -118,7 +118,7 @@ pub fn current_timestamp() -> String {
 
 /// Convenience: build a [`SnapshotMeta`] from a discovered installation and
 /// the current time.
-pub fn snapshot_meta_from_install(install: &sc_installs::Installation) -> SnapshotMeta {
+pub fn snapshot_meta_from_install(install: &sc_discovery::Installation) -> SnapshotMeta {
     SnapshotMeta {
         schema_version: ExtractSnapshot::SCHEMA_VERSION,
         game_version: install.short_version().to_string(),

@@ -11,7 +11,7 @@
 //! - Ship-class / hull / spawn-flag / effect differences are
 //!   player-relevant variance — surface as distinct alternatives.
 //!
-//! This module classifies tags by walking their [`TagTree`] path
+//! This module classifies tags by walking their [`Tags`] path
 //! into a small set of [`AxisKind`] families. The classifier is
 //! pure (no I/O), data-driven (path-prefix matching, no hardcoded
 //! tag names), and forward-compatible (unknown tags land in
@@ -30,11 +30,11 @@
 use std::collections::{BTreeMap, HashSet};
 
 use sc_extract::Guid;
-use sc_tags::TagTree;
+use sc_tags::Tags;
 
 /// Classification of a single tag by the tag-tree family it lives in.
 ///
-/// Computed by [`AxisKind::for_path`] from the tag's [`TagTree::path`].
+/// Computed by [`AxisKind::for_path`] from the tag's [`Tags::path`].
 /// Renderers use this to bucket variance into player-meaningful axes.
 ///
 /// # Ordering convention
@@ -98,7 +98,7 @@ impl AxisKind {
     /// specific path wins (e.g., `AI/Ship/CombatClass` matches before
     /// the broader `AI/Ship`).
     ///
-    /// Path is the dotted-name list returned by [`TagTree::path`] —
+    /// Path is the dotted-name list returned by [`Tags::path`] —
     /// e.g., `["AI", "Ship", "CombatClass", "VeryEasy"]`.
     pub fn for_path(path: &[&str]) -> Self {
         match path {
@@ -203,9 +203,9 @@ impl AxisDiff {
     /// across options, sorted by name, useful for the renderer's
     /// "tags shared by every alternative in this group" line.
     ///
-    /// Tags whose GUID isn't in the [`TagTree`] are silently dropped
+    /// Tags whose GUID isn't in the [`Tags`] are silently dropped
     /// (matching [`crate::TagBag::new`] semantics).
-    pub fn compute(per_option_tags: &[Vec<Guid>], tree: &TagTree) -> (Self, Vec<SharedTag>) {
+    pub fn compute(per_option_tags: &[Vec<Guid>], tree: &Tags) -> (Self, Vec<SharedTag>) {
         let n = per_option_tags.len();
         if n == 0 {
             return (Self::default(), Vec::new());
@@ -362,10 +362,10 @@ mod tests {
         Guid::from_bytes(bytes)
     }
 
-    /// Build a small TagTree from `(name, parent_idx)` pairs. Index 0
+    /// Build a small Tags from `(name, parent_idx)` pairs. Index 0
     /// is reserved for the root.
-    fn build_tree(nodes: &[(&str, Option<usize>)]) -> TagTree {
-        let mut tree = TagTree::new();
+    fn build_tree(nodes: &[(&str, Option<usize>)]) -> Tags {
+        let mut tree = Tags::new();
         for (i, (name, parent)) in nodes.iter().enumerate() {
             let guid = mk_guid(i as u8);
             tree.insert(TagNode {

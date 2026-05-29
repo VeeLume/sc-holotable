@@ -439,7 +439,7 @@ pub struct Metadata {
 /// Read `build_manifest.id` from next to `Data.p4k` if possible.
 fn load_metadata(p4k: &Path, struct_count: usize, enum_count: usize) -> Metadata {
     let install = p4k.parent().unwrap_or(Path::new("."));
-    let manifest = sc_installs::read_build_manifest(install).ok();
+    let manifest = sc_discovery::read_build_manifest(install).ok();
 
     Metadata {
         game_version: manifest

@@ -153,7 +153,7 @@ fn parse_args() -> Result<RunOptions, String> {
 /// run here surfaces the underlying problem; a wrong tag like
 /// `datacore/4.7.0-live.11715810` for an actual 4.7.2 build would not.
 fn autodiscover_p4k() -> Result<PathBuf, String> {
-    let install = sc_installs::discover_primary()
+    let install = sc_discovery::discover_primary()
         .map_err(|e| format!("auto-discovery failed: {e}. Pass --p4k <path> explicitly."))?;
     let p4k = install.data_p4k();
 

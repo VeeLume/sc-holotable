@@ -11,7 +11,7 @@ use std::collections::BTreeMap;
 use sc_extract::{AssetConfig, AssetData, AssetSource, RecordPaths};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let install = sc_installs::discover_primary()?;
+    let install = sc_discovery::discover_primary()?;
     println!("{} v{}", install.channel, install.short_version());
 
     let assets = AssetSource::from_install(&install)?;

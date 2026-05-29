@@ -1,5 +1,5 @@
-//! Validate the bundled walk against separate builds: build `ItemCache`,
-//! `TagTree`, and `RecordPaths` both the standalone way and as one fused
+//! Validate the bundled walk against separate builds: build `Items`,
+//! `Tags`, and `RecordPaths` both the standalone way and as one fused
 //! [`BundledWalk`], then assert the outputs are identical.
 //!
 //! ```bash
@@ -9,11 +9,11 @@
 use sc_extract::{
     AssetConfig, AssetData, AssetSource, BundledWalk, RecordPaths, RecordPathsBuilder,
 };
-use sc_items::{ItemCache, ItemCacheBuilder};
-use sc_tags::{TagTree, TagTreeBuilder};
+use sc_items::{Items, ItemsBuilder};
+use sc_tags::{Tags, TagsBuilder};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let install = sc_installs::discover_primary()?;
+    let install = sc_discovery::discover_primary()?;
     println!("{} v{}", install.channel, install.short_version());
 
     let assets = AssetSource::from_install(&install)?;
@@ -22,14 +22,14 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let store = datacore.records();
 
     // Baseline: three independent builds (today's path).
-    let items_sep = ItemCache::build(store);
-    let tags_sep = TagTree::build(store);
+    let items_sep = Items::build(store);
+    let tags_sep = Tags::build(store);
     let paths_sep = RecordPaths::build(&datacore);
 
     // One fused pass over db.all_records().
     let (items_b, tags_b, paths_b) = BundledWalk::new(&datacore).run((
-        ItemCacheBuilder::default(),
-        TagTreeBuilder::default(),
+        ItemsBuilder::default(),
+        TagsBuilder::default(),
         RecordPathsBuilder::default(),
     ));
 
@@ -49,8 +49,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         paths_b.len()
     );
 
-    assert_eq!(items_sep.len(), items_b.len(), "ItemCache count mismatch");
-    assert_eq!(tags_sep.len(), tags_b.len(), "TagTree count mismatch");
+    assert_eq!(items_sep.len(), items_b.len(), "Items count mismatch");
+    assert_eq!(tags_sep.len(), tags_b.len(), "Tags count mismatch");
     assert_eq!(paths_sep.len(), paths_b.len(), "RecordPaths count mismatch");
 
     // Content equality, not just counts.
@@ -60,7 +60,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         .count();
     assert_eq!(
         item_mismatch, 0,
-        "ItemCache content differs ({item_mismatch})"
+        "Items content differs ({item_mismatch})"
     );
 
     let path_mismatch = paths_sep
@@ -72,12 +72,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         "RecordPaths content differs ({path_mismatch})"
     );
 
-    // TagTree: parent links must match too (the finish-time pass-2).
+    // Tags: parent links must match too (the finish-time pass-2).
     let tag_mismatch = tags_sep
         .iter()
         .filter(|n| tags_b.get(&n.guid) != Some(*n))
         .count();
-    assert_eq!(tag_mismatch, 0, "TagTree content differs ({tag_mismatch})");
+    assert_eq!(tag_mismatch, 0, "Tags content differs ({tag_mismatch})");
 
     println!("bundled walk matches separate builds (counts + content) ✓");
     Ok(())

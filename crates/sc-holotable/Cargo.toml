@@ -15,7 +15,7 @@ rust-version.workspace = true
 # crates do.
 
 [dependencies]
-sc-installs = { workspace = true, optional = true }
+sc-discovery = { workspace = true, optional = true }
 sc-extract = { workspace = true, optional = true }
 sc-items = { workspace = true, optional = true }
 sc-tags = { workspace = true, optional = true }
@@ -29,7 +29,7 @@ serde = { workspace = true }
 default = []
 
 # ── Per-crate surfaces ───────────────────────────────────────────────────────
-installs = ["dep:sc-installs"]
+installs = ["dep:sc-discovery"]
 extract = ["dep:sc-extract"]
 items = ["dep:sc-items", "extract"]
 tags = ["dep:sc-tags", "extract"]

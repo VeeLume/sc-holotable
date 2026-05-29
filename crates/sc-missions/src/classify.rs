@@ -5,7 +5,7 @@
 //! [`TagBag`]s. The bag holds raw `Guid`s (escape hatch for consumer-side
 //! classification) plus parallel resolved names (cheap to display). All
 //! semantic classification is delivered by methods that walk the bag
-//! against a [`TagTree`] on demand — no eager bucketing of tags into
+//! against a [`Tags`] on demand — no eager bucketing of tags into
 //! `Vec<String>` per category.
 //!
 //! # Subtree taxonomy
@@ -21,20 +21,20 @@
 //! - `Missions ▸ *` — [`TagBag::mission_tags`] (`AvailableToSalvage`, size markers)
 //!
 //! Ship-rooted tags are not surfaced through classifier methods — they
-//! drive [`crate::ShipRegistry::resolve_spawn`] resolution, which
+//! drive [`crate::Ships::resolve_spawn`] resolution, which
 //! materialises [`crate::ShipCandidate`]s on the slot. Consumers that
 //! want the raw Ship-rooted tag GUIDs use [`TagBag::guids`].
 
 use sc_extract::generated::{Handle, TagList};
 use sc_extract::{DataPools, Guid};
-use sc_tags::TagTree;
+use sc_tags::Tags;
 
 /// One resolved tag list — the canonical shape exposed for each of the
 /// four `SpawnDescription_Ship` tag slots (positive / negative / markup
 /// / entity). The two vecs are parallel: `guids[i]` and `names[i]`
 /// describe the same tag, sorted primarily by name (display order).
 ///
-/// Tags whose GUID isn't in the live [`TagTree`] are dropped during
+/// Tags whose GUID isn't in the live [`Tags`] are dropped during
 /// construction — there's nothing useful a consumer can do with an
 /// unresolved GUID, and dropping keeps the parallel-vec invariant
 /// trivial.
@@ -48,10 +48,10 @@ pub struct TagBag {
 }
 
 impl TagBag {
-    /// Build from a raw GUID set against a [`TagTree`]. GUIDs that don't
+    /// Build from a raw GUID set against a [`Tags`]. GUIDs that don't
     /// resolve are silently dropped. Output is deterministic: sorted by
     /// name with GUID-byte tiebreak, deduplicated by GUID.
-    pub fn new(raw_guids: impl IntoIterator<Item = Guid>, tree: &TagTree) -> Self {
+    pub fn new(raw_guids: impl IntoIterator<Item = Guid>, tree: &Tags) -> Self {
         // Dedup by GUID via HashMap, then sort the resulting vec — name
         // is deterministic per GUID, so this collapses true duplicates
         // without losing distinct same-name tags.
@@ -77,7 +77,7 @@ impl TagBag {
 
     /// Convenience: build from an underlying `Handle<TagList>` reference.
     /// Used by extraction code to materialise the four slot tag lists.
-    pub fn from_handle(pools: &DataPools, tree: &TagTree, h: Option<&Handle<TagList>>) -> Self {
+    pub fn from_handle(pools: &DataPools, tree: &Tags, h: Option<&Handle<TagList>>) -> Self {
         let Some(h) = h else { return Self::default() };
         let Some(list) = h.get(pools) else {
             return Self::default();
@@ -113,14 +113,14 @@ impl TagBag {
     // bucketing — consumers pay only for the categories they read.
 
     /// Tags under `AI ▸ Faction ▸ *` (e.g. `Criminal`, `UEE`, `Ninetails`).
-    pub fn factions<'a>(&'a self, tree: &'a TagTree) -> impl Iterator<Item = &'a str> + 'a {
+    pub fn factions<'a>(&'a self, tree: &'a Tags) -> impl Iterator<Item = &'a str> + 'a {
         self.subtree_iter(tree, "AI", Some("Faction"))
     }
 
     /// Tags under `AI ▸ CargoManifest ▸ *` (volume tags like `Full Cargo`,
     /// value tiers, `Bounty`, `Salvage` — the latter two live here despite
     /// their semantic role-marker meaning).
-    pub fn cargo<'a>(&'a self, tree: &'a TagTree) -> impl Iterator<Item = &'a str> + 'a {
+    pub fn cargo<'a>(&'a self, tree: &'a Tags) -> impl Iterator<Item = &'a str> + 'a {
         self.subtree_iter(tree, "AI", Some("CargoManifest"))
     }
 
@@ -129,7 +129,7 @@ impl TagBag {
     /// ship spawns.
     pub fn spawn_identifiers<'a>(
         &'a self,
-        tree: &'a TagTree,
+        tree: &'a Tags,
     ) -> impl Iterator<Item = &'a str> + 'a {
         self.subtree_iter(tree, "AI", Some("Spawning"))
     }
@@ -138,7 +138,7 @@ impl TagBag {
     /// Includes power-state traits (`PoweredOff`, `EngineOff`,
     /// `EnableInteractions`, `DisablePowerInteractions`, `EmptyCrew`,
     /// `Unmanned`), value tiers, legality (`Legal` / `Illegal`).
-    pub fn ai_traits<'a>(&'a self, tree: &'a TagTree) -> impl Iterator<Item = &'a str> + 'a {
+    pub fn ai_traits<'a>(&'a self, tree: &'a Tags) -> impl Iterator<Item = &'a str> + 'a {
         self.guids.iter().enumerate().filter_map(move |(i, g)| {
             let path = tree.path(g);
             match root_and_category(&path) {
@@ -153,14 +153,14 @@ impl TagBag {
 
     /// Tags under `Missions ▸ *` (`AvailableToSalvage`, size markers,
     /// mission-type flags).
-    pub fn mission_tags<'a>(&'a self, tree: &'a TagTree) -> impl Iterator<Item = &'a str> + 'a {
+    pub fn mission_tags<'a>(&'a self, tree: &'a Tags) -> impl Iterator<Item = &'a str> + 'a {
         self.subtree_iter(tree, "Missions", None)
     }
 
     /// Tags under any other root the bag contains — catch-all so nothing
-    /// is silently invisible. Excludes `Ship` (consumed by ShipRegistry)
+    /// is silently invisible. Excludes `Ship` (consumed by Ships)
     /// and the AI / Missions subtrees handled by named methods.
-    pub fn other<'a>(&'a self, tree: &'a TagTree) -> impl Iterator<Item = &'a str> + 'a {
+    pub fn other<'a>(&'a self, tree: &'a Tags) -> impl Iterator<Item = &'a str> + 'a {
         self.guids.iter().enumerate().filter_map(move |(i, g)| {
             let path = tree.path(g);
             match root_and_category(&path) {
@@ -226,7 +226,7 @@ impl TagBag {
     /// or `(root, None)` (any first category) when `category == None`.
     fn subtree_iter<'a>(
         &'a self,
-        tree: &'a TagTree,
+        tree: &'a Tags,
         root: &'a str,
         category: Option<&'a str>,
     ) -> impl Iterator<Item = &'a str> + 'a {

@@ -1,7 +1,7 @@
-//! Top-level [`MissionIndex`] — the one-stop entry point for
+//! Top-level [`Missions`] — the one-stop entry point for
 //! consumers.
 //!
-//! A `MissionIndex` owns the contract-expansion list plus every
+//! A `Missions` owns the contract-expansion list plus every
 //! registry needed to resolve the GUIDs missions point at, and a
 //! precomputed [`MissionPools`] grouping for the common patcher-tool
 //! axes (title key, description key). Build once from a
@@ -10,9 +10,9 @@
 //! (see `docs/localization.md`).
 //!
 //! ```no_run
-//! use sc_missions::MissionIndex;
+//! use sc_missions::Missions;
 //! # fn demo(datacore: &sc_extract::Datacore) {
-//! let index = MissionIndex::build(datacore);
+//! let index = Missions::build(datacore);
 //! println!("{} missions ({} with mission span)",
 //!     index.contracts.len(),
 //!     index.contracts.iter().filter(|m| !m.mission_span.is_empty()).count(),
@@ -27,15 +27,15 @@
 use std::collections::HashMap;
 
 use sc_extract::{Datacore, Guid};
-use sc_items::ItemCache;
-use sc_tags::TagTree;
+use sc_items::Items;
+use sc_tags::Tags;
 
-use crate::blueprint_pools::BlueprintPoolRegistry;
-use crate::currency::RewardCurrencyCatalog;
+use crate::blueprint_pools::BlueprintPools;
+use crate::currency::RewardCurrencies;
 use crate::expand::{Mission, expand_all};
-use crate::locality::{LocalityRegistry, LocationRegistry};
+use crate::locality::{Localities, Locations};
 use crate::pools::{self, MissionPools};
-use crate::ships::ShipRegistry;
+use crate::ships::Ships;
 
 /// Bundled output of the four-stage contracts pipeline.
 ///
@@ -44,13 +44,13 @@ use crate::ships::ShipRegistry;
 /// `blueprint_reward.pool_guid`, `reward_scrip[i].currency_guid`,
 /// encounter candidate GUIDs — that need one of these registries to
 /// resolve into user-facing text. Consumers either keep the entire
-/// `MissionIndex` or pull specific registries out at build time.
+/// `Missions` or pull specific registries out at build time.
 ///
-/// Fields are public by convention — `MissionIndex` is a plain data
+/// Fields are public by convention — `Missions` is a plain data
 /// bundle, not an opaque handle. If a consumer needs only some
 /// registries, it can drop the rest after build.
 #[derive(Debug, Clone)]
-pub struct MissionIndex {
+pub struct Missions {
     /// Every contract expansion as a flat list — one entry per
     /// `(generator, handler, contract, optional sub_contract)` tuple.
     /// Phase 4 of the v2 redesign removed the implicit merge step;
@@ -62,31 +62,31 @@ pub struct MissionIndex {
     /// Ship entity lookup + spawn-query resolver. Holds every
     /// `EntityClassDefinition` reachable from a contract spawn query
     /// plus the typed classifier for non-ship tags.
-    pub ships: ShipRegistry,
+    pub ships: Ships,
 
     /// Blueprint pool resolver. Maps `BlueprintPoolRecord` GUIDs to
     /// their items + localized item display names.
-    pub blueprints: BlueprintPoolRegistry,
+    pub blueprints: BlueprintPools,
 
     /// Typed currency catalog — identifies which
     /// `EntityClassDefinition`s are scrip vs generic items.
-    pub currency: RewardCurrencyCatalog,
+    pub currency: RewardCurrencies,
 
     /// Star-map object classifier (system + body + localized names),
     /// driven by parent-chain traversal.
-    pub locations: LocationRegistry,
+    pub locations: Locations,
 
     /// Mission-locality resolver — turns `MissionLocality` GUIDs from
     /// `Contract.mission_span` into [`crate::LocalityView`] entries
     /// with resolved locations + `region_label` summary.
-    pub localities: LocalityRegistry,
+    pub localities: Localities,
 
     /// Tag-tree handle, cloned from the underlying `Datacore` snapshot.
     /// Required by [`crate::TagBag`] classifier methods (factions /
     /// cargo / spawn_identifiers / ai_traits / mission_tags) which
     /// walk tag paths against the live tree on demand. Holding it
     /// here means consumers don't have to thread it separately.
-    pub tag_tree: TagTree,
+    pub tag_tree: Tags,
 
     /// Precomputed groupings of contracts by various consumer-relevant
     /// axes — title key, description key, …. Read fields directly:
@@ -97,7 +97,7 @@ pub struct MissionIndex {
 
     /// Fast `Guid → index` lookup for [`Self::get`]. Built at
     /// construction; stays in sync with `contracts` because
-    /// `MissionIndex` is immutable after `build`.
+    /// `Missions` is immutable after `build`.
     by_id: HashMap<Guid, usize>,
 
     /// Reverse index: `BlueprintPoolRecord` GUID → mission GUIDs that award
@@ -107,7 +107,7 @@ pub struct MissionIndex {
     missions_by_pool: HashMap<Guid, Vec<Guid>>,
 }
 
-impl MissionIndex {
+impl Missions {
     /// Run all four pipeline stages and return the result.
     ///
     /// On SC 4.7 LIVE this takes ~2–3s in release (dominated by
@@ -119,13 +119,13 @@ impl MissionIndex {
     /// turns both on.
     pub fn build(datacore: &Datacore) -> Self {
         // Build the shared indices once, thread them through the pipeline.
-        let tag_tree = TagTree::build(datacore.records());
-        let items = ItemCache::build(datacore.records());
-        let ships = ShipRegistry::build(datacore, &tag_tree);
-        let blueprints = BlueprintPoolRegistry::build(datacore, &items);
-        let currency = RewardCurrencyCatalog::build(datacore);
-        let locations = LocationRegistry::build(datacore);
-        let localities = LocalityRegistry::build(datacore, &locations);
+        let tag_tree = Tags::build(datacore.records());
+        let items = Items::build(datacore.records());
+        let ships = Ships::build(datacore, &tag_tree);
+        let blueprints = BlueprintPools::build(datacore, &items);
+        let currency = RewardCurrencies::build(datacore);
+        let locations = Locations::build(datacore);
+        let localities = Localities::build(datacore, &locations);
 
         let contracts = expand_all(datacore, &ships, &currency, &localities, &tag_tree);
 
@@ -174,7 +174,7 @@ impl MissionIndex {
 
     /// Every mission awarding a pool that contains this blueprint record,
     /// dedup'd. Combines
-    /// [`sc_crafting::BlueprintPoolRegistry::pools_containing_item`] with
+    /// [`sc_crafting::BlueprintPools::pools_containing_item`] with
     /// [`Self::missions_for_pool`].
     pub fn missions_for_item(&self, blueprint_record_guid: &Guid) -> Vec<Guid> {
         let mut seen = std::collections::HashSet::new();
@@ -368,14 +368,14 @@ mod tests {
         // Can't build without a Datacore, but can construct an empty
         // shell to exercise the accessor surface. The real build is
         // covered by the `examples/*` live validation.
-        let idx = MissionIndex {
+        let idx = Missions {
             contracts: Vec::new(),
-            ships: ShipRegistry::default(),
-            blueprints: BlueprintPoolRegistry::default(),
-            currency: RewardCurrencyCatalog::default(),
-            locations: LocationRegistry::default(),
-            localities: LocalityRegistry::default(),
-            tag_tree: TagTree::default(),
+            ships: Ships::default(),
+            blueprints: BlueprintPools::default(),
+            currency: RewardCurrencies::default(),
+            locations: Locations::default(),
+            localities: Localities::default(),
+            tag_tree: Tags::default(),
             pools: MissionPools::default(),
             by_id: HashMap::new(),
             missions_by_pool: HashMap::new(),

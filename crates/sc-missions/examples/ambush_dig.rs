@@ -24,15 +24,15 @@
 //! ```
 
 use sc_extract::{AssetConfig, AssetData, AssetSource, Datacore, Guid};
-use sc_missions::{Encounter, MissionIndex};
+use sc_missions::{Encounter, Missions};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let install = sc_installs::discover_primary()?;
+    let install = sc_discovery::discover_primary()?;
     eprintln!("[install] {} v{}", install.channel, install.short_version());
     let assets = AssetSource::from_install(&install)?;
     let asset_data = AssetData::extract(&assets, &AssetConfig::standard())?;
     let datacore = Datacore::parse(&assets, &asset_data)?;
-    let index = MissionIndex::build(&datacore);
+    let index = Missions::build(&datacore);
 
     section_1_security_turret(&index);
     section_2_not_wanted_during_combat(&index);
@@ -43,7 +43,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
 // ── §1 PU_Human_PrivateSecurity_Light_wTurret census ─────────────────────────
 
-fn section_1_security_turret(index: &MissionIndex) {
+fn section_1_security_turret(index: &Missions) {
     println!("=== §1 PU_Human_PrivateSecurity_Light_wTurret usage ===");
     let trait_name = "PU_Human_PrivateSecurity_Light_wTurret";
 
@@ -104,7 +104,7 @@ fn section_1_security_turret(index: &MissionIndex) {
 
 // ── §2 NotWantedDuringShipCombat census ──────────────────────────────────────
 
-fn section_2_not_wanted_during_combat(index: &MissionIndex) {
+fn section_2_not_wanted_during_combat(index: &Missions) {
     println!("=== §2 NotWantedDuringShipCombat (negative tag) usage ===");
     let trait_name = "NotWantedDuringShipCombat";
 
@@ -153,7 +153,7 @@ fn section_2_not_wanted_during_combat(index: &MissionIndex) {
 // ── §3 Foxwell ambush deep dive ──────────────────────────────────────────────
 
 fn section_3_foxwell_dig(
-    index: &MissionIndex,
+    index: &Missions,
     datacore: &Datacore,
     locale: &sc_extract::LocaleMap,
 ) {

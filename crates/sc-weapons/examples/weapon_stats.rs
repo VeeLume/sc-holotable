@@ -14,7 +14,7 @@
 use std::time::Instant;
 
 use sc_extract::{AssetConfig, AssetData, AssetSource};
-use sc_manufacturers::ManufacturerRegistry;
+use sc_manufacturers::Manufacturers;
 use sc_weapons::*;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -40,7 +40,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     };
 
     let t0 = Instant::now();
-    let install = sc_installs::discover_primary()?;
+    let install = sc_discovery::discover_primary()?;
     println!(
         "Found {} v{} at {}",
         install.channel,
@@ -53,8 +53,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let datacore = sc_extract::Datacore::parse(&assets, &asset_data)?;
     let parse_secs = t0.elapsed().as_secs_f64();
 
-    let items = ItemCache::build(datacore.records());
-    let mfrs = ManufacturerRegistry::build(datacore.records());
+    let items = Items::build(datacore.records());
+    let mfrs = Manufacturers::build(datacore.records());
 
     println!(
         "\nLoadoutContext: window={}s, power_per_slot={}",
@@ -134,7 +134,7 @@ fn arg_value<'a>(args: &'a [String], flag: &str) -> Option<&'a str> {
 /// One-line summary used by the `--sort` ranked view.
 fn print_ship_weapon_summary(
     w: &ShipWeapon,
-    items: &ItemCache,
+    items: &Items,
     locale: &sc_extract::LocaleMap,
     ctx: &LoadoutContext,
 ) {
@@ -154,8 +154,8 @@ fn print_ship_weapon_summary(
 
 fn print_ship_weapon(
     w: &ShipWeapon,
-    items: &ItemCache,
-    mfrs: &ManufacturerRegistry,
+    items: &Items,
+    mfrs: &Manufacturers,
     locale: &sc_extract::LocaleMap,
     ctx: &LoadoutContext,
 ) {
@@ -314,8 +314,8 @@ fn print_ship_weapon(
 
 fn print_fps_weapon(
     w: &FpsWeapon,
-    items: &ItemCache,
-    mfrs: &ManufacturerRegistry,
+    items: &Items,
+    mfrs: &Manufacturers,
     locale: &sc_extract::LocaleMap,
 ) {
     let display = items

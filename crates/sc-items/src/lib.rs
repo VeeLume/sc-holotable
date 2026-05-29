@@ -4,13 +4,13 @@
 //! snapshot as `LocalizedItemCache`. An [`Item`] is the curated view of an
 //! `EntityClassDefinition`'s `SAttachableComponentParams.AttachDef`
 //! (`SItemDefinition`) block: localization keys + typed `Type`/`SubType`
-//! classification. [`ItemCache`] indexes every such entity by GUID.
+//! classification. [`Items`] indexes every such entity by GUID.
 //!
 //! # Why this is its own crate
 //!
 //! `sc-extract` is the generic DCB foundation; the AttachDef walk is
 //! *item-shaped* domain knowledge, so it belongs here. Building the cache
-//! is an explicit [`ItemCache::build`] call — there is no `DatacoreConfig`
+//! is an explicit [`Items::build`] call — there is no `DatacoreConfig`
 //! flag to forget, so the "silently empty" failure mode is gone.
 //!
 //! # Typed surface
@@ -24,8 +24,8 @@
 //!
 //! # Sharing
 //!
-//! [`ItemCache::build`] returns an **owned** cache. Build it **once** and
-//! pass `&ItemCache` to the consumers/builders that need it (the umbrella
+//! [`Items::build`] returns an **owned** cache. Build it **once** and
+//! pass `&Items` to the consumers/builders that need it (the umbrella
 //! `sc-holotable` crate orchestrates this for end-consumers). Don't rebuild
 //! per call site — the walk touches every `EntityClassDefinition`.
 //!
@@ -132,14 +132,14 @@ impl Item {
 }
 
 /// Per-entity [`Item`] metadata for every `EntityClassDefinition` that
-/// exposes an `AttachDef`. Build **once** via [`ItemCache::build`] and share
+/// exposes an `AttachDef`. Build **once** via [`Items::build`] and share
 /// by reference.
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
-pub struct ItemCache {
+pub struct Items {
     by_record: HashMap<Guid, Item>,
 }
 
-impl ItemCache {
+impl Items {
     /// Empty cache.
     pub fn new() -> Self {
         Self::default()
@@ -147,7 +147,7 @@ impl ItemCache {
 
     /// Build the cache from a parsed [`RecordStore`] by walking the typed
     /// `EntityClassDefinition` pool. Returns an owned cache — build once,
-    /// share `&ItemCache`.
+    /// share `&Items`.
     pub fn build(store: &RecordStore) -> Self {
         let pools = &store.pools;
         let mut cache = Self::new();
@@ -215,8 +215,8 @@ impl ItemCache {
 }
 
 /// Extract the [`Item`] metadata for one `EntityClassDefinition`, or `None`
-/// if it exposes no `AttachDef`. Shared by [`ItemCache::build`] and
-/// [`ItemCacheBuilder`].
+/// if it exposes no `AttachDef`. Shared by [`Items::build`] and
+/// [`ItemsBuilder`].
 fn item_for(ecd: &EntityClassDefinition, pools: &DataPools) -> Option<Item> {
     let attachable = find_attachable(ecd, pools)?;
     let item_def = attachable.attach_def.and_then(|h| h.get(pools))?;
@@ -230,17 +230,17 @@ fn item_for(ecd: &EntityClassDefinition, pools: &DataPools) -> Option<Item> {
     })
 }
 
-/// [`sc_extract::RecordVisitor`] that builds an [`ItemCache`] in a bundled
+/// [`sc_extract::RecordVisitor`] that builds an [`Items`] in a bundled
 /// walk. Declares interest in `EntityClassDefinition` records and reads each
-/// one's typed struct via the record store. Equivalent to [`ItemCache::build`]
+/// one's typed struct via the record store. Equivalent to [`Items::build`]
 /// but fusible with other visitors in one pass.
 #[derive(Default)]
-pub struct ItemCacheBuilder {
-    inner: ItemCache,
+pub struct ItemsBuilder {
+    inner: Items,
 }
 
-impl sc_extract::RecordVisitor for ItemCacheBuilder {
-    type Output = ItemCache;
+impl sc_extract::RecordVisitor for ItemsBuilder {
+    type Output = Items;
 
     fn interest(&self) -> sc_extract::Interest {
         sc_extract::Interest::Types(&["EntityClassDefinition"])
@@ -260,7 +260,7 @@ impl sc_extract::RecordVisitor for ItemCacheBuilder {
         }
     }
 
-    fn finish(self) -> ItemCache {
+    fn finish(self) -> Items {
         self.inner
     }
 }
@@ -298,14 +298,14 @@ mod tests {
 
     #[test]
     fn cache_starts_empty() {
-        let cache = ItemCache::new();
+        let cache = Items::new();
         assert!(cache.is_empty());
         assert_eq!(cache.len(), 0);
     }
 
     #[test]
     fn insert_and_get_round_trip() {
-        let mut cache = ItemCache::new();
+        let mut cache = Items::new();
         let guid = Guid::default();
         let mut it = item(EItemType::Armor);
         it.name_key = Some(LocaleKey::new("@item_NameTest"));
@@ -321,7 +321,7 @@ mod tests {
 
     #[test]
     fn serde_round_trip_via_dcb_strings() {
-        let mut cache = ItemCache::new();
+        let mut cache = Items::new();
         let mut a = item(EItemType::Armor);
         a.item_sub_type = EItemSubType::Unrecognized("WeirdSub".into());
         a.name_key = Some(LocaleKey::new("@item_NameA"));
@@ -331,7 +331,7 @@ mod tests {
         cache.insert(Guid::from_bytes([2; 16]), b.clone());
 
         let json = serde_json::to_string(&cache).unwrap();
-        let decoded: ItemCache = serde_json::from_str(&json).unwrap();
+        let decoded: Items = serde_json::from_str(&json).unwrap();
         assert_eq!(decoded.len(), 2);
         assert_eq!(decoded.get(&Guid::from_bytes([1; 16])), Some(&a));
         assert_eq!(decoded.get(&Guid::from_bytes([2; 16])), Some(&b));

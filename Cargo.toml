@@ -1,7 +1,7 @@
 [workspace]
 resolver = "3"
 members = [
-    "crates/sc-installs",
+    "crates/sc-discovery",
     "crates/sc-extract",
     "crates/sc-extract-generated",
     "crates/sc-crafting",
@@ -23,7 +23,7 @@ rust-version = "1.94.1"
 
 [workspace.dependencies]
 # Internal crates — referenced by path so one workspace member can depend on another.
-sc-installs = { path = "crates/sc-installs" }
+sc-discovery = { path = "crates/sc-discovery" }
 sc-extract = { path = "crates/sc-extract" }
 sc-extract-generated = { path = "crates/sc-extract-generated" }
 sc-crafting = { path = "crates/sc-crafting" }

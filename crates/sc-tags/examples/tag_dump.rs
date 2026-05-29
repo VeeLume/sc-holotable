@@ -1,4 +1,4 @@
-//! Validate the typed `TagTree` against the live DCB: total count + a few
+//! Validate the typed `Tags` against the live DCB: total count + a few
 //! sample paths (should match the prior raw-walk count of ~18,313).
 //!
 //! ```bash
@@ -6,17 +6,17 @@
 //! ```
 
 use sc_extract::{AssetConfig, AssetData, AssetSource};
-use sc_tags::TagTree;
+use sc_tags::Tags;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let install = sc_installs::discover_primary()?;
+    let install = sc_discovery::discover_primary()?;
     println!("{} v{}", install.channel, install.short_version());
 
     let assets = AssetSource::from_install(&install)?;
     let asset_data = AssetData::extract(&assets, &AssetConfig::standard())?;
     let datacore = sc_extract::Datacore::parse(&assets, &asset_data)?;
 
-    let tags = TagTree::build(datacore.records());
+    let tags = Tags::build(datacore.records());
     println!("tag nodes : {}", tags.len());
     println!("roots     : {}", tags.roots().count());
 

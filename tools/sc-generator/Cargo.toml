@@ -9,7 +9,7 @@ name = "sc-generator"
 path = "src/main.rs"
 
 [dependencies]
-sc-installs = { workspace = true }
+sc-discovery = { workspace = true }
 thiserror   = { workspace = true }
 tracing     = { workspace = true }
 

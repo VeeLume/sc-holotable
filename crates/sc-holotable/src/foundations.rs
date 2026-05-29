@@ -10,18 +10,18 @@ use std::path::Path;
 use sc_extract::{
     BundledWalk, Datacore, ProcessedSnapshot, RecordPaths, RecordPathsBuilder, Result, SnapshotMeta,
 };
-use sc_items::{ItemCache, ItemCacheBuilder};
-use sc_manufacturers::{ManufacturerRegistry, ManufacturerRegistryBuilder};
-use sc_tags::{TagTree, TagTreeBuilder};
+use sc_items::{Items, ItemsBuilder};
+use sc_manufacturers::{Manufacturers, ManufacturersBuilder};
+use sc_tags::{Tags, TagsBuilder};
 use serde::{Deserialize, Serialize};
 
 /// Every foundational cooked index, built together. The live, in-memory bundle
-/// (holds [`ItemCache`], which is not yet serde-capable — see
+/// (holds [`Items`], which is not yet serde-capable — see
 /// [`HolotableSnapshot`] for the persistable subset).
 pub struct Foundations {
-    pub items: ItemCache,
-    pub tags: TagTree,
-    pub manufacturers: ManufacturerRegistry,
+    pub items: Items,
+    pub tags: Tags,
+    pub manufacturers: Manufacturers,
     pub paths: RecordPaths,
 }
 
@@ -32,9 +32,9 @@ pub struct Foundations {
 /// strictly cheaper than four independent `X::build`s.
 pub fn build_foundations(datacore: &Datacore) -> Foundations {
     let (items, tags, manufacturers, paths) = BundledWalk::new(datacore).run((
-        ItemCacheBuilder::default(),
-        TagTreeBuilder::default(),
-        ManufacturerRegistryBuilder::default(),
+        ItemsBuilder::default(),
+        TagsBuilder::default(),
+        ManufacturersBuilder::default(),
         RecordPathsBuilder::default(),
     ));
     Foundations {
@@ -53,13 +53,13 @@ pub const HOLOTABLE_COOK_VERSION: u32 = 1;
 ///
 /// Fields are optional so a producer can ship only what a consumer needs and a
 /// consumer can tolerate a producer that omitted some. Persisted via
-/// [`sc_extract::ProcessedSnapshot`]. `ItemCache` serializes its generated
+/// [`sc_extract::ProcessedSnapshot`]. `Items` serializes its generated
 /// enums as DCB strings (see `sc_items`' serde adapter).
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct HolotableSnapshot {
-    pub items: Option<ItemCache>,
-    pub tags: Option<TagTree>,
-    pub manufacturers: Option<ManufacturerRegistry>,
+    pub items: Option<Items>,
+    pub tags: Option<Tags>,
+    pub manufacturers: Option<Manufacturers>,
     pub paths: Option<RecordPaths>,
 }
 
@@ -105,8 +105,8 @@ mod tests {
             path: "libs/foundry/records/a/b.xml".into(),
         });
         let snap = HolotableSnapshot {
-            tags: Some(TagTree::new()),
-            manufacturers: Some(ManufacturerRegistry::new()),
+            tags: Some(Tags::new()),
+            manufacturers: Some(Manufacturers::new()),
             paths: Some(paths),
         };
 

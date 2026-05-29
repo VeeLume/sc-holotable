@@ -9,13 +9,13 @@
 use sc_holotable::asset::{
     AssetConfig, AssetData, AssetSource, Datacore, RecordPaths, snapshot_meta_from_install,
 };
-use sc_holotable::items::ItemCache;
-use sc_holotable::manufacturers::ManufacturerRegistry;
-use sc_holotable::tags::TagTree;
+use sc_holotable::items::Items;
+use sc_holotable::manufacturers::Manufacturers;
+use sc_holotable::tags::Tags;
 use sc_holotable::{HolotableSnapshot, build_foundations};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let install = sc_installs::discover_primary()?;
+    let install = sc_discovery::discover_primary()?;
     println!("{} v{}", install.channel, install.short_version());
 
     let assets = AssetSource::from_install(&install)?;
@@ -24,9 +24,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let store = datacore.records();
 
     // Independent builds (baseline).
-    let items = ItemCache::build(store);
-    let tags = TagTree::build(store);
-    let mfrs = ManufacturerRegistry::build(store);
+    let items = Items::build(store);
+    let tags = Tags::build(store);
+    let mfrs = Manufacturers::build(store);
     let paths = RecordPaths::build(&datacore);
 
     // One bundled pass via the umbrella build-context.
@@ -62,14 +62,14 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let path = std::env::temp_dir().join("holotable_example.cook");
     snap.save(snapshot_meta_from_install(&install), &path)?;
     let loaded = HolotableSnapshot::load(&path)?;
-    assert_eq!(loaded.items.as_ref().map(ItemCache::len), Some(f.items.len()));
+    assert_eq!(loaded.items.as_ref().map(Items::len), Some(f.items.len()));
     assert_eq!(
         loaded.paths.as_ref().map(RecordPaths::len),
         Some(f.paths.len())
     );
-    assert_eq!(loaded.tags.as_ref().map(TagTree::len), Some(f.tags.len()));
+    assert_eq!(loaded.tags.as_ref().map(Tags::len), Some(f.tags.len()));
     assert_eq!(
-        loaded.manufacturers.as_ref().map(ManufacturerRegistry::len),
+        loaded.manufacturers.as_ref().map(Manufacturers::len),
         Some(f.manufacturers.len())
     );
     let size = std::fs::metadata(&path)?.len();

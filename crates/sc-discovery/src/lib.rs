@@ -38,7 +38,7 @@
 //! # Quick start
 //!
 //! ```no_run
-//! use sc_installs::{discover, Language};
+//! use sc_discovery::{discover, Language};
 //!
 //! let installs = discover()?;
 //! for install in &installs {
@@ -54,7 +54,7 @@
 //!     let global_ini = install.localization_override(Language::English);
 //!     let _ = (p4k, global_ini);
 //! }
-//! # Ok::<(), sc_installs::Error>(())
+//! # Ok::<(), sc_discovery::Error>(())
 //! ```
 
 mod channel;

@@ -7,9 +7,9 @@
 //!
 //! It is **generic** and names no domain type: any `T: Serialize +
 //! DeserializeOwned` can ride in it. The hand-written cooked indices
-//! ([`crate::RecordPaths`], `sc-tags`' `TagTree`, `sc-manufacturers`'
-//! `ManufacturerRegistry`) are serde-clean (primitives only) and qualify
-//! today. Anything reaching a generated type (e.g. `sc-items`' `ItemCache`,
+//! ([`crate::RecordPaths`], `sc-tags`' `Tags`, `sc-manufacturers`'
+//! `Manufacturers`) are serde-clean (primitives only) and qualify
+//! today. Anything reaching a generated type (e.g. `sc-items`' `Items`,
 //! which embeds the generated `EItemType` / `LocaleKey`) does **not** — those
 //! types carry no serde and giving them serde would be a generated-crate
 //! change, the exact compile-time cliff the byte-bundle `ExtractSnapshot`

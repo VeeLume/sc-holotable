@@ -20,15 +20,15 @@
 use std::collections::BTreeMap;
 
 use sc_extract::{AssetConfig, AssetData, AssetSource, Datacore};
-use sc_missions::{Encounter, MissionIndex, raw};
+use sc_missions::{Encounter, Missions, raw};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let install = sc_installs::discover_primary()?;
+    let install = sc_discovery::discover_primary()?;
     eprintln!("[install] {} v{}", install.channel, install.short_version());
     let assets = AssetSource::from_install(&install)?;
     let asset_data = AssetData::extract(&assets, &AssetConfig::standard())?;
     let datacore = Datacore::parse(&assets, &asset_data)?;
-    let index = MissionIndex::build(&datacore);
+    let index = Missions::build(&datacore);
 
     section_1_name_property(&datacore);
     section_2_f7c_hornet_trace(&index);
@@ -166,7 +166,7 @@ fn db_instance_for_mission_property<'a>(
 
 // ── §2 F7C_Hornet broken-tag trace ───────────────────────────────────────────
 
-fn section_2_f7c_hornet_trace(index: &MissionIndex) {
+fn section_2_f7c_hornet_trace(index: &Missions) {
     println!("=== §2 F7C_Hornet broken-tag trace ===");
     let needle = "F7C_Hornet";
     let tree = &index.tag_tree;
@@ -225,7 +225,7 @@ fn section_2_f7c_hornet_trace(index: &MissionIndex) {
 
 // ── §3 Empty-candidate census ────────────────────────────────────────────────
 
-fn section_3_empty_candidate_census(index: &MissionIndex) {
+fn section_3_empty_candidate_census(index: &Missions) {
     println!("=== §3 Ship-encounter slots with candidates=0 ===");
 
     let mut total_slots = 0usize;

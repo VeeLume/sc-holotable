@@ -9,7 +9,7 @@
 //!
 //! This crate walks the generator graph, resolves every GUID the contracts
 //! touch (tags, ship entities, blueprint pools, reward currencies), and
-//! emits a single [`MissionIndex`] holding the contract list, the
+//! emits a single [`Missions`] holding the contract list, the
 //! registries used to build it, and a precomputed [`MissionPools`]
 //! grouping by title key / description key.
 //!
@@ -20,7 +20,7 @@
 //!     → ingest  (tag / ship / blueprint / currency registries)
 //!     → expand  (generator × handler × contract × sub_contract)
 //!     → resolve (GUIDs → typed values via registries)
-//!     → MissionIndex (with precomputed pools)
+//!     → Missions (with precomputed pools)
 //! ```
 //!
 //! # Scope
@@ -57,28 +57,28 @@ pub mod tui;
 
 pub use axes::{AxisDiff, AxisKind, AxisValues, SharedTag};
 // Blueprint *pools* are a mission-reward mechanic — owned here.
-pub use blueprint_pools::{BlueprintPool, BlueprintPoolEntry, BlueprintPoolRegistry};
+pub use blueprint_pools::{BlueprintPool, BlueprintPoolEntry, BlueprintPools};
 // The blueprint *catalog* lives in sc-crafting; re-exported for convenience
 // (and so intra-doc links to `BlueprintItem` keep resolving).
 pub use classify::{TagBag, parse_ai_skill};
-pub use currency::{CurrencyInfo, RewardCurrencyCatalog};
+pub use currency::{CurrencyInfo, RewardCurrencies};
 pub use expand::{
     Availability, BlueprintReward, Cooldowns, DurationRange, Encounter, EncounterPhase,
     EntityEncounter, EntitySlot, HandlerKind, ItemReward, Mission, MissionOrigin, MissionRewards,
     NpcEncounter, NpcSlot, OtherReward, PrereqView, RepReward, RewardAmount, ScripReward,
     ShipEncounter, ShipSlot, SlotGroup, expand_all,
 };
-pub use index::MissionIndex;
-pub use locality::{LocalityRegistry, LocalityView, LocationRef, LocationRegistry, SystemKey};
+pub use index::Missions;
+pub use locality::{Localities, LocalityView, LocationRef, Locations, SystemKey};
 pub use pools::MissionPools;
 pub use sc_crafting::{BlueprintItem, all_blueprints};
-pub use ships::{ShipCandidate, ShipEntity, ShipRegistry};
+pub use ships::{ShipCandidate, ShipEntity, Ships};
 pub use titles::{ContractAnchor, ResolvedKeys, resolve_contract_keys};
 
 // ── Narrow-consumer re-exports ──────────────────────────────────────────────
 //
 // Lets a consumer depend on `sc-contracts` alone and still construct the
-// arguments `MissionIndex::build` takes, without adding a direct
+// arguments `Missions::build` takes, without adding a direct
 // `sc-extract` dep. Type identity is preserved across re-exports because
 // every aggregation crate pulls the same `sc-extract` rev.
 pub use sc_extract::{
@@ -86,7 +86,7 @@ pub use sc_extract::{
     SnapshotMeta,
 };
 // Item envelope now lives in sc-items; re-export for single-crate consumers.
-pub use sc_items::{Item, ItemCache};
+pub use sc_items::{Item, Items};
 
 /// Escape hatch for raw DCB queries when the typed model doesn't cover
 /// a case. Reach for these only as a last resort; if you find yourself

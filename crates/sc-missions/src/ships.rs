@@ -31,13 +31,13 @@ use sc_extract::generated::{
     DataForgeComponentParamsPtr, DataPools, EntityClassDefinition, TagList,
 };
 use sc_extract::{Datacore, Guid, LocaleMap};
-use sc_items::ItemCache;
-use sc_tags::TagTree;
+use sc_items::Items;
+use sc_tags::Tags;
 
 /// An AI ship entity indexed for tag-query spawn resolution.
 ///
 /// Display name is intentionally absent — resolve via
-/// [`ShipRegistry::display_name`] at the call site through the active
+/// [`Ships::display_name`] at the call site through the active
 /// [`LocaleMap`].
 #[derive(Debug, Clone)]
 pub struct ShipEntity {
@@ -63,7 +63,7 @@ pub struct ShipEntity {
 /// [`ShipEntity`] stays inside the registry for match logic.
 ///
 /// Display name is intentionally absent — resolve via
-/// [`ShipRegistry::display_name`] keyed by `entity_guid`.
+/// [`Ships::display_name`] keyed by `entity_guid`.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct ShipCandidate {
     pub size: i32,
@@ -74,7 +74,7 @@ pub struct ShipCandidate {
 
 /// Registry of AI ship entities, keyed for tag-query resolution.
 ///
-/// Built once per `Datacore` via [`ShipRegistry::build`]. Holds roughly
+/// Built once per `Datacore` via [`Ships::build`]. Holds roughly
 /// one entry per possible NPC ship + variant in the live DCB.
 /// Name of the top-level `Tag` record under which every ship-selector
 /// tag lives (e.g. `Cutter`, `Pisces`, `Gladius`, `Idris_M`). Derived
@@ -83,7 +83,7 @@ pub struct ShipCandidate {
 const SHIP_TAG_ROOT_NAME: &str = "Ship";
 
 #[derive(Debug, Clone, Default)]
-pub struct ShipRegistry {
+pub struct Ships {
     entities: Vec<ShipEntity>,
     /// Union of every tag present on at least one entity in the registry.
     ship_relevant_tags: HashSet<Guid>,
@@ -109,13 +109,13 @@ pub struct ShipRegistry {
     spawn_state_tags: HashSet<Guid>,
 }
 
-impl ShipRegistry {
+impl Ships {
     /// Build the registry from the current [`Datacore`].
     ///
     /// Walks every materialized `MissionPropertyValue_ShipSpawnDescriptions`
     /// to collect spawn-referenced tags, then every `EntityClassDefinition`
     /// to include entities whose tag set intersects those tags.
-    pub fn build(datacore: &Datacore, tag_tree: &TagTree) -> Self {
+    pub fn build(datacore: &Datacore, tag_tree: &Tags) -> Self {
         let pools = &datacore.records().pools;
 
         // Pass 1 — collect every tag referenced in ship-spawn queries.
@@ -286,7 +286,7 @@ impl ShipRegistry {
 
     /// Resolve a spawn query into a list of candidate ships.
     ///
-    /// Classification uses the `sc_extract::TagTree` hierarchy:
+    /// Classification uses the `sc_extract::Tags` hierarchy:
     ///
     /// - **Ship-selective** tags are descendants of the tree's `Ship`
     ///   root (`Cutter`, `Gladius`, `Idris_M`, …).
@@ -394,7 +394,7 @@ impl ShipRegistry {
     pub fn display_name<'a>(
         &self,
         guid: &Guid,
-        cache: &ItemCache,
+        cache: &Items,
         locale: &'a LocaleMap,
     ) -> Option<&'a str> {
         cache.name_key(guid).and_then(|k| locale.resolve(k))

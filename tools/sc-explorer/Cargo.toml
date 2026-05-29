@@ -14,7 +14,7 @@ path = "src/main.rs"
 # do NOT depend on `sc-extract` directly — the aggregation crates'
 # narrow-consumer re-exports cover everything we need (AssetSource,
 # Datacore, LocaleMap), which proves the narrow-consumer dep story.
-sc-installs = { workspace = true }
+sc-discovery = { workspace = true }
 sc-missions = { workspace = true, features = ["tui"] }
 sc-weapons = { workspace = true, features = ["tui"] }
 superlighttui = { workspace = true }

@@ -1,12 +1,12 @@
 //! Precomputed mission groupings.
 //!
-//! [`MissionPools`] is built once at [`crate::MissionIndex`]
+//! [`MissionPools`] is built once at [`crate::Missions`]
 //! construction and exposed as a public field on the index. Each
 //! grouping axis is a `HashMap<key, Vec<Guid>>` of mission IDs
 //! sharing that key.
 //!
 //! Divergence — *what* differs across a pool's members — lives as
-//! opt-in helper methods on [`crate::MissionIndex`] (see the
+//! opt-in helper methods on [`crate::Missions`] (see the
 //! `*_mixed` / `*_consistent` accessors). Consumers call only what
 //! they read.
 //!
@@ -22,7 +22,7 @@ use crate::expand::Mission;
 /// Precomputed groupings keyed off the most common consumer axes.
 ///
 /// Each value is a `Vec<Guid>` of [`Mission`] ids — look up the
-/// actual row via [`crate::MissionIndex::get`].
+/// actual row via [`crate::Missions::get`].
 ///
 /// More axes are non-breaking additions: a future `by_locality` field
 /// can land alongside without changing existing fields.
@@ -60,7 +60,7 @@ impl MissionPools {
 // ── Divergence comparators ─────────────────────────────────────────────────
 //
 // Free functions used by the `*_mixed` / `*_consistent` methods on
-// `MissionIndex`.
+// `Missions`.
 
 /// True if two `ScripReward` slices represent the same multiset of
 /// (currency, amount) pairs in the same order.

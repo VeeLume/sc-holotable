@@ -54,7 +54,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         };
         (assets, meta)
     } else {
-        let install = sc_installs::discover_primary()?;
+        let install = sc_discovery::discover_primary()?;
         println!(
             "-> found {} v{} at {}",
             install.channel,

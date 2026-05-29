@@ -26,14 +26,14 @@
 use std::collections::{BTreeMap, BTreeSet, HashMap};
 
 use sc_extract::{AssetConfig, AssetData, AssetSource, Datacore};
-use sc_missions::{Encounter, MissionIndex, ShipSlot};
+use sc_missions::{Encounter, Missions, ShipSlot};
 
 /// One row in the analytics worklist — flatten contract → group →
 /// wave → slot into a single record so every section can iterate
 /// linearly without re-walking the contract graph.
 ///
 /// Classified tag projections are precomputed at row construction so
-/// the analytics sections don't have to re-thread the [`TagTree`]
+/// the analytics sections don't have to re-thread the [`Tags`]
 /// through every helper. The projections come from the slot's
 /// [`sc_missions::TagBag`] classifier methods.
 struct Row<'a> {
@@ -62,12 +62,12 @@ struct Row<'a> {
 }
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let install = sc_installs::discover_primary()?;
+    let install = sc_discovery::discover_primary()?;
     eprintln!("[install] {} v{}", install.channel, install.short_version());
     let assets = AssetSource::from_install(&install)?;
     let asset_data = AssetData::extract(&assets, &AssetConfig::standard())?;
     let datacore = Datacore::parse(&assets, &asset_data)?;
-    let index = MissionIndex::build(&datacore);
+    let index = Missions::build(&datacore);
 
     // Flatten everything into a single Row vec for cheap multi-pass
     // analysis. Classifier projections are materialised once here so

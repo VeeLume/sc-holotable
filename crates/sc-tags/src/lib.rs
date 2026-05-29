@@ -4,13 +4,13 @@
 //! records arranged in a parent-child tree. Tags are referenced from
 //! records (weapons, ships, contracts, jurisdictions, …) via their GUIDs.
 //! Moved out of `sc-extract` (domain data, not a generic DCB primitive);
-//! build it explicitly via [`TagTree::build`].
+//! build it explicitly via [`Tags::build`].
 //!
-//! [`TagTree`] provides:
+//! [`Tags`] provides:
 //! - Lookup by GUID or name
 //! - Ancestor / descendant navigation
 //! - `is_descendant_of` for hierarchical filtering
-//! - A path from the root ([`TagTree::path`])
+//! - A path from the root ([`Tags::path`])
 //!
 //! # The path *is* the semantics
 //!
@@ -27,7 +27,7 @@ use sc_extract::generated::{RecordLookup, Tag};
 use sc_extract::{Guid, RecordStore};
 use serde::{Deserialize, Serialize};
 
-/// A single node in the [`TagTree`].
+/// A single node in the [`Tags`].
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct TagNode {
     pub guid: Guid,
@@ -40,7 +40,7 @@ pub struct TagNode {
 
 /// Tree of every tag in the DCB's `TagDatabase`.
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
-pub struct TagTree {
+pub struct Tags {
     by_guid: HashMap<Guid, TagNode>,
     /// Index from tag name to all GUIDs using that name. Name collisions
     /// exist in the real DCB — multiple tags can share a display name in
@@ -48,7 +48,7 @@ pub struct TagTree {
     by_name: HashMap<String, Vec<Guid>>,
 }
 
-impl TagTree {
+impl Tags {
     /// Construct an empty tree.
     pub fn new() -> Self {
         Self::default()
@@ -81,7 +81,7 @@ impl TagTree {
 
     /// Pass 2 of the build: derive each node's `parent` from the inverse of
     /// the children graph. Run once after all nodes are inserted (the
-    /// standalone build does this inline; [`TagTreeBuilder`] does it in
+    /// standalone build does this inline; [`TagsBuilder`] does it in
     /// `finish`).
     fn derive_parents(&mut self) {
         let child_to_parent: Vec<(Guid, Guid)> = self
@@ -203,7 +203,7 @@ impl TagTree {
 }
 
 /// Build a children-only [`TagNode`] from a typed `Tag` record, or `None` for
-/// an unnamed tag. Shared by [`TagTree::build`] and [`TagTreeBuilder`] (parent
+/// an unnamed tag. Shared by [`Tags::build`] and [`TagsBuilder`] (parent
 /// links are derived in a later pass).
 fn node_for(guid: Guid, tag: &Tag) -> Option<TagNode> {
     if tag.tag_name.is_empty() {
@@ -219,17 +219,17 @@ fn node_for(guid: Guid, tag: &Tag) -> Option<TagNode> {
     })
 }
 
-/// [`sc_extract::RecordVisitor`] that builds a [`TagTree`] in a bundled walk.
+/// [`sc_extract::RecordVisitor`] that builds a [`Tags`] in a bundled walk.
 /// Declares interest in `Tag` records, accumulating nodes during the walk and
-/// deriving parent links in `finish`. Equivalent to [`TagTree::build`] but
+/// deriving parent links in `finish`. Equivalent to [`Tags::build`] but
 /// fusible with other visitors in one pass.
 #[derive(Default)]
-pub struct TagTreeBuilder {
-    inner: TagTree,
+pub struct TagsBuilder {
+    inner: Tags,
 }
 
-impl sc_extract::RecordVisitor for TagTreeBuilder {
-    type Output = TagTree;
+impl sc_extract::RecordVisitor for TagsBuilder {
+    type Output = Tags;
 
     fn interest(&self) -> sc_extract::Interest {
         sc_extract::Interest::Types(&["Tag"])
@@ -248,7 +248,7 @@ impl sc_extract::RecordVisitor for TagTreeBuilder {
         }
     }
 
-    fn finish(mut self) -> TagTree {
+    fn finish(mut self) -> Tags {
         self.inner.derive_parents();
         self.inner
     }
@@ -275,9 +275,9 @@ mod tests {
     /// root ─┬─ manufacturer ─┬─ aegs
     ///       │                └─ anvl
     ///       └─ race ──────── human
-    fn build_sample_tree() -> TagTree {
+    fn build_sample_tree() -> Tags {
         let (root, manu, race, aegs, anvl, human) = (g(1), g(2), g(3), g(4), g(5), g(6));
-        let mut tree = TagTree::new();
+        let mut tree = Tags::new();
         tree.insert(node(root, "Global", None, vec![manu, race]));
         tree.insert(node(manu, "Manufacturer", Some(root), vec![aegs, anvl]));
         tree.insert(node(race, "Race", Some(root), vec![human]));
@@ -289,7 +289,7 @@ mod tests {
 
     #[test]
     fn lookup_and_name_collision() {
-        let mut tree = TagTree::new();
+        let mut tree = Tags::new();
         tree.insert(node(g(1), "Dup", None, vec![]));
         tree.insert(node(g(2), "Dup", None, vec![]));
         assert_eq!(tree.get(&g(1)).map(|n| n.name.as_str()), Some("Dup"));
@@ -318,7 +318,7 @@ mod tests {
     fn serde_round_trip() {
         let tree = build_sample_tree();
         let json = serde_json::to_string(&tree).unwrap();
-        let decoded: TagTree = serde_json::from_str(&json).unwrap();
+        let decoded: Tags = serde_json::from_str(&json).unwrap();
         assert_eq!(decoded.len(), tree.len());
         assert_eq!(decoded.path(&g(4)), tree.path(&g(4)));
     }

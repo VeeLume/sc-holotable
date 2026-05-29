@@ -8,10 +8,10 @@
 //! # Quick start
 //!
 //! ```rust,ignore
-//! use sc_weapons::{iter_ship_weapons, ItemCache};
+//! use sc_weapons::{iter_ship_weapons, Items};
 //!
 //! let datacore: sc_extract::Datacore = /* ... */;
-//! let items = ItemCache::build(datacore.records());   // build once, share by reference
+//! let items = Items::build(datacore.records());   // build once, share by reference
 //! for weapon in iter_ship_weapons(&datacore, &items) {
 //!     println!("{}: S{} {:?}", weapon.record_name, weapon.size, weapon.primary_fire_action);
 //! }
@@ -58,7 +58,7 @@ pub use sc_extract::{
 };
 // Item envelope now lives in sc-items; re-export so single-crate consumers
 // can name the cache type without a direct sc-items dep.
-pub use sc_items::{Item, ItemCache};
+pub use sc_items::{Item, Items};
 
 /// Escape hatch for raw DCB queries when the typed model doesn't cover
 /// a case. Reach for these only as a last resort.
@@ -76,7 +76,7 @@ use std::collections::HashMap;
 /// weapons (FPS, CMLs, mining, creatures) are silently skipped.
 pub fn iter_ship_weapons<'a>(
     datacore: &'a Datacore,
-    items: &'a ItemCache,
+    items: &'a Items,
 ) -> impl Iterator<Item = ShipWeapon> + 'a {
     let store = datacore.records();
     let db = datacore.db();
@@ -96,22 +96,43 @@ pub fn iter_ship_weapons<'a>(
     })
 }
 
-/// Materialize every weapon family (ship guns, FPS, missiles) and
-/// build [`WeaponPools`] in one pass. Convenience for consumers
-/// (sc-langpatch's `weapon_enhancer` is the motivating case) that need
-/// both the per-weapon lists and the `LocaleKey → Vec<Guid>` collision
-/// pool spanning all three.
-pub fn build_weapon_pools(
-    datacore: &Datacore,
-) -> (Vec<ShipWeapon>, Vec<FpsWeapon>, Vec<Missile>, WeaponPools) {
-    // Build the item cache once and share it across all three families
-    // (each iterator would otherwise re-walk every EntityClassDefinition).
-    let items = ItemCache::build(datacore.records());
-    let ships: Vec<ShipWeapon> = iter_ship_weapons(datacore, &items).collect();
-    let fps: Vec<FpsWeapon> = iter_fps_weapons(datacore, &items).collect();
-    let missiles: Vec<Missile> = iter_missiles(datacore, &items).collect();
-    let pools = WeaponPools::build(&ships, &fps, &missiles);
-    (ships, fps, missiles, pools)
+/// Every materialized weapon family plus the cross-family collision index —
+/// the domain entry point for sc-weapons (workspace rule 6).
+///
+/// Build once via [`Weapons::build`]; the per-family [`iter_ship_weapons`] /
+/// [`iter_fps_weapons`] / [`iter_missiles`] functions remain (rule 7) for
+/// streaming one family without materializing the whole set.
+pub struct Weapons {
+    /// Ship-mounted guns.
+    pub ships: Vec<ShipWeapon>,
+    /// FPS / personal weapons.
+    pub fps: Vec<FpsWeapon>,
+    /// Missiles + torpedoes.
+    pub missiles: Vec<Missile>,
+    /// `LocaleKey → Vec<Guid>` collision index across all three families.
+    /// More grouping axes (by manufacturer, size, tag) land as sibling fields
+    /// — non-breaking.
+    pub pools: WeaponPools,
+}
+
+impl Weapons {
+    /// Materialize every weapon family (ship guns, FPS, missiles) and the
+    /// collision pools, sharing one `&Items` across the three walks.
+    ///
+    /// (sc-langpatch's `weapon_enhancer` is the motivating consumer — it needs
+    /// both the per-weapon lists and the `LocaleKey → Vec<Guid>` pool.)
+    pub fn build(datacore: &Datacore, items: &Items) -> Self {
+        let ships: Vec<ShipWeapon> = iter_ship_weapons(datacore, items).collect();
+        let fps: Vec<FpsWeapon> = iter_fps_weapons(datacore, items).collect();
+        let missiles: Vec<Missile> = iter_missiles(datacore, items).collect();
+        let pools = WeaponPools::build(&ships, &fps, &missiles);
+        Self {
+            ships,
+            fps,
+            missiles,
+            pools,
+        }
+    }
 }
 
 /// Iterate over all FPS weapons in the datacore.
@@ -119,7 +140,7 @@ pub fn build_weapon_pools(
 /// Same pattern as [`iter_ship_weapons`] but yields [`FpsWeapon`] instead.
 pub fn iter_fps_weapons<'a>(
     datacore: &'a Datacore,
-    items: &'a ItemCache,
+    items: &'a Items,
 ) -> impl Iterator<Item = FpsWeapon> + 'a {
     let store = datacore.records();
     let db = datacore.db();
@@ -145,7 +166,7 @@ pub fn iter_fps_weapons<'a>(
 /// missile/torpedo-classified ordnance are silently skipped.
 pub fn iter_missiles<'a>(
     datacore: &'a Datacore,
-    items: &'a ItemCache,
+    items: &'a Items,
 ) -> impl Iterator<Item = Missile> + 'a {
     let store = datacore.records();
     let db = datacore.db();

@@ -2,7 +2,7 @@ use std::collections::HashMap;
 
 use sc_extract::generated::*;
 use sc_extract::{DataPools, Guid, LocaleKey, LocaleMap};
-use sc_items::ItemCache;
+use sc_items::Items;
 
 use crate::classify::{WeaponCategory, classify};
 use crate::damage::{self, DamageSummary};
@@ -69,7 +69,7 @@ impl FpsWeapon {
         ecd_map: &HashMap<Guid, Handle<EntityClassDefinition>>,
         ammo_map: &HashMap<Guid, Handle<AmmoParams>>,
         record_names: &HashMap<Guid, &str>,
-        localized_items: &ItemCache,
+        localized_items: &Items,
     ) -> Option<Self> {
         let ecd = handle.get(pools)?;
 

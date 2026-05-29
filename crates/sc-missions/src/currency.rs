@@ -22,7 +22,7 @@ use sc_extract::{Datacore, Guid, LocaleMap};
 /// One resolved currency entity — scrip, favour, or other.
 ///
 /// Display name is intentionally absent — resolve via
-/// [`RewardCurrencyCatalog::display_name`] at the call site through the
+/// [`RewardCurrencies::display_name`] at the call site through the
 /// active [`LocaleMap`].
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct CurrencyInfo {
@@ -40,11 +40,11 @@ pub struct CurrencyInfo {
 /// (merc scrip, council scrip, Banu favours, plus any new currencies
 /// CIG adds).
 #[derive(Debug, Clone, Default)]
-pub struct RewardCurrencyCatalog {
+pub struct RewardCurrencies {
     by_guid: HashMap<Guid, CurrencyInfo>,
 }
 
-impl RewardCurrencyCatalog {
+impl RewardCurrencies {
     /// Build by walking every `EntityClassDefinition` and retaining
     /// those whose attach-def `SItemDefinition.type` is
     /// `EItemType::Currency`.
@@ -96,7 +96,7 @@ impl RewardCurrencyCatalog {
     pub fn display_name<'a>(
         &self,
         guid: &Guid,
-        cache: &sc_items::ItemCache,
+        cache: &sc_items::Items,
         locale: &'a LocaleMap,
     ) -> Option<&'a str> {
         if !self.by_guid.contains_key(guid) {
@@ -154,7 +154,7 @@ mod tests {
 
     #[test]
     fn empty_catalog_reports_zero() {
-        let cat = RewardCurrencyCatalog::default();
+        let cat = RewardCurrencies::default();
         assert_eq!(cat.len(), 0);
         assert!(cat.is_empty());
         assert!(!cat.is_currency(&Guid::default()));
