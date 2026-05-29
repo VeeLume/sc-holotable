@@ -14,6 +14,8 @@ separate commits and advance independently.
 
 ## [Unreleased]
 
+## [v0.8.0] - 2026-05-29
+
 ### Changed (breaking)
 
 - **Uniform API shape: domain-noun cooked indexes** (new rules 6–7 in
