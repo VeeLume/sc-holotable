@@ -13,7 +13,7 @@
 //! consumer patterns:
 //!
 //! ```no_run
-//! // 1. install only — use sc-installs, don't touch sc-extract
+//! // 1. install only — use sc-discovery, don't touch sc-extract
 //! let install = sc_discovery::discover_primary()?;
 //!
 //! // 2. install + assets — open the archive, read files directly

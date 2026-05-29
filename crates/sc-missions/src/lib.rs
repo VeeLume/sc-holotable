@@ -27,7 +27,7 @@
 //!
 //! The crate owns the generator-expansion pipeline plus the tag and
 //! ship-entity registries it needs along the way. Registries live here
-//! because sc-contracts is currently the only consumer that needs them;
+//! because sc-missions is currently the only consumer that needs them;
 //! a second consumer would graduate them into a shared helper.
 //!
 //! Escape hatch for anything the model does not cover: consumers with a
@@ -38,8 +38,8 @@
 //! # Driving consumer
 //!
 //! `sc-langpatch` is the primary driver — its contract-annotation work
-//! motivated the crate. The full design is at `docs/sc-contracts.md`;
-//! `docs/sc-contracts-v2.md` documents the in-flight v2 redesign.
+//! motivated the crate. The full design is at `docs/sc-missions.md`;
+//! `docs/sc-missions-v2.md` documents the in-flight v2 redesign.
 
 mod axes;
 mod blueprint_pools;
@@ -77,7 +77,7 @@ pub use titles::{ContractAnchor, ResolvedKeys, resolve_contract_keys};
 
 // ── Narrow-consumer re-exports ──────────────────────────────────────────────
 //
-// Lets a consumer depend on `sc-contracts` alone and still construct the
+// Lets a consumer depend on `sc-missions` alone and still construct the
 // arguments `Missions::build` takes, without adding a direct
 // `sc-extract` dep. Type identity is preserved across re-exports because
 // every aggregation crate pulls the same `sc-extract` rev.

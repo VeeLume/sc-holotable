@@ -1,6 +1,6 @@
 # RSI Launcher persistent store
 
-Reference for the structure and contents of `%APPDATA%/rsilauncher/launcher store.json` — the launcher's encrypted electron-store file. This is the launcher's source-of-truth for installed games, account state, UI preferences, and language catalogues. `sc-installs` reads it as its primary discovery source (see `crates/sc-installs/src/launcher_store.rs`).
+Reference for the structure and contents of `%APPDATA%/rsilauncher/launcher store.json` — the launcher's encrypted electron-store file. This is the launcher's source-of-truth for installed games, account state, UI preferences, and language catalogues. `sc-discovery` reads it as its primary discovery source (see `crates/sc-discovery/src/launcher_store.rs`).
 
 This doc exists so future features don't have to re-decrypt and re-explore the file from scratch.
 
@@ -21,7 +21,7 @@ Decryption is the standard [electron-store](https://github.com/sindresorhus/elec
 | Password | 44-char ASCII base64 string from the launcher's `app.asar` (literal `encryptionKey:"…"` near `pbkdf2`/`safeStorage` references) |
 | Salt | `IV.toString('utf8')` — the JS-side **lossy** conversion of the 16 IV bytes; high-bit IV bytes get folded to U+FFFD before re-encoding. Replicate via `String::from_utf8_lossy(iv).into_owned().into_bytes()`. |
 
-The encryption key is hardcoded in the launcher app and could rotate on any launcher update. We extract it at runtime from `<launcher>/resources/app.asar` rather than embed it. See `extract_encryption_key` in [crates/sc-installs/src/launcher_store.rs](../crates/sc-installs/src/launcher_store.rs).
+The encryption key is hardcoded in the launcher app and could rotate on any launcher update. We extract it at runtime from `<launcher>/resources/app.asar` rather than embed it. See `extract_encryption_key` in [crates/sc-discovery/src/launcher_store.rs](../crates/sc-discovery/src/launcher_store.rs).
 
 ---
 
@@ -50,7 +50,7 @@ Four sub-arrays. All four contain one entry per game (currently `id="SC"`, `name
 
 ### `library.installed[]`
 
-Channels that are present on disk. **This is the canonical source for sc-installs discovery.**
+Channels that are present on disk. **This is the canonical source for sc-discovery discovery.**
 
 ```jsonc
 {
@@ -144,7 +144,7 @@ Both follow the cookie-shape:
 
 `device` carries an `expires` (Unix ms, ~year out) and a `duration` field (`"year"`).
 
-**Treat the `value` strings as PII / secrets.** Never log them. Don't expose them through any sc-installs public API.
+**Treat the `value` strings as PII / secrets.** Never log them. Don't expose them through any sc-discovery public API.
 
 ---
 
@@ -239,7 +239,7 @@ electron-store migration bookkeeping. Don't touch.
 
 ---
 
-## Field-by-field — what sc-installs uses today vs. what it could use
+## Field-by-field — what sc-discovery uses today vs. what it could use
 
 | Field | Used | Could use |
 |---|---|---|

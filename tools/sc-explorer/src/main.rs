@@ -13,7 +13,7 @@
 //! modules, so when the underlying data type grows a field, the view
 //! updates next to it rather than here.
 //!
-//! Note: this binary depends only on `sc-installs`, `sc-contracts`, and
+//! Note: this binary depends only on `sc-discovery`, `sc-missions`, and
 //! `sc-weapons` — not on `sc-extract` directly. The aggregation crates'
 //! narrow-consumer re-exports cover everything we need to build the
 //! `Datacore` pipeline. That's deliberate, and validates the narrow-
@@ -132,7 +132,7 @@ struct AppState {
 /// `pool_checks` outputs under a unified shape so we can render one
 /// table over the whole set.
 struct PoolRow {
-    /// "sc-contracts" / "sc-weapons" — which crate cares about this pool.
+    /// "sc-missions" / "sc-weapons" — which crate cares about this pool.
     owner: &'static str,
     name: &'static str,
     feature: &'static str,

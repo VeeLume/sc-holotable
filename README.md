@@ -10,34 +10,34 @@ Early stub. Scaffolded structure and crate-level docs only — no logic yet. Thi
 
 | Crate | Purpose | Depends on |
 |---|---|---|
-| `sc-installs`  | Discover installed SC channels (LIVE / Hotfix / PTU / EPTU / Tech Preview), resolve paths to `Data.p4k`, `global.ini`, `user.cfg`, etc. Reads the RSI launcher log and `build_manifest.id`. | nothing domain-ish |
+| `sc-discovery`  | Discover installed SC channels (LIVE / Hotfix / PTU / EPTU / Tech Preview), resolve paths to `Data.p4k`, `global.ini`, `user.cfg`, etc. Reads the RSI launcher log and `build_manifest.id`. | nothing domain-ish |
 | `sc-extract`   | svarog adapters, DCB traversal, GUID / tag / cross-reference resolution, foundational types (`Guid`, `Reference`, `Tag`), and localization (`global.ini` parse + serialize, `LocaleMap`, `LocKey`, convenience extractor). Re-exports svarog as an escape hatch. | svarog |
 | `sc-weapons`   | Canonical weapon + damage model. `bulkhead` drives correctness; `sc-langpatch` consumes a subset. | `sc-extract` |
-| `sc-contracts` | Raw layer (generators, objectives, references) and a model layer that grows iteratively as the generator system is understood. | `sc-extract` |
+| `sc-missions` | Raw layer (generators, objectives, references) and a model layer that grows iteratively as the generator system is understood. | `sc-extract` |
 
 ## Consumer apps
 
 - **bulkhead** — SC combat / damage calculator. Primary driver of `sc-weapons`.
-- **sc-langpatch** — `global.ini` localization patcher. Primary driver of `sc-contracts`.
-- **streamdeck-starcitizen** — Stream Deck keybind plugin. Consumes only `sc-installs`.
+- **sc-langpatch** — `global.ini` localization patcher. Primary driver of `sc-missions`.
+- **streamdeck-starcitizen** — Stream Deck keybind plugin. Consumes only `sc-discovery`.
 
 ## Layering
 
 ```
-       sc-weapons      sc-contracts
+       sc-weapons      sc-missions
              \             /
               \           /
                sc-extract  ──►  svarog (re-exported as escape hatch)
                 /
-       sc-installs  (standalone — no domain deps, no svarog)
+       sc-discovery  (standalone — no domain deps, no svarog)
 ```
 
 Rules the layering enforces:
 
-- **`sc-installs` is completely standalone.** Consumers that only need install discovery don't pay for svarog. `streamdeck-starcitizen` relies on this.
+- **`sc-discovery` is completely standalone.** Consumers that only need install discovery don't pay for svarog. `streamdeck-starcitizen` relies on this.
 - **Domain crates go through `sc-extract`, never directly through svarog.** Cross-reference resolution is centralized. When a weapon references an ammo record, or a contract references a reward table, `sc-extract` handles the chase once.
 - **svarog is re-exported from `sc-extract` as an escape hatch, not the preferred interface.** Apps should prefer `sc-extract`'s own helpers when they exist, and only reach for raw svarog when the abstraction doesn't cover their case yet. That "yet" is load-bearing — reaching for raw svarog repeatedly for the same thing is a signal to lift the helper into `sc-extract`.
-- **`sc-extract` deals in bytes and types, not filesystem side effects.** It reads `Data.p4k` and parses/serializes localization content, but it does not write patched files to the install override path — that is the consumer's call (sc-langpatch, in practice), using a path helper from `sc-installs`. This keeps `sc-extract` free of any `sc-installs` dependency and preserves the acyclic layering.
+- **`sc-extract` deals in bytes and types, not filesystem side effects.** It reads `Data.p4k` and parses/serializes localization content, but it does not write patched files to the install override path — that is the consumer's call (sc-langpatch, in practice), using a path helper from `sc-discovery`. This keeps `sc-extract` free of any `sc-discovery` dependency and preserves the acyclic layering.
 
 ## Design principles
 
@@ -57,7 +57,7 @@ Git-dep only. Not published to crates.io.
 
 ```toml
 [dependencies]
-sc-installs = { git = "https://github.com/<user>/sc-holotable.git", tag = "vX.Y.Z" }
+sc-discovery = { git = "https://github.com/<user>/sc-holotable.git", tag = "vX.Y.Z" }
 ```
 
-During heavy iteration — especially while the `sc-contracts` model layer is being discovered — consumers may use a `[patch]` section to point at a local checkout of this workspace.
+During heavy iteration — especially while the `sc-missions` model layer is being discovered — consumers may use a `[patch]` section to point at a local checkout of this workspace.

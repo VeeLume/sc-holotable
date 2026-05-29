@@ -1,6 +1,6 @@
 //! Validate the crafting catalog against live DCB: full catalog count +
 //! the P4-AR trigger case (present in the full catalog, named via the
-//! baked key). Pools are a missions concern — see sc-contracts.
+//! baked key). Pools are a missions concern — see sc-missions.
 //!
 //! ```bash
 //! cargo run -p sc-crafting --release --example catalog_dump

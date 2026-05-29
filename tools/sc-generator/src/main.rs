@@ -13,7 +13,7 @@
 //! ```
 //!
 //! Without `--p4k`, the generator auto-discovers the primary LIVE install
-//! via `sc-installs` and uses its `Data.p4k`.
+//! via `sc-discovery` and uses its `Data.p4k`.
 //!
 //! Optional flags:
 //!
@@ -138,7 +138,7 @@ fn parse_args() -> Result<RunOptions, String> {
     })
 }
 
-/// Locate the primary (LIVE) Star Citizen install via `sc-installs` and
+/// Locate the primary (LIVE) Star Citizen install via `sc-discovery` and
 /// return its `Data.p4k` path. Prints a machine-parseable identity line to
 /// stdout so scripts can capture the version/channel/path without having
 /// to re-run discovery themselves.
@@ -160,7 +160,7 @@ fn autodiscover_p4k() -> Result<PathBuf, String> {
     let launcher_version = install.launcher_version_label.as_deref().ok_or_else(|| {
         format!(
             "no authoritative launcher version label for {channel} install at {root}. \
-             This means sc-installs fell back to log parsing — the launcher store could \
+             This means sc-discovery fell back to log parsing — the launcher store could \
              not be read. Most likely cause: the RSI Launcher is installed somewhere \
              other than `%PROGRAMFILES%/Roberts Space Industries/RSI Launcher`, or the \
              launcher updated and rotated its `encryptionKey:\"…\"` constant in app.asar. \
@@ -197,7 +197,7 @@ fn print_usage() {
     eprintln!();
     eprintln!("Arguments:");
     eprintln!("  --p4k <path>       Path to Data.p4k to generate from.");
-    eprintln!("                     When omitted, auto-discovered via sc-installs");
+    eprintln!("                     When omitted, auto-discovered via sc-discovery");
     eprintln!("                     (primary / LIVE channel).");
     eprintln!("  --out-dir <path>   Where to write generated files");
     eprintln!("                     (default: crates/sc-extract-generated/src/generated)");

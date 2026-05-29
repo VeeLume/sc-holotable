@@ -1,6 +1,8 @@
 # `sc-ammo` — design specification
 
-> Status: **proposal, awaiting review.** Depends on `docs/sc-extract.md` and `docs/codegen.md`.
+> Status: **proposal, awaiting review** — `sc-ammo` is **not yet a crate**. Depends on `docs/sc-extract.md` and `docs/codegen.md`.
+
+> **⚠️ v0.8.0 note.** Code sketches below reach records via `DatacoreSnapshot::records` / `Datacore::snapshot()` — both **removed**. The current path is `Datacore::records()` (returns the `RecordStore` directly). Ammo records are already materialized; `AmmoParams` is reachable through the typed pools like any other record.
 
 > **Flat-pool API update (post-refactor).** Since the spec was first drafted, `sc-extract-generated` moved to a flat-pool representation: nested `Class` / `StrongPointer` / `WeakPointer` fields are now `Option<TId>` handles into per-type `Vec<Option<T>>` pools inside `DataPools`, not `Option<Box<T>>`. Any code sketch below that shows direct dereference of a nested struct field will, in the real implementation, go through `id.get(pools)` or `pools[id].as_ref()` to resolve the handle. See `docs/codegen.md` §"Reference semantics — flat-pool model" for the API. The wrapper pattern (one `Ammo` struct, a trait, a few accessors) is unchanged — only the way nested fields are reached.
 

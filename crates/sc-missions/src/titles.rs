@@ -55,7 +55,7 @@ pub struct ResolvedKeys {
 
 /// Generic origin identifier for a contract — used to walk the right
 /// `paramOverrides` handle. Exposed so the expansion pass (step 3 in
-/// `docs/sc-contracts.md`) can build inheritance chains without
+/// `docs/sc-missions.md`) can build inheritance chains without
 /// duplicating match logic.
 #[derive(Clone, Copy)]
 pub enum ContractAnchor<'p> {

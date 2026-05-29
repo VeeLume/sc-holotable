@@ -115,7 +115,7 @@ impl Missions {
     /// two-pass entity scan).
     ///
     /// `datacore` must have the `contracts` + `servicebeacon`
-    /// features enabled — the default `sc-contracts` dependency
+    /// features enabled — the default `sc-missions` dependency
     /// turns both on.
     pub fn build(datacore: &Datacore) -> Self {
         // Build the shared indices once, thread them through the pipeline.

@@ -2,7 +2,7 @@
 
 How the sc-holotable workspace is organized, what belongs where, and the conventions every crate follows. Source-of-truth for crate boundaries and the public API contract.
 
-> **Status:** design doc, captured 2026-05-26 from a planning session that examined the live DCB record shapes. The crate set is partly aspirational — only `sc-installs`, `sc-extract`, `sc-extract-generated`, `sc-weapons`, and `sc-contracts` exist today. The rest land as their data needs become concrete. The framing, conventions, and naming rules apply now.
+> **Status:** design doc, captured 2026-05-26 from a planning session that examined the live DCB record shapes. The crate set is partly aspirational — shipped today: `sc-discovery`, `sc-extract`, `sc-extract-generated`, `sc-items`, `sc-tags`, `sc-manufacturers`, `sc-crafting`, `sc-weapons`, `sc-missions`, and the `sc-holotable` umbrella. The rest land as their data needs become concrete. The framing, conventions, and naming rules apply now.
 
 ## Two tiers
 
@@ -14,7 +14,7 @@ The workspace organizes crates by what they *serve*, not by what DCB folder they
 
 The split exists because the data is heavily cross-referenced and consumers asking realistic questions (*"where does Agricium spawn and what quality can I expect"*) cross 4-5 record types in 3-4 different folders. A consumer that depends on every T1 to answer one question reinvents the join every time; a T2 crate owns it once.
 
-T0 is reserved for crates with no DCB / svarog dependency at all (`sc-installs`, future `sc-log`).
+T0 is reserved for crates with no DCB / svarog dependency at all (`sc-discovery`, future `sc-log`).
 
 ## Crate catalogue
 
@@ -22,23 +22,25 @@ T0 is reserved for crates with no DCB / svarog dependency at all (`sc-installs`,
 
 | Crate | Owns | Status |
 |---|---|---|
-| `sc-installs` | Install discovery (channels, paths, launcher log, `build_manifest.id`) | shipped |
+| `sc-discovery` | Install discovery (channels, paths, launcher log, `build_manifest.id`) | shipped |
 | `sc-log` | Game.log event parsing (mission lifecycle, blueprint receipts, equip events) | future — driven by bulkhead Inventory panel |
 
 ### T1 — data layer
 
 | Crate | Owns (DCB folders / record types) | Status |
 |---|---|---|
-| `sc-extract` | Three-stage extraction API, `LocaleMap`, `ReferenceGraph`, `TagTree`, `ManufacturerRegistry`, `DisplayNameCache`. Re-exports svarog as escape hatch. | shipped |
+| `sc-extract` | Three-stage extraction API, `LocaleMap`, `ReferenceGraph`, `RecordPaths`, the bundled-walk API (`RecordVisitor`/`BundledWalk`), `ExtractSnapshot` + generic `ProcessedSnapshot`. Re-exports svarog as escape hatch. | shipped |
 | `sc-extract-generated` | Generated `Extract`/`Pooled` types from `sc-generator`. **Workspace-internal.** | shipped |
-| `sc-items` | The universal item envelope: `Item` (the `EntityClassDefinition` + `SAttachableComponentParams.AttachDef` shape), `ItemPort`, `Manufacturer`, `Tag`, `DensityClass` (universal entity property, persistence params), `BaseRecord + Variants` resolver. **Workspace-internal** — consumers reach typed wrappers in domain crates. | future foundation |
+| `sc-items` | The universal item envelope: `Item` + `Items` index (the `EntityClassDefinition` + `SAttachableComponentParams.AttachDef` shape: locale keys + typed `Type`/`SubType`, `is_inventory_item`). Future: `ItemPort`, `DensityClass`, `BaseRecord + Variants` resolver. **Workspace-internal.** | shipped (thin) |
+| `sc-tags` | `Tags` — hierarchical tag tree from the DCB `TagDatabase` (ancestors/descendants/path). | shipped |
+| `sc-manufacturers` | `Manufacturers` — registry over `SCItemManufacturer` (GUID + code lookup). | shipped |
 | `sc-weapons` | Combat-math primitives: ship + FPS + missile + melee. `ShipWeapon`, `FpsWeapon`, `Missile`. Owns damage / fire_action / sustain / ammo / classify. | shipped — partial (melee deferred) |
 | `sc-vehicles` | Hulls: `entities/spaceships/` (~150 base hulls × ~6 variants) + `entities/groundvehicles/` (~40). | future |
 | `sc-shipcomponents` | Non-weapon ship-bolted items: shields, thrusters, powerplants, coolers, QT/jump drives, scanners, radars, fuel, capacitors, countermeasures, missile racks, turret/weapon-mount hardpoints, ship armor. 15-30 sub-modules. | future |
 | `sc-equipment` | FPS non-weapons: armor (`scitem/characters/.../pu_armor/`), gear, tools, consumables, weapon modifiers (barrel comps, scopes, mags). | future |
-| `sc-crafting` | Entire `crafting/` folder: `Blueprint`, `BlueprintCategory`, `BlueprintReward`, `CraftedProperties`, `CraftingQualityDistributionRecord` (with extraction-method variants: ship / FPS / ground / harvestable / creature), `QualityQuantization`, global params. Plus `refiningprocess/` (9 records — same machinery family). | future — `blueprints.rs` extraction from `sc-contracts` is the first step |
+| `sc-crafting` | Entire `crafting/` folder: `Blueprint`, `BlueprintCategory`, `BlueprintReward`, `CraftedProperties`, `CraftingQualityDistributionRecord` (with extraction-method variants: ship / FPS / ground / harvestable / creature), `QualityQuantization`, global params. Plus `refiningprocess/` (9 records — same machinery family). | shipped (thin: `all_blueprints` + `BlueprintItem`); full `crafting/` modelling future |
 | `sc-resources` | World primitives: `ResourceType`, `MineableElement`, `harvestables/`, `commoditytypedatabase` / `commodityconfiguration`, `cargomanifest/`, mining global params, `rockcompositionpresets`. *What stuff exists in the world.* Knows nothing about crafting. | future |
-| `sc-locations` | `ssolarsystem`, `jumppoints`, `starmap`, `servicebeacon`, `megamap`. Extract from current `sc-contracts`. | future |
+| `sc-locations` | `ssolarsystem`, `jumppoints`, `starmap`, `servicebeacon`, `megamap`. Extract from current `sc-missions`. | future |
 | `sc-factions` | `factions/` (59 records) + `reputation/` (8 subdirs) + `lawsystem/` (4 subdirs). Tight coupling via `Faction.factionReputationRef`, `factionType=LawEnforcement`, `ableToArrest` justifies one crate. | future |
 | `sc-actors` | NPC archetypes (`actor/actors/npc_archetypes/`). Only stand up when a consumer (sc-missions for missiongiver detail, bulkhead inspector for NPC profiles) needs it. | deferred |
 
@@ -46,7 +48,7 @@ T0 is reserved for crates with no DCB / svarog dependency at all (`sc-installs`,
 
 | Crate | Joins | Replaces |
 |---|---|---|
-| `sc-missions` | Missions × crafting (reward blueprints) × locations × factions × vehicles (encounter spawns). Owns mission↔X reverse indices (`missions_for_pool`, `pools_containing_item`, `missions_for_item` — already a precedent in current `BlueprintPoolRegistry`). Also absorbs `contracts/`, `missiontype/`, `missiongiver/`, `missiondata/`, `missionbroker/`, `missionscenarios/`, `missionfailureconditions/`. | Renamed from current `sc-contracts`. |
+| `sc-missions` | Missions × crafting (reward blueprints) × locations × factions × vehicles (encounter spawns). Owns mission↔X reverse indices (`missions_for_pool`, `pools_containing_item`, `missions_for_item` — already a precedent in current `BlueprintPools`). Also absorbs `contracts/`, `missiontype/`, `missiongiver/`, `missiondata/`, `missionbroker/`, `missionscenarios/`, `missionfailureconditions/`. | Renamed from current `sc-missions`. |
 | `sc-loadouts` | Vehicles × shipcomponents × weapons × `loadoutkits/` × `sloadoutassortment/`. Answers "what fits where" and "default loadouts per hull / role." | New. |
 | `sc-economy` | Resources × crafting × locations × factions. Answers "where does resource X spawn, with what quality, what's the refined yield, who polices that area." | New. |
 
@@ -125,7 +127,7 @@ A consumer should be able to depend on just one T1 crate and construct iterator 
 ```rust
 // In sc-weapons/src/lib.rs
 pub use sc_extract::{
-    AssetConfig, AssetData, AssetSource, Datacore, DatacoreConfig,
+    AssetConfig, AssetData, AssetSource, Datacore,
     ExtractSnapshot, Guid, LocaleKey, LocaleMap, ...
 };
 ```
@@ -139,10 +141,10 @@ its domain** — a plural noun, **no structural suffix**:
 
 | Crate            | Type            | not                              |
 |------------------|-----------------|----------------------------------|
-| sc-items         | `Items`         | ~~ItemCache~~                    |
-| sc-tags          | `Tags`          | ~~TagTree~~                      |
-| sc-manufacturers | `Manufacturers` | ~~ManufacturerRegistry~~         |
-| sc-missions      | `Missions`      | ~~MissionIndex~~                 |
+| sc-items         | `Items`         | ~~Items~~                    |
+| sc-tags          | `Tags`          | ~~Tags~~                      |
+| sc-manufacturers | `Manufacturers` | ~~Manufacturers~~         |
+| sc-missions      | `Missions`      | ~~Missions~~                 |
 | sc-weapons       | `Weapons`       | ~~`iter_*` + `WeaponPools` tuple~~ |
 
 The data *shape* — flat lookup, hierarchy, grouping — is expressed through
@@ -236,7 +238,7 @@ Consumers reach typed wrappers (`ShipWeapon`, `Shield`, `Vehicle`) in their doma
 
 `sc-holotable` is the recommended public dependency. It exists to solve four pain points that the current "depend on individual crates" pattern creates (visible in `sc-langpatch/src-tauri/Cargo.toml` today):
 
-1. **Multiple tag pins to keep in sync.** Today: `sc-installs` + `sc-extract` + `sc-weapons` + `sc-contracts` each carry `tag = "sc-holotable/v0.5.0"`. Easy to leave one behind on bump.
+1. **Multiple tag pins to keep in sync.** Today: `sc-discovery` + `sc-extract` + `sc-weapons` + `sc-missions` each carry `tag = "sc-holotable/v0.5.0"`. Easy to leave one behind on bump.
 2. **`sc-extract` feature flags that have to be remembered.** Without `features = ["contracts", "servicebeacon", "entities"]`, the registries silently come back empty.
 3. **Svarog rev has to match holotable's pin** for type identity (the narrow-re-export pattern, rule 5, breaks otherwise).
 4. **Profile overrides have to be mirrored** from holotable's `Cargo.toml`.
@@ -260,7 +262,7 @@ One dep. One tag. Features describe what you want, not what crates you need.
 default = []
 
 # T1 (data) — pulls one crate each, with required sc-extract DCB features
-installs        = ["dep:sc-installs"]
+installs        = ["dep:sc-discovery"]
 extract         = ["dep:sc-extract"]
 weapons         = ["dep:sc-weapons", "extract", "sc-extract/entities-scitem"]
 vehicles        = ["dep:sc-vehicles", "extract",
@@ -288,7 +290,7 @@ full   = ["installs", "all-t1", "all-t2"]
 
 ```rust
 // sc_holotable::weapons::{ShipWeapon, FpsWeapon, Missile, WeaponPools}
-// sc_holotable::missions::{Mission, MissionIndex, ...}
+// sc_holotable::missions::{Mission, Missions, ...}
 // sc_holotable::asset::{AssetSource, AssetData, Datacore, ExtractSnapshot}
 // sc_holotable::install::Install
 // sc_holotable::prelude::*    — the common types: Mission, ShipWeapon, Vehicle,
@@ -304,11 +306,11 @@ Before (today):
 ```toml
 svarog-p4k       = { git, rev = "7f06225" }
 svarog-datacore  = { git, rev = "7f06225" }
-sc-installs      = { git, tag = "sc-holotable/v0.5.0" }
+sc-discovery      = { git, tag = "sc-holotable/v0.5.0" }
 sc-extract       = { git, tag = "sc-holotable/v0.5.0",
                      features = ["contracts", "servicebeacon", "entities"] }
 sc-weapons       = { git, tag = "sc-holotable/v0.5.0" }
-sc-contracts     = { git, tag = "sc-holotable/v0.5.0" }
+sc-missions     = { git, tag = "sc-holotable/v0.5.0" }
 ```
 
 After:
@@ -360,7 +362,7 @@ Both `scitem/ships/armor/` and `scitem/characters/human/armor/pu_armor/` use `Ty
 
 ### Log scraping crate timing
 
-`sc-log` is planned as a T0 sibling to `sc-installs` (parsing `Game.log` for mission lifecycle, blueprint receipts, equip events — see the bulkhead status note for the SCMDB-derived design). Justified once bulkhead's Inventory or Mission-history panels start landing. Not before — empty crates rot.
+`sc-log` is planned as a T0 sibling to `sc-discovery` (parsing `Game.log` for mission lifecycle, blueprint receipts, equip events — see the bulkhead status note for the SCMDB-derived design). Justified once bulkhead's Inventory or Mission-history panels start landing. Not before — empty crates rot.
 
 ### `sc-actors` deferral threshold
 

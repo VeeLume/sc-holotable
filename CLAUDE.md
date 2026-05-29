@@ -10,9 +10,9 @@ Three downstream apps depend (or will depend) on this workspace as a git dep. Th
 
 | App | What it uses | Location |
 |---|---|---|
-| `streamdeck-starcitizen` | `sc-installs` only (for install discovery) | `E:\vscode\streamdeck\streamdeck-starcitizen` |
-| `sc-langpatch` | `sc-installs` + `sc-extract` (localization, contracts) | `E:\vscode\rust\sc-langpatch` |
-| `bulkhead` | `sc-installs` + `sc-extract` + (future) `sc-weapons` | `E:\vscode\rust\bulkhead` |
+| `streamdeck-starcitizen` | `sc-discovery` only (for install discovery) | `E:\vscode\streamdeck\streamdeck-starcitizen` |
+| `sc-langpatch` | `sc-discovery` + `sc-extract` (localization, contracts) | `E:\vscode\rust\sc-langpatch` |
+| `bulkhead` | `sc-discovery` + `sc-extract` + (future) `sc-weapons` | `E:\vscode\rust\bulkhead` |
 
 **Design rule:** sc-holotable crates are *real utility libs*, not bent to any one consumer's current shape. Consumers adapt to the lib, not the other way round.
 
@@ -26,26 +26,26 @@ sc-holotable/
 ├── status.md                      current work state — read alongside this file
 ├── docs/                          design specs (stable reference)
 │   ├── datacore.md                DCB binary format reference
-│   ├── sc-installs.md             install discovery crate spec
+│   ├── sc-discovery.md             install discovery crate spec
 │   ├── sc-extract.md              foundational extraction crate spec
 │   ├── codegen.md                 sc-generator design
 │   ├── feature-gating-v2.md       feature-gating v2 — data-driven scoping + poly (implemented)
 │   ├── benchmarks.md              canonical benchmark numbers — re-run via tools/bench/bench.ps1
 │   ├── sc-ammo.md                 ammo crate spec (not implemented yet)
 │   ├── sc-weapons.md              weapons crate spec
-│   ├── sc-contracts.md            contracts v1 spec (historical — superseded by v2)
-│   ├── sc-contracts-v2.md         contracts v2 design + landing-phase log (current)
-│   ├── sc-contracts-guide.md      contracts consumer guide
+│   ├── sc-missions.md            contracts v1 spec (historical — superseded by v2)
+│   ├── sc-missions-v2.md         contracts v2 design + landing-phase log (current)
+│   ├── sc-missions-guide.md      contracts consumer guide
 │   └── feature-request-*.md       feature requests filed by sc-langpatch
 ├── implementing/                  non-obvious implementation context (not code restated in prose)
-│   ├── sc-installs.md             port lineage + consumer switch-over plan
+│   ├── sc-discovery.md             port lineage + consumer switch-over plan
 │   └── sc-extract-2c.md           open caveats (tag/manufacturer field names, locale path)
 ├── crates/
-│   ├── sc-installs/               ✅ implemented, 51 tests passing
+│   ├── sc-discovery/               ✅ implemented, 51 tests passing
 │   ├── sc-extract/                ✅ phase 2a + 2c + 2d done; API reworked 2026-04-13 (staged entry points)
 │   ├── sc-extract-generated/      ✅ workspace-internal — core/dormant/multi_feature + leaf feature dirs
 │   │   └── src/generated/         245 leaf feature dirs + core/ + dormant/ + multi_feature/
-│   ├── sc-contracts/              ✅ v2 complete — Mission, MissionIndex, MissionPools, Encounter enum
+│   ├── sc-missions/              ✅ v2 complete — Mission, Missions, MissionPools, Encounter enum
 │   └── sc-weapons/                ✅ v1 + v2 phases 1-3 + localization keys + Missile + penetration
 └── tools/
     ├── sc-generator/              ✅ implemented — offline DCB schema → Rust codegen
@@ -98,7 +98,7 @@ These refinements make the generated code more type-safe than a 1:1 schema refle
 - **`DataType::Locale` fields** emit as `LocaleKey` (a newtype over `String`). `LocaleMap::get` / `resolve` / `contains_key` accept any `AsRef<str>` so `&LocaleKey` passes natively. Consumers can't accidentally confuse a localization-reference string with a free-text string at compile time.
 - **`DataType::EnumChoice` fields** emit as the corresponding generated Rust enum (resolved through `prop.struct_index`, dual-used as the enum index for choice fields). Every enum gets a `from_dcb_str` associated function. Unknown values (including variants added in a game patch the generator didn't see) fall through to `Unrecognized(String)` for forward compat.
 - **Polymorphic pointer fields** emit a poly enum (`generated/poly_enums.rs`) with a variant per observed subclass plus an `Unknown { struct_index: u32, instance_index: u32 }` fallback. The `Unknown` payload is the raw-layer escape hatch — a consumer can walk the instance directly via `datacore.db().instance(struct_index, instance_index)`.
-- **`DataType::Reference` fields** stay bare `Option<CigGuid>` (cross-record links aren't followed into the typed pool graph — only owned Class/Strong/Weak pointers are). To re-enter the typed surface after following a Reference, use **`Datacore::resolve::<T>(&guid) -> Option<&T>`** (or `resolve_handle` for the `Handle<T>`) instead of dropping to `datacore.db().record(guid)` + raw `get_instance`/`get_bool` field pokes. `resolve` is backed by the per-record-type `CigGuid -> Handle<T>` maps in `RecordIndex`; the `T: RecordLookup` bound is a compile-time guarantee that `T` is a **seeded record type** (the ~600 top-level DCB record types — *not* every struct). The generator emits one `impl RecordLookup for T` per record type in `record_store.rs`, gated by the same cfg as the type's index field. References targeting a non-record struct, or a record type the generator never seeded, are the genuine raw-only frontier — `resolve` won't compile for those. Worked example: `sc-contracts`'s `resolve_shareable_from_template` resolves a `template` Reference to `ContractTemplate`, then poly-matches `contract_class → additional_params → can_be_shared` entirely on the typed surface.
+- **`DataType::Reference` fields** stay bare `Option<CigGuid>` (cross-record links aren't followed into the typed pool graph — only owned Class/Strong/Weak pointers are). To re-enter the typed surface after following a Reference, use **`Datacore::resolve::<T>(&guid) -> Option<&T>`** (or `resolve_handle` for the `Handle<T>`) instead of dropping to `datacore.db().record(guid)` + raw `get_instance`/`get_bool` field pokes. `resolve` is backed by the per-record-type `CigGuid -> Handle<T>` maps in `RecordIndex`; the `T: RecordLookup` bound is a compile-time guarantee that `T` is a **seeded record type** (the ~600 top-level DCB record types — *not* every struct). The generator emits one `impl RecordLookup for T` per record type in `record_store.rs`, gated by the same cfg as the type's index field. References targeting a non-record struct, or a record type the generator never seeded, are the genuine raw-only frontier — `resolve` won't compile for those. Worked example: `sc-missions`'s `resolve_shareable_from_template` resolves a `template` Reference to `ContractTemplate`, then poly-matches `contract_class → additional_params → can_be_shared` entirely on the typed surface.
 
 Two release profiles, tuned via per-dimension sweeps on 2026-04-16 (see `docs/benchmarks.md` for the full sweep data):
 
@@ -127,7 +127,7 @@ These are load-bearing — deviating from them should be a deliberate decision, 
 
 ### Naming
 
-- **Crate prefix: `sc-`** — `sc-installs`, `sc-extract`, `sc-weapons`, etc.
+- **Crate prefix: `sc-`** — `sc-discovery`, `sc-extract`, `sc-weapons`, etc.
 - **Domain wrappers**: when a spec calls for a "raw layer + curated trait", the curated struct takes the plain name (`Weapon`, `Ammo`) and the raw layer is either `EntityClassDefinition` (generic DCB type) or generated directly. No `RawFoo`/`Foo` split — see the sc-weapons spec for the wrapper-over-generated-type pattern.
 - **Error variants**: `thiserror` enums with `#[non_exhaustive]` so adding variants is non-breaking.
 
@@ -168,7 +168,7 @@ VSCode tasks: `sc: regenerate bindings` (no publish) and `sc: regenerate and pub
 The script:
 
 1. Refuses to start with a dirty working tree (pass `-AllowDirty` to override).
-2. Runs `sc-generator`, which auto-discovers the LIVE `Data.p4k` via `sc-installs` and emits a machine-parseable identity line (`sc-generator: launcher_version=4.7.2-live.11674325 version=... channel=... branch=... changelist=... p4k=...`). The script captures `launcher_version` for the commit message + tag name (`datacore/4.7.2-live.11674325`), and `changelist` — the monotonic perforce build number — for the downgrade guard. The guard compares the new changelist against the highest `datacore/*` tag already in the repo and aborts if it would go backwards (override with `-AllowDowngrade`). Hotfixes increment the changelist while leaving the marketing version alone, so the guard still catches a stale install picked up by discovery.
+2. Runs `sc-generator`, which auto-discovers the LIVE `Data.p4k` via `sc-discovery` and emits a machine-parseable identity line (`sc-generator: launcher_version=4.7.2-live.11674325 version=... channel=... branch=... changelist=... p4k=...`). The script captures `launcher_version` for the commit message + tag name (`datacore/4.7.2-live.11674325`), and `changelist` — the monotonic perforce build number — for the downgrade guard. The guard compares the new changelist against the highest `datacore/*` tag already in the repo and aborts if it would go backwards (override with `-AllowDowngrade`). Hotfixes increment the changelist while leaving the marketing version alone, so the guard still catches a stale install picked up by discovery.
 3. `cargo fmt --all`.
 4. `cargo clippy --fix --allow-dirty --allow-staged -p sc-extract-generated --all-features -- -D warnings`, then `cargo fmt --all` again to smooth any style drift. Scoped to `sc-extract-generated` because that crate is the generator's output — lints in hand-written example code are out of scope for a regen commit.
 5. `git add -A` + one commit: `Regenerate DataCore bindings (SC <version>)`. Bails out cleanly if the generator produced an identical tree.
@@ -213,15 +213,15 @@ Consumers pin to whichever axis they care about — both tags resolve to immutab
 ```bash
 # Fast iteration (warm cache ~1s)
 cargo check -p sc-extract
-cargo check -p sc-installs
+cargo check -p sc-discovery
 
 # Tests for the libs
-cargo test -p sc-installs             # 51 tests
+cargo test -p sc-discovery             # 51 tests
 cargo test -p sc-extract              # 91 tests (+ 3 doctests)
 cargo test -p sc-generator            # 3 naming tests
 
 # Clippy (strict)
-cargo clippy -p sc-installs --all-targets -- -D warnings
+cargo clippy -p sc-discovery --all-targets -- -D warnings
 cargo clippy -p sc-extract --all-targets -- -D warnings
 cargo clippy -p sc-generator --all-targets -- -D warnings
 
@@ -284,14 +284,14 @@ These are real bugs that were hit and fixed — future edits should not re-intro
 - **Poly enums use a different `Unknown` shape.** For polymorphic pointer fields, the fallback variant is `Unknown { struct_index: u32, instance_index: u32 }` — a two-field struct variant carrying the raw-layer escape hatch. Consumers holding `Datacore` can resolve an `Unknown` through `datacore.db().instance(struct_index, instance_index)`. Don't collapse this back to a single-`u32` `Unknown(u32)` — you'd lose the instance handle and break the escape hatch.
 - **`LocaleKey` lives in `sc-extract-generated`, not `sc-extract`.** Generated struct fields reference `LocaleKey` for every `DataType::Locale` field. Putting the newtype in `sc-extract` would create a dep cycle (since `sc-extract` already depends on `sc-extract-generated`). `sc-extract` re-exports it unchanged via the `locale` module.
 - **Let-chains are fine.** The workspace is on `rust-version = "1.94.1"`; let-chains have been stable since 1.88. Previously-nested `if let` blocks in `manifest.rs` and `tags.rs` were converted to let-chains after the version bump.
-- **Launcher log has two formats** (legacy plain-text + JSON v2.x). `sc-installs::log_parser` uses a single regex that works for both — don't split into separate parsers.
+- **Launcher log has two formats** (legacy plain-text + JSON v2.x). `sc-discovery::log_parser` uses a single regex that works for both — don't split into separate parsers.
 - **sc-langpatch writes `global.ini` as UTF-8 with BOM, not UTF-16 LE.** `LocaleMap::serialize` produces UTF-8+BOM for compatibility. `LocaleMap::parse` handles UTF-16 LE (the format shipped in `Data.p4k`), and `LocaleMap::parse_utf8_bom` handles the override-file format.
 
 ## What's done and what isn't
 
 See `status.md` for the always-current version. Brief snapshot:
 
-- ✅ **`sc-installs`** — fully implemented, 51 tests
+- ✅ **`sc-discovery`** — fully implemented, 51 tests
 - ✅ **`sc-extract`** — phases 2a + 2c + 2d done. API reworked 2026-04-13 into three staged entry points (`AssetSource::from_install` → `AssetData::extract` → `Datacore::parse`). `Datacore` owns the live `DataCoreDatabase` so raw svarog queries stay available post-parse. **Snapshot format reworked 2026-04-15 (later) to v5**: `ExtractSnapshot` now archives raw DCB + locale bytes (`{meta, files: BTreeMap<String, Vec<u8>>}`) instead of the cooked `DatacoreSnapshot`; the quartet is `capture` / `save` / `load` / `hydrate`. `AssetSource` became dual-sourced (live P4K or memory-backed byte map from a snapshot). 94 tests + 1 ignored live-roundtrip integration test.
 - ⏭️ **`sc-extract` phase 2b** — vehicle XML — **deliberately skipped**
 - ✅ **`sc-extract-generated`** — core/dormant/multi_feature split + 245 leaf feature dirs, typed enums, typed `LocaleKey`, poly enums with raw escape-hatch `Unknown`.
@@ -303,8 +303,8 @@ See `status.md` for the always-current version. Brief snapshot:
   unified `WeaponPools` keyed off `LocaleKey → Vec<Guid>` across all
   three families, `penetration_m` from `BulletProjectileParams`).
   See `docs/feature-request-sc-weapons-langpatch.md`. 28 unit tests.
-- ✅ **`sc-contracts`** — v2 complete (all 7 phases). `Mission` + `MissionIndex` + `MissionPools` + `Encounter` enum (Ships / NPCs / Entities / Unknown). 22 lib tests. Design history in `docs/sc-contracts.md` (v1, historical) + `docs/sc-contracts-v2.md` (v2, current); consumer guide in `docs/sc-contracts-guide.md`.
-- ✅ **`sc-explorer`** — interactive TUI binary at `tools/sc-explorer`. Per-crate `tui` modules in sc-contracts + sc-weapons own their domain views.
+- ✅ **`sc-missions`** — v2 complete (all 7 phases). `Mission` + `Missions` + `MissionPools` + `Encounter` enum (Ships / NPCs / Entities / Unknown). 22 lib tests. Design history in `docs/sc-missions.md` (v1, historical) + `docs/sc-missions-v2.md` (v2, current); consumer guide in `docs/sc-missions-guide.md`.
+- ✅ **`sc-explorer`** — interactive TUI binary at `tools/sc-explorer`. Per-crate `tui` modules in sc-missions + sc-weapons own their domain views.
 
 ## Where to read more
 
@@ -321,6 +321,6 @@ When working here, you may need to read code in sibling repos:
 - **`E:\repros\SuperLightTUI`** — read-only local clone of the SuperLightTUI source (the immediate-mode TUI lib `tools/sc-explorer` builds on). Use it to look up the public grammar (`Context`, `ListState`, `TabsState`, `TextInputState`, `ScrollState`, `bordered`, `row` / `col`, `command_palette`, …) — `docs/WIDGETS.md` is the categorized reference and `examples/demo_cli.rs` is the closest analogue to our explorer's list+detail layout. Do not modify.
 - **`E:\vscode\rust\bulkhead`** — the combat simulator. Reference implementation for damage-pipeline logic and the DCB data model docs (`docs/damage-system.md`, `docs/data-model.md`). Mostly scaffold, not a working app.
 - **`E:\vscode\rust\sc-damage-calculator`** — bulkhead's predecessor. Has a real working vehicle XML parser at `src/extract/hull.rs` (~490 lines). When sc-extract phase 2b is revived, port from this.
-- **`E:\vscode\rust\sc-langpatch`** — contract-patching Tauri app. Has working `discovery.rs` (reference for sc-installs) and a real contract-enhancer module (`src-tauri/src/modules/mission_enhancer.rs`) that shows the DCB contract system's complexity.
+- **`E:\vscode\rust\sc-langpatch`** — contract-patching Tauri app. Has working `discovery.rs` (reference for sc-discovery) and a real contract-enhancer module (`src-tauri/src/modules/mission_enhancer.rs`) that shows the DCB contract system's complexity.
 - **`E:\vscode\streamdeck\streamdeck-starcitizen`** — Stream Deck plugin. `src/discovery.rs` is the canonical prior-art for launcher log parsing.
 - **`C:\Games\StarCitizen\LIVE\Data.p4k`** — the game data file sc-generator consumes. Also extracted at `C:\Games\StarCitizen\Extracted\` for browsing.

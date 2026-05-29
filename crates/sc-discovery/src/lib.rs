@@ -6,8 +6,8 @@
 //! consumers back enough information to reach `Data.p4k`, `global.ini`,
 //! `user.cfg`, and friends.
 //!
-//! See `docs/sc-installs.md` in the workspace repository for the full
-//! design specification and `implementing/sc-installs.md` for
+//! See `docs/sc-discovery.md` in the workspace repository for the full
+//! design specification and `implementing/sc-discovery.md` for
 //! implementation notes.
 //!
 //! # Scope
@@ -33,7 +33,7 @@
 //! This crate does **not** open or parse game files. It has zero
 //! dependency on svarog, `sc-extract`, or any domain crate. A consumer
 //! that only needs to know "where is LIVE installed?" can depend on
-//! `sc-installs` alone and pay nothing for the extraction machinery.
+//! `sc-discovery` alone and pay nothing for the extraction machinery.
 //!
 //! # Quick start
 //!

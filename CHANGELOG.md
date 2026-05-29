@@ -36,7 +36,7 @@ separate commits and advance independently.
 
 ### Added
 
-- **`sc-installs`: `Installation::platform_id: Option<String>`.** Authoritative
+- **`sc-discovery`: `Installation::platform_id: Option<String>`.** Authoritative
   `'prod'` / `'ptu'` tag from the launcher store, populated during
   `discover()` and `discover_default()`. Lets consumers route to the right
   services endpoint or scope personal state by environment without re-mapping
@@ -47,7 +47,7 @@ separate commits and advance independently.
   for any prod-vs-test split. Already exposed on the lower-level
   `StoreInstall`; this just plumbs it to the public `Installation`.
 
-- **`sc-installs`: `read_identity()` / `read_identity_from()`.** Opt-in API
+- **`sc-discovery`: `read_identity()` / `read_identity_from()`.** Opt-in API
   exposing the currently-logged-in RSI handle from the launcher store's
   `identity` block. New type: `LauncherIdentity { handle: String }`.
   Only the handle is exposed — other identity fields (email, Heap account
@@ -63,7 +63,7 @@ separate commits and advance independently.
 
 ### Changed (breaking)
 
-- **`sc-contracts`: `MissionRewards.blueprint: Option<BlueprintReward>` → `blueprints: Vec<BlueprintReward>`.**
+- **`sc-missions`: `MissionRewards.blueprint: Option<BlueprintReward>` → `blueprints: Vec<BlueprintReward>`.**
   Multi-pool missions in the DCB store multiple `BlueprintRewards`
   entries side-by-side in their `contractResults`; the old `Option`
   shape combined with an early `return` in `resolve_blueprint_reward`
@@ -71,25 +71,25 @@ separate commits and advance independently.
   preserves all entries. Field rename is intentional — every
   consumer's call site breaks at compile time, making the migration
   auditable rather than a silent semantic shift.
-- **`sc-contracts`: `BlueprintReward` slimmed to `{ chance, pool_guid }`.**
+- **`sc-missions`: `BlueprintReward` slimmed to `{ chance, pool_guid }`.**
   Dropped the duplicated `pool_name` and cloned `items: Vec<BlueprintItem>`
   that previously lived on each reward. Consumers resolve the pool's
-  name and items via [`BlueprintPoolRegistry::get(pool_guid)`] at
+  name and items via [`BlueprintPools::get(pool_guid)`] at
   render time. Single source of truth for pool contents; no more
   silent drift between the registry and the mission's snapshot.
-- **`sc-contracts`: `expand_all` no longer takes `&BlueprintPoolRegistry`.**
+- **`sc-missions`: `expand_all` no longer takes `&BlueprintPools`.**
   Now that `materialise_blueprint` doesn't need to resolve items at
   build time, the param is dropped from the entire `expand_all` /
-  `walk_handler` / `emit_*` / `build_expansion` chain. `MissionIndex::build`
+  `walk_handler` / `emit_*` / `build_expansion` chain. `Missions::build`
   populates the reverse index after expansion via the new
   `link_missions` call.
 
 ### Added
 
-- **`sc-contracts`: reverse-index lookups on `BlueprintPoolRegistry`.**
+- **`sc-missions`: reverse-index lookups on `BlueprintPools`.**
   New methods unlock pool → missions and item → missions queries:
   - `missions_for_pool(pool_guid) -> &[Guid]` — mission GUIDs that
-    award the given blueprint pool. Populated by `MissionIndex::build`
+    award the given blueprint pool. Populated by `Missions::build`
     via the new `link_missions(&[Mission])` after `expand_all`.
   - `pools_containing_item(blueprint_record_guid) -> Vec<&BlueprintPool>` —
     every pool that contains the given blueprint record as one of
@@ -113,7 +113,7 @@ separate commits and advance independently.
   `LocaleMap::set`. New `pub fn strip_locale_metadata(&str) -> &str`
   exposed for downstream consumers (e.g. sc-langpatch's INI parsers)
   so the same normalization can apply at their boundaries too.
-- **`sc-contracts`: `blueprint_item_probe` example.** Dumps every
+- **`sc-missions`: `blueprint_item_probe` example.** Dumps every
   `BlueprintItem` in a matching mission's blueprint pools with full
   DCB metadata — record names, entity record + struct type,
   `LocalizedItemCache` entries, every component on the crafted entity
@@ -123,7 +123,7 @@ separate commits and advance independently.
 
 ### Fixed
 
-- **`sc-contracts`: `blueprint_pool_consistent` switched to per-set
+- **`sc-missions`: `blueprint_pool_consistent` switched to per-set
   equality.** With `MissionRewards.blueprints` now a `Vec`, the
   old "all members agree on one pool guid" check needs to compare
   the *set* of pool guids across members. Members A {X, Y} and B {X, Y}
@@ -131,16 +131,16 @@ separate commits and advance independently.
 
 ### Internal
 
-- `cargo fmt` pass across `crates/sc-contracts/src/axes.rs` and
+- `cargo fmt` pass across `crates/sc-missions/src/axes.rs` and
   ~8 example files. Pure whitespace reflow, no semantic change.
 
 ## [v0.4.0] - 2026-05-24
 
 ### Added
 
-- **`sc-contracts`: tag-axis classifier.** New `axes` module exposes
+- **`sc-missions`: tag-axis classifier.** New `axes` module exposes
   `AxisKind`, `AxisValues`, `AxisDiff`, `SharedTag`. Classifies tags
-  by their position in the `TagTree` (`AI/Ship/CombatClass/*`,
+  by their position in the `Tags` (`AI/Ship/CombatClass/*`,
   `AI/SkillDefinitions/*`, `Missions/VehicleType/Ship/*`,
   `Ship/Model/*`, `EntityEffectSystem/Tags/*`, etc.) into a small
   set of player-meaningful families. Renderers use this to decide
@@ -158,7 +158,7 @@ separate commits and advance independently.
 
 ### Changed (breaking)
 
-- **`sc-contracts`: `EncounterPhase` reshaped to preserve
+- **`sc-missions`: `EncounterPhase` reshaped to preserve
   `ShipOptions` alternatives.** Old shape `EncounterPhase { name,
   slots: Vec<S> }` flattened the three-level DCB nesting
   (`ShipGroup → ShipOptions → Ship`) and lost the boundary between
@@ -186,7 +186,7 @@ separate commits and advance independently.
 
 ### Added
 
-- **`sc-installs`: launcher-store discovery.** New module `launcher_store`
+- **`sc-discovery`: launcher-store discovery.** New module `launcher_store`
   reads `%APPDATA%/rsilauncher/launcher store.json` (electron-store /
   AES-256-CBC) for an authoritative list of installed channels — works
   even for channels never launched. Encryption key is extracted at
@@ -202,7 +202,7 @@ separate commits and advance independently.
   - New deps: `aes`, `cbc`, `pbkdf2`, `sha2` (pure-rust, no DPAPI).
   - See `docs/launcher-store.md` for the full launcher-store reference.
 
-- **`sc-installs`: broader log parsing.** Recognises `[Installer]` and
+- **`sc-discovery`: broader log parsing.** Recognises `[Installer]` and
   `Deleting <root>\loginData.json` markers in addition to
   `[Launcher::launch]`, so log-fallback discovery finds channels that
   have been installed but never launched. New `LogEntry` /
@@ -214,7 +214,7 @@ separate commits and advance independently.
 
 ### Changed (breaking)
 
-- **`sc-installs`: `Installation::launcher_version_string()` removed.**
+- **`sc-discovery`: `Installation::launcher_version_string()` removed.**
   Replaced with two explicit alternatives because the old auto-derivation
   was silently off-by-patch-number once any hotfix shipped on top of an
   X.Y.0 branch (the manifest's `Branch` field doesn't roll forward):
@@ -232,14 +232,14 @@ separate commits and advance independently.
   `datacore/4.7.0-live.X` for a 4.7.2 build can't slip through. The
   regen script gets this for free.
 
-- **`sc-installs`: `Error::NoLaunchEntries` renamed** to
+- **`sc-discovery`: `Error::NoLaunchEntries` renamed** to
   `Error::NoInstallEntries` — the error now also covers logs that have
   no `Installer` markers, not just no launch markers.
 
-- **`sc-installs`: `parse_launcher_log_entries` return type changed**
+- **`sc-discovery`: `parse_launcher_log_entries` return type changed**
   from `Vec<(Channel, PathBuf)>` to `Vec<LogEntry>`.
 
-- **`sc-installs`: legacy plain-text manifest parsing removed.** Only
+- **`sc-discovery`: legacy plain-text manifest parsing removed.** Only
   the v2 nested `{"Data": {...}}` shape is parsed now. The legacy
   flat-format support was code path debt — every shipped Star Citizen
   build the workspace targets uses the v2 shape.
@@ -248,11 +248,11 @@ separate commits and advance independently.
 
 ### Changed (breaking)
 
-- **`sc-contracts` v2 redesign — Mission-centric API.** Wholesale
+- **`sc-missions` v2 redesign — Mission-centric API.** Wholesale
   rename and reshape of the public surface; every consumer needs
-  updates. Design doc: `docs/sc-contracts-v2.md`; consumer guide:
-  `docs/sc-contracts-guide.md`.
-  - `Contract` → `Mission`, `ContractIndex` → `MissionIndex`,
+  updates. Design doc: `docs/sc-missions-v2.md`; consumer guide:
+  `docs/sc-missions-guide.md`.
+  - `Contract` → `Mission`, `ContractIndex` → `Missions`,
     `EncounterWave` → `EncounterPhase` (now generic
     `EncounterPhase<S>`).
   - `MissionOrigin` consolidates the previously-flat handler fields
@@ -268,7 +268,7 @@ separate commits and advance independently.
     SC 4.7), `is_critical`, `faction_override`.
   - Implicit BP merge step removed; `Variation`, `title_siblings`,
     and `find_bp_conflicts` deleted. Consumers walking the
-    inheritance chain manually should switch to `MissionIndex` /
+    inheritance chain manually should switch to `Missions` /
     `MissionPools`.
 
 ### Added
@@ -276,22 +276,22 @@ separate commits and advance independently.
 - **`MissionPools`** precomputed on the index, with opt-in
   divergence helpers for consumers that need to reason about per-BP
   pool drift without re-walking the graph themselves.
-- **`ShipRegistry::resolve_spawn`** — tag-tree subsumption + spawn-
+- **`Ships::resolve_spawn`** — tag-tree subsumption + spawn-
   state filter. Recovered 80 of 335 previously-empty ship-encounter
   slots on SC 4.7 LIVE (24% drop). Three coupled bugs fixed: ancestor
   tag matching, `AI > Ship > SpawnFlags` / `AI > CargoManifest` state
   tags being misread as identity filters, and the dual-`Ship`-node
   intent gate over-firing. See `status.md` "Last worked on" for the
   data-driven derivation.
-- **Narrow-consumer re-exports** on `sc-contracts` and `sc-weapons`
+- **Narrow-consumer re-exports** on `sc-missions` and `sc-weapons`
   (`EntityClassDefinition`, locale-key cluster API) so callers don't
   have to depend on `sc-extract` directly for common types.
 - **`tools/sc-explorer`** — interactive TUI binary with three tabs
   (Pools / Contracts / Weapons). Per-crate `tui` modules
-  (`sc-contracts/src/tui`, `sc-weapons/src/tui`) own their domain
+  (`sc-missions/src/tui`, `sc-weapons/src/tui`) own their domain
   views behind a `tui` feature.
 - **Investigation examples** (committed under
-  `crates/sc-contracts/examples/`) — `contract_dump`, `ambush_dig`,
+  `crates/sc-missions/examples/`) — `contract_dump`, `ambush_dig`,
   `damage_dig`, `salvage_pool`, `spawn_dig`, `encounter_analytics`,
   `encounter_kinds`, `role_investigation`, `tier_investigation`.
   Canonical way to run a quick dig against a fresh DCB regen.
@@ -306,16 +306,16 @@ separate commits and advance independently.
 
 ### Added
 
-- `sc_contracts::Contract` and `sc_contracts::Variation` now carry
+- `sc_missions::Contract` and `sc_missions::Variation` now carry
   `title_key: Option<LocaleKey>` and `description_key: Option<LocaleKey>`
   alongside the resolved `title` / `description` strings. Consumers
   patching `global.ini` (sc-langpatch, translation-extraction tooling)
   no longer need to re-walk the contract inheritance chain to recover
   the raw INI key the displayed text was resolved from.
-- `sc_contracts::ResolvedText` gained the same `title_key` /
+- `sc_missions::ResolvedText` gained the same `title_key` /
   `description_key` fields; `resolve_contract_text` fills them during
   the existing inheritance walk at no extra cost.
-- `sc_contracts::ExpandedContract` propagates the keys so
+- `sc_missions::ExpandedContract` propagates the keys so
   pre-merge consumers see them too.
 
 ### Changed

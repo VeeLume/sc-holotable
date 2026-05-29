@@ -1,4 +1,4 @@
-# `sc-installs` — implementation notes
+# `sc-discovery` — implementation notes
 
 **Status**: Complete. 51 tests + 1 doctest. No planned changes.
 
@@ -13,9 +13,9 @@ The launcher-visible version format (`4.7.1-live.11592622`) is also from sc-lang
 
 ## Consumer switch-over plan
 
-1. **streamdeck-starcitizen** switches first. Its `src/discovery.rs` becomes a thin wrapper around `sc_installs::discover`. Strongest validation since it's the source of the reference implementation.
+1. **streamdeck-starcitizen** switches first. Its `src/discovery.rs` becomes a thin wrapper around `sc_discovery::discover`. Strongest validation since it's the source of the reference implementation.
 2. **sc-langpatch** follows. Its `src-tauri/src/discovery.rs` becomes an import with `specta` feature enabled.
-3. **bulkhead** uses `sc_installs::discover_last_launched` directly (greenfield).
+3. **bulkhead** uses `sc_discovery::discover_last_launched` directly (greenfield).
 
 ## Non-obvious decisions
 

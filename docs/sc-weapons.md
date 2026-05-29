@@ -35,7 +35,7 @@ v1 is **data accessors only** — no derived calculations (sustained DPS, time-t
 - sc-ammo as a separate crate (ammo logic is inline in a private `damage` module).
 - Damage pipeline (shield/armor/hull) — consumer responsibility.
 - Ship loadout / hardpoint resolution — future sc-ships.
-- Display name / manufacturer name resolution — consumers use `DisplayNameCache` / `ManufacturerRegistry` directly.
+- Display name / manufacturer name resolution — consumers use `DisplayNameCache` / `Manufacturers` directly.
 - Power state multiplier application (all 1.0 on combat weapons in 4.7).
 
 ## Architecture: materialized owned structs
@@ -393,6 +393,6 @@ Phase 3 shipped on top of these fixes — see method listing above.
 - **BallisticWeapon / EnergyWeapon specialization traits** — the Option-returning pattern. SustainKind enum is sufficient for v1.
 - **sc-ammo as separate crate** — extract damage.rs when a second consumer needs ammo logic independently.
 - **Display name resolution** — consumers use `DisplayNameCache::get(&weapon.guid)` directly.
-- **Manufacturer name resolution** — consumers use `ManufacturerRegistry::get(&weapon.manufacturer_guid)` directly.
+- **Manufacturer name resolution** — consumers use `Manufacturers::get(&weapon.manufacturer_guid)` directly.
 - **Power state multipliers** — all 1.0 on combat weapons in 4.7. Overclock was active in a past patch but is currently disabled. Infrastructure exists but unused.
 - **Weapon attachment sub-ports** — SItemPortContainerComponentParams + SEntityComponentDefaultLoadoutParams for optics, barrels, underbarrels on FPS weapons.

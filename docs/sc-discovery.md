@@ -1,10 +1,10 @@
-# `sc-installs` — design specification
+# `sc-discovery` — design specification
 
 > Status: **decisions locked, ready for implementation planning.** Nothing in this document is implemented yet.
 
 ## Purpose
 
-`sc-installs` is the shared Star Citizen install discovery crate for the holotable workspace. It locates installed SC channels by parsing the RSI Launcher log, reads their `build_manifest.id` for version info, and hands consumers back typed `Installation` values with path helpers for the common game files.
+`sc-discovery` is the shared Star Citizen install discovery crate for the holotable workspace. It locates installed SC channels by parsing the RSI Launcher log, reads their `build_manifest.id` for version info, and hands consumers back typed `Installation` values with path helpers for the common game files.
 
 It is the only crate all three consumers depend on. It has **zero domain dependencies** — no svarog, no `sc-extract`, no DCB awareness.
 
@@ -38,7 +38,7 @@ They are **not** transformations of each other — they read different fields of
 
 **Validation divergence.** streamdeck only checks that the directory exists; sc-langpatch also checks that `Data.p4k` exists inside it. Strict wins — a directory without `Data.p4k` is useless to every consumer.
 
-**ActiveInstallationState is UI state, not discovery state.** streamdeck's `src/state/installations.rs` wraps discovery results in an `ArcSwap` with selected-index, next/previous cycling, and "last launched" tracking. That is Stream Deck plugin behavior, not install-discovery behavior, and it does not belong in `sc-installs`. Each consumer manages its own selection state.
+**ActiveInstallationState is UI state, not discovery state.** streamdeck's `src/state/installations.rs` wraps discovery results in an `ArcSwap` with selected-index, next/previous cycling, and "last launched" tracking. That is Stream Deck plugin behavior, not install-discovery behavior, and it does not belong in `sc-discovery`. Each consumer manages its own selection state.
 
 ## Proposed API
 
@@ -340,7 +340,7 @@ Standard library convention. Consumers using `anyhow` can `?`-propagate transpar
 These are consumer concerns, listed here so the boundary is unambiguous:
 
 - **Stateful selection / cycling.** Lives in each app.
-- **Filesystem writes.** `localization_override()` returns a `PathBuf`; sc-langpatch owns the `std::fs::write` call. This preserves the rule that `sc-installs` has no dep on `sc-extract` and vice versa.
+- **Filesystem writes.** `localization_override()` returns a `PathBuf`; sc-langpatch owns the `std::fs::write` call. This preserves the rule that `sc-discovery` has no dep on `sc-extract` and vice versa.
 - **Tauri bridge glue.** The lib provides `serde` derives unconditionally and `specta::Type` behind a feature flag, but sc-langpatch still owns its Tauri command wiring, IPC boundary, and any UI-specific fields it wants on top of `Installation`.
 - **User-facing error messages.** Errors are structured; message formatting is each consumer's UX.
 - **Process / app-name monitoring.** Stays in streamdeck-starcitizen.
@@ -348,6 +348,6 @@ These are consumer concerns, listed here so the boundary is unambiguous:
 
 ## Out of scope for this document
 
-- The implementation plan itself — that goes in `implementing/sc-installs.md` once this spec is agreed.
+- The implementation plan itself — that goes in `implementing/sc-discovery.md` once this spec is agreed.
 - Non-Windows support. All three consumers are Windows-only today. The lib should compile on other platforms (no Windows-specific APIs in the public surface), but install discovery via `%APPDATA%` is inherently Windows-shaped.
 - Integration with a future "user config" layer that lets the user pin custom install paths. `Installation::from_root()` is the entry point when that arrives.

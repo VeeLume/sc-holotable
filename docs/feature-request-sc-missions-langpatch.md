@@ -1,15 +1,15 @@
-# Feature request — `sc-contracts` gaps surfaced by sc-langpatch migration
+# Feature request — `sc-missions` gaps surfaced by sc-langpatch migration
 
 > **Consumer:** `sc-langpatch` (`mission_enhancer` module)
-> **Filed:** 2026-04-24, revised 2026-05-01 after the typed-difficulty audit ([`tier_investigation.rs`](../crates/sc-contracts/examples/tier_investigation.rs)).
+> **Filed:** 2026-04-24, revised 2026-05-01 after the typed-difficulty audit ([`tier_investigation.rs`](../crates/sc-missions/examples/tier_investigation.rs)).
 > **Status:** Five sections proposed. The originally-filed §1 (localization keys on `Contract` / `Variation`) shipped in `sc-holotable/v0.1.0` and is removed from this list. The originally-filed `MissionTier` and `Variation.variant_label` sections are dropped per the typed-difficulty finding (see §3).
-> **Driver:** Migration of `mission_enhancer` from raw svarog walks to `sc-contracts` v1, then redesign of the description-block layout to render one block per meaningful contract variant.
+> **Driver:** Migration of `mission_enhancer` from raw svarog walks to `sc-missions` v1, then redesign of the description-block layout to render one block per meaningful contract variant.
 
 ## Background
 
 `sc-langpatch`'s `mission_enhancer` annotates `global.ini` mission text — adds `[BP]` / `[Solo]` / `[Uniq]` / `[CS Risk]` tags to titles and a multi-line block (blueprint list, cooldowns, rep / scrip rewards, ship encounters) to descriptions.
 
-The migration to `sc_contracts::ContractIndex` collapsed the module from ~1460 lines to ~480. Almost everything the old code did by hand — generator/handler/contract walking, blueprint pool resolution, ship-tag intent matching, AI skill parsing, mixed-BP detection — comes for free from the `Contract` model and `find_bp_conflicts`.
+The migration to `sc_missions::ContractIndex` collapsed the module from ~1460 lines to ~480. Almost everything the old code did by hand — generator/handler/contract walking, blueprint pool resolution, ship-tag intent matching, AI skill parsing, mixed-BP detection — comes for free from the `Contract` model and `find_bp_conflicts`.
 
 Five pieces still require raw-svarog walks or per-consumer heuristics. They're tagged `TODO(sc-holotable)` in the consumer code and filed here.
 
@@ -179,7 +179,7 @@ Classification rule lives in `expand.rs::collect_property_encounters` (next to w
 
 The original draft of this doc proposed a `Contract.tier: Option<MissionTier>` enum mapping bounty contracts to CIG's named risk tiers (`Low`, `Moderate`, `High`, `VeryHigh`, `Extreme`) plus `Numbered(u8)` for `Tier 1 / Tier 2 / …` families. The classifier was specced to walk typed DCB difficulty fields with a `debug_name` substring fallback — same pattern sc-langpatch uses today.
 
-The audit script [`crates/sc-contracts/examples/tier_investigation.rs`](../crates/sc-contracts/examples/tier_investigation.rs) ran against SC 4.7 LIVE to confirm the typed source. Findings:
+The audit script [`crates/sc-missions/examples/tier_investigation.rs`](../crates/sc-missions/examples/tier_investigation.rs) ran against SC 4.7 LIVE to confirm the typed source. Findings:
 
 - `ContractDifficulty` records carry four `1-7` scales: `risk_of_loss`, `mechanical_skill`, `mental_load`, `game_knowledge`. Coverage: **99.2% of `CareerContract`**, **65.5% of `Contract`**, 0% of `ContractLegacy`.
 - The four scales **do** vary across tiered siblings — but `VeryEasy` and `Easy` of the same family collapse to identical quadruples. The typed data is **coarser** than CIG's named tiers.
@@ -239,13 +239,13 @@ Inheritance: the parent's `ContractDifficulty` is propagated to all sub-contract
 - A `CareerContract` with sub-contracts → the parent's `ContractDifficultyView` propagated to every `Variation`.
 - A `ContractLegacy` → `difficulty: None`.
 
-The audit script [`crates/sc-contracts/examples/tier_investigation.rs`](../crates/sc-contracts/examples/tier_investigation.rs) is the reproducible evidence; running it against a future patch verifies the data shape hasn't drifted.
+The audit script [`crates/sc-missions/examples/tier_investigation.rs`](../crates/sc-missions/examples/tier_investigation.rs) is the reproducible evidence; running it against a future patch verifies the data shape hasn't drifted.
 
 ## 4. Empty `EncounterSlot.candidates` — diagnostics + broadening
 
 ### What's missing
 
-`ShipRegistry::resolve_spawn` returns an empty `candidates` vec for some spawn slots — even after enabling `entityclassdefinition` and feeding a populated base-locale `DisplayNameCache`. `sc-contracts/src/expand.rs` already documents the case as "Empty when the query is broken (e.g. Gilly Mission01 Wave3's typo'd `Relient_Tana` tag) or awaits runtime location context." Consumers can't currently distinguish the failure modes:
+`Ships::resolve_spawn` returns an empty `candidates` vec for some spawn slots — even after enabling `entityclassdefinition` and feeding a populated base-locale `DisplayNameCache`. `sc-missions/src/expand.rs` already documents the case as "Empty when the query is broken (e.g. Gilly Mission01 Wave3's typo'd `Relient_Tana` tag) or awaits runtime location context." Consumers can't currently distinguish the failure modes:
 
 - **Typo'd tag** — DCB bug; matching is impossible.
 - **Tag-only spawn** (e.g. `LargeCombatShip` + faction, no ship-selective tag) — query is valid but `resolve_spawn` doesn't broaden.
@@ -325,7 +325,7 @@ In sc-langpatch terms: **none of these block the migration.** The raw walks and 
 
 Loose ranking:
 
-1. **§1 Crimestat risk** — biggest code reduction (~80 lines), real domain modelling in sc-contracts' wheelhouse.
+1. **§1 Crimestat risk** — biggest code reduction (~80 lines), real domain modelling in sc-missions' wheelhouse.
 2. **§2 EncounterRole** — small but eliminates a fragile substring classifier shared across consumers.
 3. **§3 Contract.difficulty** — typed-data lift; trivial to implement (the chain is `ContractResults → ContractDifficulty` and the latter is a flat record).
 4. **§4 Empty-candidate diagnostics** — non-trivial; requires deciding the broadening heuristic. Defer until at least one other consumer asks.
@@ -336,10 +336,10 @@ Reasonable bundling: §1 + §2 + §3 land together as a "Phase A" pass — they 
 ## Cross-references
 
 - Consumer code with `TODO(sc-holotable)` markers: `E:\vscode\rust\sc-langpatch\src-tauri\src\modules\mission_enhancer.rs`
-- Property-walk integration point for crimestat: `crates/sc-contracts/src/expand.rs` (per-contract `propertyOverrides` traversal)
-- Encounter-role classifier integration point: `crates/sc-contracts/src/expand.rs::collect_property_encounters` (where `variable_name` is read)
-- Difficulty audit script: `crates/sc-contracts/examples/tier_investigation.rs`
-- Tag-tree subtree classifier (cargo / value / legality): `crates/sc-contracts/src/classify.rs::SpawnContext::classify`
-- Empty-candidate diagnostics: `crates/sc-contracts/src/ships.rs::ShipRegistry::resolve_spawn`
-- Existing `Contract` surface: `docs/sc-contracts-guide.md` §"The `Contract` model"
+- Property-walk integration point for crimestat: `crates/sc-missions/src/expand.rs` (per-contract `propertyOverrides` traversal)
+- Encounter-role classifier integration point: `crates/sc-missions/src/expand.rs::collect_property_encounters` (where `variable_name` is read)
+- Difficulty audit script: `crates/sc-missions/examples/tier_investigation.rs`
+- Tag-tree subtree classifier (cargo / value / legality): `crates/sc-missions/src/classify.rs::SpawnContext::classify`
+- Empty-candidate diagnostics: `crates/sc-missions/src/ships.rs::Ships::resolve_spawn`
+- Existing `Contract` surface: `docs/sc-missions-guide.md` §"The `Contract` model"
 - Sister request for the weapons module: `docs/feature-request-sc-weapons-langpatch.md`

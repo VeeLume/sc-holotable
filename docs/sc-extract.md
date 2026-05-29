@@ -4,11 +4,13 @@
 >
 > The API was reworked on 2026-04-13 to split runtime state from serializable data. See the "Entry points" and "Result types" sections for the current shape. Implementation notes for Phase 2c modules (graph, tags, manufacturers, display names, filters) are in `implementing/sc-extract-2c.md`.
 
+> **⚠️ Superseded in parts (v0.8.0, 2026-05-29).** The cross-cutting cooked services this spec attributes to `sc-extract` — **tags, manufacturers, display names / items** — have **moved out** into their own crates (`sc-tags` → `Tags`, `sc-manufacturers` → `Manufacturers`, `sc-items` → `Item`/`Items`). `DatacoreConfig` and the cooked `DatacoreSnapshot` were **dissolved**: `Datacore` now owns a `RecordStore` directly (`Datacore::records()`), built by explicit `X::build` calls. New since: `RecordPaths`, the bundled-walk API (`RecordVisitor` / `BundledWalk`), and the generic `ProcessedSnapshot`. **Current source of truth:** `docs/workspace-structure.md` (esp. rules 6–7) + each crate's doc-comments. Sections below mentioning `DatacoreConfig` / `DatacoreSnapshot` / `LocalizedItem*` describe the pre-v0.8.0 shape and are kept as design history.
+
 ## Purpose
 
 `sc-extract` is the foundational data-access crate for the holotable workspace. It owns the complete generated DataCore type catalog, wraps svarog with ergonomic re-exports, builds the reference graph, parses non-DCB game files (vehicle XML, `global.ini`), and exposes every cross-cutting service (tags, manufacturers, localization, display names, filters, vehicle data) that domain crates depend on.
 
-It is the only non-`sc-installs` crate in the workspace that has svarog as a dependency. Every other crate (`sc-ammo`, `sc-weapons`, `sc-contracts`, future component crates, future `sc-ships`) depends on `sc-extract` and gets its svarog access through re-exports.
+It is the only non-`sc-discovery` crate in the workspace that has svarog as a dependency. Every other crate (`sc-ammo`, `sc-weapons`, `sc-missions`, future component crates, future `sc-ships`) depends on `sc-extract` and gets its svarog access through re-exports.
 
 **Two data sources, one crate.** Star Citizen game data lives in two fundamentally different formats inside `Data.p4k`: the DataCore (`Game2.dcb`, ~500 MB binary object database, ~200k records) for most game data, and **CryXmlB vehicle XML files** (`data/scripts/entities/vehicles/implementations/xml/*.xml`) for ship structure, hardpoint definitions, and flight performance. sc-extract handles both — the layering is on data source, not on format.
 
@@ -18,9 +20,9 @@ It is the only non-`sc-installs` crate in the workspace that has svarog as a dep
 |---|---|
 | `sc-ammo` | Generated `AmmoParams` + related types via `DatacoreSnapshot::records`; svarog re-exports for custom extraction. |
 | `sc-weapons` | Generated `EntityClassDefinition`, `SCItemWeaponComponentParams`, fire-action enum via `DatacoreSnapshot::records`; access to ammo records through the same store. |
-| `sc-contracts` | Generated contract generator types; **reference graph** (for reverse lookups from tags/blueprints back to contracts); tag tree; localization. |
+| `sc-missions` | Generated contract generator types; **reference graph** (for reverse lookups from tags/blueprints back to contracts); tag tree; localization. |
 | `bulkhead` (future consumer) | Everything above plus playable-content filters, display-name cache, snapshot round-trip. |
-| `sc-langpatch` (future consumer) | Everything above plus `LocaleMap` round-trip (parse + serialize patched `global.ini`) and `sc-installs` path helpers for the write target. |
+| `sc-langpatch` (future consumer) | Everything above plus `LocaleMap` round-trip (parse + serialize patched `global.ini`) and `sc-discovery` path helpers for the write target. |
 
 ## Scope
 
@@ -44,7 +46,7 @@ It is the only non-`sc-installs` crate in the workspace that has svarog as a dep
 - Domain-specific wrappers (`Weapon`, `Ammo`, `Ship`, etc.). Those live in domain crates.
 - Weapon-intrinsic calculations (DPS, sustained DPS, heat curves). Those live in `sc-weapons`.
 - Damage-pipeline calculations (shield → armor → hull). Those live in `bulkhead` for now, eventually `sc-ships`.
-- Filesystem writes to the SC install directory. `sc-langpatch` owns its own `std::fs::write` calls using path helpers from `sc-installs`.
+- Filesystem writes to the SC install directory. `sc-langpatch` owns its own `std::fs::write` calls using path helpers from `sc-discovery`.
 - Stateful selection / UI logic.
 - Tauri or Specta bindings. Serde derives are always-on, Specta is not offered (domain crates can add it at their own boundary).
 
@@ -221,7 +223,7 @@ The `records_of_type` and `get` methods handle cross-type iteration without the 
 Hand-written navigation helpers on top of the generated `Tag` records. The DCB has ~18k tag records arranged in a strict parent-child tree.
 
 ```rust
-pub struct TagTree {
+pub struct Tags {
     by_guid: HashMap<Guid, TagNode>,
     by_name: HashMap<String, Vec<Guid>>,  // name collisions happen; return all matches
     roots: Vec<Guid>,                     // top-level tags (no parent)
@@ -236,7 +238,7 @@ pub struct TagNode {
     pub legacy_guid: Option<u32>,
 }
 
-impl TagTree {
+impl Tags {
     pub fn get(&self, guid: &Guid) -> Option<&TagNode>;
 
     /// Returns all tags with this name. Collisions exist in the DCB.
@@ -263,12 +265,12 @@ The tree is built during parse by walking `TagDatabase` records (which contain n
 Flat ~100 records. Hand-written lookup on top of the generated `SCItemManufacturer` struct.
 
 ```rust
-pub struct ManufacturerRegistry {
+pub struct Manufacturers {
     by_guid: HashMap<Guid, SCItemManufacturer>,
     by_code: HashMap<String, Guid>,  // "GATS" → Guid, "AEGS" → Guid
 }
 
-impl ManufacturerRegistry {
+impl Manufacturers {
     pub fn get(&self, guid: &Guid) -> Option<&SCItemManufacturer>;
     pub fn by_code(&self, code: &str) -> Option<&SCItemManufacturer>;
     pub fn all(&self) -> impl Iterator<Item = &SCItemManufacturer> + '_;
@@ -320,7 +322,7 @@ impl LocaleMap {
 
 **Serialization format:** `serialize()` produces **UTF-8 with BOM**, not UTF-16 LE. Star Citizen accepts both encodings for override files. UTF-8 is easier to inspect, diff, and matches what sc-langpatch already writes.
 
-**Scope boundary:** `sc-extract` deals in bytes and types. It does **not** write patched `global.ini` files to the install's override path — that is `sc-langpatch`'s concern, using a path helper from `sc-installs` and the serializer from `LocaleMap`. This preserves the rule that `sc-extract` has no dependency on `sc-installs`.
+**Scope boundary:** `sc-extract` deals in bytes and types. It does **not** write patched `global.ini` files to the install's override path — that is `sc-langpatch`'s concern, using a path helper from `sc-discovery` and the serializer from `LocaleMap`. This preserves the rule that `sc-extract` has no dependency on `sc-discovery`.
 
 ## Vehicle XML (CryXmlB files)
 
@@ -584,8 +586,8 @@ pub struct AssetData {
 pub struct DatacoreSnapshot {
     pub records: RecordStore,
     pub graph: ReferenceGraph,
-    pub tag_tree: TagTree,
-    pub manufacturers: ManufacturerRegistry,
+    pub tag_tree: Tags,
+    pub manufacturers: Manufacturers,
     pub display_names: DisplayNameCache,
 }
 
@@ -629,9 +631,9 @@ The [`DatacoreSnapshot`] itself holds no references into the DCB bytes and survi
 
 Two reasons, in order of importance:
 
-1. **The cross-cutting services have to walk everything anyway.** `ReferenceGraph` needs a full pass to discover every edge. `TagTree` needs a full pass to find every tag. `DisplayNameCache` needs a full pass to resolve every entity's display name. `ManufacturerRegistry` needs a full pass. If you're walking the DCB to build these indices, you might as well materialize the records while you're there — the marginal cost per record is small.
+1. **The cross-cutting services have to walk everything anyway.** `ReferenceGraph` needs a full pass to discover every edge. `Tags` needs a full pass to find every tag. `DisplayNameCache` needs a full pass to resolve every entity's display name. `Manufacturers` needs a full pass. If you're walking the DCB to build these indices, you might as well materialize the records while you're there — the marginal cost per record is small.
 
-2. **Memory is affordable.** A full eager `DatacoreSnapshot` fits comfortably in the memory budget of a modern desktop app. The one workspace consumer with tight memory constraints (streamdeck-starcitizen) doesn't use `sc-extract` at all — it only depends on `sc-installs`.
+2. **Memory is affordable.** A full eager `DatacoreSnapshot` fits comfortably in the memory budget of a modern desktop app. The one workspace consumer with tight memory constraints (streamdeck-starcitizen) doesn't use `sc-extract` at all — it only depends on `sc-discovery`.
 
 (An earlier revision of this section listed "the snapshot model requires it" as the primary reason — that rationale evaporated in the v5 format change. Snapshots now archive raw DCB bytes and re-parse on load, so the cooked `DatacoreSnapshot` no longer needs to survive serialization. Eager parsing is still the right call, but the justification is now about query-time ergonomics, not serde compatibility.)
 
@@ -646,8 +648,8 @@ These are rough projections. Real numbers will come from the first implementatio
 | `vehicle_xmls` | ~5 MB (few hundred ships, typed) |
 | `DisplayNameCache` | ~5 MB |
 | `LocaleMap` | ~5 MB |
-| `TagTree` | ~2 MB |
-| `ManufacturerRegistry` | < 1 MB |
+| `Tags` | ~2 MB |
+| `Manufacturers` | < 1 MB |
 | **Total** | **~120–180 MB** |
 
 For comparison: the raw DCB (`Game2.dcb`) inside `Data.p4k` is ~500 MB. Our extracted representation is *smaller* than the DCB because typed values drop per-record metadata overhead (property tables, string pool references, value array indirection) and keep only the data itself.
@@ -705,7 +707,7 @@ impl AssetSource {
     pub fn open(p4k_path: &Path) -> Result<Self>;
 
     /// Convenience: open the `Data.p4k` from a discovered installation.
-    pub fn from_install(install: &sc_installs::Installation) -> Result<Self>;
+    pub fn from_install(install: &sc_discovery::Installation) -> Result<Self>;
 }
 
 impl AssetData {
@@ -763,8 +765,8 @@ impl ExtractSnapshot {
 ### The four consumer patterns
 
 ```rust
-// 1. install only — use sc-installs, don't touch sc-extract
-let install = sc_installs::discover_primary()?;
+// 1. install only — use sc-discovery, don't touch sc-extract
+let install = sc_discovery::discover_primary()?;
 
 // 2. install + assets — streamdeck-starcitizen pattern
 let assets = AssetSource::from_install(&install)?;
@@ -930,7 +932,7 @@ Explicit list, so the layering stays sharp:
 - **Stateful selection or UI logic.**
 - **Tauri / Specta glue.**
 - **User-facing diagnostic strings.**
-- **Install discovery.** That's `sc-installs`. `sc-extract` takes `&Path` values from the caller.
+- **Install discovery.** That's `sc-discovery`. `sc-extract` takes `&Path` values from the caller.
 
 ## Resolved decisions
 

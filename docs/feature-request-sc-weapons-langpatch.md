@@ -132,7 +132,7 @@ Alternative: surface a free-standing helper `sc_weapons::localization_keys(handl
 
 ### Cross-benefit
 
-- Lifting this also lets `sc-contracts` resolve weapon names through the same pre-resolved `LocaleKey`s in mission encounter listings (`ShipCandidate.display_name` is already there for ships — consistency).
+- Lifting this also lets `sc-missions` resolve weapon names through the same pre-resolved `LocaleKey`s in mission encounter listings (`ShipCandidate.display_name` is already there for ships — consistency).
 - It's also the prerequisite for §0's minimum-viable fix.
 
 ## 2. `ShipWeapon.penetration_m`
@@ -293,7 +293,7 @@ The previous loose ranking ("missiles first") is superseded — §0 is now the m
 
 Reviewing the request alongside existing patterns in the workspace surfaced
 that §0 and §1 are an instance of a more general localization-shape problem
-already half-solved by `sc-extract`'s `DisplayNameCache` and `sc-contracts`'
+already half-solved by `sc-extract`'s `DisplayNameCache` and `sc-missions`'
 `Mission.{title_key, description_key}` + `MissionPools` pair. Rather than
 add ad-hoc `name_key` / `desc_key` fields to `ShipWeapon` in isolation,
 the agreed plan lifts a small convention to the workspace level and lets
@@ -302,7 +302,7 @@ localization restructure — that lands first, in a separate change.**
 
 ### Localization restructure (separate, lands first)
 
-Lives in `sc-extract` + meaningful changes to `sc-contracts`. Tracked
+Lives in `sc-extract` + meaningful changes to `sc-missions`. Tracked
 separately from this feature request; summarized here so the dependency
 is obvious.
 
@@ -352,7 +352,7 @@ downstream code keeps it that way. Resolution goes through
 `LocaleKey::stripped()` exists for the rare INI-write call site that
 needs the bare key.
 
-#### 3. Drop pre-resolved strings from `sc-contracts`
+#### 3. Drop pre-resolved strings from `sc-missions`
 
 | Field | Action |
 |---|---|
@@ -391,7 +391,7 @@ hot path.
 
 #### 5. Sort order
 
-Currently `ShipRegistry::build`, blueprint-pool sort, etc. sort by
+Currently `Ships::build`, blueprint-pool sort, etc. sort by
 the pre-resolved `display_name` at build time. After the restructure
 they sort by a locale-independent key (record name / debug name /
 size+guid). UIs that want a localized sort do it post-resolve at
@@ -404,7 +404,7 @@ render time.
   future `bulkhead`, anything pointing at an item entity.
 - *Domain-text resolution* — multi-level inheritance walks (contract
   four-level chain, future analogues). Stays per-domain;
-  `sc-contracts` keeps `resolve_contract_text`. Both patterns
+  `sc-missions` keeps `resolve_contract_text`. Both patterns
   produce **keys only**; resolution is the call site's job.
 
 #### 7. Convention doc
@@ -520,4 +520,4 @@ Resolution plan. Notable details:
 - `sc-weapons` model: `crates/sc-weapons/src/ship.rs`, `crates/sc-weapons/src/damage.rs`
 - Classification gate that excludes missiles today: `crates/sc-weapons/src/classify.rs`
 - Existing pattern A reference: `crates/sc-extract/src/display_names.rs`
-- Existing pattern B reference: `crates/sc-contracts/src/titles.rs`, `crates/sc-contracts/src/pools.rs`
+- Existing pattern B reference: `crates/sc-missions/src/titles.rs`, `crates/sc-missions/src/pools.rs`

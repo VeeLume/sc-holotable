@@ -7,7 +7,7 @@ fit together across the workspace.
 > at the call site through whatever `LocaleMap` is current.
 
 This doc is the canonical reference for that rule and the patterns
-that flow from it. Any domain crate (`sc-weapons`, `sc-contracts`,
+that flow from it. Any domain crate (`sc-weapons`, `sc-missions`,
 future `sc-ammo`, `bulkhead`'s UI layer, …) that surfaces in-game
 text should follow it.
 
@@ -54,7 +54,7 @@ preserving the leading `@` that the DCB carries (e.g.
 `LocaleMap::get` requires the bare key — prefer `resolve` unless
 you're already past the strip step.
 
-## `LocalizedItemCache` — entity localization, single-walk
+## `Items` — entity localization, single-walk
 
 Every `EntityClassDefinition` carries `Components →
 SAttachableComponentParams.AttachDef.Localization` with three locale
@@ -63,18 +63,18 @@ entity once at parse time and stores those keys, indexed by entity
 GUID.
 
 ```rust
-pub struct LocalizedItem {
+pub struct Item {
     pub name_key: Option<LocaleKey>,        // raw, '@' kept
     pub short_name_key: Option<LocaleKey>,
     pub desc_key: Option<LocaleKey>,
 }
 
-pub struct LocalizedItemCache {
-    by_record: HashMap<Guid, LocalizedItem>,
+pub struct Items {
+    by_record: HashMap<Guid, Item>,
 }
 ```
 
-Lives at `datacore.snapshot().localized_items`. Locale-independent —
+Lives at `sc_items::Items::build(datacore.records())`. Locale-independent —
 the same cache is correct regardless of which `LocaleMap` consumers
 later resolve through.
 
@@ -132,7 +132,7 @@ formats at call time. Don't pre-build composite strings.
 Multiple entities can share a localization key (CIG ships variants
 under one display name). When a consumer needs to dedup or group by
 key, the domain crate exposes a pools struct mirroring
-`sc_contracts::MissionPools`:
+`sc_missions::MissionPools`:
 
 ```rust
 pub struct WeaponPools {
@@ -172,7 +172,7 @@ doesn't need alphabetical UX (registries, indices, snapshots).
 Two distinct ways `LocaleKey`s appear in domain types:
 
 **Entity-localization** — single-walk per entity through
-`SAttachableComponentParams`. Lives in `LocalizedItemCache`. Used by
+`SAttachableComponentParams`. Lives in `Items`. Used by
 `sc-weapons`, future `bulkhead` UI, anything pointing at an item
 entity. Generic; one cache covers every consumer.
 
@@ -182,14 +182,14 @@ levels (sub-contract → contract paramOverrides → handler
 contractParams → template), with per-key independence (title from
 level 2, description from level 4 is allowed) and template-shape
 ambiguity that requires raw-svarog walks. Stays per-domain
-(`sc_contracts::resolve_contract_text`); no other crate would
+(`sc_missions::resolve_contract_text`); no other crate would
 reuse the chain.
 
 Both patterns produce the same shape — `Option<LocaleKey>` on the
 domain struct, `display_name(&locale)`-style methods for resolution
 — and don't share machinery. New domain crates with their own
 inheritance shape add their own resolver alongside their domain
-types; they don't try to extend `LocalizedItemCache`.
+types; they don't try to extend `Items`.
 
 ## Checklist for a new domain crate
 
@@ -198,7 +198,7 @@ When adding a crate that surfaces in-game text:
 1. **Field**: `pub name_key: Option<LocaleKey>` (raw `@`-prefixed)
    on the domain struct. Same for `desc_key`, `short_name_key` if
    relevant.
-2. **Source**: populate from `LocalizedItemCache` via the entity
+2. **Source**: populate from `Items` via the entity
    GUID, or from a domain-specific resolver if the keys come
    through inheritance.
 3. **Resolution**: method on the domain type taking `&LocaleMap`.
@@ -216,11 +216,11 @@ When adding a crate that surfaces in-game text:
 
 - `crates/sc-extract/src/locale.rs` — `LocaleMap`, `LocaleKey`
 - `crates/sc-extract-generated/src/locale_key.rs` — newtype
-- `crates/sc-extract/src/localized_items.rs` — cache (post-restructure;
+- `crates/sc-items/src/lib.rs` — cache (post-restructure;
   was `display_names.rs`)
-- `crates/sc-contracts/src/titles.rs` — domain-text resolver
+- `crates/sc-missions/src/titles.rs` — domain-text resolver
   reference shape (post-restructure; returns keys only)
-- `crates/sc-contracts/src/pools.rs` — `MissionPools` reference
+- `crates/sc-missions/src/pools.rs` — `MissionPools` reference
   shape for per-domain pools
 - `docs/feature-request-sc-weapons-langpatch.md` — driving feature
   request that prompted the rule

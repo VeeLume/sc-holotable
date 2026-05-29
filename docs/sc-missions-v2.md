@@ -1,8 +1,8 @@
-# sc-contracts v2 — Mission-centric API redesign
+# sc-missions v2 — Mission-centric API redesign
 
-> **Status:** ✅ **implemented**, all 7 phases shipped 2026-04-30 → 2026-05-01. See [`docs/sc-contracts-guide.md`](sc-contracts-guide.md) for consumer usage; this file is the design history.
-> **Builds on:** [`docs/sc-contracts.md`](sc-contracts.md) (v1, historical).
-> **Drivers:** the encounter-data audit ([`role_investigation.rs`](../crates/sc-contracts/examples/role_investigation.rs), [`encounter_analytics.rs`](../crates/sc-contracts/examples/encounter_analytics.rs)) surfaced asymmetries and accretion in the v1 surface that incremental fixes couldn't clean up.
+> **Status:** ✅ **implemented**, all 7 phases shipped 2026-04-30 → 2026-05-01. See [`docs/sc-missions-guide.md`](sc-missions-guide.md) for consumer usage; this file is the design history.
+> **Builds on:** [`docs/sc-missions.md`](sc-missions.md) (v1, historical).
+> **Drivers:** the encounter-data audit ([`role_investigation.rs`](../crates/sc-missions/examples/role_investigation.rs), [`encounter_analytics.rs`](../crates/sc-missions/examples/encounter_analytics.rs)) surfaced asymmetries and accretion in the v1 surface that incremental fixes couldn't clean up.
 > **Filed:** 2026-05-01. Phases 1-5 landed 2026-04-30; phases 6-7 + resolver fix landed 2026-05-01.
 
 ## Motivation
@@ -11,7 +11,7 @@ The v1 surface grew to mirror the DCB type graph (`ContractGenerator → Contrac
 
 Concrete pain points the audit revealed:
 
-- **Asymmetric tag handling.** `SpawnDescription_Ship` carries four sibling `TagList`s (positive, negative, markup, entity). v1 surfaces them four different ways: positive becomes a deeply-classified `SpawnContext` with 9 buckets, negative is consumed silently inside `ShipRegistry` and disappears, markup/entity get flat `Vec<String>`s.
+- **Asymmetric tag handling.** `SpawnDescription_Ship` carries four sibling `TagList`s (positive, negative, markup, entity). v1 surfaces them four different ways: positive becomes a deeply-classified `SpawnContext` with 9 buckets, negative is consumed silently inside `Ships` and disappears, markup/entity get flat `Vec<String>`s.
 - **Generator-shaped names leak into consumers.** `Contract.handler_kind`, `handler_debug_name`, `variations: Vec<Variation>` (DCB SubContract). A patcher tool doesn't think about handlers and sub-contracts — it thinks about missions and their differing variants.
 - **The merge step is implicit and lossy in identity.** `Contract` is the result of `merge_expansions()` collapsing N `ExpandedContract` rows by `(title, description, reward_signature)`. The merged `Contract` carries one of the original GUIDs as canonical and discards the rest, leaving `Contract.id` semantically ambiguous: which of the N original entries does it refer to? Worse, the merge bakes one specific equivalence rule into the type, when sc-langpatch actually wants `description_key` equivalence and SCMDB wants `(title, description, rewards)` equivalence — different axes for different consumers.
 - **Reward fields scattered across six top-level slots.** `reward_uec`, `reward_scrip`, `reward_rep`, `reward_items`, `reward_other`, `blueprint_reward`. Browsing a `Contract` in the explorer is a vertical wall.
@@ -31,14 +31,14 @@ The cumulative effect is that the public surface is harder to reason about than 
 - Wave layer kept (waves are a real difficulty signal even when individual wave names aren't presentable).
 - Reward fields collapsed into one `MissionRewards` struct.
 - Zero loss of v1 information — anything v1 exposed is reachable in v2 (possibly under a new path).
-- Crate name unchanged (`sc-contracts`) — type renames don't justify path churn.
+- Crate name unchanged (`sc-missions`) — type renames don't justify path churn.
 
 ## Out of scope (for v2)
 
 - **Mission-objective cargo (delivery / hauling).** `MissionPropertyValue_HaulingOrders` and `MissionPropertyValue_DeliveryOrder` are real poly variants we ignore today, but they're a different shape from spawn-encounters (the cargo *is* the objective, no spawn list). Out of v2; flagged for a future `MissionObjective` type.
 - **NPC spawn FPS-context modeling.** v2 surfaces NPC spawns as encounters with their own slot shape; deep classification of FPS-specific fields (closet/room/defendArea tag scopes, faction overrides) is left for a v3 follow-up driven by an actual FPS consumer.
 - **A typed `EncounterRole` / `MissionTier` enum.** The role_investigation audit showed every classification we want to expose is derivable from the raw fields we already surface. v2 keeps the bias toward forwarding signals, not pre-classifying. Helper functions (`is_salvage(slot)`, `is_cargo_recovery(slot)`, …) can land alongside but don't go on the type.
-- **Crate rename.** `sc-contracts` matches the DCB. Consumers updating their type imports already absorb the breaking change of v2; renaming the path on top is gratuitous churn.
+- **Crate rename.** `sc-missions` matches the DCB. Consumers updating their type imports already absorb the breaking change of v2; renaming the path on top is gratuitous churn.
 
 ## Decisions
 
@@ -46,16 +46,16 @@ These drive the type sketches below. Each decision is small enough to be revisit
 
 ### D1. `Contract` → `Mission`, one per expansion row, no implicit merge
 
-The DCB's raw `Contract` record stays raw (reachable via `datacore.db()`). Our consumer type becomes `Mission` and corresponds **1:1 with one `ExpandedContract` row** — that is, one `(generator, handler, contract, optional sub_contract)` tuple. Every `Mission` has a unique GUID with unambiguous identity. `ContractIndex` → `MissionIndex`.
+The DCB's raw `Contract` record stays raw (reachable via `datacore.db()`). Our consumer type becomes `Mission` and corresponds **1:1 with one `ExpandedContract` row** — that is, one `(generator, handler, contract, optional sub_contract)` tuple. Every `Mission` has a unique GUID with unambiguous identity. `ContractIndex` → `Missions`.
 
 v1's `merge_expansions()` step is removed from the core pipeline. What it did — collapsing rows that share `(title, description, reward_signature)` — becomes one of several pooling axes consumers can opt into (see D8). Different consumers want different equivalence rules; baking one into the type was the wrong call.
 
 Mission count goes from ~1,642 (v1 merged) to ~4,590 (v1 expansion) on SC 4.7. That's the right number of conceptual "things a player can pick up at the contract terminal" — the merge collapsed sub-contract variants that the player perceives as separate.
 
-### D2. Pools as precomputed `MissionIndex` fields
+### D2. Pools as precomputed `Missions` fields
 
 ```rust
-pub struct MissionIndex {
+pub struct Missions {
     pub missions: Vec<Mission>,
     pub by_id: HashMap<Guid, usize>,        // O(1) lookup
     pub pools: MissionPools,                // ← precomputed groupings
@@ -69,7 +69,7 @@ pub struct MissionPools {
     // future axes are non-breaking additions: locality, generator, currency, ...
 }
 
-impl MissionIndex {
+impl Missions {
     pub fn get(&self, id: &Guid) -> Option<&Mission>;
     pub fn iter_pool<'a>(&'a self, ids: &'a [Guid])
         -> impl Iterator<Item = &'a Mission> + 'a;
@@ -87,9 +87,9 @@ impl MissionIndex {
 Two design choices that justify themselves:
 
 - **Pools are precomputed at index build time, not function calls.** Building `MissionPools` walks the missions once per axis (~14k HashMap inserts on SC 4.7). Memory cost ≈ 100-200 KB. Reading is direct field access. Consumers that don't use a pool still pay for it, but at this scale it doesn't matter, and the API reads as "the index *has* these pools" — closer to documentation than function call.
-- **Divergence is opt-in helper methods, not a precomputed struct.** `PoolDivergence` would have eagerly computed every flag for every pool group whether the consumer cared or not. Methods on `MissionIndex` taking `&[Guid]` give the same answers and are cheap; consumers call only what they read.
+- **Divergence is opt-in helper methods, not a precomputed struct.** `PoolDivergence` would have eagerly computed every flag for every pool group whether the consumer cared or not. Methods on `Missions` taking `&[Guid]` give the same answers and are cheap; consumers call only what they read.
 
-Pool values are `Vec<Guid>` rather than `Vec<&Mission>` to avoid the self-referential lifetime trap (`MissionPools` lives next to `Mission` inside the same `MissionIndex`). `iter_pool` does the lookup walk — one HashMap probe per element, nothing measurable.
+Pool values are `Vec<Guid>` rather than `Vec<&Mission>` to avoid the self-referential lifetime trap (`MissionPools` lives next to `Mission` inside the same `Missions`). `iter_pool` does the lookup walk — one HashMap probe per element, nothing measurable.
 
 Rationale: sc-langpatch's actual patch axis is the description key, not a merged Mission. A description-key pool maps directly onto its work — group missions by description, decide whether to apply `[BP]` based on whether all members of the pool have a blueprint, render the description block once with mismatch markers when the pool diverges. v1's `find_bp_conflicts` collapses to `index.pools.title_key.iter().filter(|(_, ids)| index.blueprint_mixed(ids))` — same answer, expressed at the right level of abstraction.
 
@@ -124,12 +124,12 @@ pub struct TagBag {
 
 Every `SpawnDescription_Ship` tag list (positive, negative, markup, entity) gets the same `TagBag`. Consumers can read `bag.names` for display, walk `bag.guids` against the tag tree for custom classification, and `bag.is_empty()` for skipping.
 
-Pre-classification of the positive bag (`factions`, `cargo`, `spawn_identifiers`, `ai_traits`, `mission_tags`, `directives`) becomes **free helper functions** on `TagBag`, taking a `&TagTree` parameter. The `TagTree` is on `MissionIndex` so consumers always have it.
+Pre-classification of the positive bag (`factions`, `cargo`, `spawn_identifiers`, `ai_traits`, `mission_tags`, `directives`) becomes **free helper functions** on `TagBag`, taking a `&Tags` parameter. The `Tags` is on `Missions` so consumers always have it.
 
 ```rust
 impl TagBag {
-    pub fn factions<'a>(&'a self, tree: &'a TagTree) -> impl Iterator<Item = &'a str>;
-    pub fn cargo<'a>(&'a self, tree: &'a TagTree) -> impl Iterator<Item = &'a str>;
+    pub fn factions<'a>(&'a self, tree: &'a Tags) -> impl Iterator<Item = &'a str>;
+    pub fn cargo<'a>(&'a self, tree: &'a Tags) -> impl Iterator<Item = &'a str>;
     pub fn ai_skill(&self) -> Option<u32>;
     pub fn ace_pilot(&self) -> bool;
     // etc.
@@ -185,16 +185,16 @@ Annotated, not final. Field-level decisions can shift; structure shouldn't.
 
 ```rust
 //! Top level
-pub struct MissionIndex {
+pub struct Missions {
     pub missions: Vec<Mission>,
     pub by_id: HashMap<Guid, usize>,       // mission lookup; populated at build
     pub pools: MissionPools,               // precomputed groupings (D2)
     // Registries kept for consumer escape-hatch lookups
-    pub locations: LocationRegistry,
-    pub localities: LocalityRegistry,
-    pub blueprints: BlueprintPoolRegistry,
-    pub currencies: RewardCurrencyCatalog,
-    pub ships: ShipRegistry,
+    pub locations: Locations,
+    pub localities: Localities,
+    pub blueprints: BlueprintPools,
+    pub currencies: RewardCurrencies,
+    pub ships: Ships,
     pub tag_tree: TagTreeRef,              // borrows from snapshot; needed by TagBag methods
     /// Diagnostic / audit access to the unprocessed expansion rows.
     /// Most consumers ignore this; v1's `expand_sample` example walks
@@ -227,7 +227,7 @@ pub struct Mission {
     pub availability: MissionAvailability, // once_only, max_players, hide_in_mobi_glas, cooldowns
 
     // Where can it run
-    pub locality_span: Vec<Guid>,          // LocalityRegistry refs; resolve via index.localities
+    pub locality_span: Vec<Guid>,          // Localities refs; resolve via index.localities
 
     // Rewards (collapsed)
     pub rewards: MissionRewards,
@@ -247,10 +247,10 @@ pub struct MissionOrigin {
 
 //! Pool consumption (replaces v1's variations + title_siblings + find_bp_conflicts)
 //
-// MissionPools is data on MissionIndex (sketch above); divergence is
-// opt-in methods on MissionIndex.
+// MissionPools is data on Missions (sketch above); divergence is
+// opt-in methods on Missions.
 
-impl MissionIndex {
+impl Missions {
     pub fn get(&self, id: &Guid) -> Option<&Mission>;
     pub fn iter_pool<'a>(&'a self, ids: &'a [Guid])
         -> impl Iterator<Item = &'a Mission> + 'a;
@@ -331,21 +331,21 @@ impl TagBag {
     pub fn is_empty(&self) -> bool;
 
     // Tag-tree-driven classifiers (replace v1 SpawnContext fields)
-    pub fn factions<'a>(&'a self, tree: &'a TagTree) -> impl Iterator<Item = &'a str>;
-    pub fn cargo<'a>(&'a self, tree: &'a TagTree) -> impl Iterator<Item = &'a str>;
-    pub fn spawn_identifiers<'a>(&'a self, tree: &'a TagTree) -> impl Iterator<Item = &'a str>;
-    pub fn ai_traits<'a>(&'a self, tree: &'a TagTree) -> impl Iterator<Item = &'a str>;
-    pub fn mission_tags<'a>(&'a self, tree: &'a TagTree) -> impl Iterator<Item = &'a str>;
+    pub fn factions<'a>(&'a self, tree: &'a Tags) -> impl Iterator<Item = &'a str>;
+    pub fn cargo<'a>(&'a self, tree: &'a Tags) -> impl Iterator<Item = &'a str>;
+    pub fn spawn_identifiers<'a>(&'a self, tree: &'a Tags) -> impl Iterator<Item = &'a str>;
+    pub fn ai_traits<'a>(&'a self, tree: &'a Tags) -> impl Iterator<Item = &'a str>;
+    pub fn mission_tags<'a>(&'a self, tree: &'a Tags) -> impl Iterator<Item = &'a str>;
     pub fn directives<'a>(&'a self) -> impl Iterator<Item = &'a str>;
     pub fn ai_skill(&self) -> Option<u32>;
     pub fn ace_pilot(&self) -> bool;
 
     // High-level mission-shape predicates derived from the analytics
     // findings — opt-in helpers, kept on the type so consumers don't
-    // re-derive them. Take &TagTree because they walk the subtree.
-    pub fn is_salvage_target(&self, tree: &TagTree) -> bool;        // AvailableToSalvage tag
-    pub fn is_cargo_recovery(&self, tree: &TagTree) -> bool;        // EnableInteractions + EmptyCrew
-    pub fn is_pre_damaged_wreck(&self, tree: &TagTree) -> bool;     // DisablePowerInteractions
+    // re-derive them. Take &Tags because they walk the subtree.
+    pub fn is_salvage_target(&self, tree: &Tags) -> bool;        // AvailableToSalvage tag
+    pub fn is_cargo_recovery(&self, tree: &Tags) -> bool;        // EnableInteractions + EmptyCrew
+    pub fn is_pre_damaged_wreck(&self, tree: &Tags) -> bool;     // DisablePowerInteractions
 }
 
 pub struct NpcEncounter {
@@ -373,13 +373,13 @@ for c in &index.contracts {
         // ...
     }
 }
-let conflicts = sc_contracts::find_bp_conflicts(&index.contracts);
+let conflicts = sc_missions::find_bp_conflicts(&index.contracts);
 ```
 
 v2:
 
 ```rust
-let index = MissionIndex::build(&datacore, &locale);
+let index = Missions::build(&datacore, &locale);
 
 // Per-mission iteration looks the same modulo rename + reward grouping:
 for m in &index.missions {
@@ -399,7 +399,7 @@ let conflicts: Vec<_> = index
     .collect();
 ```
 
-`find_bp_conflicts` disappears. The same answer falls out of `pools.title_key + blueprint_mixed`. Equivalent helpers for scrip, rep, locality, etc. live on `MissionIndex` and are trivial to add — each one is a one-liner over `&[Guid]`.
+`find_bp_conflicts` disappears. The same answer falls out of `pools.title_key + blueprint_mixed`. Equivalent helpers for scrip, rep, locality, etc. live on `Missions` and are trivial to add — each one is a one-liner over `&[Guid]`.
 
 ## Worked migration: sc-langpatch description-block patcher
 
@@ -418,7 +418,7 @@ for (key, ids) in &index.pools.description_key {
     write_ini_entry(key, &block);
 }
 
-fn render_description_block(index: &MissionIndex, ids: &[Guid]) -> String {
+fn render_description_block(index: &Missions, ids: &[Guid]) -> String {
     let mut out = String::new();
     let head = index.get(&ids[0]).unwrap();
 
@@ -471,7 +471,7 @@ for enc in &m.encounters {
     }
 }
 
-fn render_ship_encounter(ui: &mut Context, s: &ShipEncounter, tree: &TagTree) {
+fn render_ship_encounter(ui: &mut Context, s: &ShipEncounter, tree: &Tags) {
     ui.text(format!("  ▸ {}", s.variable_name));
     for phase in &s.phases {
         for slot in &phase.slots {
@@ -498,7 +498,7 @@ The refactor is large enough to warrant landing it in checkpoints. Each phase co
 2. **Phase 2 — Reward consolidation.** ✅ landed `d2668a3`. Six top-level reward fields on Contract collapsed into one `MissionRewards` struct.
 3. **Phase 3 — Pool fields + divergence methods.** ✅ landed `4d74d8f`. Added `MissionPools` to ContractIndex with `title_key` / `description_key` HashMaps + opt-in divergence methods (`blueprint_mixed`, `rewards_uec_consistent`, …). Cluster API deprecated.
 4. **Phase 4 — Remove implicit merge from the pipeline.** ✅ landed `c636f51`. `ContractIndex.contracts` now holds `Vec<ExpandedContract>` directly (4,590 rows on SC 4.7 vs the 1,642 merged). `merge.rs`, `clusters.rs`, `Variation`, `title_siblings`, `find_bp_conflicts`, the cluster API and `tui/clusters.rs` all deleted.
-5. **Phase 5 — `Contract` → `Mission` rename.** ✅ landed `b271e82`. `ExpandedContract → Mission`, `ContractIndex → MissionIndex`. Three handler fields + `ContractOrigin` enum consolidated into `MissionOrigin` struct with `subcontract_of: Option<Guid>`.
+5. **Phase 5 — `Contract` → `Mission` rename.** ✅ landed `b271e82`. `ExpandedContract → Mission`, `ContractIndex → Missions`. Three handler fields + `ContractOrigin` enum consolidated into `MissionOrigin` struct with `subcontract_of: Option<Guid>`.
 6. **Phase 6 — `Encounter` enum + NPC/Entity widening.** ✅ landed `9513c4d`. `Mission.encounters: Vec<Encounter>` with `Ships / Npcs / Entities / Unknown` variants and per-kind slot types (`ShipSlot`, `NpcSlot`, `EntitySlot`). NPC slots surface `mission_allied_marker` / `is_critical` / `faction_override` from `AutoSpawnSettings`. Live coverage SC 4.7: 4,575 ship + 523 npc + 131 entity + 0 unknown.
 7. **Phase 7 — `EncounterWave` → `EncounterPhase` rename.** ✅ landed `9513c4d` (rolled into Phase 6 since both touch the same code). Generic `EncounterPhase<S>` used uniformly across the three encounter kinds.
 
@@ -508,19 +508,19 @@ Phase order matters: shipping the Pool API (3) **before** removing the merge (4)
 
 ## Open questions
 
-- **Divergence helpers vs raw difference enumeration.** `MissionIndex::*_mixed` / `*_consistent` methods return bools — quick to read, but lose *what* differs (e.g., `rewards_uec_consistent` returns false but doesn't say what the differing values are). For most consumer logic the bool is enough; sc-langpatch only needs to know whether to render-or-omit a line. If a consumer wants the actual deltas they iterate `iter_pool(ids)` and compare. Acceptable, or should one or two helpers also return a `Vec<T>` of distinct values for richer rendering?
-- **`is_salvage_target` / `is_cargo_recovery` predicates.** The encounter_analytics finding (`EnableInteractions` ↔ `DisablePowerInteractions` flip) is a clean discriminator, but baking it into `TagBag` methods commits to the current 4.7 game shape. If CIG reorganizes the `AI ▸ ...` subtree in 5.0 these silently break. Acceptable risk, or should helpers live in a separate `sc_contracts::heuristics` module so it's clear they're discovery-driven not part of the type contract?
+- **Divergence helpers vs raw difference enumeration.** `Missions::*_mixed` / `*_consistent` methods return bools — quick to read, but lose *what* differs (e.g., `rewards_uec_consistent` returns false but doesn't say what the differing values are). For most consumer logic the bool is enough; sc-langpatch only needs to know whether to render-or-omit a line. If a consumer wants the actual deltas they iterate `iter_pool(ids)` and compare. Acceptable, or should one or two helpers also return a `Vec<T>` of distinct values for richer rendering?
+- **`is_salvage_target` / `is_cargo_recovery` predicates.** The encounter_analytics finding (`EnableInteractions` ↔ `DisablePowerInteractions` flip) is a clean discriminator, but baking it into `TagBag` methods commits to the current 4.7 game shape. If CIG reorganizes the `AI ▸ ...` subtree in 5.0 these silently break. Acceptable risk, or should helpers live in a separate `sc_missions::heuristics` module so it's clear they're discovery-driven not part of the type contract?
 - **`include_location_ai_spawn_tags`** — keep on slot, or fold into a `merges_at_runtime: bool` flag and document the runtime merging once at the encounter level? It's a per-slot field in the DCB but most consumers will treat it uniformly within a phase.
 - **NPC encounter shape detail.** How much FPS-side classification belongs in v2 vs v3? The phase-2 sc-langpatch use case only needs `mission_allied_marker` and a basic slot count. Closet/room/defendArea tag scopes can probably wait.
 
 ## Cross-references
 
 - Driving-consumer feature requests:
-  - [`docs/feature-request-sc-contracts-langpatch.md`](feature-request-sc-contracts-langpatch.md) §1 (crimestat) needs NPC encounters; §2 (EncounterRole) consumes the post-v2 surface; §4 (empty candidates diagnostics) layers on top.
+  - [`docs/feature-request-sc-missions-langpatch.md`](feature-request-sc-missions-langpatch.md) §1 (crimestat) needs NPC encounters; §2 (EncounterRole) consumes the post-v2 surface; §4 (empty candidates diagnostics) layers on top.
 - v1 reference docs (kept):
-  - [`docs/sc-contracts.md`](sc-contracts.md) — v1 design spec.
-  - [`docs/sc-contracts-guide.md`](sc-contracts-guide.md) — current consumer guide; updates wholesale once v2 lands.
+  - [`docs/sc-missions.md`](sc-missions.md) — v1 design spec.
+  - [`docs/sc-missions-guide.md`](sc-missions-guide.md) — current consumer guide; updates wholesale once v2 lands.
 - Audit scripts driving the design:
-  - [`crates/sc-contracts/examples/role_investigation.rs`](../crates/sc-contracts/examples/role_investigation.rs)
-  - [`crates/sc-contracts/examples/encounter_analytics.rs`](../crates/sc-contracts/examples/encounter_analytics.rs)
-  - [`crates/sc-contracts/examples/tier_investigation.rs`](../crates/sc-contracts/examples/tier_investigation.rs)
+  - [`crates/sc-missions/examples/role_investigation.rs`](../crates/sc-missions/examples/role_investigation.rs)
+  - [`crates/sc-missions/examples/encounter_analytics.rs`](../crates/sc-missions/examples/encounter_analytics.rs)
+  - [`crates/sc-missions/examples/tier_investigation.rs`](../crates/sc-missions/examples/tier_investigation.rs)

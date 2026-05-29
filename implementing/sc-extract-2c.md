@@ -6,9 +6,9 @@ Phase 2c added `graph.rs`, `tags.rs`, `manufacturers.rs`, `display_names.rs`, `f
 
 ## Open caveats
 
-- **`TagTree::from_database`** assumes `tagName` / `parent` / `children` / `legacyGUID` fields. Smoke test shows 18,313 tags — `tagName` works. Parent/children/legacyGUID field names are unverified at the individual-field level. If the DCB structure is different (e.g., tags nested under a TagDatabase record rather than top-level), the tree will need adjustment.
+- **`Tags::from_database`** assumes `tagName` / `parent` / `children` / `legacyGUID` fields. Smoke test shows 18,313 tags — `tagName` works. Parent/children/legacyGUID field names are unverified at the individual-field level. If the DCB structure is different (e.g., tags nested under a TagDatabase record rather than top-level), the tree will need adjustment.
 
-- **`ManufacturerRegistry::from_database`** shows 1,084 manufacturers. Working, but `Localization` nesting and `name_key`/`description_key` extraction unverified at field level.
+- **`Manufacturers::from_database`** shows 1,084 manufacturers. Working, but `Localization` nesting and `name_key`/`description_key` extraction unverified at field level.
 
 - **`DisplayNameCache::from_database`** returns 0 entries — `global.ini` was not found in the archive. The path pattern `english/global.ini` may have changed in this build. Needs investigation.
 

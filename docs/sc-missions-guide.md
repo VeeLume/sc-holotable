@@ -1,19 +1,19 @@
-# `sc-contracts` — consumer guide (v2)
+# `sc-missions` — consumer guide (v2)
 
-> **Who this is for.** Rust code that wants to render / analyse Star Citizen contracts — primarily `sc-langpatch`, but anything that consumes the crate. For the design rationale, see [sc-contracts-v2.md](sc-contracts-v2.md); the v1 historical spec is [sc-contracts.md](sc-contracts.md). This file is the "how do I use it" guide.
+> **Who this is for.** Rust code that wants to render / analyse Star Citizen contracts — primarily `sc-langpatch`, but anything that consumes the crate. For the design rationale, see [sc-missions-v2.md](sc-missions-v2.md); the v1 historical spec is [sc-missions.md](sc-missions.md). This file is the "how do I use it" guide.
 
 ## TL;DR
 
 ```rust
-use sc_contracts::MissionIndex;
+use sc_missions::Missions;
 use sc_extract::{AssetConfig, AssetData, AssetSource, Datacore, DatacoreConfig};
 
-let install = sc_installs::discover_primary()?;
+let install = sc_discovery::discover_primary()?;
 let assets  = AssetSource::from_install(&install)?;
 let data    = AssetData::extract(&assets, &AssetConfig::standard())?;
 let dc      = Datacore::parse(&assets, &data, &DatacoreConfig::standard())?;
 
-let index = MissionIndex::build(&dc, &data.locale);
+let index = Missions::build(&dc, &data.locale);
 
 for mission in &index.contracts {
     if let Some(title) = &mission.title {
@@ -22,7 +22,7 @@ for mission in &index.contracts {
 }
 ```
 
-The `MissionIndex` is a plain bundle: every `Mission` plus the registries (ships, blueprints, currency, locations, localities, tag tree) the missions point at. Build it once per `Datacore`; carry it freely; look up by GUID or iterate.
+The `Missions` is a plain bundle: every `Mission` plus the registries (ships, blueprints, currency, locations, localities, tag tree) the missions point at. Build it once per `Datacore`; carry it freely; look up by GUID or iterate.
 
 ## What's in a `Mission`
 
@@ -69,14 +69,14 @@ for (title_key, ids) in &index.pools.title_key {
 }
 ```
 
-`MissionPools` is a plain struct on `MissionIndex.pools`. Fields:
+`MissionPools` is a plain struct on `Missions.pools`. Fields:
 
 | Field | Type | Use |
 |---|---|---|
 | `pools.title_key` | `HashMap<LocaleKey, Vec<Guid>>` | siblings sharing the same INI title |
 | `pools.description_key` | `HashMap<LocaleKey, Vec<Guid>>` | siblings sharing the same INI description |
 
-For each pool group, query divergence helpers on `MissionIndex` to know what differs across members:
+For each pool group, query divergence helpers on `Missions` to know what differs across members:
 
 ```rust
 for (title_key, ids) in &index.pools.title_key {
@@ -144,7 +144,7 @@ pub struct EncounterPhase<S> {
 pub struct ShipSlot {
     pub concurrent: i32,
     pub weight: f32,
-    pub candidates: Vec<ShipCandidate>,         // resolved via ShipRegistry
+    pub candidates: Vec<ShipCandidate>,         // resolved via Ships
     pub initial_damage_settings: Option<Guid>,  // pre-damaged spawn marker (salvage / cargo recovery)
     pub include_location_ai_spawn_tags: bool,
 
@@ -319,7 +319,7 @@ for (description_key, ids) in &index.pools.description_key {
 ### Render a ship encounter
 
 ```rust
-fn render(enc: &Encounter, tree: &TagTree) {
+fn render(enc: &Encounter, tree: &Tags) {
     let Encounter::Ships(s) = enc else { return };
     println!("  ▸ {}", s.variable_name);
     for phase in &s.phases {
@@ -345,17 +345,17 @@ fn render(enc: &Encounter, tree: &TagTree) {
 
 ## Performance notes
 
-- `MissionIndex::build` takes ~2-3 s in release on SC 4.7 LIVE (dominated by ship registry construction).
+- `Missions::build` takes ~2-3 s in release on SC 4.7 LIVE (dominated by ship registry construction).
 - `MissionPools::build` is O(n_missions × axes), cheap.
 - Divergence helpers walk pool members once per call; don't memoise unless you're calling them in tight loops.
 - The 4,590 missions on SC 4.7 produce 11,599 ship-encounter slots + 3,749 NPC slots + 228 entity slots; expect numbers in this range.
 
 ## Version compatibility
 
-Crate version is tied to the SC version that generated `sc-extract-generated`. Each game patch may shift tag GUIDs or reorganise records; rebuild after a regen and run `cargo test -p sc-contracts --features tui` to catch obvious shape changes. The investigation examples (`spawn_dig`, `encounter_analytics`, `salvage_pool`) are reproducible audits — re-run them after a patch to spot drift.
+Crate version is tied to the SC version that generated `sc-extract-generated`. Each game patch may shift tag GUIDs or reorganise records; rebuild after a regen and run `cargo test -p sc-missions --features tui` to catch obvious shape changes. The investigation examples (`spawn_dig`, `encounter_analytics`, `salvage_pool`) are reproducible audits — re-run them after a patch to spot drift.
 
 ## See also
 
-- [sc-contracts-v2.md](sc-contracts-v2.md) — design spec for v2 (the implementation this guide covers).
-- [sc-contracts.md](sc-contracts.md) — v1 historical spec; superseded.
-- [feature-request-sc-contracts-langpatch.md](feature-request-sc-contracts-langpatch.md) — open feature requests filed by sc-langpatch.
+- [sc-missions-v2.md](sc-missions-v2.md) — design spec for v2 (the implementation this guide covers).
+- [sc-missions.md](sc-missions.md) — v1 historical spec; superseded.
+- [feature-request-sc-missions-langpatch.md](feature-request-sc-missions-langpatch.md) — open feature requests filed by sc-langpatch.

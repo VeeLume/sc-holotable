@@ -1,4 +1,4 @@
-//! Interactive explorer views for sc-contracts data.
+//! Interactive explorer views for sc-missions data.
 //!
 //! Gated behind the `tui` feature. The workspace binary
 //! `tools/sc-explorer` composes this module with `sc_weapons::tui` plus

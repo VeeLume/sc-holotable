@@ -7,7 +7,7 @@
 //!
 //! Blueprint *pools* (the weighted sets mission rewards draw from) are a
 //! mission-reward mechanic, not a catalog concept — they live on the
-//! missions side (`sc-contracts` / `sc-missions`), built on top of this
+//! missions side (`sc-missions` / `sc-missions`), built on top of this
 //! catalog.
 //!
 //! # Display names are baked

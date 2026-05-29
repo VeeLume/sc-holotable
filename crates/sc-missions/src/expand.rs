@@ -2,7 +2,7 @@
 //! one [`Mission`] per concrete (handler, contract,
 //! optional sub_contract) node in the graph.
 //!
-//! This is stage 3 of the pipeline in `docs/sc-contracts.md`. Stage 4
+//! This is stage 3 of the pipeline in `docs/sc-missions.md`. Stage 4
 //! (merge into final [`crate::Contract`]s) groups these expansions by
 //! `(title, description, reward_signature)`.
 //!

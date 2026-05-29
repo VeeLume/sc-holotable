@@ -1,4 +1,4 @@
-//! Error types for the `sc-installs` crate.
+//! Error types for the `sc-discovery` crate.
 
 use std::io;
 use std::path::PathBuf;
