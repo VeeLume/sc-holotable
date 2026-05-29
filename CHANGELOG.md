@@ -14,6 +14,56 @@ separate commits and advance independently.
 
 ## [Unreleased]
 
+### Changed (breaking)
+
+- **Uniform API shape: domain-noun cooked indexes** (new rules 6–7 in
+  `docs/workspace-structure.md`). Each data crate exposes one primary type
+  named for its domain, built with `Type::build`, shape via methods, grouping
+  folded in as a field. Renames: `ItemCache`→`Items`, `TagTree`→`Tags`,
+  `ManufacturerRegistry`→`Manufacturers`, `MissionIndex`→`Missions`, and the
+  sc-missions sub-types `ShipRegistry`/`LocationRegistry`/`LocalityRegistry`/
+  `RewardCurrencyCatalog`/`BlueprintPoolRegistry` →
+  `Ships`/`Locations`/`Localities`/`RewardCurrencies`/`BlueprintPools`. Each
+  index also exposes a `{Type}Builder` for bundled walks.
+- **Foundational builders take `&RecordStore`** (narrowest sufficient input):
+  `Items`/`Tags`/`Manufacturers::build(&RecordStore)`. Builders needing the raw
+  db (`RecordPaths`) or asset data keep `&Datacore`; dependency indices are
+  appended by reference.
+- **`sc-weapons`: `build_weapon_pools` (tuple) → `Weapons`** —
+  `Weapons { ships, fps, missiles, pools }` via `Weapons::build(&Datacore,
+  &Items)`. `WeaponPools` is now the `pools` field; `iter_*` remain for
+  streaming.
+- **Crate rename `sc-contracts` → `sc-missions`.**
+- **Crate rename `sc-installs` → `sc-discovery`** — the `install` substring
+  tripped Windows installer-detection (UAC), blocking the test binary from
+  launching. The crate discovers/locates the install; it doesn't install.
+
+### Removed
+
+- **`DatacoreConfig`** — dissolved; cooked indices are explicit `X::build`
+  calls in their owning crates.
+- **`DatacoreSnapshot`, `Datacore::snapshot()`, `Datacore::into_snapshot()`** —
+  `Datacore` owns a `RecordStore` directly; use `Datacore::records()`.
+
+### Added
+
+- **`RecordPaths`** (sc-extract) — every record's file path/name/type by GUID
+  plus a `/`-segment trie (`get`/`at`/`under`/`children`/`roots`). The DCB path
+  is a classification axis (e.g. manufacturer kind).
+- **Bundled-walk API** (sc-extract) — `RecordVisitor`/`Interest`/`VisitItem`/
+  `BundledWalk` + tuple `VisitorSet`. Build several indices in one
+  `all_records` pass; `X::build` stays as the single-index path.
+- **Generic `ProcessedSnapshot<T>`** (sc-extract) — serialize a cooked index
+  (zstd + msgpack, envelope + cook-schema version guard) for sub-second load
+  vs the raw snapshot's full re-parse. All four cooked indices are
+  serde-capable (`LocaleKey` gains serde; the generated `EItemType`/
+  `EItemSubType` round-trip as DCB strings via a new generator-emitted
+  `as_dcb_str`).
+- **`sc-holotable` umbrella crate** — feature-gated re-exports + `prelude`,
+  `build_foundations` (one bundled pass over all foundational indices), and
+  `HolotableSnapshot` (a serializable bundle of the cooked indices). The
+  recommended public dependency.
+
 ## [v0.7.0] - 2026-05-28
 
 ### Added
