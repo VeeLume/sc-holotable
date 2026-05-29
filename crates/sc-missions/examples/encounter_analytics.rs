@@ -20,12 +20,12 @@
 //! Run:
 //!
 //! ```bash
-//! cargo run -p sc-contracts --release --example encounter_analytics
+//! cargo run -p sc-missions --release --example encounter_analytics
 //! ```
 
 use std::collections::{BTreeMap, BTreeSet, HashMap};
 
-use sc_contracts::{Encounter, MissionIndex, ShipSlot};
+use sc_missions::{Encounter, MissionIndex, ShipSlot};
 use sc_extract::{AssetConfig, AssetData, AssetSource, Datacore};
 
 /// One row in the analytics worklist — flatten contract → group →
@@ -35,7 +35,7 @@ use sc_extract::{AssetConfig, AssetData, AssetSource, Datacore};
 /// Classified tag projections are precomputed at row construction so
 /// the analytics sections don't have to re-thread the [`TagTree`]
 /// through every helper. The projections come from the slot's
-/// [`sc_contracts::TagBag`] classifier methods.
+/// [`sc_missions::TagBag`] classifier methods.
 struct Row<'a> {
     /// Contract `debug_name` — kept for ad-hoc debugging when adding a
     /// new section that wants to spot-print which contracts a row came

@@ -3,7 +3,7 @@
 //! NPC-with-allied-marker and Entity slots so we can verify the new
 //! shape against live data.
 
-use sc_contracts::{Encounter, MissionIndex};
+use sc_missions::{Encounter, MissionIndex};
 use sc_extract::{AssetConfig, AssetData, AssetSource, Datacore};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {

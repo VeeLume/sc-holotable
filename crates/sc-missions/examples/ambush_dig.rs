@@ -20,10 +20,10 @@
 //!
 //! Run:
 //! ```
-//! cargo run -p sc-contracts --release --example ambush_dig
+//! cargo run -p sc-missions --release --example ambush_dig
 //! ```
 
-use sc_contracts::{Encounter, MissionIndex};
+use sc_missions::{Encounter, MissionIndex};
 use sc_extract::{AssetConfig, AssetData, AssetSource, Datacore, Guid};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -174,7 +174,7 @@ fn section_3_foxwell_dig(
         println!("    sub-of:       {:?}", c.origin.subcontract_of);
         println!("    crime_stat prereq:");
         for p in &c.prerequisites {
-            if let sc_contracts::PrereqView::CrimeStat { min, max, .. } = p {
+            if let sc_missions::PrereqView::CrimeStat { min, max, .. } = p {
                 println!("      min={min} max={max}");
             }
         }
@@ -184,7 +184,7 @@ fn section_3_foxwell_dig(
             .prerequisites
             .iter()
             .filter_map(|p| {
-                if let sc_contracts::PrereqView::Locality { locality: Some(g) } = p {
+                if let sc_missions::PrereqView::Locality { locality: Some(g) } = p {
                     Some(g)
                 } else {
                     None

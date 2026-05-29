@@ -1,0 +1,61 @@
+[package]
+name = "sc-holotable"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+
+# Umbrella prelude crate — the recommended public dependency. Re-exports the
+# typed surfaces of every workspace crate behind feature flags so downstream
+# consumers pin one tag, name no svarog rev, and pick capabilities with
+# features instead of remembering sc-extract leaf flags. See
+# `docs/workspace-structure.md` -> "Umbrella crate".
+#
+# NOTE: only the crates that exist today are wired up. The full feature map in
+# the design doc (sc-vehicles, sc-loadouts, sc-economy, ...) lands as those
+# crates do.
+
+[dependencies]
+sc-installs = { workspace = true, optional = true }
+sc-extract = { workspace = true, optional = true }
+sc-items = { workspace = true, optional = true }
+sc-tags = { workspace = true, optional = true }
+sc-manufacturers = { workspace = true, optional = true }
+sc-weapons = { workspace = true, optional = true }
+sc-crafting = { workspace = true, optional = true }
+sc-missions = { workspace = true, optional = true }
+serde = { workspace = true }
+
+[features]
+default = []
+
+# ── Per-crate surfaces ───────────────────────────────────────────────────────
+installs = ["dep:sc-installs"]
+extract = ["dep:sc-extract"]
+items = ["dep:sc-items", "extract"]
+tags = ["dep:sc-tags", "extract"]
+manufacturers = ["dep:sc-manufacturers", "extract"]
+# Leaf crates self-enable the sc-extract leaf features they need (sc-weapons →
+# entities-scitem-weapons/ammoparams, sc-crafting → crafting), so the umbrella
+# only needs to pull the crate itself.
+weapons = ["dep:sc-weapons", "extract", "items"]
+crafting = ["dep:sc-crafting", "extract", "items"]
+missions = ["dep:sc-missions", "extract", "items", "tags"]
+
+# ── Cross-cutting ────────────────────────────────────────────────────────────
+# The coordination build-context + HolotableSnapshot need every foundational
+# index, so they're gated on having them all.
+foundations = ["extract", "items", "tags", "manufacturers"]
+
+# ── Aggregators ──────────────────────────────────────────────────────────────
+all-t1 = ["installs", "items", "tags", "manufacturers", "weapons", "crafting", "foundations"]
+full = ["all-t1", "missions"]
+
+[dev-dependencies]
+tempfile = "3"
+
+# The example exercises every feature surface, so it only builds under `full`.
+# Without this, `cargo check --all-targets` (default features) would try to
+# compile it with nothing enabled and fail.
+[[example]]
+name = "foundations_snapshot"
+required-features = ["full"]

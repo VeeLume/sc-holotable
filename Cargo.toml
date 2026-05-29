@@ -9,7 +9,8 @@ members = [
     "crates/sc-manufacturers",
     "crates/sc-tags",
     "crates/sc-weapons",
-    "crates/sc-contracts",
+    "crates/sc-missions",
+    "crates/sc-holotable",
     "tools/sc-generator",
     "tools/sc-bench",
     "tools/sc-explorer",
@@ -30,14 +31,14 @@ sc-items = { path = "crates/sc-items" }
 sc-manufacturers = { path = "crates/sc-manufacturers" }
 sc-tags = { path = "crates/sc-tags" }
 sc-weapons = { path = "crates/sc-weapons" }
-sc-contracts = { path = "crates/sc-contracts" }
+sc-missions = { path = "crates/sc-missions" }
 
 # Workspace-wide logging. Every crate that emits logs uses `tracing`.
 # See the "Conventions" section of the README for the rationale.
 tracing = "0.1"
 
 # Immediate-mode TUI library used by `tools/sc-explorer` and the per-crate
-# `tui` modules in `sc-contracts` / `sc-weapons` (gated behind their `tui`
+# `tui` modules in `sc-missions` / `sc-weapons` (gated behind their `tui`
 # feature so consumers that don't need it don't pull SLT). Local clone at
 # `E:\repros\SuperLightTUI` for API exploration — see CLAUDE.md.
 superlighttui = "0.19"

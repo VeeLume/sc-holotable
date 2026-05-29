@@ -1,7 +1,7 @@
 //! Interactive explorer view for sc-weapons data.
 //!
 //! Gated behind the `tui` feature. Sister module to
-//! `sc_contracts::tui` — the workspace binary `tools/sc-explorer`
+//! `sc_missions::tui` — the workspace binary `tools/sc-explorer`
 //! composes both into a tabbed UI alongside its own pool census.
 //!
 //! Layout: a list of ship weapons on the left, a detail panel on the
@@ -47,7 +47,7 @@ pub struct WeaponSet {
 
 impl WeaponSet {
     pub fn build(datacore: &Datacore) -> Self {
-        let items = crate::ItemCache::build(datacore);
+        let items = crate::ItemCache::build(datacore.records());
         Self {
             ships: crate::iter_ship_weapons(datacore, &items).collect(),
         }
@@ -55,7 +55,7 @@ impl WeaponSet {
 }
 
 /// One pool-census row for the explorer's "Pools" tab. Mirrors
-/// `sc_contracts::tui::PoolCheck`.
+/// `sc_missions::tui::PoolCheck`.
 pub struct PoolCheck {
     pub name: &'static str,
     pub feature: &'static str,
@@ -271,13 +271,13 @@ fn kv(ui: &mut Context, key: &str, value: &str) {
 }
 
 /// Approximate row budget for the weapons list. Same logic as
-/// `sc_contracts::tui::list_visible_rows`.
+/// `sc_missions::tui::list_visible_rows`.
 fn list_visible_rows(ui: &Context) -> usize {
     (ui.height() as usize).saturating_sub(18).max(5)
 }
 
 /// Selection-aware list with a viewport that always contains
-/// `state.selected`. See `sc_contracts::tui::scroll_list` for the
+/// `state.selected`. See `sc_missions::tui::scroll_list` for the
 /// full rationale; the two helpers are intentionally duplicated rather
 /// than shared, because they're each simple enough that a shared crate
 /// would cost more than it saves.

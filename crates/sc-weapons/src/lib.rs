@@ -11,7 +11,7 @@
 //! use sc_weapons::{iter_ship_weapons, ItemCache};
 //!
 //! let datacore: sc_extract::Datacore = /* ... */;
-//! let items = ItemCache::build(&datacore);   // build once, share by reference
+//! let items = ItemCache::build(datacore.records());   // build once, share by reference
 //! for weapon in iter_ship_weapons(&datacore, &items) {
 //!     println!("{}: S{} {:?}", weapon.record_name, weapon.size, weapon.primary_fire_action);
 //! }
@@ -78,11 +78,11 @@ pub fn iter_ship_weapons<'a>(
     datacore: &'a Datacore,
     items: &'a ItemCache,
 ) -> impl Iterator<Item = ShipWeapon> + 'a {
-    let snap = datacore.snapshot();
+    let store = datacore.records();
     let db = datacore.db();
-    let pools = &snap.records.pools;
-    let ecd_map = &snap.records.records.multi_feature.entity_class_definition;
-    let ammo_map = &snap.records.records.multi_feature.ammo_params;
+    let pools = &store.pools;
+    let ecd_map = &store.records.multi_feature.entity_class_definition;
+    let ammo_map = &store.records.multi_feature.ammo_params;
 
     // Pre-build GUID → record name map
     let record_names: HashMap<Guid, &str> = db
@@ -106,7 +106,7 @@ pub fn build_weapon_pools(
 ) -> (Vec<ShipWeapon>, Vec<FpsWeapon>, Vec<Missile>, WeaponPools) {
     // Build the item cache once and share it across all three families
     // (each iterator would otherwise re-walk every EntityClassDefinition).
-    let items = ItemCache::build(datacore);
+    let items = ItemCache::build(datacore.records());
     let ships: Vec<ShipWeapon> = iter_ship_weapons(datacore, &items).collect();
     let fps: Vec<FpsWeapon> = iter_fps_weapons(datacore, &items).collect();
     let missiles: Vec<Missile> = iter_missiles(datacore, &items).collect();
@@ -121,11 +121,11 @@ pub fn iter_fps_weapons<'a>(
     datacore: &'a Datacore,
     items: &'a ItemCache,
 ) -> impl Iterator<Item = FpsWeapon> + 'a {
-    let snap = datacore.snapshot();
+    let store = datacore.records();
     let db = datacore.db();
-    let pools = &snap.records.pools;
-    let ecd_map = &snap.records.records.multi_feature.entity_class_definition;
-    let ammo_map = &snap.records.records.multi_feature.ammo_params;
+    let pools = &store.pools;
+    let ecd_map = &store.records.multi_feature.entity_class_definition;
+    let ammo_map = &store.records.multi_feature.ammo_params;
 
     let record_names: HashMap<Guid, &str> = db
         .records()
@@ -147,10 +147,10 @@ pub fn iter_missiles<'a>(
     datacore: &'a Datacore,
     items: &'a ItemCache,
 ) -> impl Iterator<Item = Missile> + 'a {
-    let snap = datacore.snapshot();
+    let store = datacore.records();
     let db = datacore.db();
-    let pools = &snap.records.pools;
-    let ecd_map = &snap.records.records.multi_feature.entity_class_definition;
+    let pools = &store.pools;
+    let ecd_map = &store.records.multi_feature.entity_class_definition;
 
     let record_names: HashMap<Guid, &str> = db
         .records()

@@ -1180,6 +1180,28 @@ pub fn emit_enums(db: &DataCoreDatabase) -> String {
             out.push_str("        }\n");
         }
         out.push_str("    }\n");
+
+        // Per-enum `as_dcb_str` — the inverse of `from_dcb_str`. Returns the
+        // raw DCB string for each variant so callers can round-trip a typed
+        // variant back to its on-disk form (e.g. serde adapters that store the
+        // enum as its DCB string without giving the generated enum serde).
+        // Built from the same `kept_variants` list so it stays in lockstep.
+        out.push_str("\n    /// The raw DCB enum string for this variant (inverse of\n");
+        out.push_str("    /// `from_dcb_str`; round-trips for serialization).\n");
+        out.push_str("    pub fn as_dcb_str(&self) -> &str {\n");
+        out.push_str("        match self {\n");
+        if kept_variants.is_empty() {
+            out.push_str("            Self::Empty => \"\",\n");
+        } else {
+            for (raw, variant) in &kept_variants {
+                let escaped = raw.replace('\\', "\\\\").replace('"', "\\\"");
+                let _ = writeln!(out, "            Self::{variant} => \"{escaped}\",");
+            }
+        }
+        let _ = writeln!(out, "            Self::{FALLBACK_VARIANT}(s) => s,");
+        out.push_str("        }\n");
+        out.push_str("    }\n");
+
         out.push_str("}\n\n");
     }
     out

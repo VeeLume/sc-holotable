@@ -23,7 +23,8 @@
 
 use std::collections::HashMap;
 
-use sc_extract::{Datacore, Guid};
+use sc_extract::generated::{RecordLookup, Tag};
+use sc_extract::{Guid, RecordStore};
 use serde::{Deserialize, Serialize};
 
 /// A single node in the [`TagTree`].
@@ -53,7 +54,7 @@ impl TagTree {
         Self::default()
     }
 
-    /// Build the tree from a parsed [`Datacore`] via the typed `Tag` pool
+    /// Build the tree from a parsed [`RecordStore`] via the typed `Tag` pool
     /// (`tagdatabase` feature). Build once, share by reference.
     ///
     /// `Tag` carries `tagName`, `children` (GUID references), and
@@ -61,31 +62,29 @@ impl TagTree {
     /// inverse of the children graph, derived in a second pass. (`TagDatabase`
     /// is the root list of every tag GUID; iterating the `Tag` pool yields
     /// the same complete set more directly.)
-    pub fn build(datacore: &Datacore) -> Self {
-        let store = datacore.records();
+    pub fn build(store: &RecordStore) -> Self {
         let pools = &store.pools;
         let mut tree = Self::new();
-
         // Pass 1 — insert every tag node, children-only.
         for (&guid, &handle) in &store.records.multi_feature.tag {
             let Some(tag) = handle.get(pools) else {
                 continue;
             };
-            if tag.tag_name.is_empty() {
-                continue;
+            if let Some(node) = node_for(guid, tag) {
+                tree.insert(node);
             }
-            tree.insert(TagNode {
-                guid,
-                name: tag.tag_name.clone(),
-                parent: None,
-                children: tag.children.clone(),
-                // 0 = no legacy id (modern-GUID-only tags).
-                legacy_guid: (tag.legacy_guid != 0).then_some(tag.legacy_guid as i32),
-            });
         }
-
         // Pass 2 — derive parent links from the inverse children graph.
-        let child_to_parent: Vec<(Guid, Guid)> = tree
+        tree.derive_parents();
+        tree
+    }
+
+    /// Pass 2 of the build: derive each node's `parent` from the inverse of
+    /// the children graph. Run once after all nodes are inserted (the
+    /// standalone build does this inline; [`TagTreeBuilder`] does it in
+    /// `finish`).
+    fn derive_parents(&mut self) {
+        let child_to_parent: Vec<(Guid, Guid)> = self
             .by_guid
             .iter()
             .flat_map(|(parent_guid, node)| {
@@ -94,12 +93,10 @@ impl TagTree {
             })
             .collect();
         for (child, parent) in child_to_parent {
-            if let Some(node) = tree.by_guid.get_mut(&child) {
+            if let Some(node) = self.by_guid.get_mut(&child) {
                 node.parent = Some(parent);
             }
         }
-
-        tree
     }
 
     /// Insert or replace a node. Maintains both indices.
@@ -202,6 +199,58 @@ impl TagTree {
         }
         stack.reverse();
         stack
+    }
+}
+
+/// Build a children-only [`TagNode`] from a typed `Tag` record, or `None` for
+/// an unnamed tag. Shared by [`TagTree::build`] and [`TagTreeBuilder`] (parent
+/// links are derived in a later pass).
+fn node_for(guid: Guid, tag: &Tag) -> Option<TagNode> {
+    if tag.tag_name.is_empty() {
+        return None;
+    }
+    Some(TagNode {
+        guid,
+        name: tag.tag_name.clone(),
+        parent: None,
+        children: tag.children.clone(),
+        // 0 = no legacy id (modern-GUID-only tags).
+        legacy_guid: (tag.legacy_guid != 0).then_some(tag.legacy_guid as i32),
+    })
+}
+
+/// [`sc_extract::RecordVisitor`] that builds a [`TagTree`] in a bundled walk.
+/// Declares interest in `Tag` records, accumulating nodes during the walk and
+/// deriving parent links in `finish`. Equivalent to [`TagTree::build`] but
+/// fusible with other visitors in one pass.
+#[derive(Default)]
+pub struct TagTreeBuilder {
+    inner: TagTree,
+}
+
+impl sc_extract::RecordVisitor for TagTreeBuilder {
+    type Output = TagTree;
+
+    fn interest(&self) -> sc_extract::Interest {
+        sc_extract::Interest::Types(&["Tag"])
+    }
+
+    fn visit(&mut self, item: sc_extract::VisitItem<'_>) {
+        let store = item.store;
+        let Some(handle) = Tag::lookup(&store.records, &item.guid) else {
+            return;
+        };
+        let Some(tag) = handle.get(&store.pools) else {
+            return;
+        };
+        if let Some(node) = node_for(item.guid, tag) {
+            self.inner.insert(node);
+        }
+    }
+
+    fn finish(mut self) -> TagTree {
+        self.inner.derive_parents();
+        self.inner
     }
 }
 

@@ -25,11 +25,9 @@
 //!     &assets,
 //!     &sc_extract::AssetConfig::standard(),
 //! )?;
-//! let datacore = sc_extract::Datacore::parse(
-//!     &assets,
-//!     &asset_data,
-//!     &sc_extract::DatacoreConfig::standard(),
-//! )?;
+//! let datacore = sc_extract::Datacore::parse(&assets, &asset_data)?;
+//! // Cooked indices are now explicit builders in their own crates, e.g.:
+//! //   let items = sc_items::ItemCache::build(datacore.records());
 //! # Ok::<(), Box<dyn std::error::Error>>(())
 //! ```
 //!
@@ -58,11 +56,14 @@
 
 mod asset_data;
 mod assets;
+mod bundled_walk;
 mod datacore;
 mod error;
 mod filters;
 mod graph;
 mod locale;
+mod processed_snapshot;
+mod record_paths;
 mod snapshot;
 
 /// Machine-generated DataCore schema bindings — workspace-internal escape
@@ -72,11 +73,14 @@ pub use sc_extract_generated as generated;
 
 pub use asset_data::{AssetConfig, AssetData};
 pub use assets::AssetSource;
-pub use datacore::{Datacore, DatacoreSnapshot};
+pub use bundled_walk::{BundledWalk, Interest, RecordVisitor, VisitItem, VisitorSet};
+pub use datacore::Datacore;
 pub use error::{Error, Result};
 pub use filters::{is_playable_ship, is_playable_weapon};
 pub use graph::ReferenceGraph;
 pub use locale::{LocaleKey, LocaleMap, strip_locale_metadata};
+pub use processed_snapshot::ProcessedSnapshot;
+pub use record_paths::{RecordPath, RecordPaths, RecordPathsBuilder};
 pub use sc_extract_generated::{
     Builder, DataPools, Extract, Handle, Pooled, RecordIndex, RecordLookup, RecordStore,
 };

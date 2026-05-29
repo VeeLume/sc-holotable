@@ -1,5 +1,5 @@
 [package]
-name = "sc-contracts"
+name = "sc-missions"
 version.workspace = true
 edition.workspace = true
 rust-version.workspace = true
@@ -7,7 +7,7 @@ rust-version.workspace = true
 [dependencies]
 # Every sc-extract feature this crate's code actually reaches. Update
 # whenever a new walk lands. The aggregation crate owns its feature
-# closure so narrow consumers can depend on `sc-contracts` alone and
+# closure so narrow consumers can depend on `sc-missions` alone and
 # get fully-populated pools without manually enabling features.
 #
 #   contracts            ContractGenerator / ContractGeneratorHandler*

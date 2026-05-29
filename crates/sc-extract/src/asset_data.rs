@@ -1,6 +1,6 @@
 //! Cooked asset-sourced data — currently just the parsed locale map.
 //!
-//! [`AssetData`] is the asset-side counterpart to [`crate::DatacoreSnapshot`]:
+//! [`AssetData`] is the asset-side counterpart to the cooked `RecordStore`:
 //! it bundles everything that comes from non-DCB files inside the P4K into
 //! one owned, runtime-only struct. Today that's just a [`LocaleMap`] parsed
 //! from `global.ini`, but the shape is designed so future cached asset-

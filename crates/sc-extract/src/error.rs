@@ -99,4 +99,14 @@ pub enum Error {
     /// with the DCB omitted.
     #[error("snapshot does not contain game2.dcb bytes; cannot hydrate datacore")]
     SnapshotMissingDcb,
+
+    /// A loaded [`crate::ProcessedSnapshot`]'s cooked-index format version did
+    /// not match what this build expects. Distinct from
+    /// [`Error::SnapshotVersionMismatch`] (the envelope) so a caller can tell
+    /// "stale cooked index" apart from "unreadable envelope" — in both cases
+    /// the right move is to fall back to a raw hydrate or fresh parse+rebuild.
+    #[error(
+        "processed snapshot cook schema mismatch: file has {found}, this build expects {expected}"
+    )]
+    ProcessedSnapshotStale { expected: u32, found: u32 },
 }

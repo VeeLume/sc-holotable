@@ -19,7 +19,7 @@
 //! Run:
 //!
 //! ```bash
-//! cargo run -p sc-contracts --release --example tier_investigation
+//! cargo run -p sc-missions --release --example tier_investigation
 //! ```
 
 use std::collections::{BTreeMap, HashMap};
@@ -49,7 +49,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let asset_data = AssetData::extract(&assets, &AssetConfig::standard())?;
     let datacore = Datacore::parse(&assets, &asset_data)?;
     let pools = &datacore.records().pools;
-    let tt = sc_tags::TagTree::build(&datacore);
+    let tt = sc_tags::TagTree::build(datacore.records());
     let tag_tree = &tt;
 
     // ── Section 1: ContractResults.difficulty coverage ───────────────────

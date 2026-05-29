@@ -45,15 +45,15 @@ pub fn run(config: &RunConfig) -> Result<BenchResult, Box<dyn std::error::Error>
     let datacore = Datacore::parse(&assets, &asset_data)?;
     r.parse_time = t.elapsed().as_secs_f64();
 
-    let snap = datacore.snapshot();
-    let items = sc_items::ItemCache::build(&datacore);
-    let mfrs = sc_manufacturers::ManufacturerRegistry::build(&datacore);
-    let tags = sc_tags::TagTree::build(&datacore);
+    let store = datacore.records();
+    let items = sc_items::ItemCache::build(store);
+    let mfrs = sc_manufacturers::ManufacturerRegistry::build(store);
+    let tags = sc_tags::TagTree::build(store);
     // Graph is opt-in (expensive ~7s); build explicitly only when requested.
     let graph = config
         .include_graph
         .then(|| sc_extract::ReferenceGraph::from_database(datacore.db()));
-    r.records = snap.records.len();
+    r.records = store.len();
     r.manufacturers = mfrs.len();
     r.display_names = items.len();
     r.tag_nodes = tags.len();
@@ -379,7 +379,7 @@ fn exercise_snapshot(
     let t = Instant::now();
     let (_hydrated_assets, hydrated_dc) = loaded.hydrate(&hydrate_asset_config)?;
     r.snapshot_hydrate_time = t.elapsed().as_secs_f64();
-    r.snapshot_hydrated_records = hydrated_dc.snapshot().records.len();
+    r.snapshot_hydrated_records = hydrated_dc.records().len();
 
     // Cleanup — best-effort.
     let _ = std::fs::remove_file(&snapshot_path);

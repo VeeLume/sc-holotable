@@ -53,8 +53,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let datacore = sc_extract::Datacore::parse(&assets, &asset_data)?;
     let parse_secs = t0.elapsed().as_secs_f64();
 
-    let items = ItemCache::build(&datacore);
-    let mfrs = ManufacturerRegistry::build(&datacore);
+    let items = ItemCache::build(datacore.records());
+    let mfrs = ManufacturerRegistry::build(datacore.records());
 
     println!(
         "\nLoadoutContext: window={}s, power_per_slot={}",

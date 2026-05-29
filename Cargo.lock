@@ -835,22 +835,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "sc-contracts"
-version = "0.0.0"
-dependencies = [
- "sc-crafting",
- "sc-extract",
- "sc-installs",
- "sc-items",
- "sc-tags",
- "superlighttui",
- "svarog-common",
- "thiserror 2.0.18",
- "tracing",
- "tracing-subscriber",
-]
-
-[[package]]
 name = "sc-crafting"
 version = "0.0.0"
 dependencies = [
@@ -865,8 +849,8 @@ name = "sc-explorer"
 version = "0.0.0"
 dependencies = [
  "anyhow",
- "sc-contracts",
  "sc-installs",
+ "sc-missions",
  "sc-weapons",
  "superlighttui",
  "tracing",
@@ -898,6 +882,7 @@ dependencies = [
 name = "sc-extract-generated"
 version = "0.0.0"
 dependencies = [
+ "serde",
  "svarog-common",
  "svarog-datacore",
 ]
@@ -913,6 +898,22 @@ dependencies = [
  "thiserror 2.0.18",
  "tracing",
  "tracing-subscriber",
+]
+
+[[package]]
+name = "sc-holotable"
+version = "0.0.0"
+dependencies = [
+ "sc-crafting",
+ "sc-extract",
+ "sc-installs",
+ "sc-items",
+ "sc-manufacturers",
+ "sc-missions",
+ "sc-tags",
+ "sc-weapons",
+ "serde",
+ "tempfile",
 ]
 
 [[package]]
@@ -950,6 +951,22 @@ dependencies = [
  "sc-installs",
  "serde",
  "serde_json",
+ "tracing",
+ "tracing-subscriber",
+]
+
+[[package]]
+name = "sc-missions"
+version = "0.0.0"
+dependencies = [
+ "sc-crafting",
+ "sc-extract",
+ "sc-installs",
+ "sc-items",
+ "sc-tags",
+ "superlighttui",
+ "svarog-common",
+ "thiserror 2.0.18",
  "tracing",
  "tracing-subscriber",
 ]

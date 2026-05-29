@@ -11,12 +11,12 @@
 //! the record type + any `entityClass` / `entity_class` field on it.
 //!
 //! ```bash
-//! cargo run -p sc-contracts --release --example damage_dig
+//! cargo run -p sc-missions --release --example damage_dig
 //! ```
 
 use std::collections::{BTreeMap, HashMap};
 
-use sc_contracts::{Encounter, MissionIndex};
+use sc_missions::{Encounter, MissionIndex};
 use sc_extract::{AssetConfig, AssetData, AssetSource, Datacore, Guid};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {

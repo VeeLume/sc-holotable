@@ -81,7 +81,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let parse_secs = t0.elapsed().as_secs_f64();
 
-    let snap_view = datacore.snapshot();
+    let store = datacore.records();
 
     println!();
     println!("Datacore summary");
@@ -89,7 +89,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("  game_version   : {}", meta.game_version);
     println!("  build_id       : {}", meta.build_id);
     println!("  extracted_at   : {}", meta.extracted_at);
-    println!("  records        : {}", snap_view.records.len());
+    println!("  records        : {}", store.len());
     println!("  locale entries : {}", asset_data.locale.len());
     if use_all {
         // Graph is no longer auto-built; build it explicitly on request.
@@ -120,7 +120,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!();
     println!("Snapshot round-trip");
     println!("-------------------");
-    let expected_records = datacore.snapshot().records.len();
+    let expected_records = datacore.records().len();
 
     let mut capture_config = SnapshotCaptureConfig::standard();
     if skip_assets {
@@ -157,7 +157,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let t4 = Instant::now();
     let (hydrated_assets, hydrated_dc) = loaded.hydrate(&hydrate_asset_config)?;
     let hydrate_secs = t4.elapsed().as_secs_f64();
-    let hydrated_records = hydrated_dc.snapshot().records.len();
+    let hydrated_records = hydrated_dc.records().len();
     println!("  hydrate time   : {hydrate_secs:.2}s  (svarog + builder + indices)");
     println!("  hydrated records : {hydrated_records}");
     println!(

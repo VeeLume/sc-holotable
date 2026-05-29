@@ -8,8 +8,8 @@
 //!
 //! # Why bytes and not cooked types?
 //!
-//! Earlier revisions of this format serialized [`crate::DatacoreSnapshot`]
-//! (the cooked output of [`crate::Datacore::parse`]) directly. That worked
+//! Earlier revisions of this format serialized the cooked `RecordStore`
+//! (the output of [`crate::Datacore::parse`]) directly. That worked
 //! functionally but caused a catastrophic compile-time regression in
 //! `sc-extract`: `rmp_serde::to_vec_named(&snapshot)` transitively
 //! monomorphized `Serialize`/`Deserialize` for every generated type
@@ -175,7 +175,7 @@ impl ExtractSnapshot {
     /// changes so older snapshots fail [`ExtractSnapshot::load`] cleanly.
     ///
     /// **v5** — byte-bundle rework: `ExtractSnapshot { meta, files }`.
-    /// Captured bytes replace the cooked [`crate::DatacoreSnapshot`] +
+    /// Captured bytes replace the cooked `RecordStore` +
     /// [`crate::AssetData`] projection. Hydration re-parses on load;
     /// forward/backward compatibility across generator regenerations is
     /// automatic because the DCB format is game-stable. Not backward

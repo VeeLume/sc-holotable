@@ -113,7 +113,7 @@ struct Counts {
 impl Counts {
     fn from(dc: &Datacore, assets: &AssetData) -> Self {
         Self {
-            records: dc.snapshot().records.len(),
+            records: dc.records().len(),
             // Cooked indices (tags / manufacturers / items) moved to their
             // own crates — testing them here would need dev-dep cycles and
             // isn't sc-extract's job. The record store proves the DCB bytes

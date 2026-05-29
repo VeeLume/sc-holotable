@@ -17,7 +17,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let asset_data = AssetData::extract(&assets, &AssetConfig::standard())?;
     let datacore = sc_extract::Datacore::parse(&assets, &asset_data)?;
 
-    let items = ItemCache::build(&datacore);
+    let items = ItemCache::build(datacore.records());
     let inv = items.iter().filter(|(_, it)| it.is_inventory_item()).count();
     println!("ItemCache entries : {}", items.len());
     println!("inventory items   : {inv}");

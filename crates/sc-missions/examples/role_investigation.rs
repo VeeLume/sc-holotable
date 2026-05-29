@@ -28,7 +28,7 @@
 //! Run:
 //!
 //! ```bash
-//! cargo run -p sc-contracts --release --example role_investigation
+//! cargo run -p sc-missions --release --example role_investigation
 //! ```
 
 use std::collections::{BTreeMap, HashMap, HashSet};
@@ -101,7 +101,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let asset_data = AssetData::extract(&assets, &AssetConfig::standard())?;
     let datacore = Datacore::parse(&assets, &asset_data)?;
     let pools = &datacore.records().pools;
-    let tt = sc_tags::TagTree::build(&datacore);
+    let tt = sc_tags::TagTree::build(datacore.records());
     let tag_tree = &tt;
 
     // ── Section 1: spawn-variant coverage ────────────────────────────────

@@ -14,12 +14,12 @@
 //!    are likely to have a non-spawning slot.
 //!
 //! ```bash
-//! cargo run -p sc-contracts --release --example spawn_dig
+//! cargo run -p sc-missions --release --example spawn_dig
 //! ```
 
 use std::collections::BTreeMap;
 
-use sc_contracts::{Encounter, MissionIndex, raw};
+use sc_missions::{Encounter, MissionIndex, raw};
 use sc_extract::{AssetConfig, AssetData, AssetSource, Datacore};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -290,7 +290,7 @@ fn section_3_empty_candidate_census(index: &MissionIndex) {
 
 /// "First positive tag" snapshot for diagnostic display — gives the
 /// reader a sense of *what the slot was trying to find*.
-fn slot_first_positive(slot: &sc_contracts::ShipSlot) -> String {
+fn slot_first_positive(slot: &sc_missions::ShipSlot) -> String {
     let names: Vec<&str> = slot.positive.names.iter().map(|s| s.as_str()).collect();
     if names.is_empty() {
         "(no positive tags)".to_string()

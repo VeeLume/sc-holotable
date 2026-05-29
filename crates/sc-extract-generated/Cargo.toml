@@ -27,6 +27,11 @@ publish = false
 # code can `use svarog_common::CigGuid` etc. without going through sc-extract.
 svarog-common = { workspace = true }
 svarog-datacore = { workspace = true }
+# serde — only for the hand-written manual types (LocaleKey). The *generated*
+# types deliberately do NOT derive serde: that monomorphization across ~6k
+# types is the compile-time cliff the byte-bundle ExtractSnapshot avoids.
+serde = { workspace = true }
+
 [features]
 default = []
 full = [

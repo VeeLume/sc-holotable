@@ -1,18 +1,14 @@
-//! Runtime [`Datacore`] session and its cooked [`DatacoreSnapshot`].
+//! Runtime [`Datacore`] session.
 //!
-//! This module splits the parse-run state into two pieces:
+//! [`Datacore`] is a live parse-run session that **owns** a
+//! [`DataCoreDatabase`] (so consumers can keep running raw svarog queries
+//! after high-level parsing) alongside the cooked [`RecordStore`] produced
+//! in one eager pass over every top-level DCB record.
 //!
-//! - [`DatacoreSnapshot`] — fully owned runtime bundle of every DCB-derived
-//!   value produced in one parse pass (records, graph). Not
-//!   serialized — persistence
-//!   happens through [`crate::ExtractSnapshot`], which archives the raw
-//!   DCB bytes and re-parses on load.
-//! - [`Datacore`] — live session that **owns** a [`DataCoreDatabase`] so
-//!   consumers can keep running raw svarog queries after high-level parsing.
-//!   Holds a [`DatacoreSnapshot`] for the cooked data.
-//!
-//! Constructed via [`Datacore::parse`]. See [`crate::asset_data::AssetData`]
-//! for the asset-sourced companion (currently just the locale map).
+//! Not serialized: persistence happens through [`crate::ExtractSnapshot`],
+//! which archives the raw DCB bytes and re-parses on load. Constructed via
+//! [`Datacore::parse`]. See [`crate::asset_data::AssetData`] for the
+//! asset-sourced companion (currently just the locale map).
 
 use crate::Guid;
 use crate::asset_data::AssetData;
@@ -21,36 +17,8 @@ use crate::error::{Error, Result};
 use crate::generated::{Builder, Handle, RecordLookup, RecordStore};
 use crate::svarog_datacore::DataCoreDatabase;
 
-/// Cooked bundle of every DCB-derived value from one parse pass.
-///
-/// Produced by [`Datacore::parse`] and held inside a live [`Datacore`]
-/// session. Access through [`Datacore::snapshot`] (borrow) or
-/// [`Datacore::into_snapshot`] (move).
-///
-/// Not serialized. Snapshot persistence happens at the
-/// [`crate::ExtractSnapshot`] layer, which archives the raw DCB bytes and
-/// re-parses on load — see `docs/sc-extract.md` for why.
-///
-/// Not `Debug` or `Clone`: the embedded [`RecordStore`] deliberately
-/// doesn't derive either, because doing so across ~6.2k generated types
-/// explodes compile time and buys nothing real — nobody clones a full
-/// parse result and [`Datacore`] supplies its own summary `Debug` impl.
-#[derive(Default)]
-#[non_exhaustive]
-pub struct DatacoreSnapshot {
-    /// Every top-level DCB record, split by concrete Rust type.
-    pub records: RecordStore,
-}
-
-impl DatacoreSnapshot {
-    /// Total number of DCB records held across all top-level types.
-    pub fn record_count(&self) -> usize {
-        self.records.len()
-    }
-}
-
 /// Live datacore session: owns the parsed [`DataCoreDatabase`] plus the
-/// cooked [`DatacoreSnapshot`].
+/// cooked [`RecordStore`].
 ///
 /// The database is kept alive so consumers can run raw svarog queries
 /// (via [`Datacore::db`]) after high-level parsing.
@@ -60,7 +28,7 @@ impl DatacoreSnapshot {
 /// [`Datacore`] on load (via [`crate::ExtractSnapshot::hydrate`]).
 pub struct Datacore {
     db: DataCoreDatabase,
-    snapshot: DatacoreSnapshot,
+    records: RecordStore,
 }
 
 impl Datacore {
@@ -88,15 +56,13 @@ impl Datacore {
         let records = Builder::new(&db).consume_database().finish();
         tracing::info!(records = records.len(), "record store built");
 
-        let snapshot = DatacoreSnapshot { records };
-
         tracing::info!(
-            records = snapshot.records.len(),
+            records = records.len(),
             elapsed_ms = start.elapsed().as_millis(),
             "datacore parse complete"
         );
 
-        Ok(Self { db, snapshot })
+        Ok(Self { db, records })
     }
 
     /// Raw access to the live [`DataCoreDatabase`]. Use this for svarog
@@ -106,20 +72,10 @@ impl Datacore {
         &self.db
     }
 
-    /// Borrow the cooked [`DatacoreSnapshot`] without consuming the session.
-    pub fn snapshot(&self) -> &DatacoreSnapshot {
-        &self.snapshot
-    }
-
-    /// Consume the session and return only the snapshot. Drops the live
-    /// [`DataCoreDatabase`].
-    pub fn into_snapshot(self) -> DatacoreSnapshot {
-        self.snapshot
-    }
-
-    /// Delegate convenience: the [`RecordStore`] inside the snapshot.
+    /// Borrow the cooked [`RecordStore`] — every top-level DCB record, split
+    /// by concrete Rust type.
     pub fn records(&self) -> &RecordStore {
-        &self.snapshot.records
+        &self.records
     }
 
     /// Resolve a record `Reference` GUID back onto the typed surface.
@@ -151,7 +107,7 @@ impl Datacore {
 impl std::fmt::Debug for Datacore {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         f.debug_struct("Datacore")
-            .field("records", &self.snapshot.records.len())
+            .field("records", &self.records.len())
             .finish()
     }
 }

@@ -46,10 +46,10 @@
 use std::collections::HashMap;
 
 use sc_extract::generated::{
-    DataForgeComponentParamsPtr, EItemSubType, EItemType, EntityClassDefinition,
+    DataForgeComponentParamsPtr, EItemSubType, EItemType, EntityClassDefinition, RecordLookup,
     SAttachableComponentParams,
 };
-use sc_extract::{DataPools, Datacore, Guid, LocaleKey, LocaleMap};
+use sc_extract::{DataPools, Guid, LocaleKey, LocaleMap, RecordStore};
 
 pub mod variants;
 
@@ -113,38 +113,20 @@ impl ItemCache {
         Self::default()
     }
 
-    /// Build the cache from a parsed [`Datacore`] by walking the typed
+    /// Build the cache from a parsed [`RecordStore`] by walking the typed
     /// `EntityClassDefinition` pool. Returns an owned cache — build once,
     /// share `&ItemCache`.
-    pub fn build(datacore: &Datacore) -> Self {
-        let store = datacore.records();
+    pub fn build(store: &RecordStore) -> Self {
         let pools = &store.pools;
         let mut cache = Self::new();
-
         for (&guid, &handle) in &store.records.multi_feature.entity_class_definition {
             let Some(ecd) = handle.get(pools) else {
                 continue;
             };
-            let Some(attachable) = find_attachable(ecd, pools) else {
-                continue;
-            };
-            let Some(item_def) = attachable.attach_def.and_then(|h| h.get(pools)) else {
-                continue;
-            };
-
-            let loc = item_def.localization.and_then(|h| h.get(pools));
-            cache.by_record.insert(
-                guid,
-                Item {
-                    name_key: loc.and_then(|l| non_empty(&l.name)),
-                    short_name_key: loc.and_then(|l| non_empty(&l.short_name)),
-                    desc_key: loc.and_then(|l| non_empty(&l.description)),
-                    item_type: item_def.r#type.clone(),
-                    item_sub_type: item_def.sub_type.clone(),
-                },
-            );
+            if let Some(item) = item_for(ecd, pools) {
+                cache.by_record.insert(guid, item);
+            }
         }
-
         cache
     }
 
@@ -197,6 +179,57 @@ impl ItemCache {
     /// Iterate `(guid, item)` pairs.
     pub fn iter(&self) -> impl Iterator<Item = (&Guid, &Item)> + '_ {
         self.by_record.iter()
+    }
+}
+
+/// Extract the [`Item`] metadata for one `EntityClassDefinition`, or `None`
+/// if it exposes no `AttachDef`. Shared by [`ItemCache::build`] and
+/// [`ItemCacheBuilder`].
+fn item_for(ecd: &EntityClassDefinition, pools: &DataPools) -> Option<Item> {
+    let attachable = find_attachable(ecd, pools)?;
+    let item_def = attachable.attach_def.and_then(|h| h.get(pools))?;
+    let loc = item_def.localization.and_then(|h| h.get(pools));
+    Some(Item {
+        name_key: loc.and_then(|l| non_empty(&l.name)),
+        short_name_key: loc.and_then(|l| non_empty(&l.short_name)),
+        desc_key: loc.and_then(|l| non_empty(&l.description)),
+        item_type: item_def.r#type.clone(),
+        item_sub_type: item_def.sub_type.clone(),
+    })
+}
+
+/// [`sc_extract::RecordVisitor`] that builds an [`ItemCache`] in a bundled
+/// walk. Declares interest in `EntityClassDefinition` records and reads each
+/// one's typed struct via the record store. Equivalent to [`ItemCache::build`]
+/// but fusible with other visitors in one pass.
+#[derive(Default)]
+pub struct ItemCacheBuilder {
+    inner: ItemCache,
+}
+
+impl sc_extract::RecordVisitor for ItemCacheBuilder {
+    type Output = ItemCache;
+
+    fn interest(&self) -> sc_extract::Interest {
+        sc_extract::Interest::Types(&["EntityClassDefinition"])
+    }
+
+    fn visit(&mut self, item: sc_extract::VisitItem<'_>) {
+        let store = item.store;
+        let pools = &store.pools;
+        let Some(handle) = EntityClassDefinition::lookup(&store.records, &item.guid) else {
+            return;
+        };
+        let Some(ecd) = handle.get(pools) else {
+            return;
+        };
+        if let Some(cached) = item_for(ecd, pools) {
+            self.inner.by_record.insert(item.guid, cached);
+        }
+    }
+
+    fn finish(self) -> ItemCache {
+        self.inner
     }
 }
 

@@ -16,7 +16,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let asset_data = AssetData::extract(&assets, &AssetConfig::standard())?;
     let datacore = sc_extract::Datacore::parse(&assets, &asset_data)?;
 
-    let tags = TagTree::build(&datacore);
+    let tags = TagTree::build(datacore.records());
     println!("tag nodes : {}", tags.len());
     println!("roots     : {}", tags.roots().count());
 

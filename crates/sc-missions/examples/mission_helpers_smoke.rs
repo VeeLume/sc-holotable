@@ -3,10 +3,10 @@
 //! values for known missions (Settle a Score etc.).
 //!
 //! ```bash
-//! cargo run -p sc-contracts --release --example mission_helpers_smoke
+//! cargo run -p sc-missions --release --example mission_helpers_smoke
 //! ```
 
-use sc_contracts::MissionIndex;
+use sc_missions::MissionIndex;
 use sc_extract::{AssetConfig, AssetData, AssetSource, Datacore};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {

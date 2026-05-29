@@ -27,7 +27,8 @@
 
 use std::collections::HashMap;
 
-use sc_extract::{Datacore, Guid};
+use sc_extract::generated::{RecordLookup, SCItemManufacturer};
+use sc_extract::{DataPools, Guid, RecordStore};
 use serde::{Deserialize, Serialize};
 
 /// A single manufacturer entry.
@@ -57,29 +58,17 @@ impl ManufacturerRegistry {
         Self::default()
     }
 
-    /// Build the registry from a parsed [`Datacore`] (typed
+    /// Build the registry from a parsed [`RecordStore`] (typed
     /// `SCItemManufacturer` pool). Build once, share by reference.
-    pub fn build(datacore: &Datacore) -> Self {
-        let store = datacore.records();
+    pub fn build(store: &RecordStore) -> Self {
         let pools = &store.pools;
         let mut registry = Self::new();
-
         for (&guid, &handle) in &store.records.multi_feature.scitem_manufacturer {
             let Some(m) = handle.get(pools) else {
                 continue;
             };
-            let (name_key, description_key) = match m.localization.and_then(|h| h.get(pools)) {
-                Some(loc) => (non_empty(loc.name.as_str()), non_empty(loc.description.as_str())),
-                None => (None, None),
-            };
-            registry.insert(Manufacturer {
-                guid,
-                code: m.code.clone(),
-                name_key,
-                description_key,
-            });
+            registry.insert(manufacturer_for(guid, m, pools));
         }
-
         registry
     }
 
@@ -120,9 +109,55 @@ impl ManufacturerRegistry {
     }
 }
 
+/// Project one typed `SCItemManufacturer` into a [`Manufacturer`]. Shared by
+/// [`ManufacturerRegistry::build`] and [`ManufacturerRegistryBuilder`].
+fn manufacturer_for(guid: Guid, m: &SCItemManufacturer, pools: &DataPools) -> Manufacturer {
+    let (name_key, description_key) = match m.localization.and_then(|h| h.get(pools)) {
+        Some(loc) => (non_empty(loc.name.as_str()), non_empty(loc.description.as_str())),
+        None => (None, None),
+    };
+    Manufacturer {
+        guid,
+        code: m.code.clone(),
+        name_key,
+        description_key,
+    }
+}
+
 /// `Some(owned)` only when the string isn't empty.
 fn non_empty(s: &str) -> Option<String> {
     (!s.is_empty()).then(|| s.to_string())
+}
+
+/// [`sc_extract::RecordVisitor`] that builds a [`ManufacturerRegistry`] in a
+/// bundled walk. Declares interest in `SCItemManufacturer` records. Equivalent
+/// to [`ManufacturerRegistry::build`] but fusible with other visitors.
+#[derive(Default)]
+pub struct ManufacturerRegistryBuilder {
+    inner: ManufacturerRegistry,
+}
+
+impl sc_extract::RecordVisitor for ManufacturerRegistryBuilder {
+    type Output = ManufacturerRegistry;
+
+    fn interest(&self) -> sc_extract::Interest {
+        sc_extract::Interest::Types(&["SCItemManufacturer"])
+    }
+
+    fn visit(&mut self, item: sc_extract::VisitItem<'_>) {
+        let store = item.store;
+        let Some(handle) = SCItemManufacturer::lookup(&store.records, &item.guid) else {
+            return;
+        };
+        let Some(m) = handle.get(&store.pools) else {
+            return;
+        };
+        self.inner.insert(manufacturer_for(item.guid, m, &store.pools));
+    }
+
+    fn finish(self) -> ManufacturerRegistry {
+        self.inner
+    }
 }
 
 #[cfg(test)]

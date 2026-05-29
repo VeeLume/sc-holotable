@@ -7,7 +7,7 @@
 //! `desc_key` so consumers can dedupe or render variant lists per
 //! INI key without re-walking the iterators.
 //!
-//! Mirrors the shape of [`sc_contracts::MissionPools`] and follows
+//! Mirrors the shape of [`sc_missions::MissionPools`] and follows
 //! the workspace localization rule (`docs/localization.md`):
 //! collisions live next to the iterator that produces them, keys
 //! stay raw with the leading `@` preserved, and resolution against

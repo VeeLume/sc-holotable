@@ -10,7 +10,7 @@
 //! (see `docs/localization.md`).
 //!
 //! ```no_run
-//! use sc_contracts::MissionIndex;
+//! use sc_missions::MissionIndex;
 //! # fn demo(datacore: &sc_extract::Datacore) {
 //! let index = MissionIndex::build(datacore);
 //! println!("{} missions ({} with mission span)",
@@ -119,8 +119,8 @@ impl MissionIndex {
     /// turns both on.
     pub fn build(datacore: &Datacore) -> Self {
         // Build the shared indices once, thread them through the pipeline.
-        let tag_tree = TagTree::build(datacore);
-        let items = ItemCache::build(datacore);
+        let tag_tree = TagTree::build(datacore.records());
+        let items = ItemCache::build(datacore.records());
         let ships = ShipRegistry::build(datacore, &tag_tree);
         let blueprints = BlueprintPoolRegistry::build(datacore, &items);
         let currency = RewardCurrencyCatalog::build(datacore);

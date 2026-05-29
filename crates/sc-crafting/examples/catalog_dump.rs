@@ -17,7 +17,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let assets = AssetSource::from_install(&install)?;
     let asset_data = AssetData::extract(&assets, &AssetConfig::standard())?;
     let datacore = sc_extract::Datacore::parse(&assets, &asset_data)?;
-    let items = ItemCache::build(&datacore);
+    let items = ItemCache::build(datacore.records());
 
     let catalog = all_blueprints(&datacore, &items);
     let craftable = catalog

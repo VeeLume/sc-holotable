@@ -5,7 +5,7 @@
 //! 1. **Pools** — record-pool census, surfaces missing-feature gaps.
 //!    A `0` next to a `required` row means the consumer's feature set isn't
 //!    pulling that pool's leaf feature in (the "data just wasn't there" mode).
-//! 2. **Contracts** — filter + drill-down into [`sc_contracts::Contract`]s,
+//! 2. **Contracts** — filter + drill-down into [`sc_missions::Contract`]s,
 //!    with the locale-key sibling cluster surfaced inline.
 //! 3. **Weapons** — filter + drill-down into [`sc_weapons::ShipWeapon`]s.
 //!
@@ -22,7 +22,7 @@
 use std::time::Instant;
 
 use anyhow::{Context as _, Result};
-use sc_contracts::{
+use sc_missions::{
     AssetConfig, AssetData, AssetSource, Datacore, ItemCache, LocaleMap, MissionIndex,
 };
 use slt::{
@@ -77,7 +77,7 @@ fn main() -> Result<()> {
 
     let pool_checks = build_pool_checks(&datacore);
 
-    let localized_items = ItemCache::build(&datacore);
+    let localized_items = ItemCache::build(datacore.records());
     let locale = asset_data.locale.clone();
 
     let mut app = AppState {
@@ -89,7 +89,7 @@ fn main() -> Result<()> {
             "Contracts".to_string(),
             "Weapons".to_string(),
         ]),
-        contracts_state: sc_contracts::tui::ExplorerState::new(),
+        contracts_state: sc_missions::tui::ExplorerState::new(),
         weapons_state: sc_weapons::tui::ExplorerState::new(),
         pools_scroll: ScrollState::new(),
         dark_mode: true,
@@ -114,7 +114,7 @@ struct AppState {
     weapon_set: sc_weapons::tui::WeaponSet,
     pool_checks: Vec<PoolRow>,
     tabs: TabsState,
-    contracts_state: sc_contracts::tui::ExplorerState,
+    contracts_state: sc_missions::tui::ExplorerState,
     weapons_state: sc_weapons::tui::ExplorerState,
     pools_scroll: ScrollState,
     dark_mode: bool,
@@ -142,9 +142,9 @@ struct PoolRow {
 
 fn build_pool_checks(datacore: &Datacore) -> Vec<PoolRow> {
     let mut rows = Vec::new();
-    for c in sc_contracts::tui::pool_checks(datacore) {
+    for c in sc_missions::tui::pool_checks(datacore) {
         rows.push(PoolRow {
-            owner: "sc-contracts",
+            owner: "sc-missions",
             name: c.name,
             feature: c.feature,
             count: c.count,
@@ -202,7 +202,7 @@ fn draw(ui: &mut Context, app: &mut AppState) {
 
             match app.tabs.selected {
                 TAB_POOLS => render_pools(ui, app),
-                TAB_CONTRACTS => sc_contracts::tui::render(
+                TAB_CONTRACTS => sc_missions::tui::render(
                     ui,
                     &mut app.contracts_state,
                     &app.index,
