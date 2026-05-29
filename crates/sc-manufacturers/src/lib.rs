@@ -113,7 +113,10 @@ impl ManufacturerRegistry {
 /// [`ManufacturerRegistry::build`] and [`ManufacturerRegistryBuilder`].
 fn manufacturer_for(guid: Guid, m: &SCItemManufacturer, pools: &DataPools) -> Manufacturer {
     let (name_key, description_key) = match m.localization.and_then(|h| h.get(pools)) {
-        Some(loc) => (non_empty(loc.name.as_str()), non_empty(loc.description.as_str())),
+        Some(loc) => (
+            non_empty(loc.name.as_str()),
+            non_empty(loc.description.as_str()),
+        ),
         None => (None, None),
     };
     Manufacturer {
@@ -152,7 +155,8 @@ impl sc_extract::RecordVisitor for ManufacturerRegistryBuilder {
         let Some(m) = handle.get(&store.pools) else {
             return;
         };
-        self.inner.insert(manufacturer_for(item.guid, m, &store.pools));
+        self.inner
+            .insert(manufacturer_for(item.guid, m, &store.pools));
     }
 
     fn finish(self) -> ManufacturerRegistry {

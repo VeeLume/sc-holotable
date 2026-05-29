@@ -3,8 +3,8 @@
 //! NPC-with-allied-marker and Entity slots so we can verify the new
 //! shape against live data.
 
-use sc_missions::{Encounter, MissionIndex};
 use sc_extract::{AssetConfig, AssetData, AssetSource, Datacore};
+use sc_missions::{Encounter, MissionIndex};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let install = sc_installs::discover_primary()?;

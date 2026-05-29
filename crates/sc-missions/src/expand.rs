@@ -19,11 +19,10 @@ use sc_extract::generated::{
     ContractBoolParam, ContractBoolParamType, ContractClass_Contract, ContractClassBasePtr,
     ContractGeneratorHandlerBasePtr, ContractIntParam, ContractIntParamType, ContractLegacy,
     ContractParamOverrides, ContractPrerequisite_CompletedContractTags,
-    ContractTemplate,
     ContractPrerequisite_CrimeStat, ContractPrerequisite_Locality, ContractPrerequisite_Location,
     ContractPrerequisite_LocationProperty, ContractPrerequisite_Reputation,
-    ContractPrerequisiteBasePtr, ContractResultBasePtr, ContractResults, DataPools,
-    ELocationTypeLevel, Handle, MissionProperty, SubContract,
+    ContractPrerequisiteBasePtr, ContractResultBasePtr, ContractResults, ContractTemplate,
+    DataPools, ELocationTypeLevel, Handle, MissionProperty, SubContract,
 };
 use sc_extract::{Datacore, Guid, LocaleKey, LocaleMap};
 

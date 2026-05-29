@@ -60,7 +60,6 @@ pub use axes::{AxisDiff, AxisKind, AxisValues, SharedTag};
 pub use blueprint_pools::{BlueprintPool, BlueprintPoolEntry, BlueprintPoolRegistry};
 // The blueprint *catalog* lives in sc-crafting; re-exported for convenience
 // (and so intra-doc links to `BlueprintItem` keep resolving).
-pub use sc_crafting::{BlueprintItem, all_blueprints};
 pub use classify::{TagBag, parse_ai_skill};
 pub use currency::{CurrencyInfo, RewardCurrencyCatalog};
 pub use expand::{
@@ -72,6 +71,7 @@ pub use expand::{
 pub use index::MissionIndex;
 pub use locality::{LocalityRegistry, LocalityView, LocationRef, LocationRegistry, SystemKey};
 pub use pools::MissionPools;
+pub use sc_crafting::{BlueprintItem, all_blueprints};
 pub use ships::{ShipCandidate, ShipEntity, ShipRegistry};
 pub use titles::{ContractAnchor, ResolvedKeys, resolve_contract_keys};
 

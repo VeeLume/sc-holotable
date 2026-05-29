@@ -18,7 +18,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let datacore = sc_extract::Datacore::parse(&assets, &asset_data)?;
 
     let items = ItemCache::build(datacore.records());
-    let inv = items.iter().filter(|(_, it)| it.is_inventory_item()).count();
+    let inv = items
+        .iter()
+        .filter(|(_, it)| it.is_inventory_item())
+        .count();
     println!("ItemCache entries : {}", items.len());
     println!("inventory items   : {inv}");
 
@@ -40,7 +43,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         if let Some(n) = it.display_name(&asset_data.locale)
             && n.contains("P4-AR")
         {
-            println!("  {n:?}  type={:?} sub={:?}", it.item_type, it.item_sub_type);
+            println!(
+                "  {n:?}  type={:?} sub={:?}",
+                it.item_type, it.item_sub_type
+            );
             hits += 1;
         }
     }

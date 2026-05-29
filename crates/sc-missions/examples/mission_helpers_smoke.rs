@@ -6,8 +6,8 @@
 //! cargo run -p sc-missions --release --example mission_helpers_smoke
 //! ```
 
-use sc_missions::MissionIndex;
 use sc_extract::{AssetConfig, AssetData, AssetSource, Datacore};
+use sc_missions::MissionIndex;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let install = sc_installs::discover_primary()?;

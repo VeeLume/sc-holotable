@@ -89,7 +89,11 @@ pub fn all_blueprints(datacore: &Datacore, items: &ItemCache) -> Vec<BlueprintIt
 /// The mission-pool builder uses this to resolve the records its reward
 /// entries reference. Returns a [`BlueprintItem`] with `None` fields for an
 /// unresolved record rather than dropping it.
-pub fn resolve_blueprint(datacore: &Datacore, items: &ItemCache, record_guid: Guid) -> BlueprintItem {
+pub fn resolve_blueprint(
+    datacore: &Datacore,
+    items: &ItemCache,
+    record_guid: Guid,
+) -> BlueprintItem {
     let records = &datacore.records().records;
     let pools = &datacore.records().pools;
     resolve_record(records, pools, items, record_guid)
@@ -141,7 +145,10 @@ fn resolve_record(
 /// Pull the crafted-entity GUID from a `CraftingProcess_*` variant. Only
 /// `CraftingProcess_Creation` crafts an item; other variants (Refining,
 /// Repair, …) don't.
-fn extract_creation_entity(process: &Option<CraftingProcess_BasePtr>, pools: &DataPools) -> Option<Guid> {
+fn extract_creation_entity(
+    process: &Option<CraftingProcess_BasePtr>,
+    pools: &DataPools,
+) -> Option<Guid> {
     match process.as_ref()? {
         CraftingProcess_BasePtr::CraftingProcess_Creation(h) => h.get(pools)?.entity_class,
         _ => None,

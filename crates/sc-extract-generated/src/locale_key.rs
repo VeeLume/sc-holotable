@@ -22,9 +22,7 @@
 /// in `global.ini`. `LocaleMap::resolve` handles the `@` prefix
 /// transparently; `LocaleMap::get` requires the caller to pass the key
 /// without the prefix — use [`LocaleKey::stripped`] for that.
-#[derive(
-    Debug, Clone, Default, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize,
-)]
+#[derive(Debug, Clone, Default, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
 pub struct LocaleKey(pub String);
 
 impl LocaleKey {

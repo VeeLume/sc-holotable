@@ -70,7 +70,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         println!("  type    : {:?}", paths.type_name(r.struct_index));
         println!("  is_main : {}", r.is_main);
         println!("  path    : {}", r.path);
-        assert!(paths.at(&r.path).contains(&r.guid), "at(path) must round-trip");
+        assert!(
+            paths.at(&r.path).contains(&r.guid),
+            "at(path) must round-trip"
+        );
         println!("  at(path) round-trips ✓");
     }
 

@@ -75,7 +75,7 @@ pub mod missions {
 #[cfg(feature = "foundations")]
 mod foundations;
 #[cfg(feature = "foundations")]
-pub use foundations::{Foundations, HolotableSnapshot, HOLOTABLE_COOK_VERSION, build_foundations};
+pub use foundations::{Foundations, HOLOTABLE_COOK_VERSION, HolotableSnapshot, build_foundations};
 
 /// The common types in one `use sc_holotable::prelude::*`.
 pub mod prelude {

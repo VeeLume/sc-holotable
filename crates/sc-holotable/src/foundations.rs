@@ -52,12 +52,12 @@ pub const HOLOTABLE_COOK_VERSION: u32 = 1;
 /// A batteries-included bundle of cooked indices, serializable for fast load.
 ///
 /// Fields are optional so a producer can ship only what a consumer needs and a
-/// consumer can tolerate a producer that omitted some. Holds only the
-/// serde-clean indices today; [`ItemCache`] joins once its serde adapter lands
-/// (regen-gated — see the project note). Persisted via
-/// [`sc_extract::ProcessedSnapshot`].
+/// consumer can tolerate a producer that omitted some. Persisted via
+/// [`sc_extract::ProcessedSnapshot`]. `ItemCache` serializes its generated
+/// enums as DCB strings (see `sc_items`' serde adapter).
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct HolotableSnapshot {
+    pub items: Option<ItemCache>,
     pub tags: Option<TagTree>,
     pub manufacturers: Option<ManufacturerRegistry>,
     pub paths: Option<RecordPaths>,
@@ -67,6 +67,7 @@ impl HolotableSnapshot {
     /// Capture the serde-clean indices from a live [`Foundations`].
     pub fn from_foundations(f: &Foundations) -> Self {
         Self {
+            items: Some(f.items.clone()),
             tags: Some(f.tags.clone()),
             manufacturers: Some(f.manufacturers.clone()),
             paths: Some(f.paths.clone()),
@@ -81,7 +82,10 @@ impl HolotableSnapshot {
     /// Load from `path`, rejecting a stale cook version (caller falls back to a
     /// raw hydrate or a fresh [`build_foundations`]).
     pub fn load(path: &Path) -> Result<Self> {
-        Ok(ProcessedSnapshot::<HolotableSnapshot>::load(path, HOLOTABLE_COOK_VERSION)?.into_index())
+        Ok(
+            ProcessedSnapshot::<HolotableSnapshot>::load(path, HOLOTABLE_COOK_VERSION)?
+                .into_index(),
+        )
     }
 }
 

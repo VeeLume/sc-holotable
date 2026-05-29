@@ -19,8 +19,8 @@
 
 use std::collections::BTreeMap;
 
-use sc_missions::{Encounter, MissionIndex, raw};
 use sc_extract::{AssetConfig, AssetData, AssetSource, Datacore};
+use sc_missions::{Encounter, MissionIndex, raw};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let install = sc_installs::discover_primary()?;

@@ -301,7 +301,9 @@ mod tests {
     fn ancestors_descendants_path() {
         let tree = build_sample_tree();
         assert_eq!(
-            tree.ancestors(&g(4)).map(|n| n.name.as_str()).collect::<Vec<_>>(),
+            tree.ancestors(&g(4))
+                .map(|n| n.name.as_str())
+                .collect::<Vec<_>>(),
             vec!["Manufacturer", "Global"]
         );
         assert_eq!(tree.path(&g(4)), vec!["Global", "Manufacturer", "Aegis"]);

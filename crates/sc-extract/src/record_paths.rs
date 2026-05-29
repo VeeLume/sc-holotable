@@ -342,8 +342,10 @@ mod tests {
             .collect();
         assert_eq!(manus, vec![g(1)]);
 
-        let all_mfr: std::collections::HashSet<_> =
-            p.under("libs/foundry/records/scitemmanufacturer").copied().collect();
+        let all_mfr: std::collections::HashSet<_> = p
+            .under("libs/foundry/records/scitemmanufacturer")
+            .copied()
+            .collect();
         assert_eq!(all_mfr, [g(1), g(2)].into_iter().collect());
 
         // Whole tree.
@@ -365,11 +367,14 @@ mod tests {
         let json = serde_json::to_string(&p).unwrap();
         let decoded: RecordPaths = serde_json::from_str(&json).unwrap();
         assert_eq!(decoded.len(), p.len());
-        assert_eq!(decoded.at(
-            "libs/foundry/records/scitemmanufacturer/paintcolorlogos/paint.xml"
-        ), &[g(2)]);
         assert_eq!(
-            decoded.under("libs/foundry/records/scitemmanufacturer").count(),
+            decoded.at("libs/foundry/records/scitemmanufacturer/paintcolorlogos/paint.xml"),
+            &[g(2)]
+        );
+        assert_eq!(
+            decoded
+                .under("libs/foundry/records/scitemmanufacturer")
+                .count(),
             2
         );
     }

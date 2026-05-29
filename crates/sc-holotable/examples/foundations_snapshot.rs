@@ -32,21 +32,41 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // One bundled pass via the umbrella build-context.
     let f = build_foundations(&datacore);
 
-    println!("items         : sep {:>6}  bundle {:>6}", items.len(), f.items.len());
-    println!("tags          : sep {:>6}  bundle {:>6}", tags.len(), f.tags.len());
-    println!("manufacturers : sep {:>6}  bundle {:>6}", mfrs.len(), f.manufacturers.len());
-    println!("paths         : sep {:>6}  bundle {:>6}", paths.len(), f.paths.len());
+    println!(
+        "items         : sep {:>6}  bundle {:>6}",
+        items.len(),
+        f.items.len()
+    );
+    println!(
+        "tags          : sep {:>6}  bundle {:>6}",
+        tags.len(),
+        f.tags.len()
+    );
+    println!(
+        "manufacturers : sep {:>6}  bundle {:>6}",
+        mfrs.len(),
+        f.manufacturers.len()
+    );
+    println!(
+        "paths         : sep {:>6}  bundle {:>6}",
+        paths.len(),
+        f.paths.len()
+    );
     assert_eq!(items.len(), f.items.len(), "items mismatch");
     assert_eq!(tags.len(), f.tags.len(), "tags mismatch");
     assert_eq!(mfrs.len(), f.manufacturers.len(), "manufacturers mismatch");
     assert_eq!(paths.len(), f.paths.len(), "paths mismatch");
 
-    // HolotableSnapshot round-trip (the 3 serde-clean indices).
+    // HolotableSnapshot round-trip (all four cooked indices).
     let snap = HolotableSnapshot::from_foundations(&f);
     let path = std::env::temp_dir().join("holotable_example.cook");
     snap.save(snapshot_meta_from_install(&install), &path)?;
     let loaded = HolotableSnapshot::load(&path)?;
-    assert_eq!(loaded.paths.as_ref().map(RecordPaths::len), Some(f.paths.len()));
+    assert_eq!(loaded.items.as_ref().map(ItemCache::len), Some(f.items.len()));
+    assert_eq!(
+        loaded.paths.as_ref().map(RecordPaths::len),
+        Some(f.paths.len())
+    );
     assert_eq!(loaded.tags.as_ref().map(TagTree::len), Some(f.tags.len()));
     assert_eq!(
         loaded.manufacturers.as_ref().map(ManufacturerRegistry::len),
@@ -54,7 +74,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     );
     let size = std::fs::metadata(&path)?.len();
     let _ = std::fs::remove_file(&path);
-    println!("HolotableSnapshot round-trip ✓  ({:.2} MB on disk)", size as f64 / 1_000_000.0);
+    println!(
+        "HolotableSnapshot round-trip ✓  ({:.2} MB on disk)",
+        size as f64 / 1_000_000.0
+    );
 
     Ok(())
 }

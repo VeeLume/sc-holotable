@@ -50,8 +50,38 @@ use sc_extract::generated::{
     SAttachableComponentParams,
 };
 use sc_extract::{DataPools, Guid, LocaleKey, LocaleMap, RecordStore};
+use serde::{Deserialize, Serialize};
 
 pub mod variants;
+
+/// serde adapters for the generated item enums. They carry no serde of their
+/// own (the generated crate stays serde-free to avoid the monomorphization
+/// cliff — see the project note), so we store each as its DCB string via the
+/// generator-emitted `as_dcb_str` / `from_dcb_str` round-trip.
+mod enum_serde {
+    use sc_extract::generated::{EItemSubType, EItemType};
+    use serde::{Deserialize, Deserializer, Serializer};
+
+    pub mod item_type {
+        use super::*;
+        pub fn serialize<S: Serializer>(v: &EItemType, s: S) -> Result<S::Ok, S::Error> {
+            s.serialize_str(v.as_dcb_str())
+        }
+        pub fn deserialize<'de, D: Deserializer<'de>>(d: D) -> Result<EItemType, D::Error> {
+            Ok(EItemType::from_dcb_str(&String::deserialize(d)?))
+        }
+    }
+
+    pub mod item_sub_type {
+        use super::*;
+        pub fn serialize<S: Serializer>(v: &EItemSubType, s: S) -> Result<S::Ok, S::Error> {
+            s.serialize_str(v.as_dcb_str())
+        }
+        pub fn deserialize<'de, D: Deserializer<'de>>(d: D) -> Result<EItemSubType, D::Error> {
+            Ok(EItemSubType::from_dcb_str(&String::deserialize(d)?))
+        }
+    }
+}
 
 /// Per-entity item metadata from the `SAttachableComponentParams.AttachDef`
 /// (`SItemDefinition`) block.
@@ -61,7 +91,7 @@ pub mod variants;
 /// `item_type` / `item_sub_type` are the typed [`EItemType`] /
 /// [`EItemSubType`] enums (`Unrecognized(..)` only for values added in a
 /// game patch the generator hasn't seen yet).
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Item {
     /// `Localization.Name` — the primary display-name key.
     pub name_key: Option<LocaleKey>,
@@ -71,8 +101,10 @@ pub struct Item {
     /// `Localization.Description` — long-form description key.
     pub desc_key: Option<LocaleKey>,
     /// `AttachDef.Type` — typed item-type classification.
+    #[serde(with = "enum_serde::item_type")]
     pub item_type: EItemType,
     /// `AttachDef.SubType` — typed item-subtype classification.
+    #[serde(with = "enum_serde::item_sub_type")]
     pub item_sub_type: EItemSubType,
 }
 
@@ -102,7 +134,7 @@ impl Item {
 /// Per-entity [`Item`] metadata for every `EntityClassDefinition` that
 /// exposes an `AttachDef`. Build **once** via [`ItemCache::build`] and share
 /// by reference.
-#[derive(Debug, Clone, Default)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct ItemCache {
     by_record: HashMap<Guid, Item>,
 }
@@ -285,6 +317,24 @@ mod tests {
         assert_eq!(cache.name_key(&guid).unwrap().as_str(), "@item_NameTest");
         assert_eq!(cache.item_type(&guid), Some(&EItemType::Armor));
         assert!(got.is_inventory_item());
+    }
+
+    #[test]
+    fn serde_round_trip_via_dcb_strings() {
+        let mut cache = ItemCache::new();
+        let mut a = item(EItemType::Armor);
+        a.item_sub_type = EItemSubType::Unrecognized("WeirdSub".into());
+        a.name_key = Some(LocaleKey::new("@item_NameA"));
+        cache.insert(Guid::from_bytes([1; 16]), a.clone());
+        // Unrecognized type must carry its raw DCB string through the trip.
+        let b = item(EItemType::Unrecognized("FutureType".into()));
+        cache.insert(Guid::from_bytes([2; 16]), b.clone());
+
+        let json = serde_json::to_string(&cache).unwrap();
+        let decoded: ItemCache = serde_json::from_str(&json).unwrap();
+        assert_eq!(decoded.len(), 2);
+        assert_eq!(decoded.get(&Guid::from_bytes([1; 16])), Some(&a));
+        assert_eq!(decoded.get(&Guid::from_bytes([2; 16])), Some(&b));
     }
 
     #[test]

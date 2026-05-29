@@ -6,7 +6,9 @@
 //! cargo run -p sc-bench --release --example bundle_check
 //! ```
 
-use sc_extract::{AssetConfig, AssetData, AssetSource, BundledWalk, RecordPaths, RecordPathsBuilder};
+use sc_extract::{
+    AssetConfig, AssetData, AssetSource, BundledWalk, RecordPaths, RecordPathsBuilder,
+};
 use sc_items::{ItemCache, ItemCacheBuilder};
 use sc_tags::{TagTree, TagTreeBuilder};
 
@@ -31,9 +33,21 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         RecordPathsBuilder::default(),
     ));
 
-    println!("items  : sep {:>6}  bundle {:>6}", items_sep.len(), items_b.len());
-    println!("tags   : sep {:>6}  bundle {:>6}", tags_sep.len(), tags_b.len());
-    println!("paths  : sep {:>6}  bundle {:>6}", paths_sep.len(), paths_b.len());
+    println!(
+        "items  : sep {:>6}  bundle {:>6}",
+        items_sep.len(),
+        items_b.len()
+    );
+    println!(
+        "tags   : sep {:>6}  bundle {:>6}",
+        tags_sep.len(),
+        tags_b.len()
+    );
+    println!(
+        "paths  : sep {:>6}  bundle {:>6}",
+        paths_sep.len(),
+        paths_b.len()
+    );
 
     assert_eq!(items_sep.len(), items_b.len(), "ItemCache count mismatch");
     assert_eq!(tags_sep.len(), tags_b.len(), "TagTree count mismatch");
@@ -44,13 +58,19 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         .iter()
         .filter(|(g, it)| items_b.get(g) != Some(*it))
         .count();
-    assert_eq!(item_mismatch, 0, "ItemCache content differs ({item_mismatch})");
+    assert_eq!(
+        item_mismatch, 0,
+        "ItemCache content differs ({item_mismatch})"
+    );
 
     let path_mismatch = paths_sep
         .iter()
         .filter(|r| paths_b.get(&r.guid) != Some(*r))
         .count();
-    assert_eq!(path_mismatch, 0, "RecordPaths content differs ({path_mismatch})");
+    assert_eq!(
+        path_mismatch, 0,
+        "RecordPaths content differs ({path_mismatch})"
+    );
 
     // TagTree: parent links must match too (the finish-time pass-2).
     let tag_mismatch = tags_sep

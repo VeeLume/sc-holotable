@@ -23,8 +23,8 @@
 //! cargo run -p sc-missions --release --example ambush_dig
 //! ```
 
-use sc_missions::{Encounter, MissionIndex};
 use sc_extract::{AssetConfig, AssetData, AssetSource, Datacore, Guid};
+use sc_missions::{Encounter, MissionIndex};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let install = sc_installs::discover_primary()?;

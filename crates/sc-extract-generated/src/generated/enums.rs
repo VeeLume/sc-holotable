@@ -36,6 +36,17 @@ impl ARDataType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Player => "Player",
+            Self::ShopItem => "ShopItem",
+            Self::PointOfInterest => "PointOfInterest",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ARLabelMovementType`
@@ -63,6 +74,17 @@ impl ARLabelMovementType {
             "FacingPlayer" => Self::FacingPlayer,
             "Rotating" => Self::Rotating,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Fixed => "Fixed",
+            Self::FacingPlayer => "FacingPlayer",
+            Self::Rotating => "Rotating",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -95,6 +117,18 @@ impl AbilityAttemptResult {
             "Failed" => Self::Failed,
             "Fatigued" => Self::Fatigued,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Activated => "Activated",
+            Self::Deactivated => "Deactivated",
+            Self::Failed => "Failed",
+            Self::Fatigued => "Fatigued",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -501,6 +535,142 @@ impl AbilityType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::BeingRestrained => "BeingRestrained",
+            Self::BeingTakenDown => "BeingTakenDown",
+            Self::BeingUnrestrained => "BeingUnrestrained",
+            Self::ChangeMode => "ChangeMode",
+            Self::Climb => "Climb",
+            Self::Crouch => "Crouch",
+            Self::Duck => "Duck",
+            Self::Fire => "Fire",
+            Self::UseConsumable => "UseConsumable",
+            Self::EatAndDrink => "EatAndDrink",
+            Self::EatAndDrink2H => "EatAndDrink2H",
+            Self::HoldBreath => "HoldBreath",
+            Self::Jump => "Jump",
+            Self::Land => "Land",
+            Self::LadderSprint => "LadderSprint",
+            Self::LadderDodge => "LadderDodge",
+            Self::Lean => "Lean",
+            Self::Melee => "Melee",
+            Self::MedicalMelee => "MedicalMelee",
+            Self::Mirror => "Mirror",
+            Self::MobiGlas => "MobiGlas",
+            Self::Movement => "Movement",
+            Self::Rotation => "Rotation",
+            Self::PersonalInnerThought => "PersonalInnerThought",
+            Self::Place => "Place",
+            Self::Prone => "Prone",
+            Self::ProneMove => "ProneMove",
+            Self::ProneRoll => "ProneRoll",
+            Self::Reload => "Reload",
+            Self::AmmoRepool => "AmmoRepool",
+            Self::Walk => "Walk",
+            Self::Run => "Run",
+            Self::Sprint => "Sprint",
+            Self::Stand => "Stand",
+            Self::Stow => "Stow",
+            Self::Restrain => "Restrain",
+            Self::PreTake => "PreTake",
+            Self::Take => "Take",
+            Self::TakeDown => "TakeDown",
+            Self::ThrowOverhand => "ThrowOverhand",
+            Self::ThrowUnderhand => "ThrowUnderhand",
+            Self::UnarmedCombat => "UnarmedCombat",
+            Self::Unstow => "Unstow",
+            Self::Unrestrain => "Unrestrain",
+            Self::Zoom => "Zoom",
+            Self::HandSignal => "HandSignal",
+            Self::Carry => "Carry",
+            Self::Carry2H => "Carry2H",
+            Self::Equip => "Equip",
+            Self::SocialEmote => "SocialEmote",
+            Self::Fall => "Fall",
+            Self::Inspect => "Inspect",
+            Self::InteractionMode => "InteractionMode",
+            Self::BlockingInteractionMode => "BlockingInteractionMode",
+            Self::TryOn => "TryOn",
+            Self::SeatTransition => "SeatTransition",
+            Self::DiscardItem => "DiscardItem",
+            Self::TurnStep => "TurnStep",
+            Self::Lookback => "Lookback",
+            Self::ItemRaise => "ItemRaise",
+            Self::HeadTrack => "HeadTrack",
+            Self::FreeLook => "FreeLook",
+            Self::MeleeBlock => "MeleeBlock",
+            Self::LootingInteraction => "LootingInteraction",
+            Self::UsableBeingDraggedOut => "UsableBeingDraggedOut",
+            Self::UsableBeingDroppedIn => "UsableBeingDroppedIn",
+            Self::UsableDragUserOut => "UsableDragUserOut",
+            Self::UsableDropUserIn => "UsableDropUserIn",
+            Self::UsableInteraction => "UsableInteraction",
+            Self::MeleeHeavy => "MeleeHeavy",
+            Self::StickyFilter => "StickyFilter",
+            Self::Dodge => "Dodge",
+            Self::ProtectFace => "ProtectFace",
+            Self::SuitEquip => "SuitEquip",
+            Self::EVA => "EVA",
+            Self::BodyCarrying => "BodyCarrying",
+            Self::BodyDragging => "BodyDragging",
+            Self::TrackviewControlled => "TrackviewControlled",
+            Self::Fidgets => "Fidgets",
+            Self::DamageReactions => "DamageReactions",
+            Self::EffortMoveSet => "EffortMoveSet",
+            Self::WalkToPlace => "WalkToPlace",
+            Self::Looting => "Looting",
+            Self::OpenCloseContainer => "OpenCloseContainer",
+            Self::UseConsumable2H => "UseConsumable2H",
+            Self::VisorWipe => "VisorWipe",
+            Self::CanUseMovable => "CanUseMovable",
+            Self::ThrowReady => "ThrowReady",
+            Self::PlaceReady => "PlaceReady",
+            Self::PrimeItem => "PrimeItem",
+            Self::Hack => "Hack",
+            Self::UsingMovable => "UsingMovable",
+            Self::ZeroGTraversal => "ZeroGTraversal",
+            Self::ZeroGTraversalMovement => "ZeroGTraversalMovement",
+            Self::ZeroGTraversalHandAttach => "ZeroGTraversalHandAttach",
+            Self::WeaponMount => "WeaponMount",
+            Self::Scanning => "Scanning",
+            Self::TurnOverApply => "TurnOverApply",
+            Self::SyncedRevival => "SyncedRevival",
+            Self::Vault => "Vault",
+            Self::VaultHigh => "VaultHigh",
+            Self::Mantle => "Mantle",
+            Self::MantleHigh => "MantleHigh",
+            Self::DrunkStumble => "DrunkStumble",
+            Self::SelfTarget => "SelfTarget",
+            Self::ForceReactions => "ForceReactions",
+            Self::SoftLockWeapons => "SoftLockWeapons",
+            Self::AnyPlayerAnimatedInteraction => "AnyPlayerAnimatedInteraction",
+            Self::LeftHandPlayerAnimatedInteraction => "LeftHandPlayerAnimatedInteraction",
+            Self::RightHandPlayerAnimatedInteraction => "RightHandPlayerAnimatedInteraction",
+            Self::FixOverheat => "FixOverheat",
+            Self::OpenInventory => "OpenInventory",
+            Self::Misfire => "Misfire",
+            Self::SyncedMeleeAttack => "SyncedMeleeAttack",
+            Self::SyncedMeleeDefend => "SyncedMeleeDefend",
+            Self::Swim => "Swim",
+            Self::WeaponLowering => "WeaponLowering",
+            Self::Slide => "Slide",
+            Self::SlideDrop => "SlideDrop",
+            Self::Malfunctioning => "Malfunctioning",
+            Self::StaticFiringModeDeploy => "StaticFiringModeDeploy",
+            Self::StaticFiringModeIdle => "StaticFiringModeIdle",
+            Self::StaticFiringModeRetract => "StaticFiringModeRetract",
+            Self::AttachedWeaponDeploy => "AttachedWeaponDeploy",
+            Self::AttachedWeaponIdle => "AttachedWeaponIdle",
+            Self::AttachedWeaponRetract => "AttachedWeaponRetract",
+            Self::EquipWearable => "EquipWearable",
+            Self::VehicleWeaponFire => "VehicleWeaponFire",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `AccountBadge`
@@ -539,6 +709,20 @@ impl AccountBadge {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::RSI_BADGE_QA => "RSI_BADGE_QA",
+            Self::RSI_BADGE_STAFF => "RSI_BADGE_STAFF",
+            Self::RSI_BADGE_GM => "RSI_BADGE_GM",
+            Self::RSI_BADGE_SUBSCRIBER => "RSI_BADGE_SUBSCRIBER",
+            Self::RSI_BADGE_CONCIERGE => "RSI_BADGE_CONCIERGE",
+            Self::RSI_BADGE_MMHC => "RSI_BADGE_MMHC",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ActivationMethod`
@@ -563,6 +747,16 @@ impl ActivationMethod {
             "ActivateOnAttach" => Self::ActivateOnAttach,
             "ActivateOnDemand" => Self::ActivateOnDemand,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::ActivateOnAttach => "ActivateOnAttach",
+            Self::ActivateOnDemand => "ActivateOnDemand",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -606,6 +800,21 @@ impl ActivationMode {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Default => "Default",
+            Self::Press => "Press",
+            Self::Tap => "Tap",
+            Self::DoubleTap => "DoubleTap",
+            Self::Hold => "Hold",
+            Self::Release => "Release",
+            Self::Movement => "Movement",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ActiveRange`
@@ -630,6 +839,16 @@ impl ActiveRange {
             "InteriorRange" => Self::InteriorRange,
             "ExteriorRange" => Self::ExteriorRange,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::InteriorRange => "InteriorRange",
+            Self::ExteriorRange => "ExteriorRange",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -667,6 +886,19 @@ impl ActorAccelerationDirection {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Up => "Up",
+            Self::Down => "Down",
+            Self::Front => "Front",
+            Self::Back => "Back",
+            Self::LeftRight => "LeftRight",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ActorBodyDirection`
@@ -700,6 +932,19 @@ impl ActorBodyDirection {
             "Right" => Self::Right,
             "Left" => Self::Left,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::Chest => "Chest",
+            Self::Back => "Back",
+            Self::Right => "Right",
+            Self::Left => "Left",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -779,6 +1024,33 @@ impl ActorBone {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Hips => "Hips",
+            Self::Spine => "Spine",
+            Self::Spine2 => "Spine2",
+            Self::Spine3 => "Spine3",
+            Self::Neck => "Neck",
+            Self::Head => "Head",
+            Self::EyeRight => "EyeRight",
+            Self::EyeLeft => "EyeLeft",
+            Self::Weapon => "Weapon",
+            Self::Weapon2 => "Weapon2",
+            Self::FootRight => "FootRight",
+            Self::FootLeft => "FootLeft",
+            Self::ArmRight => "ArmRight",
+            Self::ArmLeft => "ArmLeft",
+            Self::ForearmRight => "ForearmRight",
+            Self::ForearmLeft => "ForearmLeft",
+            Self::CalfRight => "CalfRight",
+            Self::CalfLeft => "CalfLeft",
+            Self::Camera => "Camera",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ActorFilter`
@@ -808,6 +1080,17 @@ impl ActorFilter {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::OnlyPlayer => "OnlyPlayer",
+            Self::OnlyAI => "OnlyAI",
+            Self::Both => "Both",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ActorStatCooldownType`
@@ -832,6 +1115,16 @@ impl ActorStatCooldownType {
             "Time" => Self::Time,
             "Points" => Self::Points,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Time => "Time",
+            Self::Points => "Points",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -941,6 +1234,43 @@ impl ActorStatType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Hunger => "Hunger",
+            Self::Thirst => "Thirst",
+            Self::BloodDrugLevel => "BloodDrugLevel",
+            Self::OverdoseLevel => "OverdoseLevel",
+            Self::BodyTemperature => "BodyTemperature",
+            Self::SuitTemperature => "SuitTemperature",
+            Self::Stun => "Stun",
+            Self::Distortion => "Distortion",
+            Self::Pressure => "Pressure",
+            Self::GasSaturationO2 => "GasSaturationO2",
+            Self::DownedDamage => "DownedDamage",
+            Self::HealthPool => "HealthPool",
+            Self::HealthHead => "HealthHead",
+            Self::HealthTorso => "HealthTorso",
+            Self::HealthLeftArm => "HealthLeftArm",
+            Self::HealthRightArm => "HealthRightArm",
+            Self::HealthLeftLeg => "HealthLeftLeg",
+            Self::HealthRightLeg => "HealthRightLeg",
+            Self::WearHead => "WearHead",
+            Self::WearTorso => "WearTorso",
+            Self::WearLeftArm => "WearLeftArm",
+            Self::WearRightArm => "WearRightArm",
+            Self::WearLeftLeg => "WearLeftLeg",
+            Self::WearRightLeg => "WearRightLeg",
+            Self::BodyRadiation => "BodyRadiation",
+            Self::SuitRadiation => "SuitRadiation",
+            Self::GasSaturationCO2 => "GasSaturationCO2",
+            Self::GasSaturationCO => "GasSaturationCO",
+            Self::Hygiene => "Hygiene",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ActorStateFilterByAimStanceState`
@@ -991,6 +1321,24 @@ impl ActorStateFilterByAimStanceState {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Any => "Any",
+            Self::Inactive => "Inactive",
+            Self::Relaxed => "Relaxed",
+            Self::Ready => "Ready",
+            Self::Lowered => "Lowered",
+            Self::ADS => "ADS",
+            Self::Inspect => "Inspect",
+            Self::MeleeBlock => "MeleeBlock",
+            Self::ThrowReady => "ThrowReady",
+            Self::SelfTarget => "SelfTarget",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ActorStateFilterByCharacterType`
@@ -1018,6 +1366,17 @@ impl ActorStateFilterByCharacterType {
             "PlayersOnly" => Self::PlayersOnly,
             "NonPlayersOnly" => Self::NonPlayersOnly,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Any => "Any",
+            Self::PlayersOnly => "PlayersOnly",
+            Self::NonPlayersOnly => "NonPlayersOnly",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -1085,6 +1444,29 @@ impl ActorStateFilterByHeldItemType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Any => "Any",
+            Self::Pistol => "Pistol",
+            Self::Stocked => "Stocked",
+            Self::Shouldered => "Shouldered",
+            Self::MeleeMode => "MeleeMode",
+            Self::mobiGlas => "mobiGlas",
+            Self::CombatThrowable => "CombatThrowable",
+            Self::Food => "Food",
+            Self::Drink => "Drink",
+            Self::MediPenHeal => "MediPenHeal",
+            Self::Other => "Other",
+            Self::Movable => "Movable",
+            Self::TractorBeam => "TractorBeam",
+            Self::MiningTool => "MiningTool",
+            Self::None => "None",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ActorStateFilterByLeanState`
@@ -1115,6 +1497,18 @@ impl ActorStateFilterByLeanState {
             "Right" => Self::Right,
             "None" => Self::None,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Any => "Any",
+            Self::Left => "Left",
+            Self::Right => "Right",
+            Self::None => "None",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -1164,6 +1558,23 @@ impl ActorStateFilterByLocomotionSet {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Any => "Any",
+            Self::BodyCarry => "BodyCarry",
+            Self::Drunk => "Drunk",
+            Self::Standard => "Standard",
+            Self::Effort => "Effort",
+            Self::Hurt => "Hurt",
+            Self::Stumble => "Stumble",
+            Self::BodyDragging => "BodyDragging",
+            Self::Movable => "Movable",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ActorStateFilterByMotionSpeed`
@@ -1203,6 +1614,21 @@ impl ActorStateFilterByMotionSpeed {
             "WalkOrRun" => Self::WalkOrRun,
             "Sprint" => Self::Sprint,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Any => "Any",
+            Self::Idle => "Idle",
+            Self::Movement => "Movement",
+            Self::Walk => "Walk",
+            Self::Run => "Run",
+            Self::WalkOrRun => "WalkOrRun",
+            Self::Sprint => "Sprint",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -1249,6 +1675,22 @@ impl ActorStateFilterByPoseState {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Any => "Any",
+            Self::Inactive => "Inactive",
+            Self::NoWeapon => "NoWeapon",
+            Self::Weapon => "Weapon",
+            Self::Carry => "Carry",
+            Self::EnterCarry => "EnterCarry",
+            Self::ExitCarry => "ExitCarry",
+            Self::UnarmedCombat => "UnarmedCombat",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ActorStateFilterBySkeleton`
@@ -1279,6 +1721,18 @@ impl ActorStateFilterBySkeleton {
             "HumanFemale" => Self::HumanFemale,
             "Vanduul" => Self::Vanduul,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Any => "Any",
+            Self::HumanMale => "HumanMale",
+            Self::HumanFemale => "HumanFemale",
+            Self::Vanduul => "Vanduul",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -1344,6 +1798,29 @@ impl ActorStateFilterByStanceState {
             "ZeroGSurfaceTraversal" => Self::ZeroGSurfaceTraversal,
             "Underground" => Self::Underground,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Any => "Any",
+            Self::Inactive => "Inactive",
+            Self::Stand => "Stand",
+            Self::Crouch => "Crouch",
+            Self::Prone => "Prone",
+            Self::ProneFront => "ProneFront",
+            Self::ProneBack => "ProneBack",
+            Self::ProneV2 => "ProneV2",
+            Self::CoverLow => "CoverLow",
+            Self::CoverHigh => "CoverHigh",
+            Self::Seated => "Seated",
+            Self::StandSquashed => "StandSquashed",
+            Self::Swim => "Swim",
+            Self::ZeroGSurfaceTraversal => "ZeroGSurfaceTraversal",
+            Self::Underground => "Underground",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -1450,6 +1927,42 @@ impl ActorStateFilterByState {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Any => "Any",
+            Self::BodyCarried => "BodyCarried",
+            Self::BodyDragged => "BodyDragged",
+            Self::BodyDragging => "BodyDragging",
+            Self::EVA => "EVA",
+            Self::Jump => "Jump",
+            Self::Fall => "Fall",
+            Self::Land => "Land",
+            Self::KnockDown => "KnockDown",
+            Self::Fly => "Fly",
+            Self::Ground => "Ground",
+            Self::Ladder => "Ladder",
+            Self::Interacting => "Interacting",
+            Self::Ledge => "Ledge",
+            Self::Restrain => "Restrain",
+            Self::Unrestrain => "Unrestrain",
+            Self::TakeDown => "TakeDown",
+            Self::Usable => "Usable",
+            Self::WeaponMount => "WeaponMount",
+            Self::Scanning => "Scanning",
+            Self::Linked => "Linked",
+            Self::ZeroGTraversal => "ZeroGTraversal",
+            Self::ZeroGLaunch => "ZeroGLaunch",
+            Self::ZeroGHandholdTraversal => "ZeroGHandholdTraversal",
+            Self::Swim => "Swim",
+            Self::Reload => "Reload",
+            Self::HolsterUnholster => "HolsterUnholster",
+            Self::Dead => "Dead",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ActorStateSelection_Stance`
@@ -1501,6 +2014,25 @@ impl ActorStateSelection_Stance {
             "Swim" => Self::Swim,
             "ZeroGSurfaceTraversal" => Self::ZeroGSurfaceTraversal,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Any => "Any",
+            Self::Stand => "Stand",
+            Self::Crouch => "Crouch",
+            Self::Prone => "Prone",
+            Self::ProneBack => "ProneBack",
+            Self::CoverLow => "CoverLow",
+            Self::CoverHigh => "CoverHigh",
+            Self::Seated => "Seated",
+            Self::StandSquashed => "StandSquashed",
+            Self::Swim => "Swim",
+            Self::ZeroGSurfaceTraversal => "ZeroGSurfaceTraversal",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -1592,6 +2124,37 @@ impl ActorStatusType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Concussion => "Concussion",
+            Self::Hypothermia => "Hypothermia",
+            Self::Hyperthermia => "Hyperthermia",
+            Self::Depressurization => "Depressurization",
+            Self::PoorAtmosphereQuality => "PoorAtmosphereQuality",
+            Self::LowHealth => "LowHealth",
+            Self::Hurt => "Hurt",
+            Self::Damaged => "Damaged",
+            Self::Ruined => "Ruined",
+            Self::Starved => "Starved",
+            Self::Dehydrated => "Dehydrated",
+            Self::Dying => "Dying",
+            Self::MildlyIntoxicated => "MildlyIntoxicated",
+            Self::Intoxicated => "Intoxicated",
+            Self::Downed => "Downed",
+            Self::Overdosed => "Overdosed",
+            Self::Injury => "Injury",
+            Self::MajorInjury => "MajorInjury",
+            Self::DeadlyInjury => "DeadlyInjury",
+            Self::RadiationSicknessMild => "RadiationSicknessMild",
+            Self::RadiationSicknessModerate => "RadiationSicknessModerate",
+            Self::RadiationSicknessSevere => "RadiationSicknessSevere",
+            Self::DistortionInterference => "DistortionInterference",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ActorStatusWidget`
@@ -1639,6 +2202,23 @@ impl ActorStatusWidget {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::HealthPool => "HealthPool",
+            Self::Oxygen => "Oxygen",
+            Self::BodyTemperature => "BodyTemperature",
+            Self::ExternalTemperature => "ExternalTemperature",
+            Self::InjuryDoll => "InjuryDoll",
+            Self::HeartMonitor => "HeartMonitor",
+            Self::Hunger => "Hunger",
+            Self::Thirst => "Thirst",
+            Self::BloodDrugLevel => "BloodDrugLevel",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `AgentStance`
@@ -1672,6 +2252,19 @@ impl AgentStance {
             "CoverLow" => Self::CoverLow,
             "CoverHigh" => Self::CoverHigh,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Stand => "Stand",
+            Self::Crouch => "Crouch",
+            Self::Prone => "Prone",
+            Self::CoverLow => "CoverLow",
+            Self::CoverHigh => "CoverHigh",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -1727,6 +2320,25 @@ impl AmmoCategory {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::_5mm => "_5mm",
+            Self::_7mm => "_7mm",
+            Self::_10mm => "_10mm",
+            Self::_50cal => "_50cal",
+            Self::_50cal_pistol => "_50cal_pistol",
+            Self::_12g => "_12g",
+            Self::Electron => "Electron",
+            Self::Coil => "Coil",
+            Self::Plasma => "Plasma",
+            Self::Laser => "Laser",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `AmmoSpawnType`
@@ -1753,6 +2365,16 @@ impl AmmoSpawnType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::AllClients => "AllClients",
+            Self::ServerReplicated => "ServerReplicated",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `AnimFootSyncMethod`
@@ -1777,6 +2399,16 @@ impl AnimFootSyncMethod {
             "Pairs" => Self::Pairs,
             "Cyclic" => Self::Cyclic,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Pairs => "Pairs",
+            Self::Cyclic => "Cyclic",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -1808,6 +2440,17 @@ impl AnimatedMarker_State {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Locking => "Locking",
+            Self::LockLost => "LockLost",
+            Self::Locked => "Locked",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `AnimationGraph_TimeModifier`
@@ -1835,6 +2478,17 @@ impl AnimationGraph_TimeModifier {
             "Total" => Self::Total,
             "Stagger" => Self::Stagger,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::Total => "Total",
+            Self::Stagger => "Stagger",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -1872,6 +2526,19 @@ impl AnimationGraph_TrackType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::RotateX => "RotateX",
+            Self::RotateY => "RotateY",
+            Self::RotateZ => "RotateZ",
+            Self::Scale => "Scale",
+            Self::Number => "Number",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `AnimationScopeContextTypes`
@@ -1899,6 +2566,17 @@ impl AnimationScopeContextTypes {
             "ObjectContainer" => Self::ObjectContainer,
             "ItemPort" => Self::ItemPort,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Self_ => "Self",
+            Self::ObjectContainer => "ObjectContainer",
+            Self::ItemPort => "ItemPort",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -1933,6 +2611,18 @@ impl AnimationVariableInterpolationType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Linear => "Linear",
+            Self::Acceleration => "Acceleration",
+            Self::Deceleration => "Deceleration",
+            Self::Snap => "Snap",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `AsteroidStatePropertyType`
@@ -1954,6 +2644,15 @@ impl AsteroidStatePropertyType {
         match s {
             "DebrisDensity" => Self::DebrisDensity,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::DebrisDensity => "DebrisDensity",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -1985,6 +2684,17 @@ impl AtmosphereStatePropertyType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Pressure => "Pressure",
+            Self::Temperature => "Temperature",
+            Self::Humidity => "Humidity",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `AtmosphereType`
@@ -2009,6 +2719,16 @@ impl AtmosphereType {
             "Static" => Self::Static,
             "Dynamic" => Self::Dynamic,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Static => "Static",
+            Self::Dynamic => "Dynamic",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -2038,6 +2758,17 @@ impl AttachmentZoneType {
             "Host" => Self::Host,
             "HostParent" => Self::HostParent,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Hosted => "Hosted",
+            Self::Host => "Host",
+            Self::HostParent => "HostParent",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -2105,6 +2836,29 @@ impl AttackType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::LightRight => "LightRight",
+            Self::LightLeft => "LightLeft",
+            Self::HeavyRight => "HeavyRight",
+            Self::HeavyLeft => "HeavyLeft",
+            Self::SyringeStab => "SyringeStab",
+            Self::AI_Light => "AI_Light",
+            Self::AI_Heavy => "AI_Heavy",
+            Self::AI_SwipeLeft => "AI_SwipeLeft",
+            Self::AI_SwipeRight => "AI_SwipeRight",
+            Self::AI_Stab => "AI_Stab",
+            Self::AI_Leap => "AI_Leap",
+            Self::AI_HammerDown => "AI_HammerDown",
+            Self::AI_PushBack => "AI_PushBack",
+            Self::AI_Shoot => "AI_Shoot",
+            Self::AI_TestAttack => "AI_TestAttack",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `BB_ActivationButtonAction`
@@ -2132,6 +2886,17 @@ impl BB_ActivationButtonAction {
             "Down" => Self::Down,
             "DoubleClick" => Self::DoubleClick,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Up => "Up",
+            Self::Down => "Down",
+            Self::DoubleClick => "DoubleClick",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -2166,6 +2931,18 @@ impl BB_AnimationDirection {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Forward => "Forward",
+            Self::Reverse => "Reverse",
+            Self::Alternate => "Alternate",
+            Self::AlternateReverse => "AlternateReverse",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `BB_AnimationFillMode`
@@ -2198,6 +2975,18 @@ impl BB_AnimationFillMode {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::Forward => "Forward",
+            Self::Backward => "Backward",
+            Self::Both => "Both",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `BB_AudioEvent`
@@ -2227,6 +3016,17 @@ impl BB_AudioEvent {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Change => "Change",
+            Self::ChangeToTrue => "ChangeToTrue",
+            Self::ChangeToFalse => "ChangeToFalse",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `BB_AutoScalingMethod`
@@ -2254,6 +3054,17 @@ impl BB_AutoScalingMethod {
             "Fill" => Self::Fill,
             "Contain" => Self::Contain,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::Fill => "Fill",
+            Self::Contain => "Contain",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -2288,6 +3099,18 @@ impl BB_Axis {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::X => "X",
+            Self::Y => "Y",
+            Self::Both => "Both",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `BB_AxisDirection`
@@ -2314,6 +3137,16 @@ impl BB_AxisDirection {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Horizontal => "Horizontal",
+            Self::Vertical => "Vertical",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `BB_BackgroundType`
@@ -2338,6 +3171,16 @@ impl BB_BackgroundType {
             "None" => Self::None,
             "Texture" => Self::Texture,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::Texture => "Texture",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -2384,6 +3227,22 @@ impl BB_BindingsArithmeticType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Add => "Add",
+            Self::Sub => "Sub",
+            Self::Mul => "Mul",
+            Self::Div => "Div",
+            Self::Min => "Min",
+            Self::Max => "Max",
+            Self::Mod => "Mod",
+            Self::Pow => "Pow",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `BB_BindingsBuiltInVariableTypeInteger`
@@ -2408,6 +3267,16 @@ impl BB_BindingsBuiltInVariableTypeInteger {
             "ServerTime" => Self::ServerTime,
             "ListIndex" => Self::ListIndex,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::ServerTime => "ServerTime",
+            Self::ListIndex => "ListIndex",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -2437,6 +3306,17 @@ impl BB_BindingsBuiltInVariableTypeNumber {
             "CameraDistance" => Self::CameraDistance,
             "AspectRatio" => Self::AspectRatio,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::TimerSeconds => "TimerSeconds",
+            Self::CameraDistance => "CameraDistance",
+            Self::AspectRatio => "AspectRatio",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -2474,6 +3354,19 @@ impl BB_BindingsCaseModifierType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::Upper => "Upper",
+            Self::Lower => "Lower",
+            Self::Pascal => "Pascal",
+            Self::Camel => "Camel",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `BB_BindingsCurrencyType`
@@ -2504,6 +3397,18 @@ impl BB_BindingsCurrencyType {
             "CURRENCY_AUEC" => Self::CURRENCY_AUEC,
             "CURRENCY_MER" => Self::CURRENCY_MER,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::CURRENCY_UEC => "CURRENCY_UEC",
+            Self::CURRENCY_REC => "CURRENCY_REC",
+            Self::CURRENCY_AUEC => "CURRENCY_AUEC",
+            Self::CURRENCY_MER => "CURRENCY_MER",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -2577,6 +3482,31 @@ impl BB_BindingsFunctionType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Abs => "Abs",
+            Self::Acos => "Acos",
+            Self::Asin => "Asin",
+            Self::Atan => "Atan",
+            Self::Ceil => "Ceil",
+            Self::Cos => "Cos",
+            Self::Cubed => "Cubed",
+            Self::Exp => "Exp",
+            Self::Floor => "Floor",
+            Self::Log => "Log",
+            Self::ModInt => "ModInt",
+            Self::ModFrac => "ModFrac",
+            Self::Round => "Round",
+            Self::Sin => "Sin",
+            Self::Sqrt => "Sqrt",
+            Self::Squared => "Squared",
+            Self::Tan => "Tan",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `BB_BindingsIntegerConstants`
@@ -2598,6 +3528,15 @@ impl BB_BindingsIntegerConstants {
         match s {
             "InvalidIndex" => Self::InvalidIndex,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::InvalidIndex => "InvalidIndex",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -2627,6 +3566,17 @@ impl BB_BindingsIntegerFunctionType {
             "Squared" => Self::Squared,
             "Cubed" => Self::Cubed,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Abs => "Abs",
+            Self::Squared => "Squared",
+            Self::Cubed => "Cubed",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -2904,6 +3854,99 @@ impl BB_BooleanField {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::AffectsAutosize => "AffectsAutosize",
+            Self::AffectsLayout => "AffectsLayout",
+            Self::AutoFontSize => "AutoFontSize",
+            Self::AutoScroll => "AutoScroll",
+            Self::CenterDragProxyOnCursor => "CenterDragProxyOnCursor",
+            Self::Chamfer => "Chamfer",
+            Self::CustomPivot => "CustomPivot",
+            Self::Disabled => "Disabled",
+            Self::DoStroke => "DoStroke",
+            Self::DoFill => "DoFill",
+            Self::Editable => "Editable",
+            Self::EditBoxSingleLine => "EditBoxSingleLine",
+            Self::EditBoxAllowSpaces => "EditBoxAllowSpaces",
+            Self::EditBoxBindingsAuthoritative => "EditBoxBindingsAuthoritative",
+            Self::EditBoxConfirmDeselect => "EditBoxConfirmDeselect",
+            Self::EditBoxHiddenText => "EditBoxHiddenText",
+            Self::EnableColorOverlay => "EnableColorOverlay",
+            Self::EnableNineSliceRect => "EnableNineSliceRect",
+            Self::EnableDrawInGeneralPass => "EnableDrawInGeneralPass",
+            Self::EnableBackground => "EnableBackground",
+            Self::EnableTopLeftBorderChamfer => "EnableTopLeftBorderChamfer",
+            Self::EnableTopRightBorderChamfer => "EnableTopRightBorderChamfer",
+            Self::EnableBottomRightBorderChamfer => "EnableBottomRightBorderChamfer",
+            Self::EnableBottomLeftBorderChamfer => "EnableBottomLeftBorderChamfer",
+            Self::EnableMaxWidth => "EnableMaxWidth",
+            Self::EnableMaxHeight => "EnableMaxHeight",
+            Self::EnableMinWidth => "EnableMinWidth",
+            Self::EnableMinHeight => "EnableMinHeight",
+            Self::EnableSegmentedBarFill => "EnableSegmentedBarFill",
+            Self::EnableSegmentedFill => "EnableSegmentedFill",
+            Self::EnableSilhouette => "EnableSilhouette",
+            Self::EntityAnimationNormalizeTime => "EntityAnimationNormalizeTime",
+            Self::EntityAnimationWrapTime => "EntityAnimationWrapTime",
+            Self::EntityHolographic => "EntityHolographic",
+            Self::FadeXAxis => "FadeXAxis",
+            Self::FadeYAxis => "FadeYAxis",
+            Self::FadeZAxis => "FadeZAxis",
+            Self::GhostPrimRearOffset => "GhostPrimRearOffset",
+            Self::ImageFlipHorizontal => "ImageFlipHorizontal",
+            Self::ImageFlipVertical => "ImageFlipVertical",
+            Self::IncludeInGroundingEffects => "IncludeInGroundingEffects",
+            Self::InheritDisabledState => "InheritDisabledState",
+            Self::InheritDownState => "InheritDownState",
+            Self::InheritHoverState => "InheritHoverState",
+            Self::InheritRadialRotation => "InheritRadialRotation",
+            Self::InheritRadialShapeWarp => "InheritRadialShapeWarp",
+            Self::InheritSelectedState => "InheritSelectedState",
+            Self::Instantiated => "Instantiated",
+            Self::Interactable => "Interactable",
+            Self::IsActive => "IsActive",
+            Self::Flip => "Flip",
+            Self::FillStroke => "FillStroke",
+            Self::MaintainGapLength => "MaintainGapLength",
+            Self::MouseTestRadialShape => "MouseTestRadialShape",
+            Self::MoviePlaying => "MoviePlaying",
+            Self::ParallelGaps => "ParallelGaps",
+            Self::ParamInput0 => "ParamInput0",
+            Self::ParamInput1 => "ParamInput1",
+            Self::ParamInput2 => "ParamInput2",
+            Self::ParamInput3 => "ParamInput3",
+            Self::ParamInput4 => "ParamInput4",
+            Self::ParamInput5 => "ParamInput5",
+            Self::ParamInput6 => "ParamInput6",
+            Self::ParamInput7 => "ParamInput7",
+            Self::ParamInput8 => "ParamInput8",
+            Self::PivotProgressAngleWidget => "PivotProgressAngleWidget",
+            Self::PivotStartAngleWidget => "PivotStartAngleWidget",
+            Self::PrimitiveFlipHorizontal => "PrimitiveFlipHorizontal",
+            Self::PrimitiveFlipVertical => "PrimitiveFlipVertical",
+            Self::PrimitiveHasPerspective => "PrimitiveHasPerspective",
+            Self::PrimitiveIsFacingCamera => "PrimitiveIsFacingCamera",
+            Self::PrimitiveIsGrouped => "PrimitiveIsGrouped",
+            Self::PropagateInteractionStates => "PropagateInteractionStates",
+            Self::RenderAsHTML => "RenderAsHTML",
+            Self::RenderShape => "RenderShape",
+            Self::RotateProgressAngleWidget => "RotateProgressAngleWidget",
+            Self::RotateStartAngleWidget => "RotateStartAngleWidget",
+            Self::Selected => "Selected",
+            Self::SvgFlipHorizontal => "SvgFlipHorizontal",
+            Self::SvgFlipVertical => "SvgFlipVertical",
+            Self::TextBold => "TextBold",
+            Self::TextItalic => "TextItalic",
+            Self::TextKerning => "TextKerning",
+            Self::TextUnderline => "TextUnderline",
+            Self::WordWrap => "WordWrap",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `BB_BooleanWriteMode`
@@ -2931,6 +3974,17 @@ impl BB_BooleanWriteMode {
             "Set" => Self::Set,
             "Clear" => Self::Clear,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Invert => "Invert",
+            Self::Set => "Set",
+            Self::Clear => "Clear",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -2968,6 +4022,19 @@ impl BB_CanvasCoordinateMethod {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::useRaw => "useRaw",
+            Self::aspectOverridesWidth => "aspectOverridesWidth",
+            Self::aspectOverridesHeight => "aspectOverridesHeight",
+            Self::auto => "auto",
+            Self::longestSide => "longestSide",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `BB_CanvasWidgetSizingMethod`
@@ -2992,6 +4059,16 @@ impl BB_CanvasWidgetSizingMethod {
             "Size" => Self::Size,
             "Scale" => Self::Scale,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Size => "Size",
+            Self::Scale => "Scale",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -3095,6 +4172,41 @@ impl BB_ColorField {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::BackgroundColor => "BackgroundColor",
+            Self::BackgroundColorTopLeft => "BackgroundColorTopLeft",
+            Self::BackgroundColorTopRight => "BackgroundColorTopRight",
+            Self::BackgroundColorBottomLeft => "BackgroundColorBottomLeft",
+            Self::BackgroundColorBottomRight => "BackgroundColorBottomRight",
+            Self::BorderColorLeft => "BorderColorLeft",
+            Self::BorderColorRight => "BorderColorRight",
+            Self::BorderColorTop => "BorderColorTop",
+            Self::BorderColorBottom => "BorderColorBottom",
+            Self::FillColor => "FillColor",
+            Self::GlowColor => "GlowColor",
+            Self::LightColor => "LightColor",
+            Self::ParamInput0 => "ParamInput0",
+            Self::ParamInput1 => "ParamInput1",
+            Self::ParamInput2 => "ParamInput2",
+            Self::ParamInput3 => "ParamInput3",
+            Self::ParamInput4 => "ParamInput4",
+            Self::ParamInput5 => "ParamInput5",
+            Self::ParamInput6 => "ParamInput6",
+            Self::ParamInput7 => "ParamInput7",
+            Self::ParamInput8 => "ParamInput8",
+            Self::SegmentColor => "SegmentColor",
+            Self::SilhouetteColor => "SilhouetteColor",
+            Self::StripStartColor => "StripStartColor",
+            Self::StripEndColor => "StripEndColor",
+            Self::StrokeColor => "StrokeColor",
+            Self::TintColor => "TintColor",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `BB_ColorStyle`
@@ -3166,6 +4278,31 @@ impl BB_ColorStyle {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Base => "Base",
+            Self::Positive => "Positive",
+            Self::Moderate => "Moderate",
+            Self::Critical => "Critical",
+            Self::Accent1 => "Accent1",
+            Self::Accent2 => "Accent2",
+            Self::Bright => "Bright",
+            Self::Selected => "Selected",
+            Self::Disabled => "Disabled",
+            Self::Background => "Background",
+            Self::ContactNeutral => "ContactNeutral",
+            Self::ContactParty => "ContactParty",
+            Self::ContactPositiveRep => "ContactPositiveRep",
+            Self::ContactNegativeRep => "ContactNegativeRep",
+            Self::ContactAgressive => "ContactAgressive",
+            Self::ContactUnknown => "ContactUnknown",
+            Self::MissionObjectives => "MissionObjectives",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `BB_ComparisonOperatorType`
@@ -3202,6 +4339,20 @@ impl BB_ComparisonOperatorType {
             "Less" => Self::Less,
             "LessOrEqual" => Self::LessOrEqual,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Equal => "Equal",
+            Self::NotEqual => "NotEqual",
+            Self::Greater => "Greater",
+            Self::GreaterOrEqual => "GreaterOrEqual",
+            Self::Less => "Less",
+            Self::LessOrEqual => "LessOrEqual",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -3251,6 +4402,23 @@ impl BB_ComponentParameter {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::ParamInput0 => "ParamInput0",
+            Self::ParamInput1 => "ParamInput1",
+            Self::ParamInput2 => "ParamInput2",
+            Self::ParamInput3 => "ParamInput3",
+            Self::ParamInput4 => "ParamInput4",
+            Self::ParamInput5 => "ParamInput5",
+            Self::ParamInput6 => "ParamInput6",
+            Self::ParamInput7 => "ParamInput7",
+            Self::ParamInput8 => "ParamInput8",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `BB_ContentBoxPosition`
@@ -3283,6 +4451,18 @@ impl BB_ContentBoxPosition {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Top => "Top",
+            Self::Right => "Right",
+            Self::Bottom => "Bottom",
+            Self::Left => "Left",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `BB_CullingLevel`
@@ -3310,6 +4490,17 @@ impl BB_CullingLevel {
             "Render" => Self::Render,
             "Node" => Self::Node,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::Render => "Render",
+            Self::Node => "Node",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -3341,6 +4532,17 @@ impl BB_CurvatureAxis {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::X => "X",
+            Self::Y => "Y",
+            Self::Z => "Z",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `BB_DraggablePolicyType`
@@ -3365,6 +4567,16 @@ impl BB_DraggablePolicyType {
             "None" => Self::None,
             "DropTargetItem" => Self::DropTargetItem,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::DropTargetItem => "DropTargetItem",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -3393,6 +4605,16 @@ impl BB_DropTargetPolicyType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::DropTarget => "DropTarget",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `BB_DropdownAlignment`
@@ -3417,6 +4639,16 @@ impl BB_DropdownAlignment {
             "Up" => Self::Up,
             "Down" => Self::Down,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Up => "Up",
+            Self::Down => "Down",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -3448,6 +4680,17 @@ impl BB_DustParticleMovementRestriction {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::ZoomExclusive => "ZoomExclusive",
+            Self::TranslationExclusive => "TranslationExclusive",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `BB_FillStyle`
@@ -3472,6 +4715,16 @@ impl BB_FillStyle {
             "Filled" => Self::Filled,
             "Ghost" => Self::Ghost,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Filled => "Filled",
+            Self::Ghost => "Ghost",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -3515,6 +4768,21 @@ impl BB_FlexAxisJustification {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Start => "Start",
+            Self::End => "End",
+            Self::Center => "Center",
+            Self::SpaceBetween => "SpaceBetween",
+            Self::SpaceAround => "SpaceAround",
+            Self::SpaceEvenly => "SpaceEvenly",
+            Self::Stretch => "Stretch",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `BB_FlexDirection`
@@ -3545,6 +4813,18 @@ impl BB_FlexDirection {
             "Column" => Self::Column,
             "ColumnReverse" => Self::ColumnReverse,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Row => "Row",
+            Self::RowReverse => "RowReverse",
+            Self::Column => "Column",
+            Self::ColumnReverse => "ColumnReverse",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -3579,6 +4859,18 @@ impl BB_FlexItemAlignment {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Start => "Start",
+            Self::End => "End",
+            Self::Center => "Center",
+            Self::Stretch => "Stretch",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `BB_FlexWrap`
@@ -3609,6 +4901,18 @@ impl BB_FlexWrap {
             "NoWrap" => Self::NoWrap,
             "NoWrapInfinite" => Self::NoWrapInfinite,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Wrap => "Wrap",
+            Self::WrapReverse => "WrapReverse",
+            Self::NoWrap => "NoWrap",
+            Self::NoWrapInfinite => "NoWrapInfinite",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -3643,6 +4947,18 @@ impl BB_FlipDirection {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::Vertical => "Vertical",
+            Self::Horizontal => "Horizontal",
+            Self::Both => "Both",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `BB_GrabBounds`
@@ -3672,6 +4988,17 @@ impl BB_GrabBounds {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Sphere => "Sphere",
+            Self::Box => "Box",
+            Self::Camera => "Camera",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `BB_GrabRotationMode`
@@ -3698,6 +5025,16 @@ impl BB_GrabRotationMode {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Orbital => "Orbital",
+            Self::Planar => "Planar",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `BB_GridPackDirection`
@@ -3722,6 +5059,16 @@ impl BB_GridPackDirection {
             "Horizontal" => Self::Horizontal,
             "Vertical" => Self::Vertical,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Horizontal => "Horizontal",
+            Self::Vertical => "Vertical",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -3945,6 +5292,81 @@ impl BB_IconWidgetPreset {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::_None => "_None",
+            Self::ArrowHollowUp => "ArrowHollowUp",
+            Self::ArrowHollowRight => "ArrowHollowRight",
+            Self::ArrowHollowDown => "ArrowHollowDown",
+            Self::ArrowHollowLeft => "ArrowHollowLeft",
+            Self::ArrowHollowCurvedLeft => "ArrowHollowCurvedLeft",
+            Self::ArrowHollowCurvedRight => "ArrowHollowCurvedRight",
+            Self::ArrowHollowCurvedDoubleLeft => "ArrowHollowCurvedDoubleLeft",
+            Self::ArrowHollowCurvedDoubleRight => "ArrowHollowCurvedDoubleRight",
+            Self::ArrowHollowCurvedDownLeft => "ArrowHollowCurvedDownLeft",
+            Self::ArrowHollowCurvedDownRight => "ArrowHollowCurvedDownRight",
+            Self::ArrowUp => "ArrowUp",
+            Self::ArrowRight => "ArrowRight",
+            Self::ArrowDown => "ArrowDown",
+            Self::ArrowLeft => "ArrowLeft",
+            Self::ArrowUpLeft => "ArrowUpLeft",
+            Self::ArrowUpRight => "ArrowUpRight",
+            Self::ArrowDownRight => "ArrowDownRight",
+            Self::ArrowDownLeft => "ArrowDownLeft",
+            Self::ArrowHookLeft => "ArrowHookLeft",
+            Self::ArrowHookRight => "ArrowHookRight",
+            Self::ArrowDiamond => "ArrowDiamond",
+            Self::ArrowSquare => "ArrowSquare",
+            Self::ArrowExpandDownUp => "ArrowExpandDownUp",
+            Self::ArrowExpandUpDown => "ArrowExpandUpDown",
+            Self::ArrowCurvedLeft => "ArrowCurvedLeft",
+            Self::ArrowCurvedRight => "ArrowCurvedRight",
+            Self::ArrowCurvedDoubleLeft => "ArrowCurvedDoubleLeft",
+            Self::ArrowCurvedDoubleRight => "ArrowCurvedDoubleRight",
+            Self::ArrowCurvedDownLeft => "ArrowCurvedDownLeft",
+            Self::ArrowCurvedDownRight => "ArrowCurvedDownRight",
+            Self::ArrowFullCircleCCW => "ArrowFullCircleCCW",
+            Self::ArrowFullCircleCW => "ArrowFullCircleCW",
+            Self::ArrowHalfCircleCCW => "ArrowHalfCircleCCW",
+            Self::ArrowHalfCircleCW => "ArrowHalfCircleCW",
+            Self::ArrowHalfCircleExclamationCCW => "ArrowHalfCircleExclamationCCW",
+            Self::ArrowHalfCircleExclamationCW => "ArrowHalfCircleExclamationCW",
+            Self::ArrowCaratUp => "ArrowCaratUp",
+            Self::ArrowCaratRight => "ArrowCaratRight",
+            Self::ArrowCaratDown => "ArrowCaratDown",
+            Self::ArrowCaratLeft => "ArrowCaratLeft",
+            Self::ArrowCaratDoubleUp => "ArrowCaratDoubleUp",
+            Self::ArrowCaratDoubleRight => "ArrowCaratDoubleRight",
+            Self::ArrowCaratDoubleDown => "ArrowCaratDoubleDown",
+            Self::ArrowCaratDoubleLeft => "ArrowCaratDoubleLeft",
+            Self::ArrowEncasedUp => "ArrowEncasedUp",
+            Self::ArrowEncasedRight => "ArrowEncasedRight",
+            Self::ArrowEncasedDown => "ArrowEncasedDown",
+            Self::ArrowEncasedLeft => "ArrowEncasedLeft",
+            Self::ArrowEncasedUpLeft => "ArrowEncasedUpLeft",
+            Self::ArrowEncasedUpRight => "ArrowEncasedUpRight",
+            Self::ArrowEncasedDownRight => "ArrowEncasedDownRight",
+            Self::ArrowEncasedDownLeft => "ArrowEncasedDownLeft",
+            Self::ArrowEncasedHookLeft => "ArrowEncasedHookLeft",
+            Self::ArrowEncasedHookRight => "ArrowEncasedHookRight",
+            Self::ArrowEncasedCaratUp => "ArrowEncasedCaratUp",
+            Self::ArrowEncasedCaratRight => "ArrowEncasedCaratRight",
+            Self::ArrowEncasedCaratDown => "ArrowEncasedCaratDown",
+            Self::ArrowEncasedCaratLeft => "ArrowEncasedCaratLeft",
+            Self::ArrowEncasedCaratDoubleUp => "ArrowEncasedCaratDoubleUp",
+            Self::ArrowEncasedCaratDoubleRight => "ArrowEncasedCaratDoubleRight",
+            Self::ArrowEncasedCaratDoubleDown => "ArrowEncasedCaratDoubleDown",
+            Self::ArrowEncasedCaratDoubleLeft => "ArrowEncasedCaratDoubleLeft",
+            Self::GeneralCheckmark => "GeneralCheckmark",
+            Self::GeneralCircleFilled => "GeneralCircleFilled",
+            Self::GeneralX => "GeneralX",
+            Self::GeneralInfo => "GeneralInfo",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `BB_ImageScalingMethod`
@@ -3972,6 +5394,17 @@ impl BB_ImageScalingMethod {
             "Contain" => Self::Contain,
             "Cover" => Self::Cover,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Fill => "Fill",
+            Self::Contain => "Contain",
+            Self::Cover => "Cover",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -4192,6 +5625,80 @@ impl BB_IntegerField {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::AutoScrollBehavior => "AutoScrollBehavior",
+            Self::BorderTopLeftRadiusBehavior => "BorderTopLeftRadiusBehavior",
+            Self::BorderTopRightRadiusBehavior => "BorderTopRightRadiusBehavior",
+            Self::BorderBottomRightRadiusBehavior => "BorderBottomRightRadiusBehavior",
+            Self::BorderBottomLeftRadiusBehavior => "BorderBottomLeftRadiusBehavior",
+            Self::CanvasWidgetSizingMethod => "CanvasWidgetSizingMethod",
+            Self::CaretIndex => "CaretIndex",
+            Self::CaseModifier => "CaseModifier",
+            Self::CurvatureAxis => "CurvatureAxis",
+            Self::DepthBehavior => "DepthBehavior",
+            Self::DraggablePolicy => "DraggablePolicy",
+            Self::DropTargetPolicy => "DropTargetPolicy",
+            Self::DustParticleCount => "DustParticleCount",
+            Self::DustParticleMovementRestriction => "DustParticleMovementRestriction",
+            Self::EditBoxCharLimit => "EditBoxCharLimit",
+            Self::EntityImageSource => "EntityImageSource",
+            Self::FlexDirection => "FlexDirection",
+            Self::FlexWrap => "FlexWrap",
+            Self::FlexAxisJustification => "FlexAxisJustification",
+            Self::FlexCrossAxisJustification => "FlexCrossAxisJustification",
+            Self::FlexItemAlignment => "FlexItemAlignment",
+            Self::FocusIndex => "FocusIndex",
+            Self::GhostPrimCount => "GhostPrimCount",
+            Self::GridPackDirection => "GridPackDirection",
+            Self::HeightBehavior => "HeightBehavior",
+            Self::HorizontalAlignment => "HorizontalAlignment",
+            Self::ImageScalingBehavior => "ImageScalingBehavior",
+            Self::LayoutDisplayOrder => "LayoutDisplayOrder",
+            Self::LayoutPolicy => "LayoutPolicy",
+            Self::MaxWidthBehavior => "MaxWidthBehavior",
+            Self::MaxHeightBehavior => "MaxHeightBehavior",
+            Self::MinWidthBehavior => "MinWidthBehavior",
+            Self::MinHeightBehavior => "MinHeightBehavior",
+            Self::MovieStartTimeMs => "MovieStartTimeMs",
+            Self::ParamInput0 => "ParamInput0",
+            Self::ParamInput1 => "ParamInput1",
+            Self::ParamInput2 => "ParamInput2",
+            Self::ParamInput3 => "ParamInput3",
+            Self::ParamInput4 => "ParamInput4",
+            Self::ParamInput5 => "ParamInput5",
+            Self::ParamInput6 => "ParamInput6",
+            Self::ParamInput7 => "ParamInput7",
+            Self::ParamInput8 => "ParamInput8",
+            Self::RadialPolyResolution => "RadialPolyResolution",
+            Self::RuntimeImageSource => "RuntimeImageSource",
+            Self::ScrollBehavior => "ScrollBehavior",
+            Self::ScrollDirection => "ScrollDirection",
+            Self::ScrollEasingType => "ScrollEasingType",
+            Self::ScrollPolicy => "ScrollPolicy",
+            Self::SegmentProgressBehavior => "SegmentProgressBehavior",
+            Self::SegmentEasing => "SegmentEasing",
+            Self::Segments => "Segments",
+            Self::SegmentSizeBehavior => "SegmentSizeBehavior",
+            Self::SegmentSpacingBehavior => "SegmentSpacingBehavior",
+            Self::Sides => "Sides",
+            Self::SliderMode => "SliderMode",
+            Self::SquashAxis => "SquashAxis",
+            Self::StackDirection => "StackDirection",
+            Self::StrokeCapStyle => "StrokeCapStyle",
+            Self::StrokeJointStyle => "StrokeJointStyle",
+            Self::StrokeAlignment => "StrokeAlignment",
+            Self::SvgScalingBehavior => "SvgScalingBehavior",
+            Self::TextureGroup => "TextureGroup",
+            Self::TickBoxMode => "TickBoxMode",
+            Self::VerticalAlignment => "VerticalAlignment",
+            Self::WidthBehavior => "WidthBehavior",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `BB_JumpTerm`
@@ -4216,6 +5723,16 @@ impl BB_JumpTerm {
             "Start" => Self::Start,
             "End" => Self::End,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Start => "Start",
+            Self::End => "End",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -4247,6 +5764,17 @@ impl BB_LayoutPolicyType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::Flex => "Flex",
+            Self::GridPack => "GridPack",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `BB_ListNavigationType`
@@ -4274,6 +5802,17 @@ impl BB_ListNavigationType {
             "PrimaryTab" => Self::PrimaryTab,
             "SecondaryTab" => Self::SecondaryTab,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::PrimaryTab => "PrimaryTab",
+            Self::SecondaryTab => "SecondaryTab",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -4332,6 +5871,26 @@ impl BB_LocalizedField {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::ParamInput0 => "ParamInput0",
+            Self::ParamInput1 => "ParamInput1",
+            Self::ParamInput2 => "ParamInput2",
+            Self::ParamInput3 => "ParamInput3",
+            Self::ParamInput4 => "ParamInput4",
+            Self::ParamInput5 => "ParamInput5",
+            Self::ParamInput6 => "ParamInput6",
+            Self::ParamInput7 => "ParamInput7",
+            Self::ParamInput8 => "ParamInput8",
+            Self::EditBoxHelperString => "EditBoxHelperString",
+            Self::Text => "Text",
+            Self::TooltipText => "TooltipText",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `BB_NavigationType`
@@ -4356,6 +5915,16 @@ impl BB_NavigationType {
             "Back" => Self::Back,
             "Close" => Self::Close,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Back => "Back",
+            Self::Close => "Close",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -4819,6 +6388,161 @@ impl BB_NumberField {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Alpha => "Alpha",
+            Self::AnchorX => "AnchorX",
+            Self::AnchorY => "AnchorY",
+            Self::AnchorZ => "AnchorZ",
+            Self::AutoScrollSpeed => "AutoScrollSpeed",
+            Self::AutoScrollStartPause => "AutoScrollStartPause",
+            Self::AutoScrollEndPause => "AutoScrollEndPause",
+            Self::AutoScrollFadeSpeed => "AutoScrollFadeSpeed",
+            Self::BorderTopWidth => "BorderTopWidth",
+            Self::BorderRightWidth => "BorderRightWidth",
+            Self::BorderBottomWidth => "BorderBottomWidth",
+            Self::BorderLeftWidth => "BorderLeftWidth",
+            Self::BorderTopLeftRadius => "BorderTopLeftRadius",
+            Self::BorderTopRightRadius => "BorderTopRightRadius",
+            Self::BorderBottomRightRadius => "BorderBottomRightRadius",
+            Self::BorderBottomLeftRadius => "BorderBottomLeftRadius",
+            Self::CharsPerSecond => "CharsPerSecond",
+            Self::ConicSlantFactor => "ConicSlantFactor",
+            Self::CornerRatio => "CornerRatio",
+            Self::DissolveOpacity => "DissolveOpacity",
+            Self::DustParticleDiameter => "DustParticleDiameter",
+            Self::DustParticleOffsetX => "DustParticleOffsetX",
+            Self::DustParticleOffsetY => "DustParticleOffsetY",
+            Self::DustParticleOffsetZ => "DustParticleOffsetZ",
+            Self::DustZoomFactor => "DustZoomFactor",
+            Self::EntityContentOrientationX => "EntityContentOrientationX",
+            Self::EntityContentOrientationY => "EntityContentOrientationY",
+            Self::EntityContentOrientationZ => "EntityContentOrientationZ",
+            Self::EntityContentScaleLimitMin => "EntityContentScaleLimitMin",
+            Self::EntityContentScaleLimitMax => "EntityContentScaleLimitMax",
+            Self::EntityDirt => "EntityDirt",
+            Self::EntityWear => "EntityWear",
+            Self::InterferenceAmount => "InterferenceAmount",
+            Self::FillStrokeWidth => "FillStrokeWidth",
+            Self::FlexColumnSpacing => "FlexColumnSpacing",
+            Self::FlexRowSpacing => "FlexRowSpacing",
+            Self::FlexGrowProportion => "FlexGrowProportion",
+            Self::FlexShrinkProportion => "FlexShrinkProportion",
+            Self::FontSize => "FontSize",
+            Self::GapAngle => "GapAngle",
+            Self::GeomEntityAnimationTime => "GeomEntityAnimationTime",
+            Self::GhostPrimAlphaClamp => "GhostPrimAlphaClamp",
+            Self::GhostPrimAlphaFactor => "GhostPrimAlphaFactor",
+            Self::GhostPrimScaleFactor => "GhostPrimScaleFactor",
+            Self::GlowAmount => "GlowAmount",
+            Self::GridPackGutter => "GridPackGutter",
+            Self::HitDetectionOffset => "HitDetectionOffset",
+            Self::ImageColorPickerStepSizeX => "ImageColorPickerStepSizeX",
+            Self::ImageColorPickerStepSizeY => "ImageColorPickerStepSizeY",
+            Self::LayoutTransitionDelay => "LayoutTransitionDelay",
+            Self::LayoutTransitionDuration => "LayoutTransitionDuration",
+            Self::LetterSpacing => "LetterSpacing",
+            Self::LightBulbRadius => "LightBulbRadius",
+            Self::LightIntensity => "LightIntensity",
+            Self::LightFrustumAngle => "LightFrustumAngle",
+            Self::LightRadius => "LightRadius",
+            Self::LinearSliderMinValue => "LinearSliderMinValue",
+            Self::LinearSliderMaxValue => "LinearSliderMaxValue",
+            Self::LineSpacing => "LineSpacing",
+            Self::LocalCoordinateSpace => "LocalCoordinateSpace",
+            Self::MarginTop => "MarginTop",
+            Self::MarginRight => "MarginRight",
+            Self::MarginBottom => "MarginBottom",
+            Self::MarginLeft => "MarginLeft",
+            Self::MarginFront => "MarginFront",
+            Self::MarginBack => "MarginBack",
+            Self::MaxMeterClamp => "MaxMeterClamp",
+            Self::MaxProgressClamp => "MaxProgressClamp",
+            Self::MaxSizeX => "MaxSizeX",
+            Self::MaxSizeY => "MaxSizeY",
+            Self::MinMeterClamp => "MinMeterClamp",
+            Self::MinProgressClamp => "MinProgressClamp",
+            Self::MinSizeX => "MinSizeX",
+            Self::MinSizeY => "MinSizeY",
+            Self::NineSliceTop => "NineSliceTop",
+            Self::NineSliceRight => "NineSliceRight",
+            Self::NineSliceBottom => "NineSliceBottom",
+            Self::NineSliceLeft => "NineSliceLeft",
+            Self::NineSliceScale => "NineSliceScale",
+            Self::OrientationX => "OrientationX",
+            Self::OrientationXOffset => "OrientationXOffset",
+            Self::OrientationY => "OrientationY",
+            Self::OrientationYOffset => "OrientationYOffset",
+            Self::OrientationZ => "OrientationZ",
+            Self::OrientationZOffset => "OrientationZOffset",
+            Self::OverflowWidthFadeThreshold => "OverflowWidthFadeThreshold",
+            Self::OverflowHeightFadeThreshold => "OverflowHeightFadeThreshold",
+            Self::OverflowDepthFadeThreshold => "OverflowDepthFadeThreshold",
+            Self::PaddingTop => "PaddingTop",
+            Self::PaddingRight => "PaddingRight",
+            Self::PaddingBottom => "PaddingBottom",
+            Self::PaddingLeft => "PaddingLeft",
+            Self::PaddingFront => "PaddingFront",
+            Self::PaddingBack => "PaddingBack",
+            Self::ParamInput0 => "ParamInput0",
+            Self::ParamInput1 => "ParamInput1",
+            Self::ParamInput2 => "ParamInput2",
+            Self::ParamInput3 => "ParamInput3",
+            Self::ParamInput4 => "ParamInput4",
+            Self::ParamInput5 => "ParamInput5",
+            Self::ParamInput6 => "ParamInput6",
+            Self::ParamInput7 => "ParamInput7",
+            Self::ParamInput8 => "ParamInput8",
+            Self::PivotX => "PivotX",
+            Self::PivotY => "PivotY",
+            Self::PivotZ => "PivotZ",
+            Self::PosX => "PosX",
+            Self::PosXOffset => "PosXOffset",
+            Self::PosY => "PosY",
+            Self::PosYOffset => "PosYOffset",
+            Self::PosZ => "PosZ",
+            Self::PosZOffset => "PosZOffset",
+            Self::PrimitiveConstantScale => "PrimitiveConstantScale",
+            Self::PrimitiveInterferenceEffect => "PrimitiveInterferenceEffect",
+            Self::Progress => "Progress",
+            Self::RadialTransformMultiplier => "RadialTransformMultiplier",
+            Self::ScaleX => "ScaleX",
+            Self::ScaleY => "ScaleY",
+            Self::ScaleZ => "ScaleZ",
+            Self::ScrollPixelIncrement => "ScrollPixelIncrement",
+            Self::ScrollEasingTime => "ScrollEasingTime",
+            Self::SegmentAngle => "SegmentAngle",
+            Self::SegmentSize => "SegmentSize",
+            Self::SegmentSpacingSize => "SegmentSpacingSize",
+            Self::SegmentXOffset => "SegmentXOffset",
+            Self::SilhouetteWidth => "SilhouetteWidth",
+            Self::SizeX => "SizeX",
+            Self::SizeY => "SizeY",
+            Self::SizeZ => "SizeZ",
+            Self::SliderStepSize => "SliderStepSize",
+            Self::StackSpacing => "StackSpacing",
+            Self::StartAngle => "StartAngle",
+            Self::StartDelayTime => "StartDelayTime",
+            Self::UStart => "UStart",
+            Self::VStart => "VStart",
+            Self::USize => "USize",
+            Self::VSize => "VSize",
+            Self::StepAngle => "StepAngle",
+            Self::StepMidPoint => "StepMidPoint",
+            Self::StripWidth => "StripWidth",
+            Self::StrokeExtent => "StrokeExtent",
+            Self::StrokeWidth => "StrokeWidth",
+            Self::SvgContainPositionX => "SvgContainPositionX",
+            Self::SvgContainPositionY => "SvgContainPositionY",
+            Self::SvgPlayhead => "SvgPlayhead",
+            Self::TintStrength => "TintStrength",
+            Self::WindowCameraFOV => "WindowCameraFOV",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `BB_OverflowBehavior`
@@ -4851,6 +6575,18 @@ impl BB_OverflowBehavior {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Visible => "Visible",
+            Self::Fade => "Fade",
+            Self::Clip => "Clip",
+            Self::ClipFade => "ClipFade",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `BB_ProgressMeterState`
@@ -4877,6 +6613,16 @@ impl BB_ProgressMeterState {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Static => "Static",
+            Self::Active => "Active",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `BB_ProgressType`
@@ -4901,6 +6647,16 @@ impl BB_ProgressType {
             "Ratio" => Self::Ratio,
             "Percent" => Self::Percent,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Ratio => "Ratio",
+            Self::Percent => "Percent",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -4941,6 +6697,20 @@ impl BB_RendererType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::Entity => "Entity",
+            Self::Flash => "Flash",
+            Self::Paint => "Paint",
+            Self::Primitive => "Primitive",
+            Self::ForceFlash => "ForceFlash",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `BB_RotationField`
@@ -4965,6 +6735,16 @@ impl BB_RotationField {
             "Orientation" => Self::Orientation,
             "OrientationOffset" => Self::OrientationOffset,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Orientation => "Orientation",
+            Self::OrientationOffset => "OrientationOffset",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -5032,6 +6812,29 @@ impl BB_SIPrefix {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::INVALID => "INVALID",
+            Self::Yocto => "Yocto",
+            Self::Zepto => "Zepto",
+            Self::Atto => "Atto",
+            Self::Femto => "Femto",
+            Self::Pico => "Pico",
+            Self::Nano => "Nano",
+            Self::Micro => "Micro",
+            Self::Milli => "Milli",
+            Self::Unit => "Unit",
+            Self::Kilo => "Kilo",
+            Self::Mega => "Mega",
+            Self::Giga => "Giga",
+            Self::AstronomicalUnit => "AstronomicalUnit",
+            Self::LightYear => "LightYear",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `BB_SIUnit`
@@ -5085,6 +6888,25 @@ impl BB_SIUnit {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::Acceleration => "Acceleration",
+            Self::Area => "Area",
+            Self::Distance => "Distance",
+            Self::Force => "Force",
+            Self::Percent => "Percent",
+            Self::Power => "Power",
+            Self::Speed => "Speed",
+            Self::Temperature => "Temperature",
+            Self::Volume => "Volume",
+            Self::Weight => "Weight",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `BB_SVGScalingBehavior`
@@ -5120,6 +6942,19 @@ impl BB_SVGScalingBehavior {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Contain => "Contain",
+            Self::Center => "Center",
+            Self::StretchX => "StretchX",
+            Self::StretchY => "StretchY",
+            Self::StretchXY => "StretchXY",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `BB_ScrollBehavior`
@@ -5146,6 +6981,16 @@ impl BB_ScrollBehavior {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Pixel => "Pixel",
+            Self::Item => "Item",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `BB_ScrollPolicyType`
@@ -5170,6 +7015,16 @@ impl BB_ScrollPolicyType {
             "None" => Self::None,
             "UnidirectionalScroller" => Self::UnidirectionalScroller,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::UnidirectionalScroller => "UnidirectionalScroller",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -5213,6 +7068,21 @@ impl BB_SegmentProgressBehavior {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Clip => "Clip",
+            Self::Alpha => "Alpha",
+            Self::Visibility => "Visibility",
+            Self::ThicknessIn => "ThicknessIn",
+            Self::ThicknessInAlpha => "ThicknessInAlpha",
+            Self::ThicknessOut => "ThicknessOut",
+            Self::ThicknessOutAlpha => "ThicknessOutAlpha",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `BB_SeparatorStyle`
@@ -5240,6 +7110,17 @@ impl BB_SeparatorStyle {
             "Secondary" => Self::Secondary,
             "Tertiary" => Self::Tertiary,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Primary => "Primary",
+            Self::Secondary => "Secondary",
+            Self::Tertiary => "Tertiary",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -5280,6 +7161,20 @@ impl BB_SizeBehavior {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Fixed => "Fixed",
+            Self::Percent => "Percent",
+            Self::PercentOfX => "PercentOfX",
+            Self::PercentOfY => "PercentOfY",
+            Self::PercentOfZ => "PercentOfZ",
+            Self::Auto => "Auto",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `BB_SliderMode`
@@ -5312,6 +7207,18 @@ impl BB_SliderMode {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::HorizontalBar => "HorizontalBar",
+            Self::VerticalBar => "VerticalBar",
+            Self::HorizontalMarker => "HorizontalMarker",
+            Self::VerticalMarker => "VerticalMarker",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `BB_StackDirection`
@@ -5339,6 +7246,17 @@ impl BB_StackDirection {
             "Vertical" => Self::Vertical,
             "Depth" => Self::Depth,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Horizontal => "Horizontal",
+            Self::Vertical => "Vertical",
+            Self::Depth => "Depth",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -5532,6 +7450,71 @@ impl BB_StringField {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::ActorEntityDNAString => "ActorEntityDNAString",
+            Self::ActorEntityIdleName => "ActorEntityIdleName",
+            Self::ActorEntityFacialName => "ActorEntityFacialName",
+            Self::CanvasReferenceRecord => "CanvasReferenceRecord",
+            Self::EditBoxConfirmTrigger => "EditBoxConfirmTrigger",
+            Self::EditBoxVariablePath => "EditBoxVariablePath",
+            Self::EntityGeometryTag => "EntityGeometryTag",
+            Self::EntityLoadoutName0 => "EntityLoadoutName0",
+            Self::EntityLoadoutName1 => "EntityLoadoutName1",
+            Self::EntityLoadoutName2 => "EntityLoadoutName2",
+            Self::EntityLoadoutName3 => "EntityLoadoutName3",
+            Self::EntityMaterialPath => "EntityMaterialPath",
+            Self::EntityTintPalettePath => "EntityTintPalettePath",
+            Self::FontStyleRecord => "FontStyleRecord",
+            Self::GeneralEntityClassName => "GeneralEntityClassName",
+            Self::GeomEntityAnimationPath => "GeomEntityAnimationPath",
+            Self::GeomEntityGeometryPath => "GeomEntityGeometryPath",
+            Self::ImageColorPickerAnchorXURL0 => "ImageColorPickerAnchorXURL0",
+            Self::ImageColorPickerAnchorYURL0 => "ImageColorPickerAnchorYURL0",
+            Self::ImageColorPickerOutputColorURL0 => "ImageColorPickerOutputColorURL0",
+            Self::ImagePath => "ImagePath",
+            Self::InteractionsOnLeftClickTriggerURL0 => "InteractionsOnLeftClickTriggerURL0",
+            Self::InteractionsOnLeftClickTriggerURL1 => "InteractionsOnLeftClickTriggerURL1",
+            Self::LightImagePath => "LightImagePath",
+            Self::MovieListContainerURL => "MovieListContainerURL",
+            Self::MovieListVariableURL => "MovieListVariableURL",
+            Self::MoviePath => "MoviePath",
+            Self::ParamInput0 => "ParamInput0",
+            Self::ParamInput1 => "ParamInput1",
+            Self::ParamInput2 => "ParamInput2",
+            Self::ParamInput3 => "ParamInput3",
+            Self::ParamInput4 => "ParamInput4",
+            Self::ParamInput5 => "ParamInput5",
+            Self::ParamInput6 => "ParamInput6",
+            Self::ParamInput7 => "ParamInput7",
+            Self::ParamInput8 => "ParamInput8",
+            Self::ParticleEffectName => "ParticleEffectName",
+            Self::PrimaryStateTag => "PrimaryStateTag",
+            Self::PrimitiveMaterialPath => "PrimitiveMaterialPath",
+            Self::QuarternaryStateTag => "QuarternaryStateTag",
+            Self::QuinaryStateTag => "QuinaryStateTag",
+            Self::SecondaryStateTag => "SecondaryStateTag",
+            Self::StripMaterialPath => "StripMaterialPath",
+            Self::StyleReferenceRecord => "StyleReferenceRecord",
+            Self::SenaryStateTag => "SenaryStateTag",
+            Self::SvgPath => "SvgPath",
+            Self::TertiaryStateTag => "TertiaryStateTag",
+            Self::TextMaterial => "TextMaterial",
+            Self::URLOptional => "URLOptional",
+            Self::URLPostfix => "URLPostfix",
+            Self::VariableInput0 => "VariableInput0",
+            Self::VariableInput1 => "VariableInput1",
+            Self::VariableInput2 => "VariableInput2",
+            Self::VariableInput3 => "VariableInput3",
+            Self::VariableInput4 => "VariableInput4",
+            Self::VehicleEntityClassName => "VehicleEntityClassName",
+            Self::VehicleEntityLoadoutName => "VehicleEntityLoadoutName",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `BB_StrokeAlignment`
@@ -5559,6 +7542,17 @@ impl BB_StrokeAlignment {
             "Inside" => Self::Inside,
             "Outside" => Self::Outside,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Center => "Center",
+            Self::Inside => "Inside",
+            Self::Outside => "Outside",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -5590,6 +7584,17 @@ impl BB_StrokeCapStyle {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Round => "Round",
+            Self::None => "None",
+            Self::Square => "Square",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `BB_StrokeJointStyle`
@@ -5619,6 +7624,17 @@ impl BB_StrokeJointStyle {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Round => "Round",
+            Self::Bevel => "Bevel",
+            Self::Miter => "Miter",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `BB_StyleCountType`
@@ -5646,6 +7662,17 @@ impl BB_StyleCountType {
             "First" => Self::First,
             "Last" => Self::Last,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Every => "Every",
+            Self::First => "First",
+            Self::Last => "Last",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -5678,6 +7705,18 @@ impl BB_TextAlignment {
             "Right" => Self::Right,
             "Justify" => Self::Justify,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Left => "Left",
+            Self::Center => "Center",
+            Self::Right => "Right",
+            Self::Justify => "Justify",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -5736,6 +7775,26 @@ impl BB_TextFieldWidgetStylePreset {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Title1 => "Title1",
+            Self::Title2 => "Title2",
+            Self::Title3 => "Title3",
+            Self::Title4 => "Title4",
+            Self::Title5 => "Title5",
+            Self::Heading1 => "Heading1",
+            Self::Heading2 => "Heading2",
+            Self::Heading3 => "Heading3",
+            Self::Heading4 => "Heading4",
+            Self::Heading5 => "Heading5",
+            Self::Heading6 => "Heading6",
+            Self::Body => "Body",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `BB_TextureOrientation`
@@ -5762,6 +7821,16 @@ impl BB_TextureOrientation {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Landscape => "Landscape",
+            Self::Portrait => "Portrait",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `BB_TransformField`
@@ -5786,6 +7855,16 @@ impl BB_TransformField {
             "PositionOrientation" => Self::PositionOrientation,
             "PositionOrientationOffset" => Self::PositionOrientationOffset,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::PositionOrientation => "PositionOrientation",
+            Self::PositionOrientationOffset => "PositionOrientationOffset",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -5823,6 +7902,19 @@ impl BB_UnidirectionalAutoScrollBehavior {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::LeftToRight_Always => "LeftToRight_Always",
+            Self::LeftToRight_IfLong => "LeftToRight_IfLong",
+            Self::RightToLeft_Always => "RightToLeft_Always",
+            Self::RightToLeft_IfLong => "RightToLeft_IfLong",
+            Self::Bounce => "Bounce",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `BB_UnidirectionalScrollDirection`
@@ -5853,6 +7945,18 @@ impl BB_UnidirectionalScrollDirection {
             "Vertical" => Self::Vertical,
             "Depth" => Self::Depth,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::DeriveFromLayout => "DeriveFromLayout",
+            Self::Horizontal => "Horizontal",
+            Self::Vertical => "Vertical",
+            Self::Depth => "Depth",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -5899,6 +8003,22 @@ impl BB_VectorField {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Position => "Position",
+            Self::PositionOffset => "PositionOffset",
+            Self::Orientation => "Orientation",
+            Self::OrientationOffset => "OrientationOffset",
+            Self::Scale => "Scale",
+            Self::Size => "Size",
+            Self::Pivot => "Pivot",
+            Self::Anchor => "Anchor",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `BB_VerticalTextAlignment`
@@ -5926,6 +8046,17 @@ impl BB_VerticalTextAlignment {
             "Center" => Self::Center,
             "Bottom" => Self::Bottom,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Top => "Top",
+            Self::Center => "Center",
+            Self::Bottom => "Bottom",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -6041,6 +8172,45 @@ impl BB_WidgetType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::ActorEntity => "ActorEntity",
+            Self::Base => "Base",
+            Self::Canvas => "Canvas",
+            Self::Card => "Card",
+            Self::CardTexture => "CardTexture",
+            Self::Circle => "Circle",
+            Self::Clone => "Clone",
+            Self::CustomShape => "CustomShape",
+            Self::EditBox => "EditBox",
+            Self::EnvironmentProbe => "EnvironmentProbe",
+            Self::GeneralEntity => "GeneralEntity",
+            Self::GeomEntity => "GeomEntity",
+            Self::HoloVolume => "HoloVolume",
+            Self::Image => "Image",
+            Self::Light => "Light",
+            Self::Line => "Line",
+            Self::List => "List",
+            Self::LineList => "LineList",
+            Self::Movie => "Movie",
+            Self::ParticleEffect => "ParticleEffect",
+            Self::Polygon => "Polygon",
+            Self::Polymorphic => "Polymorphic",
+            Self::RuntimeImage => "RuntimeImage",
+            Self::RuntimeVolume => "RuntimeVolume",
+            Self::Slider => "Slider",
+            Self::Slice => "Slice",
+            Self::Strip => "Strip",
+            Self::Text => "Text",
+            Self::TickBox => "TickBox",
+            Self::VehicleEntity => "VehicleEntity",
+            Self::Window => "Window",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `BettingFormat`
@@ -6067,6 +8237,16 @@ impl BettingFormat {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::TopPlayer => "TopPlayer",
+            Self::TopTeam => "TopTeam",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `CIGAudioContextNamingStrategy`
@@ -6091,6 +8271,16 @@ impl CIGAudioContextNamingStrategy {
             "DataCoreFilePathAndEntityClassName" => Self::DataCoreFilePathAndEntityClassName,
             "EntityClassNameAndEntityName" => Self::EntityClassNameAndEntityName,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::DataCoreFilePathAndEntityClassName => "DataCoreFilePathAndEntityClassName",
+            Self::EntityClassNameAndEntityName => "EntityClassNameAndEntityName",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -6125,6 +8315,18 @@ impl CameraViewTransitionMode {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::ExpSlerp => "ExpSlerp",
+            Self::Nlerp => "Nlerp",
+            Self::NlerpCubic => "NlerpCubic",
+            Self::Slerp => "Slerp",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `CanvasInstantiationMode`
@@ -6154,6 +8356,17 @@ impl CanvasInstantiationMode {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::RootDeferred => "RootDeferred",
+            Self::CanvasDeferred => "CanvasDeferred",
+            Self::Block => "Block",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `CargoFaceStackingSupport`
@@ -6181,6 +8394,17 @@ impl CargoFaceStackingSupport {
             "StackSelf" => Self::StackSelf,
             "StackNone" => Self::StackNone,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::StackAll => "StackAll",
+            Self::StackSelf => "StackSelf",
+            Self::StackNone => "StackNone",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -6254,6 +8478,31 @@ impl ChannelColor {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Blue => "Blue",
+            Self::White => "White",
+            Self::Silver => "Silver",
+            Self::Grey => "Grey",
+            Self::Charcoal => "Charcoal",
+            Self::Red => "Red",
+            Self::Orange => "Orange",
+            Self::Yellow => "Yellow",
+            Self::Chartreuse => "Chartreuse",
+            Self::Green => "Green",
+            Self::Mint => "Mint",
+            Self::Cyan => "Cyan",
+            Self::Azure => "Azure",
+            Self::Indigo => "Indigo",
+            Self::Purple => "Purple",
+            Self::Pink => "Pink",
+            Self::Hotpink => "Hotpink",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ClassMigrationValidationType`
@@ -6281,6 +8530,17 @@ impl ClassMigrationValidationType {
             "DataAssert" => Self::DataAssert,
             "DataCritical" => Self::DataCritical,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::DataAssert => "DataAssert",
+            Self::DataCritical => "DataCritical",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -6324,6 +8584,21 @@ impl CombatStyle {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::NotSet => "NotSet",
+            Self::Civilian => "Civilian",
+            Self::Merc => "Merc",
+            Self::SpecOps => "SpecOps",
+            Self::Slaver => "Slaver",
+            Self::OMC => "OMC",
+            Self::Galson => "Galson",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ComparisonType`
@@ -6353,6 +8628,17 @@ impl ComparisonType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::HigherOrEqualTo => "HigherOrEqualTo",
+            Self::LowerOrEqualTo => "LowerOrEqualTo",
+            Self::Equals => "Equals",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ConditionResult`
@@ -6377,6 +8663,16 @@ impl ConditionResult {
             "Pass" => Self::Pass,
             "Fail" => Self::Fail,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Pass => "Pass",
+            Self::Fail => "Fail",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -6441,6 +8737,28 @@ impl ContractBoolParamType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Illegal => "Illegal",
+            Self::ShowLifeTimeInMobiGlas => "ShowLifeTimeInMobiGlas",
+            Self::FailIfSentToPrison => "FailIfSentToPrison",
+            Self::FailIfBecameCriminal => "FailIfBecameCriminal",
+            Self::FailIfLeavePrison => "FailIfLeavePrison",
+            Self::NotifyOnAvailable => "NotifyOnAvailable",
+            Self::OnceOnly => "OnceOnly",
+            Self::CanReacceptAfterAbandoning => "CanReacceptAfterAbandoning",
+            Self::CanReacceptAfterFailing => "CanReacceptAfterFailing",
+            Self::HasPersonalCooldown => "HasPersonalCooldown",
+            Self::CanBeShared => "CanBeShared",
+            Self::HasCompleteButton => "HasCompleteButton",
+            Self::HideInMobiGlas => "HideInMobiGlas",
+            Self::AcceptMissionSpawnedCargo => "AcceptMissionSpawnedCargo",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ContractEndCommsReason`
@@ -6468,6 +8786,17 @@ impl ContractEndCommsReason {
             "Fail" => Self::Fail,
             "Abandon" => Self::Abandon,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Complete => "Complete",
+            Self::Fail => "Fail",
+            Self::Abandon => "Abandon",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -6508,6 +8837,20 @@ impl ContractIntParamType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::MaxPlayersPerInstance => "MaxPlayersPerInstance",
+            Self::AbandonedCooldownTime => "AbandonedCooldownTime",
+            Self::AbandonedCooldownTimeVariation => "AbandonedCooldownTimeVariation",
+            Self::PersonalCooldownTime => "PersonalCooldownTime",
+            Self::PersonalCooldownTimeVariation => "PersonalCooldownTimeVariation",
+            Self::TimeToComplete => "TimeToComplete",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ContractStringParamType`
@@ -6543,6 +8886,19 @@ impl ContractStringParamType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Title => "Title",
+            Self::TitleHUD => "TitleHUD",
+            Self::Description => "Description",
+            Self::Contractor => "Contractor",
+            Self::CommsChannelName => "CommsChannelName",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ControlHintConditionActorAttachmentType`
@@ -6575,6 +8931,18 @@ impl ControlHintConditionActorAttachmentType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Held => "Held",
+            Self::Attached => "Attached",
+            Self::Wearing => "Wearing",
+            Self::PersonalInventory => "PersonalInventory",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ControlHintConditionActorCommsState`
@@ -6596,6 +8964,15 @@ impl ControlHintConditionActorCommsState {
         match s {
             "BeingCalled" => Self::BeingCalled,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::BeingCalled => "BeingCalled",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -6643,6 +9020,23 @@ impl ControlHintConditionActorEnvironment {
             "InMeleeRange" => Self::InMeleeRange,
             "InMantleRange" => Self::InMantleRange,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Greenzone => "Greenzone",
+            Self::UsingKiosk => "UsingKiosk",
+            Self::NearInteractableObject => "NearInteractableObject",
+            Self::NearMineableRock => "NearMineableRock",
+            Self::NearDraggableBody => "NearDraggableBody",
+            Self::InRestrainRange => "InRestrainRange",
+            Self::InTakeDownRange => "InTakeDownRange",
+            Self::InMeleeRange => "InMeleeRange",
+            Self::InMantleRange => "InMantleRange",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -6766,6 +9160,57 @@ impl ControlHintConditionActorInteractionState {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::InInteractModeNothingUnderCursor => "InInteractModeNothingUnderCursor",
+            Self::InInteractModeInteractableUnderCursor => "InInteractModeInteractableUnderCursor",
+            Self::InInteractModeScreenUnderCursor => "InInteractModeScreenUnderCursor",
+            Self::QuickSelectWheelOpen => "QuickSelectWheelOpen",
+            Self::PITMenuOpen => "PITMenuOpen",
+            Self::PITMenuOpenMultiplePages => "PITMenuOpenMultiplePages",
+            Self::InventoryOpen => "InventoryOpen",
+            Self::InventoryOpenItemUnderCursor => "InventoryOpenItemUnderCursor",
+            Self::InventoryOpenContextMenuOpen => "InventoryOpenContextMenuOpen",
+            Self::LootingOpen => "LootingOpen",
+            Self::UsableLinkedInteractive => "UsableLinkedInteractive",
+            Self::PISWheelOpen => "PISWheelOpen",
+            Self::PISWheelOpenMultiplePages => "PISWheelOpenMultiplePages",
+            Self::SwapWheelOpen => "SwapWheelOpen",
+            Self::SwapWheelOpenMultiplePages => "SwapWheelOpenMultiplePages",
+            Self::PISWheelOpenCustomisablePrimarySecondary => {
+                "PISWheelOpenCustomisablePrimarySecondary"
+            }
+            Self::PISWheelOpenContextMenuOpen => "PISWheelOpenContextMenuOpen",
+            Self::QuickSelectWheelOpenSegmentHasContextMenu => {
+                "QuickSelectWheelOpenSegmentHasContextMenu"
+            }
+            Self::QuickSelectWheelOpenHoverOverNavigationSegment => {
+                "QuickSelectWheelOpenHoverOverNavigationSegment"
+            }
+            Self::QuickSelectWheelOpenMultiplePages => "QuickSelectWheelOpenMultiplePages",
+            Self::InteractionPromptWithSingleOptionAvailable => {
+                "InteractionPromptWithSingleOptionAvailable"
+            }
+            Self::InteractionPromptWithMultipleOptionsAvailable => {
+                "InteractionPromptWithMultipleOptionsAvailable"
+            }
+            Self::InteractionPromptHasAvailableSecondaryAction => {
+                "InteractionPromptHasAvailableSecondaryAction"
+            }
+            Self::InteractionPromptOverridesHintDescription => {
+                "InteractionPromptOverridesHintDescription"
+            }
+            Self::OffscreenInteractionAvailable => "OffscreenInteractionAvailable",
+            Self::HeldItemHasAvailablePrimaryAction => "HeldItemHasAvailablePrimaryAction",
+            Self::HeldItemHasAvailableSecondaryAction => "HeldItemHasAvailableSecondaryAction",
+            Self::InputAwaitingRebind => "InputAwaitingRebind",
+            Self::UsingNonFocusedModeKiosk => "UsingNonFocusedModeKiosk",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ControlHintConditionActorLadderState`
@@ -6801,6 +9246,19 @@ impl ControlHintConditionActorLadderState {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::WithinMidPointRange => "WithinMidPointRange",
+            Self::WithinLaunchAngle => "WithinLaunchAngle",
+            Self::IsLadderSlideable => "IsLadderSlideable",
+            Self::CanDodgeRight => "CanDodgeRight",
+            Self::CanDodgeLeft => "CanDodgeLeft",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ControlHintConditionActorMissionOfferReceived`
@@ -6822,6 +9280,15 @@ impl ControlHintConditionActorMissionOfferReceived {
         match s {
             "OfferReceived" => Self::OfferReceived,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::OfferReceived => "OfferReceived",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -6856,6 +9323,18 @@ impl ControlHintConditionActorSightZeroMode {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Manual => "Manual",
+            Self::Auto => "Auto",
+            Self::AutoIsZeroed => "AutoIsZeroed",
+            Self::None => "None",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ControlHintConditionActorSuitState`
@@ -6877,6 +9356,15 @@ impl ControlHintConditionActorSuitState {
         match s {
             "VisorDirty" => Self::VisorDirty,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::VisorDirty => "VisorDirty",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -6918,6 +9406,21 @@ impl ControlHintConditionActorToolState {
             "TractorBeamChargingThrow" => Self::TractorBeamChargingThrow,
             "MediGunInUseOnTarget" => Self::MediGunInUseOnTarget,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::TractorBeamInUseOnObject => "TractorBeamInUseOnObject",
+            Self::TractorBeamInDetachMode => "TractorBeamInDetachMode",
+            Self::TractorBeamInCargoMode => "TractorBeamInCargoMode",
+            Self::TractorBeamValidPlacementTarget => "TractorBeamValidPlacementTarget",
+            Self::TractorBeamMovingToValidTarget => "TractorBeamMovingToValidTarget",
+            Self::TractorBeamChargingThrow => "TractorBeamChargingThrow",
+            Self::MediGunInUseOnTarget => "MediGunInUseOnTarget",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -6967,6 +9470,23 @@ impl ControlHintConditionActorWeaponState {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Reloadable => "Reloadable",
+            Self::AmmoFull => "AmmoFull",
+            Self::AmmoEmpty => "AmmoEmpty",
+            Self::ModifierAttachment => "ModifierAttachment",
+            Self::AltFire => "AltFire",
+            Self::HasModifierPortsAvailable => "HasModifierPortsAvailable",
+            Self::HasAmmoAvailableInItemPortOrInventory => "HasAmmoAvailableInItemPortOrInventory",
+            Self::ActivatableUnderbarrelAttachment => "ActivatableUnderbarrelAttachment",
+            Self::Customizing => "Customizing",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ControlHintConditionActorZeroGEVAState`
@@ -6994,6 +9514,17 @@ impl ControlHintConditionActorZeroGEVAState {
             "CanAttachToGrip" => Self::CanAttachToGrip,
             "IsAttachedToGrip" => Self::IsAttachedToGrip,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::CanAttachToSurface => "CanAttachToSurface",
+            Self::CanAttachToGrip => "CanAttachToGrip",
+            Self::IsAttachedToGrip => "IsAttachedToGrip",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -7055,6 +9586,27 @@ impl ControlHintConditionMobiglasMapState {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::InteriorMapActive => "InteriorMapActive",
+            Self::InteriorMapAvailable => "InteriorMapAvailable",
+            Self::InteriorMapRouteAvailable => "InteriorMapRouteAvailable",
+            Self::InteriorMapRouteSet => "InteriorMapRouteSet",
+            Self::InteriorMapCrossSectionViewActive => "InteriorMapCrossSectionViewActive",
+            Self::InteriorMapHasMultipleZones => "InteriorMapHasMultipleZones",
+            Self::InteriorMapHasMultipleSections => "InteriorMapHasMultipleSections",
+            Self::StarMapActive => "StarMapActive",
+            Self::StarMapInJumpTunnel => "StarMapInJumpTunnel",
+            Self::StarMapRouteAvailable => "StarMapRouteAvailable",
+            Self::StarMapRouteSet => "StarMapRouteSet",
+            Self::GalacticMapActive => "GalacticMapActive",
+            Self::GeneralMapStepBackAvailable => "GeneralMapStepBackAvailable",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ControlHintConditionOptInEventState`
@@ -7079,6 +9631,16 @@ impl ControlHintConditionOptInEventState {
             "OptInEventAvailable" => Self::OptInEventAvailable,
             "OptInEventActive" => Self::OptInEventActive,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::OptInEventAvailable => "OptInEventAvailable",
+            Self::OptInEventActive => "OptInEventActive",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -7119,6 +9681,20 @@ impl ControlHintConditionRemoteTurret {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::HasRemoteTurretAccess => "HasRemoteTurretAccess",
+            Self::MultipleRemoteTurrets => "MultipleRemoteTurrets",
+            Self::RemoteTurret1Available => "RemoteTurret1Available",
+            Self::RemoteTurret2Available => "RemoteTurret2Available",
+            Self::RemoteTurret3Available => "RemoteTurret3Available",
+            Self::UsingRemoteTurret => "UsingRemoteTurret",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ControlHintConditionTransporterMotionSpeed`
@@ -7148,6 +9724,17 @@ impl ControlHintConditionTransporterMotionSpeed {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Idle => "Idle",
+            Self::Movement => "Movement",
+            Self::Sprint => "Sprint",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ControlHintConditionTryOnState`
@@ -7171,6 +9758,15 @@ impl ControlHintConditionTryOnState {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Active => "Active",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ControlHintConditionVehicleAutoLandState`
@@ -7192,6 +9788,15 @@ impl ControlHintConditionVehicleAutoLandState {
         match s {
             "Ready" => Self::Ready,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Ready => "Ready",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -7227,6 +9832,19 @@ impl ControlHintConditionVehicleAutoSelectedContact {
             "Friendly" => Self::Friendly,
             "Attacker" => Self::Attacker,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::All => "All",
+            Self::Hostile => "Hostile",
+            Self::Friendly => "Friendly",
+            Self::Attacker => "Attacker",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -7279,6 +9897,24 @@ impl ControlHintConditionVehicleComponents {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Missiles => "Missiles",
+            Self::Guns => "Guns",
+            Self::Radar => "Radar",
+            Self::QuantumInterdictionSnare => "QuantumInterdictionSnare",
+            Self::MiningLaser => "MiningLaser",
+            Self::QuantumDrive => "QuantumDrive",
+            Self::Bombs => "Bombs",
+            Self::Gimbals => "Gimbals",
+            Self::CurrentOrdnanceTypeEmpty => "CurrentOrdnanceTypeEmpty",
+            Self::JumpThrusterPack => "JumpThrusterPack",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ControlHintConditionVehicleCounterMeasureState`
@@ -7311,6 +9947,18 @@ impl ControlHintConditionVehicleCounterMeasureState {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::HasChaff => "HasChaff",
+            Self::HasFlare => "HasFlare",
+            Self::IncomingCounterWithChaff => "IncomingCounterWithChaff",
+            Self::IncomingCounterWithFlare => "IncomingCounterWithFlare",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ControlHintConditionVehicleDestroyedState`
@@ -7335,6 +9983,16 @@ impl ControlHintConditionVehicleDestroyedState {
             "Alive" => Self::Alive,
             "SoftDeath" => Self::SoftDeath,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Alive => "Alive",
+            Self::SoftDeath => "SoftDeath",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -7381,6 +10039,22 @@ impl ControlHintConditionVehicleDocking {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::NoDockingTube => "NoDockingTube",
+            Self::Active => "Active",
+            Self::CanAutoDock => "CanAutoDock",
+            Self::AutoDocking => "AutoDocking",
+            Self::NeedUndockRequest => "NeedUndockRequest",
+            Self::NearDockingStation => "NearDockingStation",
+            Self::NearDockingShip => "NearDockingShip",
+            Self::DockingTargetValid => "DockingTargetValid",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ControlHintConditionVehicleEjectorSeat`
@@ -7402,6 +10076,15 @@ impl ControlHintConditionVehicleEjectorSeat {
         match s {
             "EjectorSeat" => Self::EjectorSeat,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::EjectorSeat => "EjectorSeat",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -7445,6 +10128,21 @@ impl ControlHintConditionVehicleEnvironment {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::IncomingMissiles => "IncomingMissiles",
+            Self::ContactOnRadar => "ContactOnRadar",
+            Self::HostileOnRadar => "HostileOnRadar",
+            Self::BlobOnRadar => "BlobOnRadar",
+            Self::UnknownOnRadar => "UnknownOnRadar",
+            Self::NearMineableRock => "NearMineableRock",
+            Self::AttackerOnRadar => "AttackerOnRadar",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ControlHintConditionVehicleHealthState`
@@ -7478,6 +10176,19 @@ impl ControlHintConditionVehicleHealthState {
             "Below40Percent" => Self::Below40Percent,
             "Below50Percent" => Self::Below50Percent,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Below10Percent => "Below10Percent",
+            Self::Below20Percent => "Below20Percent",
+            Self::Below30Percent => "Below30Percent",
+            Self::Below40Percent => "Below40Percent",
+            Self::Below50Percent => "Below50Percent",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -7521,6 +10232,21 @@ impl ControlHintConditionVehicleJumpDriveState {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::HasJumpDrive => "HasJumpDrive",
+            Self::HasLinkedJumpPoint => "HasLinkedJumpPoint",
+            Self::TunedToJumpPoint => "TunedToJumpPoint",
+            Self::JumpPointClosed => "JumpPointClosed",
+            Self::ShipInATCQueue => "ShipInATCQueue",
+            Self::InJumpTunnel => "InJumpTunnel",
+            Self::TakingDistortionDamage => "TakingDistortionDamage",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ControlHintConditionVehicleLandingArea`
@@ -7559,6 +10285,20 @@ impl ControlHintConditionVehicleLandingArea {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::NoLandingArea => "NoLandingArea",
+            Self::InsideNonReservedLandingArea => "InsideNonReservedLandingArea",
+            Self::Reserved => "Reserved",
+            Self::NeedTakeOffPermission => "NeedTakeOffPermission",
+            Self::WaitingForTakeOff => "WaitingForTakeOff",
+            Self::NearLandingArea => "NearLandingArea",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ControlHintConditionVehicleLandingGearState`
@@ -7583,6 +10323,16 @@ impl ControlHintConditionVehicleLandingGearState {
             "Down" => Self::Down,
             "Up" => Self::Up,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Down => "Down",
+            Self::Up => "Up",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -7620,6 +10370,19 @@ impl ControlHintConditionVehicleLockedTarget {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::All => "All",
+            Self::Hostile => "Hostile",
+            Self::Friendly => "Friendly",
+            Self::Attacker => "Attacker",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ControlHintConditionVehicleMainThrustersState`
@@ -7649,6 +10412,17 @@ impl ControlHintConditionVehicleMainThrustersState {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Off => "Off",
+            Self::On => "On",
+            Self::Destroyed => "Destroyed",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ControlHintConditionVehicleMasterMode`
@@ -7675,6 +10449,16 @@ impl ControlHintConditionVehicleMasterMode {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::SCM => "SCM",
+            Self::NAV => "NAV",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ControlHintConditionVehicleMiningLaserMode`
@@ -7699,6 +10483,16 @@ impl ControlHintConditionVehicleMiningLaserMode {
             "Fracture" => Self::Fracture,
             "Extractor" => Self::Extractor,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Fracture => "Fracture",
+            Self::Extractor => "Extractor",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -7736,6 +10530,19 @@ impl ControlHintConditionVehiclePinnedTarget {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::All => "All",
+            Self::Hostile => "Hostile",
+            Self::Friendly => "Friendly",
+            Self::Attacker => "Attacker",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ControlHintConditionVehicleQuantumTravelState`
@@ -7766,6 +10573,18 @@ impl ControlHintConditionVehicleQuantumTravelState {
             "QT_CanTravel" => Self::QT_CanTravel,
             "QT_PartyLeaderRouteSet" => Self::QT_PartyLeaderRouteSet,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::QT_RouteSet => "QT_RouteSet",
+            Self::QT_ReadyToEngage => "QT_ReadyToEngage",
+            Self::QT_CanTravel => "QT_CanTravel",
+            Self::QT_PartyLeaderRouteSet => "QT_PartyLeaderRouteSet",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -7806,6 +10625,20 @@ impl ControlHintConditionVehicleSalvage {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::SupportsScraping => "SupportsScraping",
+            Self::SupportsStructural => "SupportsStructural",
+            Self::SupportsTractor => "SupportsTractor",
+            Self::SupportsFocusHeads => "SupportsFocusHeads",
+            Self::SupportsFocusStructural => "SupportsFocusStructural",
+            Self::SupportsHeadsBeamSpacing => "SupportsHeadsBeamSpacing",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ControlHintConditionVehicleScanWaveAvailability`
@@ -7827,6 +10660,15 @@ impl ControlHintConditionVehicleScanWaveAvailability {
         match s {
             "Available" => Self::Available,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Available => "Available",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -7853,6 +10695,16 @@ impl ControlHintConditionVehicleSeatTypeState {
             "SeatToExterior" => Self::SeatToExterior,
             "SeatToInterior" => Self::SeatToInterior,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::SeatToExterior => "SeatToExterior",
+            Self::SeatToInterior => "SeatToInterior",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -7894,6 +10746,21 @@ impl ControlHintConditionVehicleState {
             "VolatileCargoExplosionSoon" => Self::VolatileCargoExplosionSoon,
             "BombTargetActive" => Self::BombTargetActive,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Docked => "Docked",
+            Self::Landed => "Landed",
+            Self::Active => "Active",
+            Self::Quantum => "Quantum",
+            Self::Static => "Static",
+            Self::VolatileCargoExplosionSoon => "VolatileCargoExplosionSoon",
+            Self::BombTargetActive => "BombTargetActive",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -7952,6 +10819,26 @@ impl ControlHintConditionVehicleSystems {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Power_On => "Power_On",
+            Self::DecoupledMode_On => "DecoupledMode_On",
+            Self::CruiseControl_On => "CruiseControl_On",
+            Self::Missile_Locked => "Missile_Locked",
+            Self::Afterburner_Active => "Afterburner_Active",
+            Self::SpeedLimiter_On => "SpeedLimiter_On",
+            Self::GForceSafety_On => "GForceSafety_On",
+            Self::Rotation_Locked => "Rotation_Locked",
+            Self::AtMaxSpeed => "AtMaxSpeed",
+            Self::AtMaxCruiseSpeed => "AtMaxCruiseSpeed",
+            Self::PlayerAcceleration_Active => "PlayerAcceleration_Active",
+            Self::Shields_On => "Shields_On",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ControlHintConditionVehicleWeaponState`
@@ -7976,6 +10863,16 @@ impl ControlHintConditionVehicleWeaponState {
             "WeaponGroup1Set" => Self::WeaponGroup1Set,
             "WeaponGroup2Set" => Self::WeaponGroup2Set,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::WeaponGroup1Set => "WeaponGroup1Set",
+            Self::WeaponGroup2Set => "WeaponGroup2Set",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -8007,6 +10904,17 @@ impl ControlHintConditionVehicleWeaponSystems {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::PrecisionTargetingEnabled => "PrecisionTargetingEnabled",
+            Self::StaggeredFiringEnabled => "StaggeredFiringEnabled",
+            Self::LagPipsEnabled => "LagPipsEnabled",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `CounterMeasureType`
@@ -8031,6 +10939,16 @@ impl CounterMeasureType {
             "Flare" => Self::Flare,
             "Chaff" => Self::Chaff,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Flare => "Flare",
+            Self::Chaff => "Chaff",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -8060,6 +10978,17 @@ impl CoverBodyDirection {
             "Left" => Self::Left,
             "Right" => Self::Right,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::Left => "Left",
+            Self::Right => "Right",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -8100,6 +11029,20 @@ impl CtxGraph_ContextActionType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Load => "Load",
+            Self::Unload => "Unload",
+            Self::Enter => "Enter",
+            Self::Leave => "Leave",
+            Self::Unfocus => "Unfocus",
+            Self::Focus => "Focus",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `CurrencyType`
@@ -8133,6 +11076,19 @@ impl CurrencyType {
             "ALPHA" => Self::ALPHA,
             "MER" => Self::MER,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::INVALID => "INVALID",
+            Self::UEC => "UEC",
+            Self::REC => "REC",
+            Self::ALPHA => "ALPHA",
+            Self::MER => "MER",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -8200,6 +11156,29 @@ impl Cursor {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Auto => "Auto",
+            Self::Disabled => "Disabled",
+            Self::DollyCamera => "DollyCamera",
+            Self::Grabbable => "Grabbable",
+            Self::GrabDisabled => "GrabDisabled",
+            Self::Grabbed => "Grabbed",
+            Self::InteractMode => "InteractMode",
+            Self::InteractableZoom => "InteractableZoom",
+            Self::Press => "Press",
+            Self::SlideHorizontal => "SlideHorizontal",
+            Self::SlideVertical => "SlideVertical",
+            Self::Standard => "Standard",
+            Self::TextEntry => "TextEntry",
+            Self::Conversation => "Conversation",
+            Self::Throw => "Throw",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `CurveEndPoint`
@@ -8229,6 +11208,17 @@ impl CurveEndPoint {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::MinOptimal => "MinOptimal",
+            Self::MaxOptimal => "MaxOptimal",
+            Self::MaxPower => "MaxPower",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `CurveStartPoint`
@@ -8256,6 +11246,17 @@ impl CurveStartPoint {
             "MinOptimal" => Self::MinOptimal,
             "MaxOptimal" => Self::MaxOptimal,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::MinPower => "MinPower",
+            Self::MinOptimal => "MinOptimal",
+            Self::MaxOptimal => "MaxOptimal",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -8314,6 +11315,26 @@ impl DamageToKillType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::none => "none",
+            Self::melee => "melee",
+            Self::unarmedMelee => "unarmedMelee",
+            Self::explosion => "explosion",
+            Self::bullet => "bullet",
+            Self::suffocate => "suffocate",
+            Self::drown => "drown",
+            Self::energyWeapon => "energyWeapon",
+            Self::collision => "collision",
+            Self::fallDamage => "fallDamage",
+            Self::crash => "crash",
+            Self::suicide => "suicide",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `DamageTypes`
@@ -8352,6 +11373,20 @@ impl DamageTypes {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Physical => "Physical",
+            Self::Energy => "Energy",
+            Self::Distortion => "Distortion",
+            Self::Thermal => "Thermal",
+            Self::Biochemical => "Biochemical",
+            Self::Stun => "Stun",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `DateScheduleRepeat`
@@ -8384,6 +11419,18 @@ impl DateScheduleRepeat {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::OneOff => "OneOff",
+            Self::RepeatDaily => "RepeatDaily",
+            Self::RepeatMonthly => "RepeatMonthly",
+            Self::RepeatYearly => "RepeatYearly",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `DaylightParticleGroupActivation`
@@ -8411,6 +11458,17 @@ impl DaylightParticleGroupActivation {
             "ActiveDuringNight" => Self::ActiveDuringNight,
             "ActiveDuringDay" => Self::ActiveDuringDay,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::AlwaysActive => "AlwaysActive",
+            Self::ActiveDuringNight => "ActiveDuringNight",
+            Self::ActiveDuringDay => "ActiveDuringDay",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -8451,6 +11509,20 @@ impl DeathReason {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::none => "none",
+            Self::instantDeathFromHitDamage => "instantDeathFromHitDamage",
+            Self::deathFromTemperature => "deathFromTemperature",
+            Self::deathFromHungerOrThirst => "deathFromHungerOrThirst",
+            Self::deathFromOverdose => "deathFromOverdose",
+            Self::downedFromHitDamage => "downedFromHitDamage",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `DeliveryObjectiveType`
@@ -8486,6 +11558,19 @@ impl DeliveryObjectiveType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::Freight_Resource => "Freight_Resource",
+            Self::Freight_Entity => "Freight_Entity",
+            Self::ItemPort_Entity => "ItemPort_Entity",
+            Self::Locker_Entity => "Locker_Entity",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `DeviceType`
@@ -8516,6 +11601,18 @@ impl DeviceType {
             "Gamepad" => Self::Gamepad,
             "Joystick" => Self::Joystick,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Keyboard => "Keyboard",
+            Self::Mouse => "Mouse",
+            Self::Gamepad => "Gamepad",
+            Self::Joystick => "Joystick",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -8553,6 +11650,19 @@ impl DirectForceTypeFilter {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Any => "Any",
+            Self::ActorBump => "ActorBump",
+            Self::Melee => "Melee",
+            Self::Physics => "Physics",
+            Self::Projectile => "Projectile",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `DirectRenderStage`
@@ -8583,6 +11693,18 @@ impl DirectRenderStage {
             "AfterToneMapping" => Self::AfterToneMapping,
             "AfterPostProcessing" => Self::AfterPostProcessing,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::BeforeToneMapping => "BeforeToneMapping",
+            Self::AfterToneMapping => "AfterToneMapping",
+            Self::AfterPostProcessing => "AfterPostProcessing",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -8617,6 +11739,18 @@ impl DisplayCategory {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Critical => "Critical",
+            Self::Warning => "Warning",
+            Self::MinorWarning => "MinorWarning",
+            Self::Normal => "Normal",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `DisturbanceStyle`
@@ -8649,6 +11783,18 @@ impl DisturbanceStyle {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::CenteredNoise => "CenteredNoise",
+            Self::Figure8 => "Figure8",
+            Self::Gaussian => "Gaussian",
+            Self::Waterfall => "Waterfall",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EAEntityInclusionMode`
@@ -8675,6 +11821,16 @@ impl EAEntityInclusionMode {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::DoNotInclude => "DoNotInclude",
+            Self::ReadyToInclude => "ReadyToInclude",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EAGameCompletionAwardType`
@@ -8699,6 +11855,16 @@ impl EAGameCompletionAwardType {
             "WinOrLoss" => Self::WinOrLoss,
             "ScoreboardPlacement" => Self::ScoreboardPlacement,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::WinOrLoss => "WinOrLoss",
+            Self::ScoreboardPlacement => "ScoreboardPlacement",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -8728,6 +11894,17 @@ impl EAGunGameArmorLevels {
             "Medium" => Self::Medium,
             "Heavy" => Self::Heavy,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Light => "Light",
+            Self::Medium => "Medium",
+            Self::Heavy => "Heavy",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -8760,6 +11937,18 @@ impl EAIAwarenessLevel {
             "Threatened" => Self::Threatened,
             "Combat" => Self::Combat,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::Curious => "Curious",
+            Self::Threatened => "Threatened",
+            Self::Combat => "Combat",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -8818,6 +12007,26 @@ impl EAIDisturbanceType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::VisualHostile => "VisualHostile",
+            Self::VisualDisguisedHostile => "VisualDisguisedHostile",
+            Self::VisualBody => "VisualBody",
+            Self::VisualDeath => "VisualDeath",
+            Self::AudioCombat => "AudioCombat",
+            Self::AudioHostile => "AudioHostile",
+            Self::AudioDisruption => "AudioDisruption",
+            Self::AudioDistraction => "AudioDistraction",
+            Self::AreaDisruption => "AreaDisruption",
+            Self::Damage => "Damage",
+            Self::GroupInvestigation => "GroupInvestigation",
+            Self::RadarScan => "RadarScan",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EAIMagazineRules`
@@ -8847,6 +12056,17 @@ impl EAIMagazineRules {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::FollowGamerules => "FollowGamerules",
+            Self::FiniteMagazines => "FiniteMagazines",
+            Self::InfiniteMagazines => "InfiniteMagazines",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EAINavigationGeneration`
@@ -8874,6 +12094,17 @@ impl EAINavigationGeneration {
             "Excluded" => Self::Excluded,
             "IgnoreWalkability" => Self::IgnoreWalkability,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Included => "Included",
+            Self::Excluded => "Excluded",
+            Self::IgnoreWalkability => "IgnoreWalkability",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -8932,6 +12163,26 @@ impl EAIPerceptionAudioType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::BulletHit => "BulletHit",
+            Self::BulletWhiz => "BulletWhiz",
+            Self::Weapon => "Weapon",
+            Self::Movement => "Movement",
+            Self::Explosion => "Explosion",
+            Self::ThrownObject => "ThrownObject",
+            Self::Grenade => "Grenade",
+            Self::Vehicle => "Vehicle",
+            Self::Ragdoll => "Ragdoll",
+            Self::Takedown => "Takedown",
+            Self::Disruption => "Disruption",
+            Self::Custom => "Custom",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EAIPerceptionBehaviour`
@@ -8967,6 +12218,19 @@ impl EAIPerceptionBehaviour {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::TurnHead => "TurnHead",
+            Self::TurnBody => "TurnBody",
+            Self::Investigate => "Investigate",
+            Self::Combat => "Combat",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EAIPerceptionContext`
@@ -8991,6 +12255,16 @@ impl EAIPerceptionContext {
             "Default" => Self::Default,
             "OnSeat" => Self::OnSeat,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Default => "Default",
+            Self::OnSeat => "OnSeat",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -9037,6 +12311,22 @@ impl EAIWeaponShootingMode {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Single => "Single",
+            Self::Burst => "Burst",
+            Self::Rapid => "Rapid",
+            Self::Charge => "Charge",
+            Self::Melee => "Melee",
+            Self::TractorBeam => "TractorBeam",
+            Self::Repair => "Repair",
+            Self::Beam => "Beam",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EALoadoutSnapshotType`
@@ -9064,6 +12354,17 @@ impl EALoadoutSnapshotType {
             "EA_MARINE" => Self::EA_MARINE,
             "EA_SLAVER" => Self::EA_SLAVER,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::EA_ELIMINATION => "EA_ELIMINATION",
+            Self::EA_MARINE => "EA_MARINE",
+            Self::EA_SLAVER => "EA_SLAVER",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -9104,6 +12405,20 @@ impl EAMvpType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::Score => "Score",
+            Self::Kills => "Kills",
+            Self::Assists => "Assists",
+            Self::LeastDeaths => "LeastDeaths",
+            Self::FastestLap => "FastestLap",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EAOptionType`
@@ -9128,6 +12443,16 @@ impl EAOptionType {
             "GameMode" => Self::GameMode,
             "Map" => Self::Map,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::GameMode => "GameMode",
+            Self::Map => "Map",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -9168,6 +12493,20 @@ impl EAPickupAudioTrigger {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::PickupAquiredByPlayer => "PickupAquiredByPlayer",
+            Self::PickupAquiredByNLPC => "PickupAquiredByNLPC",
+            Self::PickupAquireFailedByPlayer => "PickupAquireFailedByPlayer",
+            Self::PickupAquireFailedByNLPC => "PickupAquireFailedByNLPC",
+            Self::PickupSpawned => "PickupSpawned",
+            Self::PickupExpired => "PickupExpired",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EAPickupType`
@@ -9206,6 +12545,20 @@ impl EAPickupType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Ballistics => "Ballistics",
+            Self::Missiles => "Missiles",
+            Self::Fuel => "Fuel",
+            Self::Repair => "Repair",
+            Self::KillConfirmed => "KillConfirmed",
+            Self::SpecialEvent => "SpecialEvent",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EASOPSpawnState`
@@ -9235,6 +12588,17 @@ impl EASOPSpawnState {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::On => "On",
+            Self::Off => "Off",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EASpawnScreenMode`
@@ -9262,6 +12626,17 @@ impl EASpawnScreenMode {
             "InitialSpawn" => Self::InitialSpawn,
             "AlwaysActive" => Self::AlwaysActive,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Disabled => "Disabled",
+            Self::InitialSpawn => "InitialSpawn",
+            Self::AlwaysActive => "AlwaysActive",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -9302,6 +12677,20 @@ impl EATransportOnTransitionFinished {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::DoNothing => "DoNothing",
+            Self::Explode => "Explode",
+            Self::Land => "Land",
+            Self::LoopNatural => "LoopNatural",
+            Self::LoopTeleportToSpawner => "LoopTeleportToSpawner",
+            Self::NextTransition => "NextTransition",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EATransportTransitionType`
@@ -9331,6 +12720,17 @@ impl EATransportTransitionType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Unknown => "Unknown",
+            Self::FlySpline => "FlySpline",
+            Self::QTravel => "QTravel",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EAccumulatorType`
@@ -9358,6 +12758,17 @@ impl EAccumulatorType {
             "Dirt" => Self::Dirt,
             "Wetness" => Self::Wetness,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Wear => "Wear",
+            Self::Dirt => "Dirt",
+            Self::Wetness => "Wetness",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -9419,6 +12830,27 @@ impl EActorActionEntityCarryableState {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Undefined => "Undefined",
+            Self::Carryable_Settled => "Carryable_Settled",
+            Self::Carryable_Carried => "Carryable_Carried",
+            Self::Carryable_CarriedAndEquipped => "Carryable_CarriedAndEquipped",
+            Self::Carryable_EquippedWorn => "Carryable_EquippedWorn",
+            Self::Carryable_CarriedAndInspected => "Carryable_CarriedAndInspected",
+            Self::Carryable_Dropped => "Carryable_Dropped",
+            Self::Carryable_Stowed => "Carryable_Stowed",
+            Self::Carryable_Offered => "Carryable_Offered",
+            Self::Carryable_Stored => "Carryable_Stored",
+            Self::Carryable_HangingOnOutfitHanger => "Carryable_HangingOnOutfitHanger",
+            Self::Special_Gripped => "Special_Gripped",
+            Self::Special_Mounted => "Special_Mounted",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EActorActionHandlerEventType`
@@ -9440,6 +12872,15 @@ impl EActorActionHandlerEventType {
         match s {
             "Sleep" => Self::Sleep,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Sleep => "Sleep",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -9472,6 +12913,18 @@ impl EActorGForceCameraEffectCategory {
             "JumpDrive" => Self::JumpDrive,
             "Legacy" => Self::Legacy,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::IfcsDefault => "IfcsDefault",
+            Self::IfcsBoost => "IfcsBoost",
+            Self::JumpDrive => "JumpDrive",
+            Self::Legacy => "Legacy",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -9509,6 +12962,19 @@ impl EActorHostedArticulatedEntityProfile {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::Default => "Default",
+            Self::Disabled => "Disabled",
+            Self::ActiveKinematic => "ActiveKinematic",
+            Self::ActiveDynamic => "ActiveDynamic",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EActorLookAheadHeadRollType`
@@ -9536,6 +13002,17 @@ impl EActorLookAheadHeadRollType {
             "VehicleVelocityRoll" => Self::VehicleVelocityRoll,
             "MgvHorizonAlignment" => Self::MgvHorizonAlignment,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::VehicleHorizonAlignment => "VehicleHorizonAlignment",
+            Self::VehicleVelocityRoll => "VehicleVelocityRoll",
+            Self::MgvHorizonAlignment => "MgvHorizonAlignment",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -9627,6 +13104,37 @@ impl EActorLookAheadTargetPointType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::VehicleForward => "VehicleForward",
+            Self::VehicleForwardHorizon => "VehicleForwardHorizon",
+            Self::VehicleVelocityTranslation => "VehicleVelocityTranslation",
+            Self::VehicleVelocityPitchYaw => "VehicleVelocityPitchYaw",
+            Self::LockedTarget => "LockedTarget",
+            Self::JumpPointSpline => "JumpPointSpline",
+            Self::VJoy => "VJoy",
+            Self::TurretForward => "TurretForward",
+            Self::TurretLockedTarget => "TurretLockedTarget",
+            Self::TurretVJoy => "TurretVJoy",
+            Self::TurretPitchYaw => "TurretPitchYaw",
+            Self::TurretPointerTarget => "TurretPointerTarget",
+            Self::LockedTargetPadlock => "LockedTargetPadlock",
+            Self::TurretLockedTargetPadlock => "TurretLockedTargetPadlock",
+            Self::MgvForward => "MgvForward",
+            Self::MgvPitchYaw => "MgvPitchYaw",
+            Self::MgvVJoy => "MgvVJoy",
+            Self::MgvVLockedTarget => "MgvVLockedTarget",
+            Self::MgvLockedTargetPadlock => "MgvLockedTargetPadlock",
+            Self::QuantumBoostTarget => "QuantumBoostTarget",
+            Self::AdsPadlock => "AdsPadlock",
+            Self::AdsCrosshair => "AdsCrosshair",
+            Self::CustomPoint => "CustomPoint",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EActorPhysicalizationProfile`
@@ -9674,6 +13182,23 @@ impl EActorPhysicalizationProfile {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::Default => "Default",
+            Self::Default_PoseMatch => "Default_PoseMatch",
+            Self::FloppyRagdoll => "FloppyRagdoll",
+            Self::DrivenRagdoll => "DrivenRagdoll",
+            Self::NewRagdoll => "NewRagdoll",
+            Self::PassiveRagdoll => "PassiveRagdoll",
+            Self::Linked => "Linked",
+            Self::Flying => "Flying",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EActorStanceUpAlignMode`
@@ -9701,6 +13226,17 @@ impl EActorStanceUpAlignMode {
             "OnlyAlignToSurfaceNormal" => Self::OnlyAlignToSurfaceNormal,
             "OnlyAlignToGravity" => Self::OnlyAlignToGravity,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Auto => "Auto",
+            Self::OnlyAlignToSurfaceNormal => "OnlyAlignToSurfaceNormal",
+            Self::OnlyAlignToGravity => "OnlyAlignToGravity",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -9732,6 +13268,17 @@ impl EActorStateFilterByAimingRestriction {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Any => "Any",
+            Self::Friendly => "Friendly",
+            Self::Kiosk => "Kiosk",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EActorStateFilterByBoolState`
@@ -9761,6 +13308,17 @@ impl EActorStateFilterByBoolState {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Any => "Any",
+            Self::True => "True",
+            Self::False => "False",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EActorStateFilterByPlayerCamera`
@@ -9788,6 +13346,17 @@ impl EActorStateFilterByPlayerCamera {
             "FirstPerson" => Self::FirstPerson,
             "ThirdPerson" => Self::ThirdPerson,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Any => "Any",
+            Self::FirstPerson => "FirstPerson",
+            Self::ThirdPerson => "ThirdPerson",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -9831,6 +13400,21 @@ impl EActorType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Regular => "Regular",
+            Self::PlayerCorpse => "PlayerCorpse",
+            Self::DebugGhost => "DebugGhost",
+            Self::Transport => "Transport",
+            Self::DeadBody => "DeadBody",
+            Self::PlayerShadow => "PlayerShadow",
+            Self::Creature => "Creature",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EAimFireDetectionMode`
@@ -9858,6 +13442,17 @@ impl EAimFireDetectionMode {
             "Radius" => Self::Radius,
             "Both" => Self::Both,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Temperature => "Temperature",
+            Self::Radius => "Radius",
+            Self::Both => "Both",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -9889,6 +13484,17 @@ impl EAimableAimType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::PipAiming => "PipAiming",
+            Self::TargetPainting => "TargetPainting",
+            Self::TargetAuto => "TargetAuto",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EAimableGimbalState`
@@ -9913,6 +13519,16 @@ impl EAimableGimbalState {
             "Fixed" => Self::Fixed,
             "Unlocked" => Self::Unlocked,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Fixed => "Fixed",
+            Self::Unlocked => "Unlocked",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -9953,6 +13569,20 @@ impl EAimableUser {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Pilot => "Pilot",
+            Self::MannedTurret => "MannedTurret",
+            Self::RemoteTurret => "RemoteTurret",
+            Self::Seat => "Seat",
+            Self::GroundVehicleDriver => "GroundVehicleDriver",
+            Self::BoatDriver => "BoatDriver",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EAmmoContainerType`
@@ -9982,6 +13612,17 @@ impl EAmmoContainerType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Primary => "Primary",
+            Self::Medical => "Medical",
+            Self::Salvage => "Salvage",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EAnnouncementPriority`
@@ -10009,6 +13650,17 @@ impl EAnnouncementPriority {
             "SkipQueue" => Self::SkipQueue,
             "PlayNow" => Self::PlayNow,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::SkipQueue => "SkipQueue",
+            Self::PlayNow => "PlayNow",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -10046,6 +13698,19 @@ impl EAnnouncerGameTokenType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::GameMode => "GameMode",
+            Self::Team => "Team",
+            Self::Level => "Level",
+            Self::Phase => "Phase",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EApplicationFormBodyTypes`
@@ -10076,6 +13741,18 @@ impl EApplicationFormBodyTypes {
             "PreferToSelfDescribe" => Self::PreferToSelfDescribe,
             "PreferNotToSay" => Self::PreferNotToSay,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Male => "Male",
+            Self::Female => "Female",
+            Self::PreferToSelfDescribe => "PreferToSelfDescribe",
+            Self::PreferNotToSay => "PreferNotToSay",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -10117,6 +13794,21 @@ impl EAudioBreathEvents {
             "BreathRelease" => Self::BreathRelease,
             "BreathCustom" => Self::BreathCustom,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::BreathIn => "BreathIn",
+            Self::BreathOut => "BreathOut",
+            Self::BreathingStarted => "BreathingStarted",
+            Self::BreathingStopped => "BreathingStopped",
+            Self::BreathHold => "BreathHold",
+            Self::BreathRelease => "BreathRelease",
+            Self::BreathCustom => "BreathCustom",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -10211,6 +13903,38 @@ impl EAudioBreathParams {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::BreathDuration => "BreathDuration",
+            Self::BreathVolume => "BreathVolume",
+            Self::BreathAirSpeed => "BreathAirSpeed",
+            Self::BloodOxygen => "BloodOxygen",
+            Self::BlackOut => "BlackOut",
+            Self::Health => "Health",
+            Self::Stamina => "Stamina",
+            Self::BreathOxygenLevel => "BreathOxygenLevel",
+            Self::Exertion => "Exertion",
+            Self::Recovery => "Recovery",
+            Self::BodyTemperature => "BodyTemperature",
+            Self::SuitTemperature => "SuitTemperature",
+            Self::ApparentTemperature => "ApparentTemperature",
+            Self::BreathHeldRatio => "BreathHeldRatio",
+            Self::LungFullness => "LungFullness",
+            Self::BreathInOut => "BreathInOut",
+            Self::GForce => "GForce",
+            Self::GForceStress => "GForceStress",
+            Self::GForcePassout => "GForcePassout",
+            Self::StyleActiveTime => "StyleActiveTime",
+            Self::CustomParameter => "CustomParameter",
+            Self::TorsoWear => "TorsoWear",
+            Self::ArmsLock => "ArmsLock",
+            Self::IsInEVA => "IsInEVA",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EAudioControllerEntityType`
@@ -10246,6 +13970,19 @@ impl EAudioControllerEntityType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::Actor => "Actor",
+            Self::Vehicle => "Vehicle",
+            Self::Communication => "Communication",
+            Self::TransitCarriage => "TransitCarriage",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EAudioEnvironmentFeedbackMovementType`
@@ -10276,6 +14013,18 @@ impl EAudioEnvironmentFeedbackMovementType {
             "EnvironmentMovement_Z" => Self::EnvironmentMovement_Z,
             "EnvironmentMovement_Magnitude" => Self::EnvironmentMovement_Magnitude,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::EnvironmentMovement_X => "EnvironmentMovement_X",
+            Self::EnvironmentMovement_Y => "EnvironmentMovement_Y",
+            Self::EnvironmentMovement_Z => "EnvironmentMovement_Z",
+            Self::EnvironmentMovement_Magnitude => "EnvironmentMovement_Magnitude",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -10320,6 +14069,22 @@ impl EAudioGameContextType {
             "Dead" => Self::Dead,
             "Cutscene" => Self::Cutscene,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Default => "Default",
+            Self::ActorDefault => "ActorDefault",
+            Self::ActorEVA => "ActorEVA",
+            Self::VehicleDriver => "VehicleDriver",
+            Self::VehicleCrew => "VehicleCrew",
+            Self::RemoteTurret => "RemoteTurret",
+            Self::Dead => "Dead",
+            Self::Cutscene => "Cutscene",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -10636,6 +14401,136 @@ impl EAudioIFCSOutputData {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::IFCS_Update_Mode => "IFCS_Update_Mode",
+            Self::Ship_Aerodynamics_DragMagnitude => "Ship_Aerodynamics_DragMagnitude",
+            Self::Ship_Aerodynamics_LiftMagnitude => "Ship_Aerodynamics_LiftMagnitude",
+            Self::Ship_AfterburnerCommanded => "Ship_AfterburnerCommanded",
+            Self::Ship_AfterburnerEnabled => "Ship_AfterburnerEnabled",
+            Self::Ship_AfterburnerEnabledScaled => "Ship_AfterburnerEnabledScaled",
+            Self::Ship_AfterburnerRampUpRatio => "Ship_AfterburnerRampUpRatio",
+            Self::Ship_AfterburnerCapacityRatio => "Ship_AfterburnerCapacityRatio",
+            Self::Ship_GSafe_Enabled => "Ship_GSafe_Enabled",
+            Self::Ship_Coupled => "Ship_Coupled",
+            Self::Ship_FuelRatio => "Ship_FuelRatio",
+            Self::Ship_HoverMode => "Ship_HoverMode",
+            Self::Ship_HoverModeAnimationPosition => "Ship_HoverModeAnimationPosition",
+            Self::Ship_HoverDriftForwardBackward => "Ship_HoverDriftForwardBackward",
+            Self::Ship_HoverDriftLeftRight => "Ship_HoverDriftLeftRight",
+            Self::Ship_HoverDriftMagnitude => "Ship_HoverDriftMagnitude",
+            Self::Ship_Planet_Altitude => "Ship_Planet_Altitude",
+            Self::Ship_Planet_AtmosphericDensity => "Ship_Planet_AtmosphericDensity",
+            Self::Ship_Planet_HeightAboveGround => "Ship_Planet_HeightAboveGround",
+            Self::Ship_Atmospheric_Mach => "Ship_Atmospheric_Mach",
+            Self::Ship_Atmospheric_StagnationTemperature => {
+                "Ship_Atmospheric_StagnationTemperature"
+            }
+            Self::Ship_Atmospheric_StagnationTemperatureFlareStarted => {
+                "Ship_Atmospheric_StagnationTemperatureFlareStarted"
+            }
+            Self::Ship_Atmospheric_StagnationTemperatureNormalized => {
+                "Ship_Atmospheric_StagnationTemperatureNormalized"
+            }
+            Self::Ship_Atmospheric_Wind_Speed_Rotational_Non_Normalised => {
+                "Ship_Atmospheric_Wind_Speed_Rotational_Non_Normalised"
+            }
+            Self::Ship_Atmospheric_Wind_Speed_Translational_Non_Normalised => {
+                "Ship_Atmospheric_Wind_Speed_Translational_Non_Normalised"
+            }
+            Self::Ship_Translation_Speed => "Ship_Translation_Speed",
+            Self::Ship_Translation_Speed_NonNormalized => "Ship_Translation_Speed_NonNormalized",
+            Self::Ship_Translation_Acceleration_MaxAll => "Ship_Translation_Acceleration_MaxAll",
+            Self::Ship_Translation_Acceleration_Forward => "Ship_Translation_Acceleration_Forward",
+            Self::Ship_Translation_Acceleration_Backward => {
+                "Ship_Translation_Acceleration_Backward"
+            }
+            Self::Ship_Translation_Acceleration_ForwardBackward => {
+                "Ship_Translation_Acceleration_ForwardBackward"
+            }
+            Self::Ship_Translation_Acceleration_UpDown => "Ship_Translation_Acceleration_UpDown",
+            Self::Ship_Translation_Acceleration_UpDownSigned => {
+                "Ship_Translation_Acceleration_UpDownSigned"
+            }
+            Self::Ship_Translation_Acceleration_LeftRight => {
+                "Ship_Translation_Acceleration_LeftRight"
+            }
+            Self::Ship_Translation_Acceleration_LeftRightSigned => {
+                "Ship_Translation_Acceleration_LeftRightSigned"
+            }
+            Self::Ship_Translation_Acceleration_MaxLeftRightUpDown => {
+                "Ship_Translation_Acceleration_MaxLeftRightUpDown"
+            }
+            Self::Ship_Translation_GSafe_Strength => "Ship_Translation_GSafe_Strength",
+            Self::Ship_Translation_InCruiseRange => "Ship_Translation_InCruiseRange",
+            Self::Ship_Rotation_Speed => "Ship_Rotation_Speed",
+            Self::Ship_Rotation_Speed_NonNormalized => "Ship_Rotation_Speed_NonNormalized",
+            Self::Ship_Rotation_Speed_Pitch => "Ship_Rotation_Speed_Pitch",
+            Self::Ship_Rotation_Speed_Pitch_Signed => "Ship_Rotation_Speed_Pitch_Signed",
+            Self::Ship_Rotation_Speed_Yaw => "Ship_Rotation_Speed_Yaw",
+            Self::Ship_Rotation_Speed_Yaw_Signed => "Ship_Rotation_Speed_Yaw_Signed",
+            Self::Ship_Rotation_Speed_Roll => "Ship_Rotation_Speed_Roll",
+            Self::Ship_Rotation_Speed_Roll_Signed => "Ship_Rotation_Speed_Roll_Signed",
+            Self::Ship_Rotation_Speed_MaxAll => "Ship_Rotation_Speed_MaxAll",
+            Self::Ship_Rotation_Speed_MaxPitchYaw => "Ship_Rotation_Speed_MaxPitchYaw",
+            Self::Ship_Rotation_InputDivergence => "Ship_Rotation_InputDivergence",
+            Self::Ship_Rotation_InputDivergence_Pitch => "Ship_Rotation_InputDivergence_Pitch",
+            Self::Ship_Rotation_InputDivergence_Yaw => "Ship_Rotation_InputDivergence_Yaw",
+            Self::Ship_Rotation_InputDivergence_Roll => "Ship_Rotation_InputDivergence_Roll",
+            Self::Ship_Rotation_InputDivergence_MaxAll => "Ship_Rotation_InputDivergence_MaxAll",
+            Self::Ship_Rotation_InputDivergence_MaxPitchYaw => {
+                "Ship_Rotation_InputDivergence_MaxPitchYaw"
+            }
+            Self::Gravlev_Compression_One => "Gravlev_Compression_One",
+            Self::Gravlev_Compression_Two => "Gravlev_Compression_Two",
+            Self::Gravlev_Compression_Three => "Gravlev_Compression_Three",
+            Self::Gravlev_Compression_Four => "Gravlev_Compression_Four",
+            Self::Gravlev_Compression_All => "Gravlev_Compression_All",
+            Self::Gravlev_Compression_Average => "Gravlev_Compression_Average",
+            Self::Gravlev_Compression_Max => "Gravlev_Compression_Max",
+            Self::Gravlev_Compression_Normalized_One => "Gravlev_Compression_Normalized_One",
+            Self::Gravlev_Compression_Normalized_Two => "Gravlev_Compression_Normalized_Two",
+            Self::Gravlev_Compression_Normalized_Three => "Gravlev_Compression_Normalized_Three",
+            Self::Gravlev_Compression_Normalized_Four => "Gravlev_Compression_Normalized_Four",
+            Self::Gravlev_Compression_Normalized_All => "Gravlev_Compression_Normalized_All",
+            Self::Gravlev_Compression_Normalized_Average => {
+                "Gravlev_Compression_Normalized_Average"
+            }
+            Self::Gravlev_Compression_Normalized_Max => "Gravlev_Compression_Normalized_Max",
+            Self::Gravlev_Enabled => "Gravlev_Enabled",
+            Self::Ship_Linear_VelocityLengthNormalizedLS => {
+                "Ship_Linear_VelocityLengthNormalizedLS"
+            }
+            Self::Ship_Linear_VelocityForwardBackwardNormalizedLS => {
+                "Ship_Linear_VelocityForwardBackwardNormalizedLS"
+            }
+            Self::Ship_Linear_VelocityRightLeftNormalizedLS => {
+                "Ship_Linear_VelocityRightLeftNormalizedLS"
+            }
+            Self::Ship_Linear_VelocityUpDownNormalizedLS => {
+                "Ship_Linear_VelocityUpDownNormalizedLS"
+            }
+            Self::Ship_Linear_VelocityGoalLengthNormalizedLS => {
+                "Ship_Linear_VelocityGoalLengthNormalizedLS"
+            }
+            Self::Ship_Angular_AccelerationLengthLS => "Ship_Angular_AccelerationLengthLS",
+            Self::Ship_Linear_RealAccelerationLS => "Ship_Linear_RealAccelerationLS",
+            Self::Ship_MaxSpeedNav => "Ship_MaxSpeedNav",
+            Self::Ship_AtmosphericDensity => "Ship_AtmosphericDensity",
+            Self::Ship_IsInControlSurfaceMode => "Ship_IsInControlSurfaceMode",
+            Self::Ship_IsLanded => "Ship_IsLanded",
+            Self::Ship_IsGearDown => "Ship_IsGearDown",
+            Self::Ship_IsMainThrustersOn => "Ship_IsMainThrustersOn",
+            Self::Ship_RawInputRotation => "Ship_RawInputRotation",
+            Self::Ship_NavModeEnabled => "Ship_NavModeEnabled",
+            Self::Ship_ThrusterDisconnectActive => "Ship_ThrusterDisconnectActive",
+            Self::Ship_ThrusterControlSurfaceMix => "Ship_ThrusterControlSurfaceMix",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EAudioTriggerType`
@@ -10680,6 +14575,22 @@ impl EAudioTriggerType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::WeaponFire => "WeaponFire",
+            Self::EntityEffect => "EntityEffect",
+            Self::Footsteps => "Footsteps",
+            Self::Foley => "Foley",
+            Self::ProceduralClip => "ProceduralClip",
+            Self::Thruster => "Thruster",
+            Self::Dialogue => "Dialogue",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EAudioValueOutputCameraInputs`
@@ -10715,6 +14626,19 @@ impl EAudioValueOutputCameraInputs {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::EAVOCI_None => "EAVOCI_None",
+            Self::EAVOCI_Snapshot => "EAVOCI_Snapshot",
+            Self::EAVOCI_Average => "EAVOCI_Average",
+            Self::EAVOCI_AverageRooted => "EAVOCI_AverageRooted",
+            Self::EAVOCI_Max => "EAVOCI_Max",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EAutoFillType`
@@ -10748,6 +14672,19 @@ impl EAutoFillType {
             "BottomToTop" => Self::BottomToTop,
             "SmartBalancing" => Self::SmartBalancing,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::Balance => "Balance",
+            Self::TopToBottom => "TopToBottom",
+            Self::BottomToTop => "BottomToTop",
+            Self::SmartBalancing => "SmartBalancing",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -10864,6 +14801,46 @@ impl EAuxiliaryProxy {
             "Helper_09_Proxies" => Self::Helper_09_Proxies,
             "Helper_10_Proxies" => Self::Helper_10_Proxies,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Head_Proxies => "Head_Proxies",
+            Self::Neck_Proxies => "Neck_Proxies",
+            Self::Spine_1_Proxies => "Spine_1_Proxies",
+            Self::Spine_2_Proxies => "Spine_2_Proxies",
+            Self::Spine_3_Proxies => "Spine_3_Proxies",
+            Self::Hips_Proxies => "Hips_Proxies",
+            Self::L_Shoulder_Proxie => "L_Shoulder_Proxie",
+            Self::L_Arm_Proxies => "L_Arm_Proxies",
+            Self::L_ForeArm_Proxies => "L_ForeArm_Proxies",
+            Self::L_Hand_Proxies => "L_Hand_Proxies",
+            Self::L_Thigh_Proxies => "L_Thigh_Proxies",
+            Self::L_Knee_Proxies => "L_Knee_Proxies",
+            Self::L_Foot_Proxies => "L_Foot_Proxies",
+            Self::L_Toe_Proxies => "L_Toe_Proxies",
+            Self::R_Shoulder_Proxie => "R_Shoulder_Proxie",
+            Self::R_Arm_Proxies => "R_Arm_Proxies",
+            Self::R_ForeArm_Proxies => "R_ForeArm_Proxies",
+            Self::R_Hand_Proxies => "R_Hand_Proxies",
+            Self::R_Thigh_Proxies => "R_Thigh_Proxies",
+            Self::R_Knee_Proxies => "R_Knee_Proxies",
+            Self::R_Foot_Proxies => "R_Foot_Proxies",
+            Self::R_Toe_Proxies => "R_Toe_Proxies",
+            Self::Helper_01_Proxies => "Helper_01_Proxies",
+            Self::Helper_02_Proxies => "Helper_02_Proxies",
+            Self::Helper_03_Proxies => "Helper_03_Proxies",
+            Self::Helper_04_Proxies => "Helper_04_Proxies",
+            Self::Helper_05_Proxies => "Helper_05_Proxies",
+            Self::Helper_06_Proxies => "Helper_06_Proxies",
+            Self::Helper_07_Proxies => "Helper_07_Proxies",
+            Self::Helper_08_Proxies => "Helper_08_Proxies",
+            Self::Helper_09_Proxies => "Helper_09_Proxies",
+            Self::Helper_10_Proxies => "Helper_10_Proxies",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -11129,6 +15106,95 @@ impl EAwardId {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::VanduulSwarm_Win_Legacy => "VanduulSwarm_Win_Legacy",
+            Self::VanduulSwarm_Win => "VanduulSwarm_Win",
+            Self::PirateSwarm_Win => "PirateSwarm_Win",
+            Self::PirateSwarm_Speedrun => "PirateSwarm_Speedrun",
+            Self::PirateSwarm_SpecialCondition => "PirateSwarm_SpecialCondition",
+            Self::Tank_Win => "Tank_Win",
+            Self::GunGame_Win => "GunGame_Win",
+            Self::ExperimentalMode_Played => "ExperimentalMode_Played",
+            Self::Killed_Developer => "Killed_Developer",
+            Self::PvE_Deathless => "PvE_Deathless",
+            Self::Xmas_Win => "Xmas_Win",
+            Self::LunarNewYear_Win => "LunarNewYear_Win",
+            Self::Valentines_Win => "Valentines_Win",
+            Self::Halloween_Win => "Halloween_Win",
+            Self::Halloween_Win_Tier2 => "Halloween_Win_Tier2",
+            Self::Halloween_Win_Tier3 => "Halloween_Win_Tier3",
+            Self::SC_GameMasterEventItem => "SC_GameMasterEventItem",
+            Self::SC_LootableEventItem => "SC_LootableEventItem",
+            Self::StPatricks_Win => "StPatricks_Win",
+            Self::WelcomeToPyro_Chapter_One => "WelcomeToPyro_Chapter_One",
+            Self::WelcomeToPyro_Chapter_Two => "WelcomeToPyro_Chapter_Two",
+            Self::WelcomeToPyro_Chapter_Two_VIG => "WelcomeToPyro_Chapter_Two_VIG",
+            Self::WelcomeToPyro_Chapter_Two_CFP => "WelcomeToPyro_Chapter_Two_CFP",
+            Self::WelcomeToPyro_Chapter_Two_HH => "WelcomeToPyro_Chapter_Two_HH",
+            Self::WelcomeToPyro_Firesale => "WelcomeToPyro_Firesale",
+            Self::WelcomeToPyro_MiningRush => "WelcomeToPyro_MiningRush",
+            Self::WelcomeToPyro_SalvageRush => "WelcomeToPyro_SalvageRush",
+            Self::WelcomeToPyro_FiresaleCombo => "WelcomeToPyro_FiresaleCombo",
+            Self::Training_UEE => "Training_UEE",
+            Self::HuntingThePolaris => "HuntingThePolaris",
+            Self::SC_BDay11_Gold => "SC_BDay11_Gold",
+            Self::SC_BDay11_Platinum => "SC_BDay11_Platinum",
+            Self::RT_GG_HRST_T1 => "RT_GG_HRST_T1",
+            Self::RT_GG_CRUS_T1 => "RT_GG_CRUS_T1",
+            Self::RT_GG_ARCC_T1 => "RT_GG_ARCC_T1",
+            Self::RT_GG_MITE_T1 => "RT_GG_MITE_T1",
+            Self::RT_GG_HRST_T2 => "RT_GG_HRST_T2",
+            Self::RT_GG_CRUS_T2 => "RT_GG_CRUS_T2",
+            Self::RT_GG_ARCC_T2 => "RT_GG_ARCC_T2",
+            Self::RT_GG_MITE_T2 => "RT_GG_MITE_T2",
+            Self::RT_GG_HRST_T3 => "RT_GG_HRST_T3",
+            Self::RT_GG_CRUS_T3 => "RT_GG_CRUS_T3",
+            Self::RT_GG_ARCC_T3 => "RT_GG_ARCC_T3",
+            Self::RT_GG_MITE_T3 => "RT_GG_MITE_T3",
+            Self::RT_GG_HRST_T4 => "RT_GG_HRST_T4",
+            Self::RT_GG_CRUS_T4 => "RT_GG_CRUS_T4",
+            Self::RT_GG_ARCC_T4 => "RT_GG_ARCC_T4",
+            Self::RT_GG_MITE_T4 => "RT_GG_MITE_T4",
+            Self::RT_GG_HRST_T5 => "RT_GG_HRST_T5",
+            Self::RT_GG_CRUS_T5 => "RT_GG_CRUS_T5",
+            Self::RT_GG_ARCC_T5 => "RT_GG_ARCC_T5",
+            Self::RT_GG_MITE_T5 => "RT_GG_MITE_T5",
+            Self::RT_CVH_CFP_1 => "RT_CVH_CFP_1",
+            Self::RT_CVH_CFP_2 => "RT_CVH_CFP_2",
+            Self::RT_CVH_CFP_3 => "RT_CVH_CFP_3",
+            Self::RT_CVH_HH_1_Awarded => "RT_CVH_HH_1_Awarded",
+            Self::RT_CVH_HH_2_Awarded => "RT_CVH_HH_2_Awarded",
+            Self::RT_CVH_HH_3_Awarded => "RT_CVH_HH_3_Awarded",
+            Self::RT_CVH_HH_1 => "RT_CVH_HH_1",
+            Self::RT_CVH_HH_2 => "RT_CVH_HH_2",
+            Self::RT_CVH_HH_3 => "RT_CVH_HH_3",
+            Self::RT_CVH_CFP_1_Awarded => "RT_CVH_CFP_1_Awarded",
+            Self::RT_CVH_CFP_2_Awarded => "RT_CVH_CFP_2_Awarded",
+            Self::RT_CVH_CFP_3_Awarded => "RT_CVH_CFP_3_Awarded",
+            Self::R_PU_CA_OP_1 => "R_PU_CA_OP_1",
+            Self::R_PU_CA_OP_2 => "R_PU_CA_OP_2",
+            Self::R_PU_CA_OP_3 => "R_PU_CA_OP_3",
+            Self::R_PU_CA_OP_4 => "R_PU_CA_OP_4",
+            Self::R_PU_CA_TRANSPORT_1 => "R_PU_CA_TRANSPORT_1",
+            Self::R_PU_CA_TRANSPORT_2 => "R_PU_CA_TRANSPORT_2",
+            Self::R_PU_CA_TRANSPORT_3 => "R_PU_CA_TRANSPORT_3",
+            Self::R_PU_CA_TRANSPORT_4 => "R_PU_CA_TRANSPORT_4",
+            Self::R_PU_CA_DEFENSE_1 => "R_PU_CA_DEFENSE_1",
+            Self::R_PU_CA_DEFENSE_2 => "R_PU_CA_DEFENSE_2",
+            Self::R_PU_CA_DEFENSE_3 => "R_PU_CA_DEFENSE_3",
+            Self::R_PU_CA_DEFENSE_4 => "R_PU_CA_DEFENSE_4",
+            Self::R_PU_CA_COLLECTION_1 => "R_PU_CA_COLLECTION_1",
+            Self::R_PU_CA_COLLECTION_2 => "R_PU_CA_COLLECTION_2",
+            Self::R_PU_CA_COLLECTION_3 => "R_PU_CA_COLLECTION_3",
+            Self::R_PU_CA_COLLECTION_4 => "R_PU_CA_COLLECTION_4",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EBuildModeSubMenu`
@@ -11161,6 +15227,18 @@ impl EBuildModeSubMenu {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::LandClaim => "LandClaim",
+            Self::NewStructure => "NewStructure",
+            Self::ExistingStructure => "ExistingStructure",
+            Self::ResourceManagement => "ResourceManagement",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EBuildingBlocksFlattenBehavior`
@@ -11188,6 +15266,17 @@ impl EBuildingBlocksFlattenBehavior {
             "FlattenAs3D" => Self::FlattenAs3D,
             "FlattenAs2D" => Self::FlattenAs2D,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::FlattenAs3D => "FlattenAs3D",
+            Self::FlattenAs2D => "FlattenAs2D",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -11234,6 +15323,22 @@ impl ECIGTestA {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Item_A => "Item_A",
+            Self::Item_B => "Item_B",
+            Self::Item_C => "Item_C",
+            Self::Item_D => "Item_D",
+            Self::Item_E => "Item_E",
+            Self::Item_F => "Item_F",
+            Self::Item_G => "Item_G",
+            Self::Item_H => "Item_H",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ECameraTransitionRelativeTo`
@@ -11258,6 +15363,16 @@ impl ECameraTransitionRelativeTo {
             "Start" => Self::Start,
             "End" => Self::End,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Start => "Start",
+            Self::End => "End",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -11367,6 +15482,43 @@ impl ECameraViewTypes {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Simple3P => "Simple3P",
+            Self::Static => "Static",
+            Self::StaticFixedSpectator => "StaticFixedSpectator",
+            Self::ThirdPersonBase => "ThirdPersonBase",
+            Self::Orbit => "Orbit",
+            Self::OrbitEntity => "OrbitEntity",
+            Self::OrbitEntityCinematic => "OrbitEntityCinematic",
+            Self::OrbitPassenger => "OrbitPassenger",
+            Self::OrbitPlayer => "OrbitPlayer",
+            Self::OrbitPoint => "OrbitPoint",
+            Self::OrbitVehicle => "OrbitVehicle",
+            Self::OrbitSCItemSeat => "OrbitSCItemSeat",
+            Self::OrbitPassengerSCItemSeat => "OrbitPassengerSCItemSeat",
+            Self::OrbitSpectatorFollow => "OrbitSpectatorFollow",
+            Self::OrbitSpectatorFollowVehicle => "OrbitSpectatorFollowVehicle",
+            Self::ChaseVehicle => "ChaseVehicle",
+            Self::ChaseSCItemSeat => "ChaseSCItemSeat",
+            Self::SeatCockpit => "SeatCockpit",
+            Self::LookBehind => "LookBehind",
+            Self::LookVehicleItem => "LookVehicleItem",
+            Self::FreeCam => "FreeCam",
+            Self::TimeCam => "TimeCam",
+            Self::FPSDeathCam => "FPSDeathCam",
+            Self::CinematicTwoShipsFrame => "CinematicTwoShipsFrame",
+            Self::FirstPersonSpectator => "FirstPersonSpectator",
+            Self::RemoteTurret => "RemoteTurret",
+            Self::FirstPersonBase => "FirstPersonBase",
+            Self::KillerDeathCam => "KillerDeathCam",
+            Self::PlayerInventory => "PlayerInventory",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ECarryableDefaultInteractions`
@@ -11420,6 +15572,25 @@ impl ECarryableDefaultInteractions {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Carry => "Carry",
+            Self::Place => "Place",
+            Self::Drop => "Drop",
+            Self::EquipToItemport => "EquipToItemport",
+            Self::Store => "Store",
+            Self::HoldReady => "HoldReady",
+            Self::EquipWearable => "EquipWearable",
+            Self::Inspect => "Inspect",
+            Self::Flip => "Flip",
+            Self::SwapAttachments => "SwapAttachments",
+            Self::AttachToHeldItem => "AttachToHeldItem",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ECarryableSequenceActions`
@@ -11447,6 +15618,17 @@ impl ECarryableSequenceActions {
             "BespokeTake" => Self::BespokeTake,
             "BespokePlace" => Self::BespokePlace,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Undefined => "Undefined",
+            Self::BespokeTake => "BespokeTake",
+            Self::BespokePlace => "BespokePlace",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -11497,6 +15679,24 @@ impl ECarryableState {
             "eCS_Stored" => Self::eCS_Stored,
             "eCS_HangingOnOutfitHanger" => Self::eCS_HangingOnOutfitHanger,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::eCS_Dropped => "eCS_Dropped",
+            Self::eCS_Carried => "eCS_Carried",
+            Self::eCS_Settled => "eCS_Settled",
+            Self::eCS_CarriedAndEquipped => "eCS_CarriedAndEquipped",
+            Self::eCS_Stowed => "eCS_Stowed",
+            Self::eCS_Offered => "eCS_Offered",
+            Self::eCS_CarriedAndInspected => "eCS_CarriedAndInspected",
+            Self::eCS_EquippedWorn => "eCS_EquippedWorn",
+            Self::eCS_Stored => "eCS_Stored",
+            Self::eCS_HangingOnOutfitHanger => "eCS_HangingOnOutfitHanger",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -11561,6 +15761,28 @@ impl ECharacterCustomizerDNARegion {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::LeftBrow => "LeftBrow",
+            Self::RightBrow => "RightBrow",
+            Self::LeftEye => "LeftEye",
+            Self::RightEye => "RightEye",
+            Self::Nose => "Nose",
+            Self::LeftEar => "LeftEar",
+            Self::RightEar => "RightEar",
+            Self::LeftCheek => "LeftCheek",
+            Self::RightCheek => "RightCheek",
+            Self::Mouth => "Mouth",
+            Self::Jawline => "Jawline",
+            Self::Crown => "Crown",
+            Self::Neck => "Neck",
+            Self::Invalid => "Invalid",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ECharacterCustomizerFeature`
@@ -11614,6 +15836,25 @@ impl ECharacterCustomizerFeature {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Skin => "Skin",
+            Self::Complexion => "Complexion",
+            Self::Hair => "Hair",
+            Self::FacialHair => "FacialHair",
+            Self::Eyebrows => "Eyebrows",
+            Self::HairDye => "HairDye",
+            Self::Eyes => "Eyes",
+            Self::Makeup => "Makeup",
+            Self::Tattoos => "Tattoos",
+            Self::BodySkin => "BodySkin",
+            Self::Invalid => "Invalid",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ECharacterCustomizerItemSelectMode`
@@ -11641,6 +15882,17 @@ impl ECharacterCustomizerItemSelectMode {
             "BindingsValue" => Self::BindingsValue,
             "Toggle" => Self::Toggle,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::HeadSelection => "HeadSelection",
+            Self::BindingsValue => "BindingsValue",
+            Self::Toggle => "Toggle",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -11673,6 +15925,18 @@ impl ECharacterCustomizerTextureSelectSlot {
             "MakeupSlot3" => Self::MakeupSlot3,
             "TattooSlot1" => Self::TattooSlot1,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::MakeupSlot1 => "MakeupSlot1",
+            Self::MakeupSlot2 => "MakeupSlot2",
+            Self::MakeupSlot3 => "MakeupSlot3",
+            Self::TattooSlot1 => "TattooSlot1",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -11755,6 +16019,34 @@ impl ECharacterCustomizerTextureSlot {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::SLOT1 => "SLOT1",
+            Self::SLOT2 => "SLOT2",
+            Self::SLOT3 => "SLOT3",
+            Self::SLOT4 => "SLOT4",
+            Self::SLOT5 => "SLOT5",
+            Self::SLOT6 => "SLOT6",
+            Self::SLOT7 => "SLOT7",
+            Self::SLOT8 => "SLOT8",
+            Self::SLOT9 => "SLOT9",
+            Self::SLOT10 => "SLOT10",
+            Self::SLOT11 => "SLOT11",
+            Self::SLOT12 => "SLOT12",
+            Self::SLOT13 => "SLOT13",
+            Self::SLOT14 => "SLOT14",
+            Self::SLOT15 => "SLOT15",
+            Self::SLOT16 => "SLOT16",
+            Self::SLOT17 => "SLOT17",
+            Self::SLOT18 => "SLOT18",
+            Self::SLOT19 => "SLOT19",
+            Self::SLOT_INVALID => "SLOT_INVALID",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ECharacterGenerationArchetypeBuild`
@@ -11785,6 +16077,18 @@ impl ECharacterGenerationArchetypeBuild {
             "Heavy" => Self::Heavy,
             "Muscular" => Self::Muscular,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Skinny => "Skinny",
+            Self::Average => "Average",
+            Self::Heavy => "Heavy",
+            Self::Muscular => "Muscular",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -11822,6 +16126,19 @@ impl ECharacterGenerationArchetypeEthnicity {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::African => "African",
+            Self::Asian => "Asian",
+            Self::Caucasian => "Caucasian",
+            Self::Hispanic => "Hispanic",
+            Self::Other => "Other",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EChargeDrainMode`
@@ -11846,6 +16163,16 @@ impl EChargeDrainMode {
             "Charge" => Self::Charge,
             "Drain" => Self::Drain,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Charge => "Charge",
+            Self::Drain => "Drain",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -11874,6 +16201,16 @@ impl EChatEmoteType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Social => "Social",
+            Self::CombatSignal => "CombatSignal",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ECommandModuleType`
@@ -11898,6 +16235,16 @@ impl ECommandModuleType {
             "Parasite" => Self::Parasite,
             "Host" => Self::Host,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Parasite => "Parasite",
+            Self::Host => "Host",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -11927,6 +16274,17 @@ impl ECommsNotificationTiming {
             "HUDNotificationFirst" => Self::HUDNotificationFirst,
             "CommsNotificationFirst" => Self::CommsNotificationFirst,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Simultaneous => "Simultaneous",
+            Self::HUDNotificationFirst => "HUDNotificationFirst",
+            Self::CommsNotificationFirst => "CommsNotificationFirst",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -11967,6 +16325,20 @@ impl ECommsRTTLocation {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::Visor => "Visor",
+            Self::Mobiglas => "Mobiglas",
+            Self::VehicleMFD => "VehicleMFD",
+            Self::Tannoy => "Tannoy",
+            Self::Hologram => "Hologram",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EComparisonMode`
@@ -12002,6 +16374,19 @@ impl EComparisonMode {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Equal => "Equal",
+            Self::Greater => "Greater",
+            Self::Less => "Less",
+            Self::GreaterOrEqual => "GreaterOrEqual",
+            Self::LessOrEqual => "LessOrEqual",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EConsumableResourceType`
@@ -12026,6 +16411,16 @@ impl EConsumableResourceType {
             "None" => Self::None,
             "Fuel" => Self::Fuel,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::Fuel => "Fuel",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -12075,6 +16470,23 @@ impl EContextMenuOptionType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::AddFriend => "AddFriend",
+            Self::Report => "Report",
+            Self::Mute => "Mute",
+            Self::Lobby_Invite => "Lobby_Invite",
+            Self::Lobby_Leave => "Lobby_Leave",
+            Self::Lobby_Kick => "Lobby_Kick",
+            Self::Lobby_TransferLeader => "Lobby_TransferLeader",
+            Self::Lobby_Promote => "Lobby_Promote",
+            Self::Vote_Kick => "Vote_Kick",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EControlledSubstanceClass`
@@ -12102,6 +16514,17 @@ impl EControlledSubstanceClass {
             "ClassB" => Self::ClassB,
             "ClassC" => Self::ClassC,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::ClassA => "ClassA",
+            Self::ClassB => "ClassB",
+            Self::ClassC => "ClassC",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -12133,6 +16556,17 @@ impl EConversationHubLinkType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::First => "First",
+            Self::Random => "Random",
+            Self::RandomCanRepeat => "RandomCanRepeat",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ECraftingCostResultCompositionOption`
@@ -12157,6 +16591,16 @@ impl ECraftingCostResultCompositionOption {
             "Include" => Self::Include,
             "Exclude" => Self::Exclude,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Include => "Include",
+            Self::Exclude => "Exclude",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -12189,6 +16633,18 @@ impl ECraftingMachineDoorState {
             "Closed" => Self::Closed,
             "Locked" => Self::Locked,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Opened => "Opened",
+            Self::Closing => "Closing",
+            Self::Closed => "Closed",
+            Self::Locked => "Locked",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -12227,6 +16683,20 @@ impl ECraftingProcessType {
             "Dismantle" => Self::Dismantle,
             "Research" => Self::Research,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Create => "Create",
+            Self::Refine => "Refine",
+            Self::Repair => "Repair",
+            Self::Upgrade => "Upgrade",
+            Self::Dismantle => "Dismantle",
+            Self::Research => "Research",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -12270,6 +16740,21 @@ impl ECustomSettingType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::TimeLimit => "TimeLimit",
+            Self::ScoreLimit => "ScoreLimit",
+            Self::EnableMatchCycling => "EnableMatchCycling",
+            Self::RandomizeMapOnMatchCycle => "RandomizeMapOnMatchCycle",
+            Self::EnableTeamSwitching => "EnableTeamSwitching",
+            Self::EnableTeamBalancing => "EnableTeamBalancing",
+            Self::DisableAllPickups => "DisableAllPickups",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EDFMVictoryScoringType`
@@ -12300,6 +16785,18 @@ impl EDFMVictoryScoringType {
             "Deaths" => Self::Deaths,
             "GunGameLevel" => Self::GunGameLevel,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Kills => "Kills",
+            Self::Score => "Score",
+            Self::Deaths => "Deaths",
+            Self::GunGameLevel => "GunGameLevel",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -12334,6 +16831,18 @@ impl EDNAEditType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::Blending => "Blending",
+            Self::Sculpting => "Sculpting",
+            Self::Preset => "Preset",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EDecayType`
@@ -12355,6 +16864,15 @@ impl EDecayType {
         match s {
             "Sink" => Self::Sink,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Sink => "Sink",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -12386,6 +16904,17 @@ impl EDefaultActionsEntityType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::MountedGun => "MountedGun",
+            Self::ActorMovable => "ActorMovable",
+            Self::DraggableBody => "DraggableBody",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EDefaultColliderBehaviour`
@@ -12413,6 +16942,17 @@ impl EDefaultColliderBehaviour {
             "NonPushale" => Self::NonPushale,
             "Kinematic" => Self::Kinematic,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Pushable => "Pushable",
+            Self::NonPushale => "NonPushale",
+            Self::Kinematic => "Kinematic",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -12445,6 +16985,18 @@ impl EDefaultEntitlement {
             "StarMarine" => Self::StarMarine,
             "ArenaCommander" => Self::ArenaCommander,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Offline => "Offline",
+            Self::AllModes => "AllModes",
+            Self::StarMarine => "StarMarine",
+            Self::ArenaCommander => "ArenaCommander",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -12503,6 +17055,26 @@ impl EDeformerType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Standard => "Standard",
+            Self::OriginalSkin => "OriginalSkin",
+            Self::Protos => "Protos",
+            Self::ProtosMisc => "ProtosMisc",
+            Self::WD_Elastic => "WD_Elastic",
+            Self::WD_BShapeExclusion => "WD_BShapeExclusion",
+            Self::WD_NUScaling => "WD_NUScaling",
+            Self::WD_ElasticNUScaling => "WD_ElasticNUScaling",
+            Self::WD_ElasticDQSkinning => "WD_ElasticDQSkinning",
+            Self::Cloth => "Cloth",
+            Self::LinearSkinning => "LinearSkinning",
+            Self::UNDEFINED => "UNDEFINED",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EDelayUnit`
@@ -12527,6 +17099,16 @@ impl EDelayUnit {
             "Seconds" => Self::Seconds,
             "RPM" => Self::RPM,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Seconds => "Seconds",
+            Self::RPM => "RPM",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -12561,6 +17143,18 @@ impl EDelinkMode {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::NoDelink => "NoDelink",
+            Self::Normal => "Normal",
+            Self::Quick => "Quick",
+            Self::Forced => "Forced",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EDeltaSignaturePriority`
@@ -12588,6 +17182,17 @@ impl EDeltaSignaturePriority {
             "Auxiliary" => Self::Auxiliary,
             "Primary" => Self::Primary,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::Auxiliary => "Auxiliary",
+            Self::Primary => "Primary",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -12720,6 +17325,52 @@ impl EDifficultyModifierType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::PlayerIncomingDamage => "PlayerIncomingDamage",
+            Self::AIIncomingDamage => "AIIncomingDamage",
+            Self::InjuryChance => "InjuryChance",
+            Self::DownedDamageRate => "DownedDamageRate",
+            Self::BuddyDownedDamageRate => "BuddyDownedDamageRate",
+            Self::MedpenRestoration => "MedpenRestoration",
+            Self::OxypenRestoration => "OxypenRestoration",
+            Self::WingmanHelpTrigger => "WingmanHelpTrigger",
+            Self::MissileUsageChance => "MissileUsageChance",
+            Self::BurstFireTime => "BurstFireTime",
+            Self::AIOnFootAccuracy => "AIOnFootAccuracy",
+            Self::AIShipAccuracy => "AIShipAccuracy",
+            Self::AIOnFootPerception => "AIOnFootPerception",
+            Self::AIGrenadeTokenCooldown => "AIGrenadeTokenCooldown",
+            Self::AIMercyTimer => "AIMercyTimer",
+            Self::VehicleDamage_AI_HitBy_AI => "VehicleDamage_AI_HitBy_AI",
+            Self::VehicleDamage_AI_HitBy_Player => "VehicleDamage_AI_HitBy_Player",
+            Self::VehicleDamage_Player_HitBy_AI => "VehicleDamage_Player_HitBy_AI",
+            Self::VehicleDamage_Player_HitBy_Player => "VehicleDamage_Player_HitBy_Player",
+            Self::VehicleDamage_Uncontrolled_HitBy_AI => "VehicleDamage_Uncontrolled_HitBy_AI",
+            Self::VehicleDamage_Uncontrolled_HitBy_Player => {
+                "VehicleDamage_Uncontrolled_HitBy_Player"
+            }
+            Self::RequiredEatAndDrink => "RequiredEatAndDrink",
+            Self::SlowerMagRelevellingEnabled => "SlowerMagRelevellingEnabled",
+            Self::SlowerMagRelevellingSpeed => "SlowerMagRelevellingSpeed",
+            Self::ReducedCheckpoints => "ReducedCheckpoints",
+            Self::ScanningRestrictions => "ScanningRestrictions",
+            Self::NoControlHints => "NoControlHints",
+            Self::NoHardTutorials => "NoHardTutorials",
+            Self::NoSoftTutorials => "NoSoftTutorials",
+            Self::NoQTETutorials => "NoQTETutorials",
+            Self::NoPlayerInnerThoughtHints => "NoPlayerInnerThoughtHints",
+            Self::NoCrosshair => "NoCrosshair",
+            Self::NoHitMarker => "NoHitMarker",
+            Self::NoPlayerHitIndicator => "NoPlayerHitIndicator",
+            Self::NoGrenadeMarker => "NoGrenadeMarker",
+            Self::ManualShipWeaponRackStorage => "ManualShipWeaponRackStorage",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EDifficultyRange_GameKnowledge`
@@ -12770,6 +17421,28 @@ impl EDifficultyRange_GameKnowledge {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Noob_gaming_or_tutorial_1 => "Noob_gaming_or_tutorial_1",
+            Self::FPS_mechanics_walk_shoot_mobiGlass_2 => "FPS_mechanics_walk_shoot_mobiGlass_2",
+            Self::Flight_mechanics_fly_dock_quantum_3 => "Flight_mechanics_fly_dock_quantum_3",
+            Self::Standard_understanding_FPS_flight_professions_4 => {
+                "Standard_understanding_FPS_flight_professions_4"
+            }
+            Self::Expert_understanding_FPS_flight_professions_5 => {
+                "Expert_understanding_FPS_flight_professions_5"
+            }
+            Self::Pro_understanding_of_optimal_tactics_6 => {
+                "Pro_understanding_of_optimal_tactics_6"
+            }
+            Self::Basically_a_Dev_7 => "Basically_a_Dev_7",
+            Self::No_content_like_this_yet_8 => "No_content_like_this_yet_8",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EDifficultyRange_MechanicalSkill`
@@ -12818,6 +17491,26 @@ impl EDifficultyRange_MechanicalSkill {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Hands_free_gaming_1 => "Hands_free_gaming_1",
+            Self::Zero_risk_of_action_2 => "Zero_risk_of_action_2",
+            Self::Easy_PvE_only_action_3 => "Easy_PvE_only_action_3",
+            Self::Normal_PvE_only_action_4 => "Normal_PvE_only_action_4",
+            Self::Hard_PvE_or_Easy_PvP_action_5 => "Hard_PvE_or_Easy_PvP_action_5",
+            Self::Multiplayer_PvE_or_Expert_PvP_action_6 => {
+                "Multiplayer_PvE_or_Expert_PvP_action_6"
+            }
+            Self::PvE_PvP_large_group_action_eg_warzone_7 => {
+                "PvE_PvP_large_group_action_eg_warzone_7"
+            }
+            Self::No_content_like_this_yet_8 => "No_content_like_this_yet_8",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EDifficultyRange_MentalLoad`
@@ -12860,6 +17553,22 @@ impl EDifficultyRange_MentalLoad {
             "Insane_complexity_NOT_soloable_7" => Self::Insane_complexity_NOT_soloable_7,
             "No_content_like_this_yet_8" => Self::No_content_like_this_yet_8,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::AFK_gaming_1 => "AFK_gaming_1",
+            Self::Requires_minimal_thought_2 => "Requires_minimal_thought_2",
+            Self::Routine_light_work_3 => "Routine_light_work_3",
+            Self::Moments_of_concentration_required_4 => "Moments_of_concentration_required_4",
+            Self::Like_spinning_10_plates_at_once_5 => "Like_spinning_10_plates_at_once_5",
+            Self::Extremely_hard_to_manage_alone_6 => "Extremely_hard_to_manage_alone_6",
+            Self::Insane_complexity_NOT_soloable_7 => "Insane_complexity_NOT_soloable_7",
+            Self::No_content_like_this_yet_8 => "No_content_like_this_yet_8",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -12908,6 +17617,24 @@ impl EDifficultyRange_RiskOfLoss {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Safe_and_sound_zzzz_1 => "Safe_and_sound_zzzz_1",
+            Self::Barely_even_breaking_a_sweat_2 => "Barely_even_breaking_a_sweat_2",
+            Self::Minimal_danger_FPS_NOT_ship_action_3 => "Minimal_danger_FPS_NOT_ship_action_3",
+            Self::Ship_could_get_damaged_Could_lose_cargo_4 => {
+                "Ship_could_get_damaged_Could_lose_cargo_4"
+            }
+            Self::Player_might_die_Ship_could_explode_5 => "Player_might_die_Ship_could_explode_5",
+            Self::Player_likely_to_die_Ship_too_6 => "Player_likely_to_die_Ship_too_6",
+            Self::Without_help_Player_and_Ship_die_7 => "Without_help_Player_and_Ship_die_7",
+            Self::No_content_like_this_yet_8 => "No_content_like_this_yet_8",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EDockingTubeAnimationStage`
@@ -12935,6 +17662,17 @@ impl EDockingTubeAnimationStage {
             "PreDocked" => Self::PreDocked,
             "Docked" => Self::Docked,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Inactive => "Inactive",
+            Self::PreDocked => "PreDocked",
+            Self::Docked => "Docked",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -12978,6 +17716,21 @@ impl EDoorCollisionReactionDirection {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::All => "All",
+            Self::Up => "Up",
+            Self::Down => "Down",
+            Self::Left => "Left",
+            Self::Right => "Right",
+            Self::Front => "Front",
+            Self::Back => "Back",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EDoorDestructionBehavior`
@@ -13002,6 +17755,16 @@ impl EDoorDestructionBehavior {
             "UnlockDoor" => Self::UnlockDoor,
             "BreakDoor" => Self::BreakDoor,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::UnlockDoor => "UnlockDoor",
+            Self::BreakDoor => "BreakDoor",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -13033,6 +17796,17 @@ impl EDoorPortalLookupMode {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Automatic => "Automatic",
+            Self::AABB_Center => "AABB_Center",
+            Self::Pivot => "Pivot",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EDoorPoweredState`
@@ -13057,6 +17831,16 @@ impl EDoorPoweredState {
             "Powered" => Self::Powered,
             "Unpowered" => Self::Unpowered,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Powered => "Powered",
+            Self::Unpowered => "Unpowered",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -13086,6 +17870,17 @@ impl EDynamicRigLightType {
             "Fill" => Self::Fill,
             "Rim" => Self::Rim,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Key => "Key",
+            Self::Fill => "Fill",
+            Self::Rim => "Rim",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -13159,6 +17954,31 @@ impl EEAActionItemMessageType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Default => "Default",
+            Self::WaitingForPlayers => "WaitingForPlayers",
+            Self::BalancingTeams => "BalancingTeams",
+            Self::MatchStarting => "MatchStarting",
+            Self::MatchEnding => "MatchEnding",
+            Self::Contested => "Contested",
+            Self::OutOfPosition => "OutOfPosition",
+            Self::PressKeyToSkip => "PressKeyToSkip",
+            Self::Retry => "Retry",
+            Self::Respawning => "Respawning",
+            Self::RespawnPrompt => "RespawnPrompt",
+            Self::RespawnTimer => "RespawnTimer",
+            Self::Award => "Award",
+            Self::ReadyWaitingOnKeyPress => "ReadyWaitingOnKeyPress",
+            Self::ReadyWaitingOnKeyPressForceReady => "ReadyWaitingOnKeyPressForceReady",
+            Self::ReadyWaitingForOtherPlayers => "ReadyWaitingForOtherPlayers",
+            Self::WaitingForPlayersWithDebugSkip => "WaitingForPlayersWithDebugSkip",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EEACapturableEntityType`
@@ -13186,6 +18006,17 @@ impl EEACapturableEntityType {
             "Prop" => Self::Prop,
             "LockedSpawn" => Self::LockedSpawn,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Terminal => "Terminal",
+            Self::Prop => "Prop",
+            Self::LockedSpawn => "LockedSpawn",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -13280,6 +18111,38 @@ impl EEACriticalMessageType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Local_FirstBlood => "Local_FirstBlood",
+            Self::Local_Ace => "Local_Ace",
+            Self::Local_KillingSpree => "Local_KillingSpree",
+            Self::Local_OnFinalKill => "Local_OnFinalKill",
+            Self::Player_FirstBlood => "Player_FirstBlood",
+            Self::Player_Ace => "Player_Ace",
+            Self::Player_KillingSpree => "Player_KillingSpree",
+            Self::Player_OnFinalKill => "Player_OnFinalKill",
+            Self::EnemyTeam_OnFinalKill => "EnemyTeam_OnFinalKill",
+            Self::FriendlyTeam_OnFinalKill => "FriendlyTeam_OnFinalKill",
+            Self::Missile_Replenished => "Missile_Replenished",
+            Self::Ammo_Replenished => "Ammo_Replenished",
+            Self::Vehicle_Repaired => "Vehicle_Repaired",
+            Self::Vehicle_Refueled => "Vehicle_Refueled",
+            Self::Missile_Replenish_Failed => "Missile_Replenish_Failed",
+            Self::Ammo_Replenish_Failed => "Ammo_Replenish_Failed",
+            Self::Vehicle_Repair_Failed => "Vehicle_Repair_Failed",
+            Self::Vehicle_Refuel_Failed => "Vehicle_Refuel_Failed",
+            Self::CTRL_Captured => "CTRL_Captured",
+            Self::CTRL_Lost => "CTRL_Lost",
+            Self::CTRL_Neutralized => "CTRL_Neutralized",
+            Self::CTRL_Phase_Notification => "CTRL_Phase_Notification",
+            Self::Respawn_Replenished => "Respawn_Replenished",
+            Self::INVALID => "INVALID",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EEAMessageTriggerFrequency`
@@ -13310,6 +18173,18 @@ impl EEAMessageTriggerFrequency {
             "OncePerRound" => Self::OncePerRound,
             "ActiveWhenInside" => Self::ActiveWhenInside,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Always => "Always",
+            Self::OncePerLife => "OncePerLife",
+            Self::OncePerRound => "OncePerRound",
+            Self::ActiveWhenInside => "ActiveWhenInside",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -13348,6 +18223,20 @@ impl EEAObjectiveState {
             "ReturningToOwner" => Self::ReturningToOwner,
             "Cooldown" => Self::Cooldown,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Default => "Default",
+            Self::Capturing => "Capturing",
+            Self::MultipleCapturing => "MultipleCapturing",
+            Self::Contesting => "Contesting",
+            Self::ReturningToOwner => "ReturningToOwner",
+            Self::Cooldown => "Cooldown",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -13391,6 +18280,21 @@ impl EEAPlayableAreaOnExit {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::Autopilot => "Autopilot",
+            Self::DamagePerSecond => "DamagePerSecond",
+            Self::Kill => "Kill",
+            Self::Disable => "Disable",
+            Self::Redout => "Redout",
+            Self::SimulationGlitch => "SimulationGlitch",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EEASpawnMulticrewType`
@@ -13415,6 +18319,16 @@ impl EEASpawnMulticrewType {
             "Public" => Self::Public,
             "SquadOnly" => Self::SquadOnly,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Public => "Public",
+            Self::SquadOnly => "SquadOnly",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -13482,6 +18396,29 @@ impl EEASpecialEventPass {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::EA_SpecialEvent_LunarNewYear => "EA_SpecialEvent_LunarNewYear",
+            Self::EA_SpecialEvent_ValentinesDay => "EA_SpecialEvent_ValentinesDay",
+            Self::EA_SpecialEvent_StPatricks => "EA_SpecialEvent_StPatricks",
+            Self::EA_SpecialEvent_AprilFools => "EA_SpecialEvent_AprilFools",
+            Self::EA_SpecialEvent_Invictus => "EA_SpecialEvent_Invictus",
+            Self::EA_SpecialEvent_AlienWeek => "EA_SpecialEvent_AlienWeek",
+            Self::EA_SpecialEvent_FoundationFestival => "EA_SpecialEvent_FoundationFestival",
+            Self::EA_SpecialEvent_PirateWeek => "EA_SpecialEvent_PirateWeek",
+            Self::EA_SpecialEvent_CitizenCon => "EA_SpecialEvent_CitizenCon",
+            Self::EA_SpecialEvent_Halloween => "EA_SpecialEvent_Halloween",
+            Self::EA_SpecialEvent_IAE => "EA_SpecialEvent_IAE",
+            Self::EA_SpecialEvent_Xmas => "EA_SpecialEvent_Xmas",
+            Self::EA_SpecialEvent_FightOrFlight => "EA_SpecialEvent_FightOrFlight",
+            Self::EA_SpecialEvent_MurrayCup => "EA_SpecialEvent_MurrayCup",
+            Self::EA_SpecialEvent_PlayerBirthday => "EA_SpecialEvent_PlayerBirthday",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EEndCondition`
@@ -13512,6 +18449,18 @@ impl EEndCondition {
             "NumberOfUsablesToUse" => Self::NumberOfUsablesToUse,
             "AllUsed_WithSync" => Self::AllUsed_WithSync,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::AllUsed => "AllUsed",
+            Self::NumberOfUsablesToUse => "NumberOfUsablesToUse",
+            Self::AllUsed_WithSync => "AllUsed_WithSync",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -13561,6 +18510,23 @@ impl EEnemyType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::ET_Invalid => "ET_Invalid",
+            Self::ET_Boss => "ET_Boss",
+            Self::ET_Butterfly => "ET_Butterfly",
+            Self::ET_Bee => "ET_Bee",
+            Self::ET_Tonbo => "ET_Tonbo",
+            Self::ET_Momiji => "ET_Momiji",
+            Self::ET_Sasori => "ET_Sasori",
+            Self::ET_Midori => "ET_Midori",
+            Self::ET_Galboss => "ET_Galboss",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EEntityComponentCommsChannelJoinType`
@@ -13585,6 +18551,16 @@ impl EEntityComponentCommsChannelJoinType {
             "AutoJoin" => Self::AutoJoin,
             "Invite" => Self::Invite,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::AutoJoin => "AutoJoin",
+            Self::Invite => "Invite",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -13620,6 +18596,19 @@ impl EEntityMarkerType {
             "AmmoCrate" => Self::AmmoCrate,
             "GrenadeCrate" => Self::GrenadeCrate,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::LandingZone => "LandingZone",
+            Self::MedPen => "MedPen",
+            Self::AmmoCrate => "AmmoCrate",
+            Self::GrenadeCrate => "GrenadeCrate",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -13675,6 +18664,25 @@ impl EEntryFlagCondition {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Tracked => "Tracked",
+            Self::Locked => "Locked",
+            Self::Pinned => "Pinned",
+            Self::DetectedByActiveRadar => "DetectedByActiveRadar",
+            Self::DetectedByDeltaSignature => "DetectedByDeltaSignature",
+            Self::ExtendedContact => "ExtendedContact",
+            Self::Tagged => "Tagged",
+            Self::BoxoutActive => "BoxoutActive",
+            Self::IsObjective => "IsObjective",
+            Self::IsPartyMember => "IsPartyMember",
+            Self::ShowInFPS => "ShowInFPS",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EEventTriggerMask`
@@ -13704,6 +18712,17 @@ impl EEventTriggerMask {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::AIAndPlayer => "AIAndPlayer",
+            Self::OnlyAI => "OnlyAI",
+            Self::OnlyPlayer => "OnlyPlayer",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EExcludeSpawnGender`
@@ -13731,6 +18750,17 @@ impl EExcludeSpawnGender {
             "Female" => Self::Female,
             "None" => Self::None,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Male => "Male",
+            Self::Female => "Female",
+            Self::None => "None",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -13765,6 +18795,18 @@ impl EFaceType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Bubble => "Bubble",
+            Self::FrontBack => "FrontBack",
+            Self::Quadrant => "Quadrant",
+            Self::Box => "Box",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EFiringRangePenaltyType`
@@ -13792,6 +18834,17 @@ impl EFiringRangePenaltyType {
             "Friendlyfire" => Self::Friendlyfire,
             "HeadShot" => Self::HeadShot,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::EnemyReachedPlayer => "EnemyReachedPlayer",
+            Self::Friendlyfire => "Friendlyfire",
+            Self::HeadShot => "HeadShot",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -13823,6 +18876,17 @@ impl EFirstSelectMode {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::Once => "Once",
+            Self::Always => "Always",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EFitnessImprovementType`
@@ -13847,6 +18911,16 @@ impl EFitnessImprovementType {
             "Stamina" => Self::Stamina,
             "BlackoutRedoutThreshold" => Self::BlackoutRedoutThreshold,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Stamina => "Stamina",
+            Self::BlackoutRedoutThreshold => "BlackoutRedoutThreshold",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -13893,6 +18967,22 @@ impl EForceReactionLeanHumanSpineBoneName {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Hips => "Hips",
+            Self::Spine => "Spine",
+            Self::Spine1 => "Spine1",
+            Self::Spine2 => "Spine2",
+            Self::Spine3 => "Spine3",
+            Self::Neck => "Neck",
+            Self::Neck1 => "Neck1",
+            Self::Head => "Head",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EForceReactionLeanVanduulSpineBoneName`
@@ -13935,6 +19025,22 @@ impl EForceReactionLeanVanduulSpineBoneName {
             "Neck1" => Self::Neck1,
             "Head" => Self::Head,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Hips => "Hips",
+            Self::Spine => "Spine",
+            Self::Spine1 => "Spine1",
+            Self::Spine2 => "Spine2",
+            Self::Spine3 => "Spine3",
+            Self::Neck => "Neck",
+            Self::Neck1 => "Neck1",
+            Self::Head => "Head",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -13987,6 +19093,24 @@ impl EForceReactionLeanXianSpineBoneName {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Hips => "Hips",
+            Self::Spine1 => "Spine1",
+            Self::Spine2 => "Spine2",
+            Self::Spine3 => "Spine3",
+            Self::Spine4 => "Spine4",
+            Self::Neck1 => "Neck1",
+            Self::Neck2 => "Neck2",
+            Self::Neck3 => "Neck3",
+            Self::Neck4 => "Neck4",
+            Self::Head => "Head",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EFortitudeImprovementType`
@@ -14025,6 +19149,20 @@ impl EFortitudeImprovementType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::HungerDecay => "HungerDecay",
+            Self::ThirstDecay => "ThirstDecay",
+            Self::DrugEffects => "DrugEffects",
+            Self::Health => "Health",
+            Self::InjuryChance => "InjuryChance",
+            Self::StunDuration => "StunDuration",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EFrontendGameModeButton`
@@ -14049,6 +19187,16 @@ impl EFrontendGameModeButton {
             "PU" => Self::PU,
             "EA" => Self::EA,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::PU => "PU",
+            Self::EA => "EA",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -14104,6 +19252,25 @@ impl EGameCollisionClass {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Actor_Capsule => "Actor_Capsule",
+            Self::Actor_Body => "Actor_Body",
+            Self::Actor_PlayerControlled => "Actor_PlayerControlled",
+            Self::Actor_AIControlled => "Actor_AIControlled",
+            Self::Vehicle => "Vehicle",
+            Self::Vehicle_Interior => "Vehicle_Interior",
+            Self::Ragdoll => "Ragdoll",
+            Self::Projectile => "Projectile",
+            Self::Missile => "Missile",
+            Self::Holo_Volume => "Holo_Volume",
+            Self::Spewgun_Projectile => "Spewgun_Projectile",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EGameDifficulty`
@@ -14140,6 +19307,20 @@ impl EGameDifficulty {
             "Hard" => Self::Hard,
             "VeryHard" => Self::VeryHard,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::VeryEasy => "VeryEasy",
+            Self::Easy => "Easy",
+            Self::Normal => "Normal",
+            Self::Hard => "Hard",
+            Self::VeryHard => "VeryHard",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -14199,6 +19380,27 @@ impl EGameModeFilters {
             "Experimental" => Self::Experimental,
             "MultiCrew" => Self::MultiCrew,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Released => "Released",
+            Self::Flight => "Flight",
+            Self::GroundVehicles => "GroundVehicles",
+            Self::FPS => "FPS",
+            Self::COOP => "COOP",
+            Self::PvP => "PvP",
+            Self::PvE => "PvE",
+            Self::Solo => "Solo",
+            Self::Leaderboards => "Leaderboards",
+            Self::Teams => "Teams",
+            Self::Racing => "Racing",
+            Self::Experimental => "Experimental",
+            Self::MultiCrew => "MultiCrew",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -14317,6 +19519,46 @@ impl EGameModeId {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::S42_Default => "S42_Default",
+            Self::SC_Frontend => "SC_Frontend",
+            Self::SC_Default => "SC_Default",
+            Self::INVALID => "INVALID",
+            Self::EA_BattleRoyale => "EA_BattleRoyale",
+            Self::EA_FreeFlight => "EA_FreeFlight",
+            Self::EA_PirateSwarm => "EA_PirateSwarm",
+            Self::EA_SquadronBattle => "EA_SquadronBattle",
+            Self::EA_VanduulSwarm => "EA_VanduulSwarm",
+            Self::EA_ClassicRace => "EA_ClassicRace",
+            Self::EA_Elimination => "EA_Elimination",
+            Self::EA_TeamElimination => "EA_TeamElimination",
+            Self::EA_Control => "EA_Control",
+            Self::EA_TheatersOfWar => "EA_TheatersOfWar",
+            Self::EA_IterativeTesting => "EA_IterativeTesting",
+            Self::EA_Duel => "EA_Duel",
+            Self::EA_FPSGunGame => "EA_FPSGunGame",
+            Self::EA_Horde => "EA_Horde",
+            Self::EA_VanduulInvasion => "EA_VanduulInvasion",
+            Self::EA_ExperimentalMode_1 => "EA_ExperimentalMode_1",
+            Self::EA_ExperimentalMode_2 => "EA_ExperimentalMode_2",
+            Self::EA_ExperimentalMode_3 => "EA_ExperimentalMode_3",
+            Self::EA_ExperimentalMode_4 => "EA_ExperimentalMode_4",
+            Self::EA_ExperimentalMode_5 => "EA_ExperimentalMode_5",
+            Self::EA_ExperimentalMode_6 => "EA_ExperimentalMode_6",
+            Self::EA_ExperimentalMode_7 => "EA_ExperimentalMode_7",
+            Self::EA_ExperimentalMode_8 => "EA_ExperimentalMode_8",
+            Self::EA_ExperimentalMode_9 => "EA_ExperimentalMode_9",
+            Self::EA_ExperimentalMode_10 => "EA_ExperimentalMode_10",
+            Self::EA_ExperimentalMode_11 => "EA_ExperimentalMode_11",
+            Self::EA_ExperimentalMode_12 => "EA_ExperimentalMode_12",
+            Self::EA_GravRace => "EA_GravRace",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EGameModePlayedId`
@@ -14386,6 +19628,31 @@ impl EGameModePlayedId {
             "EA_Played_RN_SquadronBattle" => Self::EA_Played_RN_SquadronBattle,
             "EA_Played_RN_Duel" => Self::EA_Played_RN_Duel,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::EA_Played_GunGame => "EA_Played_GunGame",
+            Self::EA_Played_TankRoyale => "EA_Played_TankRoyale",
+            Self::EA_Played_TeamTank => "EA_Played_TeamTank",
+            Self::EA_Played_SingleWeapon => "EA_Played_SingleWeapon",
+            Self::EA_Played_MirrorMatch => "EA_Played_MirrorMatch",
+            Self::EA_Played_MM_Vanduul => "EA_Played_MM_Vanduul",
+            Self::EA_Played_MM_Dogfight => "EA_Played_MM_Dogfight",
+            Self::EA_Played_MM_ClassicRace => "EA_Played_MM_ClassicRace",
+            Self::EA_Played_KillConfirmedFPS => "EA_Played_KillConfirmedFPS",
+            Self::EA_Played_KillConfirmedVehicle => "EA_Played_KillConfirmedVehicle",
+            Self::EA_Played_Wingman => "EA_Played_Wingman",
+            Self::EA_Played_TeamElimination => "EA_Played_TeamElimination",
+            Self::EA_Played_GravRace => "EA_Played_GravRace",
+            Self::EA_Played_GravRoyale => "EA_Played_GravRoyale",
+            Self::EA_Played_RN_SquadronBattle => "EA_Played_RN_SquadronBattle",
+            Self::EA_Played_RN_Duel => "EA_Played_RN_Duel",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -14639,6 +19906,91 @@ impl EGameRulesEventType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::PlayerKill => "PlayerKill",
+            Self::PlayerKillAssist => "PlayerKillAssist",
+            Self::PlayerKillAssistTeam1 => "PlayerKillAssistTeam1",
+            Self::PlayerKillAssistTeam2 => "PlayerKillAssistTeam2",
+            Self::PlayerBledOut => "PlayerBledOut",
+            Self::PlayerTeamKill => "PlayerTeamKill",
+            Self::Accident => "Accident",
+            Self::Suicide => "Suicide",
+            Self::Tagged_PlayerKillAssist => "Tagged_PlayerKillAssist",
+            Self::PlayerBleeding => "PlayerBleeding",
+            Self::DistortionDamage => "DistortionDamage",
+            Self::DistortionDisabledShip => "DistortionDisabledShip",
+            Self::DamageShip => "DamageShip",
+            Self::DamageTeamShip => "DamageTeamShip",
+            Self::DestroyedShip => "DestroyedShip",
+            Self::DestroyedTeamShip => "DestroyedTeamShip",
+            Self::DestroyedShipEjected => "DestroyedShipEjected",
+            Self::PlayerKillEjected => "PlayerKillEjected",
+            Self::CompletedLap => "CompletedLap",
+            Self::Award_UnaidedKill => "Award_UnaidedKill",
+            Self::Award_Untouchable => "Award_Untouchable",
+            Self::Award_Ace => "Award_Ace",
+            Self::Award_AceBonus => "Award_AceBonus",
+            Self::Award_AceKill => "Award_AceKill",
+            Self::Award_AceKillBonus => "Award_AceKillBonus",
+            Self::Award_KillingSpree => "Award_KillingSpree",
+            Self::Award_KillingSpreeBonus => "Award_KillingSpreeBonus",
+            Self::Award_KillingSpreeKill => "Award_KillingSpreeKill",
+            Self::Award_KillingSpreeKillBonus => "Award_KillingSpreeKillBonus",
+            Self::Award_NemesisKill => "Award_NemesisKill",
+            Self::Award_RedemptionKill => "Award_RedemptionKill",
+            Self::Award_ResurgentKill => "Award_ResurgentKill",
+            Self::Award_ResurgentKillBonus => "Award_ResurgentKillBonus",
+            Self::Award_RevengeKill => "Award_RevengeKill",
+            Self::Award_FirstBlood => "Award_FirstBlood",
+            Self::Award_KillAssist => "Award_KillAssist",
+            Self::Award_Savior => "Award_Savior",
+            Self::Award_SquadronRevengeKill => "Award_SquadronRevengeKill",
+            Self::Award_UnderdogKill => "Award_UnderdogKill",
+            Self::Award_CrashRoberts => "Award_CrashRoberts",
+            Self::Award_CheapShot => "Award_CheapShot",
+            Self::Award_ForcedEject => "Award_ForcedEject",
+            Self::Award_ForcedError => "Award_ForcedError",
+            Self::Award_Goodnight => "Award_Goodnight",
+            Self::Award_LightsOut => "Award_LightsOut",
+            Self::Award_MartyrKill => "Award_MartyrKill",
+            Self::Award_ControlTerminalCaptured => "Award_ControlTerminalCaptured",
+            Self::Award_ControlTerminalDefended => "Award_ControlTerminalDefended",
+            Self::Award_ControlTerminalCaptureAssist => "Award_ControlTerminalCaptureAssist",
+            Self::Award_ControlTerminalHackerKilled => "Award_ControlTerminalHackerKilled",
+            Self::Award_ControlTerminalDomination => "Award_ControlTerminalDomination",
+            Self::Award_CaptureAreaCaptureBegin => "Award_CaptureAreaCaptureBegin",
+            Self::Award_CaptureAreaCaptureComplete => "Award_CaptureAreaCaptureComplete",
+            Self::Award_CaptureAreaContesting => "Award_CaptureAreaContesting",
+            Self::Award_CaptureAreaCapturing => "Award_CaptureAreaCapturing",
+            Self::Award_CaptureCloseCallKill => "Award_CaptureCloseCallKill",
+            Self::Award_CaptureAreaNeutralized => "Award_CaptureAreaNeutralized",
+            Self::Award_CaptureReversing => "Award_CaptureReversing",
+            Self::Award_DefenderKill => "Award_DefenderKill",
+            Self::Award_AttackerKill => "Award_AttackerKill",
+            Self::Award_Hemorrhage => "Award_Hemorrhage",
+            Self::Award_Headshot => "Award_Headshot",
+            Self::Award_MeleeKill => "Award_MeleeKill",
+            Self::Award_TakeDown => "Award_TakeDown",
+            Self::DamageItem => "DamageItem",
+            Self::DamageTeamItem => "DamageTeamItem",
+            Self::Award_TerminalTick => "Award_TerminalTick",
+            Self::Award_PhaseWon => "Award_PhaseWon",
+            Self::Award_MatchVictory => "Award_MatchVictory",
+            Self::Award_MatchDefeat => "Award_MatchDefeat",
+            Self::Award_SecondPlace => "Award_SecondPlace",
+            Self::Award_ThirdPlace => "Award_ThirdPlace",
+            Self::Award_DestroyPhaseObjective => "Award_DestroyPhaseObjective",
+            Self::Award_DamagePhaseObjective => "Award_DamagePhaseObjective",
+            Self::Award_DamageSentToObjective => "Award_DamageSentToObjective",
+            Self::Award_KillCollected => "Award_KillCollected",
+            Self::Award_KillDenied => "Award_KillDenied",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EGasCloudFadeVolumeType`
@@ -14663,6 +20015,16 @@ impl EGasCloudFadeVolumeType {
             "Sphere" => Self::Sphere,
             "Cube" => Self::Cube,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Sphere => "Sphere",
+            Self::Cube => "Cube",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -14691,6 +20053,16 @@ impl EGasCloudLightType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Omni => "Omni",
+            Self::Projector => "Projector",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EGasCloudOverrideVolumeType`
@@ -14715,6 +20087,16 @@ impl EGasCloudOverrideVolumeType {
             "Sphere" => Self::Sphere,
             "Cube" => Self::Cube,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Sphere => "Sphere",
+            Self::Cube => "Cube",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -14749,6 +20131,18 @@ impl EGeometrySlots {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Main => "Main",
+            Self::LegacyHelper => "LegacyHelper",
+            Self::DebrisPieces => "DebrisPieces",
+            Self::UNDEFINED => "UNDEFINED",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EGeometryVisAreaMode`
@@ -14779,6 +20173,18 @@ impl EGeometryVisAreaMode {
             "Ignore_VisAreas" => Self::Ignore_VisAreas,
             "UNDEFINED" => Self::UNDEFINED,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::AABB_Center => "AABB_Center",
+            Self::Pivot => "Pivot",
+            Self::Ignore_VisAreas => "Ignore_VisAreas",
+            Self::UNDEFINED => "UNDEFINED",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -14864,6 +20270,35 @@ impl EGimbalMode {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::SeatFixed => "SeatFixed",
+            Self::SeatFixedAds => "SeatFixedAds",
+            Self::SeatFixedAssisted => "SeatFixedAssisted",
+            Self::SeatManual => "SeatManual",
+            Self::SeatManualAds => "SeatManualAds",
+            Self::SeatManualAssisted => "SeatManualAssisted",
+            Self::SeatAuto => "SeatAuto",
+            Self::MannedTurretFixed => "MannedTurretFixed",
+            Self::MannedTurretFixedAds => "MannedTurretFixedAds",
+            Self::MannedTurretFixedAssisted => "MannedTurretFixedAssisted",
+            Self::MannedTurretManual => "MannedTurretManual",
+            Self::MannedTurretManualAds => "MannedTurretManualAds",
+            Self::MannedTurretManualAssisted => "MannedTurretManualAssisted",
+            Self::MannedTurretAuto => "MannedTurretAuto",
+            Self::RemoteTurretFixed => "RemoteTurretFixed",
+            Self::RemoteTurretFixedAds => "RemoteTurretFixedAds",
+            Self::RemoteTurretFixedAssisted => "RemoteTurretFixedAssisted",
+            Self::RemoteTurretManual => "RemoteTurretManual",
+            Self::RemoteTurretManualAds => "RemoteTurretManualAds",
+            Self::RemoteTurretManualAssisted => "RemoteTurretManualAssisted",
+            Self::RemoteTurretAuto => "RemoteTurretAuto",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EGimbalOrder`
@@ -14888,6 +20323,16 @@ impl EGimbalOrder {
             "YawPitch" => Self::YawPitch,
             "PitchYaw" => Self::PitchYaw,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::YawPitch => "YawPitch",
+            Self::PitchYaw => "PitchYaw",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -14934,6 +20379,22 @@ impl EGravlevDataOutput {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::SpringCompressionOne => "SpringCompressionOne",
+            Self::SpringCompressionTwo => "SpringCompressionTwo",
+            Self::SpringCompressionThree => "SpringCompressionThree",
+            Self::SpringCompressionFour => "SpringCompressionFour",
+            Self::SpringCompressionNormalizedOne => "SpringCompressionNormalizedOne",
+            Self::SpringCompressionNormalizedTwo => "SpringCompressionNormalizedTwo",
+            Self::SpringCompressionNormalizedThree => "SpringCompressionNormalizedThree",
+            Self::SpringCompressionNormalizedFour => "SpringCompressionNormalizedFour",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EGripUser`
@@ -14961,6 +20422,17 @@ impl EGripUser {
             "Player" => Self::Player,
             "All" => Self::All,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::AI => "AI",
+            Self::Player => "Player",
+            Self::All => "All",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -15001,6 +20473,20 @@ impl EHUDNotificationType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Default => "Default",
+            Self::Group => "Group",
+            Self::Party => "Party",
+            Self::Beacon => "Beacon",
+            Self::Tutorial => "Tutorial",
+            Self::ProgressBar => "ProgressBar",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EHackingCodeCommandParamType`
@@ -15031,6 +20517,18 @@ impl EHackingCodeCommandParamType {
             "Float" => Self::Float,
             "Coordinate" => Self::Coordinate,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Int => "Int",
+            Self::Char => "Char",
+            Self::Float => "Float",
+            Self::Coordinate => "Coordinate",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -15096,6 +20594,29 @@ impl EHackingCodeCommandType {
             "AutoCorrect" => Self::AutoCorrect,
             "Exit" => Self::Exit,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::Move => "Move",
+            Self::Stop => "Stop",
+            Self::Swap => "Swap",
+            Self::Ping => "Ping",
+            Self::Wrap => "Wrap",
+            Self::Inject => "Inject",
+            Self::Slowdown => "Slowdown",
+            Self::CancelAbility => "CancelAbility",
+            Self::Spawn => "Spawn",
+            Self::RotatePreview => "RotatePreview",
+            Self::Help => "Help",
+            Self::Commands => "Commands",
+            Self::AutoCorrect => "AutoCorrect",
+            Self::Exit => "Exit",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -15173,6 +20694,33 @@ impl EHackingCodeEventType {
             "HackAborted" => Self::HackAborted,
             "HackSuccessful" => Self::HackSuccessful,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::UnrecognizedCommand => "UnrecognizedCommand",
+            Self::HackingInitiated => "HackingInitiated",
+            Self::HackingStarted => "HackingStarted",
+            Self::DefenderDetected => "DefenderDetected",
+            Self::DefenderAlerted => "DefenderAlerted",
+            Self::DefenderAlertOver => "DefenderAlertOver",
+            Self::DefenderSpottedIntruder => "DefenderSpottedIntruder",
+            Self::DefenderLostIntruder => "DefenderLostIntruder",
+            Self::DefenderStartedSwap => "DefenderStartedSwap",
+            Self::DefenderCompletedSwap => "DefenderCompletedSwap",
+            Self::LinkPointActivated => "LinkPointActivated",
+            Self::LinkPointDeactivated => "LinkPointDeactivated",
+            Self::LinkPointLinked => "LinkPointLinked",
+            Self::LinkPointUnlinked => "LinkPointUnlinked",
+            Self::IntruderCaptured => "IntruderCaptured",
+            Self::HackTimedOut => "HackTimedOut",
+            Self::HackAborted => "HackAborted",
+            Self::HackSuccessful => "HackSuccessful",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -15274,6 +20822,43 @@ impl EHackingErrorType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Ok => "Ok",
+            Self::AbilityIsChargingUp => "AbilityIsChargingUp",
+            Self::AbilityIsActive => "AbilityIsActive",
+            Self::AbilityIsCoolingDown => "AbilityIsCoolingDown",
+            Self::AbilityInjectNoOverlappedPoint => "AbilityInjectNoOverlappedPoint",
+            Self::AbilityInjectPointAlreadyActive => "AbilityInjectPointAlreadyActive",
+            Self::AbilityInjectPointAlreadyInactive => "AbilityInjectPointAlreadyInactive",
+            Self::AbilitySwapSpareNodeUnavailable => "AbilitySwapSpareNodeUnavailable",
+            Self::AbilitySwapTargetNodeCantBeSwapped => "AbilitySwapTargetNodeCantBeSwapped",
+            Self::AbilitySwapTargetNodeIsUnrevealed => "AbilitySwapTargetNodeIsUnrevealed",
+            Self::AbilityWrapTeleportWhileMoving => "AbilityWrapTeleportWhileMoving",
+            Self::AbilityWrapAgentAlreadyTeleporting => "AbilityWrapAgentAlreadyTeleporting",
+            Self::AbilityWrapDestinationNodeIsUnrevealed => {
+                "AbilityWrapDestinationNodeIsUnrevealed"
+            }
+            Self::AbilityWrapNoTeleportationDirectionAvailable => {
+                "AbilityWrapNoTeleportationDirectionAvailable"
+            }
+            Self::AbilityWrapInvalidDestination => "AbilityWrapInvalidDestination",
+            Self::AbilityWrapAmbiguousDestination => "AbilityWrapAmbiguousDestination",
+            Self::CodeInvalidCommandToken => "CodeInvalidCommandToken",
+            Self::CodeTooManyArgs => "CodeTooManyArgs",
+            Self::CodeTooLittleArgs => "CodeTooLittleArgs",
+            Self::CodeInvalidArgType => "CodeInvalidArgType",
+            Self::CodeInvalidArgFormat => "CodeInvalidArgFormat",
+            Self::MovementCantMoveToUnrevealedNode => "MovementCantMoveToUnrevealedNode",
+            Self::SpawnInappropriateGameState => "SpawnInappropriateGameState",
+            Self::SpawnInvalidNodeSelected => "SpawnInvalidNodeSelected",
+            Self::UnknownError => "UnknownError",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EHackingFlagOverrideType`
@@ -15301,6 +20886,17 @@ impl EHackingFlagOverrideType {
             "False" => Self::False,
             "True" => Self::True,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::UsePreset => "UsePreset",
+            Self::False => "False",
+            Self::True => "True",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -15344,6 +20940,21 @@ impl EHackingParamsAbilityType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Invalid => "Invalid",
+            Self::NodeSwap => "NodeSwap",
+            Self::Ping => "Ping",
+            Self::Inject => "Inject",
+            Self::Slowdown => "Slowdown",
+            Self::WrapAround => "WrapAround",
+            Self::Any => "Any",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EHandMode`
@@ -15368,6 +20979,16 @@ impl EHandMode {
             "LeftHand" => Self::LeftHand,
             "RightHand" => Self::RightHand,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::LeftHand => "LeftHand",
+            Self::RightHand => "RightHand",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -15402,6 +21023,18 @@ impl EHandholdAttachOrientationSpace {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::ActorSpace => "ActorSpace",
+            Self::HandholdSpace => "HandholdSpace",
+            Self::EntitySpace => "EntitySpace",
+            Self::ZoneSpace => "ZoneSpace",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EHazardTagListBehavior`
@@ -15426,6 +21059,16 @@ impl EHazardTagListBehavior {
             "OneTagIsRequired" => Self::OneTagIsRequired,
             "OneTagWillExempt" => Self::OneTagWillExempt,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::OneTagIsRequired => "OneTagIsRequired",
+            Self::OneTagWillExempt => "OneTagWillExempt",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -15457,6 +21100,17 @@ impl EHeadWearHair {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::any => "any",
+            Self::snoopy_cap => "snoopy_cap",
+            Self::hatHair => "hatHair",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EHealingMode`
@@ -15483,6 +21137,16 @@ impl EHealingMode {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Target => "Target",
+            Self::Self_ => "Self",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EHealingValueType`
@@ -15507,6 +21171,16 @@ impl EHealingValueType {
             "Health" => Self::Health,
             "Buff" => Self::Buff,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Health => "Health",
+            Self::Buff => "Buff",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -15542,6 +21216,19 @@ impl EHelmetState {
             "Closed" => Self::Closed,
             "Closing" => Self::Closing,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::NONE => "NONE",
+            Self::Open => "Open",
+            Self::Opening => "Opening",
+            Self::Closed => "Closed",
+            Self::Closing => "Closing",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -15586,6 +21273,22 @@ impl EHelmetStateMachine {
             "Opacity" => Self::Opacity,
             "Equip" => Self::Equip,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Default => "Default",
+            Self::Visor => "Visor",
+            Self::Strap => "Strap",
+            Self::EVA => "EVA",
+            Self::Targeting => "Targeting",
+            Self::Lights => "Lights",
+            Self::Opacity => "Opacity",
+            Self::Equip => "Equip",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -15680,6 +21383,38 @@ impl EHitType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Invalid => "Invalid",
+            Self::Melee => "Melee",
+            Self::Collision => "Collision",
+            Self::Crash => "Crash",
+            Self::Frag => "Frag",
+            Self::Explosion => "Explosion",
+            Self::TakeDown => "TakeDown",
+            Self::Punish => "Punish",
+            Self::Normal => "Normal",
+            Self::Fire => "Fire",
+            Self::Bullet => "Bullet",
+            Self::VehicleDestruction => "VehicleDestruction",
+            Self::EventDamage => "EventDamage",
+            Self::BleedOut => "BleedOut",
+            Self::ElectricArc => "ElectricArc",
+            Self::Repair => "Repair",
+            Self::Suffocate => "Suffocate",
+            Self::Suicide => "Suicide",
+            Self::SelfDestruct => "SelfDestruct",
+            Self::BoundaryViolation => "BoundaryViolation",
+            Self::Drown => "Drown",
+            Self::DamageOverTime => "DamageOverTime",
+            Self::Hazard => "Hazard",
+            Self::Extraction => "Extraction",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EHitmarkerPositionMethod`
@@ -15715,6 +21450,19 @@ impl EHitmarkerPositionMethod {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::ScreenCenter => "ScreenCenter",
+            Self::CrosshairPosition => "CrosshairPosition",
+            Self::CrosshairPositionSnapshot => "CrosshairPositionSnapshot",
+            Self::HitpositionWorld => "HitpositionWorld",
+            Self::HitpositionScreen => "HitpositionScreen",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EHoloFieldShape`
@@ -15744,6 +21492,17 @@ impl EHoloFieldShape {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::HoloField_Mesh => "HoloField_Mesh",
+            Self::HoloField_Sphere => "HoloField_Sphere",
+            Self::HoloField_HardCodedSphere => "HoloField_HardCodedSphere",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EHolographicVolumeType`
@@ -15768,6 +21527,16 @@ impl EHolographicVolumeType {
             "Sphere" => Self::Sphere,
             "Cube" => Self::Cube,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Sphere => "Sphere",
+            Self::Cube => "Cube",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -15800,6 +21569,18 @@ impl EHoverPowerStage {
             "PoweringOn" => Self::PoweringOn,
             "PoweredOn" => Self::PoweredOn,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::PoweredOff => "PoweredOff",
+            Self::PoweringOff => "PoweringOff",
+            Self::PoweringOn => "PoweringOn",
+            Self::PoweredOn => "PoweredOn",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -15838,6 +21619,20 @@ impl EIFCSFormationModeMessage {
             "CannotJoin" => Self::CannotJoin,
             "Aborted" => Self::Aborted,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::LinkAvailable => "LinkAvailable",
+            Self::MoveToHost => "MoveToHost",
+            Self::ConsentToJoin => "ConsentToJoin",
+            Self::Joined => "Joined",
+            Self::CannotJoin => "CannotJoin",
+            Self::Aborted => "Aborted",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -15881,6 +21676,21 @@ impl EIFCSFormationState {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Inactive => "Inactive",
+            Self::Blocked => "Blocked",
+            Self::Available_MoveToHost => "Available_MoveToHost",
+            Self::Available_WaitForConsent => "Available_WaitForConsent",
+            Self::Active_Transition => "Active_Transition",
+            Self::Active_Settled => "Active_Settled",
+            Self::Leaving => "Leaving",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EIFCSModifiableNumbers`
@@ -15902,6 +21712,15 @@ impl EIFCSModifiableNumbers {
         match s {
             "TestNumber" => Self::TestNumber,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::TestNumber => "TestNumber",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -15936,6 +21755,18 @@ impl EIFCSModifiableNumbersLegacy {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::SCMSpeed => "SCMSpeed",
+            Self::BoostSpeedForward => "BoostSpeedForward",
+            Self::BoostSpeedBackward => "BoostSpeedBackward",
+            Self::MaxSpeed => "MaxSpeed",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EIFCSModifiableVectors`
@@ -15957,6 +21788,15 @@ impl EIFCSModifiableVectors {
         match s {
             "TestVector" => Self::TestVector,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::TestVector => "TestVector",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -15994,6 +21834,19 @@ impl EIFCSModifiableVectorsLegacy {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::MaxAngularVelocity => "MaxAngularVelocity",
+            Self::PositiveLinearScale => "PositiveLinearScale",
+            Self::NegativeLinearScale => "NegativeLinearScale",
+            Self::PositiveAngularScale => "PositiveAngularScale",
+            Self::NegativeAngularScale => "NegativeAngularScale",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EIFCSModifierType`
@@ -16021,6 +21874,17 @@ impl EIFCSModifierType {
             "Scalar" => Self::Scalar,
             "Override" => Self::Override,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Additive => "Additive",
+            Self::Scalar => "Scalar",
+            Self::Override => "Override",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -16058,6 +21922,19 @@ impl EIfcsEspType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Default => "Default",
+            Self::DefaultAds => "DefaultAds",
+            Self::Strong => "Strong",
+            Self::StrongAds => "StrongAds",
+            Self::Disabled => "Disabled",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EIfcsPhysicsDampingType`
@@ -16090,6 +21967,18 @@ impl EIfcsPhysicsDampingType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Destroyed => "Destroyed",
+            Self::InQuantum => "InQuantum",
+            Self::ThrustAvailable => "ThrustAvailable",
+            Self::ThrustUnavailable => "ThrustUnavailable",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EImpoundingTrigger`
@@ -16117,6 +22006,17 @@ impl EImpoundingTrigger {
             "PadRamming" => Self::PadRamming,
             "TrespassImpound" => Self::TrespassImpound,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::IllegalParking => "IllegalParking",
+            Self::PadRamming => "PadRamming",
+            Self::TrespassImpound => "TrespassImpound",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -16238,6 +22138,47 @@ impl EInfractionTrigger {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::KillActor => "KillActor",
+            Self::ForcedIntoDowned => "ForcedIntoDowned",
+            Self::DownedDirectDamage => "DownedDirectDamage",
+            Self::Manslaughter => "Manslaughter",
+            Self::DestroyVehicle => "DestroyVehicle",
+            Self::DestroyEntity => "DestroyEntity",
+            Self::IllegalParking => "IllegalParking",
+            Self::Interdiction => "Interdiction",
+            Self::FireWeapon => "FireWeapon",
+            Self::RamVehicle => "RamVehicle",
+            Self::RamActor => "RamActor",
+            Self::PadRamming => "PadRamming",
+            Self::AssaultActor => "AssaultActor",
+            Self::AssaultLawEnforcement => "AssaultLawEnforcement",
+            Self::DamageEntity => "DamageEntity",
+            Self::GreenZonePropertyDamage => "GreenZonePropertyDamage",
+            Self::KnockoutActor => "KnockoutActor",
+            Self::MeleeActor => "MeleeActor",
+            Self::Arrest => "Arrest",
+            Self::PrisonEscape => "PrisonEscape",
+            Self::PrisonSuicide => "PrisonSuicide",
+            Self::KillPrisoner => "KillPrisoner",
+            Self::Trespassing => "Trespassing",
+            Self::State_Trespassing => "State_Trespassing",
+            Self::State_Intruding => "State_Intruding",
+            Self::State_WeaponDrawn => "State_WeaponDrawn",
+            Self::State_HoldingIllegalItem => "State_HoldingIllegalItem",
+            Self::State_IllegalVehicleTowing => "State_IllegalVehicleTowing",
+            Self::LowBDL => "LowBDL",
+            Self::HighBDL => "HighBDL",
+            Self::HighBDLUnconscious => "HighBDLUnconscious",
+            Self::RestrictedAreaTrespass => "RestrictedAreaTrespass",
+            Self::RemoveItemFromCargoGrid => "RemoveItemFromCargoGrid",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EInputPromptBoundTo`
@@ -16281,6 +22222,23 @@ impl EInputPromptBoundTo {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::ActorEyes => "ActorEyes",
+            Self::EntityRoot => "EntityRoot",
+            Self::TopBoundingBoxZSurface => "TopBoundingBoxZSurface",
+            Self::NearestBoundingBoxSurface => "NearestBoundingBoxSurface",
+            Self::NearestBoundingBoxIgnoreFurthestSurfaces => {
+                "NearestBoundingBoxIgnoreFurthestSurfaces"
+            }
+            Self::InteractionPointFixedOffset => "InteractionPointFixedOffset",
+            Self::Tmp_AngleConstraintForwardDirection => "Tmp_AngleConstraintForwardDirection",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EInputPromptMode`
@@ -16308,6 +22266,17 @@ impl EInputPromptMode {
             "MultiClick" => Self::MultiClick,
             "Hold" => Self::Hold,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::SingleClick => "SingleClick",
+            Self::MultiClick => "MultiClick",
+            Self::Hold => "Hold",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -16342,6 +22311,18 @@ impl EInputPromptPriority {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::LowPriority => "LowPriority",
+            Self::MediumPriority => "MediumPriority",
+            Self::HighPriority => "HighPriority",
+            Self::HighestPriority => "HighestPriority",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EInstanceType`
@@ -16363,6 +22344,15 @@ impl EInstanceType {
         match s {
             "Entrance" => Self::Entrance,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Entrance => "Entrance",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -16392,6 +22382,17 @@ impl EInteractionConditionTargetEntity {
             "Interactable" => Self::Interactable,
             "InteractableItemOwner" => Self::InteractableItemOwner,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Interactor => "Interactor",
+            Self::Interactable => "Interactable",
+            Self::InteractableItemOwner => "InteractableItemOwner",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -16429,6 +22430,19 @@ impl EInteractionTriggerType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Self_ => "Self",
+            Self::Parent => "Parent",
+            Self::Root => "Root",
+            Self::Children => "Children",
+            Self::FullHierarchy => "FullHierarchy",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EItemActionEventType`
@@ -16453,6 +22467,16 @@ impl EItemActionEventType {
             "PowerOn" => Self::PowerOn,
             "PowerOff" => Self::PowerOff,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::PowerOn => "PowerOn",
+            Self::PowerOff => "PowerOff",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -16493,6 +22517,20 @@ impl EItemClass {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Civilian => "Civilian",
+            Self::Competition => "Competition",
+            Self::Industrial => "Industrial",
+            Self::Military => "Military",
+            Self::Stealth => "Stealth",
+            Self::UNDEFINED => "UNDEFINED",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EItemFunctionalityCondition`
@@ -16514,6 +22552,15 @@ impl EItemFunctionalityCondition {
         match s {
             "Damage" => Self::Damage,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Damage => "Damage",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -16557,6 +22604,21 @@ impl EItemPortAttachImplType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Bone => "Bone",
+            Self::Skin => "Skin",
+            Self::Face => "Face",
+            Self::Entity => "Entity",
+            Self::StatObj => "StatObj",
+            Self::Noattach => "Noattach",
+            Self::Logical => "Logical",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EItemPortAttachRotationLimitAxis`
@@ -16592,6 +22654,19 @@ impl EItemPortAttachRotationLimitAxis {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::XAxis => "XAxis",
+            Self::YAxis => "YAxis",
+            Self::ZAxis => "ZAxis",
+            Self::XYZAxis => "XYZAxis",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EItemPortConnectionType`
@@ -16621,6 +22696,17 @@ impl EItemPortConnectionType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::NoConnection => "NoConnection",
+            Self::DefaultConnection => "DefaultConnection",
+            Self::ExteriorConnection => "ExteriorConnection",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EItemPortPhysicsGridBehavior`
@@ -16648,6 +22734,17 @@ impl EItemPortPhysicsGridBehavior {
             "Exterior" => Self::Exterior,
             "Both" => Self::Both,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Interior => "Interior",
+            Self::Exterior => "Exterior",
+            Self::Both => "Both",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -16700,6 +22797,24 @@ impl EItemResourceNegativeStates {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::eNone => "eNone",
+            Self::eDamaged => "eDamaged",
+            Self::eOverheating => "eOverheating",
+            Self::eNoPower => "eNoPower",
+            Self::eBricking => "eBricking",
+            Self::eDistortion => "eDistortion",
+            Self::eOverheatedShutDown => "eOverheatedShutDown",
+            Self::eDestroyed => "eDestroyed",
+            Self::eBricked => "eBricked",
+            Self::eIgnited => "eIgnited",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EItemShopAdjustmentMode`
@@ -16730,6 +22845,18 @@ impl EItemShopAdjustmentMode {
             "Offset" => Self::Offset,
             "Scale" => Self::Scale,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::NoAdjustment => "NoAdjustment",
+            Self::Override => "Override",
+            Self::Offset => "Offset",
+            Self::Scale => "Scale",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -16768,6 +22895,20 @@ impl EItemShopReference {
             "PlayerActor" => Self::PlayerActor,
             "Pedestal" => Self::Pedestal,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Item => "Item",
+            Self::Rack => "Rack",
+            Self::InteractionPoint => "InteractionPoint",
+            Self::PlayerCamera => "PlayerCamera",
+            Self::PlayerActor => "PlayerActor",
+            Self::Pedestal => "Pedestal",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -16875,6 +23016,43 @@ impl EItemStatType {
             "Weapon_Velocity" => Self::Weapon_Velocity,
             "UNDEFINED" => Self::UNDEFINED,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Flight_IFCS_BoostSpeedBackward => "Flight_IFCS_BoostSpeedBackward",
+            Self::Flight_IFCS_BoostSpeedForward => "Flight_IFCS_BoostSpeedForward",
+            Self::Flight_IFCS_MaxSpeed => "Flight_IFCS_MaxSpeed",
+            Self::Flight_IFCS_ScmSpeed => "Flight_IFCS_ScmSpeed",
+            Self::Missile_ArmTime => "Missile_ArmTime",
+            Self::Missile_LockRangeMax => "Missile_LockRangeMax",
+            Self::Missile_LockRangeMin => "Missile_LockRangeMin",
+            Self::Missile_LockTime => "Missile_LockTime",
+            Self::Missile_TopSpeed => "Missile_TopSpeed",
+            Self::Missile_TotalDamage => "Missile_TotalDamage",
+            Self::QDrive_Acceleration_Boost => "QDrive_Acceleration_Boost",
+            Self::QDrive_Acceleration_Linear => "QDrive_Acceleration_Linear",
+            Self::QDrive_Counteraction_Boost => "QDrive_Counteraction_Boost",
+            Self::QDrive_Counteraction_Linear => "QDrive_Counteraction_Linear",
+            Self::QDrive_MaxSpeed_Boost => "QDrive_MaxSpeed_Boost",
+            Self::QDrive_MaxSpeed_Linear => "QDrive_MaxSpeed_Linear",
+            Self::Shield_ChargeToFull => "Shield_ChargeToFull",
+            Self::Shield_DamagedRegenDelay => "Shield_DamagedRegenDelay",
+            Self::Shield_Health => "Shield_Health",
+            Self::Shield_Regen => "Shield_Regen",
+            Self::Vehicle_Mass => "Vehicle_Mass",
+            Self::Vehicle_SizeCount_Countermeasures => "Vehicle_SizeCount_Countermeasures",
+            Self::Vehicle_SizeCount_Ordnance => "Vehicle_SizeCount_Ordnance",
+            Self::Vehicle_SizeCount_Thrusters => "Vehicle_SizeCount_Thrusters",
+            Self::Vehicle_SizeCount_Weapon => "Vehicle_SizeCount_Weapon",
+            Self::Weapon_AmmoCapacity => "Weapon_AmmoCapacity",
+            Self::Weapon_FireRate => "Weapon_FireRate",
+            Self::Weapon_Velocity => "Weapon_Velocity",
+            Self::UNDEFINED => "UNDEFINED",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -17360,6 +23538,169 @@ impl EItemSubType {
             "WeaponControl" => Self::WeaponControl,
             "UNDEFINED" => Self::UNDEFINED,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::ADSComputer => "ADSComputer",
+            Self::AirlockPart => "AirlockPart",
+            Self::Ammo_1000mm => "Ammo_1000mm",
+            Self::Ammo_20mm => "Ammo_20mm",
+            Self::Ammo_24mm => "Ammo_24mm",
+            Self::Ammo_25mm => "Ammo_25mm",
+            Self::Ammo_28mm => "Ammo_28mm",
+            Self::Ammo_30mm => "Ammo_30mm",
+            Self::Ammo_35mm => "Ammo_35mm",
+            Self::Ammo_40mm => "Ammo_40mm",
+            Self::Ammo_50mm => "Ammo_50mm",
+            Self::Ammo_60mm => "Ammo_60mm",
+            Self::Ammo_Rail_60mm => "Ammo_Rail_60mm",
+            Self::Ammo_Rail_80mm => "Ammo_Rail_80mm",
+            Self::AmmoBox_Ballistic_120rd_106mm_exp => "AmmoBox_Ballistic_120rd_106mm_exp",
+            Self::Armor => "Armor",
+            Self::Autopilot => "Autopilot",
+            Self::Awesome => "Awesome",
+            Self::BallTurret => "BallTurret",
+            Self::Bar => "Bar",
+            Self::Barrel => "Barrel",
+            Self::BombRack => "BombRack",
+            Self::Bottle => "Bottle",
+            Self::BottomAttachment => "BottomAttachment",
+            Self::BottomTurret => "BottomTurret",
+            Self::Box => "Box",
+            Self::Can => "Can",
+            Self::CanardTurret => "CanardTurret",
+            Self::Cargo => "Cargo",
+            Self::Cockpit_Audio => "Cockpit_Audio",
+            Self::Constellation => "Constellation",
+            Self::Consumable => "Consumable",
+            Self::CountermeasureLauncher => "CountermeasureLauncher",
+            Self::CPU => "CPU",
+            Self::Credit => "Credit",
+            Self::Default => "Default",
+            Self::delta => "delta",
+            Self::DoorPart => "DoorPart",
+            Self::External => "External",
+            Self::EyeWare => "EyeWare",
+            Self::Female => "Female",
+            Self::Female_Kid => "Female_Kid",
+            Self::FiringMechanism => "FiringMechanism",
+            Self::FixedThruster => "FixedThruster",
+            Self::Flair_Hanging => "Flair_Hanging",
+            Self::Flair_Wall_Picture => "Flair_Wall_Picture",
+            Self::Flair_Wall_Interaction => "Flair_Wall_Interaction",
+            Self::Flair_Static => "Flair_Static",
+            Self::Flair_Surface_Clutter => "Flair_Surface_Clutter",
+            Self::Flair_Surface_DisplayCase => "Flair_Surface_DisplayCase",
+            Self::Flair_Surface_HoloViewer => "Flair_Surface_HoloViewer",
+            Self::Flair_Floor_WallAligned => "Flair_Floor_WallAligned",
+            Self::Flashlight => "Flashlight",
+            Self::FlexThruster => "FlexThruster",
+            Self::Fluid => "Fluid",
+            Self::Fuel => "Fuel",
+            Self::Fuse => "Fuse",
+            Self::Gadget => "Gadget",
+            Self::ghostHornet => "ghostHornet",
+            Self::Glass => "Glass",
+            Self::Grapple => "Grapple",
+            Self::Grenade => "Grenade",
+            Self::GroundVehicleMissile => "GroundVehicleMissile",
+            Self::GroundVehicleMissileRack => "GroundVehicleMissileRack",
+            Self::Gun => "Gun",
+            Self::GunTurret => "GunTurret",
+            Self::Hacking => "Hacking",
+            Self::Handheld => "Handheld",
+            Self::Harvestable => "Harvestable",
+            Self::Hat => "Hat",
+            Self::Helmet => "Helmet",
+            Self::Heavy => "Heavy",
+            Self::Idris => "Idris",
+            Self::Idris_Turret => "Idris_Turret",
+            Self::Interior_Audio => "Interior_Audio",
+            Self::Inventory_Container => "Inventory_Container",
+            Self::IronSight => "IronSight",
+            Self::JetPack => "JetPack",
+            Self::JointThruster => "JointThruster",
+            Self::JumpDrive => "JumpDrive",
+            Self::Junk => "Junk",
+            Self::Knife => "Knife",
+            Self::Kopion => "Kopion",
+            Self::LandingSystem => "LandingSystem",
+            Self::Large => "Large",
+            Self::legs => "legs",
+            Self::Light => "Light",
+            Self::LightArmor => "LightArmor",
+            Self::ln => "ln",
+            Self::LongRangeRadar => "LongRangeRadar",
+            Self::Magazine => "Magazine",
+            Self::Male => "Male",
+            Self::Male_Kid => "Male_Kid",
+            Self::MannedTurret => "MannedTurret",
+            Self::Marok => "Marok",
+            Self::Medical => "Medical",
+            Self::Medium => "Medium",
+            Self::MedPack => "MedPack",
+            Self::MeleeMedium => "MeleeMedium",
+            Self::MidRangeRadar => "MidRangeRadar",
+            Self::Mineable => "Mineable",
+            Self::Missile => "Missile",
+            Self::MissileRack => "MissileRack",
+            Self::MissileTurret => "MissileTurret",
+            Self::Mission => "Mission",
+            Self::Motherboard => "Motherboard",
+            Self::NoseMounted => "NoseMounted",
+            Self::Oxygen => "Oxygen",
+            Self::OxygenCap => "OxygenCap",
+            Self::PDCTurret => "PDCTurret",
+            Self::Personal => "Personal",
+            Self::Pilot => "Pilot",
+            Self::Plant => "Plant",
+            Self::Power => "Power",
+            Self::PowerArray => "PowerArray",
+            Self::Power_Idris => "Power_Idris",
+            Self::Prop => "Prop",
+            Self::QDrive => "QDrive",
+            Self::QuantumFuel => "QuantumFuel",
+            Self::QuasiGrazer => "QuasiGrazer",
+            Self::Radar => "Radar",
+            Self::Retaliator => "Retaliator",
+            Self::Retro => "Retro",
+            Self::Rocket => "Rocket",
+            Self::Sachet => "Sachet",
+            Self::SalvageModifier_TractorBeam => "SalvageModifier_TractorBeam",
+            Self::Scanner => "Scanner",
+            Self::ShortRangeRadar => "ShortRangeRadar",
+            Self::SignatureReductor => "SignatureReductor",
+            Self::SkinTest => "SkinTest",
+            Self::Small => "Small",
+            Self::SpaceMineRack => "SpaceMineRack",
+            Self::Stormwal => "Stormwal",
+            Self::superHornet => "superHornet",
+            Self::SystemAccess => "SystemAccess",
+            Self::TargetingComputer => "TargetingComputer",
+            Self::ThrusterPack => "ThrusterPack",
+            Self::Tin => "Tin",
+            Self::TopTurret => "TopTurret",
+            Self::Torpedo => "Torpedo",
+            Self::Trophy => "Trophy",
+            Self::Unmanned => "Unmanned",
+            Self::Utility => "Utility",
+            Self::Vanduul => "Vanduul",
+            Self::Xian => "Xian",
+            Self::Valakkar => "Valakkar",
+            Self::VectorThruster => "VectorThruster",
+            Self::Vehicle_Boat => "Vehicle_Boat",
+            Self::Vehicle_GroundVehicle => "Vehicle_GroundVehicle",
+            Self::Vehicle_PowerSuit => "Vehicle_PowerSuit",
+            Self::Vehicle_Spaceship => "Vehicle_Spaceship",
+            Self::Ventilation => "Ventilation",
+            Self::Weapon => "Weapon",
+            Self::WeaponControl => "WeaponControl",
+            Self::UNDEFINED => "UNDEFINED",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -17964,6 +24305,208 @@ impl EItemType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::AIModule => "AIModule",
+            Self::AirTrafficController => "AirTrafficController",
+            Self::AmmoBox => "AmmoBox",
+            Self::AmmoCrate => "AmmoCrate",
+            Self::Armor => "Armor",
+            Self::Audio => "Audio",
+            Self::Avionics => "Avionics",
+            Self::AttachedPart => "AttachedPart",
+            Self::Battery => "Battery",
+            Self::BoatController => "BoatController",
+            Self::BodyArmor => "BodyArmor",
+            Self::Bomb => "Bomb",
+            Self::BombLauncher => "BombLauncher",
+            Self::Bottle => "Bottle",
+            Self::Button => "Button",
+            Self::CapacitorAssignmentController => "CapacitorAssignmentController",
+            Self::Cargo => "Cargo",
+            Self::CargoGrid => "CargoGrid",
+            Self::Char_Accessory_Eyes => "Char_Accessory_Eyes",
+            Self::Char_Accessory_Head => "Char_Accessory_Head",
+            Self::Char_Armor_Arms => "Char_Armor_Arms",
+            Self::Char_Armor_Feet => "Char_Armor_Feet",
+            Self::Char_Armor_Helmet => "Char_Armor_Helmet",
+            Self::Char_Armor_Legs => "Char_Armor_Legs",
+            Self::Char_Armor_Torso => "Char_Armor_Torso",
+            Self::Char_Armor_Undersuit => "Char_Armor_Undersuit",
+            Self::Char_Armor_Backpack => "Char_Armor_Backpack",
+            Self::Char_Body => "Char_Body",
+            Self::Char_Clothing_Feet => "Char_Clothing_Feet",
+            Self::Char_Clothing_Hands => "Char_Clothing_Hands",
+            Self::Char_Clothing_Hat => "Char_Clothing_Hat",
+            Self::Char_Clothing_Mask => "Char_Clothing_Mask",
+            Self::Char_Clothing_Jumpsuit => "Char_Clothing_Jumpsuit",
+            Self::Char_Clothing_Legs => "Char_Clothing_Legs",
+            Self::Char_Clothing_Torso_0 => "Char_Clothing_Torso_0",
+            Self::Char_Clothing_Torso_1 => "Char_Clothing_Torso_1",
+            Self::Char_Clothing_Torso_2 => "Char_Clothing_Torso_2",
+            Self::Char_Clothing_Undershirt => "Char_Clothing_Undershirt",
+            Self::Char_Clothing_Backpack => "Char_Clothing_Backpack",
+            Self::Char_Flair => "Char_Flair",
+            Self::Char_Hair_Color => "Char_Hair_Color",
+            Self::Char_Hair_Prop => "Char_Hair_Prop",
+            Self::Char_Head => "Char_Head",
+            Self::Char_Head_Beard => "Char_Head_Beard",
+            Self::Char_Head_Eyebrow => "Char_Head_Eyebrow",
+            Self::Char_Head_Eyelash => "Char_Head_Eyelash",
+            Self::Char_Head_Eyes => "Char_Head_Eyes",
+            Self::Char_Head_Hair => "Char_Head_Hair",
+            Self::Char_Head_Stubble => "Char_Head_Stubble",
+            Self::Char_Head_Piercings => "Char_Head_Piercings",
+            Self::Char_Lens => "Char_Lens",
+            Self::Char_Skin_Color => "Char_Skin_Color",
+            Self::Cloth => "Cloth",
+            Self::CommsController => "CommsController",
+            Self::Container => "Container",
+            Self::ControlPanel => "ControlPanel",
+            Self::Cooler => "Cooler",
+            Self::CoolerController => "CoolerController",
+            Self::Crafter => "Crafter",
+            Self::Creature_Body => "Creature_Body",
+            Self::Creature_Hair => "Creature_Hair",
+            Self::Creature_Harvest => "Creature_Harvest",
+            Self::Currency => "Currency",
+            Self::Debris => "Debris",
+            Self::Decal => "Decal",
+            Self::Display => "Display",
+            Self::DockingAnimator => "DockingAnimator",
+            Self::DockingCollar => "DockingCollar",
+            Self::DockingController => "DockingController",
+            Self::Door => "Door",
+            Self::DoorController => "DoorController",
+            Self::Drink => "Drink",
+            Self::Elevator => "Elevator",
+            Self::EMP => "EMP",
+            Self::EnergyController => "EnergyController",
+            Self::ExternalFuelTank => "ExternalFuelTank",
+            Self::Flair_Cockpit => "Flair_Cockpit",
+            Self::Flair_Floor => "Flair_Floor",
+            Self::Flair_Surface => "Flair_Surface",
+            Self::Flair_Wall => "Flair_Wall",
+            Self::FlightController => "FlightController",
+            Self::Food => "Food",
+            Self::FPS_AttachmentBarrel => "FPS_AttachmentBarrel",
+            Self::FPS_AttachmentBottom => "FPS_AttachmentBottom",
+            Self::FPS_AttachmentOptics => "FPS_AttachmentOptics",
+            Self::FPS_Consumable => "FPS_Consumable",
+            Self::FPS_Cooler => "FPS_Cooler",
+            Self::FPS_Deployable => "FPS_Deployable",
+            Self::FPS_Magazine => "FPS_Magazine",
+            Self::FPS_PowerGen => "FPS_PowerGen",
+            Self::FPS_Radar => "FPS_Radar",
+            Self::FPS_Scanner => "FPS_Scanner",
+            Self::FPS_Throwable => "FPS_Throwable",
+            Self::FPS_WeaponMelee => "FPS_WeaponMelee",
+            Self::FPS_WeaponShouldered => "FPS_WeaponShouldered",
+            Self::FPS_WeaponSidearm => "FPS_WeaponSidearm",
+            Self::FPS_WeaponStocked => "FPS_WeaponStocked",
+            Self::FPS_WeaponUtility => "FPS_WeaponUtility",
+            Self::FuelController => "FuelController",
+            Self::FuelIntake => "FuelIntake",
+            Self::FuelNozzle => "FuelNozzle",
+            Self::FuelTank => "FuelTank",
+            Self::Gadget => "Gadget",
+            Self::GravityGenerator => "GravityGenerator",
+            Self::Grenade => "Grenade",
+            Self::GroundVehicleMissileLauncher => "GroundVehicleMissileLauncher",
+            Self::HangarExpansion => "HangarExpansion",
+            Self::Hangar => "Hangar",
+            Self::HangarStock => "HangarStock",
+            Self::Interior => "Interior",
+            Self::InventoryContainer => "InventoryContainer",
+            Self::JumpDrive => "JumpDrive",
+            Self::LandingSystem => "LandingSystem",
+            Self::LandingGear => "LandingGear",
+            Self::LifeSupportGenerator => "LifeSupportGenerator",
+            Self::LifeSupportTank => "LifeSupportTank",
+            Self::LifeSupportVent => "LifeSupportVent",
+            Self::Light => "Light",
+            Self::LightController => "LightController",
+            Self::Lightgroup => "Lightgroup",
+            Self::LiveSupport => "LiveSupport",
+            Self::MaelstromPart => "MaelstromPart",
+            Self::Magazine => "Magazine",
+            Self::MainEngine => "MainEngine",
+            Self::MainThruster => "MainThruster",
+            Self::ManneuverThruster => "ManneuverThruster",
+            Self::MiningController => "MiningController",
+            Self::MiningModifier => "MiningModifier",
+            Self::Misc => "Misc",
+            Self::Missile => "Missile",
+            Self::MissileController => "MissileController",
+            Self::MissileLauncher => "MissileLauncher",
+            Self::MobiGlas => "MobiGlas",
+            Self::Module => "Module",
+            Self::MultiLight => "MultiLight",
+            Self::NOITEM_Player => "NOITEM_Player",
+            Self::NOITEM_Vehicle => "NOITEM_Vehicle",
+            Self::Paints => "Paints",
+            Self::PersistentHab => "PersistentHab",
+            Self::PersonalInnerThought => "PersonalInnerThought",
+            Self::Ping => "Ping",
+            Self::Player => "Player",
+            Self::PowerPlant => "PowerPlant",
+            Self::QuantumDrive => "QuantumDrive",
+            Self::QuantumInterdictionGenerator => "QuantumInterdictionGenerator",
+            Self::QuantumFuelTank => "QuantumFuelTank",
+            Self::Radar => "Radar",
+            Self::Relay => "Relay",
+            Self::RemoteConnection => "RemoteConnection",
+            Self::RemovableChip => "RemovableChip",
+            Self::RemovableBlade => "RemovableBlade",
+            Self::Room => "Room",
+            Self::SalvageController => "SalvageController",
+            Self::SalvageFieldEmitter => "SalvageFieldEmitter",
+            Self::SalvageFieldSupporter => "SalvageFieldSupporter",
+            Self::SalvageFillerStation => "SalvageFillerStation",
+            Self::SalvageHead => "SalvageHead",
+            Self::SalvageInternalStorage => "SalvageInternalStorage",
+            Self::SalvageModifier => "SalvageModifier",
+            Self::Scanner => "Scanner",
+            Self::Seat => "Seat",
+            Self::SeatAccess => "SeatAccess",
+            Self::SeatDashboard => "SeatDashboard",
+            Self::SelfDestruct => "SelfDestruct",
+            Self::Sensor => "Sensor",
+            Self::Shield => "Shield",
+            Self::ShieldController => "ShieldController",
+            Self::Ship => "Ship",
+            Self::ShopDisplay => "ShopDisplay",
+            Self::SpaceMine => "SpaceMine",
+            Self::SpaceMineLauncher => "SpaceMineLauncher",
+            Self::StatusScreen => "StatusScreen",
+            Self::Suit => "Suit",
+            Self::TargetSelector => "TargetSelector",
+            Self::Thumbnail => "Thumbnail",
+            Self::ToolArm => "ToolArm",
+            Self::TowingBeam => "TowingBeam",
+            Self::TractorBeam => "TractorBeam",
+            Self::Transponder => "Transponder",
+            Self::Turret => "Turret",
+            Self::TurretBase => "TurretBase",
+            Self::Usable => "Usable",
+            Self::UtilityTurret => "UtilityTurret",
+            Self::Visor => "Visor",
+            Self::WeaponAttachment => "WeaponAttachment",
+            Self::WeaponController => "WeaponController",
+            Self::WeaponDefensive => "WeaponDefensive",
+            Self::WeaponGun => "WeaponGun",
+            Self::WeaponMining => "WeaponMining",
+            Self::WeaponPersonal => "WeaponPersonal",
+            Self::WeaponRegenPool => "WeaponRegenPool",
+            Self::WheeledController => "WheeledController",
+            Self::WeaponMount => "WeaponMount",
+            Self::UNDEFINED => "UNDEFINED",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EKnockbackBodyPart`
@@ -18005,6 +24548,21 @@ impl EKnockbackBodyPart {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Indirect => "Indirect",
+            Self::Head => "Head",
+            Self::Torso => "Torso",
+            Self::LeftArm => "LeftArm",
+            Self::RightArm => "RightArm",
+            Self::LeftLeg => "LeftLeg",
+            Self::RightLeg => "RightLeg",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EKnockbackHitType`
@@ -18037,6 +24595,18 @@ impl EKnockbackHitType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Physics => "Physics",
+            Self::Projectile => "Projectile",
+            Self::Melee => "Melee",
+            Self::Explosion => "Explosion",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ELandClaimType`
@@ -18064,6 +24634,17 @@ impl ELandClaimType {
             "Prospecting" => Self::Prospecting,
             "Beacon" => Self::Beacon,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Default => "Default",
+            Self::Prospecting => "Prospecting",
+            Self::Beacon => "Beacon",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -18096,6 +24677,18 @@ impl ELandingAreaCanBeUsedBy {
             "Player" => Self::Player,
             "All" => Self::All,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::AI => "AI",
+            Self::Player => "Player",
+            Self::All => "All",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -18131,6 +24724,19 @@ impl ELawLicenseType {
             "IllegalGoodsLicense_Prohibited" => Self::IllegalGoodsLicense_Prohibited,
             "ArrestLicense" => Self::ArrestLicense,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::IllegalGoodsLicense_ClassA => "IllegalGoodsLicense_ClassA",
+            Self::IllegalGoodsLicense_ClassB => "IllegalGoodsLicense_ClassB",
+            Self::IllegalGoodsLicense_ClassC => "IllegalGoodsLicense_ClassC",
+            Self::IllegalGoodsLicense_Prohibited => "IllegalGoodsLicense_Prohibited",
+            Self::ArrestLicense => "ArrestLicense",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -18189,6 +24795,26 @@ impl ELensDisplayMode {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::FPS => "FPS",
+            Self::Kiosk => "Kiosk",
+            Self::MobiGlas => "MobiGlas",
+            Self::Multiplayer => "Multiplayer",
+            Self::OverrideFPS => "OverrideFPS",
+            Self::PIT => "PIT",
+            Self::TrackView => "TrackView",
+            Self::Tutorial => "Tutorial",
+            Self::Vehicle => "Vehicle",
+            Self::PauseMenu => "PauseMenu",
+            Self::ADS => "ADS",
+            Self::FiringRange => "FiringRange",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ELicenseType`
@@ -18224,6 +24850,19 @@ impl ELicenseType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Gold => "Gold",
+            Self::Platinum => "Platinum",
+            Self::GameMasterEventItem => "GameMasterEventItem",
+            Self::LootableEventItem => "LootableEventItem",
+            Self::UNDEFINED => "UNDEFINED",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ELightAffectsGI`
@@ -18253,6 +24892,17 @@ impl ELightAffectsGI {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::On => "On",
+            Self::Off => "Off",
+            Self::InheritAffectsObjects => "InheritAffectsObjects",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ELightEnabledWithGI`
@@ -18280,6 +24930,17 @@ impl ELightEnabledWithGI {
             "WithGI" => Self::WithGI,
             "WithoutGI" => Self::WithoutGI,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Always => "Always",
+            Self::WithGI => "WithGI",
+            Self::WithoutGI => "WithoutGI",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -18317,6 +24978,19 @@ impl ELightImportance {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Decorative => "Decorative",
+            Self::Standard => "Standard",
+            Self::Secondary => "Secondary",
+            Self::Key => "Key",
+            Self::Cinematic => "Cinematic",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ELightState`
@@ -18350,6 +25024,19 @@ impl ELightState {
             "Emergency" => Self::Emergency,
             "Cinematic" => Self::Cinematic,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Off => "Off",
+            Self::Default => "Default",
+            Self::Auxiliary => "Auxiliary",
+            Self::Emergency => "Emergency",
+            Self::Cinematic => "Cinematic",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -18390,6 +25077,20 @@ impl ELightStateOverride {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Off => "Off",
+            Self::Default => "Default",
+            Self::Auxiliary => "Auxiliary",
+            Self::Emergency => "Emergency",
+            Self::Cinematic => "Cinematic",
+            Self::DisableOverride => "DisableOverride",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ELightType`
@@ -18425,6 +25126,19 @@ impl ELightType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Omni => "Omni",
+            Self::SoftOmni => "SoftOmni",
+            Self::Projector => "Projector",
+            Self::Planar => "Planar",
+            Self::Ambient => "Ambient",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ELinkMode`
@@ -18449,6 +25163,16 @@ impl ELinkMode {
             "NoLink" => Self::NoLink,
             "FeetLink" => Self::FeetLink,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::NoLink => "NoLink",
+            Self::FeetLink => "FeetLink",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -18481,6 +25205,18 @@ impl ELoadingScreenType {
             "Squadron42" => Self::Squadron42,
             "Frontend" => Self::Frontend,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::StarCitizen => "StarCitizen",
+            Self::ElectronicAccess => "ElectronicAccess",
+            Self::Squadron42 => "Squadron42",
+            Self::Frontend => "Frontend",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -18635,6 +25371,58 @@ impl ELoadoutGroup {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Body => "Body",
+            Self::SkinTone => "SkinTone",
+            Self::Head => "Head",
+            Self::Brows => "Brows",
+            Self::Eyes => "Eyes",
+            Self::Hair => "Hair",
+            Self::HairColour => "HairColour",
+            Self::FacialHair => "FacialHair",
+            Self::FacialHairColour => "FacialHairColour",
+            Self::FaceAttachments1 => "FaceAttachments1",
+            Self::FaceAttachments2 => "FaceAttachments2",
+            Self::Piercings1 => "Piercings1",
+            Self::Piercings2 => "Piercings2",
+            Self::Tattoos => "Tattoos",
+            Self::TattooFace => "TattooFace",
+            Self::TattooBody => "TattooBody",
+            Self::Undersuit => "Undersuit",
+            Self::Helmet => "Helmet",
+            Self::Torso => "Torso",
+            Self::Torso2 => "Torso2",
+            Self::Torso3 => "Torso3",
+            Self::TorsoAttachments => "TorsoAttachments",
+            Self::Outfit => "Outfit",
+            Self::Outfit2 => "Outfit2",
+            Self::Outfit3 => "Outfit3",
+            Self::Outfit4 => "Outfit4",
+            Self::Arm => "Arm",
+            Self::Leg => "Leg",
+            Self::Feet => "Feet",
+            Self::PrimaryWeapon => "PrimaryWeapon",
+            Self::PrimaryOptics => "PrimaryOptics",
+            Self::UnderBarrelAttachment => "UnderBarrelAttachment",
+            Self::BarrelAttachment => "BarrelAttachment",
+            Self::PrimaryAttachments => "PrimaryAttachments",
+            Self::SecondaryWeapon => "SecondaryWeapon",
+            Self::SecondaryOptics => "SecondaryOptics",
+            Self::SecondaryAttachments => "SecondaryAttachments",
+            Self::MeleeWeapon => "MeleeWeapon",
+            Self::Grenades => "Grenades",
+            Self::MedicalSupplies => "MedicalSupplies",
+            Self::Item => "Item",
+            Self::Mobiglas => "Mobiglas",
+            Self::Utility1 => "Utility1",
+            Self::Utility2 => "Utility2",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ELocationTypeLevel`
@@ -18670,6 +25458,19 @@ impl ELocationTypeLevel {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::SolarSystem => "SolarSystem",
+            Self::Region => "Region",
+            Self::LocalSystem => "LocalSystem",
+            Self::PlanetOrMoon => "PlanetOrMoon",
+            Self::POIOrCluster => "POIOrCluster",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ELootFullnessMode`
@@ -18694,6 +25495,16 @@ impl ELootFullnessMode {
             "stopAfterExceed" => Self::stopAfterExceed,
             "preventExceed" => Self::preventExceed,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::stopAfterExceed => "stopAfterExceed",
+            Self::preventExceed => "preventExceed",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -18728,6 +25539,18 @@ impl ELootPruningLevel {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::none => "none",
+            Self::containerSize => "containerSize",
+            Self::fullnessTarget => "fullnessTarget",
+            Self::dynamic => "dynamic",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ELootingDefaultInteractions`
@@ -18752,6 +25575,16 @@ impl ELootingDefaultInteractions {
             "OpenInventoryUI" => Self::OpenInventoryUI,
             "OpenLootingUI" => Self::OpenLootingUI,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::OpenInventoryUI => "OpenInventoryUI",
+            Self::OpenLootingUI => "OpenLootingUI",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -18784,6 +25617,18 @@ impl EMagLaunchState {
             "Launch" => Self::Launch,
             "LaunchComplete" => Self::LaunchComplete,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Off => "Off",
+            Self::Lift => "Lift",
+            Self::Launch => "Launch",
+            Self::LaunchComplete => "LaunchComplete",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -18831,6 +25676,23 @@ impl EMagRecoveryState {
             "Retracting" => Self::Retracting,
             "Done" => Self::Done,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Idle => "Idle",
+            Self::Deploying => "Deploying",
+            Self::WaitingForTrap => "WaitingForTrap",
+            Self::MovingToHover => "MovingToHover",
+            Self::MovingDown => "MovingDown",
+            Self::Landed => "Landed",
+            Self::LandingCompletedEngineOff => "LandingCompletedEngineOff",
+            Self::Retracting => "Retracting",
+            Self::Done => "Done",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -18985,6 +25847,58 @@ impl EMapId {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::INVALID => "INVALID",
+            Self::EA_AstorsClearing => "EA_AstorsClearing",
+            Self::EA_BloodshotRidge => "EA_BloodshotRidge",
+            Self::EA_BrokenMoon => "EA_BrokenMoon",
+            Self::EA_CaplanCircuit => "EA_CaplanCircuit",
+            Self::EA_ClioIslands => "EA_ClioIslands",
+            Self::EA_Crossroads => "EA_Crossroads",
+            Self::EA_CryAstro_DC3412 => "EA_CryAstro_DC3412",
+            Self::EA_Daymar => "EA_Daymar",
+            Self::EA_DaymarDunes => "EA_DaymarDunes",
+            Self::EA_Demien => "EA_Demien",
+            Self::EA_DemienComms => "EA_DemienComms",
+            Self::EA_DogfightTest => "EA_DogfightTest",
+            Self::EA_DunlowDerby => "EA_DunlowDerby",
+            Self::EA_DyingStar => "EA_DyingStar",
+            Self::EA_Echo11 => "EA_Echo11",
+            Self::EA_EuterpeIcebreaker => "EA_EuterpeIcebreaker",
+            Self::EA_EZHab => "EA_EZHab",
+            Self::EA_Gundo => "EA_Gundo",
+            Self::EA_HurstonGroundArena => "EA_HurstonGroundArena",
+            Self::EA_JerichoStation => "EA_JerichoStation",
+            Self::EA_Kareah => "EA_Kareah",
+            Self::EA_LorvilleOutskirts => "EA_LorvilleOutskirts",
+            Self::EA_MagdaGroundArena => "EA_MagdaGroundArena",
+            Self::EA_MakersPoint => "EA_MakersPoint",
+            Self::EA_MicroTechRiver => "EA_MicroTechRiver",
+            Self::EA_MinersLament => "EA_MinersLament",
+            Self::EA_Ministry => "EA_Ministry",
+            Self::EA_NHS_Arena => "EA_NHS_Arena",
+            Self::EA_NHS_DeffordLink => "EA_NHS_DeffordLink",
+            Self::EA_NHS_HalloranCircuit => "EA_NHS_HalloranCircuit",
+            Self::EA_NHS_OldVanderval => "EA_NHS_OldVanderval",
+            Self::EA_NHS_Rikkord => "EA_NHS_Rikkord",
+            Self::EA_NHS_Wetlands => "EA_NHS_Wetlands",
+            Self::EA_Pyro2 => "EA_Pyro2",
+            Self::EA_PyroJump => "EA_PyroJump",
+            Self::EA_ScenarioTwo => "EA_ScenarioTwo",
+            Self::EA_TheGoodDr => "EA_TheGoodDr",
+            Self::EA_TheSkyScraper => "EA_TheSkyScraper",
+            Self::EA_TheSnakePit => "EA_TheSnakePit",
+            Self::EA_TheSnakePit_Reverse => "EA_TheSnakePit_Reverse",
+            Self::EA_RayariStation => "EA_RayariStation",
+            Self::EA_YadarValley => "EA_YadarValley",
+            Self::EA_YelaGroundArena => "EA_YelaGroundArena",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EMarkerProviders`
@@ -19026,6 +25940,21 @@ impl EMarkerProviders {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Grenades => "Grenades",
+            Self::Player => "Player",
+            Self::UnattendedVehicle => "UnattendedVehicle",
+            Self::VehicleEntrance => "VehicleEntrance",
+            Self::ObjectDataBank => "ObjectDataBank",
+            Self::NavigationWaypoints => "NavigationWaypoints",
+            Self::LocationPins => "LocationPins",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EMasterMode`
@@ -19061,6 +25990,19 @@ impl EMasterMode {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Invalid => "Invalid",
+            Self::Navigation => "Navigation",
+            Self::SCM => "SCM",
+            Self::Stealth => "Stealth",
+            Self::SMP => "SMP",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EMatchCycleType`
@@ -19090,6 +26032,17 @@ impl EMatchCycleType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::NewServer => "NewServer",
+            Self::RestartLevel => "RestartLevel",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EMatchNetworkType`
@@ -19117,6 +26070,17 @@ impl EMatchNetworkType {
             "Online" => Self::Online,
             "Custom" => Self::Custom,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Offline => "Offline",
+            Self::Online => "Online",
+            Self::Custom => "Custom",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -19316,6 +26280,73 @@ impl EMeshChunks {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::vneck_zone => "vneck_zone",
+            Self::torso01_zone => "torso01_zone",
+            Self::torso02_zone => "torso02_zone",
+            Self::torso03_zone => "torso03_zone",
+            Self::torso04_zone => "torso04_zone",
+            Self::head_zone => "head_zone",
+            Self::hips_zone => "hips_zone",
+            Self::underwear_top_zone => "underwear_top_zone",
+            Self::underwear_zone => "underwear_zone",
+            Self::pants_acc_zone => "pants_acc_zone",
+            Self::shirt_acc_zone => "shirt_acc_zone",
+            Self::l_shoulder_zone => "l_shoulder_zone",
+            Self::l_arm01_zone => "l_arm01_zone",
+            Self::l_arm02_zone => "l_arm02_zone",
+            Self::l_arm03_zone => "l_arm03_zone",
+            Self::l_arm04_zone => "l_arm04_zone",
+            Self::l_arm05_zone => "l_arm05_zone",
+            Self::l_arm05_body_zone => "l_arm05_body_zone",
+            Self::l_arm05_torso0_zone => "l_arm05_torso0_zone",
+            Self::l_hand_zone => "l_hand_zone",
+            Self::l_leg01_zone => "l_leg01_zone",
+            Self::l_leg02_zone => "l_leg02_zone",
+            Self::l_leg03_zone => "l_leg03_zone",
+            Self::l_leg04_zone => "l_leg04_zone",
+            Self::l_foot_zone => "l_foot_zone",
+            Self::l_eye_zone => "l_eye_zone",
+            Self::r_shoulder_zone => "r_shoulder_zone",
+            Self::r_arm01_zone => "r_arm01_zone",
+            Self::r_arm02_zone => "r_arm02_zone",
+            Self::r_arm03_zone => "r_arm03_zone",
+            Self::r_arm04_zone => "r_arm04_zone",
+            Self::r_arm05_zone => "r_arm05_zone",
+            Self::r_arm05_body_zone => "r_arm05_body_zone",
+            Self::r_arm05_torso0_zone => "r_arm05_torso0_zone",
+            Self::r_hand_zone => "r_hand_zone",
+            Self::r_leg01_zone => "r_leg01_zone",
+            Self::r_leg02_zone => "r_leg02_zone",
+            Self::r_leg03_zone => "r_leg03_zone",
+            Self::r_leg04_zone => "r_leg04_zone",
+            Self::r_foot_zone => "r_foot_zone",
+            Self::r_eye_zone => "r_eye_zone",
+            Self::omega_core_zone => "omega_core_zone",
+            Self::omega_arms_zone => "omega_arms_zone",
+            Self::omega_legs_zone => "omega_legs_zone",
+            Self::theta_head_zone => "theta_head_zone",
+            Self::theta_core_zone => "theta_core_zone",
+            Self::theta_arms_zone => "theta_arms_zone",
+            Self::theta_legs_zone => "theta_legs_zone",
+            Self::theta_l_arm_zone => "theta_l_arm_zone",
+            Self::theta_r_arm_zone => "theta_r_arm_zone",
+            Self::theta_l_leg_zone => "theta_l_leg_zone",
+            Self::theta_r_leg_zone => "theta_r_leg_zone",
+            Self::theta_body_chest_zone => "theta_body_chest_zone",
+            Self::pcg_eyebrows => "pcg_eyebrows",
+            Self::pcg_r_ear => "pcg_r_ear",
+            Self::pcg_l_ear => "pcg_l_ear",
+            Self::pcg_nose => "pcg_nose",
+            Self::pcg_mouth => "pcg_mouth",
+            Self::UNDEFINED => "UNDEFINED",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EMisfireType`
@@ -19348,6 +26379,18 @@ impl EMisfireType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::Minor => "Minor",
+            Self::Major => "Major",
+            Self::Critical => "Critical",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EMissionObjectiveCategory`
@@ -19372,6 +26415,16 @@ impl EMissionObjectiveCategory {
             "Primary" => Self::Primary,
             "Optional" => Self::Optional,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Primary => "Primary",
+            Self::Optional => "Optional",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -19409,6 +26462,19 @@ impl EMissionPhaseStates {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::NotStarted => "NotStarted",
+            Self::Active => "Active",
+            Self::Completed => "Completed",
+            Self::Failed => "Failed",
+            Self::Abandoned => "Abandoned",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EMissionResult`
@@ -19444,6 +26510,19 @@ impl EMissionResult {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Completed => "Completed",
+            Self::InProgress => "InProgress",
+            Self::Failed => "Failed",
+            Self::Abandoned => "Abandoned",
+            Self::Withdrawn => "Withdrawn",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EMobiGlasAfterActionReportRank`
@@ -19476,6 +26555,18 @@ impl EMobiGlasAfterActionReportRank {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Acceptable => "Acceptable",
+            Self::Good => "Good",
+            Self::Great => "Great",
+            Self::Extraordinary => "Extraordinary",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EMobiGlasPersonalStatusSkillsDisplayType`
@@ -19505,6 +26596,17 @@ impl EMobiGlasPersonalStatusSkillsDisplayType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::Attribute => "Attribute",
+            Self::Technique => "Technique",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EModifierSignatureType`
@@ -19529,6 +26631,16 @@ impl EModifierSignatureType {
             "GainPercentage" => Self::GainPercentage,
             "LossPercentage" => Self::LossPercentage,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::GainPercentage => "GainPercentage",
+            Self::LossPercentage => "LossPercentage",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -19566,6 +26678,19 @@ impl EModuleType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::PersistentUniverse => "PersistentUniverse",
+            Self::ElectronicAccess => "ElectronicAccess",
+            Self::Squadron42 => "Squadron42",
+            Self::Frontend => "Frontend",
+            Self::Undefined => "Undefined",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EMolehillDecayType`
@@ -19596,6 +26721,18 @@ impl EMolehillDecayType {
             "SinkOrRise" => Self::SinkOrRise,
             "PopInOut" => Self::PopInOut,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::ShrinkOrInflate => "ShrinkOrInflate",
+            Self::FlattenOrBuild => "FlattenOrBuild",
+            Self::SinkOrRise => "SinkOrRise",
+            Self::PopInOut => "PopInOut",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -19638,6 +26775,22 @@ impl EMotionProcessorLimiterType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::NormalizedUniform => "NormalizedUniform",
+            Self::NormalizedUniformWithMaxRadius => "NormalizedUniformWithMaxRadius",
+            Self::NormalizedUniformWithMaxRadiusForwardOnly => {
+                "NormalizedUniformWithMaxRadiusForwardOnly"
+            }
+            Self::Ellipsoid => "Ellipsoid",
+            Self::PerAxis => "PerAxis",
+            Self::PerAxisLateral => "PerAxisLateral",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EMovementProcessor`
@@ -19670,6 +26823,18 @@ impl EMovementProcessor {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::Basic => "Basic",
+            Self::Locomotion => "Locomotion",
+            Self::SubmergedCreature => "SubmergedCreature",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EMyEnum`
@@ -19699,6 +26864,17 @@ impl EMyEnum {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::First => "First",
+            Self::Second => "Second",
+            Self::Third => "Third",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ENavPointType`
@@ -19723,6 +26899,16 @@ impl ENavPointType {
             "General" => Self::General,
             "QTTracePoint" => Self::QTTracePoint,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::General => "General",
+            Self::QTTracePoint => "QTTracePoint",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -19757,6 +26943,18 @@ impl ENavigationAgentType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::MediumSizedCharacters => "MediumSizedCharacters",
+            Self::LargeSizedCharacters => "LargeSizedCharacters",
+            Self::VehicleMedium => "VehicleMedium",
+            Self::MediumSizedSpaceships => "MediumSizedSpaceships",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ENavigationLinkLinkingType`
@@ -19787,6 +26985,18 @@ impl ENavigationLinkLinkingType {
             "LinksToExternalZone" => Self::LinksToExternalZone,
             "LinksFromExternalZone" => Self::LinksFromExternalZone,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::LinksInsideSameZone => "LinksInsideSameZone",
+            Self::LinksInsideSameExternalZone => "LinksInsideSameExternalZone",
+            Self::LinksToExternalZone => "LinksToExternalZone",
+            Self::LinksFromExternalZone => "LinksFromExternalZone",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -19872,6 +27082,35 @@ impl EObjectDataBankEntryTrackerType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::LandingArea => "LandingArea",
+            Self::FPSMineable => "FPSMineable",
+            Self::Mineable => "Mineable",
+            Self::Missile => "Missile",
+            Self::Mission => "Mission",
+            Self::NavPoint => "NavPoint",
+            Self::PartyMember => "PartyMember",
+            Self::QuantumTravel => "QuantumTravel",
+            Self::RaceCheckpoint => "RaceCheckpoint",
+            Self::Transponder => "Transponder",
+            Self::Vehicle => "Vehicle",
+            Self::Turret => "Turret",
+            Self::Debris => "Debris",
+            Self::Actor => "Actor",
+            Self::Unknown => "Unknown",
+            Self::BlobContact => "BlobContact",
+            Self::InteractionPoint => "InteractionPoint",
+            Self::Interactable => "Interactable",
+            Self::Hint => "Hint",
+            Self::Explosive => "Explosive",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EObjectiveInteractionType`
@@ -19904,6 +27143,18 @@ impl EObjectiveInteractionType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Defend => "Defend",
+            Self::Capture => "Capture",
+            Self::Damage => "Damage",
+            Self::Overload => "Overload",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EOperationsType`
@@ -19931,6 +27182,17 @@ impl EOperationsType {
             "Multiply" => Self::Multiply,
             "Subtract" => Self::Subtract,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Add => "Add",
+            Self::Multiply => "Multiply",
+            Self::Subtract => "Subtract",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -19989,6 +27251,26 @@ impl EOperatorMode {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::Inactive => "Inactive",
+            Self::Flight => "Flight",
+            Self::Combat => "Combat",
+            Self::Turret => "Turret",
+            Self::Missile => "Missile",
+            Self::Scanning => "Scanning",
+            Self::Mining => "Mining",
+            Self::QuantumNavigation => "QuantumNavigation",
+            Self::Refuel => "Refuel",
+            Self::AirTrafficController => "AirTrafficController",
+            Self::Salvage => "Salvage",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EOrdnanceRelativeDetachType`
@@ -20016,6 +27298,17 @@ impl EOrdnanceRelativeDetachType {
             "Weapon" => Self::Weapon,
             "WeaponHost" => Self::WeaponHost,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Ordnance => "Ordnance",
+            Self::Weapon => "Weapon",
+            Self::WeaponHost => "WeaponHost",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -20051,6 +27344,19 @@ impl EOutfitPieceType {
             "Legs" => Self::Legs,
             "Undersuit" => Self::Undersuit,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Head => "Head",
+            Self::Torso => "Torso",
+            Self::Arms => "Arms",
+            Self::Legs => "Legs",
+            Self::Undersuit => "Undersuit",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -20103,6 +27409,24 @@ impl EParticleInputs {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Count => "Count",
+            Self::Size => "Size",
+            Self::Speed => "Speed",
+            Self::Time => "Time",
+            Self::Pulse => "Pulse",
+            Self::Strength => "Strength",
+            Self::Scale => "Scale",
+            Self::Diffuse => "Diffuse",
+            Self::Radius => "Radius",
+            Self::UNDEFINED => "UNDEFINED",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EParticleModifierSource`
@@ -20145,6 +27469,22 @@ impl EParticleModifierSource {
             "SalvageRepair" => Self::SalvageRepair,
             "Wear" => Self::Wear,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::Power => "Power",
+            Self::Heat => "Heat",
+            Self::BarrelAttachment => "BarrelAttachment",
+            Self::MiningLaserThrottle => "MiningLaserThrottle",
+            Self::WeaponState => "WeaponState",
+            Self::SalvageRepair => "SalvageRepair",
+            Self::Wear => "Wear",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -20206,6 +27546,27 @@ impl EParticleProperties {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::strength => "strength",
+            Self::alpha => "alpha",
+            Self::color => "color",
+            Self::count => "count",
+            Self::size => "size",
+            Self::speed => "speed",
+            Self::time => "time",
+            Self::pulse => "pulse",
+            Self::radius => "radius",
+            Self::distribution => "distribution",
+            Self::glowScale => "glowScale",
+            Self::emissionSize => "emissionSize",
+            Self::UNDEFINED => "UNDEFINED",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EPerceptionSenses`
@@ -20233,6 +27594,17 @@ impl EPerceptionSenses {
             "Hearing" => Self::Hearing,
             "Radar" => Self::Radar,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Vision => "Vision",
+            Self::Hearing => "Hearing",
+            Self::Radar => "Radar",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -20268,6 +27640,19 @@ impl EPerceptionStatus {
             "Conscious" => Self::Conscious,
             "Invalid" => Self::Invalid,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Dead => "Dead",
+            Self::Downed => "Downed",
+            Self::Unconscious => "Unconscious",
+            Self::Conscious => "Conscious",
+            Self::Invalid => "Invalid",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -20335,6 +27720,29 @@ impl EPerceptionTypes {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Explosive => "Explosive",
+            Self::Agent => "Agent",
+            Self::Player => "Player",
+            Self::Interesting => "Interesting",
+            Self::SearchSpots => "SearchSpots",
+            Self::SabotageEquipment => "SabotageEquipment",
+            Self::Vehicle => "Vehicle",
+            Self::Spaceship => "Spaceship",
+            Self::Missile => "Missile",
+            Self::Torpedo => "Torpedo",
+            Self::Bomb => "Bomb",
+            Self::FiringRangeTarget => "FiringRangeTarget",
+            Self::LargeObject => "LargeObject",
+            Self::Turret => "Turret",
+            Self::ExplosiveDestructible => "ExplosiveDestructible",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EPersistentDataPolicy`
@@ -20362,6 +27770,17 @@ impl EPersistentDataPolicy {
             "ReadOnly" => Self::ReadOnly,
             "WriteFull" => Self::WriteFull,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Disabled => "Disabled",
+            Self::ReadOnly => "ReadOnly",
+            Self::WriteFull => "WriteFull",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -20504,6 +27923,54 @@ impl EPhysFlag {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::none => "none",
+            Self::geom_colltype_default => "geom_colltype_default",
+            Self::geom_colltype_player => "geom_colltype_player",
+            Self::geom_colltype_explosion => "geom_colltype_explosion",
+            Self::geom_colltype_vehicle => "geom_colltype_vehicle",
+            Self::geom_colltype_foliage => "geom_colltype_foliage",
+            Self::geom_colltype_debris => "geom_colltype_debris",
+            Self::geom_colltype_shield => "geom_colltype_shield",
+            Self::geom_colltype_terrain_mesh => "geom_colltype_terrain_mesh",
+            Self::geom_colltype_foliage_proxy => "geom_colltype_foliage_proxy",
+            Self::geom_colltype_obstruct => "geom_colltype_obstruct",
+            Self::geom_colltype_ray => "geom_colltype_ray",
+            Self::geom_car_wheel => "geom_car_wheel",
+            Self::geom_interior => "geom_interior",
+            Self::geom_exterior => "geom_exterior",
+            Self::geom_interior_grid_part => "geom_interior_grid_part",
+            Self::geom_voxelization_proxy => "geom_voxelization_proxy",
+            Self::geom_cluster_mesh => "geom_cluster_mesh",
+            Self::geom_interaction => "geom_interaction",
+            Self::geom_disabled => "geom_disabled",
+            Self::geom_floats => "geom_floats",
+            Self::geom_deprecated_21 => "geom_deprecated_21",
+            Self::geom_internal_deprecated_22 => "geom_internal_deprecated_22",
+            Self::geom_internal_23 => "geom_internal_23",
+            Self::geom_squashy => "geom_squashy",
+            Self::geom_log_interactions => "geom_log_interactions",
+            Self::geom_monitor_contacts => "geom_monitor_contacts",
+            Self::geom_manually_breakable => "geom_manually_breakable",
+            Self::geom_no_coll_response => "geom_no_coll_response",
+            Self::geom_mat_substitutor => "geom_mat_substitutor",
+            Self::geom_deprecated_30 => "geom_deprecated_30",
+            Self::geom_no_particle_impulse => "geom_no_particle_impulse",
+            Self::geom_destroyed_on_break => "geom_destroyed_on_break",
+            Self::geom_sdf_proxy => "geom_sdf_proxy",
+            Self::geom_internal_34 => "geom_internal_34",
+            Self::geom_internal_deprecated_35 => "geom_internal_deprecated_35",
+            Self::geom_unpushable => "geom_unpushable",
+            Self::geom_foot_coll => "geom_foot_coll",
+            Self::geom_kinematic_part => "geom_kinematic_part",
+            Self::geom_stairs_ramps => "geom_stairs_ramps",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EPipeClass`
@@ -20569,6 +28036,29 @@ impl EPipeClass {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Power => "Power",
+            Self::Heat => "Heat",
+            Self::Avionics => "Avionics",
+            Self::Fuel => "Fuel",
+            Self::QuantumFuel => "QuantumFuel",
+            Self::Oxygen => "Oxygen",
+            Self::Shield => "Shield",
+            Self::Decibel => "Decibel",
+            Self::Charge => "Charge",
+            Self::Health => "Health",
+            Self::Input => "Input",
+            Self::Output => "Output",
+            Self::Atmosphere => "Atmosphere",
+            Self::WeaponRegen => "WeaponRegen",
+            Self::WeaponAmmoLoad => "WeaponAmmoLoad",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EPipePriorityGroup`
@@ -20601,6 +28091,18 @@ impl EPipePriorityGroup {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Weapon => "Weapon",
+            Self::Shield => "Shield",
+            Self::Thruster => "Thruster",
+            Self::Other => "Other",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EPlayerActionAnimType`
@@ -20628,6 +28130,17 @@ impl EPlayerActionAnimType {
             "OneShot" => Self::OneShot,
             "Continuous" => Self::Continuous,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::NoAnim => "NoAnim",
+            Self::OneShot => "OneShot",
+            Self::Continuous => "Continuous",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -20659,6 +28172,17 @@ impl EPlayerAnimatedInteractionType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Instantaneous => "Instantaneous",
+            Self::Reactive => "Reactive",
+            Self::Bluetooth => "Bluetooth",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EPlayerAttachmentSlots`
@@ -20686,6 +28210,17 @@ impl EPlayerAttachmentSlots {
             "IronSight" => Self::IronSight,
             "UnderBarrel" => Self::UnderBarrel,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Barrel => "Barrel",
+            Self::IronSight => "IronSight",
+            Self::UnderBarrel => "UnderBarrel",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -20724,6 +28259,20 @@ impl EPlayerGroupType {
             "DirectMessage" => Self::DirectMessage,
             "GameEntity" => Self::GameEntity,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::System => "System",
+            Self::Party => "Party",
+            Self::Group => "Group",
+            Self::Server => "Server",
+            Self::DirectMessage => "DirectMessage",
+            Self::GameEntity => "GameEntity",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -20816,6 +28365,38 @@ impl EPlayerItemSlots {
             "Utility" => Self::Utility,
             "Visor" => Self::Visor,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::ArmorArms => "ArmorArms",
+            Self::ArmorHelmet => "ArmorHelmet",
+            Self::ArmorLegs => "ArmorLegs",
+            Self::ArmorTorso => "ArmorTorso",
+            Self::ArmorUndersuit => "ArmorUndersuit",
+            Self::CharAccessoryEyes => "CharAccessoryEyes",
+            Self::CharAccessoryHead => "CharAccessoryHead",
+            Self::CharBody => "CharBody",
+            Self::CharFlair => "CharFlair",
+            Self::CharHead => "CharHead",
+            Self::CharHeadBeard => "CharHeadBeard",
+            Self::CharHeadEyebrow => "CharHeadEyebrow",
+            Self::CharHeadEyelash => "CharHeadEyelash",
+            Self::CharHeadEyes => "CharHeadEyes",
+            Self::CharHeadHair => "CharHeadHair",
+            Self::Grenade => "Grenade",
+            Self::Medpen => "Medpen",
+            Self::Radar => "Radar",
+            Self::WeaponPrimary => "WeaponPrimary",
+            Self::WeaponSecondary => "WeaponSecondary",
+            Self::WeaponSidearm => "WeaponSidearm",
+            Self::WeaponMelee => "WeaponMelee",
+            Self::Utility => "Utility",
+            Self::Visor => "Visor",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -20934,6 +28515,46 @@ impl EPlayerStateActions {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::Carry => "Carry",
+            Self::Consume => "Consume",
+            Self::Drop => "Drop",
+            Self::Equip => "Equip",
+            Self::FinishConsume => "FinishConsume",
+            Self::FirstSelect => "FirstSelect",
+            Self::Hack => "Hack",
+            Self::Inspect => "Inspect",
+            Self::Interact => "Interact",
+            Self::HolsterItem => "HolsterItem",
+            Self::OffHandStore => "OffHandStore",
+            Self::OffHandStow => "OffHandStow",
+            Self::OpenCloseContainer => "OpenCloseContainer",
+            Self::OpenMobiGlas => "OpenMobiGlas",
+            Self::Place => "Place",
+            Self::PlaceReady => "PlaceReady",
+            Self::PrimeItem => "PrimeItem",
+            Self::Stow => "Stow",
+            Self::Store => "Store",
+            Self::SwapAttachments => "SwapAttachments",
+            Self::SelectAttachment => "SelectAttachment",
+            Self::Take => "Take",
+            Self::ThrowReady => "ThrowReady",
+            Self::ThrowV2 => "ThrowV2",
+            Self::Unequip => "Unequip",
+            Self::UnholsterItem => "UnholsterItem",
+            Self::UnprimeItem => "UnprimeItem",
+            Self::Unstow => "Unstow",
+            Self::VisorWipe => "VisorWipe",
+            Self::SelfTarget => "SelfTarget",
+            Self::AmmoRepool => "AmmoRepool",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EPoolFilterCombineMode`
@@ -20958,6 +28579,16 @@ impl EPoolFilterCombineMode {
             "Cumulative" => Self::Cumulative,
             "Additive" => Self::Additive,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Cumulative => "Cumulative",
+            Self::Additive => "Additive",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -20987,6 +28618,17 @@ impl EPopupType {
             "Reconnect" => Self::Reconnect,
             "ForceLaunch" => Self::ForceLaunch,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::GameModeDisclaimer => "GameModeDisclaimer",
+            Self::Reconnect => "Reconnect",
+            Self::ForceLaunch => "ForceLaunch",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -21021,6 +28663,18 @@ impl EPowerSourceState {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::Online => "Online",
+            Self::Offline => "Offline",
+            Self::Inoperable => "Inoperable",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EPreferredSpawnLocationType`
@@ -21045,6 +28699,16 @@ impl EPreferredSpawnLocationType {
             "CriminalRespawnWithoutArrest" => Self::CriminalRespawnWithoutArrest,
             "PreferredCriminalSpawn" => Self::PreferredCriminalSpawn,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::CriminalRespawnWithoutArrest => "CriminalRespawnWithoutArrest",
+            Self::PreferredCriminalSpawn => "PreferredCriminalSpawn",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -21101,6 +28765,26 @@ impl EPresetFStopValues {
             "FStop_22" => Self::FStop_22,
             "FStop_Disabled" => Self::FStop_Disabled,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::FStop_0_1 => "FStop_0_1",
+            Self::FStop_0_5 => "FStop_0_5",
+            Self::FStop_1 => "FStop_1",
+            Self::FStop_2 => "FStop_2",
+            Self::FStop_3 => "FStop_3",
+            Self::FStop_4 => "FStop_4",
+            Self::FStop_5 => "FStop_5",
+            Self::FStop_6 => "FStop_6",
+            Self::FStop_8 => "FStop_8",
+            Self::FStop_14 => "FStop_14",
+            Self::FStop_22 => "FStop_22",
+            Self::FStop_Disabled => "FStop_Disabled",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -21168,6 +28852,29 @@ impl EPresetLensSizes {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::LensSize_8mm => "LensSize_8mm",
+            Self::LensSize_9mm46 => "LensSize_9mm46",
+            Self::LensSize_12mm => "LensSize_12mm",
+            Self::LensSize_14mm => "LensSize_14mm",
+            Self::LensSize_16mm => "LensSize_16mm",
+            Self::LensSize_18mm => "LensSize_18mm",
+            Self::LensSize_21mm => "LensSize_21mm",
+            Self::LensSize_25mm => "LensSize_25mm",
+            Self::LensSize_27mm => "LensSize_27mm",
+            Self::LensSize_32mm => "LensSize_32mm",
+            Self::LensSize_35mm => "LensSize_35mm",
+            Self::LensSize_40mm => "LensSize_40mm",
+            Self::LensSize_50mm => "LensSize_50mm",
+            Self::LensSize_65mm => "LensSize_65mm",
+            Self::LensSize_75mm => "LensSize_75mm",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EProcLeanPoseType`
@@ -21195,6 +28902,17 @@ impl EProcLeanPoseType {
             "Sitting" => Self::Sitting,
             "Crouching" => Self::Crouching,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Standing => "Standing",
+            Self::Sitting => "Sitting",
+            Self::Crouching => "Crouching",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -21229,6 +28947,18 @@ impl EProjectedHudAlignmentType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::NoRotation => "NoRotation",
+            Self::AngledToPitchSource => "AngledToPitchSource",
+            Self::AngledToView => "AngledToView",
+            Self::AngledToYawLineOrigin => "AngledToYawLineOrigin",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EProjectedHudPositionType`
@@ -21253,6 +28983,16 @@ impl EProjectedHudPositionType {
             "OnAngle" => Self::OnAngle,
             "OnYawLine" => Self::OnYawLine,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::OnAngle => "OnAngle",
+            Self::OnYawLine => "OnYawLine",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -21281,6 +29021,16 @@ impl EProjectedHudYawLineAnchorType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::InForward => "InForward",
+            Self::InWorld => "InWorld",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EProjectileType`
@@ -21307,6 +29057,16 @@ impl EProjectileType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Primary => "Primary",
+            Self::Secondary => "Secondary",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EProjectionSelection1`
@@ -21331,6 +29091,16 @@ impl EProjectionSelection1 {
             "PS1_NoProjection" => Self::PS1_NoProjection,
             "PS1_ShortarcRotation" => Self::PS1_ShortarcRotation,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::PS1_NoProjection => "PS1_NoProjection",
+            Self::PS1_ShortarcRotation => "PS1_ShortarcRotation",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -21362,6 +29132,17 @@ impl EProjectionSelection2 {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::PS2_NoProjection => "PS2_NoProjection",
+            Self::PS2_ShortarcRotation => "PS2_ShortarcRotation",
+            Self::PS2_DirectedRotation => "PS2_DirectedRotation",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EProjectionSelection3`
@@ -21386,6 +29167,16 @@ impl EProjectionSelection3 {
             "PS3_NoProjection" => Self::PS3_NoProjection,
             "PS3_ShortvecTranslation" => Self::PS3_ShortvecTranslation,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::PS3_NoProjection => "PS3_NoProjection",
+            Self::PS3_ShortvecTranslation => "PS3_ShortvecTranslation",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -21415,6 +29206,17 @@ impl EProjectionSelection4 {
             "PS4_ShortvecTranslation" => Self::PS4_ShortvecTranslation,
             "PS4_DirectedTranslation" => Self::PS4_DirectedTranslation,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::PS4_NoProjection => "PS4_NoProjection",
+            Self::PS4_ShortvecTranslation => "PS4_ShortvecTranslation",
+            Self::PS4_DirectedTranslation => "PS4_DirectedTranslation",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -21449,6 +29251,18 @@ impl EQTEPriority {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::QTELowPriority => "QTELowPriority",
+            Self::QTEMediumPriority => "QTEMediumPriority",
+            Self::QTEHighPriority => "QTEHighPriority",
+            Self::QTEHighestPriority => "QTEHighestPriority",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EQTEPriorityGivewayBehaviour`
@@ -21473,6 +29287,16 @@ impl EQTEPriorityGivewayBehaviour {
             "Cancel" => Self::Cancel,
             "Silent" => Self::Silent,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Cancel => "Cancel",
+            Self::Silent => "Silent",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -21522,6 +29346,23 @@ impl EQedVisualGraphState {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Idle => "Idle",
+            Self::Charging => "Charging",
+            Self::Discharging => "Discharging",
+            Self::Ready => "Ready",
+            Self::Active => "Active",
+            Self::Tethering => "Tethering",
+            Self::Cooldown => "Cooldown",
+            Self::Jamming => "Jamming",
+            Self::Off => "Off",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EQedVisualGraphTrackedVariable`
@@ -21548,6 +29389,16 @@ impl EQedVisualGraphTrackedVariable {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::ChargePercentage => "ChargePercentage",
+            Self::CooldownPercentage => "CooldownPercentage",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EQedVisualGraphTrackedVariableContext`
@@ -21572,6 +29423,16 @@ impl EQedVisualGraphTrackedVariableContext {
             "TrackAscending" => Self::TrackAscending,
             "TrackDescending" => Self::TrackDescending,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::TrackAscending => "TrackAscending",
+            Self::TrackDescending => "TrackDescending",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -21639,6 +29500,29 @@ impl EQuantumProcessFailure {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::TargetTooClose => "TargetTooClose",
+            Self::TargetTooFar => "TargetTooFar",
+            Self::SolarObstruction => "SolarObstruction",
+            Self::QuantumObstruction => "QuantumObstruction",
+            Self::MovingBackwards => "MovingBackwards",
+            Self::OutOfFuel => "OutOfFuel",
+            Self::GroupNotReady => "GroupNotReady",
+            Self::GroupHasObstruction => "GroupHasObstruction",
+            Self::NavpointBlocked => "NavpointBlocked",
+            Self::RotationNotAligned => "RotationNotAligned",
+            Self::RotationUnstable => "RotationUnstable",
+            Self::BlockedByEvent => "BlockedByEvent",
+            Self::LandingGear => "LandingGear",
+            Self::Unknown => "Unknown",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ERadarChargeLevels`
@@ -21663,6 +29547,16 @@ impl ERadarChargeLevels {
             "LowCharge" => Self::LowCharge,
             "FullCharge" => Self::FullCharge,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::LowCharge => "LowCharge",
+            Self::FullCharge => "FullCharge",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -21697,6 +29591,18 @@ impl ERadarContactBehaviourCategory {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Vehicle => "Vehicle",
+            Self::FPS => "FPS",
+            Self::Both => "Both",
+            Self::None => "None",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ERadarContactHighlightLayer`
@@ -21721,6 +29627,16 @@ impl ERadarContactHighlightLayer {
             "Default" => Self::Default,
             "Skeleton" => Self::Skeleton,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Default => "Default",
+            Self::Skeleton => "Skeleton",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -21770,6 +29686,23 @@ impl ERadarContactHighlightState {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::TargetScanBlocked => "TargetScanBlocked",
+            Self::TargetScannable => "TargetScannable",
+            Self::TargetScanned => "TargetScanned",
+            Self::TargetScanning => "TargetScanning",
+            Self::PingDetected_Hostile => "PingDetected_Hostile",
+            Self::PingDetected_Neutral => "PingDetected_Neutral",
+            Self::PingDetected_Friendly => "PingDetected_Friendly",
+            Self::PingDetected_Objective => "PingDetected_Objective",
+            Self::PingDetected_Unknown => "PingDetected_Unknown",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ERadarContactState`
@@ -21797,6 +29730,17 @@ impl ERadarContactState {
             "Incapacitated" => Self::Incapacitated,
             "Dead" => Self::Dead,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Alive => "Alive",
+            Self::Incapacitated => "Incapacitated",
+            Self::Dead => "Dead",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -21843,6 +29787,22 @@ impl ERadarFocusLevels {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Level1 => "Level1",
+            Self::Level2 => "Level2",
+            Self::Level3 => "Level3",
+            Self::Level4 => "Level4",
+            Self::Level5 => "Level5",
+            Self::Level6 => "Level6",
+            Self::Level7 => "Level7",
+            Self::Level8 => "Level8",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ERatingScoreCurveType`
@@ -21873,6 +29833,18 @@ impl ERatingScoreCurveType {
             "SevenThousandFiveHundred" => Self::SevenThousandFiveHundred,
             "TenThousand" => Self::TenThousand,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::TwoThousandFiveHundred => "TwoThousandFiveHundred",
+            Self::FiveThousand => "FiveThousand",
+            Self::SevenThousandFiveHundred => "SevenThousandFiveHundred",
+            Self::TenThousand => "TenThousand",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -21911,6 +29883,20 @@ impl EReflexImprovementType {
             "WeaponSwap" => Self::WeaponSwap,
             "ReloadSpeed" => Self::ReloadSpeed,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::ADSSpeed => "ADSSpeed",
+            Self::SoundGeneration => "SoundGeneration",
+            Self::StanceTransition => "StanceTransition",
+            Self::BackpackReloadSpeed => "BackpackReloadSpeed",
+            Self::WeaponSwap => "WeaponSwap",
+            Self::ReloadSpeed => "ReloadSpeed",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -21990,6 +29976,33 @@ impl ERenderLayer {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Default => "Default",
+            Self::Wall => "Wall",
+            Self::Floor => "Floor",
+            Self::Bulkhead => "Bulkhead",
+            Self::Skeleton => "Skeleton",
+            Self::Exterior => "Exterior",
+            Self::Hologram => "Hologram",
+            Self::NonPlayable => "NonPlayable",
+            Self::UIObject => "UIObject",
+            Self::DoorUnlocked => "DoorUnlocked",
+            Self::DoorLocked => "DoorLocked",
+            Self::SurfaceWater => "SurfaceWater",
+            Self::Nominal => "Nominal",
+            Self::Moderate => "Moderate",
+            Self::Critical => "Critical",
+            Self::Disabled => "Disabled",
+            Self::HangarFloor => "HangarFloor",
+            Self::HangarWall => "HangarWall",
+            Self::PlayerVehicle => "PlayerVehicle",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ERenderType`
@@ -22017,6 +30030,17 @@ impl ERenderType {
             "TILEDFORWARD" => Self::TILEDFORWARD,
             "DEFERRED" => Self::DEFERRED,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::FORWARD => "FORWARD",
+            Self::TILEDFORWARD => "TILEDFORWARD",
+            Self::DEFERRED => "DEFERRED",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -22063,6 +30087,22 @@ impl EReputationChangeReason {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::UNSPECIFIED => "UNSPECIFIED",
+            Self::INITIALIZED => "INITIALIZED",
+            Self::INCREASED => "INCREASED",
+            Self::DECREASED => "DECREASED",
+            Self::SET => "SET",
+            Self::RESET => "RESET",
+            Self::STATE => "STATE",
+            Self::STANDING => "STANDING",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EReputationComparisonOperator`
@@ -22098,6 +30138,19 @@ impl EReputationComparisonOperator {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::GreaterThan => "GreaterThan",
+            Self::GreaterThanOrEqualTo => "GreaterThanOrEqualTo",
+            Self::EqualTo => "EqualTo",
+            Self::LessThanOrEqualTo => "LessThanOrEqualTo",
+            Self::LessThan => "LessThan",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EReputationEntityType`
@@ -22122,6 +30175,16 @@ impl EReputationEntityType {
             "Organization" => Self::Organization,
             "MissionGiver" => Self::MissionGiver,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Organization => "Organization",
+            Self::MissionGiver => "MissionGiver",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -22153,6 +30216,17 @@ impl EReputationSortOrderEntity {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Alphabetical => "Alphabetical",
+            Self::RecentActivity => "RecentActivity",
+            Self::PrimaryProgress => "PrimaryProgress",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EReputationSortOrderScope`
@@ -22177,6 +30251,16 @@ impl EReputationSortOrderScope {
             "Alphabetical" => Self::Alphabetical,
             "ListOrder" => Self::ListOrder,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Alphabetical => "Alphabetical",
+            Self::ListOrder => "ListOrder",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -22211,6 +30295,18 @@ impl EReputationStateValueModifier {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Increment => "Increment",
+            Self::Decrement => "Decrement",
+            Self::Set => "Set",
+            Self::SetEqualToState => "SetEqualToState",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EResourceContainerMutabilityLevel`
@@ -22238,6 +30334,17 @@ impl EResourceContainerMutabilityLevel {
             "ReadOnly" => Self::ReadOnly,
             "ReadWrite" => Self::ReadWrite,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Static => "Static",
+            Self::ReadOnly => "ReadOnly",
+            Self::ReadWrite => "ReadWrite",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -22279,6 +30386,21 @@ impl ERespawnLocationType {
             "CriminalHospital" => Self::CriminalHospital,
             "Other" => Self::Other,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::Hospital => "Hospital",
+            Self::Prison => "Prison",
+            Self::PrisonExit => "PrisonExit",
+            Self::CriminalLocation => "CriminalLocation",
+            Self::CriminalHospital => "CriminalHospital",
+            Self::Other => "Other",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -22346,6 +30468,29 @@ impl ERuntimeImageSourceType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::CommsCall => "CommsCall",
+            Self::FuelCamera => "FuelCamera",
+            Self::UserInterface => "UserInterface",
+            Self::InteriorMap => "InteriorMap",
+            Self::Slot_1 => "Slot_1",
+            Self::Slot_2 => "Slot_2",
+            Self::Slot_3 => "Slot_3",
+            Self::Slot_4 => "Slot_4",
+            Self::Slot_5 => "Slot_5",
+            Self::Slot_6 => "Slot_6",
+            Self::Slot_7 => "Slot_7",
+            Self::Slot_8 => "Slot_8",
+            Self::Slot_9 => "Slot_9",
+            Self::Slot_10 => "Slot_10",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ES42StatsComparisonType`
@@ -22384,6 +30529,20 @@ impl ES42StatsComparisonType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Equal => "Equal",
+            Self::NotEqual => "NotEqual",
+            Self::Greater => "Greater",
+            Self::Less => "Less",
+            Self::GreaterOrEqual => "GreaterOrEqual",
+            Self::LessOrEqual => "LessOrEqual",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ES42StatsOperationType`
@@ -22416,6 +30575,18 @@ impl ES42StatsOperationType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Add => "Add",
+            Self::Sub => "Sub",
+            Self::Mul => "Mul",
+            Self::Div => "Div",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ES42StatsPlayerState`
@@ -22443,6 +30614,17 @@ impl ES42StatsPlayerState {
             "OnFoot" => Self::OnFoot,
             "InShip" => Self::InShip,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Any => "Any",
+            Self::OnFoot => "OnFoot",
+            Self::InShip => "InShip",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -22498,6 +30680,25 @@ impl ES42StatsType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::EnemyKills => "EnemyKills",
+            Self::ShipKills => "ShipKills",
+            Self::GroundKills => "GroundKills",
+            Self::FriendlyFireHits => "FriendlyFireHits",
+            Self::WeaponShots => "WeaponShots",
+            Self::WeaponHits => "WeaponHits",
+            Self::MissileShots => "MissileShots",
+            Self::MissileHits => "MissileHits",
+            Self::HeadShots => "HeadShots",
+            Self::Consumable => "Consumable",
+            Self::FriendlyFireMelee => "FriendlyFireMelee",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ESCItemDisplayScreenLightType`
@@ -22531,6 +30732,19 @@ impl ESCItemDisplayScreenLightType {
             "Projector" => Self::Projector,
             "Planar" => Self::Planar,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::Omni => "Omni",
+            Self::SoftOmni => "SoftOmni",
+            Self::Projector => "Projector",
+            Self::Planar => "Planar",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -22574,6 +30788,21 @@ impl ESCItemDisplayScreenState {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::NoSignal => "NoSignal",
+            Self::NoPower => "NoPower",
+            Self::Normal => "Normal",
+            Self::Emergency => "Emergency",
+            Self::Auxiliary => "Auxiliary",
+            Self::CustomOverride => "CustomOverride",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ESCItemDisplayScreenUIModel`
@@ -22598,6 +30827,16 @@ impl ESCItemDisplayScreenUIModel {
             "Provider" => Self::Provider,
             "Consumer" => Self::Consumer,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Provider => "Provider",
+            Self::Consumer => "Consumer",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -22627,6 +30866,17 @@ impl ESCItemElevatorPathNodeType {
             "WayPoint" => Self::WayPoint,
             "Teleport" => Self::Teleport,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Stop => "Stop",
+            Self::WayPoint => "WayPoint",
+            Self::Teleport => "Teleport",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -22679,6 +30929,24 @@ impl ESCScreenType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::MFD_16_9 => "MFD_16_9",
+            Self::MFD_4_3 => "MFD_4_3",
+            Self::Support_16_9 => "Support_16_9",
+            Self::Support_1_1 => "Support_1_1",
+            Self::Support_Bespoke_1 => "Support_Bespoke_1",
+            Self::Support_Bespoke_2 => "Support_Bespoke_2",
+            Self::HeadUpDisplay => "HeadUpDisplay",
+            Self::Annunciator => "Annunciator",
+            Self::Visor => "Visor",
+            Self::Radar3DScreen => "Radar3DScreen",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ESDFSetTypes`
@@ -22700,6 +30968,15 @@ impl ESDFSetTypes {
         match s {
             "Shield" => Self::Shield,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Shield => "Shield",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -22726,6 +31003,16 @@ impl ESalvageRepairMode {
             "Salvage" => Self::Salvage,
             "Repair" => Self::Repair,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Salvage => "Salvage",
+            Self::Repair => "Repair",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -22763,6 +31050,19 @@ impl EScanCategory {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Affiliation => "Affiliation",
+            Self::General => "General",
+            Self::Physical => "Physical",
+            Self::Signatures => "Signatures",
+            Self::ScanSystem => "ScanSystem",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EScanDisplaySection`
@@ -22793,6 +31093,18 @@ impl EScanDisplaySection {
             "Exterior" => Self::Exterior,
             "Interior" => Self::Interior,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Boxout => "Boxout",
+            Self::Overview => "Overview",
+            Self::Exterior => "Exterior",
+            Self::Interior => "Interior",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -22827,6 +31139,18 @@ impl EScanDisplayVariable {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Header => "Header",
+            Self::Body => "Body",
+            Self::Capacity => "Capacity",
+            Self::Extension => "Extension",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EScanDisplayVariableAuxiliaryType`
@@ -22851,6 +31175,16 @@ impl EScanDisplayVariableAuxiliaryType {
             "None" => Self::None,
             "ShipRegNumber" => Self::ShipRegNumber,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::ShipRegNumber => "ShipRegNumber",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -23089,6 +31423,86 @@ impl EScanInformation {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::ActorStatus => "ActorStatus",
+            Self::ArmorWeightRating => "ArmorWeightRating",
+            Self::ArmorMixedWeight => "ArmorMixedWeight",
+            Self::CargoAmount => "CargoAmount",
+            Self::CargoAmountLoose => "CargoAmountLoose",
+            Self::Classification => "Classification",
+            Self::Commodity => "Commodity",
+            Self::ContactType => "ContactType",
+            Self::Callout1 => "Callout1",
+            Self::Callout2 => "Callout2",
+            Self::Callout3 => "Callout3",
+            Self::CauseOfDeath => "CauseOfDeath",
+            Self::CommsChannelStatus => "CommsChannelStatus",
+            Self::DeltaSignature => "DeltaSignature",
+            Self::Description => "Description",
+            Self::DisplaySection => "DisplaySection",
+            Self::DoorLocked => "DoorLocked",
+            Self::DoorOpen => "DoorOpen",
+            Self::DriverOrganization => "DriverOrganization",
+            Self::DriverName => "DriverName",
+            Self::EntityId => "EntityId",
+            Self::EntityClass => "EntityClass",
+            Self::ID => "ID",
+            Self::Instability => "Instability",
+            Self::InventoryAmount => "InventoryAmount",
+            Self::ItemType => "ItemType",
+            Self::ItemStatus => "ItemStatus",
+            Self::Jurisdiction => "Jurisdiction",
+            Self::LastScanned => "LastScanned",
+            Self::LegalOwnerEntityId => "LegalOwnerEntityId",
+            Self::LegalOwnerFlagged => "LegalOwnerFlagged",
+            Self::LegalOwnerName => "LegalOwnerName",
+            Self::LegalOwnerOrganization => "LegalOwnerOrganization",
+            Self::Hackable => "Hackable",
+            Self::Health => "Health",
+            Self::Mass => "Mass",
+            Self::MasterMode => "MasterMode",
+            Self::MineablePercentageTotal => "MineablePercentageTotal",
+            Self::MineablePercentageValuables => "MineablePercentageValuables",
+            Self::Model => "Model",
+            Self::Name => "Name",
+            Self::OptimalPowerWindowLow => "OptimalPowerWindowLow",
+            Self::OptimalPowerWindowHigh => "OptimalPowerWindowHigh",
+            Self::OtherTrauma1 => "OtherTrauma1",
+            Self::OtherTrauma2 => "OtherTrauma2",
+            Self::OtherTrauma3 => "OtherTrauma3",
+            Self::OtherTrauma4 => "OtherTrauma4",
+            Self::PassengerCount => "PassengerCount",
+            Self::PowerAvailability => "PowerAvailability",
+            Self::PowerSwitch => "PowerSwitch",
+            Self::PowerTransferResistance => "PowerTransferResistance",
+            Self::Priority => "Priority",
+            Self::Resource => "Resource",
+            Self::Role => "Role",
+            Self::ScanFullyCompleted => "ScanFullyCompleted",
+            Self::ScanProcedureBits => "ScanProcedureBits",
+            Self::ScanTimeStamp => "ScanTimeStamp",
+            Self::ScanToken => "ScanToken",
+            Self::SelfDestructFlagged => "SelfDestructFlagged",
+            Self::SignatureIR => "SignatureIR",
+            Self::SignatureCS => "SignatureCS",
+            Self::SignatureEM => "SignatureEM",
+            Self::SignatureRS => "SignatureRS",
+            Self::Species => "Species",
+            Self::Stolen => "Stolen",
+            Self::SubType => "SubType",
+            Self::Type => "Type",
+            Self::Value => "Value",
+            Self::Volatility => "Volatility",
+            Self::WantedLevel => "WantedLevel",
+            Self::MissionId => "MissionId",
+            Self::Quality => "Quality",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EScanProcedure`
@@ -23211,6 +31625,48 @@ impl EScanProcedure {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Armor => "Armor",
+            Self::CargoCommodities => "CargoCommodities",
+            Self::Classification => "Classification",
+            Self::CommsTap => "CommsTap",
+            Self::ContactType => "ContactType",
+            Self::Custom => "Custom",
+            Self::Cryopod => "Cryopod",
+            Self::Death => "Death",
+            Self::Description => "Description",
+            Self::Door => "Door",
+            Self::Driver => "Driver",
+            Self::Emissions => "Emissions",
+            Self::Faction => "Faction",
+            Self::Instability => "Instability",
+            Self::InventoryContents => "InventoryContents",
+            Self::Jurisdiction => "Jurisdiction",
+            Self::LegalOwner => "LegalOwner",
+            Self::Hackable => "Hackable",
+            Self::Health => "Health",
+            Self::Mass => "Mass",
+            Self::MineableCommodities => "MineableCommodities",
+            Self::Name => "Name",
+            Self::OptimalPowerWindow => "OptimalPowerWindow",
+            Self::Passenger => "Passenger",
+            Self::Power => "Power",
+            Self::PowerTransferResistance => "PowerTransferResistance",
+            Self::Species => "Species",
+            Self::Stolen => "Stolen",
+            Self::SubItems => "SubItems",
+            Self::VehicleMasterMode => "VehicleMasterMode",
+            Self::VehicleModel => "VehicleModel",
+            Self::VehicleRole => "VehicleRole",
+            Self::VehicleSelfDestruct => "VehicleSelfDestruct",
+            Self::WantedLevel => "WantedLevel",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EScanSortType`
@@ -23235,6 +31691,16 @@ impl EScanSortType {
             "Less" => Self::Less,
             "Greater" => Self::Greater,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Less => "Less",
+            Self::Greater => "Greater",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -23284,6 +31750,23 @@ impl EScanTable {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Self_ => "Self",
+            Self::CargoCommodities => "CargoCommodities",
+            Self::Custom => "Custom",
+            Self::MineableCommodities => "MineableCommodities",
+            Self::Passengers => "Passengers",
+            Self::SubItems => "SubItems",
+            Self::InventoryContents => "InventoryContents",
+            Self::CommsChannels => "CommsChannels",
+            Self::Armor => "Armor",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EScanType`
@@ -23319,6 +31802,19 @@ impl EScanType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::AIAutoScan => "AIAutoScan",
+            Self::FocalPointScan => "FocalPointScan",
+            Self::PassiveScan => "PassiveScan",
+            Self::PingBroadScan => "PingBroadScan",
+            Self::PingFocusScan => "PingFocusScan",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EScopeType`
@@ -23348,6 +31844,17 @@ impl EScopeType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::Zoom => "Zoom",
+            Self::Nightvision => "Nightvision",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EScoreDisplayType`
@@ -23372,6 +31879,16 @@ impl EScoreDisplayType {
             "Score" => Self::Score,
             "Rounds" => Self::Rounds,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Score => "Score",
+            Self::Rounds => "Rounds",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -23595,6 +32112,81 @@ impl EScoreType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Kill => "Kill",
+            Self::TeamKill => "TeamKill",
+            Self::KillAssist => "KillAssist",
+            Self::KillAssistCrew => "KillAssistCrew",
+            Self::ForcedError => "ForcedError",
+            Self::ForcedEject => "ForcedEject",
+            Self::CrashRoberts => "CrashRoberts",
+            Self::PlayerBledOut => "PlayerBledOut",
+            Self::DistortionDisabledShip => "DistortionDisabledShip",
+            Self::ControlTerminalCaptured => "ControlTerminalCaptured",
+            Self::ControlTerminalCaptureAssist => "ControlTerminalCaptureAssist",
+            Self::CaptureAreaCaptureBegin => "CaptureAreaCaptureBegin",
+            Self::CaptureAreaCaptureComplete => "CaptureAreaCaptureComplete",
+            Self::CaptureAreaNeutralized => "CaptureAreaNeutralized",
+            Self::Accident => "Accident",
+            Self::Suicide => "Suicide",
+            Self::VehicleDestruction => "VehicleDestruction",
+            Self::TeamVehicleDestruction => "TeamVehicleDestruction",
+            Self::DestroyPhaseObjective => "DestroyPhaseObjective",
+            Self::DamagePhaseObjective => "DamagePhaseObjective",
+            Self::DamageSentToObjective => "DamageSentToObjective",
+            Self::MatchVictory => "MatchVictory",
+            Self::MatchDefeat => "MatchDefeat",
+            Self::SecondPlace => "SecondPlace",
+            Self::ThirdPlace => "ThirdPlace",
+            Self::KillCollected => "KillCollected",
+            Self::KillDenied => "KillDenied",
+            Self::Hemorrhage => "Hemorrhage",
+            Self::PlayerBleeding => "PlayerBleeding",
+            Self::DistortionDamage => "DistortionDamage",
+            Self::VehicleDamage => "VehicleDamage",
+            Self::TeamVehicleDamage => "TeamVehicleDamage",
+            Self::Untouchable => "Untouchable",
+            Self::Unaided => "Unaided",
+            Self::Ace => "Ace",
+            Self::AceBonus => "AceBonus",
+            Self::AceKiller => "AceKiller",
+            Self::KillingSpree => "KillingSpree",
+            Self::KillingSpreeBonus => "KillingSpreeBonus",
+            Self::KillingSpreeKiller => "KillingSpreeKiller",
+            Self::NemesisKill => "NemesisKill",
+            Self::Redemption => "Redemption",
+            Self::Regurgence => "Regurgence",
+            Self::Revenge => "Revenge",
+            Self::FirstBlood => "FirstBlood",
+            Self::SquadronRevengeKill => "SquadronRevengeKill",
+            Self::Savior => "Savior",
+            Self::UnderdogKill => "UnderdogKill",
+            Self::CheapShot => "CheapShot",
+            Self::GoodNight => "GoodNight",
+            Self::LightsOut => "LightsOut",
+            Self::ControlTerminalDefended => "ControlTerminalDefended",
+            Self::ControlTerminalHackerKilled => "ControlTerminalHackerKilled",
+            Self::ControlTerminalDomination => "ControlTerminalDomination",
+            Self::CaptureAreaContesting => "CaptureAreaContesting",
+            Self::CaptureAreaCapturing => "CaptureAreaCapturing",
+            Self::CaptureCloseCallKill => "CaptureCloseCallKill",
+            Self::CaptureReversing => "CaptureReversing",
+            Self::DefenderKill => "DefenderKill",
+            Self::AttackerKill => "AttackerKill",
+            Self::MartyrKill => "MartyrKill",
+            Self::Headshot => "Headshot",
+            Self::MeleeKill => "MeleeKill",
+            Self::TakeDown => "TakeDown",
+            Self::VehiclePartDetached => "VehiclePartDetached",
+            Self::CompletedLap => "CompletedLap",
+            Self::INVALID => "INVALID",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EScoreUIType`
@@ -23622,6 +32214,17 @@ impl EScoreUIType {
             "Primary" => Self::Primary,
             "Secondary" => Self::Secondary,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::NONE => "NONE",
+            Self::Primary => "Primary",
+            Self::Secondary => "Secondary",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -23671,6 +32274,23 @@ impl EScoreboardType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::TotalScore => "TotalScore",
+            Self::ObjectivePoints => "ObjectivePoints",
+            Self::Kills => "Kills",
+            Self::Deaths => "Deaths",
+            Self::Assists => "Assists",
+            Self::CompletedLaps => "CompletedLaps",
+            Self::FastestLapTime => "FastestLapTime",
+            Self::RacePosition => "RacePosition",
+            Self::GunGameLevel => "GunGameLevel",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ESeatAccessConditionType`
@@ -23698,6 +32318,17 @@ impl ESeatAccessConditionType {
             "False" => Self::False,
             "Either" => Self::Either,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::True => "True",
+            Self::False => "False",
+            Self::Either => "Either",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -23732,6 +32363,18 @@ impl ESeatAccessEntranceDependencyType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Never => "Never",
+            Self::Exit => "Exit",
+            Self::Enter => "Enter",
+            Self::Always => "Always",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ESeatAccessPassageCondition`
@@ -23759,6 +32402,17 @@ impl ESeatAccessPassageCondition {
             "ExteriorOnly" => Self::ExteriorOnly,
             "Either" => Self::Either,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::InteriorOnly => "InteriorOnly",
+            Self::ExteriorOnly => "ExteriorOnly",
+            Self::Either => "Either",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -23817,6 +32471,26 @@ impl ESeatViewType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Background => "Background",
+            Self::Comms => "Comms",
+            Self::Cooler => "Cooler",
+            Self::Energy => "Energy",
+            Self::Flight => "Flight",
+            Self::Missile => "Missile",
+            Self::Quantum => "Quantum",
+            Self::Shield => "Shield",
+            Self::Target => "Target",
+            Self::Weapon => "Weapon",
+            Self::Wheeled => "Wheeled",
+            Self::Scanner => "Scanner",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ESecurityNetworkPermissionValue`
@@ -23844,6 +32518,17 @@ impl ESecurityNetworkPermissionValue {
             "Yes" => Self::Yes,
             "No" => Self::No,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Inherit => "Inherit",
+            Self::Yes => "Yes",
+            Self::No => "No",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -23884,6 +32569,20 @@ impl ESelectionBehaviour {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::KeepAllSelected => "KeepAllSelected",
+            Self::EquipAndUnselectAll => "EquipAndUnselectAll",
+            Self::EquipAndKeepItemPortSelected => "EquipAndKeepItemPortSelected",
+            Self::EquipAndKeepItemSelected => "EquipAndKeepItemSelected",
+            Self::EquipAndKeepFirstSelection => "EquipAndKeepFirstSelection",
+            Self::EquipAndKeepLastSelection => "EquipAndKeepLastSelection",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ESequenceMode`
@@ -23911,6 +32610,17 @@ impl ESequenceMode {
             "Automatically" => Self::Automatically,
             "Looping" => Self::Looping,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Individually => "Individually",
+            Self::Automatically => "Automatically",
+            Self::Looping => "Looping",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -23954,6 +32664,21 @@ impl EServiceBeaconType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::PersonalTransport => "PersonalTransport",
+            Self::CombatAssistance => "CombatAssistance",
+            Self::Escort => "Escort",
+            Self::Refuel => "Refuel",
+            Self::Revive => "Revive",
+            Self::Heal => "Heal",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EShipComputerMode`
@@ -23978,6 +32703,16 @@ impl EShipComputerMode {
             "Default" => Self::Default,
             "Race" => Self::Race,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Default => "Default",
+            Self::Race => "Race",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -24007,6 +32742,17 @@ impl EShipState {
             "Flying" => Self::Flying,
             "Both" => Self::Both,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Grounded => "Grounded",
+            Self::Flying => "Flying",
+            Self::Both => "Both",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -24053,6 +32799,22 @@ impl ESignatureType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Infrared => "Infrared",
+            Self::Electromagnetic => "Electromagnetic",
+            Self::CrossSection => "CrossSection",
+            Self::Decibel => "Decibel",
+            Self::Resource => "Resource",
+            Self::Identity => "Identity",
+            Self::CommsSignal => "CommsSignal",
+            Self::Interactable => "Interactable",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ESilhouetteColourSource`
@@ -24077,6 +32839,16 @@ impl ESilhouetteColourSource {
             "HDRTarget" => Self::HDRTarget,
             "PerObject" => Self::PerObject,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::HDRTarget => "HDRTarget",
+            Self::PerObject => "PerObject",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -24117,6 +32889,20 @@ impl ESkillType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Fitness => "Fitness",
+            Self::Strength => "Strength",
+            Self::Reflex => "Reflex",
+            Self::Fortitude => "Fortitude",
+            Self::VaultingTechnique => "VaultingTechnique",
+            Self::TakedownTechnique => "TakedownTechnique",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ESlottingMode`
@@ -24144,6 +32930,17 @@ impl ESlottingMode {
             "EnabledOnSlotting" => Self::EnabledOnSlotting,
             "DisabledOnSlotting" => Self::DisabledOnSlotting,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::EnabledOnAndOffSlotting => "EnabledOnAndOffSlotting",
+            Self::EnabledOnSlotting => "EnabledOnSlotting",
+            Self::DisabledOnSlotting => "DisabledOnSlotting",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -24175,6 +32972,17 @@ impl ESoftbodySubstepMode {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::FullSubstep => "FullSubstep",
+            Self::FullSubstep_SingleCD => "FullSubstep_SingleCD",
+            Self::Iteration => "Iteration",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ESoftbodyVisualBindingMode`
@@ -24202,6 +33010,17 @@ impl ESoftbodyVisualBindingMode {
             "Volumetric" => Self::Volumetric,
             "Spline" => Self::Spline,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Planar => "Planar",
+            Self::Volumetric => "Volumetric",
+            Self::Spline => "Spline",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -24236,6 +33055,18 @@ impl ESoundInputs {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::FloatParam => "FloatParam",
+            Self::Enable => "Enable",
+            Self::Disable => "Disable",
+            Self::UNDEFINED => "UNDEFINED",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ESpecialEffectsType`
@@ -24263,6 +33094,17 @@ impl ESpecialEffectsType {
             "ReloadCheck" => Self::ReloadCheck,
             "ReloadEmpty" => Self::ReloadEmpty,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::ReloadFull => "ReloadFull",
+            Self::ReloadCheck => "ReloadCheck",
+            Self::ReloadEmpty => "ReloadEmpty",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -24300,6 +33142,19 @@ impl ESpectatorMode {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::SM_Fixed => "SM_Fixed",
+            Self::SM_Free => "SM_Free",
+            Self::SM_Cinematic => "SM_Cinematic",
+            Self::SM_Follow => "SM_Follow",
+            Self::SM_FirstPerson => "SM_FirstPerson",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ESpinActivationMode`
@@ -24324,6 +33179,16 @@ impl ESpinActivationMode {
             "Fire" => Self::Fire,
             "Procclip" => Self::Procclip,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Fire => "Fire",
+            Self::Procclip => "Procclip",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -24421,6 +33286,39 @@ impl EStarGalaPaths {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::formationPath1 => "formationPath1",
+            Self::formationPath2 => "formationPath2",
+            Self::formationPath3 => "formationPath3",
+            Self::formationPath4 => "formationPath4",
+            Self::challengeStage1 => "challengeStage1",
+            Self::challengeStage2 => "challengeStage2",
+            Self::challengeStage3 => "challengeStage3",
+            Self::challengeStage4 => "challengeStage4",
+            Self::challengeStage5 => "challengeStage5",
+            Self::challengeStage6 => "challengeStage6",
+            Self::challengeStage7 => "challengeStage7",
+            Self::challengeStage8 => "challengeStage8",
+            Self::challengeStage9_1 => "challengeStage9_1",
+            Self::challengeStage9_2 => "challengeStage9_2",
+            Self::challengeStage10_1 => "challengeStage10_1",
+            Self::challengeStage10_2 => "challengeStage10_2",
+            Self::challengeStage11 => "challengeStage11",
+            Self::challengeStage12 => "challengeStage12",
+            Self::challengeStage13_1 => "challengeStage13_1",
+            Self::challengeStage13_2 => "challengeStage13_2",
+            Self::challengeStage13_3 => "challengeStage13_3",
+            Self::challengeStage13_4 => "challengeStage13_4",
+            Self::challengeStage14 => "challengeStage14",
+            Self::challengeStage15 => "challengeStage15",
+            Self::challengeStage16 => "challengeStage16",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EStatCompareMode`
@@ -24450,6 +33348,17 @@ impl EStatCompareMode {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::MoreIsBetter => "MoreIsBetter",
+            Self::LessIsBetter => "LessIsBetter",
+            Self::Neutral => "Neutral",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EStatType`
@@ -24477,6 +33386,17 @@ impl EStatType {
             "Seated" => Self::Seated,
             "Size" => Self::Size,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::OnFoot => "OnFoot",
+            Self::Seated => "Seated",
+            Self::Size => "Size",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -24526,6 +33446,23 @@ impl EStrengthImprovementType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::CarryWheight => "CarryWheight",
+            Self::WeightImpact => "WeightImpact",
+            Self::MeleeDamage => "MeleeDamage",
+            Self::TrolleyHandling => "TrolleyHandling",
+            Self::ThrowingForce => "ThrowingForce",
+            Self::ForcedReactionsResistance => "ForcedReactionsResistance",
+            Self::BodyCarryPickUpSpeedScale => "BodyCarryPickUpSpeedScale",
+            Self::BodyCarryDropSpeedScale => "BodyCarryDropSpeedScale",
+            Self::BodyStowingSpeedScale => "BodyStowingSpeedScale",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ESuggestedFOVMode`
@@ -24556,6 +33493,18 @@ impl ESuggestedFOVMode {
             "SuggestedFOVMode_ApplyIfBigger" => Self::SuggestedFOVMode_ApplyIfBigger,
             "SuggestedFOVMode_ApplyIfLower" => Self::SuggestedFOVMode_ApplyIfLower,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::SuggestedFOVMode_None => "SuggestedFOVMode_None",
+            Self::SuggestedFOVMode_ForceAlways => "SuggestedFOVMode_ForceAlways",
+            Self::SuggestedFOVMode_ApplyIfBigger => "SuggestedFOVMode_ApplyIfBigger",
+            Self::SuggestedFOVMode_ApplyIfLower => "SuggestedFOVMode_ApplyIfLower",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -24599,6 +33548,21 @@ impl ESunShadowMode {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Upto_20m => "Upto_20m",
+            Self::Upto_100m => "Upto_100m",
+            Self::Upto_400m => "Upto_400m",
+            Self::Upto_2000m => "Upto_2000m",
+            Self::Upto_2000m_AND_Heightmap => "Upto_2000m_AND_Heightmap",
+            Self::Heightmap_Only => "Heightmap_Only",
+            Self::UNDEFINED => "UNDEFINED",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ETakedownTechniqueImprovementType`
@@ -24623,6 +33587,16 @@ impl ETakedownTechniqueImprovementType {
             "Speed" => Self::Speed,
             "SoundGenerated" => Self::SoundGenerated,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Speed => "Speed",
+            Self::SoundGenerated => "SoundGenerated",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -24655,6 +33629,18 @@ impl ETattooMirrorMode {
             "Left" => Self::Left,
             "Right" => Self::Right,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::Both => "Both",
+            Self::Left => "Left",
+            Self::Right => "Right",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -24698,6 +33684,21 @@ impl EThrowMode {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Undefined => "Undefined",
+            Self::OverhandThrow => "OverhandThrow",
+            Self::UnderhandThrow => "UnderhandThrow",
+            Self::TwoHandedThrow => "TwoHandedThrow",
+            Self::Drop => "Drop",
+            Self::Place => "Place",
+            Self::InteractionMode => "InteractionMode",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EThrowPerceptionSound`
@@ -24722,6 +33723,16 @@ impl EThrowPerceptionSound {
             "SmallSound" => Self::SmallSound,
             "LargeSound" => Self::LargeSound,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::SmallSound => "SmallSound",
+            Self::LargeSound => "LargeSound",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -24757,6 +33768,19 @@ impl EThrusterAnimDriver {
             "ForwardOnlyVelocity" => Self::ForwardOnlyVelocity,
             "Nutcracker" => Self::Nutcracker,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::ThrustWithAfterburner => "ThrustWithAfterburner",
+            Self::Thrust => "Thrust",
+            Self::Velocity => "Velocity",
+            Self::ForwardOnlyVelocity => "ForwardOnlyVelocity",
+            Self::Nutcracker => "Nutcracker",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -24815,6 +33839,26 @@ impl EThrusterFlag {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::StrafeForward => "StrafeForward",
+            Self::StrafeBack => "StrafeBack",
+            Self::StrafeLeft => "StrafeLeft",
+            Self::StrafeRight => "StrafeRight",
+            Self::StrafeUp => "StrafeUp",
+            Self::StrafeDown => "StrafeDown",
+            Self::YawLeft => "YawLeft",
+            Self::YawRight => "YawRight",
+            Self::PitchUp => "PitchUp",
+            Self::PitchDown => "PitchDown",
+            Self::RollLeft => "RollLeft",
+            Self::RollRight => "RollRight",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EThrusterOutputData`
@@ -24871,6 +33915,26 @@ impl EThrusterOutputData {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::FireStrength => "FireStrength",
+            Self::FireStrengthSmoothed => "FireStrengthSmoothed",
+            Self::AfterburnerEnabled => "AfterburnerEnabled",
+            Self::LastFuelRequested => "LastFuelRequested",
+            Self::LastFuelReceived => "LastFuelReceived",
+            Self::HealthRatio => "HealthRatio",
+            Self::MisfireThrustRatio => "MisfireThrustRatio",
+            Self::MisfireState => "MisfireState",
+            Self::TemperatureRatio => "TemperatureRatio",
+            Self::IsOverheating => "IsOverheating",
+            Self::IsOverheated => "IsOverheated",
+            Self::PowerRatio => "PowerRatio",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EThrusterType`
@@ -24900,6 +33964,17 @@ impl EThrusterType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Maneuver => "Maneuver",
+            Self::Main => "Main",
+            Self::Retro => "Retro",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ETriggerDefaultActions`
@@ -24924,6 +33999,16 @@ impl ETriggerDefaultActions {
             "pc_item_primary" => Self::pc_item_primary,
             "pc_item_secondary" => Self::pc_item_secondary,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::pc_item_primary => "pc_item_primary",
+            Self::pc_item_secondary => "pc_item_secondary",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -25036,6 +34121,44 @@ impl ETurbulentPassEA {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::EA_BattleRoyale => "EA_BattleRoyale",
+            Self::EA_FreeFlight => "EA_FreeFlight",
+            Self::EA_PirateSwarm => "EA_PirateSwarm",
+            Self::EA_SquadronBattle => "EA_SquadronBattle",
+            Self::EA_VanduulSwarm => "EA_VanduulSwarm",
+            Self::EA_ClassicRace => "EA_ClassicRace",
+            Self::EA_Elimination => "EA_Elimination",
+            Self::EA_TeamElimination => "EA_TeamElimination",
+            Self::EA_Control => "EA_Control",
+            Self::EA_TheatersOfWar => "EA_TheatersOfWar",
+            Self::EA_IterativeTesting => "EA_IterativeTesting",
+            Self::EA_Duel => "EA_Duel",
+            Self::EA_FPSGunGame => "EA_FPSGunGame",
+            Self::EA_Horde => "EA_Horde",
+            Self::EA_VanduulInvasion => "EA_VanduulInvasion",
+            Self::EA_ExperimentalMode_1 => "EA_ExperimentalMode_1",
+            Self::EA_ExperimentalMode_2 => "EA_ExperimentalMode_2",
+            Self::EA_ExperimentalMode_3 => "EA_ExperimentalMode_3",
+            Self::EA_ExperimentalMode_4 => "EA_ExperimentalMode_4",
+            Self::EA_ExperimentalMode_5 => "EA_ExperimentalMode_5",
+            Self::EA_ExperimentalMode_6 => "EA_ExperimentalMode_6",
+            Self::EA_ExperimentalMode_7 => "EA_ExperimentalMode_7",
+            Self::EA_ExperimentalMode_8 => "EA_ExperimentalMode_8",
+            Self::EA_ExperimentalMode_9 => "EA_ExperimentalMode_9",
+            Self::EA_ExperimentalMode_10 => "EA_ExperimentalMode_10",
+            Self::EA_ExperimentalMode_11 => "EA_ExperimentalMode_11",
+            Self::EA_ExperimentalMode_12 => "EA_ExperimentalMode_12",
+            Self::EA_GravRace => "EA_GravRace",
+            Self::Subscriber => "Subscriber",
+            Self::EA_SpecialEvent => "EA_SpecialEvent",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ETurretGunSafetyType`
@@ -25065,6 +34188,17 @@ impl ETurretGunSafetyType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Off => "Off",
+            Self::PlayerOnly => "PlayerOnly",
+            Self::All => "All",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ETurretRotationStyle`
@@ -25089,6 +34223,16 @@ impl ETurretRotationStyle {
             "SingleAxis" => Self::SingleAxis,
             "MultiAxis" => Self::MultiAxis,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::SingleAxis => "SingleAxis",
+            Self::MultiAxis => "MultiAxis",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -25123,6 +34267,18 @@ impl EUsableEntrySelectionType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::FirstFound => "FirstFound",
+            Self::Closest => "Closest",
+            Self::Farthest => "Farthest",
+            Self::Random => "Random",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EUsableSelectionMethod`
@@ -25150,6 +34306,17 @@ impl EUsableSelectionMethod {
             "Random" => Self::Random,
             "Closest" => Self::Closest,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Priority => "Priority",
+            Self::Random => "Random",
+            Self::Closest => "Closest",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -25190,6 +34357,20 @@ impl EUsableStance {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Stand => "Stand",
+            Self::Crouch => "Crouch",
+            Self::Seated => "Seated",
+            Self::Prone => "Prone",
+            Self::ProneBack => "ProneBack",
+            Self::Unset => "Unset",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EUseSlotReenablePoint`
@@ -25217,6 +34398,17 @@ impl EUseSlotReenablePoint {
             "ExitAnimStart" => Self::ExitAnimStart,
             "UsableDelink" => Self::UsableDelink,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::UseChannelCompletion => "UseChannelCompletion",
+            Self::ExitAnimStart => "ExitAnimStart",
+            Self::UsableDelink => "UsableDelink",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -25254,6 +34446,19 @@ impl EVAStateType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::StandIdle => "StandIdle",
+            Self::IronmanRelaxed => "IronmanRelaxed",
+            Self::IronmanTurn => "IronmanTurn",
+            Self::IronmanMove => "IronmanMove",
+            Self::StandMove => "StandMove",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EVaultingTechniqueImprovementType`
@@ -25275,6 +34480,15 @@ impl EVaultingTechniqueImprovementType {
         match s {
             "Speed" => Self::Speed,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Speed => "Speed",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -25315,6 +34529,20 @@ impl EVehicleDamageModifier {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::AI_HitBy_AI => "AI_HitBy_AI",
+            Self::AI_HitBy_Player => "AI_HitBy_Player",
+            Self::Player_HitBy_AI => "Player_HitBy_AI",
+            Self::Player_HitBy_Player => "Player_HitBy_Player",
+            Self::Uncontrolled_HitBy_AI => "Uncontrolled_HitBy_AI",
+            Self::Uncontrolled_HitBy_Player => "Uncontrolled_HitBy_Player",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EVehicleElevatorBehavior`
@@ -25342,6 +34570,17 @@ impl EVehicleElevatorBehavior {
             "DisableNetSync" => Self::DisableNetSync,
             "Attach" => Self::Attach,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::DisableNetSync => "DisableNetSync",
+            Self::Attach => "Attach",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -25382,6 +34621,20 @@ impl EVehicleMovementClass {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::ArcadeWheeled => "ArcadeWheeled",
+            Self::Dummy => "Dummy",
+            Self::Spaceship => "Spaceship",
+            Self::TrackWheeled => "TrackWheeled",
+            Self::Boat => "Boat",
+            Self::PhysicalWheeled => "PhysicalWheeled",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EVibrationAudioCalculationType`
@@ -25406,6 +34659,16 @@ impl EVibrationAudioCalculationType {
             "Additive" => Self::Additive,
             "MaxOfAll" => Self::MaxOfAll,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Additive => "Additive",
+            Self::MaxOfAll => "MaxOfAll",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -25491,6 +34754,35 @@ impl EVibrationSource {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Collision => "Collision",
+            Self::Damage => "Damage",
+            Self::Explosion => "Explosion",
+            Self::IFCSMasterModeDrag => "IFCSMasterModeDrag",
+            Self::Thruster => "Thruster",
+            Self::ThrusterAfterburner => "ThrusterAfterburner",
+            Self::ThrustersAcceleration => "ThrustersAcceleration",
+            Self::AerodynamicsAcceleration => "AerodynamicsAcceleration",
+            Self::ExternalAcceleration => "ExternalAcceleration",
+            Self::Wheels => "Wheels",
+            Self::WeaponFire => "WeaponFire",
+            Self::WindArea => "WindArea",
+            Self::Distortion => "Distortion",
+            Self::MagLaunch_Charge => "MagLaunch_Charge",
+            Self::MagLaunch_Catapult => "MagLaunch_Catapult",
+            Self::Quantum => "Quantum",
+            Self::ElectricalCharge => "ElectricalCharge",
+            Self::ProjectileImpact => "ProjectileImpact",
+            Self::JumpDrive => "JumpDrive",
+            Self::JumpPoint => "JumpPoint",
+            Self::JumpTunnel => "JumpTunnel",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EVibrationVehiclePlayerRole`
@@ -25521,6 +34813,18 @@ impl EVibrationVehiclePlayerRole {
             "Crew" => Self::Crew,
             "Passenger" => Self::Passenger,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::Driver => "Driver",
+            Self::Crew => "Crew",
+            Self::Passenger => "Passenger",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -25579,6 +34883,26 @@ impl EViewType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::eView_Off => "eView_Off",
+            Self::eView_SelfStatus => "eView_SelfStatus",
+            Self::eView_TargetStatus => "eView_TargetStatus",
+            Self::eView_Communications => "eView_Communications",
+            Self::eView_Configuration => "eView_Configuration",
+            Self::eView_IFCS => "eView_IFCS",
+            Self::eView_Diagnostics => "eView_Diagnostics",
+            Self::eView_ResourceNetwork => "eView_ResourceNetwork",
+            Self::eView_Scanning => "eView_Scanning",
+            Self::eView_Weapons => "eView_Weapons",
+            Self::eView_Shields => "eView_Shields",
+            Self::eView_SMP => "eView_SMP",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EVoteLocType`
@@ -25617,6 +34941,20 @@ impl EVoteLocType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Passed => "Passed",
+            Self::Failed => "Failed",
+            Self::Yes => "Yes",
+            Self::No => "No",
+            Self::StartedBy => "StartedBy",
+            Self::ActionPrompts => "ActionPrompts",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EWantedLevelComparison`
@@ -25647,6 +34985,18 @@ impl EWantedLevelComparison {
             "EqualOrLess" => Self::EqualOrLess,
             "EqualOrGreater" => Self::EqualOrGreater,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Ignore => "Ignore",
+            Self::Equal => "Equal",
+            Self::EqualOrLess => "EqualOrLess",
+            Self::EqualOrGreater => "EqualOrGreater",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -25682,6 +35032,19 @@ impl EWave {
             "EWave_4" => Self::EWave_4,
             "EWave_5" => Self::EWave_5,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::EWave_1 => "EWave_1",
+            Self::EWave_2 => "EWave_2",
+            Self::EWave_3 => "EWave_3",
+            Self::EWave_4 => "EWave_4",
+            Self::EWave_5 => "EWave_5",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -25728,6 +35091,22 @@ impl EWeaponDisplayStat {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Damage => "Damage",
+            Self::Handling => "Handling",
+            Self::Range => "Range",
+            Self::Weight => "Weight",
+            Self::Velocity => "Velocity",
+            Self::FireRate => "FireRate",
+            Self::AmmoCapacity => "AmmoCapacity",
+            Self::Modes => "Modes",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EWeaponGroup`
@@ -25758,6 +35137,18 @@ impl EWeaponGroup {
             "Missiles" => Self::Missiles,
             "UNDEFINED" => Self::UNDEFINED,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Gun1 => "Gun1",
+            Self::Gun2 => "Gun2",
+            Self::Missiles => "Missiles",
+            Self::UNDEFINED => "UNDEFINED",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -25831,6 +35222,31 @@ impl EWeaponProjectileType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Ballistic => "Ballistic",
+            Self::Flak => "Flak",
+            Self::Incendiary => "Incendiary",
+            Self::Explosive => "Explosive",
+            Self::Disarray => "Disarray",
+            Self::MassDriver => "MassDriver",
+            Self::Laser => "Laser",
+            Self::Neutron => "Neutron",
+            Self::Plasma => "Plasma",
+            Self::Electron => "Electron",
+            Self::Tachyon => "Tachyon",
+            Self::Beam => "Beam",
+            Self::Distortion => "Distortion",
+            Self::Mining => "Mining",
+            Self::Tractor => "Tractor",
+            Self::Towing => "Towing",
+            Self::UNDEFINED => "UNDEFINED",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EWeaponRangeCategory`
@@ -25858,6 +35274,17 @@ impl EWeaponRangeCategory {
             "Medium" => Self::Medium,
             "Long" => Self::Long,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Short => "Short",
+            Self::Medium => "Medium",
+            Self::Long => "Long",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -25898,6 +35325,20 @@ impl EWeaponRole {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Sniper => "Sniper",
+            Self::AntiMaterial => "AntiMaterial",
+            Self::Default => "Default",
+            Self::AntiAir => "AntiAir",
+            Self::CloseQuarter => "CloseQuarter",
+            Self::UNDEFINED => "UNDEFINED",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EWeaponToggleMode`
@@ -25925,6 +35366,17 @@ impl EWeaponToggleMode {
             "IsToggle" => Self::IsToggle,
             "UsePlayerOptions" => Self::UsePlayerOptions,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::IsNotToggle => "IsNotToggle",
+            Self::IsToggle => "IsToggle",
+            Self::UsePlayerOptions => "UsePlayerOptions",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -25963,6 +35415,20 @@ impl EWeaponType {
             "Artillery" => Self::Artillery,
             "UNDEFINED" => Self::UNDEFINED,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Gatling => "Gatling",
+            Self::Repeater => "Repeater",
+            Self::GrenadeLauncher => "GrenadeLauncher",
+            Self::Cannon => "Cannon",
+            Self::Artillery => "Artillery",
+            Self::UNDEFINED => "UNDEFINED",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -26006,6 +35472,21 @@ impl EWeekday {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Sunday => "Sunday",
+            Self::Monday => "Monday",
+            Self::Tuesday => "Tuesday",
+            Self::Wednesday => "Wednesday",
+            Self::Thursday => "Thursday",
+            Self::Friday => "Friday",
+            Self::Saturday => "Saturday",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ElectricalCalculationPropertyType`
@@ -26032,6 +35513,16 @@ impl ElectricalCalculationPropertyType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Distance => "Distance",
+            Self::ElectricalCharge => "ElectricalCharge",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ElectricalStatePropertyType`
@@ -26053,6 +35544,15 @@ impl ElectricalStatePropertyType {
         match s {
             "Charge" => Self::Charge,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Charge => "Charge",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -26087,6 +35587,18 @@ impl EngineeringState {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Baseline => "Baseline",
+            Self::Warning => "Warning",
+            Self::Critical => "Critical",
+            Self::Disabled => "Disabled",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `EulerAngles`
@@ -26116,6 +35628,17 @@ impl EulerAngles {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Pitch => "Pitch",
+            Self::Roll => "Roll",
+            Self::Yaw => "Yaw",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ExpirationActivationType`
@@ -26142,6 +35665,16 @@ impl ExpirationActivationType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::AtCreation => "AtCreation",
+            Self::OnInteraction => "OnInteraction",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ExplosionZone`
@@ -26166,6 +35699,16 @@ impl ExplosionZone {
             "AdamHosted" => Self::AdamHosted,
             "Adam" => Self::Adam,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::AdamHosted => "AdamHosted",
+            Self::Adam => "Adam",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -26198,6 +35741,18 @@ impl FactionType {
             "Lawful" => Self::Lawful,
             "Unlawful" => Self::Unlawful,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::LawEnforcement => "LawEnforcement",
+            Self::PrivateSecurity => "PrivateSecurity",
+            Self::Lawful => "Lawful",
+            Self::Unlawful => "Unlawful",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -26277,6 +35832,33 @@ impl FireBehavior {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::VoxelDamage => "VoxelDamage",
+            Self::Radiation => "Radiation",
+            Self::Convection => "Convection",
+            Self::Equalization => "Equalization",
+            Self::DamageIgnition => "DamageIgnition",
+            Self::FlashIgnition => "FlashIgnition",
+            Self::OxygenStrength => "OxygenStrength",
+            Self::OxygenConsumption => "OxygenConsumption",
+            Self::LowOxygenExtinguish => "LowOxygenExtinguish",
+            Self::FuelConsumption => "FuelConsumption",
+            Self::RequiresFuel => "RequiresFuel",
+            Self::SmokeProduction => "SmokeProduction",
+            Self::FogGeneration => "FogGeneration",
+            Self::DamageToHealth => "DamageToHealth",
+            Self::AmbientTemperature => "AmbientTemperature",
+            Self::AutoRepairing => "AutoRepairing",
+            Self::Repairing => "Repairing",
+            Self::Extinguishing => "Extinguishing",
+            Self::RoomConnectors => "RoomConnectors",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `FireEnabledMode`
@@ -26312,6 +35894,19 @@ impl FireEnabledMode {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Enabled => "Enabled",
+            Self::Disabled => "Disabled",
+            Self::EnabledOnVehicles => "EnabledOnVehicles",
+            Self::EnabledOnTag => "EnabledOnTag",
+            Self::EnabledOnAllVehicles => "EnabledOnAllVehicles",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `FireFilterMode`
@@ -26338,6 +35933,16 @@ impl FireFilterMode {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Include => "Include",
+            Self::Exclude => "Exclude",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `FireHazardFogNoiseTextures`
@@ -26362,6 +35967,16 @@ impl FireHazardFogNoiseTextures {
             "Noise0" => Self::Noise0,
             "Noise1" => Self::Noise1,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Noise0 => "Noise0",
+            Self::Noise1 => "Noise1",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -26396,6 +36011,18 @@ impl FireHazardMaterials {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Baseline => "Baseline",
+            Self::MaxSpecular => "MaxSpecular",
+            Self::MaxGloss => "MaxGloss",
+            Self::MaxSpecularAndGloss => "MaxSpecularAndGloss",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `FireHazardSurfaceDirections`
@@ -26423,6 +36050,17 @@ impl FireHazardSurfaceDirections {
             "Walls" => Self::Walls,
             "Ceilings" => Self::Ceilings,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Floors => "Floors",
+            Self::Walls => "Walls",
+            Self::Ceilings => "Ceilings",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -26458,6 +36096,19 @@ impl FlashValueUpdateMode {
             "AttachContent" => Self::AttachContent,
             "AttachScreen" => Self::AttachScreen,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::Offset => "Offset",
+            Self::Overwrite => "Overwrite",
+            Self::AttachContent => "AttachContent",
+            Self::AttachScreen => "AttachScreen",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -26594,6 +36245,52 @@ impl FlightHUDMessageType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::DefaultEmptyMessageDoesNotDisplay => "DefaultEmptyMessageDoesNotDisplay",
+            Self::VehicleEjectWarning => "VehicleEjectWarning",
+            Self::ShieldCritical => "ShieldCritical",
+            Self::ShieldDown => "ShieldDown",
+            Self::ShieldRecharge => "ShieldRecharge",
+            Self::ProximityWarning => "ProximityWarning",
+            Self::FuelEmptyWarning => "FuelEmptyWarning",
+            Self::FuelLevel10Warning => "FuelLevel10Warning",
+            Self::FuelLevel25Warning => "FuelLevel25Warning",
+            Self::FuelLevel50Warning => "FuelLevel50Warning",
+            Self::FuelLevel75Warning => "FuelLevel75Warning",
+            Self::LowPowerWeaponsWarning => "LowPowerWeaponsWarning",
+            Self::LowPowerShieldsWarning => "LowPowerShieldsWarning",
+            Self::LowPowerThrustersWarning => "LowPowerThrustersWarning",
+            Self::LowPowerGenericWarning => "LowPowerGenericWarning",
+            Self::OverheatingWeaponsWarning => "OverheatingWeaponsWarning",
+            Self::OverheatingShieldsWarning => "OverheatingShieldsWarning",
+            Self::OverheatingThrustersWarning => "OverheatingThrustersWarning",
+            Self::OverheatingGenericWarning => "OverheatingGenericWarning",
+            Self::OverheatedWeaponsWarning => "OverheatedWeaponsWarning",
+            Self::OverheatedShieldsWarning => "OverheatedShieldsWarning",
+            Self::OverheatedThrustersWarning => "OverheatedThrustersWarning",
+            Self::OverheatedGenericWarning => "OverheatedGenericWarning",
+            Self::BrickingWarning => "BrickingWarning",
+            Self::BrickedWarning => "BrickedWarning",
+            Self::QuantumDriveInterdictionAlert => "QuantumDriveInterdictionAlert",
+            Self::IncomingEMPDetected => "IncomingEMPDetected",
+            Self::GreenZoneWarning => "GreenZoneWarning",
+            Self::SelfDestructWarning => "SelfDestructWarning",
+            Self::Repairing => "Repairing",
+            Self::RepairFinished => "RepairFinished",
+            Self::RequestAlignment => "RequestAlignment",
+            Self::ObstructingLandingArea => "ObstructingLandingArea",
+            Self::EMPOffline => "EMPOffline",
+            Self::PingWarningMessage => "PingWarningMessage",
+            Self::ScannedWarningMessage => "ScannedWarningMessage",
+            Self::PortsUnlocked => "PortsUnlocked",
+            Self::CatastrophicFailureWarning => "CatastrophicFailureWarning",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ForceKnockdownDirection`
@@ -26627,6 +36324,19 @@ impl ForceKnockdownDirection {
             "Left" => Self::Left,
             "Right" => Self::Right,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::Forward => "Forward",
+            Self::Backward => "Backward",
+            Self::Left => "Left",
+            Self::Right => "Right",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -26670,6 +36380,21 @@ impl ForceReactionFilterType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Standing => "Standing",
+            Self::Crouching => "Crouching",
+            Self::Prone => "Prone",
+            Self::JumpFallLand => "JumpFallLand",
+            Self::Usable => "Usable",
+            Self::EVA => "EVA",
+            Self::Dead => "Dead",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `FriendlyFireType`
@@ -26699,6 +36424,17 @@ impl FriendlyFireType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::Self_ => "Self",
+            Self::Team => "Team",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `FuelTypes`
@@ -26726,6 +36462,17 @@ impl FuelTypes {
             "QuantumFuel" => Self::QuantumFuel,
             "HydrogenFuel" => Self::HydrogenFuel,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::INVALID => "INVALID",
+            Self::QuantumFuel => "QuantumFuel",
+            Self::HydrogenFuel => "HydrogenFuel",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -26766,6 +36513,20 @@ impl GRID_TYPE {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Global => "Global",
+            Self::Planetary => "Planetary",
+            Self::Small => "Small",
+            Self::Medium => "Medium",
+            Self::Large => "Large",
+            Self::SolarSystem => "SolarSystem",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `GameplayTrigger_SelectionMode`
@@ -26795,6 +36556,17 @@ impl GameplayTrigger_SelectionMode {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::All => "All",
+            Self::Any => "Any",
+            Self::None => "None",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `GameplayTrigger_Toggle`
@@ -26819,6 +36591,16 @@ impl GameplayTrigger_Toggle {
             "Enable" => Self::Enable,
             "Disable" => Self::Disable,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Enable => "Enable",
+            Self::Disable => "Disable",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -26848,6 +36630,17 @@ impl GenderType {
             "Male" => Self::Male,
             "Female" => Self::Female,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::NotSet => "NotSet",
+            Self::Male => "Male",
+            Self::Female => "Female",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -26882,6 +36675,18 @@ impl GeomForm {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Vertices => "Vertices",
+            Self::Edges => "Edges",
+            Self::Surface => "Surface",
+            Self::Volume => "Volume",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `GeomType`
@@ -26912,6 +36717,18 @@ impl GeomType {
             "Physics" => Self::Physics,
             "Render" => Self::Render,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::BoundingBox => "BoundingBox",
+            Self::Physics => "Physics",
+            Self::Render => "Render",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -26961,6 +36778,23 @@ impl HUDPalleteEntry {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Moderate => "Moderate",
+            Self::Positive => "Positive",
+            Self::Neutral => "Neutral",
+            Self::Hostile => "Hostile",
+            Self::Critical => "Critical",
+            Self::Unknown => "Unknown",
+            Self::Highlight => "Highlight",
+            Self::Friendly => "Friendly",
+            Self::SubItemTarget => "SubItemTarget",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `HandholdType`
@@ -26990,6 +36824,17 @@ impl HandholdType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Fixed => "Fixed",
+            Self::Cylinder => "Cylinder",
+            Self::Corner => "Corner",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `HarvestableOverrideAreaType`
@@ -27014,6 +36859,16 @@ impl HarvestableOverrideAreaType {
             "AutoRegisterWithZoneHost" => Self::AutoRegisterWithZoneHost,
             "ManualEntityLink" => Self::ManualEntityLink,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::AutoRegisterWithZoneHost => "AutoRegisterWithZoneHost",
+            Self::ManualEntityLink => "ManualEntityLink",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -28021,6 +37876,377 @@ impl HintEventType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::ActorStatusBuffApplied => "ActorStatusBuffApplied",
+            Self::ActorStatusClothingChanged => "ActorStatusClothingChanged",
+            Self::ActorStatusDeadlyInjuryStarted => "ActorStatusDeadlyInjuryStarted",
+            Self::ActorStatusDigestionAbsorptionEmpty => "ActorStatusDigestionAbsorptionEmpty",
+            Self::ActorStatusDownedEnter => "ActorStatusDownedEnter",
+            Self::ActorStatusEffectArmsLockCannotClimbLadder => {
+                "ActorStatusEffectArmsLockCannotClimbLadder"
+            }
+            Self::ActorStatusEffectArmsLockCannotMantle => "ActorStatusEffectArmsLockCannotMantle",
+            Self::ActorStatusEffectArmsLockCannotSteerShip => {
+                "ActorStatusEffectArmsLockCannotSteerShip"
+            }
+            Self::ActorStatusEffectArmsLockCannotRestrain => {
+                "ActorStatusEffectArmsLockCannotRestrain"
+            }
+            Self::ActorStatusEffectArmsLockCannotTakeDown => {
+                "ActorStatusEffectArmsLockCannotTakeDown"
+            }
+            Self::ActorStatusEffectArmsLockCannotUseMountedGun => {
+                "ActorStatusEffectArmsLockCannotUseMountedGun"
+            }
+            Self::ActorStatusEffectArmsLockCannotUseTrolley => {
+                "ActorStatusEffectArmsLockCannotUseTrolley"
+            }
+            Self::ActorStatusEffectArmsLockDropItem => "ActorStatusEffectArmsLockDropItem",
+            Self::ActorStatusEffectArmsLockLowerWeapon => "ActorStatusEffectArmsLockLowerWeapon",
+            Self::ActorStatusEffectArmsLockStart => "ActorStatusEffectArmsLockStart",
+            Self::ActorStatusEffectBleedStart => "ActorStatusEffectBleedStart",
+            Self::ActorStatusEffectProneLockStart => "ActorStatusEffectProneLockStart",
+            Self::ActorStatusFoodDrinkItemHeld => "ActorStatusFoodDrinkItemHeld",
+            Self::ActorStatusFoodDrinkItemInInventory => "ActorStatusFoodDrinkItemInInventory",
+            Self::ActorStatusHospitalEnter => "ActorStatusHospitalEnter",
+            Self::ActorStatusHospitalRoomReserved => "ActorStatusHospitalRoomReserved",
+            Self::ActorStatusHungerThirstDamageStarted => "ActorStatusHungerThirstDamageStarted",
+            Self::ActorStatusHungerThirstDeath => "ActorStatusHungerThirstDeath",
+            Self::ActorStatusHungerThirstFull => "ActorStatusHungerThirstFull",
+            Self::ActorStatusHungerThirstStatusStarted => "ActorStatusHungerThirstStatusStarted",
+            Self::ActorStatusHyperthermiaDamageStarted => "ActorStatusHyperthermiaDamageStarted",
+            Self::ActorStatusHyperthermiaStarted => "ActorStatusHyperthermiaStarted",
+            Self::ActorStatusHypothermiaDamageStarted => "ActorStatusHypothermiaDamageStarted",
+            Self::ActorStatusHypothermiaStarted => "ActorStatusHypothermiaStarted",
+            Self::ActorStatusInjuryStarted => "ActorStatusInjuryStarted",
+            Self::ActorStatusIntoxicatedEnter => "ActorStatusIntoxicatedEnter",
+            Self::ActorStatusMajorInjuryStarted => "ActorStatusMajorInjuryStarted",
+            Self::ActorStatusMedBedEnter => "ActorStatusMedBedEnter",
+            Self::ActorStatusOverdoseDamageStarted => "ActorStatusOverdoseDamageStarted",
+            Self::ActorStatusOverdoseDeath => "ActorStatusOverdoseDeath",
+            Self::ActorStatusOverdoseEnter => "ActorStatusOverdoseEnter",
+            Self::ActorStatusPITMenuDrugs => "ActorStatusPITMenuDrugs",
+            Self::ActorStatusRespawnMedBed => "ActorStatusRespawnMedBed",
+            Self::ActorStatusRespawnLocationSet => "ActorStatusRespawnLocationSet",
+            Self::ActorStatusRespawnCriminal => "ActorStatusRespawnCriminal",
+            Self::ActorStatusRespawnPrison => "ActorStatusRespawnPrison",
+            Self::ActorStatusTemperatureAboveMaxResistance => {
+                "ActorStatusTemperatureAboveMaxResistance"
+            }
+            Self::ActorStatusTemperatureBelowMinResistance => {
+                "ActorStatusTemperatureBelowMinResistance"
+            }
+            Self::ActorStatusTemperatureDeath => "ActorStatusTemperatureDeath",
+            Self::ActorStatusWearingHelmetConsume => "ActorStatusWearingHelmetConsume",
+            Self::ActorStatusWearingNoUndersuitConsume => "ActorStatusWearingNoUndersuitConsume",
+            Self::ActorStatusWeatherLocomotionEntered => "ActorStatusWeatherLocomotionEntered",
+            Self::AlignShipForCargoTransfer => "AlignShipForCargoTransfer",
+            Self::ASOPShipSpawned => "ASOPShipSpawned",
+            Self::BodyCarry_Start => "BodyCarry_Start",
+            Self::BodyDrag_Start => "BodyDrag_Start",
+            Self::CargoTransferInterruptions => "CargoTransferInterruptions",
+            Self::ChatOpened => "ChatOpened",
+            Self::CollectCargoFromLoadingArea => "CollectCargoFromLoadingArea",
+            Self::ConsumableFirstMiningConsumableBought => "ConsumableFirstMiningConsumableBought",
+            Self::ConsumableFirstMiningWithConsumablesEquipped => {
+                "ConsumableFirstMiningWithConsumablesEquipped"
+            }
+            Self::ConsumableMiningConsumableExpired => "ConsumableMiningConsumableExpired",
+            Self::ConsumableMiningConsumableExpiredNoCharges => {
+                "ConsumableMiningConsumableExpiredNoCharges"
+            }
+            Self::ConsumableMiningConsumableUsed => "ConsumableMiningConsumableUsed",
+            Self::ContactsOpened => "ContactsOpened",
+            Self::CustomizeACLoadoutMenuEntered => "CustomizeACLoadoutMenuEntered",
+            Self::CustomizeSMLoadoutMenuEntered => "CustomizeSMLoadoutMenuEntered",
+            Self::DeliverCargoToLoadingArea => "DeliverCargoToLoadingArea",
+            Self::FPSMiningAttachmentPurchased => "FPSMiningAttachmentPurchased",
+            Self::FPSMiningFinishedRockScan => "FPSMiningFinishedRockScan",
+            Self::FPSMiningRockFracturedBad => "FPSMiningRockFracturedBad",
+            Self::FPSMiningRockFracturedGood => "FPSMiningRockFracturedGood",
+            Self::FPSMiningRockNearby => "FPSMiningRockNearby",
+            Self::FPSMiningRockPowerDangerLevel => "FPSMiningRockPowerDangerLevel",
+            Self::FPSMiningRockPowerOptimalLevel => "FPSMiningRockPowerOptimalLevel",
+            Self::FPSMiningRockTargetedNotADS => "FPSMiningRockTargetedNotADS",
+            Self::FPSMiningShotEnvironment => "FPSMiningShotEnvironment",
+            Self::FPSMiningShotRockADS => "FPSMiningShotRockADS",
+            Self::FPSMiningWeaponSelected => "FPSMiningWeaponSelected",
+            Self::GreenZoneEntered => "GreenZoneEntered",
+            Self::GreenZoneExited => "GreenZoneExited",
+            Self::HailCargoServicesForLoading => "HailCargoServicesForLoading",
+            Self::HarvestableInHandBackpackNotFull => "HarvestableInHandBackpackNotFull",
+            Self::HarvestableNotInHand => "HarvestableNotInHand",
+            Self::HarvestablePlayerLooksAtHarvestableBackpackNotFull => {
+                "HarvestablePlayerLooksAtHarvestableBackpackNotFull"
+            }
+            Self::HarvestablePlayerLooksAtHarvestableNoBackpack => {
+                "HarvestablePlayerLooksAtHarvestableNoBackpack"
+            }
+            Self::HintAreaEntered => "HintAreaEntered",
+            Self::HintAreaExited => "HintAreaExited",
+            Self::HullC_CargoRequiresSpindlesExtended => "HullC_CargoRequiresSpindlesExtended",
+            Self::InGameStateBegin => "InGameStateBegin",
+            Self::InteractionModeEntered => "InteractionModeEntered",
+            Self::InteractionModeExited => "InteractionModeExited",
+            Self::InteractionConditionGeneric => "InteractionConditionGeneric",
+            Self::InteractionConditionSpecific => "InteractionConditionSpecific",
+            Self::KnockdownStarted => "KnockdownStarted",
+            Self::LegallyLandedShipStarted => "LegallyLandedShipStarted",
+            Self::LogoutEntered => "LogoutEntered",
+            Self::LogoutEnteredNonOwned => "LogoutEnteredNonOwned",
+            Self::LogoutEnteredNoPlayersAround => "LogoutEnteredNoPlayersAround",
+            Self::LogoutEnteredPlayersAround => "LogoutEnteredPlayersAround",
+            Self::LogoutEnteredPlayersInShip => "LogoutEnteredPlayersInShip",
+            Self::LogoutRespawnFailed => "LogoutRespawnFailed",
+            Self::LogoutEnteredShipInShip => "LogoutEnteredShipInShip",
+            Self::LogoutEnteredNonPersistent => "LogoutEnteredNonPersistent",
+            Self::MedBeamEquippedMedgun => "MedBeamEquippedMedgun",
+            Self::MedBeamEquippedMultiTool => "MedBeamEquippedMultiTool",
+            Self::MedBeamSelfHealPrompt => "MedBeamSelfHealPrompt",
+            Self::MedBeamSelfHealDescription => "MedBeamSelfHealDescription",
+            Self::MedBeamValidTargetAcquired => "MedBeamValidTargetAcquired",
+            Self::MedBeamValidTargetAcquiredIsHurt => "MedBeamValidTargetAcquiredIsHurt",
+            Self::MedBeamBDLTooHighMedgun => "MedBeamBDLTooHighMedgun",
+            Self::MedBeamBDLTooHighMultiTool => "MedBeamBDLTooHighMultiTool",
+            Self::MedBeamMedgunToggleAdvancedMode => "MedBeamMedgunToggleAdvancedMode",
+            Self::MedBeamMedgunOnAdvancedModeActivated => "MedBeamMedgunOnAdvancedModeActivated",
+            Self::MedBeamMedgunAdvancedModeButtons => "MedBeamMedgunAdvancedModeButtons",
+            Self::MedBeamMedgunAdvancedModeSafeBDLBypass => {
+                "MedBeamMedgunAdvancedModeSafeBDLBypass"
+            }
+            Self::MedBeamMedgunAdvancedModeCriticalBDLBypass => {
+                "MedBeamMedgunAdvancedModeCriticalBDLBypass"
+            }
+            Self::MedBedClearAllRespawns => "MedBedClearAllRespawns",
+            Self::MedBedEraseDNA => "MedBedEraseDNA",
+            Self::MedBedRespawnNotAvailable => "MedBedRespawnNotAvailable",
+            Self::MedBedRespawnOutOfRange => "MedBedRespawnOutOfRange",
+            Self::MedBedUploadDNA => "MedBedUploadDNA",
+            Self::MedpenStabBlockedInGreenZone => "MedpenStabBlockedInGreenZone",
+            Self::MeleeEquip => "MeleeEquip",
+            Self::MeleeLightAttacks => "MeleeLightAttacks",
+            Self::MeleeHooks => "MeleeHooks",
+            Self::MeleeHaymaker => "MeleeHaymaker",
+            Self::MeleeUppercut => "MeleeUppercut",
+            Self::MeleeCombinationAttacks => "MeleeCombinationAttacks",
+            Self::MeleeBlocking => "MeleeBlocking",
+            Self::MeleeDodging => "MeleeDodging",
+            Self::MeleeStun => "MeleeStun",
+            Self::MeleeKnifeEquip => "MeleeKnifeEquip",
+            Self::MeleeKnifeLight => "MeleeKnifeLight",
+            Self::MeleeKnifeHeavy => "MeleeKnifeHeavy",
+            Self::MeleeTakedownGun => "MeleeTakedownGun",
+            Self::MeleeTakedownFists => "MeleeTakedownFists",
+            Self::MeleeTakedownWeapon => "MeleeTakedownWeapon",
+            Self::MeleeTakedownStop => "MeleeTakedownStop",
+            Self::MFDFocusEntered => "MFDFocusEntered",
+            Self::MFDFocusExited => "MFDFocusExited",
+            Self::MiningExtractableRockTargeted => "MiningExtractableRockTargeted",
+            Self::MiningFracturableRockTargeted => "MiningFracturableRockTargeted",
+            Self::MiningModeSwitch => "MiningModeSwitch",
+            Self::MiningNoProgress => "MiningNoProgress",
+            Self::MiningRadarBlobFound => "MiningRadarBlobFound",
+            Self::MiningRockExtracted => "MiningRockExtracted",
+            Self::MiningRockFractured => "MiningRockFractured",
+            Self::MiningRockInPassiveRadar => "MiningRockInPassiveRadar",
+            Self::MiningRockPowerDangerLevel => "MiningRockPowerDangerLevel",
+            Self::MiningRockPowerOptimalLevel => "MiningRockPowerOptimalLevel",
+            Self::MiningShipCargoFull => "MiningShipCargoFull",
+            Self::MiningShipCargoHalfFull => "MiningShipCargoHalfFull",
+            Self::MiningShipIsFlightReady => "MiningShipIsFlightReady",
+            Self::MiningShipLowMoonOrbit => "MiningShipLowMoonOrbit",
+            Self::MobiGlasOpened => "MobiGlasOpened",
+            Self::MobiGlasClosed => "MobiGlasClosed",
+            Self::MobiGlasJournalOpened => "MobiGlasJournalOpened",
+            Self::MobiGlasMissionManagerOpened => "MobiGlasMissionManagerOpened",
+            Self::MonitoredZoneEntered => "MonitoredZoneEntered",
+            Self::MonitoredZoneExited => "MonitoredZoneExited",
+            Self::OxygenDroppedTo50pcHasCapsules => "OxygenDroppedTo50pcHasCapsules",
+            Self::OxygenDroppedTo50pcNoCapsules => "OxygenDroppedTo50pcNoCapsules",
+            Self::OxygenDroppedTo25pcHasCapsules => "OxygenDroppedTo25pcHasCapsules",
+            Self::OxygenDroppedTo25pcNoCapsules => "OxygenDroppedTo25pcNoCapsules",
+            Self::OxygenRefilled => "OxygenRefilled",
+            Self::PersonalInnerThoughtClosed => "PersonalInnerThoughtClosed",
+            Self::PersonalInnerThoughtOpened => "PersonalInnerThoughtOpened",
+            Self::PersonalInnerThoughtQuickSelectionMode => {
+                "PersonalInnerThoughtQuickSelectionMode"
+            }
+            Self::PersonalInnerThoughtQuickSelectionWeaponsOpened => {
+                "PersonalInnerThoughtQuickSelectionWeaponsOpened"
+            }
+            Self::PersonalInnerThoughtQuickSelectionModeOpened => {
+                "PersonalInnerThoughtQuickSelectionModeOpened"
+            }
+            Self::PersonalInnerThoughtGreyedOutActions => "PersonalInnerThoughtGreyedOutActions",
+            Self::PersonalInnerThoughtAddToFavorites => "PersonalInnerThoughtAddToFavorites",
+            Self::PersonalInnerThoughtTriedToCustomizeDefaultActions => {
+                "PersonalInnerThoughtTriedToCustomizeDefaultActions"
+            }
+            Self::PersonalInnerThoughtCancelRebind => "PersonalInnerThoughtCancelRebind",
+            Self::PersonalInventoryBackpackFull => "PersonalInventoryBackpackFull",
+            Self::PersonalInventoryHarvestableLootedIntoBackpack => {
+                "PersonalInventoryHarvestableLootedIntoBackpack"
+            }
+            Self::PersonalInventoryItemStowed => "PersonalInventoryItemStowed",
+            Self::PersonalInventoryShardLootedIntoBackpack => {
+                "PersonalInventoryShardLootedIntoBackpack"
+            }
+            Self::PersonalInventoryHarvestableDirectlyStowedIntoBackpack => {
+                "PersonalInventoryHarvestableDirectlyStowedIntoBackpack"
+            }
+            Self::PersonalInventoryUndersuitClothingIncompatible => {
+                "PersonalInventoryUndersuitClothingIncompatible"
+            }
+            Self::PersonalInventoryOpen => "PersonalInventoryOpen",
+            Self::PersonalInventoryHomeItemAdded => "PersonalInventoryHomeItemAdded",
+            Self::PersonalInventoryItemPurchased => "PersonalInventoryItemPurchased",
+            Self::PersonalInventoryContainerSizeLimits => "PersonalInventoryContainerSizeLimits",
+            Self::PersonalInventoryContainerFull => "PersonalInventoryContainerFull",
+            Self::PersonalInventoryVehicleEnter => "PersonalInventoryVehicleEnter",
+            Self::PersonalInventoryOpenInVehicle => "PersonalInventoryOpenInVehicle",
+            Self::PersonalInventoryVehicleStorageUsed => "PersonalInventoryVehicleStorageUsed",
+            Self::PersonalInventoryVehicleDestroyed => "PersonalInventoryVehicleDestroyed",
+            Self::PersonalInventoryOpenWithNoAvailableContainer => {
+                "PersonalInventoryOpenWithNoAvailableContainer"
+            }
+            Self::PersonalInventoryInvalidClothingArmorEquip => {
+                "PersonalInventoryInvalidClothingArmorEquip"
+            }
+            Self::PersonalInventoryOutOfRange => "PersonalInventoryOutOfRange",
+            Self::PickupCollected => "PickupCollected",
+            Self::PlayerCombatHealed => "PlayerCombatHealed",
+            Self::PlayerEnteredEVA => "PlayerEnteredEVA",
+            Self::PlayerGotAKill => "PlayerGotAKill",
+            Self::PlayerLowHealth => "PlayerLowHealth",
+            Self::PlayerPickupItem => "PlayerPickupItem",
+            Self::PlayerStowItem => "PlayerStowItem",
+            Self::PlayerThrewItem => "PlayerThrewItem",
+            Self::PlayerWasKilled => "PlayerWasKilled",
+            Self::PlayerWasKilledByGrenade => "PlayerWasKilledByGrenade",
+            Self::PrivateMatchMenuEntered => "PrivateMatchMenuEntered",
+            Self::RepairBeam_AmmoEmpty => "RepairBeam_AmmoEmpty",
+            Self::RepairBeam_HullOverview => "RepairBeam_HullOverview",
+            Self::RepairBeam_Repairing => "RepairBeam_Repairing",
+            Self::RepairBeam_VehicleTargetAquired => "RepairBeam_VehicleTargetAquired",
+            Self::RestrictedAreaTunnelActivatedLanding => "RestrictedAreaTunnelActivatedLanding",
+            Self::RestrictedAreaTunnelActivatedTakeoff => "RestrictedAreaTunnelActivatedTakeoff",
+            Self::RestrictedAreaTunnelEdge => "RestrictedAreaTunnelEdge",
+            Self::RestrictedAreaTunnelNearby => "RestrictedAreaTunnelNearby",
+            Self::SalvageBeam_AmmoFull => "SalvageBeam_AmmoFull",
+            Self::SalvageBeam_HullOverview => "SalvageBeam_HullOverview",
+            Self::SalvageBeam_MaterialDepleeted => "SalvageBeam_MaterialDepleeted",
+            Self::SalvageBeam_Salvaging => "SalvageBeam_Salvaging",
+            Self::SalvageBeam_VehicleTargetAquired => "SalvageBeam_VehicleTargetAquired",
+            Self::SalvageRepairBeam_Shields => "SalvageRepairBeam_Shields",
+            Self::SalvageRepairBeam_SwitchFireMode => "SalvageRepairBeam_SwitchFireMode",
+            Self::ScanModeEntered => "ScanModeEntered",
+            Self::ScanModeExited => "ScanModeExited",
+            Self::ShipAfterburnerOn => "ShipAfterburnerOn",
+            Self::ShipBoostOn => "ShipBoostOn",
+            Self::ShipCollision => "ShipCollision",
+            Self::ShipCritPartHealthDroppedTo25pc => "ShipCritPartHealthDroppedTo25pc",
+            Self::ShipOverallHealthDroppedTo75pc => "ShipOverallHealthDroppedTo75pc",
+            Self::ShipAnyPartAndItemDamaged => "ShipAnyPartAndItemDamaged",
+            Self::ShipDecoupledOn => "ShipDecoupledOn",
+            Self::ShipGSafeToggle => "ShipGSafeToggle",
+            Self::ShipHitByGun => "ShipHitByGun",
+            Self::ShipHitByMissile => "ShipHitByMissile",
+            Self::ShipIsFlightReady => "ShipIsFlightReady",
+            Self::ShipEnteringLandingArea => "ShipEnteringLandingArea",
+            Self::ShipLandingGearRaised => "ShipLandingGearRaised",
+            Self::ShipLandingGearLowered => "ShipLandingGearLowered",
+            Self::ShipPitchedOrYawedOnce => "ShipPitchedOrYawedOnce",
+            Self::ShipHydrogenFuelDroppedTo25pc => "ShipHydrogenFuelDroppedTo25pc",
+            Self::ShipHydrogenFuelDroppedTo75pc => "ShipHydrogenFuelDroppedTo75pc",
+            Self::ShipHydrogenFuelRefilled => "ShipHydrogenFuelRefilled",
+            Self::ShipQuantumFuelDroppedTo25pc => "ShipQuantumFuelDroppedTo25pc",
+            Self::ShipQuantumFuelDroppedTo75pc => "ShipQuantumFuelDroppedTo75pc",
+            Self::ShipQuantumFuelRefilled => "ShipQuantumFuelRefilled",
+            Self::ShipQuantumTravelObstructed => "ShipQuantumTravelObstructed",
+            Self::ShipQuantumDriveSpoolingStarted => "ShipQuantumDriveSpoolingStarted",
+            Self::ShipQuantumDriveSpoolingOff => "ShipQuantumDriveSpoolingOff",
+            Self::ShipQuantumDriveTriedSpoolingInCooldown => {
+                "ShipQuantumDriveTriedSpoolingInCooldown"
+            }
+            Self::ShipQuantumCalibrationStarted => "ShipQuantumCalibrationStarted",
+            Self::ShipQuantumCalibrationCompletedButNotSpooled => {
+                "ShipQuantumCalibrationCompletedButNotSpooled"
+            }
+            Self::ShipQuantumCalibrationStalled => "ShipQuantumCalibrationStalled",
+            Self::ShipQuantumNoCalibrationButSpooled => "ShipQuantumNoCalibrationButSpooled",
+            Self::ShipQuantumCalibratedSpooledAlone => "ShipQuantumCalibratedSpooledAlone",
+            Self::ShipQuantumCalibratedSpooledInGroup => "ShipQuantumCalibratedSpooledInGroup",
+            Self::ShipSeatEntered => "ShipSeatEntered",
+            Self::ShipShieldsDown => "ShipShieldsDown",
+            Self::ShipZoneEntered => "ShipZoneEntered",
+            Self::ShipTakenOff => "ShipTakenOff",
+            Self::ShipThrottledUpOnce => "ShipThrottledUpOnce",
+            Self::ShipStartedPreRampUp => "ShipStartedPreRampUp",
+            Self::ShipStartedQuantumTravel => "ShipStartedQuantumTravel",
+            Self::ShipEndedQuantumTravel => "ShipEndedQuantumTravel",
+            Self::ShipEndedPostRampDown => "ShipEndedPostRampDown",
+            Self::ShipAbortedQuantumTravel => "ShipAbortedQuantumTravel",
+            Self::ShipWeaponGroup2Fired => "ShipWeaponGroup2Fired",
+            Self::ShipWeaponsFired => "ShipWeaponsFired",
+            Self::ShipMissilesDroppedTo25pc => "ShipMissilesDroppedTo25pc",
+            Self::ShipMissilesRefilled => "ShipMissilesRefilled",
+            Self::ShipBulletsDroppedTo25pc => "ShipBulletsDroppedTo25pc",
+            Self::ShipBulletsRefilled => "ShipBulletsRefilled",
+            Self::ShoppingTryOnInspectEnter => "ShoppingTryOnInspectEnter",
+            Self::ShoppingTryOnInspectExit => "ShoppingTryOnInspectExit",
+            Self::SignatureSystemPingAngleChanged => "SignatureSystemPingAngleChanged",
+            Self::SignatureSystemPingTriggered => "SignatureSystemPingTriggered",
+            Self::SignatureSystemScanAbandonned => "SignatureSystemScanAbandonned",
+            Self::SignatureSystemScanCompleted => "SignatureSystemScanCompleted",
+            Self::SignatureSystemScanModeEntered => "SignatureSystemScanModeEntered",
+            Self::SignatureSystemScanModeExited => "SignatureSystemScanModeExited",
+            Self::SignatureSystemScanStarted => "SignatureSystemScanStarted",
+            Self::SignatureSystemScanZoomChanged => "SignatureSystemScanZoomChanged",
+            Self::SpawnPointEnter => "SpawnPointEnter",
+            Self::SpawnPointExit => "SpawnPointExit",
+            Self::StaminaDroppedTo90pc => "StaminaDroppedTo90pc",
+            Self::StaminaDroppedTo25pc => "StaminaDroppedTo25pc",
+            Self::StartGame => "StartGame",
+            Self::TrackviewButtonPressedAllowSwitch => "TrackviewButtonPressedAllowSwitch",
+            Self::TrackviewButtonPressedDontAllowSwitch => "TrackviewButtonPressedDontAllowSwitch",
+            Self::TrackviewCameraSwitchTimeOut => "TrackviewCameraSwitchTimeOut",
+            Self::TrackviewCameraSwitchedTo1P => "TrackviewCameraSwitchedTo1P",
+            Self::TractorBeamPlayerEquipped => "TractorBeamPlayerEquipped",
+            Self::TractorBeamTetheredToTarget => "TractorBeamTetheredToTarget",
+            Self::TractorBeamDistControlUsed => "TractorBeamDistControlUsed",
+            Self::TractorBeamTetherBrokenDistance => "TractorBeamTetherBrokenDistance",
+            Self::TractorBeamTargetedTooHeavyObject => "TractorBeamTargetedTooHeavyObject",
+            Self::TractorBeamTargetedTooLargeObject => "TractorBeamTargetedTooLargeObject",
+            Self::TractorBeamEnteredZeroG => "TractorBeamEnteredZeroG",
+            Self::TractorBeamLineOfSightBroken => "TractorBeamLineOfSightBroken",
+            Self::TractorBeamTetherBrokenFastMovement => "TractorBeamTetherBrokenFastMovement",
+            Self::UnboundKeyShown => "UnboundKeyShown",
+            Self::UsableEntered => "UsableEntered",
+            Self::UsableExited => "UsableExited",
+            Self::VolatileCargoCollected => "VolatileCargoCollected",
+            Self::VolatileCargoCollectedFirstTime => "VolatileCargoCollectedFirstTime",
+            Self::VolatileCargoCritical => "VolatileCargoCritical",
+            Self::VolatileCargoExplodedNoDeath => "VolatileCargoExplodedNoDeath",
+            Self::VolatileCargoJettisoned => "VolatileCargoJettisoned",
+            Self::VolatileCargoLightOnCritical => "VolatileCargoLightOnCritical",
+            Self::VolatileCargoLightOnWarning => "VolatileCargoLightOnWarning",
+            Self::WantedLevelIncreased => "WantedLevelIncreased",
+            Self::WeaponADSActivateNightvision => "WeaponADSActivateNightvision",
+            Self::WeaponADSActivateZoom => "WeaponADSActivateZoom",
+            Self::WeaponADSUsed => "WeaponADSUsed",
+            Self::WeaponADSZoomedOut => "WeaponADSZoomedOut",
+            Self::WeaponZeroingEnteredADSManual => "WeaponZeroingEnteredADSManual",
+            Self::WeaponZeroingEnteredADSAuto => "WeaponZeroingEnteredADSAuto",
+            Self::WeaponZeroingAutoSet => "WeaponZeroingAutoSet",
+            Self::EVENTSCOUNT => "EVENTSCOUNT",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `HitReactionPart`
@@ -28056,6 +38282,19 @@ impl HitReactionPart {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Head => "Head",
+            Self::Torso => "Torso",
+            Self::Crotch => "Crotch",
+            Self::LegLeft => "LegLeft",
+            Self::LegRight => "LegRight",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `HitReactionRegion`
@@ -28083,6 +38322,17 @@ impl HitReactionRegion {
             "UpperBody" => Self::UpperBody,
             "LowerBody" => Self::LowerBody,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Head => "Head",
+            Self::UpperBody => "UpperBody",
+            Self::LowerBody => "LowerBody",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -28126,6 +38376,21 @@ impl HospitalizationReason {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::none => "none",
+            Self::selfCheckin => "selfCheckin",
+            Self::died => "died",
+            Self::injuredAndBroughtToHangar => "injuredAndBroughtToHangar",
+            Self::incapacitatedAndBroughtToHangar => "incapacitatedAndBroughtToHangar",
+            Self::incapacitatedInLandingZone => "incapacitatedInLandingZone",
+            Self::incapacitatedAndBroughtToHospital => "incapacitatedAndBroughtToHospital",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `Hostility`
@@ -28153,6 +38418,17 @@ impl Hostility {
             "Neutral" => Self::Neutral,
             "Friendly" => Self::Friendly,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Hostile => "Hostile",
+            Self::Neutral => "Neutral",
+            Self::Friendly => "Friendly",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -28196,6 +38472,21 @@ impl IconShowCondition {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::DefaultShowNever => "DefaultShowNever",
+            Self::ShowAlways => "ShowAlways",
+            Self::IsFPSRadar => "IsFPSRadar",
+            Self::ContainsMatchingAmmo => "ContainsMatchingAmmo",
+            Self::ContainsFPSDevice => "ContainsFPSDevice",
+            Self::ContainsFPSConsumable => "ContainsFPSConsumable",
+            Self::IsDeadOrIncapacitatedActor => "IsDeadOrIncapacitatedActor",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `InnerThoughtDisplayType`
@@ -28223,6 +38514,17 @@ impl InnerThoughtDisplayType {
             "Hide" => Self::Hide,
             "ForeignOnly" => Self::ForeignOnly,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Show => "Show",
+            Self::Hide => "Hide",
+            Self::ForeignOnly => "ForeignOnly",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -28254,6 +38556,17 @@ impl InnerThoughtJustification {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Left => "Left",
+            Self::Middle => "Middle",
+            Self::Right => "Right",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `InnerThoughtOrientation`
@@ -28278,6 +38591,16 @@ impl InnerThoughtOrientation {
             "RotateToPlayer" => Self::RotateToPlayer,
             "FixedRotation" => Self::FixedRotation,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::RotateToPlayer => "RotateToPlayer",
+            Self::FixedRotation => "FixedRotation",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -28307,6 +38630,17 @@ impl InnerThought_ForceCase {
             "Upper" => Self::Upper,
             "Lower" => Self::Lower,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::Upper => "Upper",
+            Self::Lower => "Lower",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -28353,6 +38687,22 @@ impl InputDeviceType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Keyboard => "Keyboard",
+            Self::Mouse => "Mouse",
+            Self::Joystick => "Joystick",
+            Self::Gamepad => "Gamepad",
+            Self::Headmounted => "Headmounted",
+            Self::Count => "Count",
+            Self::AllInputs => "AllInputs",
+            Self::Unknown => "Unknown",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `InstancedInteriorSizeEnum`
@@ -28385,6 +38735,18 @@ impl InstancedInteriorSizeEnum {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Small => "Small",
+            Self::Medium => "Medium",
+            Self::Large => "Large",
+            Self::XLarge => "XLarge",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `InteractionBindingsMethod`
@@ -28415,6 +38777,18 @@ impl InteractionBindingsMethod {
             "States" => Self::States,
             "UiTag" => Self::UiTag,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::Name => "Name",
+            Self::States => "States",
+            Self::UiTag => "UiTag",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -28455,6 +38829,20 @@ impl InteractionGenericCursor {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::SingleAction => "SingleAction",
+            Self::MultiAction => "MultiAction",
+            Self::Button => "Button",
+            Self::Grab => "Grab",
+            Self::Conversation => "Conversation",
+            Self::Invalid => "Invalid",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `InteractionModifier`
@@ -28488,6 +38876,19 @@ impl InteractionModifier {
             "Linked" => Self::Linked,
             "EVA" => Self::EVA,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::DefaultStanding => "DefaultStanding",
+            Self::Crouch => "Crouch",
+            Self::Prone => "Prone",
+            Self::Linked => "Linked",
+            Self::EVA => "EVA",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -28533,6 +38934,23 @@ impl InteractionPromptBoundTo {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::ActorEyes => "ActorEyes",
+            Self::EntityRoot => "EntityRoot",
+            Self::TopBoundingBoxZSurface => "TopBoundingBoxZSurface",
+            Self::NearestBoundingBoxSurface => "NearestBoundingBoxSurface",
+            Self::NearestBoundingBoxIgnoreFurthestSurfaces => {
+                "NearestBoundingBoxIgnoreFurthestSurfaces"
+            }
+            Self::InteractionPointFixedOffset => "InteractionPointFixedOffset",
+            Self::Tmp_AngleConstraintForwardDirection => "Tmp_AngleConstraintForwardDirection",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `InteractionPromptStyle`
@@ -28574,6 +38992,21 @@ impl InteractionPromptStyle {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Prompt => "Prompt",
+            Self::Text => "Text",
+            Self::Highlight => "Highlight",
+            Self::PromptAndText => "PromptAndText",
+            Self::PromptAndHighlight => "PromptAndHighlight",
+            Self::TextAndHighlight => "TextAndHighlight",
+            Self::PromptAndTextAndHighlight => "PromptAndTextAndHighlight",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `InteractiveVariableLoopType`
@@ -28598,6 +39031,16 @@ impl InteractiveVariableLoopType {
             "NoLoop" => Self::NoLoop,
             "Loop" => Self::Loop,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::NoLoop => "NoLoop",
+            Self::Loop => "Loop",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -28650,6 +39093,24 @@ impl InterpolationMode {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Linear => "Linear",
+            Self::EaseInQuad => "EaseInQuad",
+            Self::EaseOutQuad => "EaseOutQuad",
+            Self::EaseInOutQuad => "EaseInOutQuad",
+            Self::EaseInCubic => "EaseInCubic",
+            Self::EaseOutCubic => "EaseOutCubic",
+            Self::EaseInOutCubic => "EaseInOutCubic",
+            Self::EaseInExpo => "EaseInExpo",
+            Self::EaseOutExpo => "EaseOutExpo",
+            Self::EaseInOutExpo => "EaseInOutExpo",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ItemExpiryState`
@@ -28677,6 +39138,17 @@ impl ItemExpiryState {
             "Expiring" => Self::Expiring,
             "Expired" => Self::Expired,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Idle => "Idle",
+            Self::Expiring => "Expiring",
+            Self::Expired => "Expired",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -28726,6 +39198,23 @@ impl ItemJumpDriveState {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Idle => "Idle",
+            Self::EntryChecks => "EntryChecks",
+            Self::Tuning => "Tuning",
+            Self::RequestingJump => "RequestingJump",
+            Self::WaitingForOpen => "WaitingForOpen",
+            Self::Entering => "Entering",
+            Self::Transiting => "Transiting",
+            Self::Exiting => "Exiting",
+            Self::Failing => "Failing",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ItemKioskMode`
@@ -28761,6 +39250,19 @@ impl ItemKioskMode {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Commodity => "Commodity",
+            Self::Reference => "Reference",
+            Self::Vehicle => "Vehicle",
+            Self::Player => "Player",
+            Self::Refinery => "Refinery",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ItemResourceDeltaType`
@@ -28794,6 +39296,19 @@ impl ItemResourceDeltaType {
             "Conversion" => Self::Conversion,
             "NetworkReflection" => Self::NetworkReflection,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Consumption => "Consumption",
+            Self::Generation => "Generation",
+            Self::Storage => "Storage",
+            Self::Conversion => "Conversion",
+            Self::NetworkReflection => "NetworkReflection",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -28840,6 +39355,22 @@ impl ItemResourceTypes {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Vent => "Vent",
+            Self::LifeSupport => "LifeSupport",
+            Self::Light => "Light",
+            Self::HeatSource => "HeatSource",
+            Self::Cooler => "Cooler",
+            Self::Relay => "Relay",
+            Self::Misc => "Misc",
+            Self::All => "All",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `JumpVariant`
@@ -28876,6 +39407,20 @@ impl JumpVariant {
             "KnockdownBackward" => Self::KnockdownBackward,
             "LadderDisembark" => Self::LadderDisembark,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Default => "Default",
+            Self::Vault => "Vault",
+            Self::ZeroG => "ZeroG",
+            Self::KnockdownForward => "KnockdownForward",
+            Self::KnockdownBackward => "KnockdownBackward",
+            Self::LadderDisembark => "LadderDisembark",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -28928,6 +39473,24 @@ impl KeypadKeys {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Key0 => "Key0",
+            Self::Key1 => "Key1",
+            Self::Key2 => "Key2",
+            Self::Key3 => "Key3",
+            Self::Key4 => "Key4",
+            Self::Key5 => "Key5",
+            Self::Key6 => "Key6",
+            Self::Key7 => "Key7",
+            Self::Key8 => "Key8",
+            Self::Key9 => "Key9",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `KioskShopType`
@@ -28955,6 +39518,17 @@ impl KioskShopType {
             "ShipItem" => Self::ShipItem,
             "Refinery" => Self::Refinery,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Commodity => "Commodity",
+            Self::ShipItem => "ShipItem",
+            Self::Refinery => "Refinery",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -28986,6 +39560,17 @@ impl LadderAnimationClimbSpeed {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Walk => "Walk",
+            Self::Run => "Run",
+            Self::Sprint => "Sprint",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `LandingCondition`
@@ -29010,6 +39595,16 @@ impl LandingCondition {
             "None" => Self::None,
             "ADSTriggered" => Self::ADSTriggered,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::ADSTriggered => "ADSTriggered",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -29044,6 +39639,18 @@ impl LandingExitStance {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Stand => "Stand",
+            Self::Crouch => "Crouch",
+            Self::Prone => "Prone",
+            Self::ProneBack => "ProneBack",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `LandingStrength`
@@ -29074,6 +39681,18 @@ impl LandingStrength {
             "Heavy" => Self::Heavy,
             "Impact" => Self::Impact,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Light => "Light",
+            Self::Medium => "Medium",
+            Self::Heavy => "Heavy",
+            Self::Impact => "Impact",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -29123,6 +39742,23 @@ impl LeanStateType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Idle => "Idle",
+            Self::LeanLeft => "LeanLeft",
+            Self::LeanRight => "LeanRight",
+            Self::LeftToIdle => "LeftToIdle",
+            Self::IdleToLeft => "IdleToLeft",
+            Self::IdleToRight => "IdleToRight",
+            Self::RightToIdle => "RightToIdle",
+            Self::LeftToRight => "LeftToRight",
+            Self::RightToLeft => "RightToLeft",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `LedgeType`
@@ -29150,6 +39786,17 @@ impl LedgeType {
             "Mantle" => Self::Mantle,
             "Vault" => Self::Vault,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Any => "Any",
+            Self::Mantle => "Mantle",
+            Self::Vault => "Vault",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -29181,6 +39828,17 @@ impl LegacyCraftingPortMode {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Both => "Both",
+            Self::Input => "Input",
+            Self::Output => "Output",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `LevelStreamingMode`
@@ -29208,6 +39866,17 @@ impl LevelStreamingMode {
             "Always" => Self::Always,
             "ForTesting" => Self::ForTesting,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Never => "Never",
+            Self::Always => "Always",
+            Self::ForTesting => "ForTesting",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -29242,6 +39911,18 @@ impl LightProperties {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Radius => "Radius",
+            Self::DiffuseColor => "DiffuseColor",
+            Self::Intensity => "Intensity",
+            Self::UNDEFINED => "UNDEFINED",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `LightningStrengthPropertyType`
@@ -29266,6 +39947,16 @@ impl LightningStrengthPropertyType {
             "Distance" => Self::Distance,
             "ElectricalCharge" => Self::ElectricalCharge,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Distance => "Distance",
+            Self::ElectricalCharge => "ElectricalCharge",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -29300,6 +39991,18 @@ impl LinkedStatReverseSignFlag {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::AlwaysPositive => "AlwaysPositive",
+            Self::AlwaysNegative => "AlwaysNegative",
+            Self::ReverseSign => "ReverseSign",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `LocalizationAvailability`
@@ -29327,6 +40030,17 @@ impl LocalizationAvailability {
             "PendingRemoval" => Self::PendingRemoval,
             "Removed" => Self::Removed,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Available => "Available",
+            Self::PendingRemoval => "PendingRemoval",
+            Self::Removed => "Removed",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -29362,6 +40076,19 @@ impl LocalizationLabel {
             "Common" => Self::Common,
             "PU_NotPublic" => Self::PU_NotPublic,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::PU => "PU",
+            Self::S42 => "S42",
+            Self::Common => "Common",
+            Self::PU_NotPublic => "PU_NotPublic",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -29421,6 +40148,27 @@ impl LocalizationLanguage {
             "esES" => Self::esES,
             "es419" => Self::es419,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::enUS => "enUS",
+            Self::zhHans => "zhHans",
+            Self::zhHant => "zhHant",
+            Self::frFR => "frFR",
+            Self::deDE => "deDE",
+            Self::itIT => "itIT",
+            Self::jaJP => "jaJP",
+            Self::koKR => "koKR",
+            Self::plPL => "plPL",
+            Self::ptBR => "ptBR",
+            Self::esES => "esES",
+            Self::es419 => "es419",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -29488,6 +40236,29 @@ impl LocalizationStatus {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::WorkInProgress => "WorkInProgress",
+            Self::ReadyForText => "ReadyForText",
+            Self::TextApproved => "TextApproved",
+            Self::Transcribed => "Transcribed",
+            Self::LocalizationPreRequested => "LocalizationPreRequested",
+            Self::LocalizationRequested => "LocalizationRequested",
+            Self::LocalizationRequestRejected => "LocalizationRequestRejected",
+            Self::LocalizationInProgress => "LocalizationInProgress",
+            Self::LocalizationNeedsReview => "LocalizationNeedsReview",
+            Self::LocalizationPassedReview => "LocalizationPassedReview",
+            Self::LocalizationFailedReview => "LocalizationFailedReview",
+            Self::DoNotLocalize => "DoNotLocalize",
+            Self::LocalizationSourceUpdated => "LocalizationSourceUpdated",
+            Self::LocalizationQAChecked => "LocalizationQAChecked",
+            Self::LocalizationFinalTranslation => "LocalizationFinalTranslation",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `LocalizationUse`
@@ -29515,6 +40286,17 @@ impl LocalizationUse {
             "Dialogue" => Self::Dialogue,
             "DialogueAnimation" => Self::DialogueAnimation,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::General => "General",
+            Self::Dialogue => "Dialogue",
+            Self::DialogueAnimation => "DialogueAnimation",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -29555,6 +40337,20 @@ impl MapDisplayFrameType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Rectangle2D => "Rectangle2D",
+            Self::Rectangle2DRTT => "Rectangle2DRTT",
+            Self::Ellipse2D => "Ellipse2D",
+            Self::Ellipse2DRTT => "Ellipse2DRTT",
+            Self::Sphere3D => "Sphere3D",
+            Self::None => "None",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `MapMarkerTrackingPlaneAlignmentMode`
@@ -29579,6 +40375,16 @@ impl MapMarkerTrackingPlaneAlignmentMode {
             "GalacticPlane" => Self::GalacticPlane,
             "Player" => Self::Player,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::GalacticPlane => "GalacticPlane",
+            Self::Player => "Player",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -29608,6 +40414,17 @@ impl MapRadarMode {
             "Landing" => Self::Landing,
             "Small" => Self::Small,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::FullScreen => "FullScreen",
+            Self::Landing => "Landing",
+            Self::Small => "Small",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -29640,6 +40457,18 @@ impl MarkerClippingVolumeType {
             "Frustum" => Self::Frustum,
             "Camera" => Self::Camera,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Sphere => "Sphere",
+            Self::Cuboid => "Cuboid",
+            Self::Frustum => "Frustum",
+            Self::Camera => "Camera",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -29681,6 +40510,21 @@ impl MarkerTrackingActions {
             "HailContact" => Self::HailContact,
             "QuantumTravel" => Self::QuantumTravel,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::SelectMarker => "SelectMarker",
+            Self::FocusMarker => "FocusMarker",
+            Self::LockTarget => "LockTarget",
+            Self::PinTarget => "PinTarget",
+            Self::HailContact => "HailContact",
+            Self::QuantumTravel => "QuantumTravel",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -29742,6 +40586,27 @@ impl Marker_ARCullingCategory {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Unassigned => "Unassigned",
+            Self::Special_Hostile => "Special_Hostile",
+            Self::UnattendedVehicle => "UnattendedVehicle",
+            Self::Vehicle => "Vehicle",
+            Self::Vehicle_Ground => "Vehicle_Ground",
+            Self::Actor => "Actor",
+            Self::Turret => "Turret",
+            Self::Navpoint => "Navpoint",
+            Self::Mineable => "Mineable",
+            Self::Creature => "Creature",
+            Self::Placeholder1 => "Placeholder1",
+            Self::Placeholder2 => "Placeholder2",
+            Self::Placeholder3 => "Placeholder3",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `Marker_DisplayMode`
@@ -29766,6 +40631,16 @@ impl Marker_DisplayMode {
             "FPS" => Self::FPS,
             "VehicleSeat" => Self::VehicleSeat,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::FPS => "FPS",
+            Self::VehicleSeat => "VehicleSeat",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -29795,6 +40670,17 @@ impl Marker_MapBoxoutSectionType {
             "Galactapedia" => Self::Galactapedia,
             "Jurisdiction" => Self::Jurisdiction,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Amenities => "Amenities",
+            Self::Galactapedia => "Galactapedia",
+            Self::Jurisdiction => "Jurisdiction",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -29832,6 +40718,19 @@ impl Marker_MapDisplayMode {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::DefaultRadar => "DefaultRadar",
+            Self::DefaultStarmap => "DefaultStarmap",
+            Self::JumpTunnelRadar => "JumpTunnelRadar",
+            Self::JumpTunnelStarmap => "JumpTunnelStarmap",
+            Self::None => "None",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `Marker_MapLabelDisplayType`
@@ -29862,6 +40761,18 @@ impl Marker_MapLabelDisplayType {
             "OnParentSurface" => Self::OnParentSurface,
             "OnSelected" => Self::OnSelected,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Always => "Always",
+            Self::OnInteracted => "OnInteracted",
+            Self::OnParentSurface => "OnParentSurface",
+            Self::OnSelected => "OnSelected",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -29897,6 +40808,19 @@ impl Marker_StackPositionAlignment {
             "Bottom" => Self::Bottom,
             "TopAndBottom" => Self::TopAndBottom,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Origin => "Origin",
+            Self::Top => "Top",
+            Self::Center => "Center",
+            Self::Bottom => "Bottom",
+            Self::TopAndBottom => "TopAndBottom",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -29943,6 +40867,22 @@ impl MaterialProperties {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Glow => "Glow",
+            Self::Wear => "Wear",
+            Self::Dirt => "Dirt",
+            Self::Damage => "Damage",
+            Self::Interference => "Interference",
+            Self::Dissolve => "Dissolve",
+            Self::Wetness => "Wetness",
+            Self::UNDEFINED => "UNDEFINED",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `MedBedTier`
@@ -29970,6 +40910,17 @@ impl MedBedTier {
             "Clinic" => Self::Clinic,
             "Ambulance" => Self::Ambulance,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Hospital => "Hospital",
+            Self::Clinic => "Clinic",
+            Self::Ambulance => "Ambulance",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -30001,6 +40952,17 @@ impl MeleeAttackClass {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Basic => "Basic",
+            Self::Synced => "Synced",
+            Self::Any => "Any",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `MeleeTargetType`
@@ -30028,6 +40990,17 @@ impl MeleeTargetType {
             "Ground" => Self::Ground,
             "Aerial" => Self::Aerial,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Any => "Any",
+            Self::Ground => "Ground",
+            Self::Aerial => "Aerial",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -30059,6 +41032,17 @@ impl MessageState {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Normal => "Normal",
+            Self::Moderate => "Moderate",
+            Self::Critical => "Critical",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `MinimumInfluenceFactorOperation`
@@ -30083,6 +41067,16 @@ impl MinimumInfluenceFactorOperation {
             "GreaterThan" => Self::GreaterThan,
             "TimesGreater" => Self::TimesGreater,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::GreaterThan => "GreaterThan",
+            Self::TimesGreater => "TimesGreater",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -30112,6 +41106,17 @@ impl MissionLocationTagType {
             "Produces" => Self::Produces,
             "Consumes" => Self::Consumes,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::General => "General",
+            Self::Produces => "Produces",
+            Self::Consumes => "Consumes",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -30170,6 +41175,26 @@ impl Month {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::January => "January",
+            Self::February => "February",
+            Self::March => "March",
+            Self::April => "April",
+            Self::May => "May",
+            Self::June => "June",
+            Self::July => "July",
+            Self::August => "August",
+            Self::September => "September",
+            Self::October => "October",
+            Self::November => "November",
+            Self::December => "December",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `MotionControlType`
@@ -30194,6 +41219,16 @@ impl MotionControlType {
             "Animation" => Self::Animation,
             "Entity" => Self::Entity,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Animation => "Animation",
+            Self::Entity => "Entity",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -30243,6 +41278,23 @@ impl MotionStateType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Idle => "Idle",
+            Self::Move => "Move",
+            Self::IdleToMove => "IdleToMove",
+            Self::MoveToIdle => "MoveToIdle",
+            Self::Step => "Step",
+            Self::Turn => "Turn",
+            Self::Juke => "Juke",
+            Self::InAirIdle => "InAirIdle",
+            Self::InAirMove => "InAirMove",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `MovementSet`
@@ -30285,6 +41337,22 @@ impl MovementSet {
             "Standard" => Self::Standard,
             "Stumble" => Self::Stumble,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Inactive => "Inactive",
+            Self::BodyCarry => "BodyCarry",
+            Self::Drunk => "Drunk",
+            Self::Effort => "Effort",
+            Self::Hurt => "Hurt",
+            Self::Movable => "Movable",
+            Self::Standard => "Standard",
+            Self::Stumble => "Stumble",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -30334,6 +41402,23 @@ impl MovementSetCondition {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::StateMovable => "StateMovable",
+            Self::StateBodyCarry => "StateBodyCarry",
+            Self::StateBodyDragging => "StateBodyDragging",
+            Self::StateSubmerged => "StateSubmerged",
+            Self::ForceBrace => "ForceBrace",
+            Self::ForceLean => "ForceLean",
+            Self::ForceStumble => "ForceStumble",
+            Self::StatusHurt => "StatusHurt",
+            Self::StatusDrunk => "StatusDrunk",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `MovementSpeed`
@@ -30370,6 +41455,20 @@ impl MovementSpeed {
             "RunFast" => Self::RunFast,
             "Sprint" => Self::Sprint,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::WalkSlow => "WalkSlow",
+            Self::WalkMid => "WalkMid",
+            Self::WalkFast => "WalkFast",
+            Self::RunSlow => "RunSlow",
+            Self::RunFast => "RunFast",
+            Self::Sprint => "Sprint",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -30422,6 +41521,24 @@ impl NaturalMotionSpeed {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::WalkSlow => "WalkSlow",
+            Self::WalkMid => "WalkMid",
+            Self::WalkFast => "WalkFast",
+            Self::RunSlow => "RunSlow",
+            Self::RunFast => "RunFast",
+            Self::Sprint => "Sprint",
+            Self::GreenZoneWalk => "GreenZoneWalk",
+            Self::GreenZoneSprint => "GreenZoneSprint",
+            Self::AimDownSight => "AimDownSight",
+            Self::Conversation => "Conversation",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `NavPointIconEnum`
@@ -30463,6 +41580,21 @@ impl NavPointIconEnum {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Default => "Default",
+            Self::Star => "Star",
+            Self::Planet => "Planet",
+            Self::Moon => "Moon",
+            Self::Station => "Station",
+            Self::Outpost => "Outpost",
+            Self::LandingZone => "LandingZone",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ParticleAttachToZone`
@@ -30487,6 +41619,16 @@ impl ParticleAttachToZone {
             "Parent" => Self::Parent,
             "AboveParent" => Self::AboveParent,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Parent => "Parent",
+            Self::AboveParent => "AboveParent",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -30516,6 +41658,17 @@ impl ParticleCPUVisAreaCullingMode {
             "Local" => Self::Local,
             "Dynamic" => Self::Dynamic,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::Local => "Local",
+            Self::Dynamic => "Dynamic",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -30548,6 +41701,18 @@ impl ParticleGPUVisAreaCullingMode {
             "PerParticle" => Self::PerParticle,
             "PerPixel" => Self::PerPixel,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Default => "Default",
+            Self::None => "None",
+            Self::PerParticle => "PerParticle",
+            Self::PerPixel => "PerPixel",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -30588,6 +41753,20 @@ impl ParticleTesselationOverride {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Default => "Default",
+            Self::Off => "Off",
+            Self::Low => "Low",
+            Self::Medium => "Medium",
+            Self::High => "High",
+            Self::Ultra => "Ultra",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `PersistentItemGameModeFlag`
@@ -30626,6 +41805,20 @@ impl PersistentItemGameModeFlag {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Any => "Any",
+            Self::StarMarine => "StarMarine",
+            Self::ArenaCommander => "ArenaCommander",
+            Self::PersistentUniverse => "PersistentUniverse",
+            Self::SubscriberExclusive => "SubscriberExclusive",
+            Self::Prison => "Prison",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `PersonalThoughtCameraEffets`
@@ -30662,6 +41855,20 @@ impl PersonalThoughtCameraEffets {
             "Looting" => Self::Looting,
             "InventoryV4" => Self::InventoryV4,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::InnerThoughts => "InnerThoughts",
+            Self::Inventory => "Inventory",
+            Self::ExternalInventory => "ExternalInventory",
+            Self::Looting => "Looting",
+            Self::InventoryV4 => "InventoryV4",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -30705,6 +41912,21 @@ impl PersonalThoughtContext {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::EVA => "EVA",
+            Self::Flight => "Flight",
+            Self::GroundVehicle => "GroundVehicle",
+            Self::OnFoot => "OnFoot",
+            Self::Seated => "Seated",
+            Self::Turret => "Turret",
+            Self::Usable => "Usable",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `PickableCollision`
@@ -30737,6 +41959,18 @@ impl PickableCollision {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::Transparent => "Transparent",
+            Self::Cutout => "Cutout",
+            Self::Opaque => "Opaque",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `PlanetAreaFitting`
@@ -30761,6 +41995,16 @@ impl PlanetAreaFitting {
             "Loose" => Self::Loose,
             "Tight" => Self::Tight,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Loose => "Loose",
+            Self::Tight => "Tight",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -30793,6 +42037,18 @@ impl PlanetAreaType {
             "ExcludeAll" => Self::ExcludeAll,
             "ExcludeFaunaOnly" => Self::ExcludeFaunaOnly,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Hole => "Hole",
+            Self::ExcludeLarge => "ExcludeLarge",
+            Self::ExcludeAll => "ExcludeAll",
+            Self::ExcludeFaunaOnly => "ExcludeFaunaOnly",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -31058,6 +42314,95 @@ impl PostEffectParams {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Global_DirectionalBlur_Vec => "Global_DirectionalBlur_Vec",
+            Self::Blink_EyeClosure => "Blink_EyeClosure",
+            Self::ColorGrading_Brightness => "ColorGrading_Brightness",
+            Self::ColorGrading_Contrast => "ColorGrading_Contrast",
+            Self::ColorGrading_Saturation => "ColorGrading_Saturation",
+            Self::Dof_Active => "Dof_Active",
+            Self::Dof_FocusDistance => "Dof_FocusDistance",
+            Self::Dof_FocusRange => "Dof_FocusRange",
+            Self::Dof_FocusMin => "Dof_FocusMin",
+            Self::Dof_FocusMax => "Dof_FocusMax",
+            Self::Dof_MaxCoC => "Dof_MaxCoC",
+            Self::Dof_BlurAmount => "Dof_BlurAmount",
+            Self::Dof_User_Active => "Dof_User_Active",
+            Self::Dof_User_FocusDistance => "Dof_User_FocusDistance",
+            Self::Dof_User_FocusRange => "Dof_User_FocusRange",
+            Self::Dof_User_BlurAmount => "Dof_User_BlurAmount",
+            Self::Dof_FocusMinZ => "Dof_FocusMinZ",
+            Self::Dof_FocusMinZScale => "Dof_FocusMinZScale",
+            Self::FilterChromaShift_User_Amount => "FilterChromaShift_User_Amount",
+            Self::FilterArtifacts_ChromaShift => "FilterArtifacts_ChromaShift",
+            Self::FilterGrain_Amount => "FilterGrain_Amount",
+            Self::FilterArtifacts_Grain => "FilterArtifacts_Grain",
+            Self::FilterArtifacts_GrainTile => "FilterArtifacts_GrainTile",
+            Self::FilterBlurring_Amount => "FilterBlurring_Amount",
+            Self::FilterRadialBlurring_Amount => "FilterRadialBlurring_Amount",
+            Self::FilterRadialBlurring_ScreenPosX => "FilterRadialBlurring_ScreenPosX",
+            Self::FilterRadialBlurring_ScreenPosY => "FilterRadialBlurring_ScreenPosY",
+            Self::FilterRadialBlurring_Radius => "FilterRadialBlurring_Radius",
+            Self::FlashBang_StartTime => "FlashBang_StartTime",
+            Self::FlashBang_DifractionAmount => "FlashBang_DifractionAmount",
+            Self::FlashBang_Time => "FlashBang_Time",
+            Self::FlashBang_BlindAmount => "FlashBang_BlindAmount",
+            Self::GForce_BlackoutValue => "GForce_BlackoutValue",
+            Self::GForce_RedoutValue => "GForce_RedoutValue",
+            Self::GForce_LatStressValue => "GForce_LatStressValue",
+            Self::GForce_BlackoutRecovery => "GForce_BlackoutRecovery",
+            Self::GForce_LatStressRecovery => "GForce_LatStressRecovery",
+            Self::GForce_PulseAmplitude => "GForce_PulseAmplitude",
+            Self::GForce_PulseMaskAmplitude => "GForce_PulseMaskAmplitude",
+            Self::GForce_PulsePeriod => "GForce_PulsePeriod",
+            Self::GForce_PulseDuration => "GForce_PulseDuration",
+            Self::GForce_TunnelRadiusGrey => "GForce_TunnelRadiusGrey",
+            Self::GForce_TunnelRadiusBlack => "GForce_TunnelRadiusBlack",
+            Self::GForce_TunnelStrengthGrey => "GForce_TunnelStrengthGrey",
+            Self::GForce_TunnelStrengthBlack => "GForce_TunnelStrengthBlack",
+            Self::GForce_SaturationGrey => "GForce_SaturationGrey",
+            Self::GForce_SaturationBlack => "GForce_SaturationBlack",
+            Self::HudSilhouettes_Active => "HudSilhouettes_Active",
+            Self::HudSilhouettes_Amount => "HudSilhouettes_Amount",
+            Self::HudSilhouettes_FillStr => "HudSilhouettes_FillStr",
+            Self::HudSilhouettes_EdgeWidth => "HudSilhouettes_EdgeWidth",
+            Self::HudSilhouettes_BlurRadius => "HudSilhouettes_BlurRadius",
+            Self::HudSilhouettes_Type => "HudSilhouettes_Type",
+            Self::OcularMigraine_StrengthValue => "OcularMigraine_StrengthValue",
+            Self::OcularMigraine_BlindspotSize => "OcularMigraine_BlindspotSize",
+            Self::OcularMigraine_SpectralOpacity => "OcularMigraine_SpectralOpacity",
+            Self::OcularMigraine_BlindspotOpacity => "OcularMigraine_BlindspotOpacity",
+            Self::BloodVision_StrengthValue => "BloodVision_StrengthValue",
+            Self::BloodVision_BloodAuraStrength => "BloodVision_BloodAuraStrength",
+            Self::BloodVision_AngularVelocityScaleX => "BloodVision_AngularVelocityScaleX",
+            Self::BloodVision_AngularVelocityScaleY => "BloodVision_AngularVelocityScaleY",
+            Self::SunShafts_Active => "SunShafts_Active",
+            Self::SunShafts_RaysAmount => "SunShafts_RaysAmount",
+            Self::SunShafts_RaysAttenuation => "SunShafts_RaysAttenuation",
+            Self::SunShafts_RaysCustomColor => "SunShafts_RaysCustomColor",
+            Self::tex_VisualArtifacts_Mask => "tex_VisualArtifacts_Mask",
+            Self::clr_VisualArtifacts_ColotTint => "clr_VisualArtifacts_ColotTint",
+            Self::VisualArtifacts_Vsync => "VisualArtifacts_Vsync",
+            Self::VisualArtifacts_VsyncFreq => "VisualArtifacts_VsyncFreq",
+            Self::VisualArtifacts_Interlacing => "VisualArtifacts_Interlacing",
+            Self::VisualArtifacts_InterlacingTile => "VisualArtifacts_InterlacingTile",
+            Self::VisualArtifacts_InterlacingRot => "VisualArtifacts_InterlacingRot",
+            Self::VisualArtifacts_Noise => "VisualArtifacts_Noise",
+            Self::VisualArtifacts_SyncWaveFreq => "VisualArtifacts_SyncWaveFreq",
+            Self::VisualArtifacts_SyncWavePhase => "VisualArtifacts_SyncWavePhase",
+            Self::VisualArtifacts_SyncWaveAmplitude => "VisualArtifacts_SyncWaveAmplitude",
+            Self::WaterDroplets_Amount => "WaterDroplets_Amount",
+            Self::ImageGhosting_Amount => "ImageGhosting_Amount",
+            Self::Letterboxing_WidthAspectRatio => "Letterboxing_WidthAspectRatio",
+            Self::Letterboxing_HeightAspectRatio => "Letterboxing_HeightAspectRatio",
+            Self::Letterboxing_Progress => "Letterboxing_Progress",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `PostureType`
@@ -31091,6 +42436,19 @@ impl PostureType {
             "BlindFire" => Self::BlindFire,
             "Throw" => Self::Throw,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Invalid => "Invalid",
+            Self::Peek => "Peek",
+            Self::Aim => "Aim",
+            Self::BlindFire => "BlindFire",
+            Self::Throw => "Throw",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -31185,6 +42543,38 @@ impl ProceduralAnimationBoneName {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Hips => "Hips",
+            Self::Spine => "Spine",
+            Self::Spine1 => "Spine1",
+            Self::Spine2 => "Spine2",
+            Self::Spine3 => "Spine3",
+            Self::Neck => "Neck",
+            Self::Neck1 => "Neck1",
+            Self::Head => "Head",
+            Self::HelmetCam => "HelmetCam",
+            Self::Head_LowPass => "Head_LowPass",
+            Self::LeftShoulder => "LeftShoulder",
+            Self::RightShoulder => "RightShoulder",
+            Self::LeftArm => "LeftArm",
+            Self::RightArm => "RightArm",
+            Self::LeftForeArm => "LeftForeArm",
+            Self::RightForeArm => "RightForeArm",
+            Self::LeftHand => "LeftHand",
+            Self::RightHand => "RightHand",
+            Self::LeftFoot => "LeftFoot",
+            Self::RightFoot => "RightFoot",
+            Self::LeftLeg => "LeftLeg",
+            Self::RightLeg => "RightLeg",
+            Self::LeftUpLeg => "LeftUpLeg",
+            Self::RightUpLeg => "RightUpLeg",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ProceduralAnimationBoneOperation`
@@ -31209,6 +42599,16 @@ impl ProceduralAnimationBoneOperation {
             "Offset" => Self::Offset,
             "Rotation" => Self::Rotation,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Offset => "Offset",
+            Self::Rotation => "Rotation",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -31238,6 +42638,17 @@ impl ProceduralAnimationBoneSpace {
             "Character" => Self::Character,
             "TPose" => Self::TPose,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::ParentBone => "ParentBone",
+            Self::Character => "Character",
+            Self::TPose => "TPose",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -31275,6 +42686,19 @@ impl ProceduralLandingStrengthFilter {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Light => "Light",
+            Self::Medium => "Medium",
+            Self::Heavy => "Heavy",
+            Self::Impact => "Impact",
+            Self::Any => "Any",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ProceduralLayout_TagFilteringMode`
@@ -31301,6 +42725,16 @@ impl ProceduralLayout_TagFilteringMode {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Inclusion => "Inclusion",
+            Self::Exclusion => "Exclusion",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ProceduralLayout_VerticalDirection`
@@ -31325,6 +42759,16 @@ impl ProceduralLayout_VerticalDirection {
             "Downwards" => Self::Downwards,
             "Upwards" => Self::Upwards,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Downwards => "Downwards",
+            Self::Upwards => "Upwards",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -31356,6 +42800,17 @@ impl ProceduralPOILookAtType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Origin => "Origin",
+            Self::EntityBB => "EntityBB",
+            Self::CustomBBs => "CustomBBs",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `PurchasableVehicleUsageType`
@@ -31382,6 +42837,16 @@ impl PurchasableVehicleUsageType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Purchase => "Purchase",
+            Self::Rent => "Rent",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `QDriveSplineRotationBehavior`
@@ -31406,6 +42871,16 @@ impl QDriveSplineRotationBehavior {
             "NoRollback" => Self::NoRollback,
             "Rollback" => Self::Rollback,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::NoRollback => "NoRollback",
+            Self::Rollback => "Rollback",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -31461,6 +42936,25 @@ impl QuantumDriveState {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Off => "Off",
+            Self::Idle => "Idle",
+            Self::Aligning => "Aligning",
+            Self::Pre_Ramp_Up => "Pre_Ramp_Up",
+            Self::Ramp_Up => "Ramp_Up",
+            Self::Flight_In_Progress => "Flight_In_Progress",
+            Self::Ramp_Down => "Ramp_Down",
+            Self::Post_Ramp_Down => "Post_Ramp_Down",
+            Self::End_Travel => "End_Travel",
+            Self::Abort => "Abort",
+            Self::Cooldown => "Cooldown",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `QuantumState`
@@ -31511,6 +43005,24 @@ impl QuantumState {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Off => "Off",
+            Self::WaitingForInputDelay => "WaitingForInputDelay",
+            Self::TargetLocking => "TargetLocking",
+            Self::Charging => "Charging",
+            Self::BoostingSlow => "BoostingSlow",
+            Self::Travelling => "Travelling",
+            Self::CancelingTravel => "CancelingTravel",
+            Self::CancelingBoost => "CancelingBoost",
+            Self::Cooldown => "Cooldown",
+            Self::Done => "Done",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `RadarPriorityComparison`
@@ -31544,6 +43056,19 @@ impl RadarPriorityComparison {
             "GreaterThanEqual" => Self::GreaterThanEqual,
             "GreaterThan" => Self::GreaterThan,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::LessThan => "LessThan",
+            Self::LessThanEqual => "LessThanEqual",
+            Self::Equals => "Equals",
+            Self::GreaterThanEqual => "GreaterThanEqual",
+            Self::GreaterThan => "GreaterThan",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -31581,6 +43106,19 @@ impl RadiationStatePropertyType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Distortion => "Distortion",
+            Self::IR => "IR",
+            Self::EM => "EM",
+            Self::CS => "CS",
+            Self::RadiationHazard => "RadiationHazard",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ReactionType`
@@ -31613,6 +43151,18 @@ impl ReactionType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Hostile => "Hostile",
+            Self::Neutral => "Neutral",
+            Self::Friendly => "Friendly",
+            Self::Unknown => "Unknown",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `RefiningQuality`
@@ -31640,6 +43190,17 @@ impl RefiningQuality {
             "Careful" => Self::Careful,
             "Wasteful" => Self::Wasteful,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Normal => "Normal",
+            Self::Careful => "Careful",
+            Self::Wasteful => "Wasteful",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -31671,6 +43232,17 @@ impl RefiningSpeed {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Normal => "Normal",
+            Self::Slow => "Slow",
+            Self::Fast => "Fast",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `RenderToTextureTarget`
@@ -31698,6 +43270,17 @@ impl RenderToTextureTarget {
             "Primary" => Self::Primary,
             "Secondary" => Self::Secondary,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::All => "All",
+            Self::Primary => "Primary",
+            Self::Secondary => "Secondary",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -31742,6 +43325,22 @@ impl ResourceNetworkAcessParameter {
             "FuncionalityRatio" => Self::FuncionalityRatio,
             "Preference" => Self::Preference,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Pressure => "Pressure",
+            Self::Temperature => "Temperature",
+            Self::CarbonDioxide => "CarbonDioxide",
+            Self::Oxygen => "Oxygen",
+            Self::Consumption => "Consumption",
+            Self::Generation => "Generation",
+            Self::FuncionalityRatio => "FuncionalityRatio",
+            Self::Preference => "Preference",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -31794,6 +43393,24 @@ impl ResourceNetworkResource {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Power => "Power",
+            Self::Fuel => "Fuel",
+            Self::Coolant => "Coolant",
+            Self::Shield => "Shield",
+            Self::Gravity => "Gravity",
+            Self::QuantumFuel => "QuantumFuel",
+            Self::CPU => "CPU",
+            Self::Gas => "Gas",
+            Self::Filter => "Filter",
+            Self::LifeSupport => "LifeSupport",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `RestraintStyle`
@@ -31818,6 +43435,16 @@ impl RestraintStyle {
             "CuffArmLeg" => Self::CuffArmLeg,
             "CuffArmOnly" => Self::CuffArmOnly,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::CuffArmLeg => "CuffArmLeg",
+            Self::CuffArmOnly => "CuffArmOnly",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -31858,6 +43485,20 @@ impl RestrictedAreaDirectionalMessage {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Left => "Left",
+            Self::Right => "Right",
+            Self::Above => "Above",
+            Self::Below => "Below",
+            Self::Ahead => "Ahead",
+            Self::Behind => "Behind",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `RestrictedAreaState`
@@ -31885,6 +43526,17 @@ impl RestrictedAreaState {
             "Disallow" => Self::Disallow,
             "Despawn" => Self::Despawn,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Allow => "Allow",
+            Self::Disallow => "Disallow",
+            Self::Despawn => "Despawn",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -31919,6 +43571,18 @@ impl RoomConnectorOrientationMode {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::AutoDetectWidest => "AutoDetectWidest",
+            Self::ForwardBackward => "ForwardBackward",
+            Self::UpDown => "UpDown",
+            Self::RightLeft => "RightLeft",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `RoomStateModifyType`
@@ -31946,6 +43610,17 @@ impl RoomStateModifyType {
             "Override" => Self::Override,
             "Additive" => Self::Additive,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Inherit => "Inherit",
+            Self::Override => "Override",
+            Self::Additive => "Additive",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -31998,6 +43673,24 @@ impl RoomStatePropertyType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::DebrisDensity => "DebrisDensity",
+            Self::Pressure => "Pressure",
+            Self::Temperature => "Temperature",
+            Self::Humidity => "Humidity",
+            Self::Charge => "Charge",
+            Self::Distortion => "Distortion",
+            Self::IR => "IR",
+            Self::EM => "EM",
+            Self::CS => "CS",
+            Self::RadiationHazard => "RadiationHazard",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `RoomType`
@@ -32036,6 +43729,20 @@ impl RoomType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Area => "Area",
+            Self::Planet => "Planet",
+            Self::GasCloud => "GasCloud",
+            Self::AsteroidField => "AsteroidField",
+            Self::Helmet => "Helmet",
+            Self::NavPoint => "NavPoint",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `RttOutputType`
@@ -32062,6 +43769,16 @@ impl RttOutputType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Default => "Default",
+            Self::SurfaceWater => "SurfaceWater",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `SCSeatActorAttachmentType`
@@ -32086,6 +43803,16 @@ impl SCSeatActorAttachmentType {
             "Host" => Self::Host,
             "Seat" => Self::Seat,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Host => "Host",
+            Self::Seat => "Seat",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -32120,6 +43847,18 @@ impl SeatSkipStates {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::SkipDeploy => "SkipDeploy",
+            Self::SkipRetract => "SkipRetract",
+            Self::SkipBoth => "SkipBoth",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `SeatTypes`
@@ -32147,6 +43886,17 @@ impl SeatTypes {
             "HOTAS_C_L" => Self::HOTAS_C_L,
             "DUAL_STICK" => Self::DUAL_STICK,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::HOTAS_R_L => "HOTAS_R_L",
+            Self::HOTAS_C_L => "HOTAS_C_L",
+            Self::DUAL_STICK => "DUAL_STICK",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -32181,6 +43931,18 @@ impl ShadowQuality {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Full => "Full",
+            Self::Half => "Half",
+            Self::Quarter => "Quarter",
+            Self::OneEighth => "OneEighth",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ShockwaveType`
@@ -32205,6 +43967,16 @@ impl ShockwaveType {
             "Cylinder" => Self::Cylinder,
             "Sphere" => Self::Sphere,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Cylinder => "Cylinder",
+            Self::Sphere => "Sphere",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -32236,6 +44008,17 @@ impl ShopInventoryType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::INVALID => "INVALID",
+            Self::ITEM => "ITEM",
+            Self::COMMODITY => "COMMODITY",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `ShoppingKioskVariant`
@@ -32260,6 +44043,16 @@ impl ShoppingKioskVariant {
             "LOW" => Self::LOW,
             "MED" => Self::MED,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::LOW => "LOW",
+            Self::MED => "MED",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -32291,6 +44084,17 @@ impl SinglePlayerOrMultiplayer {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Both => "Both",
+            Self::SinglePlayerOnly => "SinglePlayerOnly",
+            Self::MultiplayerOnly => "MultiplayerOnly",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `SkeletonAnimationTaskTransitionType`
@@ -32315,6 +44119,16 @@ impl SkeletonAnimationTaskTransitionType {
             "Linear" => Self::Linear,
             "Cubic" => Self::Cubic,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Linear => "Linear",
+            Self::Cubic => "Cubic",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -32343,6 +44157,16 @@ impl SpawnWithMode {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::MostSimilar => "MostSimilar",
+            Self::Random => "Random",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `SpeedThrottleActiveMode`
@@ -32367,6 +44191,16 @@ impl SpeedThrottleActiveMode {
             "Always" => Self::Always,
             "NoWeapon" => Self::NoWeapon,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Always => "Always",
+            Self::NoWeapon => "NoWeapon",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -32402,6 +44236,19 @@ impl SpeedThrottleNoWeaponSpeedCategory {
             "SlowRun" => Self::SlowRun,
             "FastRun" => Self::FastRun,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::SlowWalk => "SlowWalk",
+            Self::MidWalk => "MidWalk",
+            Self::FastWalk => "FastWalk",
+            Self::SlowRun => "SlowRun",
+            Self::FastRun => "FastRun",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -32443,6 +44290,21 @@ impl SpeedThrottleWithWeaponSpeedCategory {
             "FastRun" => Self::FastRun,
             "AimDownSight" => Self::AimDownSight,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::SameAsNoWeapon => "SameAsNoWeapon",
+            Self::SlowWalk => "SlowWalk",
+            Self::MidWalk => "MidWalk",
+            Self::FastWalk => "FastWalk",
+            Self::SlowRun => "SlowRun",
+            Self::FastRun => "FastRun",
+            Self::AimDownSight => "AimDownSight",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -32534,6 +44396,37 @@ impl StaminaActionCategory {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::MeleeJab => "MeleeJab",
+            Self::MeleeHook => "MeleeHook",
+            Self::MeleeOverhand => "MeleeOverhand",
+            Self::MeleeArmed => "MeleeArmed",
+            Self::MeleeUpperCut => "MeleeUpperCut",
+            Self::MeleeBolo => "MeleeBolo",
+            Self::MeleeHaymaker => "MeleeHaymaker",
+            Self::BladeSlash => "BladeSlash",
+            Self::BladeStab => "BladeStab",
+            Self::BladeLightOver => "BladeLightOver",
+            Self::BladeLightUnder => "BladeLightUnder",
+            Self::BladeHeavyOver => "BladeHeavyOver",
+            Self::BladeHeavyUnder => "BladeHeavyUnder",
+            Self::LanceSwipeLeft => "LanceSwipeLeft",
+            Self::LanceSwipeRight => "LanceSwipeRight",
+            Self::LanceStab => "LanceStab",
+            Self::LanceLeap => "LanceLeap",
+            Self::LanceHammerDown => "LanceHammerDown",
+            Self::LancePushBack => "LancePushBack",
+            Self::LanceShoot => "LanceShoot",
+            Self::TestAttack => "TestAttack",
+            Self::Blocking => "Blocking",
+            Self::SyringeStab => "SyringeStab",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `StarmapBoolOverride`
@@ -32561,6 +44454,17 @@ impl StarmapBoolOverride {
             "True" => Self::True,
             "NoOverride" => Self::NoOverride,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::False => "False",
+            Self::True => "True",
+            Self::NoOverride => "NoOverride",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -32736,6 +44640,65 @@ impl StatBuffType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Hypertrophic => "Hypertrophic",
+            Self::Atrophic => "Atrophic",
+            Self::Fatiguing => "Fatiguing",
+            Self::Energizing => "Energizing",
+            Self::CognitiveBoost => "CognitiveBoost",
+            Self::CognitiveImpair => "CognitiveImpair",
+            Self::HypoMetabolic => "HypoMetabolic",
+            Self::HyperMetabolic => "HyperMetabolic",
+            Self::Hydrating => "Hydrating",
+            Self::Dehydrating => "Dehydrating",
+            Self::Healing => "Healing",
+            Self::Toxic => "Toxic",
+            Self::ImmuneBoost => "ImmuneBoost",
+            Self::ImmuneSuppress => "ImmuneSuppress",
+            Self::WeaponChargeMoveSpeed => "WeaponChargeMoveSpeed",
+            Self::GForcePassOut => "GForcePassOut",
+            Self::OverdoseRevival => "OverdoseRevival",
+            Self::OverdoseRevivalBDLDecay => "OverdoseRevivalBDLDecay",
+            Self::ReviveDamageMultiplier => "ReviveDamageMultiplier",
+            Self::DownedDamageMultiplier => "DownedDamageMultiplier",
+            Self::DrugDurationMultiplier => "DrugDurationMultiplier",
+            Self::HealthPoolMask => "HealthPoolMask",
+            Self::HurtLocomotionMask => "HurtLocomotionMask",
+            Self::StunRecoveryMask => "StunRecoveryMask",
+            Self::ImpactResistanceKnockdownMask => "ImpactResistanceKnockdownMask",
+            Self::ImpactResistanceStaggerMask => "ImpactResistanceStaggerMask",
+            Self::ImpactResistanceTwitchMask => "ImpactResistanceTwitchMask",
+            Self::ImpactResistanceFlinchMask => "ImpactResistanceFlinchMask",
+            Self::StaminaRegenMask => "StaminaRegenMask",
+            Self::StaminaPoolMask => "StaminaPoolMask",
+            Self::WheezingAudioMask => "WheezingAudioMask",
+            Self::CoughBloodMask => "CoughBloodMask",
+            Self::MoveSpeedMask => "MoveSpeedMask",
+            Self::TraversalLockMask => "TraversalLockMask",
+            Self::TraversalLockProneMask => "TraversalLockProneMask",
+            Self::PainGruntMask => "PainGruntMask",
+            Self::ArmsLockMask => "ArmsLockMask",
+            Self::WeaponSwayMask => "WeaponSwayMask",
+            Self::ADSEnterMask => "ADSEnterMask",
+            Self::BloodVisionMask => "BloodVisionMask",
+            Self::MuffledAudioInjuryMask => "MuffledAudioInjuryMask",
+            Self::BlurredVisionMask => "BlurredVisionMask",
+            Self::DrunkLocomotionMask => "DrunkLocomotionMask",
+            Self::DrunkManoeuvringMask => "DrunkManoeuvringMask",
+            Self::DoubleVisionMask => "DoubleVisionMask",
+            Self::OrificeBloodMask => "OrificeBloodMask",
+            Self::FlashEffect => "FlashEffect",
+            Self::Slam => "Slam",
+            Self::RadiationAntidote => "RadiationAntidote",
+            Self::ThrowForceMask => "ThrowForceMask",
+            Self::MeleeForceMask => "MeleeForceMask",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `StateTypeNetworkAuthority`
@@ -32760,6 +44723,16 @@ impl StateTypeNetworkAuthority {
             "Server" => Self::Server,
             "Local" => Self::Local,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Server => "Server",
+            Self::Local => "Local",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -32986,6 +44959,82 @@ impl StatusEffectType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::ADSEnter => "ADSEnter",
+            Self::ArmsLock => "ArmsLock",
+            Self::Bleed => "Bleed",
+            Self::BloodDrugLevelDecay => "BloodDrugLevelDecay",
+            Self::BloodVision => "BloodVision",
+            Self::BlurredVision => "BlurredVision",
+            Self::BodyRadiationDecay => "BodyRadiationDecay",
+            Self::CoughBlood => "CoughBlood",
+            Self::Dead => "Dead",
+            Self::DehydrationDamage => "DehydrationDamage",
+            Self::DepressurizationDamage => "DepressurizationDamage",
+            Self::DrugDuration => "DrugDuration",
+            Self::DrunkLocomotion => "DrunkLocomotion",
+            Self::DrunkManoeuvring => "DrunkManoeuvring",
+            Self::DoubleVision => "DoubleVision",
+            Self::DownedDamageDecay => "DownedDamageDecay",
+            Self::EarRinging => "EarRinging",
+            Self::ExternalDamageMultiplier => "ExternalDamageMultiplier",
+            Self::FlashEffect => "FlashEffect",
+            Self::HeadacheAudio => "HeadacheAudio",
+            Self::HealthPool => "HealthPool",
+            Self::HealthBoost => "HealthBoost",
+            Self::HungerDecay => "HungerDecay",
+            Self::HurtLocomotion => "HurtLocomotion",
+            Self::HurtProne => "HurtProne",
+            Self::HygieneDecay => "HygieneDecay",
+            Self::HypothermiaDamage => "HypothermiaDamage",
+            Self::HyperthermiaDamage => "HyperthermiaDamage",
+            Self::ImpactResistanceKnockdown => "ImpactResistanceKnockdown",
+            Self::ImpactResistanceStagger => "ImpactResistanceStagger",
+            Self::ImpactResistanceTwitch => "ImpactResistanceTwitch",
+            Self::ImpactResistanceFlinch => "ImpactResistanceFlinch",
+            Self::LightSensitivity => "LightSensitivity",
+            Self::MacularDegeneration => "MacularDegeneration",
+            Self::MalfunctionDistortion => "MalfunctionDistortion",
+            Self::MeleeDamage => "MeleeDamage",
+            Self::MeleeForce => "MeleeForce",
+            Self::MoveSpeed => "MoveSpeed",
+            Self::MuffledAudio => "MuffledAudio",
+            Self::Blink => "Blink",
+            Self::OcularMigraine => "OcularMigraine",
+            Self::OrificeBlood => "OrificeBlood",
+            Self::OverdoseDamage => "OverdoseDamage",
+            Self::PainGrunt => "PainGrunt",
+            Self::PassOutDowned => "PassOutDowned",
+            Self::PassOutUnconscious => "PassOutUnconscious",
+            Self::PassOutGForce => "PassOutGForce",
+            Self::RadiationDamageLow => "RadiationDamageLow",
+            Self::RadiationDamageHigh => "RadiationDamageHigh",
+            Self::Recoil => "Recoil",
+            Self::Shivering => "Shivering",
+            Self::StaminaCost => "StaminaCost",
+            Self::StaminaPool => "StaminaPool",
+            Self::StaminaRegen => "StaminaRegen",
+            Self::StarvationDamage => "StarvationDamage",
+            Self::StatusDamageCap => "StatusDamageCap",
+            Self::StatusDamageMultiplier => "StatusDamageMultiplier",
+            Self::StomachGroanAudio => "StomachGroanAudio",
+            Self::StunDecay => "StunDecay",
+            Self::Suffocation => "Suffocation",
+            Self::SuffocationDamage => "SuffocationDamage",
+            Self::TempAudioLoss => "TempAudioLoss",
+            Self::ThirstDecay => "ThirstDecay",
+            Self::ThrowForce => "ThrowForce",
+            Self::TraversalLock => "TraversalLock",
+            Self::TraversalLockProne => "TraversalLockProne",
+            Self::Wheezing => "Wheezing",
+            Self::WeaponSway => "WeaponSway",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `StatusEffectValueType`
@@ -33019,6 +45068,19 @@ impl StatusEffectValueType {
             "MinValue" => Self::MinValue,
             "DiminishingReturns" => Self::DiminishingReturns,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Additive => "Additive",
+            Self::Multiplier => "Multiplier",
+            Self::MaxValue => "MaxValue",
+            Self::MinValue => "MinValue",
+            Self::DiminishingReturns => "DiminishingReturns",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -33065,6 +45127,22 @@ impl StatusHeadBleedingLocation {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::LeftEye => "LeftEye",
+            Self::LeftNostril => "LeftNostril",
+            Self::LeftMouth => "LeftMouth",
+            Self::LeftEar => "LeftEar",
+            Self::RightEye => "RightEye",
+            Self::RightNostril => "RightNostril",
+            Self::RightMouth => "RightMouth",
+            Self::RightEar => "RightEar",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `StatusProbabilityCheckType`
@@ -33092,6 +45170,17 @@ impl StatusProbabilityCheckType {
             "StatValueIncrease" => Self::StatValueIncrease,
             "StatValueDecrease" => Self::StatValueDecrease,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Always => "Always",
+            Self::StatValueIncrease => "StatValueIncrease",
+            Self::StatValueDecrease => "StatValueDecrease",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -33126,6 +45215,18 @@ impl SubItemScanItemStatus {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Default => "Default",
+            Self::PowerOn => "PowerOn",
+            Self::PowerOff => "PowerOff",
+            Self::Destroyed => "Destroyed",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `SurfaceRaindropEmitterType`
@@ -33150,6 +45251,16 @@ impl SurfaceRaindropEmitterType {
             "Rain" => Self::Rain,
             "Snow" => Self::Snow,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Rain => "Rain",
+            Self::Snow => "Snow",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -33181,6 +45292,17 @@ impl SyncedMeleeAttackResult {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Hit => "Hit",
+            Self::Countered => "Countered",
+            Self::Dodged => "Dodged",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `TacticalQuerySystemType`
@@ -33205,6 +45327,16 @@ impl TacticalQuerySystemType {
             "TacticalPointQuery" => Self::TacticalPointQuery,
             "TacticalTargetQuery" => Self::TacticalTargetQuery,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::TacticalPointQuery => "TacticalPointQuery",
+            Self::TacticalTargetQuery => "TacticalTargetQuery",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -33239,6 +45371,18 @@ impl TakeDownQuadrant {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::AllQuadrants => "AllQuadrants",
+            Self::BackOnly => "BackOnly",
+            Self::FrontOnly => "FrontOnly",
+            Self::NotPossible => "NotPossible",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `TakeDownStance`
@@ -33271,6 +45415,18 @@ impl TakeDownStance {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::AnyStance => "AnyStance",
+            Self::StandOnly => "StandOnly",
+            Self::ProneOnly => "ProneOnly",
+            Self::NotPossible => "NotPossible",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `TestType`
@@ -33300,6 +45456,17 @@ impl TestType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::PhysicsImpact_Ocean => "PhysicsImpact_Ocean",
+            Self::PhysicsImpact_WaterVolume => "PhysicsImpact_WaterVolume",
+            Self::MFXHit => "MFXHit",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `TransportDestinationCategoryLayout`
@@ -33326,6 +45493,16 @@ impl TransportDestinationCategoryLayout {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::List => "List",
+            Self::ButtonGrid => "ButtonGrid",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `TransportDestinationOrderingMethod`
@@ -33350,6 +45527,16 @@ impl TransportDestinationOrderingMethod {
             "Height" => Self::Height,
             "Priority" => Self::Priority,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Height => "Height",
+            Self::Priority => "Priority",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -33381,6 +45568,17 @@ impl UI3DDisplayInputType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Pan => "Pan",
+            Self::Rotate => "Rotate",
+            Self::Zoom => "Zoom",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `UIBlockingMode`
@@ -33402,6 +45600,15 @@ impl UIBlockingMode {
         match s {
             "ScanMode" => Self::ScanMode,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::ScanMode => "ScanMode",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -33433,6 +45640,17 @@ impl UIDisplayActivationTypes {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Manual => "Manual",
+            Self::AlwaysOn => "AlwaysOn",
+            Self::OnWhenUsed => "OnWhenUsed",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `UIDisplayEnvironmentAlignment`
@@ -33462,6 +45680,17 @@ impl UIDisplayEnvironmentAlignment {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::GalacticPlane => "GalacticPlane",
+            Self::World => "World",
+            Self::Owner => "Owner",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `UIElementAlignMode`
@@ -33486,6 +45715,16 @@ impl UIElementAlignMode {
             "dynamic" => Self::dynamic,
             "fullscreen" => Self::fullscreen,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::dynamic => "dynamic",
+            Self::fullscreen => "fullscreen",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -33526,6 +45765,20 @@ impl UIGraph_BackBehavior {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Unsuported => "Unsuported",
+            Self::NoAction => "NoAction",
+            Self::LastDoNothing => "LastDoNothing",
+            Self::LastRequestContextEnd => "LastRequestContextEnd",
+            Self::LastRequestClose => "LastRequestClose",
+            Self::LastCustomCallback => "LastCustomCallback",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `UIGraph_BlockingMessagePopUpProvider`
@@ -33550,6 +45803,16 @@ impl UIGraph_BlockingMessagePopUpProvider {
             "GlobalGame" => Self::GlobalGame,
             "ElectronicAccess" => Self::ElectronicAccess,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::GlobalGame => "GlobalGame",
+            Self::ElectronicAccess => "ElectronicAccess",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -33662,6 +45925,44 @@ impl UIGraph_SimpleComponentType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::ElectronicAccessFullscreen => "ElectronicAccessFullscreen",
+            Self::Hints => "Hints",
+            Self::PlayerInteraction => "PlayerInteraction",
+            Self::PlayerLens => "PlayerLens",
+            Self::ChatWidget => "ChatWidget",
+            Self::FpsCombat => "FpsCombat",
+            Self::ACLoadoutContextSwitch => "ACLoadoutContextSwitch",
+            Self::EALoadoutWarningPopUp => "EALoadoutWarningPopUp",
+            Self::EAShipDetailsKickNoticePopUp => "EAShipDetailsKickNoticePopUp",
+            Self::EAShipDetailsKickWarningPopUp => "EAShipDetailsKickWarningPopUp",
+            Self::EALeaderboards => "EALeaderboards",
+            Self::GGULoadingScreen => "GGULoadingScreen",
+            Self::GGUNotificationScreen => "GGUNotificationScreen",
+            Self::FrontendViewTransition => "FrontendViewTransition",
+            Self::mobiGlasLauncherDock => "mobiGlasLauncherDock",
+            Self::mobiGlasHomeDock => "mobiGlasHomeDock",
+            Self::mobiGlasBeacon => "mobiGlasBeacon",
+            Self::mobiGlasRouteInfo => "mobiGlasRouteInfo",
+            Self::ShopApp => "ShopApp",
+            Self::ShopDock => "ShopDock",
+            Self::Popup => "Popup",
+            Self::ContactsCommsApp => "ContactsCommsApp",
+            Self::BackClick => "BackClick",
+            Self::ShipList => "ShipList",
+            Self::PortCategories => "PortCategories",
+            Self::ItemKioskDock => "ItemKioskDock",
+            Self::VehicleQuery => "VehicleQuery",
+            Self::ShipSelectOrRental => "ShipSelectOrRental",
+            Self::ShopKiosk => "ShopKiosk",
+            Self::AreaMapContextComponent => "AreaMapContextComponent",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `UIWorldDisplayFollowRotationMode`
@@ -33694,6 +45995,18 @@ impl UIWorldDisplayFollowRotationMode {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Default => "Default",
+            Self::None => "None",
+            Self::Owner => "Owner",
+            Self::User => "User",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `UIWorldDisplayPathTypes`
@@ -33721,6 +46034,17 @@ impl UIWorldDisplayPathTypes {
             "Selected" => Self::Selected,
             "Destination" => Self::Destination,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Highlighted => "Highlighted",
+            Self::Selected => "Selected",
+            Self::Destination => "Destination",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -33752,6 +46076,17 @@ impl UIWorldDisplayPlaneAlignment {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Default => "Default",
+            Self::GalacticPlane => "GalacticPlane",
+            Self::Owner => "Owner",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `UIWorldDisplayUseInputMode`
@@ -33779,6 +46114,17 @@ impl UIWorldDisplayUseInputMode {
             "UseInput" => Self::UseInput,
             "NoInput" => Self::NoInput,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Default => "Default",
+            Self::UseInput => "UseInput",
+            Self::NoInput => "NoInput",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -33810,6 +46156,17 @@ impl VectorBases {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Right => "Right",
+            Self::Forward => "Forward",
+            Self::Up => "Up",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `WeaponPoseType`
@@ -33839,6 +46196,17 @@ impl WeaponPoseType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::RightHand => "RightHand",
+            Self::Zoom => "Zoom",
+            Self::LeftHand => "LeftHand",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `WingmanTargetTypes`
@@ -33866,6 +46234,17 @@ impl WingmanTargetTypes {
             "Player" => Self::Player,
             "Target" => Self::Target,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::Player => "Player",
+            Self::Target => "Target",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -33898,6 +46277,18 @@ impl WorldDisplayObjectFacingMode {
             "Camera" => Self::Camera,
             "AwayFromParent" => Self::AwayFromParent,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Default => "Default",
+            Self::World => "World",
+            Self::Camera => "Camera",
+            Self::AwayFromParent => "AwayFromParent",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -33953,6 +46344,25 @@ impl ZeroGTraversalAction {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::Attach => "Attach",
+            Self::Detach => "Detach",
+            Self::Idle => "Idle",
+            Self::MoveForward => "MoveForward",
+            Self::LedgeTraversal => "LedgeTraversal",
+            Self::IdleToTurn => "IdleToTurn",
+            Self::KneeDrop => "KneeDrop",
+            Self::LaunchTurn => "LaunchTurn",
+            Self::Launch => "Launch",
+            Self::Sprint => "Sprint",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `eCommunicationChannelType`
@@ -33982,6 +46392,17 @@ impl eCommunicationChannelType {
             _ => Self::Unrecognized(s.to_string()),
         }
     }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Global => "Global",
+            Self::Group => "Group",
+            Self::Personal => "Personal",
+            Self::Unrecognized(s) => s,
+        }
+    }
 }
 
 /// DCB enum: `eCommunicationChoiceMethod`
@@ -34009,6 +46430,17 @@ impl eCommunicationChoiceMethod {
             "Sequence" => Self::Sequence,
             "RandomSequence" => Self::RandomSequence,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Random => "Random",
+            Self::Sequence => "Sequence",
+            Self::RandomSequence => "RandomSequence",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -34047,6 +46479,20 @@ impl eCommunicationCriteriaOperant {
             "GreaterThan" => Self::GreaterThan,
             "GreaterThanOrEquals" => Self::GreaterThanOrEquals,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::None => "None",
+            Self::Equals => "Equals",
+            Self::LessThan => "LessThan",
+            Self::LessThanOrEquals => "LessThanOrEquals",
+            Self::GreaterThan => "GreaterThan",
+            Self::GreaterThanOrEquals => "GreaterThanOrEquals",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -34121,6 +46567,32 @@ impl eContextualCommunicationConcept {
             "OnVehicleMissileLaunched" => Self::OnVehicleMissileLaunched,
             "OnResponseFinished" => Self::OnResponseFinished,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Custom => "Custom",
+            Self::OnIdleChatter => "OnIdleChatter",
+            Self::OnHit => "OnHit",
+            Self::OnVehicleHit => "OnVehicleHit",
+            Self::OnFriendlyDied => "OnFriendlyDied",
+            Self::OnFriendlyKilledEnemy => "OnFriendlyKilledEnemy",
+            Self::OnTargetKilled => "OnTargetKilled",
+            Self::OnVehiclePartDestroyed => "OnVehiclePartDestroyed",
+            Self::OnRespawn => "OnRespawn",
+            Self::OnKilled => "OnKilled",
+            Self::OnVehicleEnemySpotted => "OnVehicleEnemySpotted",
+            Self::OnVehicleEnemyMissileLockingOn => "OnVehicleEnemyMissileLockingOn",
+            Self::OnVehicleEnemyMissileLockedOn => "OnVehicleEnemyMissileLockedOn",
+            Self::OnVehicleEnemyMissileLockLost => "OnVehicleEnemyMissileLockLost",
+            Self::OnVehicleEnemyMissileLaunched => "OnVehicleEnemyMissileLaunched",
+            Self::OnVehicleMissileLockingOn => "OnVehicleMissileLockingOn",
+            Self::OnVehicleMissileLaunched => "OnVehicleMissileLaunched",
+            Self::OnResponseFinished => "OnResponseFinished",
+            Self::Unrecognized(s) => s,
         }
     }
 }
@@ -34282,6 +46754,61 @@ impl eContextualCommunicationCriteria {
             "Target_IsDead" => Self::Target_IsDead,
             "Target_IsFriendly" => Self::Target_IsFriendly,
             _ => Self::Unrecognized(s.to_string()),
+        }
+    }
+
+    /// The raw DCB enum string for this variant (inverse of
+    /// `from_dcb_str`; round-trips for serialization).
+    pub fn as_dcb_str(&self) -> &str {
+        match self {
+            Self::Custom => "Custom",
+            Self::Who => "Who",
+            Self::LevelName => "LevelName",
+            Self::LastResponse => "LastResponse",
+            Self::LastDialog => "LastDialog",
+            Self::Vehicle => "Vehicle",
+            Self::VehicleHealth => "VehicleHealth",
+            Self::VehicleShield => "VehicleShield",
+            Self::VehicleSpeed => "VehicleSpeed",
+            Self::VehicleHitTime => "VehicleHitTime",
+            Self::VehicleHitShield => "VehicleHitShield",
+            Self::VehicleHitDamage => "VehicleHitDamage",
+            Self::VehicleStartFireTime => "VehicleStartFireTime",
+            Self::VehicleStopFireTime => "VehicleStopFireTime",
+            Self::VehicleFiringWeapons => "VehicleFiringWeapons",
+            Self::Attacker_Vehicle => "Attacker_Vehicle",
+            Self::Attacker_VehicleHealth => "Attacker_VehicleHealth",
+            Self::Attacker_VehicleShield => "Attacker_VehicleShield",
+            Self::Attacker_VehicleSpeed => "Attacker_VehicleSpeed",
+            Self::Attacker_VehicleFiringWeapons => "Attacker_VehicleFiringWeapons",
+            Self::Target_Vehicle => "Target_Vehicle",
+            Self::Target_VehicleHealth => "Target_VehicleHealth",
+            Self::Target_VehicleShield => "Target_VehicleShield",
+            Self::Target_VehicleSpeed => "Target_VehicleSpeed",
+            Self::Target_VehicleFiringWeapons => "Target_VehicleFiringWeapons",
+            Self::ActorHealth => "ActorHealth",
+            Self::IsDriving => "IsDriving",
+            Self::IsOnFoot => "IsOnFoot",
+            Self::IsEjecting => "IsEjecting",
+            Self::IsEjected => "IsEjected",
+            Self::IsDead => "IsDead",
+            Self::Attacker_Who => "Attacker_Who",
+            Self::Attacker_ActorHealth => "Attacker_ActorHealth",
+            Self::Attacker_IsDriving => "Attacker_IsDriving",
+            Self::Attacker_IsOnFoot => "Attacker_IsOnFoot",
+            Self::Attacker_IsEjecting => "Attacker_IsEjecting",
+            Self::Attacker_IsEjected => "Attacker_IsEjected",
+            Self::Attacker_IsDead => "Attacker_IsDead",
+            Self::Attacker_IsFriendly => "Attacker_IsFriendly",
+            Self::Target_Who => "Target_Who",
+            Self::Target_ActorHealth => "Target_ActorHealth",
+            Self::Target_IsDriving => "Target_IsDriving",
+            Self::Target_IsOnFoot => "Target_IsOnFoot",
+            Self::Target_IsEjecting => "Target_IsEjecting",
+            Self::Target_IsEjected => "Target_IsEjected",
+            Self::Target_IsDead => "Target_IsDead",
+            Self::Target_IsFriendly => "Target_IsFriendly",
+            Self::Unrecognized(s) => s,
         }
     }
 }

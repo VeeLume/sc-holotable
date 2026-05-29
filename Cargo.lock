@@ -939,6 +939,8 @@ version = "0.0.0"
 dependencies = [
  "sc-extract",
  "sc-installs",
+ "serde",
+ "serde_json",
  "tracing",
  "tracing-subscriber",
 ]

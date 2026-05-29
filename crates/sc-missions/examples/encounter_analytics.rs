@@ -25,8 +25,8 @@
 
 use std::collections::{BTreeMap, BTreeSet, HashMap};
 
-use sc_missions::{Encounter, MissionIndex, ShipSlot};
 use sc_extract::{AssetConfig, AssetData, AssetSource, Datacore};
+use sc_missions::{Encounter, MissionIndex, ShipSlot};
 
 /// One row in the analytics worklist — flatten contract → group →
 /// wave → slot into a single record so every section can iterate

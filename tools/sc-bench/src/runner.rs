@@ -123,7 +123,6 @@ fn open_assets(
 }
 
 fn exercise_tags(tree: &sc_tags::TagTree, r: &mut BenchResult) {
-
     // Count root nodes.
     r.tag_roots = tree.roots().count();
 
