@@ -88,8 +88,6 @@ separate commits and advance independently.
     the `crafting` feature.
   - **`BlueprintsBuilder`** implementing `RecordVisitor` for bundled
     walks (interest = `["CraftingBlueprintRecord"]`).
-  - Pre-v0.9.0 `BlueprintItem` + `all_blueprints` +
-    `resolve_blueprint` retained as compatibility shims.
 
 - **Umbrella `sc-holotable` integration.** New `resources` feature,
   `resources` module re-exporting `sc_resources::*`. `crafting` now
@@ -107,6 +105,16 @@ separate commits and advance independently.
   bumps `HOLOTABLE_COOK_VERSION` from 1 to 2. Old snapshots fall back
   per the `ProcessedSnapshot` version-guard machinery
   (rebuild from raw / live).
+
+### Removed (breaking)
+
+- **`sc_crafting::BlueprintItem`** and the free functions
+  **`sc_crafting::all_blueprints` / `sc_crafting::resolve_blueprint`**.
+  Use [`Blueprints::build`] + [`Blueprints::get`] + [`Blueprints::iter`]
+  instead — the new types carry everything the old shims did, plus the
+  full recipe surface. `sc-missions` re-exports of the same names also
+  dropped; `sc_missions::BlueprintPoolEntry.blueprint` is now a
+  `sc_crafting::Blueprint`.
 
 ### Fixed
 

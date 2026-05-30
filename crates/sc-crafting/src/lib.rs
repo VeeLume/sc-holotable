@@ -20,12 +20,6 @@
 //! for dormant variants until the next regen-after-population promotes
 //! them.
 //!
-//! # Compatibility
-//!
-//! Pre-v0.9.0 consumers used [`all_blueprints`] returning
-//! `Vec<BlueprintItem>` (identity + display name only). Those types
-//! remain as a thin shim; new consumers use [`Blueprints`] for the full
-//! recipe surface.
 
 use sc_extract::generated::{
     CraftingBlueprintRecord, CraftingBlueprintTier_BasePtr, CraftingBlueprint_Base_NonRefPtr,
@@ -728,88 +722,6 @@ impl<'a> sc_extract::RecordVisitor for BlueprintsBuilder<'a> {
     fn finish(self) -> Blueprints {
         self.inner
     }
-}
-
-// ─────────────────────────────────────────────────────────────────────
-// Pre-v0.9.0 compatibility shim
-// ─────────────────────────────────────────────────────────────────────
-
-/// **Compatibility:** the pre-v0.9.0 catalog shape (identity + display
-/// name only). Equivalent to `Blueprint` minus recipe data. Use
-/// [`Blueprint`] for new code.
-#[derive(Debug, Clone, PartialEq)]
-pub struct BlueprintItem {
-    pub blueprint_record_guid: Guid,
-    pub crafted_entity_guid: Option<Guid>,
-    pub entity_name_key: Option<LocaleKey>,
-    pub blueprint_name_key: Option<LocaleKey>,
-}
-
-impl BlueprintItem {
-    pub fn display_name<'a>(&self, locale: &'a LocaleMap) -> Option<&'a str> {
-        if let Some(key) = &self.entity_name_key
-            && let Some(name) = locale.resolve(key)
-            && !name.is_empty()
-            && !is_placeholder(name)
-        {
-            return Some(name);
-        }
-        if let Some(key) = &self.blueprint_name_key
-            && let Some(text) = locale.resolve(key)
-            && !is_placeholder(text)
-        {
-            return Some(text);
-        }
-        None
-    }
-}
-
-impl From<&Blueprint> for BlueprintItem {
-    fn from(bp: &Blueprint) -> Self {
-        Self {
-            blueprint_record_guid: bp.blueprint_record_guid,
-            crafted_entity_guid: bp.crafted_entity_guid(),
-            entity_name_key: bp.entity_name_key.clone(),
-            blueprint_name_key: bp.blueprint_name_key.clone(),
-        }
-    }
-}
-
-/// **Compatibility:** the full craftable catalog as `BlueprintItem`s.
-/// Equivalent to `Blueprints::build(...).iter().map(BlueprintItem::from).collect()`.
-pub fn all_blueprints(datacore: &Datacore, items: &Items) -> Vec<BlueprintItem> {
-    Blueprints::build(datacore, items)
-        .iter()
-        .map(BlueprintItem::from)
-        .collect()
-}
-
-/// **Compatibility:** resolve a single `CraftingBlueprintRecord` GUID
-/// to a [`BlueprintItem`].
-pub fn resolve_blueprint(
-    datacore: &Datacore,
-    items: &Items,
-    record_guid: Guid,
-) -> BlueprintItem {
-    let pools = &datacore.records().pools;
-    let records = &datacore.records().records;
-    let Some(handle) = records.multi_feature.crafting_blueprint_record.get(&record_guid) else {
-        return BlueprintItem {
-            blueprint_record_guid: record_guid,
-            crafted_entity_guid: None,
-            entity_name_key: None,
-            blueprint_name_key: None,
-        };
-    };
-    let Some(record) = handle.get(pools) else {
-        return BlueprintItem {
-            blueprint_record_guid: record_guid,
-            crafted_entity_guid: None,
-            entity_name_key: None,
-            blueprint_name_key: None,
-        };
-    };
-    BlueprintItem::from(&build_blueprint(record_guid, record, records, pools, items))
 }
 
 // ─────────────────────────────────────────────────────────────────────

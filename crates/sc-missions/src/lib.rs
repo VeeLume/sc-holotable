@@ -58,8 +58,6 @@ pub mod tui;
 pub use axes::{AxisDiff, AxisKind, AxisValues, SharedTag};
 // Blueprint *pools* are a mission-reward mechanic — owned here.
 pub use blueprint_pools::{BlueprintPool, BlueprintPoolEntry, BlueprintPools};
-// The blueprint *catalog* lives in sc-crafting; re-exported for convenience
-// (and so intra-doc links to `BlueprintItem` keep resolving).
 pub use classify::{TagBag, parse_ai_skill};
 pub use currency::{CurrencyInfo, RewardCurrencies};
 pub use expand::{
@@ -71,7 +69,6 @@ pub use expand::{
 pub use index::Missions;
 pub use locality::{Localities, LocalityView, LocationRef, Locations, SystemKey};
 pub use pools::MissionPools;
-pub use sc_crafting::{BlueprintItem, all_blueprints};
 pub use ships::{ShipCandidate, ShipEntity, Ships};
 pub use titles::{ContractAnchor, ResolvedKeys, resolve_contract_keys};
 

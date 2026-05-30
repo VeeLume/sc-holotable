@@ -4,13 +4,13 @@
 //! draws from (the engine grants one weighted-random blueprint per pool).
 //! Pools are a *mission* concept; the blueprint catalog itself lives in
 //! [`sc_crafting`]. This module is the join: it resolves each pool's reward
-//! entries against [`sc_crafting::all_blueprints`] and pairs them with their
+//! entries against [`sc_crafting::Blueprints`] and pairs them with their
 //! pool weight. The pool→missions reverse index lives on
 //! [`crate::Missions`].
 
 use std::collections::HashMap;
 
-use sc_crafting::{BlueprintItem, all_blueprints};
+use sc_crafting::{Blueprint, Blueprints, Process};
 use sc_extract::{Datacore, Guid};
 use sc_items::Items;
 
@@ -18,7 +18,7 @@ use sc_items::Items;
 #[derive(Debug, Clone)]
 pub struct BlueprintPoolEntry {
     /// The blueprint this entry awards (resolved from the catalog).
-    pub blueprint: BlueprintItem,
+    pub blueprint: Blueprint,
     /// Pick-weight within the pool. Higher = more likely. Relative.
     pub weight: f32,
 }
@@ -44,13 +44,10 @@ pub struct BlueprintPools {
 
 impl BlueprintPools {
     /// Build from a [`Datacore`] + [`Items`]: resolve the catalog once
-    /// via [`sc_crafting::all_blueprints`], then join each pool's reward
-    /// entries against it (attaching the pool weight).
+    /// via [`sc_crafting::Blueprints::build`], then join each pool's
+    /// reward entries against it (attaching the pool weight).
     pub fn build(datacore: &Datacore, items: &Items) -> Self {
-        let catalog: HashMap<Guid, BlueprintItem> = all_blueprints(datacore, items)
-            .into_iter()
-            .map(|b| (b.blueprint_record_guid, b))
-            .collect();
+        let catalog = Blueprints::build(datacore, items);
 
         let pools_data = &datacore.records().pools;
         let records = &datacore.records().records;
@@ -82,11 +79,16 @@ impl BlueprintPools {
                 };
                 // Every CraftingBlueprintRecord is in the catalog; the stub
                 // only guards a feature-gated/missing record.
-                let blueprint = catalog.get(&record_guid).cloned().unwrap_or(BlueprintItem {
+                let blueprint = catalog.get(record_guid).cloned().unwrap_or(Blueprint {
                     blueprint_record_guid: record_guid,
-                    crafted_entity_guid: None,
-                    entity_name_key: None,
+                    category: None,
+                    process: Process::Other {
+                        type_name: "(missing from catalog)".into(),
+                        struct_index: 0,
+                    },
                     blueprint_name_key: None,
+                    entity_name_key: None,
+                    tiers: Vec::new(),
                 });
                 entries.push(BlueprintPoolEntry {
                     blueprint,
