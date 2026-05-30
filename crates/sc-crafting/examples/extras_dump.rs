@@ -5,7 +5,10 @@
 //! cargo run -p sc-crafting --release --example extras_dump
 //! ```
 
-use sc_crafting::{Categories, DisplayTransformation, GameplayProperties, GlobalParams};
+use sc_crafting::{
+    Categories, DisplayTransformation, DistributionRef, GameplayProperties, GlobalParams, Quality,
+    QualityDistributionShape,
+};
 use sc_extract::{AssetConfig, AssetData, AssetSource, Datacore, RecordPaths};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -89,6 +92,66 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         for o in &p.name_overrides {
             let n = locale.resolve(&o.property_name_key).unwrap_or("?");
             println!("      override → {n:?} when {:?}", o.condition);
+        }
+    }
+
+    // -- Quality --
+    let quality = Quality::build(&datacore);
+    println!("\n=== Quality ===");
+    println!(
+        "distributions: {}  location_overrides: {}  quantizations: {}",
+        quality.distributions().count(),
+        quality.location_overrides().count(),
+        quality.quantizations().count(),
+    );
+
+    // tally distribution shapes
+    let mut normal = 0usize;
+    let mut other = 0usize;
+    for d in quality.distributions() {
+        match &d.shape {
+            Some(QualityDistributionShape::Normal { .. }) => normal += 1,
+            _ => other += 1,
+        }
+    }
+    println!("  distribution shapes: Normal={normal}  Other={other}");
+    if let Some(d) = quality.distributions().next() {
+        println!("  sample distribution: {} → {:?}", d.guid, d.shape);
+    }
+
+    // location override stats + reference resolution
+    let total_entries: usize = quality.location_overrides().map(|o| o.entries.len()).sum();
+    let mut inline = 0usize;
+    let mut record_refs = 0usize;
+    let mut resolved_refs = 0usize;
+    for o in quality.location_overrides() {
+        for e in &o.entries {
+            match &e.distribution {
+                Some(DistributionRef::Inline(_)) => inline += 1,
+                Some(DistributionRef::Record(g)) => {
+                    record_refs += 1;
+                    if quality.distribution(g).is_some() {
+                        resolved_refs += 1;
+                    }
+                }
+                _ => {}
+            }
+        }
+    }
+    println!("  location override entries: {total_entries}");
+    println!("    inline distributions  : {inline}");
+    println!("    record-ref'd          : {record_refs} ({resolved_refs} resolve in our catalog)");
+
+    // quantization band stats
+    let total_bands: usize = quality.quantizations().map(|q| q.bands.len()).sum();
+    println!("  quantization bands total: {total_bands}");
+    if let Some(q) = quality.quantizations().next() {
+        println!("  sample quantization {} → {} bands:", q.guid, q.bands.len());
+        for b in q.bands.iter().take(3) {
+            println!(
+                "    Band {{ start={}, end={}, mapped_value={} }}",
+                b.start, b.end, b.mapped_value
+            );
         }
     }
 
