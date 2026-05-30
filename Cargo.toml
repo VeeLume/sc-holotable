@@ -7,6 +7,7 @@ members = [
     "crates/sc-crafting",
     "crates/sc-items",
     "crates/sc-manufacturers",
+    "crates/sc-resources",
     "crates/sc-tags",
     "crates/sc-weapons",
     "crates/sc-missions",
@@ -29,6 +30,7 @@ sc-extract-generated = { path = "crates/sc-extract-generated" }
 sc-crafting = { path = "crates/sc-crafting" }
 sc-items = { path = "crates/sc-items" }
 sc-manufacturers = { path = "crates/sc-manufacturers" }
+sc-resources = { path = "crates/sc-resources" }
 sc-tags = { path = "crates/sc-tags" }
 sc-weapons = { path = "crates/sc-weapons" }
 sc-missions = { path = "crates/sc-missions" }

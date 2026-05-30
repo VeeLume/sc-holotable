@@ -1,0 +1,19 @@
+[package]
+name = "sc-resources"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+
+[dependencies]
+# `resourcetypedatabase` decodes the ResourceType record type this crate
+# walks — sc-resources owns its feature closure. ResourceType is the
+# canonical resource catalog: it's referenced by every Cost_Resource in
+# sc-crafting, drives refining via `refined_version`, and is keyed by
+# the per-resource quality quantization records.
+sc-extract = { workspace = true, features = ["resourcetypedatabase"] }
+serde = { workspace = true }
+tracing = { workspace = true }
+
+[dev-dependencies]
+sc-discovery = { workspace = true }
+serde_json = { workspace = true }
