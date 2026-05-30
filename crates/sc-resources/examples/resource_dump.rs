@@ -24,6 +24,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut named = 0;
     let mut unresolved = 0;
     let mut refining_pairs = 0;
+    let mut with_density = 0;
+    let mut with_volatility = 0;
     let mut sorted: Vec<_> = resources.all().collect();
     sorted.sort_by(|a, b| {
         let an = asset_data.locale.resolve(&a.name_key).unwrap_or("");
@@ -42,7 +44,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             .refined_version
             .and_then(|g| resources.get(&g))
             .and_then(|next| asset_data.locale.resolve(&next.name_key));
-        let suffix = match (&r.refined_version, refined_name) {
+        let refined_suffix = match (&r.refined_version, refined_name) {
             (Some(g), Some(n)) => {
                 refining_pairs += 1;
                 format!("  →refined: {n} ({g})")
@@ -50,8 +52,30 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             (Some(g), None) => format!("  →refined: ?? ({g})"),
             (None, _) => String::new(),
         };
+        let density_suffix = match r
+            .density
+            .as_ref()
+            .and_then(|d| d.unit.as_ref())
+            .and_then(|u| u.to_kg_per_m3())
+        {
+            Some(kg_m3) => {
+                with_density += 1;
+                format!("  density={kg_m3:.0} kg/m³")
+            }
+            None => String::new(),
+        };
+        let volatility_suffix = match &r.volatility {
+            Some(v) => {
+                with_volatility += 1;
+                format!(
+                    "  volatility={}/{}(decay/s)",
+                    v.volatility, v.health_decay_per_second
+                )
+            }
+            None => String::new(),
+        };
         println!(
-            "  {} ({}){suffix}",
+            "  {} ({}){refined_suffix}{density_suffix}{volatility_suffix}",
             nm.unwrap_or("(unresolved)"),
             r.guid
         );
@@ -59,6 +83,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     println!("\nname resolution : {named} ok / {unresolved} unresolved");
     println!("refining edges  : {refining_pairs} resources have a refined_version");
+    println!("density present : {with_density} / {}", resources.len());
+    println!("volatility      : {with_volatility} / {}", resources.len());
 
     Ok(())
 }

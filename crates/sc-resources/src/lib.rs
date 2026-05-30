@@ -1,7 +1,8 @@
 //! Resource catalog over the DCB's `ResourceType` records.
 //!
 //! Every resource entity in the game — raw ores (`Aluminum`, `Quantainium`,
-//! …), refined materials, etc. — is a `ResourceType` record in
+//! …), refined materials, drugs, commodities, ship-ammo SKUs, …  — is a
+//! `ResourceType` record in
 //! `libs/foundry/records/resourcetypedatabase/resourcetypedatabase.xml`.
 //! SC 4.8 holds ~206 records (ores, refined metals, drugs, commodities,
 //! ship ammunition sizes 1–9, infrastructure resources, …); ~30 of those
@@ -10,44 +11,139 @@
 //! # Who references this
 //!
 //! - `sc-crafting`: every `CraftingCost_Resource` and `CraftingResult_Resource`
-//!   carries a resource GUID. The crafting recipe ingredient model bottoms
-//!   out here.
-//! - `sc-crafting` quality subsystem: `CraftingQualityQuantizationRecord`
-//!   discretizes per-resource quality into crafting tiers, keyed by
-//!   resource GUID.
+//!   carries a resource GUID and a [`CargoQuantity`]. The crafting recipe
+//!   ingredient model bottoms out here.
+//! - `sc-crafting` quality subsystem: per-resource [`Resource::crafting_data`]
+//!   is the inline wiring; sc-crafting reads `ResourceType.properties` for
+//!   the standalone `CraftingQualityDistribution`/`LocationOverride`/
+//!   `Quantization` references — that machinery lives in sc-crafting.
 //! - `sc-crafting` global params: `dismantleBlacklistResources` references
 //!   resource GUIDs.
 //!
 //! # Refining graph
 //!
-//! `Resource.refined_version` is currently *the* refining mechanism — a
-//! raw resource points at its refined counterpart. `refined_version_of`
+//! [`Resource::refined_version`] is currently *the* refining mechanism — a
+//! raw resource points at its refined counterpart. [`Resources::refined_version_of`]
 //! walks the graph forwards. The schema also defines a per-blueprint
 //! `CraftingProcess_Refining` but it is dormant + 0 records in SC 4.8.
 //!
-//! # Not yet modelled
+//! # Coverage in SC 4.8 (live-validated by `examples/resource_dump.rs`)
 //!
-//! `ResourceType.density_type` (polymorphic `ResourceTypeDensityType_*`)
-//! and `ResourceType.properties: Vec<ResourceTypePropertiesPtr>` (also
-//! polymorphic) are reachable on the typed record but the variants need
-//! a separate dig before locking. Added as a follow-up when sc-crafting
-//! needs them — see `docs/sc-crafting.md` open questions.
+//! - **206 records** total.
+//! - **205 resolve names** via the locale map.
+//! - **30 refining edges** (raw ore → refined metal pairs).
+//! - **206 / 206** carry a [`Density`] (always the concrete
+//!   `ResourceTypeDensity` variant).
+//! - **1 / 206** carries a [`Volatility`] property.
 
 use std::collections::HashMap;
 
 use sc_extract::generated::{RecordLookup, ResourceType};
-use sc_extract::{Guid, LocaleKey, RecordStore};
+use sc_extract::{DataPools, Guid, LocaleKey, RecordStore};
 use serde::{Deserialize, Serialize};
 
-/// A single resource entry, projected from the typed `ResourceType` pool.
+// ── Cargo quantity ──────────────────────────────────────────────────────
+//
+// `SBaseCargoUnit` is a 4-variant unit-of-measure hierarchy:
+//   - `SStandardCargoUnit { standard_cargo_units: f32 }` (1 SCU)
+//   - `SCentiCargoUnit    { centi_scu: i32 }`            (1/100 SCU)
+//   - `SMicroCargoUnit    { micro_scu: i32 }`            (1/1_000_000 SCU)
+//   - `SBaseCargoUnit {}`                                (empty base)
+//
+// Consumers convert to a normalized SCU value via [`CargoQuantity::to_scu`].
+
+/// A cargo quantity expressed in one of the DCB's unit types. The raw
+/// variants are preserved so a consumer can show the original unit; use
+/// [`CargoQuantity::to_scu`] to normalize.
 ///
-/// Fields currently captured cover the load-bearing data: name +
-/// description for display, `refined_version` for the refining graph,
-/// thumbnail paths for UI, the dismantle-validation flag, and the
-/// optional default-cargo-containers + RTT thumbnail entity refs.
-/// `density_type` and `properties` are deliberately deferred — see
-/// the module docs.
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+/// The projection from the raw `SBaseCargoUnitPtr` is in sc-crafting
+/// (which enables the `crafting` feature that gates the Centi/Micro
+/// pool types — under sc-resources's `resourcetypedatabase` alone, only
+/// `SStandardCargoUnit` would be reachable).
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub enum CargoQuantity {
+    Standard(f32),
+    Centi(i32),
+    Micro(i32),
+    /// Polymorphic-fallback for a variant compiled out (dormant) or a
+    /// future type the generator doesn't recognise yet.
+    Other {
+        type_name: String,
+        struct_index: u32,
+    },
+}
+
+impl CargoQuantity {
+    /// Normalize to SCU. `Centi` and `Micro` scale by 1/100 and 1/1_000_000.
+    /// `Other` returns `None` — the unit shape isn't known.
+    pub fn to_scu(&self) -> Option<f32> {
+        match self {
+            Self::Standard(n) => Some(*n),
+            Self::Centi(n) => Some(*n as f32 / 100.0),
+            Self::Micro(n) => Some(*n as f32 / 1_000_000.0),
+            Self::Other { .. } => None,
+        }
+    }
+}
+
+// ── Density ─────────────────────────────────────────────────────────────
+//
+// `ResourceType.density_type` is `ResourceTypeDensityType_*`; the only
+// populated concrete is `ResourceTypeDensity { density_unit:
+// BaseDensityUnit_* }`. `BaseDensityUnit` has 3 variants:
+//   - `BaseDensityUnit {}` (empty marker, base)
+//   - `GramsPerCubicCentimeter { grams_per_cubic_centimeter: f32 }` (multi_feature)
+//   - `KilogramsPerCubicMeter { kilograms_per_cubic_meter: f32 }` (dormant)
+//
+// Conversion: 1 g/cm³ = 1000 kg/m³.
+
+/// A density value with its original unit preserved.
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub enum DensityUnit {
+    GramsPerCm3(f32),
+    /// `KilogramsPerCubicMeter` is in the dormant feature; reachable
+    /// only as `Other` until a regen-after-population promotes it.
+    Other {
+        type_name: String,
+        struct_index: u32,
+    },
+}
+
+impl DensityUnit {
+    /// Normalize to kg/m³. 1 g/cm³ = 1000 kg/m³. `Other` returns `None`.
+    pub fn to_kg_per_m3(&self) -> Option<f32> {
+        match self {
+            Self::GramsPerCm3(v) => Some(v * 1000.0),
+            Self::Other { .. } => None,
+        }
+    }
+}
+
+/// A resource's density, with the underlying unit preserved.
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct Density {
+    pub unit: Option<DensityUnit>,
+}
+
+// ── Volatility ──────────────────────────────────────────────────────────
+
+/// Tracks how quickly the resource decays. Carried by 1 / 206 resources
+/// in SC 4.8 (CIG hasn't populated this widely yet).
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct Volatility {
+    /// `name` field on the typed record — the property bucket label
+    /// (`"Default"` in the one sample we see).
+    pub name: String,
+    /// Volatility coefficient. SC 4.8 sample: 1.0.
+    pub volatility: f32,
+    /// Health decay per second. SC 4.8 sample: 0.0675.
+    pub health_decay_per_second: f32,
+}
+
+// ── Resource ────────────────────────────────────────────────────────────
+
+/// A single resource entry, projected from the typed `ResourceType` pool.
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Resource {
     /// The resource's GUID. Stable across patches.
     pub guid: Guid,
@@ -66,9 +162,17 @@ pub struct Resource {
     pub refined_version: Option<Guid>,
     /// True when this resource is subject to default-cargo-box validation.
     pub validate_default_cargo_box: bool,
+    /// Density — every SC 4.8 ResourceType carries one.
+    pub density: Option<Density>,
+    /// Decay/volatility, if defined. SC 4.8: 1 / 206 carry this.
+    pub volatility: Option<Volatility>,
     // `default_cargo_containers: Option<Handle<SResourceTypeDefaultCargoContainers>>`
     // on the raw record is an inline nested struct (Handle, not Guid). Not
-    // surfaced in the MVP — add when a consumer needs cargo-box defaults.
+    // surfaced — add when a consumer needs cargo-box defaults.
+    //
+    // `ResourceTypeCraftingData` (the inline per-resource quality wiring)
+    // is sc-crafting's domain; it reads `ResourceType.properties` directly
+    // and builds its own typed surface on top.
 }
 
 /// Flat lookup over every `ResourceType` record in the DCB. Build once,
@@ -85,15 +189,13 @@ impl Resources {
     }
 
     /// Build the catalog from a parsed [`RecordStore`] (typed
-    /// `ResourceType` pool). The build is cheap — ~30 records in SC 4.8.
+    /// `ResourceType` pool). Cheap — ~200 records in SC 4.8.
     pub fn build(store: &RecordStore) -> Self {
         let pools = &store.pools;
         let mut catalog = Self::new();
         for (&guid, &handle) in &store.records.multi_feature.resource_type {
-            let Some(rt) = handle.get(pools) else {
-                continue;
-            };
-            catalog.insert(resource_for(guid, rt));
+            let Some(rt) = handle.get(pools) else { continue };
+            catalog.insert(resource_for(guid, rt, pools));
         }
         catalog
     }
@@ -132,7 +234,7 @@ impl Resources {
 
 /// Project one typed `ResourceType` into a [`Resource`]. Shared by
 /// [`Resources::build`] and [`ResourcesBuilder`].
-fn resource_for(guid: Guid, rt: &ResourceType) -> Resource {
+fn resource_for(guid: Guid, rt: &ResourceType, pools: &DataPools) -> Resource {
     Resource {
         guid,
         name_key: rt.display_name.clone(),
@@ -142,7 +244,57 @@ fn resource_for(guid: Guid, rt: &ResourceType) -> Resource {
         rtt_thumbnail_entity_class: rt.rtt_thumbnail_entity_class,
         refined_version: rt.refined_version,
         validate_default_cargo_box: rt.validate_default_cargo_box,
+        density: extract_density(rt, pools),
+        volatility: extract_volatility(rt, pools),
     }
+}
+
+/// Resolve `ResourceType.density_type` → `ResourceTypeDensity` →
+/// `BaseDensityUnit*` into a [`Density`].
+fn extract_density(rt: &ResourceType, pools: &DataPools) -> Option<Density> {
+    use sc_extract::generated::{BaseDensityUnitPtr, ResourceTypeDensityTypePtr};
+    let dt = rt.density_type.as_ref()?;
+    let ResourceTypeDensityTypePtr::ResourceTypeDensity(h) = dt else {
+        // Base marker or Unknown — no usable unit data.
+        return Some(Density { unit: None });
+    };
+    let density_rec = h.get(pools)?;
+    let unit = density_rec.density_unit.as_ref().map(|u| match u {
+        BaseDensityUnitPtr::GramsPerCubicCentimeter(uh) => uh
+            .get(pools)
+            .map(|gpcc| DensityUnit::GramsPerCm3(gpcc.grams_per_cubic_centimeter))
+            .unwrap_or(DensityUnit::GramsPerCm3(0.0)),
+        BaseDensityUnitPtr::BaseDensityUnit(_) => DensityUnit::Other {
+            type_name: "BaseDensityUnit".into(),
+            struct_index: 0,
+        },
+        BaseDensityUnitPtr::Unknown {
+            struct_index, ..
+        } => DensityUnit::Other {
+            type_name: format!("struct#{struct_index}"),
+            struct_index: *struct_index,
+        },
+    });
+    Some(Density { unit })
+}
+
+/// Resolve `ResourceType.properties[ResourceTypeVolatility]` into a
+/// [`Volatility`]. Returns the first volatility property found (only one
+/// is populated in SC 4.8).
+fn extract_volatility(rt: &ResourceType, pools: &DataPools) -> Option<Volatility> {
+    use sc_extract::generated::ResourceTypePropertiesPtr as P;
+    for p in &rt.properties {
+        if let P::ResourceTypeVolatility(h) = p
+            && let Some(v) = h.get(pools)
+        {
+            return Some(Volatility {
+                name: v.name.clone(),
+                volatility: v.volatility,
+                health_decay_per_second: v.health_decay_per_second,
+            });
+        }
+    }
+    None
 }
 
 /// [`sc_extract::RecordVisitor`] that builds a [`Resources`] catalog
@@ -168,7 +320,7 @@ impl sc_extract::RecordVisitor for ResourcesBuilder {
         let Some(rt) = handle.get(&store.pools) else {
             return;
         };
-        self.inner.insert(resource_for(item.guid, rt));
+        self.inner.insert(resource_for(item.guid, rt, &store.pools));
     }
 
     fn finish(self) -> Resources {
@@ -194,6 +346,10 @@ mod tests {
             rtt_thumbnail_entity_class: None,
             refined_version: refined,
             validate_default_cargo_box: true,
+            density: Some(Density {
+                unit: Some(DensityUnit::GramsPerCm3(2.7)),
+            }),
+            volatility: None,
         }
     }
 
@@ -225,10 +381,37 @@ mod tests {
 
     #[test]
     fn refined_version_of_dangling_pointer_returns_none() {
-        // resource exists but its `refined_version` GUID isn't in the catalog
         let mut cat = Resources::new();
         cat.insert(make(g(1), "Orphan", Some(g(255))));
         assert!(cat.refined_version_of(&g(1)).is_none());
+    }
+
+    #[test]
+    fn cargo_quantity_to_scu_normalizes_units() {
+        assert_eq!(CargoQuantity::Standard(2.5).to_scu(), Some(2.5));
+        assert_eq!(CargoQuantity::Centi(150).to_scu(), Some(1.5));
+        assert_eq!(CargoQuantity::Micro(1_500_000).to_scu(), Some(1.5));
+        assert_eq!(
+            CargoQuantity::Other {
+                type_name: "X".into(),
+                struct_index: 0,
+            }
+            .to_scu(),
+            None
+        );
+    }
+
+    #[test]
+    fn density_unit_normalizes_to_kg_per_m3() {
+        assert_eq!(DensityUnit::GramsPerCm3(2.7).to_kg_per_m3(), Some(2700.0));
+        assert_eq!(
+            DensityUnit::Other {
+                type_name: "X".into(),
+                struct_index: 0,
+            }
+            .to_kg_per_m3(),
+            None
+        );
     }
 
     #[test]
@@ -237,6 +420,17 @@ mod tests {
         cat.insert(make(g(1), "Gold", None));
         let json = serde_json::to_string(&cat).unwrap();
         let decoded: Resources = serde_json::from_str(&json).unwrap();
-        assert_eq!(decoded.get(&g(1)).map(|r| r.name_key.as_ref()), Some("@resource_Gold"));
+        assert_eq!(
+            decoded.get(&g(1)).map(|r| r.name_key.as_ref()),
+            Some("@resource_Gold")
+        );
+        // density survives the round-trip
+        assert_eq!(
+            decoded
+                .get(&g(1))
+                .and_then(|r| r.density.as_ref())
+                .and_then(|d| d.unit.clone()),
+            Some(DensityUnit::GramsPerCm3(2.7))
+        );
     }
 }
