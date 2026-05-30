@@ -29,12 +29,15 @@
 
 use sc_extract::generated::{
     CraftingBlueprintRecord, CraftingBlueprintTier_BasePtr, CraftingBlueprint_Base_NonRefPtr,
-    CraftingCost_BasePtr, CraftingOptionalEffect_BasePtr, CraftingProcess_BasePtr,
+    CraftingCost_BasePtr, CraftingDisplayTransformation_BasePtr, CraftingGameplayPropertyDef,
+    CraftingGlobalParams, CraftingOptionalEffect_BasePtr, CraftingPropertyNameOverride,
+    CraftingPropertyNameOverrideCondition_BasePtr, CraftingProcess_BasePtr,
     CraftingRecipeCosts_BasePtr, CraftingRecipeResults_BasePtr, CraftingRecipe_BasePtr,
     CraftingResearch_BasePtr, CraftingResearchUnlock_BasePtr, CraftingResult_BasePtr, DataPools,
-    RecordIndex, RecordLookup, SBaseCargoUnitPtr, TimeValue_BasePtr,
+    DefaultBlueprintSelection_BasePtr, EItemSubType, EItemType, RecordIndex, RecordLookup,
+    SBaseCargoUnitPtr, TimeValue_BasePtr,
 };
-use sc_extract::{Datacore, Guid, LocaleKey, LocaleMap};
+use sc_extract::{Datacore, Guid, LocaleKey, LocaleMap, RecordPaths};
 use sc_items::Items;
 use sc_resources::CargoQuantity;
 use serde::{Deserialize, Serialize};
@@ -804,6 +807,389 @@ pub fn resolve_blueprint(
         };
     };
     BlueprintItem::from(&build_blueprint(record_guid, record, records, pools, items))
+}
+
+// ─────────────────────────────────────────────────────────────────────
+// Categories
+// ─────────────────────────────────────────────────────────────────────
+
+/// Blueprint categories. The DCB schema has `BlueprintCategoryRecord`
+/// as an *empty* marker record (verified via `category_probe.rs`:
+/// attribute_count = 0). The semantic identity is the record's NAME
+/// (`"BlueprintCategoryRecord.RefiningExample1"`, `…FPSWeapons`,
+/// `…Medical`, `…VehicleWeaponsS1-6`, etc.) plus its GUID, both of
+/// which we get from [`RecordPaths`].
+///
+/// Singleton `BlueprintCategoryDatabaseRecord` carries a
+/// `Vec<Reference>` to every category — captured as
+/// [`Categories::database_guid`].
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct Categories {
+    by_guid: HashMap<Guid, Category>,
+    /// The one `BlueprintCategoryDatabaseRecord` GUID, if present.
+    pub database_guid: Option<Guid>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct Category {
+    pub guid: Guid,
+    /// svarog record name — e.g. `"BlueprintCategoryRecord.FPSWeapons"`.
+    pub name: String,
+    /// Full DCB file path. Mostly informational
+    /// (`libs/foundry/records/crafting/blueprintcategories/blueprintcategorydatabase.xml`
+    /// for every entry today — all 20 categories + the database live in
+    /// the same file).
+    pub path: String,
+}
+
+impl Categories {
+    /// Build from a [`RecordPaths`] index (the marker records carry no
+    /// typed fields — RecordPaths gives us everything we need).
+    pub fn build(paths: &RecordPaths) -> Self {
+        let mut cats = Self::default();
+        // Categories live under blueprintcategories/.
+        let prefix = "libs/foundry/records/crafting/blueprintcategories";
+        for guid in paths.under(prefix) {
+            let Some(rp) = paths.get(guid) else { continue };
+            let type_name = paths.type_name(rp.struct_index).unwrap_or("");
+            match type_name {
+                "BlueprintCategoryRecord" => {
+                    cats.by_guid.insert(
+                        *guid,
+                        Category {
+                            guid: *guid,
+                            name: rp.name.clone(),
+                            path: rp.path.clone(),
+                        },
+                    );
+                }
+                "BlueprintCategoryDatabaseRecord" => {
+                    cats.database_guid = Some(*guid);
+                }
+                _ => {}
+            }
+        }
+        cats
+    }
+
+    pub fn get(&self, guid: &Guid) -> Option<&Category> {
+        self.by_guid.get(guid)
+    }
+
+    pub fn iter(&self) -> impl Iterator<Item = &Category> + '_ {
+        self.by_guid.values()
+    }
+
+    pub fn len(&self) -> usize {
+        self.by_guid.len()
+    }
+
+    pub fn is_empty(&self) -> bool {
+        self.by_guid.is_empty()
+    }
+}
+
+// ─────────────────────────────────────────────────────────────────────
+// GlobalParams
+// ─────────────────────────────────────────────────────────────────────
+
+/// The `CraftingGlobalParams` singleton — knobs that apply to the
+/// whole crafting subsystem regardless of per-blueprint settings.
+///
+/// SC 4.8 sample: `refining_multiplier=2.0`,
+/// `default_composition_quality=500`, 6 blacklisted resources,
+/// 2 blacklisted entity classes, 9 default-unlocked blueprints
+/// (incl. the P4-AR — see [`GlobalParams::default_blueprint_whitelist`]).
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct GlobalParams {
+    /// Scales the quality contribution of refining steps (×2 in SC 4.8).
+    pub refining_quality_unit_multiplier: f32,
+    /// Default quality value used when a recipe doesn't specify one
+    /// (500 in SC 4.8).
+    pub default_composition_quality: i32,
+    /// Resources that **cannot be dismantled** (→ `ResourceType` GUIDs).
+    pub dismantle_blacklist_resources: Vec<Guid>,
+    /// Entity classes that **cannot be dismantled**
+    /// (→ `EntityClassDefinition` GUIDs).
+    pub dismantle_blacklist_entity_classes: Vec<Guid>,
+    /// Blueprints unlocked by default at character start.
+    /// Flattened from `DefaultBlueprintSelection_Whitelist.blueprint_records`.
+    /// SC 4.8: 9 entries (the basic dismantle, P4-AR, light combat
+    /// armor parts, etc.).
+    pub default_blueprint_whitelist: Vec<Guid>,
+    /// True when `default_blueprint_selection` is present but its
+    /// concrete variant isn't `Whitelist` (a non-Whitelist selection
+    /// strategy CIG hasn't shipped yet).
+    pub default_selection_is_non_whitelist: bool,
+}
+
+impl GlobalParams {
+    /// Build the singleton from a parsed [`Datacore`]. Returns `None` if
+    /// no `CraftingGlobalParams` record is present (shouldn't happen in
+    /// production builds).
+    pub fn build(datacore: &Datacore) -> Option<Self> {
+        let pools = &datacore.records().pools;
+        let gp = pools.crafting.crafting_global_params.iter().flatten().next()?;
+        Some(Self::from_record(gp, pools))
+    }
+
+    fn from_record(gp: &CraftingGlobalParams, pools: &DataPools) -> Self {
+        let mut params = Self {
+            refining_quality_unit_multiplier: gp.refining_quality_unit_multiplier,
+            default_composition_quality: gp.default_composition_quality,
+            dismantle_blacklist_resources: gp.dismantle_blacklist_resources.clone(),
+            dismantle_blacklist_entity_classes: gp.dismantle_blacklist_entity_classes.clone(),
+            default_blueprint_whitelist: Vec::new(),
+            default_selection_is_non_whitelist: false,
+        };
+        match &gp.default_blueprint_selection {
+            None => {}
+            Some(DefaultBlueprintSelection_BasePtr::DefaultBlueprintSelection_Whitelist(h)) => {
+                if let Some(wl) = h.get(pools) {
+                    params.default_blueprint_whitelist = wl.blueprint_records.clone();
+                }
+            }
+            Some(_) => {
+                params.default_selection_is_non_whitelist = true;
+            }
+        }
+        params
+    }
+}
+
+// ─────────────────────────────────────────────────────────────────────
+// GameplayProperties (the menu of properties crafting effects modify)
+// ─────────────────────────────────────────────────────────────────────
+
+/// All `CraftingGameplayPropertyDef` records — the menu of gameplay
+/// attributes that crafting effects can modify (damage, range, weight,
+/// …). SC 4.8: 29 records; 8 carry a `DisplayTransformation`, 1 carries
+/// a non-empty `name_overrides` list.
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct GameplayProperties {
+    by_guid: HashMap<Guid, GameplayProperty>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct GameplayProperty {
+    pub guid: Guid,
+    /// `propertyName` — typically `"@StatName_..."`. Resolve via [`LocaleMap`].
+    pub property_name_key: LocaleKey,
+    /// `unitFormat` — typically `"@LOC_..."` or `"@LOC_EMPTY"`.
+    pub unit_format_key: LocaleKey,
+    /// Optional display transformation applied to the property's raw
+    /// value (e.g. scale by 100, convert factor to percent change).
+    pub display_transformation: Option<DisplayTransformation>,
+    /// Conditional name overrides — when the crafted entity matches a
+    /// condition, the property's name swaps to a different locale key.
+    /// SC 4.8: 1 entry total across all 29 properties.
+    pub name_overrides: Vec<PropertyNameOverride>,
+}
+
+/// Polymorphic display transformation applied to a property's raw
+/// value before showing it. 5 typed variants reachable under the
+/// `crafting` feature; `Other` catches anything else.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub enum DisplayTransformation {
+    /// Multiply by a scalar.
+    Scale { factor: f32 },
+    /// Convert a factor (e.g. 1.2 means +20%) into a percent change.
+    ConvertFactorToPercentChange,
+    /// Same but negated (multiplier 0.8 ⇒ "20% less").
+    ConvertFactorToNegatedPercentChange,
+    /// Express the value as a factor of a base.
+    ConvertValueToFactorOfBaseValue,
+    /// Chain multiple transformations in order.
+    Sequence(Vec<DisplayTransformation>),
+    /// Dormant variant or future type the generator hasn't promoted.
+    Other {
+        type_name: String,
+        struct_index: u32,
+    },
+}
+
+/// A conditional override on a property's display name. Today only
+/// `OverrideCondition::ItemType` is populated.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct PropertyNameOverride {
+    pub property_name_key: LocaleKey,
+    pub condition: Option<OverrideCondition>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub enum OverrideCondition {
+    /// Override applies when the crafted entity matches any of these
+    /// item types / sub-types.
+    ItemType {
+        #[serde(with = "enum_serde::item_type_vec")]
+        match_item_types: Vec<EItemType>,
+        #[serde(with = "enum_serde::item_sub_type_vec")]
+        match_sub_types: Vec<EItemSubType>,
+    },
+    Other {
+        type_name: String,
+        struct_index: u32,
+    },
+}
+
+impl GameplayProperties {
+    pub fn build(datacore: &Datacore) -> Self {
+        let records = &datacore.records().records;
+        let pools = &datacore.records().pools;
+        let mut props = Self::default();
+        for (&guid, &handle) in &records.multi_feature.crafting_gameplay_property_def {
+            let Some(rec) = handle.get(pools) else { continue };
+            props
+                .by_guid
+                .insert(guid, build_gameplay_property(guid, rec, pools));
+        }
+        props
+    }
+
+    pub fn get(&self, guid: &Guid) -> Option<&GameplayProperty> {
+        self.by_guid.get(guid)
+    }
+
+    pub fn iter(&self) -> impl Iterator<Item = &GameplayProperty> + '_ {
+        self.by_guid.values()
+    }
+
+    pub fn len(&self) -> usize {
+        self.by_guid.len()
+    }
+
+    pub fn is_empty(&self) -> bool {
+        self.by_guid.is_empty()
+    }
+}
+
+fn build_gameplay_property(
+    guid: Guid,
+    rec: &CraftingGameplayPropertyDef,
+    pools: &DataPools,
+) -> GameplayProperty {
+    GameplayProperty {
+        guid,
+        property_name_key: rec.property_name.clone(),
+        unit_format_key: rec.unit_format.clone(),
+        display_transformation: rec
+            .display_transformation
+            .as_ref()
+            .map(|t| build_display_transformation(t, pools)),
+        name_overrides: rec
+            .name_overrides
+            .iter()
+            .filter_map(|h| h.get(pools))
+            .map(|o| build_property_name_override(o, pools))
+            .collect(),
+    }
+}
+
+fn build_display_transformation(
+    ptr: &CraftingDisplayTransformation_BasePtr,
+    pools: &DataPools,
+) -> DisplayTransformation {
+    use CraftingDisplayTransformation_BasePtr as D;
+    match ptr {
+        D::CraftingDisplayTransformation_Scale(h) => match h.get(pools) {
+            Some(s) => DisplayTransformation::Scale { factor: s.scale },
+            None => DisplayTransformation::Scale { factor: 0.0 },
+        },
+        D::CraftingDisplayTransformation_ConvertFactorToPercentChange(_) => {
+            DisplayTransformation::ConvertFactorToPercentChange
+        }
+        D::CraftingDisplayTransformation_ConvertFactorToNegatedPercentChange(_) => {
+            DisplayTransformation::ConvertFactorToNegatedPercentChange
+        }
+        D::CraftingDisplayTransformation_ConvertValueToFactorOfBaseValue(_) => {
+            DisplayTransformation::ConvertValueToFactorOfBaseValue
+        }
+        D::CraftingDisplayTransformation_Sequence(h) => match h.get(pools) {
+            Some(seq) => DisplayTransformation::Sequence(
+                seq.transformations
+                    .iter()
+                    .map(|t| build_display_transformation(t, pools))
+                    .collect(),
+            ),
+            None => DisplayTransformation::Sequence(Vec::new()),
+        },
+        D::CraftingDisplayTransformation_Base(_) => DisplayTransformation::Other {
+            type_name: "CraftingDisplayTransformation_Base".into(),
+            struct_index: 0,
+        },
+        D::Unknown { struct_index, .. } => DisplayTransformation::Other {
+            type_name: format!("struct#{struct_index}"),
+            struct_index: *struct_index,
+        },
+    }
+}
+
+fn build_property_name_override(
+    o: &CraftingPropertyNameOverride,
+    pools: &DataPools,
+) -> PropertyNameOverride {
+    use CraftingPropertyNameOverrideCondition_BasePtr as C;
+    let condition = o.condition.as_ref().map(|c| match c {
+        C::CraftingPropertyNameOverrideCondition_ItemType(h) => match h.get(pools) {
+            Some(it) => OverrideCondition::ItemType {
+                match_item_types: it.match_item_types.clone(),
+                match_sub_types: it.match_sub_types.clone(),
+            },
+            None => OverrideCondition::Other {
+                type_name: "ItemType(empty)".into(),
+                struct_index: 0,
+            },
+        },
+        C::CraftingPropertyNameOverrideCondition_Base(_) => OverrideCondition::Other {
+            type_name: "CraftingPropertyNameOverrideCondition_Base".into(),
+            struct_index: 0,
+        },
+        C::Unknown { struct_index, .. } => OverrideCondition::Other {
+            type_name: format!("struct#{struct_index}"),
+            struct_index: *struct_index,
+        },
+    });
+    PropertyNameOverride {
+        property_name_key: o.property_name.clone(),
+        condition,
+    }
+}
+
+/// serde adapters for generated enums. Same pattern as sc-items: the
+/// generated crate is serde-free (compile-time monomorphization cliff)
+/// so we round-trip each variant through its DCB string via
+/// `as_dcb_str` / `from_dcb_str`.
+mod enum_serde {
+    use sc_extract::generated::{EItemSubType, EItemType};
+    use serde::{Deserialize, Deserializer, Serialize, Serializer};
+
+    pub mod item_type_vec {
+        use super::*;
+        pub fn serialize<S: Serializer>(v: &[EItemType], s: S) -> Result<S::Ok, S::Error> {
+            let strs: Vec<&str> = v.iter().map(EItemType::as_dcb_str).collect();
+            strs.serialize(s)
+        }
+        pub fn deserialize<'de, D: Deserializer<'de>>(d: D) -> Result<Vec<EItemType>, D::Error> {
+            Ok(Vec::<String>::deserialize(d)?
+                .into_iter()
+                .map(|s| EItemType::from_dcb_str(&s))
+                .collect())
+        }
+    }
+
+    pub mod item_sub_type_vec {
+        use super::*;
+        pub fn serialize<S: Serializer>(v: &[EItemSubType], s: S) -> Result<S::Ok, S::Error> {
+            let strs: Vec<&str> = v.iter().map(EItemSubType::as_dcb_str).collect();
+            strs.serialize(s)
+        }
+        pub fn deserialize<'de, D: Deserializer<'de>>(d: D) -> Result<Vec<EItemSubType>, D::Error> {
+            Ok(Vec::<String>::deserialize(d)?
+                .into_iter()
+                .map(|s| EItemSubType::from_dcb_str(&s))
+                .collect())
+        }
+    }
 }
 
 #[cfg(test)]
