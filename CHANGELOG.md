@@ -14,6 +14,107 @@ separate commits and advance independently.
 
 ## [Unreleased]
 
+### Added
+
+- **New crate `sc-resources`** — typed catalog over the DCB's
+  `ResourceType` records (`libs/foundry/records/resourcetypedatabase/`).
+  Surfaces `Resources::build(&RecordStore)` + GUID lookup +
+  `refined_version_of()` graph walk + `RecordVisitor` impl for bundled
+  walks. `Resource` carries display name + description, thumbnail
+  paths, RTT entity ref, `refined_version` (the raw→refined edge),
+  `validate_default_cargo_box`, `density: Option<Density>`, and
+  `volatility: Option<Volatility>`. SC 4.8: 206 records, 30 refining
+  edges, 205 resolve names, 206/206 carry density with physically
+  grounded values (Tungsten Ore = 19,300 kg/m³ ≈ real Tungsten).
+  Plus the shared `CargoQuantity` primitive (Standard/Centi/Micro
+  variants with `.to_scu()` normalization) and `DensityUnit`
+  (GramsPerCm3 with `.to_kg_per_m3()`).
+
+- **`sc-crafting` future-proofing pass — full recipe surface.** Owns
+  the whole `libs/foundry/records/crafting/` subsystem (minus the
+  legacy salvage/repair recipes). 8 typed surfaces, every polymorphic
+  enum carries an `Other { type_name, struct_index }` fallback for
+  dormant variants so future regen-after-population promotes them
+  cleanly. Live-validated end-to-end against SC 4.8 LIVE.
+  - **`Blueprints`** index + `Blueprint { category, process, tiers }`
+    with by_record_guid / by_category / by_crafted_entity reverse
+    lookups. `Process { Creation { entity_class } | Other }`. Tier
+    carries `recipe: Option<Recipe>` + `research: Option<Research>`.
+    Sample: P4-AR Rifle resolves to 150s craft time + Aluminum 0.04
+    SCU + Hephaestanite 0.02 SCU + Iron 0.02 SCU.
+  - **`Duration { days, hours, minutes, seconds }`** projected from
+    `TimeValue_Partitioned` (the only populated `TimeValue_*` in 4.8).
+  - **`Recipe { craft_time, costs, results, is_shared }`** with
+    `RecipeCosts { mandatory, optional }` and the recursive
+    `Cost { Resource(ResourceCost) | Item(ItemCost) | Select { count,
+    options } | Other }` tree. SC 4.8 universally shapes mandatory
+    as `Select(Select(Resource))`.
+  - **`ResourceCost { resource: Guid, quantity: Option<CargoQuantity>,
+    min_quality }`** and `ItemCost { entity_class, quantity, min_quality }`.
+  - **`RecipeResult { Item | Resource | Other }`** — Vec preserved
+    even though SC 4.8 results are universally empty (Creation's
+    `entity_class` IS the output).
+  - **`Research { unlock, costs }`** + `ResearchUnlock { Default |
+    Other }`. Present-but-empty on 57% of tiers.
+  - **`Categories`** — 20 marker-record categories (FPSWeapons /
+    FPSArmours / VehicleWeaponsS1-6 / Medical / Refining/Dismantle
+    Examples / …) + database_guid, built from `RecordPaths`.
+  - **`GlobalParams`** singleton — refining_quality_unit_multiplier,
+    default_composition_quality, dismantle blacklists, and
+    `default_blueprint_whitelist` (the 9 default-unlocked blueprints
+    at character start: basic dismantle, P4-AR, behr_pistol, light
+    combat armor parts, ammo magazines).
+  - **`GameplayProperties`** (29 records) — `GameplayProperty {
+    property_name_key, unit_format_key, display_transformation,
+    name_overrides }` with `DisplayTransformation { Scale { factor }
+    | ConvertFactorToPercentChange | ConvertFactorToNegatedPercentChange
+    | ConvertValueToFactorOfBaseValue | Sequence(Vec<Self>) | Other }`
+    (recursive). `PropertyNameOverride` with `OverrideCondition::ItemType
+    { match_item_types: Vec<EItemType>, match_sub_types: Vec<EItemSubType> }`
+    via the enum_serde DCB-string adapter pattern.
+  - **`Quality`** — standalone records under `qualitydistribution/`,
+    `qualitylocationoverride/`, `qualityquantization/`. 10 / 12 / 38
+    in SC 4.8. `QualityDistributionShape::Normal { min, max, mean,
+    stddev }`, `LocationOverrideEntry { location, distribution:
+    Option<DistributionRef> }` where `DistributionRef { Inline |
+    Record(Guid) | Other }` captures both inline and shared-by-RecordRef
+    forms, and `QuantizationBand { start, end, mapped_value }` maps
+    quality ranges to discrete outputs. Per-resource quality data
+    (also reachable via `ResourceType.properties` → `ResourceTypeCraftingData`)
+    has been confirmed independent of the standalone records (134/134
+    location-override entries inline, 0 RecordRef cross-links).
+  - **`cargo_quantity_from_ptr`** projection helper. Lives here, not
+    sc-resources, because the Centi/Micro pool types are gated under
+    the `crafting` feature.
+  - **`BlueprintsBuilder`** implementing `RecordVisitor` for bundled
+    walks (interest = `["CraftingBlueprintRecord"]`).
+  - Pre-v0.9.0 `BlueprintItem` + `all_blueprints` +
+    `resolve_blueprint` retained as compatibility shims.
+
+- **Umbrella `sc-holotable` integration.** New `resources` feature,
+  `resources` module re-exporting `sc_resources::*`. `crafting` now
+  depends on `resources` transitively. Prelude grows the full
+  sc-resources + sc-crafting type surface.
+
+### Changed
+
+- **`Foundations` grows a `resources: Resources` field.**
+  `build_foundations` is now a 5-builder bundled `all_records` pass
+  (was 4). `RecordPaths` still declares `AllRecords` so the walk shape
+  doesn't change — Resources rides along for free.
+
+- **`HolotableSnapshot` grows `resources: Option<Resources>`** and
+  bumps `HOLOTABLE_COOK_VERSION` from 1 to 2. Old snapshots fall back
+  per the `ProcessedSnapshot` version-guard machinery
+  (rebuild from raw / live).
+
+### Fixed
+
+- `holotable_snapshot_round_trip` test built `HolotableSnapshot`
+  without its `items` field — was masked because workspace
+  `cargo check --all-targets` runs with the umbrella's empty default
+  features, so the test target never compiled.
+
 ## [v0.8.0] - 2026-05-29
 
 ### Changed (breaking)
