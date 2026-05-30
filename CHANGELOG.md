@@ -14,6 +14,8 @@ separate commits and advance independently.
 
 ## [Unreleased]
 
+## [v0.9.0] - 2026-05-31
+
 ### Added
 
 - **New crate `sc-resources`** — typed catalog over the DCB's
