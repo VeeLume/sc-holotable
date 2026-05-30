@@ -841,6 +841,7 @@ dependencies = [
  "sc-discovery",
  "sc-extract",
  "sc-items",
+ "sc-resources",
  "tracing",
 ]
 

@@ -320,34 +320,102 @@ impl Quality {
 }
 ```
 
-## Open questions to resolve in implementation
+## Open questions — resolved 2026-05-31
 
-Quick digs before locking each type:
+Run `cargo run -p sc-crafting --release --example open_questions` to
+reproduce. All shapes verified against SC 4.8 LIVE.
 
-- **`TimeValue` and `SBaseCargoUnit` shapes** — polymorphic ptrs. Probe
-  which variants are populated; decide whether to model a typed
-  `Duration` / `CargoQuantity` or pass the discriminator through.
-- **`ResourceTypeProperties`** — `Resource.properties: Vec<ResourceProperty>`
-  shape; what variants exist?
-- **`DensityType`** — `ResourceTypeDensityType` core + variants in
-  multi_feature/dormant; minimal model.
-- **`DisplayTransformation` enum values** — the gameplay-property
-  `displayTransformation` field returned discriminant 17 in a sample;
-  enumerate.
-- **`DefaultBlueprintSelection_Whitelist`** — what does the whitelist
-  list? GUIDs of unlocked blueprints? Verify shape.
-- **`NameOverride`** class array on `CraftingGameplayPropertyDef` —
-  empty in the sample; probe a non-empty case if one exists.
-- **`CraftingQualityDistributionRecord` / `_LocationOverrideRecord` /
-  `_QuantizationRecord`** — three separate digs to see their fields and
-  any cross-references (probably location overrides reference
-  distributions; quantization records likely reference a `ResourceType`).
-- **Confirm sc-resources visible record count** — census saw 26 unique
-  resources *used by crafting*; the pool itself may hold more (e.g. raw
-  ores not yet referenced by any blueprint).
+### Q1. TimeValue — model `TimeValue_Partitioned` only
 
-Each is a small RecordPaths-driven dig (5-15 min). Do all upfront before
-writing the typed builders so the types match the data.
+- 1561 / 1561 craft_times present, ALL populate `TimeValue_Partitioned`
+  (multi_feature, gated under `crafting`).
+- 0 `TimeValue_LongSeconds` records (dormant, no occurrences).
+- `TimeValue_Base` is empty marker.
+- Sample: `{ days=0, hours=0, minutes=0, seconds=15 }`.
+- **Decision:** model as `pub struct Duration { days: i32, hours: i32, minutes: i32, seconds: f32 }`. No polymorphic enum needed today; if `LongSeconds` ever populates, promote to `enum Duration { Partitioned(...), LongSeconds(f64) }` (a breaking change but trivial).
+
+### Q2. SBaseCargoUnit — small unit-of-measure hierarchy
+
+- `SBaseCargoUnit` itself is empty (polymorphic base, 0 records).
+- Sub-types all in `multi_feature`, all reachable under `crafting`:
+  - `SStandardCargoUnit { standard_cargo_units: f32 }` (1 SCU)
+  - `SCentiCargoUnit` (1/100 SCU — same single-field shape)
+  - `SMicroCargoUnit` (1/1_000_000 SCU — same)
+- **Decision:** model `pub enum CargoQuantity { Standard(f32), Centi(f32), Micro(f32) }` with `.to_scu()` helper that normalizes to SCU units (×1, ×0.01, ×0.000001). Used by both `ResourceCost.quantity` and `RecipeResult::Resource.quantity`.
+
+### Q3. ResourceTypeProperties — model `CraftingData` + `Volatility`
+
+- 44 total property ptrs across 206 ResourceTypes.
+- 43 = `ResourceTypeCraftingData`; 1 = `ResourceTypeVolatility`; 0 bare-base.
+- `ResourceTypeCraftingData { name: String, quality_distribution, quality_location_override, quality_quantization }` — **this is where per-resource quality data lives**.
+- `ResourceTypeVolatility { name: String, volatility: f32, health_decay_per_second: f32 }` — degrades over time.
+- **Decision:** Resource gains `crafting_data: Option<ResourceCraftingData>` and `volatility: Option<ResourceVolatility>` fields. Move sc-resources beyond MVP to surface these. `ResourceCraftingData` is **the natural home for `Quality { distribution, location_override, quantization }`** per-resource — no separate standalone Quality catalog needed for the per-resource path.
+
+### Q4. ResourceTypeDensityType — surface `ResourceTypeDensity`
+
+- 206/206 resources have a `density_type`, all = `ResourceTypeDensity` (concrete leaf).
+- `ResourceTypeDensity { density_unit: Option<BaseDensityUnitPtr> }` — the density value lives one ptr deeper in a `BaseDensityUnit*` polymorphic. Mini follow-up dig owed (small, single-field unit types likely).
+- **Decision:** add `density: Option<ResourceDensity>` to Resource. The inner unit-wrapping pattern matches `CargoQuantity` — defer until the BaseDensityUnit dig pins the shape.
+
+### Q5. DefaultBlueprintSelection_Whitelist — 9 default-unlocked blueprints
+
+- `Whitelist.blueprint_records.len() = 9`.
+- Sample entries (resolved via `RecordPaths`): the basic dismantle blueprint, `behr_pistol_ballistic_01`, **`behr_rifle_ballistic_01` (the P4-AR!)**, basic light combat armor parts.
+- **Decision:** `GlobalParams.default_blueprint_selection: Vec<Guid>` (flat list). Confirms the Whitelist is "what you have unlocked at character start"; the rest need in-game research. Drop the polymorphic wrapper since only Whitelist is populated; `Other { type_name }` fallback handles future shifts.
+
+### Q6. CraftingDisplayTransformation — 5 typed variants, all populated
+
+- 8 / 29 GameplayPropertyDefs have a transformation; 21 are unsetup.
+- Variants seen: `Scale` ×4, `ConvertFactorToNegatedPercentChange` ×2, `ConvertFactorToPercentChange` ×1, `Sequence` ×1. `ConvertValueToFactorOfBaseValue` not seen but in schema.
+- Fields:
+  - `Scale { scale: f32 }`
+  - `ConvertFactorToPercentChange {}`, `ConvertFactorToNegatedPercentChange {}`, `ConvertValueToFactorOfBaseValue {}` — empty marker leafs
+  - `Sequence { transformations: Vec<CraftingDisplayTransformation_BasePtr> }` (chains the others)
+- **Decision:**
+  ```rust
+  pub enum DisplayTransformation {
+      Scale { factor: f32 },
+      ConvertFactorToPercentChange,
+      ConvertFactorToNegatedPercentChange,
+      ConvertValueToFactorOfBaseValue,
+      Sequence(Vec<DisplayTransformation>),
+      Other { type_name: String, struct_index: u32 },
+  }
+  ```
+
+### Q7. CraftingPropertyNameOverride — model trivially
+
+- Schema: 2 fields (`propertyName`, `condition`).
+- 1 GPP in the whole DCB has a name_override; total 1 entry.
+- **Decision:** `pub struct PropertyNameOverride { property_name: LocaleKey, condition: ??? }` (condition shape pending — second mini-dig owed; likely a polymorphic ptr).
+
+### Q8. Quality concrete leaves
+
+- **Distribution** — 10 standalone records, ALL `Normal { min, max, mean, stddev }` (e.g. `Normal { min=501, max=1000, mean=500, stddev=143 }`). 0 `Uniform` records anywhere. **Model just `Normal` for now**; promote to enum if `Uniform` ever populates.
+- **LocationOverride** — 12 standalone records, all `LocationOverride { location_override_list: Vec<Entry> }`. **134 total entries** across the 12 records (~11 per record). Each entry: `{ location: Guid, quality_distribution: Option<Distribution> }`. Model as `Vec<LocationEntry>`.
+- **Quantization** — 38 standalone records, all `Quantization { bands: Vec<Band> }`. **304 total bands** (~8 per record). `Band { start: i32, end: i32, mapped_value: i32 }` — maps a quality range to a discrete output value (tier).
+
+### Q9. Per-resource quality wiring — confirmed
+
+- 43 / 206 resources have `ResourceTypeCraftingData` in their `properties` vec (the 163 without are non-craftable: drugs, ship-ammo SKUs, commodities, etc.).
+- Of those 43: all 43 have `quality_distribution`, 35 have `quality_location_override`, 38 have `quality_quantization`. Numbers don't match the **standalone** record counts (10 / 12 / 38), so the per-resource ptrs are inline `_BasePtr` to *different* objects than the standalone records — OR many resources reference the same record via the `_RecordRef` variant. **Worth a quick follow-up dig** (count how many of the per-resource ptrs land on the same target), but design-wise the safe path is: model `Quality` as nested-inside-Resource via the CraftingData. The standalone records can be exposed separately (`Distributions`/`LocationOverrides`/`Quantizations`) if a consumer wants to enumerate them without per-resource traversal.
+
+### Follow-up mini-digs
+
+- **`BaseDensityUnit*`** (Q4 follow-up) — **resolved.** Empty `BaseDensityUnit` marker base + `GramsPerCubicCentimeter { grams_per_cubic_centimeter: f32 }` (multi_feature) + `KilogramsPerCubicMeter` (dormant). Same unit-of-measure pattern as `CargoQuantity`; model as `pub enum DensityUnit { GramsPerCm3(f32), KgPerM3(f32) }` with `.to_kg_per_m3()` helper.
+- **`PropertyNameOverride.condition`** (Q7 follow-up) — **resolved.** Polymorphic `CraftingPropertyNameOverrideCondition_*` with one concrete: `_ItemType { match_item_types: Vec<EItemType>, match_sub_types: Vec<EItemSubType> }`. Model as `pub enum OverrideCondition { ItemType { types: Vec<EItemType>, sub_types: Vec<EItemSubType> }, Other { type_name } }`. The condition says "this name override applies when the crafted entity matches these item types/subtypes".
+- **Per-resource vs standalone Quality record overlap** (Q9 follow-up) — **deferred, not blocking.** Quick `count of distinct GUIDs reached via per-resource CraftingData vs the standalone pool counts`. Determines whether the standalone Quality* records are pure shared definitions (RecordRef'd into CraftingData) or independent. Either way the per-resource model stays — this just decides whether sc-crafting also exposes the standalone catalogs. Recommend exposing them (cheap, gives consumers the option), confirm shape during implementation.
+
+### Concrete impact on sc-resources MVP
+
+The probe shows sc-resources should grow beyond the v0.9.0-step-2 MVP
+before sc-crafting builds on it:
+- Add `crafting_data: Option<ResourceCraftingData>` (quality wiring).
+- Add `volatility: Option<ResourceVolatility>`.
+- Add `density: Option<ResourceDensity>` (after the `BaseDensityUnit` mini-dig).
+
+Cleanest sequencing: do the BaseDensityUnit dig first, then one combined
+sc-resources upgrade commit, then start sc-crafting.
 
 ## Implementation phasing (committable)
 
