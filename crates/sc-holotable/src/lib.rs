@@ -54,6 +54,14 @@ pub mod manufacturers {
     pub use sc_manufacturers::*;
 }
 
+#[cfg(feature = "resources")]
+pub mod resources {
+    //! Resource catalog ([`sc_resources`]) — `ResourceType` records,
+    //! refining graph, density, volatility, plus the shared
+    //! `CargoQuantity` primitive used by sc-crafting.
+    pub use sc_resources::*;
+}
+
 #[cfg(feature = "weapons")]
 pub mod weapons {
     //! Ship / FPS weapons + missiles ([`sc_weapons`]).
@@ -90,10 +98,19 @@ pub mod prelude {
     pub use sc_manufacturers::{Manufacturer, Manufacturers};
     #[cfg(feature = "missions")]
     pub use sc_missions::Missions;
+    #[cfg(feature = "resources")]
+    pub use sc_resources::{CargoQuantity, Density, DensityUnit, Resource, Resources, Volatility};
     #[cfg(feature = "tags")]
     pub use sc_tags::Tags;
     #[cfg(feature = "weapons")]
     pub use sc_weapons::{FpsWeapon, Missile, ShipWeapon, WeaponPools, Weapons};
+    #[cfg(feature = "crafting")]
+    pub use sc_crafting::{
+        Blueprint, Blueprints, Categories, Category, Cost, Duration, GameplayProperties,
+        GameplayProperty, GlobalParams, Process, Quality, QualityDistribution,
+        QualityDistributionShape, QualityLocationOverride, QualityQuantization, Recipe,
+        RecipeCosts, RecipeResult, Research, ResourceCost, Tier,
+    };
 
     #[cfg(feature = "foundations")]
     pub use crate::{Foundations, HolotableSnapshot, build_foundations};

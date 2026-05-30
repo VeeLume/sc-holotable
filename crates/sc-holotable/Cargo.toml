@@ -20,6 +20,7 @@ sc-extract = { workspace = true, optional = true }
 sc-items = { workspace = true, optional = true }
 sc-tags = { workspace = true, optional = true }
 sc-manufacturers = { workspace = true, optional = true }
+sc-resources = { workspace = true, optional = true }
 sc-weapons = { workspace = true, optional = true }
 sc-crafting = { workspace = true, optional = true }
 sc-missions = { workspace = true, optional = true }
@@ -34,20 +35,21 @@ extract = ["dep:sc-extract"]
 items = ["dep:sc-items", "extract"]
 tags = ["dep:sc-tags", "extract"]
 manufacturers = ["dep:sc-manufacturers", "extract"]
+resources = ["dep:sc-resources", "extract"]
 # Leaf crates self-enable the sc-extract leaf features they need (sc-weapons →
 # entities-scitem-weapons/ammoparams, sc-crafting → crafting), so the umbrella
 # only needs to pull the crate itself.
 weapons = ["dep:sc-weapons", "extract", "items"]
-crafting = ["dep:sc-crafting", "extract", "items"]
+crafting = ["dep:sc-crafting", "extract", "items", "resources"]
 missions = ["dep:sc-missions", "extract", "items", "tags"]
 
 # ── Cross-cutting ────────────────────────────────────────────────────────────
 # The coordination build-context + HolotableSnapshot need every foundational
 # index, so they're gated on having them all.
-foundations = ["extract", "items", "tags", "manufacturers"]
+foundations = ["extract", "items", "tags", "manufacturers", "resources"]
 
 # ── Aggregators ──────────────────────────────────────────────────────────────
-all-t1 = ["installs", "items", "tags", "manufacturers", "weapons", "crafting", "foundations"]
+all-t1 = ["installs", "items", "tags", "manufacturers", "resources", "weapons", "crafting", "foundations"]
 full = ["all-t1", "missions"]
 
 [dev-dependencies]

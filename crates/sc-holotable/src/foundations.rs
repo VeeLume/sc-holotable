@@ -12,42 +12,47 @@ use sc_extract::{
 };
 use sc_items::{Items, ItemsBuilder};
 use sc_manufacturers::{Manufacturers, ManufacturersBuilder};
+use sc_resources::{Resources, ResourcesBuilder};
 use sc_tags::{Tags, TagsBuilder};
 use serde::{Deserialize, Serialize};
 
-/// Every foundational cooked index, built together. The live, in-memory bundle
-/// (holds [`Items`], which is not yet serde-capable — see
-/// [`HolotableSnapshot`] for the persistable subset).
+/// Every foundational cooked index, built together. See
+/// [`HolotableSnapshot`] for the persistable form.
 pub struct Foundations {
     pub items: Items,
     pub tags: Tags,
     pub manufacturers: Manufacturers,
+    pub resources: Resources,
     pub paths: RecordPaths,
 }
 
 /// Build all foundational indices in a single bundled `all_records` pass.
 ///
 /// The `RecordPaths` member declares [`sc_extract::Interest::AllRecords`], so
-/// the walk is a full pass and the three type-readers ride along for free —
-/// strictly cheaper than four independent `X::build`s.
+/// the walk is a full pass and the four type-readers ride along for free —
+/// strictly cheaper than five independent `X::build`s.
 pub fn build_foundations(datacore: &Datacore) -> Foundations {
-    let (items, tags, manufacturers, paths) = BundledWalk::new(datacore).run((
+    let (items, tags, manufacturers, resources, paths) = BundledWalk::new(datacore).run((
         ItemsBuilder::default(),
         TagsBuilder::default(),
         ManufacturersBuilder::default(),
+        ResourcesBuilder::default(),
         RecordPathsBuilder::default(),
     ));
     Foundations {
         items,
         tags,
         manufacturers,
+        resources,
         paths,
     }
 }
 
 /// Cook-format version of [`HolotableSnapshot`]. Bump when any included
 /// index's serialized layout changes.
-pub const HOLOTABLE_COOK_VERSION: u32 = 1;
+///
+/// v2 (2026-05-31): added optional `resources: Resources` field.
+pub const HOLOTABLE_COOK_VERSION: u32 = 2;
 
 /// A batteries-included bundle of cooked indices, serializable for fast load.
 ///
@@ -60,6 +65,7 @@ pub struct HolotableSnapshot {
     pub items: Option<Items>,
     pub tags: Option<Tags>,
     pub manufacturers: Option<Manufacturers>,
+    pub resources: Option<Resources>,
     pub paths: Option<RecordPaths>,
 }
 
@@ -70,6 +76,7 @@ impl HolotableSnapshot {
             items: Some(f.items.clone()),
             tags: Some(f.tags.clone()),
             manufacturers: Some(f.manufacturers.clone()),
+            resources: Some(f.resources.clone()),
             paths: Some(f.paths.clone()),
         }
     }
@@ -107,7 +114,9 @@ mod tests {
         let snap = HolotableSnapshot {
             tags: Some(Tags::new()),
             manufacturers: Some(Manufacturers::new()),
+            resources: Some(Resources::new()),
             paths: Some(paths),
+            ..Default::default()
         };
 
         let dir = tempfile::tempdir().unwrap();
@@ -118,5 +127,6 @@ mod tests {
         assert_eq!(loaded.paths.expect("paths present").len(), 1);
         assert!(loaded.tags.is_some());
         assert!(loaded.manufacturers.is_some());
+        assert!(loaded.resources.is_some());
     }
 }
