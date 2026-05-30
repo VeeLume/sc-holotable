@@ -842,6 +842,7 @@ dependencies = [
  "sc-extract",
  "sc-items",
  "sc-resources",
+ "serde",
  "tracing",
 ]
 

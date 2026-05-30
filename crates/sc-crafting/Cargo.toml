@@ -8,10 +8,13 @@ rust-version.workspace = true
 # `crafting` decodes the BlueprintPoolRecord / CraftingBlueprintRecord /
 # CraftingProcess record types this crate walks. sc-items resolves the
 # crafted entity's display name (its feature flows in transitively).
+# sc-resources contributes CargoQuantity + Resource (for Cost_Resource
+# quantity projection + downstream resource lookup).
 sc-extract = { workspace = true, features = ["crafting"] }
 sc-items = { workspace = true }
+sc-resources = { workspace = true }
+serde = { workspace = true }
 tracing = { workspace = true }
 
 [dev-dependencies]
 sc-discovery = { workspace = true }
-sc-resources = { workspace = true }
