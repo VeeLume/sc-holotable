@@ -14,6 +14,32 @@ separate commits and advance independently.
 
 ## [Unreleased]
 
+### Added
+
+- **`sc-items`: `family` module + `ItemFamilies` index.** Groups
+  item entities into "models" so paint / skin / special-edition
+  variants collapse to one entry — built so catalog consumers
+  (hearth, future tools) don't each reinvent the bundling logic.
+  - Identity computed from a 3-tier priority chain: (1) ECD model
+    tag tree (whitelisted prefix like `Weapon / FPS / Pistol / `,
+    truncated to the model-identity depth so sub-variant markers
+    like `… / Atzkav / AtzkavDE` collapse to `… / Atzkav`); (2)
+    `SItemDefinition.tags` first specific token (catches armor sets
+    that ship only the generic `Armor / FPS / Set` marker); (3)
+    `None` (caller treats as singleton).
+  - `ItemFamilies::build(&Items, &Tags, &RecordStore)` —
+    `family_id_of(guid)` returns the model identifier, `members_of(id)`
+    returns every variant in the model, `iter()` walks all families.
+  - Reverse-engineered against SC 4.8 live DCB via cross-section
+    probes (FPS Pistols, Snipers, Stocked, Armor sets, Crossbows,
+    Helmets). Whitelist covers all FPS weapon classes (pistol, SMG,
+    shotgun, sniper, LMG, HMG, cannon, launcher, mining,
+    stocked/{rifle,sniper,shotgun,smg,lmg,hmg}) + FPS armor sets;
+    ship weapons fall through to the SItemDefinition.tags signal.
+  - sc-items gains `sc-tags` as a dependency (small leaf crate the
+    family module needs for tag path resolution).
+  - serde-clean — round-trips through `ProcessedSnapshot`.
+
 ## [v0.9.0] - 2026-05-31
 
 ### Added

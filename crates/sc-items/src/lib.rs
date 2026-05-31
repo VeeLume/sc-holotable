@@ -52,7 +52,10 @@ use sc_extract::generated::{
 use sc_extract::{DataPools, Guid, LocaleKey, LocaleMap, RecordStore};
 use serde::{Deserialize, Serialize};
 
+pub mod family;
 pub mod variants;
+
+pub use family::{FamilyId, ItemFamilies};
 
 /// serde adapters for the generated item enums. They carry no serde of their
 /// own (the generated crate stays serde-free to avoid the monomorphization

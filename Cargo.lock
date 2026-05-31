@@ -942,6 +942,7 @@ version = "0.0.0"
 dependencies = [
  "sc-discovery",
  "sc-extract",
+ "sc-tags",
  "serde",
  "serde_json",
  "tracing",
