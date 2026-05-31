@@ -16,29 +16,68 @@ separate commits and advance independently.
 
 ### Added
 
-- **`sc-items`: `family` module + `ItemFamilies` index.** Groups
-  item entities into "models" so paint / skin / special-edition
-  variants collapse to one entry — built so catalog consumers
-  (hearth, future tools) don't each reinvent the bundling logic.
-  - Identity computed from a 3-tier priority chain: (1) ECD model
-    tag tree (whitelisted prefix like `Weapon / FPS / Pistol / `,
-    truncated to the model-identity depth so sub-variant markers
-    like `… / Atzkav / AtzkavDE` collapse to `… / Atzkav`); (2)
-    `SItemDefinition.tags` first specific token (catches armor sets
-    that ship only the generic `Armor / FPS / Set` marker); (3)
-    `None` (caller treats as singleton).
-  - `ItemFamilies::build(&Items, &Tags, &RecordStore)` —
-    `family_id_of(guid)` returns the model identifier, `members_of(id)`
-    returns every variant in the model, `iter()` walks all families.
-  - Reverse-engineered against SC 4.8 live DCB via cross-section
-    probes (FPS Pistols, Snipers, Stocked, Armor sets, Crossbows,
-    Helmets). Whitelist covers all FPS weapon classes (pistol, SMG,
-    shotgun, sniper, LMG, HMG, cannon, launcher, mining,
-    stocked/{rifle,sniper,shotgun,smg,lmg,hmg}) + FPS armor sets;
-    ship weapons fall through to the SItemDefinition.tags signal.
-  - sc-items gains `sc-tags` as a dependency (small leaf crate the
-    family module needs for tag path resolution).
-  - serde-clean — round-trips through `ProcessedSnapshot`.
+- **`sc-items`: `family` module + `ItemFamilies` index.** Recovers
+  the base ↔ variant relationship CIG doesn't model structurally —
+  every paint, skin, and special-edition entity is grouped under a
+  canonical *base* item so catalog UIs can render the family as one
+  entry instead of N rows.
+
+  Each `Family` carries an explicit `base: Guid` + `members: Vec<Guid>`
+  (base first, deterministic order). Base detection uses the
+  shortest-entity-name heuristic — variants nearly always carry
+  additional suffixes — with alphabetical tiebreaker for armor
+  families whose variant entities all share a name length.
+
+  Family identity is computed via a priority chain:
+
+  1. **ECD model tag** matching a whitelisted prefix
+     (`Weapon / FPS / Pistol / Coda`, `Armor / FPS / Set / ClarkeDefense
+     / FBL-8a`, …) and truncated to the per-prefix model depth — so
+     sub-variant markers like `… / Atzkav / AtzkavDE` (a special
+     "Deadeye" edition of the Atzkav sniper) collapse to the shared
+     `… / Atzkav` family with the base.
+  2. **Entity record name stem + `(item_type, item_sub_type)`** for
+     items whose ECD has no usable model tag (e.g. armor sets that
+     ship with only the generic `Armor / FPS / Set` marker). The
+     entity name leads with the manufacturer prefix (`kap_`, `gmni_`,
+     `omc_`, `ano_`), so the stem naturally distinguishes brands. Item
+     type / sub-type gating prevents cross-slot bundling (a helmet
+     never bundles with a chest piece even if both share a stem).
+     Iterative stripping of trailing variant suffixes (numeric
+     `_01` / `_15`, alpha+digits `_chromic01` / `_imp01` / `_S2`,
+     known semantic words `_mag` / `_spc` / `_scitem`) — but never
+     below 3 segments, so the stem still meaningfully identifies a
+     model.
+  3. **Solo (entity GUID)** so every item has a family entry; items
+     with no other signal form a one-member family.
+
+  Built over [`Items`] — covers every entity exposing an `AttachDef`,
+  independent of whether the entity has a blueprint, mission reward,
+  or any other downstream reference. Future consumers wanting "all
+  variants of Ripper SMG" get them whether or not Ripper itself is
+  craftable.
+
+  API:
+  ```rust
+  let families = ItemFamilies::build(&items, &tags, store, &paths);
+  families.family_of(guid)     // -> Option<&Family>
+  families.base_of(guid)       // -> Option<Guid>
+  families.family_id_of(guid)  // -> Option<&str>
+  family.variants()            // iterate non-base members
+  family.is_solo()             // true if just the base
+  ```
+
+  Reverse-engineered against SC 4.8 live DCB via cross-section
+  probes (FPS Pistols, Snipers, Stocked weapons, Crossbows, Helmets,
+  Cores, Arms). Earlier iterations used `SItemDefinition.tags` as a
+  fallback signal and over-grouped catastrophically — most armor's
+  tags string is `"Set_<n> Color_<n> SM_RestrictedArm"`, and
+  `SM_RestrictedArm` is a generic suit-mannequin marker shared by
+  every armor item. That signal is removed; the entity-name-stem
+  approach is both more reliable and naturally brand-gated.
+
+  sc-items gains `sc-tags` as a dependency for tag path resolution.
+  serde-clean — round-trips through `ProcessedSnapshot`.
 
 ## [v0.9.0] - 2026-05-31
 
