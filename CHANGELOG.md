@@ -14,6 +14,8 @@ separate commits and advance independently.
 
 ## [Unreleased]
 
+## [v0.10.0] - 2026-05-31
+
 ### Added
 
 - **`sc-items`: `catalog` module + two-tier `ItemCatalog` index.** A
