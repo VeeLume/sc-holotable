@@ -16,68 +16,63 @@ separate commits and advance independently.
 
 ### Added
 
-- **`sc-items`: `family` module + `ItemFamilies` index.** Recovers
-  the base ↔ variant relationship CIG doesn't model structurally —
-  every paint, skin, and special-edition entity is grouped under a
-  canonical *base* item so catalog UIs can render the family as one
-  entry instead of N rows.
+- **`sc-items`: `catalog` module + two-tier `ItemCatalog` index.** A
+  gear catalog that recovers the design ↔ model ↔ colorway relationship
+  CIG doesn't model cleanly, in two tiers so a UI can render either a
+  whole matching design or a single item with its colorways:
 
-  Each `Family` carries an explicit `base: Guid` + `members: Vec<Guid>`
-  (base first, deterministic order). Base detection uses the
-  shortest-entity-name heuristic — variants nearly always carry
-  additional suffixes — with alphabetical tiebreaker for armor
-  families whose variant entities all share a name length.
+  - **`Collection`** — the models that read as the **same design**:
+    "Geist Armor" helmet + arms + core + legs; a gun with its magazine.
+    Carries a human `name` ("Geist Armor") and its member model ids.
+  - **`Model`** — one design + one slot: "Geist Armor Helmet" and all
+    its colorways; "LH86 Pistol" and its paints; "LH86 Magazine" on its
+    own. Carries `base: Guid` + `members: Vec<Guid>` (base first — the
+    plain "design + slot" item, else a "…Base" default, else CIG's
+    canonical first colorway `…_01_01_01`, else shortest name),
+    `item_type`/`item_sub_type`, and an optional `collection` link.
 
-  Family identity is computed via a priority chain:
+  Classification is driven by the **display name** — the signal users
+  actually read — not by CIG's `Armor / FPS / Set / …` tag, which proved
+  unreliable (one set tag bundles visually-unrelated models: the
+  `FieldRecon` tag mixes Geist, Field Recon, and FBL-8a helmets). The
+  design name is the base display name's words up to the slot noun
+  (Helmet/Arms/Core/…, known from `item_type`): "Geist Armor Helmet" →
+  "Geist Armor". Colorways trail *after* the slot noun, so they fold
+  into one model regardless of how the colorway or underlying record is
+  named. A `Model` is `(design, item_type, item_sub_type, size, grade)`;
+  a `Collection` is `(category, design)`. The `size`/`grade` split (from
+  `SItemDefinition`, now surfaced on `Item`) keeps distinct ship-weapon
+  size classes apart — "Deadbolt I Cannon" (S1) and "Deadbolt V Cannon"
+  (S5) are separate models under one "Deadbolt" collection — robustly,
+  where parsing the display numeral would fail ("Omnisky IX" is S3).
+  Weapons/clothing have no slot noun, so their design is the leading word
+  (grouping a gun with its magazine, or a cannon's whole size ladder).
 
-  1. **ECD model tag** matching a whitelisted prefix
-     (`Weapon / FPS / Pistol / Coda`, `Armor / FPS / Set / ClarkeDefense
-     / FBL-8a`, …) and truncated to the per-prefix model depth — so
-     sub-variant markers like `… / Atzkav / AtzkavDE` (a special
-     "Deadeye" edition of the Atzkav sniper) collapse to the shared
-     `… / Atzkav` family with the base.
-  2. **Entity record name stem + `(item_type, item_sub_type)`** for
-     items whose ECD has no usable model tag (e.g. armor sets that
-     ship with only the generic `Armor / FPS / Set` marker). The
-     entity name leads with the manufacturer prefix (`kap_`, `gmni_`,
-     `omc_`, `ano_`), so the stem naturally distinguishes brands. Item
-     type / sub-type gating prevents cross-slot bundling (a helmet
-     never bundles with a chest piece even if both share a stem).
-     Iterative stripping of trailing variant suffixes (numeric
-     `_01` / `_15`, alpha+digits `_chromic01` / `_imp01` / `_S2`,
-     known semantic words `_mag` / `_spc` / `_scitem`) — but never
-     below 3 segments, so the stem still meaningfully identifies a
-     model.
-  3. **Solo (entity GUID)** so every item has a family entry; items
-     with no other signal form a one-member family.
-
-  Built over [`Items`] — covers every entity exposing an `AttachDef`,
-  independent of whether the entity has a blueprint, mission reward,
-  or any other downstream reference. Future consumers wanting "all
-  variants of Ripper SMG" get them whether or not Ripper itself is
-  craftable.
+  Scope: a **gear** catalog (armor, clothing, weapons), built over
+  [`Items`] and restricted to real inventory items
+  (`is_inventory_item()`). Excluded: non-inventory attachables (NPC
+  archetypes, seat-access, doors, tattoos); non-gear items (ship
+  components, world props); and dev-template items with placeholder
+  names (`<= PLACEHOLDER =>`).
 
   API:
   ```rust
-  let families = ItemFamilies::build(&items, &tags, store, &paths);
-  families.family_of(guid)     // -> Option<&Family>
-  families.base_of(guid)       // -> Option<Guid>
-  families.family_id_of(guid)  // -> Option<&str>
-  family.variants()            // iterate non-base members
-  family.is_solo()             // true if just the base
+  let catalog = ItemCatalog::build(&items, &paths, &locale);
+  catalog.model_of(guid)              // -> Option<&Model>      (item + colorways)
+  catalog.collection_of(guid)         // -> Option<&Collection> (the design)
+  catalog.models_in(collection)       // iterate a design's models
+  catalog.members_of_collection(col)  // iterate every member of a design
+  catalog.base_of(guid)               // -> Option<Guid>
+  model.variants() / model.is_solo()
   ```
 
-  Reverse-engineered against SC 4.8 live DCB via cross-section
-  probes (FPS Pistols, Snipers, Stocked weapons, Crossbows, Helmets,
-  Cores, Arms). Earlier iterations used `SItemDefinition.tags` as a
-  fallback signal and over-grouped catastrophically — most armor's
-  tags string is `"Set_<n> Color_<n> SM_RestrictedArm"`, and
-  `SM_RestrictedArm` is a generic suit-mannequin marker shared by
-  every armor item. That signal is removed; the entity-name-stem
-  approach is both more reliable and naturally brand-gated.
-
-  sc-items gains `sc-tags` as a dependency for tag path resolution.
-  serde-clean — round-trips through `ProcessedSnapshot`.
+  Verified against live SC DCB (SC 1.0): the polluted `FieldRecon` tag
+  dissolves into the "Geist Armor", "Field Recon Suit", and "FBL-8a"
+  designs a user would actually name; mixed-type models and
+  non-inventory models are both 0. Classification needs only `&Items` +
+  `&LocaleMap` — no tag tree, so sc-items no longer depends on `sc-tags`
+  (`&RecordPaths` is used only to pick a model's base/header). serde-clean
+  — round-trips through `ProcessedSnapshot`.
 
 ## [v0.9.0] - 2026-05-31
 

@@ -52,10 +52,10 @@ use sc_extract::generated::{
 use sc_extract::{DataPools, Guid, LocaleKey, LocaleMap, RecordStore};
 use serde::{Deserialize, Serialize};
 
-pub mod family;
+pub mod catalog;
 pub mod variants;
 
-pub use family::{FamilyId, ItemFamilies};
+pub use catalog::{Collection, CollectionId, ItemCatalog, Model, ModelId};
 
 /// serde adapters for the generated item enums. They carry no serde of their
 /// own (the generated crate stays serde-free to avoid the monomorphization
@@ -109,6 +109,11 @@ pub struct Item {
     /// `AttachDef.SubType` — typed item-subtype classification.
     #[serde(with = "enum_serde::item_sub_type")]
     pub item_sub_type: EItemSubType,
+    /// `AttachDef.Size` — the item's size class (e.g. ship-weapon mount size
+    /// S1–S6). `0` when the item carries no meaningful size.
+    pub size: i32,
+    /// `AttachDef.Grade` — the item's quality grade. `0` when ungraded.
+    pub grade: i32,
 }
 
 impl Item {
@@ -230,6 +235,8 @@ fn item_for(ecd: &EntityClassDefinition, pools: &DataPools) -> Option<Item> {
         desc_key: loc.and_then(|l| non_empty(&l.description)),
         item_type: item_def.r#type.clone(),
         item_sub_type: item_def.sub_type.clone(),
+        size: item_def.size,
+        grade: item_def.grade,
     })
 }
 
@@ -296,6 +303,8 @@ mod tests {
             desc_key: None,
             item_type: t,
             item_sub_type: EItemSubType::Unrecognized(String::new()),
+            size: 0,
+            grade: 0,
         }
     }
 

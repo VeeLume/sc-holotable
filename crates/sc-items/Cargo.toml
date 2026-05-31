@@ -11,14 +11,13 @@ rust-version.workspace = true
 # crate's typed walk reaches — sc-items owns its feature closure so consumers
 # depend on it alone and get a populated cache.
 sc-extract = { workspace = true, features = ["entities-scitem"] }
-# The `family` module resolves entity-tag paths through the tag tree to
-# pick a model identifier for variant grouping. sc-tags is a small
-# leaf crate (~18k records, no further deps beyond sc-extract).
-sc-tags = { workspace = true }
 serde = { workspace = true }
 tracing = { workspace = true }
 
 [dev-dependencies]
 sc-discovery = { workspace = true }
+# Only the `catalog_dump` diagnostic example reads the raw tag tree (to show
+# why items are grouped); the library no longer classifies by tag.
+sc-tags = { workspace = true }
 serde_json = { workspace = true }
 tracing-subscriber = { version = "0.3", features = ["env-filter"] }
