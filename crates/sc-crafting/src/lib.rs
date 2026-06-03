@@ -238,9 +238,13 @@ pub enum OptionalEffectKind {
 /// The polymorphic ingredient tree.
 ///
 /// SC 4.8 universally shapes mandatory costs as
-/// `Select { N, [Select { 1, [Resource] }] }` — pick N ingredient
-/// groups, each with one resource alternative. Item costs and
-/// top-level Resource costs are 0 records today but kept in the model.
+/// `Select { N, [Select { 1, [<leaf>] }] }` — pick N ingredient groups,
+/// each with one alternative. The leaf is either a `Resource` (bulk
+/// ship-mined / refined material, ~3.9k entries) or an `Item` (a discrete
+/// carried entity counted individually — the hand-mined gems, ~294
+/// entries). Top-level `Resource`/`Item` costs (not wrapped in a `Select`)
+/// and the dormant `Other` variants are 0 records today but kept in the
+/// model.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub enum Cost {
     Resource(ResourceCost),
