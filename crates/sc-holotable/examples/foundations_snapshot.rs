@@ -10,6 +10,7 @@ use sc_holotable::asset::{
     AssetConfig, AssetData, AssetSource, Datacore, RecordPaths, snapshot_meta_from_install,
 };
 use sc_holotable::items::Items;
+use sc_holotable::locations::Locations;
 use sc_holotable::manufacturers::Manufacturers;
 use sc_holotable::resources::Resources;
 use sc_holotable::tags::Tags;
@@ -29,6 +30,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let tags = Tags::build(store);
     let mfrs = Manufacturers::build(store);
     let resources = Resources::build(store);
+    let locations = Locations::build(store);
     let paths = RecordPaths::build(&datacore);
 
     // One bundled pass via the umbrella build-context.
@@ -55,6 +57,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         f.resources.len()
     );
     println!(
+        "locations     : sep {:>6}  bundle {:>6}",
+        locations.len(),
+        f.locations.len()
+    );
+    println!(
         "paths         : sep {:>6}  bundle {:>6}",
         paths.len(),
         f.paths.len()
@@ -63,6 +70,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     assert_eq!(tags.len(), f.tags.len(), "tags mismatch");
     assert_eq!(mfrs.len(), f.manufacturers.len(), "manufacturers mismatch");
     assert_eq!(resources.len(), f.resources.len(), "resources mismatch");
+    assert_eq!(locations.len(), f.locations.len(), "locations mismatch");
     assert_eq!(paths.len(), f.paths.len(), "paths mismatch");
 
     // HolotableSnapshot round-trip (all four cooked indices).
@@ -83,6 +91,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     assert_eq!(
         loaded.resources.as_ref().map(Resources::len),
         Some(f.resources.len())
+    );
+    assert_eq!(
+        loaded.locations.as_ref().map(Locations::len),
+        Some(f.locations.len())
     );
     let size = std::fs::metadata(&path)?.len();
     let _ = std::fs::remove_file(&path);

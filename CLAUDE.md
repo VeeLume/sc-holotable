@@ -36,6 +36,7 @@ sc-holotable/
 │   ├── sc-missions.md            contracts v1 spec (historical — superseded by v2)
 │   ├── sc-missions-v2.md         contracts v2 design + landing-phase log (current)
 │   ├── sc-missions-guide.md      contracts consumer guide
+│   ├── sc-locations.md           typed StarMapObject location surface (implemented)
 │   └── feature-request-*.md       feature requests filed by sc-langpatch
 ├── implementing/                  non-obvious implementation context (not code restated in prose)
 │   ├── sc-discovery.md             port lineage + consumer switch-over plan
@@ -46,6 +47,7 @@ sc-holotable/
 │   ├── sc-extract-generated/      ✅ workspace-internal — core/dormant/multi_feature + leaf feature dirs
 │   │   └── src/generated/         245 leaf feature dirs + core/ + dormant/ + multi_feature/
 │   ├── sc-missions/              ✅ v2 complete — Mission, Missions, MissionPools, Encounter enum
+│   ├── sc-locations/             ✅ typed StarMapObject surface — Location, LocationKind, class-CRC + hierarchy
 │   └── sc-weapons/                ✅ v1 + v2 phases 1-3 + localization keys + Missile + penetration
 └── tools/
     ├── sc-generator/              ✅ implemented — offline DCB schema → Rust codegen
@@ -304,6 +306,7 @@ See `status.md` for the always-current version. Brief snapshot:
   three families, `penetration_m` from `BulletProjectileParams`).
   See `docs/feature-request-sc-weapons-langpatch.md`. 28 unit tests.
 - ✅ **`sc-missions`** — v2 complete (all 7 phases). `Mission` + `Missions` + `MissionPools` + `Encounter` enum (Ships / NPCs / Entities / Unknown). 22 lib tests. Design history in `docs/sc-missions.md` (v1, historical) + `docs/sc-missions-v2.md` (v2, current); consumer guide in `docs/sc-missions-guide.md`.
+- ✅ **`sc-locations`** — typed surface over `StarMapObject` (2,054 universe places). `Location` + `LocationKind` (21 kinds) + `Locations` with class-CRC resolution (`by_crc` → typed location, the counterpart to `sc-extract`'s generic `CrcIndex`) and parent/children/ancestors hierarchy. Feature closure is `sc-extract[starmap]`. 5 lib tests. Spec: `docs/sc-locations.md`.
 - ✅ **`sc-explorer`** — interactive TUI binary at `tools/sc-explorer`. Per-crate `tui` modules in sc-missions + sc-weapons own their domain views.
 
 ## Where to read more

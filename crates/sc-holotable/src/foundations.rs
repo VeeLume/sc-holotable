@@ -11,6 +11,7 @@ use sc_extract::{
     BundledWalk, Datacore, ProcessedSnapshot, RecordPaths, RecordPathsBuilder, Result, SnapshotMeta,
 };
 use sc_items::{Items, ItemsBuilder};
+use sc_locations::{Locations, LocationsBuilder};
 use sc_manufacturers::{Manufacturers, ManufacturersBuilder};
 use sc_resources::{Resources, ResourcesBuilder};
 use sc_tags::{Tags, TagsBuilder};
@@ -23,6 +24,7 @@ pub struct Foundations {
     pub tags: Tags,
     pub manufacturers: Manufacturers,
     pub resources: Resources,
+    pub locations: Locations,
     pub paths: RecordPaths,
 }
 
@@ -32,18 +34,21 @@ pub struct Foundations {
 /// the walk is a full pass and the four type-readers ride along for free —
 /// strictly cheaper than five independent `X::build`s.
 pub fn build_foundations(datacore: &Datacore) -> Foundations {
-    let (items, tags, manufacturers, resources, paths) = BundledWalk::new(datacore).run((
-        ItemsBuilder::default(),
-        TagsBuilder::default(),
-        ManufacturersBuilder::default(),
-        ResourcesBuilder::default(),
-        RecordPathsBuilder::default(),
-    ));
+    let (items, tags, manufacturers, resources, locations, paths) =
+        BundledWalk::new(datacore).run((
+            ItemsBuilder::default(),
+            TagsBuilder::default(),
+            ManufacturersBuilder::default(),
+            ResourcesBuilder::default(),
+            LocationsBuilder::default(),
+            RecordPathsBuilder::default(),
+        ));
     Foundations {
         items,
         tags,
         manufacturers,
         resources,
+        locations,
         paths,
     }
 }
@@ -52,7 +57,8 @@ pub fn build_foundations(datacore: &Datacore) -> Foundations {
 /// index's serialized layout changes.
 ///
 /// v2 (2026-05-31): added optional `resources: Resources` field.
-pub const HOLOTABLE_COOK_VERSION: u32 = 2;
+/// v3 (2026-06-03): added optional `locations: Locations` field.
+pub const HOLOTABLE_COOK_VERSION: u32 = 3;
 
 /// A batteries-included bundle of cooked indices, serializable for fast load.
 ///
@@ -66,6 +72,7 @@ pub struct HolotableSnapshot {
     pub tags: Option<Tags>,
     pub manufacturers: Option<Manufacturers>,
     pub resources: Option<Resources>,
+    pub locations: Option<Locations>,
     pub paths: Option<RecordPaths>,
 }
 
@@ -77,6 +84,7 @@ impl HolotableSnapshot {
             tags: Some(f.tags.clone()),
             manufacturers: Some(f.manufacturers.clone()),
             resources: Some(f.resources.clone()),
+            locations: Some(f.locations.clone()),
             paths: Some(f.paths.clone()),
         }
     }

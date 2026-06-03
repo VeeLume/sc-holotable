@@ -42,6 +42,13 @@ pub mod items {
     pub use sc_items::*;
 }
 
+#[cfg(feature = "locations")]
+pub mod locations {
+    //! Universe locations ([`sc_locations`]) — typed `StarMapObject` surface
+    //! with class-CRC resolution and hierarchy.
+    pub use sc_locations::*;
+}
+
 #[cfg(feature = "tags")]
 pub mod tags {
     //! Hierarchical tag tree ([`sc_tags`]).
@@ -89,11 +96,13 @@ pub use foundations::{Foundations, HOLOTABLE_COOK_VERSION, HolotableSnapshot, bu
 pub mod prelude {
     #[cfg(feature = "extract")]
     pub use sc_extract::{
-        AssetConfig, AssetData, AssetSource, Datacore, ExtractSnapshot, Guid, LocaleKey, LocaleMap,
-        ProcessedSnapshot, RecordPath, RecordPaths, SnapshotMeta,
+        AssetConfig, AssetData, AssetSource, CrcIndex, Datacore, ExtractSnapshot, Guid, LocaleKey,
+        LocaleMap, ProcessedSnapshot, RecordPath, RecordPaths, SnapshotMeta, class_crc,
     };
     #[cfg(feature = "items")]
     pub use sc_items::{Item, Items};
+    #[cfg(feature = "locations")]
+    pub use sc_locations::{Location, LocationKind, Locations};
     #[cfg(feature = "manufacturers")]
     pub use sc_manufacturers::{Manufacturer, Manufacturers};
     #[cfg(feature = "missions")]

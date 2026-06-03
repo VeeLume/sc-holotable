@@ -51,6 +51,7 @@ use sc_extract::generated::{
 };
 use sc_extract::{DataPools, Guid, LocaleKey, LocaleMap, RecordStore};
 use serde::{Deserialize, Serialize};
+use tracing::warn;
 
 pub mod catalog;
 pub mod variants;
@@ -139,12 +140,52 @@ impl Item {
     }
 }
 
+/// Class CRC of a record GUID — re-exported from the foundation. The reverse
+/// lookup here ([`Items::by_crc`]) is item-scoped; for any record GUID use
+/// `sc_extract::CrcIndex`.
+pub use sc_extract::class_crc;
+
 /// Per-entity [`Item`] metadata for every `EntityClassDefinition` that
 /// exposes an `AttachDef`. Build **once** via [`Items::build`] and share
 /// by reference.
+///
+/// Carries a reverse [`class_crc`] → GUID index ([`Items::guid_by_crc`] /
+/// [`Items::by_crc`]) so an EntityGraph wire CRC resolves back to a GUID/item.
+/// The index is derived from `by_record`, so it is not serialized — it's
+/// rebuilt on deserialize via the [`ItemsRepr`] shadow.
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
+#[serde(from = "ItemsRepr", into = "ItemsRepr")]
 pub struct Items {
     by_record: HashMap<Guid, Item>,
+    /// Reverse index: [`class_crc`] of each cached GUID → that GUID. Rebuilt,
+    /// not serialized (see [`ItemsRepr`]).
+    by_crc: HashMap<u32, Guid>,
+}
+
+/// Serialization shadow for [`Items`]: only `by_record` is persisted; the
+/// `by_crc` reverse index is recomputed on the way back in.
+#[derive(Serialize, Deserialize)]
+struct ItemsRepr {
+    by_record: HashMap<Guid, Item>,
+}
+
+impl From<ItemsRepr> for Items {
+    fn from(repr: ItemsRepr) -> Self {
+        let mut items = Items {
+            by_record: repr.by_record,
+            by_crc: HashMap::new(),
+        };
+        items.rebuild_crc_index();
+        items
+    }
+}
+
+impl From<Items> for ItemsRepr {
+    fn from(items: Items) -> Self {
+        ItemsRepr {
+            by_record: items.by_record,
+        }
+    }
 }
 
 impl Items {
@@ -164,15 +205,50 @@ impl Items {
                 continue;
             };
             if let Some(item) = item_for(ecd, pools) {
-                cache.by_record.insert(guid, item);
+                cache.insert(guid, item);
             }
         }
         cache
     }
 
-    /// Insert or replace a record's entry.
+    /// Insert or replace a record's entry, keeping the [`class_crc`] reverse
+    /// index in sync.
     pub fn insert(&mut self, guid: Guid, item: Item) {
         self.by_record.insert(guid, item);
+        self.index_crc(guid);
+    }
+
+    /// Record `guid` in the reverse [`class_crc`] index. Logs (but tolerates) a
+    /// CRC collision: CRC32 can in principle collide across the ~25k catalog
+    /// entries, though none is observed in live data.
+    fn index_crc(&mut self, guid: Guid) {
+        let crc = class_crc(&guid);
+        if let Some(prev) = self.by_crc.insert(crc, guid)
+            && prev != guid
+        {
+            warn!(crc, %prev, new = %guid, "class_crc collision: by_crc entry overwritten");
+        }
+    }
+
+    /// Rebuild the reverse [`class_crc`] index from `by_record` (used after
+    /// deserialization, where only `by_record` is persisted).
+    fn rebuild_crc_index(&mut self) {
+        self.by_crc.clear();
+        self.by_crc.reserve(self.by_record.len());
+        let guids: Vec<Guid> = self.by_record.keys().copied().collect();
+        for guid in guids {
+            self.index_crc(guid);
+        }
+    }
+
+    /// Resolve an EntityGraph wire [`class_crc`] back to its record GUID.
+    pub fn guid_by_crc(&self, crc: u32) -> Option<Guid> {
+        self.by_crc.get(&crc).copied()
+    }
+
+    /// Resolve an EntityGraph wire [`class_crc`] back to its [`Item`].
+    pub fn by_crc(&self, crc: u32) -> Option<&Item> {
+        self.by_record.get(self.by_crc.get(&crc)?)
     }
 
     /// Look up the entry for a record GUID.
@@ -266,7 +342,7 @@ impl sc_extract::RecordVisitor for ItemsBuilder {
             return;
         };
         if let Some(cached) = item_for(ecd, pools) {
-            self.inner.by_record.insert(item.guid, cached);
+            self.inner.insert(item.guid, cached);
         }
     }
 
@@ -294,6 +370,8 @@ fn non_empty(key: &LocaleKey) -> Option<LocaleKey> {
 
 #[cfg(test)]
 mod tests {
+    use std::str::FromStr;
+
     use super::*;
 
     fn item(t: EItemType) -> Item {
@@ -354,6 +432,44 @@ mod tests {
         let mut it = item(EItemType::Armor);
         it.name_key = Some(LocaleKey::new("@item_NameRaw"));
         assert!(it.name_key.unwrap().as_str().starts_with('@'));
+    }
+
+    #[test]
+    fn class_crc_matches_live_ground_truth() {
+        // Verified byte-exact against a live EntityGraph (guid, crc) pair: the
+        // CRC is crc32c over CigGuid storage-order bytes.
+        let guid = Guid::from_str("bba17984-86e7-4002-aab7-f33f1279fe1f").unwrap();
+        assert_eq!(class_crc(&guid), 1_038_868_829);
+    }
+
+    #[test]
+    fn crc_index_round_trips_to_guid_and_item() {
+        let mut cache = Items::new();
+        let guid = Guid::from_str("bba17984-86e7-4002-aab7-f33f1279fe1f").unwrap();
+        let mut it = item(EItemType::Armor);
+        it.name_key = Some(LocaleKey::new("@item_NameCrc"));
+        cache.insert(guid, it.clone());
+
+        let crc = class_crc(&guid);
+        assert_eq!(cache.guid_by_crc(crc), Some(guid));
+        assert_eq!(cache.by_crc(crc), Some(&it));
+        // An unknown CRC resolves to nothing.
+        assert_eq!(cache.guid_by_crc(crc.wrapping_add(1)), None);
+    }
+
+    #[test]
+    fn crc_index_rebuilt_after_serde_round_trip() {
+        let mut cache = Items::new();
+        let guid = Guid::from_bytes([7; 16]);
+        cache.insert(guid, item(EItemType::Armor));
+
+        let crc = class_crc(&guid);
+        let json = serde_json::to_string(&cache).unwrap();
+        // The reverse index is not persisted, so it must not bloat the payload.
+        assert!(!json.contains("by_crc"));
+        let decoded: Items = serde_json::from_str(&json).unwrap();
+        // ...but it is rebuilt on load.
+        assert_eq!(decoded.guid_by_crc(crc), Some(guid));
     }
 
     #[test]

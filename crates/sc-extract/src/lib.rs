@@ -57,6 +57,7 @@
 mod asset_data;
 mod assets;
 mod bundled_walk;
+mod crc;
 mod datacore;
 mod error;
 mod filters;
@@ -74,6 +75,7 @@ pub use sc_extract_generated as generated;
 pub use asset_data::{AssetConfig, AssetData};
 pub use assets::AssetSource;
 pub use bundled_walk::{BundledWalk, Interest, RecordVisitor, VisitItem, VisitorSet};
+pub use crc::{CrcIndex, class_crc};
 pub use datacore::Datacore;
 pub use error::{Error, Result};
 pub use filters::{is_playable_ship, is_playable_weapon};

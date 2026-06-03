@@ -62,6 +62,7 @@ These tools are kept committed; they're the canonical way to run a quick dig aga
 | `sc-ammo` | Spec only (`docs/sc-ammo.md`), no crate. |
 | `sc-weapons` | v1 + v2 phases 1-3 shipped. 24 unit tests. |
 | `sc-missions` | **v2 complete (all 7 phases + resolver fix). 22 lib tests.** |
+| `sc-locations` | Complete. Typed `StarMapObject` surface — `Location` / `LocationKind` (21 kinds) / `Locations` with class-CRC resolution + hierarchy. `sc-extract[starmap]`. 5 lib tests. |
 | `sc-explorer` | Tools binary — three tabs (Pools / Contracts / Weapons). Per-crate `tui` modules own their domain views. |
 
 **Total: 191 tests + 4 doctests, all passing.**

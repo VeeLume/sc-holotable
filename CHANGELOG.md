@@ -14,6 +14,56 @@ separate commits and advance independently.
 
 ## [Unreleased]
 
+### Added
+
+- **`sc-locations`: new crate — typed surface over `StarMapObject` records.**
+  The universe's stable places (2,054 in LIVE: systems, planets, moons, landing
+  zones, rest stops, stations, outposts, mining claims), the canonical "record
+  type with no typed domain crate" getting one.
+
+  - **`Location`** — materialized struct: localized `name`/`description`/
+    `callouts` keys, typed `LocationKind` category, `nav_icon`, `respawn`,
+    hierarchy `parent`, `jurisdiction`.
+  - **`LocationKind`** — typed category enum (21 variants from
+    `StarMapObjectType.name` + `Unrecognized` fallback), `from_dcb_str` /
+    `as_dcb_str`. The category is the StarMapObjectType, not the nav icon (e.g.
+    Levski is `Manmade`, not `LandingZone`).
+  - **`Locations`** — index by GUID **and by class-CRC**:
+    `by_crc(crc) -> Option<&Location>` / `guid_by_crc` resolve an EntityGraph
+    `subject_id` to a typed location (verified: `3723364946` → "Levski").
+    Hierarchy via `parent_of` / `children_of` / `ancestors` (cycle-guarded).
+    Derived indices rebuild on deserialize (no snapshot bloat).
+  - Whole feature closure is one flag: `sc-extract[starmap]`. Wired into
+    `Foundations` + `HolotableSnapshot` (cook version 2 → 3) and the
+    `sc-holotable` prelude (`Location`, `LocationKind`, `Locations`).
+
+- **`sc-extract`: class-CRC resolution (`class_crc` + `CrcIndex`).** Star
+  Citizen's EntityGraph gRPC service identifies records on the wire by a u32
+  CRC (`class_guid_crc`, `guid_hash_crc`, resource-descriptor `resource_id`)
+  rather than the full GUID. The CRC is `crc32c(guid.as_bytes())` — CRC32C over
+  the GUID's 16 storage-order bytes (reverse-engineered, verified byte-exact
+  against live `(guid, crc)` pairs).
+
+  - **`class_crc(&Guid) -> u32`** — the forward function.
+  - **`CrcIndex`** — reverse `crc → guid` over the **whole DCB record set**,
+    built from a `RecordPaths` (`from_paths`, recommended) or a live `Datacore`
+    (`from_datacore`). Derived data, not serialized: rebuilt on demand from the
+    already-snapshotted `RecordPaths`, so it adds nothing to snapshot size.
+    Collisions are logged (`warn`) but tolerated. Both are re-exported from the
+    `sc-holotable` prelude.
+
+- **`sc-items`: item-scoped class-CRC lookups.** `Items` now carries a reverse
+  `class_crc → Item`/`Guid` index — `Items::guid_by_crc` and `Items::by_crc`
+  (the latter returns `&Item`, which the global `CrcIndex` can't). The forward
+  `sc_items::class_crc` is re-exported from `sc-extract`. The reverse index is
+  rebuilt on deserialize, so it doesn't bloat the `Items` snapshot.
+
+### Fixed
+
+- **`sc-crafting`: two `redundant_closure` clippy lints** (`.map(|e|
+  build_effect_kind(e))` → `.map(build_effect_kind)`), surfaced by the rust 1.94
+  clippy. Internal only — no behavior change.
+
 ## [v0.10.0] - 2026-05-31
 
 ### Added

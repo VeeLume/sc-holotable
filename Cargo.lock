@@ -927,6 +927,7 @@ dependencies = [
  "sc-discovery",
  "sc-extract",
  "sc-items",
+ "sc-locations",
  "sc-manufacturers",
  "sc-missions",
  "sc-resources",
@@ -943,6 +944,18 @@ dependencies = [
  "sc-discovery",
  "sc-extract",
  "sc-tags",
+ "serde",
+ "serde_json",
+ "tracing",
+ "tracing-subscriber",
+]
+
+[[package]]
+name = "sc-locations"
+version = "0.0.0"
+dependencies = [
+ "sc-discovery",
+ "sc-extract",
  "serde",
  "serde_json",
  "tracing",

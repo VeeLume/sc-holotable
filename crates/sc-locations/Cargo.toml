@@ -1,0 +1,19 @@
+[package]
+name = "sc-locations"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+
+[dependencies]
+# Foundation: typed StarMapObject / StarMapObjectType record pools + generated
+# enums + locale + the class_crc bridge. The `starmap` feature is this crate's
+# whole closure (it pulls both record types), so consumers depend on sc-locations
+# alone and get a populated index.
+sc-extract = { workspace = true, features = ["starmap"] }
+serde = { workspace = true }
+tracing = { workspace = true }
+
+[dev-dependencies]
+sc-discovery = { workspace = true }
+serde_json = { workspace = true }
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
