@@ -14,6 +14,8 @@ separate commits and advance independently.
 
 ## [Unreleased]
 
+## [v0.11.0] - 2026-06-03
+
 ### Added
 
 - **`sc-locations`: new crate — typed surface over `StarMapObject` records.**
