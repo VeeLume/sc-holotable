@@ -488,10 +488,7 @@ fn build_recipe(ptr: &CraftingRecipe_BasePtr, pools: &DataPools) -> Recipe {
                     .filter_map(|oh| oh.get(pools))
                     .map(|oe| OptionalCost {
                         cost: oe.optional_cost.as_ref().map(|c| build_cost(c, pools)),
-                        effect_kind: oe
-                            .effect
-                            .as_ref()
-                            .map(|e| build_effect_kind(e)),
+                        effect_kind: oe.effect.as_ref().map(build_effect_kind),
                     })
                     .collect();
                 (time, Some(RecipeCosts { mandatory, optional }))
@@ -656,7 +653,7 @@ fn build_research(ptr: &CraftingResearch_BasePtr, pools: &DataPools) -> Research
                     .filter_map(|oh| oh.get(pools))
                     .map(|oe| OptionalCost {
                         cost: oe.optional_cost.as_ref().map(|c| build_cost(c, pools)),
-                        effect_kind: oe.effect.as_ref().map(|e| build_effect_kind(e)),
+                        effect_kind: oe.effect.as_ref().map(build_effect_kind),
                     })
                     .collect(),
             }

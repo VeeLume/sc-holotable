@@ -54,7 +54,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         }
 
         // sample one record of this type if any
-        for rec in db.records_by_type(type_name) {
+        if let Some(rec) = db.records_by_type(type_name).next() {
             println!("  sample record: name={:?} guid={}", rec.name(), rec.id());
             let inst = rec.as_instance();
             let mut shown = 0;
@@ -75,7 +75,6 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             if shown == 0 {
                 println!("    (no instance-level fields)");
             }
-            break;
         }
     }
     Ok(())
