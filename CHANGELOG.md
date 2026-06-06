@@ -14,6 +14,8 @@ separate commits and advance independently.
 
 ## [Unreleased]
 
+## [v0.12.0] - 2026-06-06
+
 ### Added
 
 - **`sc-missions`: contract enrichment — every `Mission` now carries its
