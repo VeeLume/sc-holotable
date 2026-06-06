@@ -31,10 +31,12 @@ use sc_items::Items;
 use sc_tags::Tags;
 
 use crate::blueprint_pools::BlueprintPools;
+use crate::categories::MissionTypes;
 use crate::currency::RewardCurrencies;
-use crate::expand::{Mission, expand_all};
+use crate::expand::{Mission, PrereqView, expand_all};
 use crate::locality::{Localities, Locations};
 use crate::pools::{self, MissionPools};
+use crate::reputation::{FactionReputations, ReputationStandings};
 use crate::ships::Ships;
 
 /// Bundled output of the four-stage contracts pipeline.
@@ -72,6 +74,20 @@ pub struct Missions {
     /// `EntityClassDefinition`s are scrip vs generic items.
     pub currency: RewardCurrencies,
 
+    /// Reputation-faction catalog — resolves a mission's faction
+    /// (`Mission::faction`, rep reward/prereq faction GUIDs) to a stable
+    /// record name + localizable display name. The "Faction" grouping axis.
+    pub factions: FactionReputations,
+
+    /// Reputation standing-tier catalog — resolves rep-prerequisite
+    /// `min_standing` / `max_standing` GUIDs to their tier names + thresholds.
+    pub rep_standings: ReputationStandings,
+
+    /// Mission-type (category) catalog — resolves `Mission::category` (the
+    /// template's `contractDisplayInfo.type`) to a name + icon. SCMDB's
+    /// "Mission Type" column.
+    pub mission_types: MissionTypes,
+
     /// Star-map object classifier (system + body + localized names),
     /// driven by parent-chain traversal.
     pub locations: Locations,
@@ -105,6 +121,12 @@ pub struct Missions {
     /// [`sc_crafting`]). Powers [`Self::missions_for_pool`] /
     /// [`Self::missions_for_item`].
     missions_by_pool: HashMap<Guid, Vec<Guid>>,
+
+    /// Reverse index: completion-tag GUID → mission GUIDs that **grant** it
+    /// (via [`Mission::grants_completion_tags`]). The other half of the
+    /// mission-chain join — [`Self::prerequisite_missions`] walks a mission's
+    /// `CompletedContractTags` requirements back through this.
+    grantors_by_tag: HashMap<Guid, Vec<Guid>>,
 }
 
 impl Missions {
@@ -124,7 +146,14 @@ impl Missions {
         let ships = Ships::build(datacore, &tag_tree);
         let blueprints = BlueprintPools::build(datacore, &items);
         let currency = RewardCurrencies::build(datacore);
-        let locations = Locations::build(datacore);
+        let factions = FactionReputations::build(datacore);
+        let rep_standings = ReputationStandings::build(datacore);
+        let mission_types = MissionTypes::build(datacore);
+        // The typed sc-locations index supplies each location's LocationKind
+        // (the in-game position type); the mission-specific Locations layer
+        // stamps it onto its LocationRefs.
+        let sc_loc = sc_locations::Locations::build(datacore.records());
+        let locations = Locations::build(datacore, &sc_loc);
         let localities = Localities::build(datacore, &locations);
 
         let contracts = expand_all(datacore, &ships, &currency, &localities, &tag_tree);
@@ -142,6 +171,16 @@ impl Missions {
             }
         }
 
+        // Reverse index: which missions grant which completion tag (the
+        // chain graph's emitting side; the consuming side is each mission's
+        // CompletedContractTags prereqs).
+        let mut grantors_by_tag: HashMap<Guid, Vec<Guid>> = HashMap::new();
+        for mission in &contracts {
+            for tag in &mission.grants_completion_tags {
+                grantors_by_tag.entry(*tag).or_default().push(mission.id);
+            }
+        }
+
         let by_id = contracts
             .iter()
             .enumerate()
@@ -154,12 +193,16 @@ impl Missions {
             ships,
             blueprints,
             currency,
+            factions,
+            rep_standings,
+            mission_types,
             locations,
             localities,
             tag_tree,
             pools,
             by_id,
             missions_by_pool,
+            grantors_by_tag,
         }
     }
 
@@ -183,6 +226,33 @@ impl Missions {
             for id in self.missions_for_pool(&pool.guid) {
                 if seen.insert(*id) {
                     out.push(*id);
+                }
+            }
+        }
+        out
+    }
+
+    /// Missions that must be completed first to unlock `mission` — the
+    /// "required completed missions" gate. Resolved by matching each
+    /// `CompletedContractTags` prerequisite's required tags against the
+    /// missions that **grant** them ([`Mission::grants_completion_tags`]).
+    ///
+    /// Deduplicated, in grant order; `mission` itself is excluded (a
+    /// self-granting tag isn't a real prerequisite). Empty when the mission
+    /// has no chain prerequisite, or none of its required tags are granted by
+    /// a mission this index knows about. Resolve each GUID via [`Self::get`].
+    pub fn prerequisite_missions(&self, mission: &Mission) -> Vec<Guid> {
+        let mut seen = std::collections::HashSet::new();
+        let mut out = Vec::new();
+        for p in &mission.prerequisites {
+            if let PrereqView::CompletedContractTags { required_tags, .. } = p {
+                for tag in required_tags {
+                    for &grantor in self.grantors_by_tag.get(tag).map(Vec::as_slice).unwrap_or(&[])
+                    {
+                        if grantor != mission.id && seen.insert(grantor) {
+                            out.push(grantor);
+                        }
+                    }
                 }
             }
         }
@@ -373,12 +443,16 @@ mod tests {
             ships: Ships::default(),
             blueprints: BlueprintPools::default(),
             currency: RewardCurrencies::default(),
+            factions: FactionReputations::default(),
+            rep_standings: ReputationStandings::default(),
+            mission_types: MissionTypes::default(),
             locations: Locations::default(),
             localities: Localities::default(),
             tag_tree: Tags::default(),
             pools: MissionPools::default(),
             by_id: HashMap::new(),
             missions_by_pool: HashMap::new(),
+            grantors_by_tag: HashMap::new(),
         };
         assert_eq!(idx.len(), 0);
         assert!(idx.is_empty());

@@ -37,6 +37,7 @@ use std::collections::{BTreeMap, BTreeSet, HashMap};
 
 use sc_extract::generated::{MissionLocality, StarMapObject};
 use sc_extract::{Datacore, Guid, LocaleKey, LocaleMap};
+use sc_locations::{LocationKind, Locations as ScLocations};
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -117,6 +118,11 @@ pub struct LocationRef {
     /// Locale key for the body ancestor's name. `Some` when `body` is
     /// `Some` and the body's `StarMapObject.name` field is non-empty.
     pub body_name_key: Option<LocaleKey>,
+    /// Typed location category from [`sc_locations`] — the in-game "position
+    /// type" (planet / moon / station / outpost / landing zone / …) a player
+    /// uses to recognise where a mission is offered. `None` when the
+    /// `StarMapObject` didn't resolve in the [`sc_locations`] index.
+    pub kind: Option<LocationKind>,
 }
 
 impl LocationRef {
@@ -225,7 +231,10 @@ impl Locations {
     /// alongside the parent-chain-derived system + body. Locale-
     /// independent: resolved display strings are produced on demand
     /// via [`LocationRef::display_name`] / [`LocationRef::body_display_name`].
-    pub fn build(datacore: &Datacore) -> Self {
+    ///
+    /// `sc_locations` supplies the typed [`LocationKind`] per object (the
+    /// in-game position type), stamped onto each [`LocationRef::kind`].
+    pub fn build(datacore: &Datacore, sc_loc: &ScLocations) -> Self {
         let pools = &datacore.records().pools;
         let records = &datacore.records().records;
         let db = datacore.db();
@@ -279,6 +288,7 @@ impl Locations {
                     system: SystemKey::from_root_name(&root_name),
                     body: body_name,
                     body_name_key,
+                    kind: sc_loc.kind(guid).cloned(),
                 },
             );
         }
@@ -591,6 +601,7 @@ mod tests {
             system: SystemKey::Pyro,
             body: Some("Pyro3".to_string()),
             body_name_key: Some(LocaleKey::new("@starmap_name_Bloom")),
+            kind: None,
         };
         assert_eq!(loc.short_tag(), "Pyro / Pyro3");
         assert_eq!(loc.human_tag(&locale), "Pyro / Bloom");
@@ -602,6 +613,7 @@ mod tests {
             system: SystemKey::Stanton,
             body: None,
             body_name_key: None,
+            kind: None,
         };
         assert_eq!(top.short_tag(), "Stanton");
         assert_eq!(top.human_tag(&LocaleMap::new()), "Stanton");
@@ -627,6 +639,7 @@ mod tests {
             system,
             body: body.map(|(rec, _)| rec.to_string()),
             body_name_key,
+            kind: None,
         }
     }
 

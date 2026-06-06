@@ -12,14 +12,16 @@
 //! and the blueprint reward (if any). Ship-encounter resolution and
 //! the full reward model land in subsequent iterations.
 
-use std::collections::HashSet;
+use std::collections::{BTreeMap, HashSet};
 
 use sc_extract::generated::{
-    BaseMissionPropertyValuePtr, BlueprintRewards, CareerContract, Contract, ContractAvailability,
+    BaseDataSetMatchConditionPtr, BaseMissionPropertyValuePtr, BlueprintRewards, CareerContract,
+    Contract, ContractAvailability,
     ContractBoolParam, ContractBoolParamType, ContractClass_Contract, ContractClassBasePtr,
-    ContractGeneratorHandlerBasePtr, ContractIntParam, ContractIntParamType, ContractLegacy,
-    ContractParamOverrides, ContractPrerequisite_CompletedContractTags,
-    ContractPrerequisite_CrimeStat, ContractPrerequisite_Locality, ContractPrerequisite_Location,
+    ContractDifficultyProfile, ContractGeneratorHandlerBasePtr, ContractIntParam,
+    ContractIntParamType, ContractLegacy, ContractParamOverrides,
+    ContractPrerequisite_CompletedContractTags, ContractPrerequisite_CrimeStat,
+    ContractPrerequisite_Locality, ContractPrerequisite_Location,
     ContractPrerequisite_LocationProperty, ContractPrerequisite_Reputation,
     ContractPrerequisiteBasePtr, ContractResultBasePtr, ContractResults, ContractTemplate,
     DataPools, ELocationTypeLevel, Handle, MissionProperty, SubContract,
@@ -61,6 +63,37 @@ pub struct Mission {
     /// semantics as [`Self::title_key`]. Resolve via
     /// [`Mission::description`].
     pub description_key: Option<LocaleKey>,
+
+    /// GUID of the `ContractTemplate` this expansion resolved from, when one
+    /// is referenced. Carried so consumers can reach template-only data
+    /// (e.g. the category — see [`Self::category`]). `None` for the rare
+    /// contract with no template.
+    pub template_id: Option<Guid>,
+    /// Mission category — the `MissionType` record GUID from the template's
+    /// `contractDisplayInfo.type` (SCMDB's "Mission Type" column: Bounty
+    /// Hunter / Hauling / Mercenary / Salvage / …). Resolve the name + icon
+    /// via [`crate::MissionTypes`]. `None` when the template carries no
+    /// display info / type.
+    pub category: Option<Guid>,
+    /// The mission's reputation faction (SCMDB's "Faction"). The rep-*reward*
+    /// faction is primary (the faction whose standing you gain); falls back to
+    /// the first rep-*prerequisite* faction (the gating faction). A
+    /// `FactionReputation` GUID — resolve the name via [`crate::FactionReputations`].
+    /// `None` when the mission touches no reputation faction.
+    pub faction: Option<Guid>,
+    /// Difficulty profile — the four `ContractDifficulty` axes (each a level
+    /// `1..=8`) plus the profile reference + weights. Drives the computed
+    /// aUEC payout (the evergr3n-formula inputs) and is the hidden axis the
+    /// visible payout sorts by. `None` when the contract carries no
+    /// `ContractResults.difficulty`.
+    pub difficulty: Option<Difficulty>,
+    /// `ContractResults.contractBuyInAmount` — upfront cost to accept (0 when
+    /// free). A payout-formula input and a displayable cost.
+    pub buy_in: i32,
+    /// `ContractResults.timeToComplete` minutes — the contract's time budget
+    /// (0 when none). A payout-formula input. (Stored as a bare `Single` in
+    /// minutes; not seconds — verified against the DCB raw values.)
+    pub time_to_complete: f32,
 
     /// `ActiveContractSettings.canBeShared` on the contract's template,
     /// overrideable by a `CanBeShared` bool-param at any inheritance
@@ -107,6 +140,62 @@ pub struct Mission {
     /// then contract, then sub-contract (most-specific last), with
     /// first-seen-wins deduplication.
     pub mission_span: Vec<Guid>,
+
+    /// Completion tags this mission **grants** on success
+    /// (`ContractResult_CompletionTags`). These are the edges of the mission
+    /// *chain* graph: a tag granted here can satisfy another mission's
+    /// `CompletedContractTags` prerequisite. Deduplicated, in grant order. Use
+    /// [`crate::Missions::prerequisite_missions`] to walk a mission's
+    /// required tags back to the missions that grant them.
+    pub grants_completion_tags: Vec<Guid>,
+
+    /// Resolved non-spawn `MissionProperty` values, keyed by the player-facing
+    /// `extendedTextToken` — the same token a `~mission(Token|Fmt)` marker in
+    /// the title/description references. Built from the handler → contract →
+    /// sub-contract override layers (most-specific wins). Spawn-shaped values
+    /// (ship / npc / entity) are surfaced as [`Self::encounters`] instead; the
+    /// runtime-only location queries are not captured here yet. Used by the
+    /// marker substitutor ([`crate::Missions::title_text`]).
+    pub variables: BTreeMap<String, MissionVar>,
+}
+
+/// A resolved non-spawn `MissionProperty` value (see [`Mission::variables`]).
+/// The engine picks a final value at spawn from the (possibly gated) options;
+/// a static view exposes the option set so consumers can show a single value or
+/// a "drawn from" candidate list.
+#[derive(Debug, Clone, PartialEq)]
+pub enum MissionVar {
+    /// A `MissionPropertyValue_StringHash` — one or more label options. Resolve
+    /// each option's [`VarOption::label_key`] against a `LocaleMap` at the call
+    /// site. Used by cargo-grade / rank-style tokens.
+    Choice(Vec<VarOption>),
+    /// A `MissionPropertyValue_Integer` — one or more numeric options (e.g.
+    /// `MissionMaxSCUSize`, `ScripAmount`). Used by quantity tokens.
+    Number(Vec<i64>),
+    /// A `MissionPropertyValue_Location(s)` query. The concrete place is chosen
+    /// at spawn from tag-defined archetypes, so a static view can only expose
+    /// the query's tag facets — the system(s) and setting(s) the `TagSearch`
+    /// targets (e.g. `systems=["Nyx"]`, `settings=["Space"]`).
+    Location {
+        /// System names from the query's `…/System/<X>` positive tags.
+        systems: Vec<String>,
+        /// Location-setting names from `…/LocationSetting/<X>` positive tags.
+        settings: Vec<String>,
+    },
+}
+
+/// One option of a [`MissionVar::Choice`] StringHash value.
+#[derive(Debug, Clone, PartialEq)]
+pub struct VarOption {
+    /// `textId` — the player-facing label key. Resolve against a `LocaleMap`.
+    pub label_key: LocaleKey,
+    /// `value` — the raw string the engine stores (a locale key or id token).
+    /// Kept for diagnostics / matching; the label is the display value.
+    pub value: String,
+    /// True when this option carries `dependentProperties` — i.e. it only fires
+    /// under a runtime condition (held reputation, chosen cargo). When several
+    /// options are gated the static value is a candidate set, not a guarantee.
+    pub gated: bool,
 }
 
 impl Mission {
@@ -329,6 +418,33 @@ impl MissionRewards {
             && self.blueprints.is_empty()
             && self.other.is_empty()
     }
+}
+
+/// The contract's difficulty profile — four authored skill axes plus the
+/// weighting profile they're combined under.
+///
+/// Each axis is the engine's `EDifficultyRange_*` enum, whose variant name
+/// ends in its numeric level (`Hands_free_gaming_1` … `No_content_like_this_yet_8`),
+/// so [`Self::mechanical_skill`] etc. are that `1..=8` level (`0` if the value
+/// didn't parse). Players never see difficulty directly — it drives the
+/// **computed aUEC payout**, which is the visible signal, so a consumer
+/// splitting missions by payout is implicitly splitting by this. The four
+/// levels + [`Self::weights`] + buy-in + time are the inputs the (community-
+/// derived "evergr3n") reward formula consumes.
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub struct Difficulty {
+    pub mechanical_skill: u8,
+    pub mental_load: u8,
+    pub risk_of_loss: u8,
+    pub game_knowledge: u8,
+    /// `ContractDifficulty.difficultyProfile` reference — a stable, hashable
+    /// grouping key (two missions on the same profile + levels compute the
+    /// same payout). `None` when the difficulty carries no profile.
+    pub profile: Option<Guid>,
+    /// `[mechanicalSkill, mentalLoad, riskOfLoss, gameKnowledge]` weights from
+    /// the referenced `ContractDifficultyProfile`. `None` when the profile
+    /// didn't resolve. Carried for the reward estimator (Part B).
+    pub weights: Option<[f32; 4]>,
 }
 
 /// How a reward amount is delivered.
@@ -873,6 +989,8 @@ fn walk_handler(
                 contract_params: handler.contract_params.as_ref(),
                 handler_availability: handler.default_availability.as_ref(),
             };
+            let career_faction = handler.faction_reputation;
+            let career_scope = handler.reputation_scope;
             for c_handle in &handler.contracts {
                 if let Some(c) = c_handle.get(pools) {
                     emit_from_career(
@@ -885,6 +1003,8 @@ fn walk_handler(
                         generator_id,
                         &ctx,
                         c,
+                        career_faction,
+                        career_scope,
                         out,
                     );
                 }
@@ -957,8 +1077,26 @@ fn walk_handler(
             }),
             out,
         ),
+        H::ContractGeneratorHandler_ServiceBeacon(h) => emit_list_like(
+            datacore,
+            ships,
+            currency,
+            localities,
+            pools,
+            tree,
+            generator_id,
+            HandlerKind::ServiceBeacon,
+            h.get(pools).map(|h| ListLikeHandler {
+                debug_name: &h.debug_name,
+                contract_params: h.contract_params.as_ref(),
+                default_availability: h.default_availability.as_ref(),
+                // ServiceBeacon names its contract vec `serviceBeaconContracts`
+                // but the shape is the same list-like handler.
+                contracts: &h.service_beacon_contracts,
+            }),
+            out,
+        ),
         H::ContractGeneratorHandler_PVPBountyDef(_) => {}
-        H::ContractGeneratorHandler_ServiceBeacon(_) => {}
         _ => {}
     }
 }
@@ -1161,13 +1299,17 @@ fn emit_from_career(
     generator_id: Guid,
     ctx: &HandlerCtx<'_>,
     c: &CareerContract,
+    // Career rep gate lives on the handler (`factionReputation` / `reputationScope`)
+    // + the contract (`minStanding` / `maxStanding`), not as a prerequisite.
+    career_faction: Option<Guid>,
+    career_scope: Option<Guid>,
     out: &mut Vec<Mission>,
 ) {
     let anchor = ContractAnchor::CareerContract(c);
     let contract_results = c.contract_results.as_ref();
     let param_overrides = c.param_overrides.as_ref();
 
-    out.push(build_expansion(
+    let mut m = build_expansion(
         datacore,
         ships,
         currency,
@@ -1185,10 +1327,12 @@ fn emit_from_career(
         &c.debug_name,
         c.template,
         None, /*Career*/
-    ));
+    );
+    apply_career_rep(&mut m, career_faction, career_scope, c.min_standing, c.max_standing);
+    out.push(m);
     for sub_h in &c.sub_contracts {
         if let Some(sub) = sub_h.get(pools) {
-            out.push(build_expansion(
+            let mut m = build_expansion(
                 datacore,
                 ships,
                 currency,
@@ -1206,8 +1350,38 @@ fn emit_from_career(
                 &c.debug_name,
                 c.template,
                 Some(c.id),
-            ));
+            );
+            apply_career_rep(&mut m, career_faction, career_scope, c.min_standing, c.max_standing);
+            out.push(m);
         }
+    }
+}
+
+/// Stamp a career contract's reputation gate onto the mission. Career missions
+/// carry their rep requirement as the handler's `factionReputation` plus the
+/// contract's `minStanding` / `maxStanding` (a `Reference`, not a
+/// `ContractPrerequisite_Reputation`), so it's surfaced here as a synthetic
+/// [`PrereqView::Reputation`] — only when a standing bound is present (a real
+/// gate). The faction also backfills [`Mission::faction`] when nothing else set it.
+fn apply_career_rep(
+    m: &mut Mission,
+    faction: Option<Guid>,
+    scope: Option<Guid>,
+    min_standing: Option<Guid>,
+    max_standing: Option<Guid>,
+) {
+    if min_standing.is_some() || max_standing.is_some() {
+        m.prerequisites.push(PrereqView::Reputation {
+            include_when_sharing: false,
+            faction,
+            scope,
+            exclude: false,
+            min_standing,
+            max_standing,
+        });
+    }
+    if m.faction.is_none() {
+        m.faction = faction;
     }
 }
 
@@ -1276,7 +1450,20 @@ fn build_expansion(
         ctx.contract_params,
     );
 
+    let variables = resolve_variables(
+        pools,
+        tree,
+        sub_contract,
+        contract_param_overrides,
+        ctx.contract_params,
+    );
+
     let mission_span = collect_mission_span(&prerequisites, localities);
+
+    let category = resolve_category(template_guid, datacore);
+    let faction = resolve_faction(&rewards, &prerequisites);
+    let (difficulty, buy_in, time_to_complete) = resolve_meta(pools, datacore, contract_results);
+    let grants_completion_tags = resolve_granted_completion_tags(pools, contract_results);
 
     let origin = MissionOrigin {
         kind: ctx.kind,
@@ -1290,6 +1477,12 @@ fn build_expansion(
         origin,
         title_key,
         description_key,
+        template_id: template_guid,
+        category,
+        faction,
+        difficulty,
+        buy_in,
+        time_to_complete,
         shareable: flags.shareable,
         illegal_flag: flags.illegal,
         availability: flags.availability,
@@ -1297,7 +1490,113 @@ fn build_expansion(
         prerequisites,
         encounters,
         mission_span,
+        grants_completion_tags,
+        variables,
     }
+}
+
+/// Collect the completion tags a contract **grants** — every
+/// `ContractResult_CompletionTags` entry's per-tag `tag` reference, across the
+/// contract's `ContractResults`. Sorted + deduplicated. Empty when the
+/// contract grants none (or has no results).
+fn resolve_granted_completion_tags(
+    pools: &DataPools,
+    results: Option<&Handle<ContractResults>>,
+) -> Vec<Guid> {
+    let mut seen: HashSet<Guid> = HashSet::new();
+    let mut out: Vec<Guid> = Vec::new();
+    let Some(results) = results.and_then(|h| h.get(pools)) else {
+        return out;
+    };
+    for r in &results.contract_results {
+        if let ContractResultBasePtr::ContractResult_CompletionTags(h) = r
+            && let Some(ct) = h.get(pools)
+        {
+            for tag_h in &ct.completion_tags {
+                if let Some(tag) = tag_h.get(pools).and_then(|t| t.tag)
+                    && seen.insert(tag)
+                {
+                    out.push(tag);
+                }
+            }
+        }
+    }
+    out
+}
+
+/// Mission category — walk `template → contractDisplayInfo → type`. Returns
+/// the `MissionType` record GUID (resolve its name/icon via
+/// [`crate::MissionTypes`]). `None` when the template, its display info, or
+/// the type reference is absent.
+fn resolve_category(template_guid: Option<Guid>, datacore: &Datacore) -> Option<Guid> {
+    let guid = template_guid?;
+    let pools = &datacore.records().pools;
+    let template = datacore.resolve::<ContractTemplate>(&guid)?;
+    let display_info = template.contract_display_info.as_ref()?.get(pools)?;
+    display_info.r#type
+}
+
+/// The mission's reputation faction (SCMDB's "Faction"). Prefers the
+/// rep-*reward* faction (the faction whose standing you earn); falls back to
+/// the first rep-*prerequisite* faction (the gating faction). `None` when no
+/// reputation faction is touched.
+fn resolve_faction(rewards: &MissionRewards, prereqs: &[PrereqView]) -> Option<Guid> {
+    rewards
+        .reputation
+        .iter()
+        .find_map(|r| r.faction)
+        .or_else(|| {
+            prereqs.iter().find_map(|p| match p {
+                PrereqView::Reputation { faction, .. } => *faction,
+                _ => None,
+            })
+        })
+}
+
+/// Resolve the payout-formula inputs from the contract's `ContractResults`:
+/// the [`Difficulty`] profile (levels + weights), the buy-in, and the time
+/// budget. All default to empty when there are no results.
+fn resolve_meta(
+    pools: &DataPools,
+    datacore: &Datacore,
+    results: Option<&Handle<ContractResults>>,
+) -> (Option<Difficulty>, i32, f32) {
+    let Some(results) = results.and_then(|h| h.get(pools)) else {
+        return (None, 0, 0.0);
+    };
+    let difficulty = results
+        .difficulty
+        .as_ref()
+        .and_then(|h| h.get(pools))
+        .map(|d| {
+            let profile = d.difficulty_profile;
+            let weights = profile
+                .and_then(|g| datacore.resolve::<ContractDifficultyProfile>(&g))
+                .map(|p| {
+                    [
+                        p.mechanical_skill_weight,
+                        p.mental_load_weight,
+                        p.risk_of_loss_weight,
+                        p.game_knowledge_weight,
+                    ]
+                });
+            Difficulty {
+                mechanical_skill: difficulty_level(d.mechanical_skill.as_dcb_str()),
+                mental_load: difficulty_level(d.mental_load.as_dcb_str()),
+                risk_of_loss: difficulty_level(d.risk_of_loss.as_dcb_str()),
+                game_knowledge: difficulty_level(d.game_knowledge.as_dcb_str()),
+                profile,
+                weights,
+            }
+        });
+    (difficulty, results.contract_buy_in_amount, results.time_to_complete)
+}
+
+/// Parse the trailing `_N` level off an `EDifficultyRange_*` DCB string
+/// (`"Easy_PvE_only_action_3"` → `3`). `0` when there's no numeric suffix
+/// (e.g. an `Unrecognized` value).
+fn difficulty_level(dcb: &str) -> u8 {
+    dcb.rsplit('_').next().and_then(|n| n.parse().ok()).unwrap_or(0)
 }
 
 /// Extract the unique Locality GUIDs from a prerequisite list (the
@@ -1930,6 +2229,146 @@ fn collect_property_encounters(
             // Non-spawn variants are skipped — they're property values, not
             // encounters. Phase 6 doesn't classify them.
             _ => {}
+        }
+    }
+}
+
+/// Walk every non-spawn `MissionProperty` reachable through the handler →
+/// contract → sub-contract override layers, collecting its value into a map
+/// keyed by `extendedTextToken`. Most-specific layer wins (later overwrites),
+/// matching how the engine resolves a `~mission(Token)` marker. Spawn-shaped
+/// values (ship / npc / entity) are handled by [`resolve_encounters`] instead.
+fn resolve_variables(
+    pools: &DataPools,
+    tree: &sc_tags::Tags,
+    sub: Option<&SubContract>,
+    contract_params: Option<&Handle<ContractParamOverrides>>,
+    handler_params: Option<&Handle<ContractParamOverrides>>,
+) -> BTreeMap<String, MissionVar> {
+    let mut out = BTreeMap::new();
+    for params in [handler_params, contract_params] {
+        if let Some(h) = params
+            && let Some(po) = h.get(pools)
+        {
+            collect_property_vars(pools, tree, &po.property_overrides, &mut out);
+        }
+    }
+    if let Some(sub) = sub {
+        collect_property_vars(pools, tree, &sub.property_overrides, &mut out);
+    }
+    out
+}
+
+fn collect_property_vars(
+    pools: &DataPools,
+    tree: &sc_tags::Tags,
+    props: &[Handle<MissionProperty>],
+    out: &mut BTreeMap<String, MissionVar>,
+) {
+    for prop_h in props {
+        let Some(prop) = prop_h.get(pools) else {
+            continue;
+        };
+        if prop.extended_text_token.is_empty() {
+            continue;
+        }
+        let Some(value_ptr) = prop.value.as_ref() else {
+            continue;
+        };
+        let var = match value_ptr {
+            BaseMissionPropertyValuePtr::MissionPropertyValue_StringHash(h) => h.get(pools).map(|v| {
+                MissionVar::Choice(
+                    v.options
+                        .iter()
+                        .filter_map(|o| o.get(pools))
+                        .map(|o| VarOption {
+                            label_key: o.text_id.clone(),
+                            value: o.value.clone(),
+                            gated: !o.dependent_properties.is_empty(),
+                        })
+                        .collect(),
+                )
+            }),
+            BaseMissionPropertyValuePtr::MissionPropertyValue_Integer(h) => h.get(pools).map(|v| {
+                MissionVar::Number(
+                    v.options
+                        .iter()
+                        .filter_map(|o| o.get(pools))
+                        .map(|o| o.value as i64)
+                        .collect(),
+                )
+            }),
+            // Location query → static tag facets (system / setting). The plural
+            // `_Locations` carries the same `matchConditions` shape.
+            BaseMissionPropertyValuePtr::MissionPropertyValue_Location(h) => {
+                h.get(pools).and_then(|v| location_var(pools, tree, &v.match_conditions))
+            }
+            BaseMissionPropertyValuePtr::MissionPropertyValue_Locations(h) => {
+                h.get(pools).and_then(|v| location_var(pools, tree, &v.match_conditions))
+            }
+            // Float / AIName / spawn / org variants aren't captured here: Float
+            // is rare, spawns are encounters, names are runtime generators.
+            _ => None,
+        };
+        if let Some(var) = var {
+            let empty = match &var {
+                MissionVar::Choice(o) => o.is_empty(),
+                MissionVar::Number(n) => n.is_empty(),
+                MissionVar::Location { systems, settings } => {
+                    systems.is_empty() && settings.is_empty()
+                }
+            };
+            if !empty {
+                // Most-specific layer wins.
+                out.insert(prop.extended_text_token.clone(), var);
+            }
+        }
+    }
+}
+
+/// Reduce a location query's `matchConditions` to its static tag facets — the
+/// system(s) and setting(s) named by every `TagSearch` positive tag. The
+/// concrete place is a runtime pick; these facets are the most a static view
+/// can say (e.g. "Nyx · Space"). Returns `None` when no facet tag resolves.
+fn location_var(
+    pools: &DataPools,
+    tree: &sc_tags::Tags,
+    conditions: &[BaseDataSetMatchConditionPtr],
+) -> Option<MissionVar> {
+    let mut systems: Vec<String> = Vec::new();
+    let mut settings: Vec<String> = Vec::new();
+    for cond in conditions {
+        let BaseDataSetMatchConditionPtr::DataSetMatchCondition_TagSearch(h) = cond else {
+            continue;
+        };
+        let Some(ts) = h.get(pools) else { continue };
+        for term_h in &ts.tag_search {
+            let Some(term) = term_h.get(pools) else {
+                continue;
+            };
+            for tag in &term.positive_tags {
+                let path = tree.path(tag);
+                push_facet(&path, "System", &mut systems);
+                push_facet(&path, "LocationSetting", &mut settings);
+            }
+        }
+    }
+    if systems.is_empty() && settings.is_empty() {
+        None
+    } else {
+        Some(MissionVar::Location { systems, settings })
+    }
+}
+
+/// Push the tag-path segment immediately after `marker` (e.g. the `Nyx` in
+/// `…/System/Nyx`) into `out`, deduplicated.
+fn push_facet(path: &[&str], marker: &str, out: &mut Vec<String>) {
+    if let Some(pos) = path.iter().position(|s| *s == marker)
+        && let Some(name) = path.get(pos + 1)
+    {
+        let v = (*name).to_string();
+        if !out.contains(&v) {
+            out.push(v);
         }
     }
 }

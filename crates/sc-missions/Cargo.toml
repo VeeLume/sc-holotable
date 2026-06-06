@@ -18,9 +18,16 @@ rust-version.workspace = true
 #                          are not decoded at parse time and the
 #                          registries silently come back empty — the
 #                          "data just wasn't there" failure mode.
-sc-extract = { workspace = true, features = ["contracts", "servicebeacon", "entities-scitem"] }
+#   reputation             FactionReputation + SReputationStandingParams —
+#                          the mission faction (giver/gating rep) and the
+#                          rep-prerequisite standing tiers.
+sc-extract = { workspace = true, features = ["contracts", "servicebeacon", "entities-scitem", "reputation", "missiondata", "missionbroker", "entities-objectcontainers", "entities-objectcontainerrotating", "entities-rastar", "entities-spaceships", "entities-missionlocationtemplate", "entities-missionlocationmanager", "entities-locationmanager", "entities-locationtemplate", "entities-baselocationtemplate"] }
 sc-crafting = { workspace = true }
 sc-items = { workspace = true }
+# Typed StarMapObject surface (LocationKind + hierarchy + jurisdiction) — the
+# richer replacement for the bespoke parent-walk in locality.rs. Brings the
+# `starmap` sc-extract feature with it.
+sc-locations = { workspace = true }
 sc-tags = { workspace = true }
 svarog-common = { workspace = true }
 thiserror = { workspace = true }

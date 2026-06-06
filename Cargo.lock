@@ -982,6 +982,7 @@ dependencies = [
  "sc-discovery",
  "sc-extract",
  "sc-items",
+ "sc-locations",
  "sc-tags",
  "superlighttui",
  "svarog-common",

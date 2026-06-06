@@ -14,6 +14,41 @@ separate commits and advance independently.
 
 ## [Unreleased]
 
+### Added
+
+- **`sc-missions`: contract enrichment — every `Mission` now carries its
+  display-and-grouping facets.** `category` (the `MissionType` — SCMDB's "Mission
+  Type"), `faction` (reward-or-prerequisite reputation faction), `difficulty`
+  (the four `ContractDifficulty` axes + profile + weights), `buy_in`,
+  `time_to_complete`, `mission_span` localities (now with a typed
+  `LocationRef::kind` via `sc-locations`), and `grants_completion_tags`.
+  `Missions::prerequisite_missions` walks a contract's required tags back to the
+  missions that grant them (the mission-chain graph).
+
+- **Reputation + mission-type registries on `Missions`.** `factions`
+  (`FactionReputations` → `FactionRep`), `rep_standings` (`ReputationStandings` →
+  `Standing`), and `mission_types` (`MissionTypes` → `MissionTypeInfo`) resolve
+  the GUIDs a contract references to stable record names + localizable display
+  keys. Reputation *prerequisites* now surface as `PrereqView::Reputation`,
+  including career-contract gates (handler faction + contract min/max standing).
+
+- **`~mission(...)` runtime-marker resolution.** `Missions::title_text` /
+  `description_text` substitute the engine's `~mission(Token|Fmt)` markers in a
+  contract's title/description: reputation rank (from the rep gate), cargo grade
+  and numeric quantities (from the contract's `MissionProperty` values), and
+  location-query facets (system · setting, from the `TagSearch` tags). Values the
+  contract pins render verbatim; values the engine finalizes at spawn (a query
+  scope, a gated / multi-option pick) render in `[brackets]`. Backed by
+  `Mission::variables` (the resolved non-spawn `MissionProperty` map) with
+  `MissionVar` / `VarOption`, plus `Missions::unresolved_markers`.
+
+### Fixed
+
+- **`Mission::time_to_complete` is minutes, not seconds.** The field and its doc
+  comment were mislabeled as seconds; the DCB stores a bare minute value.
+  Verified against the raw records — no numeric change, only the unit is
+  corrected.
+
 ## [v0.11.0] - 2026-06-03
 
 ### Added
