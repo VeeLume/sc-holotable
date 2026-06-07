@@ -14,6 +14,8 @@ separate commits and advance independently.
 
 ## [Unreleased]
 
+## [v0.13.0] - 2026-06-07
+
 ### Added
 
 - **`sc-crafting`: per-material crafting-effect surface.** `Cost::Select` now
