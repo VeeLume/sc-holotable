@@ -6,7 +6,10 @@
 //! cargo run -p sc-crafting --release --example blueprint_dump
 //! ```
 
-use sc_crafting::{Blueprint, Blueprints, Cost, Process, RecipeResult};
+use sc_crafting::{
+    Blueprint, Blueprints, Cost, CostContext, GameplayProperties, ModifierValue, Process,
+    RecipeResult, ValueRange,
+};
 use sc_extract::{AssetConfig, AssetData, AssetSource, Datacore, LocaleMap};
 use sc_items::Items;
 use sc_resources::{CargoQuantity, Resources};
@@ -20,6 +23,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let datacore = Datacore::parse(&assets, &asset_data)?;
     let items = Items::build(datacore.records());
     let resources = Resources::build(datacore.records());
+    let gpps = GameplayProperties::build(&datacore);
     let blueprints = Blueprints::build(&datacore, &items);
     let locale = &asset_data.locale;
 
@@ -74,7 +78,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         if let Some(name) = bp.display_name(locale)
             && name.contains("P4-AR")
         {
-            print_blueprint(bp, locale, &items, &resources);
+            print_blueprint(bp, locale, &items, &resources, &gpps);
             sampled += 1;
             break;
         }
@@ -85,7 +89,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             break;
         }
         if bp.tiers.iter().any(|t| t.research.is_some()) {
-            print_blueprint(bp, locale, &items, &resources);
+            print_blueprint(bp, locale, &items, &resources, &gpps);
             sampled += 1;
         }
     }
@@ -98,6 +102,7 @@ fn print_blueprint(
     locale: &LocaleMap,
     _items: &Items,
     resources: &Resources,
+    gpps: &GameplayProperties,
 ) {
     let name = bp.display_name(locale).unwrap_or("(unresolved)");
     println!("\n--- {name} ---");
@@ -122,7 +127,7 @@ fn print_blueprint(
                 && let Some(mc) = &costs.mandatory
             {
                 println!("    mandatory:");
-                print_cost(mc, locale, resources, 6);
+                print_cost(mc, locale, resources, gpps, 6);
             }
             if !recipe.results.is_empty() {
                 println!("    results      : {} entries", recipe.results.len());
@@ -153,7 +158,13 @@ fn print_blueprint(
     }
 }
 
-fn print_cost(cost: &Cost, locale: &LocaleMap, resources: &Resources, indent: usize) {
+fn print_cost(
+    cost: &Cost,
+    locale: &LocaleMap,
+    resources: &Resources,
+    gpps: &GameplayProperties,
+    indent: usize,
+) {
     let pad = " ".repeat(indent);
     match cost {
         Cost::Resource(rc) => {
@@ -172,19 +183,82 @@ fn print_cost(cost: &Cost, locale: &LocaleMap, resources: &Resources, indent: us
                 "{pad}Resource: {rname} (minQ={}) qty={scu}",
                 rc.min_quality
             );
+            print_effects(cost, locale, gpps, indent + 2);
         }
         Cost::Item(ic) => {
             println!(
                 "{pad}Item: entity={:?} qty={} minQ={}",
                 ic.entity_class, ic.quantity, ic.min_quality
             );
+            print_effects(cost, locale, gpps, indent + 2);
         }
-        Cost::Select { count, options } => {
-            println!("{pad}Select count={count} options={}", options.len());
+        Cost::Select {
+            name_info,
+            count,
+            options,
+            ..
+        } => {
+            let slot = name_info
+                .as_ref()
+                .and_then(|n| locale.resolve(&n.display_name))
+                .unwrap_or("(unnamed slot)");
+            println!("{pad}Slot \"{slot}\" (count={count}, options={})", options.len());
+            print_effects(cost, locale, gpps, indent + 2);
             for opt in options {
-                print_cost(opt, locale, resources, indent + 2);
+                print_cost(opt, locale, resources, gpps, indent + 2);
             }
         }
         Cost::Other { type_name, .. } => println!("{pad}Other({type_name})"),
+    }
+}
+
+/// Print the gameplay-property modifiers attached directly to this cost node
+/// (not the subtree — `print_cost` already recurses).
+fn print_effects(cost: &Cost, locale: &LocaleMap, gpps: &GameplayProperties, indent: usize) {
+    let pad = " ".repeat(indent);
+    for ctx in cost.context() {
+        let CostContext::GameplayPropertyModifiers(mods) = ctx else {
+            continue;
+        };
+        for m in mods {
+            let prop = m
+                .gameplay_property
+                .and_then(|g| gpps.get(&g))
+                .and_then(|p| locale.resolve(&p.property_name_key))
+                .unwrap_or("?");
+            for vr in &m.value_ranges {
+                println!("{pad}effect: {prop} {}", fmt_range(vr));
+            }
+        }
+    }
+}
+
+fn fmt_range(vr: &ValueRange) -> String {
+    match vr {
+        ValueRange::Linear {
+            start_quality,
+            end_quality,
+            ..
+        }
+        | ValueRange::LinearIntegerAdditive {
+            start_quality,
+            end_quality,
+            ..
+        } => {
+            // Sample at the slot midpoint to show the curve resolving.
+            let mid = (start_quality + end_quality) / 2;
+            // Reconstruct a modifier so we can reuse the evaluation helper.
+            let m = sc_crafting::GameplayPropertyModifier {
+                gameplay_property: None,
+                value_ranges: vec![vr.clone()],
+            };
+            let at = match m.evaluate(mid) {
+                Some(ModifierValue::Multiplier(f)) => format!("×{f:.3}"),
+                Some(ModifierValue::Additive(a)) => format!("+{a:.1}"),
+                None => "?".into(),
+            };
+            format!("Q {start_quality}-{end_quality} → @Q{mid}={at}")
+        }
+        ValueRange::Other { type_name, .. } => format!("Other({type_name})"),
     }
 }

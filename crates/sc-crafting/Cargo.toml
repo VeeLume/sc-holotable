@@ -18,3 +18,4 @@ tracing = { workspace = true }
 
 [dev-dependencies]
 sc-discovery = { workspace = true }
+serde_json = { workspace = true }

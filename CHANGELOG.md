@@ -14,6 +14,22 @@ separate commits and advance independently.
 
 ## [Unreleased]
 
+### Added
+
+- **`sc-crafting`: per-material crafting-effect surface.** `Cost::Select` now
+  carries `name_info: Option<SlotName>` (the slot label — "Frame", "Cabling",
+  "Power Regulator", …) and every cost node carries `context: Vec<CostContext>`,
+  exposing the gameplay-property modifiers that were previously dropped. New
+  types: `SlotName`, `CostContext` (`GameplayPropertyModifiers` /
+  `QuantityMultiplier` / `ResultCompositionInclusion` / `Other`),
+  `CompositionInclusion`, `GameplayPropertyModifier`, `ValueRange`
+  (`Linear` / `LinearIntegerAdditive` / `Other`), `ModifierValue`. Quality
+  interpolation helpers: `ValueRange::{quality_band, contains, evaluate}`,
+  `GameplayPropertyModifier::evaluate(quality)`, and
+  `Cost::{context, gameplay_property_modifiers}` (subtree roll-up). This is the
+  data a consumer needs to render a slot/material/quality crafting calculator.
+  See `docs/sc-crafting.md` § "Update 2026-06-07".
+
 ## [v0.12.0] - 2026-06-06
 
 ### Added

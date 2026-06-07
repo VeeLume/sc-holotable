@@ -23,16 +23,17 @@
 
 use sc_extract::generated::{
     CraftingBlueprintRecord, CraftingBlueprintTier_BasePtr, CraftingBlueprint_Base_NonRefPtr,
-    CraftingCost_BasePtr, CraftingDisplayTransformation_BasePtr, CraftingGameplayPropertyDef,
+    CraftingCostContext_BasePtr, CraftingCost_BasePtr, CraftingDisplayTransformation_BasePtr,
+    CraftingGameplayPropertyDef, CraftingGameplayPropertyModifierValueRange_BasePtr,
+    CraftingGameplayPropertyModifier_BasePtr, CraftingGameplayPropertyModifiers_BasePtr,
     CraftingGlobalParams, CraftingOptionalEffect_BasePtr, CraftingPropertyNameOverride,
     CraftingPropertyNameOverrideCondition_BasePtr, CraftingProcess_BasePtr,
     CraftingQualityDistribution_BasePtr, CraftingQualityDistribution_Base_NonRefPtr,
-    CraftingQualityLocationOverride_Base_NonRefPtr,
-    CraftingQualityQuantization_Base_NonRefPtr, CraftingRecipeCosts_BasePtr,
-    CraftingRecipeResults_BasePtr, CraftingRecipe_BasePtr, CraftingResearch_BasePtr,
-    CraftingResearchUnlock_BasePtr, CraftingResult_BasePtr, DataPools,
-    DefaultBlueprintSelection_BasePtr, EItemSubType, EItemType, RecordIndex, RecordLookup,
-    SBaseCargoUnitPtr, TimeValue_BasePtr,
+    CraftingQualityLocationOverride_Base_NonRefPtr, CraftingQualityQuantization_Base_NonRefPtr,
+    CraftingRecipeCosts_BasePtr, CraftingRecipeResults_BasePtr, CraftingRecipe_BasePtr,
+    CraftingResearch_BasePtr, CraftingResearchUnlock_BasePtr, CraftingResult_BasePtr, DataPools,
+    DefaultBlueprintSelection_BasePtr, ECraftingCostResultCompositionOption, EItemSubType,
+    EItemType, RecordIndex, RecordLookup, SBaseCargoUnitPtr, TimeValue_BasePtr,
 };
 use sc_extract::{Datacore, Guid, LocaleKey, LocaleMap, RecordPaths};
 use sc_items::Items;
@@ -237,21 +238,36 @@ pub enum OptionalEffectKind {
 
 /// The polymorphic ingredient tree.
 ///
-/// SC 4.8 universally shapes mandatory costs as
-/// `Select { N, [Select { 1, [<leaf>] }] }` — pick N ingredient groups,
+/// SC 4.x universally shapes mandatory costs as
+/// `Select { N, [Select { 1, [<leaf>] }] }` — pick N ingredient *slots*,
 /// each with one alternative. The leaf is either a `Resource` (bulk
 /// ship-mined / refined material, ~3.9k entries) or an `Item` (a discrete
 /// carried entity counted individually — the hand-mined gems, ~294
 /// entries). Top-level `Resource`/`Item` costs (not wrapped in a `Select`)
 /// and the dormant `Other` variants are 0 records today but kept in the
 /// model.
+///
+/// Each node also carries a [`context`](Cost::context) list — this is where
+/// the **crafting-effect machinery** lives: how an ingredient's quality
+/// reshapes the crafted item's gameplay properties (recoil, damage,
+/// integrity, …). The `Select` slot additionally carries a
+/// [`SlotName`] ("Frame", "Cabling", "Power Regulator", …). See
+/// [`Cost::gameplay_property_modifiers`] to roll a slot's effects up for
+/// display.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub enum Cost {
     Resource(ResourceCost),
     Item(ItemCost),
     Select {
+        /// Slot label from `CraftingCost_Select.name_info`. `None` when the
+        /// select carries no name info; resolves to `<= PLACEHOLDER =>` for
+        /// not-yet-authored slots.
+        name_info: Option<SlotName>,
         count: i32,
         options: Vec<Cost>,
+        /// Context attached at the slot level (where the gameplay-property
+        /// modifiers attach in observed data).
+        context: Vec<CostContext>,
     },
     /// Dormant variants (`_Ref`/`_RecordRef`/...) surface here.
     Other {
@@ -260,12 +276,49 @@ pub enum Cost {
     },
 }
 
+impl Cost {
+    /// The context attached directly to this cost node (empty for `Other`).
+    pub fn context(&self) -> &[CostContext] {
+        match self {
+            Cost::Resource(rc) => &rc.context,
+            Cost::Item(ic) => &ic.context,
+            Cost::Select { context, .. } => context,
+            Cost::Other { .. } => &[],
+        }
+    }
+
+    /// Walk this cost subtree and collect every gameplay-property modifier,
+    /// regardless of which node carries it. The natural way to roll up a
+    /// slot's effects for display (`for m in slot.gameplay_property_modifiers()`).
+    pub fn gameplay_property_modifiers(&self) -> Vec<&GameplayPropertyModifier> {
+        let mut out = Vec::new();
+        self.collect_modifiers(&mut out);
+        out
+    }
+
+    fn collect_modifiers<'a>(&'a self, out: &mut Vec<&'a GameplayPropertyModifier>) {
+        for ctx in self.context() {
+            if let CostContext::GameplayPropertyModifiers(mods) = ctx {
+                out.extend(mods.iter());
+            }
+        }
+        if let Cost::Select { options, .. } = self {
+            for o in options {
+                o.collect_modifiers(out);
+            }
+        }
+    }
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ResourceCost {
     /// → `ResourceType` (resolve via `sc_resources::Resources::get`).
     pub resource: Option<Guid>,
     pub quantity: Option<CargoQuantity>,
     pub min_quality: i32,
+    /// Per-ingredient context (gameplay-property modifiers, quantity
+    /// multiplier, composition inclusion). Empty when none attached.
+    pub context: Vec<CostContext>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -274,6 +327,185 @@ pub struct ItemCost {
     pub entity_class: Option<Guid>,
     pub quantity: i32,
     pub min_quality: i32,
+    /// Per-ingredient context. See [`ResourceCost::context`].
+    pub context: Vec<CostContext>,
+}
+
+/// The player-facing label of a `Select` ingredient slot, from
+/// `CraftingCost_Select.name_info`.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct SlotName {
+    /// Authoring-side identifier (never localized).
+    pub debug_name: String,
+    /// Display label key — resolve via [`LocaleMap`]. `<= PLACEHOLDER =>`
+    /// for not-yet-authored slots.
+    pub display_name: LocaleKey,
+}
+
+/// Extra context attached to a [`Cost`] node. The crafting-effect machinery
+/// — how an ingredient's quality reshapes the crafted item's stats — rides
+/// here.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub enum CostContext {
+    /// Per-quality modifiers applied to the crafted item's gameplay
+    /// properties (e.g. "Recoil Smoothness ×1.4→0.6 across quality 0–1000").
+    GameplayPropertyModifiers(Vec<GameplayPropertyModifier>),
+    /// Scales the ingredient's required quantity.
+    QuantityMultiplier(f32),
+    /// Whether this ingredient is folded into the result's composition.
+    ResultCompositionInclusion(CompositionInclusion),
+    /// Dormant / future context variant.
+    Other {
+        type_name: String,
+        struct_index: u32,
+    },
+}
+
+/// `ECraftingCostResultCompositionOption`.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+pub enum CompositionInclusion {
+    Include,
+    Exclude,
+    /// Unrecognised / future value.
+    Other,
+}
+
+/// One gameplay property reshaped by an ingredient's quality.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct GameplayPropertyModifier {
+    /// → `CraftingGameplayPropertyDef` (resolve via [`GameplayProperties::get`]
+    /// for the display name, printf unit format, and display transform).
+    /// **The GUID is the join key — do not match on the property's name.**
+    pub gameplay_property: Option<Guid>,
+    /// Quality→value bands. Each band covers a `[start, end]` quality slice;
+    /// [`GameplayPropertyModifier::evaluate`] picks the band for a quality.
+    pub value_ranges: Vec<ValueRange>,
+}
+
+impl GameplayPropertyModifier {
+    /// Evaluate this modifier at `quality` (0–1000), choosing the band whose
+    /// `[start, end]` contains `quality`. When `quality` falls outside every
+    /// band (a gap, or below the first / above the last), clamps to the
+    /// nearest band. `None` if there are no evaluable bands.
+    pub fn evaluate(&self, quality: i32) -> Option<ModifierValue> {
+        if let Some(vr) = self.value_ranges.iter().find(|vr| vr.contains(quality)) {
+            return vr.evaluate(quality);
+        }
+        self.value_ranges
+            .iter()
+            .filter_map(|vr| vr.quality_band().map(|b| (vr, b)))
+            .min_by_key(|(_, (s, e))| {
+                if quality < *s {
+                    s - quality
+                } else {
+                    quality - e
+                }
+            })
+            .and_then(|(vr, _)| vr.evaluate(quality))
+    }
+}
+
+/// A single quality→value band.
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub enum ValueRange {
+    /// Multiplicative factor, linearly interpolated across the band:
+    /// `×modifier_at_start` at `start_quality` → `×modifier_at_end` at
+    /// `end_quality`.
+    Linear {
+        start_quality: i32,
+        end_quality: i32,
+        modifier_at_start: f32,
+        modifier_at_end: f32,
+    },
+    /// Integer additive bonus, linearly interpolated across the band.
+    LinearIntegerAdditive {
+        start_quality: i32,
+        end_quality: i32,
+        additive_at_start: i32,
+        additive_at_end: i32,
+    },
+    /// Dormant / future range shape.
+    Other {
+        type_name: String,
+        struct_index: u32,
+    },
+}
+
+impl ValueRange {
+    /// The `[start_quality, end_quality]` band this range covers, if any.
+    pub fn quality_band(&self) -> Option<(i32, i32)> {
+        match self {
+            ValueRange::Linear {
+                start_quality,
+                end_quality,
+                ..
+            }
+            | ValueRange::LinearIntegerAdditive {
+                start_quality,
+                end_quality,
+                ..
+            } => Some((*start_quality, *end_quality)),
+            ValueRange::Other { .. } => None,
+        }
+    }
+
+    /// True if `quality` falls within this range's band (inclusive).
+    pub fn contains(&self, quality: i32) -> bool {
+        self.quality_band()
+            .is_some_and(|(s, e)| quality >= s && quality <= e)
+    }
+
+    /// Evaluate the modifier at `quality`, linearly interpolating within the
+    /// band and clamping to its endpoints. `None` for `Other`.
+    pub fn evaluate(&self, quality: i32) -> Option<ModifierValue> {
+        match self {
+            ValueRange::Linear {
+                start_quality,
+                end_quality,
+                modifier_at_start,
+                modifier_at_end,
+            } => Some(ModifierValue::Multiplier(lerp(
+                *start_quality,
+                *end_quality,
+                *modifier_at_start,
+                *modifier_at_end,
+                quality,
+            ))),
+            ValueRange::LinearIntegerAdditive {
+                start_quality,
+                end_quality,
+                additive_at_start,
+                additive_at_end,
+            } => Some(ModifierValue::Additive(lerp(
+                *start_quality,
+                *end_quality,
+                *additive_at_start as f32,
+                *additive_at_end as f32,
+                quality,
+            ))),
+            ValueRange::Other { .. } => None,
+        }
+    }
+}
+
+/// The evaluated effect of a [`ValueRange`] at a given quality.
+#[derive(Debug, Clone, Copy, PartialEq, Serialize, Deserialize)]
+pub enum ModifierValue {
+    /// Multiplicative factor (1.0 = no change).
+    Multiplier(f32),
+    /// Additive bonus.
+    Additive(f32),
+}
+
+/// Linear interpolation over a quality band, clamped to `[start_q, end_q]`.
+/// A degenerate band (`end_q <= start_q`) yields the start value.
+fn lerp(start_q: i32, end_q: i32, v_start: f32, v_end: f32, quality: i32) -> f32 {
+    if end_q <= start_q {
+        return v_start;
+    }
+    let q = quality.clamp(start_q, end_q);
+    let t = (q - start_q) as f32 / (end_q - start_q) as f32;
+    v_start + (v_end - v_start) * t
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -540,6 +772,7 @@ fn build_cost(ptr: &CraftingCost_BasePtr, pools: &DataPools) -> Cost {
                 resource: r.resource,
                 quantity: r.quantity.as_ref().map(|q| cargo_quantity_from_ptr(q, pools)),
                 min_quality: r.min_quality,
+                context: build_context(&r.context, pools),
             }),
             None => Cost::Other {
                 type_name: "CraftingCost_Resource(empty)".into(),
@@ -551,6 +784,7 @@ fn build_cost(ptr: &CraftingCost_BasePtr, pools: &DataPools) -> Cost {
                 entity_class: i.entity_class,
                 quantity: i.quantity,
                 min_quality: i.min_quality,
+                context: build_context(&i.context, pools),
             }),
             None => Cost::Other {
                 type_name: "CraftingCost_Item(empty)".into(),
@@ -559,8 +793,15 @@ fn build_cost(ptr: &CraftingCost_BasePtr, pools: &DataPools) -> Cost {
         },
         CraftingCost_BasePtr::CraftingCost_Select(h) => match h.get(pools) {
             Some(sel) => Cost::Select {
+                name_info: sel.name_info.as_ref().and_then(|nih| nih.get(pools)).map(|ni| {
+                    SlotName {
+                        debug_name: ni.debug_name.clone(),
+                        display_name: ni.display_name.clone(),
+                    }
+                }),
                 count: sel.count,
                 options: sel.options.iter().map(|o| build_cost(o, pools)).collect(),
+                context: build_context(&sel.context, pools),
             },
             None => Cost::Other {
                 type_name: "CraftingCost_Select(empty)".into(),
@@ -574,6 +815,124 @@ fn build_cost(ptr: &CraftingCost_BasePtr, pools: &DataPools) -> Cost {
         CraftingCost_BasePtr::Unknown {
             struct_index, ..
         } => Cost::Other {
+            type_name: format!("struct#{struct_index}"),
+            struct_index: *struct_index,
+        },
+    }
+}
+
+fn build_context(ctx: &[CraftingCostContext_BasePtr], pools: &DataPools) -> Vec<CostContext> {
+    ctx.iter().map(|c| build_cost_context(c, pools)).collect()
+}
+
+fn build_cost_context(ptr: &CraftingCostContext_BasePtr, pools: &DataPools) -> CostContext {
+    use CraftingCostContext_BasePtr as C;
+    match ptr {
+        C::CraftingCostContext_ResultGameplayPropertyModifiers(h) => {
+            let mods = h
+                .get(pools)
+                .and_then(|c| c.gameplay_property_modifiers.as_ref())
+                .map(|m| build_modifier_list(m, pools))
+                .unwrap_or_default();
+            CostContext::GameplayPropertyModifiers(mods)
+        }
+        C::CraftingCostContext_QuantityMultiplier(h) => {
+            CostContext::QuantityMultiplier(h.get(pools).map(|c| c.multiplier).unwrap_or(1.0))
+        }
+        C::CraftingCostContext_ResultCompositionInclusion(h) => {
+            let inclusion = match h.get(pools) {
+                Some(c) => match &c.option {
+                    ECraftingCostResultCompositionOption::Include => CompositionInclusion::Include,
+                    ECraftingCostResultCompositionOption::Exclude => CompositionInclusion::Exclude,
+                    ECraftingCostResultCompositionOption::Unrecognized(_) => {
+                        CompositionInclusion::Other
+                    }
+                },
+                None => CompositionInclusion::Other,
+            };
+            CostContext::ResultCompositionInclusion(inclusion)
+        }
+        C::CraftingCostContext_Base(_) => CostContext::Other {
+            type_name: "CraftingCostContext_Base".into(),
+            struct_index: 0,
+        },
+        C::Unknown { struct_index, .. } => CostContext::Other {
+            type_name: format!("struct#{struct_index}"),
+            struct_index: *struct_index,
+        },
+    }
+}
+
+fn build_modifier_list(
+    ptr: &CraftingGameplayPropertyModifiers_BasePtr,
+    pools: &DataPools,
+) -> Vec<GameplayPropertyModifier> {
+    let CraftingGameplayPropertyModifiers_BasePtr::CraftingGameplayPropertyModifiers_List(h) = ptr
+    else {
+        return Vec::new();
+    };
+    let Some(list) = h.get(pools) else { return Vec::new() };
+    list.gameplay_property_modifiers
+        .iter()
+        .filter_map(|m| build_modifier(m, pools))
+        .collect()
+}
+
+fn build_modifier(
+    ptr: &CraftingGameplayPropertyModifier_BasePtr,
+    pools: &DataPools,
+) -> Option<GameplayPropertyModifier> {
+    let CraftingGameplayPropertyModifier_BasePtr::CraftingGameplayPropertyModifierCommon(h) = ptr
+    else {
+        return None;
+    };
+    let common = h.get(pools)?;
+    Some(GameplayPropertyModifier {
+        gameplay_property: common.gameplay_property_record,
+        value_ranges: common
+            .value_ranges
+            .iter()
+            .map(|vr| build_value_range(vr, pools))
+            .collect(),
+    })
+}
+
+fn build_value_range(
+    ptr: &CraftingGameplayPropertyModifierValueRange_BasePtr,
+    pools: &DataPools,
+) -> ValueRange {
+    use CraftingGameplayPropertyModifierValueRange_BasePtr as V;
+    match ptr {
+        V::CraftingGameplayPropertyModifierValueRange_Linear(h) => match h.get(pools) {
+            Some(v) => ValueRange::Linear {
+                start_quality: v.start_quality,
+                end_quality: v.end_quality,
+                modifier_at_start: v.modifier_at_start,
+                modifier_at_end: v.modifier_at_end,
+            },
+            None => ValueRange::Other {
+                type_name: "Linear(empty)".into(),
+                struct_index: 0,
+            },
+        },
+        V::CraftingGameplayPropertyModifierValueRange_LinearIntegerAdditive(h) => match h.get(pools)
+        {
+            Some(v) => ValueRange::LinearIntegerAdditive {
+                start_quality: v.start_quality,
+                end_quality: v.end_quality,
+                additive_at_start: v.additive_modifier_at_start,
+                additive_at_end: v.additive_modifier_at_end,
+            },
+            None => ValueRange::Other {
+                type_name: "LinearIntegerAdditive(empty)".into(),
+                struct_index: 0,
+            },
+        },
+        V::CraftingGameplayPropertyModifierValueRange_Base(_) => ValueRange::Other {
+            type_name: "CraftingGameplayPropertyModifierValueRange_Base".into(),
+            struct_index: 0,
+        },
+        V::Unknown { struct_index, .. } => ValueRange::Other {
             type_name: format!("struct#{struct_index}"),
             struct_index: *struct_index,
         },
@@ -1402,5 +1761,125 @@ mod tests {
         // we can't resolve without a LocaleMap, but the helper at least
         // doesn't panic with both keys present.
         let _ = bp;
+    }
+
+    #[test]
+    fn value_range_linear_interpolates_and_clamps() {
+        // Matches the screenshot: ×1.4 → 0.6 across quality 0–1000.
+        let vr = ValueRange::Linear {
+            start_quality: 0,
+            end_quality: 1000,
+            modifier_at_start: 1.4,
+            modifier_at_end: 0.6,
+        };
+        assert_eq!(vr.evaluate(0), Some(ModifierValue::Multiplier(1.4)));
+        assert_eq!(vr.evaluate(1000), Some(ModifierValue::Multiplier(0.6)));
+        // Q750 → ×0.8 (the screenshot's reading).
+        match vr.evaluate(750).unwrap() {
+            ModifierValue::Multiplier(f) => assert!((f - 0.8).abs() < 1e-5, "{f}"),
+            other => panic!("expected multiplier, got {other:?}"),
+        }
+        // Out-of-band clamps to the nearest endpoint.
+        assert_eq!(vr.evaluate(-50), Some(ModifierValue::Multiplier(1.4)));
+        assert_eq!(vr.evaluate(5000), Some(ModifierValue::Multiplier(0.6)));
+    }
+
+    #[test]
+    fn modifier_picks_band_then_clamps_to_nearest() {
+        // Two adjacent bands, as seen on real ship-component blueprints.
+        let m = GameplayPropertyModifier {
+            gameplay_property: None,
+            value_ranges: vec![
+                ValueRange::Linear {
+                    start_quality: 0,
+                    end_quality: 500,
+                    modifier_at_start: 0.8,
+                    modifier_at_end: 1.0,
+                },
+                ValueRange::Linear {
+                    start_quality: 501,
+                    end_quality: 1000,
+                    modifier_at_start: 1.0,
+                    modifier_at_end: 1.2,
+                },
+            ],
+        };
+        assert_eq!(m.evaluate(0), Some(ModifierValue::Multiplier(0.8)));
+        assert_eq!(m.evaluate(500), Some(ModifierValue::Multiplier(1.0)));
+        assert_eq!(m.evaluate(1000), Some(ModifierValue::Multiplier(1.2)));
+        // Above the last band → clamps to the last band's endpoint.
+        assert_eq!(m.evaluate(2000), Some(ModifierValue::Multiplier(1.2)));
+    }
+
+    #[test]
+    fn additive_range_yields_additive_value() {
+        let vr = ValueRange::LinearIntegerAdditive {
+            start_quality: 0,
+            end_quality: 100,
+            additive_at_start: 10,
+            additive_at_end: 30,
+        };
+        assert_eq!(vr.evaluate(50), Some(ModifierValue::Additive(20.0)));
+    }
+
+    #[test]
+    fn other_range_does_not_evaluate() {
+        let vr = ValueRange::Other {
+            type_name: "future".into(),
+            struct_index: 7,
+        };
+        assert_eq!(vr.evaluate(500), None);
+        assert_eq!(vr.quality_band(), None);
+        assert!(!vr.contains(500));
+    }
+
+    #[test]
+    fn cost_rolls_up_modifiers_across_subtree() {
+        let mk = |gp: u8| GameplayPropertyModifier {
+            gameplay_property: Some(Guid::from_bytes([gp; 16])),
+            value_ranges: vec![],
+        };
+        // Slot-level modifier + a leaf-resource modifier inside the slot.
+        let slot = Cost::Select {
+            name_info: Some(SlotName {
+                debug_name: "Frame".into(),
+                display_name: LocaleKey::from("@slot_frame"),
+            }),
+            count: 1,
+            options: vec![Cost::Resource(ResourceCost {
+                resource: None,
+                quantity: None,
+                min_quality: 0,
+                context: vec![CostContext::GameplayPropertyModifiers(vec![mk(2)])],
+            })],
+            context: vec![CostContext::GameplayPropertyModifiers(vec![mk(1)])],
+        };
+        let rolled = slot.gameplay_property_modifiers();
+        assert_eq!(rolled.len(), 2);
+        let gps: Vec<_> = rolled.iter().map(|m| m.gameplay_property).collect();
+        assert!(gps.contains(&Some(Guid::from_bytes([1; 16]))));
+        assert!(gps.contains(&Some(Guid::from_bytes([2; 16]))));
+    }
+
+    #[test]
+    fn cost_context_serde_round_trip() {
+        let ctx = CostContext::GameplayPropertyModifiers(vec![GameplayPropertyModifier {
+            gameplay_property: Some(Guid::from_bytes([9; 16])),
+            value_ranges: vec![ValueRange::Linear {
+                start_quality: 0,
+                end_quality: 1000,
+                modifier_at_start: 1.2,
+                modifier_at_end: 0.8,
+            }],
+        }]);
+        let json = serde_json::to_string(&ctx).unwrap();
+        let back: CostContext = serde_json::from_str(&json).unwrap();
+        match back {
+            CostContext::GameplayPropertyModifiers(mods) => {
+                assert_eq!(mods.len(), 1);
+                assert_eq!(mods[0].value_ranges.len(), 1);
+            }
+            other => panic!("expected modifiers, got {other:?}"),
+        }
     }
 }

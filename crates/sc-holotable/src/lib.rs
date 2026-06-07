@@ -115,10 +115,11 @@ pub mod prelude {
     pub use sc_weapons::{FpsWeapon, Missile, ShipWeapon, WeaponPools, Weapons};
     #[cfg(feature = "crafting")]
     pub use sc_crafting::{
-        Blueprint, Blueprints, Categories, Category, Cost, Duration, GameplayProperties,
-        GameplayProperty, GlobalParams, Process, Quality, QualityDistribution,
-        QualityDistributionShape, QualityLocationOverride, QualityQuantization, Recipe,
-        RecipeCosts, RecipeResult, Research, ResourceCost, Tier,
+        Blueprint, Blueprints, Categories, Category, CompositionInclusion, Cost, CostContext,
+        Duration, GameplayProperties, GameplayProperty, GameplayPropertyModifier, GlobalParams,
+        ItemCost, ModifierValue, Process, Quality, QualityDistribution, QualityDistributionShape,
+        QualityLocationOverride, QualityQuantization, Recipe, RecipeCosts, RecipeResult, Research,
+        ResourceCost, SlotName, Tier, ValueRange,
     };
 
     #[cfg(feature = "foundations")]

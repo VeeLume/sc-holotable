@@ -459,3 +459,72 @@ sc-resources upgrade commit, then start sc-crafting.
 - Legacy salvage/repair is a distinct gameplay loop with a distinct
   schema; modelling it would double the surface for marginal value to
   Hearth. Note the discovery, skip it.
+
+## Update 2026-06-07 — material-effect surface (implemented)
+
+The original census concluded crafting effects were an empty schema corner
+(`CraftingOptionalEntry.effect` = 0 records). That was a **measurement blind
+spot**: the census only walked `CraftingRecipeCosts.optional_costs`. The real
+per-material effect machinery lives on a *different* field — `context` on the
+**mandatory** cost tree — and is densely populated in live data. This is the
+data Hearth's crafting calculator (slot → material → quality → modified stat)
+renders. It is now modelled.
+
+### What was being dropped
+
+Every cost node (`CraftingCost_Resource` / `_Item` / `_Select`) carries an
+inherited `context: Vec<CraftingCostContext_*>`, and `CraftingCost_Select`
+additionally carries `name_info` (the slot label). The chain:
+
+```
+CraftingCost_Select.name_info → CraftingNameInfo{debug_name, display_name}   // "Frame", "Cabling", …
+CraftingCost_*.context[] → CraftingCostContext_ResultGameplayPropertyModifiers
+  → CraftingGameplayPropertyModifiers_List
+    → CraftingGameplayPropertyModifierCommon{ gameplay_property_record, value_ranges[] }
+      → CraftingGameplayPropertyModifierValueRange_Linear{ start/end_quality, modifier_at_start/end }
+                                              _LinearIntegerAdditive{ …, additive_at_start/end }
+```
+
+All reachable under the existing `crafting` feature — no new flag. Live counts
+(`examples/effect_probe.rs`): 5,740 Select nodes all with `name_info`
+(4,168 real labels incl. Frame/Cabling/Power Regulator, 1,572 placeholder);
+4,080 `ResultGameplayPropertyModifiers`; 5,800 `Linear` + 598
+`LinearIntegerAdditive` ranges. The modifiers attach at the inner named
+`Select` (slot) level. Other context variants seen: `QuantityMultiplier`,
+`ResultCompositionInclusion{Include|Exclude}`.
+
+### Modelled shape
+
+`Cost::Select` gained `name_info: Option<SlotName>` + `context: Vec<CostContext>`;
+`ResourceCost` / `ItemCost` gained `context`. New types: `SlotName`,
+`CostContext` (`GameplayPropertyModifiers` / `QuantityMultiplier` /
+`ResultCompositionInclusion` / `Other`), `CompositionInclusion`,
+`GameplayPropertyModifier{gameplay_property: Option<Guid>, value_ranges}`,
+`ValueRange` (`Linear` / `LinearIntegerAdditive` / `Other`), `ModifierValue`
+(`Multiplier(f32)` / `Additive(f32)`). Helpers: `Cost::context()`,
+`Cost::gameplay_property_modifiers()` (rolls up the subtree),
+`ValueRange::{quality_band, contains, evaluate}`,
+`GameplayPropertyModifier::evaluate(quality)` (picks the band, lerps, clamps).
+
+### Open: gameplay property → base-stat-field binding (Hearth follow-up)
+
+A modifier references a `CraftingGameplayPropertyDef` **by GUID**. The def is
+pure display metadata — `property_name` (display), `unit_format` (a printf
+string like `%.2f RPM`), `display_transformation` (`Scale` / `…PercentChange`
+/ `Sequence`). Records are named `GPP_<Domain>_<Property>` (29 of them: Armor,
+Health, Weapon, Shield, Quantum, Radar, ItemResource, Crafter; 20 used,
+9 unused incl. both `GPP_Crafter_*` → future crafting-station gameplay).
+
+**Gotchas:** display name ≠ key (`GPP_Weapon_Damage` shows "Impact Force",
+`GPP_Health_MaxHealth` → "Integrity"); transforms carry asymmetries
+(Recoil Kick = FactorToPercent vs Handling/Smoothness = FactorToNegatedPercent)
+and unit-scaling (`Scale ×1e-6`, `×1000`).
+
+To compute Hearth's base→modified **Product Stats** column you need to join a
+GPP to the crafted item's *base* stat field (e.g. `GPP_Weapon_FireRate` →
+sc-weapons' fire-rate field). **There is no typed DCB link** entity→property,
+and the binding must NOT be done by name/record-name matching. It is also **not
+a CRC lookup**: CRC resolves gRPC/runtime data only, never p4k/DataCore links
+(the p4k joins via GUIDs + typed `Reference`s). So the binding is either a
+runtime/gRPC concern not encoded in the p4k at all, or a typed/structural link
+still to be found — an open investigation, deliberately not solved here.

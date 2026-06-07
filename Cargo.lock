@@ -843,6 +843,7 @@ dependencies = [
  "sc-items",
  "sc-resources",
  "serde",
+ "serde_json",
  "tracing",
 ]
 
