@@ -75,6 +75,34 @@ pub mod weapons {
     pub use sc_weapons::*;
 }
 
+#[cfg(feature = "fps-weapons")]
+pub mod fps_weapons {
+    //! FPS-weapon base-stat sheet ([`sc_items_fps_weapons`]) — the T1
+    //! per-itemtype data source for crafting product stats.
+    pub use sc_items_fps_weapons::*;
+}
+
+#[cfg(feature = "armor")]
+pub mod armor {
+    //! Character-armor base-stat sheet ([`sc_items_armor`]) — temperature /
+    //! radiation resistance + per-type damage resistance.
+    pub use sc_items_armor::*;
+}
+
+#[cfg(feature = "ship-components")]
+pub mod ship_components {
+    //! Ship-component base-stat sheet ([`sc_items_ship_components`]) —
+    //! integrity, quantum drive, shield, cooler / power-plant generation.
+    pub use sc_items_ship_components::*;
+}
+
+#[cfg(feature = "ship-weapons")]
+pub mod ship_weapons {
+    //! Ship-weapon base-stat sheet ([`sc_items_ship_weapons`]) — integrity +
+    //! gun per-shot damage / mining-laser beam DPS.
+    pub use sc_items_ship_weapons::*;
+}
+
 #[cfg(feature = "crafting")]
 pub mod crafting {
     //! Crafting blueprints ([`sc_crafting`]).
@@ -113,13 +141,21 @@ pub mod prelude {
     pub use sc_tags::Tags;
     #[cfg(feature = "weapons")]
     pub use sc_weapons::{FpsWeapon, Missile, ShipWeapon, WeaponPools, Weapons};
+    #[cfg(feature = "fps-weapons")]
+    pub use sc_items_fps_weapons::{Damage, FpsWeaponStats, FpsWeapons};
+    #[cfg(feature = "armor")]
+    pub use sc_items_armor::{Armor, ArmorKind, ArmorStats, DamageResistance, ResistanceEntry};
+    #[cfg(feature = "ship-components")]
+    pub use sc_items_ship_components::{ShipComponentKind, ShipComponentStats, ShipComponents};
+    #[cfg(feature = "ship-weapons")]
+    pub use sc_items_ship_weapons::{ShipWeaponKind, ShipWeaponStats, ShipWeapons};
     #[cfg(feature = "crafting")]
     pub use sc_crafting::{
         Blueprint, Blueprints, Categories, Category, CompositionInclusion, Cost, CostContext,
-        Duration, GameplayProperties, GameplayProperty, GameplayPropertyModifier, GlobalParams,
-        ItemCost, ModifierValue, Process, Quality, QualityDistribution, QualityDistributionShape,
-        QualityLocationOverride, QualityQuantization, Recipe, RecipeCosts, RecipeResult, Research,
-        ResourceCost, SlotName, Tier, ValueRange,
+        Duration, GameplayProperties, GameplayProperty, GameplayPropertyModifier, GameplayStat,
+        GlobalParams, ItemCost, ModifierValue, Process, ProductStat, ProductStatSource, Quality,
+        QualityDistribution, QualityDistributionShape, QualityLocationOverride, QualityQuantization,
+        Recipe, RecipeCosts, RecipeResult, Research, ResourceCost, SlotName, Tier, ValueRange,
     };
 
     #[cfg(feature = "foundations")]

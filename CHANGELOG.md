@@ -14,6 +14,27 @@ separate commits and advance independently.
 
 ## [Unreleased]
 
+### Added
+
+- **Per-itemtype base-stat T1 crates + crafting product stats.** Four new data
+  crates expose the *base* stats a crafted item declares, read from the entity's
+  typed component structure:
+  - `sc-items-fps-weapons` — FPS weapons (fire rate, damage, spread, recoil, magazine).
+  - `sc-items-armor` — character armor (temperature/radiation resistance, per-type damage resistance).
+  - `sc-items-ship-components` — coolers / power plants / quantum drives / shields / radars (integrity + per-domain stats).
+  - `sc-items-ship-weapons` — ship guns + mining lasers (integrity + per-shot / beam damage).
+
+  `sc-crafting` ties them to recipes: `GameplayStat` (the typed gameplay-stat
+  vocabulary, mapped from a GPP's **record name** — never its churning GUID —
+  with build-time drift validation), `GameplayProperty::stat()`, the
+  `ProductStatSource` trait (one impl per domain), and
+  `Blueprints::product_stats(entity, &gp, &source, quality) -> Vec<ProductStat>`,
+  which aggregates a recipe's per-slot modifiers (additively, the in-game rule)
+  and applies them to the item's base value. Verified to the decimal against the
+  SC Crafter (scmdb) reference across all four domains. The umbrella
+  `sc-holotable` exposes every surface behind `fps-weapons` / `armor` /
+  `ship-components` / `ship-weapons` features (all pulled by `crafting`).
+
 ## [v0.13.0] - 2026-06-07
 
 ### Added

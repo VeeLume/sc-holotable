@@ -18,6 +18,10 @@ rust-version.workspace = true
 sc-discovery = { workspace = true, optional = true }
 sc-extract = { workspace = true, optional = true }
 sc-items = { workspace = true, optional = true }
+sc-items-armor = { workspace = true, optional = true }
+sc-items-fps-weapons = { workspace = true, optional = true }
+sc-items-ship-components = { workspace = true, optional = true }
+sc-items-ship-weapons = { workspace = true, optional = true }
 sc-locations = { workspace = true, optional = true }
 sc-tags = { workspace = true, optional = true }
 sc-manufacturers = { workspace = true, optional = true }
@@ -42,7 +46,13 @@ resources = ["dep:sc-resources", "extract"]
 # entities-scitem-weapons/ammoparams, sc-crafting → crafting), so the umbrella
 # only needs to pull the crate itself.
 weapons = ["dep:sc-weapons", "extract", "items"]
-crafting = ["dep:sc-crafting", "extract", "items", "resources"]
+# T1 per-itemtype base-stat sheets. The crafting product-stats API consumes
+# them, so `crafting` enables these surfaces too.
+fps-weapons = ["dep:sc-items-fps-weapons", "extract", "items"]
+armor = ["dep:sc-items-armor", "extract", "items"]
+ship-components = ["dep:sc-items-ship-components", "extract", "items"]
+ship-weapons = ["dep:sc-items-ship-weapons", "extract", "items"]
+crafting = ["dep:sc-crafting", "extract", "items", "resources", "fps-weapons", "armor", "ship-components", "ship-weapons"]
 missions = ["dep:sc-missions", "extract", "items", "tags"]
 
 # ── Cross-cutting ────────────────────────────────────────────────────────────
@@ -51,7 +61,7 @@ missions = ["dep:sc-missions", "extract", "items", "tags"]
 foundations = ["extract", "items", "tags", "manufacturers", "resources", "locations"]
 
 # ── Aggregators ──────────────────────────────────────────────────────────────
-all-t1 = ["installs", "items", "locations", "tags", "manufacturers", "resources", "weapons", "crafting", "foundations"]
+all-t1 = ["installs", "items", "locations", "tags", "manufacturers", "resources", "weapons", "fps-weapons", "armor", "ship-components", "ship-weapons", "crafting", "foundations"]
 full = ["all-t1", "missions"]
 
 [dev-dependencies]
