@@ -14,6 +14,8 @@ TUI for browsing the data; pair it with the `cargo run … --example
 
 ## Last worked on
 
+**Crafting product stats — `sc-holotable/v0.14.0` (2026-06-08)** — `660585a`. Crafted-item base stats reshaped by recipe quality modifiers. Four new T1 stat crates (`sc-items-fps-weapons`, `sc-items-armor`, `sc-items-ship-components`, `sc-items-ship-weapons`) + the `sc-crafting` integrator (`GameplayStat`, `ProductStatSource`, `Blueprints::product_stats`) + umbrella surfaces. GPP→stat binding is record-name-anchored (not GUID), additive slot aggregation, verified to the decimal vs scmdb. **See `docs/sc-product-stats.md` for the orientation + API + gotchas.** `sc-weapons` is now legacy. Remaining: tractor/hull-scraping are percent-only by design; SalvageModifier deferred.
+
 **`Ships::resolve_spawn` — three-bug fix (2026-05-01)** — `93cf1cb`. Salvage-target spawns reported `candidates=0` despite working in-game. Three coupled bugs identified via `salvage_pool` + `resolve_debug` digs:
 
 1. **Tag-tree subsumption missing.** Avenger Titan Renegade carries the leaf `AvailableToSalvage > Small`; the slot demands the bare parent `AvailableToSalvage`. Strict GUID equality fails. Fix: precompute `tags_expanded` per entity at build time (literal tags + all ancestors) and match against that.
@@ -60,7 +62,12 @@ These tools are kept committed; they're the canonical way to run a quick dig aga
 | `sc-generator` | Complete. Codegen + feature classification + Cargo.toml generation. |
 | `sc-bench` | Complete. Runtime benchmark binary. |
 | `sc-ammo` | Spec only (`docs/sc-ammo.md`), no crate. |
-| `sc-weapons` | v1 + v2 phases 1-3 shipped. 24 unit tests. |
+| `sc-weapons` | **Legacy.** v1 + v2 phases 1-3 shipped. 24 unit tests. Superseded for product stats by the `sc-items-*` crates. |
+| `sc-items-fps-weapons` | Complete. FPS-weapon base-stat sheet (fire rate / damage / spread / recoil / mag). 2 tests. |
+| `sc-items-armor` | Complete. Armor base stats (temp / radiation resistance, per-type damage resistance). 2 tests. |
+| `sc-items-ship-components` | Complete. Cooler/PowerPlant/QuantumDrive/Shield/Radar (integrity + per-domain). 2 tests. |
+| `sc-items-ship-weapons` | Complete. WeaponGun + WeaponMining (integrity + per-shot/beam damage). 2 tests. |
+| `sc-crafting` | Complete + product-stats integrator (`GameplayStat`, `ProductStatSource`, `product_stats`). 11 lib tests. |
 | `sc-missions` | **v2 complete (all 7 phases + resolver fix). 22 lib tests.** |
 | `sc-locations` | Complete. Typed `StarMapObject` surface — `Location` / `LocationKind` (21 kinds) / `Locations` with class-CRC resolution + hierarchy. `sc-extract[starmap]`. 5 lib tests. |
 | `sc-explorer` | Tools binary — three tabs (Pools / Contracts / Weapons). Per-crate `tui` modules own their domain views. |
