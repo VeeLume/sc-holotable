@@ -37,9 +37,14 @@ use sc_extract::generated::{
 };
 use sc_extract::{Datacore, Guid, LocaleKey, LocaleMap, RecordPaths};
 use sc_items::Items;
+use sc_items_armor::Armor;
+use sc_items_fps_weapons::FpsWeapons;
+use sc_items_ship_components::ShipComponents;
+use sc_items_ship_weapons::ShipWeapons;
 use sc_resources::CargoQuantity;
 use serde::{Deserialize, Serialize};
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
+use tracing::warn;
 
 // ─────────────────────────────────────────────────────────────────────
 // Primary index
@@ -1248,6 +1253,11 @@ pub struct GameplayProperties {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GameplayProperty {
     pub guid: Guid,
+    /// DCB record name, e.g. `"CraftingGameplayPropertyDef.GPP_Weapon_FireRate"`.
+    /// The stable anchor for [`GameplayProperty::stat`] — we key the
+    /// GPP→stat mapping on this name (not the GUID, which churns between
+    /// patches). See [`GameplayStat`].
+    pub record_name: String,
     /// `propertyName` — typically `"@StatName_..."`. Resolve via [`LocaleMap`].
     pub property_name_key: LocaleKey,
     /// `unitFormat` — typically `"@LOC_..."` or `"@LOC_EMPTY"`.
@@ -1311,18 +1321,45 @@ impl GameplayProperties {
     pub fn build(datacore: &Datacore) -> Self {
         let records = &datacore.records().records;
         let pools = &datacore.records().pools;
+        let db = datacore.db();
         let mut props = Self::default();
         for (&guid, &handle) in &records.multi_feature.crafting_gameplay_property_def {
             let Some(rec) = handle.get(pools) else { continue };
+            let record_name = db
+                .record(&guid)
+                .and_then(|r| r.name())
+                .unwrap_or_default()
+                .to_string();
             props
                 .by_guid
-                .insert(guid, build_gameplay_property(guid, rec, pools));
+                .insert(guid, build_gameplay_property(guid, rec, pools, record_name));
         }
+        props.validate_stat_coverage();
         props
     }
 
     pub fn get(&self, guid: &Guid) -> Option<&GameplayProperty> {
         self.by_guid.get(guid)
+    }
+
+    /// Loud-drift guard: warn if any modelled [`GameplayStat`] no longer has a
+    /// matching live GPP record (renamed/removed in a patch). This is the
+    /// alarm that keeps the name-anchored mapping honest — see [`GameplayStat`].
+    fn validate_stat_coverage(&self) {
+        let live: HashSet<&str> = self
+            .by_guid
+            .values()
+            .map(|p| gpp_suffix(&p.record_name))
+            .collect();
+        for (suffix, variant) in GameplayStat::KNOWN {
+            if !live.contains(suffix) {
+                warn!(
+                    stat = ?variant,
+                    suffix,
+                    "modelled GameplayStat has no live GPP record — renamed/removed? GPP→stat mapping needs review"
+                );
+            }
+        }
     }
 
     pub fn iter(&self) -> impl Iterator<Item = &GameplayProperty> + '_ {
@@ -1338,13 +1375,297 @@ impl GameplayProperties {
     }
 }
 
+// ─────────────────────────────────────────────────────────────────────
+// Gameplay-stat mapping + product stats
+// ─────────────────────────────────────────────────────────────────────
+
+/// The typed vocabulary of gameplay stats that crafting reshapes.
+///
+/// A GPP is a *data record* with no schema-level identity, so we map it by its
+/// **record-name** suffix — the only stable, auditable anchor (record GUIDs
+/// churn between patches and would fail silently). This is the project's
+/// "string match genuinely unavoidable → scope, comment, alarm" carve-out: the
+/// GPP→stat binding is *not present in the p4k at all* (the GPP def is
+/// display-only; nothing references it but recipe blueprints — verified via
+/// `examples/fps_gpp_dig.rs`), so no typed/data-derived alternative exists.
+/// [`GameplayProperties::build`] validates coverage and `warn!`s on drift.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum GameplayStat {
+    WeaponFireRate,
+    WeaponDamage,
+    WeaponRecoilKick,
+    WeaponRecoilHandling,
+    WeaponRecoilSmoothness,
+    WeaponSpread,
+    ArmorDamageMitigation,
+    ArmorTemperatureMin,
+    ArmorTemperatureMax,
+    ArmorRadiationDissipation,
+    /// Component HP ("Integrity") — `GPP_Health_MaxHealth`, shared by every
+    /// ship component.
+    Integrity,
+    QuantumSpeed,
+    QuantumFuelRequirement,
+    ShieldMaxHealth,
+    CoolantGeneration,
+    PowerGeneration,
+    RadarMinAimAssist,
+    RadarMaxAimAssist,
+    /// A GPP not yet modelled (tractor / hull-scraping / …, or a stat added in
+    /// a game patch). Carries the record-name suffix.
+    Unknown(String),
+}
+
+impl GameplayStat {
+    /// `(record-name suffix, variant)` for every modelled stat. The recoil
+    /// axis pairing — Kick→pitch, Handling→yaw, Smoothness→smooth-time —
+    /// follows the in-game stat-panel convention; it is the one editorial
+    /// choice here, since the three recoil GPPs are otherwise indistinguishable
+    /// in data (a recipe applies all three identically).
+    const KNOWN: &'static [(&'static str, GameplayStat)] = &[
+        ("GPP_Weapon_FireRate", GameplayStat::WeaponFireRate),
+        ("GPP_Weapon_Damage", GameplayStat::WeaponDamage),
+        ("GPP_Weapon_Recoil_Kick", GameplayStat::WeaponRecoilKick),
+        ("GPP_Weapon_Recoil_Handling", GameplayStat::WeaponRecoilHandling),
+        ("GPP_Weapon_Recoil_Smoothness", GameplayStat::WeaponRecoilSmoothness),
+        ("GPP_Weapon_Spread", GameplayStat::WeaponSpread),
+        ("GPP_Armor_DamageMitigation", GameplayStat::ArmorDamageMitigation),
+        ("GPP_Armor_TemperatureMin", GameplayStat::ArmorTemperatureMin),
+        ("GPP_Armor_TemperatureMax", GameplayStat::ArmorTemperatureMax),
+        ("GPP_Armor_RadiationDissipation", GameplayStat::ArmorRadiationDissipation),
+        ("GPP_Health_MaxHealth", GameplayStat::Integrity),
+        ("GPP_Quantum_Speed", GameplayStat::QuantumSpeed),
+        ("GPP_Quantum_FuelRequirement", GameplayStat::QuantumFuelRequirement),
+        ("GPP_Shield_MaxHealth", GameplayStat::ShieldMaxHealth),
+        ("GPP_ItemResource_CoolantGeneration", GameplayStat::CoolantGeneration),
+        ("GPP_ItemResource_PowerGeneration", GameplayStat::PowerGeneration),
+        ("GPP_Radar_MinAimAssistDistance", GameplayStat::RadarMinAimAssist),
+        ("GPP_Radar_MaxAimAssistDistance", GameplayStat::RadarMaxAimAssist),
+    ];
+
+    /// Resolve a GPP record name (full `TypeName.Suffix` or bare suffix) to a
+    /// stat. Unmodelled GPPs fall through to [`GameplayStat::Unknown`].
+    pub fn from_gpp_name(record_name: &str) -> GameplayStat {
+        let suffix = gpp_suffix(record_name);
+        Self::KNOWN
+            .iter()
+            .find(|(s, _)| *s == suffix)
+            .map(|(_, v)| v.clone())
+            .unwrap_or_else(|| GameplayStat::Unknown(suffix.to_string()))
+    }
+}
+
+/// Record-name tail after the `TypeName.` prefix
+/// (`CraftingGameplayPropertyDef.GPP_Weapon_FireRate` → `GPP_Weapon_FireRate`).
+fn gpp_suffix(record_name: &str) -> &str {
+    record_name.rsplit('.').next().unwrap_or(record_name)
+}
+
+impl GameplayProperty {
+    /// The typed [`GameplayStat`] this property maps to (record-name anchored).
+    pub fn stat(&self) -> GameplayStat {
+        GameplayStat::from_gpp_name(&self.record_name)
+    }
+}
+
+/// One crafted-item product stat: a gameplay property after the recipe's
+/// material modifiers are applied at a given quality.
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct ProductStat {
+    /// The GPP this came from (raw GUID).
+    pub gameplay_property: Guid,
+    /// Typed stat (record-name anchored). [`GameplayStat::Unknown`] for GPPs
+    /// outside the modelled set.
+    pub stat: GameplayStat,
+    /// Base value off the item (fire-rate RPM, recoil degrees, …). `None` when
+    /// the entity has no known base for this stat — the caller can still show
+    /// [`ProductStat::pct_change`].
+    pub base: Option<f32>,
+    /// `base × factor + additive`, when `base` is known.
+    pub modified: Option<f32>,
+    /// Aggregate multiplicative factor (1.0 = no change), combined **additively
+    /// across slots**: `1 + Σ(factorᵢ − 1)` — the in-game rule, verified
+    /// against scmdb (two −10% slots → −20%, not −19%).
+    pub factor: f32,
+    /// Aggregate additive bonus (0.0 for pure-multiplier stats).
+    pub additive: f32,
+}
+
+impl ProductStat {
+    /// Percent change implied by the factor (×0.80 → −20%).
+    pub fn pct_change(&self) -> f32 {
+        (self.factor - 1.0) * 100.0
+    }
+}
+
+/// A source of *base* values for [`GameplayStat`]s — implemented per item
+/// domain so [`Blueprints::product_stats`] stays generic over the source.
+///
+/// Each domain's base-stat crate (`sc-items-fps-weapons`, `sc-items-armor`, …)
+/// is pure data; the `GameplayStat → field` mapping lives here in sc-crafting
+/// (orphan rule: the trait is local), so the integrator remains the single
+/// owner of the GPP↔stat mapping.
+pub trait ProductStatSource {
+    /// Base value for `stat` on `entity`, or `None` if this source doesn't
+    /// cover that entity or stat.
+    fn base_value(&self, entity: &Guid, stat: &GameplayStat) -> Option<f32>;
+}
+
+impl ProductStatSource for FpsWeapons {
+    fn base_value(&self, entity: &Guid, stat: &GameplayStat) -> Option<f32> {
+        let w = self.get(entity)?;
+        match stat {
+            GameplayStat::WeaponFireRate => w.fire_rate.map(|r| r as f32),
+            GameplayStat::WeaponDamage => w.damage.map(|d| d.total()),
+            GameplayStat::WeaponRecoilKick => w.recoil_pitch,
+            GameplayStat::WeaponRecoilHandling => w.recoil_yaw,
+            GameplayStat::WeaponRecoilSmoothness => w.recoil_smooth,
+            GameplayStat::WeaponSpread => w.spread_max,
+            _ => None,
+        }
+    }
+}
+
+impl ProductStatSource for Armor {
+    fn base_value(&self, entity: &Guid, stat: &GameplayStat) -> Option<f32> {
+        let a = self.get(entity)?;
+        match stat {
+            GameplayStat::ArmorTemperatureMin => a.temp_resistance_min,
+            GameplayStat::ArmorTemperatureMax => a.temp_resistance_max,
+            GameplayStat::ArmorRadiationDissipation => a.radiation_dissipation,
+            // Damage Mitigation = the mitigation FRACTION `1 − multiplier`
+            // (a damage-taken `multiplier` of 0.60 = 40% mitigation). The
+            // crafting modifier multiplies the *mitigation*, so the modified
+            // multiplier is `1 − base_mitigation × factor`. Verified vs scmdb
+            // ADP Core: physical 0.60 → mitigation 0.40, ×0.85 @ Q0 → 0.34
+            // ("−34%"). A factor < 1 below Base-500 quality correctly yields
+            // worse armor. Physical type is the representative scalar; the same
+            // factor applies to every type in `ArmorStats.damage_resistance`.
+            GameplayStat::ArmorDamageMitigation => a
+                .damage_resistance
+                .as_ref()
+                .and_then(|d| d.physical.as_ref())
+                .map(|e| 1.0 - e.multiplier),
+            _ => None,
+        }
+    }
+}
+
+impl ProductStatSource for ShipComponents {
+    fn base_value(&self, entity: &Guid, stat: &GameplayStat) -> Option<f32> {
+        let c = self.get(entity)?;
+        match stat {
+            GameplayStat::Integrity => c.integrity_hp,
+            GameplayStat::QuantumSpeed => c.quantum_drive_speed,
+            GameplayStat::QuantumFuelRequirement => c.quantum_fuel_requirement,
+            GameplayStat::ShieldMaxHealth => c.shield_max_health,
+            GameplayStat::CoolantGeneration => c.coolant_rate,
+            GameplayStat::PowerGeneration => c.power_output,
+            GameplayStat::RadarMinAimAssist => c.radar_aim_assist_min,
+            GameplayStat::RadarMaxAimAssist => c.radar_aim_assist_max,
+            _ => None,
+        }
+    }
+}
+
+impl ProductStatSource for ShipWeapons {
+    fn base_value(&self, entity: &Guid, stat: &GameplayStat) -> Option<f32> {
+        let w = self.get(entity)?;
+        match stat {
+            GameplayStat::Integrity => w.integrity_hp,
+            // GPP_Weapon_Damage — per-shot for guns, per-second beam DPS for
+            // mining lasers ("Laser Power").
+            GameplayStat::WeaponDamage => w.damage.map(|d| d.total()),
+            _ => None,
+        }
+    }
+}
+
+impl Blueprints {
+    /// Compute the crafted item's product stats at `quality` (0–1000): for
+    /// every gameplay property the recipe modifies, the per-slot modifiers are
+    /// aggregated additively, mapped to a [`GameplayStat`], and applied to the
+    /// item's base value via `bases`.
+    ///
+    /// `bases` is the per-domain base-stat source ([`FpsWeapons`], [`Armor`],
+    /// …). Stats with no base (or entities the source doesn't cover) yield
+    /// `base = None`, leaving the percent change still meaningful. Returns
+    /// empty if the entity has no blueprint.
+    pub fn product_stats<S: ProductStatSource>(
+        &self,
+        entity_guid: Guid,
+        gp: &GameplayProperties,
+        bases: &S,
+        quality: i32,
+    ) -> Vec<ProductStat> {
+        let Some(bp) = self.for_crafted_entity(entity_guid) else {
+            return Vec::new();
+        };
+        // Group every modifier in the recipe by gameplay property.
+        let mut by_gpp: HashMap<Guid, Vec<&GameplayPropertyModifier>> = HashMap::new();
+        for tier in &bp.tiers {
+            if let Some(recipe) = &tier.recipe
+                && let Some(costs) = &recipe.costs
+                && let Some(mc) = &costs.mandatory
+            {
+                for m in mc.gameplay_property_modifiers() {
+                    if let Some(g) = m.gameplay_property {
+                        by_gpp.entry(g).or_default().push(m);
+                    }
+                }
+            }
+        }
+        let mut out: Vec<ProductStat> = by_gpp
+            .into_iter()
+            .map(|(guid, mods)| {
+                let mut factor = 1.0_f32;
+                let mut additive = 0.0_f32;
+                for m in &mods {
+                    match m.evaluate(quality) {
+                        Some(ModifierValue::Multiplier(f)) => factor += f - 1.0,
+                        Some(ModifierValue::Additive(a)) => additive += a,
+                        None => {}
+                    }
+                }
+                let stat = gp
+                    .get(&guid)
+                    .map(GameplayProperty::stat)
+                    .unwrap_or_else(|| GameplayStat::Unknown(String::new()));
+                let base = bases.base_value(&entity_guid, &stat);
+                let modified = base.map(|b| b * factor + additive);
+                ProductStat {
+                    gameplay_property: guid,
+                    stat,
+                    base,
+                    modified,
+                    factor,
+                    additive,
+                }
+            })
+            .collect();
+        // Stable display order: known stats first (in KNOWN order), then unknown.
+        out.sort_by_key(|p| stat_order(&p.stat));
+        out
+    }
+}
+
+/// Sort key giving modelled stats their `KNOWN` order, unknowns last.
+fn stat_order(stat: &GameplayStat) -> usize {
+    GameplayStat::KNOWN
+        .iter()
+        .position(|(_, v)| v == stat)
+        .unwrap_or(usize::MAX)
+}
+
 fn build_gameplay_property(
     guid: Guid,
     rec: &CraftingGameplayPropertyDef,
     pools: &DataPools,
+    record_name: String,
 ) -> GameplayProperty {
     GameplayProperty {
         guid,
+        record_name,
         property_name_key: rec.property_name.clone(),
         unit_format_key: rec.unit_format.clone(),
         display_transformation: rec
@@ -1726,6 +2047,47 @@ mod enum_serde {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn gameplay_stat_maps_by_record_name_suffix() {
+        // Full record name and bare suffix both resolve.
+        assert_eq!(
+            GameplayStat::from_gpp_name("CraftingGameplayPropertyDef.GPP_Weapon_FireRate"),
+            GameplayStat::WeaponFireRate
+        );
+        assert_eq!(
+            GameplayStat::from_gpp_name("GPP_Weapon_Recoil_Kick"),
+            GameplayStat::WeaponRecoilKick
+        );
+        // Modelled armor stat resolves typed.
+        assert_eq!(
+            GameplayStat::from_gpp_name("CraftingGameplayPropertyDef.GPP_Armor_DamageMitigation"),
+            GameplayStat::ArmorDamageMitigation
+        );
+        // Modelled ship-component stat resolves typed.
+        assert_eq!(
+            GameplayStat::from_gpp_name("GPP_Health_MaxHealth"),
+            GameplayStat::Integrity
+        );
+        // A crafting-station GPP (never an item product stat) stays Unknown.
+        assert_eq!(
+            GameplayStat::from_gpp_name("CraftingGameplayPropertyDef.GPP_Crafter_CraftSpeed"),
+            GameplayStat::Unknown("GPP_Crafter_CraftSpeed".into())
+        );
+    }
+
+    #[test]
+    fn product_stat_pct_change() {
+        let ps = ProductStat {
+            gameplay_property: Guid::default(),
+            stat: GameplayStat::WeaponRecoilKick,
+            base: Some(1.55),
+            modified: Some(1.24),
+            factor: 0.80,
+            additive: 0.0,
+        };
+        assert!((ps.pct_change() - (-20.0)).abs() < 1e-4);
+    }
 
     #[test]
     fn duration_seconds_sum() {

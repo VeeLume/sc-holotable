@@ -12,6 +12,12 @@ rust-version.workspace = true
 # quantity projection + downstream resource lookup).
 sc-extract = { workspace = true, features = ["crafting"] }
 sc-items = { workspace = true }
+# Integrator: sc-crafting owns the GPP -> stat mapping and produces finished
+# product stats, so it depends on the per-domain base-stat crates.
+sc-items-armor = { workspace = true }
+sc-items-fps-weapons = { workspace = true }
+sc-items-ship-components = { workspace = true }
+sc-items-ship-weapons = { workspace = true }
 sc-resources = { workspace = true }
 serde = { workspace = true }
 tracing = { workspace = true }
