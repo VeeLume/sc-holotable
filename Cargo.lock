@@ -841,6 +841,10 @@ dependencies = [
  "sc-discovery",
  "sc-extract",
  "sc-items",
+ "sc-items-armor",
+ "sc-items-fps-weapons",
+ "sc-items-ship-components",
+ "sc-items-ship-weapons",
  "sc-resources",
  "serde",
  "serde_json",
@@ -928,6 +932,10 @@ dependencies = [
  "sc-discovery",
  "sc-extract",
  "sc-items",
+ "sc-items-armor",
+ "sc-items-fps-weapons",
+ "sc-items-ship-components",
+ "sc-items-ship-weapons",
  "sc-locations",
  "sc-manufacturers",
  "sc-missions",
@@ -949,6 +957,50 @@ dependencies = [
  "serde_json",
  "tracing",
  "tracing-subscriber",
+]
+
+[[package]]
+name = "sc-items-armor"
+version = "0.0.0"
+dependencies = [
+ "sc-discovery",
+ "sc-extract",
+ "sc-items",
+ "serde",
+ "tracing",
+]
+
+[[package]]
+name = "sc-items-fps-weapons"
+version = "0.0.0"
+dependencies = [
+ "sc-discovery",
+ "sc-extract",
+ "sc-items",
+ "serde",
+ "tracing",
+]
+
+[[package]]
+name = "sc-items-ship-components"
+version = "0.0.0"
+dependencies = [
+ "sc-discovery",
+ "sc-extract",
+ "sc-items",
+ "serde",
+ "tracing",
+]
+
+[[package]]
+name = "sc-items-ship-weapons"
+version = "0.0.0"
+dependencies = [
+ "sc-discovery",
+ "sc-extract",
+ "sc-items",
+ "serde",
+ "tracing",
 ]
 
 [[package]]

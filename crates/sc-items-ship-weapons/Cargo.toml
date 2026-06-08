@@ -1,0 +1,18 @@
+[package]
+name = "sc-items-ship-weapons"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+
+[dependencies]
+# T1 data crate: ship-weapon base-stat sheet (integrity + the GPP_Weapon_Damage
+# surface — per-shot damage for ballistic/energy guns, per-second beam DPS for
+# mining lasers). Classification via sc-items (EItemType); stats read through
+# the raw `Datacore::db()` layer.
+sc-extract = { workspace = true }
+sc-items = { workspace = true }
+serde = { workspace = true }
+tracing = { workspace = true }
+
+[dev-dependencies]
+sc-discovery = { workspace = true }

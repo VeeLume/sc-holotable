@@ -1,0 +1,17 @@
+[package]
+name = "sc-items-ship-components"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+
+[dependencies]
+# T1 data crate: ship-component base-stat sheet (integrity, quantum drive
+# speed/fuel, shield HP/regen, cooler/power-plant generation). Classification
+# via sc-items (EItemType); stats read through the raw `Datacore::db()` layer.
+sc-extract = { workspace = true }
+sc-items = { workspace = true }
+serde = { workspace = true }
+tracing = { workspace = true }
+
+[dev-dependencies]
+sc-discovery = { workspace = true }

@@ -1,0 +1,19 @@
+[package]
+name = "sc-items-fps-weapons"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+
+[dependencies]
+# T1 data crate: the FPS-weapon base-stat sheet (fire rate, damage, spread,
+# recoil, ammo, magazine) read from the typed entity surface. Decoupled from
+# sc-weapons (legacy) and from sc-crafting / gameplay properties.
+#   entities-scitem-weapons  weapon EntityClassDefinitions
+#   ammoparams               AmmoParams (damage / projectile speed)
+sc-extract = { workspace = true, features = ["entities-scitem-weapons", "ammoparams"] }
+sc-items = { workspace = true }
+serde = { workspace = true }
+tracing = { workspace = true }
+
+[dev-dependencies]
+sc-discovery = { workspace = true }

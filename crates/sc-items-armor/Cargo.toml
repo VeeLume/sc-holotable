@@ -1,0 +1,20 @@
+[package]
+name = "sc-items-armor"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+
+[dependencies]
+# T1 data crate: character-armor base-stat sheet (temperature + radiation
+# resistance, per-type damage resistance) read from the entity's typed
+# component structure. Classification uses sc-items (EItemType); the armor
+# stat components (SCItemClothingParams / SCItemSuitArmorParams) and the
+# DamageResistance chain are read through the raw `Datacore::db()` layer
+# (feature-independent), so no sc-extract leaf feature is required here.
+sc-extract = { workspace = true }
+sc-items = { workspace = true }
+serde = { workspace = true }
+tracing = { workspace = true }
+
+[dev-dependencies]
+sc-discovery = { workspace = true }

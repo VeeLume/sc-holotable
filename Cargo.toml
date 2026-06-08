@@ -6,6 +6,10 @@ members = [
     "crates/sc-extract-generated",
     "crates/sc-crafting",
     "crates/sc-items",
+    "crates/sc-items-armor",
+    "crates/sc-items-fps-weapons",
+    "crates/sc-items-ship-components",
+    "crates/sc-items-ship-weapons",
     "crates/sc-locations",
     "crates/sc-manufacturers",
     "crates/sc-resources",
@@ -30,6 +34,10 @@ sc-extract = { path = "crates/sc-extract" }
 sc-extract-generated = { path = "crates/sc-extract-generated" }
 sc-crafting = { path = "crates/sc-crafting" }
 sc-items = { path = "crates/sc-items" }
+sc-items-armor = { path = "crates/sc-items-armor" }
+sc-items-fps-weapons = { path = "crates/sc-items-fps-weapons" }
+sc-items-ship-components = { path = "crates/sc-items-ship-components" }
+sc-items-ship-weapons = { path = "crates/sc-items-ship-weapons" }
 sc-locations = { path = "crates/sc-locations" }
 sc-manufacturers = { path = "crates/sc-manufacturers" }
 sc-resources = { path = "crates/sc-resources" }
