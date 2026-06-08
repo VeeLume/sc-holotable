@@ -14,6 +14,8 @@ separate commits and advance independently.
 
 ## [Unreleased]
 
+## [v0.14.0] - 2026-06-08
+
 ### Added
 
 - **Per-itemtype base-stat T1 crates + crafting product stats.** Four new data
