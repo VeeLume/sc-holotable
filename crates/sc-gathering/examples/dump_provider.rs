@@ -57,9 +57,16 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                     )
                 })
                 .unwrap_or_default();
-            let harvestable = e.harvestable.map(|h| h.to_string()).unwrap_or_default();
+            let deposit = e
+                .deposit
+                .as_ref()
+                .map(|d| {
+                    let res = d.parts.iter().filter(|p| p.resource.is_some()).count();
+                    format!("{:?} ({}/{} parts w/ resource)", d.name, res, d.parts.len())
+                })
+                .unwrap_or_else(|| "<no deposit>".to_string());
             println!(
-                "      rel={:<6} share={:>5.1}%  {cluster:<12}  {harvestable}",
+                "      rel={:<6} share={:>5.1}%  {cluster:<12}  {deposit}",
                 e.relative_probability,
                 e.share * 100.0
             );

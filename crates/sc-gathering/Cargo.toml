@@ -5,11 +5,16 @@ edition.workspace = true
 rust-version.workspace = true
 
 [dependencies]
-# Tier 1 — the harvestable provider spine (groups / elements / clusters, with
-# normalized rarity). Resource identity + mode (Tier 2, `entities-mineable` +
-# `resourcetypedatabase`), quality (`sc-crafting`), and the location join
-# (`sc-locations` `LocationContainers`) are layered on next.
-sc-extract = { workspace = true, features = ["harvestable"] }
+# Provider spine (`harvestable`) + Tier-2 resource resolution: the rock entity
+# classes (`entities-mineable`), composition/element records (`mining`), and the
+# `ResourceType` catalog (`resourcetypedatabase`). Mode + signal, quality
+# (`sc-crafting`), and the location join (`sc-locations`) are layered on next.
+sc-extract = { workspace = true, features = [
+    "harvestable",
+    "entities-mineable",
+    "mining",
+    "resourcetypedatabase",
+] }
 serde = { workspace = true }
 tracing = { workspace = true }
 

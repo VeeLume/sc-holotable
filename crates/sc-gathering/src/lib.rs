@@ -10,8 +10,10 @@
 //! rarity + clusters). Resource identity + gathering mode (Tier 2), quality
 //! (Tier 3), and the location join land next.
 
+mod mineable;
 mod provider;
 
+pub use mineable::{Deposit, DepositPart};
 pub use provider::{Cluster, ClusterBand, GatherableElement, Provider, ProviderGroup};
 
 use std::collections::HashMap;

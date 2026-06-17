@@ -9,6 +9,8 @@ use sc_extract::generated::{HarvestableElementGroup, HarvestableProviderPreset};
 use sc_extract::{Guid, RecordStore};
 use serde::{Deserialize, Serialize};
 
+use crate::mineable::{self, Deposit};
+
 /// One body/field's resource-provider spine, resolved from a
 /// `HarvestableProviderPreset` (keyed by its record GUID).
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -31,14 +33,16 @@ pub struct ProviderGroup {
 }
 
 /// One harvestable within a group. `share` is `relative_probability` normalized
-/// within the group. `harvestable` is the `HarvestablePreset` GUID (Tier-2
-/// resolves it to a `ResourceType` + mode + signal).
+/// within the group. `harvestable` is the `HarvestablePreset` GUID; `deposit` is
+/// its resolved within-rock composition (Tier 2, mineables only — `None` for
+/// plants/salvage). Mode + signal land in the following increments.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GatherableElement {
     pub harvestable: Option<Guid>,
     pub relative_probability: f32,
     pub share: f32,
     pub cluster: Option<Cluster>,
+    pub deposit: Option<Deposit>,
 }
 
 /// Cluster spawn: a probability plus **weighted discrete sizes** (each band has
@@ -95,6 +99,7 @@ pub(crate) fn provider_for(
                 relative_probability: e.relative_probability,
                 share: norm(e.relative_probability, elem_sum),
                 cluster: e.clustering.and_then(|cg| cluster_for(cg, store)),
+                deposit: e.harvestable.and_then(|h| mineable::deposit_for(h, store)),
             })
             .collect();
         groups.push(ProviderGroup {
