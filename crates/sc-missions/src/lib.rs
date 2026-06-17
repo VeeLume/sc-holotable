@@ -55,6 +55,9 @@ mod reputation;
 mod ships;
 mod titles;
 
+#[cfg(feature = "payout")]
+mod payout;
+
 #[cfg(feature = "tui")]
 pub mod tui;
 
@@ -72,6 +75,8 @@ pub use expand::{
 };
 pub use index::Missions;
 pub use locality::{Localities, LocalityView, LocationRef, Locations, SystemKey};
+#[cfg(feature = "payout")]
+pub use payout::UecCurve;
 pub use reputation::{FactionRep, FactionReputations, ReputationStandings, Standing};
 // Re-exported so consumers can read `LocationRef::kind` without a direct
 // sc-locations dep. Type identity is preserved (same workspace `sc-extract`).

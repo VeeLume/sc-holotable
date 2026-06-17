@@ -44,3 +44,11 @@ tracing-subscriber = { version = "0.3", features = ["env-filter"] }
 [features]
 default = []
 tui = ["dep:superlighttui"]
+# Payout estimation: pulls the `gamemode` pools so `UecCurve` can read
+# GameMode.SC_Default.subsumptionMissionModule.uecCurve.
+payout = ["sc-extract/gamemode"]
+
+# Examples that use the payout API only build when the feature is on.
+[[example]]
+name = "uec_validate"
+required-features = ["payout"]

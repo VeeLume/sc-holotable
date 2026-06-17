@@ -1,20 +1,21 @@
-//! Validate the shipped aUEC estimator against known SCMDB payouts.
+//! Validate the *extracted* aUEC estimator against known SCMDB payouts.
 //!
-//! Applies the exact formula Hearth ships in `cook.rs::estimate_uec`
-//! (`round₂₅₀(1232 × 1.354^weighted_difficulty × time_minutes)` — exponential
-//! in difficulty) to a set of missions the maintainer looked up on SCMDB, and
-//! prints estimate vs known. The 13-mission set spans difficulty levels 2–5 and
-//! should resolve every row to 0.0% after rounding; any regression after a
-//! data/weight change shows up here.
+//! Builds [`UecCurve`] from the game's `GameMode.SC_Default.uecCurve` (no longer
+//! a hardcoded formula) and applies it to a set of missions the maintainer
+//! looked up on SCMDB, printing estimate vs known. The set spans difficulty
+//! 2–7 and should resolve every row to 0.0% after rounding; any regression
+//! after a data/extraction change shows up here.
+//!
+//! Requires the `payout` feature (for `UecCurve`):
 //!
 //! ```bash
-//! cargo run -p sc-missions --release --example uec_validate
+//! cargo run -p sc-missions --release --features payout --example uec_validate
 //! ```
 
 use std::collections::BTreeSet;
 
 use sc_extract::{AssetConfig, AssetData, AssetSource, Datacore};
-use sc_missions::{Missions, RewardAmount};
+use sc_missions::{Missions, RewardAmount, UecCurve};
 
 /// Known SCMDB payouts the maintainer provided (title substring → aUEC).
 /// Several titles have system/rep variants with distinct payouts; we print
@@ -46,23 +47,30 @@ const SAMPLES: &[(&str, &[i32])] = &[
     ("Eliminate XenoThreat Enforcer", &[260_750]),
 ];
 
-/// The shipped estimator, mirrored from `hearth`'s `cook.rs::estimate_uec`.
-/// Exponential in difficulty: reward/min grows ~1.354× per difficulty level.
-fn estimate(weighted: f32, time: f32) -> Option<i32> {
-    if weighted <= 0.0 || time <= 0.0 {
-        return None;
-    }
-    let raw = 1232.0 * 1.354_f32.powf(weighted) * time;
-    Some(((raw / 250.0).round() * 250.0) as i32)
+fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
+    // The `gamemode` extraction (GameMode.SC_Default) recurses deep enough to
+    // overflow the default Windows main-thread stack — run on a larger one.
+    std::thread::Builder::new()
+        .stack_size(64 * 1024 * 1024)
+        .spawn(run)?
+        .join()
+        .unwrap()
 }
 
-fn main() -> Result<(), Box<dyn std::error::Error>> {
+fn run() -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
     let install = sc_discovery::discover_primary()?;
     let assets = AssetSource::from_install(&install)?;
     let asset_data = AssetData::extract(&assets, &AssetConfig::standard())?;
     let datacore = Datacore::parse(&assets, &asset_data)?;
     let locale = &asset_data.locale;
     let index = Missions::build(&datacore);
+
+    let curve = UecCurve::build(&datacore)
+        .ok_or("GameMode.SC_Default uecCurve not found (gamemode pools empty?)")?;
+    println!(
+        "extracted GameMode.SC_Default.uecCurve: i={} k={} m={}\n",
+        curve.i, curve.k, curve.m
+    );
 
     println!("=== aUEC estimator vs known SCMDB payouts ===\n");
     for (needle, known) in SAMPLES {
@@ -71,7 +79,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         let mut seen: BTreeSet<(u32, u32)> = BTreeSet::new();
         let mut rows: Vec<(f32, f32, [u8; 4], Option<i32>)> = Vec::new();
         for m in index.iter() {
-            let Some(title) = m.title(locale) else { continue };
+            let Some(title) = m.title(locale) else {
+                continue;
+            };
             if !title.contains(needle) {
                 continue;
             }
@@ -95,7 +105,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             if !seen.insert(key) {
                 continue;
             }
-            rows.push((weighted, t, levels, estimate(weighted, t)));
+            rows.push((weighted, t, levels, curve.estimate(weighted, t)));
         }
         // Match each known value to its nearest estimate for a % error readout.
         println!("{needle}  (known: {known:?})");
