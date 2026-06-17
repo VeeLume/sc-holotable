@@ -37,6 +37,8 @@ sc-holotable/
 │   ├── sc-missions-v2.md         contracts v2 design + landing-phase log (current)
 │   ├── sc-missions-guide.md      contracts consumer guide
 │   ├── sc-locations.md           typed StarMapObject location surface (implemented)
+│   ├── resource-gathering.md     mining/plants/salvage data-source map + crate plan (investigated, not built)
+│   ├── dcb-exploration-guide.md  reusable playbook for DCB + object-container data digs (method behind resource-gathering)
 │   └── feature-request-*.md       feature requests filed by sc-langpatch
 ├── implementing/                  non-obvious implementation context (not code restated in prose)
 │   ├── sc-discovery.md             port lineage + consumer switch-over plan
