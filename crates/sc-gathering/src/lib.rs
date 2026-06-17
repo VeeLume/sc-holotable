@@ -11,14 +11,16 @@
 //! (Tier 3), and the location join land next.
 
 mod mineable;
+mod mode;
 mod provider;
 
 pub use mineable::{Deposit, DepositPart};
+pub use mode::GatheringMode;
 pub use provider::{Cluster, ClusterBand, GatherableElement, Provider, ProviderGroup};
 
 use std::collections::HashMap;
 
-use sc_extract::{Guid, RecordStore};
+use sc_extract::{Guid, RecordPaths, RecordStore};
 use serde::{Deserialize, Serialize};
 
 /// Every resource provider, keyed by its `HarvestableProviderPreset` GUID.
@@ -33,10 +35,11 @@ impl Gathering {
         Self::default()
     }
 
-    /// Build the provider spine from a parsed [`RecordStore`] (the `harvestable`
-    /// feature). DCB-only and offline — the location join is layered on
-    /// separately (it needs the live p4k).
-    pub fn build(store: &RecordStore) -> Self {
+    /// Build the provider spine from a parsed [`RecordStore`] + [`RecordPaths`]
+    /// (the latter resolves the `MiningGlobalParams` record names that classify a
+    /// group's gathering mode). DCB-only and offline — the location join is
+    /// layered on separately (it needs the live p4k).
+    pub fn build(store: &RecordStore, paths: &RecordPaths) -> Self {
         let pools = &store.pools;
         let mut g = Self::new();
         for (&guid, &handle) in &store.records.harvestable.harvestable_provider_preset {
@@ -44,7 +47,7 @@ impl Gathering {
                 continue;
             };
             g.by_guid
-                .insert(guid, provider::provider_for(guid, preset, store));
+                .insert(guid, provider::provider_for(guid, preset, store, paths));
         }
         g
     }

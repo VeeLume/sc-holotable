@@ -1,18 +1,24 @@
-//! Tier 2 (resource side) — resolve a `HarvestablePreset` to its within-rock
-//! deposit: the `MineableComposition` reached through the rock's entity class.
+//! Tier 2 — resolve a `HarvestablePreset` to its mineable-rock data: the
+//! within-rock [`Deposit`], the rock's `MiningGlobalParams` reference (the
+//! gathering-mode ground truth), and its `Resource`-channel scan signal.
 //!
-//! Chain (all typed, GUID references):
+//! All reached through the rock's entity class, in one pass:
 //! ```text
-//! HarvestablePreset.entityClass → EntityClassDefinition
-//!   .components ∋ MineableParams.composition → MineableComposition
-//!     .compositionArray[] → MineableCompositionPart.mineableElement → MineableElement.resourceType
+//! HarvestablePreset.entityClass → EntityClassDefinition.components ∋
+//!   MineableParams        → globalParams (mode) + composition (Deposit)
+//!   SSCSignatureSystemParams → radarProperties.baseSignatureParams.signatures[4]
 //! ```
-//! Needs the `entities-mineable` (rock entity classes), `mining`
-//! (composition/element), and `resourcetypedatabase` features.
+//! Needs `entities-mineable` + `mining` + `resourcetypedatabase`.
 
-use sc_extract::generated::DataForgeComponentParamsPtr;
+use sc_extract::generated::{
+    DataForgeComponentParamsPtr, SSCSignatureParamsBasePtr, SSCSignatureSystemParams,
+};
 use sc_extract::{Guid, LocaleKey, RecordStore};
 use serde::{Deserialize, Serialize};
+
+/// `ESignatureType::Resource` — the only non-zero signature channel on mineable
+/// rocks; its value ×1000 is the in-game "sig" readout.
+const RESOURCE_CHANNEL: usize = 4;
 
 /// The within-rock composition a gatherable resolves to (the `MineableComposition`).
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -37,37 +43,70 @@ pub struct DepositPart {
     pub quality_scale: f32,
 }
 
-/// Resolve a `HarvestablePreset` GUID to its [`Deposit`], or `None` when the
-/// preset isn't a mineable rock (plants/salvage take a different chain) or any
-/// link is missing/unloaded.
-pub(crate) fn deposit_for(harvestable: Guid, store: &RecordStore) -> Option<Deposit> {
+/// Everything Tier 2 reads off a mineable rock's entity class.
+#[derive(Debug, Clone, Default)]
+pub(crate) struct RockData {
+    pub deposit: Option<Deposit>,
+    /// `MiningGlobalParams` GUID — the rock's tool family (mode ground truth).
+    pub global_params: Option<Guid>,
+    /// `Resource`-channel scan signature (raw; ×1000 is the displayed "sig").
+    pub signal: Option<f32>,
+}
+
+/// Resolve a `HarvestablePreset` GUID to its rock data in a single entity-class
+/// pass. Empty for plants/salvage (no `MineableParams`) or missing links.
+pub(crate) fn resolve_rock(harvestable: Guid, store: &RecordStore) -> RockData {
+    let mut out = RockData::default();
     let pools = &store.pools;
     let records = &store.records;
 
-    let preset = records
+    let Some(preset) = records
         .multi_feature
         .harvestable_preset
-        .get(&harvestable)?
-        .get(pools)?;
-    let entity_class = preset.entity_class?;
-    let class = records
-        .multi_feature
-        .entity_class_definition
-        .get(&entity_class)?
-        .get(pools)?;
+        .get(&harvestable)
+        .and_then(|h| h.get(pools))
+    else {
+        return out;
+    };
+    let Some(class) = preset.entity_class.and_then(|ec| {
+        records
+            .multi_feature
+            .entity_class_definition
+            .get(&ec)
+            .and_then(|h| h.get(pools))
+    }) else {
+        return out;
+    };
 
-    // The mineable rock carries a MineableParams component pointing at its composition.
-    let mineable = class.components.iter().find_map(|c| match c {
-        DataForgeComponentParamsPtr::MineableParams(h) => h.get(pools),
-        _ => None,
-    })?;
-    let composition = records
+    for component in &class.components {
+        match component {
+            DataForgeComponentParamsPtr::MineableParams(h) => {
+                if let Some(mp) = h.get(pools) {
+                    out.global_params = mp.global_params;
+                    out.deposit = mp.composition.and_then(|cg| composition_deposit(cg, store));
+                }
+            }
+            DataForgeComponentParamsPtr::SSCSignatureSystemParams(h) => {
+                if let Some(sig) = h.get(pools) {
+                    out.signal = resource_signal(sig, store);
+                }
+            }
+            _ => {}
+        }
+    }
+    out
+}
+
+/// Resolve a `MineableComposition` GUID into a [`Deposit`].
+fn composition_deposit(composition: Guid, store: &RecordStore) -> Option<Deposit> {
+    let pools = &store.pools;
+    let records = &store.records;
+    let comp = records
         .multi_feature
         .mineable_composition
-        .get(&mineable.composition?)?
+        .get(&composition)?
         .get(pools)?;
-
-    let parts = composition
+    let parts = comp
         .composition_array
         .iter()
         .filter_map(|h| h.get(pools))
@@ -86,10 +125,21 @@ pub(crate) fn deposit_for(harvestable: Guid, store: &RecordStore) -> Option<Depo
             quality_scale: part.quality_scale,
         })
         .collect();
-
     Some(Deposit {
-        name: composition.deposit_name.clone(),
-        minimum_distinct_elements: composition.minimum_distinct_elements,
+        name: comp.deposit_name.clone(),
+        minimum_distinct_elements: comp.minimum_distinct_elements,
         parts,
     })
+}
+
+/// Read the `Resource`-channel signature off a `SSCSignatureSystemParams` component.
+fn resource_signal(sig: &SSCSignatureSystemParams, store: &RecordStore) -> Option<f32> {
+    let pools = &store.pools;
+    let radar = sig.radar_properties?.get(pools)?;
+    let base = radar.base_signature_params.as_ref()?;
+    let params = match base {
+        SSCSignatureParamsBasePtr::SSCSignatureSystemBaseSignatureParams(h) => h.get(pools)?,
+        _ => return None,
+    };
+    params.signatures.get(RESOURCE_CHANNEL).copied()
 }

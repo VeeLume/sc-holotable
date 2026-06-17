@@ -6,10 +6,11 @@
 //! element's `MiningGlobalParams` family) + scan signal.
 
 use sc_extract::generated::{HarvestableElementGroup, HarvestableProviderPreset};
-use sc_extract::{Guid, RecordStore};
+use sc_extract::{Guid, RecordPaths, RecordStore};
 use serde::{Deserialize, Serialize};
 
 use crate::mineable::{self, Deposit};
+use crate::mode::GatheringMode;
 
 /// One body/field's resource-provider spine, resolved from a
 /// `HarvestableProviderPreset` (keyed by its record GUID).
@@ -27,15 +28,18 @@ pub struct Provider {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ProviderGroup {
     pub name: String,
+    /// Tool family, derived from the elements' `MiningGlobalParams` family
+    /// (mineables) or this group's `name` (plants/salvage).
+    pub mode: GatheringMode,
     pub group_probability: f32,
     pub mode_share: f32,
     pub elements: Vec<GatherableElement>,
 }
 
 /// One harvestable within a group. `share` is `relative_probability` normalized
-/// within the group. `harvestable` is the `HarvestablePreset` GUID; `deposit` is
-/// its resolved within-rock composition (Tier 2, mineables only — `None` for
-/// plants/salvage). Mode + signal land in the following increments.
+/// within the group. `harvestable` is the `HarvestablePreset` GUID; `deposit`,
+/// `global_params`, and `signal` are its resolved mineable-rock data (Tier 2,
+/// mineables only — `None` for plants/salvage).
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GatherableElement {
     pub harvestable: Option<Guid>,
@@ -43,6 +47,11 @@ pub struct GatherableElement {
     pub share: f32,
     pub cluster: Option<Cluster>,
     pub deposit: Option<Deposit>,
+    /// `MiningGlobalParams` GUID — the rock's tool-family ground truth (the basis
+    /// for the group's [`GatheringMode`]). `None` for plants/salvage.
+    pub global_params: Option<Guid>,
+    /// `Resource`-channel scan signature (raw; ×1000 is the displayed "sig").
+    pub signal: Option<f32>,
 }
 
 /// Cluster spawn: a probability plus **weighted discrete sizes** (each band has
@@ -78,6 +87,7 @@ pub(crate) fn provider_for(
     guid: Guid,
     preset: &HarvestableProviderPreset,
     store: &RecordStore,
+    paths: &RecordPaths,
 ) -> Provider {
     let pools = &store.pools;
 
@@ -92,17 +102,26 @@ pub(crate) fn provider_for(
     for g in raw_groups {
         let elems: Vec<_> = g.harvestables.iter().filter_map(|h| h.get(pools)).collect();
         let elem_sum: f32 = elems.iter().map(|e| e.relative_probability).sum();
-        let elements = elems
+        let elements: Vec<GatherableElement> = elems
             .into_iter()
-            .map(|e| GatherableElement {
-                harvestable: e.harvestable,
-                relative_probability: e.relative_probability,
-                share: norm(e.relative_probability, elem_sum),
-                cluster: e.clustering.and_then(|cg| cluster_for(cg, store)),
-                deposit: e.harvestable.and_then(|h| mineable::deposit_for(h, store)),
+            .map(|e| {
+                let rock = e
+                    .harvestable
+                    .map(|h| mineable::resolve_rock(h, store))
+                    .unwrap_or_default();
+                GatherableElement {
+                    harvestable: e.harvestable,
+                    relative_probability: e.relative_probability,
+                    share: norm(e.relative_probability, elem_sum),
+                    cluster: e.clustering.and_then(|cg| cluster_for(cg, store)),
+                    deposit: rock.deposit,
+                    global_params: rock.global_params,
+                    signal: rock.signal,
+                }
             })
             .collect();
         groups.push(ProviderGroup {
+            mode: group_mode(&elements, &g.group_name, paths),
             name: g.group_name.clone(),
             group_probability: g.group_probability,
             mode_share: norm(g.group_probability, group_sum),
@@ -111,6 +130,21 @@ pub(crate) fn provider_for(
     }
 
     Provider { guid, groups }
+}
+
+/// Derive a group's mode from the rock's `MiningGlobalParams` family (the
+/// per-element ground truth), falling back to the `groupName` for plants/salvage.
+fn group_mode(
+    elements: &[GatherableElement],
+    group_name: &str,
+    paths: &RecordPaths,
+) -> GatheringMode {
+    let from_global_params = elements
+        .iter()
+        .find_map(|e| e.global_params)
+        .and_then(|gp| paths.get(&gp))
+        .map(|rp| GatheringMode::classify(&rp.name));
+    from_global_params.unwrap_or_else(|| GatheringMode::classify(group_name))
 }
 
 /// Resolve a `HarvestableClusterPreset` GUID into a [`Cluster`].

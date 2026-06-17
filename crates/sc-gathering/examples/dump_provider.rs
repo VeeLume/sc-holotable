@@ -11,7 +11,7 @@
 
 use std::collections::BTreeMap;
 
-use sc_extract::{AssetConfig, AssetData, AssetSource, Datacore, Guid};
+use sc_extract::{AssetConfig, AssetData, AssetSource, Datacore, Guid, RecordPaths};
 use sc_gathering::Gathering;
 
 const DCB: &str = "target/probe-resources/dcbfile/Data/Game2.dcb";
@@ -23,7 +23,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let assets = AssetSource::from_snapshot(files, "probe");
     let asset_data = AssetData::extract(&assets, &AssetConfig::minimal())?;
     let dc = Datacore::parse(&assets, &asset_data)?;
-    let gathering = Gathering::build(dc.records());
+    let paths = RecordPaths::build(&dc);
+    let gathering = Gathering::build(dc.records(), &paths);
     eprintln!("providers: {}", gathering.len());
 
     let guid: Guid = std::env::args()
@@ -38,8 +39,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("provider {guid} — {} groups", p.groups.len());
     for grp in &p.groups {
         println!(
-            "  [{}]  group_prob={}  mode_share={:.1}%  ({} elements)",
+            "  [{}]  mode={:?}  group_prob={}  mode_share={:.1}%  ({} elements)",
             grp.name,
+            grp.mode,
             grp.group_probability,
             grp.mode_share * 100.0,
             grp.elements.len()
@@ -65,8 +67,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                     format!("{:?} ({}/{} parts w/ resource)", d.name, res, d.parts.len())
                 })
                 .unwrap_or_else(|| "<no deposit>".to_string());
+            let signal = e
+                .signal
+                .map(|s| format!("sig {:.3}", s / 1000.0))
+                .unwrap_or_else(|| "sig —".to_string());
             println!(
-                "      rel={:<6} share={:>5.1}%  {cluster:<12}  {deposit}",
+                "      rel={:<6} share={:>5.1}%  {cluster:<12}  {signal:<11}  {deposit}",
                 e.relative_probability,
                 e.share * 100.0
             );
