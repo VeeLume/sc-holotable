@@ -47,17 +47,7 @@ const SAMPLES: &[(&str, &[i32])] = &[
     ("Eliminate XenoThreat Enforcer", &[260_750]),
 ];
 
-fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
-    // The `gamemode` extraction (GameMode.SC_Default) recurses deep enough to
-    // overflow the default Windows main-thread stack — run on a larger one.
-    std::thread::Builder::new()
-        .stack_size(64 * 1024 * 1024)
-        .spawn(run)?
-        .join()
-        .unwrap()
-}
-
-fn run() -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
+fn main() -> Result<(), Box<dyn std::error::Error>> {
     let install = sc_discovery::discover_primary()?;
     let assets = AssetSource::from_install(&install)?;
     let asset_data = AssetData::extract(&assets, &AssetConfig::standard())?;

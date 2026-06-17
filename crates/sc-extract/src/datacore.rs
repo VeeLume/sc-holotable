@@ -31,6 +31,11 @@ pub struct Datacore {
     records: RecordStore,
 }
 
+/// Stack size for the parse worker thread. The materialize walk recurses per
+/// record-nesting depth; deeply-nested records (e.g. `GameMode.SC_Default`,
+/// pulled in by the `gamemode` feature) overflow the default ~1 MB stack.
+const PARSE_STACK_SIZE: usize = 64 * 1024 * 1024;
+
 impl Datacore {
     /// Parse the DCB from an open [`AssetSource`] into the record store.
     ///
@@ -49,20 +54,31 @@ impl Datacore {
             .ok_or(Error::DcbNotFound)?;
         tracing::info!(dcb_name = %dcb_name, bytes = dcb_bytes.len(), "extracted Game2.dcb");
 
-        tracing::info!("parsing DataCore");
-        let db = DataCoreDatabase::parse(&dcb_bytes).map_err(Error::DcbParse)?;
+        // The materialize walk recurses per record-nesting depth; deeply-nested
+        // records (e.g. `GameMode.SC_Default`, pulled in by the `gamemode`
+        // feature) overflow the default ~1 MB thread stack. Run it on a large
+        // stack so every consumer — and the snapshot `hydrate` path — is
+        // protected without each spawning its own big-stack thread.
+        std::thread::Builder::new()
+            .stack_size(PARSE_STACK_SIZE)
+            .spawn(move || -> Result<Self> {
+                tracing::info!("parsing DataCore");
+                let db = DataCoreDatabase::parse(&dcb_bytes).map_err(Error::DcbParse)?;
 
-        tracing::info!("building record store");
-        let records = Builder::new(&db).consume_database().finish();
-        tracing::info!(records = records.len(), "record store built");
+                tracing::info!("building record store");
+                let records = Builder::new(&db).consume_database().finish();
+                tracing::info!(records = records.len(), "record store built");
 
-        tracing::info!(
-            records = records.len(),
-            elapsed_ms = start.elapsed().as_millis(),
-            "datacore parse complete"
-        );
-
-        Ok(Self { db, records })
+                tracing::info!(
+                    records = records.len(),
+                    elapsed_ms = start.elapsed().as_millis(),
+                    "datacore parse complete"
+                );
+                Ok(Self { db, records })
+            })
+            .expect("spawn datacore parse thread")
+            .join()
+            .expect("datacore parse thread panicked")
     }
 
     /// Raw access to the live [`DataCoreDatabase`]. Use this for svarog
