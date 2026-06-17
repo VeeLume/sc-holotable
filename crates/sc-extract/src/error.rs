@@ -50,6 +50,34 @@ pub enum Error {
     #[error("file not found in P4K: {0}")]
     FileNotInP4k(String),
 
+    // ── Object containers (socpak / .soc / CryXmlB) ──────────────────────
+    /// A `.socpak` could not be opened or read as a ZIP archive.
+    #[error("socpak archive error")]
+    Socpak(#[source] zip::result::ZipError),
+
+    /// Reading a member out of a `.socpak` failed.
+    #[error("failed to read socpak member")]
+    SocpakRead(#[source] io::Error),
+
+    /// A CrCh `.soc`/`.pla` chunk container was malformed (truncated header,
+    /// chunk range past EOF, …).
+    #[error("malformed CrCh chunk container: {0}")]
+    ChunkContainer(String),
+
+    /// A CryXmlB payload (whole file or an embedded `.soc` chunk) failed to
+    /// decode.
+    #[error("CryXmlB decode failed: {0}")]
+    CryXml(String),
+
+    /// Decoded object-container XML could not be parsed into a node tree.
+    #[error("object-container XML parse failed: {0}")]
+    ObjectContainerXml(String),
+
+    /// Object-container bytes were not a recognized form (not CrCh, not
+    /// CryXmlB, and not UTF-8 XML).
+    #[error("unrecognized object-container format: {0}")]
+    ObjectContainerFormat(String),
+
     // ── DCB parse ────────────────────────────────────────────────────────
     /// `Game2.dcb` could not be located inside the P4K archive.
     #[error("Game2.dcb not found inside P4K archive")]

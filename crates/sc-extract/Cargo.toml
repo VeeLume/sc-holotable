@@ -20,6 +20,13 @@ encoding_rs = "0.8"
 svarog-common = { workspace = true }
 svarog-datacore = { workspace = true }
 svarog-p4k = { workspace = true }
+svarog-cryxml = { workspace = true }
+
+# Object-container access (the generic `object_container` reader). A `.socpak`
+# is a plain ZIP; a `.soc`/`.pla` is a CrCh chunk file whose CryXmlB chunk —
+# and plain-XML `pivot.entxml` — are parsed into a generic node tree via quick-xml.
+quick-xml = "0.37"
+zip = { version = "2", default-features = false, features = ["deflate"] }
 
 # Snapshot persistence: msgpack + zstd. msgpack matches `docs/sc-extract.md`;
 # zstd keeps the on-disk footprint in the 5–30 MB target range.

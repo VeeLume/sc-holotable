@@ -63,6 +63,7 @@ mod error;
 mod filters;
 mod graph;
 mod locale;
+pub mod object_container;
 mod processed_snapshot;
 mod record_paths;
 mod snapshot;
@@ -81,6 +82,7 @@ pub use error::{Error, Result};
 pub use filters::{is_playable_ship, is_playable_weapon};
 pub use graph::ReferenceGraph;
 pub use locale::{LocaleKey, LocaleMap, strip_locale_metadata};
+pub use object_container::{Socpak, XmlNode};
 pub use processed_snapshot::ProcessedSnapshot;
 pub use record_paths::{RecordPath, RecordPaths, RecordPathsBuilder};
 pub use sc_extract_generated::{

@@ -66,6 +66,7 @@ regex = "1"
 svarog-common = { git = "https://github.com/19h/Svarog.git", rev = "7f06225", features = ["serde"] }
 svarog-datacore = { git = "https://github.com/19h/Svarog.git", rev = "7f06225" }
 svarog-p4k = { git = "https://github.com/19h/Svarog.git", rev = "7f06225" }
+svarog-cryxml = { git = "https://github.com/19h/Svarog.git", rev = "7f06225" }
 
 # ── Profiles ────────────────────────────────────────────────────────────────
 #
