@@ -30,6 +30,9 @@ use sc_extract::{Guid, LocaleKey, LocaleMap, RecordStore, class_crc};
 use serde::{Deserialize, Serialize};
 use tracing::warn;
 
+mod containers;
+pub use containers::LocationContainers;
+
 /// Typed location category, resolved from a `StarMapObjectType.name`. The known
 /// variants are the 21 type records observed in live DCB data; a value the
 /// generator hasn't seen (a future patch's type) falls through to
