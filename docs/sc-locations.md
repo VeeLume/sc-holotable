@@ -178,6 +178,96 @@ impl Locations {
 pub struct LocationsBuilder { /* … */ }
 ```
 
+## Object-container binding — `LocationContainers` (added 2026-06-18)
+
+> Status: **specced, implementation pending.** This is the next change to land in
+> `sc-locations`; the core `Locations` surface above is unaffected.
+
+A `StarMapObject` is the *navigable* place; the 3D world it loads is an **object
+container** (`.socpak`). Resolving "which socpak realizes this location" is a
+**location** concern (reusable by gathering, missions, nav, …), so it lives here
+— but it is **not** in the DCB. The binding is authored in the **system** object
+containers: each body/field/moon/lagrange/jump-point/asteroid-base is placed by
+an `OrbitingObjectContainer` entity that carries both halves on one entity:
+
+```
+<Entity EntityClass="OrbitingObjectContainer" …>
+  <EntityComponentObjectContainer objectContainer="…/stanton/stanton4b.socpak"/>   ← socpak
+  <EntityComponentObjectMetadata>
+    <SNavPointObjectMetadataParams starmapRecord="2a21d86f-…"/>                     ← StarMapObject GUID
+```
+
+This is a **typed GUID/path link** (no name-matching). `Locations` stays
+DCB-pure and offline; `LocationContainers` is a **separate cooked index** that
+needs a live `AssetSource` (the binding only exists in the socpaks):
+
+```rust
+/// StarMapObject ↔ object-container binding, harvested from the system OCs.
+/// Cooked from the live p4k; serde-clean → ProcessedSnapshot<LocationContainers>.
+#[derive(Default, Serialize, Deserialize)]
+pub struct LocationContainers {
+    by_location:  HashMap<Guid, String>,        // StarMapObject GUID → socpak (1:1)
+    by_container: HashMap<String, Vec<Guid>>,   // socpak → StarMapObjects sharing it (1:many)
+}
+
+impl LocationContainers {
+    pub const COOK_SCHEMA_VERSION: u32 = 1;
+    /// Parse every `*system.socpak` (stanton/pyro/nyx) for OrbitingObjectContainer
+    /// `(starmapRecord, objectContainer)` pairs, via `sc_extract::object_container`.
+    pub fn cook(assets: &AssetSource) -> Result<Self>;
+    pub fn container_of(&self, loc: &Guid) -> Option<&str>;
+    pub fn locations_in(&self, socpak: &str) -> &[Guid];
+    pub fn iter(&self) -> impl Iterator<Item = (&Guid, &str)> + '_;
+    pub fn len(&self) -> usize;
+    pub fn is_empty(&self) -> bool;
+}
+```
+
+**Cook mechanics:** enumerate p4k entries ending `system.socpak` (3 today — no
+universe-root container exists); for each, `object_container::Socpak::open` →
+`decode` the system `.soc` (CrChF) → `find_all("Entity")` filtered to
+`EntityClass == "OrbitingObjectContainer"` → read
+`EntityComponentObjectContainer.objectContainer` +
+`SNavPointObjectMetadataParams.starmapRecord`. **Skip entities with an empty
+`starmapRecord`** (the skybox and space-scattered derelicts place without a nav
+entry). **Normalize the socpak path** (lowercase, strip the `Data\` prefix,
+backslash→`/`) before keying — live data mixes `objectcontainers/…`,
+`ObjectContainers/PU/…`, `Data/ObjectContainers/…`.
+
+**Granularity** falls out of the two maps: bodies/moons/lagrange/jump-points are
+1:1; **asteroid bases reuse one socpak across many placements**
+(`asteroidbase/ab_mine_stanton_cloud_med_001.socpak` ← 20+ distinct
+`StarMapObject`s), so `by_container` is genuinely 1:many — that *is* the
+"which places share this provider" query.
+
+**Persistence:** its own `ProcessedSnapshot<LocationContainers>`, cooked once
+where the p4k is present (alongside the DCB snapshot), `COOK_SCHEMA_VERSION`-gated.
+`Locations` is unchanged.
+
+**Consumer (`sc-gathering`):** takes `&LocationContainers`; opens each distinct
+socpak to read its (harvestable-domain) `HarvestableProviderComponent.preset`,
+then composes `StarMapObject → provider → ResourceType` and the inverse via
+`locations_in`. See `docs/resource-gathering.md` → "Location binding."
+
+**Deferred (documented, not built):**
+- **(b) Recursion for sub-location bindings.** Bodies/fields are placed at the
+  *system* level (all gathering needs). But **sub-locations** — e.g. Clio's
+  `stanton4b_rayarihydro_*` outposts — are placed by `OrbitingObjectContainer`
+  entities *inside the body's* OC, so a system-OC-only cook misses them. A
+  follow-on can recurse into each placed container to capture the full
+  location→container map (heavier; useful to non-gathering consumers).
+- **Orbital / spatial data.** The same bridge entity carries `Pos`,
+  `OrbitalRadius`, `OrbitalAngle`, and `parentGUID` (the *entity*-graph orbital
+  parent, distinct from `StarMapObject.parent`). A later `ContainerBinding {
+  object_container, orbit }` could surface real 3D positions; v1 stores only the
+  socpak path.
+
+> Note: the `StarMapObject` `parent` hierarchy roots at the **`Star`**, not the
+> `SolarSystem` (which is a parentless sibling node). And `dcbraw` XML empties
+> reference fields, so the hierarchy + this binding are only correct off the
+> **binary** `Game2.dcb` / the live socpaks — see
+> `examples/dump_location_tree.rs`.
+
 ## Mechanics
 
 - **Class-CRC**: reuse `sc_extract::class_crc`. Build a scoped

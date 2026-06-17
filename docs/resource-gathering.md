@@ -77,26 +77,32 @@ matching.
 
 ## The four questions
 
-### 1. Where — `HarvestableProviderPreset`, joined per-body in the object container
+### 1. Where — two edges, both anchored on the object container
 
-The location join is a single GUID. Each body's root `ProceduralEntity` carries
-a `HarvestableProviderComponent` whose `preset` is the `RecordId` of a
-`HarvestableProviderPreset`. Verified verbatim for Clio:
+"Where" is **two separate links**, and neither is a DCB-internal edge from a
+resource record to a location:
 
-- `oc/…/stanton/stanton4b/stanton4b/pivot.entxml`:
-  `<HarvestableProviderComponent __type="HarvestableProviderParams" preset="703a18ca-7f7c-4489-a64a-cd0cd359b8fe"/>`
-- → `dcbraw/…/harvestable/providerpresets/system/stanton/hpp_stanton4b.xml`
-  (`RecordId` matches exactly).
+1. **Resource → provider → object container** (presence). Each body/field's root
+   entity carries a `HarvestableProviderComponent` whose `preset` is the
+   `RecordId` of a `HarvestableProviderPreset`. Verified verbatim for Clio:
+   - `oc/…/stanton/stanton4b/stanton4b/pivot.entxml`:
+     `<HarvestableProviderComponent __type="HarvestableProviderParams" preset="703a18ca-7f7c-4489-a64a-cd0cd359b8fe"/>`
+   - → `dcbraw/…/harvestable/providerpresets/system/stanton/hpp_stanton4b.xml`.
+   Reading it is a solved, structured parse — see
+   [The object-container join](#the-object-container-join--solved-validated).
+2. **Object container ↔ StarMapObject** (the actual place). The body socpak is
+   tied to a `StarMapObject` (the navigable location) by a GUID pair in the
+   **system** object container — see
+   [Location binding](#location-binding--the-system-oc-bridge). This is the hop
+   that turns `hpp_stanton4b` into "Clio."
 
-The 49 provider presets are named after their bodies (`hpp_stanton4b`,
-`hpp_nyx_glaciemring`, `hpp_aaronhalo`, `hpp_lagrange_a…g`, `hpp_pyro1…6`, …).
-**No DCB record references these GUIDs** — the body→preset binding exists *only*
-in the object-container `.soc`/`.entxml` instances, and reading it is now a
-solved, structured parse (no byte-scanning). See
-[The object-container join](#the-object-container-join--solved-validated).
+**No DCB record references the provider GUIDs**; the body→preset binding exists
+*only* in the object-container instances. `HarvestableProviderPreset` is a seeded
+record type in `sc-extract` (gated by the `harvestable` feature).
 
-`HarvestableProviderPreset` is already a seeded record type in `sc-extract`
-(`RecordLookup` impl in `record_store.rs`), gated by the `harvestable` feature.
+There is also a **third, independent edge — quality by location** — a direct
+typed DCB reference from a resource's quality data to a `StarMapObject`; see
+[Location binding](#location-binding--the-system-oc-bridge).
 
 ### 2. Rarity — two normalized probability fields
 
@@ -352,6 +358,94 @@ piece** and is what graduates into a real `sc-extract` SOC source. StarBreaker
 `starbreaker-3d/src/socpak.rs`) remains the format cross-reference, but **no port
 was needed** — svarog's CryXmlB decoder does the whole payload.
 
+## Location binding — the system-OC bridge
+
+> **Correction (2026-06-18).** An earlier draft claimed there was *no* GUID link
+> between an object container and its `StarMapObject`, so location had to be
+> recovered by a **body-token name match** (OC folder `stanton4b` ⇔ record
+> `StarMapObject.Stanton4b`). **That was wrong.** A typed GUID link exists; it
+> just lives in the **system** container, not the body's own. The name
+> correspondence is real but *incidental* — use it only as a sanity cross-check,
+> not the join.
+
+### The bridge: `OrbitingObjectContainer` entities in the system OC
+
+Each system has a top-level object container (`stantonsystem.socpak`,
+`pyrosystem`, `nyxsystem`). Inside it, **every body, moon, lagrange point, jump
+point, asteroid base, comm array, … is placed by an `OrbitingObjectContainer`
+entity** that carries both halves of the location link on one entity:
+
+```
+<Entity Name="OOC_Stanton_4b_Clio" EntityClass="OrbitingObjectContainer" …>
+  <EntityComponentObjectContainer  objectContainer="…/stanton/stanton4b.socpak"/>   ← the body socpak
+  <EntityComponentObjectMetadata>
+    <SNavPointObjectMetadataParams  starmapRecord="2a21d86f-…"/>                     ← the StarMapObject GUID
+  …
+```
+
+So the full presence chain is **GUID/path at every hop — no name matching**:
+
+```
+StarMapObject  ◄──starmapRecord──  OrbitingObjectContainer (system OC)  ──objectContainer──►  body socpak
+                                                                                                   │
+                                                  HarvestableProviderComponent.preset ◄───────────┘
+                                                                                                   ▼
+                                                  HarvestableProviderPreset → groups/elements → ResourceType
+```
+
+### Granularity falls out of the pairs
+- **Bodies / moons / lagrange / jump points** → one `OrbitingObjectContainer` →
+  one socpak → one `StarMapObject` (`stanton4b.socpak`,
+  `lagrangepoints/stanton4_l4.socpak`, `jumppoints/jumppoint_stanton_terra.socpak`).
+  Clean 1:1.
+- **Asteroid bases** → **many distinct `starmapRecord` GUIDs point at the *same*
+  reusable socpak** (`asteroidbase/ab_mine_stanton_cloud_med_001.socpak` appears
+  20+ times). One provider (in that one socpak) applies to *all* those placements;
+  find them by enumerating every `OrbitingObjectContainer` whose `objectContainer`
+  is that socpak. The 1:many is a join, not a guess.
+
+### The StarMapObject hierarchy (for keying / display)
+- Rooted at the **`Star`**, *not* the `SolarSystem` (the `SolarSystem` record is a
+  parentless, childless sibling node). 1962/2054 locations carry a `parent`;
+  `sc-locations` exposes `parent_of` / `children_of` / `ancestors`.
+- 21 `LocationKind`s; there is **no dedicated Lagrange/AsteroidCluster/AsteroidBase
+  kind** — lagrange points and asteroid clusters are `Asteroid`/`AsteroidValidQt`,
+  jump points are `Anomaly`, stations are `Manmade`.
+- Pyro shape (851 records): 6 planets, 6 moons, ~381 asteroid-type, 101 outposts;
+  `PrivateMiningPoint_*` hang off lagrange asteroid clusters; encounter clusters
+  hang off the Star. Aaron Halo has **no** single `StarMapObject` — it is placed
+  *as* the cloud of `ab_mine_*` asteroid-base nodes (its `aaronhalo.socpak`
+  placement has an empty `starmapRecord`).
+
+### Quality-by-location — the one direct DCB→location edge
+Separate from presence, and the **only** place the DCB itself references a
+location: `ResourceType → ResourceTypeCraftingData → qualityLocationOverride →
+CraftingQualityLocationOverrideEntry.location` is a **GUID Reference to a
+`StarMapObject`**. It is hierarchy-aware (the `location` may be a whole system,
+e.g. `pyrosolarsystem`, or a single cluster, e.g. the 61
+`asteroidclusterbase_nyx_rockcracker_*`) and **sparse** (only resources with
+per-place quality variance have it — the trace found ~2: Savrilium-RCD, Torite).
+Quality can therefore be **more granular than presence** (per-cluster overrides
+on a per-field provider).
+
+### Caveats
+- **`objectContainer` paths vary** in case/prefix (`objectcontainers/…`,
+  `ObjectContainers/PU/…`, `Data/ObjectContainers/…`) — normalize before matching
+  p4k entries.
+- **Not every placement is a location** — scattered derelict sets and the skybox
+  place with an empty `starmapRecord`.
+- **`dcbraw` XML is lossy for references** — the exporter empties `parent`/`type`
+  etc., so the hierarchy is only correct off the **binary** `Game2.dcb`. Use the
+  typed parse (`sc-locations`), reproduced by
+  `crates/sc-locations/examples/dump_location_tree.rs`.
+
+### Cook implication
+The location cook must parse the **system** object containers (not just body
+socpaks): collect `OrbitingObjectContainer` `(starmapRecord, objectContainer)`
+pairs → the reusable **`StarMapObject` ↔ socpak** map → per socpak read the
+`HarvestableProviderComponent.preset` → compose `StarMapObject → provider →
+ResourceType`.
+
 ## What is NOT in the data (runtime / absent)
 
 - **Absolute spawn density** (rocks per km²) — runtime; only normalized shares
@@ -389,18 +483,22 @@ A new domain crate (working name `sc-mining` or `sc-gathering`) over
   `qualityScale`).
 - **`Mineable`** — `MineableElement` joined to `ResourceType` + mining mechanics
   (instability/resistance/optimal-window/cluster-factor) + resolved signal.
-- **`GatheringPools` / per-body index** — keyed by location (via the `.soc` join
-  or the name heuristic), classifying ship/ROC/FPS/plant/salvage by
-  `MiningGlobalParams` family + group name.
+- **`GatheringPools` / per-location index** — keyed by `StarMapObject` GUID via
+  the [system-OC bridge](#location-binding--the-system-oc-bridge), classifying
+  ship/ROC/FPS/plant/salvage by `MiningGlobalParams` family (not group-name
+  strings — see [the mode note](#the-unified-chain)).
 - Salvage and plants as modules in the same crate (they share the provider
   spine) or as a thin follow-on.
 
 Open decisions before scaffolding: **(a)** crate shape (one `sc-mining` with
 modules vs `sc-gathering` umbrella vs per-method crates); **(c)** initial scope
-(mining-only end-to-end first, vs all three at once). **(b) is resolved** — the
-location join is the structured `.soc` parse, proven above; the only remaining
-build work is graduating the example's `cryxml_chunks` peel into an `sc-extract`
-SOC source and walking entities into typed provider records.
+(mining-only end-to-end first, vs all three at once). **(b) the location join is
+resolved** — it is the system-OC `(starmapRecord, objectContainer)` bridge
+([Location binding](#location-binding--the-system-oc-bridge)), **not** the
+name-token match an earlier draft assumed. Remaining build work: (1) graduate the
+example's `cryxml_chunks` peel into an `sc-extract` SOC source; (2) the location
+cook parses **system** OCs for the bridge pairs, then body socpaks for the
+provider component.
 
 ## Record-type reference
 
@@ -473,3 +571,13 @@ It peels the CrCh chunk table itself and feeds the `CRYXMLB` chunk to
 `svarog_cryxml` — so the full path (DCB provider records via `sc-extract` +
 body join via the `.soc` scan) is reproducible from code. To extend coverage,
 expand more bodies' socpaks into `target/probe-resources/` and re-run.
+
+The `StarMapObject` hierarchy (and the kind tally per system) is reproduced by
+`crates/sc-locations/examples/dump_location_tree.rs`, which hydrates the loose
+`dcbfile/Data/Game2.dcb` via an in-memory `AssetSource::from_snapshot` and walks
+the typed `Locations`. The system-OC `(starmapRecord, objectContainer)` bridge
+was read directly from the expanded **Stanton** system OC
+(`oc/…/stanton/stantonsystem/stantonsystem/entdata/*.entxml`, placement entities
+with `EntityClass="OrbitingObjectContainer"`). The **Pyro** system OC is not in
+the corpus (Pyro was not expanded), so the Pyro bridge is reasoned, not yet
+verified — expand `pyrosystem.socpak` to confirm.
