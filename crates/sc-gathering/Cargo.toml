@@ -1,0 +1,17 @@
+[package]
+name = "sc-gathering"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+
+[dependencies]
+# Tier 1 — the harvestable provider spine (groups / elements / clusters, with
+# normalized rarity). Resource identity + mode (Tier 2, `entities-mineable` +
+# `resourcetypedatabase`), quality (`sc-crafting`), and the location join
+# (`sc-locations` `LocationContainers`) are layered on next.
+sc-extract = { workspace = true, features = ["harvestable"] }
+serde = { workspace = true }
+tracing = { workspace = true }
+
+[dev-dependencies]
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }

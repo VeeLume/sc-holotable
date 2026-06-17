@@ -946,6 +946,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "sc-gathering"
+version = "0.0.0"
+dependencies = [
+ "sc-extract",
+ "serde",
+ "tracing",
+ "tracing-subscriber",
+]
+
+[[package]]
 name = "sc-generator"
 version = "0.0.0"
 dependencies = [

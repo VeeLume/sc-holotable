@@ -11,6 +11,7 @@ members = [
     "crates/sc-items-ship-components",
     "crates/sc-items-ship-weapons",
     "crates/sc-locations",
+    "crates/sc-gathering",
     "crates/sc-manufacturers",
     "crates/sc-resources",
     "crates/sc-tags",
